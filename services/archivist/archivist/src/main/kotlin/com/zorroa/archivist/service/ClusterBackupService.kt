@@ -1,41 +1,32 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.IndexCluster
-import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
-import org.elasticsearch.action.ActionListener
 import org.elasticsearch.action.admin.cluster.repositories.get.GetRepositoriesRequest
-import org.elasticsearch.action.admin.cluster.repositories.get.GetRepositoriesResponse
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequest
-import org.elasticsearch.action.admin.cluster.snapshots.create.CreateSnapshotRequest
-import org.elasticsearch.action.admin.cluster.snapshots.create.CreateSnapshotResponse
-import org.elasticsearch.action.admin.cluster.snapshots.delete.DeleteSnapshotRequest
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequest
-import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse
 import org.elasticsearch.action.admin.cluster.snapshots.restore.RestoreSnapshotRequest
 import org.elasticsearch.action.admin.cluster.snapshots.restore.RestoreSnapshotResponse
 import org.elasticsearch.client.RequestOptions
-import org.elasticsearch.client.RestHighLevelClient
-import org.elasticsearch.client.core.AcknowledgedResponse
-import org.elasticsearch.client.slm.DeleteSnapshotLifecyclePolicyRequest
 import org.elasticsearch.client.slm.ExecuteSnapshotLifecyclePolicyRequest
 import org.elasticsearch.client.slm.ExecuteSnapshotLifecyclePolicyResponse
 import org.elasticsearch.client.slm.GetSnapshotLifecyclePolicyRequest
-import org.elasticsearch.client.slm.GetSnapshotLifecyclePolicyResponse
 import org.elasticsearch.client.slm.PutSnapshotLifecyclePolicyRequest
 import org.elasticsearch.client.slm.SnapshotLifecyclePolicy
+import org.elasticsearch.client.slm.SnapshotLifecyclePolicyMetadata
 import org.elasticsearch.client.slm.SnapshotRetentionConfiguration
+import org.elasticsearch.cluster.metadata.RepositoryMetaData
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.unit.TimeValue
-import org.elasticsearch.repositories.fs.FsRepository
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Profile
+import org.elasticsearch.snapshots.SnapshotInfo
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.context.annotation.Configuration
+import org.springframework.core.env.Environment
 import org.springframework.stereotype.Service
-import java.util.Date
-import java.util.HashMap
 import java.util.UUID
 
 /**
@@ -45,701 +36,320 @@ import java.util.UUID
 interface ClusterBackupService {
 
     /**
-     * Create a repository where the snapshots will be stored
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-repository.html
-     * @param cluster: [IndexCluster] Cluster reference
+     * Enable backups on the given IndexCluster using the available storage backend.
      */
-    fun createClusterRepository(cluster: IndexCluster)
+    fun enableBackups(cluster: IndexCluster)
 
     /**
-     * Asynchronously Create a repository where the snapshots will be stored
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-repository.html
+     * Get Cluster Repository with the same name as the cluster ID, or null it does not exist.
+     *
      * @param cluster: [IndexCluster] Cluster reference
      */
-    fun createClusterRepositoryAsync(cluster: IndexCluster)
-
-    /**
-     * Get Cluster Repository
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-verify-repository.html
-     * @param cluster: [IndexCluster] Cluster reference
-     */
-    fun getRepository(cluster: IndexCluster): GetRepositoriesResponse
-
-    /**
-     * Create a Snapshot Lifecycle Policy
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-put-snapshot-lifecycle-policy.html
-     * @param cluster: [IndexCluster] Cluster reference
-     * @param policyId: [String] Policy Name
-     * @param schedule: [String] Schedule String in Cron Syntax
-     * @param indices: [List] List of indices that will be considered to Back up
-     * @param maxRetentionDays: [Long] Maximum Amount of Days that the Snapshots will be stored before being discarded
-     * @param minimumSnapshotCount: [Int] Minimum Amount of Snapshot that will be keeped even if [maxRetentionDays] is achieved
-     * @param maximumSnapshotCount: [Int] Maximum Amount of Snapshot that will be keeped even if [maxRetentionDays] is not achieved
-     */
-    fun createClusterSnapshotPolicy(
-        cluster: IndexCluster,
-        policyId: String,
-        schedule: String,
-        indices: List<String>,
-        maxRetentionDays: Long,
-        minimumSnapshotCount: Int,
-        maximumSnapshotCount: Int
-    )
-
-    /**
-     * Asynchronously Create a Snapshot Lifecycle Policy
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-put-snapshot-lifecycle-policy.html
-     * @param cluster: [IndexCluster] Cluster reference
-     * @param policyId: [String] Policy Name
-     * @param schedule: [String] Schedule String in Cron Syntax
-     * @param indices: [List] List of indices that will be considered to Back up
-     * @param maxRetentionDays: [Long] Maximum Amount of Days that the Snapshots will be stored before being discarded
-     * @param minimumSnapshotCount: [Int] Minimum Amount of Snapshot that will be keeped even if [maxRetentionDays] is achieved
-     * @param maximumSnapshotCount: [Int] Maximum Amount of Snapshot that will be keeped even if [maxRetentionDays] is not achieved
-     */
-    fun createClusterSnaphotPolicyAsync(
-        cluster: IndexCluster,
-        policyId: String,
-        schedule: String,
-        indices: List<String>,
-        maxRetentionDays: Long,
-        minimumSnapshotCount: Int,
-        maximumSnapshotCount: Int
-    )
-
-    /**
-     * Execute a snapshot using specified policy
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-execute-snapshot-lifecycle-policy.html
-     * @param cluster: [IndexCluster] Cluster reference
-     * @param policyId: [String] Policy ID
-     */
-    fun executeClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): ExecuteSnapshotLifecyclePolicyResponse
+    fun getRepository(cluster: IndexCluster): RepositoryMetaData?
 
     /**
      * Retrieve a Policy by ID
+     *
      * @param cluster: [IndexCluster] Cluster reference
      * @param policyId: [String] Policy ID
      */
-    fun getClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): GetSnapshotLifecyclePolicyResponse
-
-    /**
-     * Delete cluster policy by ID
-     * @param cluster: [IndexCluster] Cluster reference
-     * @param policyId: [String] Policy ID
-     */
-    fun deleteClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): AcknowledgedResponse
-
-    /**
-     * Generate a Repository Based on IndexCluster ID
-     * @param cluster: Cluster which name will be generated
-     */
-    fun getRepositoryName(cluster: IndexCluster) = cluster.id.toString()
-
-    /**
-     * Generate a Repository Based on IndexCluster ID
-     * @param clusterId: Cluster Id
-     */
-    fun getRepositoryName(clusterId: UUID) = clusterId.toString()
+    fun getSnapshotPolicy(cluster: IndexCluster): SnapshotLifecyclePolicyMetadata?
 
     /**
      * Get All Snapshots from a cluster
-     * @param cluster: [IndexCluster] Cluster
      *
-     */
-    fun getSnapshots(cluster: IndexCluster): GetSnapshotsResponse
-
-    /**
-     * Delete Snapshot by Name
      * @param cluster: [IndexCluster] Cluster
-     * @param snapshotName: [String] Snapshot name
      */
-    fun deleteSnapshot(cluster: IndexCluster, snapshotName: String)
-
-    /**
-     * Create a Instant Snapshot of a Cluster
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-snapshot.html
-     * @param cluster: [IndexCluster] Cluster
-     * @param name: [String] Snapshot name
-     */
-    fun createClusterSnapshot(cluster: IndexCluster, name: String?)
-
-    /**
-     * Asynchronously Create a Instant Snapshot of a Cluster
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-snapshot.html
-     * @param cluster: [IndexCluster] Cluster
-     * @param name: [String] Snapshot Name
-     */
-    fun createClusterSnapshotAsync(cluster: IndexCluster, name: String?)
+    fun getSnapshots(cluster: IndexCluster): List<SnapshotInfo>
 
     /**
      * Restore Cluster State from Another Cluster
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-restore-snapshot.html
-     * https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshots-restore-snapshot.html#_restoring_to_a_different_cluster
+     *
      * @param cluster: [IndexCluster] Brand new Cluster
      * @param snapshotName: [String] Name of the snapshot that will be restored
      * @param oldClusterId: [IndexCluster] Cluster that contains the snapshot at its repository
      */
     fun restoreSnapshot(cluster: IndexCluster, snapshotName: String, oldClusterId: UUID): RestoreSnapshotResponse
-
-    /**
-     * Assign a repository located in another cluster Repository Path to a new Cluster.
-     * @param cluster: [IndexCluster] New Cluster
-     * @param oldClusterId: [UUID] Old Cluster ID
-     */
-    fun assignExistingRepositoryToCluster(cluster: IndexCluster, oldClusterId: UUID)
-
-    /**
-     * Create a base path pattern. This path will contain the backup at the Bucket
-     */
-    fun getBasePath(indexCluster: IndexCluster, basePath: String): String {
-        return "${indexCluster.id}/$basePath"
-    }
-
-    fun getBasePath(clusterId: UUID, basePath: String): String {
-        return "$clusterId/$basePath"
-    }
-
-    fun getSnapshotPutRequest(
-        name: String?,
-        cluster: IndexCluster
-    ): CreateSnapshotRequest {
-        var snapshotName = name ?: Date().time.toString()
-        var request = CreateSnapshotRequest()
-        request.repository(getRepositoryName(cluster))
-        request.snapshot(snapshotName)
-        request.waitForCompletion(true)
-        return request
-    }
-
-    fun getSnapshotPolicyPutRequest(
-        indices: List<String>,
-        maxRetentionDays: Long,
-        minimumSnapshotCount: Int,
-        maximumSnapshotCount: Int,
-        policyId: String,
-        schedule: String,
-        cluster: IndexCluster
-    ): PutSnapshotLifecyclePolicyRequest {
-        val config: MutableMap<String, Any> = HashMap()
-        config["indices"] = indices
-        val retention = SnapshotRetentionConfiguration(
-            TimeValue.timeValueDays(maxRetentionDays),
-            minimumSnapshotCount,
-            maximumSnapshotCount
-        )
-
-        val policy = SnapshotLifecyclePolicy(
-            policyId, policyId, schedule,
-            getRepositoryName(cluster), config, retention
-        )
-        return PutSnapshotLifecyclePolicyRequest(policy)
-    }
 }
 
 /**
- * Log the storage of a snapshot.
+ * Thrown when communication with the Cluster fails.
  */
-fun logCreateSnapshot(cluster: IndexCluster, request: CreateSnapshotRequest) {
-    ProjectStorageService.logger.event(
-        LogObject.CLUSTER_SNAPSHOT, LogAction.CREATE,
-        mapOf(
-            "clusterId" to cluster.id,
-            "repository" to request.repository(),
-            "snapshot" to request.snapshot()
-        )
-    )
+class ClusterBackupException : RuntimeException {
+    constructor(message: String) : super(message) {}
 }
 
-fun logDeleteSnapshot(cluster: IndexCluster, request: DeleteSnapshotRequest) {
-    ProjectStorageService.logger.event(
-        LogObject.CLUSTER_SNAPSHOT, LogAction.DELETE,
-        mapOf(
-            "clusterId" to cluster.id,
-            "repository" to request.repository(),
-            "snapshot" to request.snapshot()
-        )
-    )
-}
+/**
+ * Configuration for Cluster backups
+ */
+@ConfigurationProperties("archivist.es.backup")
+@Configuration
+class ClusterBackupConfiguration {
 
-fun logCreateSnapshotPolicy(cluster: IndexCluster, request: PutSnapshotLifecyclePolicyRequest) {
-    ProjectStorageService.logger.event(
-        LogObject.CLUSTER_SNAPSHOT_POLICY, LogAction.CREATE,
-        mapOf(
-            "clusterId" to cluster.id,
-            "repository" to request.policy.repository,
-            "policyName" to request.policy.name
-        )
-    )
-}
+    /**
+     * The bucket name where backups are being stored.  This defaults
+     * to the system bucket.
+     */
+    lateinit var bucketName: String
 
-fun logDeleteSnapshotPolicy(cluster: IndexCluster, request: DeleteSnapshotLifecyclePolicyRequest) {
-    ProjectStorageService.logger.event(
-        LogObject.CLUSTER_SNAPSHOT_POLICY, LogAction.CREATE,
-        mapOf(
-            "clusterId" to cluster.id,
-            "policyId" to request.policyId
-        )
-    )
-}
+    /**
+     * The schedule in whichb backups should run.
+     */
+    var schedule: String = "0 30 1 * * ?"
 
-fun logCreateClusterRepository(cluster: IndexCluster, request: PutRepositoryRequest) {
-    ProjectStorageService.logger.event(
-        LogObject.CLUSTER_REPOSITORY, LogAction.CREATE,
-        mapOf(
-            "clusterId" to cluster.id,
-            "repository" to request.name(),
-            "clusterType" to request.type()
-        )
-    )
+    /**
+     * The number of days to return backup snapshots.
+     */
+    var retenionDays: Long = 30
+
+    /**
+     * The minimum number of snapshots to retain.
+     */
+    var minSnapshots: Int = 5
+
+    /**
+     * The maximum number of snapshots top rtain.
+     */
+    var maxSnapshots: Int = 50
 }
 
 @Service
-@Profile("gcsClusterBackup")
-class GcsClusterBackupService(
-    val indexClusterService: IndexClusterService
+class ClusterBackupServiceImpl(
+    val properties: ClusterBackupConfiguration,
+    val esClientCache: EsClientCache
 ) : ClusterBackupService {
 
-    @Value("\${archivist.es.backup.bucket.name}")
-    lateinit var bucket: String
+    @Autowired
+    lateinit var env: Environment
 
-    @Value("\${archivist.es.backup.bucket.base-path}")
-    lateinit var basePath: String
-
-    override fun getRepository(cluster: IndexCluster): GetRepositoriesResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        return client.snapshot().getRepository(GetRepositoriesRequest(), RequestOptions.DEFAULT)
+    override fun enableBackups(cluster: IndexCluster) {
+        createSnapshotRepository(cluster)
+        createSnapshotPolicy(cluster)
+        executeSnapshotPolicy(cluster)
     }
 
-    private fun getCreateRepositoryRequest(client: RestHighLevelClient, cluster: IndexCluster): PutRepositoryRequest {
+    override fun getRepository(cluster: IndexCluster): RepositoryMetaData? {
+        val client = esClientCache.getRestHighLevelClient(cluster)
+        val repos = client.snapshot().getRepository(
+            GetRepositoriesRequest(), RequestOptions.DEFAULT
+        ).repositories()
+        return repos.firstOrNull { it.name() == getRepositoryName(cluster) }
+    }
+
+    override fun restoreSnapshot(
+        cluster: IndexCluster,
+        snapshotName: String,
+        oldClusterId: UUID
+    ): RestoreSnapshotResponse {
+
+        val client = esClientCache.getRestHighLevelClient(cluster)
+
+        // Get repository name on old cluster
+        var repositoryName = getRepositoryName(oldClusterId)
+        // Assign Repository on old Cluster to new Cluster
+        assignExistingRepositoryToCluster(cluster, oldClusterId)
+
+        // Restore Snapshot
+        val request = RestoreSnapshotRequest(repositoryName, snapshotName)
+        return client.snapshot().restore(request, RequestOptions.DEFAULT)
+    }
+
+    override fun getSnapshotPolicy(cluster: IndexCluster): SnapshotLifecyclePolicyMetadata? {
+        val client = esClientCache.getRestHighLevelClient(cluster)
+        val rsp = client.indexLifecycle()
+            .getSnapshotLifecyclePolicy(
+                GetSnapshotLifecyclePolicyRequest(policyId), RequestOptions.DEFAULT
+            )
+        return rsp.policies[policyId]
+    }
+
+    override fun getSnapshots(cluster: IndexCluster): List<SnapshotInfo> {
+        val client = esClientCache.getRestHighLevelClient(cluster)
+        val rsp = client.snapshot().get(
+            GetSnapshotsRequest().repository(getRepositoryName(cluster)), RequestOptions.DEFAULT
+        )
+        return rsp.snapshots
+    }
+
+    /**
+     * In order to restore to a new cluster, you have to put add the repository to the
+     * server.
+     */
+    private fun assignExistingRepositoryToCluster(cluster: IndexCluster, oldClusterId: UUID) {
+
+        val client = esClientCache.getRestHighLevelClient(cluster)
+        var repositoryLocation = getBasePath(oldClusterId)
+        var repositoryName = getRepositoryName(oldClusterId)
 
         var settings =
             Settings
                 .builder()
-                .put("bucket", bucket)
-                .put("base_path", getBasePath(cluster, basePath))
+                .put("bucket", properties.bucketName)
+                .put("base_path", repositoryLocation)
+                .put("compress", true)
+
+        val putRepositoryRequest = PutRepositoryRequest()
+            .type(getStorageType())
+            .name(repositoryName)
+            .settings(settings)
+            .verify(true)
+
+        client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
+    }
+
+    /**
+     * Create a Snapshot Lifecycle Policy
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-put-snapshot-lifecycle-policy.html
+     *
+     *  @param cluster: [IndexCluster] Cluster reference
+     */
+    private fun createSnapshotPolicy(
+        cluster: IndexCluster
+    ) {
+        val client = esClientCache.getRestHighLevelClient(cluster)
+        val req = getSnapshotPolicyPutRequest(cluster)
+        val rsp = client.indexLifecycle().putSnapshotLifecyclePolicy(req, RequestOptions.DEFAULT)
+
+        if (!rsp.isAcknowledged) {
+            throw ClusterBackupException(
+                "Attempted to create backup policy on repository but request was not acked."
+            )
+        }
+
+        logger.event(
+            LogObject.CLUSTER_SNAPSHOT_POLICY, LogAction.CREATE, mapOf(
+                "clusterId" to cluster.id,
+                "repositoryName" to req.policy.repository,
+                "policyName" to req.policy.name,
+                "schedule" to properties.schedule
+            )
+        )
+    }
+
+    /**
+     * Create a repository where the snapshots will be stored
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-repository.html
+     * @param cluster: [IndexCluster] Cluster reference
+     */
+    private fun createSnapshotRepository(cluster: IndexCluster) {
+        val client = esClientCache.getRestHighLevelClient(cluster)
+        val req = getCreateRepositoryRequest(cluster)
+        val rsp = client.snapshot().createRepository(req, RequestOptions.DEFAULT)
+
+        if (!rsp.isAcknowledged) {
+            val stype = getStorageType()
+            throw ClusterBackupException(
+                "Attempted to create $stype repository but request was not acked."
+            )
+        }
+
+        logger.event(
+            LogObject.CLUSTER_REPOSITORY, LogAction.CREATE,
+            mapOf(
+                "clusterId" to cluster.id,
+                "basePath" to req.settings().get("base_path"),
+                "bucket" to properties.bucketName,
+                "repositoryName" to req.name(),
+                "repositoryType" to req.type()
+            )
+        )
+    }
+
+    /**
+     * Execute a snapshot using specified policy
+     *
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-execute-snapshot-lifecycle-policy.html
+     * @param cluster: [IndexCluster] Cluster reference
+     */
+    private fun executeSnapshotPolicy(
+        cluster: IndexCluster
+    ): ExecuteSnapshotLifecyclePolicyResponse {
+        val client = esClientCache.getRestHighLevelClient(cluster)
+        val executeRequest = ExecuteSnapshotLifecyclePolicyRequest(policyId)
+        return client.indexLifecycle().executeSnapshotLifecyclePolicy(executeRequest, RequestOptions.DEFAULT)
+    }
+
+    private fun getSnapshotPolicyPutRequest(
+        cluster: IndexCluster
+    ): PutSnapshotLifecyclePolicyRequest {
+
+        val retention = SnapshotRetentionConfiguration(
+            TimeValue.timeValueDays(properties.retenionDays),
+            properties.minSnapshots,
+            properties.maxSnapshots
+        )
+
+        val policy = SnapshotLifecyclePolicy(
+            policyId, "<daily-snapshot-{now/d}>",
+            properties.schedule,
+            getRepositoryName(cluster),
+            mapOf(
+                "indicies" to listOf("*")
+            ), retention
+        )
+        return PutSnapshotLifecyclePolicyRequest(policy)
+    }
+
+    private fun getStorageType(): String {
+        val profiles = env.activeProfiles
+        return if ("gcs" in profiles) {
+            "gcs"
+        } else {
+            "s3"
+        }
+    }
+
+    private fun getCreateRepositoryRequest(cluster: IndexCluster): PutRepositoryRequest {
+        val settings = Settings
+            .builder()
+            .put("bucket", properties.bucketName)
+            .put("base_path", getBasePath(cluster))
+            .put("compress", true)
         return PutRepositoryRequest()
-            .type("gcs")
+            .type(getStorageType())
             .name(getRepositoryName(cluster))
             .settings(settings)
             .verify(true)
     }
 
-    override fun createClusterRepository(cluster: IndexCluster) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        val putRepositoryRequest = getCreateRepositoryRequest(client, cluster)
+    /**
+     * Generate a Repository name Based on IndexCluster ID
+     *
+     * @param cluster: Cluster which name will be generated
+     */
+    private fun getRepositoryName(cluster: IndexCluster) = cluster.id.toString()
 
-        client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
+    /**
+     * Generate a Repository name Based on IndexCluster ID
+     *
+     * @param id: The cluster id.
+     */
+    private fun getRepositoryName(id: UUID) = id.toString()
+
+    /**
+     * Get the repository base path.
+     *
+     * @param indexCluster: The IndexCluster instance.
+     */
+    private fun getBasePath(indexCluster: IndexCluster): String {
+        return getBasePath(indexCluster.id)
     }
 
-    override fun assignExistingRepositoryToCluster(cluster: IndexCluster, oldClusterId: UUID) {
-
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        var repositoryLocation = getBasePath(oldClusterId, basePath)
-        var repositoryName = getRepositoryName(oldClusterId)
-
-        var settings =
-            Settings
-                .builder()
-                .put("bucket", bucket)
-                .put("base_path", repositoryLocation)
-                .put("compress", true)
-
-        val putRepositoryRequest = PutRepositoryRequest()
-            .type("s3")
-            .name(repositoryName)
-            .settings(settings)
-            .verify(true)
-
-        client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
+    /**
+     * Get the repository base bath.
+     *
+     * @param id: The cluster ID.
+     */
+    private fun getBasePath(id: UUID): String {
+        return "index-clusters/$id/backups"
     }
 
-    override fun createClusterRepositoryAsync(cluster: IndexCluster) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        val putRepositoryRequest = getCreateRepositoryRequest(client, cluster)
-
-        val listener = object : ActionListener<org.elasticsearch.action.support.master.AcknowledgedResponse> {
-            override fun onResponse(putRepositoryResponse: org.elasticsearch.action.support.master.AcknowledgedResponse) {
-                logCreateClusterRepository(cluster, putRepositoryRequest)
-            }
-
-            override fun onFailure(exception: Exception) {
-                throw ArchivistException(exception)
-            }
-        }
-
-        client.snapshot().createRepositoryAsync(putRepositoryRequest, RequestOptions.DEFAULT, listener)
-    }
-
-    override fun createClusterSnapshot(cluster: IndexCluster, name: String?) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-
-        var request = getSnapshotPutRequest(name, cluster)
-        client.snapshot().create(request, RequestOptions.DEFAULT)
-        logCreateSnapshot(cluster, request)
-    }
-
-    override fun createClusterSnapshotAsync(cluster: IndexCluster, name: String?) {
-
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-
-        var request = getSnapshotPutRequest(name, cluster)
-
-        val listener = object : ActionListener<CreateSnapshotResponse> {
-            override fun onResponse(createSnapshotResponse: CreateSnapshotResponse) {
-                logCreateSnapshot(cluster, request)
-            }
-
-            override fun onFailure(exception: Exception) {
-                throw ArchivistException(exception)
-            }
-        }
-        client.snapshot().createAsync(request, RequestOptions.DEFAULT, listener)
-    }
-
-    override fun restoreSnapshot(
-        cluster: IndexCluster,
-        snapshotName: String,
-        oldClusterId: UUID
-    ): RestoreSnapshotResponse {
-
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-
-        // Get repository name on old cluster
-        var repositoryName = getRepositoryName(oldClusterId)
-        // Assign Repository on old Cluster to new Cluster
-        assignExistingRepositoryToCluster(cluster, oldClusterId)
-
-        // Restore Snapshot
-        val request = RestoreSnapshotRequest(repositoryName, snapshotName)
-        return client.snapshot().restore(request, RequestOptions.DEFAULT)
-    }
-
-    override fun createClusterSnapshotPolicy(
-        cluster: IndexCluster,
-        policyId: String,
-        schedule: String, // cron syntax
-        indices: List<String>,
-        maxRetentionDays: Long,
-        minimumSnapshotCount: Int,
-        maximumSnapshotCount: Int
-    ) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-
-        val policyRequest = getSnapshotPolicyPutRequest(
-            indices,
-            maxRetentionDays,
-            minimumSnapshotCount,
-            maximumSnapshotCount,
-            policyId,
-            schedule,
-            cluster
-        )
-
-        client.indexLifecycle().putSnapshotLifecyclePolicy(policyRequest, RequestOptions.DEFAULT)
-        logCreateSnapshotPolicy(cluster, policyRequest)
-    }
-
-    override fun createClusterSnaphotPolicyAsync(
-        cluster: IndexCluster,
-        policyId: String,
-        schedule: String,
-        indices: List<String>,
-        maxRetentionDays: Long,
-        minimumSnapshotCount: Int,
-        maximumSnapshotCount: Int
-    ) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-
-        val policyRequest = getSnapshotPolicyPutRequest(
-            indices,
-            maxRetentionDays,
-            minimumSnapshotCount,
-            maximumSnapshotCount,
-            policyId,
-            schedule,
-            cluster
-        )
-
-        val listener = object : ActionListener<AcknowledgedResponse> {
-
-            override fun onResponse(resp: AcknowledgedResponse) {
-                logCreateSnapshotPolicy(cluster, policyRequest)
-            }
-
-            override fun onFailure(exception: java.lang.Exception) {
-                throw ArchivistException(exception)
-            }
-        }
-
-        client.indexLifecycle().putSnapshotLifecyclePolicyAsync(policyRequest, RequestOptions.DEFAULT, listener)
-    }
-
-    override fun executeClusterSnapshotPolicy(
-        cluster: IndexCluster,
-        policyId: String
-    ): ExecuteSnapshotLifecyclePolicyResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        val executeRequest = ExecuteSnapshotLifecyclePolicyRequest(policyId)
-
-        return client.indexLifecycle().executeSnapshotLifecyclePolicy(executeRequest, RequestOptions.DEFAULT)
-    }
-
-    override fun getClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): GetSnapshotLifecyclePolicyResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        return client.indexLifecycle()
-            .getSnapshotLifecyclePolicy(GetSnapshotLifecyclePolicyRequest(policyId), RequestOptions.DEFAULT)
-    }
-
-    override fun deleteClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): AcknowledgedResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        val deleteSnapshotLifecyclePolicyRequest = DeleteSnapshotLifecyclePolicyRequest(policyId)
-        val deleteSnapshotLifecyclePolicy = client.indexLifecycle()
-            .deleteSnapshotLifecyclePolicy(deleteSnapshotLifecyclePolicyRequest, RequestOptions.DEFAULT)
-
-        logDeleteSnapshotPolicy(cluster, deleteSnapshotLifecyclePolicyRequest)
-
-        return deleteSnapshotLifecyclePolicy
-    }
-
-    override fun getSnapshots(cluster: IndexCluster): GetSnapshotsResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        return client.snapshot().get(GetSnapshotsRequest(), RequestOptions.DEFAULT)
-    }
-
-    override fun deleteSnapshot(cluster: IndexCluster, snapshotName: String) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        val deleteSnapshotRequest = DeleteSnapshotRequest(getRepositoryName(cluster), snapshotName)
-        client.snapshot()
-            .delete(deleteSnapshotRequest, RequestOptions.DEFAULT)
-        logDeleteSnapshot(cluster, deleteSnapshotRequest)
-    }
-}
-
-@Service
-@Profile("test", "none", "awsClusterBackup")
-class S3ClusterBackupService(
-    val indexClusterService: IndexClusterService
-) : ClusterBackupService {
-
-    @Value("\${archivist.es.backup.bucket.name}")
-    lateinit var bucket: String
-
-    @Value("\${archivist.es.backup.bucket.base-path}")
-    lateinit var basePath: String
-
-    override fun createClusterRepository(cluster: IndexCluster) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-
-        var settings =
-            Settings
-                .builder()
-                .put("bucket", bucket)
-                .put("base_path", getBasePath(cluster, basePath))
-                .put("compress", true)
-
-        val putRepositoryRequest = PutRepositoryRequest()
-            .type("s3")
-            .name(getRepositoryName(cluster))
-            .settings(settings)
-            .verify(true)
-
-        val createRepository = client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
-        logCreateClusterRepository(cluster, putRepositoryRequest)
-    }
-
-    override fun assignExistingRepositoryToCluster(cluster: IndexCluster, oldClusterId: UUID) {
-
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        var repositoryLocation = getBasePath(oldClusterId, basePath)
-        var repositoryName = getRepositoryName(oldClusterId)
-
-        var settings =
-            Settings
-                .builder()
-                .put("bucket", bucket)
-                .put("base_path", repositoryLocation)
-                .put("compress", true)
-
-        val putRepositoryRequest = PutRepositoryRequest()
-            .type("s3")
-            .name(repositoryName)
-            .settings(settings)
-            .verify(true)
-
-        client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
-    }
-
-    override fun createClusterRepositoryAsync(cluster: IndexCluster) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-
-        var settings =
-            Settings
-                .builder()
-                .put("bucket", bucket)
-                .put("base_path", basePath)
-                .put(FsRepository.LOCATION_SETTING.key, "./config/backups")
-                .put(FsRepository.COMPRESS_SETTING.key, true)
-
-        val putRepositoryRequest = PutRepositoryRequest()
-            .type(FsRepository.TYPE)
-            .name(getRepositoryName(cluster))
-            .settings(settings)
-            .verify(true)
-
-        val listener = object : ActionListener<org.elasticsearch.action.support.master.AcknowledgedResponse> {
-            override fun onResponse(putRepositoryResponse: org.elasticsearch.action.support.master.AcknowledgedResponse) {
-                logCreateClusterRepository(cluster, putRepositoryRequest)
-            }
-
-            override fun onFailure(exception: Exception) {
-                throw ArchivistException(exception)
-            }
-        }
-
-        client.snapshot().createRepositoryAsync(putRepositoryRequest, RequestOptions.DEFAULT, listener)
-    }
-
-    override fun createClusterSnapshot(cluster: IndexCluster, name: String?) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-
-        var request = getSnapshotPutRequest(name, cluster)
-        client.snapshot().create(request, RequestOptions.DEFAULT)
-        logCreateSnapshot(cluster, request)
-    }
-
-    override fun createClusterSnapshotAsync(cluster: IndexCluster, name: String?) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        var request = getSnapshotPutRequest(name, cluster)
-
-        val listener = object : ActionListener<CreateSnapshotResponse> {
-            override fun onResponse(createSnapshotResponse: CreateSnapshotResponse) {
-                logCreateSnapshot(cluster, request)
-            }
-
-            override fun onFailure(exception: Exception) {
-                throw ArchivistException(exception)
-            }
-        }
-
-        client.snapshot().createAsync(request, RequestOptions.DEFAULT, listener)
-    }
-
-    override fun restoreSnapshot(
-        cluster: IndexCluster,
-        snapshotName: String,
-        oldClusterId: UUID
-    ): RestoreSnapshotResponse {
-
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-
-        // Get repository name on old cluster
-        var repositoryName = getRepositoryName(oldClusterId)
-        // Assign Repository on old Cluster to new Cluster
-        assignExistingRepositoryToCluster(cluster, oldClusterId)
-
-        // Restore Snapshot
-        val request = RestoreSnapshotRequest(repositoryName, snapshotName)
-        return client.snapshot().restore(request, RequestOptions.DEFAULT)
-    }
-
-    override fun getRepository(cluster: IndexCluster): GetRepositoriesResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        return client.snapshot().getRepository(GetRepositoriesRequest(), RequestOptions.DEFAULT)
-    }
-
-    override fun createClusterSnapshotPolicy(
-        cluster: IndexCluster,
-        policyId: String,
-        schedule: String, // cron syntax
-        indices: List<String>,
-        maxRetentionDays: Long,
-        minimumSnapshotCount: Int,
-        maximumSnapshotCount: Int
-    ) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-
-        val snapshotPolicyPutRequest = getSnapshotPolicyPutRequest(
-            indices,
-            maxRetentionDays,
-            minimumSnapshotCount,
-            maximumSnapshotCount,
-            policyId,
-            schedule,
-            cluster
-        )
-
-        client.indexLifecycle().putSnapshotLifecyclePolicy(snapshotPolicyPutRequest, RequestOptions.DEFAULT)
-    }
-
-    override fun createClusterSnaphotPolicyAsync(
-        cluster: IndexCluster,
-        policyId: String,
-        schedule: String,
-        indices: List<String>,
-        maxRetentionDays: Long,
-        minimumSnapshotCount: Int,
-        maximumSnapshotCount: Int
-    ) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-
-        val policyRequest = getSnapshotPolicyPutRequest(
-            indices,
-            maxRetentionDays,
-            minimumSnapshotCount,
-            maximumSnapshotCount,
-            policyId,
-            schedule,
-            cluster
-        )
-
-        val listener = object : ActionListener<AcknowledgedResponse> {
-
-            override fun onResponse(resp: AcknowledgedResponse) {
-                logCreateSnapshotPolicy(cluster, policyRequest)
-            }
-
-            override fun onFailure(exception: java.lang.Exception) {
-                throw ArchivistException(exception)
-            }
-        }
-        client.indexLifecycle().putSnapshotLifecyclePolicyAsync(policyRequest, RequestOptions.DEFAULT, listener)
-    }
-
-    override fun executeClusterSnapshotPolicy(
-        cluster: IndexCluster,
-        policyId: String
-    ): ExecuteSnapshotLifecyclePolicyResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        val executeRequest = ExecuteSnapshotLifecyclePolicyRequest(policyId)
-
-        return client.indexLifecycle().executeSnapshotLifecyclePolicy(executeRequest, RequestOptions.DEFAULT)
-    }
-
-    override fun getClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): GetSnapshotLifecyclePolicyResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        return client.indexLifecycle()
-            .getSnapshotLifecyclePolicy(GetSnapshotLifecyclePolicyRequest(policyId), RequestOptions.DEFAULT)
-    }
-
-    override fun deleteClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): AcknowledgedResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        val deleteSnapshotLifecyclePolicyRequest = DeleteSnapshotLifecyclePolicyRequest(policyId)
-        val deleteSnapshotLifecyclePolicy = client.indexLifecycle()
-            .deleteSnapshotLifecyclePolicy(deleteSnapshotLifecyclePolicyRequest, RequestOptions.DEFAULT)
-
-        logDeleteSnapshotPolicy(cluster, deleteSnapshotLifecyclePolicyRequest)
-        return deleteSnapshotLifecyclePolicy
-    }
-
-    override fun getSnapshots(cluster: IndexCluster): GetSnapshotsResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        return client.snapshot().get(GetSnapshotsRequest(getRepositoryName(cluster)), RequestOptions.DEFAULT)
-    }
-
-    override fun deleteSnapshot(cluster: IndexCluster, snapshotName: String) {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        val deleteSnapshotRequest = DeleteSnapshotRequest(getRepositoryName(cluster), snapshotName)
-        client.snapshot().delete(deleteSnapshotRequest, RequestOptions.DEFAULT)
-        logDeleteSnapshot(cluster, deleteSnapshotRequest)
+    companion object {
+        private val logger = LoggerFactory.getLogger(ClusterBackupServiceImpl::class.java)
+
+        /**
+         * The name of the backup policy.
+         */
+        const val policyId = "daily-snapshot"
     }
 }

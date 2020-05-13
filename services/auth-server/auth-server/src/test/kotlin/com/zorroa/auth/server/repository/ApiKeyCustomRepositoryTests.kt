@@ -34,4 +34,5 @@ class ApiKeyCustomRepositoryTests : AbstractTest() {
         assertEquals(mockKey.projectId, key.projectId)
         assertEquals(mockKey.secretKey, key.secretKey)
     }
+
 }

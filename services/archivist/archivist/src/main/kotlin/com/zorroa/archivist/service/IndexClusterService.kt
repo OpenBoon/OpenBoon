@@ -17,6 +17,7 @@ import org.elasticsearch.client.RestHighLevelClient
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import java.io.BufferedReader
 import java.util.Timer
@@ -59,17 +60,6 @@ interface IndexClusterService {
     fun createDefaultCluster(): IndexCluster
 
     /**
-     * Pings all ES clusters for their status.
-     */
-    fun pingAllClusters()
-
-    /**
-     * Ping the given [IndexCluster] and return true if the
-     * cluster was repsonsive.
-     */
-    fun pingCluster(cluster: IndexCluster): Boolean
-
-    /**
      * Return a [RestClient] to the given IndexCluster
      */
     fun getLowLevelClient(cluster: IndexCluster): RestClient
@@ -88,8 +78,6 @@ class IndexClusterServiceImpl constructor(
 
 ) : IndexClusterService {
 
-    var pingTimer: Timer? = null
-
     @EventListener
     fun onApplicationEvent(event: ContextRefreshedEvent) {
         if (ArchivistConfiguration.unittest) {
@@ -98,16 +86,6 @@ class IndexClusterServiceImpl constructor(
 
         // See AbstractTest for how these are setup for testsl
         createDefaultCluster()
-        setupClusterPingTimer()
-    }
-
-    fun setupClusterPingTimer() {
-        pingTimer = fixedRateTimer(
-            name = "index-ping-timer",
-            initialDelay = 3000, period = 10000
-        ) {
-            pingAllClusters()
-        }
     }
 
     override fun createIndexCluster(spec: IndexClusterSpec): IndexCluster {
@@ -120,7 +98,6 @@ class IndexClusterServiceImpl constructor(
                 "indexClusterId" to indexCluster.id
             )
         )
-
         return indexCluster
     }
 
@@ -145,28 +122,6 @@ class IndexClusterServiceImpl constructor(
         }
     }
 
-    override fun pingAllClusters() {
-        for (cluster in indexClusterDao.getAll()) {
-            pingCluster(cluster)
-        }
-    }
-
-    override fun pingCluster(cluster: IndexCluster): Boolean {
-        val client = getRestHighLevelClient(cluster)
-        return try {
-            val rsp = client.lowLevelClient.performRequest(Request("GET", "/"))
-            val content = rsp.entity.content.bufferedReader().use(BufferedReader::readText)
-            indexClusterDao.updateAttrs(cluster, content)
-            // The status is up if we got a good ping.
-            indexClusterDao.updateState(cluster, IndexClusterState.UP)
-            true
-        } catch (e: Exception) {
-            logger.warn("Failed to contact ${cluster.url} for status information", e)
-            indexClusterDao.updateState(cluster, IndexClusterState.DOWN)
-            false
-        }
-    }
-
     override fun getNextAutoPoolCluster(): IndexCluster {
         return indexClusterDao.getNextAutoPoolCluster()
     }
@@ -181,5 +136,91 @@ class IndexClusterServiceImpl constructor(
 
     companion object {
         private val logger = LoggerFactory.getLogger(IndexClusterServiceImpl::class.java)
+    }
+}
+
+/**
+ * IndexClusterPingTimer handles keeping track of up/down state of a cluster
+ * by communicating with the cluster on a frequent basis.
+ *
+ * The first time communication is established with the server, the backups
+ * are enabled from this class.
+ */
+@Component
+class IndexClusterMonitor(
+    val indexClusterDao: IndexClusterDao,
+    val indexClusterService: IndexClusterService,
+    val clusterBackupService: ClusterBackupService
+
+) {
+
+    var pingTimer: Timer = setupClusterPingTimer()
+
+    val backupsEnabled = mutableSetOf<UUID>()
+
+    fun setupClusterPingTimer(): Timer {
+        return fixedRateTimer(
+            name = "index-ping-timer",
+            initialDelay = 3000, period = 10000
+        ) {
+            // Don't ping clusters during unittest.
+            if (!ArchivistConfiguration.unittest) {
+                pingAllClusters()
+            }
+        }
+    }
+
+    fun pingAllClusters() {
+        for (cluster in indexClusterDao.getAll()) {
+            if (pingCluster(cluster)) {
+                // If we can ping it, ensure backups enabled.
+                enableBackups(cluster)
+            }
+        }
+    }
+
+    fun enableBackups(cluster: IndexCluster) {
+
+        /**
+         * Check if we've already enabled backups.
+         */
+        if (cluster.id in backupsEnabled) {
+            return
+        }
+
+        /**
+         * Double check if we've already enabled backups.
+         */
+        val repos = clusterBackupService.getRepository(cluster)
+        if (repos == null) {
+            try {
+                clusterBackupService.enableBackups(cluster)
+                backupsEnabled.add(cluster.id)
+            } catch (e: Exception) {
+                logger.warn("Failed to enable backups on cluster ${cluster.id}", e)
+            }
+        } else {
+            backupsEnabled.add(cluster.id)
+        }
+    }
+
+    fun pingCluster(cluster: IndexCluster): Boolean {
+        val client = indexClusterService.getRestHighLevelClient(cluster)
+        return try {
+            val rsp = client.lowLevelClient.performRequest(Request("GET", "/"))
+            val content = rsp.entity.content.bufferedReader().use(BufferedReader::readText)
+            indexClusterDao.updateAttrs(cluster, content)
+            // The status is up if we got a good ping.
+            indexClusterDao.updateState(cluster, IndexClusterState.UP)
+            true
+        } catch (e: Exception) {
+            logger.warn("Failed to contact ${cluster.url} for status information", e)
+            indexClusterDao.updateState(cluster, IndexClusterState.DOWN)
+            false
+        }
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(IndexClusterMonitor::class.java)
     }
 }

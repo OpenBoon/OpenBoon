@@ -212,7 +212,7 @@ class ApiKeyFilter(
     override fun buildWhereClause(root: Root<ApiKey>, cb: CriteriaBuilder): Array<Predicate> {
         val where = mutableListOf<Predicate>()
 
-        cb.equal(root.get<UUID>("projectId"), getProjectId())
+        where.add(cb.equal(root.get<UUID>("projectId"), getProjectId()))
 
         ids?.let {
             val ic: CriteriaBuilder.In<UUID> = cb.`in`(root.get("id"))

@@ -1,117 +1,57 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.AssetSpec
-import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.IndexCluster
-import com.zorroa.archivist.domain.IndexClusterSpec
-import org.elasticsearch.ElasticsearchStatusException
-import org.elasticsearch.action.get.GetRequest
-import org.elasticsearch.client.RequestOptions
+import com.zorroa.zmlp.util.Json
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class ClusterBackupServiceTests : AbstractTest() {
 
+    override fun requiresElasticSearch(): Boolean = true
+
     lateinit var cluster: IndexCluster
 
-    val policyId = "test-policy-id"
-    val schedule = "0 30 2 * * ?"
-    val indices = listOf("*")
-    val maxRetentionDays = 30L
-    val minimumSnapshotCount = 10
-    val maximumSnapshotCount = 50
+    @Autowired
+    internal lateinit var clusterBackupService: ClusterBackupService
 
     @Before
-    fun createClusterRepository() {
+    fun init() {
+        // Backup are not enabled automatically in unittests.
         cluster = indexClusterService.createDefaultCluster()
-        clusterBackupService.createClusterRepository(cluster)
     }
 
+    /**
+     * Tests almost everything in a single function because once
+     * backups are enabled some async processors kick off on ES
+     * which make testing from multiple functions impossible
+     * without random failures.
+     */
     @Test
-    fun createSnapshot() {
-        var snapshots = clusterBackupService.getSnapshots(cluster)
-        clusterBackupService.createClusterSnapshot(cluster, "test")
+    fun testEnableBackups() {
+        val rsp1 = clusterBackupService.getRepository(cluster)
+        assertNull(rsp1)
+        clusterBackupService.enableBackups(cluster)
 
-        var snapshotTest = clusterBackupService
-            .getSnapshots(cluster)
-            .snapshots.find { it.snapshotId().name == "test" }
+        // Test getting the repositorry
+        val repos = clusterBackupService.getRepository(cluster)
+        assertNotNull(repos)
 
-        assertEquals("test", snapshotTest?.snapshotId()?.name)
+        // Test getting the
+        val policy = clusterBackupService.getSnapshotPolicy(cluster)
+        assertNotNull(policy)
+        assertEquals("<daily-snapshot-{now/d}>", policy?.name)
 
-        clusterBackupService.deleteSnapshot(cluster, "test")
+        val snapshots = clusterBackupService.getSnapshots(cluster)
+        assertEquals(1, snapshots.size)
+        Json.prettyPrint(snapshots)
     }
 
-    @Test
-    fun deleteSnapshot() {
-
-        var snapshots = clusterBackupService.getSnapshots(cluster)
-
-        assertEquals(0, snapshots.snapshots.size)
-
-        clusterBackupService.createClusterSnapshot(cluster, "test")
-
-        assertEquals(1, clusterBackupService.getSnapshots(cluster).snapshots.size)
-
-        clusterBackupService.deleteSnapshot(cluster, "test")
-
-        assertEquals(0, clusterBackupService.getSnapshots(cluster).snapshots.size)
-    }
-
-    @Test
-    fun createSnapshotPolicy() {
-
-        clusterBackupService.createClusterSnapshotPolicy(
-            cluster,
-            policyId,
-            schedule,
-            indices,
-            maxRetentionDays,
-            minimumSnapshotCount,
-            maximumSnapshotCount
-        )
-
-        val clusterPolicy = clusterBackupService.getClusterSnapshotPolicy(cluster, policyId)
-
-        assertEquals(policyId, clusterPolicy.policies[policyId]?.name)
-        assertEquals(schedule, clusterPolicy.policies[policyId]?.policy?.schedule)
-        assertEquals(maxRetentionDays, clusterPolicy.policies[policyId]?.policy?.retentionPolicy?.expireAfter?.days)
-        assertEquals(
-            minimumSnapshotCount,
-            clusterPolicy.policies[policyId]?.policy?.retentionPolicy?.minimumSnapshotCount
-        )
-        assertEquals(
-            maximumSnapshotCount,
-            clusterPolicy.policies[policyId]?.policy?.retentionPolicy?.maximumSnapshotCount
-        )
-        assertEquals(
-            indices[0],
-            (clusterPolicy.policies[policyId]?.policy?.config?.get("indices") as ArrayList<String>)?.get(0)
-        )
-    }
-
-    @Test(expected = ElasticsearchStatusException::class)
-    fun deleteSnapshotPolicy() {
-        clusterBackupService.createClusterSnapshotPolicy(
-            cluster,
-            policyId,
-            schedule,
-            indices,
-            maxRetentionDays,
-            minimumSnapshotCount,
-            maximumSnapshotCount
-        )
-
-        var clusterPolicy = clusterBackupService.getClusterSnapshotPolicy(cluster, policyId)
-
-        assertEquals(1, clusterPolicy.policies.size)
-
-        clusterBackupService.deleteClusterSnapshotPolicy(cluster, policyId)
-        clusterBackupService.getClusterSnapshotPolicy(cluster, policyId)
-    }
-
+    /*
     @Test
     @Ignore
     // docker run -d --name elasticsearch-test  -p 9201:9200 -p 9301:9300 -e "discovery.type=single-node" -e "MINIO_URL={yourlocalip}:9000" -e "network.host=0.0.0.0" zmlp/elasticsearch:latest
@@ -149,4 +89,5 @@ class ClusterBackupServiceTests : AbstractTest() {
         assertEquals(assetOnOldCluster.id, assetOnNewCluster.id)
         assertEquals(assetOnOldCluster, assetOnNewCluster)
     }
+    */
 }
