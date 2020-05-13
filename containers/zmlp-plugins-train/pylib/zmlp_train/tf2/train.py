@@ -93,147 +93,133 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         # Upload the zipped model to project storage.
         self.logger.info('uploading model')
 
-<< << << < HEAD
-stored_file = upload_model_directory(model_dir,
-                                     self.arg_value("file_id"))
-== == == =
-self.reactor.write_event("status", {
-    "status": "Uploading model{}".format(self.app_model.file_id)
-})
->> >> >> > c381308b17d7834c486f415a2a5a59a906295ca7
+        self.reactor.write_event("status", {
+            "status": "Uploading model{}".format(self.app_model.file_id)
+        })
 
-upload_model_directory(model_dir, self.app_model.file_id)
+        upload_model_directory(model_dir, self.app_model.file_id)
 
-self.app.models.publish_model(self.app_model)
-self.reactor.write_event("status", {
-    "status": "Published model {}".format(self.app_model.file_id)
-})
+        self.app.models.publish_model(self.app_model)
+        self.reactor.write_event("status", {
+            "status": "Published model {}".format(self.app_model.file_id)
+        })
 
+    def check_labels(self):
+        """
+        Check the dataset labels to ensure we have enough labels and example images.
 
-def check_labels(self):
-    """
-    Check the dataset labels to ensure we have enough labels and example images.
+        """
+        min_concepts = self.arg_value('min_concepts')
+        min_examples = self.arg_value('min_examples')
 
-    """
-    min_concepts = self.arg_value('min_concepts')
-    min_examples = self.arg_value('min_examples')
+        # Do some checks here.
+        if len(self.labels) < min_concepts:
+            raise ValueError(
+                'You need at least {} labels to train.'.format(min_concepts))
 
-    # Do some checks here.
-    if len(self.labels) < min_concepts:
-        raise ValueError(
-            'You need at least {} labels to train.'.format(min_concepts))
+        for name, count in self.labels.items():
+            if count < min_examples:
+                msg = 'You need at least {} examples to train, {} has  {}'
+                raise ValueError(msg.format(min_examples, name, count))
 
-    for name, count in self.labels.items():
-        if count < min_examples:
-            msg = 'You need at least {} examples to train, {} has  {}'
-            raise ValueError(msg.format(min_examples, name, count))
+    def build_model(self):
+        """
+        Build the Tensorflow model using the base model specified in the args.
+        """
+        self.reactor.write_event("status", {
+            "status": "Building model{}".format(self.app_model.file_id)
+        })
 
+        base_model = self.get_base_model()
 
-def build_model(self):
-    """
-    Build the Tensorflow model using the base model specified in the args.
-    """
-    self.reactor.write_event("status", {
-        "status": "Building model{}".format(self.app_model.file_id)
-    })
+        base_model.trainable = False
+        for layer in base_model.layers:
+            layer.trainable = False
 
-    base_model = self.get_base_model()
+        self.model = tf.keras.models.Sequential([
+            base_model,
 
-    base_model.trainable = False
-    for layer in base_model.layers:
-        layer.trainable = False
+            Flatten(),
+            Dense(512, activation='relu'),
+            BatchNormalization(),
+            Dropout(0.5),
 
-    self.model = tf.keras.models.Sequential([
-        base_model,
+            Dense(64, activation='relu'),
+            BatchNormalization(),
+            Dropout(0.5),
+            Dense(len(self.labels), activation='softmax')
+        ])
 
-        Flatten(),
-        Dense(512, activation='relu'),
-        BatchNormalization(),
-        Dropout(0.5),
+        self.model.summary()
+        self.logger.info('Compiling...')
 
-        Dense(64, activation='relu'),
-        BatchNormalization(),
-        Dropout(0.5),
-        Dense(len(self.labels), activation='softmax')
-    ])
+        self.model.compile(
+            optimizer='adam',
+            loss='categorical_crossentropy',
+            metrics=['acc']
+        )
 
-    self.model.summary()
-    self.logger.info('Compiling...')
+    def build_generators(self):
+        """
+        Build the tensorflow ImageDataGenerators used to load in the the train
+        and test images.
 
-    self.model.compile(
-        optimizer='adam',
-        loss='categorical_crossentropy',
-        metrics=['acc']
-    )
+        Returns:
+            tuple: a tuple of ImageDataGenerators, 1st one is train, other is tet.
+        """
+        train_datagen = ImageDataGenerator(
+            rescale=1. / 255,
+            rotation_range=40,
+            width_shift_range=0.2,
+            height_shift_range=0.2,
+            shear_range=0.2,
+            zoom_range=0.2,
+            horizontal_flip=True,
+            fill_mode='nearest'
+        )
 
+        test_datagen = ImageDataGenerator(rescale=1. / 255.)
 
-def build_generators(self):
-    """
-    Build the tensorflow ImageDataGenerators used to load in the the train
-    and test images.
+        train_generator = train_datagen.flow_from_directory(
+            '{}/set_train/'.format(self.base_dir),
+            batch_size=128,
+            class_mode='categorical',
+            target_size=self.img_size
+        )
 
-    Returns:
-        tuple: a tuple of ImageDataGenerators, 1st one is train, other is tet.
-    """
-    train_datagen = ImageDataGenerator(
-        rescale=1. / 255,
-        rotation_range=40,
-        width_shift_range=0.2,
-        height_shift_range=0.2,
-        shear_range=0.2,
-        zoom_range=0.2,
-        horizontal_flip=True,
-        fill_mode='nearest'
-    )
+        test_generator = test_datagen.flow_from_directory(
+            '{}/set_test/'.format(self.base_dir),
+            batch_size=128,
+            class_mode='categorical',
+            target_size=self.img_size
+        )
 
-    test_datagen = ImageDataGenerator(rescale=1. / 255.)
+        return train_generator, test_generator
 
-    train_generator = train_datagen.flow_from_directory(
-        '{}/set_train/'.format(self.base_dir),
-        batch_size=128,
-        class_mode='categorical',
-        target_size=self.img_size
-    )
+    def get_base_model(self):
+        """
+        Using the 'base_model' arg, choose the base model for transfer learning/
 
-    test_generator = test_datagen.flow_from_directory(
-        '{}/set_test/'.format(self.base_dir),
-        batch_size=128,
-        class_mode='categorical',
-        target_size=self.img_size
-    )
+        Returns:
+            Model: A tensorflow model.
 
-    return train_generator, test_generator
+        Raises:
+            ZmlpFatalProcessorException: If the model is not fouond/
 
-
-def get_base_model(self):
-    """
-    Using the 'base_model' arg, choose the base model for transfer learning/
-
-    Returns:
-        Model: A tensorflow model.
-
-    Raises:
-        ZmlpFatalProcessorException: If the model is not fouond/
-
-    """
-    modl_base = self.app_model.type
-    if modl_base == zmlp.ModelType.LABEL_DETECTION_MOBILENET2:
-        return mobilenet_v2.MobileNetV2(weights='imagenet',
-                                        include_top=False,
-                                        input_shape=(224, 224, 3))
-    elif modl_base == zmlp.ModelType.LABEL_DETECTION_RESNET152:
-        return resnet_v2.ResNet152V2(weights='imagenet',
-                                     include_top=False,
-                                     input_shape=(224, 224, 3))
-    elif modl_base == zmlp.ModelType.LABEL_DETECTION_VGG16:
-        return vgg16.VGG16(weights='imagenet',
-                           include_top=False,
-                           input_shape=(224, 224, 3))
-    else:
-
-<< << << < HEAD
-raise ZmlpFatalProcessorException(
-    'Invalid model: {}'.format(model))
-== == == =
-raise ZmlpFatalProcessorException('Invalid model: {}'.format(modl_base))
->> >> >> > c381308b17d7834c486f415a2a5a59a906295ca7
+        """
+        modl_base = self.app_model.type
+        if modl_base == zmlp.ModelType.LABEL_DETECTION_MOBILENET2:
+            return mobilenet_v2.MobileNetV2(weights='imagenet',
+                                            include_top=False,
+                                            input_shape=(224, 224, 3))
+        elif modl_base == zmlp.ModelType.LABEL_DETECTION_RESNET152:
+            return resnet_v2.ResNet152V2(weights='imagenet',
+                                         include_top=False,
+                                         input_shape=(224, 224, 3))
+        elif modl_base == zmlp.ModelType.LABEL_DETECTION_VGG16:
+            return vgg16.VGG16(weights='imagenet',
+                               include_top=False,
+                               input_shape=(224, 224, 3))
+        else:
+            raise ZmlpFatalProcessorException(
+                'Invalid model: {}'.format(modl_base))
