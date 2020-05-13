@@ -789,7 +789,9 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 .emotion-0 {
   font-family: Roboto Condensed;
   color: #808080;
-  padding: 16px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 8px;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -797,7 +799,8 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 
 .emotion-4 {
   width: 36px;
-  padding-top: 16px;
+  padding-top: 12px;
+  padding-left: 8px;
   padding-right: 16px;
 }
 
@@ -856,8 +859,10 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   -ms-flex: 4;
   flex: 4;
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   color: #e0e0e0;
-  padding: 16px;
+  padding: 12px;
   word-break: break-word;
 }
 
@@ -926,7 +931,9 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
 .emotion-0 {
   font-family: Roboto Condensed;
   color: #808080;
-  padding: 16px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 8px;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -937,14 +944,17 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   -ms-flex: 4;
   flex: 4;
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   color: #e0e0e0;
-  padding: 16px;
+  padding: 12px;
   word-break: break-all;
 }
 
 .emotion-4 {
   width: 36px;
-  padding-top: 16px;
+  padding-top: 12px;
+  padding-left: 8px;
   padding-right: 16px;
 }
 
