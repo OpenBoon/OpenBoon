@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { constants, spacing } from '../Styles'
+import { constants, spacing, typography } from '../Styles'
 
 import MetadataPrettySwitch from './Switch'
 
@@ -29,6 +29,8 @@ const MetadataPretty = ({ metadata, section }) => {
               css={{
                 paddingTop: spacing.base,
                 fontFamily: 'Roboto Mono',
+                fontSize: typography.size.small,
+                lineHeight: typography.height.small,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
