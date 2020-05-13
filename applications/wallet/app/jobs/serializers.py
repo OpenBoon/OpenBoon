@@ -58,7 +58,7 @@ class StackTraceSerializer(serializers.Serializer):
     file = serializers.CharField(required=True)
     lineNumber = serializers.IntegerField(required=True)
     className = serializers.CharField(required=True)
-    methodName = serializers.CharField(required=True)
+    methodName = serializers.CharField(default='', allow_blank=True)
 
 
 class TaskErrorSerializer(serializers.Serializer):

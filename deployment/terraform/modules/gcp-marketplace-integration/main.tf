@@ -60,10 +60,10 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
           }
         }
         container {
-          name              = "gcp-marketplace-integration"
+          name              = "gcp-marketplace-usage-report"
           image             = "zmlp/wallet:${var.container-tag}"
           image_pull_policy = "Always"
-          command = ["sh", "/applications/wallet/start-marketplace-tools.sh"]
+          command = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-usage-report"]
           resources {
             limits {
               memory = "1Gi"
@@ -111,16 +111,88 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
             value = var.fqdn
           }
           env {
-            name = "GOOGLE_CLOUD_PROJECT"
+            name = "MARKETPLACE_PROJECT_ID"
             value = var.marketplace-project
           }
           env {
-            name = "MARKETPLACE_SUBSCRIPTION"
+            name = "MARKETPLACE_PUBSUB_SUBSCRIPTION"
             value = var.marketplace-subscription
           }
           env {
-            name = "GOOGLE_CREDENTIALS"
+            name = "MARKETPLACE_CREDENTIALS"
             value = var.marketplace-credentials
+          }
+          env {
+            name = "MARKETPLACE_SERVICE_NAME"
+            value = var.marketplace-service-name
+          }
+        }
+        container {
+          name              = "gcp-marketplace-pub-sub"
+          image             = "zmlp/wallet:${var.container-tag}"
+          image_pull_policy = "Always"
+          command = ["python3", "-u", "/applications/wallet/app/manage.py", "gcpmarketplace-pubsub"]
+          resources {
+            limits {
+              memory = "1Gi"
+              cpu    = 1
+            }
+            requests {
+              memory = "256Mi"
+              cpu    = 0.5
+            }
+          }
+          env {
+            name  = "PG_HOST"
+            value = "localhost"
+          }
+          env {
+            name  = "PG_PASSWORD"
+            value = var.pg_password
+          }
+          env {
+            name  = "ZMLP_API_URL"
+            value = var.zmlp-api-url
+          }
+          env {
+            name  = "SMTP_PASSWORD"
+            value = var.smtp-password
+          }
+          env {
+            name  = "GOOGLE_OAUTH_CLIENT_ID"
+            value = var.google-oauth-client-id
+          }
+          env {
+            name  = "ENVIRONMENT"
+            value = var.environment
+          }
+          env {
+            name  = "ENABLE_SENTRY"
+            value = "true"
+          }
+          env {
+            name  = "INCEPTION_KEY_B64"
+            value = var.inception-key-b64
+          }
+          env {
+            name  = "FQDN"
+            value = var.fqdn
+          }
+          env {
+            name = "MARKETPLACE_PROJECT_ID"
+            value = var.marketplace-project
+          }
+          env {
+            name = "MARKETPLACE_PUBSUB_SUBSCRIPTION"
+            value = var.marketplace-subscription
+          }
+          env {
+            name = "MARKETPLACE_CREDENTIALS"
+            value = var.marketplace-credentials
+          }
+          env {
+            name = "MARKETPLACE_SERVICE_NAME"
+            value = var.marketplace-service-name
           }
         }
       }

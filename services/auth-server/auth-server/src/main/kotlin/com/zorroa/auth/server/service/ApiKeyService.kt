@@ -66,7 +66,7 @@ class ApiKeyServiceImpl constructor(
         val actor = getZmlpActor()
         val key = ApiKey(
             UUID.randomUUID(),
-            getProjectId(),
+            spec.projectId ?: getProjectId(),
             KeyGenerator.generate(16),
             encryptionService.encryptString(KeyGenerator.generate(16), ApiKey.CRYPT_VARIANCE),
             spec.name,

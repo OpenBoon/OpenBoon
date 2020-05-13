@@ -145,6 +145,17 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+  -webkit-align-items: end;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: end;
 }
 
 .emotion-174:hover {
@@ -170,8 +181,13 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   background-color: #808080;
 }
 
+.emotion-174 svg {
+  margin-right: 8px;
+}
+
 .emotion-175 {
   width: 8px;
+  min-width: 8px;
 }
 
 .emotion-176 {
@@ -207,6 +223,17 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+  -webkit-align-items: end;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: end;
 }
 
 .emotion-176:hover {
@@ -230,6 +257,10 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
 
 .emotion-176[aria-disabled=true] {
   background-color: #808080;
+}
+
+.emotion-176 svg {
+  margin-right: 8px;
 }
 
 .emotion-0 {
@@ -1183,22 +1214,32 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
     className="emotion-177"
   >
     <button
+      aria-label="Cancel"
       className="emotion-174"
       onClick={[Function]}
       type="button"
     >
-      x Cancel
+      <svg
+        data-file-name="crossSmall.svg"
+        width={18}
+      />
+      Cancel
     </button>
     <div
       className="emotion-175"
     />
     <button
       aria-disabled={true}
+      aria-label="Add Selected Filters"
       className="emotion-176"
       onClick={[Function]}
       type="button"
     >
-      + Add Selected Filters
+      <svg
+        data-file-name="plus.svg"
+        width={16}
+      />
+      Add Selected Filters
     </button>
   </div>
 </div>
@@ -1349,6 +1390,17 @@ exports[`<Filters /> should open the menu 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+  -webkit-align-items: end;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: end;
 }
 
 .emotion-71:hover {
@@ -1374,8 +1426,13 @@ exports[`<Filters /> should open the menu 1`] = `
   background-color: #808080;
 }
 
+.emotion-71 svg {
+  margin-right: 8px;
+}
+
 .emotion-72 {
   width: 8px;
+  min-width: 8px;
 }
 
 .emotion-73 {
@@ -1411,6 +1468,17 @@ exports[`<Filters /> should open the menu 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+  -webkit-align-items: end;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: end;
 }
 
 .emotion-73:hover {
@@ -1434,6 +1502,10 @@ exports[`<Filters /> should open the menu 1`] = `
 
 .emotion-73[aria-disabled=true] {
   background-color: #808080;
+}
+
+.emotion-73 svg {
+  margin-right: 8px;
 }
 
 .emotion-0 {
@@ -1920,22 +1992,32 @@ exports[`<Filters /> should open the menu 1`] = `
     className="emotion-74"
   >
     <button
+      aria-label="Cancel"
       className="emotion-71"
       onClick={[Function]}
       type="button"
     >
-      x Cancel
+      <svg
+        data-file-name="crossSmall.svg"
+        width={18}
+      />
+      Cancel
     </button>
     <div
       className="emotion-72"
     />
     <button
       aria-disabled={true}
+      aria-label="Add Selected Filters"
       className="emotion-73"
       onClick={[Function]}
       type="button"
     >
-      + Add Selected Filters
+      <svg
+        data-file-name="plus.svg"
+        width={16}
+      />
+      Add Selected Filters
     </button>
   </div>
 </div>
