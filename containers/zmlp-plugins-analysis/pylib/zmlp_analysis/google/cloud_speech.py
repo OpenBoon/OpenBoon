@@ -22,7 +22,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
             'A set of alternative languages that your audio data might contain.'
     }
 
-    namespace = 'gcp.speech-to-text'
+    namespace = 'gcp-speech-to-text'
 
     max_length_sec = 30 * 60
 
