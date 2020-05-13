@@ -26,6 +26,7 @@ import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
+import com.zorroa.zmlp.service.storage.SystemStorageService
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
@@ -56,6 +57,9 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var dispatchQueueManager: DispatchQueueManager
+
+    @Autowired
+    lateinit var systemStorageService: SystemStorageService
 
     @Test
     fun testHandleStatsEvent() {
@@ -510,6 +514,23 @@ class DispatcherServiceTests : AbstractTest() {
         assertEquals(task.id, get.id)
         assertEquals("testingStatus", get.status)
     }
+
+    @Test
+    fun testQueueAndDispatchTaskWithExternalTaskEnv() {
+
+        systemStorageService.storeObject("environments/task_env.json",
+            mapOf("foo" to "bar"))
+
+        launchJob(JobPriority.Standard)
+        authenticateAsAnalyst()
+        val task = dispatchQueueManager.getNext()
+        task?.let {
+            dispatchQueueManager.queueAndDispatchTask(it, "http://localhost:5000")
+        }
+
+        assertEquals("bar", task!!.env["foo"])
+    }
+
 
     fun launchJob(priority: Int): Job {
         val spec1 = JobSpec(
