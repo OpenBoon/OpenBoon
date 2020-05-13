@@ -2,13 +2,17 @@ import TestRenderer from 'react-test-renderer'
 
 import bboxAsset, { boxImagesResponse } from '../../Asset/__mocks__/bboxAsset'
 
-import MetadataAnalysis from '..'
+import MetadataPrettyObject from '../Object'
 
-describe('<MetadataAnalysis />', () => {
+describe('<MetadataPrettyObject />', () => {
   it('should render label with no box images detection properly', () => {
     const value = bboxAsset.metadata.analysis['zvi-label-detection']
     const component = TestRenderer.create(
-      <MetadataAnalysis name="zvi-label-detection" value={value} />,
+      <MetadataPrettyObject
+        name="zvi-label-detection"
+        value={value}
+        path="analysis"
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -21,7 +25,11 @@ describe('<MetadataAnalysis />', () => {
 
     const value = bboxAsset.metadata.analysis['zvi-object-detection']
     const component = TestRenderer.create(
-      <MetadataAnalysis name="zvi-object-detection" value={value} />,
+      <MetadataPrettyObject
+        name="zvi-object-detection"
+        value={value}
+        path="analysis"
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -34,7 +42,11 @@ describe('<MetadataAnalysis />', () => {
       content: 'some result',
     }
     const component = TestRenderer.create(
-      <MetadataAnalysis name="zvi-text-detection" value={value} />,
+      <MetadataPrettyObject
+        name="zvi-text-detection"
+        value={value}
+        path="analysis"
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -43,7 +55,11 @@ describe('<MetadataAnalysis />', () => {
   it('should render content detection with no results properly', () => {
     const value = bboxAsset.metadata.analysis['zvi-text-detection']
     const component = TestRenderer.create(
-      <MetadataAnalysis name="zvi-text-detection" value={value} />,
+      <MetadataPrettyObject
+        name="zvi-text-detection"
+        value={value}
+        path="analysis"
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -52,7 +68,11 @@ describe('<MetadataAnalysis />', () => {
   it('should render similarity detection properly', () => {
     const value = bboxAsset.metadata.analysis['zvi-image-similarity']
     const component = TestRenderer.create(
-      <MetadataAnalysis name="zvi-image-similarity" value={value} />,
+      <MetadataPrettyObject
+        name="zvi-image-similarity"
+        value={value}
+        path="analysis"
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

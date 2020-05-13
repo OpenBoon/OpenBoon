@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<MetadataAnalysis /> should render content detection properly 1`] = `
+exports[`<MetadataPrettyObject /> should render content detection properly 1`] = `
 Array [
   .emotion-0 {
   padding: 16px;
@@ -150,7 +150,7 @@ Array [
 ]
 `;
 
-exports[`<MetadataAnalysis /> should render content detection with no results properly 1`] = `
+exports[`<MetadataPrettyObject /> should render content detection with no results properly 1`] = `
 Array [
   .emotion-0 {
   padding: 16px;
@@ -279,7 +279,7 @@ Array [
 ]
 `;
 
-exports[`<MetadataAnalysis /> should render label detection with box images properly 1`] = `
+exports[`<MetadataPrettyObject /> should render label detection with box images properly 1`] = `
 .emotion-15 {
   padding: 16px;
   padding-bottom: 24px;
@@ -498,7 +498,7 @@ exports[`<MetadataAnalysis /> should render label detection with box images prop
 </div>
 `;
 
-exports[`<MetadataAnalysis /> should render label with no box images detection properly 1`] = `
+exports[`<MetadataPrettyObject /> should render label with no box images detection properly 1`] = `
 Array [
   .emotion-10 {
   padding: 16px;
@@ -762,7 +762,7 @@ Array [
 ]
 `;
 
-exports[`<MetadataAnalysis /> should render similarity detection properly 1`] = `
+exports[`<MetadataPrettyObject /> should render similarity detection properly 1`] = `
 Array [
   .emotion-0 {
   padding: 16px;
