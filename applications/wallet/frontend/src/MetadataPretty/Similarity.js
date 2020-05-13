@@ -4,7 +4,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
-const MetadataAnalysisContentDetection = ({ name, value: { content } }) => {
+const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
   return (
     <>
       <div
@@ -22,47 +22,46 @@ const MetadataAnalysisContentDetection = ({ name, value: { content } }) => {
       >
         {name}
       </div>
-      {content && (
-        <div
-          css={{
-            padding: `${spacing.base}px ${spacing.normal}px`,
-            paddingBottom: 0,
-            minHeight: COPY_SIZE,
-            width: '100%',
-            fontFamily: 'Roboto Condensed',
-            textTransform: 'uppercase',
-            color: colors.structure.steel,
-          }}
-        >
-          content
-        </div>
-      )}
+      <div
+        css={{
+          padding: `${spacing.base}px ${spacing.normal}px`,
+          paddingBottom: 0,
+          minHeight: COPY_SIZE,
+          width: '100%',
+          fontFamily: 'Roboto Condensed',
+          textTransform: 'uppercase',
+          color: colors.structure.steel,
+        }}
+      >
+        simhash
+      </div>
       <div css={{ paddingBottom: spacing.base }}>
         <div
           css={{
             display: 'flex',
-            ':hover': content
-              ? {
-                  backgroundColor: colors.signal.electricBlue.background,
-                  div: {
-                    svg: {
-                      display: 'inline-block',
-                    },
-                  },
-                }
-              : {},
+            ':hover': {
+              backgroundColor: colors.signal.electricBlue.background,
+              div: {
+                svg: {
+                  display: 'inline-block',
+                },
+              },
+            },
           }}
         >
           <div
             css={{
-              width: '100%',
               padding: `${spacing.moderate}px ${spacing.normal}px`,
-              wordBreak: 'break-word',
-              color: colors.structure.zinc,
-              fontStyle: content ? '' : typography.style.italic,
+              fontFamily: 'Roboto Mono',
+              fontSize: typography.size.small,
+              lineHeight: typography.height.small,
+              color: colors.structure.white,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
             }}
+            title={simhash}
           >
-            {content || 'No Results'}
+            {simhash}
           </div>
           <div
             css={{
@@ -71,7 +70,7 @@ const MetadataAnalysisContentDetection = ({ name, value: { content } }) => {
               paddingRight: spacing.normal,
             }}
           >
-            <ButtonCopy value={content} />
+            <ButtonCopy value={simhash} />
           </div>
         </div>
       </div>
@@ -79,11 +78,11 @@ const MetadataAnalysisContentDetection = ({ name, value: { content } }) => {
   )
 }
 
-MetadataAnalysisContentDetection.propTypes = {
+MetadataPrettySimilarity.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.shape({
-    content: PropTypes.string.isRequired,
+    simhash: PropTypes.string.isRequired,
   }).isRequired,
 }
 
-export default MetadataAnalysisContentDetection
+export default MetadataPrettySimilarity

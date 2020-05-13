@@ -9,7 +9,7 @@ export const BBOX_SIZE = 56
 
 const COLUMNS = ['bbox', 'label', 'score']
 
-const MetadataAnalysisLabelDetection = ({ name, value: { predictions } }) => {
+const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
   const predictionColumns = Object.keys(predictions[0])
 
   // filter from COLUMNS which holds the module column names in the correct order
@@ -181,11 +181,11 @@ const MetadataAnalysisLabelDetection = ({ name, value: { predictions } }) => {
   )
 }
 
-MetadataAnalysisLabelDetection.propTypes = {
+MetadataPrettyLabelsContent.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.shape({
     predictions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   }).isRequired,
 }
 
-export default MetadataAnalysisLabelDetection
+export default MetadataPrettyLabelsContent

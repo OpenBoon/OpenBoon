@@ -8,8 +8,8 @@ import useLocalStorage from '../LocalStorage'
 import Button, { VARIANTS } from '../Button'
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import JsonDisplay from '../JsonDisplay'
+import MetadataPretty from '../MetadataPretty'
 
-import MetadataPretty from './Pretty'
 import { formatDisplayName } from './helpers'
 
 const DISPLAY_OPTIONS = ['pretty', 'raw json']
