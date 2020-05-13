@@ -61,7 +61,7 @@ class StackTraceSerializer(serializers.Serializer):
     methodName = serializers.CharField(default='', allow_null=True)
 
     def validate_methodName(self, value):
-        if value == None:
+        if value is None:
             return ''
         return value
 

@@ -457,7 +457,7 @@ class TestTaskErrorViewSet:
         assert _json['results'][0]['stackTrace'][1]['methodName'] == ''
 
     def test_list_stacktrace_null_methodname(self, monkeypatch, api_client, zmlp_project_user,
-                                           project):
+                                             project):
         def mock_post_response(*args, **kwargs):
             return {'list': [{"id": "d5ffb9ba-5822-11ea-b3c8-0242ac120004", "taskId": "d4fffcf9-5822-11ea-b3c8-0242ac120004", "jobId": "ce4df7e7-5822-11ea-b3c8-0242ac120004", "dataSourceId": "ce46f306-5822-11ea-b3c8-0242ac120004", "assetId": "oh4g6WGPFqlQOShzVdmpr2hugGu1WuEh", "path": "gs://zmlp-public-test-data/corrupt.jpg", "message": "ZmlpFatalProcessorException: ('Failed to pre-cache source file', ValueError('Anonymous credentials cannot be refreshed.'))", "processor": "zmlp_core.core.processors.PreCacheSourceFileProcessor", "fatal": True, "analyst": "not-implemented", "phase": "execute", "timeCreated": 1582671723066, "stackTrace": [{ "file": "/usr/local/lib/python3.7/dist-packages/zmlpcd/process.py", "lineNumber": 263, "className": "process", "methodName": None }, { "file": "/zps/pylib/zmlp_core/core/processors.py", "lineNumber": 39, "className": "process"} ] }], 'page': {'from': 0, 'size': 50, 'disabled': False, 'totalCount': 1}}  # noqa
 
