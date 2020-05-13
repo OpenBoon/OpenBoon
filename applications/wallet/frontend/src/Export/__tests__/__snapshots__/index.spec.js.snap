@@ -2,11 +2,11 @@
 
 exports[`<Export /> should render properly 1`] = `
 .emotion-2 {
-  padding: 8px;
+  padding: 16px;
 }
 
 .emotion-0 {
-  height: 8px;
+  height: 16px;
 }
 
 .emotion-1 {
