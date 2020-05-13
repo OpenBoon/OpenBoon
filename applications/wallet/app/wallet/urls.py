@@ -28,6 +28,7 @@ from apikeys.views import ApikeyViewSet
 from assets.views import (AssetViewSet, FileCategoryViewSet,
                           FileNameViewSet)
 from datasources.views import DataSourceViewSet
+from gcpmarketplace.views import signup_success, SignUpView
 from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
 from modules.views import ModuleViewSet, ProviderViewSet
 from permissions.views import PermissionViewSet
@@ -107,7 +108,9 @@ urlpatterns = [
     path('api/v1/', include(assets_files_router.urls)),
     path('api/v1/', include(assets_file_names_router.urls)),
     path('api/v1/', include(jobs_router.urls)),
-    path('api/v1/health/', include('health_check.urls'))
+    path('api/v1/health/', include('health_check.urls')),
+    path('marketplace/signup/', SignUpView.as_view(), name='gcpmarketplace-signup'),
+    path('marketplace/signup_success/', signup_success, name='gcpmarketplace-signup-success'),
 ]
 urlpatterns += [i[1] for i in BROWSABLE_API_URLS]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
