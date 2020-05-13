@@ -51,7 +51,7 @@ class ApiKeyCustomRepositoryTests : AbstractTest() {
 
         assertEquals(create.id, key.id)
 
-        //Should fail when Enabled = false
+        // Should fail when Enabled = false
         apiKeyService.updateEnabled(create, false)
         val keyException = apiKeyCustomRepository.getValidationKey(create.accessKey)
     }
