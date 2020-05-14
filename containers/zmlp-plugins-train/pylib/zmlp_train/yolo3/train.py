@@ -71,10 +71,10 @@ class YOLOTrainer:
                                        patience=10, verbose=1)
 
         # TODO: determine where images are stored
-        # 1. goto directory of jpgs
+        # [X] 1. goto directory of jpgs
         # 2. split between train/val .txt files
         # 3. reformat data_generator for format
-        #    - images as jpgs (e.g. 0001.jpg)
+        #    - [X] images as jpgs (e.g. 0001.jpg)
         #    - txt file (e.g. 0001.txt) has class and bbox info
         dir_train = '{}/set_train/'.format(self.base_dir)
         dir_test = '{}/set_test/'.format(self.base_dir)
