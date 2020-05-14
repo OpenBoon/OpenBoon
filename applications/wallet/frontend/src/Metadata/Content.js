@@ -99,6 +99,7 @@ const MetadataContent = ({ projectId, assetId }) => {
                   title={title}
                   cacheKey={`Metadata.${section}`}
                   isInitiallyOpen={false}
+                  isResizeable={false}
                 >
                   <MetadataPretty metadata={metadata} section={section} />
                 </Accordion>

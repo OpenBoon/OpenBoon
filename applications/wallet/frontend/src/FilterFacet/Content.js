@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
@@ -7,6 +8,7 @@ import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 import FiltersReset from '../Filters/Reset'
+import FiltersSearch from '../Filters/Search'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 
@@ -24,6 +26,8 @@ const FilterFacet = ({
   },
   filterIndex,
 }) => {
+  const [searchString, setSearchString] = useState('')
+
   const encodedFilter = encode({ filters: { type, attribute } })
 
   const {
@@ -53,6 +57,14 @@ const FilterFacet = ({
         filterIndex={filterIndex}
         onReset={noop}
       />
+      <div css={{ height: spacing.moderate }} />
+      <FiltersSearch
+        placeholder="Search facets"
+        searchString={searchString}
+        onChange={({ value }) => {
+          setSearchString(value)
+        }}
+      />
       <div
         css={{
           display: 'flex',
@@ -68,6 +80,8 @@ const FilterFacet = ({
       </div>
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
         {buckets.map(({ key, docCount = 0 }) => {
+          if (!key.toLowerCase().includes(searchString)) return null
+
           const offset = Math.ceil((docCount * 100) / largestCount)
           const facetIndex = facets.findIndex((f) => f === key)
           const isSelected = !!(facetIndex + 1)

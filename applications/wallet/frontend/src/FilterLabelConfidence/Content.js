@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
@@ -8,6 +9,7 @@ import Button, { VARIANTS } from '../Button'
 import filterShape from '../Filter/shape'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
+import FiltersSearch from '../Filters/Search'
 
 import FilterLabelConfidenceSlider from './Slider'
 
@@ -23,6 +25,8 @@ const FilterLabelConfidenceContent = ({
   },
   filterIndex,
 }) => {
+  const [searchString, setSearchString] = useState('')
+
   const encodedFilter = encode({ filters: { type, attribute } })
 
   const {
@@ -51,6 +55,13 @@ const FilterLabelConfidenceContent = ({
         filter={filter}
         filterIndex={filterIndex}
       />
+      <FiltersSearch
+        placeholder="Search labels"
+        searchString={searchString}
+        onChange={({ value }) => {
+          setSearchString(value)
+        }}
+      />
       <div
         css={{
           display: 'flex',
@@ -66,6 +77,8 @@ const FilterLabelConfidenceContent = ({
       </div>
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
         {buckets.map(({ key, docCount = 0 }) => {
+          if (!key.toLowerCase().includes(searchString)) return null
+
           const offset = Math.ceil((docCount * 100) / largestCount)
           const facetIndex = labels.findIndex((f) => f === key)
           const isSelected = !!(facetIndex + 1)
