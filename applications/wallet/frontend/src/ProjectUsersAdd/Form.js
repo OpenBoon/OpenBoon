@@ -22,6 +22,7 @@ const INITIAL_STATE = {
   roles: {},
   succeeded: [],
   failed: [],
+  isLoading: false,
   errors: { global: '' },
 }
 
@@ -103,9 +104,9 @@ const ProjectUsersAddForm = () => {
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => onSubmit({ projectId, dispatch, state })}
-            isDisabled={!state.emails}
+            isDisabled={!state.emails || state.isLoading}
           >
-            Add
+            {state.isLoading ? 'Adding...' : 'Add'}
           </Button>
         </ButtonGroup>
       </Form>
