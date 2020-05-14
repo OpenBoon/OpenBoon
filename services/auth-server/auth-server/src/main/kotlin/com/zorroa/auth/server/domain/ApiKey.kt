@@ -31,7 +31,11 @@ class ApiKeySpec(
     val name: String,
 
     @ApiModelProperty("A list of permissions associated with key.")
-    val permissions: Set<Permission>
+    val permissions: Set<Permission>,
+
+    @JsonIgnore
+    @ApiModelProperty("An optional project Id override, not available via REST.", hidden = true)
+    val projectId: UUID? = null
 )
 
 @Entity

@@ -109,9 +109,10 @@ class ModelServiceImpl(
         if (mod != null) {
             return mod
         }
+        val ds = dataSetDao.getOne(model.dataSetId)
 
         val modspec = PipelineModSpec(
-            model.name,
+            model.type.moduleName.replace("%s", ds.name),
             model.type.description,
             Provider.CUSTOM,
             Category.TRAINED,

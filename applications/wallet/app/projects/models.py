@@ -2,6 +2,7 @@ import logging
 import uuid
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django_cryptography.fields import encrypt
 from multiselectfield import MultiSelectField
@@ -33,6 +34,17 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_zmlp_super_client(self):
+        """Returns a ZMLP client configured with a super user for this project.
+
+        WARNING: Use with seldom and with great caution. This should only be used when
+        absolutely necessary. Most ZMLP actions should occur using the the credentials
+        of the logged in user.
+
+        """
+        user = User.objects.get(email=settings.SUPERUSER_EMAIL)
+        return get_zmlp_superuser_client(user, project_id=str(self.id))
 
     def sync_with_zmlp(self, syncing_user):
         """Tries to create a project in ZMLP with the same name and ID. This syncs the projects

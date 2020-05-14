@@ -410,8 +410,8 @@ class DockerContainerWrapper(object):
         env.update({
             'ZMLP_SERVER': os.environ.get("ZMLP_SERVER"),
             'OFFICER_URL': os.environ.get('OFFICER_URL'),
-            "CLARIFAI_KEY":  os.environ.get('CLARIFAI_KEY'),
-            "ANALYST_THREADS": os.environ.get('ANALYST_THREADS')
+            # Get threads from task env, or os env.
+            "ANALYST_THREADS": env.get("ANALYST_THREADS", os.environ.get('ANALYST_THREADS'))
         })
 
         logger.info("starting container {} vols={} network={}".format(self.image, volumes, network))
@@ -572,6 +572,8 @@ class DockerContainerWrapper(object):
             if event_type == "asset":
                 return event["payload"]
             else:
+                if event_type == "error":
+                    logger.warning("processing error {}".format(event["payload"]))
                 # Echo back to archivist.
                 self.client.emit_event(self.task, event_type, event["payload"])
 

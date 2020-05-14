@@ -86,4 +86,49 @@ describe('<FiltersContent />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render the "Text Detection" filter', () => {
+    const filters = [
+      {
+        type: 'textContent',
+        attribute: 'analysis.zvi-text-content',
+        values: {},
+      },
+    ]
+
+    const component = TestRenderer.create(
+      <FiltersContent
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={filters}
+        setIsMenuOpen={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render the default filter', () => {
+    const mockRouterPush = jest.fn()
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    const filters = [
+      {
+        type: 'similarity',
+        attribute: '',
+        values: {},
+      },
+    ]
+
+    const component = TestRenderer.create(
+      <FiltersContent
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={filters}
+        setIsMenuOpen={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

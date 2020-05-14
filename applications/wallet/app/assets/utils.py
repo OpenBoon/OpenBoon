@@ -90,7 +90,7 @@ class AssetBoxImager(object):
         return field_value
 
 
-def crop_image_poly(image, poly, width=256, color=(255, 0, 0), thickness=3):
+def crop_image_poly(image, poly, width=256, draw=False, color=(255, 0, 0), thickness=3):
     """Function accepts an opencv image and returns a new image cropped to just show the
     poly given. The output image is also resized to the given width while maintaining
     the original aspect ratio. If the poly has more a less than 4 points then a polygon
@@ -101,6 +101,8 @@ def crop_image_poly(image, poly, width=256, color=(255, 0, 0), thickness=3):
         poly (list): List of numbers given as percentages of image size. If len(poly)==4, it is
          assumed to be a bounding box. Otherwise it is a list of vertices. In this case the
          polygon is drawn and then the image cropped to the polygon's bounding box.
+        width: (int): Width of the resulting cropped image.
+        draw: (boolean): Whether to draw the outline of a list-or-vertices polygon.
         color (List<int>): RGB values describing the color of the polygon.
         thickness (int): Thickness of the polygon drawn.
 
@@ -119,7 +121,7 @@ def crop_image_poly(image, poly, width=256, color=(255, 0, 0), thickness=3):
         y1 = int(poly[1] * yr)
         x2 = int(poly[2] * xr)
         y2 = int(poly[3] * yr)
-        draw = image
+        image_draw = image
     else:
         point_list = []
         for i in range(0, len(poly), 2):
@@ -128,16 +130,26 @@ def crop_image_poly(image, poly, width=256, color=(255, 0, 0), thickness=3):
             point_list.append([x, y])
         pts = np.array([point_list], np.int32)
         pts = pts.reshape((-1, 1, 2))
-        draw = cv2.polylines(image, [pts], True, color, thickness)
+        if draw:
+            image_draw = cv2.polylines(image, [pts], True, color, thickness)
+        else:
+            image_draw = image
+            # If we are not drawing, we reset the thickness so the crop is exact
+            thickness = 0
         # Now figure out where to crop, using the bounding box of all those points
         v_min = np.min(pts, axis=0)
         v_max = np.max(pts, axis=0)
-        y1 = v_min[0][1] - thickness
-        y2 = v_max[0][1]
-        x1 = v_min[0][0] - thickness
-        x2 = v_max[0][0]
-    cropped_image = draw[y1:y2, x1:x2]
+        # The crop rectangle is capped to the actual image boundaries
+        y1 = max(0, v_min[0][1] - thickness)
+        y2 = min(yr-1, v_max[0][1] + thickness)
+        x1 = max(0, v_min[0][0] - thickness)
+        x2 = min(xr-1, v_max[0][0] + thickness)
+    cropped_image = image_draw[y1:y2, x1:x2]
     xrc = cropped_image.shape[1]
-    scale = width / xrc
-    resized = cv2.resize(cropped_image, (0, 0), fx=scale, fy=scale)
+    if xrc > 0:
+        scale = width / xrc
+        resized = cv2.resize(cropped_image, (0, 0), fx=scale, fy=scale)
+    else:
+        resized = np.zeros((width, width, 3), np.uint8)
+
     return resized

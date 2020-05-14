@@ -10,13 +10,13 @@ const Export = () => {
   } = useRouter()
 
   return (
-    <div css={{ padding: spacing.base }}>
+    <div css={{ padding: spacing.normal }}>
       <div>
         Export the metadata for all assets in the current search as CSV. File
         will download automatically.
       </div>
 
-      <div css={{ height: spacing.base }} />
+      <div css={{ height: spacing.normal }} />
 
       <Button
         variant={VARIANTS.PRIMARY_SMALL}

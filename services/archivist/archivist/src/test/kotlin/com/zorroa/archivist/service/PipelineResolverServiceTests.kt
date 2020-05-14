@@ -41,20 +41,20 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineName() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-clips"))
+        val pspec = PipelineSpec("test", modules = listOf("zvi-object-detection"))
         val pipeline = pipelineService.create(pspec)
 
         val resolved = pipelineResolverService.resolve(pipeline.name, null)
         val last = resolved.last()
-        assertEquals(last.className, "zmlp_core.zvi.clipify.ShotDetectionVideoClipifier")
-        assertEquals(last.image, "zmlp/plugins-core")
+        assertEquals("zmlp_analysis.zvi.ZviObjectDetectionProcessor", last.className)
+        assertEquals("zmlp/plugins-analysis", last.image)
     }
 
     @Test
     fun resolveUsingPipelineNameAndPlusModules() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("+zvi-video-shot-clips"))
+        val pspec = PipelineSpec("test", modules = listOf("zvi-object-detection"))
         val pipeline = pipelineService.create(pspec)
 
         val resolved = pipelineResolverService.resolve(pipeline.name, listOf("zvi-label-detection"))
@@ -63,18 +63,18 @@ class PipelineResolverServiceTests : AbstractTest() {
         assertEquals(last.image, "zmlp/plugins-analysis")
 
         val beforeLast = resolved[resolved.size - 2]
-        assertEquals(beforeLast.className, "zmlp_core.zvi.clipify.ShotDetectionVideoClipifier")
-        assertEquals(beforeLast.image, "zmlp/plugins-core")
+        assertEquals("zmlp_analysis.zvi.ZviObjectDetectionProcessor", beforeLast.className)
+        assertEquals("zmlp/plugins-analysis", beforeLast.image)
     }
 
     @Test
     fun resolveUsingPipelineNameAndMinusModules() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-clips"))
+        val pspec = PipelineSpec("test", modules = listOf("zvi-document-page-extraction"))
         val pipeline = pipelineService.create(pspec)
 
-        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-video-shot-clips"))
+        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-document-page-extraction"))
         val last = resolved.last()
 
         assertEquals(last.className, "zmlp_analysis.zvi.ZviSimilarityProcessor")

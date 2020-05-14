@@ -2,11 +2,12 @@ import PropTypes from 'prop-types'
 
 const filterShape = {
   type: PropTypes.oneOf([
-    'search',
-    'facet',
-    'range',
     'exists',
+    'range',
+    'facet',
     'labelConfidence',
+    'textContent',
+    'similarity',
   ]).isRequired,
   attribute: PropTypes.string.isRequired,
   values: PropTypes.shape({}),

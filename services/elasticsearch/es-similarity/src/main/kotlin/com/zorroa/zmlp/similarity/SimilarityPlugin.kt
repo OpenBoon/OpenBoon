@@ -10,7 +10,6 @@ import org.elasticsearch.script.ScriptContext
 import org.elasticsearch.script.ScriptEngine
 import org.elasticsearch.search.lookup.SearchLookup
 import java.util.logging.Logger
-import kotlin.math.abs
 
 class SimilarityPlugin : Plugin(), ScriptPlugin {
 
@@ -56,11 +55,8 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
 
         private val field: String = params.getValue("field") as String
         private val charHashes: List<String>
-        private val length: Int
         private val minScore: Double = params.getOrDefault("minScore", 0.75) as Double
-        private val resolution: Int = 16
-        private val numHashes: Int
-        private val singleScore: Double
+        private val resolution: Int = params.getOrDefault("resolution", 16) as Int
 
         init {
 
@@ -71,20 +67,6 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
             charHashes = (params["hashes"] as List<String>)
                 .mapNotNull { it }
                 .filter { it.isNotEmpty() }
-
-            /**
-             * If there are no valid hashes left, initialize to defaults
-             */
-            if (charHashes.isEmpty()) {
-                singleScore = 0.0
-                numHashes = 0
-                length = 0
-            } else {
-                val hash = charHashes[0]
-                length = hash.length
-                numHashes = charHashes.size
-                singleScore = (resolution * length).toDouble()
-            }
         }
 
         override fun needs_score(): Boolean {
@@ -94,6 +76,12 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
         override fun newInstance(ctx: LeafReaderContext?): ScoreScript {
 
             return object : ScoreScript(params, lookup, ctx) {
+
+                val simEngine = SimilarityEngine(
+                    charHashes,
+                    minScore,
+                    resolution
+                )
 
                 override fun execute(explanationHolder: ExplanationHolder?): Double {
 
@@ -105,52 +93,12 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
                         return noScore
                     }
 
-                    var highScore = 0.0
-                    for (value in strings) {
-                        highScore = highScore.coerceAtLeast(charHashesComparison(value))
-                    }
-
-                    return if (highScore >= minScore) highScore else noScore
-                }
-
-                fun charHashesComparison(fieldValue: String?): Double {
-                    var totalScore = 0.0
-
-                    if (numHashes == 0) {
+                    if (charHashes.isEmpty()) {
                         return noScore
                     }
 
-                    if (fieldValue == null || fieldValue.isEmpty()) {
-                        return noScore
-                    }
-
-                    val bytes = fieldValue.toCharArray()
-                    for (i in 0 until numHashes) {
-                        val hash = charHashes[i]
-                        if (bytes.size != hash.length) {
-                            continue
-                        }
-                        val elementScore = normalize(hammingDistance(bytes, hash))
-                        if (elementScore < minScore) {
-                            return noScore
-                        } else {
-                            totalScore += elementScore
-                        }
-                    }
-
-                    return totalScore
-                }
-
-                fun normalize(score: Double): Double {
-                    return score / singleScore
-                }
-
-                fun hammingDistance(lhs: CharArray, rhs: String): Double {
-                    var score = singleScore
-                    for (i in 0 until length) {
-                        score -= abs(lhs[i] - rhs[i])
-                    }
-                    return score
+                    val score = simEngine.execute(strings)
+                    return if (score >= minScore) score else noScore
                 }
             }
         }
@@ -158,8 +106,8 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
 
     companion object {
 
-        private const val noScore = 0.0
+        const val noScore = 0.0
 
-        private val logger = Logger.getLogger(SimilarityPlugin::class.java.canonicalName)
+        private val logger = Logger.getLogger("similarity-plugin")
     }
 }

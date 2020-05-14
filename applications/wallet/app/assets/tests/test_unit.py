@@ -111,5 +111,17 @@ class TestCropImagePoly:
 
         blank_image = np.zeros((100, 100, 3), np.uint8)
         cropped_image = crop_image_poly(blank_image, [-.1, 0, .5, .7], width=50)
-
         assert cropped_image.shape == (70, 50, 3)
+
+        cropped_image = crop_image_poly(blank_image,
+                                        [0.0026, 0.2903, 0.099, 0.2903,
+                                         0.099, 0.4755, 0.0026, 0.4755],
+                                        width=50, draw=True)
+        assert cropped_image.shape == (100, 50, 3)
+
+        blank_image = np.zeros((350, 590, 3), np.uint8)
+        cropped_image = crop_image_poly(blank_image,
+                                        [0.7578, 0.5278, 0.9366, 0.5278,
+                                         0.9366, 0.8183, 0.7578, 0.8183],
+                                        width=56, thickness=0)
+        assert cropped_image.shape == (54, 56, 3)

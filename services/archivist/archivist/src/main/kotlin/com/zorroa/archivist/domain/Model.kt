@@ -72,12 +72,12 @@ enum class ModelType(
         "Classify images using a custom trained Mobilenet2 model.",
         DataSetType.LABEL_DETECTION
     ),
-    FACE_RECOGNITON_KNN(
+    FACE_RECOGNITION_KNN(
         "zmlp_train.knn.KnnFaceRecognitionTrainer",
         mapOf(),
         "zmlp_train.knn.KnnFaceRecognitionClassifier",
         mapOf(),
-        "custom-%s-face-recognition-knn",
+        "custom-%s-face-recognition",
         "Relabel existing ZMLP faces using a KNN Face Recognition model.",
         DataSetType.FACE_RECOGNITION
     );

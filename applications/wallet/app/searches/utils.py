@@ -114,6 +114,10 @@ class FilterBoy(object):
         except KeyError:
             return []
 
+        if not encoded_query:
+            # Catches a blank `query=` querystring
+            return []
+
         try:
             converted_query = convert_base64_to_json(encoded_query)
         except ValueError:

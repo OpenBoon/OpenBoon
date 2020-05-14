@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import MetadataAnalysisLabelDetection, { BBOX_SIZE } from './LabelDetection'
+import MetadataPrettyLabelsContent, { BBOX_SIZE } from './LabelsContent'
 
-const MetadataAnalysisBbox = ({ name }) => {
+const MetadataPrettyLabelsQuery = ({ name }) => {
   const attr = `analysis.${name}&width=${BBOX_SIZE}`
 
   const {
@@ -16,11 +16,11 @@ const MetadataAnalysisBbox = ({ name }) => {
     `/api/v1/projects/${projectId}/assets/${assetId}/box_images/?attr=${attr}`,
   )
 
-  return <MetadataAnalysisLabelDetection name={name} value={data[name]} />
+  return <MetadataPrettyLabelsContent name={name} value={data[name]} />
 }
 
-MetadataAnalysisBbox.propTypes = {
+MetadataPrettyLabelsQuery.propTypes = {
   name: PropTypes.string.isRequired,
 }
 
-export default MetadataAnalysisBbox
+export default MetadataPrettyLabelsQuery

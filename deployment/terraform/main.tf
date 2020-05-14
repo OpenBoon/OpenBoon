@@ -201,6 +201,7 @@ module "gcp-marketplace-integration" {
   marketplace-project      = "zorroa-marketplace"
   marketplace-subscription = "codelab"
   marketplace-credentials  = var.marketplace-credentials
+  marketplace-service-name = "isaas-codelab.mp-marketplace-partner-demos.appspot.com"
   fqdn                     = "https://wallet.zmlp.zorroa.com"
   environment              = "staging"
   inception-key-b64        = base64encode(local.inception-key)
