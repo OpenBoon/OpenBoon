@@ -613,8 +613,8 @@ class TestProjectUserPost:
         # Verify at least one membership was created
         membership1 = Membership.objects.get(user=tester1, project=project)
         decoded_apikey = convert_base64_to_json(membership1.apikey)
-        assert decoded_apikey == {'accessKey': 'P1klR1U1RgT3YfdLYN4-AHPlnOhXZHeD',
-                                  'secretKey': '6Ti7kZZ7IcmWnR1bfdvCMUataoMh9Mbq9Kqvs'}
+        assert decoded_apikey['accessKey'] == 'P1klR1U1RgT3YfdLYN4-AHPlnOhXZHeD'
+        assert decoded_apikey['secretKey'] == '6Ti7kZZ7IcmWnR1bfdvCMUataoMh9Mbq9Kqvs'
         # Verify Individual response objects
         content = response.json()['results']
         assert len(content['succeeded']) == 2
@@ -738,7 +738,8 @@ class TestProjectUserPut:
         assert response.status_code == status.HTTP_200_OK
         membership = Membership.objects.get(user=new_user, project=project)
         decoded_apikey = convert_base64_to_json(membership.apikey)
-        assert decoded_apikey == {'accessKey': 'access', 'secretKey': 'secret'}
+        assert decoded_apikey['accessKey'] == 'access'
+        assert decoded_apikey['secretKey'] == 'secret'
         assert membership.roles == ['User_Admin']
 
     @override_settings(PLATFORM='zmlp')
