@@ -317,7 +317,6 @@ Array [
 
 .emotion-18 {
   background-color: #252525;
-  border-radius: 2px;
   border: 1px solid transparent;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -331,9 +330,8 @@ Array [
 }
 
 .emotion-10 {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  padding: 4px 8px;
+  padding-right: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -347,7 +345,7 @@ Array [
   min-width: 0;
   width: 100%;
   font-weight: 400;
-  padding-right: 12px;
+  padding-left: 4px;
 }
 
 .emotion-1 {
@@ -479,7 +477,7 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1113,7 +1111,6 @@ Array [
 
 .emotion-57 {
   background-color: #252525;
-  border-radius: 2px;
   border: 1px solid transparent;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -1127,9 +1124,8 @@ Array [
 }
 
 .emotion-10 {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  padding: 4px 8px;
+  padding-right: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1143,7 +1139,7 @@ Array [
   min-width: 0;
   width: 100%;
   font-weight: 400;
-  padding-right: 12px;
+  padding-left: 4px;
 }
 
 .emotion-1 {
@@ -1275,7 +1271,7 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2136,7 +2132,6 @@ Array [
 
 .emotion-657 {
   background-color: #252525;
-  border-radius: 2px;
   border: 1px solid transparent;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -2150,9 +2145,8 @@ Array [
 }
 
 .emotion-10 {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  padding: 4px 8px;
+  padding-right: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2166,7 +2160,7 @@ Array [
   min-width: 0;
   width: 100%;
   font-weight: 400;
-  padding-right: 12px;
+  padding-left: 4px;
 }
 
 .emotion-1 {
@@ -2298,7 +2292,7 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -6792,7 +6786,6 @@ Array [
 
 .emotion-23 {
   background-color: #252525;
-  border-radius: 2px;
   border: 1px solid transparent;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -6806,9 +6799,8 @@ Array [
 }
 
 .emotion-10 {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  padding: 4px 8px;
+  padding-right: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -6822,7 +6814,7 @@ Array [
   min-width: 0;
   width: 100%;
   font-weight: 400;
-  padding-right: 12px;
+  padding-left: 4px;
 }
 
 .emotion-1 {
@@ -6954,7 +6946,7 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -7647,7 +7639,6 @@ Array [
 
 .emotion-16 {
   background-color: #252525;
-  border-radius: 2px;
   border: 1px solid transparent;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -7661,9 +7652,8 @@ Array [
 }
 
 .emotion-10 {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  padding: 4px 8px;
+  padding-right: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -7677,7 +7667,7 @@ Array [
   min-width: 0;
   width: 100%;
   font-weight: 400;
-  padding-right: 12px;
+  padding-left: 4px;
 }
 
 .emotion-1 {
@@ -7809,7 +7799,7 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

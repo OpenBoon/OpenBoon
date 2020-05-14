@@ -4,7 +4,7 @@ import filterShape from '../Filter/shape'
 
 import HiddenSvg from '../Icons/hidden.svg'
 import CrossSvg from '../Icons/cross.svg'
-import SearchSvg from '../Icons/search.svg'
+import TextSvg from '../Icons/text.svg'
 
 import { spacing, constants, colors, typography } from '../Styles'
 
@@ -36,43 +36,47 @@ const FilterTextSearch = ({
             visibility: 'visible',
           },
         },
-        padding: spacing.moderate,
+        padding: `${spacing.small}px ${spacing.base}px`,
+        paddingRight: spacing.small,
       }}
     >
       <div
         css={{
+          width: '100%',
           display: 'flex',
-          justifyContent: 'space-between',
-          padding: 1,
+          alignItems: 'center',
         }}
       >
         <div
           css={{
             display: 'flex',
-            alignItems: 'center',
-            color: 'white',
-            height: spacing.large,
-            width: '100%',
-            paddingLeft: spacing.spacious,
-            paddingRight: spacing.comfy,
+            paddingLeft: spacing.comfy,
           }}
         >
-          <div css={{ display: 'flex', paddingRight: spacing.normal }}>
-            <SearchSvg css={{ width: 14, color: colors.key.one }} />
-          </div>
-          <div
-            title={query}
+          <TextSvg css={{ width: SVG_SIZE, color: colors.key.one }} />
+        </div>
+        <div
+          css={{
+            flex: 1,
+            minWidth: 0,
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <span
             css={{
               fontFamily: 'Roboto Mono',
               fontSize: typography.size.small,
               lineHeight: typography.height.small,
+              paddingLeft: spacing.base,
               overflow: 'hidden',
-              textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
             }}
           >
             {query}
-          </div>
+          </span>
         </div>
         <Button
           aria-label={`${isDisabled ? 'Enable' : 'Disable'} Filter`}

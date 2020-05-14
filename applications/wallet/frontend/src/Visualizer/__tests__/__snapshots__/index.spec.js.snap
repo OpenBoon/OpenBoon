@@ -166,7 +166,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }
@@ -218,7 +218,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }
@@ -540,7 +540,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }
@@ -592,7 +592,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }
