@@ -194,7 +194,29 @@ sdk-unit-tests-master-branch:
     - sdk-java-unit-tests
     - .master-branch
 
-docker-hub-build-all-push:
+wallet-dockerhub-build-push-latest:
+  image: zmlp/docker-buildx
+  stage: push
+  services:
+    - docker:19.03-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+  retry: 2
+  before_script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+  script:
+    - ./buildx wallet
+    - docker push zmlp/wallet:latest
+  only:
+    refs:
+      - development
+    changes:
+      - applications/wallet/**/*
+
+zmlp-dockerhub-build-push-latest:
   image: zmlp/docker-buildx
   stage: push
   services:
@@ -211,7 +233,6 @@ docker-hub-build-all-push:
     - ./buildx
     - docker push zmlp/archivist:latest
     - docker push zmlp/officer:latest
-    - docker push zmlp/wallet:latest
     - docker push zmlp/elasticsearch:latest
     - docker push zmlp/authserver:latest
     - docker push zmlp/apigateway:latest
@@ -227,7 +248,15 @@ docker-hub-build-all-push:
     - docker push zmlp/ml-bbq:latest
     - docker push zmlp/plugins-train:latest
   only:
-    - development
+    refs:
+      - development
+    changes:
+      - client/**/*
+      - containers/**/*
+      - dev/**/*
+      - lib/**/*
+      - sdk/**/*
+      - services/**/*
 
 deploy-development:
   image: google/cloud-sdk
