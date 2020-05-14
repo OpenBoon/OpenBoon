@@ -38,18 +38,6 @@ provider "kubernetes" {
   version                = ">= 1.11.2"
 }
 
-//data "google_client_config" "default" {}
-//
-//provider "kubernetes" {
-//  load_config_file       = "false"
-//  host                   = module.gke-cluster.endpoint
-//  token                  = data.google_client_config.default.access_token
-//  client_certificate     = module.gke-cluster.client_certificate
-//  client_key             = module.gke-cluster.client_key
-//  cluster_ca_certificate = module.gke-cluster.cluster_ca_certificate
-//  version                = ">= 1.11.0"
-//}
-
 ## GCP Infrastructure ###################################################################
 module "gke-cluster" {
   source = "./modules/gke-cluster"
