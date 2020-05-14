@@ -270,7 +270,7 @@ class MetadataExportViewSet(BaseProjectViewSet):
         return self._yield_all_items_from_es(request, base_url=path, search_filter=query)
 
     def _yield_all_items_from_es(self, request, base_url=None, search_filter={}):
-        """Helper to get all results from paginated responses from ZMLP.
+        """Helper to get all results from scroll responses from ZMLP.
 
         Given the search in `search_filter`, will return the results from ZMLP, making
         repeated paginated requests until all results are returned. Returned items will
