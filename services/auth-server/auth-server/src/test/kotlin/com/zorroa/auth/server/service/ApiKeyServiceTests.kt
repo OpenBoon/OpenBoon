@@ -48,8 +48,7 @@ class ApiKeyServiceTests : AbstractTest() {
     fun testApiKeyUpdateEnabled() {
         val spec = ApiKeySpec(
             "test",
-            setOf(Permission.AssetsRead),
-            true
+            setOf(Permission.AssetsRead)
         )
         var key = apiKeyService.create(spec)
         assertEquals(true, key.enabled)
@@ -62,8 +61,7 @@ class ApiKeyServiceTests : AbstractTest() {
     fun testProjectApiKeysUpdateEnabled() {
         val spec = ApiKeySpec(
             "test",
-            setOf(Permission.AssetsRead),
-            true
+            setOf(Permission.AssetsRead)
         )
 
         var key = apiKeyService.create(spec)

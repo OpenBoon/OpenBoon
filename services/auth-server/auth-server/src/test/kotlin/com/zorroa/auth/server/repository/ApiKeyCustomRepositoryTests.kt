@@ -43,8 +43,7 @@ class ApiKeyCustomRepositoryTests : AbstractTest() {
 
         val spec = ApiKeySpec(
             "test",
-            setOf(Permission.AssetsRead),
-            true
+            setOf(Permission.AssetsRead)
         )
         val create = apiKeyService.create(spec)
         val key = apiKeyCustomRepository.getValidationKey(create.accessKey)
