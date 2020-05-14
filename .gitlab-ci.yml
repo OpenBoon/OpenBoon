@@ -73,20 +73,6 @@ wallet-backend-test-suite-master-branch:
     - wallet-backend-test-suite
     - .master-branch
 
-## Wallet Container Build Validation
-wallet-container-build-validation:
-  only:
-    refs:
-      - master
-    changes:
-      - "**/*"
-  stage: test
-  image: docker:18.09.8-dind
-  services:
-    - docker:18.09.8-dind
-  script:
-    - docker build --pull --no-cache --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA --file applications/wallet/Dockerfile .
-
 ## Backend Python Lint
 backend-py-lint:
   image: python:3.7.5
