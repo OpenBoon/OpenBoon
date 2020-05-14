@@ -27,10 +27,21 @@ provider "google-beta" {
   version     = ">= 3.8.0"
 }
 
+//provider "kubernetes" {
+//  host                   = module.gke-cluster.endpoint
+//  username               = module.gke-cluster.username
+//  password               = module.gke-cluster.password
+//  client_certificate     = module.gke-cluster.client_certificate
+//  client_key             = module.gke-cluster.client_key
+//  cluster_ca_certificate = module.gke-cluster.cluster_ca_certificate
+//  version                = ">= 1.11.0"
+//}
+
+data "google_client_config" "default" {}
+
 provider "kubernetes" {
   host                   = module.gke-cluster.endpoint
-  username               = module.gke-cluster.username
-  password               = module.gke-cluster.password
+  token                  = data.google_client_config.default.access_token
   client_certificate     = module.gke-cluster.client_certificate
   client_key             = module.gke-cluster.client_key
   cluster_ca_certificate = module.gke-cluster.cluster_ca_certificate
