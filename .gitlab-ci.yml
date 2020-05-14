@@ -258,7 +258,7 @@ zmlp-dockerhub-build-push-latest:
       - sdk/**/*
       - services/**/*
 
-deploy-development:
+wallet-deploy-development:
   image: google/cloud-sdk
   retry: 1
   variables:
@@ -266,7 +266,34 @@ deploy-development:
     PROJECT: zmlp-258901
   stage: deploy
   only:
-    - development
+    refs:
+      - development
+    changes:
+      - applications/wallet/**/*
+  before_script:
+    - echo $SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
+  script:
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
+
+zmlp-deploy-development:
+  image: google/cloud-sdk
+  retry: 1
+  variables:
+    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
+    PROJECT: zmlp-258901
+  stage: deploy
+  only:
+    refs:
+      - development
+    changes:
+      - client/**/*
+      - containers/**/*
+      - dev/**/*
+      - lib/**/*
+      - sdk/**/*
+      - services/**/*
   before_script:
     - echo $SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
@@ -279,7 +306,6 @@ deploy-development:
     - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-master
     - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-data
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} ml-bbq
 
 # Kotlin services - Unit tests - Step 1
