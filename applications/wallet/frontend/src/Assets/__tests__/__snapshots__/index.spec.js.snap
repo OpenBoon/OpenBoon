@@ -59,7 +59,7 @@ exports[`<Assets /> should render properly 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }
@@ -111,7 +111,7 @@ exports[`<Assets /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }
@@ -234,7 +234,7 @@ exports[`<Assets /> should render properly 2`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }
@@ -286,7 +286,7 @@ exports[`<Assets /> should render properly 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }
@@ -409,7 +409,7 @@ exports[`<Assets /> should render properly 3`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }
@@ -461,7 +461,7 @@ exports[`<Assets /> should render properly 3`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }
@@ -640,7 +640,7 @@ exports[`<Assets /> should render properly while loading 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }
@@ -692,7 +692,7 @@ exports[`<Assets /> should render properly while loading 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   opacity: 1;
   padding: 8px;
 }

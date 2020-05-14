@@ -122,7 +122,7 @@ const STYLES = {
     },
   },
   ICON: {
-    padding: spacing.base,
+    padding: spacing.small,
     ':hover': {
       color: colors.key.one,
     },
