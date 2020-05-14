@@ -30,8 +30,9 @@ class ApikeyViewSet(BaseProjectViewSet):
 
         apikey = create_zmlp_api_key(request.client, serializer.validated_data['name'],
                                      serializer.validated_data['permissions'], encode_b64=False)
-
-        return Response(status=status.HTTP_201_CREATED, data=apikey)
+        slim_key = {'accessKey': apikey['accessKey'],
+                    'secretKey': apikey['secretKey']}
+        return Response(status=status.HTTP_201_CREATED, data=slim_key)
 
     def destroy(self, request, project_pk, pk):
         return self._zmlp_destroy(request, pk)
