@@ -36,8 +36,8 @@ const FilterTextSearch = ({
             visibility: 'visible',
           },
         },
-        padding: `${spacing.small}px ${spacing.base}px`,
-        paddingRight: spacing.small,
+        padding: spacing.small,
+        paddingLeft: spacing.base,
       }}
     >
       <div

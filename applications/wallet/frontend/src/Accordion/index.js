@@ -70,8 +70,8 @@ const STYLES = {
       },
     },
     title: {
-      padding: `${spacing.small}px ${spacing.base}px`,
-      paddingRight: spacing.small,
+      padding: spacing.small,
+      paddingLeft: spacing.base,
       display: 'flex',
       h4: {
         flex: 1,

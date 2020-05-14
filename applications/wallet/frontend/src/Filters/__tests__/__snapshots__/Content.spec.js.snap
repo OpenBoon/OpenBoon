@@ -330,8 +330,8 @@ Array [
 }
 
 .emotion-10 {
-  padding: 4px 8px;
-  padding-right: 4px;
+  padding: 4px;
+  padding-left: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1124,8 +1124,8 @@ Array [
 }
 
 .emotion-10 {
-  padding: 4px 8px;
-  padding-right: 4px;
+  padding: 4px;
+  padding-left: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2145,8 +2145,8 @@ Array [
 }
 
 .emotion-10 {
-  padding: 4px 8px;
-  padding-right: 4px;
+  padding: 4px;
+  padding-left: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -6799,8 +6799,8 @@ Array [
 }
 
 .emotion-10 {
-  padding: 4px 8px;
-  padding-right: 4px;
+  padding: 4px;
+  padding-left: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -7652,8 +7652,8 @@ Array [
 }
 
 .emotion-10 {
-  padding: 4px 8px;
-  padding-right: 4px;
+  padding: 4px;
+  padding-left: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

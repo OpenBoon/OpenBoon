@@ -72,8 +72,8 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
 }
 
 .emotion-3 {
-  padding: 4px 8px;
-  padding-right: 4px;
+  padding: 4px;
+  padding-left: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
