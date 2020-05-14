@@ -39,6 +39,9 @@ const ApiKeysAddForm = () => {
     return (
       <ApiKeysAddFormSuccess
         projectId={projectId}
+        permissions={Object.keys(state.permissions).filter(
+          (key) => state.permissions[key],
+        )}
         apikey={apikey}
         onReset={() => dispatch(INITIAL_STATE)}
       />
