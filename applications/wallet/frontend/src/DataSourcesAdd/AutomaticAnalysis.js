@@ -14,6 +14,7 @@ const DataSourcesAddAutomaticAnalysis = () => {
         title="Zorroa Automatic Analysis"
         cacheKey="DataSourcesAddAutomaticAnalysis"
         isInitiallyOpen
+        isResizeable={false}
       >
         <>
           <p

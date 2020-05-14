@@ -42,6 +42,16 @@ describe('<FilterFacetContent />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Search
+    act(() => {
+      component.root
+        .findByProps({ type: 'search' })
+        .props.onChange({ target: { value: 'boro' } })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Select
     act(() => {
       component.root
         .findByProps({ 'aria-label': 'Tyngsboro' })

@@ -60,6 +60,7 @@ const STYLES = {
       backgroundColor: colors.structure.lead,
       border: constants.borders.transparent,
       borderBottom: constants.borders.tabs,
+      paddingBottom: spacing.hairline,
       ':hover': {
         border: constants.borders.tableRow,
         div: {
@@ -93,7 +94,14 @@ export const VARIANTS = Object.keys(STYLES).reduce(
   {},
 )
 
-const Accordion = ({ variant, title, cacheKey, children, isInitiallyOpen }) => {
+const Accordion = ({
+  variant,
+  title,
+  cacheKey,
+  children,
+  isInitiallyOpen,
+  isResizeable,
+}) => {
   const [isOpen, setOpen] = useLocalStorage({
     key: cacheKey,
     initialValue: isInitiallyOpen,
@@ -127,7 +135,16 @@ const Accordion = ({ variant, title, cacheKey, children, isInitiallyOpen }) => {
           {title}
         </h4>
       </div>
-      {isOpen && <div css={STYLES[variant].content}>{children}</div>}
+      {isOpen && !isResizeable && (
+        <div css={STYLES[variant].content}>{children}</div>
+      )}
+      {isOpen && isResizeable && (
+        <div
+          css={[STYLES[variant].content, { maxHeight: 500, overflowY: 'auto' }]}
+        >
+          {children}
+        </div>
+      )}
     </div>
   )
 }
@@ -138,6 +155,7 @@ Accordion.propTypes = {
   cacheKey: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   isInitiallyOpen: PropTypes.bool.isRequired,
+  isResizeable: PropTypes.bool.isRequired,
 }
 
 export default Accordion

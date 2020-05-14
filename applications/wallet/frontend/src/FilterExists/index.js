@@ -35,6 +35,7 @@ const FilterExists = ({
       }
       cacheKey={`FilterExists.${attribute}.${filterIndex}`}
       isInitiallyOpen
+      isResizeable
     >
       <div
         css={{

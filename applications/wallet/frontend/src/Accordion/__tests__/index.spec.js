@@ -13,6 +13,7 @@ describe('<Accordion />', () => {
           title="Hi"
           cacheKey={`cacheKey.${variant}`}
           isInitiallyOpen={false}
+          isResizeable={variant === 'FILTER'}
         >
           Hello
         </Accordion>,

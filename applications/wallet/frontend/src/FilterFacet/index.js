@@ -25,6 +25,7 @@ const FilterFacet = ({ projectId, assetId, filters, filter, filterIndex }) => {
       }
       cacheKey={`FilterFacet.${filter.attribute}.${filterIndex}`}
       isInitiallyOpen
+      isResizeable
     >
       <div
         css={{

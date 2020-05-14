@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FilterTextDetection /> should clear a text detection 1`] = `
+.emotion-5 {
+  padding: 16px 12px;
+}
+
 .emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -124,37 +128,45 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
 }
 
 <div
-  className="emotion-4"
+  className="emotion-5"
 >
-  <button
-    aria-label="Edit Text Detection"
-    className="emotion-1"
-    onClick={[Function]}
-    type="button"
+  <div
+    className="emotion-4"
   >
-    <span
-      className="emotion-0"
+    <button
+      aria-label="Edit Text Detection"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
     >
-      cats
-    </span>
-  </button>
-  <button
-    aria-label="Clear Text Detection"
-    className="emotion-3"
-    onClick={[Function]}
-    title="Clear"
-    type="button"
-  >
-    <svg
-      className="emotion-2"
-      data-file-name="cross.svg"
-      width={20}
-    />
-  </button>
+      <span
+        className="emotion-0"
+      >
+        cats
+      </span>
+    </button>
+    <button
+      aria-label="Clear Text Detection"
+      className="emotion-3"
+      onClick={[Function]}
+      title="Clear"
+      type="button"
+    >
+      <svg
+        className="emotion-2"
+        data-file-name="cross.svg"
+        width={20}
+      />
+    </button>
+  </div>
 </div>
 `;
 
 exports[`<FilterTextDetection /> should edit a text detection 1`] = `
+.emotion-4 {
+  padding: 16px 12px;
+}
+
 .emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -224,37 +236,45 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
   onSubmit={[Function]}
 >
   <div
-    className="emotion-3"
+    className="emotion-4"
   >
-    <input
-      className="emotion-0"
-      onChange={[Function]}
-      placeholder="Search text"
-      type="search"
-      value={
-        Array [
-          "cats",
-        ]
-      }
-    />
-    <button
-      aria-disabled={false}
-      aria-label="Search"
-      className="emotion-2"
-      onClick={[Function]}
-      type="submit"
+    <div
+      className="emotion-3"
     >
-      <svg
-        className="emotion-1"
-        data-file-name="search.svg"
-        width={20}
+      <input
+        className="emotion-0"
+        onChange={[Function]}
+        placeholder="Search text"
+        type="search"
+        value={
+          Array [
+            "cats",
+          ]
+        }
       />
-    </button>
+      <button
+        aria-disabled={false}
+        aria-label="Search"
+        className="emotion-2"
+        onClick={[Function]}
+        type="submit"
+      >
+        <svg
+          className="emotion-1"
+          data-file-name="search.svg"
+          width={20}
+        />
+      </button>
+    </div>
   </div>
 </form>
 `;
 
 exports[`<FilterTextDetection /> should select a facet 1`] = `
+.emotion-4 {
+  padding: 16px 12px;
+}
+
 .emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -324,28 +344,32 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
   onSubmit={[Function]}
 >
   <div
-    className="emotion-3"
+    className="emotion-4"
   >
-    <input
-      className="emotion-0"
-      onChange={[Function]}
-      placeholder="Search text"
-      type="search"
-      value=""
-    />
-    <button
-      aria-disabled={true}
-      aria-label="Search"
-      className="emotion-2"
-      onClick={[Function]}
-      type="submit"
+    <div
+      className="emotion-3"
     >
-      <svg
-        className="emotion-1"
-        data-file-name="search.svg"
-        width={20}
+      <input
+        className="emotion-0"
+        onChange={[Function]}
+        placeholder="Search text"
+        type="search"
+        value=""
       />
-    </button>
+      <button
+        aria-disabled={true}
+        aria-label="Search"
+        className="emotion-2"
+        onClick={[Function]}
+        type="submit"
+      >
+        <svg
+          className="emotion-1"
+          data-file-name="search.svg"
+          width={20}
+        />
+      </button>
+    </div>
   </div>
 </form>
 `;
