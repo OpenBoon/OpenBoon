@@ -71,6 +71,11 @@ class DataSetServiceImpl(
         val time = System.currentTimeMillis()
         val actor = getZmlpActor()
 
+        if (!spec.name.matches(Regex("[a-z0-9\\-_]{2,32}", RegexOption.IGNORE_CASE))) {
+            throw IllegalArgumentException(
+                "DataSet names must be alpha numeric, dashes and underscores allowed")
+        }
+
         val ts = DataSet(
             id,
             getProjectId(),
