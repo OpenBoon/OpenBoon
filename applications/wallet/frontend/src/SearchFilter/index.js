@@ -24,13 +24,18 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
           onChange={({ target: { value } }) => setSearchString(value)}
           css={{
             flex: 1,
-            border: 'none',
+            border: constants.borders.transparent,
             padding: spacing.moderate,
             borderTopLeftRadius: constants.borderRadius.small,
             borderBottomLeftRadius: constants.borderRadius.small,
             color: colors.structure.pebble,
             backgroundColor: colors.structure.coal,
-            '&:focus': {
+            ':focus': {
+              outline: 0,
+              border: constants.borders.inputSmall,
+              ':hover': {
+                border: constants.borders.inputSmall,
+              },
               color: colors.structure.coal,
               backgroundColor: colors.structure.white,
               backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==')`,
@@ -38,6 +43,9 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
             paddingLeft: spacing.spacious,
             '::placeholder': {
               fontStyle: typography.style.italic,
+            },
+            ':hover': {
+              border: constants.borders.inputHover,
             },
             backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==')`,
             backgroundRepeat: `no-repeat, repeat`,
@@ -74,7 +82,6 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
             width: BUTTON_SIZE,
             borderTopRightRadius: constants.borderRadius.small,
             borderBottomRightRadius: constants.borderRadius.small,
-            color: hasSearch ? colors.structure.white : colors.structure.black,
             backgroundColor: hasSearch
               ? colors.key.one
               : colors.structure.steel,
@@ -84,7 +91,14 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
             cursor: searchString === '' ? 'not-allowed' : 'pointer',
           }}
         >
-          <PlusSvg width={ICON_SIZE} css={{ color: colors.structure.smoke }} />
+          <PlusSvg
+            width={ICON_SIZE}
+            css={{
+              color: hasSearch
+                ? colors.structure.white
+                : colors.structure.smoke,
+            }}
+          />
         </button>
       </div>
     </form>
