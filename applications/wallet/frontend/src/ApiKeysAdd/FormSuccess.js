@@ -11,12 +11,7 @@ import SectionTitle from '../SectionTitle'
 
 import { onCopy } from '../Copy/helpers'
 
-const ApiKeysAddFormSuccess = ({
-  projectId,
-  apikey: { permissions },
-  apikey,
-  onReset,
-}) => {
+const ApiKeysAddFormSuccess = ({ projectId, permissions, apikey, onReset }) => {
   const copyRef = useRef()
 
   useEffect(() => {
@@ -126,8 +121,9 @@ const ApiKeysAddFormSuccess = ({
 
 ApiKeysAddFormSuccess.propTypes = {
   projectId: PropTypes.string.isRequired,
+  permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   apikey: PropTypes.shape({
-    permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    accessKey: PropTypes.string.isRequired,
     secretKey: PropTypes.string.isRequired,
   }).isRequired,
   onReset: PropTypes.func.isRequired,
