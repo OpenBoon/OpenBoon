@@ -208,7 +208,7 @@ sdk-unit-tests-master-branch:
     - sdk-java-unit-tests
     - .master-branch
 
-docker_hub_build_push:
+docker-hub-build-all-push:
   image: zmlp/docker-buildx
   stage: push
   services:
@@ -243,7 +243,7 @@ docker_hub_build_push:
   only:
     - development
 
-deploy_development:
+deploy-development:
   image: google/cloud-sdk
   retry: 1
   variables:
@@ -268,7 +268,7 @@ deploy_development:
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} ml-bbq
 
 # Kotlin services - Unit tests - Step 1
-services_build_artifacts:
+zmlp-services-build-artifacts:
   image: maven:3.6.2-jdk-11-slim
   stage: build
   script:
@@ -285,13 +285,13 @@ services_build_artifacts:
       - lib/**/*
       - .gitlab-ci.yml
 
-services_build_artifacts-master-branch:
+zmlp-services-build-artifacts-master-branch:
   extends:
-    - services_build_artifacts
+    - zmlp-services-build-artifacts
     - .master-branch
 
 # Kotlin services - Unit tests - Step 2
-services_push_to_local_registry:
+elasticsearch-push-to-local-registry:
   image: docker:18.09.8-dind
   stage: pretest
   retry: 2
@@ -309,12 +309,12 @@ services_push_to_local_registry:
       - services/**/*
       - .gitlab-ci.yml
 
-services_push_to_local_registry-master-branch:
+elasticsearch-push-to-local-registry-master-branch:
   extends:
-    - services_push_to_local_registry
+    - elasticsearch-push-to-local-registry
     - .master-branch
 
-services_unit_tests:
+zmlp-services-unit-tests:
   stage: test
   image: maven:3.6-jdk-11
   retry: 1
@@ -376,9 +376,9 @@ services_unit_tests:
       - lib/**/*
       - .gitlab-cy.yml
 
-services_unit_tests-master-branch:
+zmlp-services-unit-tests-master-branch:
   extends:
-    - services_unit_tests
+    - zmlp-services-unit-tests
     - .master-branch
 
 
