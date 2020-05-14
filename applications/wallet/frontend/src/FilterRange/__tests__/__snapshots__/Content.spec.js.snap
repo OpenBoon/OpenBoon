@@ -1,5 +1,154 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
+.emotion-7 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  font-family: Roboto Mono;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-6 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+<div>
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "clip.length",
+        "type": "range",
+        "values": Object {},
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "clip.length",
+          "type": "range",
+          "values": Object {},
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-7"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        1
+      </span>
+      <span>
+        1
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            1,
+            1.001,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.1}
+        values={
+          Array [
+            1,
+            1.001,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        MIN  
+        <div
+          className="emotion-2"
+        >
+          1
+        </div>
+      </div>
+      <div
+        className="emotion-3"
+      >
+        MAX  
+        <div
+          className="emotion-2"
+        >
+          1
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
 .emotion-7 {
   padding: 16px;
