@@ -110,7 +110,7 @@ your session ends. It should also allow to work offline.
 
 To run a local environment of ZMLP, you need to build the docker setup
 (`docker-compose build`) and run it (`docker-compose up`). Refer to the overall
-`wallet` or `wallet/backend` docs for further information.
+`wallet` or `wallet/app` docs for further information.
 
 Run `npm run dev` to start a local development node server on
 http://localhost:3000. This starts the node.js / next.js SSR development server
