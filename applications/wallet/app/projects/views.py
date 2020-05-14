@@ -280,7 +280,7 @@ class BaseProjectViewSet(ViewSet):
             item_modifier (function): The function to run over each individual item.
 
         Returns:
-            (list): The modified items
+            (list): The modified items.
         """
         items = content['hits']['hits']
         for item in items:

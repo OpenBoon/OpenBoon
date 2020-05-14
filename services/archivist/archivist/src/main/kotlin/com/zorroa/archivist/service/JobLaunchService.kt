@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.DataSource
+import com.zorroa.archivist.domain.FileTypes
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobSpec
@@ -104,7 +105,8 @@ class JobLaunchServiceImpl(
 
         val pipeline = pipelineResolverService.resolveModular(req.modules)
         val settings = mapOf(
-            "batchSize" to req.batchSize
+            "batchSize" to req.batchSize,
+            "fileTypes" to FileTypes.all
         )
 
         val job = launchJob(name, gen, pipeline, settings)

@@ -24,6 +24,7 @@ inline fun <reified T : Any> ObjectMapper.readValueOrNull(content: String?): T? 
 object Json {
 
     val GENERIC_MAP: TypeReference<Map<String, Any>> = object : TypeReference<Map<String, Any>>() {}
+    val ENV_MAP: TypeReference<Map<String, String>> = object : TypeReference<Map<String, String>>() {}
     val MUTABLE_MAP: TypeReference<MutableMap<String, Any>> = object : TypeReference<MutableMap<String, Any>>() {}
     val LIST_OF_GENERIC_MAP: TypeReference<List<Map<String, Any>>> = object : TypeReference<List<Map<String, Any>>>() {}
     val LIST_OF_STRING: TypeReference<List<String>> = object : TypeReference<List<String>>() {}

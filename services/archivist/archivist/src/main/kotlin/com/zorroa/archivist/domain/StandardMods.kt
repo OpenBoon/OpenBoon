@@ -46,7 +46,7 @@ object ModType {
 fun getStandardModules(): List<PipelineModSpec> {
     return listOf(
         PipelineModSpec(
-            "zvi-document-page-clips",
+            "zvi-document-page-extraction",
             "Extract all pages in MS Office/PDF documents into separate assets.",
             Provider.ZORROA,
             Category.ZORROA_TL,
@@ -62,8 +62,8 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "zvi-image-page-clips",
-            "Extract all layers in multi page image formats such as tiff and psd as as " +
+            "zvi-image-layer-extraction",
+            "Extract all layers in multilayer or multi-page image formats such as tiff and psd as as " +
                 "separate assets",
             Provider.ZORROA,
             Category.ZORROA_TL,
@@ -79,26 +79,8 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
-            "zvi-video-shot-clips",
-            "Break video files into individual assets based on a shot detection algorithm.",
-            Provider.ZORROA,
-            Category.ZORROA_TL,
-            ModType.CLIPIFIER,
-            listOf(SupportedMedia.Video),
-            listOf(
-                ModOp(
-                    ModOpType.APPEND,
-                    listOf(
-                        ProcessorRef("zmlp_core.zvi.clipify.ShotDetectionVideoClipifier",
-                            StandardContainers.CORE)
-                    )
-                )
-            ),
-            true
-        ),
-        PipelineModSpec(
             "zvi-object-detection",
-            "Detect everyday objects in images, video, and documents.",
+            "Detect everyday objects in images and documents.",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.OBJECT_DETECTION,
@@ -116,7 +98,7 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "zvi-face-detection",
-            "Detect faces in images, video, and documents.",
+            "Detect faces in images and documents.",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.FACE_RECOGNITION,
@@ -134,7 +116,7 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "zvi-label-detection",
-            "Generate keyword labels for image, video, and documents.",
+            "Generate keyword labels for images and documents.",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,

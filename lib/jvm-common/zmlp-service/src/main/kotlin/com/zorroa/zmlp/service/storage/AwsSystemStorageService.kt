@@ -32,25 +32,42 @@ class AwsSystemStorageService constructor(
     }
 
     override fun storeObject(path: String, any: Any) {
-        val metadata = ObjectMetadata()
-        s3Client.putObject(
-            PutObjectRequest(
-                properties.bucket, path.trimStart('/'),
-                Json.prettyString(any).toByteArray().inputStream(),
-                metadata
+        try {
+
+            val data = Json.prettyString(any).toByteArray()
+            val metadata = ObjectMetadata()
+            metadata.contentType = "application/json"
+            metadata.contentLength = data.size.toLong()
+
+            s3Client.putObject(
+                PutObjectRequest(
+                    properties.bucket, path.trimStart('/'),
+                    data.inputStream(),
+                    metadata
+                )
             )
-        )
-        logger.event(LogObject.SYSTEM_STORAGE, LogAction.CREATE, mapOf("path" to path))
+            logger.event(LogObject.SYSTEM_STORAGE, LogAction.CREATE, mapOf("path" to path))
+        } catch (e: Exception) {
+            throw SystemStorageException("failed to store object $path", e)
+        }
     }
 
     override fun <T> fetchObject(path: String, valueType: Class<T>): T {
-        val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path.trimStart('/')))
-        return Json.Mapper.readValue(s3obj.objectContent.readAllBytes(), valueType)
+        try {
+            val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path.trimStart('/')))
+            return Json.Mapper.readValue(s3obj.objectContent.readAllBytes(), valueType)
+        } catch (e: Exception) {
+            throw SystemStorageException("failed to fetch object $path", e)
+        }
     }
 
     override fun <T> fetchObject(path: String, valueType: TypeReference<T>): T {
-        val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path.trimStart('/')))
-        return Json.Mapper.readValue(s3obj.objectContent.readAllBytes(), valueType)
+        try {
+            val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path.trimStart('/')))
+            return Json.Mapper.readValue(s3obj.objectContent.readAllBytes(), valueType)
+        } catch (e: Exception) {
+            throw SystemStorageException("failed to fetch object $path", e)
+        }
     }
 
     companion object {

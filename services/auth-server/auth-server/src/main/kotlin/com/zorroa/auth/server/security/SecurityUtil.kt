@@ -34,7 +34,6 @@ fun getZmlpActor(): ZmlpActor {
  */
 fun loadServiceKey(serviceKey: String?): ValidationKey {
     serviceKey?.let {
-        logger.info("path: {}", serviceKey)
         val path = Paths.get(it)
         val apikey = if (Files.exists(path)) {
             val key = Json.Mapper.readValue<ValidationKey>(path.toFile())

@@ -23,6 +23,14 @@ class DataSetServiceTests : AbstractTest() {
         assertEquals(spec.type, ts.type)
     }
 
+    @Test(expected = IllegalArgumentException::class)
+    fun testCreateIllegalName() {
+        val spec2 = DataSetSpec("@23@#@#@  ", DataSetType.LABEL_DETECTION)
+        val ts = dataSetService.create(spec2)
+        assertEquals(spec.name, ts.name)
+        assertEquals(spec.type, ts.type)
+    }
+
     @Test
     fun testGetById() {
         val ts1 = dataSetService.create(spec)

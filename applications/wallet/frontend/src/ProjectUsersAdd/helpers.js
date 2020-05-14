@@ -6,6 +6,8 @@ export const onSubmit = async ({
   state: { emails: e, roles: r },
 }) => {
   try {
+    dispatch({ isLoading: true })
+
     const emails = e.split(',').map((str) => str.trim(''))
     const roles = Object.keys(r).filter((name) => r[name])
     const body = JSON.stringify({
@@ -19,7 +21,7 @@ export const onSubmit = async ({
       body,
     })
 
-    dispatch({ succeeded, failed })
+    dispatch({ succeeded, failed, isLoading: false })
   } catch (response) {
     try {
       const errors = await response.json()
@@ -29,10 +31,11 @@ export const onSubmit = async ({
         return acc
       }, {})
 
-      dispatch({ errors: parsedErrors })
+      dispatch({ errors: parsedErrors, isLoading: false })
     } catch (error) {
       dispatch({
         errors: { global: 'Something went wrong. Please try again.' },
+        isLoading: false,
       })
     }
   }
