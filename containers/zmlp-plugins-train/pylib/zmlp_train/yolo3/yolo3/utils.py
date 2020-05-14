@@ -40,8 +40,7 @@ def rand(a=0, b=1):
 def get_random_data(annotation_line, input_shape, random=True, max_boxes=20,
                     jitter=.3, hue=.1, sat=1.5, val=1.5, proc_img=True):
     """random pre-processing for real-time data augmentation"""
-    line = annotation_line.split()
-    image = Image.open(line[0])
+    image = Image.open(annotation_line)
     iw, ih = image.size
     h, w = input_shape
     box = np.array(
@@ -93,7 +92,8 @@ def get_random_data(annotation_line, input_shape, random=True, max_boxes=20,
 
     # flip image or not
     flip = rand() < .5
-    if flip: image = image.transpose(Image.FLIP_LEFT_RIGHT)
+    if flip:
+        image = image.transpose(Image.FLIP_LEFT_RIGHT)
 
     # distort image
     hue = rand(-hue, hue)

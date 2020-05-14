@@ -1,5 +1,6 @@
 import os
 import logging
+from glob import glob
 
 import numpy as np
 import keras.backend as K
@@ -28,12 +29,12 @@ class YOLOTrainer:
                  anchors_path='model_data/yolo_anchors.txt',
                  output_path='model_data/yolo.h5',
                  labels=None,
-                 epochs=100):
+                 epochs=500):
         # './export/_annotations.txt'
         self.annotation_path = annotation_path
         self.log_dir = 'logs/000/'
         # './export/_annotations.txt'
-        
+
         self.class_names = labels
         logging.debug(self.class_names)
         self.anchors_path = anchors_path
@@ -57,15 +58,17 @@ class YOLOTrainer:
 
         logger = TensorBoard(log_dir=self.log_dir)
         checkpoint = ModelCheckpoint(
-            self.log_dir + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
-            monitor='val_loss', save_weights_only=True, save_best_only=True,
-            period=3)
+            self.log_dir
+            + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
+            monitor='val_loss',
+            save_weights_only=True,
+            save_best_only=True,
+            period=3
+        )
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1,
                                       patience=3, verbose=1)
         early_stopping = EarlyStopping(monitor='val_loss', min_delta=0,
                                        patience=10, verbose=1)
-
-        val_split = 0.2
 
         # TODO: determine where images are stored
         # 1. goto directory of jpgs
@@ -73,16 +76,22 @@ class YOLOTrainer:
         # 3. reformat data_generator for format
         #    - images as jpgs (e.g. 0001.jpg)
         #    - txt file (e.g. 0001.txt) has class and bbox info
-        with open(self.annotation_path) as f:
-            lines = f.readlines()
+        dir_train = '{}/set_train/'.format(self.base_dir)
+        dir_test = '{}/set_test/'.format(self.base_dir)
+
+        # list of image files only
+        paths_train = glob('{}/*.jpg'.format(dir_train))
+        paths_test = glob('{}/*.jpg'.format(dir_test))
+
+        # number of images for train and val
         np.random.seed(10101)
-        np.random.shuffle(lines)
+        np.random.shuffle(paths_train)
+        np.random.shuffle(paths_test)
         np.random.seed(None)
-        num_val = int(len(lines) * val_split)
-        num_train = len(lines) - num_val
+        num_train = len(paths_train)
+        num_val = len(paths_test)
 
         # Train with frozen layers first, to get a stable loss.
-        # Adjust num epochs to your dataset. This step is enough to obtain a not bad model.
         if True:
             model.compile(optimizer=Adam(lr=1e-3), loss={
                 # use custom yolo_loss Lambda layer.
@@ -90,20 +99,19 @@ class YOLOTrainer:
 
             batch_size = 32
             logging.debug(
-                'Train on {} samples, val on {} samples, with batch size {}.'.format(
-                    num_train, num_val, batch_size))
+                'Train on {} samples, val on {} samples, '
+                'with batch size {}.'.format(num_train, num_val, batch_size))
             model.fit_generator(
-                self.data_generator_wrapper(lines[:num_train], batch_size,
-                                            input_shape,
-                                            anchors, num_classes),
+                self.data_generator_wrapper(paths_train, batch_size,
+                                            input_shape, anchors, num_classes),
                 steps_per_epoch=max(1, num_train // batch_size),
-                validation_data=self.data_generator_wrapper(lines[num_train:],
+                validation_data=self.data_generator_wrapper(paths_test,
                                                             batch_size,
                                                             input_shape,
                                                             anchors,
                                                             num_classes),
                 validation_steps=max(1, num_val // batch_size),
-                epochs=500,
+                epochs=self.epochs,
                 initial_epoch=0,
                 callbacks=[logger, checkpoint])
             model.save_weights(self.log_dir + 'trained_weights_stage_1.h5')
@@ -113,27 +121,30 @@ class YOLOTrainer:
         if True:
             for i in range(len(model.layers)):
                 model.layers[i].trainable = True
-            model.compile(optimizer=Adam(lr=1e-4), loss={
-                'yolo_loss': lambda y_true,
-                                    y_pred: y_pred})  # recompile to apply the change
+            # recompile to apply the change
+            model.compile(
+                optimizer=Adam(lr=1e-4),
+                loss={'yolo_loss': lambda y_true, y_pred: y_pred}
+            )
             logging.debug('Unfreeze all of the layers.')
 
-            batch_size = 32  # note that more GPU memory is required after unfreezing the body
+            # note that more GPU memory is required after unfreezing the body
+            batch_size = 32
             logging.debug(
                 'Train on {} samples, val on {} samples, with batch size {}.'.format(
                     num_train, num_val, batch_size))
             model.fit_generator(
-                self.data_generator_wrapper(lines[:num_train], batch_size,
+                self.data_generator_wrapper(paths_train, batch_size,
                                             input_shape,
                                             anchors, num_classes),
                 steps_per_epoch=max(1, num_train // batch_size),
-                validation_data=self.data_generator_wrapper(lines[num_train:],
+                validation_data=self.data_generator_wrapper(paths_test,
                                                             batch_size,
                                                             input_shape,
                                                             anchors,
                                                             num_classes),
                 validation_steps=max(1, num_val // batch_size),
-                epochs=self.epochs,
+                epochs=(self.epochs * 0.20),
                 initial_epoch=50,
                 callbacks=[logger, checkpoint, reduce_lr, early_stopping])
             model.save_weights(self.log_dir + 'trained_weights_final.h5')
@@ -234,8 +245,7 @@ class YOLOTrainer:
         return model
 
     @staticmethod
-    def data_generator(annotation_lines, batch_size, input_shape,
-                       anchors,
+    def data_generator(annotation_lines, batch_size, input_shape, anchors,
                        num_classes):
         """data generator for fit_generator"""
         n = len(annotation_lines)
@@ -258,10 +268,9 @@ class YOLOTrainer:
             yield [image_data, *y_true], np.zeros(batch_size)
 
     def data_generator_wrapper(self, annotation_lines, batch_size, input_shape,
-                               anchors,
-                               num_classes):
+                               anchors, num_classes):
         n = len(annotation_lines)
-        if n == 0 or batch_size <= 0: return None
+        if n == 0 or batch_size <= 0:
+            return None
         return self.data_generator(annotation_lines, batch_size, input_shape,
-                                   anchors,
-                                   num_classes)
+                                   anchors, num_classes)
