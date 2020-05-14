@@ -31,147 +31,161 @@ const FilterTextDetection = ({
 
   if (query && !isEditing) {
     return (
-      <div css={{ display: 'flex', height: BUTTON_SIZE }}>
-        <Button
-          aria-label="Edit Text Detection"
-          variant={VARIANTS.NEUTRAL}
-          style={{
-            flex: 1,
-            paddingLeft: spacing.moderate,
-            color: colors.structure.pebble,
-            backgroundColor: colors.structure.mattGrey,
-            fontWeight: typography.weight.regular,
-            alignItems: 'flex-start',
-            ':hover': {
-              backgroundColor: colors.structure.smoke,
-            },
-          }}
-          onClick={() => {
-            setEditing(true)
-            setSearchString(query)
+      <div css={{ padding: `${spacing.normal}px ${spacing.moderate}px` }}>
+        <div
+          css={{
+            display: 'flex',
+            height: BUTTON_SIZE,
           }}
         >
-          <span
-            css={{
-              paddingLeft: spacing.hairline,
+          <Button
+            aria-label="Edit Text Detection"
+            variant={VARIANTS.NEUTRAL}
+            style={{
+              flex: 1,
+              paddingLeft: spacing.moderate,
+              color: colors.structure.pebble,
+              backgroundColor: colors.structure.mattGrey,
+              fontWeight: typography.weight.regular,
+              alignItems: 'flex-start',
+              ':hover': {
+                backgroundColor: colors.structure.smoke,
+              },
+            }}
+            onClick={() => {
+              setEditing(true)
+              setSearchString(query)
             }}
           >
-            {query}
-          </span>
-        </Button>
-        <Button
-          title="Clear"
-          aria-label="Clear Text Detection"
-          style={{
-            width: BUTTON_SIZE,
-            padding: spacing.moderate,
-            backgroundColor: colors.structure.coal,
-            ':hover': {
-              svg: {
-                color: colors.structure.white,
-              },
-            },
-          }}
-          variant={VARIANTS.NEUTRAL}
-          onClick={() => {
-            dispatch({
-              action: ACTIONS.UPDATE_FILTER,
-              payload: {
-                projectId,
-                assetId,
-                filters,
-                updatedFilter: {
-                  type,
-                  attribute,
-                  values: {},
+            <span
+              css={{
+                paddingLeft: spacing.hairline,
+              }}
+            >
+              {query}
+            </span>
+          </Button>
+          <Button
+            title="Clear"
+            aria-label="Clear Text Detection"
+            style={{
+              width: BUTTON_SIZE,
+              padding: spacing.moderate,
+              backgroundColor: colors.structure.coal,
+              ':hover': {
+                svg: {
+                  color: colors.structure.white,
                 },
-                filterIndex,
               },
-            })
-          }}
-        >
-          <CrossSvg width={ICON_SIZE} css={{ color: colors.structure.steel }} />
-        </Button>
+            }}
+            variant={VARIANTS.NEUTRAL}
+            onClick={() => {
+              dispatch({
+                action: ACTIONS.UPDATE_FILTER,
+                payload: {
+                  projectId,
+                  assetId,
+                  filters,
+                  updatedFilter: {
+                    type,
+                    attribute,
+                    values: {},
+                  },
+                  filterIndex,
+                },
+              })
+            }}
+          >
+            <CrossSvg
+              width={ICON_SIZE}
+              css={{ color: colors.structure.steel }}
+            />
+          </Button>
+        </div>
       </div>
     )
   }
 
   return (
     <form action="" method="post" onSubmit={(event) => event.preventDefault()}>
-      <div
-        css={{
-          display: 'flex',
-          height: BUTTON_SIZE,
-          position: 'relative',
-        }}
-      >
-        <input
-          type="search"
-          placeholder="Search text"
-          value={searchString}
-          onChange={({ target: { value } }) => setSearchString(value)}
+      <div css={{ padding: `${spacing.normal}px ${spacing.moderate}px` }}>
+        <div
           css={{
-            flex: 1,
-            border: constants.borders.transparent,
-            padding: spacing.moderate,
-            borderTopLeftRadius: constants.borderRadius.small,
-            borderBottomLeftRadius: constants.borderRadius.small,
-            color: colors.structure.pebble,
-            backgroundColor: colors.structure.mattGrey,
-            '&:focus': {
-              color: colors.structure.coal,
-              backgroundColor: colors.structure.white,
-            },
-            ':hover': {
-              border: constants.borders.tableRow,
-            },
-            paddingLeft: spacing.moderate,
-            '::placeholder': {
-              fontStyle: typography.style.italic,
-            },
-          }}
-        />
-        <button
-          type="submit"
-          aria-disabled={!searchString}
-          aria-label="Search"
-          onClick={() => {
-            if (searchString === '') return
-
-            dispatch({
-              action: ACTIONS.UPDATE_FILTER,
-              payload: {
-                projectId,
-                assetId,
-                filters,
-                updatedFilter: {
-                  type,
-                  attribute,
-                  values: { query: searchString },
-                },
-                filterIndex,
-              },
-            })
-          }}
-          css={{
-            width: BUTTON_SIZE,
-            borderTopRightRadius: constants.borderRadius.small,
-            borderBottomRightRadius: constants.borderRadius.small,
-            color: hasSearch ? colors.structure.white : colors.structure.black,
-            backgroundColor: hasSearch
-              ? colors.key.one
-              : colors.structure.steel,
-            margin: 0,
-            padding: 0,
-            border: 0,
-            cursor: searchString === '' ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            height: BUTTON_SIZE,
+            position: 'relative',
           }}
         >
-          <SearchSvg
-            width={ICON_SIZE}
-            css={{ color: colors.structure.white }}
+          <input
+            type="search"
+            placeholder="Search text"
+            value={searchString}
+            onChange={({ target: { value } }) => setSearchString(value)}
+            css={{
+              flex: 1,
+              border: constants.borders.transparent,
+              padding: spacing.moderate,
+              borderTopLeftRadius: constants.borderRadius.small,
+              borderBottomLeftRadius: constants.borderRadius.small,
+              color: colors.structure.pebble,
+              backgroundColor: colors.structure.mattGrey,
+              '&:focus': {
+                color: colors.structure.coal,
+                backgroundColor: colors.structure.white,
+              },
+              ':hover': {
+                border: constants.borders.tableRow,
+              },
+              paddingLeft: spacing.moderate,
+              '::placeholder': {
+                fontStyle: typography.style.italic,
+              },
+            }}
           />
-        </button>
+          <button
+            type="submit"
+            aria-disabled={!searchString}
+            aria-label="Search"
+            onClick={() => {
+              if (searchString === '') return
+
+              dispatch({
+                action: ACTIONS.UPDATE_FILTER,
+                payload: {
+                  projectId,
+                  assetId,
+                  filters,
+                  updatedFilter: {
+                    type,
+                    attribute,
+                    values: { query: searchString },
+                  },
+                  filterIndex,
+                },
+              })
+            }}
+            css={{
+              width: BUTTON_SIZE,
+              borderTopRightRadius: constants.borderRadius.small,
+              borderBottomRightRadius: constants.borderRadius.small,
+              color: hasSearch
+                ? colors.structure.white
+                : colors.structure.black,
+              backgroundColor: hasSearch
+                ? colors.key.one
+                : colors.structure.steel,
+              margin: 0,
+              padding: 0,
+              border: 0,
+              cursor: searchString === '' ? 'not-allowed' : 'pointer',
+            }}
+          >
+            <SearchSvg
+              width={ICON_SIZE}
+              css={{ color: colors.structure.white }}
+            />
+          </button>
+        </div>
       </div>
     </form>
   )

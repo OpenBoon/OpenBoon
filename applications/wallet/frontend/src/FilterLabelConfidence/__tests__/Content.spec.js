@@ -53,6 +53,16 @@ describe('<FilterLabelConfidenceContent />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Search
+    act(() => {
+      component.root
+        .findByProps({ type: 'search' })
+        .props.onChange({ target: { value: 'web' } })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Select
     act(() => {
       component.root
         .findByProps({ 'aria-label': 'web_site' })

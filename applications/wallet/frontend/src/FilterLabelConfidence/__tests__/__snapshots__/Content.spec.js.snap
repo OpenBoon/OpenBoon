@@ -107,6 +107,61 @@ Array [
       />
     </div>
   </div>,
+  .emotion-1 {
+  padding-bottom: 16px;
+}
+
+.emotion-0 {
+  width: 100%;
+  border: 1px solid transparent;
+  padding: 12px;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-color: #2e2e2e;
+  padding-left: 32px;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-0:focus {
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-0::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-0::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-0:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-0::placeholder {
+  font-style: italic;
+}
+
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
+<div
+    className="emotion-1"
+  >
+    <input
+      className="emotion-0"
+      onChange={[Function]}
+      placeholder="Search labels"
+      type="search"
+      value=""
+    />
+  </div>,
   .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -242,6 +297,61 @@ Array [
         }
       />
     </div>
+  </div>,
+  .emotion-1 {
+  padding-bottom: 16px;
+}
+
+.emotion-0 {
+  width: 100%;
+  border: 1px solid transparent;
+  padding: 12px;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-color: #2e2e2e;
+  padding-left: 32px;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-0:focus {
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-0::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-0::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-0:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-0::placeholder {
+  font-style: italic;
+}
+
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
+<div
+    className="emotion-1"
+  >
+    <input
+      className="emotion-0"
+      onChange={[Function]}
+      placeholder="Search labels"
+      type="search"
+      value=""
+    />
   </div>,
   .emotion-0 {
   display: -webkit-box;
@@ -532,6 +642,317 @@ Array [
 ]
 `;
 
+exports[`<FilterLabelConfidenceContent /> should select a label 2`] = `
+Array [
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "analysis.zvi-label-detection",
+        "type": "labelConfidence",
+        "values": Object {},
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "analysis.zvi-label-detection",
+          "type": "labelConfidence",
+          "values": Object {},
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-0 {
+  padding-bottom: 12px;
+}
+
+<div
+    className="emotion-0"
+  >
+    Label prediction confidence score:
+     
+    All
+  </div>,
+  .emotion-2 {
+  padding: 16px;
+  padding-bottom: 32px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  font-family: Roboto Mono;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        0.00
+      </span>
+      <span>
+        1.00
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            0,
+            1,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.01}
+        values={
+          Array [
+            0,
+            1,
+          ]
+        }
+      />
+    </div>
+  </div>,
+  .emotion-1 {
+  padding-bottom: 16px;
+}
+
+.emotion-0 {
+  width: 100%;
+  border: 1px solid transparent;
+  padding: 12px;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-color: #2e2e2e;
+  padding-left: 32px;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-0:focus {
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-0::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-0::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-0:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-0::placeholder {
+  font-style: italic;
+}
+
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
+<div
+    className="emotion-1"
+  >
+    <input
+      className="emotion-0"
+      onChange={[Function]}
+      placeholder="Search labels"
+      type="search"
+      value="web"
+    />
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  color: #b3b3b3;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div>
+      KEYWORD
+    </div>
+    <div>
+      COUNT
+    </div>
+  </div>,
+  .emotion-6 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  color: #ffffff;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5:hover {
+  background-color: #027aff38;
+  color: #ffffff;
+}
+
+.emotion-4 {
+  width: 100%;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  width: 100%;
+  border-top: 4px solid #73b61c;
+}
+
+.emotion-1 {
+  height: 4px;
+  width: 0%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+<ul
+    className="emotion-6"
+  >
+    <li>
+      <button
+        aria-label="web_site"
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-2"
+          >
+            <div
+              className="emotion-0"
+            />
+            <div
+              className="emotion-1"
+            />
+          </div>
+          <div
+            className="emotion-3"
+          >
+            <div>
+              web_site
+            </div>
+            <div>
+              134
+            </div>
+          </div>
+        </div>
+      </button>
+    </li>
+  </ul>,
+]
+`;
+
 exports[`<FilterLabelConfidenceContent /> should unselect a label 1`] = `
 Array [
   <FiltersReset
@@ -642,6 +1063,61 @@ Array [
         }
       />
     </div>
+  </div>,
+  .emotion-1 {
+  padding-bottom: 16px;
+}
+
+.emotion-0 {
+  width: 100%;
+  border: 1px solid transparent;
+  padding: 12px;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-color: #2e2e2e;
+  padding-left: 32px;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-0:focus {
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-0::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-0::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-0:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-0::placeholder {
+  font-style: italic;
+}
+
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
+<div
+    className="emotion-1"
+  >
+    <input
+      className="emotion-0"
+      onChange={[Function]}
+      placeholder="Search labels"
+      type="search"
+      value=""
+    />
   </div>,
   .emotion-0 {
   display: -webkit-box;

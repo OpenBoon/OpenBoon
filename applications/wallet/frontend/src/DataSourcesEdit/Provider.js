@@ -20,6 +20,7 @@ const DataSourcesEditProvider = ({
         title={<img src={logo} alt={name} height={IMG_HEIGHT} />}
         cacheKey={`DataSourcesEditProvider.${name}`}
         isInitiallyOpen
+        isResizeable={false}
       >
         <>
           <p

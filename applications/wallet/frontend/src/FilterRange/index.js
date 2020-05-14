@@ -25,6 +25,7 @@ const FilterRange = ({ projectId, assetId, filters, filter, filterIndex }) => {
       }
       cacheKey={`FilterRange.${filter.attribute}.${filterIndex}`}
       isInitiallyOpen
+      isResizeable
     >
       <div
         css={{
