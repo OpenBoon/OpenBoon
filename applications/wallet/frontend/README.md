@@ -104,7 +104,7 @@ Run `npm run dev:mocked` to start a local development node server on
 http://localhost:3000, where every API call will be mocked instead of going to
 the network. This is very convenient when you are working on some UI code for
 instance, and don't want to bother having to log in and authenticate every time
-your session ends. It should also allow to work offline.
+your session ends. It should also allow you to work offline.
 
 #### Local Mode
 
