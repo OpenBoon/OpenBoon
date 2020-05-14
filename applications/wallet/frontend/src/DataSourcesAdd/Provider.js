@@ -18,6 +18,7 @@ const DataSourcesAddProvider = ({
         title={<img src={logo} alt={name} height={IMG_HEIGHT} />}
         cacheKey={`DataSourcesAddProvider.${name}`}
         isInitiallyOpen
+        isResizeable={false}
       >
         <>
           <p

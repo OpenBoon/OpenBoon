@@ -6,6 +6,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   border-radius: 2px;
   border: 1px solid transparent;
   border-bottom: 1px solid #4a4a4a;
+  padding-bottom: 1px;
 }
 
 .emotion-18:hover {
@@ -213,6 +214,8 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 .emotion-17 {
   width: 100%;
   background-color: #191919;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .emotion-16 {
@@ -493,6 +496,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   border-radius: 2px;
   border: 1px solid transparent;
   border-bottom: 1px solid #4a4a4a;
+  padding-bottom: 1px;
 }
 
 .emotion-18:hover {
@@ -700,6 +704,8 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 .emotion-17 {
   width: 100%;
   background-color: #191919;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .emotion-16 {

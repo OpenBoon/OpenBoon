@@ -60,6 +60,7 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
               title={formatDisplayName({ name: key })}
               cacheKey={`Filters.${key}`}
               isInitiallyOpen={false}
+              isResizeable={false}
             >
               <div
                 css={{
