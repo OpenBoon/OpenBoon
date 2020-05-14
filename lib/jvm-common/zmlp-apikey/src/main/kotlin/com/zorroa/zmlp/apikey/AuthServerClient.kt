@@ -110,7 +110,16 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         val data = mapOf(
             "enabled" to enabled
         )
-        return post("/auth/v1/project/enabled", data, projectId)
+
+        val path = "/auth/v1/project/enabled"
+        val rbody = RequestBody.create(MEDIA_TYPE_JSON, Mapper.writeValueAsString(data))
+        val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
+            .post(rbody)
+            .build()
+        val rsp = client.newCall(req).execute()
+        if (rsp.code() >= 400) {
+            throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+        }
     }
 
     override fun getSigningKey(projectId: UUID, name: String): SigningKey {
