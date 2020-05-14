@@ -67,16 +67,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
               </div>
             )}
 
-            <div
-              css={
-                name
-                  ? {
-                      paddingLeft: spacing.normal,
-                      paddingRight: spacing.normal,
-                    }
-                  : {}
-              }
-            >
+            <div css={name ? { paddingLeft: spacing.normal } : {}}>
               {Object.entries(value).map(([k, v]) => (
                 <MetadataPrettySwitch
                   key={k}

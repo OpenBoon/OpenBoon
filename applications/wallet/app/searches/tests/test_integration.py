@@ -426,6 +426,24 @@ class TestMetadataExportView:
         assert result.content == b'extra_field,id,resolution.height,resolution.width\r\n,1,10,10\r\n,2,20,20\r\nTrue,4,30,30\r\n'  # noqa
         assert result.charset == 'utf-8'
 
+    def test_get_empty_included_query(self, login, api_client, monkeypatch, project):
+
+        def mock_search_for_assets(*args, **kwargs):
+            return [
+                {'id': '1', 'metadata': {'resolution': {'width': 10, 'height': 10}}},
+                {'id': '2', 'metadata': {'resolution': {'width': 20, 'height': 20}}},
+                {'id': '4', 'metadata': {'resolution': {'width': 30, 'height': 30}, 'extra_field': True}},  # noqa
+            ]
+
+        monkeypatch.setattr(MetadataExportViewSet, '_yield_all_items_from_es',
+                            mock_search_for_assets)
+        result = api_client.get(reverse('export-list', kwargs={'project_pk': project.id}),
+                                {'query': ''})
+        assert result.status_code == 200
+        assert result.accepted_media_type == 'text/csv'
+        assert result.content == b'extra_field,id,resolution.height,resolution.width\r\n,1,10,10\r\n,2,20,20\r\nTrue,4,30,30\r\n'  # noqa
+        assert result.charset == 'utf-8'
+
     def test_get_large_export(self, login, api_client, monkeypatch, project):
         def yield_response(*args, **kwargs):
             for x in range(0, 10):
