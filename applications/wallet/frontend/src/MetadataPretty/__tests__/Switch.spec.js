@@ -42,6 +42,18 @@ describe('<MetadataPrettySwitch />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render label with no predictions properly', () => {
+    const component = TestRenderer.create(
+      <MetadataPrettySwitch
+        name="zvi-label-detection"
+        value={{ type: 'labels', predictions: [] }}
+        path="analysis"
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render label detection with box images properly', () => {
     require('swr').__setMockUseSWRResponse({
       data: boxImagesResponse,
