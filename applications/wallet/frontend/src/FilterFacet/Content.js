@@ -57,6 +57,7 @@ const FilterFacet = ({
         filterIndex={filterIndex}
         onReset={noop}
       />
+      <div css={{ height: spacing.moderate }} />
       <FiltersSearch
         placeholder="Search facets"
         searchString={searchString}

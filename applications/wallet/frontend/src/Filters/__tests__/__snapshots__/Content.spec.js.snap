@@ -1092,11 +1092,11 @@ Array [
       </div>
     </form>
   </div>,
-  .emotion-60 {
+  .emotion-61 {
   overflow: auto;
 }
 
-.emotion-59 {
+.emotion-60 {
   background-color: #252525;
   border-radius: 2px;
   border: 1px solid transparent;
@@ -1104,11 +1104,11 @@ Array [
   padding-bottom: 1px;
 }
 
-.emotion-59:hover {
+.emotion-60:hover {
   border: 1px solid #808080;
 }
 
-.emotion-59:hover div svg {
+.emotion-60:hover div svg {
   visibility: visible;
 }
 
@@ -1306,32 +1306,36 @@ Array [
   visibility: hidden;
 }
 
-.emotion-58 {
+.emotion-59 {
   width: 100%;
   background-color: #191919;
   max-height: 500px;
   overflow-y: auto;
 }
 
-.emotion-57 {
+.emotion-58 {
   padding: 16px 12px;
 }
 
-.emotion-57 .ErrorBoundary > div {
+.emotion-58 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-57 .Loading {
+.emotion-58 .Loading {
   background-color: transparent;
   box-shadow: none;
-}
-
-.emotion-12 {
-  padding-bottom: 16px;
 }
 
 .emotion-11 {
+  height: 12px;
+}
+
+.emotion-13 {
+  padding-bottom: 16px;
+}
+
+.emotion-12 {
   width: 100%;
   border: 1px solid transparent;
   padding: 12px;
@@ -1345,33 +1349,33 @@ Array [
   background-size: 20px;
 }
 
-.emotion-11:focus {
+.emotion-12:focus {
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-11::-webkit-input-placeholder {
+.emotion-12::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::-moz-placeholder {
+.emotion-12::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-11:-ms-input-placeholder {
+.emotion-12:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::placeholder {
+.emotion-12::placeholder {
   font-style: italic;
 }
 
-.emotion-11:hover {
+.emotion-12:hover {
   border: 1px solid #808080;
 }
 
-.emotion-13 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1386,13 +1390,13 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-56 {
+.emotion-57 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-19 {
+.emotion-20 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1430,43 +1434,43 @@ Array [
   color: #ffffff;
 }
 
-.emotion-19:hover {
+.emotion-20:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-19[aria-disabled=true] {
+.emotion-20[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-19:hover {
+.emotion-20:hover {
   background-color: #027aff38;
   color: #ffffff;
 }
 
-.emotion-18 {
+.emotion-19 {
   width: 100%;
 }
 
-.emotion-16 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-14 {
+.emotion-15 {
   width: 100%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-15 {
+.emotion-16 {
   height: 4px;
   width: 0%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-17 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1478,33 +1482,33 @@ Array [
   padding: 8px;
 }
 
-.emotion-20 {
+.emotion-21 {
   width: 67%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-21 {
+.emotion-22 {
   height: 4px;
   width: 33%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-26 {
+.emotion-27 {
   width: 34%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-27 {
+.emotion-28 {
   height: 4px;
   width: 66%;
   border-top: 1px solid #3b3b3b;
 }
 
 <div
-    className="emotion-60"
+    className="emotion-61"
   >
     <div
-      className="emotion-59"
+      className="emotion-60"
     >
       <div
         className="emotion-10"
@@ -1572,10 +1576,10 @@ Array [
         </h4>
       </div>
       <div
-        className="emotion-58"
+        className="emotion-59"
       >
         <div
-          className="emotion-57"
+          className="emotion-58"
         >
           <FiltersReset
             assetId=""
@@ -1600,10 +1604,13 @@ Array [
             projectId="76917058-b147-4556-987a-0a0f11e46d9b"
           />
           <div
-            className="emotion-12"
+            className="emotion-11"
+          />
+          <div
+            className="emotion-13"
           >
             <input
-              className="emotion-11"
+              className="emotion-12"
               onChange={[Function]}
               placeholder="Search facets"
               type="search"
@@ -1611,7 +1618,7 @@ Array [
             />
           </div>
           <div
-            className="emotion-13"
+            className="emotion-14"
           >
             <div>
               KEYWORD
@@ -1621,30 +1628,30 @@ Array [
             </div>
           </div>
           <ul
-            className="emotion-56"
+            className="emotion-57"
           >
             <li>
               <button
                 aria-label="Tyngsboro"
-                className="emotion-19"
+                className="emotion-20"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-19"
                 >
                   <div
-                    className="emotion-16"
+                    className="emotion-17"
                   >
-                    <div
-                      className="emotion-14"
-                    />
                     <div
                       className="emotion-15"
                     />
+                    <div
+                      className="emotion-16"
+                    />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-18"
                   >
                     <div>
                       Tyngsboro
@@ -1659,25 +1666,25 @@ Array [
             <li>
               <button
                 aria-label="Brooklyn"
-                className="emotion-19"
+                className="emotion-20"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-19"
                 >
                   <div
-                    className="emotion-16"
+                    className="emotion-17"
                   >
-                    <div
-                      className="emotion-20"
-                    />
                     <div
                       className="emotion-21"
                     />
+                    <div
+                      className="emotion-22"
+                    />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-18"
                   >
                     <div>
                       Brooklyn
@@ -1692,25 +1699,25 @@ Array [
             <li>
               <button
                 aria-label="Cát Bà"
-                className="emotion-19"
+                className="emotion-20"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-19"
                 >
                   <div
-                    className="emotion-16"
+                    className="emotion-17"
                   >
-                    <div
-                      className="emotion-26"
-                    />
                     <div
                       className="emotion-27"
                     />
+                    <div
+                      className="emotion-28"
+                    />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-18"
                   >
                     <div>
                       Cát Bà
@@ -1725,25 +1732,25 @@ Array [
             <li>
               <button
                 aria-label="La Habana Vieja"
-                className="emotion-19"
+                className="emotion-20"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-19"
                 >
                   <div
-                    className="emotion-16"
+                    className="emotion-17"
                   >
-                    <div
-                      className="emotion-26"
-                    />
                     <div
                       className="emotion-27"
                     />
+                    <div
+                      className="emotion-28"
+                    />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-18"
                   >
                     <div>
                       La Habana Vieja
@@ -1758,25 +1765,25 @@ Array [
             <li>
               <button
                 aria-label="North Glendale"
-                className="emotion-19"
+                className="emotion-20"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-19"
                 >
                   <div
-                    className="emotion-16"
+                    className="emotion-17"
                   >
-                    <div
-                      className="emotion-26"
-                    />
                     <div
                       className="emotion-27"
                     />
+                    <div
+                      className="emotion-28"
+                    />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-18"
                   >
                     <div>
                       North Glendale
@@ -1791,25 +1798,25 @@ Array [
             <li>
               <button
                 aria-label="Saalfelden am Steinernen Meer"
-                className="emotion-19"
+                className="emotion-20"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-19"
                 >
                   <div
-                    className="emotion-16"
+                    className="emotion-17"
                   >
-                    <div
-                      className="emotion-26"
-                    />
                     <div
                       className="emotion-27"
                     />
+                    <div
+                      className="emotion-28"
+                    />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-18"
                   >
                     <div>
                       Saalfelden am Steinernen Meer
@@ -1824,25 +1831,25 @@ Array [
             <li>
               <button
                 aria-label="Zermatt"
-                className="emotion-19"
+                className="emotion-20"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-19"
                 >
                   <div
-                    className="emotion-16"
+                    className="emotion-17"
                   >
-                    <div
-                      className="emotion-26"
-                    />
                     <div
                       className="emotion-27"
                     />
+                    <div
+                      className="emotion-28"
+                    />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-18"
                   >
                     <div>
                       Zermatt

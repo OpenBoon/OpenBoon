@@ -24,6 +24,13 @@ Array [
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
+  .emotion-0 {
+  height: 12px;
+}
+
+<div
+    className="emotion-0"
+  />,
   .emotion-1 {
   padding-bottom: 16px;
 }
@@ -143,6 +150,13 @@ Array [
     }
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-0 {
+  height: 12px;
+}
+
+<div
+    className="emotion-0"
   />,
   .emotion-1 {
   padding-bottom: 16px;
@@ -450,6 +464,13 @@ Array [
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
+  .emotion-0 {
+  height: 12px;
+}
+
+<div
+    className="emotion-0"
+  />,
   .emotion-1 {
   padding-bottom: 16px;
 }
@@ -693,6 +714,13 @@ Array [
     }
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-0 {
+  height: 12px;
+}
+
+<div
+    className="emotion-0"
   />,
   .emotion-1 {
   padding-bottom: 16px;
