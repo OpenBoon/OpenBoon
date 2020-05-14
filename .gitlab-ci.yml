@@ -13,10 +13,10 @@ stages:
   - push
   - deploy
 
-.all-stable-branches:
+.master-branch:
   only:
     refs:
-      - development
+      - master
     changes:
       - "**/*"
 
@@ -38,10 +38,10 @@ wallet-frontend-test-suite:
       - applications/wallet/frontend/**/*
       - .gitlab-ci.yml
 
-wallet-frontend-test-suite-all-stable-branches:
+wallet-frontend-test-suite-master-branch:
   extends:
     - wallet-frontend-test-suite
-    - .all-stable-branches
+    - .master-branch
 
 ## Wallet Backend
 wallet-backend-test-suite:
@@ -68,15 +68,18 @@ wallet-backend-test-suite:
       - applications/wallet/app/**/*
       - .gitlab-ci.yml
 
-wallet-backend-test-suite-all-stable-branches:
+wallet-backend-test-suite-master-branch:
   extends:
     - wallet-backend-test-suite
-    - .all-stable-branches
+    - .master-branch
 
 ## Wallet Container Build Validation
 wallet-container-build-validation:
   only:
-    - development
+    refs:
+      - master
+    changes:
+      - "**/*"
   stage: test
   image: docker:18.09.8-dind
   services:
@@ -102,10 +105,10 @@ backend-py-lint:
       - services/analyst/**/*.py
       - .gitlab-ci.yml
 
-backend-py-lint-all-stable-branches:
+backend-py-lint-master-branch:
   extends:
     - backend-py-lint
-    - .all-stable-branches
+    - .master-branch
 
 ## Backend Kotlin Lint
 backend-kotlin-lint:
@@ -121,10 +124,10 @@ backend-kotlin-lint:
       - lib/**/*.kt
       - .gitlab-ci.yml
 
-backend-kotlin-lint-all-stable-branches:
+backend-kotlin-lint-master-branch:
   extends:
     - backend-kotlin-lint
-    - .all-stable-branches
+    - .master-branch
 
 # SDK Test
 # Testing other containers requires building containers
@@ -198,12 +201,12 @@ sdk-java-unit-tests:
       - containers/zmlp-plugins-base/**/*
       - .gitlab-ci.yml
 
-sdk-unit-tests-all-stable-branches:
+sdk-unit-tests-master-branch:
   retry: 1
   extends:
     - sdk-unit-tests
     - sdk-java-unit-tests
-    - .all-stable-branches
+    - .master-branch
 
 docker_hub_build_push:
   image: zmlp/docker-buildx
@@ -282,10 +285,10 @@ services_build_artifacts:
       - lib/**/*
       - .gitlab-ci.yml
 
-services_build_artifacts-all-stable-branches:
+services_build_artifacts-master-branch:
   extends:
     - services_build_artifacts
-    - .all-stable-branches
+    - .master-branch
 
 # Kotlin services - Unit tests - Step 2
 services_push_to_local_registry:
@@ -306,10 +309,10 @@ services_push_to_local_registry:
       - services/**/*
       - .gitlab-ci.yml
 
-services_push_to_local_registry-all-stable-branches:
+services_push_to_local_registry-master-branch:
   extends:
     - services_push_to_local_registry
-    - .all-stable-branches
+    - .master-branch
 
 services_unit_tests:
   stage: test
@@ -370,12 +373,15 @@ services_unit_tests:
       - merge_requests
     changes:
       - services/**/*
+      - lib/**/*
       - .gitlab-cy.yml
 
-services_unit_tests-all-stable-branches:
+services_unit_tests-master-branch:
   extends:
     - services_unit_tests
-    - .all-stable-branches
+    - .master-branch
+
+
 # Kotlin Services Jobs
 #sdk-containers-tests:
 #  stage: test
