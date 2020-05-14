@@ -2136,7 +2136,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  border: none;
+  border: 1px solid transparent;
   padding: 12px;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
@@ -2150,9 +2150,15 @@ Array [
 }
 
 .emotion-6:focus {
+  outline: 0;
+  border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-6:focus:hover {
+  border: 1px solid #73b61c;
 }
 
 .emotion-6::-webkit-input-placeholder {
@@ -2171,11 +2177,14 @@ Array [
   font-style: italic;
 }
 
+.emotion-6:hover {
+  border: 1px solid #ffffff;
+}
+
 .emotion-8 {
   width: 42px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
-  color: #000000;
   background-color: #808080;
   margin: 0;
   padding: 0;
