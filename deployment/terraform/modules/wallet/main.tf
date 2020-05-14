@@ -1,6 +1,5 @@
-resource "google_compute_address" "wallet-external" {
+resource "google_compute_global_address" "wallet-external" {
   name         = var.external-ip-name
-  address_type = "EXTERNAL"
 }
 
 resource "random_string" "sql-password" {
@@ -194,7 +193,7 @@ resource "kubernetes_ingress" "wallet" {
     annotations = {
       "kubernetes.io/ingress.allow-http"            = "false"
       "ingress.gcp.kubernetes.io/pre-shared-cert"   = google_compute_managed_ssl_certificate.default.name
-      "kubernetes.io/ingress.global-static-ip-name" = google_compute_address.wallet-external.name
+      "kubernetes.io/ingress.global-static-ip-name" = google_compute_global_address.wallet-external.name
     }
   }
   spec {

@@ -1,12 +1,8 @@
 ## Store state in GCS. ###################################################################
 terraform {
-  backend "remote" {
-    hostname      = "app.terraform.io"
-    organization  = "zorroa"
-
-    workspaces {
-      name = "zvi-production"
-    }
+  backend "gcs" {
+    bucket = "zorroa-deploy-state"
+    prefix = "terraform/state"
   }
 }
 

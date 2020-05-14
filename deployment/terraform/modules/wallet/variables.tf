@@ -42,7 +42,7 @@ variable "namespace" {
 }
 
 variable "external-ip-name" {
-  default = "curator-external-ip"
+  default = "wallet-external-ip"
 }
 
 variable "database-name" {

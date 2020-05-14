@@ -31,6 +31,11 @@ resource "google_container_node_pool" "analyst" {
   }
 }
 
+resource "random_string" "analyst-shared-key" {
+  length = 50
+  special = false
+}
+
 resource "kubernetes_deployment" "analyst" {
   provider = kubernetes
   metadata {
@@ -101,7 +106,7 @@ resource "kubernetes_deployment" "analyst" {
           }
           env {
             name  = "ANALYST_SHAREDKEY"
-            value = "QjZEQzRDQTgtOUUwRC00NUE1LUFCNjktRUYwQTA4ODc4MTM3Cg"
+            value = random_string.analyst-shared-key.result
           }
           env {
             name = "OFFICER_URL"

@@ -41,7 +41,10 @@ REACT_APP_DIR = os.path.join(BASE_DIR, '..', 'frontend')
 SECRET_KEY = '4*-c#z+_^gwef_ai&!5vfxf_al_#o^lx(4u70@q#n057a&65j$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.environ.get('DEBUG'):
+    DEBUG = True
+else:
+    DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -165,6 +168,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Rest Framework Specific Settings
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'wallet.paginators.FromSizePagination',
+    'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer'],
     'PAGE_SIZE': 50,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -175,6 +179,10 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'EXCEPTION_HANDLER': 'wallet.exceptions.zmlp_exception_handler'
 }
+
+if DEBUG:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
+        'rest_framework.renderers.BrowsableAPIRenderer')
 
 REST_AUTH_SERIALIZERS = {
     'PASSWORD_RESET_SERIALIZER': 'registration.serializers.PasswordResetSerializer'
