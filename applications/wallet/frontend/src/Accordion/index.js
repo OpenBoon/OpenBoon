@@ -58,7 +58,6 @@ const STYLES = {
   FILTER: {
     container: {
       backgroundColor: colors.structure.lead,
-      borderRadius: constants.borderRadius.small,
       border: constants.borders.transparent,
       borderBottom: constants.borders.tabs,
       ':hover': {
@@ -71,16 +70,15 @@ const STYLES = {
       },
     },
     title: {
-      paddingTop: spacing.moderate,
-      paddingBottom: spacing.moderate,
-      paddingLeft: spacing.moderate,
+      padding: spacing.small,
+      paddingLeft: spacing.base,
       display: 'flex',
       h4: {
         flex: 1,
         minWidth: 0,
         width: '100%',
         fontWeight: typography.weight.regular,
-        paddingRight: spacing.moderate,
+        paddingLeft: spacing.small,
       },
     },
     content: {

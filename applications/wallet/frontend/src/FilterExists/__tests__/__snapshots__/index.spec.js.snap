@@ -3,7 +3,6 @@
 exports[`<FilterExists /> should select "Exists" 1`] = `
 .emotion-18 {
   background-color: #252525;
-  border-radius: 2px;
   border: 1px solid transparent;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -17,9 +16,8 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 }
 
 .emotion-10 {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  padding: 4px;
+  padding-left: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -33,7 +31,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   min-width: 0;
   width: 100%;
   font-weight: 400;
-  padding-right: 12px;
+  padding-left: 4px;
 }
 
 .emotion-1 {
@@ -165,7 +163,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -490,7 +488,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 exports[`<FilterExists /> should select "Missing" 1`] = `
 .emotion-18 {
   background-color: #252525;
-  border-radius: 2px;
   border: 1px solid transparent;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -504,9 +501,8 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 }
 
 .emotion-10 {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  padding: 4px;
+  padding-left: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -520,7 +516,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   min-width: 0;
   width: 100%;
   font-weight: 400;
-  padding-right: 12px;
+  padding-left: 4px;
 }
 
 .emotion-1 {
@@ -652,7 +648,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
+  padding: 4px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
