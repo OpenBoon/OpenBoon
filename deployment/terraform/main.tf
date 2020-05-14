@@ -212,4 +212,5 @@ module "gcp-marketplace-integration" {
   environment              = var.environment
   inception-key-b64        = base64encode(local.inception-key)
   pg_password              = module.wallet.pg_password
+  marketplace-service-name = "isaas-codelab.mp-marketplace-partner-demos.appspot.com"
 }
