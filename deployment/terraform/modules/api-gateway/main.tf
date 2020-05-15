@@ -15,6 +15,7 @@ resource "kubernetes_deployment" "api-gateway" {
     }
   }
   spec {
+    replicas = 2
     selector {
       match_labels = {
         app = "api-gateway"

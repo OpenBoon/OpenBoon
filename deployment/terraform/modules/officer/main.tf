@@ -43,6 +43,7 @@ resource "kubernetes_deployment" "officer" {
     }
   }
   spec {
+    replicas = 2
     selector {
       match_labels = {
         app = "officer"

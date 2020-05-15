@@ -97,6 +97,7 @@ resource "kubernetes_deployment" "archivist" {
     }
   }
   spec {
+    replicas = 2
     selector {
       match_labels = {
         app = "archivist"

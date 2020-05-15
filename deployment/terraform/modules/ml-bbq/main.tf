@@ -11,6 +11,7 @@ resource "kubernetes_deployment" "ml-bbq" {
     }
   }
   spec {
+    replicas = 2
     selector {
       match_labels = {
         app = "ml-bbq"
