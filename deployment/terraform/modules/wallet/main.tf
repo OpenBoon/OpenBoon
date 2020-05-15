@@ -182,7 +182,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
   name     = "wallet-cert"
   managed {
-    domains = ["wallet.zmlp.zorroa.com"]
+    domains = [var.fqdn]
   }
 }
 
