@@ -37,6 +37,7 @@ wallet-frontend-test-suite:
   only:
     refs:
       - merge_requests
+      - development
     changes:
       - applications/wallet/frontend/**/*
       - .gitlab-ci.yml
@@ -69,6 +70,7 @@ wallet-backend-test-suite:
   only:
     refs:
       - merge_requests
+      - development
     changes:
       - applications/wallet/app/**/*
       - .gitlab-ci.yml
