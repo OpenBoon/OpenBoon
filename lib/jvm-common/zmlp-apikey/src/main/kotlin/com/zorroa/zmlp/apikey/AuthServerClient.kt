@@ -107,12 +107,12 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
     }
 
     override fun updateApiKeyEnabledByProject(projectId: UUID, enabled: Boolean) {
-        val data = mapOf(
-            "enabled" to enabled
-        )
 
-        val path = "/auth/v1/project/enabled"
-        val rbody = RequestBody.create(MEDIA_TYPE_JSON, Mapper.writeValueAsString(data))
+        var enableProjectUrl = "/auth/v1/apikey/_enable_project/$projectId"
+        var disableProjectUrl = "/auth/v1/apikey/_disable_project/$projectId"
+        val path = if (enabled) enableProjectUrl else disableProjectUrl
+
+        val rbody = RequestBody.create(MEDIA_TYPE_JSON, Mapper.writeValueAsString(emptyMap<String, String>()))
         val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
             .post(rbody)
             .build()
