@@ -28,6 +28,7 @@ const borders = {
   prettyMetadata: `4px solid ${colors.structure.iron}`,
   facet: `4px solid ${colors.key.one}`,
   unselectedFacet: `4px solid ${colors.structure.steel}`,
+  metrics: `2px solid ${colors.structure.white}`,
 }
 
 const opacity = {
