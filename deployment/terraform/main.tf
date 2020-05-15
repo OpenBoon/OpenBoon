@@ -78,7 +78,7 @@ locals {
 {
     "name": "admin-key",
     "projectId": "00000000-0000-0000-0000-000000000000",
-    "id": "${uuid()}",
+    "id": "f3bd2541-428d-442b-8a17-e401e5e76d06",
     "accessKey": "${random_string.access-key.result}",
     "secretKey": "${random_string.secret-key.result}",
     "permissions": [
