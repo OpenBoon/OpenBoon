@@ -171,7 +171,7 @@ class ApiKeyServiceImpl constructor(
         val projectId = getProjectId()
         val apiKeyList = apiKeyRepository.findAllByProjectId(projectId)
 
-        apiKeyList.forEach{
+        apiKeyList.forEach {
             updateEnabled(it, enabled)
         }
     }

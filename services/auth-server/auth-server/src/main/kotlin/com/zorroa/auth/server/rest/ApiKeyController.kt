@@ -114,5 +114,4 @@ class ApiKeyController(
     fun disableProject(@PathVariable projectId: UUID) {
         return apiKeyService.updateEnabledByProject(projectId, false)
     }
-
 }
