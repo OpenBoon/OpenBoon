@@ -143,9 +143,13 @@ def crop_image_poly(image, poly, width=256, draw=False, color=(255, 0, 0), thick
         y1 = max(0, v_min[0][1] - thickness)
         y2 = min(yr-1, v_max[0][1] + thickness)
         x1 = max(0, v_min[0][0] - thickness)
-        x2 = min(yr-1, v_max[0][0] + thickness)
+        x2 = min(xr-1, v_max[0][0] + thickness)
     cropped_image = image_draw[y1:y2, x1:x2]
     xrc = cropped_image.shape[1]
-    scale = width / xrc
-    resized = cv2.resize(cropped_image, (0, 0), fx=scale, fy=scale)
+    if xrc > 0:
+        scale = width / xrc
+        resized = cv2.resize(cropped_image, (0, 0), fx=scale, fy=scale)
+    else:
+        resized = np.zeros((width, width, 3), np.uint8)
+
     return resized

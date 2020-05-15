@@ -58,9 +58,9 @@ const STYLES = {
   FILTER: {
     container: {
       backgroundColor: colors.structure.lead,
-      borderRadius: constants.borderRadius.small,
       border: constants.borders.transparent,
       borderBottom: constants.borders.tabs,
+      paddingBottom: spacing.hairline,
       ':hover': {
         border: constants.borders.tableRow,
         div: {
@@ -71,16 +71,15 @@ const STYLES = {
       },
     },
     title: {
-      paddingTop: spacing.moderate,
-      paddingBottom: spacing.moderate,
-      paddingLeft: spacing.moderate,
+      padding: spacing.small,
+      paddingLeft: spacing.base,
       display: 'flex',
       h4: {
         flex: 1,
         minWidth: 0,
         width: '100%',
         fontWeight: typography.weight.regular,
-        paddingRight: spacing.moderate,
+        paddingLeft: spacing.small,
       },
     },
     content: {
@@ -95,7 +94,14 @@ export const VARIANTS = Object.keys(STYLES).reduce(
   {},
 )
 
-const Accordion = ({ variant, title, cacheKey, children, isInitiallyOpen }) => {
+const Accordion = ({
+  variant,
+  title,
+  cacheKey,
+  children,
+  isInitiallyOpen,
+  isResizeable,
+}) => {
   const [isOpen, setOpen] = useLocalStorage({
     key: cacheKey,
     initialValue: isInitiallyOpen,
@@ -129,7 +135,16 @@ const Accordion = ({ variant, title, cacheKey, children, isInitiallyOpen }) => {
           {title}
         </h4>
       </div>
-      {isOpen && <div css={STYLES[variant].content}>{children}</div>}
+      {isOpen && !isResizeable && (
+        <div css={STYLES[variant].content}>{children}</div>
+      )}
+      {isOpen && isResizeable && (
+        <div
+          css={[STYLES[variant].content, { maxHeight: 500, overflowY: 'auto' }]}
+        >
+          {children}
+        </div>
+      )}
     </div>
   )
 }
@@ -140,6 +155,7 @@ Accordion.propTypes = {
   cacheKey: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   isInitiallyOpen: PropTypes.bool.isRequired,
+  isResizeable: PropTypes.bool.isRequired,
 }
 
 export default Accordion

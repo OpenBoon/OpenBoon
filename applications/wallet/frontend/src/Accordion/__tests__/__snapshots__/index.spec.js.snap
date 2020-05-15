@@ -59,9 +59,9 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
 
 .emotion-4 {
   background-color: #252525;
-  border-radius: 2px;
   border: 1px solid transparent;
   border-bottom: 1px solid #4a4a4a;
+  padding-bottom: 1px;
 }
 
 .emotion-4:hover {
@@ -73,9 +73,8 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
 }
 
 .emotion-3 {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  padding: 4px;
+  padding-left: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -89,7 +88,7 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
   min-width: 0;
   width: 100%;
   font-weight: 400;
-  padding-right: 12px;
+  padding-left: 4px;
 }
 
 <div

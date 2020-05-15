@@ -13,14 +13,17 @@ stages:
   - push
   - deploy
 
-.all-stable-branches:
+.master-branch-any-change:
   only:
     refs:
-      - development
+      - master
     changes:
       - "**/*"
 
-## Wallet Frontend
+
+########  Wallet  ########
+
+## Wallet Frontend CI Tests
 wallet-frontend-test-suite:
   stage: test
   image: node:12
@@ -38,12 +41,14 @@ wallet-frontend-test-suite:
       - applications/wallet/frontend/**/*
       - .gitlab-ci.yml
 
-wallet-frontend-test-suite-all-stable-branches:
+## Wallet Frontend CI Tests for any change to Master
+wallet-frontend-test-suite-master-branch-any-change:
   extends:
     - wallet-frontend-test-suite
-    - .all-stable-branches
+    - .master-branch-any-change
 
-## Wallet Backend
+
+## Wallet Backend CI Tests
 wallet-backend-test-suite:
   stage: test
   image: mc706/pipenv-3.7
@@ -68,21 +73,57 @@ wallet-backend-test-suite:
       - applications/wallet/app/**/*
       - .gitlab-ci.yml
 
-wallet-backend-test-suite-all-stable-branches:
+## Wallet Backend CI Tests for any change to Master
+wallet-backend-test-suite-master-branch-any-change:
   extends:
     - wallet-backend-test-suite
-    - .all-stable-branches
+    - .master-branch-any-change
 
-## Wallet Container Build Validation
-wallet-container-build-validation:
-  only:
-    - development
-  stage: test
-  image: docker:18.09.8-dind
+## Wallet Build & Push Latest on changes to Development
+wallet-dockerhub-build-push-latest:
+  image: zmlp/docker-buildx
+  stage: push
   services:
-    - docker:18.09.8-dind
+    - docker:19.03-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+  retry: 2
+  before_script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
-    - docker build --pull --no-cache --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA --file applications/wallet/Dockerfile .
+    - ./buildx wallet
+    - docker push zmlp/wallet:latest
+  only:
+    refs:
+      - development
+    changes:
+      - applications/wallet/**/*
+
+## Wallet Deploy Latest on any changes to Development
+wallet-deploy-development:
+  image: google/cloud-sdk
+  retry: 1
+  variables:
+    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
+    PROJECT: zmlp-258901
+  stage: deploy
+  only:
+    refs:
+      - development
+    changes:
+      - applications/wallet/**/*
+  before_script:
+    - echo $SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
+  script:
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
+
+
+########  ZMLP Services & Plugins  ########
 
 ## Backend Python Lint
 backend-py-lint:
@@ -102,10 +143,10 @@ backend-py-lint:
       - services/analyst/**/*.py
       - .gitlab-ci.yml
 
-backend-py-lint-all-stable-branches:
+backend-py-lint-master-branch-any-change:
   extends:
     - backend-py-lint
-    - .all-stable-branches
+    - .master-branch-any-change
 
 ## Backend Kotlin Lint
 backend-kotlin-lint:
@@ -121,10 +162,10 @@ backend-kotlin-lint:
       - lib/**/*.kt
       - .gitlab-ci.yml
 
-backend-kotlin-lint-all-stable-branches:
+backend-kotlin-lint-master-branch-any-change:
   extends:
     - backend-kotlin-lint
-    - .all-stable-branches
+    - .master-branch-any-change
 
 # SDK Test
 # Testing other containers requires building containers
@@ -183,7 +224,6 @@ plugin-container-tests:
       - containers/**/*
       - .gitlab-ci.yml
 
-
 sdk-java-unit-tests:
   image: maven:3.6-jdk-11
   stage: test
@@ -198,14 +238,14 @@ sdk-java-unit-tests:
       - containers/zmlp-plugins-base/**/*
       - .gitlab-ci.yml
 
-sdk-unit-tests-all-stable-branches:
+sdk-unit-tests-master-branch-any-change:
   retry: 1
   extends:
     - sdk-unit-tests
     - sdk-java-unit-tests
-    - .all-stable-branches
+    - .master-branch-any-change
 
-docker_hub_build_push:
+zmlp-dockerhub-build-push-latest:
   image: zmlp/docker-buildx
   stage: push
   services:
@@ -222,7 +262,6 @@ docker_hub_build_push:
     - ./buildx
     - docker push zmlp/archivist:latest
     - docker push zmlp/officer:latest
-    - docker push zmlp/wallet:latest
     - docker push zmlp/elasticsearch:latest
     - docker push zmlp/authserver:latest
     - docker push zmlp/apigateway:latest
@@ -238,9 +277,17 @@ docker_hub_build_push:
     - docker push zmlp/ml-bbq:latest
     - docker push zmlp/plugins-train:latest
   only:
-    - development
+    refs:
+      - development
+    changes:
+      - client/**/*
+      - containers/**/*
+      - dev/**/*
+      - lib/**/*
+      - sdk/**/*
+      - services/**/*
 
-deploy_development:
+zmlp-deploy-development:
   image: google/cloud-sdk
   retry: 1
   variables:
@@ -248,7 +295,15 @@ deploy_development:
     PROJECT: zmlp-258901
   stage: deploy
   only:
-    - development
+    refs:
+      - development
+    changes:
+      - client/**/*
+      - containers/**/*
+      - dev/**/*
+      - lib/**/*
+      - sdk/**/*
+      - services/**/*
   before_script:
     - echo $SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
@@ -261,11 +316,10 @@ deploy_development:
     - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-master
     - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-data
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} ml-bbq
 
 # Kotlin services - Unit tests - Step 1
-services_build_artifacts:
+zmlp-services-build-artifacts:
   image: maven:3.6.2-jdk-11-slim
   stage: build
   script:
@@ -282,13 +336,13 @@ services_build_artifacts:
       - lib/**/*
       - .gitlab-ci.yml
 
-services_build_artifacts-all-stable-branches:
+zmlp-services-build-artifacts-master-branch-any-change:
   extends:
-    - services_build_artifacts
-    - .all-stable-branches
+    - zmlp-services-build-artifacts
+    - .master-branch-any-change
 
 # Kotlin services - Unit tests - Step 2
-services_push_to_local_registry:
+elasticsearch-push-to-local-registry:
   image: docker:18.09.8-dind
   stage: pretest
   retry: 2
@@ -306,12 +360,12 @@ services_push_to_local_registry:
       - services/**/*
       - .gitlab-ci.yml
 
-services_push_to_local_registry-all-stable-branches:
+elasticsearch-push-to-local-registry-master-branch-any-change:
   extends:
-    - services_push_to_local_registry
-    - .all-stable-branches
+    - elasticsearch-push-to-local-registry
+    - .master-branch-any-change
 
-services_unit_tests:
+zmlp-services-unit-tests:
   stage: test
   image: maven:3.6-jdk-11
   retry: 1
@@ -370,12 +424,15 @@ services_unit_tests:
       - merge_requests
     changes:
       - services/**/*
+      - lib/**/*
       - .gitlab-cy.yml
 
-services_unit_tests-all-stable-branches:
+zmlp-services-unit-tests-master-branch-any-change:
   extends:
-    - services_unit_tests
-    - .all-stable-branches
+    - zmlp-services-unit-tests
+    - .master-branch-any-change
+
+
 # Kotlin Services Jobs
 #sdk-containers-tests:
 #  stage: test

@@ -104,13 +104,13 @@ Run `npm run dev:mocked` to start a local development node server on
 http://localhost:3000, where every API call will be mocked instead of going to
 the network. This is very convenient when you are working on some UI code for
 instance, and don't want to bother having to log in and authenticate every time
-your session ends. It should also allow to work offline.
+your session ends. It should also allow you to work offline.
 
 #### Local Mode
 
 To run a local environment of ZMLP, you need to build the docker setup
 (`docker-compose build`) and run it (`docker-compose up`). Refer to the overall
-`wallet` or `wallet/backend` docs for further information.
+`wallet` or `wallet/app` docs for further information.
 
 Run `npm run dev` to start a local development node server on
 http://localhost:3000. This starts the node.js / next.js SSR development server
