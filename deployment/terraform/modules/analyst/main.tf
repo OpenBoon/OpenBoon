@@ -46,7 +46,6 @@ resource "kubernetes_deployment" "analyst" {
     }
   }
   spec {
-    replicas = 2
     selector {
       match_labels = {
         app = "analyst"

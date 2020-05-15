@@ -27,7 +27,6 @@ resource "kubernetes_deployment" "auth-server" {
     }
   }
   spec {
-    //    replicas = 2
     selector {
       match_labels = {
         app = "auth-server"

@@ -30,7 +30,6 @@ resource "kubernetes_deployment" "wallet" {
     }
   }
   spec {
-    replicas = 2
     selector {
       match_labels = {
         app = "wallet"

@@ -87,7 +87,7 @@ locals {
 }
 EOF
 
-
+  inception-key-b64 = base64encode(local.inception-key)
   dockerconfigjson = {
     auths = {
       "https://index.docker.io/v1/" = {
@@ -126,7 +126,7 @@ module "archivist" {
   sql-service-account-key = module.postgres.sql-service-account-key
   sql-connection-name     = module.postgres.connection-name
   sql-instance-name       = module.postgres.instance-name
-  inception-key-b64       = base64encode(local.inception-key)
+  inception-key-b64       = local.inception-key-b64
   minio-access-key        = module.minio.access-key
   minio-secret-key        = module.minio.secret-key
   system-bucket           = google_storage_bucket.system.name
@@ -137,7 +137,7 @@ module "auth-server" {
   sql-instance-name   = module.postgres.instance-name
   sql-connection-name = module.postgres.connection-name
   image-pull-secret   = kubernetes_secret.dockerhub.metadata[0].name
-  inception-key-b64   = base64encode(local.inception-key)
+  inception-key-b64   = local.inception-key-b64
   system-bucket       = google_storage_bucket.system.name
 }
 
@@ -184,7 +184,7 @@ module "wallet" {
   smtp-password           = var.smtp-password
   google-oauth-client-id  = var.google-oauth-client-id
   environment             = var.environment
-  inception-key-b64       = base64encode(local.inception-key)
+  inception-key-b64       = local.inception-key-b64
   domain                  = var.wallet-domain
 }
 
@@ -210,7 +210,7 @@ module "gcp-marketplace-integration" {
   marketplace-credentials  = var.marketplace-credentials
   fqdn                     = var.wallet-domain
   environment              = var.environment
-  inception-key-b64        = base64encode(local.inception-key)
+  inception-key-b64        = local.inception-key-b64
   pg_password              = module.wallet.pg_password
   marketplace-service-name = "isaas-codelab.mp-marketplace-partner-demos.appspot.com"
 }
