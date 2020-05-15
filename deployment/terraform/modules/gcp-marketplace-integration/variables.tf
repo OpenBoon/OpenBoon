@@ -43,7 +43,12 @@ variable "google-oauth-client-id" {
 variable "environment" {
 }
 
-variable "fqdn" {}
+variable "fqdn" {
+}
+
+variable "replicas" {
+  default = 0
+}
 
 variable "container-tag" {
   default = "latest"
