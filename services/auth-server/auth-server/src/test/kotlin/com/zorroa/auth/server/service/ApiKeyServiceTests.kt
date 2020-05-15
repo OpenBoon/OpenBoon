@@ -3,7 +3,6 @@ package com.zorroa.auth.server.service
 import com.zorroa.auth.server.AbstractTest
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
-import com.zorroa.auth.server.domain.ProjectApiKeysEnabledSpec
 import com.zorroa.auth.server.security.getProjectId
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
@@ -65,7 +64,7 @@ class ApiKeyServiceTests : AbstractTest() {
         )
 
         var key = apiKeyService.create(spec)
-        apiKeyService.updateEnabledByProject(ProjectApiKeysEnabledSpec(false))
+        apiKeyService.updateEnabledByProject(key.projectId, false)
 
         val findAll = apiKeyService.findAll()
         assertEquals(false, findAll[0].enabled)

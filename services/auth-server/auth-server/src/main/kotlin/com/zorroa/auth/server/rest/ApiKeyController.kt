@@ -3,7 +3,6 @@ package com.zorroa.auth.server.rest
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
-import com.zorroa.auth.server.domain.ProjectApiKeysEnabledSpec
 import com.zorroa.auth.server.repository.ApiKeyCustomRepository
 import com.zorroa.auth.server.repository.PagedList
 import com.zorroa.auth.server.service.ApiKeyService
@@ -106,8 +105,14 @@ class ApiKeyController(
         return apiKeyService.findAll()
     }
 
-    @PostMapping("/auth/v1/project/enabled")
-    fun updateEnabledByProject(@RequestBody projectApiKeysEnabledSpec: ProjectApiKeysEnabledSpec) {
-        return apiKeyService.updateEnabledByProject(projectApiKeysEnabledSpec)
+    @PostMapping("/auth/v1/apikey/_enable_project/{projectId}")
+    fun enabledProject(@PathVariable projectId: UUID) {
+        return apiKeyService.updateEnabledByProject(projectId, true)
     }
+
+    @PostMapping("/auth/v1/apikey/_disable_project/{projectId}")
+    fun disableProject(@PathVariable projectId: UUID) {
+        return apiKeyService.updateEnabledByProject(projectId, false)
+    }
+
 }

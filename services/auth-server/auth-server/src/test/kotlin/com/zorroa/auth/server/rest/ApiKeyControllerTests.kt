@@ -4,7 +4,6 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.zorroa.auth.server.MockMvcTest
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
-import com.zorroa.auth.server.domain.ProjectApiKeysEnabledSpec
 import com.zorroa.zmlp.apikey.Permission
 import org.hamcrest.CoreMatchers
 import org.junit.Test
@@ -251,13 +250,22 @@ class ApiKeyControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testUpdateEnabledByProject() {
-        var projectApiKeysEnabledSpec = ProjectApiKeysEnabledSpec(false)
+    fun testEnableProject() {
         mvc.perform(
-            MockMvcRequestBuilders.post("/auth/v1/project/enabled")
+            MockMvcRequestBuilders.post("/auth/v1/apikey/_enable_project/${mockKey.projectId}")
                 .headers(superAdmin(mockKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(json.writeValueAsBytes(projectApiKeysEnabledSpec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+
+    @Test
+    fun testDisableProject() {
+        mvc.perform(
+            MockMvcRequestBuilders.post("/auth/v1/apikey/_disable_project/${mockKey.projectId}")
+                .headers(superAdmin(mockKey.projectId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()

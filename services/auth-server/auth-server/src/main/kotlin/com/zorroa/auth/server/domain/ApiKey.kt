@@ -41,11 +41,6 @@ class ApiKeySpec(
     val enabled: Boolean = true
 )
 
-@ApiModel("Project Enabled Spec", description = "Spec for updating Enabled status of Project Api Keys")
-class ProjectApiKeysEnabledSpec(
-    val enabled: Boolean
-)
-
 @Entity
 @Table(name = "api_key")
 @ApiModel("ApiKey", description = "An API key allows remote users to access ZMLP resources.")

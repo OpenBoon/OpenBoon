@@ -3,7 +3,6 @@ package com.zorroa.auth.server.service
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
-import com.zorroa.auth.server.domain.ProjectApiKeysEnabledSpec
 import com.zorroa.auth.server.repository.ApiKeyCustomRepository
 import com.zorroa.auth.server.repository.ApiKeyRepository
 import com.zorroa.auth.server.repository.PagedList
@@ -43,7 +42,7 @@ interface ApiKeyService {
 
     fun updateEnabled(apiKey: ApiKey, enabled: Boolean)
 
-    fun updateEnabledByProject(apiKeysEnabledSpec: ProjectApiKeysEnabledSpec)
+    fun updateEnabledByProject(projectId: UUID, enabled: Boolean)
 }
 
 @Service
@@ -168,15 +167,13 @@ class ApiKeyServiceImpl constructor(
         apiKeyRepository.updateEnabledById(enabled, apiKey.id)
     }
 
-    override fun updateEnabledByProject(apiKeysEnabledSpec: ProjectApiKeysEnabledSpec) {
+    override fun updateEnabledByProject(projectId: UUID, enabled: Boolean) {
         val projectId = getProjectId()
-        logger.event(
-            LogObject.API_KEY, if (apiKeysEnabledSpec.enabled) LogAction.ENABLE else LogAction.DISABLE,
-            mapOf(
-                "projectId" to projectId
-            )
-        )
-        apiKeyRepository.updateEnabledByProjectId(apiKeysEnabledSpec.enabled, projectId)
+        val apiKeyList = apiKeyRepository.findAllByProjectId(projectId)
+
+        apiKeyList.forEach{
+            updateEnabled(it, enabled)
+        }
     }
 
     fun validatePermissionsCanBeAssigned(perms: Set<Permission>) {
