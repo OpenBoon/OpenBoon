@@ -5,7 +5,7 @@ resource "google_compute_global_address" "api-gateway-external" {
 resource "kubernetes_deployment" "api-gateway" {
   provider = kubernetes
   lifecycle {
-    ignore_changes = [spec["replicas"]]
+    ignore_changes = [spec[0].replicas]
   }
   metadata {
     name      = "api-gateway"

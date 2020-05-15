@@ -20,7 +20,7 @@ resource "kubernetes_deployment" "auth-server" {
   provider   = kubernetes
   depends_on = [google_sql_user.auth-server]
   lifecycle {
-    ignore_changes = [spec["replicas"]]
+    ignore_changes = [spec[0].replicas]
   }
   metadata {
     name      = "auth-server"

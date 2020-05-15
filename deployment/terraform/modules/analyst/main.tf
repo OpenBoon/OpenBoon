@@ -39,7 +39,7 @@ resource "random_string" "analyst-shared-key" {
 resource "kubernetes_deployment" "analyst" {
   provider = kubernetes
   lifecycle {
-    ignore_changes = [spec["replicas"]]
+    ignore_changes = [spec[0].replicas]
   }
   metadata {
     name      = "analyst"

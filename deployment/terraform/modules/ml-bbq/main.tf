@@ -1,7 +1,7 @@
 resource "kubernetes_deployment" "ml-bbq" {
   provider = kubernetes
   lifecycle {
-    ignore_changes = [spec["replicas"]]
+    ignore_changes = [spec[0].replicas]
   }
   metadata {
     name      = "ml-bbq"
