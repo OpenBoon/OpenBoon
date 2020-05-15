@@ -86,6 +86,9 @@ resource "kubernetes_secret" "archivist-sa-key" {
 ## K8S Deployment
 resource "kubernetes_deployment" "archivist" {
   provider = kubernetes
+  lifecycle {
+    ignore_changes = [spec["replicas"]]
+  }
   metadata {
     name      = "archivist"
     namespace = var.namespace

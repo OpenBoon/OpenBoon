@@ -4,6 +4,9 @@ resource "google_compute_global_address" "api-gateway-external" {
 
 resource "kubernetes_deployment" "api-gateway" {
   provider = kubernetes
+  lifecycle {
+    ignore_changes = [spec["replicas"]]
+  }
   metadata {
     name      = "api-gateway"
     namespace = var.namespace
@@ -12,7 +15,6 @@ resource "kubernetes_deployment" "api-gateway" {
     }
   }
   spec {
-    replicas = 2
     selector {
       match_labels = {
         app = "api-gateway"

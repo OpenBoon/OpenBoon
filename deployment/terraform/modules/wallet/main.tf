@@ -22,6 +22,9 @@ resource "google_sql_user" "wallet" {
 resource "kubernetes_deployment" "wallet" {
   provider   = kubernetes
   depends_on = [google_sql_user.wallet]
+  lifecycle {
+    ignore_changes = [spec["replicas"]]
+  }
   metadata {
     name      = "wallet"
     namespace = var.namespace

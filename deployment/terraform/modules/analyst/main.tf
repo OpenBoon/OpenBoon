@@ -38,6 +38,9 @@ resource "random_string" "analyst-shared-key" {
 
 resource "kubernetes_deployment" "analyst" {
   provider = kubernetes
+  lifecycle {
+    ignore_changes = [spec["replicas"]]
+  }
   metadata {
     name      = "analyst"
     namespace = var.namespace
