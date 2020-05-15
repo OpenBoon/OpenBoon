@@ -28,10 +28,7 @@ class ProjectSpec(
      * for REST clients.
      */
     @ApiModelProperty("An optional unique ID for the project.")
-    val id: UUID? = null,
-
-    @ApiModelProperty("Set if the project is enabled")
-    val enabled: Boolean = true
+    val id: UUID? = null
 )
 
 /**

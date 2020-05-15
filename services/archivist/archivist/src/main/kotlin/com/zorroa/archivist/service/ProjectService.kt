@@ -38,6 +38,7 @@ import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -143,7 +144,7 @@ class ProjectServiceImpl constructor(
                 time,
                 actor.toString(),
                 actor.toString(),
-                spec.enabled
+                true
             )
         )
         withAuth(InternalThreadAuthentication(project.id, setOf())) {
@@ -292,7 +293,7 @@ class ProjectServiceImpl constructor(
 
     override fun updateEnabledStatus(id: UUID, projectSpecEnabled: ProjectSpecEnabled) {
         val project = projectDao.findById(id).orElseThrow {
-            ArchivistException("Project not found")
+            EmptyResultDataAccessException("Project not found", 1)
         }
         projectDao.updateStatus(projectSpecEnabled.enabled, project.id)
 

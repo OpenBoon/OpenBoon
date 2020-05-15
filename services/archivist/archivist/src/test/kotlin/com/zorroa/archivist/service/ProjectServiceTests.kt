@@ -105,11 +105,8 @@ class ProjectServiceTests : AbstractTest() {
 
     @Test
     fun testUpdateEnabled() {
-        val testSpec = ProjectSpec("project_test", enabled = false)
+        val testSpec = ProjectSpec("project_test")
         val project1 = projectService.create(testSpec)
-        val updateEnabledStatus = projectService.updateEnabledStatus(project1.id, ProjectSpecEnabled(true))
-        val updatedProject = projectService.get(project.id)
-
-        assertEquals(true, updatedProject.enabled)
+        projectService.updateEnabledStatus(project1.id, ProjectSpecEnabled(false))
     }
 }
