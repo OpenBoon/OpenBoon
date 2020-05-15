@@ -50,7 +50,7 @@ variable "marketplace-credentials" {
   description = "GCP Service Account JSON key to use with the GCP Procurement API."
 }
 
-variable "wallet-fqdn" {
+variable "wallet-domain" {
   description = "Fully qualified domain name for the wallet server."
 }
 

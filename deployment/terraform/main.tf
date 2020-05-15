@@ -185,7 +185,7 @@ module "wallet" {
   google-oauth-client-id  = var.google-oauth-client-id
   environment             = var.environment
   inception-key-b64       = base64encode(local.inception-key)
-  fqdn                    = var.wallet-fqdn
+  domain                  = var.wallet-domain
 }
 
 module "ml-bbq" {
@@ -208,7 +208,7 @@ module "gcp-marketplace-integration" {
   marketplace-project      = "zorroa-marketplace"
   marketplace-subscription = "codelab"
   marketplace-credentials  = var.marketplace-credentials
-  fqdn                     = var.wallet-fqdn
+  fqdn                     = var.wallet-domain
   environment              = var.environment
   inception-key-b64        = base64encode(local.inception-key)
   pg_password              = module.wallet.pg_password

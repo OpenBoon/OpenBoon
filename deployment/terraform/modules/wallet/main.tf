@@ -149,7 +149,7 @@ resource "kubernetes_deployment" "wallet" {
           }
           env {
             name  = "FQDN"
-            value = var.fqdn
+            value = "https://${var.domain}"}
           }
         }
       }
@@ -182,7 +182,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
   name     = "wallet-cert"
   managed {
-    domains = [var.fqdn]
+    domains = [var.domain]
   }
 }
 
