@@ -194,6 +194,7 @@ module "ml-bbq" {
   auth-server-url        = "http://${module.auth-server.ip-address}"
 }
 
+// Commented out while we wait for Google to finish their portion of the work.
 //module "gcp-marketplace-integration" {
 //  source                   = "./modules/gcp-marketplace-integration"
 //  project                  = var.project
