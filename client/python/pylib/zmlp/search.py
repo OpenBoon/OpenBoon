@@ -140,9 +140,7 @@ class AssetSearchResult(object):
         hits = self.result.get("hits")
         if not hits:
             return []
-        return [Asset({'id': hit['_id'],
-                       'score': hit['_score'],
-                       'document': hit['_source']}) for hit in hits['hits']]
+        return [Asset.from_hit(hit) for hit in hits['hits']]
 
     def aggregation(self, name):
         """
@@ -301,36 +299,34 @@ class SimilarityQuery:
     """
     def __init__(self, hashes, min_score=0.75, boost=1.0,
                  field="analysis.zvi-image-similarity.simhash"):
-        self.hashes = as_collection(hashes) or []
+        self.hashes = []
+        self.add_hash(hashes)
         self.min_score = min_score
         self.boost = boost
         self.field = field
 
-    def add_hash(self, simhash):
+    def add_hash(self, hashes):
         """
         Add a new hash to the search.
 
         Args:
-            simhash (str): A similarity hash.
+            hashes (mixed): A similarity hash string or an asset.
 
         Returns:
             SimilarityQuery: this instance of SimilarityQuery
         """
-        self.hashes.append(simhash)
+        for simhash in as_collection(hashes) or []:
+            if isinstance(simhash, Asset):
+                self.hashes.append(simhash.get_attr(self.field))
+            else:
+                self.hashes.append(simhash)
         return self
 
     def add_asset(self, asset):
         """
-        Adds the similarity hash for the given asset to this search.
-
-        Args:
-            asset (Asset): The asset
-
-        Returns:
-            SimilarityQuery: this instance of SimilarityQuery
+        See add_hash which handles both hashes and Assets.
         """
-        self.hashes.append(asset.get_attr(self.field))
-        return self
+        return self.add_hash(asset)
 
     def for_json(self):
         return {
@@ -351,3 +347,7 @@ class SimilarityQuery:
                 "min_score": self.min_score
             }
         }
+
+    def __add__(self, simhash):
+        self.add_hash(simhash)
+        return self
