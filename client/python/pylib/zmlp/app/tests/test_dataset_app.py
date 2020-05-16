@@ -82,3 +82,12 @@ class ZmlpDataSetAppTests(unittest.TestCase):
         get_patch.return_value = value
         rsp = self.app.datasets.get_label_counts(DataSet({"id": "foo"}))
         assert value == rsp
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_dataset_downloader(self, get_patch):
+        ds_raw = {"id": "12345", "type": "LABEL_DETECTION"}
+        ds = DataSet(ds_raw)
+        get_patch.return_value = ds_raw
+        dl = self.app.datasets.get_dataset_downloader(ds, "/tmp/dstest")
+        assert "/tmp/dstest" == dl.dst_dir
+        assert "12345" == dl.dataset.id

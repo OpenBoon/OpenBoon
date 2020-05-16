@@ -233,7 +233,8 @@ class DataSetDownloader:
             fp_test.close()
 
         with open(os.path.join(self.dst_dir, "classes.csv"), "w") as fp_classes:
-            fp_classes.write("{}\n".format(",".join(sorted(unique_labels))))
+            for idx, cls in enumerate(sorted(unique_labels)):
+                fp_classes.write("{},{}\n".format(cls, idx))
 
     def _zvi_to_keras_bbox(self, prx, bbox):
         total_width = prx.attrs['width']

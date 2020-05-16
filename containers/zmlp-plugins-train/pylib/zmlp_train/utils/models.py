@@ -23,8 +23,8 @@ def download_dataset(format, ds_id, dst_dir, ratio):
         ratio: (int): The test/train ratio.
     """
     cmd = ['dataset-dl.py',
-           ds_id,
            format,
+           ds_id,
            dst_dir,
            '--train-test-ratio',
            str(ratio)]

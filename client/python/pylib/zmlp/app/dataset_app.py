@@ -2,6 +2,7 @@ import logging
 
 from ..entity import DataSet
 from ..util import as_collection, as_id
+from ..training import DataSetDownloader
 
 logger = logging.getLogger(__name__)
 
@@ -86,7 +87,8 @@ class DataSetApp:
             'types': as_collection(type),
             'sort': sort
         }
-        return self.app.client.iter_paged_results('/api/v1/data-sets/_search', body, limit, DataSet)
+        return self.app.client.iter_paged_results(
+            '/api/v1/data-sets/_search', body, limit, DataSet)
 
     def get_label_counts(self, dataset):
         """
@@ -100,3 +102,15 @@ class DataSetApp:
 
         """
         return self.app.client.get('/api/v3/data-sets/{}/_label_counts'.format(as_id(dataset)))
+
+    def get_dataset_downloader(self, dataset, dst_dir, test_train_ratio=4):
+        """
+        Get a DataSetDownloader instance which can be used to download a full DataSet
+        to local disk.
+
+        Args:
+            dataset (DataSet): The DataSet or its unique ID.
+            dst_dir (str): The destination dir to write the DataSet files into.
+            test_train_ratio (int): The number of training files for every 1 test file.
+        """
+        return DataSetDownloader(self.app, dataset, dst_dir, test_train_ratio)
