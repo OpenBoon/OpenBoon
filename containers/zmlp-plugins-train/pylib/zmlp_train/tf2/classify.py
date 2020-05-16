@@ -13,21 +13,6 @@ from zmlpsdk.proxy import get_proxy_level_path
 from zmlp_analysis.zvi.labels import load_image
 
 
-def extract_info(model_zip, model_base_dir):
-    with zipfile.ZipFile(model_zip) as z:
-        z.extractall()
-    trained_model = load_model(model_base_dir)
-    with open('{}/labels.txt'.format(model_base_dir)) as l:
-        labels = [line.rstrip() for line in l]
-    shutil.rmtree(model_base_dir)
-    try:
-        shutil.rmtree("__MACOSX")
-    except:
-        pass
-
-    return trained_model, labels
-
-
 class TensorflowTransferLearningClassifier(AssetProcessor):
     def __init__(self):
         super(TensorflowTransferLearningClassifier, self).__init__()
@@ -47,7 +32,8 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         model_base_dir = self.app_model.name
         model_zip = FileStorage().localize_file(self.app_model.file_id)
 
-        self.trained_model, self.labels = extract_info(model_zip, model_base_dir)
+        self.trained_model, self.labels = \
+            self._extract_info(model_zip, model_base_dir)
 
     def process(self, frame):
         asset = frame.asset
@@ -65,3 +51,32 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         proba = self.trained_model.predict(preprocess_input(img))[0]
         result = [*zip(self.labels, proba)]
         return result
+
+    @staticmethod
+    def _extract_info(model_zip, model_base_dir):
+        """Extract then remove model info from a zip file
+
+        Parameters
+        ----------
+        model_zip: str
+            model zip dir
+        model_base_dir: str
+            model.name which is set as model parent dir
+
+        Returns
+        -------
+        tuple
+            (Keras model instance, List[str] of labels)
+        """
+        with zipfile.ZipFile(model_zip) as z:
+            z.extractall()
+        trained_model = load_model(model_base_dir)
+        with open('{}/labels.txt'.format(model_base_dir)) as l:
+            labels = [line.rstrip() for line in l]
+        shutil.rmtree(model_base_dir)
+        try:
+            shutil.rmtree("__MACOSX")
+        except:
+            pass
+
+        return trained_model, labels
