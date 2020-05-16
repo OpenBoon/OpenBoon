@@ -148,7 +148,20 @@ class TestImageSimilarityQuery(unittest.TestCase):
         asset.set_attr("foo.vector", "OVER9000")
 
         s = SimilarityQuery(None, 0.50, field="foo.vector")
-        s.add_asset(asset)
+        s.add_hash(asset)
+        assert ['OVER9000'] == s.hashes
+
+    def test_plus_asset(self):
+        asset = Asset({"id": "123"})
+        asset.set_attr("foo.vector", "OVER9000")
+
+        s = SimilarityQuery(None, 0.50, field="foo.vector")
+        s = s + asset
+        assert ['OVER9000'] == s.hashes
+
+    def test_plus_hash(self):
+        s = SimilarityQuery(None, 0.50, field="foo.vector")
+        s = s + "OVER9000"
         assert ['OVER9000'] == s.hashes
 
     def test_add_hash(self):
