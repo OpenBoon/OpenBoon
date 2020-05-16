@@ -70,12 +70,12 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         with zipfile.ZipFile(model_zip) as z:
             z.extractall()
         trained_model = load_model(model_base_dir)
-        with open('{}/labels.txt'.format(model_base_dir)) as l:
-            labels = [line.rstrip() for line in l]
+        with open('{}/labels.txt'.format(model_base_dir)) as label:
+            labels = [line.rstrip() for line in label]
         shutil.rmtree(model_base_dir)
         try:
             shutil.rmtree("__MACOSX")
-        except:
+        except OSError:
             pass
 
         return trained_model, labels
