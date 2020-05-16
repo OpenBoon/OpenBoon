@@ -8,7 +8,6 @@ from zmlp import ZmlpClient, ZmlpApp, DataSet
 from zmlp.app import AssetApp, DataSetApp
 from zmlp.training import DataSetDownloader
 
-
 key_dict = {
     'projectId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
     'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
@@ -25,28 +24,28 @@ class ZmlpDataSetDownloader(unittest.TestCase):
     @patch.object(DataSetApp, 'get_dataset')
     @patch.object(ZmlpClient, 'get')
     def test_setup_labels_std_base_dir(self, get_patch, data_dataset_patch):
-        data_dataset_patch.return_value = DataSet({"id": "12345", "type": "LabelDetection"})
+        data_dataset_patch.return_value = DataSet({'id': '12345', 'type': 'LabelDetection'})
         get_patch.return_value = {
-            "goats": 100,
-            "hobbits": 12,
-            "wizards": 45,
-            "dwarfs": 9
+            'goats': 100,
+            'hobbits': 12,
+            'wizards': 45,
+            'dwarfs': 9
         }
         d = tempfile.mkdtemp()
-        dsl = DataSetDownloader(self.app, "12345", d)
+        dsl = DataSetDownloader(self.app, '12345', 'objects_coco', d)
         dsl._setup_labels_std_base_dir()
 
         dirs = os.listdir(d)
         assert 'set_train' in dirs
         assert 'set_test' in dirs
 
-        labels1 = os.listdir(d + "/set_train")
+        labels1 = os.listdir(d + '/set_train')
         assert 4 == len(labels1)
-        assert ["dwarfs", "goats", "hobbits", "wizards"] == sorted(labels1)
+        assert ['dwarfs', 'goats', 'hobbits', 'wizards'] == sorted(labels1)
 
-        labels2 = os.listdir(d + "/set_test")
+        labels2 = os.listdir(d + '/set_test')
         assert 4 == len(labels2)
-        assert ["dwarfs", "goats", "hobbits", "wizards"] == sorted(labels2)
+        assert ['dwarfs', 'goats', 'hobbits', 'wizards'] == sorted(labels2)
 
     @patch.object(DataSetApp, 'get_dataset')
     @patch.object(AssetApp, 'download_file')
@@ -55,20 +54,20 @@ class ZmlpDataSetDownloader(unittest.TestCase):
     @patch.object(ZmlpClient, 'get')
     def test_build_labels_std_format(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
-        get_ds_patch.return_value = DataSet({"id": "12345", "type": "LABEL_DETECTION"})
+        get_ds_patch.return_value = DataSet({'id': '12345', 'type': 'LABEL_DETECTION'})
         get_patch.return_value = {
-            "goats": 100,
-            "hobbits": 12,
-            "wizards": 45,
-            "dwarfs": 9
+            'goats': 100,
+            'hobbits': 12,
+            'wizards': 45,
+            'dwarfs': 9
         }
         post_patch.side_effect = [mock_search_result_labels, {'hits': {'hits': []}}]
         del_patch.return_value = {}
         dl_patch.return_value = b'foo'
 
         d = tempfile.mkdtemp()
-        dsl = DataSetDownloader(self.app, "12345", d)
-        dsl.build('labels_std')
+        dsl = DataSetDownloader(self.app, '12345', 'labels_std', d)
+        dsl.build()
 
     @patch.object(DataSetApp, 'get_dataset')
     @patch.object(AssetApp, 'download_file')
@@ -77,18 +76,18 @@ class ZmlpDataSetDownloader(unittest.TestCase):
     @patch.object(ZmlpClient, 'get')
     def test_download_object_detection(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
-        get_ds_patch.return_value = DataSet({"id": "12345", "type": "OBJECT_DETECTION"})
+        get_ds_patch.return_value = DataSet({'id': '12345', 'type': 'OBJECT_DETECTION'})
 
         post_patch.side_effect = [mock_search_result_objects, {'hits': {'hits': []}}]
         del_patch.return_value = {}
         dl_patch.return_value = b'foo'
 
         d = tempfile.mkdtemp()
-        dsl = DataSetDownloader(self.app, "12345", d)
-        dsl.build('objects_coco')
-        with open(os.path.join(d, dsl.SET_TRAIN, "annotations.json")) as fp:
+        dsl = DataSetDownloader(self.app, '12345', 'objects_coco', d)
+        dsl.build()
+        with open(os.path.join(d, dsl.SET_TRAIN, 'annotations.json')) as fp:
             train_annotations = json.load(fp)
-        with open(os.path.join(d, dsl.SET_TEST, "annotations.json")) as fp:
+        with open(os.path.join(d, dsl.SET_TEST, 'annotations.json')) as fp:
             test_annotations = json.load(fp)
 
         assert 2 == len(train_annotations['images'])
@@ -107,26 +106,26 @@ class ZmlpDataSetDownloader(unittest.TestCase):
     @patch.object(ZmlpClient, 'get')
     def test_build_objects_keras_format(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
-        get_ds_patch.return_value = DataSet({"id": "12345", "type": "OBJECT_DETECTION"})
+        get_ds_patch.return_value = DataSet({'id': '12345', 'type': 'OBJECT_DETECTION'})
 
         post_patch.side_effect = [mock_search_result_objects, {'hits': {'hits': []}}]
         del_patch.return_value = {}
         dl_patch.return_value = b'foo'
 
         d = tempfile.mkdtemp()
-        dsl = DataSetDownloader(self.app, "12345", d)
-        dsl.build('objects_keras')
+        dsl = DataSetDownloader(self.app, '12345', 'objects_keras', d)
+        dsl.build()
 
-        with open(os.path.join(d, "classes.csv")) as fp:
+        with open(os.path.join(d, 'classes.csv')) as fp:
             classes = fp.read()
-        assert "wizard" in classes
-        assert "dwarf" in classes
+        assert 'wizard' in classes
+        assert 'dwarf' in classes
 
-        with open(os.path.join(d, dsl.SET_TRAIN, "annotations.csv")) as fp:
+        with open(os.path.join(d, dsl.SET_TRAIN, 'annotations.csv')) as fp:
             count = len(fp.readlines())
         assert 6 == count
 
-        with open(os.path.join(d, dsl.SET_TEST, "annotations.csv")) as fp:
+        with open(os.path.join(d, dsl.SET_TEST, 'annotations.csv')) as fp:
             count = len(fp.readlines())
         assert 2 == count
 

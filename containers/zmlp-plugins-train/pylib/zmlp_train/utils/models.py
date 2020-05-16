@@ -11,20 +11,20 @@ from zmlpsdk import file_storage
 logger = logging.getLogger(__name__)
 
 
-def download_dataset(format, ds_id, dst_dir, ratio):
+def download_dataset(ds_id, style, dst_dir, ratio):
     """
     Download the dataset locally.  Shells out to an external tool
     which handles the downloads in parallel.
 
     Args:
-        format (str): The format the DS should be written into.
         ds_id (str): The ID of the dataset.
+        style (str): The format the DS should be written into.
         dst_dir (str): The directory to write the DataSet into.
         ratio: (int): The test/train ratio.
     """
     cmd = ['dataset-dl.py',
-           format,
            ds_id,
+           style,
            dst_dir,
            '--train-test-ratio',
            str(ratio)]

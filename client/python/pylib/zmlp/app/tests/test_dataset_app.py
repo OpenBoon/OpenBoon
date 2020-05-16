@@ -88,6 +88,6 @@ class ZmlpDataSetAppTests(unittest.TestCase):
         ds_raw = {"id": "12345", "type": "LABEL_DETECTION"}
         ds = DataSet(ds_raw)
         get_patch.return_value = ds_raw
-        dl = self.app.datasets.get_dataset_downloader(ds, "/tmp/dstest")
+        dl = self.app.datasets.get_dataset_downloader(ds, "objects_coco", "/tmp/dstest")
         assert "/tmp/dstest" == dl.dst_dir
         assert "12345" == dl.dataset.id

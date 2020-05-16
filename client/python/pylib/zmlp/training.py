@@ -38,20 +38,21 @@ class DataSetDownloader:
     SET_TEST = "set_test"
     """Directory name for test images"""
 
-    def __init__(self, app, dataset, dst_dir, train_test_ratio=4):
+    def __init__(self, app, dataset, style, dst_dir, train_test_ratio=4):
         """
         Create a new DataSetDownloader.
 
         Args:
             app: (ZmlpApp): A ZmlpApp instance.
             dataset: (DataSet): A DataSet or unique DataSet ID.
+            style: (str): The output style: labels_std, objects_keras, objects_coco
             dst_dir (str): A destination directory to write the files into.
             train_test_ratio (int): The number of images in the training
                 set for every image in the test set.
         """
         self.app = app
         self.dataset = app.datasets.get_dataset(dataset)
-        self.format = format
+        self.style = style
         self.dst_dir = dst_dir
         self.train_test_ratio = train_test_ratio
 
@@ -73,22 +74,21 @@ class DataSetDownloader:
 
         os.makedirs(self.dst_dir, exist_ok=True)
 
-    def build(self, format, pool=None):
+    def build(self, pool=None):
         """
         Downloads the files in the DataSet to local disk.
 
         Args:
-            format (str):  The format to write the dataset into:
             labels_std, objects_keras, objects_coco
             pool (multiprocessing.Pool): An optional Pool instance which can be used
                 to download files in parallel.
 
         """
-        if format == "labels_std":
+        if self.style == "labels_std":
             self._build_labels_std_format(pool)
-        elif format == "objects_coco":
+        elif self.style == "objects_coco":
             self._build_objects_coco_format(pool)
-        elif format == "objects_keras":
+        elif self.style == "objects_keras":
             self._build_objects_keras_format(pool)
         else:
             raise ValueError("{} not supported by the DataSetDownloader".format(format))
