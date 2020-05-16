@@ -2,7 +2,7 @@ import shutil
 import zipfile
 
 from tensorflow.keras.models import load_model
-from keras.applications.imagenet_utils import preprocess_input
+from tensorflow.keras.applications.imagenet_utils import preprocess_input
 
 import zmlp
 from zmlpsdk import AssetProcessor, Argument
