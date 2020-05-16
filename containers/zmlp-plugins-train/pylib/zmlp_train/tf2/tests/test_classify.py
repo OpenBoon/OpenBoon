@@ -1,19 +1,12 @@
 import logging
-import os
-import shutil
 from unittest.mock import patch
-import zipfile
-
-from tensorflow.keras.models import load_model
-from tensorflow.keras.applications import mobilenet_v2 as mobilenet_v2
 
 from zmlpsdk.storage import FileStorage
-from zmlp.app import DataSetApp, ModelApp
-from zmlp.entity import Model, StoredFile, PipelineMod
+from zmlp.app import ModelApp
+from zmlp.entity import Model
 from zmlp_train.tf2 import TensorflowTransferLearningClassifier
 from zmlpsdk.base import Frame
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
-    TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset
 
 logging.basicConfig()
 
