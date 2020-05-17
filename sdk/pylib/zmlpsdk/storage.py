@@ -104,7 +104,7 @@ class ProjectStorage(object):
         self.app = app
         self.cache = cache
 
-    def store_file_by_id(self, src_path, file_id, attrs=None):
+    def store_file_by_id(self, src_path, file_id, attrs=None, precache=True):
         """
         Store a file using its unique file id.
 
@@ -148,7 +148,9 @@ class ProjectStorage(object):
 
         # Once we have the stored file its precached into the proper cache location
         path = urlparse(str(src_path)).path
-        self.cache.precache_file(result, path)
+
+        if precache:
+            self.cache.precache_file(result, path)
         return result
 
     def store_file(self, src_path, entity, category, rename=None, attrs=None):

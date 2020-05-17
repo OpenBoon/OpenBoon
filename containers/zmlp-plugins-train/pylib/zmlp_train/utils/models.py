@@ -95,7 +95,7 @@ def upload_model_directory(src_dir, file_id):
     """
 
     zip_file_path = zip_directory(src_dir, tempfile.mkstemp(".zip")[1])
-    return file_storage.projects.store_file_by_id(zip_file_path, file_id)
+    return file_storage.projects.store_file_by_id(zip_file_path, file_id, precache=False)
 
 
 def zip_directory(src_dir, dst_file, zip_root_name=None):
