@@ -12,6 +12,7 @@ import com.zorroa.archivist.domain.ModelFilter
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
 import com.zorroa.archivist.domain.ModelType
+import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.util.Json
 import org.junit.Test
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ModelServiceTests : AbstractTest() {
@@ -111,6 +114,29 @@ class ModelServiceTests : AbstractTest() {
         assertEquals("Custom Model", mod.category)
         assertEquals("Label Detection", mod.type)
         assertEquals(ModOpType.APPEND, mod.ops[0].type)
+    }
+
+    @Test
+    fun testPublishModelUpdate() {
+        val model1 = create()
+        val mod1 = modelService.publishModel(model1)
+        val mod2 = modelService.publishModel(model1)
+
+        assertEquals(mod1.id, mod2.id)
+        assertEquals(mod1.name, mod2.name)
+
+        val op1 = Json.Mapper.convertValue(mod1.ops[0].apply, ProcessorRef.LIST_OF)
+        val op2 = Json.Mapper.convertValue(mod2.ops[0].apply, ProcessorRef.LIST_OF)
+        Json.prettyPrint(op1)
+        Json.prettyPrint(op2)
+        // make sure it versioned up.
+        assertNotNull(op1[0].args?.get("version"))
+        assertNotNull(op2[0].args?.get("version"))
+
+        assertNotEquals(
+            op1[0].args?.get("version"),
+            op2[0].args?.get("version")
+        )
     }
 
     fun assertModel(model: Model) {

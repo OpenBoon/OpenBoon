@@ -168,6 +168,8 @@ class ProcessorRef(
         result = 31 * result + image.hashCode()
         return result
     }
-}
 
-var LIST_OF_PREFS: TypeReference<List<ProcessorRef>> = object : TypeReference<List<ProcessorRef>>() {}
+    companion object {
+        val LIST_OF: TypeReference<List<ProcessorRef>> = object : TypeReference<List<ProcessorRef>>() {}
+    }
+}
