@@ -28,7 +28,7 @@ assets = [
 ]
 
 
-def download_dataset(ds_id, dst_dir, ratio):
+def download_dataset(ds_id, style, dst_dir, ratio):
     os.makedirs(dst_dir + "/set_train/daisy/", exist_ok=True)
     os.makedirs(dst_dir + "/set_test/daisy/", exist_ok=True)
     os.makedirs(dst_dir + "/set_train/roses/", exist_ok=True)
