@@ -17,7 +17,7 @@ class KPage constructor(from: Int?, size: Int? = pageSizeDefault) {
     var disabled = false
 
     init {
-        this.size = size ?: pageSizeDefault
+        this.size = (size ?: pageSizeDefault).coerceAtMost(100)
     }
 
     var totalCount: Long = 0
