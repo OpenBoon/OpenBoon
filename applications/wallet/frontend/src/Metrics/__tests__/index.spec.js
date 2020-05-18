@@ -8,16 +8,6 @@ const PROCESSOR = asset.metadata.metrics.pipeline[0].processor
 
 const noop = () => () => {}
 
-describe('<Metrics />', () => {
-  it('should render properly', () => {
-    const component = TestRenderer.create(
-      <Metrics pipeline={asset.metadata.metrics.pipeline} />,
-    )
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-})
-
 describe('setLegend()', () => {
   describe('when user is using mouse', () => {
     it('should show legend on mouseenter', () => {
