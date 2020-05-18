@@ -20,7 +20,6 @@ const Metrics = ({ pipeline }) => {
 
         return (
           <div
-            // eslint-disable-next-line react/no-array-index-key
             key={processor}
             css={{
               width: '100%',
