@@ -6,13 +6,16 @@ import ClockSvg from '../Icons/clock.svg'
 
 const PIPELINE_COLORS = [
   colors.signal.sky.base,
-  colors.signal.canary.strong,
-  colors.signal.grass.base,
+  colors.graph.magenta,
+  colors.signal.halloween.base,
   colors.signal.canary.base,
-  colors.signal.sky.base,
-  colors.signal.canary.strong,
+  colors.graph.seafoam,
+  colors.graph.rust,
+  colors.graph.coral,
+  colors.graph.iris,
+  colors.graph.marigold,
+  colors.graph.magenta,
   colors.signal.grass.base,
-  colors.signal.canary.base,
 ]
 
 const CONTAINER_HEIGHT = 9
@@ -32,6 +35,8 @@ const MetricsBar = ({ pipeline }) => {
     >
       <div css={{ display: 'flex', width: '100%' }}>
         {pipeline.map((processor, index) => {
+          const colorIndex = index % PIPELINE_COLORS.length
+
           return (
             <div
               key={processor.processor}
@@ -45,7 +50,7 @@ const MetricsBar = ({ pipeline }) => {
                     : {
                         executionTime: processor.executionTime,
                         processor: processor.processor,
-                        color: PIPELINE_COLORS[index],
+                        color: PIPELINE_COLORS[colorIndex],
                       },
                 )
               }
@@ -61,7 +66,7 @@ const MetricsBar = ({ pipeline }) => {
                 height: '100%',
                 flex: `${processor.executionTime} 0 auto`,
                 minWidth: MIN_WIDTH,
-                backgroundColor: PIPELINE_COLORS[index],
+                backgroundColor: PIPELINE_COLORS[colorIndex],
                 ':hover:before': {
                   content: `''`,
                   display: 'block',
