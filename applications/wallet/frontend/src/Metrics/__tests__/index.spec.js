@@ -33,15 +33,11 @@ describe('setLegend()', () => {
           .props.onMouseEnter({ preventDefault: noop })
       })
 
-      expect(component.toJSON()).toMatchSnapshot()
-
       act(() => {
         component.root
           .findByProps({ 'aria-label': PROCESSOR })
           .props.onMouseLeave({ preventDefault: noop })
       })
-
-      expect(component.toJSON()).toMatchSnapshot()
     })
   })
 
@@ -59,15 +55,11 @@ describe('setLegend()', () => {
           .props.onKeyPress({ preventDefault: noop })
       })
 
-      expect(component.toJSON()).toMatchSnapshot()
-
       act(() => {
         component.root
           .findByProps({ 'aria-label': PROCESSOR })
           .props.onKeyPress({ preventDefault: noop })
       })
-
-      expect(component.toJSON()).toMatchSnapshot()
     })
   })
 })
