@@ -1398,7 +1398,6 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-top: 8px;
   padding-bottom: 8px;
   font-family: Roboto Condensed;
   color: #b3b3b3;
@@ -2558,7 +2557,7 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
@@ -2575,7 +2574,6 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-top: 8px;
   padding-bottom: 8px;
   font-family: Roboto Condensed;
   color: #b3b3b3;
@@ -7146,7 +7144,7 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 

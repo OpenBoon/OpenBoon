@@ -46,7 +46,7 @@ const FilterLabelConfidenceSlider = ({
           css={{
             display: 'flex',
             justifyContent: 'space-between',
-            paddingBottom: spacing.moderate,
+            paddingBottom: spacing.normal,
             fontFamily: 'Roboto Mono',
           }}
         >

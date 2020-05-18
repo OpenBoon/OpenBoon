@@ -64,7 +64,7 @@ const FilterRange = ({
           css={{
             display: 'flex',
             justifyContent: 'space-between',
-            paddingBottom: spacing.moderate,
+            paddingBottom: spacing.normal,
             fontFamily: 'Roboto Mono',
           }}
         >
