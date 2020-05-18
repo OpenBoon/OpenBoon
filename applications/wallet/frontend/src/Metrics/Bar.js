@@ -43,7 +43,7 @@ const MetricsBar = ({ pipeline }) => {
                   Object.keys(legend).length > 0
                     ? {}
                     : {
-                        executionTime: processor.executionTime || 0,
+                        executionTime: processor.executionTime,
                         processor: processor.processor,
                         color: PIPELINE_COLORS[index],
                       },
@@ -51,7 +51,7 @@ const MetricsBar = ({ pipeline }) => {
               }
               onMouseEnter={() =>
                 setLegend({
-                  executionTime: processor.executionTime || 0,
+                  executionTime: processor.executionTime,
                   processor: processor.processor,
                   color: PIPELINE_COLORS[index],
                 })
