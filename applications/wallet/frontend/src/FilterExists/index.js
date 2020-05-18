@@ -48,7 +48,9 @@ const FilterExists = ({
         />
         <div
           css={{
-            padding: `${spacing.base}px ${spacing.normal}px`,
+            paddingTop: spacing.base,
+            paddingLeft: spacing.normal,
+            paddingRight: spacing.normal,
           }}
         >
           <div
@@ -104,7 +106,7 @@ const FilterExists = ({
             css={{
               color: colors.structure.steel,
               textAlign: 'center',
-              padding: spacing.base,
+              paddingTop: spacing.base,
             }}
           >
             {exists ? (

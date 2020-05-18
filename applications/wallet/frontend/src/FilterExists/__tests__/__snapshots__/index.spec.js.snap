@@ -221,7 +221,9 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 }
 
 .emotion-15 {
-  padding: 8px 16px;
+  padding-top: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-13 {
@@ -342,7 +344,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 .emotion-14 {
   color: #808080;
   text-align: center;
-  padding: 8px;
+  padding-top: 8px;
 }
 
 <div
@@ -706,7 +708,9 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 }
 
 .emotion-15 {
-  padding: 8px 16px;
+  padding-top: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-13 {
@@ -827,7 +831,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 .emotion-14 {
   color: #808080;
   text-align: center;
-  padding: 8px;
+  padding-top: 8px;
 }
 
 <div
