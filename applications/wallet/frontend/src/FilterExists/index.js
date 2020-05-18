@@ -37,13 +37,7 @@ const FilterExists = ({
       isInitiallyOpen
       isResizeable
     >
-      <div
-        css={{
-          padding: spacing.normal,
-          paddingLeft: spacing.moderate,
-          paddingRight: spacing.moderate,
-        }}
-      >
+      <div css={{ padding: spacing.normal }}>
         <FiltersReset
           projectId={projectId}
           assetId={assetId}
@@ -52,7 +46,11 @@ const FilterExists = ({
           filterIndex={filterIndex}
           onReset={noop}
         />
-        <div css={{ paddingTop: spacing.base, paddingBottom: spacing.base }}>
+        <div
+          css={{
+            padding: `${spacing.base}px ${spacing.normal}px`,
+          }}
+        >
           <div
             css={{
               display: 'flex',

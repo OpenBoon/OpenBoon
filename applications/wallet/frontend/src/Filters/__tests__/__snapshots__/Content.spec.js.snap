@@ -532,13 +532,10 @@ Array [
 
 .emotion-16 {
   padding: 16px;
-  padding-left: 12px;
-  padding-right: 12px;
 }
 
 .emotion-15 {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding: 8px 16px;
 }
 
 .emotion-13 {
@@ -1328,7 +1325,7 @@ Array [
 }
 
 .emotion-58 {
-  padding: 16px 12px;
+  padding: 16px;
 }
 
 .emotion-58 .ErrorBoundary > div {
@@ -2530,7 +2527,7 @@ Array [
 }
 
 .emotion-656 {
-  padding: 16px 12px;
+  padding: 16px;
 }
 
 .emotion-656 .ErrorBoundary > div {
@@ -7118,7 +7115,7 @@ Array [
 }
 
 .emotion-21 {
-  padding: 16px 12px;
+  padding: 16px;
 }
 
 .emotion-21 .ErrorBoundary > div {
@@ -7974,7 +7971,7 @@ Array [
 }
 
 .emotion-15 {
-  padding: 16px 12px;
+  padding: 16px;
 }
 
 .emotion-14 {

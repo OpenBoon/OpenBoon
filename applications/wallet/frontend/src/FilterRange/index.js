@@ -29,7 +29,7 @@ const FilterRange = ({ projectId, assetId, filters, filter, filterIndex }) => {
     >
       <div
         css={{
-          padding: `${spacing.normal}px ${spacing.moderate}px`,
+          padding: spacing.normal,
           '.ErrorBoundary > div': {
             backgroundColor: 'transparent',
             boxShadow: 'none',
