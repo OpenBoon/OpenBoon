@@ -37,7 +37,7 @@ const FilterLabelConfidenceSlider = ({
         filterIndex={filterIndex}
         onReset={() => setRangeValues([0, 1])}
       />
-      <div css={{ paddingBottom: spacing.moderate }}>
+      <div>
         Label prediction confidence score:{' '}
         {formatRange({ min: rangeValues[0], max: rangeValues[1] })}
       </div>

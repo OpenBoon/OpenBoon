@@ -32,13 +32,7 @@ Array [
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-0 {
-  padding-bottom: 12px;
-}
-
-<div
-    className="emotion-0"
-  >
+  <div>
     Label prediction confidence score:
      
     All
@@ -223,13 +217,7 @@ Array [
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-0 {
-  padding-bottom: 12px;
-}
-
-<div
-    className="emotion-0"
-  >
+  <div>
     Label prediction confidence score:
      
     All
@@ -666,13 +654,7 @@ Array [
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-0 {
-  padding-bottom: 12px;
-}
-
-<div
-    className="emotion-0"
-  >
+  <div>
     Label prediction confidence score:
      
     All
@@ -989,13 +971,7 @@ Array [
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-0 {
-  padding-bottom: 12px;
-}
-
-<div
-    className="emotion-0"
-  >
+  <div>
     Label prediction confidence score:
      
     All
