@@ -25,8 +25,6 @@ describe('setLegend()', () => {
         <Metrics pipeline={asset.metadata.metrics.pipeline} />,
       )
 
-      expect(component.toJSON()).toMatchSnapshot()
-
       act(() => {
         component.root
           .findByProps({ 'aria-label': PROCESSOR })
@@ -46,8 +44,6 @@ describe('setLegend()', () => {
       const component = TestRenderer.create(
         <Metrics pipeline={asset.metadata.metrics.pipeline} />,
       )
-
-      expect(component.toJSON()).toMatchSnapshot()
 
       act(() => {
         component.root
