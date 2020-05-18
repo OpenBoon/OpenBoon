@@ -94,7 +94,8 @@ def upload_model_directory(src_dir, file_id):
         StoredFile A stored file instance.
     """
 
-    zip_file_path = zip_directory(src_dir, tempfile.mkstemp(".zip")[1])
+    zip_file_path = zip_directory(src_dir, tempfile.mkstemp(prefix="model_", suffix=".zip")[1])
+    print(zip_file_path)
     return file_storage.projects.store_file_by_id(zip_file_path, file_id, precache=False)
 
 
@@ -118,7 +119,7 @@ def zip_directory(src_dir, dst_file, zip_root_name=None):
                            os.path.join(root_name, root.replace(path, ""), file))
 
     src_dir = os.path.abspath(src_dir)
-    zip_root_name = zip_root_name or os.path.splitext(os.path.basename(dst_file))[0]
+    zip_root_name = zip_root_name or os.path.basename(src_dir)
     zipf = zipfile.ZipFile(dst_file, 'w', zipfile.ZIP_DEFLATED)
     zipdir(src_dir + "/", zipf, zip_root_name)
     zipf.close()
