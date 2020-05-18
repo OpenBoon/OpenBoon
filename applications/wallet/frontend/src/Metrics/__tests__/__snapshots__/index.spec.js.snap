@@ -3122,7 +3122,7 @@ Array [
 
 exports[`setLegend() when user is using keyboard should show legend on keyPress 2`] = `
 Array [
-  .emotion-14 {
+  .emotion-15 {
   padding: 16px;
   padding-bottom: 24px;
 }
@@ -3131,7 +3131,7 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-13 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3338,7 +3338,7 @@ Array [
   border-bottom-right-radius: 2px;
 }
 
-.emotion-12 {
+.emotion-13 {
   position: absolute;
   top: 17px;
   right: 0;
@@ -3347,18 +3347,16 @@ Array [
   width: 100%;
 }
 
-.emotion-11 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   background-color: #4a90e2;
   border-radius: 2px;
-  padding-left: 4px;
-  padding-right: 4px;
 }
 
-.emotion-10 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3368,6 +3366,18 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   padding: 8px;
+  width: 100%;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-7 {
@@ -3375,20 +3385,22 @@ Array [
   padding-right: 8px;
 }
 
-.emotion-8 {
+.emotion-9 {
   width: 1px;
   height: 100%;
   background-color: #ffffff;
   opacity: 50%;
 }
 
-.emotion-9 {
+.emotion-10 {
   padding-left: 8px;
   font-family: Roboto Condensed;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 <div
-    className="emotion-14"
+    className="emotion-15"
   >
     <div
       className="emotion-0"
@@ -3397,7 +3409,7 @@ Array [
       5
     </div>
     <div
-      className="emotion-13"
+      className="emotion-14"
     >
       <div
         className="emotion-6"
@@ -3449,28 +3461,32 @@ Array [
         />
       </div>
       <div
-        className="emotion-12"
+        className="emotion-13"
       >
         <div
-          className="emotion-11"
+          className="emotion-12"
         >
           <div
-            className="emotion-10"
+            className="emotion-11"
           >
-            <svg
-              data-file-name="clock.svg"
-              width={20}
-            />
-            <div
-              className="emotion-7"
-            >
-              0.11
-            </div>
             <div
               className="emotion-8"
-            />
+            >
+              <svg
+                data-file-name="clock.svg"
+                width={20}
+              />
+              <div
+                className="emotion-7"
+              >
+                0.11
+              </div>
+            </div>
             <div
               className="emotion-9"
+            />
+            <div
+              className="emotion-10"
             >
               zmlp_core.core.processors.PreCacheSourceFileProcessor
             </div>
@@ -7880,7 +7896,7 @@ Array [
 
 exports[`setLegend() when user is using mouse should show legend on mouseenter 2`] = `
 Array [
-  .emotion-14 {
+  .emotion-15 {
   padding: 16px;
   padding-bottom: 24px;
 }
@@ -7889,7 +7905,7 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-13 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -8096,7 +8112,7 @@ Array [
   border-bottom-right-radius: 2px;
 }
 
-.emotion-12 {
+.emotion-13 {
   position: absolute;
   top: 17px;
   right: 0;
@@ -8105,18 +8121,16 @@ Array [
   width: 100%;
 }
 
-.emotion-11 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   background-color: #4a90e2;
   border-radius: 2px;
-  padding-left: 4px;
-  padding-right: 4px;
 }
 
-.emotion-10 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -8126,6 +8140,18 @@ Array [
   -ms-flex-align: center;
   align-items: center;
   padding: 8px;
+  width: 100%;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-7 {
@@ -8133,20 +8159,22 @@ Array [
   padding-right: 8px;
 }
 
-.emotion-8 {
+.emotion-9 {
   width: 1px;
   height: 100%;
   background-color: #ffffff;
   opacity: 50%;
 }
 
-.emotion-9 {
+.emotion-10 {
   padding-left: 8px;
   font-family: Roboto Condensed;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 <div
-    className="emotion-14"
+    className="emotion-15"
   >
     <div
       className="emotion-0"
@@ -8155,7 +8183,7 @@ Array [
       5
     </div>
     <div
-      className="emotion-13"
+      className="emotion-14"
     >
       <div
         className="emotion-6"
@@ -8207,28 +8235,32 @@ Array [
         />
       </div>
       <div
-        className="emotion-12"
+        className="emotion-13"
       >
         <div
-          className="emotion-11"
+          className="emotion-12"
         >
           <div
-            className="emotion-10"
+            className="emotion-11"
           >
-            <svg
-              data-file-name="clock.svg"
-              width={20}
-            />
-            <div
-              className="emotion-7"
-            >
-              0.11
-            </div>
             <div
               className="emotion-8"
-            />
+            >
+              <svg
+                data-file-name="clock.svg"
+                width={20}
+              />
+              <div
+                className="emotion-7"
+              >
+                0.11
+              </div>
+            </div>
             <div
               className="emotion-9"
+            />
+            <div
+              className="emotion-10"
             >
               zmlp_core.core.processors.PreCacheSourceFileProcessor
             </div>

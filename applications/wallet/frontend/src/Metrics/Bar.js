@@ -107,8 +107,6 @@ const MetricsBar = ({ pipeline }) => {
               display: 'flex',
               backgroundColor: legend.color,
               borderRadius: constants.borderRadius.small,
-              paddingLeft: spacing.small,
-              paddingRight: spacing.small,
             }}
           >
             <div
@@ -116,13 +114,19 @@ const MetricsBar = ({ pipeline }) => {
                 display: 'flex',
                 alignItems: 'center',
                 padding: spacing.base,
+                width: '100%',
               }}
             >
-              <ClockSvg width={20} />
-              <div
-                css={{ paddingLeft: spacing.base, paddingRight: spacing.base }}
-              >
-                {legend.executionTime}
+              <div css={{ display: 'flex', alignItems: 'center' }}>
+                <ClockSvg width={20} />
+                <div
+                  css={{
+                    paddingLeft: spacing.base,
+                    paddingRight: spacing.base,
+                  }}
+                >
+                  {legend.executionTime}
+                </div>
               </div>
               <div
                 css={{
@@ -136,6 +140,8 @@ const MetricsBar = ({ pipeline }) => {
                 css={{
                   paddingLeft: spacing.base,
                   fontFamily: 'Roboto Condensed',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
                 }}
               >
                 {legend.processor}
