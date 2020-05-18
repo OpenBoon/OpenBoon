@@ -234,8 +234,7 @@ class ProcessorWrapper(object):
                 raise ValueError("No file types were supplied in job settings property")
 
             if self.instance:
-                self.reactor.write_event("status",
-                                         {"status": "Running {}".format(self.ref["className"])})
+                self.reactor.emit_status("Running processor {}".format(self.ref["className"]))
                 self.instance.generate(consumer)
                 total_time = round(time.monotonic() - start_time, 2)
                 self.increment_stat("generate_count")
