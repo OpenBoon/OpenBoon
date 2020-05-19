@@ -19,6 +19,9 @@ resource "google_sql_database" "auth" {
 resource "kubernetes_deployment" "auth-server" {
   provider   = kubernetes
   depends_on = [google_sql_user.auth-server]
+  lifecycle {
+    ignore_changes = [spec[0].replicas]
+  }
   metadata {
     name      = "auth-server"
     namespace = var.namespace
@@ -27,7 +30,7 @@ resource "kubernetes_deployment" "auth-server" {
     }
   }
   spec {
-    //    replicas = 2
+    replicas = 2
     selector {
       match_labels = {
         app = "auth-server"

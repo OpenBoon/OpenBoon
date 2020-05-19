@@ -1,6 +1,5 @@
-resource "google_compute_address" "wallet-external" {
+resource "google_compute_global_address" "wallet-external" {
   name         = var.external-ip-name
-  address_type = "EXTERNAL"
 }
 
 resource "random_string" "sql-password" {
@@ -23,6 +22,9 @@ resource "google_sql_user" "wallet" {
 resource "kubernetes_deployment" "wallet" {
   provider   = kubernetes
   depends_on = [google_sql_user.wallet]
+  lifecycle {
+    ignore_changes = [spec[0].replicas]
+  }
   metadata {
     name      = "wallet"
     namespace = var.namespace
@@ -150,7 +152,7 @@ resource "kubernetes_deployment" "wallet" {
           }
           env {
             name  = "FQDN"
-            value = var.fqdn
+            value = "https://${var.domain}"
           }
         }
       }
@@ -183,7 +185,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
   name     = "wallet-cert"
   managed {
-    domains = ["wallet.zmlp.zorroa.com"]
+    domains = [var.domain]
   }
 }
 
@@ -194,7 +196,7 @@ resource "kubernetes_ingress" "wallet" {
     annotations = {
       "kubernetes.io/ingress.allow-http"            = "false"
       "ingress.gcp.kubernetes.io/pre-shared-cert"   = google_compute_managed_ssl_certificate.default.name
-      "kubernetes.io/ingress.global-static-ip-name" = google_compute_address.wallet-external.name
+      "kubernetes.io/ingress.global-static-ip-name" = google_compute_global_address.wallet-external.name
     }
   }
   spec {
