@@ -1533,6 +1533,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 .emotion-21 {
@@ -2657,6 +2660,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 .emotion-25 {
