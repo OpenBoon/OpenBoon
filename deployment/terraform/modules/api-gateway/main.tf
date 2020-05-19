@@ -1,10 +1,12 @@
-resource "google_compute_address" "api-gateway-external" {
+resource "google_compute_global_address" "api-gateway-external" {
   name         = var.external-ip-name
-  address_type = "EXTERNAL"
 }
 
 resource "kubernetes_deployment" "api-gateway" {
   provider = kubernetes
+  lifecycle {
+    ignore_changes = [spec[0].replicas]
+  }
   metadata {
     name      = "api-gateway"
     namespace = var.namespace
@@ -111,7 +113,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
   name     = "api-gateway-cert"
   managed {
-    domains = ["api.zmlp.zorroa.com"]
+    domains = [var.domain]
   }
 }
 
@@ -122,7 +124,7 @@ resource "kubernetes_ingress" "api-gateway" {
     annotations = {
       "kubernetes.io/ingress.allow-http"            = "false"
       "ingress.gcp.kubernetes.io/pre-shared-cert"   = google_compute_managed_ssl_certificate.default.name
-      "kubernetes.io/ingress.global-static-ip-name" = google_compute_address.api-gateway-external.name
+      "kubernetes.io/ingress.global-static-ip-name" = google_compute_global_address.api-gateway-external.name
     }
   }
   spec {

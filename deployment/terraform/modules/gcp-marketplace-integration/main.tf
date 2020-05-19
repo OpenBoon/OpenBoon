@@ -1,5 +1,6 @@
 
 resource "kubernetes_deployment" "gcp-marketplace-integration" {
+  count = var.enabled != "" ? 1 : 0
   provider   = kubernetes
   metadata {
     name      = "gcp-marketplace-integration"
@@ -9,7 +10,7 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
     }
   }
   spec {
-    replicas = 1
+    replicas = var.replicas
     selector {
       match_labels = {
         app = "gcp-marketplace-integration"
