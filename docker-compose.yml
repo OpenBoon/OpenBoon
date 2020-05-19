@@ -160,7 +160,7 @@ services:
         CI_COMMIT_SHA: $CI_COMMIT_SHA
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings
-#      DEBUG: "true"
+      DEBUG: "true"
       PG_HOST: postgres
       ZMLP_API_URL: http://api-gateway:80
       INCEPTION_KEY_B64: ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg==
