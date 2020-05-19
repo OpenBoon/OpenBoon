@@ -32,6 +32,9 @@ resource "google_container_node_pool" "officer" {
 
 resource "kubernetes_deployment" "officer" {
   provider = kubernetes
+  lifecycle {
+    ignore_changes = [spec[0].replicas]
+  }
   metadata {
     name      = "officer"
     namespace = var.namespace
@@ -40,6 +43,7 @@ resource "kubernetes_deployment" "officer" {
     }
   }
   spec {
+    replicas = 2
     selector {
       match_labels = {
         app = "officer"

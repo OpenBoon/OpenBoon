@@ -18,6 +18,10 @@ variable "zone" {
   default     = "a"
 }
 
+variable "environment" {
+  description = "Name of the deplyment environment. Used for things like sentry reporting."
+}
+
 variable "terraform-credentials" {
   description = "Contents of a credential json file to use for creating resources."
 }
@@ -42,10 +46,23 @@ variable "google-oauth-client-id" {
   description = "Client ID to enable Google OAuth based login."
 }
 
-variable "marketplace-credentials" {
-  description = "GCP Service Account JSON key to use with the GCP Procurement API."
+variable "wallet-domain" {
+  description = "Fully qualified domain name for the wallet server."
 }
 
+variable "zmlp-domain" {
+  description = "Domain name of the zmlp api."
+}
+
+variable "deploy-marketplace-integration" {
+  description = "If this variable exists the GCP Marketplace integration will be deployed."
+  default = ""
+}
+
+variable "marketplace-credentials" {
+  description = "GCP Service Account JSON key to use with the GCP Procurement API."
+  default = ""
+}
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"

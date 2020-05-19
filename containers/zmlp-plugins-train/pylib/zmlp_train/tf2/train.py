@@ -46,18 +46,12 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         self.check_labels()
 
     def process(self, frame):
-        self.reactor.write_event("status", {
-            "status": "Downloading files in DataSet"
-        })
-
         download_dataset(self.app_model.dataset_id,
                          "labels_std",
                          self.base_dir,
                          self.arg_value('train-test-ratio'))
 
-        self.reactor.write_event("status", {
-            "status": "Training model{}".format(self.app_model.file_id)
-        })
+        self.reactor.emit_status("Training model: {}".format(self.app_model.name))
         self.build_model()
         train_gen, test_gen = self.build_generators()
         self.model.fit_generator(
@@ -81,29 +75,18 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             labels (list): An array of labels in the correct order.
 
         """
-        self.logger.info('publishing model')
         model_dir = tempfile.mkdtemp() + '/' + self.app_model.name
         os.makedirs(model_dir)
 
-        self.logger.info('saving model : {}'.format(model_dir))
         self.model.save(model_dir)
         with open(model_dir + '/labels.txt', 'w') as fp:
             for label in labels:
                 fp.write('{}\n'.format(label))
 
-        # Upload the zipped model to project storage.
-        self.logger.info('uploading model')
-
-        self.reactor.write_event("status", {
-            "status": "Uploading model{}".format(self.app_model.file_id)
-        })
-
+        self.reactor.emit_status("Uploading model: {}".format(self.app_model.name))
         upload_model_directory(model_dir, self.app_model.file_id)
 
         self.app.models.publish_model(self.app_model)
-        self.reactor.write_event("status", {
-            "status": "Published model {}".format(self.app_model.file_id)
-        })
 
     def check_labels(self):
         """
@@ -126,10 +109,6 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         """
         Build the Tensorflow model using the base model specified in the args.
         """
-        self.reactor.write_event("status", {
-            "status": "Building model{}".format(self.app_model.file_id)
-        })
-
         base_model = self.get_base_model()
 
         base_model.trainable = False
