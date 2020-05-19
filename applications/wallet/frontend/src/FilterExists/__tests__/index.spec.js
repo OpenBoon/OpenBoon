@@ -33,7 +33,7 @@ describe('<FilterExists />', () => {
     // click "Missing"
     act(() => {
       component.root
-        .findByProps({ children: 'Missing' })
+        .findByProps({ 'aria-label': 'Missing' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -84,7 +84,7 @@ describe('<FilterExists />', () => {
     // click "Exists"
     act(() => {
       component.root
-        .findByProps({ children: 'Exists' })
+        .findByProps({ 'aria-label': 'Exists' })
         .props.onClick({ preventDefault: noop })
     })
 
