@@ -2,7 +2,7 @@
 
 exports[`<FilterTextDetection /> should clear a text detection 1`] = `
 .emotion-5 {
-  padding: 16px 12px;
+  padding: 16px;
 }
 
 .emotion-4 {
@@ -164,7 +164,7 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
 
 exports[`<FilterTextDetection /> should edit a text detection 1`] = `
 .emotion-4 {
-  padding: 16px 12px;
+  padding: 16px;
 }
 
 .emotion-3 {
@@ -272,7 +272,7 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
 
 exports[`<FilterTextDetection /> should select a facet 1`] = `
 .emotion-4 {
-  padding: 16px 12px;
+  padding: 16px;
 }
 
 .emotion-3 {

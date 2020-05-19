@@ -1,4 +1,3 @@
-import shutil
 import zipfile
 
 import numpy as np
@@ -6,13 +5,9 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.imagenet_utils import preprocess_input
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
-import zmlp
-from zmlpsdk import AssetProcessor, Argument
-from zmlpsdk.storage import FileStorage
+from zmlpsdk import AssetProcessor, Argument, file_storage
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
-
-# from zmlp_analysis.zvi.labels import load_image
 
 
 class TensorflowTransferLearningClassifier(AssetProcessor):
@@ -25,8 +20,6 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
             Argument("model_id", "str", required=True, toolTip="The model Id")
         )
 
-        self.app = zmlp.app_from_env()
-
         self.app_model = None
         self.trained_model = None
         self.labels = None
@@ -38,7 +31,7 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
 
         # models are saved in dir named after model name
         model_base_dir = self.app_model.name
-        model_zip = FileStorage().localize_file(self.app_model.file_id)
+        model_zip = file_storage.localize_file(self.app_model.file_id)
 
         # unzip and extract needed files for trained model and labels
         self.trained_model, self.labels = self._extract_info(
@@ -62,7 +55,7 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         for label in predictions:
             analysis.add_label_and_score(label[0], label[1])
 
-        asset.add_analysis("zvi-label-detection", analysis)
+        asset.add_analysis(self.app_model.name, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path
@@ -99,15 +92,8 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         trained_model = load_model(model_base_dir)
         # labels.txt is always the name
         # create a list of labels from file labels.txt
-        with open("{}/labels.txt".format(model_base_dir)) as label:
-            labels = [line.rstrip() for line in label]
-
-        # cleanup; remove extracted files
-        shutil.rmtree(model_base_dir)
-        try:
-            shutil.rmtree("__MACOSX")
-        except OSError:
-            pass
+        with open("{}/labels.txt".format(model_base_dir)) as fp:
+            labels = fp.read().splitlines()
 
         # return model and labels
         return trained_model, labels

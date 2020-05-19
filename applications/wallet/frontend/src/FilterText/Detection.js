@@ -31,7 +31,7 @@ const FilterTextDetection = ({
 
   if (query && !isEditing) {
     return (
-      <div css={{ padding: `${spacing.normal}px ${spacing.moderate}px` }}>
+      <div css={{ padding: spacing.normal }}>
         <div
           css={{
             display: 'flex',
@@ -108,7 +108,7 @@ const FilterTextDetection = ({
 
   return (
     <form action="" method="post" onSubmit={(event) => event.preventDefault()}>
-      <div css={{ padding: `${spacing.normal}px ${spacing.moderate}px` }}>
+      <div css={{ padding: spacing.normal }}>
         <div
           css={{
             display: 'flex',

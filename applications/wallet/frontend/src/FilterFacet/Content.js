@@ -69,7 +69,6 @@ const FilterFacet = ({
         css={{
           display: 'flex',
           justifyContent: 'space-between',
-          paddingTop: spacing.base,
           paddingBottom: spacing.base,
           fontFamily: 'Roboto Condensed',
           color: colors.structure.zinc,

@@ -16,6 +16,7 @@ class ZviFaceDetectionProcessor(AssetProcessor):
     def __init__(self):
         super(ZviFaceDetectionProcessor, self).__init__()
         self.mtcnn = None
+        self.resnet = None
 
     def init(self):
         self.mtcnn = MTCNN(image_size=160, margin=20, keep_all=True)
@@ -42,6 +43,6 @@ class ZviFaceDetectionProcessor(AssetProcessor):
             f_hash = "".join([chr(item) for item in v_hash[0]])
 
             rect = calculate_normalized_bbox(img.shape[1], img.shape[0], elem[0])
-            analysis.add_label_and_score('face' + str(i), elem[1], bbox=rect, simhash=f_hash)
+            analysis.add_label_and_score('face{}'.format(i), elem[1], bbox=rect, simhash=f_hash)
 
         asset.add_analysis(self.namespace, analysis)
