@@ -99,7 +99,7 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
             PipelineMod: The published Pipeline Module.
         """
         self.logger.info('publishing model')
-        model_dir = os.path.join(tempfile.tempdir, "model")
+        model_dir = os.path.join(tempfile.mkdtemp(), "model")
         os.makedirs(model_dir, exist_ok=True)
 
         with open(os.path.join(model_dir, 'face_classifier.pickle'), 'wb') as fp:
