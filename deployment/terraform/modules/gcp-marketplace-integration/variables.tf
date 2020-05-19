@@ -1,3 +1,6 @@
+variable "enabled" {
+}
+
 variable "project" {
 }
 

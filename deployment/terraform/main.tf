@@ -194,24 +194,24 @@ module "ml-bbq" {
   auth-server-url        = "http://${module.auth-server.ip-address}"
 }
 
-// Commented out while we wait for Google to finish their portion of the work.
-//module "gcp-marketplace-integration" {
-//  source                   = "./modules/gcp-marketplace-integration"
-//  project                  = var.project
-//  image-pull-secret        = kubernetes_secret.dockerhub.metadata[0].name
-//  pg_host                  = module.postgres.ip-address
-//  sql-instance-name        = module.postgres.instance-name
-//  sql-service-account-key  = module.postgres.sql-service-account-key
-//  sql-connection-name      = module.postgres.connection-name
-//  zmlp-api-url             = "http://${module.api-gateway.ip-address}"
-//  smtp-password            = var.smtp-password
-//  google-oauth-client-id   = var.google-oauth-client-id
-//  marketplace-project      = "zorroa-marketplace"
-//  marketplace-subscription = "codelab"
-//  marketplace-credentials  = var.marketplace-credentials
-//  fqdn                     = var.wallet-domain
-//  environment              = var.environment
-//  inception-key-b64        = local.inception-key-b64
-//  pg_password              = module.wallet.pg_password
-//  marketplace-service-name = "isaas-codelab.mp-marketplace-partner-demos.appspot.com"
-//}
+module "gcp-marketplace-integration" {
+  source                   = "./modules/gcp-marketplace-integration"
+  project                  = var.project
+  image-pull-secret        = kubernetes_secret.dockerhub.metadata[0].name
+  pg_host                  = module.postgres.ip-address
+  sql-instance-name        = module.postgres.instance-name
+  sql-service-account-key  = module.postgres.sql-service-account-key
+  sql-connection-name      = module.postgres.connection-name
+  zmlp-api-url             = "http://${module.api-gateway.ip-address}"
+  smtp-password            = var.smtp-password
+  google-oauth-client-id   = var.google-oauth-client-id
+  marketplace-project      = "zorroa-marketplace"
+  marketplace-subscription = "codelab"
+  marketplace-credentials  = var.marketplace-credentials
+  fqdn                     = var.wallet-domain
+  environment              = var.environment
+  inception-key-b64        = local.inception-key-b64
+  pg_password              = module.wallet.pg_password
+  marketplace-service-name = "isaas-codelab.mp-marketplace-partner-demos.appspot.com"
+  enabled                  = var.deploy-marketplace-integration
+}
