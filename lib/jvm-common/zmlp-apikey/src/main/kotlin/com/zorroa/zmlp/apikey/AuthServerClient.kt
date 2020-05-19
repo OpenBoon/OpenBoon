@@ -25,6 +25,7 @@ interface AuthServerClient {
     fun createApiKey(project: UUID, name: String, perms: Collection<Permission>): ApiKey
     fun getApiKey(projectId: UUID, name: String): ApiKey
     fun getSigningKey(projectId: UUID, name: String): SigningKey
+    fun updateApiKeyEnabledByProject(projectId: UUID, enabled: Boolean)
 
     companion object {
 
@@ -103,6 +104,22 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
             "names" to listOf(name)
         )
         return post("auth/v1/apikey/_findOne", data, projectId)
+    }
+
+    override fun updateApiKeyEnabledByProject(projectId: UUID, enabled: Boolean) {
+
+        var enableProjectUrl = "/auth/v1/apikey/_enable_project/$projectId"
+        var disableProjectUrl = "/auth/v1/apikey/_disable_project/$projectId"
+        val path = if (enabled) enableProjectUrl else disableProjectUrl
+
+        val rbody = RequestBody.create(MEDIA_TYPE_JSON, Mapper.writeValueAsString(emptyMap<String, String>()))
+        val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
+            .post(rbody)
+            .build()
+        val rsp = client.newCall(req).execute()
+        if (rsp.code() >= 400) {
+            throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+        }
     }
 
     override fun getSigningKey(projectId: UUID, name: String): SigningKey {

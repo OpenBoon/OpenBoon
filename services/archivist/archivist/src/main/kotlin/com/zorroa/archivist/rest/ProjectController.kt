@@ -10,6 +10,7 @@ import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.ProjectService
 import com.zorroa.archivist.storage.ProjectStorageService
+import com.zorroa.archivist.util.HttpUtils
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.security.access.prepost.PreAuthorize
@@ -80,6 +81,22 @@ class ProjectController constructor(
     fun putSettings(@PathVariable id: UUID, @RequestBody(required = true) settings: ProjectSettings): ProjectSettings {
         projectService.updateSettings(id, settings)
         return projectService.getSettings(id)
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @PutMapping(value = ["/api/v1/project/{id}/_enable"])
+    @ApiOperation("Set an disabled project to enabled.")
+    fun putEnabled(@PathVariable id: UUID): Any {
+        projectService.setEnabled(id, true)
+        return HttpUtils.status("project", id.toString(), "enable", true)
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @PutMapping(value = ["/api/v1/project/{id}/_disable"])
+    @ApiOperation("Set a disabled project to enabled.")
+    fun putDisabled(@PathVariable id: UUID): Any {
+        projectService.setEnabled(id, false)
+        return HttpUtils.status("project", id.toString(), "disable", true)
     }
 
     //

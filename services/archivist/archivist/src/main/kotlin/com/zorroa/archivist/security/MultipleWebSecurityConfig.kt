@@ -1,6 +1,7 @@
 package com.zorroa.archivist.security
 
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.service.ProjectService
 import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.AuthServerClientImpl
 import com.zorroa.zmlp.apikey.Permission
@@ -168,8 +169,8 @@ class MultipleWebSecurityConfig {
     }
 
     @Bean
-    fun apiKeyAuthenticationFilter(): ApiKeyAuthorizationFilter {
-        return ApiKeyAuthorizationFilter(authServerClient())
+    fun apiKeyAuthenticationFilter(projectService: ProjectService): ApiKeyAuthorizationFilter {
+        return ApiKeyAuthorizationFilter(authServerClient(), projectService)
     }
 
     @Bean
@@ -183,9 +184,10 @@ class MultipleWebSecurityConfig {
     }
 
     @Bean
-    fun apiKeyFilterRegistration(): FilterRegistrationBean<ApiKeyAuthorizationFilter> {
+    @Autowired
+    fun apiKeyFilterRegistration(projectService: ProjectService): FilterRegistrationBean<ApiKeyAuthorizationFilter> {
         val bean = FilterRegistrationBean<ApiKeyAuthorizationFilter>()
-        bean.filter = apiKeyAuthenticationFilter()
+        bean.filter = apiKeyAuthenticationFilter(projectService)
         bean.isEnabled = false
         return bean
     }
