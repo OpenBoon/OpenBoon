@@ -1,15 +1,18 @@
 import shutil
 import zipfile
 
+import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.imagenet_utils import preprocess_input
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 import zmlp
 from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.storage import FileStorage
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
-from zmlp_analysis.zvi.labels import load_image
+
+# from zmlp_analysis.zvi.labels import load_image
 
 
 class TensorflowTransferLearningClassifier(AssetProcessor):
@@ -108,3 +111,26 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
 
         # return model and labels
         return trained_model, labels
+
+
+def load_image(path, size=(224, 224)):
+    """
+    Load the given image and prepare it for use by Tensorflow.
+
+    Args:
+        path (str): The path to the file to load.
+        size (tuple): A tuple of width, height
+
+    Returns:
+        numpy array: an array of bytes for Tensorflow use.
+    """
+    img = load_img(
+        path,
+        grayscale=False,
+        color_mode="rgb",
+        target_size=size,
+        interpolation="nearest",
+    )
+
+    numpy_image = img_to_array(img)
+    return np.expand_dims(numpy_image, axis=0)
