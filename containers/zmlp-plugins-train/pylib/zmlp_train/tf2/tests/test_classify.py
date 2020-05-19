@@ -38,7 +38,7 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         }
 
         flower_paths = [
-            "{}/flowers/test_daisy.jpg".format(self.base_dir),
+            "{}/flowers/test_dsy.jpg".format(self.base_dir),
             "{}/flowers/test_rose.png".format(self.base_dir),
         ]
         for paths in flower_paths:
