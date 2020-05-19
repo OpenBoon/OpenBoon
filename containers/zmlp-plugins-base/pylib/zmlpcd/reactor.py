@@ -203,6 +203,17 @@ class Reactor(object):
         """
         self.write_event("stats", report)
 
+    def emit_status(self, text):
+        """
+        Emit and log the text as a new task status.
+
+        Args:
+            text (str): A task status.
+
+        """
+        logger.info("Task Status: {}".format(text))
+        self.write_event("status", {"status": text})
+
     def write_event(self, type, payload):
         """
         Write an event back to the analyst.
