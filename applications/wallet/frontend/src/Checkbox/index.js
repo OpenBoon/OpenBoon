@@ -67,8 +67,9 @@ const STYLES = {
     },
     value: {
       color: colors.structure.zinc,
-      fontSize: typography.size.regular,
-      lineHeight: typography.height.regular,
+      fontFamily: 'Roboto Mono',
+      fontSize: typography.size.small,
+      lineHeight: typography.height.small,
     },
     legend: {
       paddingLeft: spacing.moderate,

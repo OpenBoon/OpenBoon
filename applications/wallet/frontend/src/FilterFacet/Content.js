@@ -4,7 +4,7 @@ import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 import FiltersReset from '../Filters/Reset'
@@ -155,6 +155,9 @@ const FilterFacet = ({
                       display: 'flex',
                       justifyContent: 'space-between',
                       padding: spacing.base,
+                      fontFamily: 'Roboto Mono',
+                      fontSize: typography.size.small,
+                      lineHeight: typography.height.small,
                     }}
                   >
                     <div>{key}</div>

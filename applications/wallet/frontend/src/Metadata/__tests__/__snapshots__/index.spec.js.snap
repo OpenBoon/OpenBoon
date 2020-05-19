@@ -1,23 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Metadata /> should render properly 1`] = `
-.emotion-1 {
-  padding: 16px;
-}
-
 .emotion-0 {
-  color: #73b61c;
-  font-style: italic;
+  padding: 16px;
+  color: #ffffff;
 }
 
 <div
-  className="emotion-1"
+  className="emotion-0"
 >
-  <div
-    className="emotion-0"
-  >
-    Select an asset to view its metadata
-  </div>
+  Select an asset to view its metadata
 </div>
 `;
 
