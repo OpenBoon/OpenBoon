@@ -44,10 +44,11 @@ class FileCacheTests(TestCase):
         assert os.path.getsize(path) == 65649
 
     def test_localize_uri_local_path(self):
-        local_file = zorroa_test_data('images/set01/toucan.jpg', uri=False)
-        path = self.lfc.localize_uri(local_file)
-        assert os.path.exists(path)
-        assert os.path.getsize(path) == 97221
+        local_file = os.path.join('images', 'set01', 'toucan.jpg')
+        local_file = zorroa_test_data(local_file, uri=False)
+
+        assert os.path.exists(local_file)
+        assert os.path.getsize(local_file) == 97221
 
     def test_get_path(self):
         path = self.lfc.get_path('spock', '.kirk')
