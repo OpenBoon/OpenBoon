@@ -6,7 +6,6 @@ exports[`<FiltersReset /> should reset properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 8px;
   padding-bottom: 8px;
 }
 
@@ -126,7 +125,6 @@ exports[`<FiltersReset /> should switch properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 8px;
   padding-bottom: 8px;
 }
 
@@ -246,7 +244,6 @@ exports[`<FiltersReset /> should switch properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 8px;
   padding-bottom: 8px;
 }
 
