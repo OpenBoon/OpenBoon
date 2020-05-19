@@ -12,7 +12,7 @@ def test_zip_directory():
 
     zip = zipfile.ZipFile(output_zip)
     for name in zip.namelist():
-        assert name.startswith("foo")
+        assert name.startswith("tests")
     roses = [n for n in zip.namelist() if 'roses' in n]
     assert 6 == len(roses)
     daisy = [n for n in zip.namelist() if 'daisy' in n]

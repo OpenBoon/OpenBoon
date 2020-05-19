@@ -112,10 +112,10 @@ class ModelServiceImpl(
                 ModOpType.APPEND,
                 listOf(
                     ProcessorRef(
-                        model.type.trainProcessor,
-                        StandardContainers.TRAIN,
+                        model.type.classifyProcessor,
+                        StandardContainers.ANALYSIS,
                         model.type.classifyArgs.plus(mapOf(
-                            "model_file_id" to model.fileId,
+                            "model_id" to model.id.toString(),
                             "version" to System.currentTimeMillis()
                         )),
                         module = model.name

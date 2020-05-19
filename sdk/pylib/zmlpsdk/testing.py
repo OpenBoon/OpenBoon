@@ -269,6 +269,9 @@ class TestReactor(object):
     def performance_report(self, *args):
         pass
 
+    def emit_status(self, text):
+        pass
+
     def write_event(self, event, payload):
         print("Event: {}  Payload: {}".format(event, payload))
 
