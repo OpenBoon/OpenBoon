@@ -45,14 +45,11 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
 
-        Parameters
-        ----------
-        frame: Frame
-            Frame to be processed
+        Args:
+            frame (Frame): Frame to be processed
 
-        Returns
-        -------
-        None
+        Returns:
+            None
         """
         asset = frame.asset
         proxy_path = get_proxy_level_path(asset, 0)
@@ -65,17 +62,14 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         asset.add_analysis("zvi-label-detection", analysis)
 
     def predict(self, path):
-        """Make a prediction for an image path
+        """ Make a prediction for an image path
 
-        Parameters
-        ----------
-        path: str
-            Image patch
+        Args:
+            path (str): image path
 
-        Returns
-        -------
-        List[tuple]
-            result is list of tuples in format [(label, score), (label, score)]
+        Returns:
+            List[tuple]: result is list of tuples in format [(label, score),
+            (label, score)]
         """
         img = load_image(path)
         # get predictions
@@ -86,19 +80,14 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
 
     @staticmethod
     def _extract_info(model_zip, model_base_dir):
-        """Extract then remove model info from a zip file
+        """ Extract then remove model info from a zip file
 
-        Parameters
-        ----------
-        model_zip: str
-            model zip dir
-        model_base_dir: str
-            model.name which is set as model parent dir
+        Args:
+            model_zip (str): model zip dir
+            model_base_dir (str): model.name which is set as model parent dir
 
-        Returns
-        -------
-        tuple
-            (Keras model instance, List[str] of labels)
+        Returns:
+            tuple: (Keras model instance, List[str] of labels)
         """
         # extract all files
         with zipfile.ZipFile(model_zip) as z:
