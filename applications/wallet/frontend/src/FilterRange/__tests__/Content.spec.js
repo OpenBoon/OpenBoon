@@ -69,4 +69,35 @@ describe('<FilterRangeContent />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should not crash if min equals max', () => {
+    const filter = {
+      type: 'range',
+      attribute: 'clip.length',
+      values: {},
+    }
+
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        count: 16,
+        results: { count: 16, min: 1.0, max: 1.0, avg: 1.0, sum: 16.0 },
+      },
+    })
+
+    const component = TestRenderer.create(
+      <FilterRangeContent
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={[filter]}
+        filter={filter}
+        filterIndex={0}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

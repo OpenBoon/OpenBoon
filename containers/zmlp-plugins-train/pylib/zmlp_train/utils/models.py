@@ -11,13 +11,20 @@ from zmlpsdk import file_storage
 logger = logging.getLogger(__name__)
 
 
-def download_dataset(ds_id, dst_dir, ratio):
+def download_dataset(ds_id, style, dst_dir, ratio):
     """
     Download the dataset locally.  Shells out to an external tool
     which handles the downloads in parallel.
+
+    Args:
+        ds_id (str): The ID of the dataset.
+        style (str): The format the DS should be written into.
+        dst_dir (str): The directory to write the DataSet into.
+        ratio: (int): The test/train ratio.
     """
     cmd = ['dataset-dl.py',
            ds_id,
+           style,
            dst_dir,
            '--train-test-ratio',
            str(ratio)]
@@ -88,7 +95,7 @@ def upload_model_directory(src_dir, file_id):
     """
 
     zip_file_path = zip_directory(src_dir, tempfile.mkstemp(".zip")[1])
-    return file_storage.projects.store_file_by_id(zip_file_path, file_id)
+    return file_storage.projects.store_file_by_id(zip_file_path, file_id, precache=False)
 
 
 def zip_directory(src_dir, dst_file, zip_root_name=None):

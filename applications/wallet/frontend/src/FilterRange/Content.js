@@ -40,11 +40,13 @@ const FilterRange = ({
     },
   )
 
-  const domain = [results.min, results.max]
+  const minMaxFix = results.min === results.max ? 0.001 : 0
+
+  const domain = [results.min, results.max + minMaxFix]
 
   const [rangeValues, setRangeValues] = useState([
     min || results.min,
-    max || results.max,
+    max || results.max + minMaxFix,
   ])
 
   return (
@@ -67,7 +69,9 @@ const FilterRange = ({
           }}
         >
           <span>{formatValue({ attribute, value: results.min })}</span>
-          <span>{formatValue({ attribute, value: results.max })}</span>
+          <span>
+            {formatValue({ attribute, value: results.max + minMaxFix })}
+          </span>
         </div>
         <div css={{ padding: spacing.small }}>
           <FilterRangeSlider

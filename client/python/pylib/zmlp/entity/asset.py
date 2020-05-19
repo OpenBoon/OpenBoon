@@ -282,6 +282,24 @@ class Asset(DocumentMixin):
         self.id = data.get("id")
         self.document = data.get("document", {})
         self.score = data.get("score", 0)
+        self.inner_hits = data.get("inner_hits", [])
+
+    @staticmethod
+    def from_hit(hit):
+        """
+        Converts an ElasticSearch hit into an Asset.
+
+        Args:
+            hit (dict): An raw ES document
+
+        Returns:
+            Asset: The Asset.
+        """
+        return Asset({
+            'id': hit['_id'],
+            'score': hit.get('_score', 0),
+            'document': hit.get('_source', {}),
+            'inner_hits': hit.get('inner_hits', [])})
 
     @property
     def uri(self):
@@ -391,6 +409,21 @@ class Asset(DocumentMixin):
         if level >= len(files):
             level = -1
         return files[level]
+
+    def get_inner_hits(self, name):
+        """
+        Return any inner hits from a collapse query.
+
+        Args:
+            name (str): The inner hit name.
+
+        Returns:
+            list[Asset]:  A list of Assets.
+        """
+        try:
+            return [Asset.from_hit(hit) for hit in self.inner_hits[name]['hits']['hits']]
+        except KeyError:
+            return []
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.

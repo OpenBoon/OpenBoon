@@ -4,7 +4,13 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
+import MetadataPrettyNoResults from './NoResults'
+
 const MetadataPrettyContent = ({ name, value: { content } }) => {
+  if (!content) {
+    return <MetadataPrettyNoResults name={name} />
+  }
+
   return (
     <>
       <div
@@ -22,35 +28,31 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
       >
         {name}
       </div>
-      {content && (
-        <div
-          css={{
-            padding: `${spacing.base}px ${spacing.normal}px`,
-            paddingBottom: 0,
-            minHeight: COPY_SIZE,
-            width: '100%',
-            fontFamily: 'Roboto Condensed',
-            textTransform: 'uppercase',
-            color: colors.structure.steel,
-          }}
-        >
-          content
-        </div>
-      )}
+      <div
+        css={{
+          padding: `${spacing.base}px ${spacing.normal}px`,
+          paddingBottom: 0,
+          minHeight: COPY_SIZE,
+          width: '100%',
+          fontFamily: 'Roboto Condensed',
+          textTransform: 'uppercase',
+          color: colors.structure.steel,
+        }}
+      >
+        content
+      </div>
       <div css={{ paddingBottom: spacing.base }}>
         <div
           css={{
             display: 'flex',
-            ':hover': content
-              ? {
-                  backgroundColor: colors.signal.electricBlue.background,
-                  div: {
-                    svg: {
-                      display: 'inline-block',
-                    },
-                  },
-                }
-              : {},
+            ':hover': {
+              backgroundColor: colors.signal.electricBlue.background,
+              div: {
+                svg: {
+                  display: 'inline-block',
+                },
+              },
+            },
           }}
         >
           <div
@@ -59,10 +61,9 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
               padding: `${spacing.moderate}px ${spacing.normal}px`,
               wordBreak: 'break-word',
               color: colors.structure.zinc,
-              fontStyle: content ? '' : typography.style.italic,
             }}
           >
-            {content || 'No Results'}
+            {content}
           </div>
           <div
             css={{
