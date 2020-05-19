@@ -5,13 +5,13 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectSpec
-import com.zorroa.archivist.domain.ProjectSpecEnabled
 import com.zorroa.archivist.security.getProjectId
 
 import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ProjectServiceTests : AbstractTest() {
@@ -104,9 +104,18 @@ class ProjectServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testUpdateEnabled() {
+    fun testSetEnable() {
         val testSpec = ProjectSpec("project_test")
         val project1 = projectService.create(testSpec)
-        projectService.updateEnabledStatus(project1.id, ProjectSpecEnabled(false))
+        projectService.setEnabled(project1.id, false)
+
+        var status = jdbc.queryForObject(
+            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project1.id)
+        assertFalse(status)
+
+        projectService.setEnabled(project1.id, true)
+        status = jdbc.queryForObject(
+            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project1.id)
+        assertTrue(status)
     }
 }

@@ -94,12 +94,6 @@ class ProjectSettings(
     var defaultIndexRouteId: UUID
 )
 
-@ApiModel("Project Spec Enabled", description = "Project Enabled Property")
-class ProjectSpecEnabled(
-    @ApiModelProperty("Project Enabled Status")
-    var enabled: Boolean
-)
-
 @ApiModel("Project Filter", description = "Search filter for finding Projects")
 class ProjectFilter(
 

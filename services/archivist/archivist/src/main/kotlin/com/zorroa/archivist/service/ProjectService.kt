@@ -1,7 +1,8 @@
 package com.zorroa.archivist.service
 
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
@@ -15,7 +16,6 @@ import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
-import com.zorroa.archivist.domain.ProjectSpecEnabled
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.archivist.repository.ProjectDao
@@ -45,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.Base64
 import java.util.Date
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 interface ProjectService {
     /**
@@ -110,9 +111,14 @@ interface ProjectService {
     fun getQuotasTimeSeries(projectId: UUID, start: Date, end: Date): List<ProjectQuotasTimeSeriesEntry>
 
     /**
-     * Update Project Enabled attribute
+     * Enable or disable the project.
      */
-    fun updateEnabledStatus(id: UUID, projectSpecEnabled: ProjectSpecEnabled)
+    fun setEnabled(projectId: UUID, value: Boolean)
+
+    /**
+     * Return true if the project ID is enabled, false if not.
+     */
+    fun isEnabled(id: UUID): Boolean
 }
 
 @Service
@@ -164,6 +170,8 @@ class ProjectServiceImpl constructor(
             createCryptoKey(project)
             createStandardApiKeys(project)
         }
+
+        enabledCache.invalidate(project.id)
 
         logger.event(
             LogObject.PROJECT, LogAction.CREATE,
@@ -291,28 +299,46 @@ class ProjectServiceImpl constructor(
             "projects/${project.id}/keys.json", result.toList())
     }
 
-    override fun updateEnabledStatus(id: UUID, projectSpecEnabled: ProjectSpecEnabled) {
+    override fun setEnabled(id: UUID, enabled: Boolean) {
         val project = projectDao.findById(id).orElseThrow {
             EmptyResultDataAccessException("Project not found", 1)
         }
-        projectDao.updateStatus(projectSpecEnabled.enabled, project.id)
 
-        var previousState = project.enabled
-        try {
-            authServerClient.updateApiKeyEnabledByProject(project.id, projectSpecEnabled.enabled)
-        } catch (ex: Exception) {
-            projectDao.updateStatus(previousState, project.id)
-            throw ArchivistException(ex)
-        }
-
+        projectCustomDao.setEnabled(project.id, enabled)
+        authServerClient.updateApiKeyEnabledByProject(project.id, enabled)
+        enabledCache.invalidate(project.id)
         logger.event(
-            LogObject.PROJECT, if (projectSpecEnabled.enabled) LogAction.ENABLE else LogAction.DISABLE,
+            LogObject.PROJECT, if (enabled) LogAction.ENABLE else LogAction.DISABLE,
             mapOf(
                 "projectId" to project.id,
                 "projectName" to project.name
             )
         )
     }
+
+    @Transactional(readOnly = true)
+    override fun isEnabled(id: UUID): Boolean {
+        try {
+            return enabledCache.get(id)
+        } catch (e: Exception) {
+            logger.warn("Unable to check for project enabled status.", e)
+        }
+
+        return false
+    }
+
+    // This gets called alot so hold onto the values for a while.
+    // Might have to go into redis.
+    private val enabledCache = CacheBuilder.newBuilder()
+        .initialCapacity(32)
+        .concurrencyLevel(2)
+        .expireAfterWrite(1, TimeUnit.MINUTES)
+        .build(object : CacheLoader<UUID, Boolean>() {
+            @Throws(Exception::class)
+            override fun load(projectId: UUID): Boolean {
+                return projectCustomDao.isEnabled(projectId)
+            }
+        })
 
     companion object {
         private val logger = LoggerFactory.getLogger(ProjectServiceImpl::class.java)

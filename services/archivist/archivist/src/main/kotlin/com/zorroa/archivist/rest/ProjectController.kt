@@ -6,11 +6,11 @@ import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
-import com.zorroa.archivist.domain.ProjectSpecEnabled
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.ProjectService
 import com.zorroa.archivist.storage.ProjectStorageService
+import com.zorroa.archivist.util.HttpUtils
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.security.access.prepost.PreAuthorize
@@ -83,6 +83,22 @@ class ProjectController constructor(
         return projectService.getSettings(id)
     }
 
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @PutMapping(value = ["/api/v1/project/{id}/_enable"])
+    @ApiOperation("Set an disabled project to enabled.")
+    fun putEnabled(@PathVariable id: UUID): Any {
+        projectService.setEnabled(id, true)
+        return HttpUtils.status("project", id.toString(), "enable", true)
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @PutMapping(value = ["/api/v1/project/{id}/_disable"])
+    @ApiOperation("Set a disabled project to enabled.")
+    fun putDisabled(@PathVariable id: UUID): Any {
+        projectService.setEnabled(id, false)
+        return HttpUtils.status("project", id.toString(), "disable", true)
+    }
+
     //
     // Methods that default to the API Keys project Id.
     //
@@ -126,13 +142,5 @@ class ProjectController constructor(
         val id = getProjectId()
         projectService.updateSettings(id, settings)
         return projectService.getSettings(id)
-    }
-
-    @PreAuthorize("hasAuthority('ProjectManage')")
-    @PutMapping(value = ["/api/v1/project/enabled"])
-    @ApiOperation("Get the project Settings")
-    fun putEnabled(@RequestBody(required = true) projectSpecEnabled: ProjectSpecEnabled) {
-        val id = getProjectId()
-        return projectService.updateEnabledStatus(id, projectSpecEnabled)
     }
 }

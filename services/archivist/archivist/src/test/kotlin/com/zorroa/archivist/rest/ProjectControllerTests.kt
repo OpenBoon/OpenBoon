@@ -223,12 +223,27 @@ class ProjectControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun updateProjectEnabledStatus() {
+    fun enableProject() {
         val pid = getProjectId()
         val settings = projectService.getSettings(pid)
 
         mvc.perform(
-            MockMvcRequestBuilders.put("/api/v1/project/enabled")
+            MockMvcRequestBuilders.put("/api/v1/project/$pid/_enable")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(settings))
+        )
+            .andExpect(status().isOk)
+            .andReturn()
+    }
+
+    @Test
+    fun disableProject() {
+        val pid = getProjectId()
+        val settings = projectService.getSettings(pid)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/project/$pid/_disable")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(settings))
