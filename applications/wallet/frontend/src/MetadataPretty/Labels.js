@@ -4,10 +4,15 @@ import { constants, spacing } from '../Styles'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 
+import MetadataPrettyNoResults from './NoResults'
 import MetadataPrettyLabelsQuery from './LabelsQuery'
 import MetadataPrettyLabelsContent from './LabelsContent'
 
 const MetadataPrettyLabels = ({ name, value: { predictions } }) => {
+  if (predictions.length === 0) {
+    return <MetadataPrettyNoResults name={name} />
+  }
+
   if (Object.keys(predictions[0]).includes('bbox')) {
     return (
       <div

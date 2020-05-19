@@ -1,7 +1,5 @@
 package com.zorroa.archivist.repository
 
-import com.google.common.base.Preconditions
-import com.zorroa.archivist.domain.LIST_OF_PREFS
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.Pipeline
@@ -10,6 +8,7 @@ import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
+import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.zmlp.service.logging.event
@@ -38,7 +37,6 @@ interface PipelineDao {
 class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
     override fun create(spec: PipelineSpec): Pipeline {
-        Preconditions.checkNotNull(spec.name)
 
         val id = uuid1.generate()
         val time = System.currentTimeMillis()
@@ -151,7 +149,7 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
             rs.getObject("pk_project") as UUID,
             rs.getString("str_name"),
             PipelineMode.values()[rs.getInt("int_mode")],
-            Json.Mapper.readValue(rs.getString("json_processors"), LIST_OF_PREFS),
+            Json.Mapper.readValue(rs.getString("json_processors"), ProcessorRef.LIST_OF),
             jdbc.queryForList(
                 "SELECT x.pk_module FROM x_module_pipeline x WHERE x.pk_pipeline=?", UUID::class.java,
                 rs.getObject("pk_pipeline")

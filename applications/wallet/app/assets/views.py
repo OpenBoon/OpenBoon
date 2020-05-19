@@ -57,23 +57,6 @@ class AssetViewSet(BaseProjectViewSet):
             return Response(data={'detail': 'Unable to delete asset.'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    @action(detail=False, methods=['post'])
-    def search(self, request, project_pk):
-        """Searches the assets for this project with whichever query is given.
-
-        Pagination arguments are expected in the POST body, rather than the querystring.
-
-            Args:
-                request (Request): Request the view method was given.
-                project_pk (int): The Project ID to search under.
-
-            Returns:
-                Response: DRF Response with the results of the search
-
-            """
-
-        return self._zmlp_list_from_es(request, item_modifier=asset_modifier)
-
     @action(detail=True, methods=['get'])
     def box_images(self, request, project_pk, pk):
         """Special action that returns a portion of the Asset's metadata with base64 encoded
