@@ -11,6 +11,7 @@ import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ProjectServiceTests : AbstractTest() {
@@ -100,5 +101,21 @@ class ProjectServiceTests : AbstractTest() {
     fun testGetCryptoKey() {
         val key = projectService.getCryptoKey()
         assertEquals(99, key.length)
+    }
+
+    @Test
+    fun testSetEnable() {
+        val testSpec = ProjectSpec("project_test")
+        val project1 = projectService.create(testSpec)
+        projectService.setEnabled(project1.id, false)
+
+        var status = jdbc.queryForObject(
+            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project1.id)
+        assertFalse(status)
+
+        projectService.setEnabled(project1.id, true)
+        status = jdbc.queryForObject(
+            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project1.id)
+        assertTrue(status)
     }
 }

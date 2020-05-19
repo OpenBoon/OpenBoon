@@ -37,7 +37,9 @@ enum class LogAction {
     SCAN,
     DECRYPT,
     SIGN_FOR_WRITE,
-    SIGN_FOR_READ
+    SIGN_FOR_READ,
+    ENABLE,
+    DISABLE
 }
 
 /**

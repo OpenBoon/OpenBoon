@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectSettings
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.util.JdbcUtils
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
@@ -18,6 +19,9 @@ interface ProjectCustomDao {
     fun findOne(filter: ProjectFilter): Project
     fun getAll(filter: ProjectFilter): KPagedList<Project>
     fun count(filter: ProjectFilter): Long
+
+    fun isEnabled(projectId: UUID): Boolean
+    fun setEnabled(projectId: UUID, value: Boolean): Boolean
 
     fun getSettings(projectId: UUID): ProjectSettings
     fun updateSettings(projectId: UUID, settings: ProjectSettings): Boolean
@@ -70,11 +74,23 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
     }
 
+    override fun isEnabled(projectId: UUID): Boolean {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM project WHERE pk_project=? AND enabled='t'",
+            Int::class.java, projectId) == 1
+    }
+
+    override fun setEnabled(projectId: UUID, value: Boolean): Boolean {
+        return jdbc.update(SET_ENABLED, value, System.currentTimeMillis(),
+            getZmlpActor().toString(), projectId, value) == 1
+    }
+
     companion object {
         const val GET = "SELECT * FROM project"
         const val COUNT = "SELECT COUNT(1) FROM project"
-        const val UPDATE_SETTINGS = "UPDATE " +
-            "project_settings SET pk_pipeline_default=?, pk_index_route_default=? WHERE pk_project=?"
+        const val UPDATE_SETTINGS = "UPDATE project_settings " +
+            "SET pk_pipeline_default=?, pk_index_route_default=? WHERE pk_project=?"
+        const val SET_ENABLED = "UPDATE project " +
+            "SET enabled=?, time_modified=?, actor_modified=? WHERE pk_project=? AND enabled != ?"
         val INSERT_SETTINGS = JdbcUtils.insert("project_settings",
             "pk_project_settings",
             "pk_project",
@@ -88,7 +104,8 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
                 rs.getLong("time_created"),
                 rs.getLong("time_modified"),
                 rs.getString("actor_created"),
-                rs.getString("actor_modified")
+                rs.getString("actor_modified"),
+                rs.getBoolean("enabled")
             )
         }
     }
