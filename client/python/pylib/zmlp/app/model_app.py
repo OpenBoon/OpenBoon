@@ -30,7 +30,7 @@ class ModelApp:
         """
         body = {
             "dataSetId": as_id(dataset),
-            "type": str(type)
+            "type": type.name
         }
         return Model(self.app.client.post("/api/v3/models", body))
 
