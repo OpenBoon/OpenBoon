@@ -68,7 +68,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             return -1
 
         # Cannot run on clips without transcoding the clip
-        if asset.get_attr('clip.timeline') != 'full':
+        if asset.get_attr('clip.track') != 'full':
             self.logger.info('Skipping, cannot run processor on clips.')
             return -1
 

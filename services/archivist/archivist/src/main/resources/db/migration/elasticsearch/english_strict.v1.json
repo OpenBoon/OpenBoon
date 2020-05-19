@@ -158,7 +158,7 @@
           "type": {
             "type": "keyword"
           },
-          "timeline": {
+          "track": {
             "type": "keyword"
           },
           "pile": {

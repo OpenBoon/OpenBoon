@@ -188,7 +188,7 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(3.0, assets[0].getAttr<Double?>("clip.start"))
         assertEquals(3.0, assets[0].getAttr<Double?>("clip.stop"))
         assertEquals("page", assets[0].getAttr<String?>("clip.type"))
-        assertEquals("pages", assets[0].getAttr<String?>("clip.timeline"))
+        assertEquals("pages", assets[0].getAttr<String?>("clip.track"))
         assertEquals("bLyf1hG1kgdyYYyrdzXgVdBt0ok", assets[0].getAttr<String?>("clip.pile"))
     }
 
