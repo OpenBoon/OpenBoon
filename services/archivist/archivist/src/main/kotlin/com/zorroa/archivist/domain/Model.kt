@@ -73,11 +73,11 @@ enum class ModelType(
         DataSetType.LABEL_DETECTION
     ),
     FACE_RECOGNITION_KNN(
-        "zmlp_train.knn.KnnFaceRecognitionTrainer",
+        "zmlp_train.face_rec.KnnFaceRecognitionTrainer",
         mapOf(),
-        "zmlp_train.knn.KnnFaceRecognitionClassifier",
+        "zmlp_analysis.custom.KnnFaceRecognitionClassifier",
         mapOf(),
-        "custom-%s-face-recognition",
+        "custom-%s-face-recognition-knn",
         "Relabel existing ZMLP faces using a KNN Face Recognition model.",
         DataSetType.FACE_RECOGNITION
     );

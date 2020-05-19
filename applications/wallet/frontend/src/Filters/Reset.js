@@ -29,7 +29,6 @@ const FiltersReset = ({
     <div
       css={{
         display: 'flex',
-        paddingTop: spacing.base,
         paddingBottom: spacing.base,
       }}
     >

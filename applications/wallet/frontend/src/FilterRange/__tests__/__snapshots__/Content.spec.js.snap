@@ -14,7 +14,7 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
@@ -163,7 +163,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
@@ -318,7 +318,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
@@ -473,7 +473,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
@@ -628,7 +628,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
