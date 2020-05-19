@@ -40,11 +40,25 @@ class DataSet(BaseEntity):
         Args:
             label (str): The label name.
             bbox (list[float]): A open bounding box.
-            simhash (str): An associated simhash, if nay.
+            simhash (str): An associated simhash, if any.
         Returns:
             DataSetLabel: The new label.
         """
         return DataSetLabel(self, label, bbox, simhash)
+
+    def make_label_from_prediction(self, label, prediction):
+        """
+        Make a label from a prediction.  This will copy the bbox
+        and simhash from the prediction, if any.
+
+        Args:
+            label (str): A name for the prediction.
+            prediction (dict): A prediction from an analysis namespace.s
+
+        Returns:
+            DataSetLabel: A new label
+        """
+        return DataSetLabel(self, label, prediction.get('bbox'), prediction.get('simhash'))
 
 
 class DataSetLabel:
@@ -69,10 +83,10 @@ class DataSetLabel:
 
         """
         return {
-            "dataSetId": self.dataset_id,
-            "label": self.label,
-            "bbox": round_floats(self.bbox),
-            "simhash": self.simhash
+            'dataSetId': self.dataset_id,
+            'label': self.label,
+            'bbox': round_floats(self.bbox),
+            'simhash': self.simhash
         }
 
 
