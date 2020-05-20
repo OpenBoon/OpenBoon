@@ -40,5 +40,23 @@ RUN yum remove -y unzip wget
 RUN yes | elasticsearch-plugin install repository-gcs -s
 RUN yes | elasticsearch-plugin install repository-s3 -s
 
-
 WORKDIR /usr/share/elasticsearch
+
+# Add credentials for backup snapshot bucket
+#COPY service-account-test.json service-account-test.json
+#RUN ./bin/elasticsearch-keystore add-file --force gcs.client.default.credentials_file service-account-test.json
+#RUN rm ./service-account-test.json
+
+# Setup for AWS Minio backup repository
+ARG MINIO_ACCESS_KEY=qwerty123
+ARG MINIO_SECRET_KEY=123qwerty
+
+ENV MINIO_URL http://minio:9000
+ENV MINIO_DEFAULT_PROTOCOL http
+
+RUN echo 's3.client.default.endpoint: ${MINIO_URL}' >> ./config/elasticsearch.yml
+RUN echo 's3.client.default.protocol: ${MINIO_DEFAULT_PROTOCOL}' >> ./config/elasticsearch.yml
+RUN echo 's3.client.default.path_style_access: true'  >> ./config/elasticsearch.yml
+RUN echo $MINIO_ACCESS_KEY | ./bin/elasticsearch-keystore add --stdin --force s3.client.default.access_key
+RUN echo $MINIO_SECRET_KEY | ./bin/elasticsearch-keystore add --stdin --force s3.client.default.secret_key
+

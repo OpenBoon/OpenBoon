@@ -407,6 +407,9 @@ zmlp-services-unit-tests:
     MINIO_ACCESS_KEY: "qwerty123"
     MINIO_SECRET_KEY: "123qwerty"
     MXNET_OS: "linux"
+    MINIO_URL: "http://localhost:9000"
+    MINIO_DEFAULT_PROTOCOL: "http"
+    ARCHIVIST_ES_BACKUP_BUCKET_NAME: "project-storage-test"
   script:
     - export
     - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"

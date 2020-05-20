@@ -34,6 +34,8 @@ services:
       context: services/elasticsearch
       args:
         node_type: single
+        MINIO_ACCESS_KEY: qwerty123
+        MINIO_SECRET_KEY: 123qwerty
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -43,6 +45,8 @@ services:
       cluster.name: "zorroa-es-cluster"
       network.host: "0.0.0.0"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+      MINIO_URL: http://minio:9000
+      MINIO_DEFAULT_PROTOCOL: http
 
   # API Gateway
   api-gateway:

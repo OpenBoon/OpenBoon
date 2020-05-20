@@ -62,10 +62,6 @@ class AssetServiceTests : AbstractTest() {
         return true
     }
 
-    override fun requiresFieldSets(): Boolean {
-        return true
-    }
-
     @Test
     fun testBatchCreateAssetsWithModule() {
         pipelineModuleService.updateStandardMods()
