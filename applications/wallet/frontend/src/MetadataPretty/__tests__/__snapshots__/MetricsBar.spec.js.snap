@@ -1,0 +1,219 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 9px;
+  position: relative;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 0.11 0 auto;
+  -ms-flex: 0.11 0 auto;
+  flex: 0.11 0 auto;
+  min-width: 8px;
+  background-color: #4a90e2;
+  border: 2px solid transparent;
+}
+
+.emotion-0:hover,
+.emotion-0:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 0;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-1 {
+  height: 100%;
+  -webkit-flex: 0.26 0 auto;
+  -ms-flex: 0.26 0 auto;
+  flex: 0.26 0 auto;
+  min-width: 8px;
+  background-color: #a03dc7;
+  border: 2px solid transparent;
+}
+
+.emotion-1:hover,
+.emotion-1:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 0;
+}
+
+.emotion-1:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-1:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-2 {
+  height: 100%;
+  -webkit-flex: undefined 0 auto;
+  -ms-flex: undefined 0 auto;
+  flex: undefined 0 auto;
+  min-width: 8px;
+  background-color: #d6680b;
+  border: 2px solid transparent;
+}
+
+.emotion-2:hover,
+.emotion-2:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 0;
+}
+
+.emotion-2:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-2:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-3 {
+  height: 100%;
+  -webkit-flex: undefined 0 auto;
+  -ms-flex: undefined 0 auto;
+  flex: undefined 0 auto;
+  min-width: 8px;
+  background-color: #ebb52e;
+  border: 2px solid transparent;
+}
+
+.emotion-3:hover,
+.emotion-3:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 0;
+}
+
+.emotion-3:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-3:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-4 {
+  height: 100%;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  min-width: 8px;
+  background-color: #00bdc1;
+  border: 2px solid transparent;
+}
+
+.emotion-4:hover,
+.emotion-4:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 0;
+}
+
+.emotion-4:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-4:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+<div
+  className="emotion-6"
+>
+  <div
+    className="emotion-5"
+  >
+    <button
+      aria-label="zmlp_core.core.processors.PreCacheSourceFileProcessor"
+      className="emotion-0"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="button"
+    />
+    <button
+      aria-label="zmlp_core.image.importers.ImageImporter"
+      className="emotion-1"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="button"
+    />
+    <button
+      aria-label="zmlp_core.office.importers.OfficeImporter"
+      className="emotion-2"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="button"
+    />
+    <button
+      aria-label="zmlp_core.video.VideoImporter"
+      className="emotion-3"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="button"
+    />
+    <button
+      aria-label="zmlp_core.core.processors.AssertAttributesProcessor"
+      className="emotion-4"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="button"
+    />
+  </div>
+</div>
+`;
