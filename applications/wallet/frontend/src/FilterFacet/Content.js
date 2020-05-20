@@ -23,6 +23,7 @@ const FilterFacet = ({
     type,
     attribute,
     values: { facets = [] },
+    isDisabled,
   },
   filterIndex,
 }) => {
@@ -137,7 +138,7 @@ const FilterFacet = ({
                       css={{
                         width: `${offset}%`,
                         borderTop:
-                          !isSelected && hasSelections
+                          isDisabled || (!isSelected && hasSelections)
                             ? constants.borders.unselectedFacet
                             : constants.borders.facet,
                       }}

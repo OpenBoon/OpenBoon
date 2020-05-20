@@ -117,6 +117,7 @@ FilterRangeSlider.propTypes = {
   step: PropTypes.number.isRequired,
   domain: PropTypes.arrayOf(PropTypes.number).isRequired,
   values: PropTypes.arrayOf(PropTypes.number).isRequired,
+  isDisabled: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
 }

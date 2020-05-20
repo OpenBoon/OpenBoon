@@ -22,6 +22,7 @@ const FilterLabelConfidenceContent = ({
     type,
     attribute,
     values: { labels = [], min = 0.0, max = 1.0 },
+    isDisabled,
   },
   filterIndex,
 }) => {
@@ -136,7 +137,7 @@ const FilterLabelConfidenceContent = ({
                       css={{
                         width: `${offset}%`,
                         borderTop:
-                          !isSelected && hasSelections
+                          isDisabled || (!isSelected && hasSelections)
                             ? constants.borders.unselectedFacet
                             : constants.borders.facet,
                       }}

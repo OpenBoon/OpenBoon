@@ -100,4 +100,42 @@ describe('<FilterRangeContent />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render properly when muted', () => {
+    const filter = {
+      type: 'range',
+      attribute: 'source.filesize',
+      values: { min: 200, max: 8000 },
+      isDisabled: true,
+    }
+
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        count: 584,
+        results: {
+          count: 580,
+          min: 180,
+          max: 8525.0,
+          avg: 899.5689655172414,
+          sum: 521750.0,
+        },
+      },
+    })
+
+    const component = TestRenderer.create(
+      <FilterRangeContent
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={[filter]}
+        filter={filter}
+        filterIndex={0}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
