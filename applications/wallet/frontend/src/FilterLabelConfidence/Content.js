@@ -72,7 +72,7 @@ const FilterLabelConfidenceContent = ({
           color: colors.structure.zinc,
         }}
       >
-        <div>KEYWORD</div>
+        <div>LABEL</div>
         <div>COUNT</div>
       </div>
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>

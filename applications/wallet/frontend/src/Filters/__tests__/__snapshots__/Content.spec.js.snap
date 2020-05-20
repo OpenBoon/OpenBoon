@@ -1683,7 +1683,7 @@ Array [
             className="emotion-14"
           >
             <div>
-              KEYWORD
+              LABEL
             </div>
             <div>
               COUNT
@@ -3137,7 +3137,7 @@ Array [
             className="emotion-20"
           >
             <div>
-              KEYWORD
+              LABEL
             </div>
             <div>
               COUNT
