@@ -24,6 +24,7 @@ const FilterRange = ({
     type,
     attribute,
     values: { min, max },
+    isDisabled,
   },
   filterIndex,
 }) => {
@@ -78,6 +79,7 @@ const FilterRange = ({
             step={0.1}
             domain={domain}
             values={rangeValues}
+            isDisabled={isDisabled}
             onUpdate={(values) => setRangeValues(values)}
             onChange={([newMin, newMax]) =>
               dispatch({

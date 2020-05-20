@@ -22,6 +22,7 @@ const FilterLabelConfidenceSlider = ({
     type,
     attribute,
     values: { labels = [], min = 0.0, max = 1.0 },
+    isDisabled,
   },
   filterIndex,
 }) => {
@@ -58,6 +59,7 @@ const FilterLabelConfidenceSlider = ({
             step={0.01}
             domain={[0, 1]}
             values={rangeValues}
+            isDisabled={isDisabled}
             onUpdate={(values) => setRangeValues(values)}
             onChange={([newMin, newMax]) =>
               dispatch({

@@ -10,7 +10,14 @@ const TRACK_HEIGHT = 4
 const HANDLE_WIDTH = 8
 const HANDLE_HEIGHT = 24
 
-const FilterRangeSlider = ({ step, domain, values, onUpdate, onChange }) => {
+const FilterRangeSlider = ({
+  step,
+  domain,
+  values,
+  isDisabled,
+  onUpdate,
+  onChange,
+}) => {
   return (
     <Slider
       mode={2}
@@ -89,7 +96,9 @@ const FilterRangeSlider = ({ step, domain, values, onUpdate, onChange }) => {
                   transform: 'translate(0%, -50%)',
                   height: TRACK_HEIGHT,
                   zIndex: 1,
-                  backgroundColor: colors.key.one,
+                  backgroundColor: isDisabled
+                    ? colors.structure.steel
+                    : colors.key.one,
                   cursor: 'pointer',
                   left: `${source.percent}%`,
                   width: `${target.percent - source.percent}%`,
