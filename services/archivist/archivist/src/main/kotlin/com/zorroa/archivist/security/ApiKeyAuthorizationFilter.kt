@@ -2,6 +2,7 @@ package com.zorroa.archivist.security
 
 import com.zorroa.archivist.service.ProjectService
 import com.zorroa.zmlp.apikey.AuthServerClient
+import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AbstractAuthenticationToken
@@ -53,9 +54,10 @@ class ApiKeyAuthorizationFilter constructor(
 
     fun validate(token: String, projectId: UUID? = null) {
         val actor = authServerClient.authenticate(token, projectId)
-
-        if (!projectService.isEnabled(actor.projectId)) {
-            throw RuntimeException("Project does not exist")
+        if (!actor.hasAnyPermission(Permission.SystemServiceKey)) {
+            if (!projectService.isEnabled(actor.projectId)) {
+                throw RuntimeException("Project does not exist")
+            }
         }
 
         SecurityContextHolder.getContext().authentication = ApiTokenAuthentication(actor)
