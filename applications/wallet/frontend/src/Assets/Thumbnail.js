@@ -2,7 +2,9 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import { colors, constants } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
+
+import ExpandSvg from '../Icons/expand.svg'
 
 import Button, { VARIANTS } from '../Button'
 
@@ -13,6 +15,8 @@ const AssetsThumbnail = ({
       source: { filename },
     },
     thumbnailUrl,
+    assetStyle,
+    videoLength,
   },
 }) => {
   const {
@@ -35,6 +39,7 @@ const AssetsThumbnail = ({
   return (
     <div
       css={{
+        display: 'relative',
         border: isSelected
           ? constants.borders.assetSelected
           : constants.borders.assetInactive,
@@ -44,6 +49,11 @@ const AssetsThumbnail = ({
           border: isSelected
             ? constants.borders.assetSelected
             : constants.borders.assetHover,
+          a: {
+            svg: {
+              display: 'inline-block',
+            },
+          },
         },
       }}
     >
@@ -71,6 +81,52 @@ const AssetsThumbnail = ({
           />
         </Button>
       </Link>
+
+      {assetStyle === 'video' && (
+        <>
+          <div
+            css={{
+              position: 'absolute',
+              bottom: spacing.base,
+              left: spacing.base,
+              padding: spacing.mini,
+              color: colors.structure.black,
+              // Append 80 for half opacity without affecting text
+              backgroundColor: `${colors.structure.white}80`,
+            }}
+          >
+            {videoLength}
+          </div>
+          <Link
+            href={`/[projectId]/visualizer/[id]${queryString}`}
+            as={`/${projectId}/visualizer/${id}${queryString}`}
+            passHref
+          >
+            <Button
+              variant={VARIANTS.NEUTRAL}
+              style={{
+                position: 'absolute',
+                bottom: spacing.base,
+                right: spacing.base,
+                padding: spacing.small,
+                backgroundColor: colors.structure.smoke,
+                opacity: constants.opacity.half,
+                ':hover': {
+                  opacity: constants.opacity.eighth,
+                },
+              }}
+            >
+              <ExpandSvg
+                width={20}
+                color={colors.structure.white}
+                css={{
+                  display: 'none',
+                }}
+              />
+            </Button>
+          </Link>
+        </>
+      )}
     </div>
   )
 }
@@ -87,6 +143,8 @@ AssetsThumbnail.propTypes = {
       }),
     }),
     thumbnailUrl: PropTypes.string.isRequired,
+    assetStyle: PropTypes.oneOf(['image', 'video', 'document']),
+    videoLength: PropTypes.number,
   }).isRequired,
 }
 
