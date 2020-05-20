@@ -6,6 +6,8 @@ import asset from '../../Asset/__mocks__/asset'
 
 const PIPELINE = asset.metadata.metrics.pipeline
 
+const noop = () => () => {}
+
 describe('<MetadataPrettyMetricsBar />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
@@ -36,6 +38,12 @@ describe('<MetadataPrettyMetricsBar />', () => {
       component.root
         .findByProps({ 'aria-label': PIPELINE[0].processor })
         .props.onMouseLeave()
+    })
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': PIPELINE[0].processor })
+        .props.onMouseDown({ preventDefault: noop })
     })
   })
 })

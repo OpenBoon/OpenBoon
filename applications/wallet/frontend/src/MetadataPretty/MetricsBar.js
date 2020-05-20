@@ -60,6 +60,7 @@ const MetadataPrettyMetricsBar = ({ pipeline }) => {
                 })
               }
               onMouseLeave={() => setLegend({})}
+              onMouseDown={(event) => event.preventDefault()}
               css={{
                 height: '100%',
                 flex: `${processor.executionTime} 0 auto`,
