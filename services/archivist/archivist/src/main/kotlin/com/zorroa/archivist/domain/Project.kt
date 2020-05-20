@@ -61,7 +61,11 @@ class Project(
 
     @Column(name = "actor_modified")
     @ApiModelProperty("The actor that last made the last modification the project.")
-    val actorModified: String
+    val actorModified: String,
+
+    @Column(name = "enabled")
+    @ApiModelProperty("Set if the project is enabled")
+    val enabled: Boolean
 
 ) {
     override fun equals(other: Any?): Boolean {

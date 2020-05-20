@@ -10,6 +10,8 @@ variable "auth_server_host" {
 variable "ml_bbq_host" {
 }
 
+variable "domain" {}
+
 variable "container-tag" {
   default = "latest"
 }

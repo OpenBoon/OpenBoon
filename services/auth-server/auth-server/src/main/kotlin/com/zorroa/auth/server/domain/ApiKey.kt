@@ -35,7 +35,10 @@ class ApiKeySpec(
 
     @JsonIgnore
     @ApiModelProperty("An optional project Id override, not available via REST.", hidden = true)
-    val projectId: UUID? = null
+    val projectId: UUID? = null,
+
+    @ApiModelProperty("Key enabled status")
+    val enabled: Boolean = true
 )
 
 @Entity
@@ -84,8 +87,11 @@ class ApiKey(
 
     @Column(name = "actor_modified", nullable = false)
     @ApiModelProperty("The actor that modified the key.")
-    val actorModified: String
+    val actorModified: String,
 
+    @Column(name = "enabled", nullable = false)
+    @ApiModelProperty("True if the Key is enabled")
+    val enabled: Boolean
 ) {
 
     @JsonIgnore

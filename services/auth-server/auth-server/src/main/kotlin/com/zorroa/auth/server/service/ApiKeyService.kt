@@ -39,6 +39,10 @@ interface ApiKeyService {
     fun search(filter: ApiKeyFilter): PagedList<ApiKey>
 
     fun delete(apiKey: ApiKey)
+
+    fun updateEnabled(apiKey: ApiKey, enabled: Boolean)
+
+    fun updateEnabledByProject(projectId: UUID, enabled: Boolean)
 }
 
 @Service
@@ -68,7 +72,8 @@ class ApiKeyServiceImpl constructor(
             spec.permissions.map { it.name }.toSet(),
             time, time,
             actor.toString(),
-            actor.toString()
+            actor.toString(),
+            spec.enabled
         )
 
         logger.event(
@@ -105,7 +110,8 @@ class ApiKeyServiceImpl constructor(
             spec.permissions.map { it.name }.toSet(),
             apiKey.timeCreated, time,
             apiKey.actorCreated,
-            actor.toString()
+            actor.toString(),
+            spec.enabled
         )
 
         logger.event(
@@ -121,7 +127,7 @@ class ApiKeyServiceImpl constructor(
 
     @Transactional(readOnly = true)
     override fun get(id: UUID): ApiKey {
-            return apiKeyRepository.findByProjectIdAndId(getProjectId(), id)
+        return apiKeyRepository.findByProjectIdAndId(getProjectId(), id)
     }
 
     @Transactional(readOnly = true)
@@ -148,6 +154,26 @@ class ApiKeyServiceImpl constructor(
             )
         )
         apiKeyRepository.delete(apiKey)
+    }
+
+    override fun updateEnabled(apiKey: ApiKey, enabled: Boolean) {
+        logger.event(
+            LogObject.API_KEY, if (enabled) LogAction.ENABLE else LogAction.DISABLE,
+            mapOf(
+                "apiKeyId" to apiKey.id,
+                "apiKeyName" to apiKey.name
+            )
+        )
+        apiKeyRepository.updateEnabledById(enabled, apiKey.id)
+    }
+
+    override fun updateEnabledByProject(projectId: UUID, enabled: Boolean) {
+        val projectId = getProjectId()
+        val apiKeyList = apiKeyRepository.findAllByProjectId(projectId)
+
+        apiKeyList.forEach {
+            updateEnabled(it, enabled)
+        }
     }
 
     fun validatePermissionsCanBeAssigned(perms: Set<Permission>) {

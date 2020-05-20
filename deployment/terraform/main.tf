@@ -1,8 +1,12 @@
 ## Store state in GCS. ###################################################################
 terraform {
-  backend "gcs" {
-    bucket = "zorroa-deploy-state"
-    prefix = "terraform/state"
+  backend "remote" {
+    hostname      = "app.terraform.io"
+    organization  = "zorroa"
+
+    workspaces {
+      name = "zvi-prod"
+    }
   }
 }
 
@@ -24,13 +28,14 @@ provider "google-beta" {
 }
 
 provider "kubernetes" {
+  load_config_file       = "false"
   host                   = module.gke-cluster.endpoint
   username               = module.gke-cluster.username
   password               = module.gke-cluster.password
   client_certificate     = module.gke-cluster.client_certificate
   client_key             = module.gke-cluster.client_key
   cluster_ca_certificate = module.gke-cluster.cluster_ca_certificate
-  version                = ">= 1.11.0"
+  version                = ">= 1.11.2"
 }
 
 ## GCP Infrastructure ###################################################################
@@ -73,7 +78,7 @@ locals {
 {
     "name": "admin-key",
     "projectId": "00000000-0000-0000-0000-000000000000",
-    "id": "${uuid()}",
+    "id": "f3bd2541-428d-442b-8a17-e401e5e76d06",
     "accessKey": "${random_string.access-key.result}",
     "secretKey": "${random_string.secret-key.result}",
     "permissions": [
@@ -82,7 +87,7 @@ locals {
 }
 EOF
 
-
+  inception-key-b64 = base64encode(local.inception-key)
   dockerconfigjson = {
     auths = {
       "https://index.docker.io/v1/" = {
@@ -105,6 +110,7 @@ resource "kubernetes_secret" "dockerhub" {
   type = "kubernetes.io/dockerconfigjson"
 }
 
+
 ## ZMLP Services ######################################################################
 module "elasticsearch" {
   source                 = "./modules/elasticsearch"
@@ -120,7 +126,7 @@ module "archivist" {
   sql-service-account-key = module.postgres.sql-service-account-key
   sql-connection-name     = module.postgres.connection-name
   sql-instance-name       = module.postgres.instance-name
-  inception-key-b64       = base64encode(local.inception-key)
+  inception-key-b64       = local.inception-key-b64
   minio-access-key        = module.minio.access-key
   minio-secret-key        = module.minio.secret-key
   system-bucket           = google_storage_bucket.system.name
@@ -131,7 +137,7 @@ module "auth-server" {
   sql-instance-name   = module.postgres.instance-name
   sql-connection-name = module.postgres.connection-name
   image-pull-secret   = kubernetes_secret.dockerhub.metadata[0].name
-  inception-key-b64   = base64encode(local.inception-key)
+  inception-key-b64   = local.inception-key-b64
   system-bucket       = google_storage_bucket.system.name
 }
 
@@ -141,6 +147,7 @@ module "api-gateway" {
   archivist_host    = module.archivist.ip-address
   auth_server_host  = module.auth-server.ip-address
   ml_bbq_host       = module.ml-bbq.ip-address
+  domain            = var.zmlp-domain
 }
 
 module "officer" {
@@ -176,9 +183,9 @@ module "wallet" {
   zmlp-api-url            = "http://${module.api-gateway.ip-address}"
   smtp-password           = var.smtp-password
   google-oauth-client-id  = var.google-oauth-client-id
-  environment             = "staging"
-  inception-key-b64       = base64encode(local.inception-key)
-  fqdn                    = "https://wallet.zmlp.zorroa.com"
+  environment             = var.environment
+  inception-key-b64       = local.inception-key-b64
+  domain                  = var.wallet-domain
 }
 
 module "ml-bbq" {
@@ -188,7 +195,7 @@ module "ml-bbq" {
 }
 
 module "gcp-marketplace-integration" {
-  source = "./modules/gcp-marketplace-integration"
+  source                   = "./modules/gcp-marketplace-integration"
   project                  = var.project
   image-pull-secret        = kubernetes_secret.dockerhub.metadata[0].name
   pg_host                  = module.postgres.ip-address
@@ -201,9 +208,10 @@ module "gcp-marketplace-integration" {
   marketplace-project      = "zorroa-marketplace"
   marketplace-subscription = "codelab"
   marketplace-credentials  = var.marketplace-credentials
-  marketplace-service-name = "isaas-codelab.mp-marketplace-partner-demos.appspot.com"
-  fqdn                     = "https://wallet.zmlp.zorroa.com"
-  environment              = "staging"
-  inception-key-b64        = base64encode(local.inception-key)
+  fqdn                     = var.wallet-domain
+  environment              = var.environment
+  inception-key-b64        = local.inception-key-b64
   pg_password              = module.wallet.pg_password
+  marketplace-service-name = "isaas-codelab.mp-marketplace-partner-demos.appspot.com"
+  enabled                  = var.deploy-marketplace-integration
 }

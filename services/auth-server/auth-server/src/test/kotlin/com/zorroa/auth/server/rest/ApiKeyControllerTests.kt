@@ -248,4 +248,26 @@ class ApiKeyControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
     }
+
+    @Test
+    fun testEnableProject() {
+        mvc.perform(
+            MockMvcRequestBuilders.post("/auth/v1/apikey/_enable_project/${mockKey.projectId}")
+                .headers(superAdmin(mockKey.projectId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+
+    @Test
+    fun testDisableProject() {
+        mvc.perform(
+            MockMvcRequestBuilders.post("/auth/v1/apikey/_disable_project/${mockKey.projectId}")
+                .headers(superAdmin(mockKey.projectId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
 }
