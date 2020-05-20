@@ -11,7 +11,7 @@ def forwards(apps, schema_editor):
 
 
 def reverse(apps, schema_editor):
-    User.objects.get(username='admin').delete()
+    User.objects.get(username=settings.SUPERUSER_EMAIL).delete()
 
 
 class Migration(migrations.Migration):
