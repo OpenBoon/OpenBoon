@@ -33,7 +33,7 @@ class DataSetDownloader:
     """
 
     SET_TRAIN = "set_train"
-    """Directoy name for training images"""
+    """Directory name for training images"""
 
     SET_TEST = "set_test"
     """Directory name for test images"""
@@ -262,10 +262,10 @@ class DataSetDownloader:
         new_bbox = [
             int(pt[0]),
             int(pt[1]),
-            abs(pt[0] - int((total_width * bbox[2]))),
-            abs(pt[0] - int((total_height * bbox[3])))
+            int(abs(pt[0] - (total_width * bbox[2]))),
+            int(abs(pt[0] - (total_height * bbox[3])))
         ]
-        area = new_bbox[1] * new_bbox[2]
+        area = (new_bbox[2] - new_bbox[0]) * (new_bbox[3] - new_bbox[1])
         return new_bbox, area
 
     def _download_file(self, prx, dst_path, pool=None):
