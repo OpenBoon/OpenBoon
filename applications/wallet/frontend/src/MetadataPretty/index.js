@@ -2,11 +2,11 @@ import PropTypes from 'prop-types'
 
 import MetadataPrettySwitch from './Switch'
 
-import Metrics from '../Metrics'
+import MetadataPrettyMetrics from './Metrics'
 
 const MetadataPretty = ({ metadata, section }) => {
   if (section === 'metrics') {
-    return <Metrics pipeline={metadata.metrics.pipeline} />
+    return <MetadataPrettyMetrics pipeline={metadata.metrics.pipeline} />
   }
 
   return (
