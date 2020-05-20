@@ -1,12 +1,12 @@
-import os
 import logging
+import os
 from unittest.mock import patch
 
-from zmlpsdk.storage import FileStorage
 from zmlp.app import ModelApp
 from zmlp.entity import Model
-from zmlp_train.tf2 import TensorflowTransferLearningClassifier
+from zmlp_analysis.custom import TensorflowTransferLearningClassifier
 from zmlpsdk.base import Frame
+from zmlpsdk.storage import file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset
 
 logging.basicConfig()
@@ -18,8 +18,8 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
     base_dir = os.path.dirname(__file__)
 
     @patch.object(ModelApp, "get_model")
-    @patch.object(FileStorage, "localize_file")
-    @patch("zmlp_train.tf2.classify.get_proxy_level_path")
+    @patch.object(file_storage.projects, "localize_file")
+    @patch("zmlp_analysis.custom.labels.get_proxy_level_path")
     def test_predict(self, proxy_patch, file_patch, model_patch):
         name = "custom-flowers-label-detection-tf2-xfer-mobilenet2"
         file_patch.return_value = "{}/{}.zip".format(self.base_dir, name)
@@ -38,8 +38,8 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         }
 
         flower_paths = [
-            "{}/flowers/test_dsy.jpg".format(self.base_dir),
-            "{}/flowers/test_rose.png".format(self.base_dir),
+            "{}/test_dsy.jpg".format(self.base_dir),
+            "{}/test_rose.png".format(self.base_dir),
         ]
         for paths in flower_paths:
             proxy_patch.return_value = paths

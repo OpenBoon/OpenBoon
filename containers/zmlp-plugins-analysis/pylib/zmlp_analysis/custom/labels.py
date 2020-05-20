@@ -1,4 +1,6 @@
 import zipfile
+import tempfile
+import os
 
 import numpy as np
 from tensorflow.keras.models import load_model
@@ -29,14 +31,10 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         # get model by model id
         self.app_model = self.app.models.get_model(self.arg_value("model_id"))
 
-        # models are saved in dir named after model name
-        model_base_dir = self.app_model.name
-        model_zip = file_storage.localize_file(self.app_model.file_id)
+        model_zip = file_storage.projects.localize_file(self.app_model.file_id)
 
         # unzip and extract needed files for trained model and labels
-        self.trained_model, self.labels = self._extract_info(
-            model_zip, model_base_dir
-        )
+        self.trained_model, self.labels = self.extract_model(model_zip)
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -74,25 +72,26 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         result = [*zip(self.labels, proba)]
         return result
 
-    @staticmethod
-    def _extract_info(model_zip, model_base_dir):
+    def extract_model(self, model_zip):
         """ Extract then remove model info from a zip file
 
         Args:
             model_zip (str): model zip dir
-            model_base_dir (str): model.name which is set as model parent dir
 
         Returns:
             tuple: (Keras model instance, List[str] of labels)
         """
+        loc = tempfile.mkdtemp()
+
         # extract all files
         with zipfile.ZipFile(model_zip) as z:
-            z.extractall()
+            z.extractall(path=loc)
+
         # load dir as a model
-        trained_model = load_model(model_base_dir)
+        trained_model = load_model(os.path.join(loc, self.app_model.name))
         # labels.txt is always the name
         # create a list of labels from file labels.txt
-        with open("{}/labels.txt".format(model_base_dir)) as fp:
+        with open(os.path.join(loc, self.app_model.name, "labels.txt")) as fp:
             labels = fp.read().splitlines()
 
         # return model and labels

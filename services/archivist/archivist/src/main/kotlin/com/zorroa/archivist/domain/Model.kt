@@ -27,7 +27,7 @@ enum class ModelType(
     LABEL_DETECTION_KNN(
         "zmlp_train.knn.KnnLabelDetectionTrainer",
         mapOf(),
-        "zmlp_train.knn.KnnLabelDetectionClassifier",
+        "zmlp_analysis.custom.KnnLabelDetectionClassifier",
         mapOf(),
         "custom-%s-label-detection-knn",
         "Fast classification using a KNN algorithm",
@@ -40,7 +40,7 @@ enum class ModelType(
             "min_examples" to 5,
             "train-test-ratio" to 3
         ),
-        "zmlp_train.tf2.TensorflowTransferLearningClassifier",
+        "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
         "custom-%s-label-detection-resnet152",
         "Classify images using a custom trained ResNet152 model.",
@@ -53,7 +53,7 @@ enum class ModelType(
             "min_examples" to 5,
             "train-test-ratio" to 3
         ),
-        "zmlp_train.tf2.TensorflowTransferLearningClassifier",
+        "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
         "custom-%s-label-detection-vgg16",
         "Classify images using a custom trained VGG16 model.",
@@ -66,7 +66,7 @@ enum class ModelType(
             "min_examples" to 5,
             "train-test-ratio" to 3
         ),
-        "zmlp_train.tf2.TensorflowTransferLearningClassifier",
+        "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
         "custom-%s-label-detection-mobilenet2",
         "Classify images using a custom trained Mobilenet2 model.",

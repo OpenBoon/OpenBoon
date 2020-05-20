@@ -214,6 +214,17 @@ class Reactor(object):
         logger.info("Task Status: {}".format(text))
         self.write_event("status", {"status": text})
 
+    def progress(self, progress):
+        """
+        Emit and log the text as a new task status.
+
+        Args:
+            progress (int): The task progress.
+
+        """
+        logger.info("Task Process: {}%".format(progress))
+        self.write_event("progress", {"progress": max(0, min(progress, 100))})
+
     def write_event(self, type, payload):
         """
         Write an event back to the analyst.
