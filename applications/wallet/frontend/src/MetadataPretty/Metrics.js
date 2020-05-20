@@ -65,7 +65,9 @@ const MetadataPrettyMetrics = ({ pipeline }) => {
 }
 
 MetadataPrettyMetrics.propTypes = {
-  pipeline: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  pipeline: PropTypes.arrayOf(
+    PropTypes.shape({ processor: PropTypes.string.isRequired }),
+  ).isRequired,
 }
 
 export default MetadataPrettyMetrics
