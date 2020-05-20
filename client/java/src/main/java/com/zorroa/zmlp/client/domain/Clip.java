@@ -24,7 +24,7 @@ public class Clip {
     /**
      * Used when multiple type of clipification on a video occur
      */
-    private String timeline;
+    private String track;
 
     public String getType() {
         return type;
@@ -53,12 +53,12 @@ public class Clip {
         return this;
     }
 
-    public String getTimeline() {
-        return timeline;
+    public String getTrack() {
+        return track;
     }
 
-    public Clip setTimeline(String timeline) {
-        this.timeline = timeline;
+    public Clip setTrack(String track) {
+        this.track = track;
         return this;
     }
 }
