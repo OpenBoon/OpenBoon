@@ -193,10 +193,10 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             return mobilenet_v2.MobileNetV2(weights='imagenet',
                                             include_top=False,
                                             input_shape=(224, 224, 3))
-        elif modl_base == zmlp.ModelType.LABEL_DETECTION_RESNET152:
-            return resnet_v2.ResNet152V2(weights='imagenet',
-                                         include_top=False,
-                                         input_shape=(224, 224, 3))
+        elif modl_base == zmlp.ModelType.LABEL_DETECTION_RESNET50:
+            return resnet_v2.ResNet50V2(weights='imagenet',
+                                        include_top=False,
+                                        input_shape=(224, 224, 3))
         elif modl_base == zmlp.ModelType.LABEL_DETECTION_VGG16:
             return vgg16.VGG16(weights='imagenet',
                                include_top=False,
