@@ -322,6 +322,10 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   margin-left: -32px;
 }
 
+.emotion-12:hover {
+  background-color: #027aff38;
+}
+
 .emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1566,6 +1570,10 @@ exports[`<Filters /> should open the menu 1`] = `
   padding: 8px;
   color: #b3b3b3;
   margin-left: -32px;
+}
+
+.emotion-12:hover {
+  background-color: #027aff38;
 }
 
 .emotion-11 {
