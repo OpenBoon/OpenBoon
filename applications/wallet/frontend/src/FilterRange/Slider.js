@@ -2,7 +2,6 @@
 
 import PropTypes from 'prop-types'
 import { Slider, Rail, Handles, Tracks } from 'react-compound-slider'
-
 import { colors } from '../Styles'
 
 const RAIL_HEIGHT = 2
@@ -55,7 +54,7 @@ const FilterRangeSlider = ({
         )}
       </Rail>
       <Handles>
-        {({ activeHandleID, handles, getHandleProps }) => (
+        {({ handles, getHandleProps }) => (
           <div>
             {handles.map(({ id, value, percent }) => (
               <button
@@ -75,13 +74,14 @@ const FilterRangeSlider = ({
                   zIndex: 2,
                   width: HANDLE_WIDTH,
                   height: HANDLE_HEIGHT,
-                  backgroundColor:
-                    /* istanbul ignore next */
-                    id === activeHandleID
-                      ? colors.structure.white
-                      : colors.structure.steel,
+                  backgroundColor: colors.structure.steel,
                   borderRadius: 1,
                   cursor: 'pointer',
+                }}
+                css={{
+                  ':hover, :active': {
+                    backgroundColor: `${colors.structure.white} !important`,
+                  },
                 }}
                 {...getHandleProps(id)}
               />
