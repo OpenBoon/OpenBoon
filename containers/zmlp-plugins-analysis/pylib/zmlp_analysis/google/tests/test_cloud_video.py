@@ -30,7 +30,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         uri = 'gs://zorroa-dev-data/video/mustang.mp4'
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
-        asset.set_attr('clip.timeline', 'full')
+        asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
 
@@ -55,7 +55,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
-        asset.set_attr('clip.timeline', 'full')
+        asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
 
@@ -79,7 +79,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
-        asset.set_attr('clip.timeline', 'full')
+        asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
 
@@ -102,7 +102,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         uri = 'gs://zorroa-dev-data/video/model.mp4'
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
-        asset.set_attr('clip.timeline', 'full')
+        asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
 
@@ -126,7 +126,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         uri = 'gs://zorroa-dev-data/video/model.mp4'
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
-        asset.set_attr('clip.timeline', 'full')
+        asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
 

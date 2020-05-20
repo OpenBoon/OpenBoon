@@ -236,14 +236,14 @@ class ClipTests(unittest.TestCase):
         assert clip.start == 1.44
         assert clip.stop == 2.25
         assert clip.type == 'scene'
-        assert clip.timeline == 'shot'
+        assert clip.track == 'shot'
 
     def test_create_clip(self):
         clip = Clip("scene", 1, 2, "faces")
         assert clip.start == 1
         assert clip.stop == 2
         assert clip.type == 'scene'
-        assert clip.timeline == 'faces'
+        assert clip.track == 'faces'
 
 
 class FileTypesTests(unittest.TestCase):

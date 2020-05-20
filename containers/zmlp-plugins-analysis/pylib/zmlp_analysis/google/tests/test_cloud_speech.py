@@ -57,7 +57,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
 
         asset = TestAsset('gs://zorroa-dev-data/video/ted_talk.mov')
         asset.set_attr('media.length', 15.0)
-        asset.set_attr('clip.timeline', 'full')
+        asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         self.processor.process(frame)
         assert 'dog' in asset.get_attr('analysis.gcp-speech-to-text.content')
@@ -72,7 +72,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
 
         asset = TestAsset('gs://zorroa-dev-data/video/ted_talk.mov')
         asset.set_attr('media.length', 15.0)
-        asset.set_attr('clip.timeline', 'full')
+        asset.set_attr('clip.track', 'full')
         asset.add_file(StoredFile({
             'id': 'assets/12345/audio/audio_proxy.flac',
             'category': 'audio', 'name': 'audio_proxy.flac'

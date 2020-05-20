@@ -68,15 +68,15 @@ def test_check_video_clip_preconditions_true(proxy_patch):
     proxy_patch.return_value = stored_file
 
     asset.set_attr('media.type', 'video')
-    asset.set_attr('clip.timeline', 'full')
+    asset.set_attr('clip.track', 'full')
     assert video.check_video_clip_preconditions(asset)
 
     asset.set_attr('media.type', 'image')
-    asset.set_attr('clip.timeline', 'full')
+    asset.set_attr('clip.track', 'full')
     assert not video.check_video_clip_preconditions(asset)
 
     asset.set_attr('media.type', 'video')
-    asset.set_attr('clip.timeline', 'shot')
+    asset.set_attr('clip.track', 'shot')
     assert not video.check_video_clip_preconditions(asset)
 
 
@@ -86,7 +86,7 @@ def test_check_video_clip_preconditions_no_proxy(proxy_patch):
     proxy_patch.return_value = None
 
     asset.set_attr('media.type', 'video')
-    asset.set_attr('clip.timeline', 'full')
+    asset.set_attr('clip.track', 'full')
     assert not video.check_video_clip_preconditions(asset)
 
 
@@ -95,4 +95,4 @@ def test_make_video_clip_expand_frame():
     frame = video.make_video_clip_expand_frame(asset, 100, 120, 'shot')
     assert 100.0 == frame.asset.clip.start
     assert 120.0 == frame.asset.clip.stop
-    assert 'shot' == frame.asset.clip.timeline
+    assert 'shot' == frame.asset.clip.track

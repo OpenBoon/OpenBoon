@@ -31,7 +31,7 @@ class ExtractVideoClipProxyProcessorTests(PluginUnitTestCase):
         }
         asset = self.frame.asset
         asset.set_attr('media', {'width': 450, 'height': 360})
-        asset.set_attr('clip', {'start': 10, 'stop': 15, 'length': 5, 'timeline': 'random'})
+        asset.set_attr('clip', {'start': 10, 'stop': 15, 'length': 5, 'track': 'random'})
         self.processor.process(self.frame)
 
         call = store_patch.call_args_list[0]
@@ -54,10 +54,10 @@ class ExtractVideoClipProxyProcessorTests(PluginUnitTestCase):
 
     @patch('zmlp_core.proxy.video.store_asset_proxy')
     def test_process_skipped_full(self, store_patch):
-        # A clip is on the full timeline, so its skipped.
+        # A clip is on the full track, so its skipped.
         asset = self.frame.asset
         asset.set_attr('media', {'width': 450, 'height': 360})
-        asset.set_attr('clip', {'start': 10, 'stop': 15, 'length': 5, 'timeline': 'full'})
+        asset.set_attr('clip', {'start': 10, 'stop': 15, 'length': 5, 'track': 'full'})
         self.processor.process(self.frame)
         assert len(store_patch.call_args_list) == 0
 
@@ -84,7 +84,7 @@ class VideoProxyProcessorTests(PluginUnitTestCase):
         }
         asset = self.frame.asset
         asset.set_attr('media', {'width': 640, 'height': 360})
-        asset.set_attr('clip', {'start': 0, 'stop': 15.05, 'length': 15.05, 'timeline': 'full'})
+        asset.set_attr('clip', {'start': 0, 'stop': 15.05, 'length': 15.05, 'track': 'full'})
         self.processor.process(self.frame)
 
         call = store_patch.call_args_list[0]
