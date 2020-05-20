@@ -26,7 +26,7 @@ class VideoProxyProcessor(AssetProcessor):
 
         # We only make proxies for full clips but this isn't
         # an error or warning.
-        if clip.get('timeline') != 'full':
+        if clip.get('track') != 'full':
             return -1
 
         self.make_h264_proxy(asset)
@@ -68,7 +68,7 @@ class ExtractVideoClipProxyProcessor(AssetProcessor):
             return
 
         # Don't make a cut of the full movie.
-        if clip.get('timeline') == 'full':
+        if clip.get('track') == 'full':
             return
 
         self.make_h264_proxy_cut(asset)

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
@@ -154,6 +154,9 @@ const FilterLabelConfidenceContent = ({
                       display: 'flex',
                       justifyContent: 'space-between',
                       padding: spacing.base,
+                      fontFamily: 'Roboto Mono',
+                      fontSize: typography.size.small,
+                      lineHeight: typography.height.small,
                     }}
                   >
                     <div>{key}</div>

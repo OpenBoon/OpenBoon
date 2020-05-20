@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, typography, constants } from '../Styles'
 
-import PausedSvg from '../Icons/paused.svg'
+import DoubleChevronSvg from '../Icons/doubleChevron.svg'
 
 import Button, { VARIANTS } from '../Button'
 import Resizeable from '../Resizeable'
@@ -62,10 +62,10 @@ const PanelContent = ({
               ':hover': { color: colors.structure.white },
             }}
           >
-            <PausedSvg
+            <DoubleChevronSvg
               width={ICON_WIDTH}
               css={{
-                transform: `rotate(${openToThe === 'left' ? 0 : 180}deg)`,
+                transform: `rotate(${openToThe === 'left' ? -90 : 90}deg)`,
               }}
               aria-hidden
             />

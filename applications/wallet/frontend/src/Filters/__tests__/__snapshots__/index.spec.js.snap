@@ -392,8 +392,9 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
 
 .emotion-9 {
   color: #b3b3b3;
-  font-size: 15px;
-  line-height: 19px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 <div
@@ -1637,8 +1638,9 @@ exports[`<Filters /> should open the menu 1`] = `
 
 .emotion-9 {
   color: #b3b3b3;
-  font-size: 15px;
-  line-height: 19px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 <div
