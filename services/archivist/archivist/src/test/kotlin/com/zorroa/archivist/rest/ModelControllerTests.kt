@@ -146,7 +146,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testTypeInfo() {
-        val type = ModelType.LABEL_DETECTION_RESNET152
+        val type = ModelType.LABEL_DETECTION_RESNET50
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/models/_type/$type")
                 .headers(job())
@@ -154,7 +154,7 @@ class ModelControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name",
-                CoreMatchers.equalTo("LABEL_DETECTION_RESNET152")))
+                CoreMatchers.equalTo("LABEL_DETECTION_RESNET50")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.dataSetType",
                 CoreMatchers.equalTo("LABEL_DETECTION")))
             .andReturn()
