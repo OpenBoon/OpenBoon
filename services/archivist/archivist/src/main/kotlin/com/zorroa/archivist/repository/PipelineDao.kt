@@ -1,7 +1,5 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.zmlp.service.logging.LogAction
-import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineFilter
 import com.zorroa.archivist.domain.PipelineMod
@@ -11,10 +9,12 @@ import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
-import com.zorroa.zmlp.service.logging.event
 import com.zorroa.archivist.util.JdbcUtils.insert
-import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.isUUID
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
+import com.zorroa.zmlp.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -67,8 +67,8 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
     override fun setPipelineMods(id: UUID, mods: List<PipelineMod>) {
         jdbc.update("DELETE FROM x_module_pipeline WHERE pk_pipeline=?", id)
         mods?.forEach {
-            jdbc.update("INSERT INTO x_module_pipeline VALUES (?, ?, ?)",
-                UUID.randomUUID(), it.id, id)
+            jdbc.update("INSERT INTO x_module_pipeline (pk_module, pk_pipeline) VALUES (?, ?)",
+                it.id, id)
         }
     }
 
@@ -107,9 +107,11 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
         update.modules?.let {
             jdbc.update("DELETE FROM x_module_pipeline WHERE pk_pipeline=?", id)
-            it.forEach {
-                updates += jdbc.update("INSERT INTO x_module_pipeline VALUES (?,?,?)",
-                    UUID.randomUUID(), it, id)
+            it.forEach { mod ->
+                updates += jdbc.update(
+                    "INSERT INTO x_module_pipeline (pk_module, pk_pipeline) VALUES (?,?)",
+                    mod, id
+                )
             }
         }
 
