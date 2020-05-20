@@ -214,7 +214,7 @@ class JobLaunchServiceImpl(
          */
         const val maxBatchSize = 100
 
-        fun clampBatchSize(batchSize: Int) : Int {
+        fun clampBatchSize(batchSize: Int): Int {
             return batchSize.coerceAtLeast(minBatchSize).coerceAtMost(maxBatchSize)
         }
     }
