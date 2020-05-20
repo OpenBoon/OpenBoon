@@ -38,3 +38,4 @@ health_check_storage_test/
 .terraform
 docker-compose.override.yml*
 .coverage
+*.sh
