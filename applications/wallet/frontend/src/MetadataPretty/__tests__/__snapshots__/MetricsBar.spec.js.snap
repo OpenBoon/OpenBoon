@@ -78,9 +78,9 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 
 .emotion-2 {
   height: 100%;
-  -webkit-flex: undefined 0 auto;
-  -ms-flex: undefined 0 auto;
-  flex: undefined 0 auto;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
   min-width: 8px;
   background-color: #d6680b;
   border: 2px solid transparent;
@@ -107,9 +107,9 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 
 .emotion-3 {
   height: 100%;
-  -webkit-flex: undefined 0 auto;
-  -ms-flex: undefined 0 auto;
-  flex: undefined 0 auto;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
   min-width: 8px;
   background-color: #ebb52e;
   border: 2px solid transparent;

@@ -151,7 +151,12 @@ const MetadataPrettyMetricsBar = ({ pipeline }) => {
 }
 
 MetadataPrettyMetricsBar.propTypes = {
-  pipeline: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+  pipeline: PropTypes.arrayOf(
+    PropTypes.shape({
+      processor: PropTypes.string.isRequired,
+      executionTime: PropTypes.number.isRequired,
+    }).isRequired,
+  ).isRequired,
 }
 
 export default MetadataPrettyMetricsBar
