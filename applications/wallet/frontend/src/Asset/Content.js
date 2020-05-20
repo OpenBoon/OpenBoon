@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { constants, colors, spacing, typography } from '../Styles'
+import { constants, colors, spacing, typography, zIndex } from '../Styles'
 
 import Panel from '../Panel'
 import Metadata from '../Metadata'
@@ -24,20 +24,16 @@ const AssetContent = () => {
     data: {
       metadata: { files },
     },
-  } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}`)
+  } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
   const {
     name,
     attrs: { width, height },
   } = files.find(({ mimetype }) => mimetype === 'video/mp4')
 
-  const queryParams = Object.entries({
-    ...(query ? { query } : {}),
-  })
-    .map(([key, value]) => `${key}=${value}`)
-    .join('&')
+  const queryString = query ? `?query=${query}` : ''
 
-  const queryString = queryParams ? `?${queryParams}` : ''
+  const largerDimension = width > height ? 'width' : 'height'
 
   return (
     <div
@@ -78,6 +74,7 @@ const AssetContent = () => {
               ':hover': {
                 color: colors.structure.white,
               },
+              zIndex: zIndex.layout.interactive,
             }}
           >
             <div css={{ display: 'flex' }}>
@@ -103,7 +100,7 @@ const AssetContent = () => {
             alignItems: 'center',
           }}
         >
-          <video width={width} height={height} autoPlay controls>
+          <video css={{ [largerDimension]: '100%' }} autoPlay controls>
             <source
               src={`/api/v1/projects/${projectId}/assets/${assetId}/files/category/video/name/${name}/`}
               type="video/mp4"
