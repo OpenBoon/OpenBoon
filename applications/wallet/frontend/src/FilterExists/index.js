@@ -10,6 +10,10 @@ import FiltersReset from '../Filters/Reset'
 import FiltersTitle from '../Filters/Title'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
+import ExistsSvg from '../Icons/exists.svg'
+import MissingSvg from '../Icons/missing.svg'
+
+const SVG_SIZE = 20
 
 export const noop = () => {}
 
@@ -62,6 +66,7 @@ const FilterExists = ({
           >
             {['Exists', 'Missing'].map((value) => (
               <Button
+                aria-label={value}
                 key={value}
                 style={{
                   flex: 1,
@@ -98,7 +103,14 @@ const FilterExists = ({
                   })
                 }
               >
-                {value}
+                <div css={{ display: 'flex', alignItems: 'center' }}>
+                  {value === 'Exists' ? (
+                    <ExistsSvg width={SVG_SIZE} />
+                  ) : (
+                    <MissingSvg width={SVG_SIZE} />
+                  )}
+                  <div css={{ paddingLeft: spacing.small }}>{value}</div>
+                </div>
               </Button>
             ))}
           </div>

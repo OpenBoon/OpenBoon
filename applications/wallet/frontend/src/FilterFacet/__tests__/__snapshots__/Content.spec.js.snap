@@ -326,6 +326,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 <ul
@@ -638,6 +641,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 <ul
@@ -836,6 +842,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 .emotion-5 {

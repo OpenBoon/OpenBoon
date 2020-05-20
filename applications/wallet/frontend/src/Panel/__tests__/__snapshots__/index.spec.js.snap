@@ -284,9 +284,9 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
 }
 
 .emotion-1 {
-  -webkit-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
-  transform: rotate(0deg);
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 <div
@@ -318,7 +318,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
           <svg
             aria-hidden={true}
             className="emotion-1"
-            data-file-name="paused.svg"
+            data-file-name="doubleChevron.svg"
             width={20}
           />
         </button>
@@ -622,9 +622,9 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
 }
 
 .emotion-4 {
-  -webkit-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  transform: rotate(180deg);
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .emotion-7 {
@@ -689,7 +689,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
           <svg
             aria-hidden={true}
             className="emotion-4"
-            data-file-name="paused.svg"
+            data-file-name="doubleChevron.svg"
             width={20}
           />
         </button>
