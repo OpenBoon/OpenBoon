@@ -192,6 +192,12 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
 .emotion-0:focus {
   color: #191919;
   background-color: #ffffff;
+  outline: 0;
+  border: 1px solid #73b61c;
+}
+
+.emotion-0:focus:hover {
+  border: 1px solid #73b61c;
 }
 
 .emotion-0:hover {
@@ -300,6 +306,12 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
 .emotion-0:focus {
   color: #191919;
   background-color: #ffffff;
+  outline: 0;
+  border: 1px solid #73b61c;
+}
+
+.emotion-0:focus:hover {
+  border: 1px solid #73b61c;
 }
 
 .emotion-0:hover {
