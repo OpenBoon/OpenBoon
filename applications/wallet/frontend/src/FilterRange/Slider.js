@@ -55,7 +55,7 @@ const FilterRangeSlider = ({
         )}
       </Rail>
       <Handles>
-        {({ handles, getHandleProps }) => (
+        {({ activeHandleID, handles, getHandleProps }) => (
           <div>
             {handles.map(({ id, value, percent }) => (
               <button
@@ -75,7 +75,11 @@ const FilterRangeSlider = ({
                   zIndex: 2,
                   width: HANDLE_WIDTH,
                   height: HANDLE_HEIGHT,
-                  backgroundColor: colors.structure.steel,
+                  backgroundColor:
+                    /* istanbul ignore next */
+                    id === activeHandleID
+                      ? colors.structure.white
+                      : colors.structure.steel,
                   borderRadius: 1,
                   cursor: 'pointer',
                 }}
