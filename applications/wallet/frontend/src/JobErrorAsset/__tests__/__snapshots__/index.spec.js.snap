@@ -100,12 +100,14 @@ exports[`<JobErrorAsset /> should render properly when asset has no proxies 1`] 
         {
           \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.office.importers.OfficeImporter\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">2001473853</span>
+          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">2001473853</span>,
+          \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0</span>
         },
         {
           \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.video.VideoImporter\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">3310423168</span>
+          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">3310423168</span>,
+          \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0</span>
         },
         {
           \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.core.processors.AssertAttributesProcessor\\"</span>,
@@ -260,12 +262,14 @@ exports[`<JobErrorAsset /> should render properly when asset has proxies 1`] = `
         {
           \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.office.importers.OfficeImporter\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">2001473853</span>
+          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">2001473853</span>,
+          \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0</span>
         },
         {
           \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.video.VideoImporter\\"</span>,
           \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">3310423168</span>
+          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">3310423168</span>,
+          \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0</span>
         },
         {
           \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.core.processors.AssertAttributesProcessor\\"</span>,

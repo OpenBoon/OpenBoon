@@ -1,54 +1,12 @@
 import PropTypes from 'prop-types'
 
-import { constants, spacing, typography } from '../Styles'
-
 import MetadataPrettySwitch from './Switch'
+
+import MetadataPrettyMetrics from './Metrics'
 
 const MetadataPretty = ({ metadata, section }) => {
   if (section === 'metrics') {
-    return metadata.metrics.pipeline.map((pipeline, index) => {
-      const { processor, ...filteredPipeline } = pipeline
-
-      return (
-        <div
-          // eslint-disable-next-line react/no-array-index-key
-          key={`${section}${index}`}
-          css={{
-            width: '100%',
-            '&:not(:first-of-type)': {
-              borderTop: constants.borders.prettyMetadata,
-            },
-          }}
-        >
-          <div
-            css={{ fontFamily: 'Roboto Condensed', padding: spacing.normal }}
-          >
-            PROCESSOR
-            <div
-              title={processor}
-              css={{
-                paddingTop: spacing.base,
-                fontFamily: 'Roboto Mono',
-                fontSize: typography.size.small,
-                lineHeight: typography.height.small,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {processor}
-            </div>
-          </div>
-          {Object.entries(filteredPipeline).map(([key, value]) => (
-            <MetadataPrettySwitch
-              key={key}
-              name={key}
-              value={value}
-              path="metrics.pipeline"
-            />
-          ))}
-        </div>
-      )
-    })
+    return <MetadataPrettyMetrics pipeline={metadata.metrics.pipeline} />
   }
 
   return (
