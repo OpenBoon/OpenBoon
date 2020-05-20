@@ -2,6 +2,7 @@
 
 import PropTypes from 'prop-types'
 import { Slider, Rail, Handles, Tracks } from 'react-compound-slider'
+
 import { colors } from '../Styles'
 
 const RAIL_HEIGHT = 2
