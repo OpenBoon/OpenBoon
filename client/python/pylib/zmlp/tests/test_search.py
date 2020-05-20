@@ -81,6 +81,29 @@ class AssetSearchResultTests(unittest.TestCase):
         next_page = results.next_page()
         assert next_page.raw_response == {"hits": {"hits": []}}
 
+    @patch.object(ZmlpClient, 'post')
+    def test_batches_of(self, post_patch):
+        post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
+
+        results = AssetSearchResult(self.app, {"query": {"term": {"source.filename": "dog.jpg"}}})
+        asserted = False
+        for batch in results.batches_of(2):
+            assert len(batch) == 2
+            asserted = True
+        assert asserted
+
+    @patch.object(ZmlpClient, 'post')
+    def test_batches_of_with_max(self, post_patch):
+        post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
+
+        results = AssetSearchResult(self.app, {"query": {"term": {"source.filename": "dog.jpg"}}})
+        asserted = False
+        for batch in results.batches_of(2, max_assets=1):
+            assert len(batch) == 1
+            asserted = True
+        assert asserted
+
+
     @patch.object(ZmlpClient, 'delete')
     @patch.object(ZmlpClient, 'post')
     def test_aggegation(self, post_patch, del_patch):
