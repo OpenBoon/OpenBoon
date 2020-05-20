@@ -103,7 +103,6 @@ class AssetSearchResultTests(unittest.TestCase):
             asserted = True
         assert asserted
 
-
     @patch.object(ZmlpClient, 'delete')
     @patch.object(ZmlpClient, 'post')
     def test_aggegation(self, post_patch, del_patch):
