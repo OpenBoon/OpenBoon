@@ -33,7 +33,7 @@ enum class ModelType(
         "Fast classification using a KNN algorithm",
         DataSetType.LABEL_DETECTION
     ),
-    LABEL_DETECTION_RESNET152(
+    LABEL_DETECTION_RESNET50(
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
         mapOf(
             "min_concepts" to 2,
@@ -42,8 +42,8 @@ enum class ModelType(
         ),
         "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
-        "custom-%s-label-detection-resnet152",
-        "Classify images using a custom trained ResNet152 model.",
+        "custom-%s-label-detection-resnet50",
+        "Classify images using a custom trained ResNet50V2 model.",
         DataSetType.LABEL_DETECTION
     ),
     LABEL_DETECTION_VGG16(
