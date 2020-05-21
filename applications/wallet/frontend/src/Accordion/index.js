@@ -36,11 +36,14 @@ const STYLES = {
       backgroundColor: colors.structure.lead,
       borderRadius: constants.borderRadius.small,
       ':last-of-type > div:last-of-type': {
-        borderBottom: constants.borders.tabs,
+        borderBottom: constants.borders.divider,
+      },
+      ':first-of-type > div': {
+        borderTop: 'none',
       },
     },
     title: {
-      borderTop: constants.borders.tabs,
+      borderTop: constants.borders.divider,
       paddingTop: spacing.moderate,
       paddingBottom: spacing.moderate,
       paddingLeft: spacing.moderate,

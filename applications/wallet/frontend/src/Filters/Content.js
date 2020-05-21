@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import filterShape from '../Filter/shape'
 
-import { spacing, constants } from '../Styles'
+import { spacing, constants, zIndex } from '../Styles'
 
 import PlusSvg from '../Icons/plus.svg'
 
@@ -26,7 +26,12 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
   return (
     <>
       <div
-        css={{ padding: spacing.small, borderBottom: constants.borders.spacer }}
+        css={{
+          padding: spacing.small,
+          borderBottom: constants.borders.spacer,
+          boxShadow: constants.boxShadows.navBar,
+          zIndex: zIndex.layout.interactive,
+        }}
       >
         <div css={{ display: 'flex' }}>
           <Button

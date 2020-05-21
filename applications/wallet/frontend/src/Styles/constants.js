@@ -49,6 +49,7 @@ const boxShadows = {
   panel: `3px 0 3px 0px rgba(0, 0, 0, ${opacity.third})`,
   infoBar: `0px 3px 3px 0 rgba(0, 0, 0, ${opacity.third})`,
   assets: `inset 0 0 4px 0 rgba(0, 0, 0, 0.6)`,
+  standalone: `0 0 4px 0 rgba(0, 0, 0, 1)`,
 }
 
 const constants = {
