@@ -129,6 +129,7 @@
   "devDependencies": {
     "babel-eslint": "10.1.0",
     "babel-jest": "26.0.1",
+    "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-macros": "2.8.0",
     "bundlesize": "0.18.0",
     "eslint": "7.0.0",
