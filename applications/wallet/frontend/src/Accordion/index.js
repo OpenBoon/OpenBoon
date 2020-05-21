@@ -62,7 +62,7 @@ const STYLES = {
     container: {
       backgroundColor: colors.structure.lead,
       border: constants.borders.transparent,
-      borderBottom: constants.borders.tabs,
+      borderBottom: constants.borders.divider,
       paddingBottom: spacing.hairline,
       ':hover': {
         border: constants.borders.tableRow,

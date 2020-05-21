@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
-import { colors, constants, spacing, zIndex } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import useLocalStorage from '../LocalStorage'
 
@@ -43,12 +43,7 @@ const MetadataContent = ({ projectId, assetId }) => {
       </div>
 
       <div
-        css={{
-          padding: spacing.base,
-          borderBottom: constants.borders.divider,
-          boxShadow: constants.boxShadows.navBar,
-          zIndex: zIndex.layout.interactive,
-        }}
+        css={{ padding: spacing.base, borderBottom: constants.borders.divider }}
       >
         <div
           css={{

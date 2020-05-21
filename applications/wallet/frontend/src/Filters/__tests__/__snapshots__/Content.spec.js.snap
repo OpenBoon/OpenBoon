@@ -5,8 +5,6 @@ Array [
   .emotion-12 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
 }
 
 .emotion-6 {
@@ -320,7 +318,7 @@ Array [
 .emotion-22 {
   background-color: #252525;
   border: 1px solid transparent;
-  border-bottom: 1px solid #4a4a4a;
+  border-bottom: 1px solid #3b3b3b;
   padding-bottom: 1px;
 }
 
@@ -844,8 +842,6 @@ Array [
   .emotion-12 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
 }
 
 .emotion-6 {
@@ -1159,7 +1155,7 @@ Array [
 .emotion-60 {
   background-color: #252525;
   border: 1px solid transparent;
-  border-bottom: 1px solid #4a4a4a;
+  border-bottom: 1px solid #3b3b3b;
   padding-bottom: 1px;
 }
 
@@ -1940,8 +1936,6 @@ Array [
   .emotion-12 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
 }
 
 .emotion-6 {
@@ -2255,7 +2249,7 @@ Array [
 .emotion-660 {
   background-color: #252525;
   border: 1px solid transparent;
-  border-bottom: 1px solid #4a4a4a;
+  border-bottom: 1px solid #3b3b3b;
   padding-bottom: 1px;
 }
 
@@ -6663,8 +6657,6 @@ Array [
   .emotion-12 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
 }
 
 .emotion-6 {
@@ -6978,7 +6970,7 @@ Array [
 .emotion-25 {
   background-color: #252525;
   border: 1px solid transparent;
-  border-bottom: 1px solid #4a4a4a;
+  border-bottom: 1px solid #3b3b3b;
   padding-bottom: 1px;
 }
 
@@ -7528,8 +7520,6 @@ Array [
   .emotion-12 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
 }
 
 .emotion-6 {
@@ -7843,7 +7833,7 @@ Array [
 .emotion-17 {
   background-color: #252525;
   border: 1px solid transparent;
-  border-bottom: 1px solid #4a4a4a;
+  border-bottom: 1px solid #3b3b3b;
   padding-bottom: 1px;
 }
 
@@ -8242,8 +8232,6 @@ Array [
   .emotion-12 {
   padding: 4px;
   border-bottom: 1px solid #3b3b3b;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
 }
 
 .emotion-6 {

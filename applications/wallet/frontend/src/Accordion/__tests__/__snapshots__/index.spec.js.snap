@@ -60,7 +60,7 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
 .emotion-4 {
   background-color: #252525;
   border: 1px solid transparent;
-  border-bottom: 1px solid #4a4a4a;
+  border-bottom: 1px solid #3b3b3b;
   padding-bottom: 1px;
 }
 
