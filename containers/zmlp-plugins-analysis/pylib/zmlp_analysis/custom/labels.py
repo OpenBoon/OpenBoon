@@ -6,7 +6,11 @@ from tensorflow.keras.applications.imagenet_utils import preprocess_input
 from zmlpsdk import AssetProcessor, Argument, file_storage
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
-from zmlp_train.utils.utils import get_labels, extract_model, load_image
+from zmlp_analysis.custom.utils.utils import (
+    get_labels,
+    extract_model,
+    load_image,
+)
 
 
 class TensorflowTransferLearningClassifier(AssetProcessor):
