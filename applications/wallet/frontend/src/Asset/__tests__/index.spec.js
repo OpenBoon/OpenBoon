@@ -60,9 +60,18 @@ describe('<Asset />', () => {
               id:
                 'assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/proxy/video_450x360.mp4',
               category: 'proxy',
-              attrs: { frameRate: 25.0, frames: 3611, width: 250, height: 360 },
+              attrs: { frameRate: 25.0, frames: 3611, width: 360, height: 450 },
             },
           ],
+          media: {
+            orientation: 'landscape',
+            aspect: 1.25,
+            width: 450,
+            length: 144.45,
+            timeCreated: '2014-01-25T09:28:09.000000Z',
+            type: 'video',
+            height: 360,
+          },
         },
       },
     })
