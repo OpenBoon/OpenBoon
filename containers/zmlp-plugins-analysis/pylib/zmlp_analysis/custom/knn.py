@@ -52,7 +52,6 @@ class KnnLabelDetectionClassifier(AssetProcessor):
         print('################')
         print(self.app_model.name)
 
-
     def load_model(self):
         """
         Load the model.
