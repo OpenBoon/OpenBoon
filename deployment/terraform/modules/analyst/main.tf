@@ -32,8 +32,8 @@ resource "google_container_node_pool" "analyst" {
   lifecycle {
     ignore_changes = [
       initial_node_count,
-      autoscaling.min_node_count,
-      autoscaling.max_node_count
+      autoscaling[0].min_node_count,
+      autoscaling[0].max_node_count
     ]
   }
 }
