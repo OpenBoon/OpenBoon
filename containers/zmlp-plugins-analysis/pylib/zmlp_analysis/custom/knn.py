@@ -42,14 +42,15 @@ class KnnLabelDetectionClassifier(AssetProcessor):
         print(dist[0][0], prediction[0])
         if dist[0][0] < min_distance:
             analysis.add_label_and_score(prediction[0], dist[0][0])
+            print('################')
+            print('################')
+            print('################')
+            print('################')
         else:
             analysis.add_label_and_score('Unrecognized', dist[0][0])
 
         asset.add_analysis(self.app_model.name, analysis)
-        print('################')
-        print('################')
-        print('################')
-        print('################')
+
         print(self.app_model.name)
 
     def load_model(self):
