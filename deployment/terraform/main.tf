@@ -59,6 +59,9 @@ module "minio" {
 }
 
 resource "google_storage_bucket" "system" {
+  lifecycle {
+    prevent_destroy = true
+  }
   name = "${var.project}-zmlp-system-bucket"
 }
 
@@ -130,6 +133,7 @@ module "archivist" {
   minio-access-key        = module.minio.access-key
   minio-secret-key        = module.minio.secret-key
   system-bucket           = google_storage_bucket.system.name
+  container-cluster-name  = module.gke-cluster.name
 }
 
 module "auth-server" {
@@ -139,6 +143,7 @@ module "auth-server" {
   image-pull-secret   = kubernetes_secret.dockerhub.metadata[0].name
   inception-key-b64   = local.inception-key-b64
   system-bucket       = google_storage_bucket.system.name
+  container-cluster-name  = module.gke-cluster.name
 }
 
 module "api-gateway" {
@@ -148,6 +153,7 @@ module "api-gateway" {
   auth_server_host  = module.auth-server.ip-address
   ml_bbq_host       = module.ml-bbq.ip-address
   domain            = var.zmlp-domain
+  container-cluster-name = module.gke-cluster.name
 }
 
 module "officer" {
@@ -192,6 +198,7 @@ module "ml-bbq" {
   source                 = "./modules/ml-bbq"
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   auth-server-url        = "http://${module.auth-server.ip-address}"
+  container-cluster-name = module.gke-cluster.name
 }
 
 module "gcp-marketplace-integration" {

@@ -28,6 +28,9 @@ variable "minio-secret-key" {
 variable "system-bucket" {
 }
 
+variable "container-cluster-name" {
+}
+
 variable "data-bucket-name" {
   default = "archivist-data"
 }

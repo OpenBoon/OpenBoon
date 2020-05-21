@@ -1,10 +1,8 @@
-resource "google_project_service" "service-usage" {
-  service            = "serviceusage.googleapis.com"
-  disable_on_destroy = false
-}
-
 ## GCS Buckets and Configuration Files
 resource "google_storage_bucket" "data" {
+  lifecycle {
+    prevent_destroy = true
+  }
   name          = "${var.project}-${var.data-bucket-name}"
   storage_class = "REGIONAL"
   location      = var.region
@@ -20,13 +18,10 @@ resource "random_string" "sql-password" {
   special = false
 }
 
-resource "google_project_service" "sqladmin" {
-  service            = "sqladmin.googleapis.com"
-  disable_on_destroy = false
-  depends_on         = [google_project_service.service-usage]
-}
-
 resource "google_sql_database" "archivist" {
+  lifecycle {
+    prevent_destroy = true
+  }
   name     = var.database-name
   instance = var.sql-instance-name
 }

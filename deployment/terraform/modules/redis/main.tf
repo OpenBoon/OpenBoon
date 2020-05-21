@@ -1,4 +1,7 @@
 resource "kubernetes_storage_class" "redis" {
+  lifecycle {
+    prevent_destroy = true
+  }
   metadata {
     name = var.storage-class-name
   }
@@ -10,6 +13,9 @@ resource "kubernetes_storage_class" "redis" {
 
 resource "kubernetes_stateful_set" "redis" {
   provider = kubernetes
+  lifecycle {
+    prevent_destroy = true
+  }
   metadata {
     name      = "redis"
     namespace = var.namespace

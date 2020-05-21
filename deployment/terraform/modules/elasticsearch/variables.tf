@@ -8,10 +8,6 @@ variable "container-tag" {
   default = "latest"
 }
 
-variable "es-cluster-size" {
-  default = 1
-}
-
 variable "namespace" {
   default = "default"
 }
