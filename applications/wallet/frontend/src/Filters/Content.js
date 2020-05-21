@@ -28,7 +28,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
       <div
         css={{
           padding: spacing.small,
-          borderBottom: constants.borders.spacer,
+          borderBottom: constants.borders.divider,
           boxShadow: constants.boxShadows.navBar,
           zIndex: zIndex.layout.interactive,
         }}

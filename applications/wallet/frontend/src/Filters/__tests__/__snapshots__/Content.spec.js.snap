@@ -4,7 +4,7 @@ exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
 Array [
   .emotion-12 {
   padding: 4px;
-  border-bottom: 1px solid #191919;
+  border-bottom: 1px solid #3b3b3b;
   box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
   z-index: 10;
 }
@@ -843,7 +843,7 @@ exports[`<FiltersContent /> should render the "Facet" filter 1`] = `
 Array [
   .emotion-12 {
   padding: 4px;
-  border-bottom: 1px solid #191919;
+  border-bottom: 1px solid #3b3b3b;
   box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
   z-index: 10;
 }
@@ -1939,7 +1939,7 @@ exports[`<FiltersContent /> should render the "Label Confidence" filter 1`] = `
 Array [
   .emotion-12 {
   padding: 4px;
-  border-bottom: 1px solid #191919;
+  border-bottom: 1px solid #3b3b3b;
   box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
   z-index: 10;
 }
@@ -6662,7 +6662,7 @@ exports[`<FiltersContent /> should render the "Range" filter 1`] = `
 Array [
   .emotion-12 {
   padding: 4px;
-  border-bottom: 1px solid #191919;
+  border-bottom: 1px solid #3b3b3b;
   box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
   z-index: 10;
 }
@@ -7527,7 +7527,7 @@ exports[`<FiltersContent /> should render the "Text Detection" filter 1`] = `
 Array [
   .emotion-12 {
   padding: 4px;
-  border-bottom: 1px solid #191919;
+  border-bottom: 1px solid #3b3b3b;
   box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
   z-index: 10;
 }
@@ -8241,7 +8241,7 @@ exports[`<FiltersContent /> should render the default filter 1`] = `
 Array [
   .emotion-12 {
   padding: 4px;
-  border-bottom: 1px solid #191919;
+  border-bottom: 1px solid #3b3b3b;
   box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
   z-index: 10;
 }
