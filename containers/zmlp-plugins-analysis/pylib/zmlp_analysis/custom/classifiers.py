@@ -1,7 +1,4 @@
 import os
-import tempfile
-import zipfile
-from pathlib import Path
 
 import numpy as np
 from tensorflow.keras.models import load_model
@@ -14,6 +11,7 @@ class NeuralNetClassifierProcessor(AssetProcessor):
     """A neural network that takes a similarity hash as input.
     Use Tools/ML/trainClassifier.py to create the model
     """
+
     def __init__(self):
         super(NeuralNetClassifierProcessor, self).__init__()
 
@@ -33,7 +31,7 @@ class NeuralNetClassifierProcessor(AssetProcessor):
 
         # unzip and extract needed files for trained model and labels
         loc = extract_model(model_zip)
-        model_name = self.app_model.name + '.hd5'
+        model_name = self.app_model.name + ".hd5"
         self.trained_model = load_model(os.path.join(loc, model_name))
         self.labels = get_labels(loc, self.app_model.name, "_labels.txt")
         self.hash = self.labels.pop(0)
@@ -45,7 +43,7 @@ class NeuralNetClassifierProcessor(AssetProcessor):
         num_hash = []
         hash = asset.get_attr(self.hash)
         for char in hash:
-            num_hash.append((ord(char)-65)/16.)
+            num_hash.append((ord(char) - 65) / 16.0)
         num_hash = np.asarray(num_hash).reshape(1, len(num_hash))
 
         # This is the actual call to the Keras NN
@@ -60,7 +58,7 @@ class NeuralNetClassifierProcessor(AssetProcessor):
             image_classify_metadata["prob" + str(i)] = scores[i]
         kw = [labels[0]]
         image_classify_metadata["type"] = "NeuralNetClassifier on " + self.hash
-        image_classify_metadata["model"] = self.arg_value('model')
+        image_classify_metadata["model"] = self.arg_value("model")
         image_classify_metadata["keywords"] = kw
         image_classify_metadata["confidence"] = scores[0]
         asset.add_analysis("imageClassify", image_classify_metadata)
