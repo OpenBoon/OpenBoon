@@ -45,6 +45,16 @@ class KnnLabelDetectionClassifier(AssetProcessor):
             analysis.add_label_and_score('Unrecognized', dist[0][0])
 
         asset.add_analysis(self.app_model.name, analysis)
+        print('################')
+        print('################')
+        print('################')
+        print('################')
+        print(self.app_model.name)
+        print(analysis)
+        print('################')
+        print('################')
+        print('################')
+        print('################')
 
     def load_model(self):
         """
