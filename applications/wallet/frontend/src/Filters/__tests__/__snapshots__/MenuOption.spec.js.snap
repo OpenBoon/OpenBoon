@@ -12,8 +12,11 @@ exports[`<FiltersMenuOption /> should render properly 1`] = `
 
 .emotion-7 {
   padding: 8px;
-  color: #b3b3b3;
   margin-left: -32px;
+}
+
+.emotion-7:hover {
+  background-color: #027aff38;
 }
 
 .emotion-6 {

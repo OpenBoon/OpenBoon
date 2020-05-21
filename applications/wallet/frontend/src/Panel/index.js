@@ -62,6 +62,7 @@ const Panel = ({ openToThe, children }) => {
                 color: colors.structure.white,
                 backgroundColor: colors.structure.mattGrey,
               },
+              borderRadius: constants.borderRadius.none,
             }}
           >
             {icon}

@@ -10,7 +10,14 @@ const TRACK_HEIGHT = 4
 const HANDLE_WIDTH = 8
 const HANDLE_HEIGHT = 24
 
-const FilterRangeSlider = ({ step, domain, values, onUpdate, onChange }) => {
+const FilterRangeSlider = ({
+  step,
+  domain,
+  values,
+  isDisabled,
+  onUpdate,
+  onChange,
+}) => {
   return (
     <Slider
       mode={2}
@@ -58,7 +65,7 @@ const FilterRangeSlider = ({ step, domain, values, onUpdate, onChange }) => {
                 aria-valuemin={domain.min}
                 aria-valuemax={domain.max}
                 aria-valuenow={value}
-                style={{
+                css={{
                   padding: 0,
                   margin: 0,
                   border: 'none',
@@ -71,6 +78,9 @@ const FilterRangeSlider = ({ step, domain, values, onUpdate, onChange }) => {
                   backgroundColor: colors.structure.steel,
                   borderRadius: 1,
                   cursor: 'pointer',
+                  ':hover, :active': {
+                    backgroundColor: colors.structure.white,
+                  },
                 }}
                 {...getHandleProps(id)}
               />
@@ -89,7 +99,9 @@ const FilterRangeSlider = ({ step, domain, values, onUpdate, onChange }) => {
                   transform: 'translate(0%, -50%)',
                   height: TRACK_HEIGHT,
                   zIndex: 1,
-                  backgroundColor: colors.key.one,
+                  backgroundColor: isDisabled
+                    ? colors.structure.steel
+                    : colors.key.one,
                   cursor: 'pointer',
                   left: `${source.percent}%`,
                   width: `${target.percent - source.percent}%`,
@@ -108,6 +120,7 @@ FilterRangeSlider.propTypes = {
   step: PropTypes.number.isRequired,
   domain: PropTypes.arrayOf(PropTypes.number).isRequired,
   values: PropTypes.arrayOf(PropTypes.number).isRequired,
+  isDisabled: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
 }
