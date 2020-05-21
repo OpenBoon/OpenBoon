@@ -29,7 +29,11 @@ resource "google_container_node_pool" "elasticsearch" {
     }
   }
   lifecycle {
-    ignore_changes = [initial_node_count]
+    ignore_changes = [
+      initial_node_count,
+      autoscaling.min_node_count,
+      autoscaling.max_node_count
+    ]
   }
 }
 
@@ -50,6 +54,7 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
   provider = kubernetes
   lifecycle {
     prevent_destroy = true
+    ignore_changes = [spec[0].replicas]
   }
   metadata {
     name      = "elasticsearch-master"
@@ -198,6 +203,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
   provider = kubernetes
   lifecycle {
     prevent_destroy = true
+    ignore_changes = [spec[0].replicas]
   }
   metadata {
     name      = "elasticsearch-data"
