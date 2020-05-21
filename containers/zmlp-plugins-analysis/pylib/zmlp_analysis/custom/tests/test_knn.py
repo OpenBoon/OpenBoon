@@ -5,7 +5,7 @@ from zmlp.app import ModelApp
 from zmlp.entity import Model
 from zmlp_analysis.custom import KnnLabelDetectionClassifier
 from zmlpsdk import Frame, file_storage
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset
 
 
 class KnnLabelDetectionClassifierTests(PluginUnitTestCase):
