@@ -44,10 +44,9 @@ class KnnLabelDetectionTrainer(AssetProcessor):
         for asset in self.app.assets.scroll_search(query):
             for label in asset['labels']:
                 if label['dataSetId'] == self.app_model.dataset_id:
-                    classifier_hashes.append({'simhash':
-                                                  asset.get_attr(
-                                                      'analysis.zvi-image-similarity.simhash'),
-                                                      'label': label['label']})
+                    classifier_hashes.append({'simhash': asset.get_attr(
+                            'analysis.zvi-image-similarity.simhash'),
+                            'label': label['label']})
 
         if not classifier_hashes:
             self.logger.warning("No labeled assets")
