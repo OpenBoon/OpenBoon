@@ -7,7 +7,6 @@ import numpy as np
 
 from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.storage import file_storage
-from zmlpsdk.analysis import LabelDetectionAnalysis
 
 
 class KnnLabelDetectionClassifier(AssetProcessor):
@@ -37,22 +36,15 @@ class KnnLabelDetectionClassifier(AssetProcessor):
         prediction = self.classifier.predict([x])
         dist, ind = self.classifier.kneighbors([x], n_neighbors=1, return_distance=True)
 
-        analysis = LabelDetectionAnalysis()
         min_distance = self.arg_value('sensitivity')
         print(dist[0][0], prediction[0])
         if dist[0][0] < min_distance:
-            asset.set_attr('analysis.' + self.app_model.name + '.label', prediction[0])
-            asset.set_attr('analysis.' + self.app_model.name + '.conf', dist[0][0])
-
-            # analysis.add_label_and_score(prediction[0], dist[0][0])
-            print('################')
-            print('################')
-            print('################')
-            print('################')
+            label = prediction[0]
         else:
-            analysis.add_label_and_score('Unrecognized', dist[0][0])
+            label = 'Unrecognized'
 
-        asset.add_analysis(self.app_model.name, analysis)
+        asset.set_attr('analysis.' + self.app_model.name + '.label', label)
+        asset.set_attr('analysis.' + self.app_model.name + '.conf', dist[0][0])
 
         print(self.app_model.name)
 
