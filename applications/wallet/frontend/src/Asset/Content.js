@@ -29,15 +29,23 @@ const AssetContent = () => {
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
+  const srcFile =
+    type === 'video'
+      ? files.find(({ mimetype }) => {
+          return mimetype.includes('video')
+        })
+      : files.reduce((acc, file) => {
+          if (!acc || file.size > acc.size) {
+            return file
+          }
+
+          return acc
+        }, '')
+
   const {
     name,
     attrs: { width, height },
-  } = files.find(({ mimetype }) => {
-    if (type === 'video') {
-      return mimetype === 'video/mp4'
-    }
-    return true
-  })
+  } = srcFile
 
   const queryString = query ? `?query=${query}` : ''
 
@@ -47,6 +55,7 @@ const AssetContent = () => {
       : { width: '100%', maxHeight: '100%' }
 
   const largerDimension = width > height ? 'width' : 'height'
+  const fileSrc = `/api/v1/projects/${projectId}/assets/${assetId}/files/category/proxy/name/${name}/`
 
   return (
     <div
@@ -115,18 +124,11 @@ const AssetContent = () => {
         >
           {type === 'video' && (
             <video css={videoStyle} autoPlay controls>
-              <source
-                src={`/api/v1/projects/${projectId}/assets/${assetId}/files/category/proxy/name/${name}/`}
-                type="video/mp4"
-              />
+              <source src={fileSrc} type="video/mp4" />
             </video>
           )}
           {type !== 'video' && (
-            <img
-              css={{ [largerDimension]: '100%' }}
-              src={`/api/v1/projects/${projectId}/assets/${assetId}/files/category/proxy/name/${name}/`}
-              alt={name}
-            />
+            <img css={{ [largerDimension]: '100%' }} src={fileSrc} alt={name} />
           )}
         </div>
         <Panel openToThe="left">
