@@ -101,7 +101,7 @@ class KnnLabelDetectionTrainer(AssetProcessor):
             PipelineMod: The published Pipeline Module.
         """
         self.logger.info('publishing model')
-        model_dir = os.path.join(tempfile.mkdtemp(), "model")
+        model_dir = os.path.join(tempfile.mkdtemp(), "model_knn")
         os.makedirs(model_dir, exist_ok=True)
 
         with open(os.path.join(model_dir, 'knn_classifier.pickle'), 'wb') as fp:
