@@ -81,51 +81,48 @@ const AssetsThumbnail = ({
           />
         </Button>
       </Link>
-
-      {assetStyle === 'video' && (
-        <>
-          <div
+      <Link
+        href={`/[projectId]/visualizer/[id]${queryString}`}
+        as={`/${projectId}/visualizer/${id}${queryString}`}
+        passHref
+      >
+        <Button
+          variant={VARIANTS.NEUTRAL}
+          style={{
+            position: 'absolute',
+            bottom: spacing.base,
+            right: spacing.base,
+            padding: spacing.small,
+            backgroundColor: colors.structure.smoke,
+            opacity: constants.opacity.half,
+            ':hover': {
+              opacity: constants.opacity.eighth,
+            },
+          }}
+        >
+          <ExpandSvg
+            width={20}
+            color={colors.structure.white}
             css={{
-              position: 'absolute',
-              bottom: spacing.base,
-              left: spacing.base,
-              padding: spacing.mini,
-              color: colors.structure.black,
-              // Append 80 for half opacity without affecting text
-              backgroundColor: `${colors.structure.white}80`,
+              display: 'none',
             }}
-          >
-            {videoLength}
-          </div>
-          <Link
-            href={`/[projectId]/visualizer/[id]${queryString}`}
-            as={`/${projectId}/visualizer/${id}${queryString}`}
-            passHref
-          >
-            <Button
-              variant={VARIANTS.NEUTRAL}
-              style={{
-                position: 'absolute',
-                bottom: spacing.base,
-                right: spacing.base,
-                padding: spacing.small,
-                backgroundColor: colors.structure.smoke,
-                opacity: constants.opacity.half,
-                ':hover': {
-                  opacity: constants.opacity.eighth,
-                },
-              }}
-            >
-              <ExpandSvg
-                width={20}
-                color={colors.structure.white}
-                css={{
-                  display: 'none',
-                }}
-              />
-            </Button>
-          </Link>
-        </>
+          />
+        </Button>
+      </Link>
+      {assetStyle === 'video' && (
+        <div
+          css={{
+            position: 'absolute',
+            bottom: spacing.base,
+            left: spacing.base,
+            padding: spacing.mini,
+            color: colors.structure.black,
+            // Append 80 for half opacity without affecting text
+            backgroundColor: `${colors.structure.white}80`,
+          }}
+        >
+          {videoLength}
+        </div>
       )}
     </div>
   )

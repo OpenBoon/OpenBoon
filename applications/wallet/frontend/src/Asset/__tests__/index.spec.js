@@ -1,6 +1,7 @@
 import TestRenderer from 'react-test-renderer'
 
 import videoAsset from '../__mocks__/videoAsset'
+import docAsset from '../__mocks__/docAsset'
 import mockUser from '../../User/__mocks__/user'
 
 import User from '../../User'
@@ -16,6 +17,22 @@ const QUERY_STRING =
 
 describe('<Asset />', () => {
   it('should render properly', () => {
+    require('swr').__setMockUseSWRResponse({ data: docAsset })
+
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, id: ASSET_ID, query: QUERY_STRING },
+    })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Asset />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render videos properly', () => {
     require('swr').__setMockUseSWRResponse({ data: videoAsset })
 
     require('next/router').__setUseRouter({

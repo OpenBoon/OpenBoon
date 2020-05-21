@@ -22,16 +22,29 @@ const AssetContent = () => {
 
   const {
     data: {
-      metadata: { files },
+      metadata: {
+        files,
+        media: { type },
+      },
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
   const {
     name,
     attrs: { width, height },
-  } = files.find(({ mimetype }) => mimetype === 'video/mp4')
+  } = files.find(({ mimetype }) => {
+    if (type === 'video') {
+      return mimetype === 'video/mp4'
+    }
+    return true
+  })
 
   const queryString = query ? `?query=${query}` : ''
+
+  const videoStyle =
+    width > height
+      ? { height: '100%', maxWidth: '100%' }
+      : { width: '100%', maxHeight: '100%' }
 
   const largerDimension = width > height ? 'width' : 'height'
 
@@ -100,12 +113,21 @@ const AssetContent = () => {
             alignItems: 'center',
           }}
         >
-          <video css={{ [largerDimension]: '100%' }} autoPlay controls>
-            <source
-              src={`/api/v1/projects/${projectId}/assets/${assetId}/files/category/video/name/${name}/`}
-              type="video/mp4"
+          {type === 'video' && (
+            <video css={videoStyle} autoPlay controls>
+              <source
+                src={`/api/v1/projects/${projectId}/assets/${assetId}/files/category/proxy/name/${name}/`}
+                type="video/mp4"
+              />
+            </video>
+          )}
+          {type !== 'video' && (
+            <img
+              css={{ [largerDimension]: '100%' }}
+              src={`/api/v1/projects/${projectId}/assets/${assetId}/files/category/proxy/name/${name}/`}
+              alt={name}
             />
-          </video>
+          )}
         </div>
         <Panel openToThe="left">
           {{

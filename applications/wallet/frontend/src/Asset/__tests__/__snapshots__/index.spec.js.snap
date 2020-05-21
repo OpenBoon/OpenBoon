@@ -128,10 +128,6 @@ exports[`<Asset /> should handle no query 1`] = `
   align-items: center;
 }
 
-.emotion-3 {
-  width: 100%;
-}
-
 .emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -211,6 +207,11 @@ exports[`<Asset /> should handle no query 1`] = `
   background-color: #252525;
 }
 
+.emotion-3 {
+  height: 100%;
+  max-width: 100%;
+}
+
 <div
   className="emotion-10"
 >
@@ -246,7 +247,7 @@ exports[`<Asset /> should handle no query 1`] = `
         controls={true}
       >
         <source
-          src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/video/name/video_450x360.mp4/"
+          src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
           type="video/mp4"
         />
       </video>
@@ -407,7 +408,7 @@ exports[`<Asset /> should render properly 1`] = `
 }
 
 .emotion-3 {
-  width: 100%;
+  height: 100%;
 }
 
 .emotion-8 {
@@ -518,16 +519,11 @@ exports[`<Asset /> should render properly 1`] = `
     <div
       className="emotion-4"
     >
-      <video
-        autoPlay={true}
+      <img
+        alt="image_791x1024.jpg"
         className="emotion-3"
-        controls={true}
-      >
-        <source
-          src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/video/name/video_450x360.mp4/"
-          type="video/mp4"
-        />
-      </video>
+        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/image_791x1024.jpg/"
+      />
     </div>
     <div
       className="emotion-8"
@@ -557,6 +553,59 @@ exports[`<Asset /> should render properly 1`] = `
 `;
 
 exports[`<Asset /> should render vertical videos properly 1`] = `
+.emotion-2 {
+  height: 100%;
+}
+
+.emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  background-color: #252525;
+  font-size: 15px;
+  line-height: 19px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  max-width: 80%;
+}
+
+<div
+  className="ErrorBoundary emotion-2"
+>
+  <div
+    className="emotion-1"
+  >
+    <svg
+      className="emotion-0"
+      data-file-name="error.svg"
+      width={604}
+    />
+    <br />
+     Hmmm, something went wrong.
+    <br />
+     Please try refreshing.
+  </div>
+</div>
+`;
+
+exports[`<Asset /> should render videos properly 1`] = `
 .emotion-10 {
   height: 100%;
   background-color: #191919;
@@ -765,6 +814,7 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
 
 .emotion-3 {
   height: 100%;
+  max-width: 100%;
 }
 
 <div
@@ -802,7 +852,7 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
         controls={true}
       >
         <source
-          src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/video/name/video_450x360.mp4/"
+          src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
           type="video/mp4"
         />
       </video>
