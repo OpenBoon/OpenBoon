@@ -1,6 +1,7 @@
 import colors from './colors'
 
 const borderRadius = {
+  none: 0,
   small: 2,
   medium: 4,
   large: 14,
@@ -29,6 +30,7 @@ const borders = {
   facet: `4px solid ${colors.key.one}`,
   unselectedFacet: `4px solid ${colors.structure.steel}`,
   metrics: `2px solid ${colors.structure.white}`,
+  outline: `thin solid transparent`,
 }
 
 const opacity = {

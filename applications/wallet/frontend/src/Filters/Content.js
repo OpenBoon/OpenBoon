@@ -26,7 +26,10 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
   return (
     <>
       <div
-        css={{ padding: spacing.small, borderBottom: constants.borders.spacer }}
+        css={{
+          padding: spacing.small,
+          borderBottom: constants.borders.divider,
+        }}
       >
         <div css={{ display: 'flex' }}>
           <Button
