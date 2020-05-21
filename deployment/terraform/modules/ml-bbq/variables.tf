@@ -27,14 +27,6 @@ variable "cpu-limit" {
   default = 3
 }
 
-variable "minimum-replicas" {
-  default = 1
-}
-
-variable "maximum-replicas" {
-  default = 2
-}
-
 variable "rollout-strategy" {
   default = "RollingUpdate"
 }

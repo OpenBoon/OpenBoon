@@ -249,14 +249,17 @@ resource "kubernetes_horizontal_pod_autoscaler" "archivist" {
     }
   }
   spec {
-    max_replicas = var.maximum-replicas
-    min_replicas = var.minimum-replicas
+    max_replicas = 2
+    min_replicas = 2
     scale_target_ref {
       api_version = "apps/v1"
       kind        = "Deployment"
       name        = "archivist"
     }
     target_cpu_utilization_percentage = 75
+  }
+  lifecycle {
+    ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
   }
 }
 

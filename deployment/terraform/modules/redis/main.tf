@@ -15,6 +15,7 @@ resource "kubernetes_stateful_set" "redis" {
   provider = kubernetes
   lifecycle {
     prevent_destroy = true
+    ignore_changes = [spec[0].replicas]
   }
   metadata {
     name      = "redis"
@@ -30,7 +31,7 @@ resource "kubernetes_stateful_set" "redis" {
       type = "RollingUpdate"
     }
     service_name = "redis"
-    replicas     = "1"
+    replicas     = 1
     selector {
       match_labels = {
         app = "redis"
