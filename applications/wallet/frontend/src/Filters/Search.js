@@ -22,7 +22,7 @@ const FiltersSearch = ({ placeholder, searchString, onChange }) => {
           color: colors.structure.pebble,
           backgroundColor: colors.structure.mattGrey,
           ':focus': {
-            outline: 0,
+            outline: constants.borders.outline,
             border: constants.borders.inputSmall,
             ':hover': {
               border: constants.borders.inputSmall,

@@ -130,13 +130,13 @@ const FilterTextDetection = ({
               color: colors.structure.pebble,
               backgroundColor: colors.structure.mattGrey,
               ':focus': {
-                color: colors.structure.coal,
-                backgroundColor: colors.structure.white,
-                outline: 0,
+                outline: constants.borders.outline,
                 border: constants.borders.inputSmall,
                 ':hover': {
                   border: constants.borders.inputSmall,
                 },
+                color: colors.structure.coal,
+                backgroundColor: colors.structure.white,
               },
               ':hover': {
                 border: constants.borders.tableRow,

@@ -120,7 +120,7 @@ Array [
 }
 
 .emotion-0:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -310,7 +310,7 @@ Array [
 }
 
 .emotion-0:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -755,7 +755,7 @@ Array [
 }
 
 .emotion-0:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -1080,7 +1080,7 @@ Array [
 }
 
 .emotion-0:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;

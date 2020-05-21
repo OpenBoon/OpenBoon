@@ -322,7 +322,6 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
 
 .emotion-12 {
   padding: 8px;
-  color: #b3b3b3;
   margin-left: -32px;
 }
 
@@ -1576,7 +1575,6 @@ exports[`<Filters /> should open the menu 1`] = `
 
 .emotion-12 {
   padding: 8px;
-  color: #b3b3b3;
   margin-left: -32px;
 }
 
@@ -2168,7 +2166,7 @@ Array [
 }
 
 .emotion-6:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;

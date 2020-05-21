@@ -189,7 +189,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -1026,7 +1026,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -1404,7 +1404,7 @@ Array [
 }
 
 .emotion-12:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -2120,7 +2120,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -2480,7 +2480,7 @@ Array [
 }
 
 .emotion-18:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -6841,7 +6841,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -7704,7 +7704,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -8072,10 +8072,10 @@ Array [
 }
 
 .emotion-11:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
-  outline: 0;
-  border: 1px solid #73b61c;
 }
 
 .emotion-11:focus:hover {
@@ -8416,7 +8416,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: 0;
+  outline: thin solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
