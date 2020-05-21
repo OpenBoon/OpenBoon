@@ -187,5 +187,8 @@ resource "kubernetes_horizontal_pod_autoscaler" "auth-server" {
     }
     target_cpu_utilization_percentage = 80
   }
+  lifecycle {
+    ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
+  }
 }
 
