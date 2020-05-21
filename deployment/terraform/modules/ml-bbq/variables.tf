@@ -4,6 +4,9 @@ variable "image-pull-secret" {
 variable "auth-server-url" {
 }
 
+variable "container-cluster-name" {
+}
+
 variable "container-tag" {
   default = "latest"
 }

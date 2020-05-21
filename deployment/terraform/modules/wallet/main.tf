@@ -8,6 +8,9 @@ resource "random_string" "sql-password" {
 }
 
 resource "google_sql_database" "wallet" {
+  lifecycle {
+    prevent_destroy = true
+  }
   depends_on = [google_sql_user.wallet]
   name       = var.database-name
   instance   = var.sql-instance-name

@@ -13,6 +13,9 @@ variable "inception-key-b64" {
 variable "system-bucket" {
 }
 
+variable "container-cluster-name" {
+}
+
 variable "container-tag" {
   default = "latest"
 }

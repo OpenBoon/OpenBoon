@@ -1,19 +1,7 @@
-locals {
-  es-cluster-size = min(var.es-cluster-size, 5)
-  es-hosts = [
-    "elasticsearch-0.elasticsearch.${var.namespace}.svc.cluster.local",
-    "elasticsearch-1.elasticsearch.${var.namespace}.svc.cluster.local",
-    "elasticsearch-2.elasticsearch.${var.namespace}.svc.cluster.local",
-    "elasticsearch-3.elasticsearch.${var.namespace}.svc.cluster.local",
-    "elasticsearch-4.elasticsearch.${var.namespace}.svc.cluster.local",
-  ]
-  es-host-string = join(",", slice(local.es-hosts, 0, local.es-cluster-size))
-}
-
 resource "google_container_node_pool" "elasticsearch" {
   name               = var.node-pool-name
   cluster            = var.container-cluster-name
-  initial_node_count = local.es-cluster-size
+  initial_node_count = 5
   autoscaling {
     max_node_count = 6
     min_node_count = 5
@@ -40,9 +28,15 @@ resource "google_container_node_pool" "elasticsearch" {
       namespace = var.namespace
     }
   }
+  lifecycle {
+    ignore_changes = [initial_node_count]
+  }
 }
 
 resource "kubernetes_storage_class" "elasticsearch" {
+  lifecycle {
+    prevent_destroy = true
+  }
   metadata {
     name = var.storage-class-name
   }
@@ -54,6 +48,9 @@ resource "kubernetes_storage_class" "elasticsearch" {
 
 resource "kubernetes_stateful_set" "elasticsearch-master" {
   provider = kubernetes
+  lifecycle {
+    prevent_destroy = true
+  }
   metadata {
     name      = "elasticsearch-master"
     namespace = var.namespace
@@ -199,6 +196,9 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
 
 resource "kubernetes_stateful_set" "elasticsearch-data" {
   provider = kubernetes
+  lifecycle {
+    prevent_destroy = true
+  }
   metadata {
     name      = "elasticsearch-data"
     namespace = var.namespace
