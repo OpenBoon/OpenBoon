@@ -61,7 +61,7 @@ class KnnLabelDetectionClassifier(AssetProcessor):
         return classifier
 
     @staticmethod
-    def hashes_as_nparray(hash):
+    def hash_as_nparray(hash):
         """
         Convert a sim hash into a NP array so they can be compared
         to the ones in the model.
