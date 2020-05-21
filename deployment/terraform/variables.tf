@@ -19,7 +19,7 @@ variable "zone" {
 }
 
 variable "environment" {
-  description = "Name of the deplyment environment. Used for things like sentry reporting."
+  description = "Name of the deployment environment. Used for things like sentry reporting."
 }
 
 variable "terraform-credentials" {

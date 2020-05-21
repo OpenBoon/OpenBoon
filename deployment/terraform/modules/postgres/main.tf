@@ -1,4 +1,23 @@
+resource "google_project_service" "iam" {
+  service            = "iam.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "service-usage" {
+  service            = "serviceusage.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "sqladmin" {
+  service            = "sqladmin.googleapis.com"
+  disable_on_destroy = false
+  depends_on         = [google_project_service.service-usage]
+}
+
 resource "google_sql_database_instance" "zmlp" {
+  lifecycle {
+    prevent_destroy = true
+  }
   name             = "zmlp"
   database_version = "POSTGRES_9_6"
   region           = var.region
@@ -11,16 +30,7 @@ resource "google_sql_database_instance" "zmlp" {
       enabled = true
     }
   }
-}
-
-resource "google_project_service" "iam" {
-  service            = "iam.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "sqladmin" {
-  service            = "sqladmin.googleapis.com"
-  disable_on_destroy = false
+  depends_on = [google_project_service.sqladmin]
 }
 
 resource "google_service_account" "cloud-sql-proxy" {

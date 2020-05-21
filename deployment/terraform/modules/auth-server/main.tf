@@ -11,6 +11,9 @@ resource "google_sql_user" "auth-server" {
 }
 
 resource "google_sql_database" "auth" {
+  lifecycle {
+    prevent_destroy = true
+  }
   name     = "zorroa-auth"
   instance = var.sql-instance-name
 }

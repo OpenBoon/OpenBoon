@@ -1,4 +1,7 @@
 resource "kubernetes_persistent_volume_claim" "minio" {
+  lifecycle {
+    prevent_destroy = true
+  }
   metadata {
     name      = "minio-pv-claim"
     namespace = var.namespace
