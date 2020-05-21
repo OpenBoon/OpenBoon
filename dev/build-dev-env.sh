@@ -12,14 +12,14 @@ echo "Activating Virtual Environment"
 source zenv/bin/activate
 
 echo "Installing packages..."
-chmod +x install_requirements.sh install_setups.sh
+chmod +x dev/install_requirements.sh dev/install_setups.sh
 
 echo "Installing requirements.txt"
-source install_requirements.sh
+source dev/install_requirements.sh
 cd "$cwd" || return
 
 echo "Installing setup.py"
-source install_setups.sh
+source dev/install_setups.sh
 
 echo "Complete"
 cd "$cwd" || return
