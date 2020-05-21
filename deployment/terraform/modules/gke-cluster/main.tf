@@ -32,6 +32,10 @@ resource "google_project_service" "service-usage" {
 }
 
 resource "google_container_cluster" "primary" {
+  lifecycle {
+    prevent_destroy = true
+  }
+
   name               = "zmlp"
   location           = var.zone
   cluster_ipv4_cidr  = "10.0.0.0/14"
