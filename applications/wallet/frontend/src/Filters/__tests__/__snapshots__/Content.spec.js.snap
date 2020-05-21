@@ -2584,9 +2584,48 @@ Array [
   background-color: #4a4a4a;
 }
 
+.emotion-14 {
+  padding: 0;
+  margin: 0;
+  border: none;
+  left: 0%;
+  position: absolute;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
 .emotion-14:hover,
 .emotion-14:active {
-  background-color: #ffffff !important;
+  background-color: #ffffff;
+}
+
+.emotion-15 {
+  padding: 0;
+  margin: 0;
+  border: none;
+  left: 100%;
+  position: absolute;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.emotion-15:hover,
+.emotion-15:active {
+  background-color: #ffffff;
 }
 
 .emotion-658 {
@@ -3057,47 +3096,15 @@ Array [
                     onMouseDown={[Function]}
                     onTouchStart={[Function]}
                     role="slider"
-                    style={
-                      Object {
-                        "backgroundColor": "#808080",
-                        "border": "none",
-                        "borderRadius": 1,
-                        "cursor": "pointer",
-                        "height": 24,
-                        "left": "0%",
-                        "margin": 0,
-                        "padding": 0,
-                        "position": "absolute",
-                        "transform": "translate(-50%, -50%)",
-                        "width": 8,
-                        "zIndex": 2,
-                      }
-                    }
                     type="button"
                   />
                   <button
                     aria-valuenow={1}
-                    className="emotion-14"
+                    className="emotion-15"
                     onKeyDown={[Function]}
                     onMouseDown={[Function]}
                     onTouchStart={[Function]}
                     role="slider"
-                    style={
-                      Object {
-                        "backgroundColor": "#808080",
-                        "border": "none",
-                        "borderRadius": 1,
-                        "cursor": "pointer",
-                        "height": 24,
-                        "left": "100%",
-                        "margin": 0,
-                        "padding": 0,
-                        "position": "absolute",
-                        "transform": "translate(-50%, -50%)",
-                        "width": 8,
-                        "zIndex": 2,
-                      }
-                    }
                     type="button"
                   />
                 </div>
@@ -7238,9 +7245,48 @@ Array [
   background-color: #4a4a4a;
 }
 
+.emotion-14 {
+  padding: 0;
+  margin: 0;
+  border: none;
+  left: 0%;
+  position: absolute;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
 .emotion-14:hover,
 .emotion-14:active {
-  background-color: #ffffff !important;
+  background-color: #ffffff;
+}
+
+.emotion-15 {
+  padding: 0;
+  margin: 0;
+  border: none;
+  left: 100%;
+  position: absolute;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.emotion-15:hover,
+.emotion-15:active {
+  background-color: #ffffff;
 }
 
 .emotion-21 {
@@ -7418,47 +7464,15 @@ Array [
                       onMouseDown={[Function]}
                       onTouchStart={[Function]}
                       role="slider"
-                      style={
-                        Object {
-                          "backgroundColor": "#808080",
-                          "border": "none",
-                          "borderRadius": 1,
-                          "cursor": "pointer",
-                          "height": 24,
-                          "left": "0%",
-                          "margin": 0,
-                          "padding": 0,
-                          "position": "absolute",
-                          "transform": "translate(-50%, -50%)",
-                          "width": 8,
-                          "zIndex": 2,
-                        }
-                      }
                       type="button"
                     />
                     <button
                       aria-valuenow={8525}
-                      className="emotion-14"
+                      className="emotion-15"
                       onKeyDown={[Function]}
                       onMouseDown={[Function]}
                       onTouchStart={[Function]}
                       role="slider"
-                      style={
-                        Object {
-                          "backgroundColor": "#808080",
-                          "border": "none",
-                          "borderRadius": 1,
-                          "cursor": "pointer",
-                          "height": 24,
-                          "left": "100%",
-                          "margin": 0,
-                          "padding": 0,
-                          "position": "absolute",
-                          "transform": "translate(-50%, -50%)",
-                          "width": 8,
-                          "zIndex": 2,
-                        }
-                      }
                       type="button"
                     />
                   </div>

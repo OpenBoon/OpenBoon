@@ -22,9 +22,48 @@ exports[`<FilterRangeSlider /> should render properly when muted 1`] = `
   background-color: #4a4a4a;
 }
 
+.emotion-2 {
+  padding: 0;
+  margin: 0;
+  border: none;
+  left: 0%;
+  position: absolute;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
 .emotion-2:hover,
 .emotion-2:active {
-  background-color: #ffffff !important;
+  background-color: #ffffff;
+}
+
+.emotion-3 {
+  padding: 0;
+  margin: 0;
+  border: none;
+  left: 100%;
+  position: absolute;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.emotion-3:hover,
+.emotion-3:active {
+  background-color: #ffffff;
 }
 
 <div
@@ -51,47 +90,15 @@ exports[`<FilterRangeSlider /> should render properly when muted 1`] = `
       onMouseDown={[Function]}
       onTouchStart={[Function]}
       role="slider"
-      style={
-        Object {
-          "backgroundColor": "#808080",
-          "border": "none",
-          "borderRadius": 1,
-          "cursor": "pointer",
-          "height": 24,
-          "left": "0%",
-          "margin": 0,
-          "padding": 0,
-          "position": "absolute",
-          "transform": "translate(-50%, -50%)",
-          "width": 8,
-          "zIndex": 2,
-        }
-      }
       type="button"
     />
     <button
       aria-valuenow={100}
-      className="emotion-2"
+      className="emotion-3"
       onKeyDown={[Function]}
       onMouseDown={[Function]}
       onTouchStart={[Function]}
       role="slider"
-      style={
-        Object {
-          "backgroundColor": "#808080",
-          "border": "none",
-          "borderRadius": 1,
-          "cursor": "pointer",
-          "height": 24,
-          "left": "100%",
-          "margin": 0,
-          "padding": 0,
-          "position": "absolute",
-          "transform": "translate(-50%, -50%)",
-          "width": 8,
-          "zIndex": 2,
-        }
-      }
       type="button"
     />
   </div>

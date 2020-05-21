@@ -65,7 +65,7 @@ const FilterRangeSlider = ({
                 aria-valuemin={domain.min}
                 aria-valuemax={domain.max}
                 aria-valuenow={value}
-                style={{
+                css={{
                   padding: 0,
                   margin: 0,
                   border: 'none',
@@ -78,10 +78,8 @@ const FilterRangeSlider = ({
                   backgroundColor: colors.structure.steel,
                   borderRadius: 1,
                   cursor: 'pointer',
-                }}
-                css={{
                   ':hover, :active': {
-                    backgroundColor: `${colors.structure.white} !important`,
+                    backgroundColor: colors.structure.white,
                   },
                 }}
                 {...getHandleProps(id)}
