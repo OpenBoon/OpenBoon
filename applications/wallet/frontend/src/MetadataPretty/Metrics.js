@@ -11,7 +11,7 @@ const MetadataPrettyMetrics = ({ pipeline }) => {
     <>
       <div css={{ padding: spacing.normal, paddingBottom: spacing.comfy }}>
         <div css={{ paddingBottom: spacing.moderate }}>
-          Pipelines: {pipeline.length}
+          Processors: {pipeline.length}
         </div>
         <MetadataPrettyMetricsBar pipeline={pipeline} />
       </div>
