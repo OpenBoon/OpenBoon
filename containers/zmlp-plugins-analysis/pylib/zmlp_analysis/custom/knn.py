@@ -39,6 +39,7 @@ class KnnLabelDetectionClassifier(AssetProcessor):
 
         analysis = LabelDetectionAnalysis()
         min_distance = self.arg_value('sensitivity')
+        print(prediction)
         if dist[0][0] < min_distance:
             analysis.add_label_and_score(prediction[0], dist[0][0])
         else:
@@ -50,11 +51,7 @@ class KnnLabelDetectionClassifier(AssetProcessor):
         print('################')
         print('################')
         print(self.app_model.name)
-        print(analysis)
-        print('################')
-        print('################')
-        print('################')
-        print('################')
+
 
     def load_model(self):
         """
