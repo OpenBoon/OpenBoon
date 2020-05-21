@@ -29,7 +29,7 @@ resource "google_container_node_pool" "elasticsearch" {
     }
   }
   lifecycle {
-    ignore_changes = ["initial_node_count"]
+    ignore_changes = [initial_node_count]
   }
 }
 
