@@ -106,7 +106,7 @@ wallet-dockerhub-build-push-latest:
     - ./buildx wallet
     - docker push zmlp/wallet:latest
   rules:
-    # Merged to any branch with Wallet changes
+    # Merged to Development or QA with Wallet changes
     - if: $CI_COMMIT_BRANCH == "development" || $CI_COMMIT_BRANCH == "qa"
       changes:
         - "applications/wallet/**/*"
