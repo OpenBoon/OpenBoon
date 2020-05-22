@@ -23,6 +23,18 @@ describe('<AssetsThumbnail />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render properly a video asset', () => {
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, id: ASSET_ID },
+    })
+
+    const component = TestRenderer.create(
+      <AssetsThumbnail asset={assets.results[4]} />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly a valid selected asset', () => {
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID, id: ASSET_ID },
