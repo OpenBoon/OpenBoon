@@ -34,6 +34,8 @@ class AssetSearchScroller(object):
                 response will contain the entire page, not individual assets.
         """
         self.app = app
+        if search and getattr(search, "to_dict"):
+            search = search.to_dict()
         self.search = copy.deepcopy(search or {})
         self.timeout = timeout
         self.raw_response = raw_response
@@ -124,6 +126,8 @@ class AssetSearchResult(object):
             search (dict): An ElasticSearch query.
         """
         self.app = app
+        if search and getattr(search, "to_dict"):
+            search = search.to_dict()
         self.search = search
         self.result = self.app.client.post("api/v3/assets/_search", self.search)
 
