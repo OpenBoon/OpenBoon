@@ -108,7 +108,7 @@ your session ends. It should also allow you to work offline.
 
 #### Local Mode
 
-To run a local environment of ZMLP, you need to build the docker setup
+To run a local environment of ZVI Console, you need to build the docker setup
 (`docker-compose build`) and run it (`docker-compose up`). Refer to the overall
 `wallet` or `wallet/app` docs for further information.
 
