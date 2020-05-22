@@ -10,11 +10,6 @@ from sklearn.neighbors import KNeighborsClassifier
 
 
 class KnnLabelDetectionTrainer(AssetProcessor):
-
-    file_types = None
-
-    max_detections = 100
-
     def __init__(self):
         super(KnnLabelDetectionTrainer, self).__init__()
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
@@ -24,9 +19,7 @@ class KnnLabelDetectionTrainer(AssetProcessor):
         self.app_model = self.app.models.get_model(self.arg_value('model_id'))
 
     def process(self, frame):
-        self.reactor.write_event("status", {
-            "status": "Searching Dataset Labels"
-        })
+        self.reactor.emit_status("Searching DataSet Labels")
         query = {
             '_source': 'labels.*',
             'size': 25,

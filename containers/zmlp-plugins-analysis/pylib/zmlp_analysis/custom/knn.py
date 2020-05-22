@@ -42,8 +42,10 @@ class KnnLabelDetectionClassifier(AssetProcessor):
         else:
             label = 'Unrecognized'
 
-        asset.set_attr('analysis.' + self.app_model.name + '.label', label)
-        asset.set_attr('analysis.' + self.app_model.name + '.conf', dist[0][0])
+        asset.set_attr('analysis.' + self.app_model.name, {
+            "label": label,
+            "score": dist[0][0]
+        })
 
     def load_model(self):
         """

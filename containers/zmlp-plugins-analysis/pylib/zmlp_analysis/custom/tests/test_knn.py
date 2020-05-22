@@ -28,6 +28,5 @@ class KnnLabelDetectionClassifierTests(PluginUnitTestCase):
         processor = self.init_processor(KnnLabelDetectionClassifier(), {})
         processor.process(frame)
 
-        # analysis = frame.asset.get_attr('analysis.foo')
         label = frame.asset.get_attr('analysis.foo.label')
         assert label == 'Gandalf'
