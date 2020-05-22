@@ -1,7 +1,7 @@
 import os.path as path
 import unittest
 
-from zmlp_analysis.custom.utils.utils import (
+from zmlp_train.utils.utils import (
     get_labels,
     load_image,
     extract_model,
