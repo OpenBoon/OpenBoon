@@ -64,7 +64,7 @@ There are two main folders at the root of the application: `/pages`, and `/src`.
 
 #### pages
 
-`pages` are a convention dictated by the Next.js framework and correpond to
+`pages` are a convention dictated by the Next.js framework and correspond to
 routed `urls`.
 
 #### src
