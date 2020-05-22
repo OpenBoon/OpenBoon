@@ -60,7 +60,7 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
 .emotion-4 {
   background-color: #252525;
   border: 1px solid transparent;
-  border-bottom: 1px solid #4a4a4a;
+  border-bottom: 1px solid #3b3b3b;
   padding-bottom: 1px;
 }
 
@@ -182,11 +182,15 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
 }
 
 .emotion-4:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #4a4a4a;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-4:first-of-type > div {
+  border-top: none;
 }
 
 .emotion-3 {
-  border-top: 1px solid #4a4a4a;
+  border-top: 1px solid #3b3b3b;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;

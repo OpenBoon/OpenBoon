@@ -25,8 +25,10 @@ const FiltersMenuOption = ({ option, label, filters, onClick }) => {
       <div
         css={{
           padding: spacing.base,
-          color: colors.structure.zinc,
           marginLeft: -OFFSET,
+          ':hover': {
+            backgroundColor: colors.signal.electricBlue.background,
+          },
         }}
       >
         <Checkbox
