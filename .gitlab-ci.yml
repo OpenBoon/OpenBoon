@@ -98,8 +98,8 @@ wallet-dockerhub-build-push-latest:
     - ./buildx wallet
     - docker push zmlp/wallet:latest
   rules:
-    # Merged to Development or QA with Wallet changes
-    - if: $CI_COMMIT_BRANCH == "development" || $CI_COMMIT_BRANCH == "qa"
+    # Merged to Development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "applications/wallet/**/*"
     # Merged to QA with any change
@@ -115,6 +115,9 @@ wallet-deploy-development:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
     PROJECT: zmlp-258901
   stage: deploy
+#  environment:
+#    name: dev
+#    url: https://console.dev.zvi.zorroa.com/
   before_script:
     - echo $SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
@@ -122,10 +125,22 @@ wallet-deploy-development:
   script:
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
   rules:
-    # Merged to any branch with Wallet changes
-    - if: $CI_COMMIT_BRANCH == "development" || $CI_COMMIT_BRANCH == "qa"
+    # Merged to development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "applications/wallet/**/*"
+
+## Wallet Deploy Latest on any changes to QA
+wallet-deploy-qa:
+  extends:
+    - wallet-deploy-development
+  variables:
+    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
+    PROJECT: zvi-qa
+  environment:
+    name: qa
+    url: https://console.qa.zvi.zorroa.com/
+  rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
       changes:
@@ -284,8 +299,8 @@ zmlp-dockerhub-build-push-latest:
     - docker push zmlp/ml-bbq:latest
     - docker push zmlp/plugins-train:latest
   rules:
-    # Merged to any branch with Wallet changes
-    - if: $CI_COMMIT_BRANCH == "development" || $CI_COMMIT_BRANCH == "qa"
+    # Merged to development with ZMLP changes
+    - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "client/**/*"
         - "containers/**/*"
@@ -305,6 +320,9 @@ zmlp-deploy-development:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
     PROJECT: zmlp-258901
   stage: deploy
+#  environment:
+#    name: dev
+#    url: https://console.dev.zvi.zorroa.com/
   before_script:
     - echo $SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
@@ -319,8 +337,8 @@ zmlp-deploy-development:
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} ml-bbq
   rules:
-    # Merged to any branch with Wallet changes
-    - if: $CI_COMMIT_BRANCH == "development" || $CI_COMMIT_BRANCH == "qa"
+    # Merged to development with ZMLP changes
+    - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "client/**/*"
         - "containers/**/*"
@@ -328,6 +346,17 @@ zmlp-deploy-development:
         - "lib/**/*"
         - "sdk/**/*"
         - "services/**/*"
+
+zmlp-deploy-qa:
+  extends:
+    - zmlp-deploy-development
+  environment:
+    name: qa
+    url: https://console.qa.zvi.zorroa.com/
+  variables:
+    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
+    PROJECT: zvi-qa
+  rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
       changes:
