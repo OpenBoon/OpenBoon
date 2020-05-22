@@ -184,6 +184,7 @@ exports[`<Asset /> should handle no query 1`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #808080;
+  border-radius: 0;
 }
 
 .emotion-5:hover {
@@ -467,6 +468,7 @@ exports[`<Asset /> should render properly 1`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #808080;
+  border-radius: 0;
 }
 
 .emotion-5:hover {
@@ -736,6 +738,7 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #808080;
+  border-radius: 0;
 }
 
 .emotion-5:hover {
