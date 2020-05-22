@@ -22,6 +22,7 @@ const FilterLabelConfidenceContent = ({
     type,
     attribute,
     values: { labels = [], min = 0.0, max = 1.0 },
+    isDisabled,
   },
   filterIndex,
 }) => {
@@ -71,7 +72,7 @@ const FilterLabelConfidenceContent = ({
           color: colors.structure.zinc,
         }}
       >
-        <div>KEYWORD</div>
+        <div>LABEL</div>
         <div>COUNT</div>
       </div>
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
@@ -136,7 +137,7 @@ const FilterLabelConfidenceContent = ({
                       css={{
                         width: `${offset}%`,
                         borderTop:
-                          !isSelected && hasSelections
+                          isDisabled || (!isSelected && hasSelections)
                             ? constants.borders.unselectedFacet
                             : constants.borders.facet,
                       }}

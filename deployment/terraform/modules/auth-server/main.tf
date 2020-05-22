@@ -11,6 +11,9 @@ resource "google_sql_user" "auth-server" {
 }
 
 resource "google_sql_database" "auth" {
+  lifecycle {
+    prevent_destroy = true
+  }
   name     = "zorroa-auth"
   instance = var.sql-instance-name
 }
@@ -183,6 +186,9 @@ resource "kubernetes_horizontal_pod_autoscaler" "auth-server" {
       name        = "auth-server"
     }
     target_cpu_utilization_percentage = 80
+  }
+  lifecycle {
+    ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
   }
 }
 

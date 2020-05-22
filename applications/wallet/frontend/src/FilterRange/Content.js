@@ -15,7 +15,7 @@ import FilterRangeSlider from './Slider'
 
 const MIN_WIDTH = 76
 
-const FilterRange = ({
+const FilterRangeContent = ({
   projectId,
   assetId,
   filters,
@@ -24,6 +24,7 @@ const FilterRange = ({
     type,
     attribute,
     values: { min, max },
+    isDisabled,
   },
   filterIndex,
 }) => {
@@ -78,6 +79,7 @@ const FilterRange = ({
             step={0.1}
             domain={domain}
             values={rangeValues}
+            isDisabled={!!isDisabled}
             onUpdate={(values) => setRangeValues(values)}
             onChange={([newMin, newMax]) =>
               dispatch({
@@ -145,7 +147,7 @@ const FilterRange = ({
   )
 }
 
-FilterRange.propTypes = {
+FilterRangeContent.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
@@ -153,4 +155,4 @@ FilterRange.propTypes = {
   filterIndex: PropTypes.number.isRequired,
 }
 
-export default FilterRange
+export default FilterRangeContent

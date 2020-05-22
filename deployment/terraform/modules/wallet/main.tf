@@ -8,6 +8,9 @@ resource "random_string" "sql-password" {
 }
 
 resource "google_sql_database" "wallet" {
+  lifecycle {
+    prevent_destroy = true
+  }
   depends_on = [google_sql_user.wallet]
   name       = var.database-name
   instance   = var.sql-instance-name
@@ -33,7 +36,7 @@ resource "kubernetes_deployment" "wallet" {
     }
   }
   spec {
-    replicas = 2
+    replicas = 1
     selector {
       match_labels = {
         app = "wallet"
@@ -218,13 +221,16 @@ resource "kubernetes_horizontal_pod_autoscaler" "wallet" {
   }
   spec {
     max_replicas = 10
-    min_replicas = 2
+    min_replicas = 1
     scale_target_ref {
       api_version = "apps/v1"
       kind        = "Deployment"
       name        = "wallet"
     }
     target_cpu_utilization_percentage = 80
+  }
+  lifecycle {
+    ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
   }
 }
 

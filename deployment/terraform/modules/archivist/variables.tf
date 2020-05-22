@@ -28,20 +28,15 @@ variable "minio-secret-key" {
 variable "system-bucket" {
 }
 
+variable "container-cluster-name" {
+}
+
 variable "data-bucket-name" {
   default = "archivist-data"
 }
 
 variable "container-tag" {
   default = "latest"
-}
-
-variable "minimum-replicas" {
-  default = 2
-}
-
-variable "maximum-replicas" {
-  default = 2
 }
 
 variable "rollout-strategy" {

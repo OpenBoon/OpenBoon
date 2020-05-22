@@ -28,6 +28,12 @@ resource "google_container_node_pool" "officer" {
       namespace = var.namespace
     }
   }
+  lifecycle {
+    ignore_changes = [
+      autoscaling[0].min_node_count,
+      autoscaling[0].max_node_count
+    ]
+  }
 }
 
 resource "kubernetes_deployment" "officer" {
@@ -141,6 +147,9 @@ resource "kubernetes_horizontal_pod_autoscaler" "officer" {
       name        = "officer"
     }
     target_cpu_utilization_percentage = 75
+  }
+  lifecycle {
+    ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
   }
 }
 

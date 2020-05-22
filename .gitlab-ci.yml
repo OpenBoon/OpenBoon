@@ -13,14 +13,6 @@ stages:
   - push
   - deploy
 
-.master-branch-any-change:
-  only:
-    refs:
-      - master
-    changes:
-      - "**/*"
-
-
 ########  Wallet  ########
 
 ## Wallet Frontend CI Tests
@@ -34,20 +26,23 @@ wallet-frontend-test-suite:
     - npm run lint
     - npm run test:cover
     - npm run size
-  only:
-    refs:
-      - merge_requests
-      - development
-    changes:
-      - applications/wallet/frontend/**/*
-      - .gitlab-ci.yml
-
-## Wallet Frontend CI Tests for any change to Master
-wallet-frontend-test-suite-master-branch-any-change:
-  extends:
-    - wallet-frontend-test-suite
-    - .master-branch-any-change
-
+  rules:
+    # MR to any branch that is not master with Frontend changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "applications/wallet/frontend/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
+    # Merged to any branch with Frontend changes
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - "applications/wallet/frontend/**/*"
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
 
 ## Wallet Backend CI Tests
 wallet-backend-test-suite:
@@ -67,19 +62,23 @@ wallet-backend-test-suite:
     - cd app
     - pipenv run flake8
     - pipenv run pytest --cov=.
-  only:
-    refs:
-      - merge_requests
-      - development
-    changes:
-      - applications/wallet/app/**/*
-      - .gitlab-ci.yml
-
-## Wallet Backend CI Tests for any change to Master
-wallet-backend-test-suite-master-branch-any-change:
-  extends:
-    - wallet-backend-test-suite
-    - .master-branch-any-change
+  rules:
+    # MR to any branch that is not master with Backend changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "applications/wallet/app/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
+    # Merged to any branch with Backend changes
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - "applications/wallet/app/**/*"
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
 
 ## Wallet Build & Push Latest on changes to Development
 wallet-dockerhub-build-push-latest:
@@ -98,11 +97,15 @@ wallet-dockerhub-build-push-latest:
   script:
     - ./buildx wallet
     - docker push zmlp/wallet:latest
-  only:
-    refs:
-      - development
-    changes:
-      - applications/wallet/**/*
+  rules:
+    # Merged to Development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "applications/wallet/**/*"
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
 
 ## Wallet Deploy Latest on any changes to Development
 wallet-deploy-development:
@@ -112,17 +115,36 @@ wallet-deploy-development:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
     PROJECT: zmlp-258901
   stage: deploy
-  only:
-    refs:
-      - development
-    changes:
-      - applications/wallet/**/*
+#  environment:
+#    name: dev
+#    url: https://console.dev.zvi.zorroa.com/
   before_script:
     - echo $SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
+  rules:
+    # Merged to development with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "applications/wallet/**/*"
+
+## Wallet Deploy Latest on any changes to QA
+wallet-deploy-qa:
+  extends:
+    - wallet-deploy-development
+  variables:
+    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
+    PROJECT: zvi-qa
+  environment:
+    name: qa
+    url: https://console.qa.zvi.zorroa.com/
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
 
 
 ########  ZMLP Services & Plugins  ########
@@ -135,20 +157,18 @@ backend-py-lint:
   script:
     - python -m pip install flake8
     - flake8 --config .flake8.cfg sdk client/python containers/zmlp-py3-base services/analyst containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis containers/zmlp-plugins-train
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - client/python/**/*.py
-      - sdk/**/.py
-      - containers/**/*.py
-      - services/analyst/**/*.py
-      - .gitlab-ci.yml
-
-backend-py-lint-master-branch-any-change:
-  extends:
-    - backend-py-lint
-    - .master-branch-any-change
+  rules:
+    # MR to any branch that is not master with ZMLP Python changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "client/python/**/*.py"
+        - "sdk/**/.py"
+        - "containers/**/*.py"
+        - "services/analyst/**/*.py"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
 
 ## Backend Kotlin Lint
 backend-kotlin-lint:
@@ -156,18 +176,16 @@ backend-kotlin-lint:
   stage: pretest
   script:
     - ktlint services/**/*.kt lib/**/*.kt
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - services/**/*.kt
-      - lib/**/*.kt
-      - .gitlab-ci.yml
-
-backend-kotlin-lint-master-branch-any-change:
-  extends:
-    - backend-kotlin-lint
-    - .master-branch-any-change
+  rules:
+    # MR to any branch that is not master with ZMLP Kotlin changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "services/**/*.kt"
+        - "lib/**/*.kt"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
 
 # SDK Test
 # Testing other containers requires building containers
@@ -190,14 +208,17 @@ sdk-unit-tests:
     - cd ../containers/zmlp-plugins-base
     - pip install -r requirements.txt
     - pytest
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - client/python/**/*
-      - sdk/**/*
-      - containers/zmlp-plugins-base/**/*
-      - .gitlab-ci.yml
+  rules:
+    # MR to any branch that is not master with ZMLP changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "client/python/**/*"
+        - "sdk/**/*"
+        - "containers/zmlp-plugins-base/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
 
 plugin-container-tests:
   image: zmlp/docker-buildx
@@ -217,14 +238,17 @@ plugin-container-tests:
     - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-core:latest pytest -s /zvi/pylib
     - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-analysis:latest pytest -s /zvi/pylib
     - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-train:latest pytest -s /zvi/pylib
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - client/python/**/*
-      - sdk/**/*
-      - containers/**/*
-      - .gitlab-ci.yml
+  rules:
+    # MR to any branch that is not master with ZMLP changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "client/python/**/*"
+        - "sdk/**/*"
+        - "containers/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
 
 sdk-java-unit-tests:
   image: maven:3.6-jdk-11
@@ -232,20 +256,16 @@ sdk-java-unit-tests:
   allow_failure: true
   script:
     - mvn test verify -f client/java -q
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - client/java/**/*
-      - containers/zmlp-plugins-base/**/*
-      - .gitlab-ci.yml
-
-sdk-unit-tests-master-branch-any-change:
-  retry: 1
-  extends:
-    - sdk-unit-tests
-    - sdk-java-unit-tests
-    - .master-branch-any-change
+  rules:
+    # MR to any branch that is not master with ZMLP changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "client/java/**/*"
+        - "containers/zmlp-plugins-base/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
 
 zmlp-dockerhub-build-push-latest:
   image: zmlp/docker-buildx
@@ -278,16 +298,20 @@ zmlp-dockerhub-build-push-latest:
     - docker push zmlp/jvm-common:latest
     - docker push zmlp/ml-bbq:latest
     - docker push zmlp/plugins-train:latest
-  only:
-    refs:
-      - development
-    changes:
-      - client/**/*
-      - containers/**/*
-      - dev/**/*
-      - lib/**/*
-      - sdk/**/*
-      - services/**/*
+  rules:
+    # Merged to development with ZMLP changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "client/**/*"
+        - "containers/**/*"
+        - "dev/**/*"
+        - "lib/**/*"
+        - "sdk/**/*"
+        - "services/**/*"
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
 
 zmlp-deploy-development:
   image: google/cloud-sdk
@@ -296,16 +320,9 @@ zmlp-deploy-development:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
     PROJECT: zmlp-258901
   stage: deploy
-  only:
-    refs:
-      - development
-    changes:
-      - client/**/*
-      - containers/**/*
-      - dev/**/*
-      - lib/**/*
-      - sdk/**/*
-      - services/**/*
+#  environment:
+#    name: dev
+#    url: https://console.dev.zvi.zorroa.com/
   before_script:
     - echo $SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
@@ -319,6 +336,31 @@ zmlp-deploy-development:
     - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-data
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} ml-bbq
+  rules:
+    # Merged to development with ZMLP changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "client/**/*"
+        - "containers/**/*"
+        - "dev/**/*"
+        - "lib/**/*"
+        - "sdk/**/*"
+        - "services/**/*"
+
+zmlp-deploy-qa:
+  extends:
+    - zmlp-deploy-development
+  environment:
+    name: qa
+    url: https://console.qa.zvi.zorroa.com/
+  variables:
+    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
+    PROJECT: zvi-qa
+  rules:
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
 
 # Kotlin services - Unit tests - Step 1
 zmlp-services-build-artifacts:
@@ -330,18 +372,16 @@ zmlp-services-build-artifacts:
   artifacts:
     paths:
       - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - services/**/*
-      - lib/**/*
-      - .gitlab-ci.yml
-
-zmlp-services-build-artifacts-master-branch-any-change:
-  extends:
-    - zmlp-services-build-artifacts
-    - .master-branch-any-change
+  rules:
+    # MR to any branch that is not master with ZMLP changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "services/**/*"
+        - "lib/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
 
 # Kotlin services - Unit tests - Step 2
 elasticsearch-push-to-local-registry:
@@ -355,17 +395,15 @@ elasticsearch-push-to-local-registry:
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker build -t $LOCAL_ES_NAME .
     - docker push $LOCAL_ES_NAME
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - services/**/*
-      - .gitlab-ci.yml
-
-elasticsearch-push-to-local-registry-master-branch-any-change:
-  extends:
-    - elasticsearch-push-to-local-registry
-    - .master-branch-any-change
+  rules:
+    # MR to any branch that is not master with ZMLP changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "services/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
 
 zmlp-services-unit-tests:
   stage: test
@@ -424,18 +462,16 @@ zmlp-services-unit-tests:
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
     - mvn test verify -f services/auth-server -q
     - mvn test verify -f services/officer -q
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - services/**/*
-      - lib/**/*
-      - .gitlab-cy.yml
-
-zmlp-services-unit-tests-master-branch-any-change:
-  extends:
-    - zmlp-services-unit-tests
-    - .master-branch-any-change
+  rules:
+    # MR to any branch that is not master with ZMLP changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "services/**/*"
+        - "lib/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
 
 
 # Kotlin Services Jobs

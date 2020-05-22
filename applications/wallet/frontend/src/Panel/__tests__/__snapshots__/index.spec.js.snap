@@ -38,6 +38,7 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #808080;
+  border-radius: 0;
 }
 
 .emotion-0:hover {
@@ -150,6 +151,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #73b61c;
+  border-radius: 0;
 }
 
 .emotion-6:hover {
@@ -409,6 +411,7 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #808080;
+  border-radius: 0;
 }
 
 .emotion-0:hover {
@@ -521,6 +524,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #73b61c;
+  border-radius: 0;
 }
 
 .emotion-0:hover {

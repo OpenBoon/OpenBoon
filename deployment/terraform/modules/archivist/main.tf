@@ -1,10 +1,8 @@
-resource "google_project_service" "service-usage" {
-  service            = "serviceusage.googleapis.com"
-  disable_on_destroy = false
-}
-
 ## GCS Buckets and Configuration Files
 resource "google_storage_bucket" "data" {
+  lifecycle {
+    prevent_destroy = true
+  }
   name          = "${var.project}-${var.data-bucket-name}"
   storage_class = "REGIONAL"
   location      = var.region
@@ -20,13 +18,10 @@ resource "random_string" "sql-password" {
   special = false
 }
 
-resource "google_project_service" "sqladmin" {
-  service            = "sqladmin.googleapis.com"
-  disable_on_destroy = false
-  depends_on         = [google_project_service.service-usage]
-}
-
 resource "google_sql_database" "archivist" {
+  lifecycle {
+    prevent_destroy = true
+  }
   name     = var.database-name
   instance = var.sql-instance-name
 }
@@ -254,14 +249,17 @@ resource "kubernetes_horizontal_pod_autoscaler" "archivist" {
     }
   }
   spec {
-    max_replicas = var.maximum-replicas
-    min_replicas = var.minimum-replicas
+    max_replicas = 2
+    min_replicas = 2
     scale_target_ref {
       api_version = "apps/v1"
       kind        = "Deployment"
       name        = "archivist"
     }
     target_cpu_utilization_percentage = 75
+  }
+  lifecycle {
+    ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
   }
 }
 
