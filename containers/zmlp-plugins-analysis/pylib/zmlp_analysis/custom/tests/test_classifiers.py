@@ -1,5 +1,7 @@
 import logging
 import os
+import string
+import random
 from unittest.mock import patch
 
 from zmlp.app import ModelApp
@@ -19,37 +21,24 @@ assets = [
 ]
 
 
+def id_generator(size=6, chars=string.ascii_uppercase):
+    """Generate a random simhash
+
+    Args:
+        size: (int) size of hash
+        chars: (str) values to use for the hash
+
+    Returns:
+        (str) generated similarity hash
+    """
+    return "".join(random.choice(chars) for _ in range(size))
+
+
 class ClassifiersUnitTests(PluginUnitTestCase):
     ds_id = "ds-id-12345"
     model_id = "model-id-12345"
     base_dir = os.path.dirname(__file__)
-    test_shash = (
-        "0050FPPOGPPKPIPCAPPPDHHIGPCLJEPLPPPAPPGPDPFPPGPADCBFGIPGDDCIPIGPPDPABPOMPNPAPBPPDKP"
-        "MPJMAPBPDPBOGLPDPPADOENPAAPBPPAPGAIGPDIPOGEPLCGAPPPPOAPBAJFMPPPDCPNKGAAMPLHIPEPDICO"
-        "PLPIAEPACLJPCKMPGBPOLJAABLAPAPMMPOFPKPHEPLBPPMLPKFNPMKACECLPJPPABPPPAFPGIOEPBPAPPOH"
-        "AFAHPPPJPPMDPAPPPELPAPCPPAKMLHJGPAGPMKPALPJPOMPPPPPJPPPAPPPLFINKPEBAAPADDPNMPLPPCBD"
-        "PPOCCBCIPHDACPPCPHBDPBAPBPPALAPHPCFBCADAAPPHPHEPNHNCBOPDPPIPEABNHFPAPEPPDPPAAAPLMDP"
-        "EAKPPPEGPAFPPBABDAOCKPPNPOPPGBGGPPKPMBPCDKCPBCDAPAPACAPPKHPGPPPPANPCEPCPJJGPPPEAPPA"
-        "LPAIPEIICAGPPEPDDPNPFACMPGPBPDCFICPAPPPPCPCPNIGPBPNAGPPJEPEPPAHPAEAMKPBMLAPHPNPPDAK"
-        "PGCPGPPPPPPABABPCPPANPPDEPHGCKFPAPPAPOEHNAAAKPDPNPOAGOPBPPPAPIPPIDDAPPPMAAPEMAIGAKG"
-        "ABPPPGLPAPDOEHKIPPHPNPJCNPAGECLIIFAKPDIGDAPNPDPPIGACAOPACPBPBCAPPKPPIMPFKAALPAPGBAK"
-        "AKPJPKDOAPPBPPPPPHIAPPBPPPPBFPPABACPGDJIPBPLIHPHPLPPIPLAPBCOGOJPGAPAGPDPMAMCNLGLHIL"
-        "PMGDPAMAPJPHPPLPDFBDAKPLPPPKOPPGIFCPDJJPOPAPNAADAGPLGAEPMAFOPEPAHIDPDPBAJMEOGAPCGCA"
-        "MPNCJFDPPGGDCMJPHMDPLGDAMIACPPPPPKPPIGPPPPOACPADPFPKBPNPCHPHBFAPONFKAEAPADPACAMLPPI"
-        "PPDMPCPAPBCPCPJPJFFHPPCPGMPPFHPAMEAOIPPPDPPMAPJAHPPPPPCPAFPAAPEMAAMPPPBBAPDPLHDPPPB"
-        "PPGHEEPDPDPPPEFGPBPBFEPLEPAAPEAPPEMAPPGJLGPPADNPPFMDPMFMPNPAOBMPAAICPGNPPJPPPDOPDBP"
-        "ADAPHPPDAAAEHAPCPIAKLPGAHLPHDBABPHGPKBNFPPGPADPKEFPEEMPDJBIPAPBPCPBHPPCIODDAPLGPBDP"
-        "APKBIPNBCIFHMDPAHPPPPCPPHABAAGPCPAACKFLJPPBAPPMPMOPAACJEPGPBEEHPPGPHPPIAPMPBEBPJBBF"
-        "BPKPPHPPAPDECPPOBIPPIPBAAAPABGABPAPGGJJPAEEPBPABDEBPPODCPGDPKPPPAPPJDBKPOPABPPAIGGG"
-        "PCBDPJBBPPAPPAPADEPPAPAPPFPPPPPPPCDPPLDIDBNPOECGPJPGLPPACPEPPPPPFFAPPBPCAMPKGPAGOPP"
-        "PPGAAFPAPPLPEPHPKBAEJPPBDPPDPPIGOGPFPKBLMBPPAHPIJPLEAIHPPPBFBOEADBPFCDPPGAAPMKPNPCP"
-        "MAPJPHEOPPIKEEOJPKEDJIEAIJPPPBNPEPPJJADFCKMCPADABEABPAPPAOBKDEIPAACPPDBEPPFPDCJPPCP"
-        "CIABPAPHHPCLPMPNPPJAPNALPGKPOPAGPICGPGPAPPCPDPPGAFADLHIPPPOPPKPPAELAMLKACPIPPJBPBPA"
-        "PCCAPHPPJPFPBKBPHGKDAPPPBAPHDAPMBPOABEPPPPHJNPAEPELCPPPPPPCCAJPBPNFGADHPPIKHGGBPAKF"
-        "APODJCPPPPGCPPPPPPKAAAPKBNPPIHOPKPOHPPPAHJABEPKABGPGGDEAMPAAMFELPHILIPAPEHEPPPPPPLC"
-        "APAPPPJPPIPBDGJPCBPKEGCHPJGJPPKPPPFBAPAFDHPFPEDHPLMPBJAPNPBAJBPAJEPJEAGPPFFPJFPLPIP"
-        "JJEPPJPPEMGLKAAPPDCEPPLAGCEIEMAFPABPIPKPPPBAPKOPJAAKPABDFDCFB"
-    )
+    test_shash = id_generator(size=2048)
 
     def prep_assets(self):
         for asset in assets:
@@ -69,20 +58,19 @@ class ClassifiersUnitTests(PluginUnitTestCase):
                 ],
             )
 
-            asset.set_attr("analysis.imageSimilarity.shash", self.test_shash)
+            asset.set_attr("shash", self.test_shash)
 
         return assets
 
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
-    @patch("zmlp_analysis.custom.labels.get_proxy_level_path")
+    @patch("zmlp_analysis.custom.classifiers.get_labels")
     def test_NeuralNetClassifier_defaults(
-        self, proxy_patch, file_patch, model_patch
+        self, label_patch, file_patch, model_patch
     ):
-        assets = self.prep_assets()
-
-        name = "custom-flowers-label-detection-tf2-xfer-mobilenet2"
+        name = "pets"
         file_patch.return_value = "{}/{}.zip".format(self.base_dir, name)
+        label_patch.return_value = ["dogs", "cats"]
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -92,19 +80,15 @@ class ClassifiersUnitTests(PluginUnitTestCase):
                 "name": name,
             }
         )
-        args = {
-            "model_id": self.model_id,
-        }
+        args = {"model_id": self.model_id, "attr": "shash"}
 
-        for asset in assets:
+        for asset in self.prep_assets():
             frame = Frame(asset)
             processor = self.init_processor(
                 NeuralNetClassifierProcessor(), args
             )
             processor.process(frame)
-            self.assertEquals(
-                "rose",
-                self.frame.asset.get_attr("analysis")["imageClassify"][
-                    "pred0"
-                ],
-            )
+
+            # since all hashes are random, prediction could be either dog or
+            # cat so just need to check that it made a prediction at all
+            assert asset.get_attr("analysis")["imageClassify"]["pred0"]

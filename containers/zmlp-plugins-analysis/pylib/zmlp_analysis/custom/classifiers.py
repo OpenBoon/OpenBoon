@@ -18,6 +18,9 @@ class NeuralNetClassifierProcessor(AssetProcessor):
         self.add_arg(
             Argument("model_id", "str", required=True, toolTip="The model Id")
         )
+        self.add_arg(
+            Argument("attr", "str", required=True, toolTip="asset attribute")
+        )
 
         self.app_model = None
         self.trained_model = None
@@ -31,10 +34,10 @@ class NeuralNetClassifierProcessor(AssetProcessor):
 
         # unzip and extract needed files for trained model and labels
         loc = extract_model(model_zip)
-        model_name = self.app_model.name + ".hd5"
+        model_name = self.app_model.name
         self.trained_model = load_model(os.path.join(loc, model_name))
-        self.labels = get_labels(loc, self.app_model.name, "_labels.txt")
-        self.hash = self.labels.pop(0)
+        self.labels = get_labels(loc, model_name, "_labels.txt")
+        self.hash = self.arg_value("attr")
 
     def process(self, frame):
         asset = frame.asset
