@@ -20,13 +20,6 @@ stages:
     changes:
       - "**/*"
 
-#.qa-merges:
-#  only:
-#    refs:
-#      - merge_requests
-#      - qa
-#    changes:
-#      - "**/*"
 
 ########  Wallet  ########
 
@@ -41,20 +34,23 @@ wallet-frontend-test-suite:
     - npm run lint
     - npm run test:cover
     - npm run size
-  only:
-    refs:
-      - merge_requests
-      - development
-    changes:
-      - applications/wallet/frontend/**/*
-      - .gitlab-ci.yml
-
-## Wallet Frontend CI Tests for any change to Master
-wallet-frontend-test-suite-master-branch-any-change:
-  extends:
-    - wallet-frontend-test-suite
-    - .master-branch-any-change
-
+  rules:
+    # MR to any branch that is not master with Frontend changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
+      changes:
+        - "applications/wallet/frontend/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
+      changes:
+        - "**/*"
+    # Merged to any branch with Frontend changes
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - "applications/wallet/frontend/**/*"
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
 
 ## Wallet Backend CI Tests
 wallet-backend-test-suite:
@@ -75,24 +71,22 @@ wallet-backend-test-suite:
     - pipenv run flake8
     - pipenv run pytest --cov=.
   rules:
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development"
+    # MR to any branch that is not master with Backend changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
-        - applications/wallet/frontend/**/*
-    - if: $CI_COMMIT_BRANCH == "development"
+        - "applications/wallet/app/**/*"
+    # MR to QA with any change
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
-        - applications/wallet/frontend/**/*
-
-
-### Wallet Backend CI Tests for any change to Master
-#wallet-backend-test-suite-master-branch-any-change:
-#  extends:
-#    - wallet-backend-test-suite
-#    - .master-branch-any-change
-
-## Wallet Backend CI Tests for any change to Master
-wallet-backend-test-suite-master-branch-any-change:
-  extends:
-    - wallet-backend-test-suite
+        - "**/*"
+    # Merged to any branch with Backend changes
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - "applications/wallet/app/**/*"
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
 
 ## Wallet Build & Push Latest on changes to Development
 wallet-dockerhub-build-push-latest:
@@ -111,21 +105,15 @@ wallet-dockerhub-build-push-latest:
   script:
     - ./buildx wallet
     - docker push zmlp/wallet:latest
-  only:
-    refs:
-      - development
-    changes:
-      - applications/wallet/**/*
-
-### Wallet Build & Push development to QA
-#wallet-dockerhub-build-push-development-to-qa:
-#  extends:
-#    - wallet-dockerhub-build-push-latest
-#  only:
-#    refs:
-#      - qa
-#    changes:
-#      - "**/*"
+  rules:
+    # Merged to any branch with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development" || $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "applications/wallet/**/*"
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
 
 ## Wallet Deploy Latest on any changes to Development
 wallet-deploy-development:
@@ -135,17 +123,21 @@ wallet-deploy-development:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
     PROJECT: zmlp-258901
   stage: deploy
-  only:
-    refs:
-      - development
-    changes:
-      - applications/wallet/**/*
   before_script:
     - echo $SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
+  rules:
+    # Merged to any branch with Wallet changes
+    - if: $CI_COMMIT_BRANCH == "development" || $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "applications/wallet/**/*"
+    # Merged to QA with any change
+    - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
 
 
 ########  ZMLP Services & Plugins  ########
@@ -168,11 +160,6 @@ backend-py-lint:
       - services/analyst/**/*.py
       - .gitlab-ci.yml
 
-backend-py-lint-master-branch-any-change:
-  extends:
-    - backend-py-lint
-    - .master-branch-any-change
-
 ## Backend Kotlin Lint
 backend-kotlin-lint:
   image: kkopper/ktlint
@@ -186,11 +173,6 @@ backend-kotlin-lint:
       - services/**/*.kt
       - lib/**/*.kt
       - .gitlab-ci.yml
-
-backend-kotlin-lint-master-branch-any-change:
-  extends:
-    - backend-kotlin-lint
-    - .master-branch-any-change
 
 # SDK Test
 # Testing other containers requires building containers
@@ -262,13 +244,6 @@ sdk-java-unit-tests:
       - client/java/**/*
       - containers/zmlp-plugins-base/**/*
       - .gitlab-ci.yml
-
-sdk-unit-tests-master-branch-any-change:
-  retry: 1
-  extends:
-    - sdk-unit-tests
-    - sdk-java-unit-tests
-    - .master-branch-any-change
 
 zmlp-dockerhub-build-push-latest:
   image: zmlp/docker-buildx
@@ -361,11 +336,6 @@ zmlp-services-build-artifacts:
       - lib/**/*
       - .gitlab-ci.yml
 
-zmlp-services-build-artifacts-master-branch-any-change:
-  extends:
-    - zmlp-services-build-artifacts
-    - .master-branch-any-change
-
 # Kotlin services - Unit tests - Step 2
 elasticsearch-push-to-local-registry:
   image: docker:18.09.8-dind
@@ -384,11 +354,6 @@ elasticsearch-push-to-local-registry:
     changes:
       - services/**/*
       - .gitlab-ci.yml
-
-elasticsearch-push-to-local-registry-master-branch-any-change:
-  extends:
-    - elasticsearch-push-to-local-registry
-    - .master-branch-any-change
 
 zmlp-services-unit-tests:
   stage: test
@@ -454,11 +419,6 @@ zmlp-services-unit-tests:
       - services/**/*
       - lib/**/*
       - .gitlab-cy.yml
-
-zmlp-services-unit-tests-master-branch-any-change:
-  extends:
-    - zmlp-services-unit-tests
-    - .master-branch-any-change
 
 
 # Kotlin Services Jobs
