@@ -20,6 +20,13 @@ stages:
     changes:
       - "**/*"
 
+#.qa-merges:
+#  only:
+#    refs:
+#      - merge_requests
+#      - qa
+#    changes:
+#      - "**/*"
 
 ########  Wallet  ########
 
@@ -67,19 +74,25 @@ wallet-backend-test-suite:
     - cd app
     - pipenv run flake8
     - pipenv run pytest --cov=.
-  only:
-    refs:
-      - merge_requests
-      - development
-    changes:
-      - applications/wallet/app/**/*
-      - .gitlab-ci.yml
+  rules:
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development"
+      changes:
+        - applications/wallet/frontend/**/*
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - applications/wallet/frontend/**/*
+
+
+### Wallet Backend CI Tests for any change to Master
+#wallet-backend-test-suite-master-branch-any-change:
+#  extends:
+#    - wallet-backend-test-suite
+#    - .master-branch-any-change
 
 ## Wallet Backend CI Tests for any change to Master
 wallet-backend-test-suite-master-branch-any-change:
   extends:
     - wallet-backend-test-suite
-    - .master-branch-any-change
 
 ## Wallet Build & Push Latest on changes to Development
 wallet-dockerhub-build-push-latest:
@@ -103,6 +116,16 @@ wallet-dockerhub-build-push-latest:
       - development
     changes:
       - applications/wallet/**/*
+
+### Wallet Build & Push development to QA
+#wallet-dockerhub-build-push-development-to-qa:
+#  extends:
+#    - wallet-dockerhub-build-push-latest
+#  only:
+#    refs:
+#      - qa
+#    changes:
+#      - "**/*"
 
 ## Wallet Deploy Latest on any changes to Development
 wallet-deploy-development:
