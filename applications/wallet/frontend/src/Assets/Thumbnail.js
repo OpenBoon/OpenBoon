@@ -8,6 +8,8 @@ import ExpandSvg from '../Icons/expand.svg'
 
 import Button, { VARIANTS } from '../Button'
 
+import { formatSeconds } from './helpers'
+
 const AssetsThumbnail = ({
   asset: {
     id,
@@ -121,7 +123,7 @@ const AssetsThumbnail = ({
             backgroundColor: `${colors.structure.white}80`,
           }}
         >
-          {videoLength}
+          {formatSeconds({ seconds: videoLength })}
         </div>
       )}
     </div>
