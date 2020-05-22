@@ -27,7 +27,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class LoginView(ConvertCamelToSnakeViewSetMixin, APIView):
     """Login view that supports Google OAuth bearer tokens passed in the "Authorization"
-    header or a username and password sent in the json payload.
+    header or a username and password sent in the JSON payload.
 
     """
     authentication_classes = []
