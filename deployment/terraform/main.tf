@@ -5,7 +5,7 @@ terraform {
     organization  = "zorroa"
 
     workspaces {
-      name = "zvi-prod"
+      name = "zvi-dev"
     }
   }
 }
@@ -134,6 +134,7 @@ module "archivist" {
   minio-secret-key        = module.minio.secret-key
   system-bucket           = google_storage_bucket.system.name
   container-cluster-name  = module.gke-cluster.name
+  analyst-shared-key      = module.analyst.shared-key
 }
 
 module "auth-server" {

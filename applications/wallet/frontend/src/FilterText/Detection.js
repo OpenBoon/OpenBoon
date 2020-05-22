@@ -129,7 +129,12 @@ const FilterTextDetection = ({
               borderBottomLeftRadius: constants.borderRadius.small,
               color: colors.structure.pebble,
               backgroundColor: colors.structure.mattGrey,
-              '&:focus': {
+              ':focus': {
+                outline: constants.borders.outline,
+                border: constants.borders.inputSmall,
+                ':hover': {
+                  border: constants.borders.inputSmall,
+                },
                 color: colors.structure.coal,
                 backgroundColor: colors.structure.white,
               },

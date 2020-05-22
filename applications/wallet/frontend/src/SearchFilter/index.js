@@ -31,7 +31,7 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
             color: colors.structure.pebble,
             backgroundColor: colors.structure.coal,
             ':focus': {
-              outline: 0,
+              outline: constants.borders.outline,
               border: constants.borders.inputSmall,
               ':hover': {
                 border: constants.borders.inputSmall,
