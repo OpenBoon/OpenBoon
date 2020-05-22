@@ -227,7 +227,7 @@ resource "kubernetes_deployment" "archivist" {
           }
           env {
             name  = "ANALYST_SHAREDKEY"
-            value = "QjZEQzRDQTgtOUUwRC00NUE1LUFCNjktRUYwQTA4ODc4MTM3Cg"
+            value = var.analyst-shared-key
           }
           env {
             name  = "ZMLP_STORAGE_SYSTEM_BUCKET"
