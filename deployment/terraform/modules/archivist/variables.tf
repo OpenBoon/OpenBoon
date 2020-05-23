@@ -31,6 +31,9 @@ variable "system-bucket" {
 variable "container-cluster-name" {
 }
 
+variable "analyst-shared-key" {
+}
+
 variable "data-bucket-name" {
   default = "archivist-data"
 }

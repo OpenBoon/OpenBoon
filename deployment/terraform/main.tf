@@ -119,6 +119,7 @@ module "elasticsearch" {
   source                 = "./modules/elasticsearch"
   container-cluster-name = module.gke-cluster.name
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
+  container-tag          = var.container-tag
 }
 
 module "archivist" {
@@ -134,26 +135,30 @@ module "archivist" {
   minio-secret-key        = module.minio.secret-key
   system-bucket           = google_storage_bucket.system.name
   container-cluster-name  = module.gke-cluster.name
+  analyst-shared-key      = module.analyst.shared-key
+  container-tag           = var.container-tag
 }
 
 module "auth-server" {
-  source              = "./modules/auth-server"
-  sql-instance-name   = module.postgres.instance-name
-  sql-connection-name = module.postgres.connection-name
-  image-pull-secret   = kubernetes_secret.dockerhub.metadata[0].name
-  inception-key-b64   = local.inception-key-b64
-  system-bucket       = google_storage_bucket.system.name
+  source                  = "./modules/auth-server"
+  sql-instance-name       = module.postgres.instance-name
+  sql-connection-name     = module.postgres.connection-name
+  image-pull-secret       = kubernetes_secret.dockerhub.metadata[0].name
+  inception-key-b64       = local.inception-key-b64
+  system-bucket           = google_storage_bucket.system.name
   container-cluster-name  = module.gke-cluster.name
+  container-tag           = var.container-tag
 }
 
 module "api-gateway" {
-  source            = "./modules/api-gateway"
-  image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
-  archivist_host    = module.archivist.ip-address
-  auth_server_host  = module.auth-server.ip-address
-  ml_bbq_host       = module.ml-bbq.ip-address
-  domain            = var.zmlp-domain
-  container-cluster-name = module.gke-cluster.name
+  source                 = "./modules/api-gateway"
+  image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
+  archivist_host         = module.archivist.ip-address
+  auth_server_host       = module.auth-server.ip-address
+  ml_bbq_host            = module.ml-bbq.ip-address
+  domain                 = var.zmlp-domain
+  container-cluster-name =  module.gke-cluster.name
+  container-tag          = var.container-tag
 }
 
 module "officer" {
@@ -165,6 +170,7 @@ module "officer" {
   minio-url              = "http://${module.minio.ip-address}:9000"
   minio-access-key       = module.minio.access-key
   minio-secret-key       = module.minio.secret-key
+  container-tag          = var.container-tag
 }
 
 module "analyst" {
@@ -175,6 +181,7 @@ module "analyst" {
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   archivist-url          = "http://${module.archivist.ip-address}"
   officer-url            = "http://${module.officer.ip-address}:7078"
+  container-tag          = var.container-tag
 }
 
 module "wallet" {
@@ -192,6 +199,7 @@ module "wallet" {
   environment             = var.environment
   inception-key-b64       = local.inception-key-b64
   domain                  = var.wallet-domain
+  container-tag           = var.container-tag
 }
 
 module "ml-bbq" {
@@ -199,6 +207,7 @@ module "ml-bbq" {
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   auth-server-url        = "http://${module.auth-server.ip-address}"
   container-cluster-name = module.gke-cluster.name
+  container-tag          = var.container-tag
 }
 
 module "gcp-marketplace-integration" {
@@ -221,4 +230,5 @@ module "gcp-marketplace-integration" {
   pg_password              = module.wallet.pg_password
   marketplace-service-name = "isaas-codelab.mp-marketplace-partner-demos.appspot.com"
   enabled                  = var.deploy-marketplace-integration
+  container-tag            = var.container-tag
 }
