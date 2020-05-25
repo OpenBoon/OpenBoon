@@ -123,7 +123,7 @@
     "react-virtualized-auto-sizer": "1.0.2",
     "react-window": "1.8.5",
     "react-window-infinite-loader": "1.0.5",
-    "swr": "0.2.0",
+    "swr": "0.2.2",
     "utf8": "3.0.0"
   },
   "devDependencies": {
