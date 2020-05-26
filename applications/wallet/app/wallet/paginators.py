@@ -24,7 +24,7 @@ class ZMLPFromSizePagination(FromSizePagination):
         our api response.
 
         Args:
-            content: The JSON content body from the ZMLP api
+            content: The JSON content body from the ZMLP API
             request: The original request
 
         Returns:
