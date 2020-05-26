@@ -39,3 +39,6 @@ health_check_storage_test/
 docker-compose.override.yml*
 .coverage
 *.sh
+*.ipynb_checkpoints/
+*.egg-info/
+*search.pickle
