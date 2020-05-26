@@ -246,6 +246,8 @@ exports[`<Asset /> should handle no query 1`] = `
         autoPlay={true}
         className="emotion-3"
         controls={true}
+        controlsList="nodownload"
+        disablePictureInPicture={true}
       >
         <source
           src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
@@ -800,6 +802,8 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
         autoPlay={true}
         className="emotion-3"
         controls={true}
+        controlsList="nodownload"
+        disablePictureInPicture={true}
       >
         <source
           src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
@@ -1080,6 +1084,8 @@ exports[`<Asset /> should render videos properly 1`] = `
         autoPlay={true}
         className="emotion-3"
         controls={true}
+        controlsList="nodownload"
+        disablePictureInPicture={true}
       >
         <source
           src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
