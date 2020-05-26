@@ -1,3 +1,39 @@
+
+resource "google_storage_bucket" "elasticsearch" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  name = "${var.project}-es-backups"
+  storage_class = "MULTI_REGIONAL"
+  location      = var.country
+}
+
+resource "google_service_account" "elasticsearch" {
+  project = var.project
+  account_id = "elasticsearch"
+  display_name = "Elasticsearch"
+}
+
+resource "google_project_iam_member" "elasticsearch" {
+  project = var.project
+  role    = "roles/storage.admin"
+  member  = "serviceAccount:${google_service_account.elasticsearch.email}"
+}
+
+resource "google_service_account_key" "elasticsearch" {
+  service_account_id = google_service_account.elasticsearch.name
+}
+
+resource "kubernetes_secret" "elasticsearch" {
+  metadata {
+    name      = "elasticsearch-sa-key"
+    namespace = var.namespace
+  }
+  data = {
+    "credentials.json" = base64decode(google_service_account_key.elasticsearch.private_key)
+  }
+}
+
 resource "google_container_node_pool" "elasticsearch" {
   name               = var.node-pool-name
   cluster            = var.container-cluster-name
@@ -137,6 +173,12 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
         image_pull_secrets {
           name = var.image-pull-secret
         }
+        volume {
+          name = "elasticsearch-sa-key"
+          secret {
+            secret_name = "elasticsearch-sa-key"
+          }
+        }
         container {
           name              = "elasticsearch"
           image             = "zmlp/elasticsearch:${var.container-tag}"
@@ -184,6 +226,11 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
           volume_mount {
             name       = "elasticsearch-data"
             mount_path = "/usr/share/elasticsearch/data"
+          }
+          volume_mount {
+            name       = "elasticsearch-sa-key"
+            mount_path = "/etc/secrets"
+            read_only  = true
           }
           resources {
             requests {
@@ -287,6 +334,12 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
         image_pull_secrets {
           name = var.image-pull-secret
         }
+        volume {
+          name = "elasticsearch-sa-key"
+          secret {
+            secret_name = "elasticsearch-sa-key"
+          }
+        }
         container {
           name              = "elasticsearch"
           image             = "zmlp/elasticsearch:${var.container-tag}"
@@ -330,6 +383,11 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
           volume_mount {
             name       = "elasticsearch-data"
             mount_path = "/usr/share/elasticsearch/data"
+          }
+          volume_mount {
+            name       = "elasticsearch-sa-key"
+            mount_path = "/etc/secrets"
+            read_only  = true
           }
           resources {
             requests {
