@@ -128,7 +128,7 @@ wallet-deploy-development:
     name: dev
     url: https://console.dev.zvi.zorroa.com/
   before_script:
-    - echo $SA_JSON > ./sa.json
+    - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
@@ -148,6 +148,10 @@ wallet-deploy-qa:
   environment:
     name: qa
     url: https://console.qa.zvi.zorroa.com/
+  before_script:
+    - echo $QA_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
@@ -340,7 +344,7 @@ zmlp-deploy-development:
     name: dev
     url: https://console.dev.zvi.zorroa.com/
   before_script:
-    - echo $SA_JSON > ./sa.json
+    - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
@@ -371,6 +375,10 @@ zmlp-deploy-qa:
     url: https://console.qa.zvi.zorroa.com/
   variables:
     PROJECT: zvi-qa
+  before_script:
+    - echo $QA_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
