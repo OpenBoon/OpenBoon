@@ -75,7 +75,7 @@ sense of a unit of domain context. For a lengthy explanation of how to structure
 and name files and components, please consult
 [this article](https://link.medium.com/fmSm5hOEsS).
 
-The gist of it is that it is better to group related things together, close to
+The gist is that it is better to group related things together, close to
 the root folder, than to have a deeply nested file structure where we
 prematurely try to organize things. Better discoverability and lower mental
 overhead are key.
