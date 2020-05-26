@@ -1,6 +1,9 @@
 import io
 import os
 from collections import namedtuple
+import pandas as pd
+from pandas import json_normalize
+from flatten_json import flatten
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
@@ -8,7 +11,6 @@ from ..util import as_collection, as_id_collection, as_id
 
 
 class AssetApp(object):
-
     def __init__(self, app):
         self.app = app
 
@@ -55,10 +57,7 @@ class AssetApp(object):
             and created asset ids.
 
         """
-        body = {
-            "assets": files,
-            "modules": modules
-        }
+        body = {"assets": files, "modules": modules}
         return self.app.client.post("/api/v3/assets/_batch_create", body)
 
     def batch_upload_files(self, files, modules=None):
@@ -107,15 +106,14 @@ class AssetApp(object):
         """
         files = as_collection(files)
         file_paths = [f.uri for f in files]
-        body = {
-            "assets": files,
-            "modules": modules
-        }
-        return self.app.client.upload_files("/api/v3/assets/_batch_upload",
-                                            file_paths, body)
+        body = {"assets": files, "modules": modules}
+        return self.app.client.upload_files(
+            "/api/v3/assets/_batch_upload", file_paths, body
+        )
 
-    def batch_upload_directory(self, path, file_types=None,
-                               batch_size=50, modules=None, callback=None):
+    def batch_upload_directory(
+        self, path, file_types=None, batch_size=50, modules=None, callback=None
+    ):
         """
         Recursively upload all files in the given directory path.
 
@@ -154,12 +152,13 @@ class AssetApp(object):
         }
 
         def process_batch():
-            totals['batch_count'] += 1
-            totals['file_count'] += len(batch)
-            totals['file_size'] += sum([os.path.getsize(f) for f in batch])
+            totals["batch_count"] += 1
+            totals["file_count"] += len(batch)
+            totals["file_size"] += sum([os.path.getsize(f) for f in batch])
 
             rsp = self.batch_upload_files(
-                [FileUpload(f) for f in batch], modules)
+                [FileUpload(f) for f in batch], modules
+            )
             if callback:
                 callback(batch.copy(), rsp)
             batch.clear()
@@ -195,7 +194,9 @@ class AssetApp(object):
 
         """
         asset_id = as_id(asset)
-        return self.app.client.delete("/api/v3/assets/{}".format(asset_id))['success']
+        return self.app.client.delete("/api/v3/assets/{}".format(asset_id))[
+            "success"
+        ]
 
     def batch_delete_assets(self, assets):
         """
@@ -207,9 +208,7 @@ class AssetApp(object):
         Returns:
             dict: A dictionary containing deleted and errored asset Ids.
         """
-        body = {
-            "assetIds": as_id_collection(assets)
-        }
+        body = {"assetIds": as_id_collection(assets)}
         return self.app.client.delete("/api/v3/assets/_batch_delete", body)
 
     def search(self, search=None):
@@ -256,10 +255,7 @@ class AssetApp(object):
         Returns:
             dict: Contains a Job and the number of assets to be processed.
         """
-        body = {
-            "search": search,
-            "modules": modules
-        }
+        body = {"search": search, "modules": modules}
         rsp = self.app.client.post("/api/v3/assets/_search/reprocess", body)
         return ReprocessSearchResponse(rsp["assetCount"], Job(rsp["job"]))
 
@@ -274,16 +270,12 @@ class AssetApp(object):
         Returns:
             Job: The job responsible for processing the assets.
         """
-        asset_ids = [getattr(asset, "id") or asset for asset in as_collection(assets)]
+        asset_ids = [
+            getattr(asset, "id") or asset for asset in as_collection(assets)
+        ]
         body = {
-            "search": {
-                "query": {
-                    "terms": {
-                        "_id": asset_ids
-                    }
-                }
-            },
-            "modules": modules
+            "search": {"query": {"terms": {"_id": asset_ids}}},
+            "modules": modules,
         }
         return self.app.client.post("/api/v3/assets/_search/reprocess", body)
 
@@ -314,11 +306,15 @@ class AssetApp(object):
         ids = as_id_collection(assets)
         body = {}
         if add_labels:
-            body['add'] = dict([(a, as_collection(add_labels)) for a in ids])
+            body["add"] = dict([(a, as_collection(add_labels)) for a in ids])
         if remove_labels:
-            body['remove'] = dict([(a, as_collection(remove_labels)) for a in ids])
+            body["remove"] = dict(
+                [(a, as_collection(remove_labels)) for a in ids]
+            )
         if not body:
-            raise ValueError("Must pass at least and add_labels or remove_labels argument")
+            raise ValueError(
+                "Must pass at least and add_labels or remove_labels argument"
+            )
         return self.app.client.put("/api/v3/assets/_batch_update_labels", body)
 
     def download_file(self, stored_file, dst_file=None):
@@ -343,11 +339,15 @@ class AssetApp(object):
         elif isinstance(stored_file, StoredFile):
             path = stored_file.id
         else:
-            raise ValueError("stored_file must be a string or StoredFile instance")
+            raise ValueError(
+                "stored_file must be a string or StoredFile instance"
+            )
 
-        rsp = self.app.client.get("/api/v3/files/_stream/{}".format(path), is_json=False)
+        rsp = self.app.client.get(
+            "/api/v3/files/_stream/{}".format(path), is_json=False
+        )
         if dst_file:
-            with open(dst_file, 'wb') as fp:
+            with open(dst_file, "wb") as fp:
                 fp.write(rsp.content)
             return os.path.getsize(dst_file)
         else:
@@ -364,8 +364,9 @@ class AssetApp(object):
             list of str: A list of similarity hashes.
 
         """
-        return self.app.client.upload_files("/ml/v1/sim-hash",
-                                            as_collection(images), body=None)
+        return self.app.client.upload_files(
+            "/ml/v1/sim-hash", as_collection(images), body=None
+        )
 
     def get_sim_query(self, images, min_score=0.75):
         """
@@ -382,6 +383,82 @@ class AssetApp(object):
             SimilarityQuery: A configured SimilarityQuery
         """
         return SimilarityQuery(self.get_sim_hashes(images), min_score)
+
+    def to_df(
+        self,
+        search=None,
+        attr=None,
+        descriptor="source.filename",
+        set_index=True,
+    ):
+        """Convert search result to pandas DataFrame
+
+        Args:
+            search (AssetSearchResult): an AssetSearchResult instance from ES query
+            attr (str): attribute to get
+            descriptor (str, default: source.filename): unique name to describe each row
+            set_index (bool, default: True): set index as descriptor
+            otherwise normal incrementing index
+
+        Returns:
+            pd.DataFrame - DataFrame converted from assets
+        """
+        df = pd.DataFrame()
+        src_list, attr_list = [], []
+
+        # iterate through assets
+        for asset in search:
+            # get descriptor
+            source = asset.get_attr(descriptor)
+            # get specified attribute
+            values = asset.get_attr(attr)
+
+            # check if attribute is a list
+            if isinstance(values, list):
+                # loop through list
+                for v in values:
+                    # creates tmp DataFrame from JSON
+                    tmp = json_normalize(v)
+                    # append to DataFrame
+                    df = df.append(tmp)
+                    # add descriptor to list
+                    src_list.append(source)
+                # add descriptor column from source list
+                df[descriptor] = src_list
+
+            # check if attribute is a dict
+            elif isinstance(values, dict):
+                # flatten_json.flatten expands lists to mulitple columns
+                expanded_values = flatten(values)
+                # creates tmp DataFrame from JSON
+                tmp = json_normalize(expanded_values)
+                # append to DataFrame
+                df = df.append(tmp)
+                # add descriptor to list
+                src_list.append(source)
+                # add descriptor column from source list
+                df[descriptor] = src_list
+
+            # check if attribute is either a str, int, or float
+            elif isinstance(values, (str, int, float)):
+                # add descriptor to list
+                src_list.append(source)
+                # add attribute to list
+                attr_list.append(values)
+
+        # if attribute is a str, int, or float
+        if attr_list:
+            # add descriptor and attribute columns to DataFrame
+            df[descriptor], df[attr] = [src_list, attr_list]
+
+        if set_index:
+            # set index as descriptor
+            df.set_index([descriptor], inplace=True)
+        else:
+            # reset index to increment
+            df = df.reset_index(drop=True)
+
+        return df
 
 
 """
