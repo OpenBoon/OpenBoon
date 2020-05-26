@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+import { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -17,10 +19,13 @@ const AssetsThumbnail = ({
       source: { filename },
     },
     thumbnailUrl,
+    videoProxyUrl,
     assetStyle,
     videoLength,
   },
 }) => {
+  const playerRef = useRef()
+
   const {
     query: { projectId, id: selectedId, query },
   } = useRouter()
@@ -36,7 +41,17 @@ const AssetsThumbnail = ({
 
   const queryString = queryParams ? `?${queryParams}` : ''
 
-  const { pathname: src } = new URL(thumbnailUrl)
+  const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
+  const { pathname: videoSrc } = videoProxyUrl ? new URL(videoProxyUrl) : {}
+
+  const play = /* istanbul ignore next */ () => {
+    playerRef.current.currentTime = 0
+    playerRef.current.play()
+  }
+
+  const pause = /* istanbul ignore next */ () => {
+    playerRef.current.pause()
+  }
 
   return (
     <div
@@ -76,11 +91,30 @@ const AssetsThumbnail = ({
             overflow: 'hidden',
           }}
         >
-          <img
-            css={{ width: '100%', height: '100%', objectFit: 'contain' }}
-            src={src}
-            alt={filename}
-          />
+          {videoSrc ? (
+            <video
+              ref={playerRef}
+              preload="none"
+              onMouseOver={play}
+              onMouseOut={pause}
+              onFocus={play}
+              onBlur={pause}
+              css={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              muted
+              playsinline
+              controlsList="nodownload nofullscreen noremoteplayback"
+              disablePictureInPicture
+              poster={thumbnailSrc}
+            >
+              <source src={videoSrc} type="video/mp4" />
+            </video>
+          ) : (
+            <img
+              css={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              src={thumbnailSrc}
+              alt={filename}
+            />
+          )}
         </Button>
       </Link>
       <Link
@@ -144,6 +178,7 @@ AssetsThumbnail.propTypes = {
     thumbnailUrl: PropTypes.string.isRequired,
     assetStyle: PropTypes.oneOf(['image', 'video', 'document']),
     videoLength: PropTypes.number,
+    videoProxyUrl: PropTypes.string,
   }).isRequired,
 }
 

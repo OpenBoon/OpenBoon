@@ -488,11 +488,24 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
-    <img
-      alt="FatManOnABike1914.mp4"
+    <video
       className="emotion-0"
-      src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
-    />
+      controlsList="nodownload nofullscreen noremoteplayback"
+      disablePictureInPicture={true}
+      muted={true}
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      playsinline={true}
+      poster="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
+      preload="none"
+    >
+      <source
+        src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
+        type="video/mp4"
+      />
+    </video>
   </a>
   <a
     className="emotion-3"
