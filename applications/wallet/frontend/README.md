@@ -60,7 +60,7 @@ working.
 
 ## Conventions
 
-There are two main folders at the root of the application: `/pages`, and `/src`.
+There are two main folders at the root of the application: `/pages` and `/src`.
 
 #### pages
 
