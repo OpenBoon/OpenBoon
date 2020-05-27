@@ -21,7 +21,7 @@ can access wallet at http://localhost.
 ## Building & Running your local code.
 Once you have made changes to the Wallet code you can build and run those changes in the local 
 deployment. This will build all the local wallet code, package it in a docker container and then
-run it. Once it's up and running you can test that were changes are working as expected.
+run it. Once it's up and running you can test that were changes are working as you expect.
 
 ### Steps
 
