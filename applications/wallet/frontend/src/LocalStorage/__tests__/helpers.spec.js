@@ -1,16 +1,16 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import { useLocalStorageState } from '../helpers'
+import { useLocalStorageState, useLocalStorageReducer } from '../helpers'
 
 describe('<LocalStorage /> helpers', () => {
+  const mockSet = jest.fn()
+  const mockGet = jest.fn()
+
+  Object.defineProperty(window, 'localStorage', {
+    value: { setItem: mockSet, getItem: mockGet },
+  })
+
   describe('useLocalStorageState()', () => {
-    const mockSet = jest.fn()
-    const mockGet = jest.fn()
-
-    Object.defineProperty(window, 'localStorage', {
-      value: { setItem: mockSet, getItem: mockGet },
-    })
-
     it('should return properly', () => {
       const TestComponent = () => {
         const [value, setValue] = useLocalStorageState({
@@ -75,6 +75,31 @@ describe('<LocalStorage /> helpers', () => {
       expect(
         component.root.findByProps({ type: 'button' }).props.children,
       ).toEqual('initialValue')
+    })
+  })
+
+  describe('useLocalStorageReducer()', () => {
+    it('should handle a corrupt value', () => {
+      mockGet.mockImplementationOnce(() => 'invalid json')
+
+      const TestComponent = () => {
+        const [state, dispatch] = useLocalStorageReducer({
+          key: 'name',
+          reducer: () => {},
+          initialState: 'initialState',
+        })
+        return (
+          <button type="button" onClick={() => dispatch()}>
+            {state}
+          </button>
+        )
+      }
+
+      const component = TestRenderer.create(<TestComponent />)
+
+      expect(
+        component.root.findByProps({ type: 'button' }).props.children,
+      ).toEqual('initialState')
     })
   })
 })
