@@ -19,6 +19,7 @@ RUN groupadd -r analyst && useradd --no-log-init -r -g analyst analyst
 # USER analyst
 
 ENV PYTHONPATH="/service/pylib"
+ENV ANALYST_CACHE_ROOT="/tmp"
 
 EXPOSE 5000
 ENTRYPOINT ["/service/bin/analystd"]
