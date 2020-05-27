@@ -31,7 +31,7 @@ const AssetDeleteContent = () => {
     return (
       <AssetDeleteConfirm
         filename={filename}
-        setShowConfirmationDialogue={setShowConfirmationDialogue}
+        dispatch={setShowConfirmationDialogue}
       />
     )
   }

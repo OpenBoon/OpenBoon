@@ -1,31 +1,21 @@
 import PropTypes from 'prop-types'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { mutate, cache } from 'swr'
-
-import { fetcher } from '../Fetch/helpers'
-import { formatUrl } from '../Filters/helpers'
 
 import { spacing, colors, typography } from '../Styles'
 
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS } from '../Button'
 
-const AssetDeleteConfirm = ({ filename, setShowConfirmationDialogue }) => {
+import { onDelete } from './helpers'
+
+const AssetDeleteConfirm = ({ filename, dispatch }) => {
   const {
     query: { projectId, id: assetId, query },
   } = useRouter()
 
   const [hasError, setHasError] = useState(false)
 
-  /* istanbul ignore next */
-  const keysToUpdate = cache.keys().filter((key) => {
-    return (
-      !key.includes('err@') &&
-      (key.includes('/searches/query') ||
-        key.includes('/searches/aggregate/?filter='))
-    )
-  })
   return (
     <div css={{ padding: spacing.normal }}>
       {hasError && (
@@ -57,7 +47,7 @@ const AssetDeleteConfirm = ({ filename, setShowConfirmationDialogue }) => {
           aria-label="Cancel"
           variant={VARIANTS.SECONDARY}
           onClick={() => {
-            setShowConfirmationDialogue(false)
+            dispatch(false)
             setHasError(false)
           }}
           style={{
@@ -76,38 +66,9 @@ const AssetDeleteConfirm = ({ filename, setShowConfirmationDialogue }) => {
         <Button
           aria-label="Confirm Delete Asset"
           variant={VARIANTS.WARNING}
-          onClick={async () => {
-            try {
-              await fetcher(
-                `/api/v1/projects/${projectId}/assets/${assetId}/`,
-                {
-                  method: 'DELETE',
-                },
-              )
-
-              /* istanbul ignore next */
-              keysToUpdate.forEach((key) =>
-                mutate(
-                  key,
-                  fetch(key).then((res) => res.json()),
-                ),
-              )
-
-              return Router.push(
-                {
-                  pathname: '/[projectId]/visualizer',
-                  query: { query, id: '', action: 'delete-asset-success' },
-                },
-                `/${projectId}/visualizer${formatUrl({
-                  id: '',
-                  query,
-                  action: 'delete-asset-success',
-                })}`,
-              )
-            } catch (error) {
-              return setHasError(true)
-            }
-          }}
+          onClick={() =>
+            onDelete({ projectId, assetId, query, dispatch: setHasError })
+          }
           style={{
             flex: 1,
             display: 'flex',
@@ -125,7 +86,7 @@ const AssetDeleteConfirm = ({ filename, setShowConfirmationDialogue }) => {
 
 AssetDeleteConfirm.propTypes = {
   filename: PropTypes.string.isRequired,
-  setShowConfirmationDialogue: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default AssetDeleteConfirm
