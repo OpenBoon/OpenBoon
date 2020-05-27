@@ -152,6 +152,8 @@ resource "google_project_service" "vision" {
 ## ZMLP Services ######################################################################
 module "elasticsearch" {
   source                 = "./modules/elasticsearch"
+  project                = var.project
+  country                = var.country
   container-cluster-name = module.gke-cluster.name
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   container-tag          = var.container-tag
@@ -160,7 +162,7 @@ module "elasticsearch" {
 module "archivist" {
   source                  = "./modules/archivist"
   project                 = var.project
-  region                  = local.region
+  country                 = var.country
   image-pull-secret       = kubernetes_secret.dockerhub.metadata[0].name
   sql-service-account-key = module.postgres.sql-service-account-key
   sql-connection-name     = module.postgres.connection-name
@@ -172,6 +174,7 @@ module "archivist" {
   container-cluster-name  = module.gke-cluster.name
   analyst-shared-key      = module.analyst.shared-key
   container-tag           = var.container-tag
+  es-backup-bucket-name   = module.elasticsearch.backup-bucket-name
 }
 
 module "auth-server" {
