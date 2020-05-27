@@ -68,6 +68,8 @@ variable "marketplace-credentials" {
   description = "GCP Service Account JSON key to use with the GCP Procurement API."
   default = ""
 }
+
+
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"
