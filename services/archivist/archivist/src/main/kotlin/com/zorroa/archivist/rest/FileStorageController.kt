@@ -59,6 +59,20 @@ class FileStorageController(
         return projectStorageService.stream(locator)
     }
 
+    @ApiOperation("Stream a file associated with any entity.")
+    @PreAuthorize("hasAuthority('AssetsRead')")
+    @GetMapping(value = ["/api/v3/files/_sign/{entityType}/{entityId}/{category}/{name}"])
+    @ResponseBody
+    fun signFile(
+        @PathVariable entityType: String,
+        @PathVariable entityId: String,
+        @PathVariable category: String,
+        @PathVariable name: String
+    ): Map <String, Any> {
+        val locator = getValidLocator(entityType, entityId, category, name)
+        return projectStorageService.getSignedUrl(locator, false, 60, TimeUnit.MINUTES)
+    }
+
     @ApiOperation("Get get underlying file location.", hidden = true)
     // Only job runners can get this.
     @PreAuthorize("hasAuthority('SystemProjectDecrypt')")
@@ -78,7 +92,7 @@ class FileStorageController(
     }
 
     @ApiOperation("Sign a storage entity for write.")
-    // Only job runner keys can get files.
+    // Only job runner keys can upload files..
     @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
     @PostMapping(value = ["/api/v3/files/_signed_upload_uri"])
     @ResponseBody
