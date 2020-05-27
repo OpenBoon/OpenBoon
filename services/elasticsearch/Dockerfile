@@ -8,7 +8,9 @@ RUN mvn clean install -Dmaven.test.skip=true
 FROM docker.elastic.co/elasticsearch/elasticsearch:7.6.2
 
 COPY ./docker/jvm.options /usr/share/elasticsearch/config
-COPY ./docker/docker-entrypoint.sh /usr/share/elasticsearch/bin
+COPY ./docker/docker-entrypoint.sh /usr/local/bin
+RUN chown elasticsearch:root /usr/local/bin/docker-entrypoint.sh
+RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
 
 COPY --from=mvn_build ./es-kwconf/target/releases/es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
 COPY --from=mvn_build ./es-similarity/target/releases/es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip

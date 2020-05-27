@@ -73,7 +73,7 @@ fi
 CREDS="/secrets/gcs/credentials.json"
 if test -f "$CREDS"; then
   echo "Loading GCP credentials"
-  /usr/share/elasticsearch/bin/elasticsearch-keystore add-file gcs.client.default.credentials_file $CREDS
+  /usr/share/elasticsearch/bin/elasticsearch-keystore add-file  --force gcs.client.default.credentials_file $CREDS
 else
   echo "No GCP credentials specified at /secrets/gcs/credentials.json"
 fi
