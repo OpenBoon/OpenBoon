@@ -87,6 +87,32 @@ class FileStorageControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testGetSignedDownloadUri() {
+
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val rsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                assets = listOf(spec)
+            )
+        )
+        val id = rsp.created[0]
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS,
+            id, ProjectStorageCategory.PROXY, "bob.jpg")
+        val storage = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
+        projectStorageService.store(storage)
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/files/_sign/assets/$id/proxy/bob.jpg")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.mediaType", CoreMatchers.equalTo("image/jpeg")))
+            .andExpect(jsonPath("$.uri", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
     fun testSetAttrs() {
 
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
