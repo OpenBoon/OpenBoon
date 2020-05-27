@@ -4,7 +4,7 @@ import Panel from '../Panel'
 import Assets from '../Assets'
 import Filters from '../Filters'
 import Metadata from '../Metadata'
-import Export from '../Export'
+import AssetExport from '../AssetExport'
 import AssetDelete from '../AssetDelete'
 
 import FilterSvg from '../Icons/filter.svg'
@@ -56,7 +56,7 @@ const VisualizerContent = () => {
                   aria-hidden
                 />
               ),
-              content: <Export />,
+              content: <AssetExport />,
             },
             delete: {
               title: 'Delete',

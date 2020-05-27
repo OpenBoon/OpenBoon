@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import Delete from '..'
+import AssetDelete from '..'
 
 import asset from '../../Asset/__mocks__/asset'
 
@@ -14,7 +14,7 @@ describe('<Delete />', () => {
       query: {},
     })
 
-    const component = TestRenderer.create(<Delete />)
+    const component = TestRenderer.create(<AssetDelete />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -30,7 +30,7 @@ describe('<Delete />', () => {
     const mockRouterPush = jest.fn()
     require('next/router').__setMockPushFunction(mockRouterPush)
 
-    const component = TestRenderer.create(<Delete />)
+    const component = TestRenderer.create(<AssetDelete />)
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -85,7 +85,7 @@ describe('<Delete />', () => {
       query: { action: 'delete-asset-success' },
     })
 
-    const component = TestRenderer.create(<Delete />)
+    const component = TestRenderer.create(<AssetDelete />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -99,7 +99,7 @@ describe('<Delete />', () => {
 
     require('swr').__setMockUseSWRResponse({ data: asset })
 
-    const component = TestRenderer.create(<Delete />)
+    const component = TestRenderer.create(<AssetDelete />)
 
     act(() => {
       component.root

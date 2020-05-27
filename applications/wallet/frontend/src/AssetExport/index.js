@@ -4,7 +4,7 @@ import { spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
-const Export = () => {
+const AssetExport = () => {
   const {
     query: { projectId, query = 'W10=' },
   } = useRouter()
@@ -29,4 +29,4 @@ const Export = () => {
   )
 }
 
-export default Export
+export default AssetExport
