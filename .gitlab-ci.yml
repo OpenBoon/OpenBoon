@@ -90,18 +90,27 @@ wallet-dockerhub-build-push-latest:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TAG: latest
   retry: 2
   before_script:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx wallet
-    - docker push zmlp/wallet:latest
+    - docker push zmlp/wallet:${DOCKER_TAG}
   rules:
     # Merged to Development with Wallet changes
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "applications/wallet/**/*"
+
+## Wallet Build & Push QA on changes to QA branch
+wallet-dockerhub-build-push-qa:
+  extends:
+    - wallet-dockerhub-build-push-latest
+  variables:
+    DOCKER_TAG: qa
+  rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
       changes:
@@ -113,13 +122,13 @@ wallet-deploy-development:
   retry: 1
   variables:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
-    PROJECT: zmlp-258901
+    PROJECT: zvi-dev
   stage: deploy
-#  environment:
-#    name: dev
-#    url: https://console.dev.zvi.zorroa.com/
+  environment:
+    name: dev
+    url: https://console.dev.zvi.zorroa.com/
   before_script:
-    - echo $SA_JSON > ./sa.json
+    - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
@@ -135,11 +144,14 @@ wallet-deploy-qa:
   extends:
     - wallet-deploy-development
   variables:
-    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
     PROJECT: zvi-qa
   environment:
     name: qa
     url: https://console.qa.zvi.zorroa.com/
+  before_script:
+    - echo $QA_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
@@ -276,28 +288,29 @@ zmlp-dockerhub-build-push-latest:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TAG: latest
   retry: 2
   before_script:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx
-    - docker push zmlp/archivist:latest
-    - docker push zmlp/officer:latest
-    - docker push zmlp/elasticsearch:latest
-    - docker push zmlp/authserver:latest
-    - docker push zmlp/apigateway:latest
-    - docker push zmlp/py3-base:latest
-    - docker push zmlp/py3-client:latest
-    - docker push zmlp/py3-sdk:latest
-    - docker push zmlp/plugins-base:latest
-    - docker push zmlp/plugins-models:latest
-    - docker push zmlp/plugins-core:latest
-    - docker push zmlp/plugins-analysis:latest
-    - docker push zmlp/analyst:latest
-    - docker push zmlp/jvm-common:latest
-    - docker push zmlp/ml-bbq:latest
-    - docker push zmlp/plugins-train:latest
+    - docker push zmlp/archivist:${DOCKER_TAG}
+    - docker push zmlp/officer:${DOCKER_TAG}
+    - docker push zmlp/elasticsearch:${DOCKER_TAG}
+    - docker push zmlp/authserver:${DOCKER_TAG}
+    - docker push zmlp/apigateway:${DOCKER_TAG}
+    - docker push zmlp/py3-base:${DOCKER_TAG}
+    - docker push zmlp/py3-client:${DOCKER_TAG}
+    - docker push zmlp/py3-sdk:${DOCKER_TAG}
+    - docker push zmlp/plugins-base:${DOCKER_TAG}
+    - docker push zmlp/plugins-models:${DOCKER_TAG}
+    - docker push zmlp/plugins-core:${DOCKER_TAG}
+    - docker push zmlp/plugins-analysis:${DOCKER_TAG}
+    - docker push zmlp/analyst:${DOCKER_TAG}
+    - docker push zmlp/jvm-common:${DOCKER_TAG}
+    - docker push zmlp/ml-bbq:${DOCKER_TAG}
+    - docker push zmlp/plugins-train:${DOCKER_TAG}
   rules:
     # Merged to development with ZMLP changes
     - if: $CI_COMMIT_BRANCH == "development"
@@ -308,6 +321,13 @@ zmlp-dockerhub-build-push-latest:
         - "lib/**/*"
         - "sdk/**/*"
         - "services/**/*"
+
+zmlp-dockerhub-build-push-qa:
+  extends:
+    - zmlp-dockerhub-build-push-latest
+  variables:
+    DOCKER_TAG: qa
+  rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
       changes:
@@ -318,13 +338,13 @@ zmlp-deploy-development:
   retry: 1
   variables:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
-    PROJECT: zmlp-258901
+    PROJECT: zmlp-dev
   stage: deploy
-#  environment:
-#    name: dev
-#    url: https://console.dev.zvi.zorroa.com/
+  environment:
+    name: dev
+    url: https://console.dev.zvi.zorroa.com/
   before_script:
-    - echo $SA_JSON > ./sa.json
+    - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
@@ -354,8 +374,11 @@ zmlp-deploy-qa:
     name: qa
     url: https://console.qa.zvi.zorroa.com/
   variables:
-    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
     PROJECT: zvi-qa
+  before_script:
+    - echo $QA_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"

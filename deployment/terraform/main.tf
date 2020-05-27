@@ -113,6 +113,41 @@ resource "kubernetes_secret" "dockerhub" {
   type = "kubernetes.io/dockerconfigjson"
 }
 
+## Enable Google ML APIs
+resource "google_project_service" "video-intelligence" {
+  service            = "videointelligence.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "speech-to-text" {
+  service            = "speech.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "auto-ml" {
+  service            = "automl.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "model-ml" {
+  service            = "ml.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "natural-language" {
+  service            = "language.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "translation" {
+  service            = "translate.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "vision" {
+  service            = "vision.googleapis.com"
+  disable_on_destroy = false
+}
 
 ## ZMLP Services ######################################################################
 module "elasticsearch" {
@@ -203,6 +238,7 @@ module "wallet" {
   inception-key-b64       = local.inception-key-b64
   domain                  = var.wallet-domain
   container-tag           = var.container-tag
+  debug                   = var.wallet-debug
 }
 
 module "ml-bbq" {

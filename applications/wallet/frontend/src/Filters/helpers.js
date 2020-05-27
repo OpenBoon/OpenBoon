@@ -43,7 +43,7 @@ export const dispatch = ({ action, payload }) => {
     case ACTIONS.ADD_FILTERS: {
       const { projectId, assetId, filters, newFilters } = payload
 
-      const query = encode({ filters: [...filters, ...newFilters] })
+      const query = encode({ filters: [...newFilters, ...filters] })
 
       Router.push(
         {

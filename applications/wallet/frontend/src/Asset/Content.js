@@ -123,7 +123,13 @@ const AssetContent = () => {
           }}
         >
           {type === 'video' && (
-            <video css={videoStyle} autoPlay controls>
+            <video
+              css={videoStyle}
+              autoPlay
+              controls
+              controlsList="nodownload"
+              disablePictureInPicture
+            >
               <source src={fileSrc} type="video/mp4" />
             </video>
           )}
