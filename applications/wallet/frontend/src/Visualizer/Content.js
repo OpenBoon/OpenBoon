@@ -5,7 +5,7 @@ import Assets from '../Assets'
 import Filters from '../Filters'
 import Metadata from '../Metadata'
 import Export from '../Export'
-import Delete from '../Delete'
+import AssetDelete from '../AssetDelete'
 
 import FilterSvg from '../Icons/filter.svg'
 import InformationSvg from '../Icons/information.svg'
@@ -61,7 +61,7 @@ const VisualizerContent = () => {
             delete: {
               title: 'Delete',
               icon: <TrashSvg width={ICON_WIDTH} aria-hidden />,
-              content: <Delete />,
+              content: <AssetDelete />,
             },
           }}
         </Panel>

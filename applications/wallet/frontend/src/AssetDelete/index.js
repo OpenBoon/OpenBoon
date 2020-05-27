@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router'
 
 import SuspenseBoundary from '../SuspenseBoundary'
-import DeleteContent from './Content'
+import AssetDeleteContent from './Content'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 
 import { spacing } from '../Styles'
 
-const Delete = () => {
+const AssetDelete = () => {
   const {
     query: { id: assetId, action },
   } = useRouter()
@@ -25,9 +25,9 @@ const Delete = () => {
 
   return (
     <SuspenseBoundary>
-      <DeleteContent />
+      <AssetDeleteContent />
     </SuspenseBoundary>
   )
 }
 
-export default Delete
+export default AssetDelete
