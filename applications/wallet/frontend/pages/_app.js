@@ -20,6 +20,7 @@ if (ENABLE_SENTRY === 'true') {
       }
       return event
     },
+    ignoreErrors: ['ResizeObserver loop limit exceeded'],
   })
 }
 
