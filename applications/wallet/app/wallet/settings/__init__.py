@@ -41,7 +41,7 @@ REACT_APP_DIR = os.path.join(BASE_DIR, '..', 'frontend')
 SECRET_KEY = '4*-c#z+_^gwef_ai&!5vfxf_al_#o^lx(4u70@q#n057a&65j$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get('DEBUG'):
+if os.environ.get('DEBUG') == 'true':
     DEBUG = True
 else:
     DEBUG = False
