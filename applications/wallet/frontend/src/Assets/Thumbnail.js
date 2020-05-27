@@ -25,6 +25,7 @@ const AssetsThumbnail = ({
   },
 }) => {
   const playerRef = useRef()
+  let playerPromise
 
   const {
     query: { projectId, id: selectedId, query },
@@ -46,11 +47,15 @@ const AssetsThumbnail = ({
 
   const play = /* istanbul ignore next */ () => {
     playerRef.current.currentTime = 0
-    playerRef.current.play()
+    playerPromise = playerRef.current.play()
   }
 
   const pause = /* istanbul ignore next */ () => {
-    playerRef.current.pause()
+    if (playerPromise !== undefined) {
+      playerPromise.then(() => {
+        playerRef.current.pause()
+      })
+    }
   }
 
   return (
@@ -99,7 +104,7 @@ const AssetsThumbnail = ({
               onBlur={pause}
               css={{ width: '100%', height: '100%', objectFit: 'contain' }}
               muted
-              playsinline
+              playsInline
               controlsList="nodownload nofullscreen noremoteplayback"
               disablePictureInPicture
               poster={thumbnailSrc}
