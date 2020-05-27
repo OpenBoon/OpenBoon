@@ -229,7 +229,7 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
           }
           volume_mount {
             name       = "elasticsearch-sa-key"
-            mount_path = "/etc/secrets"
+            mount_path = "/secrets/gcs/ "
             read_only  = true
           }
           resources {
