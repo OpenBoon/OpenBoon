@@ -3,7 +3,7 @@ import useSWR from 'swr'
 
 import { colors, constants, spacing } from '../Styles'
 
-import useLocalStorage from '../LocalStorage'
+import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import Button, { VARIANTS } from '../Button'
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
@@ -15,7 +15,7 @@ import { formatDisplayName } from './helpers'
 const DISPLAY_OPTIONS = ['pretty', 'raw json']
 
 const MetadataContent = ({ projectId, assetId }) => {
-  const [displayOption, setDisplayOption] = useLocalStorage({
+  const [displayOption, setDisplayOption] = useLocalStorageState({
     key: 'metadataFormat',
     initialValue: 'pretty',
   })
