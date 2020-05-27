@@ -2,12 +2,11 @@
 #-Xms1g
 #-Xmx1g
 
--XX:-UseConcMarkSweepGC
--XX:-UseCMSInitiatingOccupancyOnly
 -XX:+UseG1GC
--XX:G1ReservePercent=25
--XX:InitiatingHeapOccupancyPercent=30
+-XX:InitiatingHeapOccupancyPercent=70
 -XX:+AlwaysPreTouch
+-XX:+DisableExplicitGC
+-XX:MaxGCPauseMillis=200
 -Xlog:gc
 
 ## JVM temporary directory
