@@ -32,7 +32,7 @@ class ProviderViewSet(BaseProjectViewSet):
             category = provider.setdefault(module['category'], [])
             category.append(module)
 
-        # For now we look at all providers. In the future we will likely need to support
+        # For now we find all providers. In the future we will likely need to support
         # project-specific providers. When that happens we'll need to update this query.
         for provider in Provider.objects.all():
             name = provider.name.lower()

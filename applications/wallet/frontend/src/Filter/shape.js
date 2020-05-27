@@ -11,6 +11,7 @@ const filterShape = {
   ]).isRequired,
   attribute: PropTypes.string.isRequired,
   values: PropTypes.shape({}),
+  isDisabled: PropTypes.bool,
 }
 
 export default filterShape

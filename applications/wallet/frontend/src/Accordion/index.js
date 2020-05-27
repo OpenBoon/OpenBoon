@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import useLocalStorage from '../LocalStorage'
+import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import { typography, colors, spacing, constants } from '../Styles'
 
@@ -36,11 +36,14 @@ const STYLES = {
       backgroundColor: colors.structure.lead,
       borderRadius: constants.borderRadius.small,
       ':last-of-type > div:last-of-type': {
-        borderBottom: constants.borders.tabs,
+        borderBottom: constants.borders.divider,
+      },
+      ':first-of-type > div': {
+        borderTop: 'none',
       },
     },
     title: {
-      borderTop: constants.borders.tabs,
+      borderTop: constants.borders.divider,
       paddingTop: spacing.moderate,
       paddingBottom: spacing.moderate,
       paddingLeft: spacing.moderate,
@@ -59,7 +62,7 @@ const STYLES = {
     container: {
       backgroundColor: colors.structure.lead,
       border: constants.borders.transparent,
-      borderBottom: constants.borders.tabs,
+      borderBottom: constants.borders.divider,
       paddingBottom: spacing.hairline,
       ':hover': {
         border: constants.borders.tableRow,
@@ -102,7 +105,7 @@ const Accordion = ({
   isInitiallyOpen,
   isResizeable,
 }) => {
-  const [isOpen, setOpen] = useLocalStorage({
+  const [isOpen, setOpen] = useLocalStorageState({
     key: cacheKey,
     initialValue: isInitiallyOpen,
   })

@@ -1,4 +1,7 @@
 resource "kubernetes_storage_class" "redis" {
+  lifecycle {
+    prevent_destroy = true
+  }
   metadata {
     name = var.storage-class-name
   }
@@ -10,6 +13,10 @@ resource "kubernetes_storage_class" "redis" {
 
 resource "kubernetes_stateful_set" "redis" {
   provider = kubernetes
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes = [spec[0].replicas]
+  }
   metadata {
     name      = "redis"
     namespace = var.namespace
@@ -24,7 +31,7 @@ resource "kubernetes_stateful_set" "redis" {
       type = "RollingUpdate"
     }
     service_name = "redis"
-    replicas     = "1"
+    replicas     = 1
     selector {
       match_labels = {
         app = "redis"
