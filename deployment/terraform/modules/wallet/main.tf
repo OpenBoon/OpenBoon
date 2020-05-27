@@ -26,7 +26,10 @@ resource "kubernetes_deployment" "wallet" {
   provider   = kubernetes
   depends_on = [google_sql_user.wallet]
   lifecycle {
-    ignore_changes = [spec[0].replicas]
+    ignore_changes = [
+      spec[0].replicas,
+      spec[0].template.metadata.labels.ci-job-id
+    ]
   }
   metadata {
     name      = "wallet"
