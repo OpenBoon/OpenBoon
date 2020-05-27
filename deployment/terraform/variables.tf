@@ -3,21 +3,6 @@ variable "project" {
   description = "Name of the GCP project."
 }
 
-variable "country" {
-  description = "GCP country abbreviation (i.e. us, eu)."
-  default     = "us"
-}
-
-variable "region" {
-  description = "GCP region (i.e. central1, east1)."
-  default     = "central1"
-}
-
-variable "zone" {
-  description = "GCP zone letter (i.e. a, b)."
-  default     = "a"
-}
-
 variable "environment" {
   description = "Name of the deployment environment. Used for things like sentry reporting."
 }
@@ -54,6 +39,26 @@ variable "zmlp-domain" {
   description = "Domain name of the zmlp api."
 }
 
+variable "container-tag" {
+  description = "Tag to use for all zvi service docker contianers."
+  default = "stable"
+}
+
+variable "country" {
+  description = "GCP country abbreviation (i.e. us, eu)."
+  default     = "us"
+}
+
+variable "region" {
+  description = "GCP region (i.e. central1, east1)."
+  default     = "central1"
+}
+
+variable "zone" {
+  description = "GCP zone letter (i.e. a, b)."
+  default     = "a"
+}
+
 variable "deploy-marketplace-integration" {
   description = "If this variable exists the GCP Marketplace integration will be deployed."
   default = ""
@@ -67,5 +72,10 @@ variable "marketplace-credentials" {
 locals {
   region = "${var.country}-${var.region}"
   zone   = "${var.country}-${var.region}-${var.zone}"
+}
+
+variable "wallet-debug" {
+  description = "Turns Debug mode on for the Console/Wallet"
+  default = "false"
 }
 

@@ -10,7 +10,7 @@ class ZMLPFromSizePagination(FromSizePagination):
 
     def prep_pagination_for_api_response(self, content, request):
         """
-        Allows you to use this Paginator to prep responses returned from the ZMLP api.
+        Allows you to use this Paginator to prep responses returned from the ZMLP API.
 
         The normal method to prep a response would follow this pattern:
 
@@ -24,7 +24,7 @@ class ZMLPFromSizePagination(FromSizePagination):
         our api response.
 
         Args:
-            content: The JSON content body from the ZMLP api
+            content: The JSON content body from the ZMLP API
             request: The original request
 
         Returns:
