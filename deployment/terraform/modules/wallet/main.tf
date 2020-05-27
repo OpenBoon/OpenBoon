@@ -28,7 +28,7 @@ resource "kubernetes_deployment" "wallet" {
   lifecycle {
     ignore_changes = [
       spec[0].replicas,
-      spec[0].template.metadata.labels.ci-job-id
+      spec[0].template[0].metadata.labels.ci-job-id
     ]
   }
   metadata {
