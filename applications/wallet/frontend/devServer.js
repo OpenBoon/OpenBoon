@@ -35,7 +35,7 @@ const handle = app.getRequestHandler()
 const mock = (response) => (_, res) => res.send(JSON.stringify(response))
 const success = () => (_, res) => res.send('{"detail":"Success"}')
 const proxy = createProxyMiddleware({
-  target: STAGING ? 'https://wallet.zmlp.zorroa.com' : 'http://localhost',
+  target: STAGING ? 'https://dev.console.zvi.zorroa.com' : 'http://localhost',
   changeOrigin: true,
 })
 
