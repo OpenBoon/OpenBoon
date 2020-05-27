@@ -27,7 +27,7 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
   )
 
   const [newFilters, setNewFilters] = useState({})
-  const [fiedsFilter, setFieldsFilter] = useState('')
+  const [fieldsFilter, setFieldsFilter] = useState('')
 
   const onClick = ({ type, attribute }) => (value) => {
     if (value) {
@@ -54,10 +54,10 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
       return false
     }
 
-    if (!fiedsFilter) return true
+    if (!fieldsFilter) return true
 
     if (typeof prop === 'string' && Array.isArray(value)) {
-      return prop.includes(fiedsFilter)
+      return prop.includes(fieldsFilter)
     }
 
     return true
@@ -86,7 +86,7 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
           <input
             type="search"
             placeholder="Search metadata filters"
-            value={fiedsFilter}
+            value={fieldsFilter}
             onChange={({ target: { value } }) => setFieldsFilter(value)}
             css={{
               marginTop: spacing.base,
