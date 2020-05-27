@@ -159,7 +159,7 @@ resource "kubernetes_deployment" "wallet" {
           }
           env {
             name  = "DEBUG"
-            value = "${var.debug}"
+            value = var.debug
           }
         }
       }
