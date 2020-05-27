@@ -25,6 +25,7 @@ const DeleteContent = () => {
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
+  /* istanbul ignore next */
   const keysToUpdate = cache.keys().filter((key) => {
     return (
       !key.includes('err@') &&
@@ -75,7 +76,7 @@ const DeleteContent = () => {
           <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
           <Button
-            aria-label="Delete Asset"
+            aria-label="Confirm Delete Asset"
             variant={VARIANTS.WARNING}
             onClick={async () => {
               const response = await fetcher(
@@ -85,6 +86,7 @@ const DeleteContent = () => {
                 },
               )
 
+              /* istanbul ignore next */
               if (response) {
                 keysToUpdate.forEach((key) =>
                   mutate(
@@ -177,6 +179,7 @@ const DeleteContent = () => {
         <div css={{ height: spacing.normal }} />
 
         <Button
+          aria-label="Delete Asset"
           variant={VARIANTS.PRIMARY_SMALL}
           style={{ width: 'fit-content' }}
           onClick={() => {
