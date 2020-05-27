@@ -6,6 +6,7 @@ import { fetcher } from '../Fetch/helpers'
 
 import { spacing, colors, constants, typography } from '../Styles'
 
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS } from '../Button'
 import { formatUrl } from '../Filters/helpers'
 
@@ -37,10 +38,18 @@ const DeleteContent = () => {
   const [showConfirmationDialogue, setShowConfirmationDialogue] = useState(
     false,
   )
+  const [hasError, setHasError] = useState(false)
 
   if (showConfirmationDialogue) {
     return (
       <div css={{ padding: spacing.normal }}>
+        {hasError && (
+          <div css={{ paddingBottom: spacing.normal }}>
+            <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+              There was an error. Please try again.
+            </FlashMessage>
+          </div>
+        )}
         <div
           css={{
             fontWeight: typography.weight.bold,
@@ -57,11 +66,15 @@ const DeleteContent = () => {
         >
           Deleting this asset is permanent and cannot be undone.
         </div>
+
         <div css={{ display: 'flex' }}>
           <Button
             aria-label="Cancel"
             variant={VARIANTS.SECONDARY}
-            onClick={() => setShowConfirmationDialogue(false)}
+            onClick={() => {
+              setShowConfirmationDialogue(false)
+              setHasError(false)
+            }}
             style={{
               flex: 1,
               display: 'flex',
@@ -79,15 +92,15 @@ const DeleteContent = () => {
             aria-label="Confirm Delete Asset"
             variant={VARIANTS.WARNING}
             onClick={async () => {
-              const response = await fetcher(
-                `/api/v1/projects/${projectId}/assets/${assetId}/`,
-                {
-                  method: 'DELETE',
-                },
-              )
+              try {
+                await fetcher(
+                  `/api/v1/projects/${projectId}/assets/${assetId}/`,
+                  {
+                    method: 'DELETE',
+                  },
+                )
 
-              /* istanbul ignore next */
-              if (response) {
+                /* istanbul ignore next */
                 keysToUpdate.forEach((key) =>
                   mutate(
                     key,
@@ -95,7 +108,7 @@ const DeleteContent = () => {
                   ),
                 )
 
-                Router.push(
+                return Router.push(
                   {
                     pathname: '/[projectId]/visualizer',
                     query: { query, id: '', action: 'delete-asset-success' },
@@ -106,6 +119,8 @@ const DeleteContent = () => {
                     action: 'delete-asset-success',
                   })}`,
                 )
+              } catch (error) {
+                return setHasError(true)
               }
             }}
             style={{

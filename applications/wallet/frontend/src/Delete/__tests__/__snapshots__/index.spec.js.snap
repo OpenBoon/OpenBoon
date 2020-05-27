@@ -1,0 +1,481 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Delete /> should render properly when as asset is selected 1`] = `
+.emotion-7 {
+  padding: 16px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-1 {
+  position: absolute;
+  top: 6px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+  background-color: #73b61c;
+  border-radius: 16px;
+}
+
+.emotion-2 {
+  padding-left: 8px;
+  font-weight: 700;
+}
+
+.emotion-4 {
+  padding-left: 24px;
+}
+
+.emotion-5 {
+  height: 16px;
+}
+
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited {
+  background-color: #73b61c;
+}
+
+.emotion-6:hover {
+  background-color: #96c955;
+}
+
+.emotion-6[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+  className="emotion-7"
+>
+  <form
+    action=""
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-3"
+    >
+      <input
+        checked={true}
+        className="emotion-0"
+        id="deleteSelected"
+        type="radio"
+        value="deleteSelected"
+      />
+      <div
+        className="emotion-1"
+      />
+      <label
+        className="emotion-2"
+        htmlFor="deleteSelected"
+      >
+        Delete Selected: 1
+      </label>
+    </div>
+    <div
+      className="emotion-4"
+    >
+      Delete the selected asset
+    </div>
+    <div
+      className="emotion-5"
+    />
+    <button
+      aria-label="Delete Asset"
+      className="emotion-6"
+      onClick={[Function]}
+      type="button"
+    >
+      Delete Asset
+    </button>
+  </form>
+</div>
+`;
+
+exports[`<Delete /> should render properly when as asset is selected 2`] = `
+.emotion-9 {
+  padding: 16px;
+}
+
+.emotion-3 {
+  font-weight: 700;
+  padding-bottom: 8px;
+}
+
+.emotion-4 {
+  color: #c92300;
+  padding-bottom: 16px;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+  -webkit-align-items: end;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: end;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
+  background-color: #808080;
+}
+
+.emotion-5:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-5 svg {
+  margin-right: 8px;
+}
+
+.emotion-6 {
+  width: 8px;
+  min-width: 8px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+  -webkit-align-items: end;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: end;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  background-color: #c92300;
+}
+
+.emotion-7:hover {
+  opacity: 0.5;
+}
+
+.emotion-7[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-7 svg {
+  margin-right: 8px;
+}
+
+.emotion-2 {
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+<div
+  className="emotion-9"
+>
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#c92300"
+        data-file-name="warning.svg"
+        height={20}
+      />
+      <div
+        className="emotion-0"
+        role="alert"
+      >
+        There was an error. Please try again.
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-3"
+  >
+    Are you sure you want to delete 
+    TIFF_1MB.tiff
+  </div>
+  <div
+    className="emotion-4"
+  >
+    Deleting this asset is permanent and cannot be undone.
+  </div>
+  <div
+    className="emotion-8"
+  >
+    <button
+      aria-label="Cancel"
+      className="emotion-5"
+      onClick={[Function]}
+      type="button"
+    >
+      Cancel
+    </button>
+    <div
+      className="emotion-6"
+    />
+    <button
+      aria-label="Confirm Delete Asset"
+      className="emotion-7"
+      onClick={[Function]}
+      type="button"
+    >
+      Delete Asset
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<Delete /> should render properly when asset is deleted 1`] = `
+.emotion-2 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #d7f2de;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+<div
+  className="emotion-2"
+>
+  <div
+    className="emotion-1"
+  >
+    <svg
+      color="#4ac565"
+      data-file-name="checkmark.svg"
+      height={20}
+    />
+    <div
+      className="emotion-0"
+      role="alert"
+    >
+      1 asset deleted.
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Delete /> should render properly when no asset is selected 1`] = `
+.emotion-0 {
+  padding: 16px;
+}
+
+<div
+  className="emotion-0"
+>
+  Select an asset to delete.
+</div>
+`;
