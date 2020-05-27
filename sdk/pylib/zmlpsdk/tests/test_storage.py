@@ -1,5 +1,7 @@
 import logging
 import os
+import zipfile
+import tempfile
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -7,7 +9,8 @@ import pytest
 from minio.api import Minio
 
 import zmlp
-from zmlp import StoredFile, DataSet, ZmlpClient
+from zmlp import StoredFile, DataSet, ZmlpClient, PipelineMod
+from zmlp.app import ModelApp
 from zmlpsdk import storage
 from zmlpsdk.testing import zorroa_test_data, TestAsset
 
@@ -309,6 +312,70 @@ class TestProjectStorage(TestCase):
         post_patch.return_value = '/tmp/cat.jpg'
         self.fs.projects.localize_file('asset/foo/fake/fake_model.dat')
         assert 'asset/foo/fake/fake_model.dat' in post_patch.call_args_list[0][0][0]
+
+
+class ModelStorageTests(TestCase):
+
+    def setUp(self):
+        self.fs = storage.FileStorage()
+        self.fs.models.root = tempfile.mkdtemp()
+
+    def tearDown(self):
+        self.fs.cache.clear()
+
+    @patch.object(storage.ProjectStorage, 'localize_file')
+    def test_install_model(self, post_patch):
+        post_patch.return_value = os.path.dirname(__file__) + "/model.zip"
+        path = self.fs.models.install_model('asset/foo/fake/fake_model.zip')
+        assert os.path.exists(path + "/fake_model.dat")
+
+        # Attempt to install twice
+        path = self.fs.models.install_model('asset/foo/fake/fake_model.zip')
+        assert os.path.exists(path + "/fake_model.dat")
+
+    @patch.object(ZmlpClient, 'put')
+    @patch('requests.put')
+    @patch.object(ZmlpClient, 'post')
+    @patch.object(ModelApp, 'publish_model')
+    def test_save_model(self, publish_patch, post_patch, req_put_patch, put_patch):
+        post_patch.return_value = {
+            'uri': "http://localhost:9999/foo/bar/signed",
+            'mediaType': "image/jpeg"
+        }
+        req_put_patch.return_value = MockResponse()
+        put_patch.return_value = {
+            'id': "models/foo/fake/fake_model.dat",
+            'name': 'fake_model.dat',
+            'category': 'fake'
+        }
+        publish_patch.return_value = PipelineMod({
+            'id': '12345'
+        })
+
+        cur_dir = os.path.dirname(__file__) + '/model_root_dir'
+        mod = self.fs.models.save_model(cur_dir, "foo/bar/bing/model.zip")
+
+        assert '12345' == mod.id
+
+
+def test_zip_directory_no_base():
+    output_zip = '/tmp/test-zip1.zip'
+    cur_dir = os.path.dirname(__file__) + '/model_root_dir'
+    storage.zip_directory(cur_dir, output_zip)
+
+    with zipfile.ZipFile(output_zip) as zip:
+        assert 'test1.txt' in zip.namelist()
+        assert 'subdir/test2.txt' in zip.namelist()
+
+
+def test_zip_directory_with_base():
+    output_zip = '/tmp/test-zip1.zip'
+    cur_dir = os.path.dirname(__file__) + '/model_root_dir'
+    storage.zip_directory(cur_dir, output_zip, 'base')
+
+    with zipfile.ZipFile(output_zip) as zip:
+        assert 'base/test1.txt' in zip.namelist()
+        assert 'base/subdir/test2.txt' in zip.namelist()
 
 
 class MockResponse:

@@ -9,8 +9,8 @@ from tensorflow.keras.layers import Dropout, Flatten, Dense, BatchNormalization
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 import zmlp
-from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException
-from ..utils.models import upload_model_directory, download_dataset
+from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException, file_storage
+from zmlpsdk.training import download_dataset
 
 
 class TensorflowTransferLearningTrainer(AssetProcessor):
@@ -85,9 +85,9 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             for label in labels:
                 fp.write('{}\n'.format(label))
 
-        self.reactor.emit_status("Publishing model: {}".format(self.app_model.name))
-        upload_model_directory(model_dir, self.app_model.file_id)
-        self.app.models.publish_model(self.app_model)
+        mod = file_storage.models.save_model(model_dir,  self.app_model)
+        self.reactor.emit_status("Published model: {}".format(self.app_model.name))
+        return mod
 
     def check_labels(self):
         """
