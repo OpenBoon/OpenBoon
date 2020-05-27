@@ -74,7 +74,7 @@ const STYLES = {
       },
     },
     title: {
-      padding: spacing.small,
+      padding: spacing.base,
       paddingLeft: spacing.base,
       display: 'flex',
       h4: {

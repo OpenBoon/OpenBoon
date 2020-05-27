@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
+import deepfilter from 'deep-filter'
 
 import filterShape from '../Filter/shape'
 
-import { spacing } from '../Styles'
+import { spacing, constants, colors, typography } from '../Styles'
 
 import PlusSvg from '../Icons/plus.svg'
 import CrossSvg from '../Icons/crossSmall.svg'
@@ -18,12 +19,15 @@ import { dispatch, ACTIONS } from './helpers'
 
 import FiltersMenuSection from './MenuSection'
 
+const ICON_SIZE = 20
+
 const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
   const { data: fields } = useSWR(
     `/api/v1/projects/${projectId}/searches/fields/`,
   )
 
   const [newFilters, setNewFilters] = useState({})
+  const [fiedsFilter, setFieldsFilter] = useState('')
 
   const onClick = ({ type, attribute }) => (value) => {
     if (value) {
@@ -41,6 +45,24 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
     }
   }
 
+  const filteredFields = deepfilter(fields, (value, prop) => {
+    if (
+      typeof prop === 'string' &&
+      Array.isArray(value) &&
+      value.includes('similarity')
+    ) {
+      return false
+    }
+
+    if (!fiedsFilter) return true
+
+    if (typeof prop === 'string' && Array.isArray(value)) {
+      return prop.includes(fiedsFilter)
+    }
+
+    return true
+  })
+
   return (
     <div
       css={{
@@ -51,27 +73,74 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
         flex: 1,
       }}
     >
-      <div css={{ overflowX: 'auto' }}>
-        {Object.entries(fields).map(([key, value]) =>
-          Array.isArray(value) ? null : (
-            <Accordion
-              key={key}
-              variant={ACCORDION_VARIANTS.PANEL}
-              title={formatDisplayName({ name: key })}
-              cacheKey={`Filters.${key}`}
-              isInitiallyOpen={false}
-              isResizeable={false}
-            >
-              <div
-                css={{
-                  padding: spacing.normal,
-                  paddingTop: spacing.base,
-                  paddingBottom: spacing.base,
-                }}
+      <div
+        css={{
+          display: 'flex',
+          flexDirection: 'column',
+          padding: spacing.moderate,
+          borderBottom: constants.borders.divider,
+        }}
+      >
+        <label>
+          Select metadata label filter(s)
+          <input
+            type="search"
+            placeholder="Search metadata filters"
+            value={fiedsFilter}
+            onChange={({ target: { value } }) => setFieldsFilter(value)}
+            css={{
+              marginTop: spacing.base,
+              width: '100%',
+              border: constants.borders.transparent,
+              padding: spacing.moderate,
+              paddingLeft: spacing.spacious,
+              borderRadius: constants.borderRadius.small,
+              color: colors.structure.pebble,
+              backgroundColor: colors.structure.mattGrey,
+              ':hover': {
+                border: constants.borders.tableRow,
+              },
+              ':focus': {
+                outline: constants.borders.outline,
+                border: constants.borders.inputSmall,
+                color: colors.structure.coal,
+                backgroundColor: colors.structure.white,
+                backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==')`,
+              },
+
+              '::placeholder': {
+                fontStyle: typography.style.italic,
+              },
+              backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==')`,
+              backgroundRepeat: `no-repeat, repeat`,
+              backgroundPosition: `left ${spacing.base}px top 50%`,
+              backgroundSize: ICON_SIZE,
+            }}
+          />
+        </label>
+      </div>
+
+      <div css={{ flex: 1, overflowX: 'auto' }}>
+        {Object.entries(filteredFields)
+          .filter(([, value]) => Object.values(value).length > 0)
+          .map(([key, value]) =>
+            Array.isArray(value) ? null : (
+              <Accordion
+                key={key}
+                variant={ACCORDION_VARIANTS.PANEL}
+                title={formatDisplayName({ name: key })}
+                cacheKey={`Filters.${key}`}
+                isInitiallyOpen={false}
+                isResizeable={false}
               >
-                {Object.entries(value)
-                  .filter((entry) => entry[1][0] !== 'similarity')
-                  .map(([subKey, subValue]) => {
+                <div
+                  css={{
+                    padding: spacing.normal,
+                    paddingTop: spacing.base,
+                    paddingBottom: spacing.base,
+                  }}
+                >
+                  {Object.entries(value).map(([subKey, subValue]) => {
                     return (
                       <FiltersMenuSection
                         key={subKey}
@@ -83,10 +152,10 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
                       />
                     )
                   })}
-              </div>
-            </Accordion>
-          ),
-        )}
+                </div>
+              </Accordion>
+            ),
+          )}
       </div>
 
       <div css={{ padding: spacing.base, display: 'flex' }}>
