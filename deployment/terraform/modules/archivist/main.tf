@@ -4,8 +4,8 @@ resource "google_storage_bucket" "data" {
     prevent_destroy = true
   }
   name          = "${var.project}-${var.data-bucket-name}"
-  storage_class = "REGIONAL"
-  location      = var.region
+  storage_class = "MULTI_REGIONAL"
+  location      = var.country
   cors {
     origin = ["*"]
     method = ["GET"]
@@ -232,6 +232,10 @@ resource "kubernetes_deployment" "archivist" {
           env {
             name  = "ZMLP_STORAGE_SYSTEM_BUCKET"
             value = var.system-bucket
+          }
+          env {
+            name = "ARCHIVIST_ES_BACKUP_BUCKET_NAME"
+            value = var.es-backup-bucket-name
           }
         }
       }
