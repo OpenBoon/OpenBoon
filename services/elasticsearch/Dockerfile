@@ -30,24 +30,11 @@ RUN rm es-kwconf.zip
 
 RUN yum remove -y unzip wget
 
-# Uncomment when this version comes out.
-#RUN mkdir /usr/share/elasticsearch/plugins/prometheus-exporter
-#WORKDIR /usr/share/elasticsearch/plugins/prometheus-exporter
-
-#RUN wget https://distfiles.compuscene.net/elasticsearch/elasticsearch-prometheus-exporter-7.5.1.0.zip
-#RUN unzip elasticsearch-prometheus-exporter-7.5.1.0.zip
-#RUN rm elasticsearch-prometheus-exporter-7.5.1.0.zip
-
 # Installs plugins to allow recovery snapshots to be stored in gcs or s3.
 RUN yes | elasticsearch-plugin install repository-gcs -s
 RUN yes | elasticsearch-plugin install repository-s3 -s
 
 WORKDIR /usr/share/elasticsearch
-
-# Add credentials for backup snapshot bucket
-#COPY service-account-test.json service-account-test.json
-#RUN ./bin/elasticsearch-keystore add-file --force gcs.client.default.credentials_file service-account-test.json
-#RUN rm ./service-account-test.json
 
 # Setup for AWS Minio backup repository
 ARG MINIO_ACCESS_KEY=qwerty123
