@@ -200,6 +200,7 @@ module "wallet" {
   inception-key-b64       = local.inception-key-b64
   domain                  = var.wallet-domain
   container-tag           = var.container-tag
+  debug                   = var.wallet-debug
 }
 
 module "ml-bbq" {
