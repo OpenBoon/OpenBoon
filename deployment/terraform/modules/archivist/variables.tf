@@ -1,7 +1,7 @@
 variable "project" {
 }
 
-variable "region" {
+variable "country" {
 }
 
 variable "image-pull-secret" {
@@ -32,6 +32,9 @@ variable "container-cluster-name" {
 }
 
 variable "analyst-shared-key" {
+}
+
+variable "es-backup-bucket-name" {
 }
 
 variable "data-bucket-name" {
