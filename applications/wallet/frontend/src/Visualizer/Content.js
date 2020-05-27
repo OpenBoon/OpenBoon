@@ -5,10 +5,12 @@ import Assets from '../Assets'
 import Filters from '../Filters'
 import Metadata from '../Metadata'
 import Export from '../Export'
+import Delete from '../Delete'
 
 import FilterSvg from '../Icons/filter.svg'
 import InformationSvg from '../Icons/information.svg'
 import UploadSvg from '../Icons/upload.svg'
+import TrashSvg from '../Icons/trash.svg'
 
 const ICON_WIDTH = 20
 
@@ -55,6 +57,11 @@ const VisualizerContent = () => {
                 />
               ),
               content: <Export />,
+            },
+            delete: {
+              title: 'Delete',
+              icon: <TrashSvg width={ICON_WIDTH} aria-hidden />,
+              content: <Delete />,
             },
           }}
         </Panel>
