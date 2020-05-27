@@ -1,4 +1,4 @@
-import { useReducer, useRef, forwardRef } from 'react'
+import { useRef, forwardRef } from 'react'
 import { useRouter } from 'next/router'
 import useSWR, { useSWRPages } from 'swr'
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -8,6 +8,7 @@ import { FixedSizeGrid } from 'react-window'
 import { spacing, constants } from '../Styles'
 
 import { cleanup } from '../Filters/helpers'
+import { useLocalStorageReducer } from '../LocalStorage/helpers'
 
 import Loading from '../Loading'
 
@@ -27,7 +28,11 @@ const Assets = () => {
 
   const innerRef = useRef()
 
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const [state, dispatch] = useLocalStorageReducer({
+    key: 'Assets',
+    reducer,
+    initialState: INITIAL_STATE,
+  })
 
   const { columnCount, isMin, isMax } = state
 
