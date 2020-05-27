@@ -8,6 +8,8 @@ RUN mvn clean install -Dmaven.test.skip=true
 FROM docker.elastic.co/elasticsearch/elasticsearch:7.6.2
 
 COPY ./docker/jvm.options /usr/share/elasticsearch/config
+COPY ./docker/docker-entrypoint.sh /usr/share/elasticsearch/bin
+
 COPY --from=mvn_build ./es-kwconf/target/releases/es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
 COPY --from=mvn_build ./es-similarity/target/releases/es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
 COPY --from=mvn_build /usr/local/openjdk-11 /usr/local/openjdk-11
