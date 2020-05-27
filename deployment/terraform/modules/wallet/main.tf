@@ -157,6 +157,10 @@ resource "kubernetes_deployment" "wallet" {
             name  = "FQDN"
             value = "https://${var.domain}"
           }
+          env {
+            name  = "DEBUG"
+            value = "${var.debug}"
+          }
         }
       }
     }
