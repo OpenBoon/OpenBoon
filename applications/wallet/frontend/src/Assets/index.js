@@ -1,4 +1,4 @@
-import { useRef, forwardRef } from 'react'
+import { useRef, forwardRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import useSWR, { useSWRPages } from 'swr'
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -23,10 +23,11 @@ const PADDING_SIZE = spacing.small
 /* istanbul ignore next */
 const Assets = () => {
   const {
-    query: { projectId, query },
+    query: { projectId, id: selectedId, query },
   } = useRouter()
 
   const innerRef = useRef()
+  const virtualLoaderRef = useRef(null)
 
   const [state, dispatch] = useLocalStorageReducer({
     key: 'Assets',
@@ -94,6 +95,29 @@ const Assets = () => {
         })
     : []
 
+  const selectedRow =
+    items.length && selectedId
+      ? Math.floor(
+          items.findIndex((item) => item && item.id === selectedId) /
+            columnCount,
+        )
+      : ''
+
+  useEffect(() => {
+    if (
+      selectedRow &&
+      virtualLoaderRef.current &&
+      // eslint-disable-next-line no-underscore-dangle
+      virtualLoaderRef.current._listRef
+    ) {
+      // eslint-disable-next-line no-underscore-dangle
+      virtualLoaderRef.current._listRef.scrollToItem({
+        align: 'smart',
+        rowIndex: selectedRow,
+      })
+    }
+  })
+
   return (
     <div
       css={{
@@ -107,6 +131,7 @@ const Assets = () => {
       <AutoSizer>
         {({ height, width }) => (
           <InfiniteLoader
+            ref={virtualLoaderRef}
             isItemLoaded={(index) => !!items[index]}
             itemCount={itemCount}
             loadMoreItems={loadMore}

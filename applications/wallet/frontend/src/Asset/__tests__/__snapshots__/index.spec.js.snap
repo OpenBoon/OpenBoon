@@ -222,7 +222,7 @@ exports[`<Asset /> should handle no query 1`] = `
   >
     <a
       className="emotion-2"
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
@@ -504,7 +504,7 @@ exports[`<Asset /> should render properly 1`] = `
   >
     <a
       className="emotion-2"
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
@@ -780,7 +780,7 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
   >
     <a
       className="emotion-2"
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
@@ -1063,7 +1063,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   >
     <a
       className="emotion-2"
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
