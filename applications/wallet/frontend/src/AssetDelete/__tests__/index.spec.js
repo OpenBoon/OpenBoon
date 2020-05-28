@@ -34,9 +34,6 @@ describe('<AssetDelete />', () => {
 
     const component = TestRenderer.create(<AssetDelete />)
 
-    // useEffect
-    await act(async () => {})
-
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
