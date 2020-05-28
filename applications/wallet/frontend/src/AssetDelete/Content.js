@@ -4,6 +4,7 @@ import useSWR from 'swr'
 
 import { spacing, colors, constants, typography } from '../Styles'
 
+import Form from '../Form'
 import Button, { VARIANTS } from '../Button'
 import AssetDeleteConfirm from './Confirm'
 
@@ -36,13 +37,7 @@ const AssetDeleteContent = () => {
 
   return (
     <div css={{ padding: spacing.normal }}>
-      <form
-        action=""
-        method="post"
-        onSubmit={(event) => {
-          event.preventDefault()
-        }}
-      >
+      <Form>
         <div
           css={{ display: 'flex', position: 'relative', alignItems: 'center' }}
         >
@@ -99,7 +94,7 @@ const AssetDeleteContent = () => {
         >
           Delete Asset
         </Button>
-      </form>
+      </Form>
     </div>
   )
 }
