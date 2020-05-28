@@ -1,13 +1,13 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import FiltersTitle from '../Title'
+import FilterActions from '../Actions'
 
 const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = ''
 
-describe('<FiltersTitle />', () => {
+describe('<FilterActions />', () => {
   it('should render properly', () => {
     const filters = [{ attribute: 'clip.length', type: 'range' }]
 
@@ -16,7 +16,7 @@ describe('<FiltersTitle />', () => {
     require('next/router').__setMockPushFunction(mockRouterPush)
 
     const component = TestRenderer.create(
-      <FiltersTitle
+      <FilterActions
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         filters={filters}
@@ -28,11 +28,11 @@ describe('<FiltersTitle />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     // Disable filter
-    act(() =>
+    act(() => {
       component.root
         .findByProps({ 'aria-label': 'Disable Filter' })
-        .props.onClick({ preventDefault: noop }),
-    )
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
 
     const encodedDisable = btoa(
       JSON.stringify([
@@ -57,7 +57,7 @@ describe('<FiltersTitle />', () => {
     act(() => {
       component.root
         .findByProps({ 'aria-label': 'Delete Filter' })
-        .props.onClick({ preventDefault: noop })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -84,7 +84,7 @@ describe('<FiltersTitle />', () => {
     require('next/router').__setMockPushFunction(mockRouterPush)
 
     const component = TestRenderer.create(
-      <FiltersTitle
+      <FilterActions
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         filters={filters}

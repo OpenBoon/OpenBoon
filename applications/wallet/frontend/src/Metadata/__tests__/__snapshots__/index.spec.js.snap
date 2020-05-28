@@ -200,14 +200,19 @@ Array [
 }
 
 .emotion-3 {
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  border-top: 1px solid #3b3b3b;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+}
+
+.emotion-3:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
 }
 
 .emotion-3 h4 {
@@ -279,6 +284,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -305,6 +311,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -331,6 +338,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -357,6 +365,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -383,6 +392,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -409,6 +419,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -435,6 +446,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -461,6 +473,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
