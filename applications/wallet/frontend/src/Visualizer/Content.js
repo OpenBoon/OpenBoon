@@ -41,7 +41,7 @@ const VisualizerContent = () => {
             filters: {
               title: 'Filters',
               icon: <FilterSvg width={ICON_WIDTH} aria-hidden />,
-              content: <Filters />,
+              content: <Filters key={action} />,
             },
           }}
         </Panel>
