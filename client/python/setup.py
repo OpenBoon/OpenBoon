@@ -15,6 +15,7 @@ requirements = [
     "PyJWT",
     "backoff",
     "pytest",
+    "pandas",
 ]
 
 setup(
