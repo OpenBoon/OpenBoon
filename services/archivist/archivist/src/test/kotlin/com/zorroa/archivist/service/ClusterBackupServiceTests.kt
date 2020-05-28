@@ -37,7 +37,7 @@ class ClusterBackupServiceTests : AbstractTest() {
         assertNull(rsp1)
         clusterBackupService.enableBackups(cluster)
 
-        // Test getting the repositorry
+        // Test getting the repository
         val repos = clusterBackupService.getRepository(cluster)
         assertNotNull(repos)
 
@@ -46,9 +46,10 @@ class ClusterBackupServiceTests : AbstractTest() {
         assertNotNull(policy)
         assertEquals("<daily-snapshot-{now/d}>", policy?.name)
 
+        Thread.sleep(5000)
+
         val snapshots = clusterBackupService.getSnapshots(cluster)
         assertEquals(1, snapshots.size)
-        Json.prettyPrint(snapshots)
     }
 
     /*
