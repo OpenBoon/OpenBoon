@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.IndexCluster
-import com.zorroa.zmlp.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,7 +36,7 @@ class ClusterBackupServiceTests : AbstractTest() {
         assertNull(rsp1)
         clusterBackupService.enableBackups(cluster)
 
-        // Test getting the repositorry
+        // Test getting the repository
         val repos = clusterBackupService.getRepository(cluster)
         assertNotNull(repos)
 
@@ -46,9 +45,10 @@ class ClusterBackupServiceTests : AbstractTest() {
         assertNotNull(policy)
         assertEquals("<daily-snapshot-{now/d}>", policy?.name)
 
+        Thread.sleep(5000)
+
         val snapshots = clusterBackupService.getSnapshots(cluster)
         assertEquals(1, snapshots.size)
-        Json.prettyPrint(snapshots)
     }
 
     /*
