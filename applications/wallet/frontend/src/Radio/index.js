@@ -5,10 +5,7 @@ import { spacing, typography } from '../Styles'
 
 import RadioIcon from './Icon'
 
-const Radio = ({
-  option: { value, label, legend, initialValue, isDisabled },
-  onClick,
-}) => {
+const Radio = ({ option: { value, label, legend, initialValue }, onClick }) => {
   const [isChecked, setIsChecked] = useState(initialValue)
 
   return (
@@ -18,7 +15,7 @@ const Radio = ({
           value={value}
           isChecked={isChecked}
           onClick={() => {
-            if (isDisabled) return
+            if (isChecked) return
             setIsChecked(!isChecked)
             onClick(!isChecked)
           }}
@@ -43,7 +40,6 @@ Radio.propTypes = {
     label: PropTypes.string.isRequired,
     legend: PropTypes.string.isRequired,
     initialValue: PropTypes.bool.isRequired,
-    isDisabled: PropTypes.bool.isRequired,
   }).isRequired,
   onClick: PropTypes.func.isRequired,
 }
