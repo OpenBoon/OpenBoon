@@ -12,7 +12,7 @@ jest.mock('react-compound-slider', () => ({
   Tracks: () => 'Tracks',
 }))
 
-jest.mock('../../Filters/Reset', () => 'FiltersReset')
+jest.mock('../../Filter/Reset', () => 'FilterReset')
 
 const noop = () => () => {}
 
@@ -216,7 +216,7 @@ describe('<FilterLabelConfidenceContent />', () => {
     )
 
     act(() => {
-      component.root.findByType('FiltersReset').props.onReset()
+      component.root.findByType('FilterReset').props.onReset()
     })
   })
 

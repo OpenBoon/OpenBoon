@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types'
 
 import { useLocalStorageState } from '../LocalStorage/helpers'
@@ -17,11 +19,15 @@ const STYLES = {
       borderRadius: constants.borderRadius.small,
     },
     title: {
+      display: 'flex',
       borderBottom: constants.borders.tabs,
       paddingTop: spacing.normal,
       paddingBottom: spacing.normal,
       paddingLeft: spacing.moderate,
-      display: 'flex',
+      ':hover': {
+        cursor: 'pointer',
+        backgroundColor: colors.structure.mattGrey,
+      },
       h4: {
         fontWeight: typography.weight.bold,
       },
@@ -43,11 +49,15 @@ const STYLES = {
       },
     },
     title: {
+      display: 'flex',
       borderTop: constants.borders.divider,
       paddingTop: spacing.moderate,
       paddingBottom: spacing.moderate,
       paddingLeft: spacing.moderate,
-      display: 'flex',
+      ':hover': {
+        cursor: 'pointer',
+        backgroundColor: colors.structure.mattGrey,
+      },
       h4: {
         fontSize: typography.size.regular,
         fontWeight: typography.weight.regular,
@@ -74,13 +84,17 @@ const STYLES = {
       },
     },
     title: {
-      padding: spacing.small,
-      paddingLeft: spacing.base,
       display: 'flex',
+      padding: spacing.base,
+      paddingLeft: spacing.base,
+      ':hover': {
+        cursor: 'pointer',
+        backgroundColor: colors.structure.mattGrey,
+      },
       h4: {
         flex: 1,
-        minWidth: 0,
-        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
         fontWeight: typography.weight.regular,
         paddingLeft: spacing.small,
       },
@@ -100,6 +114,7 @@ export const VARIANTS = Object.keys(STYLES).reduce(
 const Accordion = ({
   variant,
   title,
+  actions,
   cacheKey,
   children,
   isInitiallyOpen,
@@ -110,13 +125,15 @@ const Accordion = ({
     initialValue: isInitiallyOpen,
   })
 
+  const toggle = () => setOpen({ value: !isOpen })
+
   return (
     <div css={STYLES[variant].container}>
-      <div css={STYLES[variant].title}>
+      <div css={STYLES[variant].title} onClick={toggle}>
         <Button
           aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
           variant={BUTTON_VARIANTS.NEUTRAL}
-          onClick={() => setOpen({ value: !isOpen })}
+          onClick={toggle}
         >
           <ChevronSvg
             width={CHEVRON_WIDTH}
@@ -127,6 +144,7 @@ const Accordion = ({
             }}
           />
         </Button>
+
         <h4
           css={{
             fontSize: typography.size.medium,
@@ -137,10 +155,14 @@ const Accordion = ({
         >
           {title}
         </h4>
+
+        {actions}
       </div>
+
       {isOpen && !isResizeable && (
         <div css={STYLES[variant].content}>{children}</div>
       )}
+
       {isOpen && isResizeable && (
         <div
           css={[STYLES[variant].content, { maxHeight: 500, overflowY: 'auto' }]}
@@ -152,9 +174,14 @@ const Accordion = ({
   )
 }
 
+Accordion.defaultProps = {
+  actions: false,
+}
+
 Accordion.propTypes = {
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   title: PropTypes.node.isRequired,
+  actions: PropTypes.node,
   cacheKey: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   isInitiallyOpen: PropTypes.bool.isRequired,

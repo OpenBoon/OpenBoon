@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:experimental
-FROM zmlp/py3-base:latest
+FROM zmlp/py3-client:latest
 
 RUN mkdir /build
 COPY ./ /build

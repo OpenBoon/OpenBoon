@@ -185,3 +185,10 @@ class DataSourceFilter(
         }
     }
 }
+
+@ApiModel("DataSource Import Options", description = "The options for importing a DataSource")
+class DataSourceImportOptions(
+
+    @ApiModelProperty("The number of Assets to include in a Task.")
+    val batchSize: Int = 20
+)
