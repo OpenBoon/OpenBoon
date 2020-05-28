@@ -30,7 +30,6 @@ exports[`<Radio /> should render properly 1`] = `
   border-radius: 16px;
   width: 16px;
   height: 16px;
-  border: 1px solid #ffffff;
 }
 
 .emotion-1 {
@@ -105,7 +104,6 @@ exports[`<Radio /> should render properly 2`] = `
   border-radius: 16px;
   width: 16px;
   height: 16px;
-  border: 1px solid #ffffff;
 }
 
 .emotion-3 {
@@ -180,7 +178,6 @@ exports[`<Radio /> should render properly checked and disabled 1`] = `
   border-radius: 16px;
   width: 16px;
   height: 16px;
-  border: 1px solid #ffffff;
 }
 
 .emotion-3 {
@@ -255,7 +252,6 @@ exports[`<Radio /> should render properly disabled 1`] = `
   border-radius: 16px;
   width: 16px;
   height: 16px;
-  border: 1px solid #ffffff;
 }
 
 .emotion-1 {
