@@ -2,7 +2,7 @@
 
 exports[`<FilterFacetContent /> should render with no buckets 1`] = `
 Array [
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {
@@ -126,7 +126,7 @@ Array [
 
 exports[`<FilterFacetContent /> should select a facet 1`] = `
 Array [
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {
@@ -443,7 +443,7 @@ Array [
 
 exports[`<FilterFacetContent /> should select a facet 2`] = `
 Array [
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {
@@ -694,7 +694,7 @@ Array [
 
 exports[`<FilterFacetContent /> should unselect a facet 1`] = `
 Array [
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {

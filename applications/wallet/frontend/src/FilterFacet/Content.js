@@ -7,7 +7,7 @@ import filterShape from '../Filter/shape'
 import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
-import FiltersReset from '../Filters/Reset'
+import FilterReset from '../Filter/Reset'
 import FilterSearch from '../Filter/Search'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
@@ -50,7 +50,7 @@ const FilterFacet = ({
 
   return (
     <>
-      <FiltersReset
+      <FilterReset
         projectId={projectId}
         assetId={assetId}
         filters={filters}
