@@ -8,7 +8,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 import FiltersReset from '../Filters/Reset'
-import FiltersSearch from '../Filters/Search'
+import FilterSearch from '../Filter/Search'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 
@@ -59,7 +59,7 @@ const FilterFacet = ({
         onReset={noop}
       />
       <div css={{ height: spacing.moderate }} />
-      <FiltersSearch
+      <FilterSearch
         placeholder="Search facets"
         searchString={searchString}
         onChange={({ value }) => {
