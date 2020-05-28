@@ -68,7 +68,8 @@ const ProjectCards = () => {
         }
       />
 
-      <ProjectUsagePlan />
+      {/* TODO: Update the usage component to have the new plan info.*/}
+      {/*<ProjectUsagePlan />*/}
 
       <Bouncer role={ROLES.ML_Tools}>
         <ProjectGettingStarted projectId={projectId} />

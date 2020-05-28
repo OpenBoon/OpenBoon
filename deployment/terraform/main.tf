@@ -260,7 +260,7 @@ module "gcp-marketplace-integration" {
   zmlp-api-url             = "http://${module.api-gateway.ip-address}"
   smtp-password            = var.smtp-password
   google-oauth-client-id   = var.google-oauth-client-id
-  marketplace-project      = "cloudcommerceproc-prod"
+  marketplace-project      = "zorroa-public"
   marketplace-subscription = "zorroa-public"
   marketplace-credentials  = var.marketplace-credentials
   marketplace-service-name = "zorroa-visual-intelligence-zorroa-public.cloudpartnerservices.goog"

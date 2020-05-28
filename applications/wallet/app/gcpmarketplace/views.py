@@ -50,7 +50,7 @@ class SignUpView(View):
     def _get_jwt_claims(self, request):
         """Make sure the jwt was signed correctly and is not expired."""
         issuer = 'https://www.googleapis.com/robot/v1/metadata/x509/cloud-commerce-partner@system.gserviceaccount.com'  # noqa
-        token = request.headers.get('x-gcp-marketplace-token').split()[1]
+        token = request.headers.get('X-Gcp-Marketplace-Token')
 
         # TODO: Make audience configurable.
         idinfo = id_token.verify_token(token, requests.Request(), certs_url=issuer,

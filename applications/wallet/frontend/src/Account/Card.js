@@ -35,11 +35,13 @@ const AccountCard = ({ projectId, name }) => {
         </div>
       }
       content={
-        subscriptions.length !== 0 ? (
-          <AccountUsagePlan subscriptions={subscriptions} />
-        ) : (
+        // TODO: Update usage component to have the new plan info.
+        // subscriptions.length !== 0 ? (
+        //   <AccountUsagePlan subscriptions={subscriptions} />
+        // ) : (
+        //   ''
+        // )
           ''
-        )
       }
     />
   )
