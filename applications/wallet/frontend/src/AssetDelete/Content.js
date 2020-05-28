@@ -6,6 +6,8 @@ import Form from '../Form'
 import Button, { VARIANTS } from '../Button'
 import Radio from '../Radio'
 
+export const noop = () => {}
+
 const AssetDeleteContent = ({ setShowDialogue }) => {
   return (
     <Form style={{ padding: spacing.normal, width: '100%' }}>
@@ -16,7 +18,7 @@ const AssetDeleteContent = ({ setShowDialogue }) => {
           initialValue: true,
           isDisabled: true,
         }}
-        onClick={() => {}}
+        onClick={noop}
       />
 
       <div css={{ paddingLeft: spacing.comfy }}>Delete the selected asset</div>
