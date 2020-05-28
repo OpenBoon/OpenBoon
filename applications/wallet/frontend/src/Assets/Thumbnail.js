@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+import { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -17,10 +19,14 @@ const AssetsThumbnail = ({
       source: { filename },
     },
     thumbnailUrl,
+    videoProxyUrl,
     assetStyle,
     videoLength,
   },
 }) => {
+  const playerRef = useRef()
+  let playerPromise
+
   const {
     query: { projectId, id: selectedId, query },
   } = useRouter()
@@ -36,12 +42,26 @@ const AssetsThumbnail = ({
 
   const queryString = queryParams ? `?${queryParams}` : ''
 
-  const { pathname: src } = new URL(thumbnailUrl)
+  const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
+  const { pathname: videoSrc } = videoProxyUrl ? new URL(videoProxyUrl) : {}
+
+  const play = /* istanbul ignore next */ () => {
+    playerRef.current.currentTime = 0
+    playerPromise = playerRef.current.play()
+  }
+
+  const pause = /* istanbul ignore next */ () => {
+    if (playerPromise !== undefined) {
+      playerPromise.then(() => {
+        playerRef.current.pause()
+      })
+    }
+  }
 
   return (
     <div
       css={{
-        display: 'relative',
+        position: 'relative',
         border: isSelected
           ? constants.borders.assetSelected
           : constants.borders.assetInactive,
@@ -52,9 +72,7 @@ const AssetsThumbnail = ({
             ? constants.borders.assetSelected
             : constants.borders.assetHover,
           a: {
-            svg: {
-              display: 'inline-block',
-            },
+            display: 'flex',
           },
         },
       }}
@@ -76,11 +94,30 @@ const AssetsThumbnail = ({
             overflow: 'hidden',
           }}
         >
-          <img
-            css={{ width: '100%', height: '100%', objectFit: 'contain' }}
-            src={src}
-            alt={filename}
-          />
+          {videoSrc ? (
+            <video
+              ref={playerRef}
+              preload="none"
+              onMouseOver={play}
+              onMouseOut={pause}
+              onFocus={play}
+              onBlur={pause}
+              css={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              muted
+              playsInline
+              controlsList="nodownload nofullscreen noremoteplayback"
+              disablePictureInPicture
+              poster={thumbnailSrc}
+            >
+              <source src={videoSrc} type="video/mp4" />
+            </video>
+          ) : (
+            <img
+              css={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              src={thumbnailSrc}
+              alt={filename}
+            />
+          )}
         </Button>
       </Link>
       <Link
@@ -91,9 +128,10 @@ const AssetsThumbnail = ({
         <Button
           variant={VARIANTS.NEUTRAL}
           style={{
+            display: 'none',
             position: 'absolute',
-            bottom: spacing.base,
-            right: spacing.base,
+            bottom: spacing.small,
+            right: spacing.small,
             padding: spacing.small,
             backgroundColor: colors.structure.smoke,
             opacity: constants.opacity.half,
@@ -102,21 +140,15 @@ const AssetsThumbnail = ({
             },
           }}
         >
-          <ExpandSvg
-            width={20}
-            color={colors.structure.white}
-            css={{
-              display: 'none',
-            }}
-          />
+          <ExpandSvg width={20} color={colors.structure.white} />
         </Button>
       </Link>
       {assetStyle === 'video' && (
         <div
           css={{
             position: 'absolute',
-            bottom: spacing.base,
-            left: spacing.base,
+            bottom: spacing.small,
+            left: spacing.small,
             padding: spacing.mini,
             color: colors.structure.black,
             // Append 80 for half opacity without affecting text
@@ -144,6 +176,7 @@ AssetsThumbnail.propTypes = {
     thumbnailUrl: PropTypes.string.isRequired,
     assetStyle: PropTypes.oneOf(['image', 'video', 'document']),
     videoLength: PropTypes.number,
+    videoProxyUrl: PropTypes.string,
   }).isRequired,
 }
 
