@@ -352,30 +352,31 @@ class ModelStorageTests(TestCase):
             'id': '12345'
         })
 
-        cur_dir = os.path.dirname(__file__) + '/model_root_dir'
+        cur_dir = os.path.dirname(__file__) + '/extracted_model'
         mod = self.fs.models.save_model(cur_dir, "foo/bar/bing/model.zip")
 
         assert '12345' == mod.id
 
 
-def test_zip_directory_no_base():
-    output_zip = '/tmp/test-zip1.zip'
-    cur_dir = os.path.dirname(__file__) + '/model_root_dir'
-    storage.zip_directory(cur_dir, output_zip)
+class ZipDirectoryTexts(TestCase):
 
-    with zipfile.ZipFile(output_zip) as zip:
-        assert 'test1.txt' in zip.namelist()
-        assert 'subdir/test2.txt' in zip.namelist()
+    def test_zip_directory_no_base(self):
+        output_zip = '/tmp/test-zip1.zip'
+        cur_dir = os.path.dirname(__file__)
+        storage.zip_directory(cur_dir, output_zip)
 
+        with zipfile.ZipFile(output_zip) as zip:
+            assert 'test_storage.py' in zip.namelist()
+            assert 'model.zip' in zip.namelist()
 
-def test_zip_directory_with_base():
-    output_zip = '/tmp/test-zip1.zip'
-    cur_dir = os.path.dirname(__file__) + '/model_root_dir'
-    storage.zip_directory(cur_dir, output_zip, 'base')
+    def test_zip_directory_with_base(self):
+        output_zip = '/tmp/test-zip1.zip'
+        cur_dir = os.path.dirname(__file__)
+        storage.zip_directory(cur_dir, output_zip, 'base')
 
-    with zipfile.ZipFile(output_zip) as zip:
-        assert 'base/test1.txt' in zip.namelist()
-        assert 'base/subdir/test2.txt' in zip.namelist()
+        with zipfile.ZipFile(output_zip) as zip:
+            assert 'base/test_storage.py' in zip.namelist()
+            assert 'base/model.zip' in zip.namelist()
 
 
 class MockResponse:
