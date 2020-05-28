@@ -1,15 +1,15 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import fields from '../__mocks__/fields'
+import fields from '../../Filters/__mocks__/fields'
 
-import FiltersReset from '../Reset'
+import FilterReset from '../Reset'
 
 const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = ''
 
-describe('<FiltersReset />', () => {
+describe('<FilterReset />', () => {
   it('should reset properly', () => {
     const filters = [{ attribute: 'clip.length', type: 'range' }]
 
@@ -22,7 +22,7 @@ describe('<FiltersReset />', () => {
     require('swr').__setMockUseSWRResponse({ data: fields })
 
     const component = TestRenderer.create(
-      <FiltersReset
+      <FilterReset
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         filters={filters}
@@ -75,7 +75,7 @@ describe('<FiltersReset />', () => {
     require('swr').__setMockUseSWRResponse({ data: fields })
 
     const component = TestRenderer.create(
-      <FiltersReset
+      <FilterReset
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         filters={filters}
@@ -128,7 +128,7 @@ describe('<FiltersReset />', () => {
     require('swr').__setMockUseSWRResponse({ data: fields })
 
     const component = TestRenderer.create(
-      <FiltersReset
+      <FilterReset
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         filters={filters}
