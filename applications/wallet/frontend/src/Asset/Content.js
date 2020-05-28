@@ -107,9 +107,10 @@ const AssetContent = () => {
                   fontSize: typography.size.medium,
                   lineHeight: typography.height.medium,
                   fontWeight: typography.weight.bold,
+                  textTransform: 'uppercase',
                 }}
               >
-                CLOSE VIEW
+                Close View
               </span>
             </div>
           </Button>
