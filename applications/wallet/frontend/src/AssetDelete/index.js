@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 import AssetDeleteContent from './Content'
-import AssetDeleteConfirm from './Confirm'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 
 import { spacing } from '../Styles'
@@ -35,15 +34,14 @@ const AssetDelete = () => {
     )
   }
 
-  if (assetId && showDialogue) {
-    return (
-      <SuspenseBoundary>
-        <AssetDeleteConfirm setShowDialogue={setShowDialogue} />
-      </SuspenseBoundary>
-    )
-  }
-
-  return <AssetDeleteContent setShowDialogue={setShowDialogue} />
+  return (
+    <SuspenseBoundary>
+      <AssetDeleteContent
+        showDialogue={showDialogue}
+        setShowDialogue={setShowDialogue}
+      />
+    </SuspenseBoundary>
+  )
 }
 
 export default AssetDelete

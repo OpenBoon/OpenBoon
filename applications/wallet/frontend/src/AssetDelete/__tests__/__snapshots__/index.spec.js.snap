@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Delete /> should render properly when as asset is selected 1`] = `
+exports[`<AssetDelete /> should render properly when an asset is selected 1`] = `
 .emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -181,7 +181,7 @@ exports[`<Delete /> should render properly when as asset is selected 1`] = `
 </form>
 `;
 
-exports[`<Delete /> should render properly when as asset is selected 2`] = `
+exports[`<AssetDelete /> should render properly when an asset is selected 2`] = `
 .emotion-9 {
   padding: 16px;
 }
@@ -440,7 +440,7 @@ exports[`<Delete /> should render properly when as asset is selected 2`] = `
 </div>
 `;
 
-exports[`<Delete /> should render properly when asset is deleted 1`] = `
+exports[`<AssetDelete /> should render properly when asset is deleted 1`] = `
 .emotion-2 {
   padding: 16px;
 }
@@ -489,7 +489,7 @@ exports[`<Delete /> should render properly when asset is deleted 1`] = `
 </div>
 `;
 
-exports[`<Delete /> should render properly when no asset is selected 1`] = `
+exports[`<AssetDelete /> should render properly when no asset is selected 1`] = `
 .emotion-0 {
   padding: 16px;
 }

@@ -9,10 +9,10 @@ const PROJECT_ID = asset.metadata.system.projectId
 
 jest.useFakeTimers()
 
-describe('<Delete />', () => {
+describe('<AssetDelete />', () => {
   it('should render properly when no asset is selected', () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/data-sources/add',
+      pathname: '/[projectId]/visualizer',
       query: {},
     })
 
@@ -21,9 +21,9 @@ describe('<Delete />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly when as asset is selected', async () => {
+  it('should render properly when an asset is selected', async () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/data-sources/add',
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID, id: ASSET_ID },
     })
 

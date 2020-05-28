@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
-import useSWR from 'swr'
 
 import { spacing, colors, typography } from '../Styles'
 
@@ -10,21 +8,11 @@ import Button, { VARIANTS } from '../Button'
 
 import { onDelete } from './helpers'
 
-const AssetDeleteConfirm = ({ setShowDialogue }) => {
-  const {
-    query: { projectId, id: assetId, query },
-  } = useRouter()
-
-  const {
-    data: {
-      metadata: {
-        source: { filename },
-      },
-    },
-  } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
-
+const AssetDeleteConfirm = ({ query: q, filename, setShowDialogue }) => {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+
+  const { projectId, id: assetId, query } = q
 
   return (
     <div css={{ padding: spacing.normal }}>
@@ -99,6 +87,11 @@ const AssetDeleteConfirm = ({ setShowDialogue }) => {
 }
 
 AssetDeleteConfirm.propTypes = {
+  query: PropTypes.shape({
+    projectId: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  }).isRequired,
+  filename: PropTypes.string.isRequired,
   setShowDialogue: PropTypes.func.isRequired,
 }
 
