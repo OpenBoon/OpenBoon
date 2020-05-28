@@ -406,8 +406,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
   <div
     className="emotion-3"
   >
-    Are you sure you want to delete 
-    TIFF_1MB.tiff
+    Are you sure you want to delete "TIFF_1MB.tiff"?
   </div>
   <div
     className="emotion-4"

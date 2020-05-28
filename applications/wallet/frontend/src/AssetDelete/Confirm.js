@@ -27,7 +27,7 @@ const AssetDeleteConfirm = ({ query: q, filename, setShowDialogue }) => {
           paddingBottom: spacing.base,
         }}
       >
-        Are you sure you want to delete {filename}
+        {`Are you sure you want to delete "${filename}"?`}
       </div>
       <div
         css={{
