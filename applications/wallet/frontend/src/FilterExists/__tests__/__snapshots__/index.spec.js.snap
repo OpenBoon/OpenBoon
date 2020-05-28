@@ -17,7 +17,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 }
 
 .emotion-10 {
-  padding: 4px;
+  padding: 8px;
   padding-left: 8px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -545,7 +545,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 }
 
 .emotion-10 {
-  padding: 4px;
+  padding: 8px;
   padding-left: 8px;
   display: -webkit-box;
   display: -webkit-flex;
