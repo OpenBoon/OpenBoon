@@ -86,6 +86,12 @@ resource "kubernetes_deployment" "analyst" {
           effect   = "NoSchedule"
         }
         volume {
+          name = "tmp"
+          host_path {
+            path = "/tmp"
+          }
+        }
+        volume {
           name = "dockersock"
           host_path {
             path = "/var/run/docker.sock"
@@ -101,6 +107,10 @@ resource "kubernetes_deployment" "analyst" {
           name              = "analyst"
           image             = "zmlp/analyst:${var.container-tag}"
           image_pull_policy = "Always"
+          volume_mount {
+            mount_path = "/tmp"
+            name = "tmp"
+          }
           volume_mount {
             mount_path = "/var/run/docker.sock"
             name = "dockersock"
