@@ -355,7 +355,7 @@ zmlp-deploy-development:
   retry: 1
   variables:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
-    PROJECT: zmlp-dev
+    PROJECT: zvi-dev
   stage: deploy
   environment:
     name: dev
