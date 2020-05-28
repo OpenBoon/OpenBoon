@@ -10,8 +10,6 @@ import Radio from '../Radio'
 
 import AssetDeleteConfirm from './Confirm'
 
-export const noop = () => {}
-
 const AssetDeleteContent = ({ showDialogue, setShowDialogue }) => {
   const {
     query,
@@ -45,9 +43,7 @@ const AssetDeleteContent = ({ showDialogue, setShowDialogue }) => {
           label: 'Delete Selected: 1',
           legend: 'Delete the selected asset',
           initialValue: true,
-          isDisabled: true,
         }}
-        onClick={noop}
       />
 
       <div css={{ height: spacing.normal }} />

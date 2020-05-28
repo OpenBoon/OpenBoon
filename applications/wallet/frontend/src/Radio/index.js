@@ -1,25 +1,14 @@
 import PropTypes from 'prop-types'
-import { useState } from 'react'
 
 import { spacing, typography } from '../Styles'
 
 import RadioIcon from './Icon'
 
-const Radio = ({ option: { value, label, legend, initialValue }, onClick }) => {
-  const [isChecked, setIsChecked] = useState(initialValue)
-
+const Radio = ({ option: { value, label, legend, initialValue } }) => {
   return (
     <div>
       <label css={{ display: 'flex' }}>
-        <RadioIcon
-          value={value}
-          isChecked={isChecked}
-          onClick={() => {
-            if (isChecked) return
-            setIsChecked(!isChecked)
-            onClick(!isChecked)
-          }}
-        />
+        <RadioIcon value={value} isChecked={initialValue} />
         <div
           css={{
             paddingLeft: spacing.base,
@@ -41,7 +30,6 @@ Radio.propTypes = {
     legend: PropTypes.string.isRequired,
     initialValue: PropTypes.bool.isRequired,
   }).isRequired,
-  onClick: PropTypes.func.isRequired,
 }
 
 export default Radio

@@ -149,7 +149,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
           className="emotion-0"
           defaultChecked={true}
           id="deleteSelected"
-          onClick={[Function]}
           type="radio"
           value="deleteSelected"
         />

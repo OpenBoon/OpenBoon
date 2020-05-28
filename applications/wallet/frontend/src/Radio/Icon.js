@@ -5,7 +5,7 @@ import { colors, constants } from '../Styles'
 const RADIO_BUTTON_SIZE = 16
 const RADIO_BUTTION_FILL_SIZE = 8
 
-const RadioIcon = ({ value, isChecked, onClick }) => {
+const RadioIcon = ({ value, isChecked }) => {
   return (
     <div
       css={{
@@ -19,7 +19,6 @@ const RadioIcon = ({ value, isChecked, onClick }) => {
         id={value}
         value={value}
         defaultChecked={isChecked}
-        onClick={onClick}
         css={{
           margin: 0,
           padding: 0,
@@ -48,6 +47,6 @@ const RadioIcon = ({ value, isChecked, onClick }) => {
 RadioIcon.propTypes = {
   value: PropTypes.string.isRequired,
   isChecked: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
 }
+
 export default RadioIcon
