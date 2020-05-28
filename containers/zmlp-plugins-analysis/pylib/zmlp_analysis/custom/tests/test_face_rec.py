@@ -18,7 +18,7 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
             'id': '12345',
             'dataSetId': '12345',
             'type': "FACE_RECOGNITION_KNN",
-            'fileId': 'models/{}/foo/bar/12345',
+            'fileId': 'models/foo/bar/12345',
             'name': "foo"
         })
 
