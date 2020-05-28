@@ -1,13 +1,8 @@
-import { mutate, cache } from 'swr'
+import { cache } from 'swr'
 import Router from 'next/router'
 
 import { fetcher } from '../Fetch/helpers'
 import { formatUrl } from '../Filters/helpers'
-
-/* istanbul ignore next */
-const KEYS_TO_UPDATE = cache.keys().filter((key) => {
-  return key.includes('/searches')
-})
 
 export const onDelete = async ({
   projectId,
@@ -23,15 +18,7 @@ export const onDelete = async ({
       method: 'DELETE',
     })
 
-    setIsLoading(false)
-
-    /* istanbul ignore next */
-    KEYS_TO_UPDATE.forEach((key) =>
-      mutate(
-        key,
-        fetch(key).then((res) => res.json()),
-      ),
-    )
+    cache.clear()
 
     return Router.push(
       {
