@@ -86,7 +86,7 @@ describe('<AssetDelete />', () => {
 
   it('should render properly when asset is deleted', () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/data-sources/add',
+      pathname: '/[projectId]/visualizer',
       query: { action: 'delete-asset-success' },
     })
 
@@ -98,7 +98,7 @@ describe('<AssetDelete />', () => {
   it('should do nothing', () => {
     const mockFn = jest.fn()
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/data-sources/add',
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID, id: ASSET_ID },
     })
 
