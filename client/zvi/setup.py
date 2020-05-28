@@ -10,27 +10,22 @@ from datetime import datetime
 # python3 setup.py sdist bdist_wheel
 
 requirements = [
-    "requests",
-    "pyOpenSSL",
-    "PyJWT",
-    "backoff",
-    "pytest"
+    'zmlp'
 ]
 
 setup(
     name='zmlp',
-    version="1.0.1",
-    description='ZMLP Python Client',
+    version='1.0.1',
+    description='Zorroa Visual Intelligence ML Environment',
     url='https://www.zorroa.com',
     license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
     package_dir={'': 'pylib'},
-    packages=['zmlp', 'zmlp.app', 'zmlp.entity'],
+    packages=['zvi'],
     scripts=[],
-
     classifiers=[
-        "Programming Language :: Python :: 3",
-        # "License :: OSI Approved :: MIT License",  # TODO Add license type
-        "Operating System :: OS Independent",        # TODO confirm this
+        'Programming Language :: Python :: 3',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent'
     ],
 
     include_package_data=True,
