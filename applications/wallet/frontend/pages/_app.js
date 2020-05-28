@@ -20,7 +20,10 @@ if (ENABLE_SENTRY === 'true') {
       }
       return event
     },
-    ignoreErrors: ['ResizeObserver loop limit exceeded'],
+    ignoreErrors: [
+      'ResizeObserver loop limit exceeded',
+      'The play() request was interrupted by a call to pause()',
+    ],
   })
 }
 

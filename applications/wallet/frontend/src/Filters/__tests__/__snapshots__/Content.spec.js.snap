@@ -8213,6 +8213,7 @@ Array [
               className="emotion-14"
             >
               <input
+                autoFocus={true}
                 className="emotion-11"
                 onChange={[Function]}
                 placeholder="Search text"

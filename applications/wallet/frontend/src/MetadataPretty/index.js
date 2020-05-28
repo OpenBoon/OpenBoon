@@ -36,7 +36,7 @@ MetadataPretty.propTypes = {
         size: PropTypes.number,
         name: PropTypes.string,
         mimetype: PropTypes.string,
-        category: PropTypes.oneOf(['proxy', 'source', 'web-proxy']),
+        category: PropTypes.oneOf(['proxy', 'source', 'web-proxy', 'gcp']),
         attrs: PropTypes.shape({
           width: PropTypes.number,
           height: PropTypes.number,

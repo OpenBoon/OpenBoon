@@ -50,11 +50,14 @@ const AssetsThumbnail = ({
     playerPromise = playerRef.current.play()
   }
 
-  const pause = /* istanbul ignore next */ () => {
-    if (playerPromise !== undefined) {
-      playerPromise.then(() => {
-        playerRef.current.pause()
-      })
+  const pause = /* istanbul ignore next */ async () => {
+    if (!playerPromise) return
+
+    try {
+      await playerPromise
+      playerRef.current.pause()
+    } catch (error) {
+      // do nothing
     }
   }
 
