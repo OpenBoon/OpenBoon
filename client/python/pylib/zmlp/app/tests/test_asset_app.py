@@ -72,6 +72,9 @@ class AssetAppTests(unittest.TestCase):
                         '_source': {
                             'source': {
                                 'path': 'https://i.imgur.com/foo.jpg'
+                            },
+                            'analysis': {
+                                'simhash': 'ABCDEFG'
                             }
                         }
                     }
@@ -216,6 +219,31 @@ class AssetAppTests(unittest.TestCase):
         for _ in rsp:
             count += 1
         assert count == 2
+
+    @patch.object(ZmlpClient, 'post')
+    def test_search_to_df(self, post_patch):
+        post_patch.return_value = self.mock_search_result
+        search = {
+            "size": 20,
+            "query": {
+                "term": {
+                    "system.state": "Analyzed"
+                }
+            }
+        }
+        search = {
+            'query': {'match_all': {}}
+        }
+        rsp = self.app.assets.search(search=search)
+        df = self.app.assets.search_to_df(
+            search=rsp,
+            attrs=['analysis.simhash'],
+            descriptor='source.path'
+        )
+
+        assert df.shape == (2, 2)
+        assert list(df.columns) == ['source.path', 'analysis.simhash']
+        assert df.iloc[1]['analysis.simhash'] == 'ABCDEFG'
 
     @patch.object(ZmlpClient, 'post')
     def test_reprocess_search(self, post_patch):
