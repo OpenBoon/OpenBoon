@@ -17,7 +17,7 @@ const RadioIcon = ({ value, isChecked, onClick }) => {
         type="radio"
         id={value}
         value={value}
-        checked={isChecked}
+        defaultChecked={isChecked}
         onClick={onClick}
         css={{
           margin: 0,
@@ -26,7 +26,7 @@ const RadioIcon = ({ value, isChecked, onClick }) => {
           borderRadius: RADIO_BUTTON_SIZE,
           width: RADIO_BUTTON_SIZE,
           height: RADIO_BUTTON_SIZE,
-          border: constants.borders.inputHover,
+          border: constants.borders.radio,
         }}
       />
       <div

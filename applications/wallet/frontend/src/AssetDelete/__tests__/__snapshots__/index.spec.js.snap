@@ -46,6 +46,7 @@ exports[`<Delete /> should render properly when as asset is selected 1`] = `
   border-radius: 16px;
   width: 16px;
   height: 16px;
+  border: 1px solid #ffffff;
 }
 
 .emotion-1 {
@@ -144,8 +145,8 @@ exports[`<Delete /> should render properly when as asset is selected 1`] = `
       className="emotion-2"
     >
       <input
-        checked={true}
         className="emotion-0"
+        defaultChecked={true}
         id="deleteSelected"
         onClick={[Function]}
         type="radio"
