@@ -1,8 +1,5 @@
 import os
 import pickle
-import tempfile
-import zipfile
-
 import numpy as np
 
 from zmlpsdk import AssetProcessor, Argument
