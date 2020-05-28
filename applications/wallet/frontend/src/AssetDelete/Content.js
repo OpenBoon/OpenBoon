@@ -41,20 +41,18 @@ const AssetDeleteContent = ({ showDialogue, setShowDialogue }) => {
     <Form style={{ padding: spacing.normal, width: '100%' }}>
       <Radio
         option={{
-          label: 'Delete Selected: 1',
           value: 'deleteSelected',
+          label: 'Delete Selected: 1',
+          legend: 'Delete the selected asset',
           initialValue: true,
           isDisabled: true,
         }}
         onClick={noop}
       />
 
-      <div css={{ paddingLeft: spacing.comfy }}>Delete the selected asset</div>
-
       <div css={{ height: spacing.normal }} />
 
       <Button
-        aria-label="Delete Asset"
         variant={VARIANTS.PRIMARY_SMALL}
         style={{ width: 'fit-content' }}
         onClick={() => {

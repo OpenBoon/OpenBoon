@@ -138,40 +138,41 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
   method="post"
   onSubmit={[Function]}
 >
-  <label
-    className="emotion-4"
-  >
-    <div
-      className="emotion-2"
+  <div>
+    <label
+      className="emotion-4"
     >
-      <input
-        className="emotion-0"
-        defaultChecked={true}
-        id="deleteSelected"
-        onClick={[Function]}
-        type="radio"
-        value="deleteSelected"
-      />
       <div
-        className="emotion-1"
-      />
-    </div>
+        className="emotion-2"
+      >
+        <input
+          className="emotion-0"
+          defaultChecked={true}
+          id="deleteSelected"
+          onClick={[Function]}
+          type="radio"
+          value="deleteSelected"
+        />
+        <div
+          className="emotion-1"
+        />
+      </div>
+      <div
+        className="emotion-3"
+      >
+        Delete Selected: 1
+      </div>
+    </label>
     <div
-      className="emotion-3"
+      className="emotion-5"
     >
-      Delete Selected: 1
+      Delete the selected asset
     </div>
-  </label>
-  <div
-    className="emotion-5"
-  >
-    Delete the selected asset
   </div>
   <div
     className="emotion-6"
   />
   <button
-    aria-label="Delete Asset"
     className="emotion-7"
     onClick={[Function]}
     type="button"
@@ -236,17 +237,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-flow: nowrap;
-  -ms-flex-flow: nowrap;
-  flex-flow: nowrap;
-  -webkit-align-items: end;
-  -webkit-box-align: end;
-  -ms-flex-align: end;
-  align-items: end;
 }
 
 .emotion-5:hover {
@@ -270,10 +260,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
 
 .emotion-5[aria-disabled=true] {
   background-color: #808080;
-}
-
-.emotion-5 svg {
-  margin-right: 8px;
 }
 
 .emotion-6 {
@@ -314,17 +300,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-flow: nowrap;
-  -ms-flex-flow: nowrap;
-  flex-flow: nowrap;
-  -webkit-align-items: end;
-  -webkit-box-align: end;
-  -ms-flex-align: end;
-  align-items: end;
 }
 
 .emotion-7:hover {
@@ -348,10 +323,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
 
 .emotion-7[aria-disabled=true] {
   background-color: #808080;
-}
-
-.emotion-7 svg {
-  margin-right: 8px;
 }
 
 .emotion-2 {
@@ -417,7 +388,6 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
     className="emotion-8"
   >
     <button
-      aria-label="Cancel"
       className="emotion-5"
       onClick={[Function]}
       type="button"

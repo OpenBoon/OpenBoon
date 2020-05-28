@@ -40,19 +40,12 @@ const AssetDeleteConfirm = ({ query: q, filename, setShowDialogue }) => {
 
       <div css={{ display: 'flex' }}>
         <Button
-          aria-label="Cancel"
           variant={VARIANTS.SECONDARY}
           onClick={() => {
             setShowDialogue(false)
             setError('')
           }}
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexFlow: 'nowrap',
-            alignItems: 'end',
-            svg: { marginRight: spacing.base },
-          }}
+          style={{ flex: 1 }}
         >
           Cancel
         </Button>
@@ -71,13 +64,7 @@ const AssetDeleteConfirm = ({ query: q, filename, setShowDialogue }) => {
               setError,
             })
           }
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexFlow: 'nowrap',
-            alignItems: 'end',
-            svg: { marginRight: spacing.base },
-          }}
+          style={{ flex: 1 }}
         >
           {isLoading ? 'Deleting...' : 'Delete Asset'}
         </Button>

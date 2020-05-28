@@ -49,30 +49,41 @@ exports[`<Radio /> should render properly 1`] = `
   font-weight: 700;
 }
 
-<label
-  className="emotion-4"
->
-  <div
-    className="emotion-2"
+.emotion-5 {
+  padding-left: 24px;
+}
+
+<div>
+  <label
+    className="emotion-4"
   >
-    <input
-      className="emotion-0"
-      defaultChecked={false}
-      id="radio"
-      onClick={[Function]}
-      type="radio"
-      value="radio"
-    />
     <div
-      className="emotion-1"
-    />
-  </div>
+      className="emotion-2"
+    >
+      <input
+        className="emotion-0"
+        defaultChecked={false}
+        id="radio"
+        onClick={[Function]}
+        type="radio"
+        value="radio"
+      />
+      <div
+        className="emotion-1"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+      Radio
+    </div>
+  </label>
   <div
-    className="emotion-3"
+    className="emotion-5"
   >
-    Radio
+    radioLegend
   </div>
-</label>
+</div>
 `;
 
 exports[`<Radio /> should render properly 2`] = `
@@ -113,6 +124,10 @@ exports[`<Radio /> should render properly 2`] = `
   font-weight: 700;
 }
 
+.emotion-5 {
+  padding-left: 24px;
+}
+
 .emotion-1 {
   position: absolute;
   width: 8px;
@@ -124,30 +139,37 @@ exports[`<Radio /> should render properly 2`] = `
   background-color: #73b61c;
 }
 
-<label
-  className="emotion-4"
->
-  <div
-    className="emotion-2"
+<div>
+  <label
+    className="emotion-4"
   >
-    <input
-      className="emotion-0"
-      defaultChecked={true}
-      id="radio"
-      onClick={[Function]}
-      type="radio"
-      value="radio"
-    />
     <div
-      className="emotion-1"
-    />
-  </div>
+      className="emotion-2"
+    >
+      <input
+        className="emotion-0"
+        defaultChecked={true}
+        id="radio"
+        onClick={[Function]}
+        type="radio"
+        value="radio"
+      />
+      <div
+        className="emotion-1"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+      Radio
+    </div>
+  </label>
   <div
-    className="emotion-3"
+    className="emotion-5"
   >
-    Radio
+    radioLegend
   </div>
-</label>
+</div>
 `;
 
 exports[`<Radio /> should render properly checked and disabled 1`] = `
@@ -188,6 +210,10 @@ exports[`<Radio /> should render properly checked and disabled 1`] = `
   font-weight: 700;
 }
 
+.emotion-5 {
+  padding-left: 24px;
+}
+
 .emotion-1 {
   position: absolute;
   width: 8px;
@@ -199,30 +225,37 @@ exports[`<Radio /> should render properly checked and disabled 1`] = `
   background-color: #73b61c;
 }
 
-<label
-  className="emotion-4"
->
-  <div
-    className="emotion-2"
+<div>
+  <label
+    className="emotion-4"
   >
-    <input
-      className="emotion-0"
-      defaultChecked={true}
-      id="radio"
-      onClick={[Function]}
-      type="radio"
-      value="radio"
-    />
     <div
-      className="emotion-1"
-    />
-  </div>
+      className="emotion-2"
+    >
+      <input
+        className="emotion-0"
+        defaultChecked={true}
+        id="radio"
+        onClick={[Function]}
+        type="radio"
+        value="radio"
+      />
+      <div
+        className="emotion-1"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+      Radio
+    </div>
+  </label>
   <div
-    className="emotion-3"
+    className="emotion-5"
   >
-    Radio
+    radioLegend
   </div>
-</label>
+</div>
 `;
 
 exports[`<Radio /> should render properly disabled 1`] = `
@@ -274,28 +307,39 @@ exports[`<Radio /> should render properly disabled 1`] = `
   font-weight: 700;
 }
 
-<label
-  className="emotion-4"
->
-  <div
-    className="emotion-2"
+.emotion-5 {
+  padding-left: 24px;
+}
+
+<div>
+  <label
+    className="emotion-4"
   >
-    <input
-      className="emotion-0"
-      defaultChecked={false}
-      id="radio"
-      onClick={[Function]}
-      type="radio"
-      value="radio"
-    />
     <div
-      className="emotion-1"
-    />
-  </div>
+      className="emotion-2"
+    >
+      <input
+        className="emotion-0"
+        defaultChecked={false}
+        id="radio"
+        onClick={[Function]}
+        type="radio"
+        value="radio"
+      />
+      <div
+        className="emotion-1"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+      Radio
+    </div>
+  </label>
   <div
-    className="emotion-3"
+    className="emotion-5"
   >
-    Radio
+    radioLegend
   </div>
-</label>
+</div>
 `;

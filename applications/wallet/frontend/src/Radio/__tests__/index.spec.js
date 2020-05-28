@@ -11,6 +11,7 @@ describe('<Radio />', () => {
         option={{
           label: 'Radio',
           value: 'radio',
+          legend: 'radioLegend',
           initialValue: false,
           isDisabled: false,
         }}
@@ -37,6 +38,7 @@ describe('<Radio />', () => {
         option={{
           label: 'Radio',
           value: 'radio',
+          legend: 'radioLegend',
           initialValue: false,
           isDisabled: true,
         }}
@@ -61,6 +63,7 @@ describe('<Radio />', () => {
         option={{
           label: 'Radio',
           value: 'radio',
+          legend: 'radioLegend',
           initialValue: true,
           isDisabled: true,
         }}

@@ -40,19 +40,15 @@ describe('<AssetDelete />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
-      component.root
-        .findByProps({ 'aria-label': 'Delete Asset' })
-        .props.onClick()
+      component.root.findByProps({ children: 'Delete Asset' }).props.onClick()
     })
 
     act(() => {
-      component.root.findByProps({ 'aria-label': 'Cancel' }).props.onClick()
+      component.root.findByProps({ children: 'Cancel' }).props.onClick()
     })
 
     act(() => {
-      component.root
-        .findByProps({ 'aria-label': 'Delete Asset' })
-        .props.onClick()
+      component.root.findByProps({ children: 'Delete Asset' }).props.onClick()
     })
 
     // Mock Failure
