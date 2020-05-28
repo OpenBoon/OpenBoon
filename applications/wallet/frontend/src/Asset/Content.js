@@ -47,7 +47,8 @@ const AssetContent = () => {
     attrs: { width, height },
   } = srcFile
 
-  const queryString = query ? `?query=${query}` : ''
+  const idString = `?id=${assetId}`
+  const queryString = query ? `&query=${query}` : ''
 
   const videoStyle =
     width > height
@@ -80,8 +81,8 @@ const AssetContent = () => {
         }}
       >
         <Link
-          href={`/[projectId]/visualizer${queryString}`}
-          as={`/${projectId}/visualizer${queryString}`}
+          href={`/[projectId]/visualizer${idString}${queryString}`}
+          as={`/${projectId}/visualizer${idString}${queryString}`}
           passHref
         >
           <Button
