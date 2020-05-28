@@ -14,15 +14,13 @@ const AssetDeleteConfirm = ({ filename, dispatch }) => {
     query: { projectId, id: assetId, query },
   } = useRouter()
 
-  const [hasError, setHasError] = useState(false)
+  const [error, setError] = useState('')
 
   return (
     <div css={{ padding: spacing.normal }}>
-      {hasError && (
+      {error && (
         <div css={{ paddingBottom: spacing.normal }}>
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-            There was an error. Please try again.
-          </FlashMessage>
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>{error}</FlashMessage>
         </div>
       )}
       <div
@@ -48,7 +46,7 @@ const AssetDeleteConfirm = ({ filename, dispatch }) => {
           variant={VARIANTS.SECONDARY}
           onClick={() => {
             dispatch(false)
-            setHasError(false)
+            setError('')
           }}
           style={{
             flex: 1,
@@ -67,7 +65,7 @@ const AssetDeleteConfirm = ({ filename, dispatch }) => {
           aria-label="Confirm Delete Asset"
           variant={VARIANTS.WARNING}
           onClick={() =>
-            onDelete({ projectId, assetId, query, dispatch: setHasError })
+            onDelete({ projectId, assetId, query, dispatch: setError })
           }
           style={{
             flex: 1,

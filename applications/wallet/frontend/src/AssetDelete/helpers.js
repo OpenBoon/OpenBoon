@@ -35,6 +35,6 @@ export const onDelete = async ({ projectId, assetId, query, dispatch }) => {
       })}`,
     )
   } catch (error) {
-    return dispatch(true)
+    return dispatch('There was an error. Please try again.')
   }
 }

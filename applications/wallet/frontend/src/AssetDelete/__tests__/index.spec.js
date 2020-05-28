@@ -51,7 +51,7 @@ describe('<Delete />', () => {
     })
 
     // Mock Failure
-    fetch.mockResponseOnce('', { status: 400 })
+    fetch.mockResponseOnce(null, { status: 400 })
 
     await act(async () => {
       component.root
