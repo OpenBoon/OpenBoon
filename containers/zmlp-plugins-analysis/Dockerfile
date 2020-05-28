@@ -1,6 +1,8 @@
+# syntax=docker/dockerfile:experimental
 FROM zmlp/plugins-models:latest
 
-RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
     tesseract-ocr \
     libtesseract-dev
 

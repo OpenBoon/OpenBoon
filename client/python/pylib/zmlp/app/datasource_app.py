@@ -51,7 +51,7 @@ class DataSourceApp(object):
 
         return DataSource(self.app.client.post(url, body=body))
 
-    def import_files(self, ds):
+    def import_files(self, ds, batch_size=25):
         """
         Import all assets found at the given DataSource.  If the
         DataSource has already been imported then only new files will be
@@ -60,10 +60,13 @@ class DataSourceApp(object):
 
         Args:
             ds (DataSource): A DataSource object or the name of a data source.
-
+            batch_size (int): The number of Assets per batch.  Must be at least 20.
         Returns:
             Job: Return the Job responsible for processing the files.
 
         """
+        body = {
+            "batchSize": batch_size
+        }
         url = '/api/v1/data-sources/{}/_import'.format(ds.id)
-        return Job(self.app.client.post(url))
+        return Job(self.app.client.post(url, body))

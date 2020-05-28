@@ -58,7 +58,7 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
 }
 
 <div>
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {
@@ -207,7 +207,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
 }
 
 <div>
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {
@@ -362,7 +362,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
 }
 
 <div>
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {
@@ -517,7 +517,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
 }
 
 <div>
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {
@@ -672,7 +672,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
 }
 
 <div>
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {

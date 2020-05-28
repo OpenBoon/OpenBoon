@@ -80,6 +80,7 @@ const FilterTextDetection = ({
             }}
             variant={VARIANTS.NEUTRAL}
             onClick={() => {
+              setSearchString('')
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
@@ -117,6 +118,8 @@ const FilterTextDetection = ({
           }}
         >
           <input
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
             type="search"
             placeholder="Search text"
             value={searchString}

@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
+import com.zorroa.archivist.domain.DataSourceImportOptions
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
@@ -71,7 +72,7 @@ class JobLauncherServiceTests : AbstractTest() {
         entityManager.flush()
         entityManager.clear()
         val ds2 = dataSourceService.get(ds.id)
-        val job = jobLaunchService.launchJob(ds2)
+        val job = jobLaunchService.launchJob(ds2, DataSourceImportOptions())
 
         assertEquals(
             1, jdbc.queryForObject(

@@ -1,70 +1,28 @@
 import PropTypes from 'prop-types'
 
-import filterShape from '../Filter/shape'
+import filterShape from './shape'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import { colors, constants } from '../Styles'
 
-import Button, { VARIANTS } from '../Button'
+import { dispatch, ACTIONS } from '../Filters/helpers'
 
-import { dispatch, ACTIONS } from './helpers'
-import FacetSvg from '../Icons/facet.svg'
-import RangeSvg from '../Icons/range.svg'
-import ExistsSvg from '../Icons/exists.svg'
-import MissingSvg from '../Icons/missing.svg'
 import HiddenSvg from '../Icons/hidden.svg'
 import CrossSvg from '../Icons/cross.svg'
 
+import Button, { VARIANTS } from '../Button'
+
 const SVG_SIZE = 20
 
-const FiltersTitle = ({
+const FilterActions = ({
   projectId,
   assetId,
-  filter,
-  filter: { attribute, type, values, isDisabled },
   filters,
+  filter,
+  filter: { isDisabled },
   filterIndex,
 }) => {
   return (
-    <div
-      css={{
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      {(type === 'facet' || type === 'labelConfidence') && (
-        <FacetSvg width={SVG_SIZE} color={colors.key.one} />
-      )}
-      {type === 'range' && <RangeSvg width={SVG_SIZE} color={colors.key.one} />}
-      {type === 'exists' &&
-        (values && values.exists ? (
-          <ExistsSvg width={SVG_SIZE} color={colors.key.one} />
-        ) : (
-          <MissingSvg width={SVG_SIZE} color={colors.key.one} />
-        ))}
-
-      <div
-        css={{
-          flex: 1,
-          minWidth: 0,
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <span
-          css={{
-            fontFamily: 'Roboto Mono',
-            fontSize: typography.size.small,
-            lineHeight: typography.height.small,
-            paddingLeft: spacing.base,
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {attribute}
-        </span>
-      </div>
+    <div css={{ display: 'flex', alignItems: 'center' }}>
       <Button
         aria-label={`${isDisabled ? 'Enable' : 'Disable'} Filter`}
         variant={VARIANTS.ICON}
@@ -82,7 +40,9 @@ const FiltersTitle = ({
             },
           },
         }}
-        onClick={() =>
+        onClick={(event) => {
+          event.stopPropagation()
+
           dispatch({
             action: ACTIONS.UPDATE_FILTER,
             payload: {
@@ -93,18 +53,17 @@ const FiltersTitle = ({
               filterIndex,
             },
           })
-        }
+        }}
       >
         <HiddenSvg
           width={SVG_SIZE}
           color={
             isDisabled ? colors.signal.canary.strong : colors.structure.steel
           }
-          css={{
-            visibility: isDisabled ? '' : 'hidden',
-          }}
+          css={{ visibility: isDisabled ? '' : 'hidden' }}
         />
       </Button>
+
       <Button
         aria-label="Delete Filter"
         variant={VARIANTS.ICON}
@@ -118,7 +77,9 @@ const FiltersTitle = ({
             svg: { color: colors.structure.white },
           },
         }}
-        onClick={() =>
+        onClick={(event) => {
+          event.stopPropagation()
+
           dispatch({
             action: ACTIONS.DELETE_FILTER,
             payload: {
@@ -128,21 +89,19 @@ const FiltersTitle = ({
               filterIndex,
             },
           })
-        }
+        }}
       >
         <CrossSvg
           width={SVG_SIZE}
           color={colors.structure.steel}
-          css={{
-            visibility: 'hidden',
-          }}
+          css={{ visibility: 'hidden' }}
         />
       </Button>
     </div>
   )
 }
 
-FiltersTitle.propTypes = {
+FilterActions.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
@@ -150,4 +109,4 @@ FiltersTitle.propTypes = {
   filterIndex: PropTypes.number.isRequired,
 }
 
-export default FiltersTitle
+export default FilterActions
