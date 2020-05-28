@@ -1,7 +1,9 @@
+# syntax=docker/dockerfile:experimental
 FROM ubuntu:eoan
 RUN groupadd -r zorroa && useradd --no-log-init -r -m -g zorroa zorroa
 
-RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
     python3 \
     python3-pip \
     libmagic-dev \

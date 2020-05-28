@@ -1,6 +1,8 @@
+# syntax=docker/dockerfile:experimental
 FROM zmlp/plugins-base:latest
 
-RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
     python3-dev \
     build-essential \
     curl
