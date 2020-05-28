@@ -27,6 +27,7 @@ export const onSubmit = async ({
     })
   } catch (response) {
     const errors = await response.json()
+
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
       acc[errorKey] = errors[errorKey].join(' ')
 
