@@ -224,14 +224,6 @@ class AssetAppTests(unittest.TestCase):
     def test_search_to_df(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {
-            "size": 20,
-            "query": {
-                "term": {
-                    "system.state": "Analyzed"
-                }
-            }
-        }
-        search = {
             'query': {'match_all': {}}
         }
         rsp = self.app.assets.search(search=search)

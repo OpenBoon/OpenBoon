@@ -2,8 +2,6 @@ import io
 import os
 from collections import namedtuple
 import pandas as pd
-from pandas import json_normalize
-from flatten_json import flatten
 from collections import defaultdict
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
@@ -384,82 +382,6 @@ class AssetApp(object):
             SimilarityQuery: A configured SimilarityQuery
         """
         return SimilarityQuery(self.get_sim_hashes(images), min_score)
-
-    def to_df(
-        self,
-        search=None,
-        attr=None,
-        descriptor="source.filename",
-        set_index=True,
-    ):
-        """Convert search result to pandas DataFrame
-
-        Args:
-            search (AssetSearchResult): an AssetSearchResult instance from ES query
-            attr (str): attribute to get
-            descriptor (str, default: source.filename): unique name to describe each row
-            set_index (bool, default: True): set index as descriptor
-            otherwise normal incrementing index
-
-        Returns:
-            pd.DataFrame - DataFrame converted from assets
-        """
-        df = pd.DataFrame()
-        src_list, attr_list = [], []
-
-        # iterate through assets
-        for asset in search:
-            # get descriptor
-            source = asset.get_attr(descriptor)
-            # get specified attribute
-            values = asset.get_attr(attr)
-
-            # check if attribute is a list
-            if isinstance(values, list):
-                # loop through list
-                for v in values:
-                    # creates tmp DataFrame from JSON
-                    tmp = json_normalize(v)
-                    # append to DataFrame
-                    df = df.append(tmp)
-                    # add descriptor to list
-                    src_list.append(source)
-                # add descriptor column from source list
-                df[descriptor] = src_list
-
-            # check if attribute is a dict
-            elif isinstance(values, dict):
-                # flatten_json.flatten expands lists to mulitple columns
-                expanded_values = flatten(values)
-                # creates tmp DataFrame from JSON
-                tmp = json_normalize(expanded_values)
-                # append to DataFrame
-                df = df.append(tmp)
-                # add descriptor to list
-                src_list.append(source)
-                # add descriptor column from source list
-                df[descriptor] = src_list
-
-            # check if attribute is either a str, int, or float
-            elif isinstance(values, (str, int, float)):
-                # add descriptor to list
-                src_list.append(source)
-                # add attribute to list
-                attr_list.append(values)
-
-        # if attribute is a str, int, or float
-        if attr_list:
-            # add descriptor and attribute columns to DataFrame
-            df[descriptor], df[attr] = [src_list, attr_list]
-
-        if set_index:
-            # set index as descriptor
-            df.set_index([descriptor], inplace=True)
-        else:
-            # reset index to increment
-            df = df.reset_index(drop=True)
-
-        return df
 
     def search_to_df(self, search=None, attrs=None, descriptor='source.filename'):
         """Convert search results to DataFrame

@@ -15,8 +15,6 @@ requirements = [
     "PyJWT",
     "backoff",
     "pytest",
-    "pandas",
-    "flatten_json"
 ]
 
 setup(
