@@ -27,7 +27,7 @@ const Assets = () => {
   } = useRouter()
 
   const innerRef = useRef()
-  const virtualLoaderRef = useRef(null)
+  const virtualLoaderRef = useRef()
 
   const [state, dispatch] = useLocalStorageReducer({
     key: 'Assets',
@@ -116,7 +116,7 @@ const Assets = () => {
         rowIndex: selectedRow,
       })
     }
-  })
+  }, [selectedRow])
 
   return (
     <div
