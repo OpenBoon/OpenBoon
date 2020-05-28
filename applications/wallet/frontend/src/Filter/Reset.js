@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
-import filterShape from '../Filter/shape'
+import filterShape from './shape'
 
 import { colors, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
-import { dispatch, ACTIONS } from './helpers'
+import { dispatch, ACTIONS } from '../Filters/helpers'
 
-const FiltersReset = ({
+const FilterReset = ({
   projectId,
   assetId,
   filters,
@@ -118,7 +118,7 @@ const FiltersReset = ({
   )
 }
 
-FiltersReset.propTypes = {
+FilterReset.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
@@ -127,4 +127,4 @@ FiltersReset.propTypes = {
   onReset: PropTypes.func.isRequired,
 }
 
-export default FiltersReset
+export default FilterReset

@@ -97,6 +97,7 @@ wallet-dockerhub-build-push-latest:
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx wallet
+    - docker tag zmlp/wallet:latest zmlp/wallet:${DOCKER_TAG}
     - docker push zmlp/wallet:${DOCKER_TAG}
   rules:
     # Merged to Development with Wallet changes
@@ -122,13 +123,13 @@ wallet-deploy-development:
   retry: 1
   variables:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
-    PROJECT: zmlp-dev
+    PROJECT: zvi-dev
   stage: deploy
   environment:
     name: dev
-    url: https://console.dev.zvi.zorroa.com/
+    url: https://dev.console.zvi.zorroa.com/
   before_script:
-    - echo $SA_JSON > ./sa.json
+    - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
@@ -147,7 +148,11 @@ wallet-deploy-qa:
     PROJECT: zvi-qa
   environment:
     name: qa
-    url: https://console.qa.zvi.zorroa.com/
+    url: https://qa.console.zvi.zorroa.com/
+  before_script:
+    - echo $QA_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
@@ -291,6 +296,22 @@ zmlp-dockerhub-build-push-latest:
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx
+    - docker tag zmlp/archivist:latest zmlp/archivist:${DOCKER_TAG}
+    - docker tag zmlp/officer:latest zmlp/officer:${DOCKER_TAG}
+    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:${DOCKER_TAG}
+    - docker tag zmlp/authserver:latest zmlp/authserver:${DOCKER_TAG}
+    - docker tag zmlp/apigateway:latest zmlp/apigateway:${DOCKER_TAG}
+    - docker tag zmlp/py3-base:latest zmlp/py3-base:${DOCKER_TAG}
+    - docker tag zmlp/py3-client:latest zmlp/py3-client:${DOCKER_TAG}
+    - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:${DOCKER_TAG}
+    - docker tag zmlp/plugins-base:latest zmlp/plugins-base:${DOCKER_TAG}
+    - docker tag zmlp/plugins-models:latest zmlp/plugins-models:${DOCKER_TAG}
+    - docker tag zmlp/plugins-core:latest zmlp/plugins-core:${DOCKER_TAG}
+    - docker tag zmlp/plugins-analysis:latest zmlp/plugins-analysis:${DOCKER_TAG}
+    - docker tag zmlp/analyst:latest zmlp/analyst:${DOCKER_TAG}
+    - docker tag zmlp/jvm-common:latest zmlp/jvm-common:${DOCKER_TAG}
+    - docker tag zmlp/ml-bbq:latest zmlp/ml-bbq:${DOCKER_TAG}
+    - docker tag zmlp/plugins-train:latest zmlp/plugins-train:${DOCKER_TAG}
     - docker push zmlp/archivist:${DOCKER_TAG}
     - docker push zmlp/officer:${DOCKER_TAG}
     - docker push zmlp/elasticsearch:${DOCKER_TAG}
@@ -334,13 +355,13 @@ zmlp-deploy-development:
   retry: 1
   variables:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
-    PROJECT: zmlp-dev
+    PROJECT: zvi-dev
   stage: deploy
   environment:
     name: dev
-    url: https://console.dev.zvi.zorroa.com/
+    url: https://dev.console.zvi.zorroa.com/
   before_script:
-    - echo $SA_JSON > ./sa.json
+    - echo $DEV_SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
@@ -368,9 +389,13 @@ zmlp-deploy-qa:
     - zmlp-deploy-development
   environment:
     name: qa
-    url: https://console.qa.zvi.zorroa.com/
+    url: https://qa.console.zvi.zorroa.com/
   variables:
     PROJECT: zvi-qa
+  before_script:
+    - echo $QA_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"

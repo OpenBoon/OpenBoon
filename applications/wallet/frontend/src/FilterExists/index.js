@@ -4,14 +4,16 @@ import filterShape from '../Filter/shape'
 
 import { spacing, constants, colors } from '../Styles'
 
-import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
-import Button, { VARIANTS } from '../Button'
-import FiltersReset from '../Filters/Reset'
-import FiltersTitle from '../Filters/Title'
-
-import { dispatch, ACTIONS } from '../Filters/helpers'
 import ExistsSvg from '../Icons/exists.svg'
 import MissingSvg from '../Icons/missing.svg'
+
+import { dispatch, ACTIONS } from '../Filters/helpers'
+
+import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
+import Button, { VARIANTS } from '../Button'
+import FilterReset from '../Filter/Reset'
+import FilterTitle from '../Filter/Title'
+import FilterActions from '../Filter/Actions'
 
 const SVG_SIZE = 20
 
@@ -28,8 +30,9 @@ const FilterExists = ({
   return (
     <Accordion
       variant={ACCORDION_VARIANTS.FILTER}
-      title={
-        <FiltersTitle
+      title={<FilterTitle filter={filter} />}
+      actions={
+        <FilterActions
           projectId={projectId}
           assetId={assetId}
           filters={filters}
@@ -42,7 +45,7 @@ const FilterExists = ({
       isResizeable
     >
       <div css={{ padding: spacing.normal }}>
-        <FiltersReset
+        <FilterReset
           projectId={projectId}
           assetId={assetId}
           filters={filters}

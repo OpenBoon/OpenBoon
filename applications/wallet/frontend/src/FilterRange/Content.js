@@ -7,7 +7,7 @@ import filterShape from '../Filter/shape'
 import { colors, constants, spacing } from '../Styles'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
-import FiltersReset from '../Filters/Reset'
+import FilterReset from '../Filter/Reset'
 
 import { formatValue } from './helpers'
 
@@ -52,7 +52,7 @@ const FilterRangeContent = ({
 
   return (
     <div>
-      <FiltersReset
+      <FilterReset
         projectId={projectId}
         assetId={assetId}
         filters={filters}

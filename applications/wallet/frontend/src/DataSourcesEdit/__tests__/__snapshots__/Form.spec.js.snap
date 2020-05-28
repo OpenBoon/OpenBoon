@@ -215,14 +215,19 @@ Array [
 }
 
 .emotion-47 {
-  border-bottom: 1px solid #4a4a4a;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 12px;
+}
+
+.emotion-47:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
 }
 
 .emotion-47 h4 {
@@ -855,6 +860,7 @@ Array [
       >
         <div
           className="emotion-47"
+          onClick={[Function]}
         >
           <button
             aria-label="Collapse Section"
@@ -934,6 +940,7 @@ Array [
       >
         <div
           className="emotion-47"
+          onClick={[Function]}
         >
           <button
             aria-label="Collapse Section"
