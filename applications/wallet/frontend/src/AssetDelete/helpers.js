@@ -9,11 +9,21 @@ const KEYS_TO_UPDATE = cache.keys().filter((key) => {
   return key.includes('/searches')
 })
 
-export const onDelete = async ({ projectId, assetId, query, dispatch }) => {
+export const onDelete = async ({
+  projectId,
+  assetId,
+  query,
+  setIsLoading,
+  setError,
+}) => {
   try {
+    setIsLoading(true)
+
     await fetcher(`/api/v1/projects/${projectId}/assets/${assetId}/`, {
       method: 'DELETE',
     })
+
+    setIsLoading(false)
 
     /* istanbul ignore next */
     KEYS_TO_UPDATE.forEach((key) =>
@@ -35,6 +45,7 @@ export const onDelete = async ({ projectId, assetId, query, dispatch }) => {
       })}`,
     )
   } catch (error) {
-    return dispatch('There was an error. Please try again.')
+    setIsLoading(false)
+    return setError('There was an error. Please try again.')
   }
 }

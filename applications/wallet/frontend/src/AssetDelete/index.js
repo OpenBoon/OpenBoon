@@ -25,7 +25,7 @@ const AssetDelete = () => {
 
   return (
     <SuspenseBoundary>
-      <AssetDeleteContent />
+      <AssetDeleteContent key={assetId} />
     </SuspenseBoundary>
   )
 }

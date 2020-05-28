@@ -23,15 +23,13 @@ const AssetDeleteContent = () => {
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
-  const [showConfirmationDialogue, setShowConfirmationDialogue] = useState(
-    false,
-  )
+  const [showDialogue, setShowDialogue] = useState(false)
 
-  if (showConfirmationDialogue) {
+  if (showDialogue) {
     return (
       <AssetDeleteConfirm
         filename={filename}
-        dispatch={setShowConfirmationDialogue}
+        setShowDialogue={setShowDialogue}
       />
     )
   }
@@ -96,7 +94,7 @@ const AssetDeleteContent = () => {
           variant={VARIANTS.PRIMARY_SMALL}
           style={{ width: 'fit-content' }}
           onClick={() => {
-            setShowConfirmationDialogue(true)
+            setShowDialogue(true)
           }}
         >
           Delete Asset

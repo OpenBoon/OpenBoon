@@ -9,12 +9,13 @@ import Button, { VARIANTS } from '../Button'
 
 import { onDelete } from './helpers'
 
-const AssetDeleteConfirm = ({ filename, dispatch }) => {
+const AssetDeleteConfirm = ({ filename, setShowDialogue }) => {
   const {
     query: { projectId, id: assetId, query },
   } = useRouter()
 
   const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <div css={{ padding: spacing.normal }}>
@@ -45,7 +46,7 @@ const AssetDeleteConfirm = ({ filename, dispatch }) => {
           aria-label="Cancel"
           variant={VARIANTS.SECONDARY}
           onClick={() => {
-            dispatch(false)
+            setShowDialogue(false)
             setError('')
           }}
           style={{
@@ -65,7 +66,13 @@ const AssetDeleteConfirm = ({ filename, dispatch }) => {
           aria-label="Confirm Delete Asset"
           variant={VARIANTS.WARNING}
           onClick={() =>
-            onDelete({ projectId, assetId, query, dispatch: setError })
+            onDelete({
+              projectId,
+              assetId,
+              query,
+              setIsLoading,
+              setError,
+            })
           }
           style={{
             flex: 1,
@@ -75,7 +82,7 @@ const AssetDeleteConfirm = ({ filename, dispatch }) => {
             svg: { marginRight: spacing.base },
           }}
         >
-          Delete Asset
+          {isLoading ? 'Deleting...' : 'Delete Asset'}
         </Button>
       </div>
     </div>
@@ -84,7 +91,7 @@ const AssetDeleteConfirm = ({ filename, dispatch }) => {
 
 AssetDeleteConfirm.propTypes = {
   filename: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  setShowDialogue: PropTypes.func.isRequired,
 }
 
 export default AssetDeleteConfirm
