@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Delete /> should render properly when as asset is selected 1`] = `
-.emotion-7 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,16 +17,26 @@ exports[`<Delete /> should render properly when as asset is selected 1`] = `
   width: 100%;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  position: relative;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .emotion-0 {
@@ -41,31 +51,29 @@ exports[`<Delete /> should render properly when as asset is selected 1`] = `
 
 .emotion-1 {
   position: absolute;
-  top: 6px;
-  left: 4px;
   width: 8px;
   height: 8px;
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
-  background-color: #73b61c;
   border-radius: 16px;
+  background-color: #73b61c;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding-left: 8px;
   font-weight: 700;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding-left: 24px;
 }
 
-.emotion-5 {
+.emotion-6 {
   height: 16px;
 }
 
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -101,66 +109,70 @@ exports[`<Delete /> should render properly when as asset is selected 1`] = `
   width: fit-content;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6,
-.emotion-6:hover,
-.emotion-6:visited {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
   background-color: #73b61c;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   background-color: #96c955;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-7"
+  className="emotion-8"
   method="post"
   onSubmit={[Function]}
 >
-  <div
-    className="emotion-3"
+  <label
+    className="emotion-4"
   >
-    <input
-      checked={true}
-      className="emotion-0"
-      id="deleteSelected"
-      type="radio"
-      value="deleteSelected"
-    />
     <div
-      className="emotion-1"
-    />
-    <label
       className="emotion-2"
-      htmlFor="deleteSelected"
+    >
+      <input
+        checked={true}
+        className="emotion-0"
+        id="deleteSelected"
+        onClick={[Function]}
+        type="radio"
+        value="deleteSelected"
+      />
+      <div
+        className="emotion-1"
+      />
+    </div>
+    <div
+      className="emotion-3"
     >
       Delete Selected: 1
-    </label>
-  </div>
+    </div>
+  </label>
   <div
-    className="emotion-4"
+    className="emotion-5"
   >
     Delete the selected asset
   </div>
   <div
-    className="emotion-5"
+    className="emotion-6"
   />
   <button
     aria-label="Delete Asset"
-    className="emotion-6"
+    className="emotion-7"
     onClick={[Function]}
     type="button"
   >

@@ -1,0 +1,301 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Radio /> should render properly 1`] = `
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-0 {
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-1 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: none;
+}
+
+.emotion-3 {
+  padding-left: 8px;
+  font-weight: 700;
+}
+
+<label
+  className="emotion-4"
+>
+  <div
+    className="emotion-2"
+  >
+    <input
+      checked={false}
+      className="emotion-0"
+      id="radio"
+      onClick={[Function]}
+      type="radio"
+      value="radio"
+    />
+    <div
+      className="emotion-1"
+    />
+  </div>
+  <div
+    className="emotion-3"
+  >
+    Radio
+  </div>
+</label>
+`;
+
+exports[`<Radio /> should render properly 2`] = `
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-0 {
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-3 {
+  padding-left: 8px;
+  font-weight: 700;
+}
+
+.emotion-1 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: #73b61c;
+}
+
+<label
+  className="emotion-4"
+>
+  <div
+    className="emotion-2"
+  >
+    <input
+      checked={true}
+      className="emotion-0"
+      id="radio"
+      onClick={[Function]}
+      type="radio"
+      value="radio"
+    />
+    <div
+      className="emotion-1"
+    />
+  </div>
+  <div
+    className="emotion-3"
+  >
+    Radio
+  </div>
+</label>
+`;
+
+exports[`<Radio /> should render properly checked and disabled 1`] = `
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-0 {
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-3 {
+  padding-left: 8px;
+  font-weight: 700;
+}
+
+.emotion-1 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: #73b61c;
+}
+
+<label
+  className="emotion-4"
+>
+  <div
+    className="emotion-2"
+  >
+    <input
+      checked={true}
+      className="emotion-0"
+      id="radio"
+      onClick={[Function]}
+      type="radio"
+      value="radio"
+    />
+    <div
+      className="emotion-1"
+    />
+  </div>
+  <div
+    className="emotion-3"
+  >
+    Radio
+  </div>
+</label>
+`;
+
+exports[`<Radio /> should render properly disabled 1`] = `
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-0 {
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-1 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: none;
+}
+
+.emotion-3 {
+  padding-left: 8px;
+  font-weight: 700;
+}
+
+<label
+  className="emotion-4"
+>
+  <div
+    className="emotion-2"
+  >
+    <input
+      checked={false}
+      className="emotion-0"
+      id="radio"
+      onClick={[Function]}
+      type="radio"
+      value="radio"
+    />
+    <div
+      className="emotion-1"
+    />
+  </div>
+  <div
+    className="emotion-3"
+  >
+    Radio
+  </div>
+</label>
+`;
