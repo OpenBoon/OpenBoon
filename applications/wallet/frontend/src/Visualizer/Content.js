@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router'
+
 import { colors, spacing } from '../Styles'
 
 import Panel from '../Panel'
@@ -15,6 +17,10 @@ import TrashSvg from '../Icons/trash.svg'
 const ICON_WIDTH = 20
 
 const VisualizerContent = () => {
+  const {
+    query: { action },
+  } = useRouter()
+
   return (
     <div
       css={{
@@ -39,7 +45,7 @@ const VisualizerContent = () => {
             },
           }}
         </Panel>
-        <Assets />
+        <Assets key={action} />
         <Panel openToThe="left">
           {{
             metadata: {

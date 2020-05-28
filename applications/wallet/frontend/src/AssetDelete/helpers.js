@@ -20,6 +20,8 @@ export const onDelete = async ({
 
     cache.clear()
 
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
     return Router.push(
       {
         pathname: '/[projectId]/visualizer',
