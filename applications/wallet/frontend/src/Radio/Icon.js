@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+
 import { colors, constants } from '../Styles'
 
 const RADIO_BUTTON_SIZE = 16

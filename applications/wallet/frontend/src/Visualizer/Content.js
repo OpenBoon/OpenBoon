@@ -6,7 +6,7 @@ import Panel from '../Panel'
 import Assets from '../Assets'
 import Filters from '../Filters'
 import Metadata from '../Metadata'
-import AssetExport from '../AssetExport'
+import Export from '../Export'
 import AssetDelete from '../AssetDelete'
 
 import FilterSvg from '../Icons/filter.svg'
@@ -18,7 +18,7 @@ const ICON_WIDTH = 20
 
 const VisualizerContent = () => {
   const {
-    query: { action },
+    query: { id: assetId, action },
   } = useRouter()
 
   return (
@@ -62,12 +62,12 @@ const VisualizerContent = () => {
                   aria-hidden
                 />
               ),
-              content: <AssetExport />,
+              content: <Export />,
             },
             delete: {
               title: 'Delete',
               icon: <TrashSvg width={ICON_WIDTH} aria-hidden />,
-              content: <AssetDelete />,
+              content: <AssetDelete key={assetId} />,
             },
           }}
         </Panel>
