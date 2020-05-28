@@ -18,6 +18,7 @@ const LOGO_WIDTH = 143
 
 const INITIAL_STATE = {
   isChecked: false,
+  isLoading: false,
   errors: { global: '' },
 }
 
@@ -100,7 +101,7 @@ const Policies = ({ userId }) => {
             onClick={() => onSubmit({ dispatch, userId })}
             isDisabled={!isChecked}
           >
-            Continue
+            {state.isLoading ? 'Loading...' : 'Continue'}
           </Button>
         </div>
       </form>

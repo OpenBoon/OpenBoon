@@ -5,6 +5,8 @@ export const onSubmit = async ({
   dispatch,
   state: { currentPassword, newPassword, confirmPassword },
 }) => {
+  dispatch({ isLoading: true })
+
   try {
     await fetcher(`/api/v1/password/change/`, {
       method: 'POST',
@@ -20,6 +22,7 @@ export const onSubmit = async ({
       newPassword: '',
       confirmPassword: '',
       success: true,
+      isLoading: false,
       errors: {},
     })
   } catch (response) {
@@ -30,7 +33,7 @@ export const onSubmit = async ({
       return acc
     }, {})
 
-    dispatch({ success: false, errors: parsedErrors })
+    dispatch({ success: false, isLoading: false, errors: parsedErrors })
   }
 }
 

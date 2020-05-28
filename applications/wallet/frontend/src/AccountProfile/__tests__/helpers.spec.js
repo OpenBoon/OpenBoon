@@ -42,6 +42,7 @@ describe('<AccountProfile /> helpers', () => {
       expect(mockDispatch).toHaveBeenCalledWith({
         showForm: false,
         success: true,
+        isLoading: false,
         errors: {},
       })
 
@@ -80,6 +81,7 @@ describe('<AccountProfile /> helpers', () => {
 
       expect(mockDispatch).toHaveBeenCalledWith({
         success: false,
+        isLoading: false,
         errors: { firstName: 'Error message' },
       })
     })

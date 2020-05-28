@@ -24,6 +24,7 @@ const INITIAL_STATE = {
   password: '',
   confirmPassword: '',
   isChecked: false,
+  isLoading: false,
   error: '',
 }
 
@@ -33,6 +34,7 @@ const reducer = (state, action) => ({ ...state, ...action })
 
 const CreateAccount = () => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+
   const {
     query: { token, uid, action },
   } = useRouter()
@@ -170,7 +172,7 @@ const CreateAccount = () => {
                 !state.isChecked
               }
             >
-              Save
+              {state.isLoading ? 'Saving...' : 'Save'}
             </Button>
           </ButtonGroup>
         </Form>

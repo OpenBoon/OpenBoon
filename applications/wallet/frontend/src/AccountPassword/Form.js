@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   confirmPassword: '',
   showForm: false,
   success: false,
+  isLoading: false,
   errors: {},
 }
 
@@ -89,7 +90,7 @@ const AccountPasswordForm = () => {
               !state.confirmPassword
             }
           >
-            Save
+            {state.isLoading ? 'Saving...' : 'Save'}
           </Button>
         </ButtonGroup>
       </Form>

@@ -20,6 +20,7 @@ const INITIAL_STATE = ({ id, firstName, lastName }) => ({
   lastName,
   showForm: false,
   success: false,
+  isLoading: false,
   errors: {},
 })
 
@@ -128,7 +129,7 @@ const AccountProfileForm = () => {
               onClick={() => onSubmit({ dispatch, state })}
               isDisabled={!state.firstName || !state.lastName}
             >
-              Save
+              {state.isLoading ? 'Saving...' : 'Save'}
             </Button>
           </ButtonGroup>
         </Form>

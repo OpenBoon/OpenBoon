@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   name: '',
   permissions: {},
   apikey: {},
+  isLoading: false,
   errors: {},
 }
 
@@ -86,7 +87,7 @@ const ApiKeysAddForm = () => {
           onClick={() => onSubmit({ dispatch, projectId, state })}
           isDisabled={!state.name}
         >
-          Generate Key &amp; Download
+          {state.isLoading ? 'Generating...' : 'Generate Key & Download'}
         </Button>
       </ButtonGroup>
     </Form>
