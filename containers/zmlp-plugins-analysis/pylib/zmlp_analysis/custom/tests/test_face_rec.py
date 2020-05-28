@@ -11,9 +11,9 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
 class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
 
     @patch.object(ModelApp, 'get_model')
-    @patch.object(file_storage.projects, "localize_file")
+    @patch.object(file_storage.models, "install_model")
     def test_process(self, localize_patch, get_model_patch):
-        localize_patch.return_value = os.path.dirname(__file__) + "/model.zip"
+        localize_patch.return_value = os.path.dirname(__file__)
         get_model_patch.return_value = Model({
             'id': '12345',
             'dataSetId': '12345',
