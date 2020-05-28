@@ -1,10 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Delete /> should render properly when as asset is selected 1`] = `
-.emotion-8 {
-  padding: 16px;
-}
-
 .emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -17,6 +13,8 @@ exports[`<Delete /> should render properly when as asset is selected 1`] = `
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  padding: 16px;
+  width: 100%;
 }
 
 .emotion-3 {
@@ -126,53 +124,49 @@ exports[`<Delete /> should render properly when as asset is selected 1`] = `
   background-color: #808080;
 }
 
-<div
-  className="emotion-8"
+<form
+  action=""
+  className="emotion-7"
+  method="post"
+  onSubmit={[Function]}
 >
-  <form
-    action=""
-    className="emotion-7"
-    method="post"
-    onSubmit={[Function]}
+  <div
+    className="emotion-3"
   >
-    <div
-      className="emotion-3"
-    >
-      <input
-        checked={true}
-        className="emotion-0"
-        id="deleteSelected"
-        type="radio"
-        value="deleteSelected"
-      />
-      <div
-        className="emotion-1"
-      />
-      <label
-        className="emotion-2"
-        htmlFor="deleteSelected"
-      >
-        Delete Selected: 1
-      </label>
-    </div>
-    <div
-      className="emotion-4"
-    >
-      Delete the selected asset
-    </div>
-    <div
-      className="emotion-5"
+    <input
+      checked={true}
+      className="emotion-0"
+      id="deleteSelected"
+      type="radio"
+      value="deleteSelected"
     />
-    <button
-      aria-label="Delete Asset"
-      className="emotion-6"
-      onClick={[Function]}
-      type="button"
+    <div
+      className="emotion-1"
+    />
+    <label
+      className="emotion-2"
+      htmlFor="deleteSelected"
     >
-      Delete Asset
-    </button>
-  </form>
-</div>
+      Delete Selected: 1
+    </label>
+  </div>
+  <div
+    className="emotion-4"
+  >
+    Delete the selected asset
+  </div>
+  <div
+    className="emotion-5"
+  />
+  <button
+    aria-label="Delete Asset"
+    className="emotion-6"
+    onClick={[Function]}
+    type="button"
+  >
+    Delete Asset
+  </button>
+</form>
 `;
 
 exports[`<Delete /> should render properly when as asset is selected 2`] = `
