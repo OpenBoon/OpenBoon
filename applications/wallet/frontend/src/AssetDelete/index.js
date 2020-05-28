@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 import AssetDeleteContent from './Content'
@@ -14,6 +14,10 @@ const AssetDelete = () => {
   } = useRouter()
 
   const [showDialogue, setShowDialogue] = useState(false)
+
+  useEffect(() => {
+    setShowDialogue(false)
+  }, [assetId])
 
   if (!assetId && action === 'delete-asset-success') {
     return (
@@ -39,7 +43,7 @@ const AssetDelete = () => {
     )
   }
 
-  return <AssetDeleteContent key={assetId} setShowDialogue={setShowDialogue} />
+  return <AssetDeleteContent setShowDialogue={setShowDialogue} />
 }
 
 export default AssetDelete
