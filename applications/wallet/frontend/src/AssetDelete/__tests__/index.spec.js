@@ -7,6 +7,8 @@ import asset from '../../Asset/__mocks__/asset'
 const ASSET_ID = asset.id
 const PROJECT_ID = asset.metadata.system.projectId
 
+jest.useFakeTimers()
+
 describe('<Delete />', () => {
   it('should render properly when no asset is selected', () => {
     require('next/router').__setUseRouter({
@@ -72,6 +74,10 @@ describe('<Delete />', () => {
         .findByProps({ 'aria-label': 'Confirm Delete Asset' })
         .props.onClick()
     })
+
+    // wait for timeout
+    jest.runAllTimers()
+    await act(async () => {})
 
     expect(mockRouterPush).toHaveBeenCalledWith(
       {
