@@ -13,7 +13,7 @@ import Button, { VARIANTS } from '../Button'
 
 const SVG_SIZE = 20
 
-const FilterTitle = ({
+const FilterActions = ({
   projectId,
   assetId,
   filters,
@@ -101,7 +101,7 @@ const FilterTitle = ({
   )
 }
 
-FilterTitle.propTypes = {
+FilterActions.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
@@ -109,4 +109,4 @@ FilterTitle.propTypes = {
   filterIndex: PropTypes.number.isRequired,
 }
 
-export default FilterTitle
+export default FilterActions
