@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/media-has-caption */
 import { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
@@ -50,11 +49,14 @@ const AssetsThumbnail = ({
     playerPromise = playerRef.current.play()
   }
 
-  const pause = /* istanbul ignore next */ () => {
-    if (playerPromise !== undefined) {
-      playerPromise.then(() => {
-        playerRef.current.pause()
-      })
+  const pause = /* istanbul ignore next */ async () => {
+    if (!playerPromise) return
+
+    try {
+      await playerPromise
+      playerRef.current.pause()
+    } catch (error) {
+      // do nothing
     }
   }
 

@@ -16,6 +16,7 @@ def main():
                         help='File extensions to import')
 
     parser.add_argument('-a', '--creds', action='append', help='Creds blob name')
+    parser.add_argument('-b', '--batch-size', help='The batch size', default=25, type=int)
 
     args = parser.parse_args()
 
@@ -25,7 +26,7 @@ def main():
                                           args.module,
                                           file_types=args.types,
                                           credentials=args.creds or None)
-    app.datasource.import_files(ds)
+    app.datasource.import_files(ds, int(args.batch_size))
 
 
 if __name__ == '__main__':

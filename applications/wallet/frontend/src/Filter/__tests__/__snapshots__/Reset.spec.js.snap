@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FiltersReset /> should reset properly 1`] = `
+exports[`<FilterReset /> should reset properly 1`] = `
 .emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -119,7 +119,7 @@ exports[`<FiltersReset /> should reset properly 1`] = `
 </div>
 `;
 
-exports[`<FiltersReset /> should switch properly 1`] = `
+exports[`<FilterReset /> should switch properly 1`] = `
 .emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -238,7 +238,7 @@ exports[`<FiltersReset /> should switch properly 1`] = `
 </div>
 `;
 
-exports[`<FiltersReset /> should switch properly 2`] = `
+exports[`<FilterReset /> should switch properly 2`] = `
 .emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;

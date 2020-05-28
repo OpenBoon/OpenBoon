@@ -9,7 +9,7 @@ import Button, { VARIANTS } from '../Button'
 import filterShape from '../Filter/shape'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
-import FiltersSearch from '../Filters/Search'
+import FilterSearch from '../Filter/Search'
 
 import FilterLabelConfidenceSlider from './Slider'
 
@@ -56,7 +56,7 @@ const FilterLabelConfidenceContent = ({
         filter={filter}
         filterIndex={filterIndex}
       />
-      <FiltersSearch
+      <FilterSearch
         placeholder="Search labels"
         searchString={searchString}
         onChange={({ value }) => {

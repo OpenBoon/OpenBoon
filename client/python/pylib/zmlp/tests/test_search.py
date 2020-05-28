@@ -52,6 +52,19 @@ class AssetSearchScrollerTests(unittest.TestCase):
         results = list(scroller)
         assert results[0] == self.mock_search_result
 
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    def test_search_es_object(self, post_patch, del_patch):
+        post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
+        del_patch.return_value = {}
+
+        scroller = AssetSearchScroller(self.app,
+                                       MockEsDslSearch(),
+                                       raw_response=True)
+        assert scroller.search == MockEsDslSearch().to_dict()
+        results = list(scroller)
+        assert results[0] == self.mock_search_result
+
 
 class AssetSearchResultTests(unittest.TestCase):
 
@@ -81,6 +94,28 @@ class AssetSearchResultTests(unittest.TestCase):
         next_page = results.next_page()
         assert next_page.raw_response == {"hits": {"hits": []}}
 
+    @patch.object(ZmlpClient, 'post')
+    def test_batches_of(self, post_patch):
+        post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
+
+        results = AssetSearchResult(self.app, {"query": {"term": {"source.filename": "dog.jpg"}}})
+        asserted = False
+        for batch in results.batches_of(2):
+            assert len(batch) == 2
+            asserted = True
+        assert asserted
+
+    @patch.object(ZmlpClient, 'post')
+    def test_batches_of_with_max(self, post_patch):
+        post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
+
+        results = AssetSearchResult(self.app, {"query": {"term": {"source.filename": "dog.jpg"}}})
+        asserted = False
+        for batch in results.batches_of(2, max_assets=1):
+            assert len(batch) == 1
+            asserted = True
+        assert asserted
+
     @patch.object(ZmlpClient, 'delete')
     @patch.object(ZmlpClient, 'post')
     def test_aggegation(self, post_patch, del_patch):
@@ -89,7 +124,6 @@ class AssetSearchResultTests(unittest.TestCase):
 
         results = AssetSearchResult(self.app, {})
         agg = results.aggregation("file_types")
-        print(agg)
         assert 1 == agg["buckets"][0]["doc_count"]
         assert "jpg" == agg["buckets"][0]["key"]
 
@@ -120,6 +154,15 @@ class AssetSearchResultTests(unittest.TestCase):
 
         results = AssetSearchResult(self.app, {})
         assert results.aggregation("sterm#dogs") is not None
+
+    @patch.object(ZmlpClient, 'post')
+    def test_search_es_object(self, post_patch):
+        post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
+
+        search = AssetSearchScroller(self.app,
+                                     MockEsDslSearch(),
+                                     raw_response=True)
+        assert search.search == MockEsDslSearch().to_dict()
 
 
 class TestLabelConfidenceQuery(unittest.TestCase):
@@ -170,6 +213,12 @@ class TestImageSimilarityQuery(unittest.TestCase):
         assert ['OVER9000'] == s.hashes
         assert "foo.vector" == s.field
         assert 0.50 == s.min_score
+
+
+class MockEsDslSearch:
+    """Mock ElasticSearch DSL search class."""
+    def to_dict(self):
+        return {"query": {"term": {"foo": {"bar"}}}}
 
 
 mock_search_result = {

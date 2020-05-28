@@ -5,7 +5,7 @@ import { spacing } from '../Styles'
 
 import filterShape from '../Filter/shape'
 
-import FiltersReset from '../Filters/Reset'
+import FilterReset from '../Filter/Reset'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
@@ -30,7 +30,7 @@ const FilterLabelConfidenceSlider = ({
 
   return (
     <>
-      <FiltersReset
+      <FilterReset
         projectId={projectId}
         assetId={assetId}
         filters={filters}
