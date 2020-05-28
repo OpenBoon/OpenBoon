@@ -54,10 +54,9 @@ class KnnLabelDetectionClassifier(AssetProcessor):
         Returns:
             KNeighborsClassifier: The model.
         """
-        model_zip = file_storage.projects.localize_file(self.app_model.file_id)
-        with zipfile.ZipFile(model_zip) as zfp:
-            zfp.extractall(path=tempfile.tempdir)
-        with open(os.path.join(tempfile.tempdir, 'model_knn', 'knn_classifier.pickle'), 'rb') as fp:
+
+        model_path = file_storage.models.install_model(self.app_model)
+        with open(os.path.join(model_path, 'knn_classifier.pickle'), 'rb') as fp:
             classifier = pickle.load(fp)
         return classifier
 
