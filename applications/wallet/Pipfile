@@ -35,7 +35,6 @@ djangorestframework-csv = "*"
 google-api-python-client = "*"
 google-cloud = "*"
 google-cloud-pubsub = "*"
-random-word = "*"
 namegenerator = "*"
 zmlp = {path = "./../../client/python"}
 
