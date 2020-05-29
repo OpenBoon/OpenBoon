@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AccountCard /> should not render without subscriptions 1`] = `
-.emotion-8 {
+.emotion-7 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-7 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -113,15 +113,11 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
   background-color: #808080;
 }
 
-.emotion-6 {
-  padding: 32px;
-}
-
 <div
-  className="emotion-8"
+  className="emotion-7"
 >
   <div
-    className="emotion-7"
+    className="emotion-6"
   >
     <div
       className="emotion-5"
@@ -154,24 +150,19 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
           </a>
         </div>
       </div>
-    </div>
-    <div
-      className="emotion-6"
-    >
-      <span />
     </div>
   </div>
 </div>
 `;
 
 exports[`<AccountCard /> should render properly 1`] = `
-.emotion-8 {
+.emotion-7 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-7 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -277,15 +268,11 @@ exports[`<AccountCard /> should render properly 1`] = `
   background-color: #808080;
 }
 
-.emotion-6 {
-  padding: 32px;
-}
-
 <div
-  className="emotion-8"
+  className="emotion-7"
 >
   <div
-    className="emotion-7"
+    className="emotion-6"
   >
     <div
       className="emotion-5"
@@ -318,24 +305,19 @@ exports[`<AccountCard /> should render properly 1`] = `
           </a>
         </div>
       </div>
-    </div>
-    <div
-      className="emotion-6"
-    >
-      <span />
     </div>
   </div>
 </div>
 `;
 
 exports[`<AccountCard /> should render properly with no modules 1`] = `
-.emotion-8 {
+.emotion-7 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-7 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -441,15 +423,11 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   background-color: #808080;
 }
 
-.emotion-6 {
-  padding: 32px;
-}
-
 <div
-  className="emotion-8"
+  className="emotion-7"
 >
   <div
-    className="emotion-7"
+    className="emotion-6"
   >
     <div
       className="emotion-5"
@@ -482,24 +460,19 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
           </a>
         </div>
       </div>
-    </div>
-    <div
-      className="emotion-6"
-    >
-      <span />
     </div>
   </div>
 </div>
 `;
 
 exports[`<AccountCard /> should render properly with over usage 1`] = `
-.emotion-8 {
+.emotion-7 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-7 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -605,15 +578,11 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   background-color: #808080;
 }
 
-.emotion-6 {
-  padding: 32px;
-}
-
 <div
-  className="emotion-8"
+  className="emotion-7"
 >
   <div
-    className="emotion-7"
+    className="emotion-6"
   >
     <div
       className="emotion-5"
@@ -646,11 +615,6 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
           </a>
         </div>
       </div>
-    </div>
-    <div
-      className="emotion-6"
-    >
-      <span />
     </div>
   </div>
 </div>

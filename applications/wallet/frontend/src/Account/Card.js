@@ -34,6 +34,7 @@ const AccountCard = ({ projectId, name }) => {
           </div>
         </div>
       }
+      // eslint-disable-next-line react/jsx-curly-brace-presence
       content={
         // TODO: Update usage component to have the new plan info.
         // subscriptions.length !== 0 ? (
@@ -41,7 +42,7 @@ const AccountCard = ({ projectId, name }) => {
         // ) : (
         //   ''
         // )
-        <span />
+        ''
       }
     />
   )
