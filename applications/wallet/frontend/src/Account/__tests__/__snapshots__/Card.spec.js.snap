@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AccountCard /> should not render without subscriptions 1`] = `
-.emotion-7 {
+.emotion-8 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -113,11 +113,15 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
   background-color: #808080;
 }
 
+.emotion-6 {
+  padding: 32px;
+}
+
 <div
-  className="emotion-7"
+  className="emotion-8"
 >
   <div
-    className="emotion-6"
+    className="emotion-7"
   >
     <div
       className="emotion-5"
@@ -150,19 +154,24 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
           </a>
         </div>
       </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <span />
     </div>
   </div>
 </div>
 `;
 
 exports[`<AccountCard /> should render properly 1`] = `
-.emotion-30 {
+.emotion-8 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-29 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -268,90 +277,15 @@ exports[`<AccountCard /> should render properly 1`] = `
   background-color: #808080;
 }
 
-.emotion-28 {
+.emotion-6 {
   padding: 32px;
 }
 
-.emotion-6 {
-  padding-bottom: 24px;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-13 {
-  padding-bottom: 16px;
-}
-
-.emotion-7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-7 img {
-  margin-right: 12px;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 44px;
-  font-family: Roboto Condensed;
-}
-
-.emotion-9 {
-  color: #b3b3b3;
-  padding-bottom: 2px;
-}
-
-.emotion-8 {
-  font-weight: 700;
-}
-
-.emotion-11 {
-  color: #cdf6a8;
-}
-
-.emotion-20 {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-27 {
-  padding-top: 16px;
-}
-
-.emotion-21 {
-  padding-bottom: 4px;
-}
-
-.emotion-26 {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.emotion-22 {
-  font-family: Roboto Mono;
-  color: #b3b3b3;
-  padding-bottom: 2px;
-}
-
 <div
-  className="emotion-30"
+  className="emotion-8"
 >
   <div
-    className="emotion-29"
+    className="emotion-7"
   >
     <div
       className="emotion-5"
@@ -386,147 +320,22 @@ exports[`<AccountCard /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-28"
+      className="emotion-6"
     >
-      <h3
-        className="emotion-6"
-      >
-        Usage Plan:
-      </h3>
-      <div
-        className="emotion-13"
-      >
-        <h4
-          className="emotion-7"
-        >
-          <img
-            alt=""
-            src="/icons/videos.png"
-            width={32}
-          />
-           Video:
-           
-          300
-           hours
-        </h4>
-        <div
-          className="emotion-12"
-        >
-          <div
-            className="emotion-9"
-          >
-            Used:
-             
-            <span
-              className="emotion-8"
-            >
-              100
-              /hrs
-            </span>
-          </div>
-          <div
-            className="emotion-11"
-          >
-            Available:
-             
-            <span
-              className="emotion-8"
-            >
-              200
-              /hrs
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-20"
-      >
-        <h4
-          className="emotion-7"
-        >
-          <img
-            alt=""
-            src="/icons/images.png"
-            width={32}
-          />
-           Image / Documents: 
-          30,000
-        </h4>
-        <div
-          className="emotion-12"
-        >
-          <div
-            className="emotion-9"
-          >
-            Used:
-             
-            <span
-              className="emotion-8"
-            >
-              20,000
-              
-            </span>
-          </div>
-          <div
-            className="emotion-11"
-          >
-            Available:
-             
-            <span
-              className="emotion-8"
-            >
-              10,000
-              
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-27"
-      >
-        <h4
-          className="emotion-21"
-        >
-          Additional Modules:
-        </h4>
-        <ul
-          className="emotion-26"
-        >
-          <li
-            className="emotion-22"
-          >
-            zmlp-classification
-          </li>
-          <li
-            className="emotion-22"
-          >
-            zmlp-face-recognition
-          </li>
-          <li
-            className="emotion-22"
-          >
-            shot-detection
-          </li>
-          <li
-            className="emotion-22"
-          >
-            gcp-vision-text-detection
-          </li>
-        </ul>
-      </div>
+      <span />
     </div>
   </div>
 </div>
 `;
 
 exports[`<AccountCard /> should render properly with no modules 1`] = `
-.emotion-26 {
+.emotion-8 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-25 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -632,83 +441,15 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   background-color: #808080;
 }
 
-.emotion-24 {
+.emotion-6 {
   padding: 32px;
 }
 
-.emotion-6 {
-  padding-bottom: 24px;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-13 {
-  padding-bottom: 16px;
-}
-
-.emotion-7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-7 img {
-  margin-right: 12px;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 44px;
-  font-family: Roboto Condensed;
-}
-
-.emotion-9 {
-  color: #b3b3b3;
-  padding-bottom: 2px;
-}
-
-.emotion-8 {
-  font-weight: 700;
-}
-
-.emotion-11 {
-  color: #cdf6a8;
-}
-
-.emotion-20 {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-23 {
-  padding-top: 16px;
-}
-
-.emotion-21 {
-  padding-bottom: 4px;
-}
-
-.emotion-22 {
-  color: #b3b3b3;
-  font-style: italic;
-}
-
 <div
-  className="emotion-26"
+  className="emotion-8"
 >
   <div
-    className="emotion-25"
+    className="emotion-7"
   >
     <div
       className="emotion-5"
@@ -743,128 +484,22 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
       </div>
     </div>
     <div
-      className="emotion-24"
+      className="emotion-6"
     >
-      <h3
-        className="emotion-6"
-      >
-        Usage Plan:
-      </h3>
-      <div
-        className="emotion-13"
-      >
-        <h4
-          className="emotion-7"
-        >
-          <img
-            alt=""
-            src="/icons/videos.png"
-            width={32}
-          />
-           Video:
-           
-          300
-           hours
-        </h4>
-        <div
-          className="emotion-12"
-        >
-          <div
-            className="emotion-9"
-          >
-            Used:
-             
-            <span
-              className="emotion-8"
-            >
-              100
-              /hrs
-            </span>
-          </div>
-          <div
-            className="emotion-11"
-          >
-            Available:
-             
-            <span
-              className="emotion-8"
-            >
-              200
-              /hrs
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-20"
-      >
-        <h4
-          className="emotion-7"
-        >
-          <img
-            alt=""
-            src="/icons/images.png"
-            width={32}
-          />
-           Image / Documents: 
-          30,000
-        </h4>
-        <div
-          className="emotion-12"
-        >
-          <div
-            className="emotion-9"
-          >
-            Used:
-             
-            <span
-              className="emotion-8"
-            >
-              20,000
-              
-            </span>
-          </div>
-          <div
-            className="emotion-11"
-          >
-            Available:
-             
-            <span
-              className="emotion-8"
-            >
-              10,000
-              
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-23"
-      >
-        <h4
-          className="emotion-21"
-        >
-          Additional Modules:
-        </h4>
-        <span
-          className="emotion-22"
-        >
-          None
-        </span>
-      </div>
+      <span />
     </div>
   </div>
 </div>
 `;
 
 exports[`<AccountCard /> should render properly with over usage 1`] = `
-.emotion-34 {
+.emotion-8 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-33 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -970,117 +605,15 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   background-color: #808080;
 }
 
-.emotion-32 {
+.emotion-6 {
   padding: 32px;
 }
 
-.emotion-10 {
-  padding-bottom: 24px;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-9 {
-  padding-bottom: 16px;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-11 img {
-  margin-right: 12px;
-}
-
-.emotion-16 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 44px;
-  font-family: Roboto Condensed;
-}
-
-.emotion-13 {
-  color: #b3b3b3;
-  padding-bottom: 2px;
-}
-
-.emotion-12 {
-  font-weight: 700;
-}
-
-.emotion-15 {
-  color: #cdf6a8;
-}
-
-.emotion-24 {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-31 {
-  padding-top: 16px;
-}
-
-.emotion-25 {
-  padding-bottom: 4px;
-}
-
-.emotion-30 {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.emotion-26 {
-  font-family: Roboto Mono;
-  color: #b3b3b3;
-  padding-bottom: 2px;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-7 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-}
-
-.emotion-6 {
-  font-weight: 400;
-}
-
 <div
-  className="emotion-34"
+  className="emotion-8"
 >
   <div
-    className="emotion-33"
+    className="emotion-7"
   >
     <div
       className="emotion-5"
@@ -1115,170 +648,9 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
       </div>
     </div>
     <div
-      className="emotion-32"
+      className="emotion-6"
     >
-      <div
-        className="emotion-9"
-      >
-        <div
-          className="emotion-8"
-        >
-          <svg
-            color="#c92300"
-            data-file-name="warning.svg"
-            height={20}
-          />
-          <div
-            className="emotion-7"
-            role="alert"
-          >
-            <div
-              className="emotion-6"
-            >
-              You are
-               
-              <strong>
-                20
-                 hours over
-              </strong>
-               your video plan
-               and 
-              <strong>
-                40
-                 assets over
-              </strong>
-               your image & documents plan
-              . Contact your Account Manager to add more resources.
-            </div>
-          </div>
-        </div>
-      </div>
-      <h3
-        className="emotion-10"
-      >
-        Usage Plan:
-      </h3>
-      <div
-        className="emotion-9"
-      >
-        <h4
-          className="emotion-11"
-        >
-          <img
-            alt=""
-            src="/icons/videos.png"
-            width={32}
-          />
-           Video:
-           
-          300
-           hours
-        </h4>
-        <div
-          className="emotion-16"
-        >
-          <div
-            className="emotion-13"
-          >
-            Used:
-             
-            <span
-              className="emotion-12"
-            >
-              320
-              /hrs
-            </span>
-          </div>
-          <div
-            className="emotion-15"
-          >
-            Available:
-             
-            <span
-              className="emotion-12"
-            >
-              -20
-              /hrs
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-24"
-      >
-        <h4
-          className="emotion-11"
-        >
-          <img
-            alt=""
-            src="/icons/images.png"
-            width={32}
-          />
-           Image / Documents: 
-          30,000
-        </h4>
-        <div
-          className="emotion-16"
-        >
-          <div
-            className="emotion-13"
-          >
-            Used:
-             
-            <span
-              className="emotion-12"
-            >
-              30,040
-              
-            </span>
-          </div>
-          <div
-            className="emotion-15"
-          >
-            Available:
-             
-            <span
-              className="emotion-12"
-            >
-              -40
-              
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-31"
-      >
-        <h4
-          className="emotion-25"
-        >
-          Additional Modules:
-        </h4>
-        <ul
-          className="emotion-30"
-        >
-          <li
-            className="emotion-26"
-          >
-            zmlp-classification
-          </li>
-          <li
-            className="emotion-26"
-          >
-            zmlp-face-recognition
-          </li>
-          <li
-            className="emotion-26"
-          >
-            shot-detection
-          </li>
-          <li
-            className="emotion-26"
-          >
-            gcp-vision-text-detection
-          </li>
-        </ul>
-      </div>
+      <span />
     </div>
   </div>
 </div>
