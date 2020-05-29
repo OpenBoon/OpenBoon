@@ -7,9 +7,11 @@ import { constants, colors, spacing, typography, zIndex } from '../Styles'
 
 import Panel from '../Panel'
 import Metadata from '../Metadata'
+import AssetDelete from '../AssetDelete'
 
 import InformationSvg from '../Icons/information.svg'
 import CrossSvg from '../Icons/cross.svg'
+import TrashSvg from '../Icons/trash.svg'
 
 import Button, { VARIANTS } from '../Button'
 
@@ -145,6 +147,11 @@ const AssetContent = () => {
               title: 'Asset Metadata',
               icon: <InformationSvg width={ICON_WIDTH} aria-hidden />,
               content: <Metadata />,
+            },
+            delete: {
+              title: 'Delete',
+              icon: <TrashSvg width={ICON_WIDTH} aria-hidden />,
+              content: <AssetDelete />,
             },
           }}
         </Panel>
