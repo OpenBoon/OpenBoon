@@ -51,7 +51,7 @@ def asset():
             'zvi-object-detection': {'count': 1, 'type': 'labels', 'predictions': [
                 {'score': 0.882, 'bbox': [0.068, 0.079, 0.904, 0.739],
                  'label': 'laptop'}, {'score': 0.882, 'bbox': [0.068, 0.079, 0.904, 0.739],
-                 'label': 'laptop2'}]}, 'zvi': {
+                 'label': 'laptop2'}]}, 'zvi': {  # noqa
                 'tinyProxy': ['#f3dfc3', '#f4efd8', '#c18f46', '#ebdfbd', '#ccd3c0',
                               '#e7d4bb', '#beae8e', '#cabf9e', '#d2c09c']},
             'zvi-image-similarity': {'type': 'similarity',
