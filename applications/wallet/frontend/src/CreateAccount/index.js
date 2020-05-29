@@ -169,7 +169,8 @@ const CreateAccount = () => {
                 !state.lastName ||
                 !state.password ||
                 state.password !== state.confirmPassword ||
-                !state.isChecked
+                !state.isChecked ||
+                state.isLoading
               }
             >
               {state.isLoading ? 'Saving...' : 'Save'}

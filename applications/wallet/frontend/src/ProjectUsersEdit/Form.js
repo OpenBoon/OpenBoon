@@ -75,7 +75,7 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
             onClick={() =>
               onSubmit({ dispatch, projectId, userId: user.id, state })
             }
-            isDisabled={false}
+            isDisabled={state.isLoading}
           >
             {state.isLoading ? 'Saving...' : 'Save'}
           </Button>

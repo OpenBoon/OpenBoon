@@ -75,7 +75,9 @@ const ResetPasswordConfirm = ({ uid, token }) => {
               token,
             })
           }
-          isDisabled={!state.newPassword || !state.newPassword2}
+          isDisabled={
+            !state.newPassword || !state.newPassword2 || state.isLoading
+          }
         >
           {state.isLoading ? 'Saving...' : 'Save'}
         </Button>

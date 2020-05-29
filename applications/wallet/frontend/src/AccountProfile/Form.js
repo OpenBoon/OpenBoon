@@ -127,7 +127,9 @@ const AccountProfileForm = () => {
               type="submit"
               variant={BUTTON_VARIANTS.PRIMARY}
               onClick={() => onSubmit({ dispatch, state })}
-              isDisabled={!state.firstName || !state.lastName}
+              isDisabled={
+                !state.firstName || !state.lastName || state.isLoading
+              }
             >
               {state.isLoading ? 'Saving...' : 'Save'}
             </Button>

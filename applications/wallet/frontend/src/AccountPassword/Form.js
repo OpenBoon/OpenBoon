@@ -87,7 +87,8 @@ const AccountPasswordForm = () => {
             isDisabled={
               !state.currentPassword ||
               !state.newPassword ||
-              !state.confirmPassword
+              !state.confirmPassword ||
+              state.isLoading
             }
           >
             {state.isLoading ? 'Saving...' : 'Save'}

@@ -173,7 +173,8 @@ const DataSourcesAddForm = () => {
               uri === SOURCES[source].uri ||
               !!errors.uri ||
               isRequiredCredentialsEmpty ||
-              isFileTypesEmpty
+              isFileTypesEmpty ||
+              state.isLoading
             }
           >
             {state.isLoading ? 'Creating...' : 'Create Data Source'}

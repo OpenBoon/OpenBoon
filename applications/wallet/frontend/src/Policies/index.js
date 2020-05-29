@@ -99,7 +99,7 @@ const Policies = ({ userId }) => {
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => onSubmit({ dispatch, userId })}
-            isDisabled={!isChecked}
+            isDisabled={!isChecked || state.isLoading}
           >
             {state.isLoading ? 'Loading...' : 'Continue'}
           </Button>
