@@ -45,6 +45,7 @@ class TestZpsExecutor(unittest.TestCase):
         self.gen_task = {
             "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
             "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
+            "projectId": "81C54046-6452-4669-BD71-719E9D5C2BBF",
             "name": "process_me",
             "logFile": "file:///%s" % tempfile.mktemp("logfile"),
             "env": {
@@ -137,8 +138,7 @@ class TestDockerContainerWrapper(unittest.TestCase):
         task = test_task()
         wrapper = ZpsExecutor(task, self.client)
         self.container = DockerContainerWrapper(
-            wrapper, task, "zmlp/plugins-base:latest",
-            os.path.realpath(tempfile.mkdtemp()))
+            wrapper, task, "zmlp/plugins-base:latest")
 
     def tearDown(self):
         self.container.stop()

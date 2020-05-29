@@ -570,9 +570,10 @@ class DispatcherServiceImpl @Autowired constructor(
 
     @Subscribe
     fun handleJobStateChangeEvent(event: JobStateChangeEvent) {
+        logger.info("Handling job state changes event.")
         val auth = getAuthentication()
         if (event.newState == JobState.Cancelled) {
-            GlobalScope.launch {
+            GlobalScope.launch(Dispatchers.IO) {
                 withAuth(auth) {
                     handleJobCanceled(event.job)
                 }
@@ -581,8 +582,10 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     fun handleJobCanceled(job: Job) {
-        for (task in taskDao.getAll(job.id, TaskState.Running)) {
-            killRunningTaskOnAnalyst(task, TaskState.Waiting, "Job canceled by ")
+        val tasks = taskDao.getAll(job.id, TaskState.Running)
+        logger.info("Killing ${tasks.size} tasks on job ${job.id} / ${job.name}")
+        tasks.forEach {
+            killRunningTaskOnAnalyst(it, TaskState.Waiting, "Job canceled by ")
         }
     }
 

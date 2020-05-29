@@ -1,7 +1,5 @@
 import os
 import pickle
-import tempfile
-import zipfile
 
 import numpy as np
 
@@ -51,10 +49,8 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
         Returns:
             KNeighborsClassifier: The model.
         """
-        model_zip = file_storage.projects.localize_file(self.app_model.file_id)
-        with zipfile.ZipFile(model_zip) as zfp:
-            zfp.extractall(path=tempfile.tempdir)
-        with open(os.path.join(tempfile.tempdir, 'model', 'face_classifier.pickle'), 'rb') as fp:
+        model_path = file_storage.models.install_model(self.app_model)
+        with open(os.path.join(model_path, 'face_classifier.pickle'), 'rb') as fp:
             face_classifier = pickle.load(fp)
         return face_classifier
 
