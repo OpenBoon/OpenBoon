@@ -1,5 +1,3 @@
-import zipfile
-import tempfile
 import os
 
 import numpy as np
@@ -31,10 +29,8 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         # get model by model id
         self.app_model = self.app.models.get_model(self.arg_value("model_id"))
 
-        model_zip = file_storage.projects.localize_file(self.app_model.file_id)
-
         # unzip and extract needed files for trained model and labels
-        self.trained_model, self.labels = self.extract_model(model_zip)
+        self.trained_model, self.labels = self.extract_model()
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -72,26 +68,20 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         result = [*zip(self.labels, proba)]
         return result
 
-    def extract_model(self, model_zip):
-        """ Extract then remove model info from a zip file
-
-        Args:
-            model_zip (str): model zip dir
+    def extract_model(self):
+        """Extract then remove model info from a zip file
 
         Returns:
             tuple: (Keras model instance, List[str] of labels)
         """
-        loc = tempfile.mkdtemp()
+        model_path = file_storage.models.install_model(self.app_model)
 
-        # extract all files
-        with zipfile.ZipFile(model_zip) as z:
-            z.extractall(path=loc)
+        # load dir as a model using keras
+        trained_model = load_model(model_path)
 
-        # load dir as a model
-        trained_model = load_model(os.path.join(loc, self.app_model.name))
         # labels.txt is always the name
         # create a list of labels from file labels.txt
-        with open(os.path.join(loc, self.app_model.name, "labels.txt")) as fp:
+        with open(os.path.join(model_path, "labels.txt")) as fp:
             labels = fp.read().splitlines()
 
         # return model and labels
