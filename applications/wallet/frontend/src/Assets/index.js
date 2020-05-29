@@ -47,7 +47,7 @@ const Assets = () => {
 
       const q = cleanup({ query })
 
-      const { data: { results } = {} } = withSWR(
+      const { data } = withSWR(
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useSWR(
           `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${from}&size=${SIZE}`,
@@ -59,6 +59,8 @@ const Assets = () => {
           },
         ),
       )
+
+      const { results } = data || {}
 
       if (!results) {
         if (offset > 0) return null
@@ -74,7 +76,8 @@ const Assets = () => {
     },
 
     // offset of next page
-    ({ data: { count } }, index) => {
+    ({ data }, index) => {
+      const { count } = data || {}
       const offset = (index + 1) * SIZE
       return offset < count ? index + 1 : null
     },
@@ -83,7 +86,9 @@ const Assets = () => {
     [query],
   )
 
-  const { data: { count: itemCount } = {} } = pageSWRs[0] || {}
+  const { data } = pageSWRs[0] || {}
+
+  const { count: itemCount } = data || {}
 
   const items = Array.isArray(pageSWRs)
     ? pageSWRs
