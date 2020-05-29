@@ -8,11 +8,9 @@ from projects.models import Project
 
 User = get_user_model()
 
-TIERS = (('essentials', 'Essentials'),
-         ('premier', 'Premier'))
-
 
 class Tier(models.TextChoices):
+    """Choices for the tier field in the Subscription model."""
     ESSENTIALS = 'essentials'
     PREMIER = 'premier'
 

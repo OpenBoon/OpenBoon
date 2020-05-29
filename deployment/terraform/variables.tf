@@ -69,15 +69,14 @@ variable "marketplace-credentials" {
   default = ""
 }
 
+variable "wallet-debug" {
+  description = "Turns Debug mode on for the Console/Wallet"
+  default = "false"
+}
 
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"
   zone   = "${var.country}-${var.region}-${var.zone}"
-}
-
-variable "wallet-debug" {
-  description = "Turns Debug mode on for the Console/Wallet"
-  default = "false"
 }
 
