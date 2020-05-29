@@ -25,6 +25,7 @@ def test_task(event_type=None, attrs=None, sleep=1):
     task = {
         "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
         "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
+        "projectId": "81C54046-6452-4669-BD71-719E9D5C2BBF",
         "name": "process_me",
         "state": 1,
         "logFile": "file:///%s" % tempfile.mktemp("logfile"),
@@ -195,3 +196,29 @@ class TestExecutor(unittest.TestCase):
                     break
         thread.join(5)
         time.sleep(2)
+
+    @patch("requests.post")
+    def test_model_cache_clear(self, post_patch):
+        task = test_task(sleep=1)
+        self.api.executor.run_task(task)
+        assert self.api.executor.previous_task["id"] == task["id"]
+
+        model_cache_dir = "/tmp/model-cache/{}".format(task["projectId"])
+        os.makedirs(model_cache_dir, exist_ok=True)
+
+        task2 = test_task(sleep=1)
+        task2["projectId"] = "AAAA4046-6452-4669-BD71-719E9D5C2BBF"
+        self.api.executor.run_task(task2)
+
+        assert not os.path.exists(model_cache_dir)
+
+    @patch("requests.post")
+    def test_model_cache_keep(self, post_patch):
+        task = test_task(sleep=1)
+        model_cache_dir = "/tmp/model-cache/{}".format(task["projectId"])
+        os.makedirs(model_cache_dir, exist_ok=True)
+
+        self.api.executor.previous_task = task
+        self.api.executor.run_task(task)
+
+        assert os.path.exists(model_cache_dir)

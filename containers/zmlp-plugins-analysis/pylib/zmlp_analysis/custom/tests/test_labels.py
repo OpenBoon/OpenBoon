@@ -1,5 +1,6 @@
 import logging
 import os
+import shutil
 from unittest.mock import patch
 
 from zmlp.app import ModelApp
@@ -13,6 +14,13 @@ logging.basicConfig()
 
 
 class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
+
+    def setUp(self):
+        try:
+            shutil.rmetrree("/tmp/model-cache/models_model-id-12345_foo_bar")
+        except Exception:
+            print("Didn't clear out model cache, this is ok.")
+
     ds_id = "ds-id-12345"
     model_id = "model-id-12345"
     base_dir = os.path.dirname(__file__)

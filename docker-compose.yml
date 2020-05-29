@@ -145,6 +145,7 @@ services:
     ports:
       - 5000:5000
     volumes:
+      - "/tmp:/tmp"
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
       ANALYST_DOCKER_PULL: "false"
