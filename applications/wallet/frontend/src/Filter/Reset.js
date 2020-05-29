@@ -21,9 +21,9 @@ const FilterReset = ({
     `/api/v1/projects/${projectId}/searches/fields/`,
   )
 
-  const options = filter.attribute
-    .split('.')
-    .reduce((acc, cur) => acc && acc[cur], fields)
+  const options =
+    filter.attribute.split('.').reduce((acc, cur) => acc && acc[cur], fields) ||
+    []
 
   return (
     <div
