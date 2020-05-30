@@ -85,7 +85,7 @@ class DataSetLabel:
         return {
             'dataSetId': self.dataset_id,
             'label': self.label,
-            'bbox': round_floats(self.bbox),
+            'bbox': self.bbox,
             'simhash': self.simhash
         }
 
