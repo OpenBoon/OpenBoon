@@ -28,6 +28,7 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
       accumulator[role] = true
       return accumulator
     }, {}),
+    isLoading: false,
     error: '',
   })
 
@@ -74,9 +75,9 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
             onClick={() =>
               onSubmit({ dispatch, projectId, userId: user.id, state })
             }
-            isDisabled={false}
+            isDisabled={state.isLoading}
           >
-            Save
+            {state.isLoading ? 'Saving...' : 'Save'}
           </Button>
         </ButtonGroup>
       </Form>
