@@ -1,7 +1,7 @@
 from enum import Enum
 
 from .base import BaseEntity
-from ..util import round_floats, as_id
+from ..util import as_id
 
 __all__ = [
     'DataSet',
