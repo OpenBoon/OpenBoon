@@ -6,6 +6,8 @@ export const onSubmit = async ({
   dispatch,
   state: { id, firstName, lastName },
 }) => {
+  dispatch({ isLoading: true })
+
   try {
     await fetcher(`/api/v1/users/${id}/`, {
       method: 'PATCH',
@@ -15,6 +17,7 @@ export const onSubmit = async ({
     dispatch({
       showForm: false,
       success: true,
+      isLoading: false,
       errors: {},
     })
 
@@ -27,6 +30,6 @@ export const onSubmit = async ({
       return acc
     }, {})
 
-    dispatch({ success: false, errors: parsedErrors })
+    dispatch({ success: false, isLoading: false, errors: parsedErrors })
   }
 }
