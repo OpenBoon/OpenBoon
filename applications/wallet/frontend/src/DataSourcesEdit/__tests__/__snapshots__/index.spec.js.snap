@@ -141,6 +141,7 @@ Array [
         "fileTypes": Object {
           "images": true,
         },
+        "isLoading": false,
         "modules": Array [
           "1810b623-4b95-11ea-8b23-0242ac120004",
         ],

@@ -46,7 +46,7 @@ describe('<ApiKeysAdd /> helpers', () => {
   })
 
   it('should display an error message with mismatching new passwords', async () => {
-    const mockFn = jest.fn()
+    const mockDispatch = jest.fn()
 
     fetch.mockRejectOnce({
       json: () =>
@@ -54,7 +54,7 @@ describe('<ApiKeysAdd /> helpers', () => {
     })
 
     await onSubmit({
-      dispatch: mockFn,
+      dispatch: mockDispatch,
       projectId: PROJECT_ID,
       state: {
         name: 'FooBarApiKey',
@@ -73,10 +73,9 @@ describe('<ApiKeysAdd /> helpers', () => {
       '/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/api_keys/',
     )
 
-    expect(mockFn).toHaveBeenCalledWith({
-      errors: {
-        name: 'This API key name is already in use.',
-      },
+    expect(mockDispatch).toHaveBeenCalledWith({
+      isLoading: false,
+      errors: { name: 'This API key name is already in use.' },
     })
   })
 })

@@ -18,6 +18,8 @@ import { fetcher } from '../Fetch/helpers'
 export const CURRENT_POLICIES_DATE = '20200414'
 
 export const onSubmit = async ({ dispatch, userId }) => {
+  dispatch({ isLoading: true })
+
   try {
     await fetcher(`/api/v1/users/${userId}/agreements/`, {
       method: 'POST',
@@ -30,6 +32,9 @@ export const onSubmit = async ({ dispatch, userId }) => {
       false,
     )
   } catch (response) {
-    dispatch({ errors: { global: 'Something went wrong. Please try again.' } })
+    dispatch({
+      isLoading: false,
+      errors: { global: 'Something went wrong. Please try again.' },
+    })
   }
 }
