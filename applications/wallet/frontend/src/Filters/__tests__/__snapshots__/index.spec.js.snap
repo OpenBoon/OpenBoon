@@ -2339,7 +2339,7 @@ Array [
           className="emotion-6"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
-          type="text"
+          type="search"
           value=""
         />
         <button

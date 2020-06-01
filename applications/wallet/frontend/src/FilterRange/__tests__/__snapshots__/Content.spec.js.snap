@@ -47,14 +47,43 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
 }
 
 .emotion-2 {
-  min-width: 76px;
-  background-color: #252525;
+  text-align: center;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
-  text-align: center;
+  border: 1px solid transparent;
   border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  width: 60%;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-2:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
 }
 
 <div>
@@ -124,26 +153,32 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
     <div
       className="emotion-6"
     >
-      <div
+      <label
         className="emotion-3"
       >
         MIN  
-        <div
+        <input
           className="emotion-2"
-        >
-          1
-        </div>
-      </div>
-      <div
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={1}
+        />
+      </label>
+      <label
         className="emotion-3"
       >
         MAX  
-        <div
+        <input
           className="emotion-2"
-        >
-          1
-        </div>
-      </div>
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={1.001}
+        />
+      </label>
     </div>
   </div>
 </div>
@@ -196,14 +231,43 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
 }
 
 .emotion-2 {
-  min-width: 76px;
-  background-color: #252525;
+  text-align: center;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
-  text-align: center;
+  border: 1px solid transparent;
   border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  width: 60%;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-2:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
 }
 
 <div>
@@ -279,26 +343,32 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
     <div
       className="emotion-6"
     >
-      <div
+      <label
         className="emotion-3"
       >
         MIN  
-        <div
+        <input
           className="emotion-2"
-        >
-          200 Bytes
-        </div>
-      </div>
-      <div
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={200}
+        />
+      </label>
+      <label
         className="emotion-3"
       >
         MAX  
-        <div
+        <input
           className="emotion-2"
-        >
-          7.8 KB
-        </div>
-      </div>
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={8000}
+        />
+      </label>
     </div>
   </div>
 </div>
@@ -351,14 +421,43 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
 }
 
 .emotion-2 {
-  min-width: 76px;
-  background-color: #252525;
+  text-align: center;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
-  text-align: center;
+  border: 1px solid transparent;
   border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  width: 60%;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-2:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
 }
 
 <div>
@@ -434,26 +533,32 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
     <div
       className="emotion-6"
     >
-      <div
+      <label
         className="emotion-3"
       >
         MIN  
-        <div
+        <input
           className="emotion-2"
-        >
-          200 Bytes
-        </div>
-      </div>
-      <div
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={200}
+        />
+      </label>
+      <label
         className="emotion-3"
       >
         MAX  
-        <div
+        <input
           className="emotion-2"
-        >
-          7.8 KB
-        </div>
-      </div>
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={8000}
+        />
+      </label>
     </div>
   </div>
 </div>
@@ -506,14 +611,43 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
 }
 
 .emotion-2 {
-  min-width: 76px;
-  background-color: #252525;
+  text-align: center;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
-  text-align: center;
+  border: 1px solid transparent;
   border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  width: 60%;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-2:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
 }
 
 <div>
@@ -589,26 +723,32 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
     <div
       className="emotion-6"
     >
-      <div
+      <label
         className="emotion-3"
       >
         MIN  
-        <div
+        <input
           className="emotion-2"
-        >
-          200 Bytes
-        </div>
-      </div>
-      <div
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={200}
+        />
+      </label>
+      <label
         className="emotion-3"
       >
         MAX  
-        <div
+        <input
           className="emotion-2"
-        >
-          7.8 KB
-        </div>
-      </div>
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={8000}
+        />
+      </label>
     </div>
   </div>
 </div>
@@ -661,14 +801,43 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
 }
 
 .emotion-2 {
-  min-width: 76px;
-  background-color: #252525;
+  text-align: center;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
-  text-align: center;
+  border: 1px solid transparent;
   border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  width: 60%;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-2:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
 }
 
 <div>
@@ -744,26 +913,32 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
     <div
       className="emotion-6"
     >
-      <div
+      <label
         className="emotion-3"
       >
         MIN  
-        <div
+        <input
           className="emotion-2"
-        >
-          180 Bytes
-        </div>
-      </div>
-      <div
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={180}
+        />
+      </label>
+      <label
         className="emotion-3"
       >
         MAX  
-        <div
+        <input
           className="emotion-2"
-        >
-          8.3 KB
-        </div>
-      </div>
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={8525}
+        />
+      </label>
     </div>
   </div>
 </div>
