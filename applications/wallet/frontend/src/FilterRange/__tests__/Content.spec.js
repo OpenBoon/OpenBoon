@@ -163,7 +163,13 @@ describe('<FilterRangeContent />', () => {
     act(() => {
       component.root
         .findByProps({ value: 50.5555 })
-        .props.onBlur({ target: { value: 50.5555 } })
+        .props.onKeyPress({ target: { value: 50.5555 }, key: 'Not Enter' })
+    })
+
+    act(() => {
+      component.root
+        .findByProps({ value: 50.5555 })
+        .props.onKeyPress({ target: { value: 50.5555 }, key: 'Enter' })
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(
@@ -249,7 +255,13 @@ describe('<FilterRangeContent />', () => {
     act(() => {
       component.root
         .findByProps({ value: 50.5555 })
-        .props.onBlur({ target: { value: 50.5555 } })
+        .props.onKeyPress({ target: { value: 50.5555 }, key: 'Not Enter' })
+    })
+
+    act(() => {
+      component.root
+        .findByProps({ value: 50.5555 })
+        .props.onKeyPress({ target: { value: 50.5555 }, key: 'Enter' })
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(

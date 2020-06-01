@@ -161,6 +161,7 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
           className="emotion-2"
           onBlur={[Function]}
           onChange={[Function]}
+          onKeyPress={[Function]}
           type="text"
           value={1}
         />
@@ -173,6 +174,7 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
           className="emotion-2"
           onBlur={[Function]}
           onChange={[Function]}
+          onKeyPress={[Function]}
           type="text"
           value={1.001}
         />
@@ -349,6 +351,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
           className="emotion-2"
           onBlur={[Function]}
           onChange={[Function]}
+          onKeyPress={[Function]}
           type="text"
           value={200}
         />
@@ -361,6 +364,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
           className="emotion-2"
           onBlur={[Function]}
           onChange={[Function]}
+          onKeyPress={[Function]}
           type="text"
           value={8000}
         />
@@ -537,6 +541,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
           className="emotion-2"
           onBlur={[Function]}
           onChange={[Function]}
+          onKeyPress={[Function]}
           type="text"
           value={200}
         />
@@ -549,6 +554,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
           className="emotion-2"
           onBlur={[Function]}
           onChange={[Function]}
+          onKeyPress={[Function]}
           type="text"
           value={8000}
         />
@@ -725,6 +731,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
           className="emotion-2"
           onBlur={[Function]}
           onChange={[Function]}
+          onKeyPress={[Function]}
           type="text"
           value={200}
         />
@@ -737,6 +744,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
           className="emotion-2"
           onBlur={[Function]}
           onChange={[Function]}
+          onKeyPress={[Function]}
           type="text"
           value={8000}
         />
@@ -913,6 +921,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
           className="emotion-2"
           onBlur={[Function]}
           onChange={[Function]}
+          onKeyPress={[Function]}
           type="text"
           value={180}
         />
@@ -925,6 +934,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
           className="emotion-2"
           onBlur={[Function]}
           onChange={[Function]}
+          onKeyPress={[Function]}
           type="text"
           value={8525}
         />

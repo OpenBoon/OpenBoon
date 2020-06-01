@@ -50,6 +50,66 @@ const FilterRangeContent = ({
   const [inputMin, setInputMin] = useState(rangeValues[0])
   const [inputMax, setInputMax] = useState(rangeValues[1])
 
+  const saveMinValue = ({ value }) => {
+    const newMin = parseValue({ value })
+
+    if (newMin === rangeValues[0]) return
+
+    if (newMin < domain[0] || newMin > rangeValues[1]) {
+      setInputMin(rangeValues[0])
+      return
+    }
+
+    setInputMin(newMin)
+
+    setRangeValues([newMin, rangeValues[1]])
+
+    dispatch({
+      action: ACTIONS.UPDATE_FILTER,
+      payload: {
+        projectId,
+        assetId,
+        filters,
+        updatedFilter: {
+          type,
+          attribute,
+          values: { min: newMin, max: rangeValues[1] },
+        },
+        filterIndex,
+      },
+    })
+  }
+
+  const saveMaxValue = ({ value }) => {
+    const newMax = parseValue({ value })
+
+    if (newMax === rangeValues[1]) return
+
+    if (newMax < rangeValues[0] || newMax > domain[1]) {
+      setInputMax(rangeValues[1])
+      return
+    }
+
+    setInputMax(newMax)
+
+    setRangeValues([rangeValues[0], newMax])
+
+    dispatch({
+      action: ACTIONS.UPDATE_FILTER,
+      payload: {
+        projectId,
+        assetId,
+        filters,
+        updatedFilter: {
+          type,
+          attribute,
+          values: { min: rangeValues[0], max: newMax },
+        },
+        filterIndex,
+      },
+    })
+  }
+
   return (
     <div>
       <FilterReset
@@ -145,34 +205,12 @@ const FilterRangeContent = ({
               }}
               value={inputMin}
               onChange={({ target: { value } }) => setInputMin(value)}
+              onKeyPress={({ target: { value }, key }) => {
+                if (key !== 'Enter') return
+                saveMinValue({ value })
+              }}
               onBlur={({ target: { value } }) => {
-                const newMin = parseValue({ value })
-
-                if (newMin === rangeValues[0]) return
-
-                if (newMin < domain[0] || newMin > rangeValues[1]) {
-                  setInputMin(rangeValues[0])
-                  return
-                }
-
-                setInputMin(newMin)
-
-                setRangeValues([newMin, rangeValues[1]])
-
-                dispatch({
-                  action: ACTIONS.UPDATE_FILTER,
-                  payload: {
-                    projectId,
-                    assetId,
-                    filters,
-                    updatedFilter: {
-                      type,
-                      attribute,
-                      values: { min: newMin, max: rangeValues[1] },
-                    },
-                    filterIndex,
-                  },
-                })
+                saveMinValue({ value })
               }}
             />
           </label>
@@ -206,34 +244,12 @@ const FilterRangeContent = ({
               }}
               value={inputMax}
               onChange={({ target: { value } }) => setInputMax(value)}
+              onKeyPress={({ target: { value }, key }) => {
+                if (key !== 'Enter') return
+                saveMaxValue({ value })
+              }}
               onBlur={({ target: { value } }) => {
-                const newMax = parseValue({ value })
-
-                if (newMax === rangeValues[1]) return
-
-                if (newMax < rangeValues[0] || newMax > domain[1]) {
-                  setInputMax(rangeValues[1])
-                  return
-                }
-
-                setInputMax(newMax)
-
-                setRangeValues([rangeValues[0], newMax])
-
-                dispatch({
-                  action: ACTIONS.UPDATE_FILTER,
-                  payload: {
-                    projectId,
-                    assetId,
-                    filters,
-                    updatedFilter: {
-                      type,
-                      attribute,
-                      values: { min: rangeValues[0], max: newMax },
-                    },
-                    filterIndex,
-                  },
-                })
+                saveMaxValue({ value })
               }}
             />
           </label>
