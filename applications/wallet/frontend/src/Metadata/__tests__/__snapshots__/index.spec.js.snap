@@ -1,23 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Metadata /> should render properly 1`] = `
-.emotion-1 {
-  padding: 16px;
-}
-
 .emotion-0 {
-  color: #73b61c;
-  font-style: italic;
+  padding: 16px;
+  color: #ffffff;
 }
 
 <div
-  className="emotion-1"
+  className="emotion-0"
 >
-  <div
-    className="emotion-0"
-  >
-    Select an asset to view its metadata
-  </div>
+  Select an asset to view its metadata
 </div>
 `;
 
@@ -200,18 +192,27 @@ Array [
 }
 
 .emotion-4:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #4a4a4a;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-4:first-of-type > div {
+  border-top: none;
 }
 
 .emotion-3 {
-  border-top: 1px solid #4a4a4a;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  border-top: 1px solid #3b3b3b;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+}
+
+.emotion-3:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
 }
 
 .emotion-3 h4 {
@@ -283,6 +284,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -309,6 +311,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -335,6 +338,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -361,6 +365,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -387,6 +392,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -413,6 +419,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -439,6 +446,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -465,6 +473,7 @@ Array [
     >
       <div
         className="emotion-3"
+        onClick={[Function]}
       >
         <button
           aria-label="Expand Section"
@@ -761,11 +770,13 @@ Array [
                 },
                 Object {
                   "checksum": 2001473853,
+                  "executionTime": 0,
                   "module": "standard",
                   "processor": "zmlp_core.office.importers.OfficeImporter",
                 },
                 Object {
                   "checksum": 3310423168,
+                  "executionTime": 0,
                   "module": "standard",
                   "processor": "zmlp_core.video.VideoImporter",
                 },

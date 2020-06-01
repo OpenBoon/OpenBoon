@@ -20,8 +20,8 @@ class Clip(
     @ApiModelProperty("The ending point of a clip.")
     val stop: Double,
 
-    @ApiModelProperty("An optional timeline name for the clip in case case multiple [ClipSpec] configurations collide.")
-    val timeline: String? = null
+    @ApiModelProperty("An optional track name for the clip in case case multiple [ClipSpec] configurations collide.")
+    val track: String? = null
 ) {
     init {
         if (stop - start < 0f) {
@@ -37,7 +37,7 @@ class Clip(
         0.01 * kotlin.math.round(x * 100.0)
     }
 
-    @ApiModelProperty("A unique identifier for a related set of clips on a specific timeline.  This can be overridden")
+    @ApiModelProperty("A unique identifier for a related set of clips on a specific track.  This can be overridden")
     var pile: String? = null
 
     @ApiModelProperty("The asset ID used for the clip source", hidden = true)
@@ -48,7 +48,7 @@ class Clip(
      *
      * - source asset id
      * - type
-     * - timeline
+     * - track
      *
      * If any of these values are null then they are skipped.
      */
@@ -59,7 +59,7 @@ class Clip(
         val digester = MessageDigest.getInstance("SHA")
         digester.update(assetId.toByteArray())
         digester.update(type.toByteArray())
-        timeline?.let {
+        track?.let {
             digester.update(it.toByteArray())
         }
         sourceAssetId = assetId

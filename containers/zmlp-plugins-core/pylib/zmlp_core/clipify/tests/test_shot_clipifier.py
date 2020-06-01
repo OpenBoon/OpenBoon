@@ -29,7 +29,7 @@ class ShotDetectionVideoClipifierTests(PluginUnitTestCase):
 
         # Set preconditions
         frame.asset.set_attr('media.type', 'video')
-        frame.asset.set_attr('clip.timeline', 'full')
+        frame.asset.set_attr('clip.track', 'full')
         frame.asset.set_attr('files', [proxy])
 
         processor = self.init_processor(ShotDetectionVideoClipifier(), {})
@@ -54,7 +54,7 @@ class ShotDetectionVideoClipifierTests(PluginUnitTestCase):
 
         # Set preconditions
         frame.asset.set_attr('media.type', 'video')
-        frame.asset.set_attr('clip.timeline', 'full')
+        frame.asset.set_attr('clip.track', 'full')
         frame.asset.set_attr('files', [proxy])
         file_storage.cache.precache_file(StoredFile(proxy), video_path)
 

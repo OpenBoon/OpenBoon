@@ -2,14 +2,14 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
 import filterShape from '../Filter/shape'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
-import FiltersSearch from '../Filters/Search'
+import FilterSearch from '../Filter/Search'
 
 import FilterLabelConfidenceSlider from './Slider'
 
@@ -22,6 +22,7 @@ const FilterLabelConfidenceContent = ({
     type,
     attribute,
     values: { labels = [], min = 0.0, max = 1.0 },
+    isDisabled,
   },
   filterIndex,
 }) => {
@@ -55,7 +56,7 @@ const FilterLabelConfidenceContent = ({
         filter={filter}
         filterIndex={filterIndex}
       />
-      <FiltersSearch
+      <FilterSearch
         placeholder="Search labels"
         searchString={searchString}
         onChange={({ value }) => {
@@ -71,7 +72,7 @@ const FilterLabelConfidenceContent = ({
           color: colors.structure.zinc,
         }}
       >
-        <div>KEYWORD</div>
+        <div>LABEL</div>
         <div>COUNT</div>
       </div>
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
@@ -136,7 +137,7 @@ const FilterLabelConfidenceContent = ({
                       css={{
                         width: `${offset}%`,
                         borderTop:
-                          !isSelected && hasSelections
+                          isDisabled || (!isSelected && hasSelections)
                             ? constants.borders.unselectedFacet
                             : constants.borders.facet,
                       }}
@@ -154,6 +155,9 @@ const FilterLabelConfidenceContent = ({
                       display: 'flex',
                       justifyContent: 'space-between',
                       padding: spacing.base,
+                      fontFamily: 'Roboto Mono',
+                      fontSize: typography.size.small,
+                      lineHeight: typography.height.small,
                     }}
                   >
                     <div>{key}</div>

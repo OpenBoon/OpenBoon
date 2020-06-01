@@ -1,3 +1,0 @@
-
-ALTER TABLE module ADD COLUMN str_type TEXT NOT NULL DEFAULT 'Machine Learning';
-ALTER TABLE module ADD COLUMN bool_standard BOOLEAN NOT NULL DEFAULT 't';

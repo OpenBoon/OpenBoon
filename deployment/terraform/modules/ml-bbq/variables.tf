@@ -4,6 +4,9 @@ variable "image-pull-secret" {
 variable "auth-server-url" {
 }
 
+variable "container-cluster-name" {
+}
+
 variable "container-tag" {
   default = "latest"
 }
@@ -22,14 +25,6 @@ variable "cpu-request" {
 
 variable "cpu-limit" {
   default = 3
-}
-
-variable "minimum-replicas" {
-  default = 1
-}
-
-variable "maximum-replicas" {
-  default = 2
 }
 
 variable "rollout-strategy" {

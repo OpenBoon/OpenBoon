@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types'
 
-import useLocalStorage from '../LocalStorage'
+import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import { zIndex } from '../Styles'
 
@@ -16,7 +16,7 @@ const Resizeable = ({
   onMouseUp,
   children,
 }) => {
-  const [width, setWidth] = useLocalStorage({
+  const [width, setWidth] = useLocalStorageState({
     key: storageName,
     initialValue: minWidth,
   })

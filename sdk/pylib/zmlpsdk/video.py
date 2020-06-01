@@ -129,7 +129,7 @@ class ShotBasedClipGenerator(VideoClipGenerator):
 
 class VideoClip:
     """
-    A VideoClip describes a section of a video timeline.
+    A VideoClip describes a section of a video track.
 
     Attributes:
         length (float): The length of the clip.
@@ -259,7 +259,7 @@ def check_video_clip_preconditions(asset):
         return False
 
     # Only full videos can be clipped
-    if asset.get_attr('clip.timeline') != 'full':
+    if asset.get_attr('clip.track') != 'full':
         return False
 
     if not get_proxy_level_path(asset, 3, "video/"):
@@ -268,7 +268,7 @@ def check_video_clip_preconditions(asset):
     return True
 
 
-def make_video_clip_expand_frame(asset, time_in, time_out, timeline):
+def make_video_clip_expand_frame(asset, time_in, time_out, track):
     """
     Make an FileImport wrapped in an ExpandFrame that can be
     emitted back to the archivist using the parent asset and given clip
@@ -278,12 +278,12 @@ def make_video_clip_expand_frame(asset, time_in, time_out, timeline):
         asset (Asset): The parent asset.
         time_in (float): The start time of the clip.
         time_out (float): The stop time of the clip.
-        timeline (str): The name of the timeline.
+        track (str): The name of the track.
 
     Returns:
 
     """
-    clip = Clip.scene(time_in, time_out, timeline)
+    clip = Clip.scene(time_in, time_out, track)
     file_import = FileImport("asset:{}".format(asset.id), clip=clip)
     # Copy media onto the new asset since it's going to be
     # exactly the same.

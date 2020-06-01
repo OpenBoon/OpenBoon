@@ -10,7 +10,7 @@ const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
-jest.mock('../../Filters/Reset', () => 'FiltersReset')
+jest.mock('../../Filter/Reset', () => 'FilterReset')
 
 describe('<FiltersContent />', () => {
   it('should render the "Exists" filter', () => {

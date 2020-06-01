@@ -27,7 +27,7 @@ class TimeBasedVideoClipifierTests(PluginUnitTestCase):
         frame = Frame(TestAsset(video_path))
         # Set preconditions
         frame.asset.set_attr('media.type', 'video')
-        frame.asset.set_attr('clip.timeline', 'full')
+        frame.asset.set_attr('clip.track', 'full')
         frame.asset.set_attr('clip.stop', float(100))
         frame.asset.set_attr('files', [proxy])
         file_storage.cache.precache_file(StoredFile(proxy), video_path)

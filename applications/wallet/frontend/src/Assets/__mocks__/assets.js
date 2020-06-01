@@ -61,6 +61,26 @@ const assets = {
       thumbnailUrl:
         'https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/',
     },
+    {
+      assetStyle: 'video',
+      id: 'srL8ob5cTpCJjYoKkqqfa2ciyG425dGi',
+      metadata: {
+        source: {
+          checksum: 2431356942,
+          extension: 'mp4',
+          filename: 'FatManOnABike1914.mp4',
+          filesize: 13168719,
+          mimetype: 'video/mp4',
+          path:
+            'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/mp4/FatManOnABike1914.mp4',
+        },
+      },
+      thumbnailUrl:
+        'https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/',
+      videoLength: 144.45,
+      videoProxyUrl:
+        'https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/',
+    },
   ],
 }
 

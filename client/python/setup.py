@@ -19,7 +19,7 @@ requirements = [
 
 setup(
     name='zmlp',
-    version=open("VERSION").read().strip(),
+    version="1.0.1",
     description='ZMLP Python Client',
     url='https://www.zorroa.com',
     license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',

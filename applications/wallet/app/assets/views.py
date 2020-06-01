@@ -17,7 +17,7 @@ def asset_modifier(request, item):
     if '_source' in item:
         item['id'] = item['_id']
         item['metadata'] = item['_source']
-        # We don't need to be passing around the data we just duplicated
+        # No need to be passing around the data we just duplicated
         del(item['_id'])
         del(item['_source'])
     else:
@@ -63,7 +63,7 @@ class AssetViewSet(BaseProjectViewSet):
         images anywhere it finds a "bbox" key. When a bbox key is found an image that represents
         that box is generated and added to the metadata next to the "bbox" key as "b64_image".
         By default the entire "analysis" section is returned but the query param "attr" can be
-        used to return only a specific section of the metadata.
+        used to return a specific section of the metadata.
 
         Available Query Params:
 

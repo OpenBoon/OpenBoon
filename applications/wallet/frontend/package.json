@@ -84,7 +84,7 @@
     {
       "//": "main runtime",
       "path": ".next/static/runtime/main**.js",
-      "maxSize": "6 kB"
+      "maxSize": "7 kB"
     },
     {
       "//": "error page",
@@ -109,10 +109,11 @@
     "@svgr/webpack": "5.4.0",
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "body-scroll-lock": "3.0.2",
+    "deep-filter": "1.0.2",
     "dotenv": "8.2.0",
     "focus-visible": "5.1.0",
     "jwt-decode": "2.2.0",
-    "next": "9.3.6",
+    "next": "9.4.2",
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-aria-modal": "4.0.0",
@@ -123,34 +124,35 @@
     "react-virtualized-auto-sizer": "1.0.2",
     "react-window": "1.8.5",
     "react-window-infinite-loader": "1.0.5",
-    "swr": "0.2.0",
+    "swr": "0.2.2",
     "utf8": "3.0.0"
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
     "babel-jest": "26.0.1",
+    "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-macros": "2.8.0",
     "bundlesize": "0.18.0",
-    "eslint": "7.0.0",
+    "eslint": "7.1.0",
     "eslint-config-airbnb": "18.1.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-emotion": "10.0.27",
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.19.0",
-    "eslint-plugin-react-hooks": "4.0.0",
+    "eslint-plugin-react": "7.20.0",
+    "eslint-plugin-react-hooks": "4.0.2",
     "esm": "3.2.25",
     "express": "4.17.1",
-    "http-proxy-middleware": "1.0.3",
+    "http-proxy-middleware": "1.0.4",
     "husky": "4.2.5",
     "import-all.macro": "3.0.0",
     "jest": "26.0.1",
     "jest-emotion": "10.0.32",
     "jest-fetch-mock": "3.0.3",
-    "lint-staged": "10.2.2",
+    "lint-staged": "10.2.6",
     "morgan": "1.10.0",
     "prettier": "2.0.5",
     "react-test-renderer": "16.13.1",
-    "webpack-bundle-analyzer": "3.7.0"
+    "webpack-bundle-analyzer": "3.8.0"
   }
 }
