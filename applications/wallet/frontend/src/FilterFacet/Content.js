@@ -4,11 +4,11 @@ import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
-import FiltersReset from '../Filters/Reset'
-import FiltersSearch from '../Filters/Search'
+import FilterReset from '../Filter/Reset'
+import FilterSearch from '../Filter/Search'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 
@@ -23,6 +23,7 @@ const FilterFacet = ({
     type,
     attribute,
     values: { facets = [] },
+    isDisabled,
   },
   filterIndex,
 }) => {
@@ -49,7 +50,7 @@ const FilterFacet = ({
 
   return (
     <>
-      <FiltersReset
+      <FilterReset
         projectId={projectId}
         assetId={assetId}
         filters={filters}
@@ -58,7 +59,7 @@ const FilterFacet = ({
         onReset={noop}
       />
       <div css={{ height: spacing.moderate }} />
-      <FiltersSearch
+      <FilterSearch
         placeholder="Search facets"
         searchString={searchString}
         onChange={({ value }) => {
@@ -74,7 +75,7 @@ const FilterFacet = ({
           color: colors.structure.zinc,
         }}
       >
-        <div>KEYWORD</div>
+        <div>LABEL</div>
         <div>COUNT</div>
       </div>
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
@@ -137,7 +138,7 @@ const FilterFacet = ({
                       css={{
                         width: `${offset}%`,
                         borderTop:
-                          !isSelected && hasSelections
+                          isDisabled || (!isSelected && hasSelections)
                             ? constants.borders.unselectedFacet
                             : constants.borders.facet,
                       }}
@@ -155,6 +156,9 @@ const FilterFacet = ({
                       display: 'flex',
                       justifyContent: 'space-between',
                       padding: spacing.base,
+                      fontFamily: 'Roboto Mono',
+                      fontSize: typography.size.small,
+                      lineHeight: typography.height.small,
                     }}
                   >
                     <div>{key}</div>

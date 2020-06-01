@@ -37,7 +37,9 @@ enum class LogAction {
     SCAN,
     DECRYPT,
     SIGN_FOR_WRITE,
-    SIGN_FOR_READ
+    SIGN_FOR_READ,
+    ENABLE,
+    DISABLE
 }
 
 /**
@@ -60,7 +62,10 @@ enum class LogObject {
     PIPELINE_MODULE,
     API_KEY,
     CREDENTIALS,
-    DATASET
+    DATASET,
+    CLUSTER_SNAPSHOT,
+    CLUSTER_SNAPSHOT_POLICY,
+    CLUSTER_REPOSITORY
 }
 
 /**

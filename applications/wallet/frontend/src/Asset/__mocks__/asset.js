@@ -40,11 +40,13 @@ const asset = {
           processor: 'zmlp_core.office.importers.OfficeImporter',
           module: 'standard',
           checksum: 2001473853,
+          executionTime: 0,
         },
         {
           processor: 'zmlp_core.video.VideoImporter',
           module: 'standard',
           checksum: 3310423168,
+          executionTime: 0,
         },
         {
           processor: 'zmlp_core.core.processors.AssertAttributesProcessor',

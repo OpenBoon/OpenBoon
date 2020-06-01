@@ -411,30 +411,37 @@ describe('<Filters />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    // Expand Analysis Section
+    // Filter the fields
     act(() => {
       component.root
-        .findAllByProps({ 'aria-label': 'Expand Section' })[0]
+        .findByProps({ placeholder: 'Search metadata filters' })
+        .props.onChange({ target: { value: 'e' } })
+    })
+
+    // Expand Clip Section
+    act(() => {
+      component.root
+        .findAllByProps({ 'aria-label': 'Expand Section' })[2]
         .props.onClick({ preventDefault: noop })
     })
 
     // enable first checkbox
     act(() => {
       component.root
-        .findByProps({ value: 'analysis.zvi.tinyProxy' })
+        .findByProps({ value: 'clip.length' })
         .props.onClick({ preventDefault: noop })
     })
 
     // enable then disable second checkbox
     act(() => {
       component.root
-        .findByProps({ value: 'analysis.zvi-image-similarity.simhash' })
+        .findByProps({ value: 'clip.pile' })
         .props.onClick({ preventDefault: noop })
     })
 
     act(() => {
       component.root
-        .findByProps({ value: 'analysis.zvi-image-similarity.simhash' })
+        .findByProps({ value: 'clip.pile' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -454,15 +461,15 @@ describe('<Filters />', () => {
           query: btoa(
             JSON.stringify([
               {
-                type: 'facet',
-                attribute: 'analysis.zvi.tinyProxy',
+                type: 'range',
+                attribute: 'clip.length',
                 values: {},
               },
             ]),
           ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoiYW5hbHlzaXMuenZpLnRpbnlQcm94eSIsInZhbHVlcyI6e319XQ==',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InJhbmdlIiwiYXR0cmlidXRlIjoiY2xpcC5sZW5ndGgiLCJ2YWx1ZXMiOnt9fV0=',
     )
   })
 

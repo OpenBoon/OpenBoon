@@ -32,6 +32,10 @@ resource "google_project_service" "service-usage" {
 }
 
 resource "google_container_cluster" "primary" {
+  lifecycle {
+    prevent_destroy = true
+  }
+
   name               = "zmlp"
   location           = var.zone
   cluster_ipv4_cidr  = "10.0.0.0/14"
@@ -82,5 +86,12 @@ resource "google_container_node_pool" "default" {
     }
   }
   depends_on = [google_container_cluster.primary]
+  lifecycle {
+    ignore_changes = [
+      initial_node_count,
+      autoscaling[0].min_node_count,
+      autoscaling[0].max_node_count
+    ]
+  }
 }
 

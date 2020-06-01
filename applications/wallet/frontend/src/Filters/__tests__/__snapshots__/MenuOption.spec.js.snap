@@ -12,8 +12,11 @@ exports[`<FiltersMenuOption /> should render properly 1`] = `
 
 .emotion-7 {
   padding: 8px;
-  color: #b3b3b3;
   margin-left: -32px;
+}
+
+.emotion-7:hover {
+  background-color: #027aff38;
 }
 
 .emotion-6 {
@@ -87,8 +90,9 @@ exports[`<FiltersMenuOption /> should render properly 1`] = `
 
 .emotion-4 {
   color: #b3b3b3;
-  font-size: 15px;
-  line-height: 19px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 <div

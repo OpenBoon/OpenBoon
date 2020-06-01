@@ -104,4 +104,14 @@ class ApiKeyController(
     fun findAll(): List<ApiKey> {
         return apiKeyService.findAll()
     }
+
+    @PostMapping("/auth/v1/apikey/_enable_project/{projectId}")
+    fun enabledProject(@PathVariable projectId: UUID) {
+        return apiKeyService.updateEnabledByProject(projectId, true)
+    }
+
+    @PostMapping("/auth/v1/apikey/_disable_project/{projectId}")
+    fun disableProject(@PathVariable projectId: UUID) {
+        return apiKeyService.updateEnabledByProject(projectId, false)
+    }
 }

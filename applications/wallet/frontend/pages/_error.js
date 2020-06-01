@@ -22,6 +22,10 @@ MyError.getInitialProps = async ({ res, err, asPath }) => {
   // getInitialProps has run
   errorInitialProps.hasGetInitialPropsRun = true
 
+  if (errorInitialProps.statusCode === 404) {
+    return errorInitialProps
+  }
+
   if (err) {
     // Running on the client (browser).
     //

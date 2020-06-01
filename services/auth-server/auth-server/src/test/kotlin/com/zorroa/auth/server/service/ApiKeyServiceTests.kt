@@ -44,6 +44,34 @@ class ApiKeyServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testApiKeyUpdateEnabled() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead)
+        )
+        var key = apiKeyService.create(spec)
+        assertEquals(true, key.enabled)
+        apiKeyService.updateEnabled(key, false)
+        val newKey = apiKeyService.get(key.id)
+        assertEquals(false, newKey.enabled)
+    }
+
+    @Test
+    fun testProjectApiKeysUpdateEnabled() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead)
+        )
+
+        var key = apiKeyService.create(spec)
+        apiKeyService.updateEnabledByProject(key.projectId, false)
+
+        val findAll = apiKeyService.findAll()
+        assertEquals(false, findAll[0].enabled)
+        assertEquals(false, findAll[1].enabled)
+    }
+
+    @Test
     fun testGet() {
         val spec = ApiKeySpec(
             "test",
@@ -118,9 +146,12 @@ class ApiKeyServiceTests : AbstractTest() {
         apiKeyService.create(ApiKeySpec("try2", setOf(Permission.AssetsRead)))
         apiKeyService.create(ApiKeySpec("try3", setOf(Permission.AssetsRead)))
 
-        val keys = apiKeyService.search(ApiKeyFilter(
-            namePrefixes = listOf("test"),
-            names = listOf("test1")))
+        val keys = apiKeyService.search(
+            ApiKeyFilter(
+                namePrefixes = listOf("test"),
+                names = listOf("test1")
+            )
+        )
 
         assertEquals(1, keys.list.size)
     }
@@ -131,9 +162,12 @@ class ApiKeyServiceTests : AbstractTest() {
         val create1 = apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
         val create2 = apiKeyService.create(ApiKeySpec("try1", setOf(Permission.AssetsRead)))
 
-        val keys = apiKeyService.search(ApiKeyFilter(
-            ids = listOf(create1.id),
-            names = listOf(create2.name)))
+        val keys = apiKeyService.search(
+            ApiKeyFilter(
+                ids = listOf(create1.id),
+                names = listOf(create2.name)
+            )
+        )
 
         assertEquals(0, keys.list.size)
     }
