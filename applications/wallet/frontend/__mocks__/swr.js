@@ -10,10 +10,26 @@ export const SWRConfig = ({ children, ...rest }) =>
   createElement('SWRConfig', rest, children)
 
 /**
- * unmock
+ * pagesSWRs
  */
 
-export const { useSWRPages } = jest.requireActual('swr')
+const { useSWRPages: actualUseSWRPages } = jest.requireActual('swr')
+
+let mockPageSWRs = []
+
+export const __setPageSWRs = (data) => {
+  mockPageSWRs = data
+}
+
+export const useSWRPages = (key, component, offset, deps) => {
+  const { pages, loadMore } = actualUseSWRPages(key, component, offset, deps)
+
+  return {
+    pages,
+    pageSWRs: mockPageSWRs,
+    loadMore,
+  }
+}
 
 /**
  * cache

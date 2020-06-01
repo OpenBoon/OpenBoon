@@ -119,21 +119,16 @@ exports[`<Visualizer /> should render properly 1`] = `
 }
 
 .emotion-4 {
-  height: 36px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
   font-family: Roboto Condensed;
   font-size: 15px;
   line-height: 19px;
   background-color: #252525;
   color: #808080;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-left: 8px;
 }
 
 .emotion-7 {
@@ -529,21 +524,16 @@ exports[`<Visualizer /> should render selected asset 1`] = `
 }
 
 .emotion-4 {
-  height: 36px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
   font-family: Roboto Condensed;
   font-size: 15px;
   line-height: 19px;
   background-color: #252525;
   color: #808080;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-left: 8px;
 }
 
 .emotion-7 {

@@ -11,21 +11,16 @@ exports[`<Assets /> should render properly 1`] = `
 }
 
 .emotion-0 {
-  height: 36px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
   font-family: Roboto Condensed;
   font-size: 15px;
   line-height: 19px;
   background-color: #252525;
   color: #808080;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-left: 8px;
 }
 
 .emotion-3 {
@@ -157,6 +152,7 @@ exports[`<Assets /> should render properly 1`] = `
   <div
     className="emotion-0"
   >
+    574
      Assets
   </div>
   <div
@@ -209,21 +205,16 @@ exports[`<Assets /> should render properly 2`] = `
 }
 
 .emotion-0 {
-  height: 36px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
   font-family: Roboto Condensed;
   font-size: 15px;
   line-height: 19px;
   background-color: #252525;
   color: #808080;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-left: 8px;
 }
 
 .emotion-3 {
@@ -355,6 +346,7 @@ exports[`<Assets /> should render properly 2`] = `
   <div
     className="emotion-0"
   >
+    574
      Assets
   </div>
   <div
@@ -407,21 +399,16 @@ exports[`<Assets /> should render properly 3`] = `
 }
 
 .emotion-0 {
-  height: 36px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
   font-family: Roboto Condensed;
   font-size: 15px;
   line-height: 19px;
   background-color: #252525;
   color: #808080;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-left: 8px;
 }
 
 .emotion-3 {
@@ -553,6 +540,7 @@ exports[`<Assets /> should render properly 3`] = `
   <div
     className="emotion-0"
   >
+    574
      Assets
   </div>
   <div
@@ -619,21 +607,16 @@ exports[`<Assets /> should render properly while loading 1`] = `
 }
 
 .emotion-0 {
-  height: 36px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
   font-family: Roboto Condensed;
   font-size: 15px;
   line-height: 19px;
   background-color: #252525;
   color: #808080;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-left: 8px;
 }
 
 .emotion-3 {

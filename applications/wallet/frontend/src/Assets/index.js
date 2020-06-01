@@ -19,6 +19,7 @@ import AssetsThumbnail from './Thumbnail'
 
 const SIZE = 100
 const PADDING_SIZE = spacing.small
+const COUNT_SPACING = 20
 
 /* istanbul ignore next */
 const Assets = () => {
@@ -134,15 +135,13 @@ const Assets = () => {
     >
       <div
         css={{
-          height: 36,
+          alignItems: 'center',
+          padding: spacing.base,
           fontFamily: 'Roboto Condensed',
           fontSize: typography.size.regular,
           lineHeight: typography.height.regular,
           backgroundColor: colors.structure.lead,
           color: colors.structure.steel,
-          display: 'flex',
-          alignItems: 'center',
-          paddingLeft: spacing.base,
         }}
       >
         {itemCount} Assets
@@ -196,7 +195,7 @@ const Assets = () => {
                   rowHeight={adjustedThumbnailSize}
                   rowCount={rowCount}
                   width={width}
-                  height={height - PADDING_SIZE / 2}
+                  height={height - COUNT_SPACING - PADDING_SIZE / 2}
                   innerElementType={forwardRef(
                     ({ style, ...rest }, elementRef) => (
                       <div
