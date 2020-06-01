@@ -169,6 +169,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
 }
 
 .emotion-5 {
+  margin-left: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -542,6 +543,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
 }
 
 .emotion-8 {
+  margin-left: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

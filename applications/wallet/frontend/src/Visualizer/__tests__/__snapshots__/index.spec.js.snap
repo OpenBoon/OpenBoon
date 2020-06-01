@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Visualizer /> should render properly 1`] = `
-.emotion-16 {
+.emotion-17 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-15 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -109,7 +109,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   background-color: #252525;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -118,7 +118,25 @@ exports[`<Visualizer /> should render properly 1`] = `
   box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-6 {
+.emotion-4 {
+  height: 36px;
+  font-family: Roboto Condensed;
+  font-size: 15px;
+  line-height: 19px;
+  background-color: #252525;
+  color: #808080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 8px;
+}
+
+.emotion-7 {
   position: absolute;
   bottom: 16px;
   right: 16px;
@@ -137,7 +155,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding-right: 8px;
 }
 
-.emotion-4 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -172,24 +190,24 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-4:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-4:hover {
+.emotion-5:hover {
   color: #73b61c;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -224,24 +242,24 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   color: #73b61c;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-14 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -249,7 +267,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-13 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -260,17 +278,17 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding-left: 1px;
 }
 
-.emotion-9 {
+.emotion-10 {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
 <div
-  className="emotion-16"
+  className="emotion-17"
 >
   <div
-    className="emotion-15"
+    className="emotion-16"
   >
     <div
       className="emotion-3"
@@ -296,8 +314,13 @@ exports[`<Visualizer /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-7"
+      className="emotion-8"
     >
+      <div
+        className="emotion-4"
+      >
+         Assets
+      </div>
       <div
         style={
           Object {
@@ -308,12 +331,12 @@ exports[`<Visualizer /> should render properly 1`] = `
         }
       />
       <div
-        className="emotion-6"
+        className="emotion-7"
       >
         <button
           aria-disabled={true}
           aria-label="Zoom Out"
-          className="emotion-4"
+          className="emotion-5"
           onClick={[Function]}
           type="button"
         >
@@ -324,7 +347,7 @@ exports[`<Visualizer /> should render properly 1`] = `
         </button>
         <button
           aria-label="Zoom In"
-          className="emotion-5"
+          className="emotion-6"
           onClick={[Function]}
           type="button"
         >
@@ -336,10 +359,10 @@ exports[`<Visualizer /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-15"
     >
       <div
-        className="emotion-13"
+        className="emotion-14"
       >
         <button
           aria-label="Asset Metadata"
@@ -361,7 +384,7 @@ exports[`<Visualizer /> should render properly 1`] = `
         >
           <svg
             aria-hidden={true}
-            className="emotion-9"
+            className="emotion-10"
             data-file-name="upload.svg"
             width={20}
           />
@@ -388,7 +411,7 @@ exports[`<Visualizer /> should render properly 1`] = `
 `;
 
 exports[`<Visualizer /> should render selected asset 1`] = `
-.emotion-16 {
+.emotion-17 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -407,7 +430,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   flex-direction: column;
 }
 
-.emotion-15 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -496,7 +519,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   background-color: #252525;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -505,7 +528,25 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-6 {
+.emotion-4 {
+  height: 36px;
+  font-family: Roboto Condensed;
+  font-size: 15px;
+  line-height: 19px;
+  background-color: #252525;
+  color: #808080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 8px;
+}
+
+.emotion-7 {
   position: absolute;
   bottom: 16px;
   right: 16px;
@@ -524,7 +565,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding-right: 8px;
 }
 
-.emotion-4 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -559,24 +600,24 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding: 8px;
 }
 
-.emotion-4:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-4:hover {
+.emotion-5:hover {
   color: #73b61c;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -611,24 +652,24 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding: 8px;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   color: #73b61c;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-14 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -636,7 +677,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-13 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -647,17 +688,17 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding-left: 1px;
 }
 
-.emotion-9 {
+.emotion-10 {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
 <div
-  className="emotion-16"
+  className="emotion-17"
 >
   <div
-    className="emotion-15"
+    className="emotion-16"
   >
     <div
       className="emotion-3"
@@ -683,8 +724,13 @@ exports[`<Visualizer /> should render selected asset 1`] = `
       </div>
     </div>
     <div
-      className="emotion-7"
+      className="emotion-8"
     >
+      <div
+        className="emotion-4"
+      >
+         Assets
+      </div>
       <div
         style={
           Object {
@@ -695,12 +741,12 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         }
       />
       <div
-        className="emotion-6"
+        className="emotion-7"
       >
         <button
           aria-disabled={true}
           aria-label="Zoom Out"
-          className="emotion-4"
+          className="emotion-5"
           onClick={[Function]}
           type="button"
         >
@@ -711,7 +757,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         </button>
         <button
           aria-label="Zoom In"
-          className="emotion-5"
+          className="emotion-6"
           onClick={[Function]}
           type="button"
         >
@@ -723,10 +769,10 @@ exports[`<Visualizer /> should render selected asset 1`] = `
       </div>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-15"
     >
       <div
-        className="emotion-13"
+        className="emotion-14"
       >
         <button
           aria-label="Asset Metadata"
@@ -748,7 +794,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         >
           <svg
             aria-hidden={true}
-            className="emotion-9"
+            className="emotion-10"
             data-file-name="upload.svg"
             width={20}
           />

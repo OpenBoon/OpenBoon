@@ -26,6 +26,7 @@ const PanelContent = ({
     >
       <div
         css={{
+          marginLeft: 1,
           display: 'flex',
           flexDirection: 'column',
           height: '100%',

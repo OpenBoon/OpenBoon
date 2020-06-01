@@ -5,7 +5,7 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeGrid } from 'react-window'
 
-import { spacing, constants } from '../Styles'
+import { colors, spacing, constants, typography } from '../Styles'
 
 import { cleanup } from '../Filters/helpers'
 import { useLocalStorageReducer } from '../LocalStorage/helpers'
@@ -132,6 +132,21 @@ const Assets = () => {
         boxShadow: constants.boxShadows.assets,
       }}
     >
+      <div
+        css={{
+          height: 36,
+          fontFamily: 'Roboto Condensed',
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
+          backgroundColor: colors.structure.lead,
+          color: colors.structure.steel,
+          display: 'flex',
+          alignItems: 'center',
+          paddingLeft: spacing.base,
+        }}
+      >
+        {itemCount} Assets
+      </div>
       {pages}
       <AutoSizer>
         {({ height, width }) => (
