@@ -141,20 +141,14 @@ describe('<FilterFacetContent />', () => {
     )
   })
 
-  it('should render with no buckets', () => {
+  it('should render with no data', () => {
     const filter = {
       attribute: 'location.city',
       type: 'facet',
       values: {},
     }
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        results: {
-          buckets: [],
-        },
-      },
-    })
+    require('swr').__setMockUseSWRResponse({})
 
     const component = TestRenderer.create(
       <FilterFacetContent

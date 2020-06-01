@@ -30,6 +30,7 @@ export const cache = {
     return mockCacheKeys
   },
   clear: () => {},
+  delete: () => {},
 }
 
 /**
