@@ -27,6 +27,8 @@ export const onSubmit = async ({
   dataSourceId,
   state: { name, uri, fileTypes, modules, credentials },
 }) => {
+  dispatch({ isLoading: true })
+
   try {
     await fetcher(
       `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/`,
@@ -55,11 +57,12 @@ export const onSubmit = async ({
         return acc
       }, {})
 
-      dispatch({ errors: parsedErrors })
+      dispatch({ isLoading: false, errors: parsedErrors })
 
       window.scrollTo(0, 0)
     } catch (error) {
       dispatch({
+        isLoading: false,
         errors: { global: 'Something went wrong. Please try again.' },
       })
     }

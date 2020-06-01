@@ -2,8 +2,7 @@ import os
 import tempfile
 import pickle
 
-from zmlpsdk import AssetProcessor, Argument
-from ..utils.models import upload_model_directory
+from zmlpsdk import AssetProcessor, Argument, file_storage
 
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
@@ -105,8 +104,6 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
         with open(os.path.join(model_dir, 'face_classifier.pickle'), 'wb') as fp:
             pickle.dump(classifier, fp)
 
-        upload_model_directory(model_dir, self.app_model.file_id)
-
-        pmod = self.app.models.publish_model(self.app_model)
+        mod = file_storage.models.save_model(model_dir, self.app_model)
         self.reactor.emit_status("Published model {}".format(self.app_model.name))
-        return pmod
+        return mod

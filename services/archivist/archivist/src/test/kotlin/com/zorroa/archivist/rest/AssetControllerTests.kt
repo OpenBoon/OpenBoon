@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
+import com.zorroa.archivist.domain.DataSetLabel
 import com.zorroa.archivist.domain.DataSetSpec
 import com.zorroa.archivist.domain.DataSetType
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
@@ -12,6 +13,7 @@ import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.DataSetService
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.storage.ProjectStorageService
+import com.zorroa.archivist.util.bbox
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Test
@@ -22,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.io.File
+import kotlin.test.assertEquals
 
 class AssetControllerTests : MockMvcTest() {
 
@@ -265,6 +268,48 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
             .andReturn()
+    }
+
+    @Test
+    fun testUpdateLabelsWithBbox() {
+        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LABEL_DETECTION))
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+
+        val req = UpdateAssetLabelsRequest(
+            add = mapOf(created.created[0] to
+                listOf(ds.getLabel("cat", bbox = bbox(0.0, 0.0, 0.1, 0.1))))
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/assets/_batch_update_labels")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(req))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+
+        val req2 = UpdateAssetLabelsRequest(
+            add = mapOf(created.created[0] to
+                listOf(ds.getLabel("dog", bbox = bbox(0.1, 0.1, 0.3, 0.3))))
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/assets/_batch_update_labels")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(req2))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+
+        authenticate()
+        val asset = assetService.getAsset(created.created[0])
+        val labels = asset.getAttr("labels", DataSetLabel.SET_OF)
+        assertEquals(2, labels?.size)
     }
 
     @Test

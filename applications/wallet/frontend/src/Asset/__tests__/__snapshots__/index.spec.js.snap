@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Asset /> should handle no query 1`] = `
-.emotion-10 {
+.emotion-11 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Asset /> should handle no query 1`] = `
   flex-direction: column;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -129,7 +129,7 @@ exports[`<Asset /> should handle no query 1`] = `
   align-items: center;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -137,7 +137,7 @@ exports[`<Asset /> should handle no query 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-7 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -202,7 +202,7 @@ exports[`<Asset /> should handle no query 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -215,14 +215,14 @@ exports[`<Asset /> should handle no query 1`] = `
 }
 
 <div
-  className="emotion-10"
+  className="emotion-11"
 >
   <div
-    className="emotion-9"
+    className="emotion-10"
   >
     <a
       className="emotion-2"
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
@@ -257,10 +257,10 @@ exports[`<Asset /> should handle no query 1`] = `
       </video>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <button
           aria-label="Asset Metadata"
@@ -274,8 +274,20 @@ exports[`<Asset /> should handle no query 1`] = `
             width={20}
           />
         </button>
+        <button
+          aria-label="Delete"
+          className="emotion-5"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="trash.svg"
+            width={20}
+          />
+        </button>
         <div
-          className="emotion-6"
+          className="emotion-7"
         />
       </div>
     </div>
@@ -284,7 +296,7 @@ exports[`<Asset /> should handle no query 1`] = `
 `;
 
 exports[`<Asset /> should render properly 1`] = `
-.emotion-10 {
+.emotion-11 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -303,7 +315,7 @@ exports[`<Asset /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -416,7 +428,7 @@ exports[`<Asset /> should render properly 1`] = `
   height: 100%;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -424,7 +436,7 @@ exports[`<Asset /> should render properly 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-7 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -489,7 +501,7 @@ exports[`<Asset /> should render properly 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -497,14 +509,14 @@ exports[`<Asset /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-10"
+  className="emotion-11"
 >
   <div
-    className="emotion-9"
+    className="emotion-10"
   >
     <a
       className="emotion-2"
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
@@ -532,10 +544,10 @@ exports[`<Asset /> should render properly 1`] = `
       />
     </div>
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <button
           aria-label="Asset Metadata"
@@ -549,8 +561,20 @@ exports[`<Asset /> should render properly 1`] = `
             width={20}
           />
         </button>
+        <button
+          aria-label="Delete"
+          className="emotion-5"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="trash.svg"
+            width={20}
+          />
+        </button>
         <div
-          className="emotion-6"
+          className="emotion-7"
         />
       </div>
     </div>
@@ -559,7 +583,7 @@ exports[`<Asset /> should render properly 1`] = `
 `;
 
 exports[`<Asset /> should render vertical videos properly 1`] = `
-.emotion-10 {
+.emotion-11 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -578,7 +602,7 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -687,7 +711,7 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
   align-items: center;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -695,7 +719,7 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-7 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -760,7 +784,7 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -773,14 +797,14 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
 }
 
 <div
-  className="emotion-10"
+  className="emotion-11"
 >
   <div
-    className="emotion-9"
+    className="emotion-10"
   >
     <a
       className="emotion-2"
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
@@ -815,10 +839,10 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
       </video>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <button
           aria-label="Asset Metadata"
@@ -832,8 +856,20 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
             width={20}
           />
         </button>
+        <button
+          aria-label="Delete"
+          className="emotion-5"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="trash.svg"
+            width={20}
+          />
+        </button>
         <div
-          className="emotion-6"
+          className="emotion-7"
         />
       </div>
     </div>
@@ -842,7 +878,7 @@ exports[`<Asset /> should render vertical videos properly 1`] = `
 `;
 
 exports[`<Asset /> should render videos properly 1`] = `
-.emotion-10 {
+.emotion-11 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -861,7 +897,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -970,7 +1006,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   align-items: center;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -978,7 +1014,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-7 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1043,7 +1079,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1056,14 +1092,14 @@ exports[`<Asset /> should render videos properly 1`] = `
 }
 
 <div
-  className="emotion-10"
+  className="emotion-11"
 >
   <div
-    className="emotion-9"
+    className="emotion-10"
   >
     <a
       className="emotion-2"
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
@@ -1098,10 +1134,10 @@ exports[`<Asset /> should render videos properly 1`] = `
       </video>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <button
           aria-label="Asset Metadata"
@@ -1115,8 +1151,20 @@ exports[`<Asset /> should render videos properly 1`] = `
             width={20}
           />
         </button>
+        <button
+          aria-label="Delete"
+          className="emotion-5"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="trash.svg"
+            width={20}
+          />
+        </button>
         <div
-          className="emotion-6"
+          className="emotion-7"
         />
       </div>
     </div>

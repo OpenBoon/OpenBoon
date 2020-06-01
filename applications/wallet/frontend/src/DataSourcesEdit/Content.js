@@ -33,6 +33,7 @@ const DataSourcesEditContent = () => {
     fileTypes: groupedFileTypes,
     modules,
     credentials,
+    isLoading: false,
     errors: { global: '' },
   }
 
