@@ -168,4 +168,24 @@ describe('<FilterReset />', () => {
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3siYXR0cmlidXRlIjoiY2xpcC5sZW5ndGgiLCJ0eXBlIjoicmFuZ2UiLCJ2YWx1ZXMiOnt9fV0=',
     )
   })
+
+  it('should render properly with no fields', () => {
+    const filters = [{ attribute: 'clip.length', type: 'range' }]
+    const mockFn = jest.fn()
+
+    require('swr').__setMockUseSWRResponse({ data: {} })
+
+    const component = TestRenderer.create(
+      <FilterReset
+        projectId={PROJECT_ID}
+        assetId={ASSET_ID}
+        filters={filters}
+        filter={filters[0]}
+        filterIndex={0}
+        onReset={mockFn}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
