@@ -64,6 +64,7 @@ const AssetDeleteConfirm = ({ query: q, filename, setShowDialogue }) => {
               setError,
             })
           }
+          isDisabled={isLoading}
           style={{ flex: 1 }}
         >
           {isLoading ? 'Deleting...' : 'Delete Asset'}
