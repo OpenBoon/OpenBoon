@@ -288,7 +288,7 @@ Array [
           className="emotion-8"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
-          type="text"
+          type="search"
           value=""
         />
         <button
@@ -1113,7 +1113,7 @@ Array [
           className="emotion-8"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
-          type="text"
+          type="search"
           value=""
         />
         <button
@@ -2191,7 +2191,7 @@ Array [
           className="emotion-8"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
-          type="text"
+          type="search"
           value=""
         />
         <button
@@ -6903,7 +6903,7 @@ Array [
           className="emotion-8"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
-          type="text"
+          type="search"
           value=""
         />
         <button
@@ -7261,14 +7261,43 @@ Array [
 }
 
 .emotion-16 {
-  min-width: 76px;
-  background-color: #252525;
+  text-align: center;
   padding-left: 12px;
   padding-right: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
-  text-align: center;
+  border: 1px solid transparent;
   border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  width: 60%;
+}
+
+.emotion-16:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-16:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-16::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-16::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-16:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-16::placeholder {
+  font-style: italic;
 }
 
 <div
@@ -7443,26 +7472,30 @@ Array [
               <div
                 className="emotion-20"
               >
-                <div
+                <label
                   className="emotion-17"
                 >
                   MIN  
-                  <div
+                  <input
                     className="emotion-16"
-                  >
-                    180
-                  </div>
-                </div>
-                <div
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    type="text"
+                    value={180}
+                  />
+                </label>
+                <label
                   className="emotion-17"
                 >
                   MAX  
-                  <div
+                  <input
                     className="emotion-16"
-                  >
-                    8525
-                  </div>
-                </div>
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    type="text"
+                    value={8525}
+                  />
+                </label>
               </div>
             </div>
           </div>
@@ -7761,7 +7794,7 @@ Array [
           className="emotion-8"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
-          type="text"
+          type="search"
           value=""
         />
         <button
@@ -8462,7 +8495,7 @@ Array [
           className="emotion-8"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
-          type="text"
+          type="search"
           value=""
         />
         <button

@@ -4,16 +4,14 @@ import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 import FilterReset from '../Filter/Reset'
 
-import { formatValue } from './helpers'
+import { formatValue, parseValue } from './helpers'
 
 import FilterRangeSlider from './Slider'
-
-const MIN_WIDTH = 76
 
 const FilterRangeContent = ({
   projectId,
@@ -49,6 +47,8 @@ const FilterRangeContent = ({
     min || results.min,
     max || results.max + minMaxFix,
   ])
+  const [inputMin, setInputMin] = useState(rangeValues[0])
+  const [inputMax, setInputMax] = useState(rangeValues[1])
 
   return (
     <div>
@@ -58,7 +58,11 @@ const FilterRangeContent = ({
         filters={filters}
         filter={filter}
         filterIndex={filterIndex}
-        onReset={() => setRangeValues(domain)}
+        onReset={() => {
+          setRangeValues(domain)
+          setInputMin(domain[0])
+          setInputMax(domain[1])
+        }}
       />
       <div css={{ padding: spacing.normal }}>
         <div
@@ -80,8 +84,12 @@ const FilterRangeContent = ({
             domain={domain}
             values={rangeValues}
             isDisabled={!!isDisabled}
-            onUpdate={(values) => setRangeValues(values)}
-            onChange={([newMin, newMax]) =>
+            onUpdate={(values) => {
+              setRangeValues(values)
+              setInputMin(parseValue({ value: values[0] }))
+              setInputMax(parseValue({ value: values[1] }))
+            }}
+            onChange={([newMin, newMax]) => {
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
@@ -96,7 +104,7 @@ const FilterRangeContent = ({
                   filterIndex,
                 },
               })
-            }
+            }}
           />
         </div>
         <div
@@ -107,40 +115,128 @@ const FilterRangeContent = ({
             justifyContent: 'space-around',
           }}
         >
-          <div css={{ display: 'flex', alignItems: 'center' }}>
+          <label css={{ display: 'flex', alignItems: 'center' }}>
             MIN &nbsp;
-            <div
+            <input
+              type="text"
               css={{
-                minWidth: MIN_WIDTH,
-                backgroundColor: colors.structure.lead,
+                textAlign: 'center',
                 paddingLeft: spacing.moderate,
                 paddingRight: spacing.moderate,
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.normal,
-                textAlign: 'center',
+                border: constants.borders.transparent,
                 borderRadius: constants.borderRadius.small,
+                backgroundColor: colors.structure.lead,
+                color: colors.structure.white,
+                width: '60%',
+                ':hover': {
+                  border: constants.borders.tableRow,
+                },
+                ':focus': {
+                  outline: constants.borders.outline,
+                  border: constants.borders.inputSmall,
+                  color: colors.structure.coal,
+                  backgroundColor: colors.structure.white,
+                },
+                '::placeholder': {
+                  fontStyle: typography.style.italic,
+                },
               }}
-            >
-              {formatValue({ attribute, value: rangeValues[0] })}
-            </div>
-          </div>
-          <div css={{ display: 'flex', alignItems: 'center' }}>
+              value={inputMin}
+              onChange={({ target: { value } }) => setInputMin(value)}
+              onBlur={({ target: { value } }) => {
+                const newMin = parseValue({ value })
+
+                if (newMin === rangeValues[0]) return
+
+                if (newMin < domain[0] || newMin > rangeValues[1]) {
+                  setInputMin(rangeValues[0])
+                  return
+                }
+
+                setInputMin(newMin)
+
+                setRangeValues([newMin, rangeValues[1]])
+
+                dispatch({
+                  action: ACTIONS.UPDATE_FILTER,
+                  payload: {
+                    projectId,
+                    assetId,
+                    filters,
+                    updatedFilter: {
+                      type,
+                      attribute,
+                      values: { min: newMin, max: rangeValues[1] },
+                    },
+                    filterIndex,
+                  },
+                })
+              }}
+            />
+          </label>
+          <label css={{ display: 'flex', alignItems: 'center' }}>
             MAX &nbsp;
-            <div
+            <input
+              type="text"
               css={{
-                minWidth: MIN_WIDTH,
-                backgroundColor: colors.structure.lead,
+                textAlign: 'center',
                 paddingLeft: spacing.moderate,
                 paddingRight: spacing.moderate,
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.normal,
-                textAlign: 'center',
+                border: constants.borders.transparent,
                 borderRadius: constants.borderRadius.small,
+                backgroundColor: colors.structure.lead,
+                color: colors.structure.white,
+                width: '60%',
+                ':hover': {
+                  border: constants.borders.tableRow,
+                },
+                ':focus': {
+                  outline: constants.borders.outline,
+                  border: constants.borders.inputSmall,
+                  color: colors.structure.coal,
+                  backgroundColor: colors.structure.white,
+                },
+                '::placeholder': {
+                  fontStyle: typography.style.italic,
+                },
               }}
-            >
-              {formatValue({ attribute, value: rangeValues[1] })}
-            </div>
-          </div>
+              value={inputMax}
+              onChange={({ target: { value } }) => setInputMax(value)}
+              onBlur={({ target: { value } }) => {
+                const newMax = parseValue({ value })
+
+                if (newMax === rangeValues[1]) return
+
+                if (newMax < rangeValues[0] || newMax > domain[1]) {
+                  setInputMax(rangeValues[1])
+                  return
+                }
+
+                setInputMax(newMax)
+
+                setRangeValues([rangeValues[0], newMax])
+
+                dispatch({
+                  action: ACTIONS.UPDATE_FILTER,
+                  payload: {
+                    projectId,
+                    assetId,
+                    filters,
+                    updatedFilter: {
+                      type,
+                      attribute,
+                      values: { min: rangeValues[0], max: newMax },
+                    },
+                    filterIndex,
+                  },
+                })
+              }}
+            />
+          </label>
         </div>
       </div>
     </div>
