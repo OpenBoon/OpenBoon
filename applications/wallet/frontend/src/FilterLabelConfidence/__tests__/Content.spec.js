@@ -220,20 +220,14 @@ describe('<FilterLabelConfidenceContent />', () => {
     })
   })
 
-  it('should render with no buckets', () => {
+  it('should render with no data', () => {
     const filter = {
       type: 'labelConfidence',
       attribute: 'analysis.zvi-label-detection',
       values: { labels: [], min: 0.0, max: 1.0 },
     }
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        results: {
-          buckets: [],
-        },
-      },
-    })
+    require('swr').__setMockUseSWRResponse({})
 
     const component = TestRenderer.create(
       <FilterLabelConfidenceContent
