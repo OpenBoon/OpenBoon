@@ -20,6 +20,7 @@ const INITIAL_STATE = ({ id, firstName, lastName }) => ({
   lastName,
   showForm: false,
   success: false,
+  isLoading: false,
   errors: {},
 })
 
@@ -126,9 +127,11 @@ const AccountProfileForm = () => {
               type="submit"
               variant={BUTTON_VARIANTS.PRIMARY}
               onClick={() => onSubmit({ dispatch, state })}
-              isDisabled={!state.firstName || !state.lastName}
+              isDisabled={
+                !state.firstName || !state.lastName || state.isLoading
+              }
             >
-              Save
+              {state.isLoading ? 'Saving...' : 'Save'}
             </Button>
           </ButtonGroup>
         </Form>

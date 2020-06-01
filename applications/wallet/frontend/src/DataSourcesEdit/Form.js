@@ -154,9 +154,9 @@ const DataSourcesEditForm = ({ initialState }) => {
             onClick={() =>
               onSubmit({ dispatch, projectId, dataSourceId, state })
             }
-            isDisabled={!name}
+            isDisabled={!name || state.isLoading}
           >
-            Update Data Source
+            {state.isLoading ? 'Updating...' : 'Update Data Source'}
           </Button>
         </ButtonGroup>
       </Form>

@@ -10,13 +10,31 @@ export const SWRConfig = ({ children, ...rest }) =>
   createElement('SWRConfig', rest, children)
 
 /**
+ * unmock
+ */
+
+export const { useSWRPages } = jest.requireActual('swr')
+
+/**
  * cache
  */
 
-export const { cache, useSWRPages } = jest.requireActual('swr')
+let mockCacheKeys = []
+
+export const __setMockCacheKeys = (data) => {
+  mockCacheKeys = data
+}
+
+export const cache = {
+  keys: () => {
+    return mockCacheKeys
+  },
+  clear: () => {},
+  delete: () => {},
+}
 
 /**
- * useSWR
+ * mutate
  */
 
 let mockMutateFn = () => {}

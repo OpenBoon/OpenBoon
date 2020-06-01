@@ -1,5 +1,3 @@
-import os
-
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.imagenet_utils import preprocess_input
 
@@ -36,8 +34,8 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
 
         # unzip and extract needed files for trained model and labels
         loc = extract_model(model_zip)
-        self.trained_model = load_model(os.path.join(loc, self.app_model.name))
-        self.labels = get_labels(loc, self.app_model.name, "labels.txt")
+        self.trained_model = load_model(loc)
+        self.labels = get_labels(loc, "labels.txt")
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset

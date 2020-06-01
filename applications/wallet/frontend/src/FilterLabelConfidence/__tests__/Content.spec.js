@@ -12,7 +12,7 @@ jest.mock('react-compound-slider', () => ({
   Tracks: () => 'Tracks',
 }))
 
-jest.mock('../../Filters/Reset', () => 'FiltersReset')
+jest.mock('../../Filter/Reset', () => 'FilterReset')
 
 const noop = () => () => {}
 
@@ -216,24 +216,18 @@ describe('<FilterLabelConfidenceContent />', () => {
     )
 
     act(() => {
-      component.root.findByType('FiltersReset').props.onReset()
+      component.root.findByType('FilterReset').props.onReset()
     })
   })
 
-  it('should render with no buckets', () => {
+  it('should render with no data', () => {
     const filter = {
       type: 'labelConfidence',
       attribute: 'analysis.zvi-label-detection',
       values: { labels: [], min: 0.0, max: 1.0 },
     }
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        results: {
-          buckets: [],
-        },
-      },
-    })
+    require('swr').__setMockUseSWRResponse({})
 
     const component = TestRenderer.create(
       <FilterLabelConfidenceContent

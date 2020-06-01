@@ -17,7 +17,7 @@ const borders = {
   error: `2px solid ${colors.signal.warning.base}`,
   success: `1px solid ${colors.signal.grass.base}`,
   tableRow: `1px solid ${colors.structure.steel}`,
-  inputHover: `1px solid ${colors.structure.white}`,
+  radio: `1px solid ${colors.structure.white}`,
   inputSmall: `1px solid ${colors.key.one}`,
   input: `2px solid ${colors.key.one}`,
   divider: `1px solid ${colors.structure.smoke}`,

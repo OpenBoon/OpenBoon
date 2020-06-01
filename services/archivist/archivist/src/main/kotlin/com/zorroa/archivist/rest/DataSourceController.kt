@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceFilter
+import com.zorroa.archivist.domain.DataSourceImportOptions
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.Job
@@ -80,7 +81,13 @@ class DataSourceController(
 
     @ApiOperation("Import assets from a DataSource.")
     @PostMapping("/api/v1/data-sources/{id}/_import")
-    fun importAssets(@ApiParam("The DataSource unique Id.") @PathVariable id: UUID): Job {
-        return jobLaunchService.launchJob(dataSourceService.get(id))
+    fun importAssets(
+        @ApiParam("The DataSource unique Id.") @PathVariable id: UUID,
+        @RequestBody(required = false) options: DataSourceImportOptions?
+    ): Job {
+        return jobLaunchService.launchJob(
+            dataSourceService.get(id),
+            options ?: DataSourceImportOptions()
+        )
     }
 }

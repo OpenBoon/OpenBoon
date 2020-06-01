@@ -12,7 +12,7 @@ jest.mock('react-compound-slider', () => ({
   Tracks: () => 'Tracks',
 }))
 
-jest.mock('../../Filters/Reset', () => 'FiltersReset')
+jest.mock('../../Filter/Reset', () => 'FilterReset')
 
 describe('<FilterRangeContent />', () => {
   it('should render with file sizes and reset', () => {
@@ -64,7 +64,7 @@ describe('<FilterRangeContent />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
-      component.root.findByType('FiltersReset').props.onReset()
+      component.root.findByType('FilterReset').props.onReset()
     })
 
     expect(component.toJSON()).toMatchSnapshot()

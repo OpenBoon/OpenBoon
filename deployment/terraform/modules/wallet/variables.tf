@@ -56,3 +56,7 @@ variable "database-user" {
 variable "inception-key-b64" {
 }
 
+variable "debug" {
+  default = "false"
+}
+

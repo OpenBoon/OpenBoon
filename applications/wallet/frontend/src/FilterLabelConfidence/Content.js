@@ -9,7 +9,7 @@ import Button, { VARIANTS } from '../Button'
 import filterShape from '../Filter/shape'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
-import FiltersSearch from '../Filters/Search'
+import FilterSearch from '../Filter/Search'
 
 import FilterLabelConfidenceSlider from './Slider'
 
@@ -30,11 +30,7 @@ const FilterLabelConfidenceContent = ({
 
   const encodedFilter = encode({ filters: { type, attribute } })
 
-  const {
-    data: {
-      results: { buckets },
-    },
-  } = useSWR(
+  const { data } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
     {
       revalidateOnFocus: false,
@@ -42,6 +38,10 @@ const FilterLabelConfidenceContent = ({
       shouldRetryOnError: false,
     },
   )
+
+  const { results } = data || {}
+
+  const { buckets = [] } = results || {}
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
 
@@ -56,7 +56,7 @@ const FilterLabelConfidenceContent = ({
         filter={filter}
         filterIndex={filterIndex}
       />
-      <FiltersSearch
+      <FilterSearch
         placeholder="Search labels"
         searchString={searchString}
         onChange={({ value }) => {
