@@ -18,7 +18,10 @@ export const onDelete = async ({
       method: 'DELETE',
     })
 
-    cache.clear()
+    cache
+      .keys()
+      .filter((key) => key.includes('/searches'))
+      .forEach((key) => cache.delete(key))
 
     await new Promise((resolve) => setTimeout(resolve, 500))
 
