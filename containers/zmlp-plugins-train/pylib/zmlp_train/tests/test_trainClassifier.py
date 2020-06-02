@@ -1,14 +1,14 @@
 import os
-import string
 import random
 import logging
 from unittest.mock import patch
 
 from zmlp import ZmlpClient
 from zmlp.app import ModelApp
-from zmlp.entity import Model, StoredFile, PipelineMod
+from zmlp.entity import Model, PipelineMod
 from zmlpsdk.storage import file_storage
 from zmlpsdk.testing import PluginUnitTestCase
+from zmlpsdk.training import id_generator
 from zmlp_train.trainClassifier import run
 
 logging.basicConfig()
@@ -45,9 +45,8 @@ class TrainClassifierTests(PluginUnitTestCase):
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
     @patch.object(ZmlpClient, "post")
-    @patch("zmlp_train.trainClassifier.upload_model_directory")
     def test_main(
-        self, upload_patch, post_patch, file_patch, model_patch, pub_patch
+        self, post_patch, file_patch, model_patch, pub_patch
     ):
         name = "custom-flowers-label-detection-tf2-xfer-mobilenet2"
         file_patch.return_value = "{}/{}.zip".format(self.base_dir, name)
@@ -62,7 +61,6 @@ class TrainClassifierTests(PluginUnitTestCase):
                 "name": name,
             }
         )
-        upload_patch.return_value = StoredFile({"id": "12345"})
 
         main_args = [
             "--model_id",
@@ -77,16 +75,3 @@ class TrainClassifierTests(PluginUnitTestCase):
         assert os.path.exists(model_dir)
         assert os.path.exists(os.path.join(model_dir, "assets"))
         assert os.path.exists(os.path.join(model_dir, "_labels.txt"))
-
-
-def id_generator(size=6, chars=string.ascii_uppercase):
-    """Generate a random simhash
-
-    Args:
-        size: (int) size of hash
-        chars: (str) values to use for the hash
-
-    Returns:
-        (str) generated similarity hash
-    """
-    return "".join(random.choice(chars) for _ in range(size))

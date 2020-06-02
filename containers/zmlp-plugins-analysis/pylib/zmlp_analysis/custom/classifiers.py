@@ -4,7 +4,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 
 from zmlpsdk import AssetProcessor, Argument, file_storage
-from zmlp_analysis.custom.utils.utils import get_labels, extract_model
+from zmlpsdk.training import get_labels, extract_model
 
 
 class NeuralNetClassifierProcessor(AssetProcessor):

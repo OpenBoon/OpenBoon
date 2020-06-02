@@ -1,7 +1,5 @@
 import logging
 import os
-import string
-import random
 from unittest.mock import patch
 
 from zmlp.app import ModelApp
@@ -10,6 +8,7 @@ from zmlpsdk.base import Frame
 from zmlpsdk.storage import file_storage
 from zmlp_analysis.custom.classifiers import NeuralNetClassifierProcessor
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset
+from zmlpsdk.training import id_generator
 
 logging.basicConfig()
 
@@ -19,19 +18,6 @@ assets = [
         id="9f0f8a1d-4719-5cf8-b427-4612c5597811",
     )
 ]
-
-
-def id_generator(size=6, chars=string.ascii_uppercase):
-    """Generate a random simhash
-
-    Args:
-        size: (int) size of hash
-        chars: (str) values to use for the hash
-
-    Returns:
-        (str) generated similarity hash
-    """
-    return "".join(random.choice(chars) for _ in range(size))
 
 
 class ClassifiersUnitTests(PluginUnitTestCase):

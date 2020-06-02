@@ -16,8 +16,7 @@ from tensorflow.keras.utils import to_categorical
 
 import zmlp
 from zmlpsdk import file_storage
-from zmlp_train.utils.utils import get_labels, extract_model
-from zmlp_train.utils.models import upload_model_directory
+from zmlpsdk.training import get_labels, extract_model
 
 logging.basicConfig(level=logging.INFO)
 
@@ -141,8 +140,7 @@ def run(main_args):
         for label in class_names:
             fp.write("{}\n".format(label))
 
-    # zip and publish
-    upload_model_directory(model_dir, app_model.file_id)
+    # publish
     app.models.publish_model(app_model)
 
     logging.info("Model saved in " + model_dir)
