@@ -327,7 +327,6 @@ exports[`<Visualizer /> should render properly 1`] = `
       <div
         className="emotion-4"
       >
-        574
          Assets
       </div>
       <div
@@ -750,7 +749,6 @@ exports[`<Visualizer /> should render selected asset 1`] = `
       <div
         className="emotion-4"
       >
-        574
          Assets
       </div>
       <div
