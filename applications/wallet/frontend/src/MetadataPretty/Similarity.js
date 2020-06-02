@@ -9,7 +9,7 @@ import { encode } from '../Filters/helpers'
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import AssetsThumbnail from '../Assets/Thumbnail'
 
-const THUMNAIL_SIZE = 80
+const THUMBNAIL_SIZE = 80
 
 const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
   const {
@@ -130,9 +130,9 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
                   <div
                     key={asset.id}
                     css={{
-                      width: THUMNAIL_SIZE,
-                      minWidth: THUMNAIL_SIZE,
-                      height: THUMNAIL_SIZE,
+                      width: THUMBNAIL_SIZE,
+                      minWidth: THUMBNAIL_SIZE,
+                      height: THUMBNAIL_SIZE,
                     }}
                   >
                     <AssetsThumbnail asset={asset} />
