@@ -8,6 +8,7 @@ import Filters from '../Filters'
 import Metadata from '../Metadata'
 import Export from '../Export'
 import AssetDelete from '../AssetDelete'
+import AssetsCount from '../AssetsCount'
 
 import FilterSvg from '../Icons/filter.svg'
 import InformationSvg from '../Icons/information.svg'
@@ -51,7 +52,10 @@ const VisualizerContent = () => {
             },
           }}
         </Panel>
-        <Assets key={reloadKey} />
+        <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <AssetsCount />
+          <Assets key={reloadKey} />
+        </div>
         <Panel openToThe="left">
           {{
             metadata: {

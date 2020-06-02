@@ -5,7 +5,7 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeGrid } from 'react-window'
 
-import { colors, spacing, constants, typography } from '../Styles'
+import { spacing, constants } from '../Styles'
 
 import { cleanup } from '../Filters/helpers'
 import { useLocalStorageReducer } from '../LocalStorage/helpers'
@@ -19,7 +19,6 @@ import AssetsThumbnail from './Thumbnail'
 
 const SIZE = 100
 const PADDING_SIZE = spacing.small
-const COUNT_SPACING = 20
 
 /* istanbul ignore next */
 const Assets = () => {
@@ -133,19 +132,6 @@ const Assets = () => {
         boxShadow: constants.boxShadows.assets,
       }}
     >
-      <div
-        css={{
-          alignItems: 'center',
-          padding: spacing.base,
-          fontFamily: 'Roboto Condensed',
-          fontSize: typography.size.regular,
-          lineHeight: typography.height.regular,
-          backgroundColor: colors.structure.lead,
-          color: colors.structure.steel,
-        }}
-      >
-        {itemCount} Assets
-      </div>
       {pages}
       <AutoSizer>
         {({ height, width }) => (
@@ -195,7 +181,7 @@ const Assets = () => {
                   rowHeight={adjustedThumbnailSize}
                   rowCount={rowCount}
                   width={width}
-                  height={height - COUNT_SPACING - PADDING_SIZE / 2}
+                  height={height - PADDING_SIZE / 2}
                   innerElementType={forwardRef(
                     ({ style, ...rest }, elementRef) => (
                       <div
