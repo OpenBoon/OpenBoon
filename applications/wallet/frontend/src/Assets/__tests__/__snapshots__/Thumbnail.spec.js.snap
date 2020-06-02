@@ -210,7 +210,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
     />
   </a>
   <button
-    aria-label="Image similarity"
+    aria-label="Find similar images"
     className="emotion-2"
     onClick={[Function]}
     type="button"
@@ -446,7 +446,7 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
     />
   </a>
   <button
-    aria-label="Image similarity"
+    aria-label="Find similar images"
     className="emotion-2"
     onClick={[Function]}
     type="button"
@@ -704,7 +704,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
     </video>
   </a>
   <button
-    aria-label="Image similarity"
+    aria-label="Find similar images"
     className="emotion-2"
     onClick={[Function]}
     type="button"
@@ -945,7 +945,7 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
     />
   </a>
   <button
-    aria-label="Image similarity"
+    aria-label="Find similar images"
     className="emotion-2"
     onClick={[Function]}
     type="button"

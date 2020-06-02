@@ -127,7 +127,7 @@ const AssetsThumbnail = ({
         </Button>
       </Link>
       <Button
-        aria-label="Image similarity"
+        aria-label="Find similar images"
         variant={VARIANTS.NEUTRAL}
         style={{
           display: 'none',
@@ -142,25 +142,20 @@ const AssetsThumbnail = ({
           },
         }}
         onClick={() => {
-          const filters = decode({ query })
-          const similarityFilterIndex = filters.findIndex(
-            (filter) => filter.type === 'similarity',
-          )
-
           dispatch({
-            action: ACTIONS.ADD_OR_REPLACE_FILTER,
+            action: ACTIONS.APPLY_SIMILARITY,
             payload: {
               projectId,
               assetId: id,
-              filters,
+              filters: decode({ query }),
               newFilter: {
                 type: 'similarity',
                 attribute: 'analysis.zvi-image-similarity',
                 values: {
                   ids: [id],
                 },
+                isDisabled: true, // TODO: remove after backend update
               },
-              filterIndex: similarityFilterIndex,
             },
           })
         }}

@@ -13,7 +13,7 @@ export const formatUrl = (params = {}) => {
 export const ACTIONS = {
   ADD_FILTERS: 'ADD_FILTERS',
   UPDATE_FILTER: 'UPDATE_FILTER',
-  ADD_OR_REPLACE_FILTER: 'ADD_OR_REPLACE_FILTER',
+  APPLY_SIMILARITY: 'APPLY_SIMILARITY',
   DELETE_FILTER: 'DELETE_FILTER',
   CLEAR_FILTERS: 'CLEAR_FILTERS',
 }
@@ -106,22 +106,23 @@ export const dispatch = ({ action, payload }) => {
       break
     }
 
-    case ACTIONS.ADD_OR_REPLACE_FILTER: {
-      const { projectId, assetId, filters, newFilter, filterIndex } = payload
-      let query
-      if (filterIndex === -1) {
-        // if filter does not exist, add
-        query = encode({ filters: [newFilter, ...filters] })
-      } else {
-        // if filter exists, update
-        query = encode({
-          filters: [
-            ...filters.slice(0, filterIndex),
-            newFilter,
-            ...filters.slice(filterIndex + 1),
-          ],
-        })
-      }
+    case ACTIONS.APPLY_SIMILARITY: {
+      const { projectId, assetId, filters, newFilter } = payload
+
+      const similarityFilterIndex = filters.findIndex(
+        (filter) => filter.type === 'similarity',
+      )
+
+      const combinedFilters =
+        similarityFilterIndex === -1
+          ? [newFilter, ...filters]
+          : [
+              ...filters.slice(0, similarityFilterIndex),
+              newFilter,
+              ...filters.slice(similarityFilterIndex + 1),
+            ]
+
+      const query = encode({ filters: combinedFilters })
 
       Router.push(
         {
