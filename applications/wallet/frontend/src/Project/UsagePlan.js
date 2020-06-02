@@ -1,12 +1,9 @@
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
-import { colors, spacing, constants, typography } from '../Styles'
+import { spacing, constants } from '../Styles'
 
 import Card from '../Card'
-import FlashMessage, { VARIANTS } from '../FlashMessage'
-
-import ProjectUsageBar from './UsageBar'
 
 const IMG_WIDTH = 32
 
@@ -22,42 +19,17 @@ const ProjectUsagePlan = () => {
   if (subscriptions.length === 0) return null
 
   const {
-    limits: { videoHours: videoLimit, imageCount: imageLimit },
+    tier,
     usage: { videoHours: videoUsage, imageCount: imageUsage },
-    modules,
   } = subscriptions[0]
-
-  const videoOverTime = videoUsage - videoLimit
-  const imageOverTime = imageUsage - imageLimit
 
   return (
     <Card
-      header="Project Usage Plan"
+      header={`Project Tier: ${
+        tier.charAt(0).toUpperCase() + tier.substring(1)
+      }`}
       content={
         <>
-          {(videoOverTime > 1 || imageOverTime > 1) && (
-            <div css={{ paddingBottom: spacing.comfy }}>
-              <FlashMessage variant={VARIANTS.ERROR}>
-                <div css={{ fontWeight: typography.weight.regular }}>
-                  You are{' '}
-                  {videoOverTime > 1 && (
-                    <>
-                      <strong>{videoOverTime} hours over</strong> your video
-                      plan
-                    </>
-                  )}
-                  {videoOverTime > 1 && imageOverTime > 1 && ' and '}
-                  {imageOverTime > 1 && (
-                    <>
-                      <strong>{imageOverTime} assets over</strong> your image
-                      &amp; documents plan
-                    </>
-                  )}
-                  . Contact your Account Manager to add more resources.
-                </div>
-              </FlashMessage>
-            </div>
-          )}
           <div
             css={{
               borderBottom: constants.borders.tabs,
@@ -73,18 +45,13 @@ const ProjectUsagePlan = () => {
                 },
               }}
             >
-              <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video:{' '}
-              {videoLimit.toLocaleString()} hours
+              <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video
+              hours used:
+              {videoUsage.toLocaleString()}
             </h4>
-            <ProjectUsageBar
-              limit={videoLimit}
-              usage={videoUsage}
-              legend="/hrs"
-            />
           </div>
           <div
             css={{
-              borderBottom: constants.borders.tabs,
               paddingTop: spacing.normal,
               paddingBottom: spacing.normal,
             }}
@@ -99,45 +66,8 @@ const ProjectUsagePlan = () => {
               }}
             >
               <img src="/icons/images.png" alt="" width={IMG_WIDTH} /> Image /
-              Documents: {imageLimit.toLocaleString()}
+              Documents: {imageUsage.toLocaleString()}
             </h4>
-            <ProjectUsageBar limit={imageLimit} usage={imageUsage} legend="" />
-          </div>
-          <div
-            css={{
-              borderBottom: constants.borders.tabs,
-              paddingTop: spacing.normal,
-              paddingBottom: spacing.normal,
-            }}
-          >
-            <h4 css={{ paddingBottom: spacing.small }}>Additional Modules:</h4>
-
-            {modules.length === 0 ? (
-              <span css={{ color: colors.structure.zinc, fontStyle: 'italic' }}>
-                None
-              </span>
-            ) : (
-              <ul css={{ padding: 0, margin: 0, listStyle: 'none' }}>
-                {modules.map((module) => (
-                  <li
-                    key={module}
-                    css={{
-                      fontFamily: 'Roboto Mono',
-                      color: colors.structure.zinc,
-                      paddingBottom: spacing.mini,
-                    }}
-                  >
-                    {module}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div
-            css={{ paddingTop: spacing.normal, color: colors.structure.zinc }}
-          >
-            Contact your Account Manager to add additional modules and resources
-            to your plan.
           </div>
         </>
       }
