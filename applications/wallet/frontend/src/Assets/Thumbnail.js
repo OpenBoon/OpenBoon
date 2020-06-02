@@ -19,7 +19,6 @@ const AssetsThumbnail = ({
     },
     thumbnailUrl,
     videoProxyUrl,
-    assetStyle,
     videoLength,
   },
 }) => {
@@ -75,6 +74,9 @@ const AssetsThumbnail = ({
             : constants.borders.assetHover,
           a: {
             display: 'flex',
+          },
+          '.videoLength': {
+            display: 'none',
           },
         },
       }}
@@ -145,8 +147,9 @@ const AssetsThumbnail = ({
           <ExpandSvg width={20} color={colors.structure.white} />
         </Button>
       </Link>
-      {assetStyle === 'video' && (
+      {videoLength > 0 && (
         <div
+          className="videoLength"
           css={{
             position: 'absolute',
             bottom: spacing.small,
