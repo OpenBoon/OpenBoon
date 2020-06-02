@@ -88,8 +88,7 @@ class MessageHandler(object):
         """Handles the ACCOUNT_ACTIVE event from google marketplace."""
 
         # Wait for account to exist.
-        # TODO: remove DEMO when this goes live.
-        account_name = (f'providers/DEMO-{settings.MARKETPLACE_PROJECT_ID}/accounts/'
+        account_name = (f'providers/{settings.MARKETPLACE_PROJECT_ID}/accounts/'
                         f'{self.payload["account"]["id"]}')
         while not MarketplaceAccount.objects.filter(name=account_name).exists():
             print('Waiting for user account to be created. Sleeping for 10 seconds')
@@ -108,14 +107,13 @@ class MessageHandler(object):
         entitlement_id = self.payload['entitlement']['id']
         entitlement_data = self._get_entitlement(entitlement_id)
 
-        project_name = f'marketplace-{entitlement_id}'
         with transaction.atomic():
 
             # Create the Project, Subscription and MarketplaceEntitlement.
-            project = Project.objects.create(name=project_name)
+            project = Project.objects.create()
             project.sync_with_zmlp(self.superuser)
-            Subscription.objects.create(project=project, video_hours_limit=100,
-                                        image_count_limit=10000)
+            tier = entitlement_data['plan']
+            Subscription.objects.create(project=project, tier=tier)
             entitlement_name = self._get_entitlement_name(entitlement_id)
             MarketplaceEntitlement.objects.create(name=entitlement_name, project=project)
 
@@ -151,18 +149,11 @@ class MessageHandler(object):
 
     def _handle_entitlement_plan_changed(self):
         """Handles the ENTITLEMENT_PLAN_CHANGED event from google marketplace."""
-        plan_quota_map = {'free': (100, 1000),
-                          'decent': (200, 2000),
-                          'pretty-good': (300, 3000),
-                          'very-good': (400, 4000),
-                          'amazing': (500, 5000)}
         entitlement_data = self.payload['entitlement']
         plan_name = entitlement_data['newPlan']
-        video_quota, image_quota = plan_quota_map[plan_name]
         entitlement_name = self._get_entitlement_name(entitlement_data['id'])
         subscription = MarketplaceEntitlement.objects.get(name=entitlement_name).project.subscription  # noqa
-        subscription.video_hours_limit = video_quota
-        subscription.image_count_limit = image_quota
+        subscription.tier = plan_name
         subscription.save()
         print(f'Plan changed to {plan_name} for entitlement {entitlement_name}')
 
@@ -202,7 +193,7 @@ class MessageHandler(object):
 
         """
         # TODO: Remove DEMO- when this goes live.
-        return f'providers/DEMO-{settings.MARKETPLACE_PROJECT_ID}/entitlements/{entitlement_id}'
+        return f'providers/{settings.MARKETPLACE_PROJECT_ID}/entitlements/{entitlement_id}'
 
 
 class Command(BaseCommand):
