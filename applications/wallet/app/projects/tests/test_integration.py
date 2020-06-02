@@ -17,10 +17,20 @@ from zmlp.client import ZmlpDuplicateException, ZmlpInvalidRequestException
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 from wallet.tests.utils import check_response
 from projects.models import Project, Membership
+from projects.utils import random_project_name
 from projects.serializers import ProjectSerializer
 from projects.views import BaseProjectViewSet, ProjectUserViewSet
 
 pytestmark = pytest.mark.django_db
+
+
+def test_random_name():
+    assert random_project_name()
+
+
+def test_project_with_random_name():
+    project = Project.objects.create()
+    assert project.name
 
 
 def test_project_view_user_does_not_belong_to_project(user, project):
@@ -191,13 +201,6 @@ class TestProjectViewSet:
         assert response.status_code == 403
         assert response.json()['detail'] == ('user is either not a member of Project Zero '
                                              'or the Project has not been created yet.')
-
-    def test_post_create_bad_data(self, project_zero, project_zero_user, api_client):
-        api_client.force_authenticate(project_zero_user)
-        body = {'pointless': 'field'}
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 400
-        assert response.json()['name'][0] == 'This field is required.'
 
     def test_post_create_dup_zmlp_project(self, project_zero, project_zero_user, api_client,
                                           monkeypatch):

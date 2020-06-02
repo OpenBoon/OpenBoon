@@ -68,14 +68,15 @@ variable "marketplace-credentials" {
   description = "GCP Service Account JSON key to use with the GCP Procurement API."
   default = ""
 }
-## Generated Variables
-locals {
-  region = "${var.country}-${var.region}"
-  zone   = "${var.country}-${var.region}-${var.zone}"
-}
 
 variable "wallet-debug" {
   description = "Turns Debug mode on for the Console/Wallet"
   default = "false"
+}
+
+## Generated Variables
+locals {
+  region = "${var.country}-${var.region}"
+  zone   = "${var.country}-${var.region}-${var.zone}"
 }
 

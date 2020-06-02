@@ -260,14 +260,14 @@ module "gcp-marketplace-integration" {
   zmlp-api-url             = "http://${module.api-gateway.ip-address}"
   smtp-password            = var.smtp-password
   google-oauth-client-id   = var.google-oauth-client-id
-  marketplace-project      = "zorroa-marketplace"
-  marketplace-subscription = "codelab"
+  marketplace-project      = "zorroa-public"
+  marketplace-subscription = "zorroa-public"
   marketplace-credentials  = var.marketplace-credentials
+  marketplace-service-name = "zorroa-visual-intelligence-zorroa-public.cloudpartnerservices.goog"
   fqdn                     = var.wallet-domain
   environment              = var.environment
   inception-key-b64        = local.inception-key-b64
   pg_password              = module.wallet.pg_password
-  marketplace-service-name = "isaas-codelab.mp-marketplace-partner-demos.appspot.com"
   enabled                  = var.deploy-marketplace-integration
   container-tag            = var.container-tag
 }
