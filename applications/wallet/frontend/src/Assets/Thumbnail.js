@@ -51,7 +51,7 @@ const AssetsThumbnail = ({
       //   attribute: 'analysis.zvi-image-similarity',
       //   values: {
       //     hashes: [''],
-      //     minScore: 0.5,
+      //     minScore: 0,
       //   },
       // },
     ],
