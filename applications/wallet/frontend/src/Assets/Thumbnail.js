@@ -10,7 +10,7 @@ import SimilaritySvg from '../Icons/similarity.svg'
 
 import Button, { VARIANTS } from '../Button'
 
-import { decode, dispatch, ACTIONS } from '../Filters/helpers'
+import { dispatch, ACTIONS } from '../Filters/helpers'
 import { formatSeconds } from './helpers'
 
 const AssetsThumbnail = ({
@@ -147,7 +147,7 @@ const AssetsThumbnail = ({
             payload: {
               projectId,
               assetId: id,
-              filters: decode({ query }),
+              query,
               newFilter: {
                 type: 'similarity',
                 attribute: 'analysis.zvi-image-similarity',

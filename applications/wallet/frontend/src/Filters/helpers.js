@@ -107,8 +107,8 @@ export const dispatch = ({ action, payload }) => {
     }
 
     case ACTIONS.APPLY_SIMILARITY: {
-      const { projectId, assetId, filters, newFilter } = payload
-
+      const { projectId, assetId, query: q, newFilter } = payload
+      const filters = decode({ query: q })
       const similarityFilterIndex = filters.findIndex(
         (filter) => filter.type === 'similarity',
       )
