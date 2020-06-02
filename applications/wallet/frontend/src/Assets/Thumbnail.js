@@ -42,19 +42,20 @@ const AssetsThumbnail = ({
 
   const queryString = queryParams ? `?${queryParams}` : ''
 
-  const filters = decode({ query })
-  const simQuery = encode({
-    filters: [
-      ...filters,
-      // {
-      //   type: 'similarity',
-      //   attribute: 'analysis.zvi-image-similarity',
-      //   values: {
-      //     hashes: [''],
-      //     minScore: 0,
-      //   },
-      // },
-    ],
+  const filtersWithoutSimilarity = decode({ query }).filter(
+    (filter) => filter.type !== 'similarity',
+  )
+
+  const newSimilarityFilter = {
+    type: 'similarity',
+    attribute: 'analysis.zvi-image-similarity',
+    values: {
+      ids: [id],
+    },
+  }
+
+  const similarityQuery = encode({
+    filters: [newSimilarityFilter, ...filtersWithoutSimilarity],
   })
 
   const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
@@ -142,8 +143,8 @@ const AssetsThumbnail = ({
         </Button>
       </Link>
       <Link
-        href={`/[projectId]/visualizer?id=${id}&query=${simQuery}`}
-        as={`/${projectId}/visualizer?id=${id}&query=${simQuery}`}
+        href={`/[projectId]/visualizer?id=${id}&query=${similarityQuery}`}
+        as={`/${projectId}/visualizer?id=${id}&query=${similarityQuery}`}
         passHref
       >
         <Button

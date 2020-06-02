@@ -210,7 +210,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   </a>
   <a
     className="emotion-2"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsicE53blhqVm50Z2JEUWdQWmhrWHFWVC0yVVJNcXZKTkwiXX19LHsidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -445,7 +445,7 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   </a>
   <a
     className="emotion-2"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W10="
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsicE53blhqVm50Z2JEUWdQWmhrWHFWVC0yVVJNcXZKTkwiXX19XQ=="
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -702,7 +702,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   </a>
   <a
     className="emotion-2"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W10="
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsic3JMOG9iNWNUcENKallvS2txcWZhMmNpeUc0MjVkR2kiXX19XQ=="
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -942,7 +942,7 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   </a>
   <a
     className="emotion-2"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4&query=W10="
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXX19XQ=="
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
