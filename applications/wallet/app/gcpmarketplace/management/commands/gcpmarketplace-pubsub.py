@@ -59,30 +59,70 @@ class MessageHandler(object):
 
     def _handle_entitlement_creation_requested(self):
         """Handles the ENTITLEMENT_CREATION_REQUESTED event from google marketplace."""
+        def continue_waiting_for_account():
+            """Closure used to determine if the outer function should continue to wait
+            for an account to be active. Returns True if the function should continue to
+            wait. In the event of a timeout the closure handles canceling the entitlement
+            and returns False.
+
+            """
+            nonlocal account_timer
+            nonlocal sleep_time
+            nonlocal entitlement
+            account_timer += sleep_time
+            if account_timer >= (60 * 60 * 2):  # 2 hours
+                print(f'Account {account_name} has been waiting for activation for '
+                      f'2 hours. Timing out and moving on.')
+                if entitlement['state'] == 'ENTITLEMENT_ACTIVATION_REQUESTED':
+                    print(f'Due to account activation timeout cancelling '
+                          f'entitlement {entitlement_id}')
+                    reason = ('You did not complete account activation within 2 hours. '
+                              'Please try again.')
+                    request = get_procurement_api().providers().entitlements().reject(
+                        name=entitlement["name"], body={'reason': reason})
+                    request.execute()
+                return False
+            entitlement = self._get_entitlement(entitlement_id)
+            if entitlement['state'] != 'ENTITLEMENT_ACTIVATION_REQUESTED':
+                return False
+            return True
+
         entitlement_id = self.payload['entitlement']['id']
         entitlement = self._get_entitlement(entitlement_id)
         if not entitlement:
             print('No entitlement found. Could not handle entitlement creation request.')
             return
 
+        # Check entitlement state.
+        if entitlement['state'] != 'ENTITLEMENT_ACTIVATION_REQUESTED':
+            print(f'Entitlement {entitlement_id} is in the {entitlement["state"]} state. '
+                  f'Ignoring this request and moving on.')
+            return
+
         # Wait for the user to be activated.
         account_name = entitlement['account']
+        account_timer = 0
+        sleep_time = 10
         while not MarketplaceAccount.objects.filter(name=account_name).exists():
-            print('Waiting for user account to be created. Sleeping for 10 seconds')
-            sleep(10)
+            print(f'Waiting for user account {account_name} to be created. Sleeping for 10 seconds')
+            sleep(sleep_time)
+            if not continue_waiting_for_account():
+                return
         user = MarketplaceAccount.objects.get(name=account_name).user
         while not user.is_active:
-            print('Waiting for user account to be activated. Sleeping for 10 seconds')
-            sleep(10)
+            print('Waiting for user account {account_name} to be activated. '
+                  'Sleeping for 10 seconds')
+            sleep(sleep_time)
+            if not continue_waiting_for_account():
+                return
             user = User.objects.get(id=user.id)
 
         # Approve the entitlement.
-        if entitlement['state'] == 'ENTITLEMENT_ACTIVATION_REQUESTED':
-            name = self._get_entitlement_name(entitlement_id)
-            request = get_procurement_api().providers().entitlements().approve(
-                name=name, body={})
-            request.execute()
-            print(f'Approved entitlement {entitlement_id}.')
+        name = self._get_entitlement_name(entitlement_id)
+        request = get_procurement_api().providers().entitlements().approve(
+            name=name, body={})
+        request.execute()
+        print(f'Approved entitlement {entitlement_id}.')
 
     def _handle_account_activate(self):
         """Handles the ACCOUNT_ACTIVE event from google marketplace."""
@@ -160,7 +200,11 @@ class MessageHandler(object):
     def _handle_entitlement_cancelled(self):
         """Handles the ENTITLEMENT_CANCELLED event from google marketplace."""
         entitlement_name = self._get_entitlement_name(self.payload['entitlement']['id'])
-        project = MarketplaceEntitlement.objects.get(name=entitlement_name).project
+        try:
+            project = MarketplaceEntitlement.objects.get(name=entitlement_name).project
+        except MarketplaceEntitlement.DoesNotExist:
+            print(f'No record of entitlement {entitlement_name} existed. Cancellation complete.')
+            return
         project.is_active = False
         project.save()
         print(f'Deactivated project {project.id} for entitlement {entitlement_name}.')
