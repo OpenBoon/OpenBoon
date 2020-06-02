@@ -114,8 +114,6 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
                 borderTop: constants.borders.divider,
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.moderate,
-                minHeight: COPY_SIZE,
-                width: '100%',
                 fontFamily: 'Roboto Condensed',
                 textTransform: 'uppercase',
                 color: colors.structure.steel,
