@@ -130,6 +130,23 @@ class TestFileNameViewSet:
         assert response._headers['cache-control'] == ('Cache-Control', 'max-age=86400, private')
         assert 'expires' in response._headers
 
+    def test_get_signed_url(self, project, api_client, monkeypatch, login):
+
+        def mock_response(*args, **kwargs):
+            return {'uri': 'http://minio:9000/project-storage/projects/00000000-0000-0000-0000-000000000000/assets/AjXYVpaVeLsOgpenKKSW8oDB5YuOTWDs/web-proxy/web-proxy.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200602T013235Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=qwerty123%2F20200602%2FUS_WEST_2%2Fs3%2Faws4_request&X-Amz-Signature=acbf9a9b0668b29315f262713742648c1943299e63cb1ea5e6145cf27ad4f95f', 'mediaType': 'image/jpeg'}  # noqa
+
+        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        asset_id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
+        filename = 'TIFF_1MB.tiff'
+        response = api_client.get(reverse('file_name-signed-url',
+                                          kwargs={'project_pk': project.id,
+                                                  'asset_pk': asset_id,
+                                                  'category_pk': 'proxy',
+                                                  'pk': filename}))
+        content = check_response(response)
+        assert 'uri' in content
+        assert 'mediaType' in content
+
 
 class TestBoxImagesAction:
     def test_box_images(self, project, monkeypatch, api_client, zvi_project_user,
