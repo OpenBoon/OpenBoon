@@ -1,13 +1,11 @@
-import os
 
-import numpy as np
-from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.imagenet_utils import preprocess_input
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
-from zmlpsdk import AssetProcessor, Argument, file_storage
+from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
+
+from ..utils.keras import load_keras_image, load_keras_model
 
 
 class TensorflowTransferLearningClassifier(AssetProcessor):
@@ -30,7 +28,7 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         self.app_model = self.app.models.get_model(self.arg_value("model_id"))
 
         # unzip and extract needed files for trained model and labels
-        self.trained_model, self.labels = self.extract_model()
+        self.trained_model, self.labels = load_keras_model(self.app_model)
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -61,51 +59,9 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
             List[tuple]: result is list of tuples in format [(label, score),
             (label, score)]
         """
-        img = load_image(path)
+        img = load_keras_image(path)
         # get predictions
         proba = self.trained_model.predict(preprocess_input(img))[0]
         # create list of tuples for labels and prob scores
         result = [*zip(self.labels, proba)]
         return result
-
-    def extract_model(self):
-        """Extract then remove model info from a zip file
-
-        Returns:
-            tuple: (Keras model instance, List[str] of labels)
-        """
-        model_path = file_storage.models.install_model(self.app_model)
-
-        # load dir as a model using keras
-        trained_model = load_model(model_path)
-
-        # labels.txt is always the name
-        # create a list of labels from file labels.txt
-        with open(os.path.join(model_path, "labels.txt")) as fp:
-            labels = fp.read().splitlines()
-
-        # return model and labels
-        return trained_model, labels
-
-
-def load_image(path, size=(224, 224)):
-    """
-    Load the given image and prepare it for use by Tensorflow.
-
-    Args:
-        path (str): The path to the file to load.
-        size (tuple): A tuple of width, height
-
-    Returns:
-        numpy array: an array of bytes for Tensorflow use.
-    """
-    img = load_img(
-        path,
-        grayscale=False,
-        color_mode="rgb",
-        target_size=size,
-        interpolation="nearest",
-    )
-
-    numpy_image = img_to_array(img)
-    return np.expand_dims(numpy_image, axis=0)
