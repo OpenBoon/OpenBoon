@@ -16,8 +16,7 @@ def test_subscripton_str(project):
 
 @pytest.fixture
 def subscription(project):
-    sub = Subscription(project=project, video_hours_limit=200, image_count_limit=1000,
-                       modules='zmlp-classification,zmlp-objects')
+    sub = Subscription(project=project)
     sub.save()
     return sub
 
@@ -83,10 +82,9 @@ class TestSubscriptionViewSet:
         content = check_response(response)
         result = content['results'][0]
         assert result['id'] == str(subscription.id)
-        assert result['limits']['videoHours'] == 200
-        assert result['limits']['imageCount'] == 1000
         assert result['usage']['videoHours'] == 0.0
         assert result['usage']['imageCount'] == 121
+        assert result['tier'] == 'essentials'
 
     def test_get_bad_pk(self, zmlp_project_membership, api_client, login):
         project_pk = zmlp_project_membership.project_id
@@ -109,5 +107,4 @@ class TestSubscriptionViewSet:
                                                   'pk': subscription.id}))
         content = check_response(response)
         assert content['id'] == str(subscription.id)
-        assert content['limits']['videoHours'] == 200
-        assert content['limits']['imageCount'] == 1000
+        assert content['tier'] == 'essentials'

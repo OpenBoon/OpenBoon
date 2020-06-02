@@ -8,6 +8,7 @@ from django_cryptography.fields import encrypt
 from multiselectfield import MultiSelectField
 from zmlp.client import ZmlpDuplicateException
 
+from projects.utils import random_project_name
 from wallet.utils import get_zmlp_superuser_client
 
 logger = logging.getLogger(__name__)
@@ -27,7 +28,7 @@ class Project(models.Model):
     objects = ActiveProjectManager()
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    name = models.CharField(max_length=144)
+    name = models.CharField(max_length=144, default=random_project_name)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='projects.Membership',
                                    related_name='projects')
     is_active = models.BooleanField(default=True)
