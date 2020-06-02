@@ -3,13 +3,13 @@
 exports[`<ProjectUsagePlan /> should not render without subscriptions 1`] = `null`;
 
 exports[`<ProjectUsagePlan /> should render properly 1`] = `
-.emotion-7 {
+.emotion-8 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -39,16 +39,22 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
   margin-right: 8px;
 }
 
-.emotion-5 {
+.emotion-6 {
   padding: 32px;
 }
 
-.emotion-2 {
+.emotion-1 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-3 {
   border-bottom: 1px solid #4a4a4a;
   padding-bottom: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -59,20 +65,20 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-1 img {
+.emotion-2 img {
   margin-right: 12px;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding-top: 16px;
   padding-bottom: 16px;
 }
 
 <div
-  className="emotion-7"
+  className="emotion-8"
 >
   <div
-    className="emotion-6"
+    className="emotion-7"
   >
     <h3
       className="emotion-0"
@@ -80,13 +86,18 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
       Project Tier: Premier
     </h3>
     <div
-      className="emotion-5"
+      className="emotion-6"
     >
+      <h3
+        className="emotion-1"
+      >
+        Usage:
+      </h3>
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <h4
-          className="emotion-1"
+          className="emotion-2"
         >
           <img
             alt=""
@@ -98,10 +109,10 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
         </h4>
       </div>
       <div
-        className="emotion-4"
+        className="emotion-5"
       >
         <h4
-          className="emotion-1"
+          className="emotion-2"
         >
           <img
             alt=""
@@ -118,13 +129,13 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
 `;
 
 exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
-.emotion-7 {
+.emotion-8 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -154,16 +165,22 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
   margin-right: 8px;
 }
 
-.emotion-5 {
+.emotion-6 {
   padding: 32px;
 }
 
-.emotion-2 {
+.emotion-1 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-3 {
   border-bottom: 1px solid #4a4a4a;
   padding-bottom: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -174,20 +191,20 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
   align-items: center;
 }
 
-.emotion-1 img {
+.emotion-2 img {
   margin-right: 12px;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding-top: 16px;
   padding-bottom: 16px;
 }
 
 <div
-  className="emotion-7"
+  className="emotion-8"
 >
   <div
-    className="emotion-6"
+    className="emotion-7"
   >
     <h3
       className="emotion-0"
@@ -195,13 +212,18 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
       Project Tier: Premier
     </h3>
     <div
-      className="emotion-5"
+      className="emotion-6"
     >
+      <h3
+        className="emotion-1"
+      >
+        Usage:
+      </h3>
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <h4
-          className="emotion-1"
+          className="emotion-2"
         >
           <img
             alt=""
@@ -213,10 +235,10 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
         </h4>
       </div>
       <div
-        className="emotion-4"
+        className="emotion-5"
       >
         <h4
-          className="emotion-1"
+          className="emotion-2"
         >
           <img
             alt=""
@@ -233,13 +255,13 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
 `;
 
 exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
-.emotion-7 {
+.emotion-8 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -269,16 +291,22 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   margin-right: 8px;
 }
 
-.emotion-5 {
+.emotion-6 {
   padding: 32px;
 }
 
-.emotion-2 {
+.emotion-1 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-3 {
   border-bottom: 1px solid #4a4a4a;
   padding-bottom: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -289,20 +317,20 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   align-items: center;
 }
 
-.emotion-1 img {
+.emotion-2 img {
   margin-right: 12px;
 }
 
-.emotion-4 {
+.emotion-5 {
   padding-top: 16px;
   padding-bottom: 16px;
 }
 
 <div
-  className="emotion-7"
+  className="emotion-8"
 >
   <div
-    className="emotion-6"
+    className="emotion-7"
   >
     <h3
       className="emotion-0"
@@ -310,13 +338,18 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
       Project Tier: Premier
     </h3>
     <div
-      className="emotion-5"
+      className="emotion-6"
     >
+      <h3
+        className="emotion-1"
+      >
+        Usage:
+      </h3>
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         <h4
-          className="emotion-1"
+          className="emotion-2"
         >
           <img
             alt=""
@@ -328,10 +361,10 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
         </h4>
       </div>
       <div
-        className="emotion-4"
+        className="emotion-5"
       >
         <h4
-          className="emotion-1"
+          className="emotion-2"
         >
           <img
             alt=""

@@ -31,7 +31,7 @@ const AccountUsagePlan = ({ subscriptions }) => {
           lineHeight: typography.height.regular,
         }}
       >
-        Usage Plan:
+        Usage:
       </h3>
       <div
         css={{

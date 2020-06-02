@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
-import { spacing, constants } from '../Styles'
+import { spacing, constants, typography } from '../Styles'
 
 import Card from '../Card'
 
@@ -30,6 +30,15 @@ const ProjectUsagePlan = () => {
       }`}
       content={
         <>
+          <h3
+            css={{
+              paddingBottom: spacing.comfy,
+              fontSize: typography.size.regular,
+              lineHeight: typography.height.regular,
+            }}
+          >
+            Usage:
+          </h3>
           <div
             css={{
               borderBottom: constants.borders.tabs,
