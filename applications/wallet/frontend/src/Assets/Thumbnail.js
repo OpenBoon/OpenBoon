@@ -10,7 +10,7 @@ import SimilaritySvg from '../Icons/similarity.svg'
 
 import Button, { VARIANTS } from '../Button'
 
-import { encode, decode } from '../Filters/helpers'
+import { decode, dispatch, ACTIONS } from '../Filters/helpers'
 import { formatSeconds } from './helpers'
 
 const AssetsThumbnail = ({
@@ -41,22 +41,6 @@ const AssetsThumbnail = ({
     .join('&')
 
   const queryString = queryParams ? `?${queryParams}` : ''
-
-  const filtersWithoutSimilarity = decode({ query }).filter(
-    (filter) => filter.type !== 'similarity',
-  )
-
-  const newSimilarityFilter = {
-    type: 'similarity',
-    attribute: 'analysis.zvi-image-similarity',
-    values: {
-      ids: [id],
-    },
-  }
-
-  const similarityQuery = encode({
-    filters: [newSimilarityFilter, ...filtersWithoutSimilarity],
-  })
 
   const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
   const { pathname: videoSrc } = videoProxyUrl ? new URL(videoProxyUrl) : {}
@@ -90,7 +74,7 @@ const AssetsThumbnail = ({
           border: isSelected
             ? constants.borders.assetSelected
             : constants.borders.assetHover,
-          a: {
+          'a, button': {
             display: 'flex',
           },
           '.videoLength': {
@@ -142,29 +126,47 @@ const AssetsThumbnail = ({
           )}
         </Button>
       </Link>
-      <Link
-        href={`/[projectId]/visualizer?id=${id}&query=${similarityQuery}`}
-        as={`/${projectId}/visualizer?id=${id}&query=${similarityQuery}`}
-        passHref
-      >
-        <Button
-          variant={VARIANTS.NEUTRAL}
-          style={{
-            display: 'none',
-            position: 'absolute',
-            top: spacing.small,
-            right: spacing.small,
-            padding: spacing.small,
-            backgroundColor: colors.structure.smoke,
-            opacity: constants.opacity.half,
-            ':hover': {
-              opacity: constants.opacity.eighth,
+      <Button
+        aria-label="Image similarity"
+        variant={VARIANTS.NEUTRAL}
+        style={{
+          display: 'none',
+          position: 'absolute',
+          top: spacing.small,
+          right: spacing.small,
+          padding: spacing.small,
+          backgroundColor: colors.structure.smoke,
+          opacity: constants.opacity.half,
+          ':hover': {
+            opacity: constants.opacity.eighth,
+          },
+        }}
+        onClick={() => {
+          const filters = decode({ query })
+          const similarityFilterIndex = filters.findIndex(
+            (filter) => filter.type === 'similarity',
+          )
+
+          dispatch({
+            action: ACTIONS.ADD_OR_REPLACE_FILTER,
+            payload: {
+              projectId,
+              assetId: id,
+              filters,
+              newFilter: {
+                type: 'similarity',
+                attribute: 'analysis.zvi-image-similarity',
+                values: {
+                  ids: [id],
+                },
+              },
+              filterIndex: similarityFilterIndex,
             },
-          }}
-        >
-          <SimilaritySvg width={20} color={colors.structure.white} />
-        </Button>
-      </Link>
+          })
+        }}
+      >
+        <SimilaritySvg width={20} color={colors.structure.white} />
+      </Button>
       <Link
         href={`/[projectId]/visualizer/[id]${queryString}`}
         as={`/${projectId}/visualizer/${id}${queryString}`}
