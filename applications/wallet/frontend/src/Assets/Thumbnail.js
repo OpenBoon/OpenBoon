@@ -6,9 +6,11 @@ import Link from 'next/link'
 import { colors, constants, spacing } from '../Styles'
 
 import ExpandSvg from '../Icons/expand.svg'
+import SimilaritySvg from '../Icons/similarity.svg'
 
 import Button, { VARIANTS } from '../Button'
 
+import { encode, decode } from '../Filters/helpers'
 import { formatSeconds } from './helpers'
 
 const AssetsThumbnail = ({
@@ -39,6 +41,21 @@ const AssetsThumbnail = ({
     .join('&')
 
   const queryString = queryParams ? `?${queryParams}` : ''
+
+  const filters = decode({ query })
+  const simQuery = encode({
+    filters: [
+      ...filters,
+      // {
+      //   type: 'similarity',
+      //   attribute: 'analysis.zvi-image-similarity',
+      //   values: {
+      //     hashes: [''],
+      //     minScore: 0.5,
+      //   },
+      // },
+    ],
+  })
 
   const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
   const { pathname: videoSrc } = videoProxyUrl ? new URL(videoProxyUrl) : {}
@@ -122,6 +139,29 @@ const AssetsThumbnail = ({
               alt={filename}
             />
           )}
+        </Button>
+      </Link>
+      <Link
+        href={`/[projectId]/visualizer?id=${id}&query=${simQuery}`}
+        as={`/${projectId}/visualizer?id=${id}&query=${simQuery}`}
+        passHref
+      >
+        <Button
+          variant={VARIANTS.NEUTRAL}
+          style={{
+            display: 'none',
+            position: 'absolute',
+            top: spacing.small,
+            right: spacing.small,
+            padding: spacing.small,
+            backgroundColor: colors.structure.smoke,
+            opacity: constants.opacity.half,
+            ':hover': {
+              opacity: constants.opacity.eighth,
+            },
+          }}
+        >
+          <SimilaritySvg width={20} color={colors.structure.white} />
         </Button>
       </Link>
       <Link
