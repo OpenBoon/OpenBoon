@@ -370,7 +370,7 @@
 <div id="__next">
     <div class="css-1643h4y-ResetPassword">
         <form method="post" class="css-rzccx6-ResetPassword" action="/marketplace/signup/">
-            {% csrf_token %}
+            <input type="hidden" id="x-gcp-marketplace-token" value="{{ token }}">
             <svg viewBox="0 0 103.3 30" width="143" class="css-gmidt3-ResetPassword">
                 <path d="M11.3 0l11.9 4.7-.8 1.7zm-.3.9L23.5 8l-7.4 12.7-2.4-1.6 7.8-9.6z"
                       fill="#fff"></path>
@@ -810,6 +810,7 @@
 <div id="__next">
     <div class="css-1643h4y-ResetPassword">
         <form method="post" class="css-rzccx6-ResetPassword">
+            <input type="hidden" id="x-gcp-marketplace-token" value="{{ token }}">
             <svg viewBox="0 0 103.3 30" width="143" class="css-gmidt3-ResetPassword">
                 <path d="M11.3 0l11.9 4.7-.8 1.7zm-.3.9L23.5 8l-7.4 12.7-2.4-1.6 7.8-9.6z"
                       fill="#fff"></path>
