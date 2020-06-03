@@ -55,6 +55,7 @@ class TestAssetViewSet:
         content = response.json()
         assert content['id'] == id
         assert 'metadata' in content
+        assert 'fullscreen_url' in content
 
     def test_list_and_detail_resources_match(self, project, zvi_project_user, api_client,
                                              monkeypatch, detail_api_return, list_api_return):

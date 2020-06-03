@@ -67,3 +67,7 @@ variable "debug" {
   default = "false"
 }
 
+variable "browsable" {
+  default = "false"
+}
+
