@@ -156,13 +156,13 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
 `;
 
 exports[`<AccountCard /> should render properly 1`] = `
-.emotion-7 {
+.emotion-14 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-6 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -268,11 +268,53 @@ exports[`<AccountCard /> should render properly 1`] = `
   background-color: #808080;
 }
 
+.emotion-12 {
+  padding: 32px;
+}
+
+.emotion-6 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-bottom: 12px;
+}
+
+.emotion-7 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-9 {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 img {
+  margin-right: 12px;
+}
+
+.emotion-11 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
 <div
-  className="emotion-7"
+  className="emotion-14"
 >
   <div
-    className="emotion-6"
+    className="emotion-13"
   >
     <div
       className="emotion-5"
@@ -304,6 +346,51 @@ exports[`<AccountCard /> should render properly 1`] = `
             View Dashboard
           </a>
         </div>
+      </div>
+    </div>
+    <div
+      className="emotion-12"
+    >
+      <div
+        className="emotion-6"
+      >
+        Project Tier: 
+        Premier
+      </div>
+      <h3
+        className="emotion-7"
+      >
+        Usage:
+      </h3>
+      <div
+        className="emotion-9"
+      >
+        <h4
+          className="emotion-8"
+        >
+          <img
+            alt=""
+            src="/icons/videos.png"
+            width={32}
+          />
+           Video hours used: 
+          0
+        </h4>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        <h4
+          className="emotion-8"
+        >
+          <img
+            alt=""
+            src="/icons/images.png"
+            width={32}
+          />
+           Images / Documents: 
+          97
+        </h4>
       </div>
     </div>
   </div>
@@ -311,13 +398,13 @@ exports[`<AccountCard /> should render properly 1`] = `
 `;
 
 exports[`<AccountCard /> should render properly with no modules 1`] = `
-.emotion-7 {
+.emotion-14 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-6 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -423,11 +510,53 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
   background-color: #808080;
 }
 
+.emotion-12 {
+  padding: 32px;
+}
+
+.emotion-6 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-bottom: 12px;
+}
+
+.emotion-7 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-9 {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 img {
+  margin-right: 12px;
+}
+
+.emotion-11 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
 <div
-  className="emotion-7"
+  className="emotion-14"
 >
   <div
-    className="emotion-6"
+    className="emotion-13"
   >
     <div
       className="emotion-5"
@@ -461,18 +590,63 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
         </div>
       </div>
     </div>
+    <div
+      className="emotion-12"
+    >
+      <div
+        className="emotion-6"
+      >
+        Project Tier: 
+        Premier
+      </div>
+      <h3
+        className="emotion-7"
+      >
+        Usage:
+      </h3>
+      <div
+        className="emotion-9"
+      >
+        <h4
+          className="emotion-8"
+        >
+          <img
+            alt=""
+            src="/icons/videos.png"
+            width={32}
+          />
+           Video hours used: 
+          0
+        </h4>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        <h4
+          className="emotion-8"
+        >
+          <img
+            alt=""
+            src="/icons/images.png"
+            width={32}
+          />
+           Images / Documents: 
+          97
+        </h4>
+      </div>
+    </div>
   </div>
 </div>
 `;
 
 exports[`<AccountCard /> should render properly with over usage 1`] = `
-.emotion-7 {
+.emotion-14 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-6 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -578,11 +752,53 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   background-color: #808080;
 }
 
+.emotion-12 {
+  padding: 32px;
+}
+
+.emotion-6 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-bottom: 12px;
+}
+
+.emotion-7 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-9 {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 img {
+  margin-right: 12px;
+}
+
+.emotion-11 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
 <div
-  className="emotion-7"
+  className="emotion-14"
 >
   <div
-    className="emotion-6"
+    className="emotion-13"
   >
     <div
       className="emotion-5"
@@ -614,6 +830,51 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
             View Dashboard
           </a>
         </div>
+      </div>
+    </div>
+    <div
+      className="emotion-12"
+    >
+      <div
+        className="emotion-6"
+      >
+        Project Tier: 
+        Premier
+      </div>
+      <h3
+        className="emotion-7"
+      >
+        Usage:
+      </h3>
+      <div
+        className="emotion-9"
+      >
+        <h4
+          className="emotion-8"
+        >
+          <img
+            alt=""
+            src="/icons/videos.png"
+            width={32}
+          />
+           Video hours used: 
+          320
+        </h4>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        <h4
+          className="emotion-8"
+        >
+          <img
+            alt=""
+            src="/icons/images.png"
+            width={32}
+          />
+           Images / Documents: 
+          30,040
+        </h4>
       </div>
     </div>
   </div>

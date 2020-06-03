@@ -1,25 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
-.emotion-3 {
+.emotion-4 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
 }
 
-.emotion-3:hover {
+.emotion-4:hover {
   border: 4px solid #ffffff;
 }
 
-.emotion-3:hover a {
+.emotion-4:hover a,
+.emotion-4:hover button {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-3:hover .videoLength {
+.emotion-4:hover .videoLength {
   display: none;
 }
 
@@ -120,7 +121,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   padding: 0;
   display: none;
   position: absolute;
-  bottom: 4px;
+  top: 4px;
   right: 4px;
   padding: 4px;
   background-color: #3b3b3b;
@@ -140,8 +141,61 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   opacity: 0.8;
 }
 
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  display: none;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  padding: 4px;
+  background-color: #3b3b3b;
+  opacity: 0.5;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:hover {
+  opacity: 0.8;
+}
+
 <div
-  className="emotion-3"
+  className="emotion-4"
 >
   <a
     className="emotion-1"
@@ -155,8 +209,20 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
       src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
     />
   </a>
-  <a
+  <button
+    aria-label="Find similar images"
     className="emotion-2"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      color="#ffffff"
+      data-file-name="similarity.svg"
+      width={20}
+    />
+  </button>
+  <a
+    className="emotion-3"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d"
     onClick={[Function]}
     onMouseEnter={[Function]}
@@ -268,7 +334,7 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   padding: 0;
   display: none;
   position: absolute;
-  bottom: 4px;
+  top: 4px;
   right: 4px;
   padding: 4px;
   background-color: #3b3b3b;
@@ -289,29 +355,83 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
 }
 
 .emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  display: none;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  padding: 4px;
+  background-color: #3b3b3b;
+  opacity: 0.5;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:hover {
+  opacity: 0.8;
+}
+
+.emotion-4 {
   position: relative;
   border: 4px solid #027aff;
   width: 100%;
   height: 100%;
 }
 
-.emotion-3:hover {
+.emotion-4:hover {
   border: 4px solid #027aff;
 }
 
-.emotion-3:hover a {
+.emotion-4:hover a,
+.emotion-4:hover button {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-3:hover .videoLength {
+.emotion-4:hover .videoLength {
   display: none;
 }
 
 <div
-  className="emotion-3"
+  className="emotion-4"
 >
   <a
     className="emotion-1"
@@ -325,8 +445,20 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
       src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
     />
   </a>
-  <a
+  <button
+    aria-label="Find similar images"
     className="emotion-2"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      color="#ffffff"
+      data-file-name="similarity.svg"
+      width={20}
+    />
+  </button>
+  <a
+    className="emotion-3"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL"
     onClick={[Function]}
     onMouseEnter={[Function]}
@@ -341,6 +473,269 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
 `;
 
 exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
+.emotion-5 {
+  position: relative;
+  border: 4px solid transparent;
+  width: 100%;
+  height: 100%;
+}
+
+.emotion-5:hover {
+  border: 4px solid #ffffff;
+}
+
+.emotion-5:hover a,
+.emotion-5:hover button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5:hover .videoLength {
+  display: none;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #2e2e2e;
+  overflow: hidden;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  display: none;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 4px;
+  background-color: #3b3b3b;
+  opacity: 0.5;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2:hover {
+  opacity: 0.8;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  display: none;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  padding: 4px;
+  background-color: #3b3b3b;
+  opacity: 0.5;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:hover {
+  opacity: 0.8;
+}
+
+.emotion-4 {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  padding: 2px;
+  color: #000000;
+  background-color: #ffffff80;
+}
+
+<div
+  className="emotion-5"
+>
+  <a
+    className="emotion-1"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+  >
+    <video
+      className="emotion-0"
+      controlsList="nodownload nofullscreen noremoteplayback"
+      disablePictureInPicture={true}
+      muted={true}
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      playsInline={true}
+      poster="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
+      preload="none"
+    >
+      <source
+        src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
+        type="video/mp4"
+      />
+    </video>
+  </a>
+  <button
+    aria-label="Find similar images"
+    className="emotion-2"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      color="#ffffff"
+      data-file-name="similarity.svg"
+      width={20}
+    />
+  </button>
+  <a
+    className="emotion-3"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+  >
+    <svg
+      color="#ffffff"
+      data-file-name="expand.svg"
+      width={20}
+    />
+  </a>
+  <div
+    className="videoLength emotion-4"
+  >
+    2:24
+  </div>
+</div>
+`;
+
+exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 1`] = `
 .emotion-4 {
   position: relative;
   border: 4px solid transparent;
@@ -352,7 +747,8 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   border: 4px solid #ffffff;
 }
 
-.emotion-4:hover a {
+.emotion-4:hover a,
+.emotion-4:hover button {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -460,7 +856,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   padding: 0;
   display: none;
   position: absolute;
-  bottom: 4px;
+  top: 4px;
   right: 4px;
   padding: 4px;
   background-color: #3b3b3b;
@@ -481,204 +877,60 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
 }
 
 .emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  display: none;
   position: absolute;
   bottom: 4px;
-  left: 4px;
-  padding: 2px;
-  color: #000000;
-  background-color: #ffffff80;
+  right: 4px;
+  padding: 4px;
+  background-color: #3b3b3b;
+  opacity: 0.5;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:hover {
+  opacity: 0.8;
 }
 
 <div
   className="emotion-4"
->
-  <a
-    className="emotion-1"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
-  >
-    <video
-      className="emotion-0"
-      controlsList="nodownload nofullscreen noremoteplayback"
-      disablePictureInPicture={true}
-      muted={true}
-      onBlur={[Function]}
-      onFocus={[Function]}
-      onMouseOut={[Function]}
-      onMouseOver={[Function]}
-      playsInline={true}
-      poster="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
-      preload="none"
-    >
-      <source
-        src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
-        type="video/mp4"
-      />
-    </video>
-  </a>
-  <a
-    className="emotion-2"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
-  >
-    <svg
-      color="#ffffff"
-      data-file-name="expand.svg"
-      width={20}
-    />
-  </a>
-  <div
-    className="videoLength emotion-3"
-  >
-    2:24
-  </div>
-</div>
-`;
-
-exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 1`] = `
-.emotion-3 {
-  position: relative;
-  border: 4px solid transparent;
-  width: 100%;
-  height: 100%;
-}
-
-.emotion-3:hover {
-  border: 4px solid #ffffff;
-}
-
-.emotion-3:hover a {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-3:hover .videoLength {
-  display: none;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background: #2e2e2e;
-  overflow: hidden;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0 {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  display: none;
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover {
-  opacity: 0.8;
-}
-
-<div
-  className="emotion-3"
 >
   <a
     className="emotion-1"
@@ -692,8 +944,20 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
       src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
     />
   </a>
-  <a
+  <button
+    aria-label="Find similar images"
     className="emotion-2"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      color="#ffffff"
+      data-file-name="similarity.svg"
+      width={20}
+    />
+  </button>
+  <a
+    className="emotion-3"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
     onClick={[Function]}
     onMouseEnter={[Function]}

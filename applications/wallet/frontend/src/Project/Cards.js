@@ -10,7 +10,7 @@ import Bouncer, { ROLES } from '../Bouncer'
 
 import KeySvg from '../Icons/key.svg'
 
-// import ProjectUsagePlan from './UsagePlan'
+import ProjectUsagePlan from './UsagePlan'
 import ProjectGettingStarted from './GettingStarted'
 
 const ProjectCards = () => {
@@ -68,8 +68,7 @@ const ProjectCards = () => {
         }
       />
 
-      {/* TODO: Update the usage component to have the new plan info. */}
-      {/* <ProjectUsagePlan /> */}
+      <ProjectUsagePlan />
 
       <Bouncer role={ROLES.ML_Tools}>
         <ProjectGettingStarted projectId={projectId} />

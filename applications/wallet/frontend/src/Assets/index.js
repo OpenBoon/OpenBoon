@@ -125,19 +125,23 @@ const Assets = () => {
 
   return (
     <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <div
-        css={{
-          padding: spacing.base,
-          alignItems: 'center',
-          fontFamily: 'Roboto Condensed',
-          fontSize: typography.size.regular,
-          lineHeight: typography.height.regular,
-          backgroundColor: colors.structure.lead,
-          color: colors.structure.steel,
-        }}
-      >
-        {itemCount} Assets
-      </div>
+      {itemCount && (
+        <div
+          css={{
+            padding: spacing.base,
+            alignItems: 'center',
+            fontFamily: 'Roboto Condensed',
+            fontSize: typography.size.regular,
+            lineHeight: typography.height.regular,
+            backgroundColor: colors.structure.lead,
+            color: colors.structure.steel,
+            boxShadow: constants.boxShadows.navBar,
+            marginBottom: spacing.hairline,
+          }}
+        >
+          {itemCount} Assets
+        </div>
+      )}
       <div
         css={{
           flex: 1,

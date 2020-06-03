@@ -31,7 +31,14 @@ variable "google-oauth-client-id" {
 variable "environment" {
 }
 
-variable "domain" {}
+variable "domain" {
+}
+
+variable "marketplace-project" {
+}
+
+variable "marketplace-credentials" {
+}
 
 variable "container-tag" {
   default = "latest"
