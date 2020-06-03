@@ -72,9 +72,6 @@ class AssetAppTests(unittest.TestCase):
                         '_source': {
                             'source': {
                                 'path': 'https://i.imgur.com/foo.jpg'
-                            },
-                            'analysis': {
-                                'simhash': 'ABCDEFG'
                             }
                         }
                     }
