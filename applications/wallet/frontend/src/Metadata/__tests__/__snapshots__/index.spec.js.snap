@@ -9,7 +9,7 @@ exports[`<Metadata /> should render properly 1`] = `
 <div
   className="emotion-0"
 >
-  Select an asset to view its metadata
+  Select an asset to view its metadata.
 </div>
 `;
 
