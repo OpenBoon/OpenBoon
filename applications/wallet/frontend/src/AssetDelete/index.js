@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
+import { spacing } from '../Styles'
+
 import SuspenseBoundary from '../SuspenseBoundary'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 
 import AssetDeleteContent from './Content'
-
-import { spacing } from '../Styles'
 
 const AssetDelete = () => {
   const {
