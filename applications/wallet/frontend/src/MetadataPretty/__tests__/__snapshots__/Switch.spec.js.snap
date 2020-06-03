@@ -1076,7 +1076,7 @@ Array [
   color: #ffffff;
 }
 
-.emotion-29 {
+.emotion-33 {
   padding-bottom: 8px;
 }
 
@@ -1111,7 +1111,7 @@ Array [
   padding-right: 16px;
 }
 
-.emotion-28 {
+.emotion-32 {
   padding: 16px;
   padding-top: 4px;
   padding-bottom: 12px;
@@ -1126,7 +1126,7 @@ Array [
   color: #808080;
 }
 
-.emotion-27 {
+.emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1137,31 +1137,32 @@ Array [
   overflow: hidden;
 }
 
-.emotion-10 {
+.emotion-11 {
   width: 80px;
   min-width: 80px;
   height: 80px;
 }
 
-.emotion-9 {
+.emotion-10 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
 }
 
-.emotion-9:hover {
+.emotion-10:hover {
   border: 4px solid #ffffff;
 }
 
-.emotion-9:hover a {
+.emotion-10:hover a,
+.emotion-10:hover button {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-9:hover .videoLength {
+.emotion-10:hover .videoLength {
   display: none;
 }
 
@@ -1262,7 +1263,7 @@ Array [
   padding: 0;
   display: none;
   position: absolute;
-  bottom: 4px;
+  top: 4px;
   right: 4px;
   padding: 4px;
   background-color: #3b3b3b;
@@ -1282,7 +1283,60 @@ Array [
   opacity: 0.8;
 }
 
-.emotion-24 {
+.emotion-9 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  display: none;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  padding: 4px;
+  background-color: #3b3b3b;
+  opacity: 0.5;
+}
+
+.emotion-9:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-9[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-9:hover {
+  opacity: 0.8;
+}
+
+.emotion-28 {
   position: absolute;
   bottom: 4px;
   left: 4px;
@@ -1292,7 +1346,7 @@ Array [
 }
 
 <div
-    className="emotion-29"
+    className="emotion-33"
   >
     <div
       className="emotion-4"
@@ -1322,7 +1376,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-28"
+      className="emotion-32"
     >
       <div
         className="emotion-5"
@@ -1330,13 +1384,13 @@ Array [
         Similar Images
       </div>
       <div
-        className="emotion-27"
+        className="emotion-31"
       >
         <div
-          className="emotion-10"
+          className="emotion-11"
         >
           <div
-            className="emotion-9"
+            className="emotion-10"
           >
             <a
               className="emotion-7"
@@ -1350,8 +1404,20 @@ Array [
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
-            <a
+            <button
+              aria-label="Find similar images"
               className="emotion-8"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                width={20}
+              />
+            </button>
+            <a
+              className="emotion-9"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1365,10 +1431,10 @@ Array [
           </div>
         </div>
         <div
-          className="emotion-10"
+          className="emotion-11"
         >
           <div
-            className="emotion-9"
+            className="emotion-10"
           >
             <a
               className="emotion-7"
@@ -1382,8 +1448,20 @@ Array [
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
-            <a
+            <button
+              aria-label="Find similar images"
               className="emotion-8"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                width={20}
+              />
+            </button>
+            <a
+              className="emotion-9"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo?id=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1397,10 +1475,10 @@ Array [
           </div>
         </div>
         <div
-          className="emotion-10"
+          className="emotion-11"
         >
           <div
-            className="emotion-9"
+            className="emotion-10"
           >
             <a
               className="emotion-7"
@@ -1414,8 +1492,20 @@ Array [
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
-            <a
+            <button
+              aria-label="Find similar images"
               className="emotion-8"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                width={20}
+              />
+            </button>
+            <a
+              className="emotion-9"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r?id=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1429,10 +1519,10 @@ Array [
           </div>
         </div>
         <div
-          className="emotion-10"
+          className="emotion-11"
         >
           <div
-            className="emotion-9"
+            className="emotion-10"
           >
             <a
               className="emotion-7"
@@ -1459,8 +1549,20 @@ Array [
                 />
               </video>
             </a>
-            <a
+            <button
+              aria-label="Find similar images"
               className="emotion-8"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="similarity.svg"
+                width={20}
+              />
+            </button>
+            <a
+              className="emotion-9"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1472,7 +1574,7 @@ Array [
               />
             </a>
             <div
-              className="videoLength emotion-24"
+              className="videoLength emotion-28"
             >
               2:24
             </div>
