@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -20,19 +20,21 @@ User = get_user_model()
 
 class SignUpForm(forms.Form):
     email = forms.CharField(label='Google Account Email Address', max_length=255)
+    token = forms.CharField()
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class SignUpView(View):
-    def get(self, request):
-        form = SignUpForm()
-        return render(request, 'gcpmarketplace/signup.html', {'form': form})
 
     def post(self, request):
         form = SignUpForm(request.POST)
+
+        # If the form is valid this means the new client has loaded the signup page
+        # and filled out the form. We'll now activate the account.
         if form.is_valid():
             email = form.data['email']
-            claims = self._get_jwt_claims(request)
+            token = form.data['token']
+            claims = self._get_jwt_claims(token)
             account_name = f'providers/{settings.MARKETPLACE_PROJECT_ID}/accounts/{claims["sub"]}'
 
             # Create the User and MarketplaceAccount in Wallet
@@ -48,12 +50,19 @@ class SignUpView(View):
                 name=account_name, body={'approvalName': 'signup'})
             request.execute()
 
-            return HttpResponseRedirect(reverse('gcpmarketplace-signup-success'))
+            return redirect('gcpmarketplace-signup-success')
 
-    def _get_jwt_claims(self, request):
+        # If the form is not valid we assume this is the initial post request from marketplace
+        # and we need to render the signup page for the new client.
+        else:
+            form = SignUpForm()
+            context = {'token': request.POST['x-gcp-marketplace-token'],
+                       'form': form}
+            return render(request, 'gcpmarketplace/signup.html', context)
+
+    def _get_jwt_claims(self, token):
         """Make sure the jwt was signed correctly and is not expired."""
         issuer = 'https://www.googleapis.com/robot/v1/metadata/x509/cloud-commerce-partner@system.gserviceaccount.com'  # noqa
-        token = request.headers.get('X-Gcp-Marketplace-Token')
 
         # TODO: Make audience configurable.
         idinfo = id_token.verify_token(token, requests.Request(), certs_url=issuer,
