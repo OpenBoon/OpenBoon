@@ -9,34 +9,6 @@ class PandasTests(unittest.TestCase):
     def setUp(self):
         self.app = app_from_env()
 
-        self.mock_import_result = {
-            'bulkResponse': {
-                'took': 15,
-                'errors': False,
-                'items': [{
-                    'create': {
-                        '_index': 'yvqg1901zmu5bw9q',
-                        '_type': '_doc',
-                        '_id': 'dd0KZtqyec48n1q1fniqVMV5yllhRRGx',
-                        '_version': 1,
-                        'result': 'created',
-                        'forced_refresh': True,
-                        '_shards': {
-                            'total': 1,
-                            'successful': 1,
-                            'failed': 0
-                        },
-                        '_seq_no': 0,
-                        '_primary_term': 1,
-                        'status': 201
-                    }
-                }]
-            },
-            'failed': [],
-            'created': ['dd0KZtqyec48n1q1fniqVMV5yllhRRGx'],
-            'jobId': 'ba310246-1f87-1ece-b67c-be3f79a80d11'
-        }
-
         # A mock search result used for asset search tests
         self.mock_search_result = {
             'took': 4,
@@ -53,7 +25,16 @@ class PandasTests(unittest.TestCase):
                         '_source': {
                             'source': {
                                 'path': 'https://i.imgur.com/SSN26nN.jpg'
-                            }
+                            },
+                            "analysis": {"zvi-image-similarity": {
+                                "simhash": "AAAAAAAA"}
+                            },
+                            "labels": [
+                                {
+                                    "dataSetId": "ds-id-12345",
+                                    "label": "Glion",
+                                }
+                            ]
                         }
                     },
                     {
@@ -65,9 +46,29 @@ class PandasTests(unittest.TestCase):
                             'source': {
                                 'path': 'https://i.imgur.com/foo.jpg'
                             },
-                            'analysis': {
-                                'simhash': 'ABCDEFG'
-                            }
+                            'analysis': {"zvi-image-similarity": {
+                                "simhash": "BBBBBBBB"}
+                            },
+                            "labels": [
+                                {
+                                    "dataSetId": "ds-id-12345",
+                                    "label": "Gandalf",
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        '_index': 'litvqrkus86sna2w',
+                        '_type': 'asset',
+                        '_id': 'aabbccddec48n1q1fginVMV5yllhRRGx2WKyKLjDphg',
+                        '_score': 0.2876821,
+                        '_source': {
+                            'source': {
+                                'path': 'https://i.imgur.com/bar.jpg'
+                            },
+                            'analysis': {"zvi-image-similarity": {
+                                "simhash": "CCCCCCCC"}
+                            },
                         }
                     }
                 ]
@@ -80,13 +81,19 @@ class PandasTests(unittest.TestCase):
         search = {
             'query': {'match_all': {}}
         }
+        attrs = [
+            'source.path',
+            'analysis.zvi-image-similarity.simhash',
+            'labels'
+        ]
         rsp = self.app.assets.search(search=search)
         df = search_to_df(
             search=rsp,
-            attrs=['analysis.simhash'],
+            attrs=attrs[1:],  # all but source.path
             descriptor='source.path'
         )
 
-        assert df.shape == (2, 2)
-        assert list(df.columns) == ['source.path', 'analysis.simhash']
-        assert df.iloc[1]['analysis.simhash'] == 'ABCDEFG'
+        assert df.shape == (3, 3)
+        assert list(df.columns) == attrs
+        assert df.iloc[1][attrs[1]] == 'BBBBBBBB'  # simhash
+        assert not df.iloc[2][attrs[2]]  # no `labels` for last asset
