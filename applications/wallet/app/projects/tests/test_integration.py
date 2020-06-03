@@ -83,7 +83,7 @@ def test_projects_view_with_projects(project, zmlp_project_user, api_client):
 
 def test_projects_view_inactive_projects(project, zmlp_project_user, api_client):
     api_client.force_authenticate(zmlp_project_user)
-    project.is_active=False
+    project.is_active = False
     project.save()
     response = api_client.get(reverse('project-list')).json()
     assert response['count'] == 0
