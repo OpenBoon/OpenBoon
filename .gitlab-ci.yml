@@ -122,7 +122,6 @@ wallet-deploy-development:
   image: google/cloud-sdk
   retry: 1
   variables:
-    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
     PROJECT: zvi-dev
   stage: deploy
   environment:
@@ -133,12 +132,28 @@ wallet-deploy-development:
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
+    - kubectl rollout restart deployment wallet
   rules:
     # Merged to development with Wallet changes
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "applications/wallet/**/*"
+
+wallet-test-development:
+  image: google/cloud-sdk
+  retry: 1
+  variables:
+    PROJECT: zvi-dev
+  stage: test
+  environment:
+    name: dev
+    url: https://dev.console.zvi.zorroa.com/
+  before_script:
+    - echo $DEV_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
+  script:
+    - kubectl rollout restart deployment wallet
 
 ## Wallet Deploy Latest on any changes to QA
 wallet-deploy-qa:
@@ -354,7 +369,6 @@ zmlp-deploy-development:
   image: google/cloud-sdk
   retry: 1
   variables:
-    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
     PROJECT: zvi-dev
   stage: deploy
   environment:
@@ -365,14 +379,14 @@ zmlp-deploy-development:
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} analyst
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} api-gateway
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} archivist
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} auth-server
-    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-master
-    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-data
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} ml-bbq
+    - kubectl rollout restart deployment analyst
+    - kubectl rollout restart deployment api-gateway
+    - kubectl rollout restart deployment archivist
+    - kubectl rollout restart deployment auth-server
+    - kubectl rollout restart statefulset elasticsearch-master
+    - kubectl rollout restart statefulset elasticsearch-data
+    - kubectl rollout restart deployment officer
+    - kubectl rollout restart deployment ml-bbq
   rules:
     # Merged to development with ZMLP changes
     - if: $CI_COMMIT_BRANCH == "development"
@@ -512,16 +526,3 @@ zmlp-services-unit-tests:
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
         - "**/*"
-
-
-# Kotlin Services Jobs
-#sdk-containers-tests:
-#  stage: test
-#  before_script:
-#    - apk add --no-cache python3 # for build-images.py
-#    - pip3 install wheel
-#    - ./build-images.py
-#  script:
-#    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-analysis /zvi/pylib/zplugins
-#    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-core /zvi/pylib/zplugins
-
