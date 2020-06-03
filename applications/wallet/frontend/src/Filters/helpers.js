@@ -107,7 +107,17 @@ export const dispatch = ({ action, payload }) => {
     }
 
     case ACTIONS.APPLY_SIMILARITY: {
-      const { projectId, assetId, query: q, newFilter } = payload
+      const { projectId, assetId, query: q } = payload
+
+      const similarityFilter = {
+        type: 'similarity',
+        attribute: 'analysis.zvi-image-similarity',
+        values: {
+          ids: [assetId],
+        },
+        isDisabled: true, // TODO: remove after backend update
+      }
+
       const filters = decode({ query: q })
       const similarityFilterIndex = filters.findIndex(
         (filter) => filter.type === 'similarity',
@@ -115,10 +125,10 @@ export const dispatch = ({ action, payload }) => {
 
       const combinedFilters =
         similarityFilterIndex === -1
-          ? [newFilter, ...filters]
+          ? [similarityFilter, ...filters]
           : [
               ...filters.slice(0, similarityFilterIndex),
-              newFilter,
+              similarityFilter,
               ...filters.slice(similarityFilterIndex + 1),
             ]
 

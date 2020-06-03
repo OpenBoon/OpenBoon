@@ -148,14 +148,6 @@ const AssetsThumbnail = ({
               projectId,
               assetId: id,
               query,
-              newFilter: {
-                type: 'similarity',
-                attribute: 'analysis.zvi-image-similarity',
-                values: {
-                  ids: [id],
-                },
-                isDisabled: true, // TODO: remove after backend update
-              },
             },
           })
         }}
