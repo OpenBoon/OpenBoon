@@ -1,9 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import asset from '../../Asset/__mocks__/asset'
-import mockUser from '../../User/__mocks__/user'
-
-import User from '../../User'
 
 import Metadata from '..'
 
@@ -20,11 +17,7 @@ describe('<Metadata />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    const component = TestRenderer.create(
-      <User initialUser={mockUser}>
-        <Metadata />
-      </User>,
-    )
+    const component = TestRenderer.create(<Metadata />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -36,11 +29,7 @@ describe('<Metadata />', () => {
       query: { id: ASSET_ID, projectId: PROJECT_ID },
     })
 
-    const component = TestRenderer.create(
-      <User initialUser={mockUser}>
-        <Metadata />
-      </User>,
-    )
+    const component = TestRenderer.create(<Metadata />)
 
     expect(component.toJSON()).toMatchSnapshot()
 
