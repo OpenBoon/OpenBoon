@@ -391,7 +391,7 @@ class ProjectViewSet(ConvertCamelToSnakeViewSetMixin,
     serializer_class = ProjectSerializer
 
     def get_queryset(self):
-        return self.request.user.projects.all()
+        return self.request.user.projects.filter(is_active=True)
 
     @transaction.atomic
     def create(self, request):

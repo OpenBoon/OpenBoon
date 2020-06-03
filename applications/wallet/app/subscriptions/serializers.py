@@ -16,13 +16,11 @@ class SubscriptionLimitsUsageSerializer(serializers.Serializer):
 
 class SubscriptionSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.SerializerMethodField()
-    limits = SubscriptionLimitsUsageSerializer()
     usage = SubscriptionLimitsUsageSerializer()
 
     class Meta:
         model = Subscription
-        fields = ('id', 'project', 'limits', 'usage', 'modules', 'created_date',
-                  'modified_date', 'url')
+        fields = ('id', 'project', 'tier', 'usage', 'created_date', 'modified_date', 'url')
 
     def get_url(self, obj):
         request = self.context['request']
