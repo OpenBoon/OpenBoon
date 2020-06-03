@@ -6,7 +6,9 @@ from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from google.auth.transport import requests
 from google.oauth2 import id_token
 
@@ -20,6 +22,7 @@ class SignUpForm(forms.Form):
     email = forms.CharField(label='Google Account Email Address', max_length=255)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class SignUpView(View):
     def get(self, request):
         form = SignUpForm()
