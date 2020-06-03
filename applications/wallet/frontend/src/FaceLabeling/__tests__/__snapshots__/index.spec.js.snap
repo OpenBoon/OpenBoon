@@ -13,7 +13,20 @@ exports[`<FaceLabeling /> should render properly 1`] = `
 </div>
 `;
 
-exports[`<FaceLabeling /> should render selected asset 1`] = `
+exports[`<FaceLabeling /> should render selected asset with no predictions 1`] = `
+.emotion-0 {
+  padding: 16px;
+  color: #ffffff;
+}
+
+<div
+  className="emotion-0"
+>
+  No faces have been detected in this asset for naming and training. Please select another asset.
+</div>
+`;
+
+exports[`<FaceLabeling /> should render selected asset with predictions 1`] = `
 Array [
   .emotion-2 {
   padding: 16px;
@@ -99,7 +112,6 @@ Array [
   </div>,
   .emotion-0 {
   padding: 16px;
-  border-bottom: 1px solid #3b3b3b;
   color: #4a90e2;
 }
 
@@ -108,5 +120,295 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
+  .emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  padding: 16px;
+  width: 100%;
+  background-color: #191919;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  max-height: 64px;
+  width: 64px;
+  object-fit: contain;
+  margin-right: 16px;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-1 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  position: relative;
+}
+
+.emotion-2 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-2:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
+.emotion-2:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-4 {
+  padding-top: 8px;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  background-color: #808080;
+}
+
+.emotion-7:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-7[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-8 {
+  width: 8px;
+  min-width: 8px;
+}
+
+.emotion-9 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-9:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-9[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-9,
+.emotion-9:hover,
+.emotion-9:visited {
+  background-color: #73b61c;
+}
+
+.emotion-9:hover {
+  background-color: #96c955;
+}
+
+.emotion-9[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-11"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div>
+      <div
+        className="emotion-6"
+      >
+        <img
+          alt={
+            Array [
+              0.38,
+              0.368,
+              0.484,
+              0.584,
+            ]
+          }
+          className="emotion-0"
+          src="data:image/png;base64"
+          title={
+            Array [
+              0.38,
+              0.368,
+              0.484,
+              0.584,
+            ]
+          }
+        />
+        <div
+          className="emotion-5"
+        >
+          <label
+            className="emotion-1"
+            htmlFor="MNONPMMKPLRLONLJMRLNM"
+          >
+            Name:
+          </label>
+          <div
+            className="emotion-3"
+          >
+            <input
+              className="emotion-2"
+              disabled={false}
+              id="MNONPMMKPLRLONLJMRLNM"
+              name="MNONPMMKPLRLONLJMRLNM"
+              onChange={[Function]}
+              type="text"
+              value="face1"
+            />
+          </div>
+          <div
+            className="emotion-4"
+          >
+             
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-10"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-7"
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+      <div
+        className="emotion-8"
+      />
+      <button
+        aria-disabled={true}
+        className="emotion-9"
+        onClick={[Function]}
+        type="button"
+      >
+        Saved
+      </button>
+    </div>
+  </form>,
 ]
 `;

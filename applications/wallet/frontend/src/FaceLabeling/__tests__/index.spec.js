@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import asset from '../../Asset/__mocks__/asset'
 
@@ -6,6 +6,8 @@ import FaceLabeling from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = asset.id
+
+const noop = () => () => {}
 
 describe('<FaceLabeling />', () => {
   it('should render properly', () => {
@@ -18,8 +20,10 @@ describe('<FaceLabeling />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render selected asset', () => {
-    require('swr').__setMockUseSWRResponse({ data: asset })
+  it('should render selected asset with no predictions', () => {
+    require('swr').__setMockUseSWRResponse({
+      data: { ...asset, 'zvi-face-detection': null },
+    })
 
     require('next/router').__setUseRouter({
       query: { id: ASSET_ID, projectId: PROJECT_ID },
@@ -28,5 +32,46 @@ describe('<FaceLabeling />', () => {
     const component = TestRenderer.create(<FaceLabeling />)
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render selected asset with predictions', () => {
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...asset,
+        'zvi-face-detection': {
+          count: 3,
+          type: 'labels',
+          predictions: [
+            {
+              score: 0.999,
+              bbox: [0.38, 0.368, 0.484, 0.584],
+              label: 'face1',
+              simhash: 'MNONPMMKPLRLONLJMRLNM',
+              b64_image: 'data:image/png;base64',
+            },
+          ],
+        },
+      },
+    })
+
+    require('next/router').__setUseRouter({
+      query: { id: ASSET_ID, projectId: PROJECT_ID },
+    })
+
+    const component = TestRenderer.create(<FaceLabeling />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ id: 'MNONPMMKPLRLONLJMRLNM' })
+        .props.onChange({ target: { value: 'Jane' } })
+    })
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'Cancel' })
+        .props.onClick({ preventDefault: noop })
+    })
   })
 })
