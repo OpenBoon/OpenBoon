@@ -55,9 +55,7 @@ class SignUpView(View):
         # If the form is not valid we assume this is the initial post request from marketplace
         # and we need to render the signup page for the new client.
         else:
-            form = SignUpForm()
-            context = {'token': request.POST['x-gcp-marketplace-token'],
-                       'form': form}
+            context = {'token': request.POST['x-gcp-marketplace-token']}
             return render(request, 'gcpmarketplace/signup.html', context)
 
     def _get_jwt_claims(self, token):
