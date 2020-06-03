@@ -157,7 +157,14 @@ def crop_image_poly(image, poly, width=256, draw=False, color=(255, 0, 0), thick
 
 
 def get_asset_style(item):
-    """Set the AssetStyle for the frontend. Images and Documents are 'image'."""
+    """Set the AssetStyle for the frontend. Images and Documents are 'image'.
+
+    Args:
+        item: The specific asset item being acted upon, as returned by ZMLP.
+
+    Returns:
+        str: Whether this asset's source is primarily image or video
+    """
     try:
         mimetype_base = item['metadata']['source']['mimetype'].split('/')[0]
         if mimetype_base == 'video':
@@ -169,7 +176,14 @@ def get_asset_style(item):
 
 
 def get_video_length(item):
-    """Sets the video length for an asset for the frontend to use."""
+    """Sets the video length for an asset for the frontend to use.
+
+    Args:
+        item: The specific asset item being acted upon, as returned by ZMLP.
+
+    Returns:
+        str: The length of this assets video, if it exists.
+    """
     try:
         if item['asset_style'] == 'video':
             return item['metadata']['media']['length']
@@ -180,6 +194,19 @@ def get_video_length(item):
 
 
 def get_thumbnail_and_video_urls(request, item):
+    """Determines the thumbnail image and video url to use for the frontend.
+
+    For the thumbnail url, if an appropriate web-proxy is not found it will use the
+    fallback image address. For the video url, if a suitable proxy video is not found
+    (it may not have been created yet or the asset is an image) it will return None.
+
+    Args:
+        request: DRF Request object
+        item: The specific asset item being acted upon, as returned by ZMLP.
+
+    Returns:
+        (str, str): Thumbnail and Video url for this asset item.
+    """
     project_id = request.parser_context['view'].kwargs['project_pk']
     asset_id = item['id']
     thumbnail_url = '/icons/fallback_3x.png'
