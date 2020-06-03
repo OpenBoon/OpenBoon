@@ -14,8 +14,7 @@ requirements = [
     "pyOpenSSL",
     "PyJWT",
     "backoff",
-    "pytest",
-    "pandas",
+    "pytest"
 ]
 
 setup(

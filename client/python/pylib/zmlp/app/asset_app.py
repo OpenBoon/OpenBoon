@@ -1,8 +1,6 @@
 import io
 import os
 from collections import namedtuple
-import pandas as pd
-from collections import defaultdict
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
@@ -382,29 +380,6 @@ class AssetApp(object):
             SimilarityQuery: A configured SimilarityQuery
         """
         return SimilarityQuery(self.get_sim_hashes(images), min_score)
-
-    def search_to_df(self, search=None, attrs=None, descriptor='source.filename'):
-        """Convert search results to DataFrame
-
-        Args:
-            search (AssetSearchResult): an AssetSearchResult instance from ES query
-            attrs (List[str]): attributes to get
-            descriptor (str, default: source.filename): unique name to describe each row
-
-        Returns:
-            pd.DataFrame - DataFrame converted from assets
-        """
-        asset_dict = defaultdict(list)
-
-        for asset in search:
-            src = asset.get_attr(descriptor)
-            asset_dict[descriptor].append(src)
-            for attr in attrs:
-                a = asset.get_attr(attr)
-                asset_dict[attr].append(a)
-        df = pd.DataFrame(asset_dict)
-
-        return df
 
 
 """
