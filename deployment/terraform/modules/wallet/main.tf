@@ -161,6 +161,14 @@ resource "kubernetes_deployment" "wallet" {
             name  = "DEBUG"
             value = var.debug
           }
+          env {
+            name = "MARKETPLACE_PROJECT_ID"
+            value = var.marketplace-project
+          }
+          env {
+            name = "MARKETPLACE_CREDENTIALS"
+            value = var.marketplace-credentials
+          }
         }
       }
     }
