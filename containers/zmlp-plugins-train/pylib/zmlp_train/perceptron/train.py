@@ -20,6 +20,11 @@ logging.basicConfig(level=logging.INFO)
 class LabelDetectionPerceptronTrainer(AssetProcessor):
     """Trainer for Label Detection Perceptron """
 
+    # determines the supported FileTypes for a Processor
+    # setting to `None` since it is a "fake" Processor that doesn't run on
+    # each asset and instead runs only once
+    file_types = None
+
     PTEST = 0.3
     SEED = 42
     ORD_VAL = 65
@@ -60,7 +65,7 @@ class LabelDetectionPerceptronTrainer(AssetProcessor):
 
     def process(self, frame):
         # load data
-        self.reactor.emit_status("Looking for categories:")
+        logging.debug("Looking for categories:")
         (train_x, train_y), (test_x, test_y), self.class_names = \
             self.load_data(self.attr)
 
