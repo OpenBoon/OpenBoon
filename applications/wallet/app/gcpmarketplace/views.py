@@ -23,7 +23,6 @@ class SignUpForm(forms.Form):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class SignUpView(View):
-
     def post(self, request):
         form = SignUpForm(request.POST)
 
