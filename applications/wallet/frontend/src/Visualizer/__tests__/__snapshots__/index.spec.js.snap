@@ -295,6 +295,7 @@ exports[`<Visualizer /> should render properly 1`] = `
           aria-label="Filters"
           className="emotion-0"
           onClick={[Function]}
+          title="Filters"
           type="button"
         >
           <svg
@@ -362,6 +363,7 @@ exports[`<Visualizer /> should render properly 1`] = `
           aria-label="Asset Metadata"
           className="emotion-0"
           onClick={[Function]}
+          title="Asset Metadata"
           type="button"
         >
           <svg
@@ -374,6 +376,7 @@ exports[`<Visualizer /> should render properly 1`] = `
           aria-label="Export"
           className="emotion-0"
           onClick={[Function]}
+          title="Export"
           type="button"
         >
           <svg
@@ -387,6 +390,7 @@ exports[`<Visualizer /> should render properly 1`] = `
           aria-label="Delete"
           className="emotion-0"
           onClick={[Function]}
+          title="Delete"
           type="button"
         >
           <svg
@@ -699,6 +703,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           aria-label="Filters"
           className="emotion-0"
           onClick={[Function]}
+          title="Filters"
           type="button"
         >
           <svg
@@ -766,6 +771,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           aria-label="Asset Metadata"
           className="emotion-0"
           onClick={[Function]}
+          title="Asset Metadata"
           type="button"
         >
           <svg
@@ -778,6 +784,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           aria-label="Export"
           className="emotion-0"
           onClick={[Function]}
+          title="Export"
           type="button"
         >
           <svg
@@ -791,6 +798,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           aria-label="Delete"
           className="emotion-0"
           onClick={[Function]}
+          title="Delete"
           type="button"
         >
           <svg
