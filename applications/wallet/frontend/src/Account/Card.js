@@ -1,4 +1,4 @@
-// import useSWR from 'swr'
+import useSWR from 'swr'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 
@@ -7,12 +7,12 @@ import { colors, spacing } from '../Styles'
 import Button, { VARIANTS } from '../Button'
 import Card from '../Card'
 
-// import AccountUsagePlan from './UsagePlan'
+import AccountUsagePlan from './UsagePlan'
 
 const AccountCard = ({ projectId, name }) => {
-  // const {
-  //   data: { results: subscriptions },
-  // } = useSWR(`/api/v1/projects/${projectId}/subscriptions/`)
+  const {
+    data: { results: subscriptions },
+  } = useSWR(`/api/v1/projects/${projectId}/subscriptions/`)
 
   return (
     <Card
@@ -36,13 +36,11 @@ const AccountCard = ({ projectId, name }) => {
       }
       // eslint-disable-next-line react/jsx-curly-brace-presence
       content={
-        // TODO: Update usage component to have the new plan info.
-        // subscriptions.length !== 0 ? (
-        //   <AccountUsagePlan subscriptions={subscriptions} />
-        // ) : (
-        //   ''
-        // )
-        ''
+        subscriptions.length !== 0 ? (
+          <AccountUsagePlan subscriptions={subscriptions} />
+        ) : (
+          ''
+        )
       }
     />
   )
