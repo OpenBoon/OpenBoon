@@ -128,4 +128,27 @@ describe('<DataSourcesEditForm />', () => {
       `/${PROJECT_ID}/data-sources?action=edit-datasource-success`,
     )
   })
+
+  it('should display an error with an empty source name', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/data-sources/add',
+      query: { projectId: PROJECT_ID, dataSourceId: DATA_SOURCE_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: providers })
+
+    const component = TestRenderer.create(
+      <DataSourcesEditForm
+        initialState={{
+          name: '',
+          uri: dataSource.uri,
+          fileTypes: { video: true },
+          modules: [MODULE.id],
+          errors: { global: '' },
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
