@@ -1,8 +1,9 @@
 import base64
-
 import cv2
 import numpy as np
 import requests
+
+from django.urls import reverse
 
 
 class AssetBoxImager(object):
@@ -153,3 +154,86 @@ def crop_image_poly(image, poly, width=256, draw=False, color=(255, 0, 0), thick
         resized = np.zeros((width, width, 3), np.uint8)
 
     return resized
+
+
+def get_asset_style(item):
+    """Set the AssetStyle for the frontend. Images and Documents are 'image'.
+
+    Args:
+        item: The specific asset item being acted upon, as returned by ZMLP.
+
+    Returns:
+        str: Whether this asset's source is primarily image or video
+    """
+    try:
+        mimetype_base = item['metadata']['source']['mimetype'].split('/')[0]
+        if mimetype_base == 'video':
+            return 'video'
+        else:
+            return 'image'
+    except (KeyError, IndexError):
+        return None
+
+
+def get_video_length(item):
+    """Sets the video length for an asset for the frontend to use.
+
+    Args:
+        item: The specific asset item being acted upon, as returned by ZMLP.
+
+    Returns:
+        str: The length of this assets video, if it exists.
+    """
+    try:
+        if item['asset_style'] == 'video':
+            return item['metadata']['media']['length']
+        else:
+            return None
+    except KeyError:
+        return None
+
+
+def get_thumbnail_and_video_urls(request, item):
+    """Determines the thumbnail image and video url to use for the frontend.
+
+    For the thumbnail url, if an appropriate web-proxy is not found it will use the
+    fallback image address. For the video url, if a suitable proxy video is not found
+    (it may not have been created yet or the asset is an image) it will return None.
+
+    Args:
+        request: DRF Request object
+        item: The specific asset item being acted upon, as returned by ZMLP.
+
+    Returns:
+        (str, str): Thumbnail and Video url for this asset item.
+    """
+    project_id = request.parser_context['view'].kwargs['project_pk']
+    asset_id = item['id']
+    thumbnail_url = '/icons/fallback_3x.png'
+    thumbnail_category = 'web-proxy'
+    video_proxy_url = None
+    video_proxy_category = 'proxy'
+    video_proxy_mimetype = 'video/mp4'
+    for _file in item['metadata']['files']:
+        if _file['category'] == thumbnail_category:
+            name = _file['name']
+            # If a web-proxy is found, build the file serving url for it
+            thumbnail_url = reverse('file_name-detail', kwargs={'project_pk': project_id,
+                                                                'asset_pk': asset_id,
+                                                                'category_pk': thumbnail_category,
+                                                                'pk': name})
+        if _file['category'] == video_proxy_category and _file['mimetype'] == video_proxy_mimetype:
+            name = _file['name']
+            video_proxy_url = reverse('file_name-detail',
+                                      kwargs={'project_pk': project_id,
+                                              'asset_pk': asset_id,
+                                              'category_pk': video_proxy_category,
+                                              'pk': name})
+    # Regardless of the url being used, make it absolute
+    thumb = request.build_absolute_uri(thumbnail_url)
+    if video_proxy_url:
+        video = request.build_absolute_uri(video_proxy_url)
+    else:
+        video = None
+
+    return thumb, video

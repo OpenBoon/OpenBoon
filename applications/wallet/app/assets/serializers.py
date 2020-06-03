@@ -5,6 +5,7 @@ from wallet.serializers import PageSerializer
 
 class AssetSerializer(serializers.Serializer):
     id = serializers.CharField(required=False, allow_null=True)
+    fullscreen_url = serializers.CharField(required=False)
     metadata = serializers.DictField(required=True)
 
 
