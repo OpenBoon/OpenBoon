@@ -162,6 +162,10 @@ resource "kubernetes_deployment" "wallet" {
             value = var.debug
           }
           env {
+            name  = "BROWSABLE"
+            value = var.browsable
+          }
+          env {
             name = "MARKETPLACE_PROJECT_ID"
             value = var.marketplace-project
           }

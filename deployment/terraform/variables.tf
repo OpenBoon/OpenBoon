@@ -74,6 +74,11 @@ variable "wallet-debug" {
   default = "false"
 }
 
+variable "wallet-browsable-api" {
+  description = "Turns on the Wallet/Console browsable API for an environment."
+  default = "false"
+}
+
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"
