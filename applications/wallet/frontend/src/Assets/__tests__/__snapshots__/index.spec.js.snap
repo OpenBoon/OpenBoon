@@ -14,19 +14,6 @@ exports[`<Assets /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-0 {
-  padding: 8px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Roboto Condensed;
-  font-size: 15px;
-  line-height: 19px;
-  background-color: #252525;
-  color: #808080;
-}
-
 .emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -157,6 +144,21 @@ exports[`<Assets /> should render properly 1`] = `
 
 .emotion-2[aria-disabled=true] {
   color: #808080;
+}
+
+.emotion-0 {
+  padding: 8px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  font-size: 15px;
+  line-height: 19px;
+  background-color: #252525;
+  color: #808080;
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+  margin-bottom: 1px;
 }
 
 <div
@@ -225,19 +227,6 @@ exports[`<Assets /> should render properly 2`] = `
   flex-direction: column;
 }
 
-.emotion-0 {
-  padding: 8px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Roboto Condensed;
-  font-size: 15px;
-  line-height: 19px;
-  background-color: #252525;
-  color: #808080;
-}
-
 .emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -368,6 +357,21 @@ exports[`<Assets /> should render properly 2`] = `
 
 .emotion-1[aria-disabled=true] {
   color: #808080;
+}
+
+.emotion-0 {
+  padding: 8px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  font-size: 15px;
+  line-height: 19px;
+  background-color: #252525;
+  color: #808080;
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+  margin-bottom: 1px;
 }
 
 <div
@@ -436,19 +440,6 @@ exports[`<Assets /> should render properly 3`] = `
   flex-direction: column;
 }
 
-.emotion-0 {
-  padding: 8px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Roboto Condensed;
-  font-size: 15px;
-  line-height: 19px;
-  background-color: #252525;
-  color: #808080;
-}
-
 .emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -579,6 +570,21 @@ exports[`<Assets /> should render properly 3`] = `
 
 .emotion-2[aria-disabled=true] {
   color: #808080;
+}
+
+.emotion-0 {
+  padding: 8px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Roboto Condensed;
+  font-size: 15px;
+  line-height: 19px;
+  background-color: #252525;
+  color: #808080;
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+  margin-bottom: 1px;
 }
 
 <div
@@ -648,7 +654,7 @@ exports[`<Assets /> should render properly while loading 1`] = `
   }
 }
 
-.emotion-8 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -661,20 +667,7 @@ exports[`<Assets /> should render properly while loading 1`] = `
   flex-direction: column;
 }
 
-.emotion-0 {
-  padding: 8px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Roboto Condensed;
-  font-size: 15px;
-  line-height: 19px;
-  background-color: #252525;
-  color: #808080;
-}
-
-.emotion-7 {
+.emotion-6 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -683,7 +676,7 @@ exports[`<Assets /> should render properly while loading 1`] = `
   box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-3 {
+.emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -694,7 +687,7 @@ exports[`<Assets /> should render properly while loading 1`] = `
   height: 100%;
 }
 
-.emotion-2 {
+.emotion-1 {
   min-height: 300px;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -719,13 +712,13 @@ exports[`<Assets /> should render properly while loading 1`] = `
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-1 {
+.emotion-0 {
   -webkit-animation: animation-0 2s linear infinite;
   animation: animation-0 2s linear infinite;
   margin-right: 16px;
 }
 
-.emotion-6 {
+.emotion-5 {
   position: absolute;
   bottom: 16px;
   right: 16px;
@@ -744,7 +737,7 @@ exports[`<Assets /> should render properly while loading 1`] = `
   padding-right: 8px;
 }
 
-.emotion-4 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -779,24 +772,24 @@ exports[`<Assets /> should render properly while loading 1`] = `
   padding: 8px;
 }
 
-.emotion-4:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-4:hover {
+.emotion-3:hover {
   color: #73b61c;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-5 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -831,42 +824,37 @@ exports[`<Assets /> should render properly while loading 1`] = `
   padding: 8px;
 }
 
-.emotion-5:hover {
+.emotion-4:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-4:hover {
   color: #73b61c;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #808080;
 }
 
 <div
-  className="emotion-8"
+  className="emotion-7"
 >
   <div
-    className="emotion-0"
-  >
-     Assets
-  </div>
-  <div
-    className="emotion-7"
+    className="emotion-6"
   >
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <div
-        className="Loading emotion-2"
+        className="Loading emotion-1"
       >
         <svg
-          className="emotion-1"
+          className="emotion-0"
           data-file-name="generating.svg"
           height={20}
         />
@@ -883,12 +871,12 @@ exports[`<Assets /> should render properly while loading 1`] = `
       }
     />
     <div
-      className="emotion-6"
+      className="emotion-5"
     >
       <button
         aria-disabled={true}
         aria-label="Zoom Out"
-        className="emotion-4"
+        className="emotion-3"
         onClick={[Function]}
         type="button"
       >
@@ -899,7 +887,7 @@ exports[`<Assets /> should render properly while loading 1`] = `
       </button>
       <button
         aria-label="Zoom In"
-        className="emotion-5"
+        className="emotion-4"
         onClick={[Function]}
         type="button"
       >
