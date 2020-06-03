@@ -122,7 +122,7 @@ wallet-deploy-development:
   image: google/cloud-sdk
   retry: 1
   variables:
-    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
+    DEPLOY_SCRIPT: kubectl --namespace default rollout restart
     PROJECT: zvi-dev
   stage: deploy
   environment:
@@ -139,6 +139,23 @@ wallet-deploy-development:
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
         - "applications/wallet/**/*"
+
+wallet-deploy-test:
+  image: google/cloud-sdk
+  retry: 1
+  variables:
+    DEPLOY_SCRIPT: kubectl --namespace default rollout restart
+    PROJECT: zvi-dev
+  stage: test
+  environment:
+    name: dev
+    url: https://dev.console.zvi.zorroa.com/
+  before_script:
+    - echo $DEV_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
+  script:
+    - ${DEPLOY_SCRIPT} deployment wallet
 
 ## Wallet Deploy Latest on any changes to QA
 wallet-deploy-qa:
