@@ -153,7 +153,7 @@ wallet-test-development:
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - kubectl rollout restart deployment wallet
+    - kubectl --namespace default rollout restart deployment wallet
 
 ## Wallet Deploy Latest on any changes to QA
 wallet-deploy-qa:
