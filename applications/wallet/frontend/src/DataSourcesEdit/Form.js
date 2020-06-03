@@ -87,10 +87,8 @@ const DataSourcesEditForm = ({ initialState }) => {
                 name: value,
               })
             }
-            hasError={!errors.name || !name}
-            errorMessage={
-              errors.name || !name ? 'Data Source Name is required' : ''
-            }
+            hasError={!!errors.name || !name}
+            errorMessage={errors.name || !name ? 'Name cannot be empty' : ''}
           />
 
           <SectionTitle>{`Storage Address: ${uri}`}</SectionTitle>
