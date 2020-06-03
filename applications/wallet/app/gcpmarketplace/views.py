@@ -23,9 +23,6 @@ class SignUpForm(forms.Form):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class SignUpView(View):
-    def get(self, request):
-        return render(request, 'gcpmarketplace/signup.html', {'token': 'blah'})
-
     def post(self, request):
         form = SignUpForm(request.POST)
 
