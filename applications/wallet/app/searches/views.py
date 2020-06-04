@@ -37,7 +37,6 @@ def search_asset_modifier(request, item):
     # Cleanup
     del(item['metadata']['files'])
     del(item['metadata']['media'])
-    del(item['fullscreen_url'])
 
 
 class SearchViewSet(ConvertCamelToSnakeViewSetMixin,

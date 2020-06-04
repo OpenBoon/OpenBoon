@@ -237,3 +237,74 @@ def get_thumbnail_and_video_urls(request, item):
         video = None
 
     return thumb, video
+
+
+def get_best_fullscreen_file_data(item):
+    """Helper that looks at an assets files and determines the best one to view fullscreen.
+
+    If no valid file is found for display, returns None.
+
+    Args:
+        item: The specific asset item being acted upon, as returned by ZMLP.
+
+    Return:
+        dict: The file blob that represents the best file for fullscreen viewing. None if
+            a file is not found.
+    """
+    source_mimetype = item['metadata']['source']['mimetype']
+    if source_mimetype.startswith('image'):
+        best_file = get_largest_proxy(item, 'image')
+    else:
+        best_file = get_largest_proxy(item, 'video')
+    return best_file
+
+
+def get_largest_proxy(item, mimetype_prefix='image'):
+    """Looks at an assets files, and return the largest proxy file with the specified mimetype.
+
+    Proxy files that are of category 'web-proxy' will be prioritized first.
+
+    Args:
+        item: The specific asset item being acted upon, as return by ZMLP.
+        mimetype_prefix: The mimetype of the proxy that should be looked for. Defaults to images.
+
+    Return:
+        dict: The data for the largest proxy of the given mimetype.
+    """
+    _files = item['metadata']['files']
+    if not _files:
+        # Bail if there are no files to look at
+        return None
+
+    # Filter for the given mimetype
+    def filter_by_mimetype(_file):
+        if _file['mimetype'].startswith(mimetype_prefix):
+            return True
+        return False
+    matching_mimetypes = list(filter(filter_by_mimetype, _files))
+
+    # Sort matching files, largest resolution first
+    def resolution_resolver(_file):
+        return int(_file['attrs'].get('width', 0)) * int(_file['attrs'].get('height', 0))
+    sorted_files = sorted(matching_mimetypes, key=resolution_resolver, reverse=True)
+
+    # Check for web proxies in the sorted files first
+    def filter_for_web_proxies(_file):
+        if _file['category'] == 'web-proxy':
+            return True
+        return False
+    sorted_web_proxies = list(filter(filter_for_web_proxies, sorted_files))
+    if sorted_web_proxies:
+        return sorted_web_proxies[0]
+
+    # Return the just the largest proxy if there are no web-proxies
+    def filter_for_proxies(_file):
+        if _file['category'] == 'proxy':
+            return True
+        return False
+    sorted_proxies = list(filter(filter_for_proxies, sorted_files))
+    if sorted_proxies:
+        return sorted_proxies[0]
+    else:
+        # Managed to not find any web-proxies or proxies
+        return None
