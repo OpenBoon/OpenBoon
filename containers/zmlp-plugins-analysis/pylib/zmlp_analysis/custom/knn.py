@@ -36,12 +36,14 @@ class KnnLabelDetectionClassifier(AssetProcessor):
         min_distance = self.arg_value('sensitivity')
         if dist[0][0] < min_distance:
             label = prediction[0]
+            score = round(1 - dist[0][0] / min_distance, 2)
         else:
             label = 'Unrecognized'
+            score = 0.0
 
         asset.set_attr('analysis.' + self.app_model.name, {
             "label": label,
-            "score": dist[0][0]
+            "score": score
         })
 
     def load_model(self):

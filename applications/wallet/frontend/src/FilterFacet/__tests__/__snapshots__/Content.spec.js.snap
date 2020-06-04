@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FilterFacetContent /> should render with no buckets 1`] = `
+exports[`<FilterFacetContent /> should render with no data 1`] = `
 Array [
   <FilterReset
     assetId=""

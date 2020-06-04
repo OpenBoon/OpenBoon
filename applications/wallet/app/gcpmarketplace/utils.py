@@ -8,7 +8,7 @@ from googleapiclient.discovery import build
 
 def get_google_credentials():
     return service_account.Credentials.from_service_account_info(
-        json.loads(settings.MARKETPLACE_CREDENTIALS))
+            json.loads(settings.MARKETPLACE_CREDENTIALS))
 
 
 def get_procurement_api():

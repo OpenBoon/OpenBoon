@@ -326,6 +326,10 @@ class TestSearchAssetModifier:
         search_asset_modifier(mock_request, video_item)
         assert video_item['video_proxy_url'] == 'http://testserver/api/v1/projects/asdf/assets/mUqByg6ARFdORH1UaO2NH4JvxfN2Wk7W/files/category/proxy/name/video_640x360.mp4/'  # noqa
 
+    def test_fullscreen_url_not_included(self, mock_request, video_item):
+        search_asset_modifier(mock_request, video_item)
+        assert 'fullscreen_url' not in video_item
+
 
 class TestQuery(BaseFiltersTestCase):
 

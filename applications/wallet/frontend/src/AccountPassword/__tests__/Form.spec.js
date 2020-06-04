@@ -4,10 +4,8 @@ import AccountPasswordForm from '../Form'
 
 const noop = () => () => {}
 
-jest.mock('../helpers')
-
 describe('<AccountPasswordForm />', () => {
-  it('should render properly', () => {
+  it('should render properly', async () => {
     const component = TestRenderer.create(<AccountPasswordForm />)
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -30,7 +28,15 @@ describe('<AccountPasswordForm />', () => {
         .props.onChange({ target: { value: 'bar' } })
     })
 
-    act(() => {
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        oldPassword: 'password',
+        newPassword1: 'password1',
+        newPassword2: 'password1',
+      }),
+    )
+
+    await act(async () => {
       component.root
         .findByProps({ type: 'submit' })
         .props.onClick({ preventDefault: noop })

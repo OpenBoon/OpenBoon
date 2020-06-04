@@ -16,10 +16,16 @@ import TrashSvg from '../Icons/trash.svg'
 
 const ICON_WIDTH = 20
 
+let reloadKey = 0
+
 const VisualizerContent = () => {
   const {
     query: { id: assetId, action },
   } = useRouter()
+
+  if (action === 'delete-asset-success') {
+    reloadKey += 1
+  }
 
   return (
     <div
@@ -41,11 +47,11 @@ const VisualizerContent = () => {
             filters: {
               title: 'Filters',
               icon: <FilterSvg width={ICON_WIDTH} aria-hidden />,
-              content: <Filters key={action} />,
+              content: <Filters key={reloadKey} />,
             },
           }}
         </Panel>
-        <Assets key={action} />
+        <Assets key={reloadKey} />
         <Panel openToThe="left">
           {{
             metadata: {

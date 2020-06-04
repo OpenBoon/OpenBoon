@@ -1,7 +1,7 @@
 from enum import Enum
 
 from .base import BaseEntity
-from ..util import round_floats, as_id
+from ..util import as_id
 
 __all__ = [
     'DataSet',
@@ -85,7 +85,7 @@ class DataSetLabel:
         return {
             'dataSetId': self.dataset_id,
             'label': self.label,
-            'bbox': round_floats(self.bbox),
+            'bbox': self.bbox,
             'simhash': self.simhash
         }
 
