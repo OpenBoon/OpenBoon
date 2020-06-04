@@ -5,6 +5,8 @@ import Breadcrumbs from '../Breadcrumbs'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 import Tabs from '../Tabs'
 
+import TaskDetails from './Details'
+
 const TASK_URL = '/[projectId]/jobs/[jobId]/tasks/[taskId]'
 
 const Task = () => {
@@ -25,6 +27,8 @@ const Task = () => {
       />
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
+        <TaskDetails key={pathname} />
+
         <Tabs tabs={[{ title: 'Assets', href: `${TASK_URL}/assets` }]} />
 
         {pathname === TASK_URL && 'Log'}

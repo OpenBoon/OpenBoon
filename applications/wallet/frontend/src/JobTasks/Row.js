@@ -2,11 +2,10 @@ import PropTypes from 'prop-types'
 import Router from 'next/router'
 import Link from 'next/link'
 
-import { formatFullDate, formatDuration } from '../Date/helpers'
+import { formatFullDate, getDuration, formatDuration } from '../Date/helpers'
 import { spacing, typography } from '../Styles'
 
 import JobTasksStateIcon from './StateIcon'
-import { getDuration } from './helpers'
 
 const JobTasksRow = ({
   projectId,
@@ -43,6 +42,7 @@ const JobTasksRow = ({
         <JobTasksStateIcon state={state} />
         <span css={{ paddingLeft: spacing.normal }}>{state}</span>
       </td>
+
       <td>
         <Link
           href="/[projectId]/jobs/[jobId]/tasks/[taskId]"
@@ -54,7 +54,19 @@ const JobTasksRow = ({
           </a>
         </Link>
       </td>
+
       <td title={name}>{name}</td>
+
+      <td>
+        {isStarted ? (
+          formatFullDate({ timestamp: timeStarted })
+        ) : (
+          <div
+            css={{ fontStyle: typography.style.italic }}
+          >{`${state}...`}</div>
+        )}
+      </td>
+
       <td>
         {isStarted ? (
           formatDuration({
@@ -66,15 +78,7 @@ const JobTasksRow = ({
           >{`${state}...`}</div>
         )}
       </td>
-      <td>
-        {isStarted ? (
-          formatFullDate({ timestamp: timeStarted })
-        ) : (
-          <div
-            css={{ fontStyle: typography.style.italic }}
-          >{`${state}...`}</div>
-        )}
-      </td>
+
       <td>{assetErrorCount}</td>
     </tr>
   )
