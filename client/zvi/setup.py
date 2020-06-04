@@ -11,11 +11,11 @@ from datetime import datetime
 
 requirements = [
     'zmlp',
-    "pandas"
+    'pandas'
 ]
 
 setup(
-    name='zmlp',
+    name='zvi',
     version='1.0.1',
     description='Zorroa Visual Intelligence ML Environment',
     url='https://www.zorroa.com',
