@@ -1,7 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import PropTypes from 'prop-types'
-import { Slider, Rail, Handles, Tracks } from 'react-compound-slider'
+import {
+  Slider as ReactSlider,
+  Rail,
+  Handles,
+  Tracks,
+} from 'react-compound-slider'
 
 import { colors } from '../Styles'
 
@@ -10,16 +15,9 @@ const TRACK_HEIGHT = 4
 const HANDLE_WIDTH = 8
 const HANDLE_HEIGHT = 24
 
-const FilterRangeSlider = ({
-  step,
-  domain,
-  values,
-  isDisabled,
-  onUpdate,
-  onChange,
-}) => {
+const Slider = ({ step, domain, values, isDisabled, onUpdate, onChange }) => {
   return (
-    <Slider
+    <ReactSlider
       mode={2}
       step={step}
       domain={domain}
@@ -88,7 +86,7 @@ const FilterRangeSlider = ({
           </div>
         )}
       </Handles>
-      <Tracks left={false} right={false}>
+      <Tracks left={false} right={values.length === 1}>
         {({ tracks, getTrackProps }) => (
           <div>
             {tracks.map(({ id, source, target }) => (
@@ -112,11 +110,11 @@ const FilterRangeSlider = ({
           </div>
         )}
       </Tracks>
-    </Slider>
+    </ReactSlider>
   )
 }
 
-FilterRangeSlider.propTypes = {
+Slider.propTypes = {
   step: PropTypes.number.isRequired,
   domain: PropTypes.arrayOf(PropTypes.number).isRequired,
   values: PropTypes.arrayOf(PropTypes.number).isRequired,
@@ -125,4 +123,4 @@ FilterRangeSlider.propTypes = {
   onChange: PropTypes.func.isRequired,
 }
 
-export default FilterRangeSlider
+export default Slider
