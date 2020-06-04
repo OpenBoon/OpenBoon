@@ -32,12 +32,11 @@ class ProjectSpec(
 )
 
 @ApiModel("Project Tier", description = "Specifies in which tier is the Project in.")
-enum class ProjectTier{
+enum class ProjectTier {
     @ApiModelProperty(" Allows the use of Essentials Modules")
     ESSENTIALS,
     @ApiModelProperty(" Allows the use of Premium Modules")
     PREMIUM
-
 }
 
 @ApiModel("Project Tier Update", description = "Set new Tier State")
@@ -82,8 +81,8 @@ class Project(
     @ApiModelProperty("Set if the project is enabled")
     val enabled: Boolean,
 
-    @Column(name= "int_tier")
-    @ApiModelProperty( "Project Tier")
+    @Column(name = "int_tier")
+    @ApiModelProperty("Project Tier")
     val tier: ProjectTier
 
 ) {
