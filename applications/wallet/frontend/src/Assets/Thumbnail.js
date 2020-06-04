@@ -147,6 +147,7 @@ const AssetsThumbnail = ({
             payload: {
               projectId,
               assetId: id,
+              selectedId,
               query,
             },
           })

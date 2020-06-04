@@ -107,14 +107,12 @@ export const dispatch = ({ action, payload }) => {
     }
 
     case ACTIONS.APPLY_SIMILARITY: {
-      const { projectId, assetId, query: q } = payload
+      const { projectId, assetId, selectedId, query: q } = payload
 
       const similarityFilter = {
         type: 'similarity',
         attribute: 'analysis.zvi-image-similarity',
-        values: {
-          ids: [assetId],
-        },
+        values: { ids: [assetId] },
         isDisabled: true, // TODO: remove after backend update
       }
 
@@ -137,9 +135,9 @@ export const dispatch = ({ action, payload }) => {
       Router.push(
         {
           pathname: '/[projectId]/visualizer',
-          query: { projectId, id: assetId, query },
+          query: { projectId, id: selectedId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
+        `/${projectId}/visualizer${formatUrl({ id: selectedId, query })}`,
       )
 
       break
