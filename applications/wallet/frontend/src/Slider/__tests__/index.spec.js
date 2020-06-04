@@ -1,13 +1,13 @@
 import TestRenderer from 'react-test-renderer'
 
-import FilterRangeSlider from '../Slider'
+import Slider from '..'
 
 const noop = () => () => {}
 
-describe('<FilterRangeSlider />', () => {
+describe('<Slider />', () => {
   it('should render properly when muted', () => {
     const component = TestRenderer.create(
-      <FilterRangeSlider
+      <Slider
         step={0.1}
         domain={[0, 100]}
         values={[0, 100]}
