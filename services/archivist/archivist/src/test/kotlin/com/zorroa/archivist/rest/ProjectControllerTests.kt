@@ -4,6 +4,8 @@ import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectTier
+import com.zorroa.archivist.domain.ProjectTierUpdate
 import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
@@ -219,6 +221,23 @@ class ProjectControllerTests : MockMvcTest() {
                 settings.defaultPipelineId.toString())))
             .andExpect(jsonPath("$.defaultIndexRouteId",
                 CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())))
+            .andReturn()
+    }
+
+    @Test
+    fun updateTier() {
+        val pid = getProjectId()
+        var update = ProjectTierUpdate(ProjectTier.PREMIUM)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/project/$pid/_update_tier")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(update))
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.tier",
+                CoreMatchers.anything()))
             .andReturn()
     }
 

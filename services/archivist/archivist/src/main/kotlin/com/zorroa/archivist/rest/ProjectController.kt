@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectTierUpdate
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.ProjectService
@@ -143,4 +144,15 @@ class ProjectController constructor(
         projectService.updateSettings(id, settings)
         return projectService.getSettings(id)
     }
+
+    @PreAuthorize("hasAuthority('ProjectManage')")
+    @PutMapping(value = ["/api/v1/project/{id}/_update_tier"])
+    @ApiOperation("Update Project Tier")
+    fun updateProjectTier(@PathVariable id: UUID, @RequestBody(required = true) projectTierUpdate: ProjectTierUpdate):
+        Project{
+        projectService.setTier(id, projectTierUpdate.tier)
+        return projectService.get(id)
+    }
+
+
 }

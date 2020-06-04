@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
@@ -16,6 +17,7 @@ import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.archivist.repository.ProjectDao
@@ -119,6 +121,11 @@ interface ProjectService {
      * Return true if the project ID is enabled, false if not.
      */
     fun isEnabled(id: UUID): Boolean
+
+    /**
+     * Update Project Tier
+     */
+    fun setTier(projectId: UUID, value: ProjectTier)
 }
 
 @Service
@@ -150,7 +157,8 @@ class ProjectServiceImpl constructor(
                 time,
                 actor.toString(),
                 actor.toString(),
-                true
+                true,
+                ProjectTier.ESSENTIALS
             )
         )
         withAuth(InternalThreadAuthentication(project.id, setOf())) {
@@ -325,6 +333,25 @@ class ProjectServiceImpl constructor(
         }
 
         return false
+    }
+
+    override fun setTier(projectId: UUID, value: ProjectTier){
+        val project = projectDao.findById(projectId).orElseThrow {
+            EmptyResultDataAccessException("Project not found", 1)
+        }
+
+        if(!projectCustomDao.updateTier(projectId, value)){
+            throw ArchivistException("Project Tier update failed")
+        }
+
+        logger.event(
+            LogObject.PROJECT, LogAction.UPDATE,
+            mapOf(
+                "projectId" to project.id,
+                "projectName" to project.name,
+                "projectTier" to value
+            )
+        )
     }
 
     // This gets called alot so hold onto the values for a while.
