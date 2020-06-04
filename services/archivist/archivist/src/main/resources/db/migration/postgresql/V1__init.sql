@@ -378,8 +378,7 @@ CREATE TABLE project (
     time_modified bigint NOT NULL,
     actor_created text NOT NULL,
     actor_modified text NOT NULL,
-    enabled boolean DEFAULT true NOT NULL,
-    int_tier int2 NOT NULL DEFAULT 0
+    enabled boolean DEFAULT true NOT NULL
 );
 
 --
