@@ -71,4 +71,17 @@ describe('<Assets />', () => {
     ).toBe(true)
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render empty properly', () => {
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
+    require('swr').__setPageSWRs([{ data: { count: 0, results: [] } }])
+
+    const component = TestRenderer.create(<Assets />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
