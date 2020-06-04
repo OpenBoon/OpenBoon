@@ -125,7 +125,7 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
             1,
           ]
         }
-        mode={1}
+        mode={2}
         onChange={[Function]}
         onUpdate={[Function]}
         rootStyle={
@@ -271,7 +271,7 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
             1,
           ]
         }
-        mode={1}
+        mode={2}
         onChange={[Function]}
         onUpdate={[Function]}
         rootStyle={
@@ -417,7 +417,7 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
             1,
           ]
         }
-        mode={1}
+        mode={2}
         onChange={[Function]}
         onUpdate={[Function]}
         rootStyle={
@@ -563,7 +563,7 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
             1,
           ]
         }
-        mode={1}
+        mode={2}
         onChange={[Function]}
         onUpdate={[Function]}
         rootStyle={
@@ -709,7 +709,7 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
             1,
           ]
         }
-        mode={1}
+        mode={2}
         onChange={[Function]}
         onUpdate={[Function]}
         rootStyle={

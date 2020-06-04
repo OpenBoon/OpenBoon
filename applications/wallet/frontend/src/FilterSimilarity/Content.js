@@ -11,7 +11,7 @@ import FilterReset from '../Filter/Reset'
 
 import { formatValue } from '../FilterRange/helpers'
 
-import FilterSimilaritySlider from './Slider'
+import FilterRangeSlider from '../FilterRange/Slider'
 
 const THUMBNAIL_SIZE = 74
 
@@ -105,7 +105,7 @@ const FilterSimilarityContent = ({
           <span>1.00</span>
         </div>
         <div css={{ padding: spacing.small }}>
-          <FilterSimilaritySlider
+          <FilterRangeSlider
             step={0.01}
             domain={[0.01, 1]}
             values={[value]}

@@ -18,6 +18,8 @@ const FilterRangeSlider = ({
   onUpdate,
   onChange,
 }) => {
+  const trackProps = values.length > 1 ? { right: false } : {}
+
   return (
     <Slider
       mode={2}
@@ -88,7 +90,7 @@ const FilterRangeSlider = ({
           </div>
         )}
       </Handles>
-      <Tracks left={false} right={false}>
+      <Tracks left={false} {...trackProps}>
         {({ tracks, getTrackProps }) => (
           <div>
             {tracks.map(({ id, source, target }) => (

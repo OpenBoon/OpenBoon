@@ -8029,6 +8029,27 @@ Array [
   overflow-y: auto;
 }
 
+.emotion-14 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  cursor: pointer;
+}
+
+.emotion-15 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
+}
+
 .emotion-19 {
   padding: 16px;
 }
@@ -8094,27 +8115,6 @@ Array [
 
 .emotion-17 {
   padding: 4px;
-}
-
-.emotion-14 {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  -webkit-transform: translate(0%,-50%);
-  -ms-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  cursor: pointer;
-}
-
-.emotion-15 {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  -webkit-transform: translate(0%,-50%);
-  -ms-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  pointer-events: none;
-  background-color: #4a4a4a;
 }
 
 .emotion-16 {
