@@ -119,7 +119,7 @@ const MetadataContent = ({ projectId, assetId }) => {
             },
           }}
         >
-          <JsonDisplay json={asset} />
+          <JsonDisplay json={asset.metadata} />
         </div>
       )}
     </>
