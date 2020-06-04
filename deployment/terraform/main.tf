@@ -5,7 +5,7 @@ terraform {
     organization  = "zorroa"
 
     workspaces {
-      name = "zvi-dev"
+      name = "zvi-prod"
     }
   }
 }
@@ -239,6 +239,9 @@ module "wallet" {
   domain                  = var.wallet-domain
   container-tag           = var.container-tag
   debug                   = var.wallet-debug
+  browsable               = var.wallet-browsable-api
+  marketplace-project     = "zorroa-public"
+  marketplace-credentials = var.marketplace-credentials
 }
 
 module "ml-bbq" {

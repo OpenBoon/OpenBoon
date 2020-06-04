@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from assets.serializers import AssetSerializer
-from assets.utils import AssetBoxImager
+from assets.utils import AssetBoxImager, get_thumbnail_and_video_urls
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
@@ -25,6 +25,14 @@ def asset_modifier(request, item):
 
     if 'files' not in item['metadata']:
         item['metadata']['files'] = []
+
+    thumbnail_url, video_url = get_thumbnail_and_video_urls(request, item)
+    if video_url:
+        item['fullscreen_url'] = f'{video_url}signed_url/'
+    elif thumbnail_url.endswith('fallback_3x.png'):
+        item['fullscreen_url'] = thumbnail_url
+    else:
+        item['fullscreen_url'] = f'{thumbnail_url}signed_url/'
 
 
 def stream(request, path):

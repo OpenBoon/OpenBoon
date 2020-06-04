@@ -1,5 +1,4 @@
 from django.http import Http404
-from django.urls import reverse
 from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer
 from flatten_dict import flatten
 from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
@@ -12,6 +11,7 @@ from rest_framework_csv.renderers import CSVRenderer
 from zmlp.search import AssetSearchScroller
 
 from assets.views import asset_modifier
+from assets.utils import get_asset_style, get_video_length, get_thumbnail_and_video_urls
 from projects.views import BaseProjectViewSet
 from searches.models import Search
 from searches.serializers import SearchSerializer, SearchAssetSerializer
@@ -23,59 +23,21 @@ from .utils import FieldUtility, FilterBoy
 def search_asset_modifier(request, item):
     asset_modifier(request, item)
 
-    # Set the AssetStyle for the frontend. Images and Documents are "image"
-    try:
-        mimetype_base = item['metadata']['source']['mimetype'].split('/')[0]
-        if mimetype_base == 'video':
-            item['asset_style'] = 'video'
-        else:
-            item['asset_style'] = 'image'
-    except (KeyError, IndexError):
-        item['asset_style'] = None
+    # Set the AssetStyle for the frontend.
+    item['asset_style'] = get_asset_style(item)
 
     # Set the videoLength
-    # TODO: Once the Frontend implements, see if this is actually the length they want
-    try:
-        if item['asset_style'] == 'video':
-            item['video_length'] = item['metadata']['media']['length']
-        else:
-            item['video_length'] = None
-    except KeyError:
-        item['video_length'] = None
+    item['video_length'] = get_video_length(item)
 
-    # Set thumbnail and video proxy urls
-    project_id = request.parser_context['view'].kwargs['project_pk']
-    asset_id = item['id']
-    thumbnail_url = '/icons/fallback_3x.png'
-    thumbnail_category = 'web-proxy'
-    video_proxy_url = None
-    video_proxy_category = 'proxy'
-    video_proxy_mimetype = 'video/mp4'
-    for _file in item['metadata']['files']:
-        if _file['category'] == thumbnail_category:
-            name = _file['name']
-            # If a web-proxy is found, build the file serving url for it
-            thumbnail_url = reverse('file_name-detail', kwargs={'project_pk': project_id,
-                                                                'asset_pk': asset_id,
-                                                                'category_pk': thumbnail_category,
-                                                                'pk': name})
-        if _file['category'] == video_proxy_category and _file['mimetype'] == video_proxy_mimetype:
-            name = _file['name']
-            video_proxy_url = reverse('file_name-detail',
-                                      kwargs={'project_pk': project_id,
-                                              'asset_pk': asset_id,
-                                              'category_pk': video_proxy_category,
-                                              'pk': name})
-    # Regardless of the url being used, make it absolute
-    item['thumbnail_url'] = request.build_absolute_uri(thumbnail_url)
-    if video_proxy_url:
-        item['video_proxy_url'] = request.build_absolute_uri(video_proxy_url)
-    else:
-        item['video_proxy_url'] = None
+    # Set thumbnail and video urls
+    thumbnail_url, video_proxy_url = get_thumbnail_and_video_urls(request, item)
+    item['thumbnail_url'] = thumbnail_url
+    item['video_proxy_url'] = video_proxy_url
 
     # Cleanup
     del(item['metadata']['files'])
     del(item['metadata']['media'])
+    del(item['fullscreen_url'])
 
 
 class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
