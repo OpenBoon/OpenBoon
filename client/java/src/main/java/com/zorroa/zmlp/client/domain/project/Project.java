@@ -38,6 +38,8 @@ public class Project {
      */
     String actorModified;
 
+    Boolean enabled;
+
     public Project() {
     }
 
@@ -92,6 +94,15 @@ public class Project {
 
     public Project setActorModified(String actorModified) {
         this.actorModified = actorModified;
+        return this;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public Project setEnabled(Boolean enabled) {
+        this.enabled = enabled;
         return this;
     }
 }
