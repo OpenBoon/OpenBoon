@@ -1,8 +1,19 @@
+import PropTypes from 'prop-types'
+
 import { colors, spacing, typography } from '../Styles'
 
 import NoAssetsSvg from '../Icons/noAssets.svg'
 
-const AssetsEmpty = () => {
+import Button, { VARIANTS } from '../Button'
+
+import { ACTIONS, dispatch, decode } from '../Filters/helpers'
+
+const BUTTON_WIDTH = 168
+
+const AssetsEmpty = ({ projectId, query, assetId }) => {
+  const filters = query ? decode({ query }) : []
+  const hasFilters = filters.length > 0
+
   return (
     <div
       css={{
@@ -33,8 +44,38 @@ const AssetsEmpty = () => {
       >
         Either all have been filtered out or there aren’t any in the system yet.
       </h3>
+      {hasFilters && (
+        <>
+          <div css={{ height: spacing.comfy }} />
+          <Button
+            aria-label="Clear All Filters"
+            variant={VARIANTS.PRIMARY}
+            style={{ width: BUTTON_WIDTH }}
+            isDisabled={filters.length === 0}
+            onClick={() => {
+              dispatch({
+                action: ACTIONS.CLEAR_FILTERS,
+                payload: { projectId, assetId },
+              })
+            }}
+          >
+            Clear All Filters
+          </Button>
+        </>
+      )}
     </div>
   )
+}
+
+AssetsEmpty.defaultProps = {
+  query: '',
+  assetId: '',
+}
+
+AssetsEmpty.propTypes = {
+  projectId: PropTypes.string.isRequired,
+  query: PropTypes.string,
+  assetId: PropTypes.string,
 }
 
 export default AssetsEmpty

@@ -84,6 +84,161 @@ exports[`<Assets /> should render empty properly 1`] = `
 </div>
 `;
 
+exports[`<Assets /> should render empty with filter properly 1`] = `
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+  margin-bottom: -2px;
+  box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
+}
+
+.emotion-4 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 16px;
+}
+
+.emotion-0 {
+  padding-top: 16px;
+  font-size: 32px;
+  line-height: 43px;
+}
+
+.emotion-1 {
+  font-size: 18px;
+  line-height: 21px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  height: 24px;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  width: 168px;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
+  background-color: #73b61c;
+}
+
+.emotion-3:hover {
+  background-color: #96c955;
+}
+
+.emotion-3[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+  className="emotion-6"
+>
+  <div
+    className="emotion-5"
+  >
+    <div
+      className="emotion-4"
+    >
+      <svg
+        color="#808080"
+        data-file-name="noAssets.svg"
+        width={168}
+      />
+      <h2
+        className="emotion-0"
+      >
+        There are currently no assets to show.
+      </h2>
+      <h3
+        className="emotion-1"
+      >
+        Either all have been filtered out or there aren’t any in the system yet.
+      </h3>
+      <div
+        className="emotion-2"
+      />
+      <button
+        aria-label="Clear All Filters"
+        className="emotion-3"
+        onClick={[Function]}
+        type="button"
+      >
+        Clear All Filters
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<Assets /> should render properly 1`] = `
 .emotion-5 {
   -webkit-flex: 1;

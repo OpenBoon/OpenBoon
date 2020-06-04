@@ -4,7 +4,10 @@ import Assets from '..'
 
 import assets from '../__mocks__/assets'
 
+import { encode } from '../../Filters/helpers'
+
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+const ASSET_ID = assets.results[0].id
 
 describe('<Assets />', () => {
   it('should render properly while loading', () => {
@@ -75,6 +78,30 @@ describe('<Assets />', () => {
   it('should render empty properly', () => {
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
+    require('swr').__setPageSWRs([{ data: { count: 0, results: [] } }])
+
+    const component = TestRenderer.create(<Assets />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render empty with filter properly', () => {
+    require('next/router').__setUseRouter({
+      query: {
+        projectId: PROJECT_ID,
+        query: encode({
+          filters: [
+            {
+              type: 'similarity',
+              attribute: 'analysis.zvi-image-similarity',
+              values: { ids: [ASSET_ID] },
+            },
+          ],
+        }),
+      },
     })
 
     require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })

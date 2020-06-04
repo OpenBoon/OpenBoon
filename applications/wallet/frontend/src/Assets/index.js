@@ -153,7 +153,13 @@ const Assets = () => {
       >
         {pages}
 
-        {itemCount === 0 && <AssetsEmpty />}
+        {itemCount === 0 && (
+          <AssetsEmpty
+            projectId={projectId}
+            assetId={selectedId}
+            query={query}
+          />
+        )}
 
         {!!itemCount && (
           <>
