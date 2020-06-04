@@ -42,6 +42,7 @@ const FilterSimilarityContent = ({
 
   const {
     name,
+    category,
     attrs: { width, height },
   } = files.reduce((acc, file) => {
     if (!acc || file.size < acc.size) {
@@ -52,7 +53,7 @@ const FilterSimilarityContent = ({
   }, '')
 
   const largerDimension = width > height ? 'height' : 'width'
-  const fileSrc = `/api/v1/projects/${projectId}/assets/${assetId}/files/category/proxy/name/${name}/`
+  const fileSrc = `/api/v1/projects/${projectId}/assets/${assetId}/files/category/${category}/name/${name}/`
 
   return (
     <div>
@@ -100,13 +101,13 @@ const FilterSimilarityContent = ({
             fontFamily: 'Roboto Mono',
           }}
         >
-          <span>0.00</span>
+          <span>0.01</span>
           <span>1.00</span>
         </div>
         <div css={{ padding: spacing.small }}>
           <FilterSimilaritySlider
             step={0.01}
-            domain={[0, 1]}
+            domain={[0.01, 1]}
             values={[value]}
             isDisabled={!!isDisabled}
             onUpdate={([newValue]) => {

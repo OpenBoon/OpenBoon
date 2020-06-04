@@ -99,9 +99,9 @@ const FilterReset = ({
           }}
           variant={VARIANTS.NEUTRAL}
           onClick={() => {
-            const { values: { ids } = {} } = filter
+            const { type, values: { ids } = {} } = filter
 
-            const values = ids ? { ids } : {}
+            const values = type === 'similarity' && ids ? { ids } : {}
 
             onReset()
 

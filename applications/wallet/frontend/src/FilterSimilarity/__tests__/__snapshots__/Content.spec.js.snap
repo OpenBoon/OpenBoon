@@ -109,7 +109,7 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
       className="emotion-3"
     >
       <span>
-        0.00
+        0.01
       </span>
       <span>
         1.00
@@ -121,7 +121,7 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
       <Slider
         domain={
           Array [
-            0,
+            0.01,
             1,
           ]
         }
@@ -255,7 +255,7 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
       className="emotion-3"
     >
       <span>
-        0.00
+        0.01
       </span>
       <span>
         1.00
@@ -267,7 +267,7 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
       <Slider
         domain={
           Array [
-            0,
+            0.01,
             1,
           ]
         }
@@ -401,7 +401,7 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
       className="emotion-3"
     >
       <span>
-        0.00
+        0.01
       </span>
       <span>
         1.00
@@ -413,7 +413,7 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
       <Slider
         domain={
           Array [
-            0,
+            0.01,
             1,
           ]
         }
@@ -547,7 +547,7 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
       className="emotion-3"
     >
       <span>
-        0.00
+        0.01
       </span>
       <span>
         1.00
@@ -559,7 +559,7 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
       <Slider
         domain={
           Array [
-            0,
+            0.01,
             1,
           ]
         }
@@ -693,7 +693,7 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
       className="emotion-3"
     >
       <span>
-        0.00
+        0.01
       </span>
       <span>
         1.00
@@ -705,7 +705,7 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
       <Slider
         domain={
           Array [
-            0,
+            0.01,
             1,
           ]
         }

@@ -8121,7 +8121,7 @@ Array [
   padding: 0;
   margin: 0;
   border: none;
-  left: 75%;
+  left: 74.74747474747475%;
   position: absolute;
   -webkit-transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
@@ -8268,7 +8268,7 @@ Array [
                 className="emotion-13"
               >
                 <span>
-                  0.00
+                  0.01
                 </span>
                 <span>
                   1.00
@@ -8313,10 +8313,10 @@ Array [
                           "backgroundColor": "#73b61c",
                           "cursor": "pointer",
                           "height": 4,
-                          "left": "75%",
+                          "left": "74.74747474747475%",
                           "position": "absolute",
                           "transform": "translate(0%, -50%)",
-                          "width": "25%",
+                          "width": "25.252525252525245%",
                           "zIndex": 1,
                         }
                       }
