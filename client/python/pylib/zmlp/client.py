@@ -413,19 +413,19 @@ class SearchResult(object):
         return self.items[idx]
 
 
-def to_json(obj):
+def to_json(obj, indent=None):
     """
     Convert the given object to a JSON string using
     the ZmlpJsonEncoder.
 
     Args:
         obj (mixed): any json serializable python object.
-
+        indent (int): The indentation level for the json, or None for compact.
     Returns:
         str: The serialized object
 
     """
-    val = json.dumps(obj, cls=ZmlpJsonEncoder)
+    val = json.dumps(obj, cls=ZmlpJsonEncoder, indent=indent)
     if logger.getEffectiveLevel() == logging.DEBUG:
         logger.debug("json: %s" % val)
     return val
