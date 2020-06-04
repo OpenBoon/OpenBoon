@@ -1,0 +1,731 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
+.emotion-5 {
+  padding: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-4 {
+  padding: 4px;
+}
+
+.emotion-0 {
+  height: 74px;
+}
+
+<div>
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "analysis.zvi-image-similarity",
+        "type": "similarity",
+        "values": Object {
+          "ids": Array [
+            "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+          ],
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "analysis.zvi-image-similarity",
+          "type": "similarity",
+          "values": Object {
+            "ids": Array [
+              "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+            ],
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-5"
+  >
+    <div
+      className="emotion-1"
+    >
+      <img
+        alt="image_512x343.jpg"
+        className="emotion-0"
+        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets//files/category/proxy/name/image_512x343.jpg/"
+      />
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <span>
+        Similarity Range: 
+        0.75
+      </span>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <span>
+        0.01
+      </span>
+      <span>
+        1.00
+      </span>
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <Slider
+        domain={
+          Array [
+            0.01,
+            1,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.01}
+        values={
+          Array [
+            0.75,
+          ]
+        }
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterSimilarityContent /> should render properly 1`] = `
+.emotion-5 {
+  padding: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  width: 74px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-4 {
+  padding: 4px;
+}
+
+<div>
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "analysis.zvi-image-similarity",
+        "type": "similarity",
+        "values": Object {
+          "ids": Array [
+            "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+          ],
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "analysis.zvi-image-similarity",
+          "type": "similarity",
+          "values": Object {
+            "ids": Array [
+              "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+            ],
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-5"
+  >
+    <div
+      className="emotion-1"
+    >
+      <img
+        alt="image_247x320.jpg"
+        className="emotion-0"
+        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets//files/category/proxy/name/image_247x320.jpg/"
+      />
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <span>
+        Similarity Range: 
+        0.75
+      </span>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <span>
+        0.01
+      </span>
+      <span>
+        1.00
+      </span>
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <Slider
+        domain={
+          Array [
+            0.01,
+            1,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.01}
+        values={
+          Array [
+            0.75,
+          ]
+        }
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterSimilarityContent /> should render properly 2`] = `
+.emotion-5 {
+  padding: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  width: 74px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-4 {
+  padding: 4px;
+}
+
+<div>
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "analysis.zvi-image-similarity",
+        "type": "similarity",
+        "values": Object {
+          "ids": Array [
+            "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+          ],
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "analysis.zvi-image-similarity",
+          "type": "similarity",
+          "values": Object {
+            "ids": Array [
+              "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+            ],
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-5"
+  >
+    <div
+      className="emotion-1"
+    >
+      <img
+        alt="image_247x320.jpg"
+        className="emotion-0"
+        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets//files/category/proxy/name/image_247x320.jpg/"
+      />
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <span>
+        Similarity Range: 
+        0.25
+      </span>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <span>
+        0.01
+      </span>
+      <span>
+        1.00
+      </span>
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <Slider
+        domain={
+          Array [
+            0.01,
+            1,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.01}
+        values={
+          Array [
+            0.25,
+          ]
+        }
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterSimilarityContent /> should render properly 3`] = `
+.emotion-5 {
+  padding: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  width: 74px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-4 {
+  padding: 4px;
+}
+
+<div>
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "analysis.zvi-image-similarity",
+        "type": "similarity",
+        "values": Object {
+          "ids": Array [
+            "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+          ],
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "analysis.zvi-image-similarity",
+          "type": "similarity",
+          "values": Object {
+            "ids": Array [
+              "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+            ],
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-5"
+  >
+    <div
+      className="emotion-1"
+    >
+      <img
+        alt="image_247x320.jpg"
+        className="emotion-0"
+        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets//files/category/proxy/name/image_247x320.jpg/"
+      />
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <span>
+        Similarity Range: 
+        0.25
+      </span>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <span>
+        0.01
+      </span>
+      <span>
+        1.00
+      </span>
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <Slider
+        domain={
+          Array [
+            0.01,
+            1,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.01}
+        values={
+          Array [
+            0.25,
+          ]
+        }
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterSimilarityContent /> should render properly 4`] = `
+.emotion-5 {
+  padding: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  width: 74px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-4 {
+  padding: 4px;
+}
+
+<div>
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "analysis.zvi-image-similarity",
+        "type": "similarity",
+        "values": Object {
+          "ids": Array [
+            "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+          ],
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "analysis.zvi-image-similarity",
+          "type": "similarity",
+          "values": Object {
+            "ids": Array [
+              "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+            ],
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-5"
+  >
+    <div
+      className="emotion-1"
+    >
+      <img
+        alt="image_247x320.jpg"
+        className="emotion-0"
+        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets//files/category/proxy/name/image_247x320.jpg/"
+      />
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <span>
+        Similarity Range: 
+        0.75
+      </span>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <span>
+        0.01
+      </span>
+      <span>
+        1.00
+      </span>
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <Slider
+        domain={
+          Array [
+            0.01,
+            1,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.01}
+        values={
+          Array [
+            0.75,
+          ]
+        }
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -11,7 +11,7 @@ import FilterReset from '../Filter/Reset'
 
 import { formatValue, parseValue } from './helpers'
 
-import FilterRangeSlider from './Slider'
+import Slider from '../Slider'
 
 const FilterRangeContent = ({
   projectId,
@@ -139,7 +139,7 @@ const FilterRangeContent = ({
           </span>
         </div>
         <div css={{ padding: spacing.small }}>
-          <FilterRangeSlider
+          <Slider
             step={0.1}
             domain={domain}
             values={rangeValues}
