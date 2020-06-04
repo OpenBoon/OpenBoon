@@ -86,13 +86,13 @@ Array [
       Task Details
     </h2>
   </div>,
-  .emotion-9 {
+  .emotion-3 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
 }
 
-.emotion-8 {
+.emotion-2 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -108,34 +108,9 @@ Array [
   margin-bottom: -1px;
 }
 
-.emotion-4 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
 .emotion-0 {
   border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
+  border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -155,61 +130,24 @@ Array [
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
 }
 
 <nav
-    className="emotion-9"
+    className="emotion-3"
   >
     <ul
-      className="emotion-8"
+      className="emotion-2"
     >
       <li
         className="emotion-1"
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Log
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/details"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Details
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-4"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/assets"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
           Assets
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/errors"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Errors
         </a>
       </li>
     </ul>
@@ -304,13 +242,13 @@ Array [
       Task Details
     </h2>
   </div>,
-  .emotion-9 {
+  .emotion-3 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
 }
 
-.emotion-8 {
+.emotion-2 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -324,30 +262,6 @@ Array [
 .emotion-1 {
   padding-right: 16px;
   margin-bottom: -1px;
-}
-
-.emotion-2 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
 }
 
 .emotion-0 {
@@ -377,35 +291,11 @@ Array [
 }
 
 <nav
-    className="emotion-9"
+    className="emotion-3"
   >
     <ul
-      className="emotion-8"
+      className="emotion-2"
     >
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Log
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/details"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Details
-        </a>
-      </li>
       <li
         className="emotion-1"
       >
@@ -416,18 +306,6 @@ Array [
           onMouseEnter={[Function]}
         >
           Assets
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/errors"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Errors
         </a>
       </li>
     </ul>
@@ -522,13 +400,13 @@ Array [
       Task Details
     </h2>
   </div>,
-  .emotion-9 {
+  .emotion-3 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
 }
 
-.emotion-8 {
+.emotion-2 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -542,30 +420,6 @@ Array [
 .emotion-1 {
   padding-right: 16px;
   margin-bottom: -1px;
-}
-
-.emotion-6 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-6:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
 }
 
 .emotion-0 {
@@ -595,35 +449,11 @@ Array [
 }
 
 <nav
-    className="emotion-9"
+    className="emotion-3"
   >
     <ul
-      className="emotion-8"
+      className="emotion-2"
     >
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Log
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/details"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Details
-        </a>
-      </li>
       <li
         className="emotion-1"
       >
@@ -634,18 +464,6 @@ Array [
           onMouseEnter={[Function]}
         >
           Assets
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-6"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/errors"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Errors
         </a>
       </li>
     </ul>
@@ -740,13 +558,13 @@ Array [
       Task Details
     </h2>
   </div>,
-  .emotion-9 {
+  .emotion-3 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
 }
 
-.emotion-8 {
+.emotion-2 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -763,30 +581,6 @@ Array [
 }
 
 .emotion-0 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -806,64 +600,28 @@ Array [
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
 <nav
-    className="emotion-9"
+    className="emotion-3"
   >
     <ul
-      className="emotion-8"
+      className="emotion-2"
     >
       <li
         className="emotion-1"
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Log
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/details"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Details
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-2"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/assets"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
           Assets
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/errors"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Errors
         </a>
       </li>
     </ul>

@@ -25,14 +25,7 @@ const Task = () => {
       />
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
-        <Tabs
-          tabs={[
-            { title: 'Log', href: TASK_URL },
-            { title: 'Details', href: `${TASK_URL}/details` },
-            { title: 'Assets', href: `${TASK_URL}/assets` },
-            { title: 'Errors', href: `${TASK_URL}/errors` },
-          ]}
-        />
+        <Tabs tabs={[{ title: 'Assets', href: `${TASK_URL}/assets` }]} />
 
         {pathname === TASK_URL && 'Log'}
 
