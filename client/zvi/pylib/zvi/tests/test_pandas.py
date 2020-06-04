@@ -4,6 +4,7 @@ from unittest.mock import patch
 from zmlp import ZmlpClient, app_from_env
 from zvi.pandas import search_to_df
 
+
 class PandasTests(unittest.TestCase):
 
     def setUp(self):
