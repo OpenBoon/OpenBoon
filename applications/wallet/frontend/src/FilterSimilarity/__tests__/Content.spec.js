@@ -3,6 +3,7 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import docAsset from '../../Asset/__mocks__/docAsset'
 import imageAsset from '../../Asset/__mocks__/imageAsset'
+import videoAsset from '../../Asset/__mocks__/videoAsset'
 
 import FilterSimilarityContent from '../Content'
 
@@ -61,6 +62,28 @@ describe('<FilterSimilarityContent />', () => {
 
   it('should render a wide asset properly', () => {
     require('swr').__setMockUseSWRResponse({ data: imageAsset })
+
+    const filter = {
+      type: 'similarity',
+      attribute: 'analysis.zvi-image-similarity',
+      values: { ids: [ASSET_ID] },
+    }
+
+    const component = TestRenderer.create(
+      <FilterSimilarityContent
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={[filter]}
+        filter={filter}
+        filterIndex={0}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render a video properly', () => {
+    require('swr').__setMockUseSWRResponse({ data: videoAsset })
 
     const filter = {
       type: 'similarity',
