@@ -87,10 +87,8 @@ const DataSourcesEditForm = ({ initialState }) => {
                 name: value,
               })
             }
-            hasError={!errors.name || !name}
-            errorMessage={
-              errors.name || !name ? 'Data Source Name is required' : ''
-            }
+            hasError={!!errors.name || !name}
+            errorMessage={errors.name || (!name ? 'Name cannot be empty' : '')}
           />
 
           <SectionTitle>{`Storage Address: ${uri}`}</SectionTitle>
@@ -154,9 +152,9 @@ const DataSourcesEditForm = ({ initialState }) => {
             onClick={() =>
               onSubmit({ dispatch, projectId, dataSourceId, state })
             }
-            isDisabled={!name}
+            isDisabled={!name || state.isLoading}
           >
-            Update Data Source
+            {state.isLoading ? 'Updating...' : 'Update Data Source'}
           </Button>
         </ButtonGroup>
       </Form>

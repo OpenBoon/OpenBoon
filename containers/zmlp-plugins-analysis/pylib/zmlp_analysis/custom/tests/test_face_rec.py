@@ -1,11 +1,10 @@
-import os
 from unittest.mock import patch
 
 from zmlp.app import ModelApp
 from zmlp.entity import Model
 from zmlp_analysis.custom import KnnFaceRecognitionClassifier
 from zmlpsdk import Frame, file_storage
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels, zorroa_test_path
 
 
 class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
@@ -13,7 +12,7 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
     @patch.object(ModelApp, 'get_model')
     @patch.object(file_storage.models, "install_model")
     def test_process(self, localize_patch, get_model_patch):
-        localize_patch.return_value = os.path.dirname(__file__)
+        localize_patch.return_value = zorroa_test_path('training')
         get_model_patch.return_value = Model({
             'id': '12345',
             'dataSetId': '12345',

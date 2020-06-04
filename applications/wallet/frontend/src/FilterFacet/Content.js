@@ -31,11 +31,7 @@ const FilterFacet = ({
 
   const encodedFilter = encode({ filters: { type, attribute } })
 
-  const {
-    data: {
-      results: { buckets },
-    },
-  } = useSWR(
+  const { data } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
     {
       revalidateOnFocus: false,
@@ -43,6 +39,9 @@ const FilterFacet = ({
       shouldRetryOnError: false,
     },
   )
+  const { results } = data || {}
+
+  const { buckets = [] } = results || {}
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
 

@@ -4,6 +4,8 @@ import { colors, constants, spacing } from '../Styles'
 
 import { formatDisplayName } from '../Metadata/helpers'
 
+import SuspenseBoundary from '../SuspenseBoundary'
+
 import MetadataPrettyLabels from './Labels'
 import MetadataPrettyContent from './Content'
 import MetadataPrettySimilarity from './Similarity'
@@ -38,7 +40,11 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
         return <MetadataPrettyContent name={name} value={value} />
 
       case 'similarity':
-        return <MetadataPrettySimilarity name={name} value={value} />
+        return (
+          <SuspenseBoundary>
+            <MetadataPrettySimilarity name={name} value={value} />
+          </SuspenseBoundary>
+        )
 
       default:
         return (
