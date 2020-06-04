@@ -5,6 +5,8 @@ export const onSubmit = async ({
   projectId,
   state: { name, permissions: p },
 }) => {
+  dispatch({ isLoading: true })
+
   try {
     const permissions = Object.keys(p).filter((key) => p[key])
 
@@ -13,7 +15,7 @@ export const onSubmit = async ({
       body: JSON.stringify({ name, permissions }),
     })
 
-    dispatch({ apikey })
+    dispatch({ apikey, isLoading: false })
   } catch (response) {
     const errors = await response.json()
 
@@ -22,6 +24,6 @@ export const onSubmit = async ({
       return accumulator
     }, {})
 
-    dispatch({ errors: parsedErrors })
+    dispatch({ isLoading: false, errors: parsedErrors })
   }
 }

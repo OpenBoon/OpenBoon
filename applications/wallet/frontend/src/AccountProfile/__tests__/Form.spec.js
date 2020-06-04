@@ -4,12 +4,10 @@ import User from '../../User'
 
 import AccountProfileForm from '../Form'
 
-jest.mock('../helpers')
-
 const noop = () => () => {}
 
 describe('<AccountProfileForm />', () => {
-  it('should render properly when a user edits their name', () => {
+  it('should render properly when a user edits their name', async () => {
     const component = TestRenderer.create(
       <User
         initialUser={{
@@ -45,8 +43,15 @@ describe('<AccountProfileForm />', () => {
         .props.onChange({ target: { value: 'Doe' } })
     })
 
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        firstName: 'John',
+        lastName: 'Smith',
+      }),
+    )
+
     // Submit the form
-    act(() => {
+    await act(async () => {
       component.root
         .findByProps({ children: 'Save' })
         .props.onClick({ preventDefault: noop })

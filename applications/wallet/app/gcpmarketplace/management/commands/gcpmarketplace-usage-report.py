@@ -15,7 +15,7 @@ sentry_sdk.init(
 
 
 class UsageReporter():
-    # Handles reporting project usage to Googel Marketplace.
+    # Handles reporting project usage to Google Marketplace.
 
     def report(self):
         """Loops over all active entitlements and sends usage information for each of them."""
@@ -28,9 +28,8 @@ class UsageReporter():
 
     def _get_active_entitlements(self):
         """Returns a list of all active marketplace entitlements."""
-        # TODO: Remove DEMO- when this goes live.
         request = get_procurement_api().providers().entitlements().list(
-            parent=f'providers/DEMO-{settings.MARKETPLACE_PROJECT_ID}',
+            parent=f'providers/{settings.MARKETPLACE_PROJECT_ID}',
             filter='state=active')
         return request.execute().get('entitlements')
 
@@ -50,19 +49,19 @@ class UsageReporter():
         end_time = datetime.datetime.fromtimestamp(usage['end_time'],
                                                    datetime.timezone.utc)
         start_time = end_time - datetime.timedelta(hours=1)
+
         operation = {
             'operationId': str(uuid.uuid4()),
-            'operationName': 'Codelab Usage Report',
+            'operationName': 'ZVI Usage Report',
             'consumerId': entitlement['usageReportingId'],
             'startTime': start_time.strftime(time_format),
             'endTime': end_time.strftime(time_format),
-            'metricValueSets': [{
-                'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_requests',
-                # TODO: Get real service name.
-                'metricValues': [{
-                    'int64Value': usage['image_count'],  # TODO: Get from usage.
-                }],
-            }],
+            'metricValueSets': [
+                {'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_video',
+                 'metricValues': [{'int64Value': int(usage['video_hours'])}]},
+                {'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_image',
+                 'metricValues': [{'int64Value': int(usage['image_count'])}]}
+            ]
         }
         check = ServiceControlApi.services().check(
             serviceName=settings.MARKETPLACE_SERVICE_NAME, body={
@@ -73,7 +72,6 @@ class UsageReporter():
             print('Errors for user %s with product %s:' % (entitlement['account'],
                                                            entitlement['product']))
             print(check['checkErrors'])
-            # TODO: Temporarily turn off service for the user.
             return
         print(f'Sending report:\n{pprint.pformat(operation)}')
         ServiceControlApi.services().report(

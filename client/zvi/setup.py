@@ -10,7 +10,8 @@ from datetime import datetime
 # python3 setup.py sdist bdist_wheel
 
 requirements = [
-    'zmlp'
+    'zmlp',
+    "pandas"
 ]
 
 setup(

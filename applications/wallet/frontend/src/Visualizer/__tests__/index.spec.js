@@ -17,7 +17,7 @@ describe('<Visualizer />', () => {
     require('swr').__setMockUseSWRResponse({ data: assets })
 
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID },
+      query: { projectId: PROJECT_ID, action: 'delete-asset-success' },
     })
 
     const component = TestRenderer.create(

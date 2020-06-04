@@ -15,6 +15,8 @@ export const onRegister = async ({
   dispatch,
   state: { firstName, lastName, email, password },
 }) => {
+  dispatch({ isLoading: true })
+
   try {
     const response = await fetch(`/api/v1/accounts/register`, {
       ...BASE_HEADER,
@@ -31,7 +33,10 @@ export const onRegister = async ({
 
     Router.push('/?action=create-account-success')
   } catch (response) {
-    dispatch({ error: 'Something went wrong. Please try again.' })
+    dispatch({
+      isLoading: false,
+      error: 'Something went wrong. Please try again.',
+    })
   }
 }
 

@@ -1,24 +1,23 @@
-import os
 from unittest.mock import patch
 
 from zmlp.app import ModelApp
 from zmlp.entity import Model
 from zmlp_analysis.custom import KnnLabelDetectionClassifier
 from zmlpsdk import Frame, file_storage
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
 
 
 class KnnLabelDetectionClassifierTests(PluginUnitTestCase):
 
     @patch.object(ModelApp, 'get_model')
-    @patch.object(file_storage.projects, "localize_file")
+    @patch.object(file_storage.projects, 'localize_file')
     def test_process(self, localize_patch, get_model_patch):
-        localize_patch.return_value = os.path.dirname(__file__) + "/model_knn.zip"
+        localize_patch.return_value = zorroa_test_path('training/model_knn.zip')
         get_model_patch.return_value = Model({
             'id': '12345',
             'dataSetId': '12345',
             'type': "LABEL_DETECTION_KNN",
-            'fileId': 'models/{}/foo/bar/12345',
+            'fileId': 'models/foo/knn/12345',
             'name': "foo"
         })
 

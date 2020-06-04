@@ -122,7 +122,7 @@ wallet-deploy-development:
   image: google/cloud-sdk
   retry: 1
   variables:
-    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
+    DEPLOY_SCRIPT: kubectl --namespace default rollout restart
     PROJECT: zvi-dev
   stage: deploy
   environment:
@@ -133,7 +133,7 @@ wallet-deploy-development:
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
+    - ${DEPLOY_SCRIPT} deployment wallet
   rules:
     # Merged to development with Wallet changes
     - if: $CI_COMMIT_BRANCH == "development"
@@ -169,7 +169,7 @@ backend-py-lint:
   allow_failure: false
   script:
     - python -m pip install flake8
-    - flake8 --config .flake8.cfg sdk client/python containers/zmlp-py3-base services/analyst containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis containers/zmlp-plugins-train
+    - flake8 --config .flake8.cfg sdk client/python client/zvi containers/zmlp-py3-base services/analyst containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis containers/zmlp-plugins-train
   rules:
     # MR to any branch that is not master with ZMLP Python changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
@@ -210,13 +210,16 @@ sdk-unit-tests:
   script:
     - python -m pip install pipenv pytest
     - cd client/python
-    - python setup.py install
+    - pip install .
+    - pytest
+    - cd ../zvi
+    - pip install .
     - pytest
     - cd ../../sdk
     - tar -xJf ffmpeg-4.2.1-amd64-static.tar.xz
     - cp ffmpeg-4.2.1-amd64-static/ffmpeg /usr/bin
     - cp ffmpeg-4.2.1-amd64-static/ffprobe /usr/bin
-    - python setup.py install
+    - pip install .
     - pytest
     - cd ../containers/zmlp-plugins-base
     - pip install -r requirements.txt
@@ -354,7 +357,7 @@ zmlp-deploy-development:
   image: google/cloud-sdk
   retry: 1
   variables:
-    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
+    DEPLOY_SCRIPT: kubectl --namespace default rollout restart
     PROJECT: zvi-dev
   stage: deploy
   environment:
@@ -365,14 +368,14 @@ zmlp-deploy-development:
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} analyst
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} api-gateway
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} archivist
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} auth-server
-    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-master
-    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-data
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} ml-bbq
+    - ${DEPLOY_SCRIPT} deployment analyst
+    - ${DEPLOY_SCRIPT} deployment api-gateway
+    - ${DEPLOY_SCRIPT} deployment archivist
+    - ${DEPLOY_SCRIPT} deployment auth-server
+    - ${DEPLOY_SCRIPT} statefulset elasticsearch-master
+    - ${DEPLOY_SCRIPT} statefulset elasticsearch-data
+    - ${DEPLOY_SCRIPT} deployment officer
+    - ${DEPLOY_SCRIPT} deployment ml-bbq
   rules:
     # Merged to development with ZMLP changes
     - if: $CI_COMMIT_BRANCH == "development"

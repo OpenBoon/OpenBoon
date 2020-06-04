@@ -34,6 +34,7 @@ const AccountCard = ({ projectId, name }) => {
           </div>
         </div>
       }
+      // eslint-disable-next-line react/jsx-curly-brace-presence
       content={
         subscriptions.length !== 0 ? (
           <AccountUsagePlan subscriptions={subscriptions} />

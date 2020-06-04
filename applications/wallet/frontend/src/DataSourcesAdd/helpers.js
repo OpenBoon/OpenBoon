@@ -31,6 +31,8 @@ export const onSubmit = async ({
   projectId,
   state: { name, uri, credentials, source, fileTypes, modules },
 }) => {
+  dispatch({ isLoading: true })
+
   const parsedCredentials = Object.keys(credentials[source]).reduce(
     (acc, credential) => {
       const { value } = credentials[source][credential]
@@ -69,11 +71,12 @@ export const onSubmit = async ({
         return acc
       }, {})
 
-      dispatch({ errors: parsedErrors })
+      dispatch({ isLoading: false, errors: parsedErrors })
 
       window.scrollTo(0, 0)
     } catch (error) {
       dispatch({
+        isLoading: false,
         errors: { global: 'Something went wrong. Please try again.' },
       })
     }

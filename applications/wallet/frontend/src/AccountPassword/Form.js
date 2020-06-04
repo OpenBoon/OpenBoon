@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   confirmPassword: '',
   showForm: false,
   success: false,
+  isLoading: false,
   errors: {},
 }
 
@@ -86,10 +87,11 @@ const AccountPasswordForm = () => {
             isDisabled={
               !state.currentPassword ||
               !state.newPassword ||
-              !state.confirmPassword
+              !state.confirmPassword ||
+              state.isLoading
             }
           >
-            Save
+            {state.isLoading ? 'Saving...' : 'Save'}
           </Button>
         </ButtonGroup>
       </Form>
