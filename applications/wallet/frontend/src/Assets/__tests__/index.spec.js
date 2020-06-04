@@ -89,9 +89,13 @@ describe('<Assets />', () => {
   })
 
   it('should render empty with filter properly', () => {
+    const mockPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockPush)
     require('next/router').__setUseRouter({
       query: {
         projectId: PROJECT_ID,
+        id: ASSET_ID,
         query: encode({
           filters: [
             {
@@ -110,5 +114,19 @@ describe('<Assets />', () => {
     const component = TestRenderer.create(<Assets />)
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'Clear All Filters' })
+        .props.onClick()
+    })
+
+    expect(mockPush).toHaveBeenCalledWith(
+      {
+        pathname: '/[projectId]/visualizer',
+        query: { id: ASSET_ID, projectId: PROJECT_ID },
+      },
+      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}`,
+    )
   })
 })
