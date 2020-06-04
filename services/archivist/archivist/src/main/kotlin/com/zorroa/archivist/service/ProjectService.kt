@@ -335,12 +335,12 @@ class ProjectServiceImpl constructor(
         return false
     }
 
-    override fun setTier(projectId: UUID, value: ProjectTier){
+    override fun setTier(projectId: UUID, value: ProjectTier) {
         val project = projectDao.findById(projectId).orElseThrow {
             EmptyResultDataAccessException("Project not found", 1)
         }
 
-        if(!projectCustomDao.updateTier(projectId, value)){
+        if (!projectCustomDao.updateTier(projectId, value)) {
             throw ArchivistException("Project Tier update failed")
         }
 
