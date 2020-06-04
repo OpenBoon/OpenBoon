@@ -121,7 +121,7 @@ class ProjectServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testSetTier(){
+    fun testSetTier() {
         val testSpec = ProjectSpec("project_test")
         val project = projectService.create(testSpec)
         assertEquals(ProjectTier.ESSENTIALS, project.tier)
