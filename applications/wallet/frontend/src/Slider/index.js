@@ -16,8 +16,6 @@ const HANDLE_WIDTH = 8
 const HANDLE_HEIGHT = 24
 
 const Slider = ({ step, domain, values, isDisabled, onUpdate, onChange }) => {
-  const trackProps = values.length > 1 ? { right: false } : {}
-
   return (
     <ReactSlider
       mode={2}
@@ -88,7 +86,7 @@ const Slider = ({ step, domain, values, isDisabled, onUpdate, onChange }) => {
           </div>
         )}
       </Handles>
-      <Tracks left={false} {...trackProps}>
+      <Tracks left={false} right={values.length === 1}>
         {({ tracks, getTrackProps }) => (
           <div>
             {tracks.map(({ id, source, target }) => (
