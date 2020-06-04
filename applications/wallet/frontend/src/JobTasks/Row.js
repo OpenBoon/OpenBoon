@@ -45,8 +45,8 @@ const JobTasksRow = ({
 
       <td>
         <Link
-          href="/[projectId]/jobs/[jobId]/tasks/[taskId]"
-          as={`/${projectId}/jobs/${jobId}/tasks/${taskId}`}
+          href="/[projectId]/jobs/[jobId]/tasks/[taskId]/assets"
+          as={`/${projectId}/jobs/${jobId}/tasks/${taskId}/assets`}
           passHref
         >
           <a css={{ ':hover': { textDecoration: 'none' } }} title={taskId}>
