@@ -94,7 +94,7 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
       <img
         alt="image_512x343.jpg"
         className="emotion-0"
-        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets//files/category/proxy/name/image_512x343.jpg/"
+        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/proxy/name/image_512x343.jpg/"
       />
     </div>
     <div
@@ -240,7 +240,7 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
       <img
         alt="image_247x320.jpg"
         className="emotion-0"
-        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets//files/category/proxy/name/image_247x320.jpg/"
+        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/proxy/name/image_247x320.jpg/"
       />
     </div>
     <div
@@ -386,7 +386,7 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
       <img
         alt="image_247x320.jpg"
         className="emotion-0"
-        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets//files/category/proxy/name/image_247x320.jpg/"
+        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/proxy/name/image_247x320.jpg/"
       />
     </div>
     <div
@@ -532,7 +532,7 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
       <img
         alt="image_247x320.jpg"
         className="emotion-0"
-        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets//files/category/proxy/name/image_247x320.jpg/"
+        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/proxy/name/image_247x320.jpg/"
       />
     </div>
     <div
@@ -678,7 +678,7 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
       <img
         alt="image_247x320.jpg"
         className="emotion-0"
-        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets//files/category/proxy/name/image_247x320.jpg/"
+        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/proxy/name/image_247x320.jpg/"
       />
     </div>
     <div
