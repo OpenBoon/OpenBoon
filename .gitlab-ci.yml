@@ -229,6 +229,7 @@ sdk-unit-tests:
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
         - "client/python/**/*"
+        - "client/zvi/**/*"
         - "sdk/**/*"
         - "containers/zmlp-plugins-base/**/*"
     # MR to QA with any change
