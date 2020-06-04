@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from assets.serializers import AssetSerializer
-from assets.utils import AssetBoxImager
+from assets.utils import AssetBoxImager, get_thumbnail_and_video_urls
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
@@ -25,6 +25,14 @@ def asset_modifier(request, item):
 
     if 'files' not in item['metadata']:
         item['metadata']['files'] = []
+
+    thumbnail_url, video_url = get_thumbnail_and_video_urls(request, item)
+    if video_url:
+        item['fullscreen_url'] = f'{video_url}signed_url/'
+    elif thumbnail_url.endswith('fallback_3x.png'):
+        item['fullscreen_url'] = thumbnail_url
+    else:
+        item['fullscreen_url'] = f'{thumbnail_url}signed_url/'
 
 
 def stream(request, path):
@@ -101,13 +109,21 @@ class FileCategoryViewSet(BaseProjectViewSet):
 
 class FileNameViewSet(BaseProjectViewSet):
     zmlp_only = True
-    zmlp_root_api_path = 'api/v3/files/_stream'
+    zmlp_root_api_path = 'api/v3/files'
     lookup_value_regex = '[^/]+'
 
     def retrieve(self, request, project_pk, asset_pk, category_pk, pk):
-        path = f'{self.zmlp_root_api_path}/assets/{asset_pk}/{category_pk}/{pk}'
+        path = f'{self.zmlp_root_api_path}/_stream/assets/{asset_pk}/{category_pk}/{pk}'
         content_type, encoding = mimetypes.guess_type(pk)
         response = StreamingHttpResponse(stream(request, path), content_type=content_type)
         patch_response_headers(response, cache_timeout=86400)
         patch_cache_control(response, private=True)
         return response
+
+    @action(detail=True, methods=['get'])
+    def signed_url(self, request, project_pk, asset_pk, category_pk, pk):
+        """Retrieves the signed URL for the given asset id."""
+        # make the call, bro
+        path = f'{self.zmlp_root_api_path}/_sign/assets/{asset_pk}/{category_pk}/{pk}'
+        response = request.client.get(path)
+        return Response(status=status.HTTP_200_OK, data=response)

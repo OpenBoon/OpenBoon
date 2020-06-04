@@ -8,29 +8,29 @@ from zmlp.entity import Model
 from zmlp_analysis.custom import TensorflowTransferLearningClassifier
 from zmlpsdk.base import Frame
 from zmlpsdk.storage import file_storage
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
 
 logging.basicConfig()
 
 
 class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
-
-    def setUp(self):
-        try:
-            shutil.rmetrree("/tmp/model-cache/models_model-id-12345_foo_bar")
-        except Exception:
-            print("Didn't clear out model cache, this is ok.")
-
     ds_id = "ds-id-12345"
     model_id = "model-id-12345"
     base_dir = os.path.dirname(__file__)
+
+    def setUp(self):
+        try:
+            shutil.rmtree("/tmp/model-cache/models_model-id-12345_foo_bar")
+        except FileNotFoundError:
+            print("Didn't clear out model cache, this is ok.")
 
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
     @patch("zmlp_analysis.custom.labels.get_proxy_level_path")
     def test_predict(self, proxy_patch, file_patch, model_patch):
         name = "custom-flowers-label-detection-tf2-xfer-mobilenet2"
-        file_patch.return_value = "{}/{}.zip".format(self.base_dir, name)
+        model_file = zorroa_test_path("training/{}.zip".format(name))
+        file_patch.return_value = model_file
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -46,8 +46,8 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         }
 
         flower_paths = [
-            "{}/test_dsy.jpg".format(self.base_dir),
-            "{}/test_rose.png".format(self.base_dir),
+            zorroa_test_path("training/test_dsy.jpg"),
+            zorroa_test_path("training/test_rose.png")
         ]
         for paths in flower_paths:
             proxy_patch.return_value = paths

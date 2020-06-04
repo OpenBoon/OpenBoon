@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -63,3 +64,10 @@ fun UUID.prefix(size: Int = 8): String {
  * Extension function to check if a string is a UUID
  */
 fun String.isUUID(): Boolean = StaticUtils.UUID_REGEXP.matches(this)
+
+/**
+ * Utility function for making a bbox.
+ */
+fun bbox(x1: Double, y1: Double, x2: Double, y2: Double): List<BigDecimal> {
+    return listOf(BigDecimal(x1), BigDecimal(y1), BigDecimal(x2), BigDecimal(y2))
+}

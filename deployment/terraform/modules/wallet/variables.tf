@@ -31,7 +31,14 @@ variable "google-oauth-client-id" {
 variable "environment" {
 }
 
-variable "domain" {}
+variable "domain" {
+}
+
+variable "marketplace-project" {
+}
+
+variable "marketplace-credentials" {
+}
 
 variable "container-tag" {
   default = "latest"
@@ -57,6 +64,10 @@ variable "inception-key-b64" {
 }
 
 variable "debug" {
+  default = "false"
+}
+
+variable "browsable" {
   default = "false"
 }
 

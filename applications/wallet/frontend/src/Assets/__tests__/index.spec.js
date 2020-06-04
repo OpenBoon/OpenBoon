@@ -25,6 +25,7 @@ describe('<Assets />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({ data: assets })
+    require('swr').__setPageSWRs([{ data: assets }])
 
     const component = TestRenderer.create(<Assets />)
 

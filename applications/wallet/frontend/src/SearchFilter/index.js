@@ -18,7 +18,7 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
     <form action="" method="post" onSubmit={(event) => event.preventDefault()}>
       <div css={{ display: 'flex' }}>
         <input
-          type="text"
+          type="search"
           placeholder="Create text filter (search name or field value)"
           value={searchString}
           onChange={({ target: { value } }) => setSearchString(value)}

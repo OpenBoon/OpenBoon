@@ -181,7 +181,7 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'wallet.exceptions.zmlp_exception_handler'
 }
 
-if DEBUG:
+if os.environ.get('BROWSABLE') == 'true':
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
         'rest_framework.renderers.BrowsableAPIRenderer')
 

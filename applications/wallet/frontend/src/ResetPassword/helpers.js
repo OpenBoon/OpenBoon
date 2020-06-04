@@ -3,6 +3,8 @@ import Router from 'next/router'
 import { getCsrfToken } from '../Fetch/helpers'
 
 export const onRequest = async ({ dispatch, state: { email } }) => {
+  dispatch({ isLoading: true })
+
   const csrftoken = getCsrfToken()
 
   try {
@@ -21,7 +23,7 @@ export const onRequest = async ({ dispatch, state: { email } }) => {
 
     Router.push('/?action=password-reset-request-success')
   } catch (response) {
-    dispatch({ error: 'Error. Please try again.' })
+    dispatch({ isLoading: false, error: 'Error. Please try again.' })
   }
 }
 
@@ -31,6 +33,8 @@ export const onConfirm = async ({
   uid,
   token,
 }) => {
+  dispatch({ isLoading: true })
+
   const csrftoken = getCsrfToken()
 
   try {
@@ -59,6 +63,6 @@ export const onConfirm = async ({
       return acc
     }, {})
 
-    dispatch({ errors: parsedErrors })
+    dispatch({ isLoading: false, errors: parsedErrors })
   }
 }

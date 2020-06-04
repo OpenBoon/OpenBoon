@@ -767,14 +767,15 @@ class AssetServiceImpl : AssetService {
 
     override fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse {
         val bulkSize = 50
-        if (req.add?.size ?: 0 > bulkSize) {
+        val maxAssets = 1000
+        if (req.add?.size ?: 0 > maxAssets) {
             throw IllegalArgumentException(
-                "Cannot add labels to more than 100 assets at a time.")
+                "Cannot add labels to more than $maxAssets assets at a time.")
         }
 
-        if (req.remove?.size ?: 0 > bulkSize) {
+        if (req.remove?.size ?: 0 > maxAssets) {
             throw IllegalArgumentException(
-                "Cannot remove labels from more than 100 assets at a time.")
+                "Cannot remove labels from more than $maxAssets assets at a time.")
         }
 
         // Gather up unique Assets and DataSets
@@ -800,14 +801,14 @@ class AssetServiceImpl : AssetService {
         builder.source.sort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
         builder.source.size(bulkSize)
         builder.request.scroll(TimeValue(60000))
-        builder.source.fetchSource("datasets", null)
+        builder.source.fetchSource("labels", null)
 
         // Build a bulk update.
         val rsp = rest.client.search(builder.request, RequestOptions.DEFAULT)
         val bulk = BulkRequest()
         bulk.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
-        for (asset in AssetIterator(rest.client, rsp, 1000)) {
+        for (asset in AssetIterator(rest.client, rsp, 5000)) {
             val removeLabels = req.remove?.get(asset.id)
             removeLabels?.let {
                 asset.removeLabels(it)

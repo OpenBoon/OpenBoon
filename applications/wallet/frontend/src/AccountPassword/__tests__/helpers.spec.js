@@ -42,6 +42,7 @@ describe('<AccountPassword /> helpers', () => {
         newPassword: '',
         confirmPassword: '',
         success: true,
+        isLoading: false,
         errors: {},
       })
     })
@@ -76,10 +77,9 @@ describe('<AccountPassword /> helpers', () => {
       })
 
       expect(mockDispatch).toHaveBeenCalledWith({
-        errors: {
-          newPassword2: 'Error message',
-        },
         success: false,
+        isLoading: false,
+        errors: { newPassword2: 'Error message' },
       })
     })
   })

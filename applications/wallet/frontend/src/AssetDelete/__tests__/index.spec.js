@@ -29,6 +29,8 @@ describe('<AssetDelete />', () => {
 
     require('swr').__setMockUseSWRResponse({ data: asset })
 
+    require('swr').__setMockCacheKeys(['/searches'])
+
     const mockRouterPush = jest.fn()
     require('next/router').__setMockPushFunction(mockRouterPush)
 

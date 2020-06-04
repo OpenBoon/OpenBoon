@@ -9,6 +9,9 @@ from sklearn.neighbors import KNeighborsClassifier
 
 
 class KnnLabelDetectionTrainer(AssetProcessor):
+
+    file_types = None
+
     def __init__(self):
         super(KnnLabelDetectionTrainer, self).__init__()
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
@@ -20,7 +23,7 @@ class KnnLabelDetectionTrainer(AssetProcessor):
     def process(self, frame):
         self.reactor.emit_status("Searching DataSet Labels")
         query = {
-            '_source': 'labels.*',
+            '_source': ['labels.*', 'analysis.zvi-image-similarity.*'],
             'size': 25,
             'query': {
                 'nested': {

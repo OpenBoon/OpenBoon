@@ -6,9 +6,11 @@ import Link from 'next/link'
 import { colors, constants, spacing } from '../Styles'
 
 import ExpandSvg from '../Icons/expand.svg'
+import SimilaritySvg from '../Icons/similarity.svg'
 
 import Button, { VARIANTS } from '../Button'
 
+import { dispatch, ACTIONS } from '../Filters/helpers'
 import { formatSeconds } from './helpers'
 
 const AssetsThumbnail = ({
@@ -19,7 +21,6 @@ const AssetsThumbnail = ({
     },
     thumbnailUrl,
     videoProxyUrl,
-    assetStyle,
     videoLength,
   },
 }) => {
@@ -73,8 +74,11 @@ const AssetsThumbnail = ({
           border: isSelected
             ? constants.borders.assetSelected
             : constants.borders.assetHover,
-          a: {
+          'a, button': {
             display: 'flex',
+          },
+          '.videoLength': {
+            display: 'none',
           },
         },
       }}
@@ -122,6 +126,34 @@ const AssetsThumbnail = ({
           )}
         </Button>
       </Link>
+      <Button
+        aria-label="Find similar images"
+        variant={VARIANTS.NEUTRAL}
+        style={{
+          display: 'none',
+          position: 'absolute',
+          top: spacing.small,
+          right: spacing.small,
+          padding: spacing.small,
+          backgroundColor: colors.structure.smoke,
+          opacity: constants.opacity.half,
+          ':hover': {
+            opacity: constants.opacity.eighth,
+          },
+        }}
+        onClick={() => {
+          dispatch({
+            action: ACTIONS.APPLY_SIMILARITY,
+            payload: {
+              projectId,
+              assetId: id,
+              query,
+            },
+          })
+        }}
+      >
+        <SimilaritySvg width={20} color={colors.structure.white} />
+      </Button>
       <Link
         href={`/[projectId]/visualizer/[id]${queryString}`}
         as={`/${projectId}/visualizer/${id}${queryString}`}
@@ -145,8 +177,9 @@ const AssetsThumbnail = ({
           <ExpandSvg width={20} color={colors.structure.white} />
         </Button>
       </Link>
-      {assetStyle === 'video' && (
+      {videoLength > 0 && (
         <div
+          className="videoLength"
           css={{
             position: 'absolute',
             bottom: spacing.small,

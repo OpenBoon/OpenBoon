@@ -11,6 +11,7 @@ import { onConfirm } from './helpers'
 const INITIAL_STATE = {
   newPassword: '',
   newPassword2: '',
+  isLoading: false,
   errors: {},
 }
 
@@ -18,6 +19,7 @@ const reducer = (state, action) => ({ ...state, ...action })
 
 const ResetPasswordConfirm = ({ uid, token }) => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+
   return (
     <>
       <h3
@@ -73,9 +75,11 @@ const ResetPasswordConfirm = ({ uid, token }) => {
               token,
             })
           }
-          isDisabled={!state.newPassword || !state.newPassword2}
+          isDisabled={
+            !state.newPassword || !state.newPassword2 || state.isLoading
+          }
         >
-          Save
+          {state.isLoading ? 'Saving...' : 'Save'}
         </Button>
       </div>
     </>

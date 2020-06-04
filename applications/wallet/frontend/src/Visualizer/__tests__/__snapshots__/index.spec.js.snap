@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Visualizer /> should render properly 1`] = `
-.emotion-16 {
+.emotion-17 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-15 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -107,6 +107,19 @@ exports[`<Visualizer /> should render properly 1`] = `
   -ms-flex: 1;
   flex: 1;
   background-color: #252525;
+}
+
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .emotion-7 {
@@ -241,7 +254,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-14 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -249,7 +262,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-13 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -260,17 +273,17 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding-left: 1px;
 }
 
-.emotion-9 {
+.emotion-10 {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
 <div
-  className="emotion-16"
+  className="emotion-17"
 >
   <div
-    className="emotion-15"
+    className="emotion-16"
   >
     <div
       className="emotion-3"
@@ -296,50 +309,54 @@ exports[`<Visualizer /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-7"
+      className="emotion-8"
     >
       <div
-        style={
-          Object {
-            "height": 0,
-            "overflow": "visible",
-            "width": 0,
-          }
-        }
-      />
-      <div
-        className="emotion-6"
+        className="emotion-7"
       >
-        <button
-          aria-disabled={true}
-          aria-label="Zoom Out"
-          className="emotion-4"
-          onClick={[Function]}
-          type="button"
+        <div
+          style={
+            Object {
+              "height": 0,
+              "overflow": "visible",
+              "width": 0,
+            }
+          }
+        />
+        <div
+          className="emotion-6"
         >
-          <svg
-            data-file-name="circleMinus.svg"
-            width={20}
-          />
-        </button>
-        <button
-          aria-label="Zoom In"
-          className="emotion-5"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="circlePlus.svg"
-            width={20}
-          />
-        </button>
+          <button
+            aria-disabled={true}
+            aria-label="Zoom Out"
+            className="emotion-4"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="circleMinus.svg"
+              width={20}
+            />
+          </button>
+          <button
+            aria-label="Zoom In"
+            className="emotion-5"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="circlePlus.svg"
+              width={20}
+            />
+          </button>
+        </div>
       </div>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-15"
     >
       <div
-        className="emotion-13"
+        className="emotion-14"
       >
         <button
           aria-label="Asset Metadata"
@@ -361,7 +378,7 @@ exports[`<Visualizer /> should render properly 1`] = `
         >
           <svg
             aria-hidden={true}
-            className="emotion-9"
+            className="emotion-10"
             data-file-name="upload.svg"
             width={20}
           />
@@ -388,7 +405,7 @@ exports[`<Visualizer /> should render properly 1`] = `
 `;
 
 exports[`<Visualizer /> should render selected asset 1`] = `
-.emotion-16 {
+.emotion-17 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -407,7 +424,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   flex-direction: column;
 }
 
-.emotion-15 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -494,6 +511,19 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   -ms-flex: 1;
   flex: 1;
   background-color: #252525;
+}
+
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .emotion-7 {
@@ -628,7 +658,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   color: #808080;
 }
 
-.emotion-14 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -636,7 +666,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-13 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -647,17 +677,17 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding-left: 1px;
 }
 
-.emotion-9 {
+.emotion-10 {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
 <div
-  className="emotion-16"
+  className="emotion-17"
 >
   <div
-    className="emotion-15"
+    className="emotion-16"
   >
     <div
       className="emotion-3"
@@ -683,50 +713,54 @@ exports[`<Visualizer /> should render selected asset 1`] = `
       </div>
     </div>
     <div
-      className="emotion-7"
+      className="emotion-8"
     >
       <div
-        style={
-          Object {
-            "height": 0,
-            "overflow": "visible",
-            "width": 0,
-          }
-        }
-      />
-      <div
-        className="emotion-6"
+        className="emotion-7"
       >
-        <button
-          aria-disabled={true}
-          aria-label="Zoom Out"
-          className="emotion-4"
-          onClick={[Function]}
-          type="button"
+        <div
+          style={
+            Object {
+              "height": 0,
+              "overflow": "visible",
+              "width": 0,
+            }
+          }
+        />
+        <div
+          className="emotion-6"
         >
-          <svg
-            data-file-name="circleMinus.svg"
-            width={20}
-          />
-        </button>
-        <button
-          aria-label="Zoom In"
-          className="emotion-5"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="circlePlus.svg"
-            width={20}
-          />
-        </button>
+          <button
+            aria-disabled={true}
+            aria-label="Zoom Out"
+            className="emotion-4"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="circleMinus.svg"
+              width={20}
+            />
+          </button>
+          <button
+            aria-label="Zoom In"
+            className="emotion-5"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="circlePlus.svg"
+              width={20}
+            />
+          </button>
+        </div>
       </div>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-15"
     >
       <div
-        className="emotion-13"
+        className="emotion-14"
       >
         <button
           aria-label="Asset Metadata"
@@ -748,7 +782,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         >
           <svg
             aria-hidden={true}
-            className="emotion-9"
+            className="emotion-10"
             data-file-name="upload.svg"
             width={20}
           />

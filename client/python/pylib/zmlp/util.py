@@ -105,19 +105,3 @@ def memoize(func):
         return cache[key]
 
     return memoized_func
-
-
-def round_floats(floats, places=3):
-    """
-    Rounds an array of floats to given number of places.
-
-    Args:
-        floats (list): An array of floats.
-        places (int): The precision/places to round the floats to.
-
-    Returns:
-        list: An array of floats
-    """
-    if floats is None:
-        return None
-    return [round(f, places) for f in as_collection(floats)]
