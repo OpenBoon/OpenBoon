@@ -45,14 +45,12 @@ const FilterSimilarityContent = ({
     category,
     attrs: { width, height },
   } = files.reduce((acc, file) => {
-    if (file.mimetype.includes('image')) {
-      if (!acc || file.size < acc.size) {
-        return file
-      }
-    }
+    if (!file.mimetype.includes('image')) return acc
 
-    return acc
-  }, '')
+    if (acc && acc.size < file.size) return acc
+
+    return file
+  }, undefined)
 
   const largerDimension = width > height ? 'height' : 'width'
   const fileSrc = `/api/v1/projects/${projectId}/assets/${ids[0]}/files/category/${category}/name/${name}/`
