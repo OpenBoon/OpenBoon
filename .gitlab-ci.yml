@@ -169,7 +169,7 @@ backend-py-lint:
   allow_failure: false
   script:
     - python -m pip install flake8
-    - flake8 --config .flake8.cfg sdk client/python containers/zmlp-py3-base services/analyst containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis containers/zmlp-plugins-train
+    - flake8 --config .flake8.cfg sdk client/python client/zvi containers/zmlp-py3-base services/analyst containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis containers/zmlp-plugins-train
   rules:
     # MR to any branch that is not master with ZMLP Python changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
@@ -210,13 +210,16 @@ sdk-unit-tests:
   script:
     - python -m pip install pipenv pytest
     - cd client/python
-    - python setup.py install
+    - pip install .
+    - pytest
+    - cd ../zvi
+    - pip install .
     - pytest
     - cd ../../sdk
     - tar -xJf ffmpeg-4.2.1-amd64-static.tar.xz
     - cp ffmpeg-4.2.1-amd64-static/ffmpeg /usr/bin
     - cp ffmpeg-4.2.1-amd64-static/ffprobe /usr/bin
-    - python setup.py install
+    - pip install .
     - pytest
     - cd ../containers/zmlp-plugins-base
     - pip install -r requirements.txt
