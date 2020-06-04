@@ -8,8 +8,6 @@ import Button, { VARIANTS } from '../Button'
 
 import { ACTIONS, dispatch, decode } from '../Filters/helpers'
 
-const BUTTON_WIDTH = 168
-
 const AssetsEmpty = ({ projectId, query, assetId }) => {
   const filters = query ? decode({ query }) : []
   const hasFilters = filters.length > 0
@@ -50,7 +48,6 @@ const AssetsEmpty = ({ projectId, query, assetId }) => {
           <Button
             aria-label="Clear All Filters"
             variant={VARIANTS.PRIMARY}
-            style={{ width: BUTTON_WIDTH }}
             isDisabled={filters.length === 0}
             onClick={() => {
               dispatch({

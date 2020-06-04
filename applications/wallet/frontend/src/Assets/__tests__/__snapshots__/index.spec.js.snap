@@ -173,7 +173,6 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  width: 168px;
 }
 
 .emotion-3:hover {
