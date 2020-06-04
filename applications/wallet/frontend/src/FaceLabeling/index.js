@@ -4,22 +4,22 @@ import { colors, spacing } from '../Styles'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 
-import MetadataContent from './Content'
+import FaceLabelingContent from './Content'
 
-const Metadata = () => {
+const FaceLabeling = () => {
   const {
     query: { projectId, id: assetId },
   } = useRouter()
 
   return assetId ? (
     <SuspenseBoundary key={assetId}>
-      <MetadataContent projectId={projectId} assetId={assetId} />
+      <FaceLabelingContent projectId={projectId} assetId={assetId} />
     </SuspenseBoundary>
   ) : (
     <div css={{ padding: spacing.normal, color: colors.structure.white }}>
-      Select an asset to view its metadata.
+      Select an asset to start adding names to faces and train your model.
     </div>
   )
 }
 
-export default Metadata
+export default FaceLabeling

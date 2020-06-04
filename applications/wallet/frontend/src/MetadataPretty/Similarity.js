@@ -122,7 +122,14 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
               Similar Images
             </div>
             <div
-              css={{ display: 'flex', flexWrap: 'nowrap', overflow: 'hidden' }}
+              css={{
+                display: 'flex',
+                flexWrap: 'nowrap',
+                overflowX: 'scroll',
+                '::-webkit-scrollbar': {
+                  display: 'none',
+                },
+              }}
             >
               {results
                 .filter(({ id }) => id !== assetId)
