@@ -299,7 +299,7 @@ zmlp-dockerhub-build-push-latest:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
-    - if [["${BUILD}" == "true"]]; then ./buildx; fi
+    - if [[$BUILD == "true"]]; then ./buildx; fi
     - docker tag zmlp/archivist:latest zmlp/archivist:${DOCKER_TAG}
     - docker tag zmlp/officer:latest zmlp/officer:${DOCKER_TAG}
     - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:${DOCKER_TAG}
