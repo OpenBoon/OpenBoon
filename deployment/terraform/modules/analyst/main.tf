@@ -12,6 +12,7 @@ resource "google_container_node_pool" "analyst" {
   }
 
   node_config {
+    preemptible = true
     machine_type = var.machine-type
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
