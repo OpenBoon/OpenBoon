@@ -6,6 +6,16 @@ import Pills from '../Pills'
 
 import DataSourcesMenu from './Menu'
 
+const getSource = ({ uri }) => {
+  if (uri.includes('s3://')) return 'Amazon Web Service (AWS)'
+
+  if (uri.includes('azure://')) return 'Azure'
+
+  if (uri.includes('gs://')) return 'Google Cloud Platform (GCP)'
+
+  return 'Unknown'
+}
+
 const DataSourcesRow = ({
   projectId,
   dataSource: {
@@ -21,7 +31,7 @@ const DataSourcesRow = ({
   return (
     <tr>
       <td>{name}</td>
-      <td>Google Cloud Storage</td>
+      <td>{getSource({ uri })}</td>
       <td>{uri}</td>
       <td>{formatFullDate({ timestamp: timeCreated })}</td>
       <td>{formatFullDate({ timestamp: timeModified })}</td>
