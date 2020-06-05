@@ -20,7 +20,7 @@ def get_ip_from_request(request):
 
 
 class AgreementViewSet(ConvertCamelToSnakeViewSetMixin, ListModelMixin, GenericViewSet):
-    """Viewset for working with Privacy & Terms Agreements"""
+    """Viewset for working with Privacy & Terms of Use Agreements"""
     serializer_class = AgreementSerializer
 
     def get_queryset(self):
