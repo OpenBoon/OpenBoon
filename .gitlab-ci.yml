@@ -479,9 +479,9 @@ zmlp-dockerhub-build-push-prod:
     - docker push zmlp/jvm-common:${DOCKER_TAG}
     - docker push zmlp/ml-bbq:${DOCKER_TAG}
     - docker push zmlp/plugins-train:${DOCKER_TAG}
-#  rules:
-#    - if: $CI_COMMIT_BRANCH == "master"
-#      when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: manual
 
 zmlp-deploy-prod:
   image: google/cloud-sdk
@@ -498,9 +498,9 @@ zmlp-deploy-prod:
   script:
     - kubectl --namespace default rollout restart deployment wallet analyst api-gateway archivist auth-server officer ml-bbq
     - kubectl --namespace default rollout restart statefulset elasticsearch-master elasticsearch-data
-#  rules:
-#    - if: $CI_COMMIT_BRANCH == "master"
-#      when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: manual
 
 # Kotlin services - Unit tests - Step 1
 zmlp-services-build-artifacts:
