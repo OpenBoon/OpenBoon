@@ -1,13 +1,13 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import JobMenu from '../Menu'
+import TaskMenu from '../Menu'
 
 const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const JOB_ID = '82d5308b-67c2-1433-8fef-0a580a000955'
 
-describe('<JobMenu />', () => {
+describe('<TaskMenu />', () => {
   it('should render properly', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/api-keys',
@@ -17,9 +17,7 @@ describe('<JobMenu />', () => {
 
     fetch.mockResponseOnce('{}')
 
-    const component = TestRenderer.create(
-      <JobMenu status="InProgress" revalidate={mockFn} />,
-    )
+    const component = TestRenderer.create(<TaskMenu revalidate={mockFn} />)
 
     act(() => {
       component.root
@@ -30,13 +28,13 @@ describe('<JobMenu />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     await act(async () => {
-      component.root.findByProps({ children: 'Pause' }).props.onClick()
+      component.root.findByProps({ children: 'Retry' }).props.onClick()
     })
 
     expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/jobs/${JOB_ID}/pause/`,
+      `/api/v1/projects/${PROJECT_ID}/jobs/${JOB_ID}/retry/`,
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({
