@@ -129,6 +129,12 @@ exports[`<Asset /> should handle no query 1`] = `
   align-items: center;
 }
 
+.emotion-3 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -209,11 +215,6 @@ exports[`<Asset /> should handle no query 1`] = `
   background-color: #252525;
 }
 
-.emotion-3 {
-  height: 100%;
-  max-width: 100%;
-}
-
 <div
   className="emotion-11"
 >
@@ -251,7 +252,7 @@ exports[`<Asset /> should handle no query 1`] = `
         disablePictureInPicture={true}
       >
         <source
-          src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
+          src="https://storage.googleapis.com/video.mp4"
           type="video/mp4"
         />
       </video>
@@ -427,7 +428,9 @@ exports[`<Asset /> should render properly 1`] = `
 }
 
 .emotion-3 {
+  width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .emotion-9 {
@@ -540,307 +543,10 @@ exports[`<Asset /> should render properly 1`] = `
       className="emotion-4"
     >
       <img
-        alt="image_791x1024.jpg"
+        alt="test_document.docx"
         className="emotion-3"
-        src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/image_791x1024.jpg/"
+        src="https://storage.googleapis.com/image.jpeg"
       />
-    </div>
-    <div
-      className="emotion-9"
-    >
-      <div
-        className="emotion-8"
-      >
-        <button
-          aria-label="Asset Metadata"
-          className="emotion-5"
-          onClick={[Function]}
-          title="Asset Metadata"
-          type="button"
-        >
-          <svg
-            aria-hidden={true}
-            data-file-name="information.svg"
-            width={20}
-          />
-        </button>
-        <button
-          aria-label="Delete"
-          className="emotion-5"
-          onClick={[Function]}
-          title="Delete"
-          type="button"
-        >
-          <svg
-            aria-hidden={true}
-            data-file-name="trash.svg"
-            width={20}
-          />
-        </button>
-        <div
-          className="emotion-7"
-        />
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<Asset /> should render vertical videos properly 1`] = `
-.emotion-11 {
-  height: 100%;
-  background-color: #191919;
-  margin-left: -32px;
-  margin-right: -32px;
-  margin-bottom: -32px;
-  padding-top: 1px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-10 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 100%;
-  overflow-y: hidden;
-  position: relative;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  padding: 8px 16px;
-  font-weight: 400;
-  border-radius: 0;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  padding: 8px;
-  color: #808080;
-  border-radius: 2px;
-  z-index: 10;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2:hover {
-  background-color: #4a4a4a;
-}
-
-.emotion-2:hover {
-  color: #ffffff;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-0 {
-  padding-left: 8px;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.emotion-4 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 1px;
-}
-
-.emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  padding: 8px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  background-color: #252525;
-  margin-bottom: 1px;
-  color: #808080;
-  border-radius: 0;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5:hover {
-  color: #ffffff;
-  background-color: #2e2e2e;
-}
-
-.emotion-7 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  background-color: #252525;
-}
-
-.emotion-3 {
-  width: 100%;
-  max-height: 100%;
-}
-
-<div
-  className="emotion-11"
->
-  <div
-    className="emotion-10"
-  >
-    <a
-      className="emotion-2"
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
-      onClick={[Function]}
-      onMouseEnter={[Function]}
-    >
-      <div
-        className="emotion-1"
-      >
-        <svg
-          data-file-name="cross.svg"
-          width={20}
-        />
-        <span
-          className="emotion-0"
-        >
-          Close View
-        </span>
-      </div>
-    </a>
-    <div
-      className="emotion-4"
-    >
-      <video
-        autoPlay={true}
-        className="emotion-3"
-        controls={true}
-        controlsList="nodownload"
-        disablePictureInPicture={true}
-      >
-        <source
-          src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
-          type="video/mp4"
-        />
-      </video>
     </div>
     <div
       className="emotion-9"
@@ -1012,6 +718,12 @@ exports[`<Asset /> should render videos properly 1`] = `
   align-items: center;
 }
 
+.emotion-3 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1092,11 +804,6 @@ exports[`<Asset /> should render videos properly 1`] = `
   background-color: #252525;
 }
 
-.emotion-3 {
-  height: 100%;
-  max-width: 100%;
-}
-
 <div
   className="emotion-11"
 >
@@ -1134,7 +841,7 @@ exports[`<Asset /> should render videos properly 1`] = `
         disablePictureInPicture={true}
       >
         <source
-          src="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
+          src="https://storage.googleapis.com/video.mp4"
           type="video/mp4"
         />
       </video>
