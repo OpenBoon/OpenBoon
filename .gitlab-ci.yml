@@ -383,7 +383,8 @@ zmlp-deploy-development:
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - kubectl --namespace default rollout restart deployment,statefulset analyst api-gateway archivist auth-server elasticsearch-master elasticsearch-data officer ml-bbq
+    - kubectl --namespace default rollout restart deployment analyst api-gateway archivist auth-server officer ml-bbq
+    - kubectl --namespace default rollout restart statefulset elasticsearch-master elasticsearch-data
   rules:
     # Merged to development with ZMLP changes
     - if: $CI_COMMIT_BRANCH == "development"
@@ -427,10 +428,11 @@ zmlp-deploy-prod:
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - kubectl --namespace default rollout restart deployment,statefulset wallet analyst api-gateway archivist auth-server elasticsearch-master elasticsearch-data officer ml-bbq
-#  rules:
-#    # Merged to master
-#    - if: $CI_COMMIT_BRANCH == "master"
+    - kubectl --namespace default rollout restart deployment wallet analyst api-gateway archivist auth-server officer ml-bbq
+    - kubectl --namespace default rollout restart statefulset elasticsearch-master elasticsearch-data
+  rules:
+    # Merged to master
+    - if: $CI_COMMIT_BRANCH == "master"
 
 # Kotlin services - Unit tests - Step 1
 zmlp-services-build-artifacts:
