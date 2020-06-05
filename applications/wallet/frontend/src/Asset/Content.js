@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
+import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -16,8 +17,28 @@ import TrashSvg from '../Icons/trash.svg'
 import Button, { VARIANTS } from '../Button'
 
 const ICON_WIDTH = 20
+const FALLBACK_IMG = '/icons/fallback_3x.png'
 
 const AssetContent = () => {
+  const [hasError, setHasError] = useState(false)
+
+  const assetRef = useRef()
+
+  /* istanbul ignore next */
+  useEffect(() => {
+    const asset = assetRef.current
+
+    if (!asset) return () => {}
+
+    const fallback = () => {
+      setHasError(true)
+    }
+
+    asset.addEventListener('error', fallback)
+
+    return () => asset.removeEventListener('error', fallback)
+  })
+
   const {
     query: { projectId, id: assetId, query },
   } = useRouter()
@@ -105,7 +126,7 @@ const AssetContent = () => {
             alignItems: 'center',
           }}
         >
-          {isVideo ? (
+          {isVideo && !hasError ? (
             <video
               css={{ width: '100%', height: '100%', objectFit: 'contain' }}
               autoPlay
@@ -113,12 +134,13 @@ const AssetContent = () => {
               controlsList="nodownload"
               disablePictureInPicture
             >
-              <source src={uri} type={mediaType} />
+              <source ref={assetRef} src={uri} type={mediaType} />
             </video>
           ) : (
             <img
+              ref={assetRef}
               css={{ width: '100%', height: '100%', objectFit: 'contain' }}
-              src={uri}
+              src={hasError ? /* istanbul ignore next */ FALLBACK_IMG : uri}
               alt={filename}
             />
           )}
