@@ -25,40 +25,19 @@ const AssetContent = () => {
   const {
     data: {
       metadata: {
-        files,
-        media: { type },
+        source: { filename },
       },
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
-  const srcFile =
-    type === 'video'
-      ? files.find(({ mimetype }) => {
-          return mimetype.includes('video')
-        })
-      : files.reduce((acc, file) => {
-          if (!acc || file.size > acc.size) {
-            return file
-          }
-
-          return acc
-        }, '')
-
   const {
-    name,
-    attrs: { width, height },
-  } = srcFile
+    data: { mediaType, uri },
+  } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/signed_url/`)
+
+  const isVideo = mediaType.includes('video')
 
   const idString = `?id=${assetId}`
   const queryString = query ? `&query=${query}` : ''
-
-  const videoStyle =
-    width > height
-      ? { height: '100%', maxWidth: '100%' }
-      : { width: '100%', maxHeight: '100%' }
-
-  const largerDimension = width > height ? 'width' : 'height'
-  const fileSrc = `/api/v1/projects/${projectId}/assets/${assetId}/files/category/proxy/name/${name}/`
 
   return (
     <div
@@ -126,19 +105,22 @@ const AssetContent = () => {
             alignItems: 'center',
           }}
         >
-          {type === 'video' && (
+          {isVideo ? (
             <video
-              css={videoStyle}
+              css={{ width: '100%', height: '100%', objectFit: 'contain' }}
               autoPlay
               controls
               controlsList="nodownload"
               disablePictureInPicture
             >
-              <source src={fileSrc} type="video/mp4" />
+              <source src={uri} type="video/mp4" />
             </video>
-          )}
-          {type !== 'video' && (
-            <img css={{ [largerDimension]: '100%' }} src={fileSrc} alt={name} />
+          ) : (
+            <img
+              css={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              src={uri}
+              alt={filename}
+            />
           )}
         </div>
         <Panel openToThe="left">
