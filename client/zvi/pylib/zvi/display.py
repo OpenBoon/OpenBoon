@@ -1,7 +1,7 @@
 import os
 import cv2
 import matplotlib.pyplot as plt
-from IPython.display import Image, HTML, display
+from IPython.display import HTML, display
 
 from zmlp import app_from_env
 from zvi.proxies import download_proxy
