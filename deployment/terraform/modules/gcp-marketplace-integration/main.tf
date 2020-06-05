@@ -10,7 +10,7 @@ resource "kubernetes_deployment" "gcp-marketplace-integration" {
     }
   }
   spec {
-    replicas = var.replicas
+    replicas = 1
     selector {
       match_labels = {
         app = "gcp-marketplace-integration"
