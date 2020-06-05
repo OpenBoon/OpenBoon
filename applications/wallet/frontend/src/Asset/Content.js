@@ -113,7 +113,7 @@ const AssetContent = () => {
               controlsList="nodownload"
               disablePictureInPicture
             >
-              <source src={uri} type="video/mp4" />
+              <source src={uri} type={mediaType} />
             </video>
           ) : (
             <img
