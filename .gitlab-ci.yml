@@ -433,6 +433,8 @@ zmlp-deploy-prod:
   rules:
     # Merged to master
     - if: $CI_COMMIT_BRANCH == "master"
+      changes:
+        - "**/*"
 
 # Kotlin services - Unit tests - Step 1
 zmlp-services-build-artifacts:
