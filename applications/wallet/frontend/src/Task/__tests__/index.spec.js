@@ -20,7 +20,7 @@ describe('<Task />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: task,
+      data: { ...task, timeStarted: -1, state: 'Waiting' },
     })
 
     const component = TestRenderer.create(
