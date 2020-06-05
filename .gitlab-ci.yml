@@ -35,6 +35,10 @@ wallet-frontend-test-suite:
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
         - "**/*"
+    # Merged to Development with Frontend changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "applications/wallet/frontend/**/*"
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
       changes:
@@ -67,6 +71,10 @@ wallet-backend-test-suite:
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
         - "**/*"
+    # Merged to Development with Backend changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "applications/wallet/app/**/*"
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
       changes:
