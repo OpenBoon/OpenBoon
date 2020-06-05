@@ -1,6 +1,6 @@
 import mimetypes
-
 import requests
+
 from django.http import StreamingHttpResponse
 from django.utils.cache import patch_response_headers, patch_cache_control
 from rest_framework import status
@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from assets.serializers import AssetSerializer
-from assets.utils import AssetBoxImager, get_thumbnail_and_video_urls
+from assets.utils import AssetBoxImager, get_best_fullscreen_file_data
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
@@ -25,14 +25,6 @@ def asset_modifier(request, item):
 
     if 'files' not in item['metadata']:
         item['metadata']['files'] = []
-
-    thumbnail_url, video_url = get_thumbnail_and_video_urls(request, item)
-    if video_url:
-        item['fullscreen_url'] = f'{video_url}signed_url/'
-    elif thumbnail_url.endswith('fallback_3x.png'):
-        item['fullscreen_url'] = thumbnail_url
-    else:
-        item['fullscreen_url'] = f'{thumbnail_url}signed_url/'
 
 
 def stream(request, path):
@@ -101,6 +93,23 @@ class AssetViewSet(BaseProjectViewSet):
         width = int(request.query_params.get('width', 255))
         response_data = {attr.split('.')[-1]: imager.get_attr_with_box_images(attr, width=width)}
         return Response(response_data)
+
+    @action(detail=True, methods=['get'])
+    def signed_url(self, request, project_pk, pk):
+        """Helper action to try to determine the best file and return the signed url for it."""
+        # Query for the asset details to get the assets list of files.
+        detail_response = self.retrieve(request, project_pk, pk)
+
+        # Determine the best file to display in fullscreen
+        _file = get_best_fullscreen_file_data(detail_response.data)
+        if not _file:
+            return Response(status=status.HTTP_200_OK, data={'uri': '/icons/fallback_3x.png',
+                                                             'mediaType': 'image/png'})
+
+        # Query for it's signed url
+        path = f'{FileNameViewSet.zmlp_root_api_path}/_sign/{_file["id"]}'
+        response = request.client.get(path)
+        return Response(status=status.HTTP_200_OK, data=response)
 
 
 class FileCategoryViewSet(BaseProjectViewSet):
