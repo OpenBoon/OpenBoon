@@ -33,7 +33,7 @@ There are multiple ways to run this application which may be better suited to th
 you are doing. 
 
 1. _Frontend Development_ - Use the Frontend development server. For the
-   Backend, you can either use the runserver or the Docker Compose.
+   Backend, you can use the runserver or the Docker Compose.
 1. _Backend Development_ - Use the Backend Development server.
 
 ---
