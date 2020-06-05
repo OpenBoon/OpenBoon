@@ -292,6 +292,7 @@ zmlp-dockerhub-build-push-latest:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
+    SOURCE_TAG: latest
     DOCKER_TAG: latest
     BUILD: "true"
   retry: 2
@@ -300,22 +301,22 @@ zmlp-dockerhub-build-push-latest:
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - if [[ $BUILD == "true" ]]; then ./buildx; fi
-    - docker tag zmlp/archivist:latest zmlp/archivist:${DOCKER_TAG}
-    - docker tag zmlp/officer:latest zmlp/officer:${DOCKER_TAG}
-    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:${DOCKER_TAG}
-    - docker tag zmlp/authserver:latest zmlp/authserver:${DOCKER_TAG}
-    - docker tag zmlp/apigateway:latest zmlp/apigateway:${DOCKER_TAG}
-    - docker tag zmlp/py3-base:latest zmlp/py3-base:${DOCKER_TAG}
-    - docker tag zmlp/py3-client:latest zmlp/py3-client:${DOCKER_TAG}
-    - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:${DOCKER_TAG}
-    - docker tag zmlp/plugins-base:latest zmlp/plugins-base:${DOCKER_TAG}
-    - docker tag zmlp/plugins-models:latest zmlp/plugins-models:${DOCKER_TAG}
-    - docker tag zmlp/plugins-core:latest zmlp/plugins-core:${DOCKER_TAG}
-    - docker tag zmlp/plugins-analysis:latest zmlp/plugins-analysis:${DOCKER_TAG}
-    - docker tag zmlp/analyst:latest zmlp/analyst:${DOCKER_TAG}
-    - docker tag zmlp/jvm-common:latest zmlp/jvm-common:${DOCKER_TAG}
-    - docker tag zmlp/ml-bbq:latest zmlp/ml-bbq:${DOCKER_TAG}
-    - docker tag zmlp/plugins-train:latest zmlp/plugins-train:${DOCKER_TAG}
+    - docker tag zmlp/archivist:${SOURCE_TAG} zmlp/archivist:${DOCKER_TAG}
+    - docker tag zmlp/officer:${SOURCE_TAG} zmlp/officer:${DOCKER_TAG}
+    - docker tag zmlp/elasticsearch:${SOURCE_TAG} zmlp/elasticsearch:${DOCKER_TAG}
+    - docker tag zmlp/authserver:${SOURCE_TAG} zmlp/authserver:${DOCKER_TAG}
+    - docker tag zmlp/apigateway:${SOURCE_TAG} zmlp/apigateway:${DOCKER_TAG}
+    - docker tag zmlp/py3-base:${SOURCE_TAG} zmlp/py3-base:${DOCKER_TAG}
+    - docker tag zmlp/py3-client:${SOURCE_TAG} zmlp/py3-client:${DOCKER_TAG}
+    - docker tag zmlp/py3-sdk:${SOURCE_TAG} zmlp/py3-sdk:${DOCKER_TAG}
+    - docker tag zmlp/plugins-base:${SOURCE_TAG} zmlp/plugins-base:${DOCKER_TAG}
+    - docker tag zmlp/plugins-models:${SOURCE_TAG} zmlp/plugins-models:${DOCKER_TAG}
+    - docker tag zmlp/plugins-core:${SOURCE_TAG} zmlp/plugins-core:${DOCKER_TAG}
+    - docker tag zmlp/plugins-analysis:${SOURCE_TAG} zmlp/plugins-analysis:${DOCKER_TAG}
+    - docker tag zmlp/analyst:${SOURCE_TAG} zmlp/analyst:${DOCKER_TAG}
+    - docker tag zmlp/jvm-common:${SOURCE_TAG} zmlp/jvm-common:${DOCKER_TAG}
+    - docker tag zmlp/ml-bbq:${SOURCE_TAG} zmlp/ml-bbq:${DOCKER_TAG}
+    - docker tag zmlp/plugins-train:${SOURCE_TAG} zmlp/plugins-train:${DOCKER_TAG}
     - docker push zmlp/archivist:${DOCKER_TAG}
     - docker push zmlp/officer:${DOCKER_TAG}
     - docker push zmlp/elasticsearch:${DOCKER_TAG}
@@ -332,16 +333,16 @@ zmlp-dockerhub-build-push-latest:
     - docker push zmlp/jvm-common:${DOCKER_TAG}
     - docker push zmlp/ml-bbq:${DOCKER_TAG}
     - docker push zmlp/plugins-train:${DOCKER_TAG}
-#  rules:
-#    # Merged to development with ZMLP changes
-#    - if: $CI_COMMIT_BRANCH == "development"
-#      changes:
-#        - "client/**/*"
-#        - "containers/**/*"
-#        - "dev/**/*"
-#        - "lib/**/*"
-#        - "sdk/**/*"
-#        - "services/**/*"
+  rules:
+    # Merged to development with ZMLP changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "client/**/*"
+        - "containers/**/*"
+        - "dev/**/*"
+        - "lib/**/*"
+        - "sdk/**/*"
+        - "services/**/*"
 
 zmlp-dockerhub-build-push-qa:
   extends:
@@ -351,6 +352,19 @@ zmlp-dockerhub-build-push-qa:
   rules:
     # Merged to QA with any change
     - if: $CI_COMMIT_BRANCH == "qa"
+      changes:
+        - "**/*"
+
+zmlp-dockerhub-build-push-master:
+  extends:
+    - zmlp-dockerhub-build-push-latest
+  variables:
+    SOURCE_TAG: qa
+    DOCKER_TAG: stable
+    BUI:D: "false"
+  rules:
+    # Merged to master with any change
+    - if: $CI_COMMIT_BRANCH == "master"
       changes:
         - "**/*"
 
@@ -398,6 +412,25 @@ zmlp-deploy-qa:
     - if: $CI_COMMIT_BRANCH == "qa"
       changes:
         - "**/*"
+
+zmlp-deploy-prod:
+  image: google/cloud-sdk
+  variables:
+    PROJECT: zvi-prod
+  stage: deploy
+  when: manual
+  environment:
+    name: prod
+    url: https://console.zvi.zorroa.com/
+  before_script:
+    - echo $PROD_SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
+  script:
+    - kubectl --namespace default rollout restart deployment,statefulset wallet analyst api-gateway archivist auth-server elasticsearch-master elasticsearch-data officer ml-bbq
+#  rules:
+#    # Merged to master
+#    - if: $CI_COMMIT_BRANCH == "master"
 
 # Kotlin services - Unit tests - Step 1
 zmlp-services-build-artifacts:
