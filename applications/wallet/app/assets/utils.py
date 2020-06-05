@@ -251,11 +251,8 @@ def get_best_fullscreen_file_data(item):
         dict: The file blob that represents the best file for fullscreen viewing. None if
             a file is not found.
     """
-    source_mimetype = item['metadata']['source']['mimetype']
-    if source_mimetype.startswith('image'):
-        best_file = get_largest_proxy(item, 'image')
-    else:
-        best_file = get_largest_proxy(item, 'video')
+    asset_style = get_asset_style(item)
+    best_file = get_largest_proxy(item, asset_style)
     return best_file
 
 
