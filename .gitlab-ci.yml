@@ -419,7 +419,6 @@ zmlp-deploy-prod:
   variables:
     PROJECT: zvi-prod
   stage: deploy
-  when: manual
   environment:
     name: prod
     url: https://console.zvi.zorroa.com/
@@ -433,6 +432,7 @@ zmlp-deploy-prod:
   rules:
     # Merged to master
     - if: $CI_COMMIT_BRANCH == "master"
+      when: manual
       changes:
         - "**/*"
 
@@ -546,16 +546,3 @@ zmlp-services-unit-tests:
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
       changes:
         - "**/*"
-
-
-# Kotlin Services Jobs
-#sdk-containers-tests:
-#  stage: test
-#  before_script:
-#    - apk add --no-cache python3 # for build-images.py
-#    - pip3 install wheel
-#    - ./build-images.py
-#  script:
-#    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-analysis /zvi/pylib/zplugins
-#    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-core /zvi/pylib/zplugins
-
