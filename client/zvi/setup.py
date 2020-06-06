@@ -13,6 +13,7 @@ requirements = [
     'zmlp',
     'pandas',
     'opencv-python',
+    'Pillow',
 ]
 
 setup(
