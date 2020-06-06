@@ -1,11 +1,11 @@
 import unittest
 from unittest.mock import patch
 import numpy as np
+from PIL import Image
 
 from zmlp import Asset
 from zmlp.app import AssetApp
 from zvi.proxies import download_proxy
-from zmlpsdk.testing import zorroa_test_path
 
 
 class ProxiesTests(unittest.TestCase):
@@ -33,8 +33,10 @@ class ProxiesTests(unittest.TestCase):
             }]
 
     @patch.object(AssetApp, 'download_file')
-    def test_download_proxy(self, dl_patch):
-        dl_patch.return_value = zorroa_test_path("training/test_dsy.jpg")
+    @patch.object(Image, 'open')
+    def test_download_proxy(self, img_patch, dl_patch):
+        img_patch.return_value = np.random.rand(225, 224, 3)
+        dl_patch.return_value = b'foo'
 
         asset = Asset({"id": "123"})
         asset.set_attr("files", self.test_files)
