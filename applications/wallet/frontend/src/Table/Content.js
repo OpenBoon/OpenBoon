@@ -34,7 +34,7 @@ const TableContent = ({
   } = useSWR(`${url}?from=${from}&size=${SIZE}`)
 
   return (
-    <div css={{ height: count === 0 ? '100%' : 'auto' }}>
+    <div css={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <div
         css={{
           display: 'flex',
@@ -59,101 +59,108 @@ const TableContent = ({
           legend={legend}
         />
       </div>
-      <table
-        css={{
-          width: '100%',
-          height: count === 0 ? '100%' : 'auto',
-          borderSpacing: 0,
-          boxShadow: constants.boxShadows.default,
-          whiteSpace: 'nowrap',
-          tr: {
-            backgroundColor: colors.structure.lead,
-            '&:nth-of-type(2n)': {
-              backgroundColor: colors.structure.mattGrey,
-            },
-            ':hover': {
-              backgroundColor: colors.structure.iron,
-              boxShadow: constants.boxShadows.tableRow,
-              '.gear': {
-                color: colors.structure.zinc,
+
+      <div css={{ flex: 1, position: 'relative' }}>
+        <div
+          css={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+        >
+          <table
+            css={{
+              width: '100%',
+              height: count === 0 ? '100%' : 'auto',
+              borderSpacing: 0,
+              boxShadow: constants.boxShadows.default,
+              whiteSpace: 'nowrap',
+              tr: {
+                backgroundColor: colors.structure.lead,
+                '&:nth-of-type(2n)': {
+                  backgroundColor: colors.structure.mattGrey,
+                },
+                ':hover': {
+                  backgroundColor: colors.structure.iron,
+                  boxShadow: constants.boxShadows.tableRow,
+                  '.gear': {
+                    color: colors.structure.zinc,
+                  },
+                  td: {
+                    border: constants.borders.tableRow,
+                    borderLeft: '0',
+                    borderRight: '0',
+                    '&:first-of-type': {
+                      borderLeft: constants.borders.tableRow,
+                    },
+                    '&:last-of-type': {
+                      borderRight: constants.borders.tableRow,
+                    },
+                  },
+                },
               },
               td: {
-                border: constants.borders.tableRow,
+                maxWidth: `calc(100vw / ${columns.length - 1})`,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                fontWeight: typography.weight.extraLight,
+                color: colors.structure.pebble,
+                padding: `${spacing.base}px ${spacing.normal}px`,
+                border: constants.borders.transparent,
                 borderLeft: '0',
                 borderRight: '0',
-                '&:first-of-type': {
-                  borderLeft: constants.borders.tableRow,
+                ':first-of-type': {
+                  borderLeft: constants.borders.transparent,
                 },
-                '&:last-of-type': {
-                  borderRight: constants.borders.tableRow,
+                ':last-of-type': {
+                  borderRight: constants.borders.transparent,
+                  overflow: 'visible',
                 },
               },
-            },
-          },
-          td: {
-            maxWidth: `calc(100vw / ${columns.length - 1})`,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            fontWeight: typography.weight.extraLight,
-            color: colors.structure.pebble,
-            padding: `${spacing.base}px ${spacing.normal}px`,
-            border: constants.borders.transparent,
-            borderLeft: '0',
-            borderRight: '0',
-            ':first-of-type': {
-              borderLeft: constants.borders.transparent,
-            },
-            ':last-of-type': {
-              borderRight: constants.borders.transparent,
-              overflow: 'visible',
-            },
-          },
-        }}
-      >
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th
-                key={column}
-                css={{
-                  textAlign: 'left',
-                  fontSize: typography.size.regular,
-                  lineHeight: typography.height.regular,
-                  fontWeight: typography.weight.medium,
-                  color: colors.structure.pebble,
-                  backgroundColor: colors.structure.iron,
-                  padding: `${spacing.moderate}px ${spacing.normal}px`,
-                  borderBottom: constants.borders.default,
-                  [`:nth-of-type(${expandColumn})`]: { width: '100%' },
-                  '&:not(:last-child)': {
-                    borderRight: constants.borders.default,
-                  },
-                }}
-              >
-                {column === '#Actions#' ? (
-                  <div css={{ display: 'flex' }}>
-                    <GearSvg width={20} />
-                  </div>
-                ) : (
-                  column
-                )}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {count === 0 ? (
-            <TableException numColumns={columns.length}>
-              {renderEmpty}
-            </TableException>
-          ) : (
-            results.map((result) => renderRow({ result, revalidate }))
-          )}
-        </tbody>
-      </table>
+            }}
+          >
+            <thead>
+              <tr>
+                {columns.map((column) => (
+                  <th
+                    key={column}
+                    css={{
+                      textAlign: 'left',
+                      fontSize: typography.size.regular,
+                      lineHeight: typography.height.regular,
+                      fontWeight: typography.weight.medium,
+                      color: colors.structure.pebble,
+                      backgroundColor: colors.structure.iron,
+                      padding: `${spacing.moderate}px ${spacing.normal}px`,
+                      borderBottom: constants.borders.default,
+                      [`:nth-of-type(${expandColumn})`]: { width: '100%' },
+                      '&:not(:last-child)': {
+                        borderRight: constants.borders.default,
+                      },
+                    }}
+                  >
+                    {column === '#Actions#' ? (
+                      <div css={{ display: 'flex' }}>
+                        <GearSvg width={20} />
+                      </div>
+                    ) : (
+                      column
+                    )}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {count === 0 ? (
+                <TableException numColumns={columns.length}>
+                  {renderEmpty}
+                </TableException>
+              ) : (
+                results.map((result) => renderRow({ result, revalidate }))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-      <div>&nbsp;</div>
+      {count > 0 && <div>&nbsp;</div>}
 
       {count > 0 && (
         <Pagination
@@ -162,7 +169,7 @@ const TableContent = ({
         />
       )}
 
-      <div>&nbsp;</div>
+      {count > 0 && <div>&nbsp;</div>}
     </div>
   )
 }
