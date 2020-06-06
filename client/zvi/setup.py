@@ -15,6 +15,7 @@ requirements = [
     'matplotlib',
     'opencv-python',
     'Pillow',
+    'ipython'
 ]
 
 setup(
