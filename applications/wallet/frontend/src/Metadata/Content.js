@@ -20,16 +20,14 @@ const MetadataContent = ({ projectId, assetId }) => {
     initialValue: 'pretty',
   })
 
-  const { data: asset } = useSWR(
-    `/api/v1/projects/${projectId}/assets/${assetId}/`,
-  )
-
   const {
-    metadata,
-    metadata: {
-      source: { filename },
+    data: {
+      metadata,
+      metadata: {
+        source: { filename },
+      },
     },
-  } = asset
+  } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
   return (
     <>
@@ -119,7 +117,7 @@ const MetadataContent = ({ projectId, assetId }) => {
             },
           }}
         >
-          <JsonDisplay json={asset.metadata} />
+          <JsonDisplay json={metadata} />
         </div>
       )}
     </>
