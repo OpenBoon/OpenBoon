@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Assets /> should render empty properly 1`] = `
-.emotion-8 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -14,7 +14,7 @@ exports[`<Assets /> should render empty properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -23,7 +23,7 @@ exports[`<Assets /> should render empty properly 1`] = `
   box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-6 {
+.emotion-7 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -59,6 +59,13 @@ exports[`<Assets /> should render empty properly 1`] = `
 
 .emotion-2 {
   height: 24px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-3 {
@@ -116,14 +123,18 @@ exports[`<Assets /> should render empty properly 1`] = `
   background-color: #808080;
 }
 
+.emotion-4 {
+  width: 24px;
+}
+
 <div
-  className="emotion-8"
+  className="emotion-9"
 >
   <div
-    className="emotion-7"
+    className="emotion-8"
   >
     <div
-      className="emotion-6"
+      className="emotion-7"
     >
       <svg
         color="#808080"
@@ -133,42 +144,46 @@ exports[`<Assets /> should render empty properly 1`] = `
       <h2
         className="emotion-0"
       >
-        There are currently no assets to show.
+        There are no assets in the system yet. 
       </h2>
       <h3
         className="emotion-1"
       >
-        Either all have been filtered out or there aren’t any in the system yet.
+        Assets can be added via the data source and the progress monitored in the job queue.
       </h3>
       <div
         className="emotion-2"
       />
-      <button
-        aria-label="Create a Data Source"
-        className="emotion-3"
-        onClick={[Function]}
-        type="button"
-      >
-        Create a Data Source
-      </button>
       <div
-        className="emotion-2"
-      />
-      <button
-        aria-label="View Job Queue"
-        className="emotion-3"
-        onClick={[Function]}
-        type="button"
+        className="emotion-6"
       >
-        View Job Queue
-      </button>
+        <button
+          aria-label="Create a Data Source"
+          className="emotion-3"
+          onClick={[Function]}
+          type="button"
+        >
+          Create a Data Source
+        </button>
+        <div
+          className="emotion-4"
+        />
+        <button
+          aria-label="View Job Queue"
+          className="emotion-3"
+          onClick={[Function]}
+          type="button"
+        >
+          View Job Queue
+        </button>
+      </div>
     </div>
   </div>
 </div>
 `;
 
 exports[`<Assets /> should render empty with filter properly 1`] = `
-.emotion-6 {
+.emotion-5 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -181,7 +196,7 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -190,7 +205,7 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
   box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-4 {
+.emotion-3 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -218,17 +233,10 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
 }
 
 .emotion-1 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  color: #b3b3b3;
-}
-
-.emotion-2 {
   height: 24px;
 }
 
-.emotion-3 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -260,37 +268,37 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-3,
-.emotion-3:hover,
-.emotion-3:visited {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
   background-color: #73b61c;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   background-color: #96c955;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-  className="emotion-6"
+  className="emotion-5"
 >
   <div
-    className="emotion-5"
+    className="emotion-4"
   >
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <svg
         color="#808080"
@@ -300,19 +308,14 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
       <h2
         className="emotion-0"
       >
-        There are currently no assets to show.
+        All assets have been filtered out.
       </h2>
-      <h3
-        className="emotion-1"
-      >
-        Either all have been filtered out or there aren’t any in the system yet.
-      </h3>
       <div
-        className="emotion-2"
+        className="emotion-1"
       />
       <button
         aria-label="Clear All Filters"
-        className="emotion-3"
+        className="emotion-2"
         onClick={[Function]}
         type="button"
       >
@@ -324,7 +327,7 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
 `;
 
 exports[`<Assets /> should render empty with no filters properly 1`] = `
-.emotion-8 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -337,7 +340,7 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -346,7 +349,7 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
   box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-6 {
+.emotion-7 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -382,6 +385,13 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
 
 .emotion-2 {
   height: 24px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-3 {
@@ -439,14 +449,18 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
   background-color: #808080;
 }
 
+.emotion-4 {
+  width: 24px;
+}
+
 <div
-  className="emotion-8"
+  className="emotion-9"
 >
   <div
-    className="emotion-7"
+    className="emotion-8"
   >
     <div
-      className="emotion-6"
+      className="emotion-7"
     >
       <svg
         color="#808080"
@@ -456,35 +470,39 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
       <h2
         className="emotion-0"
       >
-        There are currently no assets to show.
+        There are no assets in the system yet. 
       </h2>
       <h3
         className="emotion-1"
       >
-        Either all have been filtered out or there aren’t any in the system yet.
+        Assets can be added via the data source and the progress monitored in the job queue.
       </h3>
       <div
         className="emotion-2"
       />
-      <button
-        aria-label="Create a Data Source"
-        className="emotion-3"
-        onClick={[Function]}
-        type="button"
-      >
-        Create a Data Source
-      </button>
       <div
-        className="emotion-2"
-      />
-      <button
-        aria-label="View Job Queue"
-        className="emotion-3"
-        onClick={[Function]}
-        type="button"
+        className="emotion-6"
       >
-        View Job Queue
-      </button>
+        <button
+          aria-label="Create a Data Source"
+          className="emotion-3"
+          onClick={[Function]}
+          type="button"
+        >
+          Create a Data Source
+        </button>
+        <div
+          className="emotion-4"
+        />
+        <button
+          aria-label="View Job Queue"
+          className="emotion-3"
+          onClick={[Function]}
+          type="button"
+        >
+          View Job Queue
+        </button>
+      </div>
     </div>
   </div>
 </div>

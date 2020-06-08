@@ -33,18 +33,11 @@ const AssetsEmpty = ({ projectId, query, assetId }) => {
           lineHeight: typography.height.giant,
         }}
       >
-        There are currently no assets to show.
+        {hasFilters
+          ? 'All assets have been filtered out.'
+          : 'There are no assets in the system yet. '}
       </h2>
-      <h3
-        css={{
-          fontSize: typography.size.large,
-          lineHeight: typography.height.large,
-          fontWeight: typography.weight.regular,
-          color: colors.structure.zinc,
-        }}
-      >
-        Either all have been filtered out or there aren’t any in the system yet.
-      </h3>
+
       {hasFilters && (
         <>
           <div css={{ height: spacing.comfy }} />
@@ -65,31 +58,44 @@ const AssetsEmpty = ({ projectId, query, assetId }) => {
 
       {!hasFilters && (
         <>
-          <div css={{ height: spacing.comfy }} />
-          <Button
-            aria-label="Create a Data Source"
-            variant={VARIANTS.PRIMARY}
-            onClick={() => {
-              Router.push(
-                '/[projectId]/data-sources/add',
-                `/${projectId}/data-sources/add`,
-              )
-              return null
+          <h3
+            css={{
+              fontSize: typography.size.large,
+              lineHeight: typography.height.large,
+              fontWeight: typography.weight.regular,
+              color: colors.structure.zinc,
             }}
           >
-            Create a Data Source
-          </Button>
+            Assets can be added via the data source and the progress monitored
+            in the job queue.
+          </h3>
           <div css={{ height: spacing.comfy }} />
-          <Button
-            aria-label="View Job Queue"
-            variant={VARIANTS.PRIMARY}
-            onClick={() => {
-              Router.push('/[projectId]/jobs', `/${projectId}/jobs`)
-              return null
-            }}
-          >
-            View Job Queue
-          </Button>
+          <div css={{ display: 'flex' }}>
+            <Button
+              aria-label="Create a Data Source"
+              variant={VARIANTS.PRIMARY}
+              onClick={() => {
+                Router.push(
+                  '/[projectId]/data-sources/add',
+                  `/${projectId}/data-sources/add`,
+                )
+                return null
+              }}
+            >
+              Create a Data Source
+            </Button>
+            <div css={{ width: spacing.comfy }} />
+            <Button
+              aria-label="View Job Queue"
+              variant={VARIANTS.PRIMARY}
+              onClick={() => {
+                Router.push('/[projectId]/jobs', `/${projectId}/jobs`)
+                return null
+              }}
+            >
+              View Job Queue
+            </Button>
+          </div>
         </>
       )}
     </div>
