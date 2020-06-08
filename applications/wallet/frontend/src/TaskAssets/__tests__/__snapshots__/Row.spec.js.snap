@@ -227,9 +227,9 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
 }
 
 .emotion-7 {
-  -webkit-flex: 10;
-  -ms-flex: 10;
-  flex: 10;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

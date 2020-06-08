@@ -70,7 +70,7 @@ const TaskAssetsRow = ({
 
         <h4
           css={{
-            flex: 10,
+            flex: 1,
             display: 'flex',
             fontSize: typography.size.medium,
             lineHeight: typography.height.medium,
