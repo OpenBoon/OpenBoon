@@ -13,11 +13,7 @@ const SIZE = 20
 
 const TaskAssets = () => {
   const {
-    query: {
-      projectId,
-      // taskId,
-      page = 1,
-    },
+    query: { projectId, taskId, page = 1 },
   } = useRouter()
 
   const parsedPage = parseInt(page, 10)
@@ -27,7 +23,7 @@ const TaskAssets = () => {
     data: { count = 0, results },
     revalidate,
   } = useSWR(
-    `/api/v1/projects/${projectId}/searches/query/?from=${from}&size=${SIZE}`,
+    `/api/v1/projects/${projectId}/tasks/${taskId}/assets/?from=${from}&size=${SIZE}`,
   )
 
   if (count === 0) {

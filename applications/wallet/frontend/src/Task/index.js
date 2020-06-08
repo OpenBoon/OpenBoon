@@ -36,7 +36,11 @@ const Task = () => {
 
         {pathname === `${TASK_URL}/details` && 'Details'}
 
-        {pathname === `${TASK_URL}/assets` && <TaskAssets />}
+        {pathname === `${TASK_URL}/assets` && (
+          <SuspenseBoundary>
+            <TaskAssets />
+          </SuspenseBoundary>
+        )}
 
         {pathname === `${TASK_URL}/errors` && 'Errors'}
       </SuspenseBoundary>

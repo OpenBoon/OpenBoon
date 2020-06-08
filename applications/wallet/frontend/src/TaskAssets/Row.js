@@ -119,7 +119,7 @@ const TaskAssetsRow = ({
             },
           }}
         >
-          <SuspenseBoundary error>
+          <SuspenseBoundary>
             <TaskAssetsMetadata projectId={projectId} assetId={asset.id} />
           </SuspenseBoundary>
         </div>
