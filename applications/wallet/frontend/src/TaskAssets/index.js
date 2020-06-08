@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { colors, spacing, typography } from '../Styles'
+import { colors, spacing, typography, constants } from '../Styles'
 
 import TableRefresh from '../Table/Refresh'
 import Pagination from '../Pagination'
 
 import TaskAssetsEmpty from './Empty'
+import TaskAssetsRow from './Row'
 
 const SIZE = 20
 
@@ -55,6 +56,17 @@ const TaskAssets = () => {
         </h3>
 
         <TableRefresh onClick={revalidate} refreshKeys={[]} legend="Assets" />
+      </div>
+
+      <div css={{ boxShadow: constants.boxShadows.default }}>
+        {results.map((asset, index) => (
+          <TaskAssetsRow
+            key={asset.id}
+            projectId={projectId}
+            index={index + from}
+            asset={asset}
+          />
+        ))}
       </div>
 
       {count > 0 && <div>&nbsp;</div>}
