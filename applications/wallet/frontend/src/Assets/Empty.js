@@ -1,3 +1,4 @@
+import Router from 'next/router'
 import PropTypes from 'prop-types'
 
 import { colors, spacing, typography } from '../Styles'
@@ -21,6 +22,7 @@ const AssetsEmpty = ({ projectId, query, assetId }) => {
         justifyContent: 'center',
         alignItems: 'center',
         padding: spacing.normal,
+        textAlign: 'center',
       }}
     >
       <NoAssetsSvg width={168} color={colors.structure.steel} />
@@ -37,6 +39,7 @@ const AssetsEmpty = ({ projectId, query, assetId }) => {
         css={{
           fontSize: typography.size.large,
           lineHeight: typography.height.large,
+          fontWeight: typography.weight.regular,
           color: colors.structure.zinc,
         }}
       >
@@ -48,7 +51,6 @@ const AssetsEmpty = ({ projectId, query, assetId }) => {
           <Button
             aria-label="Clear All Filters"
             variant={VARIANTS.PRIMARY}
-            isDisabled={filters.length === 0}
             onClick={() => {
               dispatch({
                 action: ACTIONS.CLEAR_FILTERS,
@@ -57,6 +59,36 @@ const AssetsEmpty = ({ projectId, query, assetId }) => {
             }}
           >
             Clear All Filters
+          </Button>
+        </>
+      )}
+
+      {!hasFilters && (
+        <>
+          <div css={{ height: spacing.comfy }} />
+          <Button
+            aria-label="Create a Data Source"
+            variant={VARIANTS.PRIMARY}
+            onClick={() => {
+              Router.push(
+                '/[projectId]/data-sources/add',
+                `/${projectId}/data-sources/add`,
+              )
+              return null
+            }}
+          >
+            Create a Data Source
+          </Button>
+          <div css={{ height: spacing.comfy }} />
+          <Button
+            aria-label="View Job Queue"
+            variant={VARIANTS.PRIMARY}
+            onClick={() => {
+              Router.push('/[projectId]/jobs', `/${projectId}/jobs`)
+              return null
+            }}
+          >
+            View Job Queue
           </Button>
         </>
       )}
