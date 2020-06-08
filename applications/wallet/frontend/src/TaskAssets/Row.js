@@ -104,7 +104,10 @@ const TaskAssetsRow = ({
           css={{
             backgroundColor: colors.structure.coal,
             height: MAX_HEIGHT,
-            overflowY: 'scroll',
+            overflow: 'auto',
+            pre: {
+              padding: spacing.normal,
+            },
             '.ErrorBoundary > div': {
               backgroundColor: 'transparent',
               boxShadow: 'none',
