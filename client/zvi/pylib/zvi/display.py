@@ -6,7 +6,8 @@ from IPython.display import HTML, display
 from zmlp import app_from_env
 from zvi.proxies import download_proxy
 
-DISPLAY_HTML = "<img style='width: 200px; height: 200px; object-fit: contain; margin: 3px; float: left; border: 2px solid black;' title='index: %d' src='%s' />"
+DISPLAY_HTML = "<img style='width: 200px; height: 200px; object-fit: contain; " \
+               "margin: 3px; float: left; border: 2px solid black;' title='index: %d' src='%s' />"
 
 
 def is_running_from_ipython():

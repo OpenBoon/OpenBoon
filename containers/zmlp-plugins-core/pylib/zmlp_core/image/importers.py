@@ -1,5 +1,4 @@
 import operator
-import re
 from datetime import datetime
 from functools import reduce
 
@@ -13,17 +12,7 @@ from ..util.media import get_image_metadata, set_resolution_attrs
 
 
 class ImageImporter(AssetProcessor):
-    default_fields = ['XResolution', 'YResolution', 'ResolutionUnit',
-                      'Exif.ExposureBiasValue', 'Exif.ExposureProgram', 'ExposureTime',
-                      'Exif.ExposureTime', 'Exif.Flash', 'FNumber', 'Exif.FNumber',
-                      'Exif.FocalLength', 'Exif.FocalLength35', 'Exif.Make', 'Exif.Model',
-                      'Orientation', 'Exif.Orientation', 'Exif.Software', 'IPTC.Keywords',
-                      'XMP.FNumber', 'FocalLength', 'XMP.FocalLength', 'Make', 'XMP.Make',
-                      'Model', 'XMP.Model', 'XMP.Rating', 'IPTC.Country', 'IPTC.State',
-                      'Keywords', 'Copyright', 'Artist', 'ImageDescription',
-                      'IPTC.Headline', 'IPTC.Creator', 'IPTC.ObjectName',
-                      'IPTC.AuthorsPosition', 'Keywords', 'IPTC.Keywords',
-                      'IPTC.Country', 'IPTC.State', 'ImageDescription', 'IPTC.Headline']
+
     date_fields = ['Exif.DateTimeOriginal', 'Exif.DateTimeDigitized',
                    'Exif.DateTime', 'IPTC.DateCreated', 'IPTC.TimeCreated', 'DateTime',
                    'File.FileModifiedDate', 'Date']
@@ -32,9 +21,7 @@ class ImageImporter(AssetProcessor):
 
     def __init__(self):
         super(ImageImporter, self).__init__()
-        self.add_arg(Argument('included_tags', 'list[str]', default=self.default_fields))
         self.add_arg(Argument('extract_pages', 'bool', default=False))
-        self.add_arg(Argument('extract_extended_metadata', 'bool', default=False))
 
     def process(self, frame):
         asset = frame.asset
@@ -43,10 +30,12 @@ class ImageImporter(AssetProcessor):
         set_resolution_attrs(asset, int(metadata.get('full_width')),
                              int(metadata.get('full_height')))
 
-        self.set_media_type(asset)
+        asset.set_attr("media.type", "image")
         self.set_location(asset, metadata)
         self.set_date(asset, metadata)
-        self.set_metadata(asset, metadata)
+
+        subimages = int(metadata.get('subimages', 1))
+        asset.set_attr('media.length', subimages)
 
         has_clip = asset.attr_exists('clip')
         if not has_clip:
@@ -138,57 +127,3 @@ class ImageImporter(AssetProcessor):
             clip = Clip.page(i)
             expand = ExpandFrame(FileImport(source_asset, clip=clip))
             self.expand(frame, expand)
-
-    def set_metadata(self, document, metadata, namespace=None):
-        """Based on the arguments given to the processor the necessary metadata is
-        extracted and added to the given document.
-
-        Args:
-            document(Document): The document to add the metadata to.
-            metadata(dict): Blob of metadata to extract information from.
-            namespace(str): The parent namespace this metadata belongs. This
-             is used when constructing the complete field name for each matadatum to
-             determine if it should be extracted and allows for recursion into nested
-             metadata sets.
-
-        """
-        included_tags = self.arg_value('included_tags')
-        non_alphanum_regex = re.compile(r'[\W_]+')
-        for key, value in metadata.items():
-            clean_key = non_alphanum_regex.sub('', key)
-            if namespace:
-                field = '%s.%s' % (namespace, clean_key)
-            else:
-                field = clean_key
-            if field in included_tags and self.arg_value('extract_extended_metadata'):
-                document.set_attr('media.attrs.%s' % clean_key, value)
-
-            if isinstance(value, dict):
-                self.set_metadata(document, value, namespace=field)
-        # Set the length of the image
-        subimages = int(metadata.get('subimages', 1))
-        document.set_attr('media.length', subimages)
-
-    def set_media_type(self, asset):
-        """
-        Set media.type to image which signals that the Asset was processed as an image.
-
-        Args:
-            asset (Asset): The asset to fix.
-        """
-        asset.set_attr("media.type", "image")
-
-    def add_keywords(self, document, item):
-        """Adds the item to the asset as keywords. Simple function that allows for
-        recursion in the case that the item is a dictionary.
-
-        Args:
-            document(Document): Document to add keywords to.
-            item(str, dict): Item to add as keywords.
-
-        """
-        if isinstance(item, dict):
-            for value in list(item.values()):
-                self.add_keywords(document, value)
-        else:
-            document.add_keywords('media', str(item).split())
