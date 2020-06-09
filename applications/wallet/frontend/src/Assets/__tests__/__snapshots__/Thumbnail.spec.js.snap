@@ -20,10 +20,6 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   display: flex;
 }
 
-.emotion-4:hover .videoLength {
-  display: none;
-}
-
 .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -426,10 +422,6 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   display: flex;
 }
 
-.emotion-4:hover .videoLength {
-  display: none;
-}
-
 <div
   className="emotion-4"
 >
@@ -490,10 +482,6 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-5:hover .videoLength {
-  display: none;
 }
 
 .emotion-1 {
@@ -728,7 +716,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
     />
   </a>
   <div
-    className="videoLength emotion-4"
+    className="emotion-4"
   >
     2:24
   </div>
@@ -753,10 +741,6 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-4:hover .videoLength {
-  display: none;
 }
 
 .emotion-1 {
