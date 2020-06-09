@@ -14,7 +14,7 @@ import ChevronSvg from '../Icons/chevron.svg'
 
 import TaskAssetsMetadata from './Metadata'
 
-const THUMBNAIL_SIZE = 80
+const THUMBNAIL_SIZE = 100
 const CHEVRON_WIDTH = 20
 const MAX_HEIGHT = 600
 

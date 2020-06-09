@@ -137,9 +137,9 @@ exports[`<TaskAssets /> should render properly 1`] = `
 }
 
 .emotion-12 {
-  width: 80px;
-  min-width: 80px;
-  height: 80px;
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
 }
 
 .emotion-11 {
@@ -159,10 +159,6 @@ exports[`<TaskAssets /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-11:hover .videoLength {
-  display: none;
 }
 
 .emotion-8 {
@@ -937,7 +933,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               />
             </a>
             <div
-              className="videoLength emotion-63"
+              className="emotion-63"
             >
               2:24
             </div>

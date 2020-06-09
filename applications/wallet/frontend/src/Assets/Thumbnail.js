@@ -77,9 +77,6 @@ const AssetsThumbnail = ({
           'a, button': {
             display: 'flex',
           },
-          '.videoLength': {
-            display: 'none',
-          },
         },
       }}
     >
@@ -180,7 +177,6 @@ const AssetsThumbnail = ({
       </Link>
       {videoLength > 0 && (
         <div
-          className="videoLength"
           css={{
             position: 'absolute',
             bottom: spacing.small,
