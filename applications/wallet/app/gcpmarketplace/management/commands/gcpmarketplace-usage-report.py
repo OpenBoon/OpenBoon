@@ -46,6 +46,11 @@ class UsageReporter():
         if not usage:
             print(f'No usage data. Skipping report for entitlement {entitlement["name"]}.')
             return
+        video_hours = int(usage['video_hours'])
+        image_count = int(usage['image_count'])
+        if video_hours == 0 and image_count == 0:
+            print(f'No new usage for entitlement {entitlement["name"]}. Skipping report.')
+            return
         end_time = datetime.datetime.fromtimestamp(usage['end_time'],
                                                    datetime.timezone.utc)
         start_time = end_time - datetime.timedelta(hours=1)
@@ -58,9 +63,9 @@ class UsageReporter():
             'endTime': end_time.strftime(time_format),
             'metricValueSets': [
                 {'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_video',
-                 'metricValues': [{'int64Value': int(usage['video_hours'])}]},
+                 'metricValues': [{'int64Value': video_hours}]},
                 {'metricName': f'{settings.MARKETPLACE_SERVICE_NAME}/{entitlement["plan"]}_image',
-                 'metricValues': [{'int64Value': int(usage['image_count'])}]}
+                 'metricValues': [{'int64Value': image_count}]}
             ]
         }
         check = ServiceControlApi.services().check(
@@ -73,7 +78,7 @@ class UsageReporter():
                                                            entitlement['product']))
             print(check['checkErrors'])
             return
-        print(f'Sending report:\n{pprint.pformat(operation)}')
+        print(f'Sending report for entitlement {entitlement["name"]}:\n{operation}')
         ServiceControlApi.services().report(
             serviceName=settings.MARKETPLACE_SERVICE_NAME, body={
                 'operations': [operation]
