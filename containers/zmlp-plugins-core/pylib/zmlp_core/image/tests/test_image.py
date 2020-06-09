@@ -23,20 +23,6 @@ class ImageImporterUnitTestCase(PluginUnitTestCase):
         assert document.get_attr('media.attrs.JPEG') is None
         assert document.get_attr('media.attrs.IPTC') is None
 
-    def test_process_extended_metadata(self):
-        frame = Frame(TestAsset(TOUCAN))
-        processor = self.init_processor(ImageImporter(),
-                                        {'extract_extended_metadata': True})
-        processor.process(frame)
-        document = frame.asset
-        assert document.get_attr('media.width') == 512
-        assert document.get_attr('media.height') == 341
-        assert document.get_attr('media.attrs.Model') == 'Canon EOS 400D DIGITAL'
-        assert document.get_attr('media.attrs.Make') == 'Canon'
-        assert document.get_attr('media.attrs.Orientation') == 'normal'
-        assert document.get_attr('media.attrs.ExposureBiasValue') == 0.0
-        assert document.get_attr('media.attrs.FocalLength') == '220 mm'
-
     def test_extract_date(self):
         frame = Frame(TestAsset(GEO_TAG))
         processor = self.init_processor(ImageImporter())
