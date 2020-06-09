@@ -129,4 +129,20 @@ describe('<Assets />', () => {
       `/${PROJECT_ID}/visualizer?id=${ASSET_ID}`,
     )
   })
+
+  it('should render empty with no filters properly', () => {
+    require('next/router').__setUseRouter({
+      query: {
+        projectId: PROJECT_ID,
+        id: ASSET_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
+    require('swr').__setPageSWRs([{ data: { count: 0, results: [] } }])
+
+    const component = TestRenderer.create(<Assets />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
