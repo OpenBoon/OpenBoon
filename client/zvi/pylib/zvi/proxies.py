@@ -15,7 +15,9 @@ def download_proxy(asset, level):
     """
     app = app_from_env()
 
-    proxies = asset.get_files(category="proxy", mimetype="image/", sort_func=lambda f: f.attrs["width"])
+    proxies = asset.get_files(category="proxy",
+                              mimetype="image/",
+                              sort_func=lambda f: f.attrs["width"])
 
     if not proxies:
         return None
@@ -28,5 +30,3 @@ def download_proxy(asset, level):
     img = np.array(Image.open(img_data))
 
     return img
-
-
