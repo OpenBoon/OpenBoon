@@ -31,7 +31,7 @@ const Job = () => {
 
         <Tabs
           tabs={[
-            { title: 'All Tasks', href: '/[projectId]/jobs/[jobId]' },
+            { title: 'Tasks', href: '/[projectId]/jobs/[jobId]' },
             { title: 'Errors', href: '/[projectId]/jobs/[jobId]/errors' },
           ]}
         />

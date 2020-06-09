@@ -12,7 +12,7 @@ const Export = () => {
   return (
     <div css={{ padding: spacing.normal }}>
       <div>
-        Export the metadata for all assets in the current search as CSV. File
+        Export the metadata for all assets in the current search as a CSV file. File
         will download automatically.
       </div>
 
