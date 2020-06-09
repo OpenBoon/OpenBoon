@@ -28,9 +28,9 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
 }
 
 .emotion-6 {
-  width: 80px;
-  min-width: 80px;
-  height: 80px;
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
 }
 
 .emotion-5 {
@@ -50,10 +50,6 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-5:hover .videoLength {
-  display: none;
 }
 
 .emotion-2 {
