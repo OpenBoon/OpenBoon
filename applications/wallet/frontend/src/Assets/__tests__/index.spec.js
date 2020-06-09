@@ -131,9 +131,6 @@ describe('<Assets />', () => {
   })
 
   it('should render empty with no filters properly', () => {
-    const mockPush = jest.fn()
-
-    require('next/router').__setMockPushFunction(mockPush)
     require('next/router').__setUseRouter({
       query: {
         projectId: PROJECT_ID,
@@ -147,25 +144,5 @@ describe('<Assets />', () => {
     const component = TestRenderer.create(<Assets />)
 
     expect(component.toJSON()).toMatchSnapshot()
-
-    act(() => {
-      component.root
-        .findByProps({ children: 'Create a Data Source' })
-        .props.onClick()
-    })
-
-    expect(mockPush).toHaveBeenCalledWith(
-      '/[projectId]/data-sources/add',
-      `/${PROJECT_ID}/data-sources/add`,
-    )
-
-    act(() => {
-      component.root.findByProps({ children: 'View Job Queue' }).props.onClick()
-    })
-
-    expect(mockPush).toHaveBeenCalledWith(
-      '/[projectId]/jobs',
-      `/${PROJECT_ID}/jobs`,
-    )
   })
 })

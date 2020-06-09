@@ -1,4 +1,4 @@
-import Router from 'next/router'
+import Link from 'next/link'
 import PropTypes from 'prop-types'
 
 import { colors, spacing, typography } from '../Styles'
@@ -42,7 +42,6 @@ const AssetsEmpty = ({ projectId, query, assetId }) => {
         <>
           <div css={{ height: spacing.comfy }} />
           <Button
-            aria-label="Clear All Filters"
             variant={VARIANTS.PRIMARY}
             onClick={() => {
               dispatch({
@@ -71,30 +70,17 @@ const AssetsEmpty = ({ projectId, query, assetId }) => {
           </h3>
           <div css={{ height: spacing.comfy }} />
           <div css={{ display: 'flex' }}>
-            <Button
-              aria-label="Create a Data Source"
-              variant={VARIANTS.PRIMARY}
-              onClick={() => {
-                Router.push(
-                  '/[projectId]/data-sources/add',
-                  `/${projectId}/data-sources/add`,
-                )
-                return null
-              }}
+            <Link
+              href="/[projectId]/data-sources/add"
+              as={`/${projectId}/data-sources/add`}
+              passHref
             >
-              Create a Data Source
-            </Button>
+              <Button variant={VARIANTS.PRIMARY}>Create a Data Source</Button>
+            </Link>
             <div css={{ width: spacing.comfy }} />
-            <Button
-              aria-label="View Job Queue"
-              variant={VARIANTS.PRIMARY}
-              onClick={() => {
-                Router.push('/[projectId]/jobs', `/${projectId}/jobs`)
-                return null
-              }}
-            >
-              View Job Queue
-            </Button>
+            <Link href="/[projectId]/jobs" as={`/${projectId}/jobs`} passHref>
+              <Button variant={VARIANTS.PRIMARY}>View Job Queue</Button>
+            </Link>
           </div>
         </>
       )}

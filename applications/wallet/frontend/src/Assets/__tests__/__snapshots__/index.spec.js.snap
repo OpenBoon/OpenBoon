@@ -157,25 +157,25 @@ exports[`<Assets /> should render empty properly 1`] = `
       <div
         className="emotion-6"
       >
-        <button
-          aria-label="Create a Data Source"
+        <a
           className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
           onClick={[Function]}
-          type="button"
+          onMouseEnter={[Function]}
         >
           Create a Data Source
-        </button>
+        </a>
         <div
           className="emotion-4"
         />
-        <button
-          aria-label="View Job Queue"
+        <a
           className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
           onClick={[Function]}
-          type="button"
+          onMouseEnter={[Function]}
         >
           View Job Queue
-        </button>
+        </a>
       </div>
     </div>
   </div>
@@ -314,7 +314,6 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
         className="emotion-1"
       />
       <button
-        aria-label="Clear All Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -483,25 +482,25 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
       <div
         className="emotion-6"
       >
-        <button
-          aria-label="Create a Data Source"
+        <a
           className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
           onClick={[Function]}
-          type="button"
+          onMouseEnter={[Function]}
         >
           Create a Data Source
-        </button>
+        </a>
         <div
           className="emotion-4"
         />
-        <button
-          aria-label="View Job Queue"
+        <a
           className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
           onClick={[Function]}
-          type="button"
+          onMouseEnter={[Function]}
         >
           View Job Queue
-        </button>
+        </a>
       </div>
     </div>
   </div>
