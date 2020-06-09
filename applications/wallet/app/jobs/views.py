@@ -8,6 +8,8 @@ from rest_framework.reverse import reverse
 
 from jobs.serializers import JobSerializer, TaskErrorSerializer, TaskSerializer
 from projects.views import BaseProjectViewSet
+from searches.serializers import SearchAssetSerializer
+from searches.views import search_asset_modifier
 from wallet.paginators import ZMLPFromSizePagination
 
 
@@ -244,7 +246,8 @@ class JobTaskViewSet(BaseProjectViewSet):
         def item_modifier(request, task):
             path = reverse('task-detail', kwargs={'project_pk': project_pk, 'pk': task['id']})
             task['url'] = request.build_absolute_uri(path)
-            task['actions'] = {'retry': f'{task["url"]}{task["id"]}/retry/'}
+            task['actions'] = {'retry': f'{task["url"]}{task["id"]}/retry/',
+                               'assets': f'{task["url"]}{task["id"]}/assets/'}
             task['assetCounts'] = set_asset_total_count(task['assetCounts'])
 
         return self._zmlp_list_from_search(request, item_modifier=item_modifier,
@@ -259,7 +262,8 @@ class TaskViewSet(BaseProjectViewSet):
     def list(self, request, project_pk):
         def item_modifier(request, task):
             item_url = request.build_absolute_uri(request.path)
-            task['actions'] = {'retry': f'{item_url}{task["id"]}/retry/'}
+            task['actions'] = {'retry': f'{item_url}{task["id"]}/retry/',
+                               'assets': f'{item_url}{task["id"]}/assets/'}
             task['assetCounts'] = set_asset_total_count(task['assetCounts'])
 
         return self._zmlp_list_from_search(request, item_modifier=item_modifier)
@@ -267,7 +271,8 @@ class TaskViewSet(BaseProjectViewSet):
     def retrieve(self, request, project_pk, pk):
         def item_modifier(request, task):
             item_url = request.build_absolute_uri(request.path)
-            task['actions'] = {'retry': f'{item_url}{task["id"]}/retry/'}
+            task['actions'] = {'retry': f'{item_url}{task["id"]}/retry/',
+                               'assets': f'{item_url}{task["id"]}/assets/'}
             task['assetCounts'] = set_asset_total_count(task['assetCounts'])
 
         return self._zmlp_retrieve(request, pk, item_modifier=item_modifier)
@@ -281,6 +286,16 @@ class TaskViewSet(BaseProjectViewSet):
         else:
             message = f'Task {pk} failed to be retried. Message from ZMLP: {response}'
             return Response({'detail': message}, status=500)
+
+    @action(detail=True, methods=['get'])
+    def assets(self, request, project_pk, pk):
+        """Lists all assets associated with a task."""
+        return self._zmlp_list_from_es(request,
+                                       search_filter={'system.taskId': pk},
+                                       base_url='api/v3/assets',
+                                       serializer_class=SearchAssetSerializer,
+                                       item_modifier=search_asset_modifier,
+                                       pagination_class=ZMLPFromSizePagination)
 
 
 class TaskErrorViewSet(BaseProjectViewSet):
