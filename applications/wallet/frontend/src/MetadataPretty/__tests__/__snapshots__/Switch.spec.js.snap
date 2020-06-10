@@ -77,8 +77,13 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-2:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
 .emotion-1 {
-  display: none;
+  opacity: 0;
 }
 
 .emotion-1:hover {
@@ -100,8 +105,8 @@ Array [
   background-color: #027aff38;
 }
 
-.emotion-4:hover div svg {
-  display: inline-block;
+.emotion-4:hover svg {
+  opacity: 1;
 }
 
 .emotion-0 {
@@ -578,8 +583,13 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-2:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
 .emotion-1 {
-  display: none;
+  opacity: 0;
 }
 
 .emotion-1:hover {
@@ -595,8 +605,8 @@ Array [
   background-color: #027aff38;
 }
 
-.emotion-6:hover div svg {
-  display: inline-block;
+.emotion-6:hover svg {
+  opacity: 1;
 }
 
 .emotion-3 {
@@ -728,7 +738,7 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 }
 
 .emotion-5:hover div svg {
-  display: inline-block;
+  opacity: 1;
 }
 
 .emotion-0 {
@@ -791,8 +801,13 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-3:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
 .emotion-2 {
-  display: none;
+  opacity: 0;
 }
 
 .emotion-2:hover {
@@ -870,7 +885,7 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
 }
 
 .emotion-5:hover div svg {
-  display: inline-block;
+  opacity: 1;
 }
 
 .emotion-0 {
@@ -945,8 +960,13 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-3:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
 .emotion-2 {
-  display: none;
+  opacity: 0;
 }
 
 .emotion-2:hover {
@@ -1068,8 +1088,13 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-2:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
 .emotion-1 {
-  display: none;
+  opacity: 0;
 }
 
 .emotion-1:hover {
@@ -1091,8 +1116,8 @@ Array [
   background-color: #027aff38;
 }
 
-.emotion-4:hover div svg {
-  display: inline-block;
+.emotion-4:hover svg {
+  opacity: 1;
 }
 
 .emotion-0 {

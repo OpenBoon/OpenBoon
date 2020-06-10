@@ -100,9 +100,7 @@ const ProjectGettingStarted = ({ projectId }) => {
                 paddingTop: spacing.normal,
                 display: 'flex',
                 alignItems: 'center',
-                svg: {
-                  marginRight: spacing.base,
-                },
+                svg: { marginRight: spacing.base },
               }}
             >
               {module}
