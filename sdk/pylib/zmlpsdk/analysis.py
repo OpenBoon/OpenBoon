@@ -1,4 +1,3 @@
-
 class Prediction:
     """
     A single ML prediction which includes at minimum a label
@@ -205,6 +204,7 @@ class ContentDetectionAnalysis:
     results of an OCR process.
 
     """
+
     def __init__(self, unique_words=False, **kwargs):
         """
         Create a new ContentDetectionAnalysis instance.
@@ -237,7 +237,7 @@ class ContentDetectionAnalysis:
             val (str): The string containing the content.
 
         """
-        val = val.replace('\r', ' ').replace('\n', ' ')
+        val = val.replace("\r", " ").replace("\n", " ")
         self.content.append(val)
 
     def for_json(self):
@@ -248,27 +248,130 @@ class ContentDetectionAnalysis:
         Returns:
             :obj:`dict`: A JSON serializable version of this Document.
         """
-        text = ' '.join(self.content)
+        text = " ".join(self.content)
         words = text.split()
 
         # this basic processing removes line breaks, etc.
         if self.unique_words:
             words = frozenset(words)
             # Words are only sorted if unqiue.
-            text = ' '.join(sorted(words))
+            text = " ".join(sorted(words))
         else:
-            text = ' '.join(words)
+            text = " ".join(words)
 
         if len(text) > 32766:
             text = text[:32765]
 
-        base = {
-            'type': 'content',
-            'words': len(words),
-            'content': text
-        }
+        base = {"type": "content", "words": len(words), "content": text}
         base.update(self.attrs)
         return base
 
     def __bool__(self):
         return len(self.content) > 0
+
+
+class SingleLabelAnalysis:
+    """
+    SingleLabelAnalysis is similar to LabelDetectionAnalysis but for a
+    single label and confidence. Note that the internals of this class are
+    not oriented the same way the data is represented on the Asset.
+    The 'for_json' transforms the data into something more suitable for ElasticSearch.
+
+    """
+
+    def __init__(self, min_score=0.15, max_predictions=32, collapse_labels=False):
+        """
+        Create a new LabelDetectionSchema instance.
+
+        Args:
+            min_score (float): The minimum score a prediction must have to be included.
+            max_predictions (int): The max number of predictions.
+            collapse_labels (bool): If true, labels of the same name are collapsed into single
+                entry with an occurrence count. This is desired fo video. Default its false.
+
+        """
+        self.min_score = min_score
+        self.max_predictions = max_predictions
+        self.collapse_labels = collapse_labels
+        self.pred_map = {}
+        self.pred_list = []
+        self.label = ""
+        self.score = 0.00
+        self.attrs = {}
+
+    def set_attr(self, key, value):
+        """
+        Set an arbitrary attr on the LabelDetectionSchema.  See the docs for
+        common attributes.  Invalid attributes may be rejected.
+
+        Args:
+            key (str): the name of the key.
+            value (mixed): the value.
+
+        """
+        self.attrs[key] = value
+
+    def add_label_and_score(self, label, score, **kwargs):
+        """
+        A convenience methods for adding a Prediction.
+        Args:
+            label (str): The label name.
+            score (float): The score/confidence.
+            **kwargs: Arbitrary key/value pairs added to the predication.
+        Returns:
+            bool: True if prediction was added. False if the score was not high enough.
+        """
+        return self.add_prediction(Prediction(label, score, **kwargs))
+
+    def add_prediction(self, pred):
+        """
+        Add a label prediction to this schema.  If label collapsing is enabled
+        and a label with the same name is added it will not be added again.  However
+        the confidence value will be updated if the new prediction has a higher
+        confidence value.
+
+        Args:
+            pred (Prediction):
+
+        Returns:
+            bool: True if prediction was added. False if the score was not high enough.
+        """
+        if pred.score < self.min_score:
+            return False
+
+        existing = self.pred_map.get('label')
+        if not existing or pred.label != existing:
+            self.label = pred.label
+            self.score = pred.score
+
+            self.pred_map = {
+                'label': self.label,
+                'score': self.score
+            }
+        else:
+            pred.add_occurrence(pred.score)
+        return True
+
+    def for_json(self):
+        """Returns a dictionary suitable for JSON encoding.
+
+        The ZpsJsonEncoder will call this method automatically.
+
+        Returns:
+            :obj:`dict`: A JSON serializable version of this Document.
+        """
+        predictions = [self.label]
+        predict_count = len(predictions)
+        base = {
+            "type": "labels",
+            "count": min(predict_count, self.max_predictions),
+            "predictions": predictions[0: min(predict_count, self.max_predictions)],
+        }
+        base.update(self.attrs)
+        return base
+
+    def __len__(self):
+        return len(self.pred_map)
+
+    def __bool__(self):
+        return len(self) > 0

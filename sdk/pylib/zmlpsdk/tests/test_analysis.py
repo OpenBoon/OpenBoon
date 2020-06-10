@@ -135,3 +135,33 @@ class ContentDetectionAnalysisTests(TestCase):
         assert 3 == serialized['words']
         assert "us" == serialized['lang']
         assert "cat dog mouse" == serialized['content']
+
+
+class SingleLabelAnalysisTests(TestCase):
+
+    def setUp(self):
+        self.analysis = analysis.SingleLabelAnalysis()
+        self.pred = analysis.Prediction('cat', 0.50)
+
+    def test_add_prediction(self):
+        assert self.analysis.add_prediction(self.pred) is True
+        assert self.analysis.add_prediction(self.pred) is True  # does not overwrite above
+        assert self.analysis.add_prediction(analysis.Prediction('dog', 0.01)) is False
+        assert 2 == len(self.analysis)  # label + score keys
+
+    def test_add_label_and_score(self):
+        assert self.analysis.add_label_and_score("dog", 0.5, color='brown') is True
+        assert self.analysis.add_label_and_score("dog", 0.6) is True  # does not overwrite above
+        assert 2 == len(self.analysis)  # label + score keys
+        assert 'dog' == self.analysis.label
+        assert 0.5 == self.analysis.score
+
+    def test_max_predictions(self):
+        self.analysis.max_predictions = 1
+        self.analysis.add_prediction(self.pred)
+        self.analysis.add_prediction(analysis.Prediction('dog', 0.54))  # overwrites self.pred
+        assert 2 == len(self.analysis)  # label + score keys
+
+        serialized = json.loads(to_json(self.analysis))
+        assert 1 == len(serialized['predictions'])
+        assert 'dog' == serialized['predictions'][0]
