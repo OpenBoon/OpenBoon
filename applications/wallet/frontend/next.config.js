@@ -12,10 +12,8 @@ const {
 
 module.exports = withSourceMaps({
   reactStrictMode: true,
-  env: {
-    CI_COMMIT_SHA,
-  },
   publicRuntimeConfig: {
+    CI_COMMIT_SHA,
     GOOGLE_OAUTH_CLIENT_ID,
     ENVIRONMENT,
     ENABLE_SENTRY,
