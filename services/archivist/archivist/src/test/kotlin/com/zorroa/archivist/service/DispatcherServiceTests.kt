@@ -472,9 +472,9 @@ class DispatcherServiceTests : AbstractTest() {
             assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(9, manualKill = false)))
             authenticate()
             assertEquals(TaskState.Failure, taskDao.get(next.taskId).state)
-            assertEquals(2, taskErrorDao.getAll(TaskErrorFilter(jobIds = listOf(next.jobId))).size())
-            assertEquals(2, taskErrorDao.getAll(TaskErrorFilter(taskIds = listOf(next.taskId))).size())
-            assertEquals(2, taskErrorDao.getAll(TaskErrorFilter()).size())
+            assertEquals(1, taskErrorDao.getAll(TaskErrorFilter(jobIds = listOf(next.jobId))).size())
+            assertEquals(1, taskErrorDao.getAll(TaskErrorFilter(taskIds = listOf(next.taskId))).size())
+            assertEquals(1, taskErrorDao.getAll(TaskErrorFilter()).size())
         }
     }
 
