@@ -18,7 +18,10 @@ const DataSourcesAdd = () => {
       <Tabs
         tabs={[
           { title: 'View All', href: '/[projectId]/data-sources' },
-          { title: 'Create Data Source', href: '/[projectId]/data-sources/add' },
+          {
+            title: 'Create Data Source',
+            href: '/[projectId]/data-sources/add',
+          },
         ]}
       />
 
