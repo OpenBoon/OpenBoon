@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.math.BigDecimal
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.Calendar
 import java.util.Date
 import java.util.TimeZone
@@ -46,14 +48,10 @@ fun randomString(length: Int = 16): String {
  * Return the given Date with minutes and seconds zeroed out.
  */
 fun toHourlyDate(date: Date?): Long {
-    val time: Calendar = Calendar.getInstance()
-    time.timeInMillis = date?.time ?: Date().time
-    time.timeZone = TimeZone.getTimeZone("UTC")
-    time.set(Calendar.MINUTE, 0)
-    time.set(Calendar.SECOND, 0)
-    time.set(Calendar.MILLISECOND, 0)
-
-    return time.timeInMillis
+    var dateMilli = date?.time ?: System.currentTimeMillis()
+    return Instant.ofEpochMilli(dateMilli)
+        .truncatedTo(ChronoUnit.HOURS)
+        .toEpochMilli()
 }
 
 /**
