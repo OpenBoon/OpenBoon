@@ -10,6 +10,7 @@ import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.TimeZone
 import java.util.UUID
 import java.util.concurrent.ThreadLocalRandom
 
@@ -47,9 +48,11 @@ fun randomString(length: Int = 16): String {
 fun toHourlyDate(date: Date?): Long {
     val time: Calendar = Calendar.getInstance()
     time.timeInMillis = date?.time ?: Date().time
+    time.timeZone = TimeZone.getTimeZone("UTC")
     time.set(Calendar.MINUTE, 0)
     time.set(Calendar.SECOND, 0)
     time.set(Calendar.MILLISECOND, 0)
+
     return time.timeInMillis
 }
 
