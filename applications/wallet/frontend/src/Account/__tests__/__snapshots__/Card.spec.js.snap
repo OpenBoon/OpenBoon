@@ -146,7 +146,7 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
             onClick={[Function]}
             onMouseEnter={[Function]}
           >
-            View Dashboard
+            Go To Project
           </a>
         </div>
       </div>
@@ -343,7 +343,7 @@ exports[`<AccountCard /> should render properly 1`] = `
             onClick={[Function]}
             onMouseEnter={[Function]}
           >
-            View Dashboard
+            Go To Project
           </a>
         </div>
       </div>
@@ -373,7 +373,7 @@ exports[`<AccountCard /> should render properly 1`] = `
             src="/icons/videos.png"
             width={32}
           />
-           Video hours used: 
+           Video Hours:
           0
         </h4>
       </div>
@@ -585,7 +585,7 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
             onClick={[Function]}
             onMouseEnter={[Function]}
           >
-            View Dashboard
+            Go To Project
           </a>
         </div>
       </div>
@@ -615,7 +615,7 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
             src="/icons/videos.png"
             width={32}
           />
-           Video hours used: 
+           Video Hours:
           0
         </h4>
       </div>
@@ -827,7 +827,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
             onClick={[Function]}
             onMouseEnter={[Function]}
           >
-            View Dashboard
+            Go To Project
           </a>
         </div>
       </div>
@@ -857,7 +857,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
             src="/icons/videos.png"
             width={32}
           />
-           Video hours used: 
+           Video Hours:
           320
         </h4>
       </div>

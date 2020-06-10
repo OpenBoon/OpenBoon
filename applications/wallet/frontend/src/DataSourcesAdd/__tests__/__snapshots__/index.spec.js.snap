@@ -102,7 +102,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          View all
+          View All
         </a>
       </li>
       <li
@@ -114,7 +114,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
@@ -1789,7 +1789,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          View all
+          View All
         </a>
       </li>
       <li
@@ -1801,7 +1801,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
@@ -3579,7 +3579,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          View all
+          View All
         </a>
       </li>
       <li
@@ -3591,7 +3591,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
@@ -5336,7 +5336,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          View all
+          View All
         </a>
       </li>
       <li
@@ -5348,7 +5348,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
