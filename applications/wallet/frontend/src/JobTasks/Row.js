@@ -1,12 +1,15 @@
 import PropTypes from 'prop-types'
+import Router from 'next/router'
+import Link from 'next/link'
 
-import { formatFullDate, formatDuration } from '../Date/helpers'
+import { formatFullDate, getDuration, formatDuration } from '../Date/helpers'
 import { spacing, typography } from '../Styles'
 
 import JobTasksStateIcon from './StateIcon'
-import { getDuration } from './helpers'
 
 const JobTasksRow = ({
+  projectId,
+  jobId,
   task: {
     id: taskId,
     name,
@@ -24,13 +27,46 @@ const JobTasksRow = ({
   })
 
   return (
-    <tr>
+    <tr
+      css={{ cursor: 'pointer' }}
+      onClick={(event) => {
+        const { target: { localName } = {} } = event || {}
+        if (['a', 'button', 'svg', 'path'].includes(localName)) return
+        Router.push(
+          '/[projectId]/jobs/[jobId]/tasks/[taskId]/assets',
+          `/${projectId}/jobs/${jobId}/tasks/${taskId}/assets`,
+        )
+      }}
+    >
       <td css={{ display: 'flex' }}>
         <JobTasksStateIcon state={state} />
         <span css={{ paddingLeft: spacing.normal }}>{state}</span>
       </td>
-      <td title={taskId}>{taskId}</td>
+
+      <td>
+        <Link
+          href="/[projectId]/jobs/[jobId]/tasks/[taskId]/assets"
+          as={`/${projectId}/jobs/${jobId}/tasks/${taskId}/assets`}
+          passHref
+        >
+          <a css={{ ':hover': { textDecoration: 'none' } }} title={taskId}>
+            {taskId}
+          </a>
+        </Link>
+      </td>
+
       <td title={name}>{name}</td>
+
+      <td>
+        {isStarted ? (
+          formatFullDate({ timestamp: timeStarted })
+        ) : (
+          <div
+            css={{ fontStyle: typography.style.italic }}
+          >{`${state}...`}</div>
+        )}
+      </td>
+
       <td>
         {isStarted ? (
           formatDuration({
@@ -42,21 +78,15 @@ const JobTasksRow = ({
           >{`${state}...`}</div>
         )}
       </td>
-      <td>
-        {isStarted ? (
-          formatFullDate({ timestamp: timeStarted })
-        ) : (
-          <div
-            css={{ fontStyle: typography.style.italic }}
-          >{`${state}...`}</div>
-        )}
-      </td>
+
       <td>{assetErrorCount}</td>
     </tr>
   )
 }
 
 JobTasksRow.propTypes = {
+  projectId: PropTypes.string.isRequired,
+  jobId: PropTypes.string.isRequired,
   task: PropTypes.shape({
     id: PropTypes.string.isRequired,
     jobId: PropTypes.string.isRequired,

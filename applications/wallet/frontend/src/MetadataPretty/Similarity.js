@@ -9,7 +9,7 @@ import { encode } from '../Filters/helpers'
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import AssetsThumbnail from '../Assets/Thumbnail'
 
-const THUMBNAIL_SIZE = 80
+const THUMBNAIL_SIZE = 100
 
 const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
   const {
@@ -122,7 +122,14 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
               Similar Images
             </div>
             <div
-              css={{ display: 'flex', flexWrap: 'nowrap', overflow: 'hidden' }}
+              css={{
+                display: 'flex',
+                flexWrap: 'nowrap',
+                overflowX: 'scroll',
+                '::-webkit-scrollbar': {
+                  display: 'none',
+                },
+              }}
             >
               {results
                 .filter(({ id }) => id !== assetId)

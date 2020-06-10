@@ -115,7 +115,8 @@ class PipelineModDaoImpl : PipelineModDao, AbstractDao() {
     override fun getByName(name: String): PipelineMod {
         return jdbc.queryForObject(
             "$GET WHERE str_name=? AND $PROJ_FILTER LIMIT 1",
-            MAPPER, name, getProjectId())
+            MAPPER, name, getProjectId()
+        )
     }
 
     override fun get(id: UUID): PipelineMod {
@@ -157,8 +158,10 @@ class PipelineModDaoImpl : PipelineModDao, AbstractDao() {
         val args = mutableListOf<Any>()
         args.addAll(ids)
 
-        val res = jdbc.update("DELETE FROM module WHERE pk_project IS NULL AND $notInClause",
-            *args.toTypedArray())
+        val res = jdbc.update(
+            "DELETE FROM module WHERE pk_project IS NULL AND $notInClause",
+            *args.toTypedArray()
+        )
         logger.info("Removing $res standard modules, leftover= ${ids.size}")
         return res
     }

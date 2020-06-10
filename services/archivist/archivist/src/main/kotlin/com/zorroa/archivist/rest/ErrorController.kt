@@ -53,9 +53,11 @@ class RestApiExceptionHandler {
      * Do extra logging for these response statuses
      */
     val doExtraLogging =
-            setOf(HttpStatus.UNAUTHORIZED,
-                    HttpStatus.BAD_REQUEST,
-                    HttpStatus.INTERNAL_SERVER_ERROR)
+        setOf(
+            HttpStatus.UNAUTHORIZED,
+            HttpStatus.BAD_REQUEST,
+            HttpStatus.INTERNAL_SERVER_ERROR
+        )
 
     @ExceptionHandler(Exception::class)
     fun defaultErrorHandler(wb: WebRequest, req: HttpServletRequest, e: Exception): ResponseEntity<Any> {
@@ -76,17 +78,19 @@ class RestApiExceptionHandler {
         } else if (e is ArchivistSecurityException || e is AccessDeniedException) {
             HttpStatus.FORBIDDEN
         } else if (e is HttpRequestMethodNotSupportedException ||
-                e is MethodArgumentTypeMismatchException) {
+            e is MethodArgumentTypeMismatchException
+        ) {
             HttpStatus.METHOD_NOT_ALLOWED
         } else if (e is ArchivistException ||
-                e is ElasticsearchException ||
-                e is InvalidRequestException ||
-                e is DataAccessException ||
-                e is NullPointerException ||
-                e is IllegalArgumentException ||
-                e is IllegalStateException ||
-                e is NumberFormatException ||
-                e is ArrayIndexOutOfBoundsException) {
+            e is ElasticsearchException ||
+            e is InvalidRequestException ||
+            e is DataAccessException ||
+            e is NullPointerException ||
+            e is IllegalArgumentException ||
+            e is IllegalStateException ||
+            e is NumberFormatException ||
+            e is ArrayIndexOutOfBoundsException
+        ) {
             HttpStatus.BAD_REQUEST
         } else {
             HttpStatus.INTERNAL_SERVER_ERROR
@@ -98,11 +102,15 @@ class RestApiExceptionHandler {
         val errorId = UUID.randomUUID().toString()
 
         if (doExtraLogging.contains(status) || debug) {
-            logger.error("endpoint='{}' project='{}', errorId='{}',",
-                    req.servletPath, getZmlpActorOrNull()?.projectId, errorId, e)
+            logger.error(
+                "endpoint='{}' project='{}', errorId='{}',",
+                req.servletPath, getZmlpActorOrNull()?.projectId, errorId, e
+            )
         } else {
-            logger.error("endpoint='{}' project='{}', errorId='{}',",
-                    req.servletPath, getZmlpActorOrNull()?.projectId, errorId)
+            logger.error(
+                "endpoint='{}' project='{}', errorId='{}',",
+                req.servletPath, getZmlpActorOrNull()?.projectId, errorId
+            )
         }
 
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
@@ -114,8 +122,8 @@ class RestApiExceptionHandler {
         }
 
         return ResponseEntity.status(status)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(errAttrs)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(errAttrs)
     }
 
     companion object {
@@ -128,7 +136,7 @@ class RestApiExceptionHandler {
 @Timed
 @ApiIgnore
 class CustomErrorController @Autowired constructor(private val errorAttributes: ErrorAttributes) :
-        AbstractErrorController(errorAttributes), ErrorController {
+    AbstractErrorController(errorAttributes), ErrorController {
 
     @Value("\${archivist.debug-mode.enabled}")
     var debug: Boolean = false

@@ -33,23 +33,30 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     override fun getSettings(projectId: UUID): ProjectSettings {
-        return jdbc.queryForObject("SELECT * FROM project_settings WHERE pk_project=?",
+        return jdbc.queryForObject(
+            "SELECT * FROM project_settings WHERE pk_project=?",
             RowMapper { rs, _ ->
                 ProjectSettings(
                     rs.getObject("pk_pipeline_default") as UUID,
                     rs.getObject("pk_index_route_default") as UUID
                 )
-            }, projectId)
+            },
+            projectId
+        )
     }
 
     override fun updateSettings(projectId: UUID, settings: ProjectSettings): Boolean {
-        return jdbc.update(UPDATE_SETTINGS,
-            settings.defaultPipelineId, settings.defaultIndexRouteId, projectId) == 1
+        return jdbc.update(
+            UPDATE_SETTINGS,
+            settings.defaultPipelineId, settings.defaultIndexRouteId, projectId
+        ) == 1
     }
 
     override fun createSettings(projectId: UUID, settings: ProjectSettings) {
-        jdbc.update(INSERT_SETTINGS, UUID.randomUUID(),
-            projectId, settings.defaultPipelineId, settings.defaultIndexRouteId)
+        jdbc.update(
+            INSERT_SETTINGS, UUID.randomUUID(),
+            projectId, settings.defaultPipelineId, settings.defaultIndexRouteId
+        )
     }
 
     override fun count(filter: ProjectFilter): Long {
@@ -75,13 +82,17 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
     }
 
     override fun isEnabled(projectId: UUID): Boolean {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM project WHERE pk_project=? AND enabled='t'",
-            Int::class.java, projectId) == 1
+        return jdbc.queryForObject(
+            "SELECT COUNT(1) FROM project WHERE pk_project=? AND enabled='t'",
+            Int::class.java, projectId
+        ) == 1
     }
 
     override fun setEnabled(projectId: UUID, value: Boolean): Boolean {
-        return jdbc.update(SET_ENABLED, value, System.currentTimeMillis(),
-            getZmlpActor().toString(), projectId, value) == 1
+        return jdbc.update(
+            SET_ENABLED, value, System.currentTimeMillis(),
+            getZmlpActor().toString(), projectId, value
+        ) == 1
     }
 
     companion object {
@@ -91,11 +102,13 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
             "SET pk_pipeline_default=?, pk_index_route_default=? WHERE pk_project=?"
         const val SET_ENABLED = "UPDATE project " +
             "SET enabled=?, time_modified=?, actor_modified=? WHERE pk_project=? AND enabled != ?"
-        val INSERT_SETTINGS = JdbcUtils.insert("project_settings",
+        val INSERT_SETTINGS = JdbcUtils.insert(
+            "project_settings",
             "pk_project_settings",
             "pk_project",
             "pk_pipeline_default",
-            "pk_index_route_default")
+            "pk_index_route_default"
+        )
 
         private val MAPPER = RowMapper { rs, _ ->
             Project(

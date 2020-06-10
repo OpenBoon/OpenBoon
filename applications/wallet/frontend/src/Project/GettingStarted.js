@@ -43,7 +43,7 @@ const STEPS = [
       'its progress in the Job Queue. There you can and apply actions ' +
       'like “pause” “cancel” or “retry”. ' +
       'You can also inspect any errors that may have occurred.',
-    cta: 'View Jobs Queue',
+    cta: 'View Job Queue',
     link: '/[projectId]/jobs',
   },
   {

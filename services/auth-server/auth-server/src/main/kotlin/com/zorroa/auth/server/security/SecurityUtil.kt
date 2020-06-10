@@ -58,8 +58,10 @@ fun loadServiceKey(serviceKey: String?): ValidationKey {
         }
     }
 
-    throw RuntimeException("Unable to load inception key, " +
-        "check the zmlp.security.inception-key property.")
+    throw RuntimeException(
+        "Unable to load inception key, " +
+            "check the zmlp.security.inception-key property."
+    )
 }
 
 /**

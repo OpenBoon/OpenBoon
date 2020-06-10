@@ -4,7 +4,7 @@ import pytest
 from requests import Response
 from zmlp import Asset
 
-from assets.utils import AssetBoxImager, crop_image_poly
+from assets.utils import AssetBoxImager, crop_image_poly, get_largest_proxy
 
 
 @pytest.fixture
@@ -125,3 +125,310 @@ class TestCropImagePoly:
                                          0.9366, 0.8183, 0.7578, 0.8183],
                                         width=56, thickness=0)
         assert cropped_image.shape == (54, 56, 3)
+
+
+class TestAssetModifierHelpers:
+
+    @pytest.fixture
+    def proxies(self):
+        return [
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/image_500x400.jpg",
+                "name": "image_500x400.jpg",
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 500,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/image_900x400.jpg",
+                "name": "image_900x400.jpg",
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 900,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/web-proxy/image_600x400.jpg",
+                "name": "image_600x400.jpg",
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "size": 53303,
+                "attrs": {
+                    "width": 600,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/image_100x400.jpg",
+                "name": "image_100x400.jpg",
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 100,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/video_500x400.mp4",
+                "name": "video_500x400.mp4",
+                "category": "proxy",
+                "mimetype": "video/mpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 500,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/video_900x400.mp4",
+                "name": "video_900x400.mp4",
+                "category": "proxy",
+                "mimetype": "video/mpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 900,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/web-proxy/video_600x400.mp4",
+                "name": "video_600x400.mp4",
+                "category": "proxy",
+                "mimetype": "video/mpeg",
+                "size": 53303,
+                "attrs": {
+                    "width": 600,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/video_100x400.mp4",
+                "name": "video_100x400.mp4",
+                "category": "proxy",
+                "mimetype": "video/mpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 100,
+                    "height": 400
+                }
+            },
+        ]
+
+    @pytest.fixture
+    def web_proxies(self):
+        return [
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/web-proxy_500x400.jpg",
+                "name": "web-proxy_500x400.jpg",
+                "category": "web-proxy",
+                "mimetype": "image/jpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 500,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/web-proxy_900x400.jpg",
+                "name": "web-proxy_900x400.jpg",
+                "category": "web-proxy",
+                "mimetype": "image/jpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 900,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/web-proxy/web-proxy_600x400.jpg",
+                "name": "web-proxy_600x400.jpg",
+                "category": "web-proxy",
+                "mimetype": "image/jpeg",
+                "size": 53303,
+                "attrs": {
+                    "width": 600,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/web-proxy_100x400.jpg",
+                "name": "web-proxy_100x400.jpg",
+                "category": "web-proxy",
+                "mimetype": "image/jpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 100,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/web-proxy_500x400.mp4",
+                "name": "web-proxy_500x400.mp4",
+                "category": "web-proxy",
+                "mimetype": "video/mpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 500,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/web-proxy_900x400.mp4",
+                "name": "web-proxy_900x400.mp4",
+                "category": "web-proxy",
+                "mimetype": "video/mpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 900,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/web-proxy/web-proxy_600x400.mp4",
+                "name": "web-proxy_600x400.mp4",
+                "category": "web-proxy",
+                "mimetype": "video/mpeg",
+                "size": 53303,
+                "attrs": {
+                    "width": 600,
+                    "height": 400
+                }
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/web-proxy_100x400.mp4",
+                "name": "web-proxy_100x400.mp4",
+                "category": "web-proxy",
+                "mimetype": "video/mpeg",
+                "size": 132785,
+                "attrs": {
+                    "width": 100,
+                    "height": 400
+                }
+            },
+        ]
+
+    @pytest.fixture
+    def data_files(self):
+        return [
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/timeline.dat",
+                "name": "timeline.dat",
+                "category": "data",
+                "mimetype": "application/octet-stream",
+                "size": 132785,
+                "attrs": {}
+            },
+            {
+                "id": "assets/3Dtt85Q6gdOLq-qQCA9c9eZwyj6oWfwK/proxy/data.gz",
+                "name": "data.gz",
+                "category": "timeline",
+                "mimetype": "application/gzip",
+                "size": 132785,
+                "attrs": {
+                    "width": 900,
+                    "height": 400
+                }
+            },
+        ]
+
+    def test_get_largest_image_proxy_all_files(self, proxies, web_proxies, data_files):
+        _files = proxies + web_proxies + data_files
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'image')
+        assert proxy['name'] == "web-proxy_900x400.jpg"
+
+    def test_get_largest_image_proxy_proxies_and_web(self, proxies, web_proxies):
+        _files = proxies + web_proxies
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'image')
+        assert proxy['name'] == "web-proxy_900x400.jpg"
+
+    def test_get_largest_image_proxy_proxies_and_data(self, proxies, data_files):
+        _files = proxies + data_files
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'image')
+        assert proxy['name'] == "image_900x400.jpg"
+
+    def test_get_largest_image_proxy_web_and_data(self, web_proxies, data_files):
+        _files = web_proxies + data_files
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'image')
+        assert proxy['name'] == "web-proxy_900x400.jpg"
+
+    def test_get_largest_image_proxy_proxies_only(self, proxies):
+        _files = proxies
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'image')
+        assert proxy['name'] == "image_900x400.jpg"
+
+    def test_get_largest_image_proxy_web_only(self, web_proxies):
+        _files = web_proxies
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'image')
+        assert proxy['name'] == "web-proxy_900x400.jpg"
+
+    def test_get_largest_image_proxy_data_files(self, data_files):
+        _files = data_files
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'image')
+        assert proxy is None
+
+    def test_get_largest_image_proxy_no_files(self):
+        item = {'metadata': {'files': []}}
+        proxy = get_largest_proxy(item, 'image')
+        assert proxy is None
+
+    def test_get_largest_video_proxy_all_files(self, proxies, web_proxies, data_files):
+        _files = proxies + web_proxies + data_files
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'video')
+        assert proxy['name'] == "web-proxy_900x400.mp4"
+
+    def test_get_largest_video_proxy_proxies_and_web(self, proxies, web_proxies):
+        _files = proxies + web_proxies
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'video')
+        assert proxy['name'] == "web-proxy_900x400.mp4"
+
+    def test_get_largest_video_proxy_proxies_and_data(self, proxies, data_files):
+        _files = proxies + data_files
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'video')
+        assert proxy['name'] == "video_900x400.mp4"
+
+    def test_get_largest_video_proxy_web_and_data(self, web_proxies, data_files):
+        _files = web_proxies + data_files
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'video')
+        assert proxy['name'] == "web-proxy_900x400.mp4"
+
+    def test_get_largest_video_proxy_proxies_only(self, proxies):
+        _files = proxies
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'video')
+        assert proxy['name'] == "video_900x400.mp4"
+
+    def test_get_largest_video_proxy_web_only(self, web_proxies):
+        _files = web_proxies
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'video')
+        assert proxy['name'] == "web-proxy_900x400.mp4"
+
+    def test_get_largest_video_proxy_data_files(self, data_files):
+        _files = data_files
+        item = {'metadata': {'files': _files}}
+        proxy = get_largest_proxy(item, 'video')
+        assert proxy is None
+
+    def test_get_largest_video_proxy_no_files(self):
+        item = {'metadata': {'files': []}}
+        proxy = get_largest_proxy(item, 'video')
+        assert proxy is None

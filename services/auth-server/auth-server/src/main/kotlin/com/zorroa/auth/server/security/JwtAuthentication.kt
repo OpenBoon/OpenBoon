@@ -55,7 +55,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
                     null
                 }
             } ?: req.getParameter("token")
-            ?: throw RuntimeException("No token specified")
+                ?: throw RuntimeException("No token specified")
 
             SecurityContextHolder.getContext().authentication =
                 validateToken(token, getProjectIdOverride(req))

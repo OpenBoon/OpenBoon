@@ -91,6 +91,7 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
       aria-label="Metadata"
       className="emotion-0"
       onClick={[Function]}
+      title="Metadata"
       type="button"
     >
       <svg
@@ -339,6 +340,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
       aria-label="Metadata"
       className="emotion-6"
       onClick={[Function]}
+      title="Metadata"
       type="button"
     >
       <svg
@@ -445,6 +447,7 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
       aria-label="Filters"
       className="emotion-0"
       onClick={[Function]}
+      title="Filters"
       type="button"
     >
       <svg
@@ -655,6 +658,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
       aria-label="Filters"
       className="emotion-0"
       onClick={[Function]}
+      title="Filters"
       type="button"
     >
       <svg
