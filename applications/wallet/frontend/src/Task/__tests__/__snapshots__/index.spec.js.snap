@@ -94,7 +94,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-16 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -222,7 +222,7 @@ Array [
       Crawling files in 'gs://zorroa-dev-data'
     </h3>
     <div
-      className="emotion-16"
+      className="emotion-19"
     >
       <div
         className="emotion-3"
@@ -251,7 +251,22 @@ Array [
         <div
           className="emotion-4"
         >
-          Task Status
+          ID
+          :
+        </div>
+        <div
+          className="emotion-5"
+        >
+          0571517b-5f31-11ea-bb46-6a6895b1a9f6
+        </div>
+      </div>
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-4"
+        >
+          Status
           :
         </div>
         <div
@@ -471,7 +486,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-16 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -599,7 +614,7 @@ Array [
       Crawling files in 'gs://zorroa-dev-data'
     </h3>
     <div
-      className="emotion-16"
+      className="emotion-19"
     >
       <div
         className="emotion-3"
@@ -628,7 +643,22 @@ Array [
         <div
           className="emotion-4"
         >
-          Task Status
+          ID
+          :
+        </div>
+        <div
+          className="emotion-5"
+        >
+          0571517b-5f31-11ea-bb46-6a6895b1a9f6
+        </div>
+      </div>
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-4"
+        >
+          Status
           :
         </div>
         <div
@@ -850,7 +880,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-16 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -978,7 +1008,7 @@ Array [
       Crawling files in 'gs://zorroa-dev-data'
     </h3>
     <div
-      className="emotion-16"
+      className="emotion-19"
     >
       <div
         className="emotion-3"
@@ -1007,7 +1037,22 @@ Array [
         <div
           className="emotion-4"
         >
-          Task Status
+          ID
+          :
+        </div>
+        <div
+          className="emotion-5"
+        >
+          0571517b-5f31-11ea-bb46-6a6895b1a9f6
+        </div>
+      </div>
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-4"
+        >
+          Status
           :
         </div>
         <div
@@ -1229,7 +1274,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-18 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1349,7 +1394,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-11 {
+.emotion-14 {
   font-style: italic;
 }
 
@@ -1361,7 +1406,7 @@ Array [
       Crawling files in 'gs://zorroa-dev-data'
     </h3>
     <div
-      className="emotion-18"
+      className="emotion-21"
     >
       <div
         className="emotion-3"
@@ -1390,7 +1435,22 @@ Array [
         <div
           className="emotion-4"
         >
-          Task Status
+          ID
+          :
+        </div>
+        <div
+          className="emotion-5"
+        >
+          0571517b-5f31-11ea-bb46-6a6895b1a9f6
+        </div>
+      </div>
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-4"
+        >
+          Status
           :
         </div>
         <div
@@ -1427,7 +1487,7 @@ Array [
           className="emotion-5"
         >
           <div
-            className="emotion-11"
+            className="emotion-14"
           >
             Waiting...
           </div>
@@ -1446,7 +1506,7 @@ Array [
           className="emotion-5"
         >
           <div
-            className="emotion-11"
+            className="emotion-14"
           >
             Waiting...
           </div>

@@ -45,7 +45,11 @@ const TaskDetails = () => {
       <div css={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
         <TaskMenu revalidate={revalidate} />
 
-        <Value legend="Task Status" variant={VARIANTS.PRIMARY}>
+        <Value legend="ID" variant={VARIANTS.PRIMARY}>
+          {taskId}
+        </Value>
+
+        <Value legend="Status" variant={VARIANTS.PRIMARY}>
           {state}
         </Value>
 
