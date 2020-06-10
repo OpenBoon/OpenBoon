@@ -6,7 +6,8 @@ import java.security.MessageDigest
 import java.util.Base64
 
 @ApiModel(
-    "Clip", description = "Defines a subsection of an Asset that was processed, " +
+    "Clip",
+    description = "Defines a subsection of an Asset that was processed, " +
         "for example a page of a document."
 )
 class Clip(

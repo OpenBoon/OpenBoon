@@ -72,9 +72,11 @@ class ProjectServiceTests : AbstractTest() {
         val mapping = properties.getString("archivist.es.default-mapping-type")
         val ver = properties.getInt("archivist.es.default-mapping-version")
 
-        val index = indexRoutingService.createIndexRoute(IndexRouteSpec(
-            mapping, ver, projectId = project.id
-        ))
+        val index = indexRoutingService.createIndexRoute(
+            IndexRouteSpec(
+                mapping, ver, projectId = project.id
+            )
+        )
         settings.defaultPipelineId = pipeline.id
         settings.defaultIndexRouteId = index.id
 
@@ -110,12 +112,14 @@ class ProjectServiceTests : AbstractTest() {
         projectService.setEnabled(project1.id, false)
 
         var status = jdbc.queryForObject(
-            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project1.id)
+            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project1.id
+        )
         assertFalse(status)
 
         projectService.setEnabled(project1.id, true)
         status = jdbc.queryForObject(
-            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project1.id)
+            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project1.id
+        )
         assertTrue(status)
     }
 }

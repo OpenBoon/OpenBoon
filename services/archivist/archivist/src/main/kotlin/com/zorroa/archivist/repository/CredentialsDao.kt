@@ -28,13 +28,17 @@ class CredentialsCustomDaoImpl : CredentialsCustomDao, AbstractDao() {
     }
 
     override fun getEncryptedBlobByJob(jobId: UUID, type: CredentialsType): String {
-        return jdbc.queryForObject(GET_BLOB_BY_JOB, String::class.java,
-            jobId, type.ordinal, getProjectId())
+        return jdbc.queryForObject(
+            GET_BLOB_BY_JOB, String::class.java,
+            jobId, type.ordinal, getProjectId()
+        )
     }
 
     override fun setEncryptedBlob(id: UUID, encryptedText: String): Boolean {
-        return jdbc.update("UPDATE credentials SET str_blob=? WHERE pk_project=? AND pk_credentials=?",
-            encryptedText, getProjectId(), id) == 1
+        return jdbc.update(
+            "UPDATE credentials SET str_blob=? WHERE pk_project=? AND pk_credentials=?",
+            encryptedText, getProjectId(), id
+        ) == 1
     }
 
     companion object {
@@ -44,27 +48,27 @@ class CredentialsCustomDaoImpl : CredentialsCustomDao, AbstractDao() {
         const val GET_BLOB_BY_DS =
             "SELECT " +
                 "str_blob " +
-            "FROM " +
+                "FROM " +
                 "credentials INNER JOIN x_credentials_datasource ON " +
-                    "(credentials.pk_credentials = x_credentials_datasource.pk_credentials) " +
-            "WHERE " +
+                "(credentials.pk_credentials = x_credentials_datasource.pk_credentials) " +
+                "WHERE " +
                 "x_credentials_datasource.pk_datasource=? " +
-            "AND " +
+                "AND " +
                 "x_credentials_datasource.int_type=? " +
-            "AND " +
+                "AND " +
                 "credentials.pk_project=?"
 
         const val GET_BLOB_BY_JOB =
             "SELECT " +
                 "str_blob " +
-            "FROM " +
+                "FROM " +
                 "credentials INNER JOIN x_credentials_job ON " +
                 "(credentials.pk_credentials = x_credentials_job.pk_credentials) " +
-            "WHERE " +
+                "WHERE " +
                 "x_credentials_job.pk_job=? " +
-            "AND " +
+                "AND " +
                 "x_credentials_job.int_type=? " +
-            "AND " +
+                "AND " +
                 "credentials.pk_project=?"
     }
 }

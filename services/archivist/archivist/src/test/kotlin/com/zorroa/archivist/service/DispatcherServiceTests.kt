@@ -67,21 +67,24 @@ class DispatcherServiceTests : AbstractTest() {
         dispatcherService.handleStatsEvent(stats)
 
         assertEquals(
-            0.1, meterRegistry.timer(
+            0.1,
+            meterRegistry.timer(
                 "zorroa.processor.process_min_time",
                 "processor", "zplugins.core.TestProcessor"
             ).totalTime(TimeUnit.SECONDS)
         )
 
         assertEquals(
-            0.5, meterRegistry.timer(
+            0.5,
+            meterRegistry.timer(
                 "zorroa.processor.process_max_time",
                 "processor", "zplugins.core.TestProcessor"
             ).totalTime(TimeUnit.SECONDS)
         )
 
         assertEquals(
-            0.25, meterRegistry.timer(
+            0.25,
+            meterRegistry.timer(
                 "zorroa.processor.process_avg_time",
                 "processor", "zplugins.core.TestProcessor"
             ).totalTime(TimeUnit.SECONDS)
@@ -105,12 +108,17 @@ class DispatcherServiceTests : AbstractTest() {
                 AssetSpec("gs://cats/large-brown-cat.jpg"),
                 AssetSpec("gs://cats/large-brown-cat.mov"),
                 AssetSpec("gs://cats/large-brown-cat.pdf")
-            ))
+            )
+        )
 
         val createRsp = assetService.batchCreate(batchCreate)
         authenticateAsAnalyst()
-        val rsp = dispatcherService.handleIndexEvent(task, BatchIndexAssetsEvent(
-            mapOf(createRsp.created[0] to mutableMapOf<String, Any>("foo" to "bar")), null))
+        val rsp = dispatcherService.handleIndexEvent(
+            task,
+            BatchIndexAssetsEvent(
+                mapOf(createRsp.created[0] to mutableMapOf<String, Any>("foo" to "bar")), null
+            )
+        )
         assertTrue(rsp?.hasFailures() ?: false)
 
         authenticate()
@@ -130,7 +138,8 @@ class DispatcherServiceTests : AbstractTest() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec("gs://cats/large-brown-cat.jpg")
-            ))
+            )
+        )
 
         val createRsp = assetService.batchCreate(batchCreate)
 
@@ -138,12 +147,19 @@ class DispatcherServiceTests : AbstractTest() {
         val task = dispatcherService.getWaitingTasks(getProjectId(), 1)[0]
 
         authenticateAsAnalyst()
-        dispatcherService.handleIndexEvent(task, BatchIndexAssetsEvent(
-            mapOf(createRsp.created[0] to
-                mutableMapOf<String, Any>(
-                    "source" to mutableMapOf("path" to "/cat.jpg"),
-                    "media" to mutableMapOf("type" to "image"))
-                ), null))
+        dispatcherService.handleIndexEvent(
+            task,
+            BatchIndexAssetsEvent(
+                mapOf(
+                    createRsp.created[0] to
+                        mutableMapOf<String, Any>(
+                            "source" to mutableMapOf("path" to "/cat.jpg"),
+                            "media" to mutableMapOf("type" to "image")
+                        )
+                ),
+                null
+            )
+        )
 
         authenticate()
         // should be no errors
@@ -518,8 +534,10 @@ class DispatcherServiceTests : AbstractTest() {
     @Test
     fun testQueueAndDispatchTaskWithExternalTaskEnv() {
 
-        systemStorageService.storeObject("environments/task_env.json",
-            mapOf("foo" to "bar"))
+        systemStorageService.storeObject(
+            "environments/task_env.json",
+            mapOf("foo" to "bar")
+        )
 
         launchJob(JobPriority.Standard)
         authenticateAsAnalyst()

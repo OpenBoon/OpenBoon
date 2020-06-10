@@ -93,11 +93,12 @@ data class AnalystFilter(
 
     @JsonIgnore
     override val sortMap: Map<String, String> = mapOf(
-            "id" to "analyst.pk_analyst",
-            "load" to "analyst.flt_load",
-            "endpoint" to "analyst.str_endpoint",
-            "lock" to "analyst.int_lock_state",
-            "timePing" to "analyst.time_ping")
+        "id" to "analyst.pk_analyst",
+        "load" to "analyst.flt_load",
+        "endpoint" to "analyst.str_endpoint",
+        "lock" to "analyst.int_lock_state",
+        "timePing" to "analyst.time_ping"
+    )
 
     @JsonIgnore
     override fun build() {

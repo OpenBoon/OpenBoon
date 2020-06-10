@@ -16,8 +16,10 @@ class JdbcUtilsTest {
 
     @Test
     fun testGetTsWordVectorMultiple() {
-        assertEquals("master generator foo bar image jpg",
-                getTsWordVector("MasterGenerator", "/foo/bar/image.jpg"))
+        assertEquals(
+            "master generator foo bar image jpg",
+            getTsWordVector("MasterGenerator", "/foo/bar/image.jpg")
+        )
     }
 
     @Test

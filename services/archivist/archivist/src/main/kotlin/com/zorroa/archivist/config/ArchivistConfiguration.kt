@@ -80,12 +80,14 @@ class ArchivistConfiguration {
                 logger.warn("Can't find info version properties")
             }
 
-            builder.withDetail("archivist-plugins",
+            builder.withDetail(
+                "archivist-plugins",
                 File("/extensions/active").walkTopDown()
                     .map { it.toString() }
                     .filter { it.endsWith(".jar") }
                     .map { FileUtils.basename(it) }
-                    .toList())
+                    .toList()
+            )
         }
 
         return InfoEndpoint(ImmutableList.of(info))

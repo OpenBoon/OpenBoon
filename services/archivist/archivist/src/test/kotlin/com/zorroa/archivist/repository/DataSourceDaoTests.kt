@@ -25,15 +25,21 @@ class DataSourceDaoTests : AbstractTest() {
     @Test
     fun testSetCredentials() {
         val creds = credentialsService.create(
-            CredentialsSpec("test",
-                CredentialsType.AWS, TEST_AWS_CREDS)
+            CredentialsSpec(
+                "test",
+                CredentialsType.AWS, TEST_AWS_CREDS
+            )
         )
         val ds = dataSourceService.create(DataSourceSpec("test", "gs://foo/bar"))
         dataSourceJdbcDao.setCredentials(ds.id, listOf(creds))
 
-        assertEquals(1, jdbc.queryForObject(
-            "SELECT COUNT(1) FROM x_credentials_datasource WHERE pk_datasource=?",
-            Int::class.java, ds.id))
+        assertEquals(
+            1,
+            jdbc.queryForObject(
+                "SELECT COUNT(1) FROM x_credentials_datasource WHERE pk_datasource=?",
+                Int::class.java, ds.id
+            )
+        )
     }
 
     @Test
