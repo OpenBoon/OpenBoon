@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.InvalidRequestException
 import com.zorroa.archivist.security.getZmlpActorOrNull
 import io.micrometer.core.annotation.Timed
 import org.elasticsearch.ElasticsearchException
+import org.elasticsearch.ElasticsearchStatusException
 import org.elasticsearch.client.ResponseException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -66,6 +67,13 @@ class RestApiExceptionHandler {
 
         val status = if (annotation != null) {
             annotation.value
+        } else if (e is ElasticsearchStatusException) {
+            val msg = e.message ?: ""
+            if (msg.contains("circuit_breaking_exception")) {
+                HttpStatus.TOO_MANY_REQUESTS
+            } else {
+                HttpStatus.INTERNAL_SERVER_ERROR
+            }
         } else if (e is DataRetrievalFailureException || e is EntityNotFoundException) {
             HttpStatus.NOT_FOUND
         } else if (e is ResponseException) {
