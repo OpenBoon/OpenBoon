@@ -24,8 +24,8 @@ const STEPS = [
     ),
     content:
       'Data Sources define the source location of files and the types of ' +
-      'Machine Learning analysis to be performed on them. Source files can located in any ' +
-      'of the major cloud provider object stores (GCS, S3, Azure Blob).',
+      'Machine Learning analysis to be performed on them. Source files can be' +
+      'located in any of the major cloud provider object stores (GCS, S3, Azure Blob).',
     cta: '+ Create Data Source',
     link: '/[projectId]/data-sources/add',
   },
