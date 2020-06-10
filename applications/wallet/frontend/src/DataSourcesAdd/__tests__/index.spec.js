@@ -126,7 +126,7 @@ describe('<DataSourcesAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Create Data Source' })
+        .findByProps({ type: 'submit', children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -139,7 +139,7 @@ describe('<DataSourcesAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Create Data Source' })
+        .findByProps({ type: 'submit', children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -149,7 +149,7 @@ describe('<DataSourcesAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Create Data Source' })
+        .findByProps({ type: 'submit', children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -238,7 +238,7 @@ describe('<DataSourcesAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Create Data Source' })
+        .findByProps({ type: 'submit', children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -338,7 +338,7 @@ describe('<DataSourcesAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Create Data Source' })
+        .findByProps({ type: 'submit', children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
