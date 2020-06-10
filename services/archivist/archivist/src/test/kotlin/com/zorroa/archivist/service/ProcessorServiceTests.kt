@@ -18,7 +18,8 @@ class ProcessorServiceTests : AbstractTest() {
     @Test
     fun testReplaceAll() {
         val specs = Json.Mapper.readValue<List<ProcessorSpec>>(
-                ClassPathResource("processors.json").inputStream)
+            ClassPathResource("processors.json").inputStream
+        )
         processorService.replaceAll(specs)
         // 2nd time should fail unless replacement is happening
         processorService.replaceAll(specs)

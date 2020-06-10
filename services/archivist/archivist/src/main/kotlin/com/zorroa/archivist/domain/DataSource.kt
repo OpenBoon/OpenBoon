@@ -114,7 +114,8 @@ class DataSource(
 ) {
 
     fun getUpdated(update: DataSourceUpdate): DataSource {
-        return DataSource(id,
+        return DataSource(
+            id,
             projectId,
             update.name,
             update.uri,
@@ -124,7 +125,8 @@ class DataSource(
             timeCreated,
             System.currentTimeMillis(),
             actorCreated,
-            getZmlpActor().toString())
+            getZmlpActor().toString()
+        )
     }
 
     override fun equals(other: Any?): Boolean {
@@ -162,7 +164,8 @@ class DataSourceFilter(
         "name" to "datasource.str_name",
         "timeCreated" to "datasource.time_created",
         "timeModified" to "datasource.time_modified",
-        "id" to "pk_datasource")
+        "id" to "pk_datasource"
+    )
 
     @JsonIgnore
     override fun build() {

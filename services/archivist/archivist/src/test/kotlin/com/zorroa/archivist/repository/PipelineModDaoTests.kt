@@ -29,11 +29,13 @@ class PipelineModDaoTests : AbstractTest() {
 
     @Before
     fun init() {
-        val spec = PipelineModSpec("foo", "test",
+        val spec = PipelineModSpec(
+            "foo", "test",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(), listOf(), true)
+            listOf(), listOf(), true
+        )
         module = pipelineModService.create(spec)
     }
 
@@ -50,11 +52,13 @@ class PipelineModDaoTests : AbstractTest() {
 
     @Test
     fun testGetProjectBased() {
-        val spec = PipelineModSpec("foo2", "test",
+        val spec = PipelineModSpec(
+            "foo2", "test",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(), listOf(), false)
+            listOf(), listOf(), false
+        )
 
         val mod1 = pipelineModService.create(spec)
         val mod2 = pipelineModDao.get(mod1.id)

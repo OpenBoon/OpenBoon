@@ -146,9 +146,12 @@ class DispatchQueueManager @Autowired constructor(
      * Caches a task priority list which is currently just a list of projects
      * sorted by the least number of tasks running first.
      */
-    val cachedDispatchPriority: Supplier<List<DispatchPriority>> = Suppliers.memoizeWithExpiration({
-        dispatcherService.getDispatchPriority()
-    }, cachedDispatchPriorityTimeoutSeconds, TimeUnit.SECONDS)
+    val cachedDispatchPriority: Supplier<List<DispatchPriority>> = Suppliers.memoizeWithExpiration(
+        {
+            dispatcherService.getDispatchPriority()
+        },
+        cachedDispatchPriorityTimeoutSeconds, TimeUnit.SECONDS
+    )
 
     /**
      * Return the next available dispatchable [DispatchTask] or null if there are not any.
@@ -396,6 +399,7 @@ class DispatcherServiceImpl @Autowired constructor(
             if (!event.manualKill && event.exitStatus == EXIT_STATUS_HARD_FAIL &&
                 newState == TaskState.Failure
             ) {
+
                 taskErrorDao.create(task, TaskErrorEvent(
                         null,
                         null,
@@ -418,16 +422,19 @@ class DispatcherServiceImpl @Autowired constructor(
             BatchCreateAssetsRequest(event.assets, analyze = false, task = parentTask)
         )
 
-        taskErrorDao.batchCreate(parentTask, result.failed.map {
-            TaskErrorEvent(
-                it["assetId"],
-                it["path"],
-                "${it["failureMessage"] ?: "Unknown ES failure"}",
-                "unknown",
-                true,
-                "index"
-            )
-        })
+        taskErrorDao.batchCreate(
+            parentTask,
+            result.failed.map {
+                TaskErrorEvent(
+                    it["assetId"],
+                    it["path"],
+                    "${it["failureMessage"] ?: "Unknown ES failure"}",
+                    "unknown",
+                    true,
+                    "index"
+                )
+            }
+        )
 
         return assetService.createAnalysisTask(parentTask, result.created, result.exists)
     }

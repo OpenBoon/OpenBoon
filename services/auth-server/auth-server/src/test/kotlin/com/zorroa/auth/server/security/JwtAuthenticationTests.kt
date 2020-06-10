@@ -42,8 +42,10 @@ class JwtAuthenticationTests : AbstractTest() {
 
         val auth = jwtAuthenticationFilter.validateToken(token)
         assertEquals("admin-key", auth.user.name)
-        assertEquals(UUID.fromString("50550AAC-6C5A-41CD-B779-2821BB5B535F"),
-            auth.user.projectId)
+        assertEquals(
+            UUID.fromString("50550AAC-6C5A-41CD-B779-2821BB5B535F"),
+            auth.user.projectId
+        )
     }
 
     @Test

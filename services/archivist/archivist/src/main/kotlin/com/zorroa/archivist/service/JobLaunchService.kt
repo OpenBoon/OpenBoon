@@ -149,8 +149,12 @@ class JobLaunchServiceImpl(
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
 
-        val script = ZpsScript(name, null, null,
-            listOf(processor), settings = mergedSettings, assetIds = listOf("single-iteration"))
+        val script = ZpsScript(
+            name, null, null,
+            listOf(processor), settings = mergedSettings,
+            assetIds = listOf("single-iteration")
+        )
+
         val spec = JobSpec(name, script, replace = true, priority = JobPriority.Interactive)
         return launchJob(spec, JobType.Batch)
     }
