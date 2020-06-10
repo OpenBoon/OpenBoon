@@ -1,4 +1,4 @@
-import { useRef, forwardRef, useEffect } from 'react'
+import { useRef, forwardRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR, { useSWRPages } from 'swr'
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -28,7 +28,7 @@ const Assets = () => {
   } = useRouter()
 
   const innerRef = useRef()
-  const virtualLoaderRef = useRef()
+  const [virtualLoaderRef, setVirtualLoaderRef] = useState()
 
   const [state, dispatch] = useLocalStorageReducer({
     key: 'Assets',
@@ -112,17 +112,17 @@ const Assets = () => {
   useEffect(() => {
     if (
       selectedRow &&
-      virtualLoaderRef.current &&
+      virtualLoaderRef &&
       // eslint-disable-next-line no-underscore-dangle
-      virtualLoaderRef.current._listRef
+      virtualLoaderRef._listRef
     ) {
       // eslint-disable-next-line no-underscore-dangle
-      virtualLoaderRef.current._listRef.scrollToItem({
+      virtualLoaderRef._listRef.scrollToItem({
         align: 'smart',
         rowIndex: selectedRow,
       })
     }
-  }, [selectedRow])
+  })
 
   return (
     <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -166,7 +166,7 @@ const Assets = () => {
             <AutoSizer>
               {({ height, width }) => (
                 <InfiniteLoader
-                  ref={virtualLoaderRef}
+                  ref={(ref) => setVirtualLoaderRef(ref)}
                   isItemLoaded={(index) => !!items[index]}
                   itemCount={itemCount}
                   loadMoreItems={loadMore}

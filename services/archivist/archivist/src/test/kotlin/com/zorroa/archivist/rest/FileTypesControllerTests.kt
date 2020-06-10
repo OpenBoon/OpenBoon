@@ -13,10 +13,10 @@ class FileTypesControllerTests : MockMvcTest() {
     @Test
     fun testGetImageTypes() {
         mvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/file-types/images")
-                    .headers(admin())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-            )
+            MockMvcRequestBuilders.get("/api/v1/file-types/images")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(jsonPath("$[0]", CoreMatchers.equalTo("bmp")))
             .andReturn()
@@ -25,10 +25,10 @@ class FileTypesControllerTests : MockMvcTest() {
     @Test
     fun testGetVideoTypes() {
         mvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/file-types/videos")
-                    .headers(admin())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-            )
+            MockMvcRequestBuilders.get("/api/v1/file-types/videos")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(jsonPath("$[0]", CoreMatchers.equalTo("m4v")))
             .andReturn()
@@ -37,10 +37,10 @@ class FileTypesControllerTests : MockMvcTest() {
     @Test
     fun testGetDocumentTypes() {
         mvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/file-types/documents")
-                    .headers(admin())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-            )
+            MockMvcRequestBuilders.get("/api/v1/file-types/documents")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(jsonPath("$[0]", CoreMatchers.equalTo("doc")))
             .andReturn()
@@ -49,10 +49,10 @@ class FileTypesControllerTests : MockMvcTest() {
     @Test
     fun testGetMediaType() {
         mvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/media-type/jpg")
-                    .headers(admin())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-            )
+            MockMvcRequestBuilders.get("/api/v1/media-type/jpg")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(jsonPath("$.media-type", CoreMatchers.equalTo("image/jpeg")))
             .andReturn()

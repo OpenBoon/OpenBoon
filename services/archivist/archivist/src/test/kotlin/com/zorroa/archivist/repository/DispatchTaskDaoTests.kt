@@ -94,10 +94,12 @@ class DispatchTaskDaoTests : AbstractTest() {
 
     @Test
     fun testGetNextByOrg() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
 
         jobService.create(spec)
         val tasks = dispatchTaskDao.getNextByProject(getProjectId(), 5)
@@ -108,10 +110,12 @@ class DispatchTaskDaoTests : AbstractTest() {
 
     @Test
     fun testGetTaskPriority() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
 
         assertTrue(dispatchTaskDao.getDispatchPriority().isEmpty())
 
@@ -123,10 +127,12 @@ class DispatchTaskDaoTests : AbstractTest() {
     }
 
     fun launchJob(priority: Int): Job {
-        val spec1 = JobSpec("test_job_p$priority",
+        val spec1 = JobSpec(
+            "test_job_p$priority",
             emptyZpsScript("priority_$priority"),
             args = mutableMapOf("captain" to "kirk"),
-            priority = priority)
+            priority = priority
+        )
         return jobService.create(spec1)
     }
 }

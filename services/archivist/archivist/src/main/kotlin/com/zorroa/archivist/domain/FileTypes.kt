@@ -31,7 +31,8 @@ object FileTypes {
         "psd",
         "rla",
         "tif",
-        "tiff")
+        "tiff"
+    )
 
     val video = setOf(
         "mov",
@@ -42,7 +43,8 @@ object FileTypes {
         "webm",
         "ogv",
         "ogg",
-        "mxf")
+        "mxf"
+    )
 
     val doc = setOf(
         "pdf",
@@ -55,7 +57,8 @@ object FileTypes {
         "vdw",
         "vsd",
         "vss",
-        "vst")
+        "vst"
+    )
 
     val all = doc.plus(video).plus(image).toList()
 

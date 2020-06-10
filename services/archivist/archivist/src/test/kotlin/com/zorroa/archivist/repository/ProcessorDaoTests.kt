@@ -20,14 +20,16 @@ class ProcessorDaoTests : AbstractTest() {
     @Test
     fun testBatchCreate() {
         val specs = Json.Mapper.readValue<List<ProcessorSpec>>(
-                ClassPathResource("processors.json").inputStream)
+            ClassPathResource("processors.json").inputStream
+        )
         assertTrue(processorDao.batchCreate(specs) > 0)
     }
 
     @Test
     fun testDeleteAll() {
         val specs = Json.Mapper.readValue<List<ProcessorSpec>>(
-                ClassPathResource("processors.json").inputStream)
+            ClassPathResource("processors.json").inputStream
+        )
         assertTrue(processorDao.batchCreate(specs) > 0)
         processorDao.deleteAll()
         assertEquals(processorDao.getAll(ProcessorFilter()).size(), 0)
@@ -36,7 +38,8 @@ class ProcessorDaoTests : AbstractTest() {
     @Test
     fun testGetAll() {
         val specs = Json.Mapper.readValue<List<ProcessorSpec>>(
-                ClassPathResource("processors.json").inputStream)
+            ClassPathResource("processors.json").inputStream
+        )
         processorDao.batchCreate(specs)
 
         val procs = processorDao.getAll(ProcessorFilter())
@@ -48,7 +51,8 @@ class ProcessorDaoTests : AbstractTest() {
     @Test
     fun testGetAllWithFilter() {
         val specs = Json.Mapper.readValue<List<ProcessorSpec>>(
-                ClassPathResource("processors.json").inputStream)
+            ClassPathResource("processors.json").inputStream
+        )
         processorDao.batchCreate(specs)
 
         // Class names
@@ -76,9 +80,12 @@ class ProcessorDaoTests : AbstractTest() {
         assertEquals(procs.size(), 7)
 
         // ids
-        filter = ProcessorFilter(ids = listOf(
+        filter = ProcessorFilter(
+            ids = listOf(
                 UUID.fromString("eebf2132-4b50-5eb0-a240-debfeaea2c6f"),
-                UUID.fromString("8bd78f42-ef43-506e-99c0-d65db28e92f7")))
+                UUID.fromString("8bd78f42-ef43-506e-99c0-d65db28e92f7")
+            )
+        )
         procs = processorDao.getAll(filter)
         assertEquals(procs.size(), 2)
     }

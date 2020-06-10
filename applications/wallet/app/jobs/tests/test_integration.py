@@ -429,9 +429,14 @@ class TestTaskViewSet:
         task_id = '5cd3eedf-ab69-1a12-8017-3e6d2d97ef02'
         url = reverse('task-assets', kwargs={'project_pk': project.id, 'pk': task_id})
         response = api_client.get(url)
+        _json = response.json()
         assert response.status_code == 200
-        assert response.json()['count'] == 357
-        assert response.json()['next'] == 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/tasks/5cd3eedf-ab69-1a12-8017-3e6d2d97ef02/assets/?from=50&size=50'  # noqa
+        assert _json['count'] == 357
+        assert _json['next'] == 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/tasks/5cd3eedf-ab69-1a12-8017-3e6d2d97ef02/assets/?from=50&size=50'  # noqa
+        assert 'thumbnailUrl' in _json['results'][0]
+        assert 'assetStyle' in _json['results'][0]
+        assert 'videoLength' in _json['results'][0]
+        assert 'videoProxyUrl' in _json['results'][0]
 
 
 class TestTaskErrorViewSet:

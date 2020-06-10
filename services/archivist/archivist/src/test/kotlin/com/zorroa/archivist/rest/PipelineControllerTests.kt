@@ -76,8 +76,12 @@ class PipelineControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name",
-                CoreMatchers.equalTo(spec.name)))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.name",
+                    CoreMatchers.equalTo(spec.name)
+                )
+            )
             .andReturn()
     }
 
@@ -90,8 +94,12 @@ class PipelineControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.success",
-                CoreMatchers.equalTo(true)))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.success",
+                    CoreMatchers.equalTo(true)
+                )
+            )
             .andReturn()
     }
 
@@ -110,8 +118,12 @@ class PipelineControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.success",
-                CoreMatchers.equalTo(true)))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.success",
+                    CoreMatchers.equalTo(true)
+                )
+            )
             .andReturn()
     }
 
@@ -124,16 +136,21 @@ class PipelineControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.id",
-                CoreMatchers.equalTo(pl.id.toString())))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.id",
+                    CoreMatchers.equalTo(pl.id.toString())
+                )
+            )
             .andReturn()
     }
 
     @Test
     fun testOneFindByName() {
-        val find = """
+        val find =
+            """
             {"names": ["Zorroa Test"]}
-        """.trimIndent()
+            """.trimIndent()
         mvc.perform(
             get("/api/v1/pipelines/_findOne")
                 .headers(admin())
@@ -183,8 +200,12 @@ class PipelineControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name",
-                CoreMatchers.equalTo("default")))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.list[0].name",
+                    CoreMatchers.equalTo("default")
+                )
+            )
             .andReturn()
     }
 
@@ -199,8 +220,12 @@ class PipelineControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name",
-                CoreMatchers.equalTo("Zorroa Test")))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.list[0].name",
+                    CoreMatchers.equalTo("Zorroa Test")
+                )
+            )
             .andReturn()
     }
 
@@ -213,10 +238,18 @@ class PipelineControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].className",
-                CoreMatchers.equalTo("zmlp_core.core.PreCacheSourceFileProcessor")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[1].args.extract_doc_pages",
-                CoreMatchers.equalTo(true)))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$[0].className",
+                    CoreMatchers.equalTo("zmlp_core.core.PreCacheSourceFileProcessor")
+                )
+            )
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$[1].args.extract_doc_pages",
+                    CoreMatchers.equalTo(true)
+                )
+            )
             .andReturn()
     }
 }

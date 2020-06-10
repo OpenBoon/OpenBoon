@@ -137,9 +137,9 @@ exports[`<TaskAssets /> should render properly 1`] = `
 }
 
 .emotion-12 {
-  width: 80px;
-  min-width: 80px;
-  height: 80px;
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
 }
 
 .emotion-11 {
@@ -159,10 +159,6 @@ exports[`<TaskAssets /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-11:hover .videoLength {
-  display: none;
 }
 
 .emotion-8 {
@@ -898,10 +894,6 @@ exports[`<TaskAssets /> should render properly 1`] = `
                 controlsList="nodownload nofullscreen noremoteplayback"
                 disablePictureInPicture={true}
                 muted={true}
-                onBlur={[Function]}
-                onFocus={[Function]}
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
                 playsInline={true}
                 poster="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
                 preload="none"
@@ -937,7 +929,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               />
             </a>
             <div
-              className="videoLength emotion-63"
+              className="emotion-63"
             >
               2:24
             </div>

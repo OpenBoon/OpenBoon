@@ -57,7 +57,8 @@ class PipelineStorageImpl(
         val logger: Logger = LoggerFactory.getLogger(PipelineStorageImpl::class.java)
 
         // Setup the tmp-files lifecycle
-        const val LIFECYCLE = """<LifecycleConfiguration><Rule>
+        const val LIFECYCLE =
+            """<LifecycleConfiguration><Rule>
                     <ID>temp-file-lifecycle</ID>
                     <Filter><Prefix>tmp-files/</Prefix></Filter>
                     <Status>Enabled</Status>

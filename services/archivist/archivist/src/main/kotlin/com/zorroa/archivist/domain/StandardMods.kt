@@ -89,8 +89,10 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.zvi.ZviObjectDetectionProcessor",
-                            StandardContainers.ANALYSIS)
+                        ProcessorRef(
+                            "zmlp_analysis.zvi.ZviObjectDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
                     )
                 )
             ),
@@ -107,8 +109,10 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.zvi.ZviFaceDetectionProcessor",
-                            StandardContainers.ANALYSIS)
+                        ProcessorRef(
+                            "zmlp_analysis.zvi.ZviFaceDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
                     )
                 )
             ),
@@ -125,8 +129,10 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.zvi.ZviLabelDetectionProcessor",
-                            StandardContainers.ANALYSIS)
+                        ProcessorRef(
+                            "zmlp_analysis.zvi.ZviLabelDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
                     )
                 )
             ),
@@ -143,8 +149,10 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.zvi.ZviOcrProcessor",
-                            StandardContainers.ANALYSIS)
+                        ProcessorRef(
+                            "zmlp_analysis.zvi.ZviOcrProcessor",
+                            StandardContainers.ANALYSIS
+                        )
                     )
                 )
             ),
@@ -161,9 +169,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND_MERGE,
                     listOf(
-                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
                             StandardContainers.ANALYSIS,
-                            mapOf("general-model" to true))
+                            mapOf("general-model" to true)
+                        )
                     )
                 )
             ),
@@ -180,9 +190,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND_MERGE,
                     listOf(
-                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
                             StandardContainers.ANALYSIS,
-                            mapOf("food-model" to true))
+                            mapOf("food-model" to true)
+                        )
                     )
                 )
             ),
@@ -199,9 +211,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND_MERGE,
                     listOf(
-                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
+                        ProcessorRef(
+                            "zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
                             StandardContainers.ANALYSIS,
-                            mapOf("apparel-model" to true))
+                            mapOf("apparel-model" to true)
+                        )
                     )
                 )
             ),
@@ -219,8 +233,10 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.google.CloudVisionDetectLabels",
-                            StandardContainers.ANALYSIS)
+                        ProcessorRef(
+                            "zmlp_analysis.google.CloudVisionDetectLabels",
+                            StandardContainers.ANALYSIS
+                        )
                     )
                 )
             ),
@@ -237,8 +253,10 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.google.CloudVisionDetectObjects",
-                            StandardContainers.ANALYSIS)
+                        ProcessorRef(
+                            "zmlp_analysis.google.CloudVisionDetectObjects",
+                            StandardContainers.ANALYSIS
+                        )
                     )
                 )
             ),
@@ -255,8 +273,10 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.google.CloudVisionDetectLogos",
-                            StandardContainers.ANALYSIS)
+                        ProcessorRef(
+                            "zmlp_analysis.google.CloudVisionDetectLogos",
+                            StandardContainers.ANALYSIS
+                        )
                     )
                 )
             ),

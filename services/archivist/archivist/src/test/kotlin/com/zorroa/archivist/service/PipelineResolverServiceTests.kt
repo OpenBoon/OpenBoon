@@ -127,9 +127,11 @@ class PipelineResolverServiceTests : AbstractTest() {
         val mod1 = pipelineModService.create(spec1)
         val mod2 = pipelineModService.create(spec2)
 
-        val pipeline = pipelineService.create(PipelineSpec(
-            "test",
-            modules = listOf(mod1.name, mod2.name))
+        val pipeline = pipelineService.create(
+            PipelineSpec(
+                "test",
+                modules = listOf(mod1.name, mod2.name)
+            )
         )
         val resolved = pipelineResolverService.resolve(pipeline.id)
         assertEquals("last_processor", resolved.last().className)
@@ -388,7 +390,8 @@ class PipelineResolverServiceTests : AbstractTest() {
         entityManager.flush()
         val pipeline = pipelineService.create(PipelineSpec("test"))
         pipelineService.update(
-            pipeline.id, PipelineUpdate(
+            pipeline.id,
+            PipelineUpdate(
                 pipeline.name, pipeline.processors, mods
             )
         )

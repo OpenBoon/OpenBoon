@@ -67,8 +67,10 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
     override fun setPipelineMods(id: UUID, mods: List<PipelineMod>) {
         jdbc.update("DELETE FROM x_module_pipeline WHERE pk_pipeline=?", id)
         mods?.forEach {
-            jdbc.update("INSERT INTO x_module_pipeline (pk_module, pk_pipeline) VALUES (?, ?)",
-                it.id, id)
+            jdbc.update(
+                "INSERT INTO x_module_pipeline (pk_module, pk_pipeline) VALUES (?, ?)",
+                it.id, id
+            )
         }
     }
 
@@ -103,7 +105,8 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
     override fun update(id: UUID, update: PipelineUpdate): Boolean {
         var updates = jdbc.update(
-            UPDATE, update.name, Json.serializeToString(update.processors), id, getProjectId())
+            UPDATE, update.name, Json.serializeToString(update.processors), id, getProjectId()
+        )
 
         update.modules?.let {
             jdbc.update("DELETE FROM x_module_pipeline WHERE pk_pipeline=?", id)
@@ -170,10 +173,10 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
         private const val UPDATE = "UPDATE " +
             "pipeline " +
             "SET " +
-                "str_name=?, " +
-                "json_processors=?::jsonb " +
+            "str_name=?, " +
+            "json_processors=?::jsonb " +
             "WHERE " +
-                "pk_pipeline=? AND pk_project=?"
+            "pk_pipeline=? AND pk_project=?"
 
         private val INSERT = insert(
             "pipeline",
