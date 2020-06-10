@@ -82,7 +82,8 @@ class ModelServiceTests : AbstractTest() {
             names = listOf(model1.name),
             dataSetIds = listOf(model1.dataSetId),
             ids = listOf(model1.id),
-            types = listOf(model1.type))
+            types = listOf(model1.type)
+        )
         val model2 = modelService.findOne(filter)
         assertEquals(model1, model2)
         assertModel(model2)
@@ -95,7 +96,8 @@ class ModelServiceTests : AbstractTest() {
             names = listOf(model1.name),
             dataSetIds = listOf(model1.dataSetId),
             ids = listOf(model1.id),
-            types = listOf(model1.type))
+            types = listOf(model1.type)
+        )
         filter.sort = filter.sortMap.keys.map { "$it:a" }
         val all = modelService.find(filter)
         assertEquals(1, all.size())

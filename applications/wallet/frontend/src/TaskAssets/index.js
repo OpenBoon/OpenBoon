@@ -59,7 +59,7 @@ const TaskAssets = () => {
           <TaskAssetsRow
             key={asset.id}
             projectId={projectId}
-            index={index + from}
+            index={index + 1 + from}
             asset={asset}
           />
         ))}

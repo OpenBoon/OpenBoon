@@ -8,7 +8,8 @@ class ClipTests() {
 
     @Test
     fun testGeneratePileIdWithNoTimeline() {
-        val doc = """
+        val doc =
+            """
             {
                 "source" : {
                   "path" : "/foo/bar.jpg",
@@ -18,7 +19,7 @@ class ClipTests() {
                   "timeCreated" : "2019-12-14T22:24:05.837301Z"
                 }
               }
-        """.trimIndent()
+            """.trimIndent()
         val clip = Clip("page", 1.0, 1.0)
         val asset = Asset("abc123", Json.Mapper.readValue(doc, Json.GENERIC_MAP).toMutableMap())
         val pileId = clip.putInPile(asset.id)
@@ -27,7 +28,8 @@ class ClipTests() {
 
     @Test
     fun testGeneratePileIdWithTimeline() {
-        val doc = """
+        val doc =
+            """
             {
                 "source" : {
                   "path" : "/foo/bar.jpg",
@@ -37,7 +39,7 @@ class ClipTests() {
                   "timeCreated" : "2019-12-14T22:24:05.837301Z"
                 }
               }
-        """.trimIndent()
+            """.trimIndent()
         val clip = Clip("page", 1.0, 1.0, "pages")
         val asset = Asset("abc123", Json.Mapper.readValue(doc, Json.GENERIC_MAP).toMutableMap())
         val pileId = clip.putInPile(asset.id)

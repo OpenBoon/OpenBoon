@@ -258,8 +258,10 @@ class AssetServiceTests : AbstractTest() {
 
     @Test(expected = ResponseException::class)
     fun testUpdateAssets_failOnDoesNotExist() {
-        assetService.update("abc",
-            UpdateAssetRequest(mapOf("source" to mapOf("mimetype" to "cat"))))
+        assetService.update(
+            "abc",
+            UpdateAssetRequest(mapOf("source" to mapOf("mimetype" to "cat")))
+        )
     }
 
     @Test(expected = ResponseException::class)
@@ -268,8 +270,10 @@ class AssetServiceTests : AbstractTest() {
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
         val assetId = assetService.batchCreate(batchCreate).created[0]
-        assetService.update(assetId,
-            UpdateAssetRequest(mapOf("source" to mapOf("filename" to mapOf("cat" to "dog")))))
+        assetService.update(
+            assetId,
+            UpdateAssetRequest(mapOf("source" to mapOf("filename" to mapOf("cat" to "dog"))))
+        )
     }
 
     @Test
@@ -277,7 +281,8 @@ class AssetServiceTests : AbstractTest() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec("gs://cats/large-brown-cat.jpg"),
-                AssetSpec("gs://cats/cat-movie.m4v"))
+                AssetSpec("gs://cats/cat-movie.m4v")
+            )
         )
         val createRsp = assetService.batchCreate(batchCreate)
         val asset1 = assetService.getAsset(createRsp.created[0])
@@ -285,9 +290,11 @@ class AssetServiceTests : AbstractTest() {
 
         val update = mapOf(
             asset1.id to UpdateAssetRequest(
-                mapOf("aux" to mapOf("foo" to "bar"))),
+                mapOf("aux" to mapOf("foo" to "bar"))
+            ),
             asset2.id to UpdateAssetRequest(
-                mapOf("source" to mapOf("mimetype" to "cat")))
+                mapOf("source" to mapOf("mimetype" to "cat"))
+            )
         )
         val rsp = assetService.batchUpdate(update)
         assertFalse(rsp.hasFailures())
@@ -297,9 +304,11 @@ class AssetServiceTests : AbstractTest() {
     fun testBatchUpdateAssets_failOnDoesNotExist() {
         val update = mapOf(
             "abc" to UpdateAssetRequest(
-                mapOf("aux" to mapOf("foo" to "bar"))),
+                mapOf("aux" to mapOf("foo" to "bar"))
+            ),
             "123" to UpdateAssetRequest(
-                mapOf("source" to mapOf("mimetype" to "cat")))
+                mapOf("source" to mapOf("mimetype" to "cat"))
+            )
         )
         val rsp = assetService.batchUpdate(update)
         assertTrue("document missing" in rsp.items[0].failureMessage)
@@ -343,7 +352,8 @@ class AssetServiceTests : AbstractTest() {
                 AssetSpec("gs://cats/large-brown-cat.jpg"),
                 AssetSpec("gs://cats/large-brown-cat.mov"),
                 AssetSpec("gs://cats/large-brown-cat.pdf")
-        ))
+            )
+        )
 
         val createRsp = assetService.batchCreate(batchCreate)
         val assets = assetService.getAll(createRsp.created)
@@ -462,7 +472,8 @@ class AssetServiceTests : AbstractTest() {
 
         val spec = AssetSpec(
             "asset:${sourceAsset.id}",
-            clip = Clip("scene", 10.24, 12.48))
+            clip = Clip("scene", 10.24, 12.48)
+        )
 
         val newAsset = Asset()
         val clip = assetService.deriveClip(newAsset, spec)
@@ -558,12 +569,17 @@ class AssetServiceTests : AbstractTest() {
         )
         // Add a label.
         var asset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
-        assetService.updateLabels(UpdateAssetLabelsRequest(
-            // Validate adding 2 identical labels only adds 1
-            mapOf(asset.id to listOf(
-                DataSetLabel(ds.id, "cat", simhash = "12345"),
-                DataSetLabel(ds.id, "cat", simhash = "12345")))
-        ))
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                // Validate adding 2 identical labels only adds 1
+                mapOf(
+                    asset.id to listOf(
+                        DataSetLabel(ds.id, "cat", simhash = "12345"),
+                        DataSetLabel(ds.id, "cat", simhash = "12345")
+                    )
+                )
+            )
+        )
 
         asset = assetService.getAsset(asset.id)
         var labels = asset.getAttr("labels", DataSetLabel.LIST_OF)
@@ -572,10 +588,12 @@ class AssetServiceTests : AbstractTest() {
         assertEquals("12345", labels?.get(0)?.simhash)
 
         // Remove a label
-        assetService.updateLabels(UpdateAssetLabelsRequest(
-            null,
-            mapOf(asset.id to listOf(DataSetLabel(ds.id, "cat")))
-        ))
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                null,
+                mapOf(asset.id to listOf(DataSetLabel(ds.id, "cat")))
+            )
+        )
 
         asset = assetService.getAsset(asset.id)
         labels = asset.getAttr("labels", DataSetLabel.LIST_OF) ?: listOf()

@@ -95,7 +95,8 @@ class IndexRoutingServiceTests : AbstractTest() {
         val index = "test123"
         jdbc.update(
             "UPDATE index_route SET str_mapping_type='test', int_mapping_major_ver=1, " +
-                "int_mapping_minor_ver=0, str_index=?, int_shards=1, int_replicas=0", index
+                "int_mapping_minor_ver=0, str_index=?, int_shards=1, int_replicas=0",
+            index
         )
 
         val rest = indexRoutingService.getProjectRestClient()

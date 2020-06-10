@@ -299,9 +299,11 @@ class TaskStateCounts(
     val total: Int
 ) {
     fun hasPendingTasks(): Boolean {
-        return (counts.getValue(TaskState.Waiting) > 0 ||
-            counts.getValue(TaskState.Running) > 0 ||
-            counts.getValue(TaskState.Queued) > 0)
+        return (
+            counts.getValue(TaskState.Waiting) > 0 ||
+                counts.getValue(TaskState.Running) > 0 ||
+                counts.getValue(TaskState.Queued) > 0
+            )
     }
 
     fun hasFailures(): Boolean {

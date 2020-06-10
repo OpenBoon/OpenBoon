@@ -65,14 +65,18 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
     }
 
     override fun getQuotas(projectId: UUID): ProjectQuotas {
-        return jdbc.queryForObject("SELECT * FROM project_quota WHERE pk_project=?",
-            MAPPER_QUOTA, projectId)
+        return jdbc.queryForObject(
+            "SELECT * FROM project_quota WHERE pk_project=?",
+            MAPPER_QUOTA, projectId
+        )
     }
 
     override fun getTimeSeriesCounters(projectId: UUID, start: Date, end: Date?): List<ProjectQuotasTimeSeriesEntry> {
-        return jdbc.query("SELECT * FROM project_quota_time_series WHERE " +
-            "time >=? AND time <=? AND pk_project=? ORDER BY time ASC",
-            MAPPER_TIME_SERIES, toHourlyDate(start), toHourlyDate(end), projectId)
+        return jdbc.query(
+            "SELECT * FROM project_quota_time_series WHERE " +
+                "time >=? AND time <=? AND pk_project=? ORDER BY time ASC",
+            MAPPER_TIME_SERIES, toHourlyDate(start), toHourlyDate(end), projectId
+        )
     }
 
     override fun incrementTimeSeriesCounters(date: Date, counts: ProjectQuotaCounters) {
@@ -102,7 +106,8 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
                 rs.getLong("int_max_video_seconds"),
                 rs.getBigDecimal("float_video_seconds"),
                 rs.getLong("int_max_page_count"),
-                rs.getLong("int_page_count"))
+                rs.getLong("int_page_count")
+            )
         }
 
         private val MAPPER_TIME_SERIES = RowMapper { rs, _ ->

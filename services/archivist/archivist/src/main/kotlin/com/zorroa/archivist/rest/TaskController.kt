@@ -50,8 +50,10 @@ class TaskController @Autowired constructor(
         return taskDao.getAll(filter)
     }
 
-    @ApiOperation("Searches for a single Task.",
-        notes = "Throws an error if more than 1 result is returned based on the given filter.")
+    @ApiOperation(
+        "Searches for a single Task.",
+        notes = "Throws an error if more than 1 result is returned based on the given filter."
+    )
     @PostMapping(value = ["/api/v1/tasks/_findOne"])
     fun findOne(@ApiParam("Search filter.") @RequestBody filter: TaskFilter): Task {
         return taskDao.findOne(filter)
@@ -70,8 +72,10 @@ class TaskController @Autowired constructor(
     @Throws(ExecutionException::class, IOException::class)
     fun retry(@ApiParam("UUID of the Task.") @PathVariable id: UUID): Any {
         val task = jobService.getInternalTask(id)
-        val result = dispatcherService.retryTask(task,
-            "Retried by ${getZmlpActor()}")
+        val result = dispatcherService.retryTask(
+            task,
+            "Retried by ${getZmlpActor()}"
+        )
         if (result) {
             jobService.restartJob(task)
         }
@@ -84,8 +88,10 @@ class TaskController @Autowired constructor(
     @Throws(ExecutionException::class, IOException::class)
     fun skip(@ApiParam("UUID of the Task.") @PathVariable id: UUID): Any {
 
-        return HttpUtils.status("Task", id, "skip",
-                dispatcherService.skipTask(jobService.getInternalTask(id)))
+        return HttpUtils.status(
+            "Task", id, "skip",
+            dispatcherService.skipTask(jobService.getInternalTask(id))
+        )
     }
 
     @ApiOperation("Get the pipeline script the Task will run.")

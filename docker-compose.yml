@@ -200,6 +200,14 @@ services:
       context: client/python
     command: echo
 
+  zmlp-py3-zvi:
+    image: zmlp/py3-zvi:latest
+    depends_on:
+      - zmlp-py3-client
+    build:
+      context: client/zvi
+    command: echo
+
   zmlp-py3-sdk:
     image: zmlp/py3-sdk:latest
     depends_on:

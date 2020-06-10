@@ -35,10 +35,12 @@ class JobServiceTests : AbstractTest() {
 
     @Before
     fun init() {
-        spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
 
         job = jobService.create(spec)
         task = jobService.createTask(job, TaskSpec("bar", emptyZpsScript("bar")))
@@ -54,10 +56,12 @@ class JobServiceTests : AbstractTest() {
 
     @Test
     fun testCreateImport() {
-        val spec2 = JobSpec(null,
+        val spec2 = JobSpec(
+            null,
             emptyZpsScript("foo"),
             args = mutableMapOf("foo" to 1),
-            env = mutableMapOf("foo" to "bar"))
+            env = mutableMapOf("foo" to "bar")
+        )
         val job2 = jobService.create(spec2, JobType.Import)
         assertEquals(JobPriority.Standard, job2.priority)
         assertEquals(JobType.Import, job2.type)
@@ -67,10 +71,12 @@ class JobServiceTests : AbstractTest() {
 
     @Test
     fun testCreateWithAutoName() {
-        val spec2 = JobSpec(null,
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec2 = JobSpec(
+            null,
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         val job2 = jobService.create(spec2)
         assertTrue("Import" in job2.name)
     }
@@ -78,34 +84,43 @@ class JobServiceTests : AbstractTest() {
     @Test
     fun testReplace() {
         val name = "bilbo_baggins_v1"
-        val spec1 = JobSpec(name,
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec1 = JobSpec(
+            name,
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         val job1 = jobService.create(spec1)
         assertEquals(spec1.name, job1.name)
 
-        val spec2 = JobSpec(name,
-                emptyZpsScript("foo"),
-                replace = true)
+        val spec2 = JobSpec(
+            name,
+            emptyZpsScript("foo"),
+            replace = true
+        )
         val job2 = jobService.create(spec2)
         assertEquals(job1.name, job2.name)
 
         // Should only have 1 job.
-        assertEquals(1, jobService.getAll(
-            JobFilter(
-                states = listOf(JobState.InProgress),
-                names = listOf(job1.name))
-        ).size())
+        assertEquals(
+            1,
+            jobService.getAll(
+                JobFilter(
+                    states = listOf(JobState.InProgress),
+                    names = listOf(job1.name)
+                )
+            ).size()
+        )
     }
 
     @Test
     fun testIncrementAssetCounts() {
 
         val counters = AssetCounters(
-                total = 10,
-                replaced = 4,
-                created = 6)
+            total = 10,
+            replaced = 4,
+            created = 6
+        )
 
         jobService.incrementAssetCounters(task, counters)
 
@@ -148,17 +163,25 @@ class JobServiceTests : AbstractTest() {
     @Test
     fun testSetCredentials() {
         val creds = credentialsService.create(
-            CredentialsSpec("test",
-                CredentialsType.AWS, TEST_AWS_CREDS)
+            CredentialsSpec(
+                "test",
+                CredentialsType.AWS, TEST_AWS_CREDS
+            )
         )
 
-        val spec2 = JobSpec("test_job2",
+        val spec2 = JobSpec(
+            "test_job2",
             emptyZpsScript("foo"),
-            credentials = setOf(creds.id.toString()))
+            credentials = setOf(creds.id.toString())
+        )
         val job2 = jobService.create(spec2)
 
-        assertEquals(1, jdbc.queryForObject(
-            "SELECT COUNT(1) FROM x_credentials_job WHERE pk_job=?",
-            Int::class.java, job2.jobId))
+        assertEquals(
+            1,
+            jdbc.queryForObject(
+                "SELECT COUNT(1) FROM x_credentials_job WHERE pk_job=?",
+                Int::class.java, job2.jobId
+            )
+        )
     }
 }

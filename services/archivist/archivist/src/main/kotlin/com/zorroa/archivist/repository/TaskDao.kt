@@ -145,7 +145,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 in RESET_STATES -> {
                     jdbc.update(
                         "UPDATE task SET time_started=-1, time_stopped=-1, int_progress=0 WHERE pk_task=?",
-                        task.taskId)
+                        task.taskId
+                    )
                 }
                 in START_STATES -> {
                     jdbc.update(
@@ -155,8 +156,10 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                     )
                 }
                 in STOP_STATES -> {
-                    jdbc.update("UPDATE task SET time_stopped=?, int_progress=100 WHERE pk_task=?",
-                        time, task.taskId)
+                    jdbc.update(
+                        "UPDATE task SET time_stopped=?, int_progress=100 WHERE pk_task=?",
+                        time, task.taskId
+                    )
                 }
             }
         }
@@ -180,18 +183,24 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun setExitStatus(task: TaskId, exitStatus: Int) {
-        jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?",
-            exitStatus, task.taskId)
+        jdbc.update(
+            "UPDATE task SET int_exit_status=? WHERE pk_task=?",
+            exitStatus, task.taskId
+        )
     }
 
     override fun setProgress(task: TaskId, progress: Int) {
-        jdbc.update("UPDATE task SET int_progress=? WHERE pk_task=?",
-            progress, task.taskId)
+        jdbc.update(
+            "UPDATE task SET int_progress=? WHERE pk_task=?",
+            progress, task.taskId
+        )
     }
 
     override fun setStatus(task: TaskId, status: String) {
-        jdbc.update("UPDATE task SET str_status=? WHERE pk_task=?",
-            status, task.taskId)
+        jdbc.update(
+            "UPDATE task SET str_status=? WHERE pk_task=?",
+            status, task.taskId
+        )
     }
 
     override fun incrementAssetCounters(task: TaskId, counts: AssetCounters): Boolean {
