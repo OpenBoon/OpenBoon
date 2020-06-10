@@ -28,6 +28,7 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
       >
         {name}
       </div>
+
       <div
         css={{
           padding: `${spacing.base}px ${spacing.normal}px`,
@@ -41,17 +42,14 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
       >
         content
       </div>
+
       <div css={{ paddingBottom: spacing.base }}>
         <div
           css={{
             display: 'flex',
             ':hover': {
               backgroundColor: colors.signal.electricBlue.background,
-              div: {
-                svg: {
-                  display: 'inline-block',
-                },
-              },
+              svg: { opacity: 1 },
             },
           }}
         >
@@ -65,6 +63,7 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
           >
             {content}
           </div>
+
           <div
             css={{
               minWidth: COPY_SIZE + spacing.normal,
