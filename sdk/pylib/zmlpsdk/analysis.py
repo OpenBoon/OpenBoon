@@ -286,6 +286,10 @@ class SingleLabelAnalysis:
     def __init__(self, label="", score=0.0):
         """
         Create a new LabelDetectionSchema instance.
+
+        Args:
+            label: (str) single label to be added
+            score: (float) score for the label
         """
         self.label = label
         self.score = score
