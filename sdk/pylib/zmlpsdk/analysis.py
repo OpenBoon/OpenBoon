@@ -1,3 +1,4 @@
+
 class Prediction:
     """
     A single ML prediction which includes at minimum a label
@@ -204,7 +205,6 @@ class ContentDetectionAnalysis:
     results of an OCR process.
 
     """
-
     def __init__(self, unique_words=False, **kwargs):
         """
         Create a new ContentDetectionAnalysis instance.
@@ -237,7 +237,7 @@ class ContentDetectionAnalysis:
             val (str): The string containing the content.
 
         """
-        val = val.replace("\r", " ").replace("\n", " ")
+        val = val.replace('\r', ' ').replace('\n', ' ')
         self.content.append(val)
 
     def for_json(self):
@@ -248,21 +248,25 @@ class ContentDetectionAnalysis:
         Returns:
             :obj:`dict`: A JSON serializable version of this Document.
         """
-        text = " ".join(self.content)
+        text = ' '.join(self.content)
         words = text.split()
 
         # this basic processing removes line breaks, etc.
         if self.unique_words:
             words = frozenset(words)
             # Words are only sorted if unqiue.
-            text = " ".join(sorted(words))
+            text = ' '.join(sorted(words))
         else:
-            text = " ".join(words)
+            text = ' '.join(words)
 
         if len(text) > 32766:
             text = text[:32765]
 
-        base = {"type": "content", "words": len(words), "content": text}
+        base = {
+            'type': 'content',
+            'words': len(words),
+            'content': text
+        }
         base.update(self.attrs)
         return base
 
