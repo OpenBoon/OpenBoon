@@ -31,21 +31,23 @@ class KnnLabelDetectionClassifier(AssetProcessor):
             return
 
         x = self.hash_as_nparray(simhash)
-        predictions = self.classifier.predict([x])
+        prediction = self.classifier.predict([x])
         dist, ind = self.classifier.kneighbors([x], n_neighbors=1, return_distance=True)
 
         analysis = SingleLabelAnalysis()
         min_distance = self.arg_value('sensitivity')
         dist_result = dist[0][0]
         if dist_result < min_distance:
-            for label in predictions:
-                score = round(1 - dist_result / min_distance, 2)
-                analysis.add_label_and_score(label, score)
+            analysis.label = prediction[0]
+            analysis.score = round(1 - dist_result / min_distance, 2)
         else:
             analysis.label = 'Unrecognized'
             analysis.score = 0.0
 
-        asset.set_attr('analysis.' + self.app_model.name, analysis.pred_map)
+        asset.set_attr('analysis.' + self.app_model.name, {
+            "label": analysis.label,
+            "score": analysis.score
+        })
 
     def load_model(self):
         """
