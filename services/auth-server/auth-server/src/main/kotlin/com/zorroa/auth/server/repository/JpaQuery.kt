@@ -36,16 +36,18 @@ class JpaQuery<T> (
     }
 
     fun applySort(query: CriteriaQuery<T>, root: Root<T>) {
-        query.orderBy(filter.sort
-            .filter { it.substring(0, it.indexOf(':')) in filter.sortFields }
-            .map {
-            val (col, dir) = it.split(":")
-            if (dir.startsWith("a", ignoreCase = true)) {
-                criteriaBuilder.asc(root.get<T>(col))
-            } else {
-                criteriaBuilder.desc(root.get<T>(col))
-            }
-        })
+        query.orderBy(
+            filter.sort
+                .filter { it.substring(0, it.indexOf(':')) in filter.sortFields }
+                .map {
+                    val (col, dir) = it.split(":")
+                    if (dir.startsWith("a", ignoreCase = true)) {
+                        criteriaBuilder.asc(root.get<T>(col))
+                    } else {
+                        criteriaBuilder.desc(root.get<T>(col))
+                    }
+                }
+        )
     }
 }
 

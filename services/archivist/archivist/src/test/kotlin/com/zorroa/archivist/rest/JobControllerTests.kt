@@ -215,8 +215,10 @@ class JobControllerTests : MockMvcTest() {
             .andReturn()
 
         val content = result.response.contentAsString
-        val log = Json.Mapper.readValue<KPagedList<TaskError>>(content,
-            object : TypeReference<KPagedList<TaskError>>() {})
+        val log = Json.Mapper.readValue<KPagedList<TaskError>>(
+            content,
+            object : TypeReference<KPagedList<TaskError>>() {}
+        )
         assertEquals(1, log.size())
     }
 
@@ -262,8 +264,10 @@ class JobControllerTests : MockMvcTest() {
     @Test
     fun testGetDescryptedCredentials() {
         credentialsService.create(
-            CredentialsSpec("test",
-                CredentialsType.AWS, TEST_AWS_CREDS)
+            CredentialsSpec(
+                "test",
+                CredentialsType.AWS, TEST_AWS_CREDS
+            )
         )
 
         val spec2 = JobSpec(
@@ -281,10 +285,18 @@ class JobControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.aws_access_key_id",
-                CoreMatchers.equalTo("foo")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.aws_secret_access_key",
-                CoreMatchers.equalTo("kirkspockbones")))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.aws_access_key_id",
+                    CoreMatchers.equalTo("foo")
+                )
+            )
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.aws_secret_access_key",
+                    CoreMatchers.equalTo("kirkspockbones")
+                )
+            )
             .andReturn()
     }
 }

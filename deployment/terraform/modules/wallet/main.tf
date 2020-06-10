@@ -158,10 +158,6 @@ resource "kubernetes_deployment" "wallet" {
             value = "https://${var.domain}"
           }
           env {
-            name  = "DEBUG"
-            value = var.debug
-          }
-          env {
             name  = "BROWSABLE"
             value = var.browsable
           }

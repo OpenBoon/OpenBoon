@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
+import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -16,8 +17,28 @@ import TrashSvg from '../Icons/trash.svg'
 import Button, { VARIANTS } from '../Button'
 
 const ICON_WIDTH = 20
+const FALLBACK_IMG = '/icons/fallback_3x.png'
 
 const AssetContent = () => {
+  const [hasError, setHasError] = useState(false)
+
+  const assetRef = useRef()
+
+  /* istanbul ignore next */
+  useEffect(() => {
+    const asset = assetRef.current
+
+    if (!asset) return () => {}
+
+    const fallback = () => {
+      setHasError(true)
+    }
+
+    asset.addEventListener('error', fallback)
+
+    return () => asset.removeEventListener('error', fallback)
+  })
+
   const {
     query: { projectId, id: assetId, query },
   } = useRouter()
@@ -25,40 +46,19 @@ const AssetContent = () => {
   const {
     data: {
       metadata: {
-        files,
-        media: { type },
+        source: { filename },
       },
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
-  const srcFile =
-    type === 'video'
-      ? files.find(({ mimetype }) => {
-          return mimetype.includes('video')
-        })
-      : files.reduce((acc, file) => {
-          if (!acc || file.size > acc.size) {
-            return file
-          }
-
-          return acc
-        }, '')
-
   const {
-    name,
-    attrs: { width, height },
-  } = srcFile
+    data: { mediaType, uri },
+  } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/signed_url/`)
+
+  const isVideo = mediaType.includes('video')
 
   const idString = `?id=${assetId}`
   const queryString = query ? `&query=${query}` : ''
-
-  const videoStyle =
-    width > height
-      ? { height: '100%', maxWidth: '100%' }
-      : { width: '100%', maxHeight: '100%' }
-
-  const largerDimension = width > height ? 'width' : 'height'
-  const fileSrc = `/api/v1/projects/${projectId}/assets/${assetId}/files/category/proxy/name/${name}/`
 
   return (
     <div
@@ -126,19 +126,23 @@ const AssetContent = () => {
             alignItems: 'center',
           }}
         >
-          {type === 'video' && (
+          {isVideo && !hasError ? (
             <video
-              css={videoStyle}
+              css={{ width: '100%', height: '100%', objectFit: 'contain' }}
               autoPlay
               controls
               controlsList="nodownload"
               disablePictureInPicture
             >
-              <source src={fileSrc} type="video/mp4" />
+              <source ref={assetRef} src={uri} type={mediaType} />
             </video>
-          )}
-          {type !== 'video' && (
-            <img css={{ [largerDimension]: '100%' }} src={fileSrc} alt={name} />
+          ) : (
+            <img
+              ref={assetRef}
+              css={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              src={hasError ? /* istanbul ignore next */ FALLBACK_IMG : uri}
+              alt={filename}
+            />
           )}
         </div>
         <Panel openToThe="left">

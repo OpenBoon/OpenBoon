@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,t
      --no-install-recommends
 
 # Auto-updating pip sometimes causes issues.
-RUN pip3 install pip==20.0.2
+RUN pip3 install pip==20.1.1
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 RUN rm requirements.txt

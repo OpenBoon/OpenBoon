@@ -29,32 +29,35 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
     override fun batchCreate(specs: List<ProcessorSpec>): Int {
 
         val time = System.currentTimeMillis()
-        val result = jdbc.batchUpdate(INSERT, object : BatchPreparedStatementSetter {
+        val result = jdbc.batchUpdate(
+            INSERT,
+            object : BatchPreparedStatementSetter {
 
-            @Throws(SQLException::class)
-            override fun setValues(ps: PreparedStatement, i: Int) {
-                val spec = specs[i]
-                val id = uuid3.generate(spec.className)
-                val types = if (spec.fileTypes == null) {
-                    emptyArray()
-                } else {
-                    spec.fileTypes.toTypedArray()
+                @Throws(SQLException::class)
+                override fun setValues(ps: PreparedStatement, i: Int) {
+                    val spec = specs[i]
+                    val id = uuid3.generate(spec.className)
+                    val types = if (spec.fileTypes == null) {
+                        emptyArray()
+                    } else {
+                        spec.fileTypes.toTypedArray()
+                    }
+
+                    ps.setObject(1, id)
+                    ps.setString(2, spec.className)
+                    ps.setString(3, spec.file)
+                    ps.setString(4, spec.type)
+                    ps.setLong(5, time)
+                    ps.setString(6, Json.serializeToString(spec.display, "[]"))
+                    ps.setArray(7, ps.connection.createArrayOf("text", types))
+                    ps.setObject(8, getTsWordVector(spec.className))
                 }
 
-                ps.setObject(1, id)
-                ps.setString(2, spec.className)
-                ps.setString(3, spec.file)
-                ps.setString(4, spec.type)
-                ps.setLong(5, time)
-                ps.setString(6, Json.serializeToString(spec.display, "[]"))
-                ps.setArray(7, ps.connection.createArrayOf("text", types))
-                ps.setObject(8, getTsWordVector(spec.className))
+                override fun getBatchSize(): Int {
+                    return specs.size
+                }
             }
-
-            override fun getBatchSize(): Int {
-                return specs.size
-            }
-        })
+        )
 
         return result.sum()
     }
@@ -91,15 +94,17 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
 
     companion object {
 
-        private val INSERT = JdbcUtils.insert("processor",
-                "pk_processor",
-                "str_name",
-                "str_file",
-                "str_type",
-                "time_updated",
-                "json_display::jsonb",
-                "list_file_types",
-                "fti_keywords@to_tsvector")
+        private val INSERT = JdbcUtils.insert(
+            "processor",
+            "pk_processor",
+            "str_name",
+            "str_file",
+            "str_type",
+            "time_updated",
+            "json_display::jsonb",
+            "list_file_types",
+            "fti_keywords@to_tsvector"
+        )
 
         private const val GET = "SELECT * FROM processor"
 
@@ -107,13 +112,13 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
 
         private val MAPPER = RowMapper { rs, _ ->
             Processor(
-                    rs.getObject("pk_processor") as UUID,
-                    rs.getString("str_name"),
-                    rs.getString("str_type"),
-                    rs.getString("str_file"),
-                    (rs.getArray("list_file_types").array as Array<String>).toList(),
-                    Json.Mapper.readValue(rs.getString("json_display"), Json.LIST_OF_GENERIC_MAP),
-                    rs.getLong("time_updated")
+                rs.getObject("pk_processor") as UUID,
+                rs.getString("str_name"),
+                rs.getString("str_type"),
+                rs.getString("str_file"),
+                (rs.getArray("list_file_types").array as Array<String>).toList(),
+                Json.Mapper.readValue(rs.getString("json_display"), Json.LIST_OF_GENERIC_MAP),
+                rs.getLong("time_updated")
             )
         }
     }

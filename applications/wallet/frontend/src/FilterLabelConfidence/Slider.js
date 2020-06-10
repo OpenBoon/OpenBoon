@@ -9,7 +9,7 @@ import FilterReset from '../Filter/Reset'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
-import FilterRangeSlider from '../FilterRange/Slider'
+import Slider from '../Slider'
 
 import { formatRange } from './helpers'
 
@@ -55,7 +55,7 @@ const FilterLabelConfidenceSlider = ({
           <span>1.00</span>
         </div>
         <div css={{ padding: spacing.small }}>
-          <FilterRangeSlider
+          <Slider
             step={0.01}
             domain={[0, 1]}
             values={rangeValues}

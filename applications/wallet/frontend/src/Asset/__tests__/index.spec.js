@@ -17,7 +17,13 @@ const QUERY_STRING =
 
 describe('<Asset />', () => {
   it('should render properly', () => {
-    require('swr').__setMockUseSWRResponse({ data: docAsset })
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...docAsset,
+        uri: 'https://storage.googleapis.com/image.jpeg',
+        mediaType: 'image/jpeg',
+      },
+    })
 
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID, id: ASSET_ID, query: QUERY_STRING },
@@ -33,46 +39,11 @@ describe('<Asset />', () => {
   })
 
   it('should render videos properly', () => {
-    require('swr').__setMockUseSWRResponse({ data: videoAsset })
-
-    require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, id: ASSET_ID, query: QUERY_STRING },
-    })
-
-    const component = TestRenderer.create(
-      <User initialUser={mockUser}>
-        <Asset />
-      </User>,
-    )
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  it('should render vertical videos properly', () => {
     require('swr').__setMockUseSWRResponse({
       data: {
-        metadata: {
-          files: [
-            {
-              size: 26029481,
-              name: 'video_450x360.mp4',
-              mimetype: 'video/mp4',
-              id:
-                'assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/proxy/video_450x360.mp4',
-              category: 'proxy',
-              attrs: { frameRate: 25.0, frames: 3611, width: 360, height: 450 },
-            },
-          ],
-          media: {
-            orientation: 'landscape',
-            aspect: 1.25,
-            width: 450,
-            length: 144.45,
-            timeCreated: '2014-01-25T09:28:09.000000Z',
-            type: 'video',
-            height: 360,
-          },
-        },
+        ...videoAsset,
+        uri: 'https://storage.googleapis.com/video.mp4',
+        mediaType: 'video/mp4',
       },
     })
 
@@ -90,7 +61,13 @@ describe('<Asset />', () => {
   })
 
   it('should handle no query', () => {
-    require('swr').__setMockUseSWRResponse({ data: videoAsset })
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...videoAsset,
+        uri: 'https://storage.googleapis.com/video.mp4',
+        mediaType: 'video/mp4',
+      },
+    })
 
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID, id: ASSET_ID },

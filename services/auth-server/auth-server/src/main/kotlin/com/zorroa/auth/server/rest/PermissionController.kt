@@ -16,11 +16,11 @@ class PermissionController {
         return Permission.values()
             .filter { !it.internal }
             .map {
-            val descr = it.javaClass.getField(it.name).getAnnotation(ApiModelProperty::class.java).value
-            mapOf(
-                "name" to it.name,
-                "description" to descr
-            )
-        }
+                val descr = it.javaClass.getField(it.name).getAnnotation(ApiModelProperty::class.java).value
+                mapOf(
+                    "name" to it.name,
+                    "description" to descr
+                )
+            }
     }
 }

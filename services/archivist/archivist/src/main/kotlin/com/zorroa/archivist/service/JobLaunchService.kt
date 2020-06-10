@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceImportOptions
 import com.zorroa.archivist.domain.FileTypes
@@ -44,7 +43,7 @@ interface JobLaunchService {
      */
     fun launchJob(
         name: String,
-        assets: List<Asset>,
+        assets: List<String>,
         pipeline: List<ProcessorRef>,
         settings: Map<String, Any>? = null,
         creds: Set<String>? = null
@@ -132,7 +131,7 @@ class JobLaunchServiceImpl(
 
     override fun launchJob(
         name: String,
-        assets: List<Asset>,
+        assets: List<String>,
         pipeline: List<ProcessorRef>,
         settings: Map<String, Any>?,
         creds: Set<String>?
@@ -141,7 +140,7 @@ class JobLaunchServiceImpl(
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
 
-        val script = ZpsScript(name, null, assets, pipeline, settings = mergedSettings)
+        val script = ZpsScript(name, null, null, pipeline, settings = mergedSettings, assetIds = assets)
         val spec = JobSpec(name, script, credentials = creds)
         return launchJob(spec)
     }
@@ -150,8 +149,12 @@ class JobLaunchServiceImpl(
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
 
-        val script = ZpsScript(name, null, listOf(Asset()),
-            listOf(processor), settings = mergedSettings)
+        val script = ZpsScript(
+            name, null, null,
+            listOf(processor), settings = mergedSettings,
+            assetIds = listOf("single-iteration")
+        )
+
         val spec = JobSpec(name, script, replace = true, priority = JobPriority.Interactive)
         return launchJob(spec, JobType.Batch)
     }

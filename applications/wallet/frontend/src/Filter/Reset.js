@@ -9,6 +9,8 @@ import Button, { VARIANTS } from '../Button'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
+import { formatOptions } from './helpers'
+
 const FilterReset = ({
   projectId,
   assetId,
@@ -75,7 +77,7 @@ const FilterReset = ({
           {options.map((option) => {
             return (
               <option key={option} value={option}>
-                {option}
+                {formatOptions({ option })}
               </option>
             )
           })}
@@ -97,6 +99,10 @@ const FilterReset = ({
           }}
           variant={VARIANTS.NEUTRAL}
           onClick={() => {
+            const { type, values: { ids } = {} } = filter
+
+            const values = type === 'similarity' && ids ? { ids } : {}
+
             onReset()
 
             dispatch({
@@ -105,7 +111,7 @@ const FilterReset = ({
                 projectId,
                 assetId,
                 filters,
-                updatedFilter: { ...filter, values: {} },
+                updatedFilter: { ...filter, values },
                 filterIndex,
               },
             })

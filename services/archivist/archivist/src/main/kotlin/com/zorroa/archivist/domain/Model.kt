@@ -83,14 +83,16 @@ enum class ModelType(
     );
 
     fun asMap(): Map<String, Any> {
-        return mapOf("name" to name,
+        return mapOf(
+            "name" to name,
             "trainProcessor" to trainProcessor,
             "trainArgs" to trainArgs,
             "classifyProcessor" to classifyProcessor,
             "classifyArgs" to classifyArgs,
             "moduleName" to moduleName,
             "description" to description,
-            "dataSetType" to dataSetType)
+            "dataSetType" to dataSetType
+        )
     }
 }
 
@@ -190,7 +192,8 @@ class ModelFilter(
         "timeCreated" to "model.time_created",
         "timeModified" to "model.time_modified",
         "id" to "model.pk_data_set",
-        "type" to "model.int_type")
+        "type" to "model.int_type"
+    )
 
     @JsonIgnore
     override fun build() {

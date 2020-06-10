@@ -147,7 +147,8 @@ class DataSetFilter(
         "timeCreated" to "data_set.time_created",
         "timeModified" to "data_set.time_modified",
         "id" to "data_set.pk_data_set",
-        "type" to "data_set.int_type")
+        "type" to "data_set.int_type"
+    )
 
     @JsonIgnore
     override fun build() {

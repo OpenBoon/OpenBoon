@@ -122,9 +122,11 @@ class ProjectController constructor(
         @RequestParam("start", required = false) start: Long?,
         @RequestParam("stop", required = false) stop: Long?
     ): List<ProjectQuotasTimeSeriesEntry> {
-        return projectService.getQuotasTimeSeries(getProjectId(),
+        return projectService.getQuotasTimeSeries(
+            getProjectId(),
             Date(start ?: System.currentTimeMillis() - 86400000L),
-            Date(stop ?: System.currentTimeMillis()))
+            Date(stop ?: System.currentTimeMillis())
+        )
     }
 
     @PreAuthorize("hasAuthority('ProjectManage')")
@@ -139,8 +141,8 @@ class ProjectController constructor(
     @ApiOperation("Get the project Settings")
     fun putMyProjectSettings(@RequestBody(required = true) settings: ProjectSettings):
         ProjectSettings {
-        val id = getProjectId()
-        projectService.updateSettings(id, settings)
-        return projectService.getSettings(id)
-    }
+            val id = getProjectId()
+            projectService.updateSettings(id, settings)
+            return projectService.getSettings(id)
+        }
 }
