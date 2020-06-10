@@ -361,7 +361,7 @@ Array [
               <p
                 className="emotion-11"
               >
-                Data Sources define the source location of files and the types of Machine Learning analysis to be performed on them. Source files can belocated in any of the major cloud provider object stores (GCS, S3, Azure Blob).
+                Data Sources define the source location of files and the types of Machine Learning analysis to be performed on them. Source files can be located in any of the major cloud provider object stores (GCS, S3, Azure Blob).
               </p>
               <div
                 className="emotion-13"
