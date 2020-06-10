@@ -64,9 +64,14 @@ class AfterCommit(private val sync: Boolean, val workQueue: AsyncListenableTaskE
         if (sync) {
             body()
         } else {
-            workQueue.execute(DelegatingSecurityContextRunnable(Runnable {
-                body()
-            }, ctx))
+            workQueue.execute(
+                DelegatingSecurityContextRunnable(
+                    Runnable {
+                        body()
+                    },
+                    ctx
+                )
+            )
         }
     }
 }

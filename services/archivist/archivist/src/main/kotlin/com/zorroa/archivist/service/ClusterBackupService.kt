@@ -217,7 +217,8 @@ class ClusterBackupServiceImpl(
         }
 
         logger.event(
-            LogObject.CLUSTER_SNAPSHOT_POLICY, LogAction.CREATE, mapOf(
+            LogObject.CLUSTER_SNAPSHOT_POLICY, LogAction.CREATE,
+            mapOf(
                 "clusterId" to cluster.id,
                 "repositoryName" to req.policy.repository,
                 "policyName" to req.policy.name,
@@ -285,7 +286,8 @@ class ClusterBackupServiceImpl(
             getRepositoryName(cluster),
             mapOf(
                 "indicies" to listOf("*")
-            ), retention
+            ),
+            retention
         )
         return PutSnapshotLifecyclePolicyRequest(policy)
     }

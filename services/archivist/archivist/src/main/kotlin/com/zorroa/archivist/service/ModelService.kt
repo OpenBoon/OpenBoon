@@ -114,10 +114,12 @@ class ModelServiceImpl(
                     ProcessorRef(
                         model.type.classifyProcessor,
                         StandardContainers.ANALYSIS,
-                        model.type.classifyArgs.plus(mapOf(
-                            "model_id" to model.id.toString(),
-                            "version" to System.currentTimeMillis()
-                        )),
+                        model.type.classifyArgs.plus(
+                            mapOf(
+                                "model_id" to model.id.toString(),
+                                "version" to System.currentTimeMillis()
+                            )
+                        ),
                         module = model.name
                     )
                 )

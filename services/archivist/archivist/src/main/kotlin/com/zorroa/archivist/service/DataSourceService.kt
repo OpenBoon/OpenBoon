@@ -117,7 +117,8 @@ class DataSourceServiceImpl(
         val mods = pipelineModService.getByNames(update.modules ?: listOf())
         val ds = get(id)
 
-        val updated = DataSource(ds.id,
+        val updated = DataSource(
+            ds.id,
             ds.projectId,
             update.name,
             update.uri,
@@ -127,7 +128,8 @@ class DataSourceServiceImpl(
             ds.timeCreated,
             System.currentTimeMillis(),
             ds.actorCreated,
-            getZmlpActor().toString())
+            getZmlpActor().toString()
+        )
 
         dataSourceDao.saveAndFlush(updated)
         update.credentials?.let {
@@ -146,7 +148,8 @@ class DataSourceServiceImpl(
         val jobs = jobService.getAll(
             JobFilter(
                 states = listOf(JobState.InProgress, JobState.Failure),
-                datasourceIds = listOf(ds.id)).apply { page.disabled = true }
+                datasourceIds = listOf(ds.id)
+            ).apply { page.disabled = true }
         )
 
         logger.info("Canceling ${jobs.size()} DataSource ${ds.id} jobs")

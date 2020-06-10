@@ -53,7 +53,8 @@ object Json {
             println(Mapper.writerWithDefaultPrettyPrinter().writeValueAsString(any))
         } catch (e: JsonProcessingException) {
             throw IllegalArgumentException(
-                "Failed to serialize object, unexpected: $e", e)
+                "Failed to serialize object, unexpected: $e", e
+            )
         }
     }
 

@@ -128,8 +128,10 @@ class DataSourceServiceTests : AbstractTest() {
     fun testUpdateWithCredentials() {
         val ds = dataSourceService.create(spec)
         val creds = credentialsService.create(
-            CredentialsSpec("test",
-                CredentialsType.AWS, TEST_AWS_CREDS)
+            CredentialsSpec(
+                "test",
+                CredentialsType.AWS, TEST_AWS_CREDS
+            )
         )
 
         val update = DataSourceUpdate(
@@ -148,7 +150,8 @@ class DataSourceServiceTests : AbstractTest() {
 
         val credsIds = jdbc.queryForList(
             "SELECT pk_credentials FROM x_credentials_datasource WHERE pk_datasource=?",
-            UUID::class.java, ds2.id)
+            UUID::class.java, ds2.id
+        )
         Json.prettyPrint(credsIds)
         assertTrue(creds.id in credsIds)
     }
@@ -159,24 +162,28 @@ class DataSourceServiceTests : AbstractTest() {
         dataSourceService.delete(ds.id)
         entityManager.flush()
         val count = jdbc.queryForObject(
-            "SELECT COUNT(1) FROM datasource WHERE pk_datasource=?", Int::class.java, ds.id)
+            "SELECT COUNT(1) FROM datasource WHERE pk_datasource=?", Int::class.java, ds.id
+        )
         assertEquals(0, count)
     }
 
     @Test
     fun testDeleteWithJob() {
         val ds = dataSourceService.create(spec)
-        val jspec = JobSpec("test_job",
+        val jspec = JobSpec(
+            "test_job",
             emptyZpsScript("foo"),
             dataSourceId = ds.id,
             args = mutableMapOf("foo" to 1),
-            env = mutableMapOf("foo" to "bar"))
+            env = mutableMapOf("foo" to "bar")
+        )
 
         val job = jobService.create(jspec)
         dataSourceService.delete(ds.id)
         entityManager.flush()
         val count = jdbc.queryForObject(
-            "SELECT COUNT(1) FROM datasource WHERE pk_datasource=?", Int::class.java, ds.id)
+            "SELECT COUNT(1) FROM datasource WHERE pk_datasource=?", Int::class.java, ds.id
+        )
         assertEquals(0, count)
 
         val dsJob = jobService.get(job.id)

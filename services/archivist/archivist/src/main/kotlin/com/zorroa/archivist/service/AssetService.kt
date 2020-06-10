@@ -417,7 +417,8 @@ class AssetServiceImpl : AssetService {
         val query = QueryBuilders.termsQuery("_id", ids)
         val rsp = rest.client.deleteByQuery(
             DeleteByQueryRequest(rest.route.indexName)
-                .setQuery(query), RequestOptions.DEFAULT
+                .setQuery(query),
+            RequestOptions.DEFAULT
         )
 
         val projectId = getProjectId()
@@ -517,9 +518,11 @@ class AssetServiceImpl : AssetService {
              * For the assets that failed to go into ES, add the ES error message
              */
             jobService.incrementAssetCounters(
-                parentTask, AssetCounters(
+                parentTask,
+                AssetCounters(
                     replaced = existingAssetIds.size,
-                    created = createdAssetIds.size)
+                    created = createdAssetIds.size
+                )
             )
 
             logger.event(
@@ -668,7 +671,8 @@ class AssetServiceImpl : AssetService {
             if (spec.label != null) {
                 if (!dataSetDao.existsByProjectIdAndId(projectId, spec.label.dataSetId)) {
                     throw java.lang.IllegalArgumentException(
-                        "The DataSet Id ${spec.label.dataSetId} does not exist.")
+                        "The DataSet Id ${spec.label.dataSetId} does not exist."
+                    )
                 }
                 asset.addLabels(listOf(spec.label))
             }
@@ -714,7 +718,8 @@ class AssetServiceImpl : AssetService {
         // This happens during deep analysis when a file is being clipped, the first
         // clip/page/scene will be augmented with clip start/stop points.
         if (asset.attrExists("clip") && (
-                !asset.attrExists("clip.sourceAssetId") || !asset.attrExists("clip.pile"))
+            !asset.attrExists("clip.sourceAssetId") || !asset.attrExists("clip.pile")
+            )
         ) {
             val clip = asset.getAttr("clip", Clip::class.java)
                 ?: throw IllegalStateException("Invalid clip data for asset ${asset.id}")
@@ -770,12 +775,14 @@ class AssetServiceImpl : AssetService {
         val maxAssets = 1000
         if (req.add?.size ?: 0 > maxAssets) {
             throw IllegalArgumentException(
-                "Cannot add labels to more than $maxAssets assets at a time.")
+                "Cannot add labels to more than $maxAssets assets at a time."
+            )
         }
 
         if (req.remove?.size ?: 0 > maxAssets) {
             throw IllegalArgumentException(
-                "Cannot remove labels from more than $maxAssets assets at a time.")
+                "Cannot remove labels from more than $maxAssets assets at a time."
+            )
         }
 
         // Gather up unique Assets and DataSets
