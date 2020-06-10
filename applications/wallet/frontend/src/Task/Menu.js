@@ -20,7 +20,7 @@ const TaskMenu = ({ revalidate }) => {
   const {
     pathname,
     asPath,
-    query: { projectId, jobId },
+    query: { projectId, jobId, taskId },
   } = useRouter()
 
   return (
@@ -49,7 +49,7 @@ const TaskMenu = ({ revalidate }) => {
                       onClick()
 
                       await fetcher(
-                        `/api/v1/projects/${projectId}/jobs/${jobId}/${action}/`,
+                        `/api/v1/projects/${projectId}/tasks/${taskId}/${action}/`,
                         { method: 'PUT' },
                       )
 
@@ -61,6 +61,7 @@ const TaskMenu = ({ revalidate }) => {
                           query: {
                             projectId,
                             jobId,
+                            taskId,
                             refreshParam: Math.random(),
                           },
                         },
