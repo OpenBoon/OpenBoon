@@ -50,6 +50,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
       >
         {name}
       </div>
+
       <div
         css={{
           padding: `${spacing.base}px ${spacing.normal}px`,
@@ -63,17 +64,14 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
       >
         simhash
       </div>
+
       <div css={{ paddingBottom: spacing.base }}>
         <div
           css={{
             display: 'flex',
             ':hover': {
               backgroundColor: colors.signal.electricBlue.background,
-              div: {
-                svg: {
-                  display: 'inline-block',
-                },
-              },
+              svg: { opacity: 1 },
             },
           }}
         >
@@ -91,6 +89,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
           >
             {simhash}
           </div>
+
           <div
             css={{
               minWidth: COPY_SIZE + spacing.normal,
@@ -101,6 +100,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
             <ButtonCopy value={simhash} />
           </div>
         </div>
+
         {results.length > 1 && (
           <div
             css={{
@@ -121,6 +121,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
             >
               Similar Images
             </div>
+
             <div
               css={{
                 display: 'flex',

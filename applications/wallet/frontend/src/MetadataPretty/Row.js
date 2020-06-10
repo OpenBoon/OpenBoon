@@ -18,9 +18,7 @@ const MetadataPrettyRow = ({ name, value, path }) => {
           backgroundColor: colors.signal.electricBlue.background,
           div: {
             color: colors.structure.white,
-            svg: {
-              display: 'inline-block',
-            },
+            svg: { opacity: 1 },
           },
         },
       }}
@@ -39,6 +37,7 @@ const MetadataPrettyRow = ({ name, value, path }) => {
           {formatDisplayName({ name })}
         </span>
       </div>
+
       <div
         title={value}
         css={{
@@ -53,6 +52,7 @@ const MetadataPrettyRow = ({ name, value, path }) => {
       >
         {formatDisplayValue({ name, value })}
       </div>
+
       <div
         css={{
           width: COPY_SIZE + spacing.normal,
