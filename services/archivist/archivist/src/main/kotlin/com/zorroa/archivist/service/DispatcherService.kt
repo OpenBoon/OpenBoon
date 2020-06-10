@@ -241,9 +241,12 @@ class DispatchQueueManager @Autowired constructor(
 
             // If the task is queued with asset IDs then
             // resolve the asset Ids.
-            withAuth(InternalThreadAuthentication(
+            withAuth(
+                InternalThreadAuthentication(
                     task.projectId,
-                    setOf(Permission.AssetsRead))) {
+                    setOf(Permission.AssetsRead)
+                )
+            ) {
 
                 task.script.assetIds?.let {
                     val assets = assetService.getAll(it)
@@ -400,7 +403,9 @@ class DispatcherServiceImpl @Autowired constructor(
                 newState == TaskState.Failure
             ) {
 
-                taskErrorDao.create(task, TaskErrorEvent(
+                taskErrorDao.create(
+                    task,
+                    TaskErrorEvent(
                         null,
                         null,
                         "Hard task container failure, all assets failed, exit ${event.exitStatus}",
