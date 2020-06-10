@@ -164,7 +164,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
@@ -938,7 +938,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
@@ -1662,7 +1662,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
