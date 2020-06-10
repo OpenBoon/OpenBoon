@@ -149,9 +149,11 @@ class JobServiceImpl @Autowired constructor(
         }
 
         logger.event(
-            LogObject.JOB, LogAction.CREATE, mapOf(
+            LogObject.JOB, LogAction.CREATE,
+            mapOf(
                 "jobId" to job.id,
-                "jobName" to job.name)
+                "jobName" to job.name
+            )
         )
 
         spec.credentials?.let {
@@ -164,9 +166,11 @@ class JobServiceImpl @Autowired constructor(
     override fun updateJob(job: Job, spec: JobUpdateSpec): Boolean {
 
         logger.event(
-            LogObject.JOB, LogAction.UPDATE, mapOf(
+            LogObject.JOB, LogAction.UPDATE,
+            mapOf(
                 "jobId" to job.id,
-                "jobName" to job.name)
+                "jobName" to job.name
+            )
         )
 
         return jobDao.update(job, spec)
@@ -175,9 +179,11 @@ class JobServiceImpl @Autowired constructor(
     override fun deleteJob(job: JobId): Boolean {
 
         logger.event(
-            LogObject.JOB, LogAction.DELETE, mapOf(
+            LogObject.JOB, LogAction.DELETE,
+            mapOf(
                 "jobId" to job.jobId
-        ))
+            )
+        )
 
         return jobDao.delete(job)
     }
@@ -232,10 +238,12 @@ class JobServiceImpl @Autowired constructor(
         val newTask = taskDao.create(job, spec)
 
         logger.event(
-            LogObject.TASK, LogAction.CREATE, mapOf(
+            LogObject.TASK, LogAction.CREATE,
+            mapOf(
                 "taskId" to newTask.id,
                 "taskName" to newTask.name
-            ))
+            )
+        )
 
         return newTask
     }
@@ -253,10 +261,12 @@ class JobServiceImpl @Autowired constructor(
         }
 
         logger.event(
-            LogObject.JOB, LogAction.UPDATE, mapOf(
+            LogObject.JOB, LogAction.UPDATE,
+            mapOf(
                 "jobId" to job.jobId,
                 "jobState" to newState.name
-            ))
+            )
+        )
 
         return result
     }
@@ -274,10 +284,12 @@ class JobServiceImpl @Autowired constructor(
         }
 
         logger.event(
-            LogObject.TASK, LogAction.UPDATE, mapOf(
+            LogObject.TASK, LogAction.UPDATE,
+            mapOf(
                 "taskId" to task.taskId,
                 "taskState" to newState.name
-            ))
+            )
+        )
 
         return result
     }
@@ -317,9 +329,11 @@ class JobServiceImpl @Autowired constructor(
     override fun deleteTaskError(id: UUID): Boolean {
 
         logger.event(
-            LogObject.TASK_ERROR, LogAction.DELETE, mapOf(
+            LogObject.TASK_ERROR, LogAction.DELETE,
+            mapOf(
                 "taskId" to id
-            ))
+            )
+        )
 
         return taskErrorDao.delete(id)
     }

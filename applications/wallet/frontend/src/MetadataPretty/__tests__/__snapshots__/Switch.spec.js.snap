@@ -1142,9 +1142,9 @@ Array [
 }
 
 .emotion-11 {
-  width: 80px;
-  min-width: 80px;
-  height: 80px;
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
 }
 
 .emotion-10 {
@@ -1164,10 +1164,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-10:hover .videoLength {
-  display: none;
 }
 
 .emotion-7 {
@@ -1539,10 +1535,6 @@ Array [
                 controlsList="nodownload nofullscreen noremoteplayback"
                 disablePictureInPicture={true}
                 muted={true}
-                onBlur={[Function]}
-                onFocus={[Function]}
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
                 playsInline={true}
                 poster="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
                 preload="none"
@@ -1578,7 +1570,7 @@ Array [
               />
             </a>
             <div
-              className="videoLength emotion-28"
+              className="emotion-28"
             >
               2:24
             </div>

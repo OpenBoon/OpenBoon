@@ -1,4 +1,4 @@
-FROM maven:3.6.2-jdk-11-slim as mvn_build
+FROM maven:3.6-jdk-11-slim as mvn_build
 COPY es-kwconf es-kwconf
 COPY es-similarity es-similarity
 COPY es-similarity-query es-similarity-query

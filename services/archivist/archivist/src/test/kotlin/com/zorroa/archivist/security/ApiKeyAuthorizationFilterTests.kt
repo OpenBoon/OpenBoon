@@ -43,7 +43,8 @@ class ApiKeyAuthorizationFilterTests : MockMvcTest() {
 
         filter.doFilter(httpServletRequest, httpServletResponse, filterChain)
         verify(httpServletResponse, times(1)).sendError(
-            HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
+            HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized"
+        )
     }
 
     @Test

@@ -27,6 +27,8 @@ def main():
     else:
         containers = set()
 
+    pull_base_images()
+
     if args.plugins:
         containers.update(['zmlp-py3-client',
                            'zmlp-py3-zvi',
@@ -56,6 +58,20 @@ def main():
                            'zmlp-plugins-analysis'])
 
     build_dependency_tree(containers, args.list)
+
+
+def pull_base_images():
+    """
+    Re-pull the commonly used based images.  We have to do this
+    because using --no-cache also disabled the buildx cache.
+    """
+    images = [
+        "ubuntu:eoan",
+        "maven:3.6-jdk-11-slim",
+        "openjdk:11-jdk-slim"
+    ]
+    for image in images:
+        subprocess.call(['docker', 'pull', image], shell=False)
 
 
 def build_dependency_tree(to_build, list_only):

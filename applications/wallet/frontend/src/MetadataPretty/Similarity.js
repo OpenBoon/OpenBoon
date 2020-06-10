@@ -9,7 +9,7 @@ import { encode } from '../Filters/helpers'
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import AssetsThumbnail from '../Assets/Thumbnail'
 
-const THUMBNAIL_SIZE = 80
+const THUMBNAIL_SIZE = 100
 
 const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
   const {

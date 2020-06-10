@@ -373,7 +373,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  "Assets",
+  <TaskAssets />,
 ]
 `;
 

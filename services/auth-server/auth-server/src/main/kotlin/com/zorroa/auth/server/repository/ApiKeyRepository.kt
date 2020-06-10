@@ -82,13 +82,15 @@ class ApiKeyCustomRepositoryImpl(
 
     override fun getSigningKey(id: UUID): SigningKey {
         return jdbc.queryForObject(
-            "$GET_SIGNING_KEY WHERE project_id=? AND pk_api_key=?", signingKeyMapper, getProjectId(), id)
+            "$GET_SIGNING_KEY WHERE project_id=? AND pk_api_key=?", signingKeyMapper, getProjectId(), id
+        )
             ?: throw DataRetrievalFailureException("Invalid API Key")
     }
 
     override fun getSigningKey(name: String): SigningKey {
         return jdbc.queryForObject(
-            "$GET_SIGNING_KEY WHERE project_id=? AND name=?", signingKeyMapper, getProjectId(), name)
+            "$GET_SIGNING_KEY WHERE project_id=? AND name=?", signingKeyMapper, getProjectId(), name
+        )
             ?: throw DataRetrievalFailureException("Invalid API Key")
     }
 
@@ -116,7 +118,8 @@ class ApiKeyCustomRepositoryImpl(
     }
 
     private val validationKeyMapper = RowMapper { rs, _ ->
-        ValidationKey(rs.getObject("pk_api_key") as UUID,
+        ValidationKey(
+            rs.getObject("pk_api_key") as UUID,
             rs.getObject("project_id") as UUID,
             rs.getString("access_key"),
             rs.getString("secret_key"),

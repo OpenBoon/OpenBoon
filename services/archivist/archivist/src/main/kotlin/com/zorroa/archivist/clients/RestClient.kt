@@ -38,7 +38,7 @@ import javax.crypto.spec.SecretKeySpec
 
 class RestClientException constructor(
     override val message:
-    String,
+        String,
     override val cause: Throwable?
 ) : RuntimeException(message, cause) {
 
@@ -125,7 +125,8 @@ class RestClient {
                 "%s/%s.key",
                 (System.getenv() as java.util.Map<String, String>).getOrDefault("ZORROA_HMAC_PATH", "/vol/hmac"),
                 user
-            ), String.format("%s/.zorroa/%s.key", System.getProperty("user.home"), user)
+            ),
+            String.format("%s/.zorroa/%s.key", System.getProperty("user.home"), user)
         )
 
         for (path in paths) {
