@@ -45,6 +45,7 @@ const JobsRow = ({
       <td>
         <JobsStatus status={status} />
       </td>
+
       <td>
         <Link
           href="/[projectId]/jobs/[jobId]"
@@ -54,9 +55,13 @@ const JobsRow = ({
           <a css={{ ':hover': { textDecoration: 'none' } }}>{name}</a>
         </Link>
       </td>
+
       <td css={{ textAlign: 'center' }}>{priority}</td>
+
       <td>{formatFullDate({ timestamp: timeCreated })}</td>
+
       <td css={{ textAlign: 'center' }}>{assetCounts.assetTotalCount}</td>
+
       <td>
         {assetCounts.assetErrorCount > 0 && (
           <div css={{ display: 'flex', justifyContent: 'center' }}>
@@ -90,6 +95,7 @@ const JobsRow = ({
           </div>
         )}
       </td>
+
       <td
         style={{
           minWidth: CONTAINER_WIDTH + spacing.normal * 2,
@@ -98,6 +104,7 @@ const JobsRow = ({
       >
         <ProgressBar taskCounts={taskCounts} />
       </td>
+
       <td>
         <JobsMenu
           projectId={projectId}
