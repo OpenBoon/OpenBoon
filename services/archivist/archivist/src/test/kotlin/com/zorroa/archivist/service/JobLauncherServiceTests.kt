@@ -75,7 +75,8 @@ class JobLauncherServiceTests : AbstractTest() {
         val job = jobLaunchService.launchJob(ds2, DataSourceImportOptions())
 
         assertEquals(
-            1, jdbc.queryForObject(
+            1,
+            jdbc.queryForObject(
                 "SELECT COUNT(1) FROM x_credentials_job WHERE pk_job=?",
                 Int::class.java, job.jobId
             )

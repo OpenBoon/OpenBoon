@@ -205,9 +205,11 @@ class PipelineResolverServiceImpl(
                             }
                             ModOpType.APPEND_MERGE -> {
                                 newPipeline.add(ref)
-                                val names = (currentPipeline.map { it.className } +
-                                    newPipeline.map { it.className } +
-                                    append.map { it.className })
+                                val names = (
+                                    currentPipeline.map { it.className } +
+                                        newPipeline.map { it.className } +
+                                        append.map { it.className }
+                                    )
                                 // Iterate procs in the fragment and add ones that don't exist,
                                 // and merge args for the ones that do.
                                 val frag = parsePipelineFragment(module.name, op.apply)

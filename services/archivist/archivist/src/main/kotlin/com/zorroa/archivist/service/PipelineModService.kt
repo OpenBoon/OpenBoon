@@ -101,7 +101,8 @@ class PipelineModServiceImpl(
     override fun create(spec: PipelineModSpec): PipelineMod {
 
         if (!spec.standard &&
-            pipelineModDao.findByName(spec.name, true) != null) {
+            pipelineModDao.findByName(spec.name, true) != null
+        ) {
             throw DataIntegrityViolationException("A module named '${spec.name}' already exists")
         }
 

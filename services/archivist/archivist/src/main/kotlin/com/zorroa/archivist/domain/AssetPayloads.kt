@@ -52,15 +52,19 @@ class BatchUploadAssetsRequest(
     lateinit var files: Array<MultipartFile>
 }
 
-@ApiModel("Batch Create Assets Request",
-    description = "Defines the properties necessary to provision a batch of assets.")
+@ApiModel(
+    "Batch Create Assets Request",
+    description = "Defines the properties necessary to provision a batch of assets."
+)
 class BatchCreateAssetsRequest(
 
     @ApiModelProperty("The list of assets to be created")
     val assets: List<AssetSpec>,
 
-    @ApiModelProperty("Set to true if the assets should undergo " +
-        "further analysis, or false to stay in the provisioned state.")
+    @ApiModelProperty(
+        "Set to true if the assets should undergo " +
+            "further analysis, or false to stay in the provisioned state."
+    )
     val analyze: Boolean = true,
 
     @ApiModelProperty("The pipeline modules to execute if any, otherwise utilize the default Pipeline.")
@@ -79,8 +83,10 @@ class BatchCreateAssetsRequest(
 
 )
 
-@ApiModel("Batch Create Assets Response",
-    description = "The response returned after provisioning assets.")
+@ApiModel(
+    "Batch Create Assets Response",
+    description = "The response returned after provisioning assets."
+)
 class BatchCreateAssetsResponse(
 
     @ApiModelProperty("A map of failed asset ids to error message")
@@ -100,8 +106,10 @@ class BatchCreateAssetsResponse(
     val totalUpdated = created.size + exists.size
 }
 
-@ApiModel("Batch Process Asset Search Request",
-    description = "Batch reprocess and asset search.")
+@ApiModel(
+    "Batch Process Asset Search Request",
+    description = "Batch reprocess and asset search."
+)
 class ReprocessAssetSearchRequest(
 
     @ApiModelProperty("An ElasticSearch query to process.  All assets will be processed that match the search.")
@@ -114,8 +122,10 @@ class ReprocessAssetSearchRequest(
     val batchSize: Int = 64
 )
 
-@ApiModel("Batch Process Asset Search Response",
-    description = "The reponse to a ReprocessAssetSearchRequest")
+@ApiModel(
+    "Batch Process Asset Search Response",
+    description = "The reponse to a ReprocessAssetSearchRequest"
+)
 class ReprocessAssetSearchResponse(
 
     @ApiModelProperty("The job running the reprocess")
@@ -125,8 +135,10 @@ class ReprocessAssetSearchResponse(
     val assetCount: Long
 )
 
-@ApiModel("UpdateAssetLabelsRequest",
-    description = "Request to add /remove labels")
+@ApiModel(
+    "UpdateAssetLabelsRequest",
+    description = "Request to add /remove labels"
+)
 class UpdateAssetLabelsRequest(
 
     @ApiModelProperty("The labels to add.  Supplying a new label for an existing DataSet overwrites it.")
@@ -136,16 +148,20 @@ class UpdateAssetLabelsRequest(
     val remove: Map<String, List<DataSetLabel>>? = null
 )
 
-@ApiModel("BatchDeleteAssetsRequest",
-    description = "Response for batch deleting of assets.")
+@ApiModel(
+    "BatchDeleteAssetsRequest",
+    description = "Response for batch deleting of assets."
+)
 class BatchDeleteAssetsRequest(
 
     @ApiModelProperty("The assets that were removed")
     val assetIds: Set<String>
 )
 
-@ApiModel("BatchDeleteAssetsResponse",
-    description = "Response for batch deleting of assets.")
+@ApiModel(
+    "BatchDeleteAssetsResponse",
+    description = "Response for batch deleting of assets."
+)
 class BatchDeleteAssetResponse(
 
     @ApiModelProperty("The assets that were removed")

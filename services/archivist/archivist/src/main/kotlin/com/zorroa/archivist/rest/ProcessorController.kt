@@ -39,8 +39,10 @@ class ProcessorController @Autowired constructor(
         return processorService.getAll(filter)
     }
 
-    @ApiOperation("Search for a single Processor.",
-        notes = "Throws an error if more than 1 result is returned based on the given filter.")
+    @ApiOperation(
+        "Search for a single Processor.",
+        notes = "Throws an error if more than 1 result is returned based on the given filter."
+    )
     @PostMapping(value = ["/api/v1/processors/_findOne"])
     fun findOne(@ApiParam("Search filter.") @RequestBody filter: ProcessorFilter): Processor {
         return processorService.findOne(filter)
