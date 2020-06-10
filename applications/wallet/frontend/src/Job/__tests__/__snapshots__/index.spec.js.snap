@@ -358,7 +358,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          All Tasks
+          Tasks
         </a>
       </li>
       <li
@@ -633,7 +633,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          All Tasks
+          Tasks
         </a>
       </li>
       <li
