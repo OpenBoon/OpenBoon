@@ -29,6 +29,7 @@ def main():
 
     if args.plugins:
         containers.update(['zmlp-py3-client',
+                           'zmlp-py3-zvi',
                            'zmlp-py3-sdk',
                            'zmlp-plugins-base',
                            'zmlp-plugins-core',
@@ -38,6 +39,7 @@ def main():
 
     if args.core:
         containers.update(['zmlp-py3-client',
+                           'zmlp-py3-zvi',
                            'zmlp-py3-sdk',
                            'zmlp-plugins-base',
                            'zmlp-plugins-core'])
@@ -48,6 +50,7 @@ def main():
                            'auth-server'])
     if args.analysis:
         containers.update(['zmlp-py3-client',
+                           'zmlp-py3-zvi',
                            'zmlp-py3-sdk',
                            'zmlp-plugins-base',
                            'zmlp-plugins-analysis'])
