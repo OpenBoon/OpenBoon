@@ -128,7 +128,8 @@ class DispatchQueueManager @Autowired constructor(
     val authServerClient: AuthServerClient,
     val pipelineStoragProperties: PipelineStorageConfiguration,
     val jobService: JobService,
-    val systemStorageService: SystemStorageService
+    val systemStorageService: SystemStorageService,
+    val assetService: AssetService
 ) {
 
     /**
@@ -235,6 +236,17 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZMLP_STORAGE_PIPELINE_SECRETKEY"] = pipelineStoragProperties.secretKey
             task.env["ZMLP_CREDENTIALS_TYPES"] = jobService.getCredentialsTypes(task).joinToString(",")
 
+            // If the task is queued with asset IDs then
+            // resolve the asset Ids.
+            withAuth(InternalThreadAuthentication(
+                    task.projectId,
+                    setOf(Permission.AssetsRead))) {
+
+                task.script.assetIds?.let {
+                    val assets = assetService.getAll(it)
+                    task.script.assets = assets
+                }
+            }
             return true
         } else {
             meterRegistry.counter(METRICS_KEY, "op", "tasks-collided").increment()
@@ -384,17 +396,15 @@ class DispatcherServiceImpl @Autowired constructor(
             if (!event.manualKill && event.exitStatus == EXIT_STATUS_HARD_FAIL &&
                 newState == TaskState.Failure
             ) {
-                val script = taskDao.getScript(task.taskId)
-                taskErrorDao.batchCreate(task, script.assets?.map {
-                    TaskErrorEvent(
-                        it.id,
-                        it.getAttr("source.path"),
-                        "Hard Task failure, exit ${event.exitStatus}",
+                taskErrorDao.create(task, TaskErrorEvent(
+                        null,
+                        null,
+                        "Hard task container failure, all assets failed, exit ${event.exitStatus}",
                         "unknown",
                         true,
                         "unknown"
                     )
-                }.orEmpty())
+                )
             }
         }
 

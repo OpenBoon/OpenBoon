@@ -207,12 +207,6 @@ class AssetServiceImpl : AssetService {
     lateinit var jobLaunchService: JobLaunchService
 
     @Autowired
-    lateinit var assetSearchService: AssetSearchService
-
-    @Autowired
-    lateinit var dataSetService: DataSetService
-
-    @Autowired
     lateinit var dataSetDao: DataSetDao
 
     override fun getAsset(id: String): Asset {
@@ -226,15 +220,15 @@ class AssetServiceImpl : AssetService {
 
     override fun getValidAssetIds(ids: Collection<String>): Set<String> {
         val rest = indexRoutingService.getProjectRestClient()
-        val req = rest.newSearchBuilder()
+        val req = rest.newSearchRequest()
         val query = QueryBuilders.boolQuery()
             .filter(QueryBuilders.termsQuery("_id", ids))
-        req.source.size(ids.size)
-        req.source.query(query)
-        req.source.fetchSource(false)
+        req.source().size(ids.size)
+        req.source().query(query)
+        req.source().fetchSource(false)
 
         val result = mutableSetOf<String>()
-        val r = rest.client.search(req.request, RequestOptions.DEFAULT)
+        val r = rest.client.search(req, RequestOptions.DEFAULT)
         r.hits.forEach {
             result.add(it.id)
         }
@@ -243,13 +237,13 @@ class AssetServiceImpl : AssetService {
 
     override fun getAll(ids: Collection<String>): List<Asset> {
         val rest = indexRoutingService.getProjectRestClient()
-        val req = rest.newSearchBuilder()
+        val req = rest.newSearchRequest()
         val query = QueryBuilders.boolQuery()
             .must(QueryBuilders.termsQuery("_id", ids))
-        req.source.size(ids.size)
-        req.source.query(query)
+        req.source().size(ids.size)
+        req.source().query(query)
 
-        val r = rest.client.search(req.request, RequestOptions.DEFAULT)
+        val r = rest.client.search(req, RequestOptions.DEFAULT)
         return r.hits.map {
             Asset(it.id, it.sourceAsMap)
         }
@@ -466,18 +460,18 @@ class AssetServiceImpl : AssetService {
     ): Job? {
 
         // Validate the assets need reprocessing
-        val assets = getAll(existingAssetIds).filter {
+        val assetIds = getAll(existingAssetIds).filter {
             assetNeedsReprocessing(it, processors)
-        }
+        }.map { it.id }
 
-        val reprocessAssetCount = assets.size
-        val finalAssetList = assets.plus(getAll(createdAssetIds))
+        val reprocessAssetCount = assetIds.size
+        val finalAssetList = assetIds.plus(createdAssetIds)
 
         return if (finalAssetList.isEmpty()) {
             null
         } else {
             val name = "Analyze ${createdAssetIds.size} created assets, $reprocessAssetCount existing files."
-            jobLaunchService.launchJob(name, finalAssetList, processors, creds = creds)
+            jobLaunchService.launchJob(name, assetIds, processors, creds = creds)
         }
     }
 
@@ -491,21 +485,17 @@ class AssetServiceImpl : AssetService {
         val procCount = parentScript?.execute?.size ?: 0
 
         // Check what assets need reprocessing at all.
-        val assets = getAll(existingAssetIds).filter {
+        val assetIds = getAll(existingAssetIds).filter {
             assetNeedsReprocessing(it, parentScript.execute ?: listOf())
-        }
+        }.map { it.id }.plus(createdAssetIds)
 
-        // Build the final asset list which are the assets that
-        // need additional processing.
-        val finalAssetList = assets.plus(getAll(createdAssetIds))
-
-        return if (finalAssetList.isEmpty()) {
+        return if (assetIds.isEmpty()) {
             null
         } else {
 
-            val name = "Expand with ${finalAssetList.size} assets, $procCount processors."
+            val name = "Expand with ${assetIds.size} assets, $procCount processors."
             val parentScript = jobService.getZpsScript(parentTask.taskId)
-            val newScript = ZpsScript(name, null, finalAssetList, parentScript.execute)
+            val newScript = ZpsScript(name, null, null, parentScript.execute, assetIds = assetIds)
 
             newScript.globalArgs = parentScript.globalArgs
             newScript.type = parentScript.type
@@ -525,7 +515,7 @@ class AssetServiceImpl : AssetService {
             logger.event(
                 LogObject.JOB, LogAction.EXPAND,
                 mapOf(
-                    "assetCount" to finalAssetList.size,
+                    "assetCount" to assetIds.size,
                     "parentTaskId" to parentTask.taskId,
                     "taskId" to newTask.id,
                     "jobId" to newTask.jobId
