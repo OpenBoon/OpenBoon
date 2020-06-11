@@ -15,22 +15,148 @@ exports[`<Metadata /> should render properly 1`] = `
 
 exports[`<Metadata /> should render selected asset 1`] = `
 Array [
-  .emotion-1 {
+  .emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-0 {
   color: #4a90e2;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
+  >
+    TIFF_1MB.tiff
+  </div>,
+  .emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-5:hover {
+  background-color: #027aff38;
+}
+
+.emotion-5:hover div {
+  color: #ffffff;
+}
+
+.emotion-5:hover div svg {
+  opacity: 1;
+}
+
+.emotion-0 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+  padding-right: 8px;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  color: #e0e0e0;
+  padding: 16px;
+  padding-left: 8px;
+  word-break: break-all;
+}
+
+.emotion-4 {
+  width: 36px;
+  padding: 16px;
+  padding-left: 8px;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
+.emotion-2 {
+  opacity: 0;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+}
+
+<div
+    className="emotion-5"
   >
     <div
       className="emotion-0"
     >
-      TIFF_1MB.tiff
+      ID
+    </div>
+    <div
+      className="emotion-1"
+      title="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+    >
+      vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <button
+        className="emotion-3"
+        onClick={[Function]}
+        title="Copy to Clipboard"
+        type="button"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="copy.svg"
+          width={20}
+        />
+      </button>
     </div>
   </div>,
   .emotion-3 {
@@ -501,22 +627,148 @@ Array [
 
 exports[`<Metadata /> should render selected asset 2`] = `
 Array [
-  .emotion-1 {
+  .emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-0 {
   color: #4a90e2;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
+  >
+    TIFF_1MB.tiff
+  </div>,
+  .emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-5:hover {
+  background-color: #027aff38;
+}
+
+.emotion-5:hover div {
+  color: #ffffff;
+}
+
+.emotion-5:hover div svg {
+  opacity: 1;
+}
+
+.emotion-0 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+  padding-right: 8px;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  color: #e0e0e0;
+  padding: 16px;
+  padding-left: 8px;
+  word-break: break-all;
+}
+
+.emotion-4 {
+  width: 36px;
+  padding: 16px;
+  padding-left: 8px;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
+.emotion-2 {
+  opacity: 0;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+}
+
+<div
+    className="emotion-5"
   >
     <div
       className="emotion-0"
     >
-      TIFF_1MB.tiff
+      ID
+    </div>
+    <div
+      className="emotion-1"
+      title="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+    >
+      vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <button
+        className="emotion-3"
+        onClick={[Function]}
+        title="Copy to Clipboard"
+        type="button"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="copy.svg"
+          width={20}
+        />
+      </button>
     </div>
   </div>,
   .emotion-3 {
@@ -684,134 +936,130 @@ Array [
     <JsonDisplay
       json={
         Object {
-          "id": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
-          "metadata": Object {
-            "analysis": Object {
-              "zvi": Object {
-                "tinyProxy": Array [
-                  "#f3dfc3",
-                  "#f4efd8",
-                  "#c18f46",
-                  "#ebdfbd",
-                  "#ccd3c0",
-                  "#e7d4bb",
-                  "#beae8e",
-                  "#cabf9e",
-                  "#d2c09c",
-                ],
-              },
-            },
-            "clip": Object {
-              "length": 1,
-              "pile": "pUn6wBxUN7x9JxOxLkvruOyNdYA",
-              "sourceAssetId": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
-              "start": 1,
-              "stop": 1,
-              "type": "page",
-            },
-            "files": Array [
-              Object {
-                "attrs": Object {
-                  "height": 434,
-                  "width": 650,
-                },
-                "category": "proxy",
-                "mimetype": "image/jpeg",
-                "name": "image_650x434.jpg",
-                "size": 89643,
-                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg",
-              },
-              Object {
-                "attrs": Object {
-                  "height": 341,
-                  "width": 512,
-                },
-                "category": "proxy",
-                "mimetype": "image/jpeg",
-                "name": "image_512x341.jpg",
-                "size": 60713,
-                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg",
-              },
-              Object {
-                "attrs": Object {
-                  "height": 213,
-                  "width": 320,
-                },
-                "category": "proxy",
-                "mimetype": "image/jpeg",
-                "name": "image_320x213.jpg",
-                "size": 30882,
-                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
-              },
-            ],
-            "media": Object {
-              "aspect": 1.5,
-              "height": 434,
-              "length": 1,
-              "orientation": "landscape",
-              "type": "image",
-              "width": 650,
-            },
-            "metrics": Object {
-              "pipeline": Array [
-                Object {
-                  "checksum": 1621235190,
-                  "executionDate": "2020-03-03T21:22:27.694149",
-                  "executionTime": 0.11,
-                  "module": "standard",
-                  "processor": "zmlp_core.core.processors.PreCacheSourceFileProcessor",
-                },
-                Object {
-                  "checksum": 1426657387,
-                  "executionDate": "2020-03-03T21:22:28.215069",
-                  "executionTime": 0.26,
-                  "module": "standard",
-                  "processor": "zmlp_core.image.importers.ImageImporter",
-                },
-                Object {
-                  "checksum": 2001473853,
-                  "executionTime": 0,
-                  "module": "standard",
-                  "processor": "zmlp_core.office.importers.OfficeImporter",
-                },
-                Object {
-                  "checksum": 3310423168,
-                  "executionTime": 0,
-                  "module": "standard",
-                  "processor": "zmlp_core.video.VideoImporter",
-                },
-                Object {
-                  "checksum": 1841569083,
-                  "executionDate": "2020-03-03T21:22:29.654215",
-                  "executionTime": 0,
-                  "module": "standard",
-                  "processor": "zmlp_core.core.processors.AssertAttributesProcessor",
-                },
+          "analysis": Object {
+            "zvi": Object {
+              "tinyProxy": Array [
+                "#f3dfc3",
+                "#f4efd8",
+                "#c18f46",
+                "#ebdfbd",
+                "#ccd3c0",
+                "#e7d4bb",
+                "#beae8e",
+                "#cabf9e",
+                "#d2c09c",
               ],
             },
-            "similarity": Object {
-              "simhash": "NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP",
-            },
-            "source": Object {
-              "checksum": 1867533868,
-              "extension": "tiff",
-              "filename": "TIFF_1MB.tiff",
-              "filesize": 1131930,
-              "mimetype": "image/tiff",
-              "path": "gs://zorroa-dev-data/image/TIFF_1MB.tiff",
-              "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff",
-            },
-            "system": Object {
-              "dataSourceId": "10509c20-5d95-11ea-baea-364023b135f5",
-              "jobId": "106d4be1-5d95-11ea-baea-364023b135f5",
-              "projectId": "89382033-bcbb-4c8f-81a9-3d0883298a81",
-              "state": "Analyzed",
-              "taskId": "106e0f32-5d95-11ea-baea-364023b135f5",
-              "timeCreated": "2020-03-03T21:22:24.922700Z",
-              "timeModified": "2020-03-03T21:22:47.575195Z",
-            },
           },
-          "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/",
+          "clip": Object {
+            "length": 1,
+            "pile": "pUn6wBxUN7x9JxOxLkvruOyNdYA",
+            "sourceAssetId": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+            "start": 1,
+            "stop": 1,
+            "type": "page",
+          },
+          "files": Array [
+            Object {
+              "attrs": Object {
+                "height": 434,
+                "width": 650,
+              },
+              "category": "proxy",
+              "mimetype": "image/jpeg",
+              "name": "image_650x434.jpg",
+              "size": 89643,
+              "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg",
+            },
+            Object {
+              "attrs": Object {
+                "height": 341,
+                "width": 512,
+              },
+              "category": "proxy",
+              "mimetype": "image/jpeg",
+              "name": "image_512x341.jpg",
+              "size": 60713,
+              "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg",
+            },
+            Object {
+              "attrs": Object {
+                "height": 213,
+                "width": 320,
+              },
+              "category": "proxy",
+              "mimetype": "image/jpeg",
+              "name": "image_320x213.jpg",
+              "size": 30882,
+              "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
+            },
+          ],
+          "media": Object {
+            "aspect": 1.5,
+            "height": 434,
+            "length": 1,
+            "orientation": "landscape",
+            "type": "image",
+            "width": 650,
+          },
+          "metrics": Object {
+            "pipeline": Array [
+              Object {
+                "checksum": 1621235190,
+                "executionDate": "2020-03-03T21:22:27.694149",
+                "executionTime": 0.11,
+                "module": "standard",
+                "processor": "zmlp_core.core.processors.PreCacheSourceFileProcessor",
+              },
+              Object {
+                "checksum": 1426657387,
+                "executionDate": "2020-03-03T21:22:28.215069",
+                "executionTime": 0.26,
+                "module": "standard",
+                "processor": "zmlp_core.image.importers.ImageImporter",
+              },
+              Object {
+                "checksum": 2001473853,
+                "executionTime": 0,
+                "module": "standard",
+                "processor": "zmlp_core.office.importers.OfficeImporter",
+              },
+              Object {
+                "checksum": 3310423168,
+                "executionTime": 0,
+                "module": "standard",
+                "processor": "zmlp_core.video.VideoImporter",
+              },
+              Object {
+                "checksum": 1841569083,
+                "executionDate": "2020-03-03T21:22:29.654215",
+                "executionTime": 0,
+                "module": "standard",
+                "processor": "zmlp_core.core.processors.AssertAttributesProcessor",
+              },
+            ],
+          },
+          "similarity": Object {
+            "simhash": "NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP",
+          },
+          "source": Object {
+            "checksum": 1867533868,
+            "extension": "tiff",
+            "filename": "TIFF_1MB.tiff",
+            "filesize": 1131930,
+            "mimetype": "image/tiff",
+            "path": "gs://zorroa-dev-data/image/TIFF_1MB.tiff",
+            "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff",
+          },
+          "system": Object {
+            "dataSourceId": "10509c20-5d95-11ea-baea-364023b135f5",
+            "jobId": "106d4be1-5d95-11ea-baea-364023b135f5",
+            "projectId": "89382033-bcbb-4c8f-81a9-3d0883298a81",
+            "state": "Analyzed",
+            "taskId": "106e0f32-5d95-11ea-baea-364023b135f5",
+            "timeCreated": "2020-03-03T21:22:24.922700Z",
+            "timeModified": "2020-03-03T21:22:47.575195Z",
+          },
         }
       }
     />

@@ -135,10 +135,20 @@ class ProjectControllerTests : MockMvcTest() {
                 .content(Json.serialize(settings))
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.defaultPipelineId", CoreMatchers.equalTo(
-                settings.defaultPipelineId.toString())))
-            .andExpect(jsonPath("$.defaultIndexRouteId",
-                CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())))
+            .andExpect(
+                jsonPath(
+                    "$.defaultPipelineId",
+                    CoreMatchers.equalTo(
+                        settings.defaultPipelineId.toString()
+                    )
+                )
+            )
+            .andExpect(
+                jsonPath(
+                    "$.defaultIndexRouteId",
+                    CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())
+                )
+            )
             .andReturn()
     }
 
@@ -157,10 +167,10 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun testGetMyProjectSettings() {
         mvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/project/_settings")
-                    .headers(admin())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-            )
+            MockMvcRequestBuilders.get("/api/v1/project/_settings")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.defaultPipelineId", CoreMatchers.anything()))
             .andExpect(jsonPath("$.defaultIndexRouteId", CoreMatchers.anything()))
@@ -170,10 +180,10 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun testGetMyProjecQuotas() {
         mvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/project/_quotas")
-                    .headers(admin())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-            )
+            MockMvcRequestBuilders.get("/api/v1/project/_quotas")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.videoSecondsMax", CoreMatchers.anything()))
             .andExpect(jsonPath("$.videoSecondsCount", CoreMatchers.anything()))
@@ -195,10 +205,10 @@ class ProjectControllerTests : MockMvcTest() {
         projectQuotasDao.incrementTimeSeriesCounters(Date(), counters)
 
         mvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/project/_quotas_time_series")
-                    .headers(admin())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-            )
+            MockMvcRequestBuilders.get("/api/v1/project/_quotas_time_series")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$[0].videoSecondsCount", CoreMatchers.anything()))
             .andExpect(jsonPath("$[0].pageCount", CoreMatchers.anything()))
@@ -217,10 +227,20 @@ class ProjectControllerTests : MockMvcTest() {
                 .content(Json.serialize(settings))
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.defaultPipelineId", CoreMatchers.equalTo(
-                settings.defaultPipelineId.toString())))
-            .andExpect(jsonPath("$.defaultIndexRouteId",
-                CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())))
+            .andExpect(
+                jsonPath(
+                    "$.defaultPipelineId",
+                    CoreMatchers.equalTo(
+                        settings.defaultPipelineId.toString()
+                    )
+                )
+            )
+            .andExpect(
+                jsonPath(
+                    "$.defaultIndexRouteId",
+                    CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())
+                )
+            )
             .andReturn()
     }
 

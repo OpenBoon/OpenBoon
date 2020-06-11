@@ -94,9 +94,13 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             ps
         }
 
-        logger.event(LogObject.INDEX_ROUTE, LogAction.CREATE,
-            mapOf("indexRouteId" to id,
-                "overrideProjectId" to projectId))
+        logger.event(
+            LogObject.INDEX_ROUTE, LogAction.CREATE,
+            mapOf(
+                "indexRouteId" to id,
+                "overrideProjectId" to projectId
+            )
+        )
         return get(id)
     }
 

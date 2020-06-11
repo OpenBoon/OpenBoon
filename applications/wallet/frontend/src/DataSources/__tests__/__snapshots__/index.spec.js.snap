@@ -164,12 +164,23 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
   </nav>,
-  .emotion-5 {
+  .emotion-35 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -263,6 +274,21 @@ Array [
   padding-left: 4px;
 }
 
+.emotion-34 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-33 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .emotion-6 {
   text-align: left;
   font-size: 15px;
@@ -287,10 +313,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-33 {
-  height: auto;
 }
 
 .emotion-32 {
@@ -421,7 +443,7 @@ Array [
 }
 
 <div
-    className="emotion-33"
+    className="emotion-35"
   >
     <div
       className="emotion-5"
@@ -457,283 +479,291 @@ Array [
         </div>
       </button>
     </div>
-    <table
-      className="emotion-32"
+    <div
+      className="emotion-34"
     >
-      <thead>
-        <tr>
-          <th
-            className="emotion-6"
-          >
-            Name
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Source Type
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Path
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Date Created
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Date Modified
-          </th>
-          <th
-            className="emotion-6"
-          >
-            File Types
-          </th>
-          <th
-            className="emotion-6"
-          >
-            <div
-              className="emotion-12"
-            >
-              <svg
-                data-file-name="gear.svg"
-                width={20}
-              />
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            test
-          </td>
-          <td>
-            Google Cloud Storage
-          </td>
-          <td>
-            gs://zorroa-dev-data/images
-          </td>
-          <td>
-            2020-02-10 01:37:47
-          </td>
-          <td>
-            2020-02-10 01:37:47
-          </td>
-          <td>
-            <span
-              className="emotion-14"
-            >
-              jpg
-            </span>
-          </td>
-          <td>
-            <div
-              className="emotion-16"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-15"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
+      <div
+        className="emotion-33"
+      >
+        <table
+          className="emotion-32"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            test2
-          </td>
-          <td>
-            Google Cloud Storage
-          </td>
-          <td>
-            gs://zorroa-dev-data/image
-          </td>
-          <td>
-            2020-02-10 01:40:26
-          </td>
-          <td>
-            2020-02-10 01:40:26
-          </td>
-          <td>
-            <span
-              className="emotion-14"
-            >
-              jpg
-            </span>
-          </td>
-          <td>
-            <div
-              className="emotion-16"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-15"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
+                Name
+              </th>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            test3
-          </td>
-          <td>
-            Google Cloud Storage
-          </td>
-          <td>
-            gs://zorroa-dev-data
-          </td>
-          <td>
-            2020-02-10 01:42:23
-          </td>
-          <td>
-            2020-02-10 01:42:23
-          </td>
-          <td>
-            <span
-              className="emotion-14"
-            >
-              jpg
-            </span>
-            <span
-              className="emotion-14"
-            >
-              jpeg
-            </span>
-          </td>
-          <td>
-            <div
-              className="emotion-16"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-15"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
+                Source Type
+              </th>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            test4
-          </td>
-          <td>
-            Google Cloud Storage
-          </td>
-          <td>
-            gs://zorroa-dev-data
-          </td>
-          <td>
-            2020-02-10 16:21:18
-          </td>
-          <td>
-            2020-02-10 16:21:18
-          </td>
-          <td>
-            <span
-              className="emotion-14"
-            >
-              jpg
-            </span>
-            <span
-              className="emotion-14"
-            >
-              jpeg
-            </span>
-          </td>
-          <td>
-            <div
-              className="emotion-16"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-15"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
+                Path
+              </th>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            test5
-          </td>
-          <td>
-            Google Cloud Storage
-          </td>
-          <td>
-            gs://zorroa-dev-data
-          </td>
-          <td>
-            2020-02-10 16:47:39
-          </td>
-          <td>
-            2020-02-10 16:47:39
-          </td>
-          <td>
-            <span
-              className="emotion-14"
-            >
-              jpg
-            </span>
-            <span
-              className="emotion-14"
-            >
-              jpeg
-            </span>
-          </td>
-          <td>
-            <div
-              className="emotion-16"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-15"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
+                Date Created
+              </th>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+                Date Modified
+              </th>
+              <th
+                className="emotion-6"
+              >
+                File Types
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                test
+              </td>
+              <td>
+                Amazon Web Service (AWS)
+              </td>
+              <td>
+                s3://zorroa-dev-data
+              </td>
+              <td>
+                2020-02-10 01:37:47
+              </td>
+              <td>
+                2020-02-10 01:37:47
+              </td>
+              <td>
+                <span
+                  className="emotion-14"
+                >
+                  jpg
+                </span>
+              </td>
+              <td>
+                <div
+                  className="emotion-16"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-15"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                test2
+              </td>
+              <td>
+                Azure
+              </td>
+              <td>
+                azure://zorroa-dev-data
+              </td>
+              <td>
+                2020-02-10 01:40:26
+              </td>
+              <td>
+                2020-02-10 01:40:26
+              </td>
+              <td>
+                <span
+                  className="emotion-14"
+                >
+                  jpg
+                </span>
+              </td>
+              <td>
+                <div
+                  className="emotion-16"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-15"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                test3
+              </td>
+              <td>
+                Google Cloud Platform (GCP)
+              </td>
+              <td>
+                gs://zorroa-dev-data
+              </td>
+              <td>
+                2020-02-10 01:42:23
+              </td>
+              <td>
+                2020-02-10 01:42:23
+              </td>
+              <td>
+                <span
+                  className="emotion-14"
+                >
+                  jpg
+                </span>
+                <span
+                  className="emotion-14"
+                >
+                  jpeg
+                </span>
+              </td>
+              <td>
+                <div
+                  className="emotion-16"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-15"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                test4
+              </td>
+              <td>
+                Unknown
+              </td>
+              <td>
+                ftp://zorroa-dev-data
+              </td>
+              <td>
+                2020-02-10 16:21:18
+              </td>
+              <td>
+                2020-02-10 16:21:18
+              </td>
+              <td>
+                <span
+                  className="emotion-14"
+                >
+                  jpg
+                </span>
+                <span
+                  className="emotion-14"
+                >
+                  jpeg
+                </span>
+              </td>
+              <td>
+                <div
+                  className="emotion-16"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-15"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                test5
+              </td>
+              <td>
+                Google Cloud Platform (GCP)
+              </td>
+              <td>
+                gs://zorroa-dev-data
+              </td>
+              <td>
+                2020-02-10 16:47:39
+              </td>
+              <td>
+                2020-02-10 16:47:39
+              </td>
+              <td>
+                <span
+                  className="emotion-14"
+                >
+                  jpg
+                </span>
+                <span
+                  className="emotion-14"
+                >
+                  jpeg
+                </span>
+              </td>
+              <td>
+                <div
+                  className="emotion-16"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-15"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div>
        
     </div>
@@ -908,12 +938,23 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
   </nav>,
-  .emotion-5 {
+  .emotion-35 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1007,6 +1048,21 @@ Array [
   padding-left: 4px;
 }
 
+.emotion-34 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-33 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .emotion-6 {
   text-align: left;
   font-size: 15px;
@@ -1031,10 +1087,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-33 {
-  height: auto;
 }
 
 .emotion-32 {
@@ -1165,7 +1217,7 @@ Array [
 }
 
 <div
-    className="emotion-33"
+    className="emotion-35"
   >
     <div
       className="emotion-5"
@@ -1201,283 +1253,291 @@ Array [
         </div>
       </button>
     </div>
-    <table
-      className="emotion-32"
+    <div
+      className="emotion-34"
     >
-      <thead>
-        <tr>
-          <th
-            className="emotion-6"
-          >
-            Name
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Source Type
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Path
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Date Created
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Date Modified
-          </th>
-          <th
-            className="emotion-6"
-          >
-            File Types
-          </th>
-          <th
-            className="emotion-6"
-          >
-            <div
-              className="emotion-12"
-            >
-              <svg
-                data-file-name="gear.svg"
-                width={20}
-              />
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            test
-          </td>
-          <td>
-            Google Cloud Storage
-          </td>
-          <td>
-            gs://zorroa-dev-data/images
-          </td>
-          <td>
-            2020-02-10 01:37:47
-          </td>
-          <td>
-            2020-02-10 01:37:47
-          </td>
-          <td>
-            <span
-              className="emotion-14"
-            >
-              jpg
-            </span>
-          </td>
-          <td>
-            <div
-              className="emotion-16"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-15"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
+      <div
+        className="emotion-33"
+      >
+        <table
+          className="emotion-32"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            test2
-          </td>
-          <td>
-            Google Cloud Storage
-          </td>
-          <td>
-            gs://zorroa-dev-data/image
-          </td>
-          <td>
-            2020-02-10 01:40:26
-          </td>
-          <td>
-            2020-02-10 01:40:26
-          </td>
-          <td>
-            <span
-              className="emotion-14"
-            >
-              jpg
-            </span>
-          </td>
-          <td>
-            <div
-              className="emotion-16"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-15"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
+                Name
+              </th>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            test3
-          </td>
-          <td>
-            Google Cloud Storage
-          </td>
-          <td>
-            gs://zorroa-dev-data
-          </td>
-          <td>
-            2020-02-10 01:42:23
-          </td>
-          <td>
-            2020-02-10 01:42:23
-          </td>
-          <td>
-            <span
-              className="emotion-14"
-            >
-              jpg
-            </span>
-            <span
-              className="emotion-14"
-            >
-              jpeg
-            </span>
-          </td>
-          <td>
-            <div
-              className="emotion-16"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-15"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
+                Source Type
+              </th>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            test4
-          </td>
-          <td>
-            Google Cloud Storage
-          </td>
-          <td>
-            gs://zorroa-dev-data
-          </td>
-          <td>
-            2020-02-10 16:21:18
-          </td>
-          <td>
-            2020-02-10 16:21:18
-          </td>
-          <td>
-            <span
-              className="emotion-14"
-            >
-              jpg
-            </span>
-            <span
-              className="emotion-14"
-            >
-              jpeg
-            </span>
-          </td>
-          <td>
-            <div
-              className="emotion-16"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-15"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
+                Path
+              </th>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            test5
-          </td>
-          <td>
-            Google Cloud Storage
-          </td>
-          <td>
-            gs://zorroa-dev-data
-          </td>
-          <td>
-            2020-02-10 16:47:39
-          </td>
-          <td>
-            2020-02-10 16:47:39
-          </td>
-          <td>
-            <span
-              className="emotion-14"
-            >
-              jpg
-            </span>
-            <span
-              className="emotion-14"
-            >
-              jpeg
-            </span>
-          </td>
-          <td>
-            <div
-              className="emotion-16"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-15"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
+                Date Created
+              </th>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+                Date Modified
+              </th>
+              <th
+                className="emotion-6"
+              >
+                File Types
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                test
+              </td>
+              <td>
+                Amazon Web Service (AWS)
+              </td>
+              <td>
+                s3://zorroa-dev-data
+              </td>
+              <td>
+                2020-02-10 01:37:47
+              </td>
+              <td>
+                2020-02-10 01:37:47
+              </td>
+              <td>
+                <span
+                  className="emotion-14"
+                >
+                  jpg
+                </span>
+              </td>
+              <td>
+                <div
+                  className="emotion-16"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-15"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                test2
+              </td>
+              <td>
+                Azure
+              </td>
+              <td>
+                azure://zorroa-dev-data
+              </td>
+              <td>
+                2020-02-10 01:40:26
+              </td>
+              <td>
+                2020-02-10 01:40:26
+              </td>
+              <td>
+                <span
+                  className="emotion-14"
+                >
+                  jpg
+                </span>
+              </td>
+              <td>
+                <div
+                  className="emotion-16"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-15"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                test3
+              </td>
+              <td>
+                Google Cloud Platform (GCP)
+              </td>
+              <td>
+                gs://zorroa-dev-data
+              </td>
+              <td>
+                2020-02-10 01:42:23
+              </td>
+              <td>
+                2020-02-10 01:42:23
+              </td>
+              <td>
+                <span
+                  className="emotion-14"
+                >
+                  jpg
+                </span>
+                <span
+                  className="emotion-14"
+                >
+                  jpeg
+                </span>
+              </td>
+              <td>
+                <div
+                  className="emotion-16"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-15"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                test4
+              </td>
+              <td>
+                Unknown
+              </td>
+              <td>
+                ftp://zorroa-dev-data
+              </td>
+              <td>
+                2020-02-10 16:21:18
+              </td>
+              <td>
+                2020-02-10 16:21:18
+              </td>
+              <td>
+                <span
+                  className="emotion-14"
+                >
+                  jpg
+                </span>
+                <span
+                  className="emotion-14"
+                >
+                  jpeg
+                </span>
+              </td>
+              <td>
+                <div
+                  className="emotion-16"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-15"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                test5
+              </td>
+              <td>
+                Google Cloud Platform (GCP)
+              </td>
+              <td>
+                gs://zorroa-dev-data
+              </td>
+              <td>
+                2020-02-10 16:47:39
+              </td>
+              <td>
+                2020-02-10 16:47:39
+              </td>
+              <td>
+                <span
+                  className="emotion-14"
+                >
+                  jpg
+                </span>
+                <span
+                  className="emotion-14"
+                >
+                  jpeg
+                </span>
+              </td>
+              <td>
+                <div
+                  className="emotion-16"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-15"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div>
        
     </div>
@@ -1602,13 +1662,20 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
   </nav>,
-  .emotion-17 {
+  .emotion-19 {
   height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .emotion-5 {
@@ -1703,6 +1770,21 @@ Array [
 
 .emotion-2 {
   padding-left: 4px;
+}
+
+.emotion-18 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-17 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .emotion-16 {
@@ -1819,7 +1901,7 @@ Array [
 }
 
 <div
-    className="emotion-17"
+    className="emotion-19"
   >
     <div
       className="emotion-5"
@@ -1855,76 +1937,78 @@ Array [
         </div>
       </button>
     </div>
-    <table
-      className="emotion-16"
+    <div
+      className="emotion-18"
     >
-      <thead>
-        <tr>
-          <th
-            className="emotion-6"
-          >
-            Name
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Source Type
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Path
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Date Created
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Date Modified
-          </th>
-          <th
-            className="emotion-6"
-          >
-            File Types
-          </th>
-          <th
-            className="emotion-6"
-          >
-            <div
-              className="emotion-12"
-            >
-              <svg
-                data-file-name="gear.svg"
-                width={20}
-              />
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          className="emotion-15"
+      <div
+        className="emotion-17"
+      >
+        <table
+          className="emotion-16"
         >
-          <td
-            colSpan={7}
-          >
-            <div
-              className="emotion-14"
+          <thead>
+            <tr>
+              <th
+                className="emotion-6"
+              >
+                Name
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Source Type
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Path
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Date Created
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Date Modified
+              </th>
+              <th
+                className="emotion-6"
+              >
+                File Types
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-15"
             >
-              No data sources
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div>
-       
-    </div>
-    <div>
-       
+              <td
+                colSpan={7}
+              >
+                <div
+                  className="emotion-14"
+                >
+                  No data sources
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>,
 ]

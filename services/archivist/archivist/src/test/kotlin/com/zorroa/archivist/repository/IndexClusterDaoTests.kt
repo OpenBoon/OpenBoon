@@ -17,7 +17,8 @@ class IndexClusterDaoTests : AbstractTest() {
     override fun requiresElasticSearch(): Boolean = true
 
     val testSpec = IndexClusterSpec(
-        "http://foo", false)
+        "http://foo", false
+    )
 
     @Test
     fun testCreate() {
@@ -57,7 +58,8 @@ class IndexClusterDaoTests : AbstractTest() {
     @Test
     fun getNextAutoPoolCluster() {
         val spec = IndexClusterSpec(
-            "http://foo", true)
+            "http://foo", true
+        )
         val cluster1 = indexClusterDao.create(spec)
         // Force the cluster to ready
         jdbc.update("UPDATE index_cluster SET int_state=1 WHERE pk_index_cluster=?", cluster1.id)
@@ -69,7 +71,8 @@ class IndexClusterDaoTests : AbstractTest() {
     @Test
     fun testUpdateStatus() {
         val spec = IndexClusterSpec(
-            "http://foo", true)
+            "http://foo", true
+        )
         val cluster1 = indexClusterDao.create(spec)
         assertTrue(indexClusterDao.updateState(cluster1, IndexClusterState.DOWN))
         assertFalse(indexClusterDao.updateState(cluster1, IndexClusterState.DOWN))

@@ -165,7 +165,8 @@ class ProjectServiceImpl constructor(
             val route = createIndexRoute(project)
             val pipeline = createDefaultPipeline(project)
             projectCustomDao.createSettings(
-                project.id, ProjectSettings(
+                project.id,
+                ProjectSettings(
                     pipeline.id,
                     route.id
                 )
@@ -205,7 +206,8 @@ class ProjectServiceImpl constructor(
     override fun getCryptoKey(): String {
         val pid = getProjectId()
         val keys = systemStorageService.fetchObject(
-            "projects/$pid/keys.json", Json.LIST_OF_STRING)
+            "projects/$pid/keys.json", Json.LIST_OF_STRING
+        )
         // If this ever changes, things will break.
         val mod1 = (pid.leastSignificantBits % keys.size).toInt()
         val mod2 = (pid.mostSignificantBits % keys.size).toInt()
@@ -278,7 +280,8 @@ class ProjectServiceImpl constructor(
     private fun createStandardApiKeys(project: Project) {
         logger.info("Creating standard API Keys for project ${project.name}")
         authServerClient.createApiKey(
-            project.id, KnownKeys.JOB_RUNNER, setOf(
+            project.id, KnownKeys.JOB_RUNNER,
+            setOf(
                 Permission.AssetsImport,
                 Permission.AssetsRead,
                 Permission.SystemProjectDecrypt,
@@ -304,7 +307,8 @@ class ProjectServiceImpl constructor(
                 .trim('=')
         }
         systemStorageService.storeObject(
-            "projects/${project.id}/keys.json", result.toList())
+            "projects/${project.id}/keys.json", result.toList()
+        )
     }
 
     override fun setEnabled(id: UUID, enabled: Boolean) {

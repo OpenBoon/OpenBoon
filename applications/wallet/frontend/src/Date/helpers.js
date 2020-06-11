@@ -50,6 +50,11 @@ export const formatPrettyDate = ({ timestamp }) => {
   return `${year}-${month}-${day} ${hour}:${minute} ${timeZoneName}`
 }
 
+export const getDuration = ({ timeStarted, timeStopped, now }) => {
+  const stopTime = timeStopped < 0 ? now : timeStopped
+  return stopTime - timeStarted
+}
+
 export const formatDuration = ({ seconds }) => {
   const date = new Date(0)
   date.setSeconds(seconds)

@@ -194,12 +194,14 @@ class TaskFilter(
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
-            mapOf("taskId" to "task.pk_task",
-                    "id" to "task.pk_task",
-                    "jobId" to "task.pk_job",
-                    "state" to "task.int_state",
-                    "timeCreated" to "task.time_created",
-                    "timeStarted" to "task.time_started")
+        mapOf(
+            "taskId" to "task.pk_task",
+            "id" to "task.pk_task",
+            "jobId" to "task.pk_job",
+            "state" to "task.int_state",
+            "timeCreated" to "task.time_created",
+            "timeStarted" to "task.time_started"
+        )
 
     @JsonIgnore
     override fun build() {

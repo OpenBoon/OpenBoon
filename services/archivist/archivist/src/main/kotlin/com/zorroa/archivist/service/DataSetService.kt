@@ -73,7 +73,8 @@ class DataSetServiceImpl(
 
         if (!spec.name.matches(Regex("[a-z0-9\\-_]{2,32}", RegexOption.IGNORE_CASE))) {
             throw IllegalArgumentException(
-                "DataSet names must be alpha numeric, dashes and underscores allowed")
+                "DataSet names must be alpha numeric, dashes and underscores allowed"
+            )
         }
 
         val ts = DataSet(
@@ -114,8 +115,10 @@ class DataSetServiceImpl(
     @Transactional(propagation = Propagation.SUPPORTS)
     override fun getLabelCounts(ds: DataSet): Map<String, Long> {
         val rest = indexRoutingService.getProjectRestClient()
-        val query = QueryBuilders.nestedQuery("labels",
-            QueryBuilders.termQuery("labels.dataSetId", ds.id.toString()), ScoreMode.None)
+        val query = QueryBuilders.nestedQuery(
+            "labels",
+            QueryBuilders.termQuery("labels.dataSetId", ds.id.toString()), ScoreMode.None
+        )
         val agg = AggregationBuilders.nested("nested_labels", "labels")
             .subAggregation(AggregationBuilders.terms("labels").field("labels.label"))
 

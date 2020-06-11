@@ -133,8 +133,10 @@ class IndexClusterDaoImpl : AbstractDao(), IndexClusterDao {
 
     override fun updateState(cluster: IndexCluster, state: IndexClusterState): Boolean {
         val time = System.currentTimeMillis()
-        return jdbc.update(UPDATE_STATE,
-            time, state.ordinal, cluster.id, state.ordinal) == 1
+        return jdbc.update(
+            UPDATE_STATE,
+            time, state.ordinal, cluster.id, state.ordinal
+        ) == 1
     }
 
     override fun count(filter: IndexClusterFilter): Long {
@@ -192,34 +194,34 @@ class IndexClusterDaoImpl : AbstractDao(), IndexClusterDao {
             "SELECT " +
                 "index_cluster.pk_index_cluster," +
                 "COUNT(1) as c " +
-            "FROM " +
+                "FROM " +
                 "index_cluster LEFT JOIN index_route " +
-                    "ON (index_cluster.pk_index_cluster = index_route.pk_index_cluster) " +
-            "WHERE " +
+                "ON (index_cluster.pk_index_cluster = index_route.pk_index_cluster) " +
+                "WHERE " +
                 "index_cluster.bool_autopool = 't'" +
-            "AND " +
+                "AND " +
                 "index_cluster.int_state = 1 " +
-            "GROUP BY " +
+                "GROUP BY " +
                 "index_cluster.pk_index_cluster"
 
         const val UPDATE_INFO =
             "UPDATE " +
                 "index_cluster " +
-            "SET " +
+                "SET " +
                 "time_ping=?," +
                 "json_attrs=?::jsonb " +
-            "WHERE " +
+                "WHERE " +
                 "pk_index_cluster=?"
 
         const val UPDATE_STATE =
             "UPDATE " +
                 "index_cluster " +
-            "SET " +
+                "SET " +
                 "time_modified=?, " +
                 "int_state=? " +
-            "WHERE " +
+                "WHERE " +
                 "pk_index_cluster=? " +
-            "AND " +
+                "AND " +
                 "int_state!=?"
     }
 }

@@ -49,10 +49,6 @@ variable "environment" {
 variable "fqdn" {
 }
 
-variable "replicas" {
-  default = 0
-}
-
 variable "container-tag" {
   default = "latest"
 }

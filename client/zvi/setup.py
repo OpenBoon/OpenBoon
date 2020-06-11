@@ -11,7 +11,11 @@ from datetime import datetime
 
 requirements = [
     'zmlp',
-    'pandas'
+    'pandas',
+    'matplotlib',
+    'opencv-python',
+    'Pillow',
+    'ipython'
 ]
 
 setup(

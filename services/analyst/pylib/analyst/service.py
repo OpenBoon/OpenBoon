@@ -113,15 +113,21 @@ class ClusterClient(object):
         data = self.make_event(task, etype, payload)
         logger.debug("POST %s/cluster/_event %s" % (self.remote_url, data))
         # Run forever until server comes back online
-        backoff = 1
+        backoff = 2
         while True:
             try:
                 rsp = requests.post(self.remote_url + "/cluster/_event", verify=False,
                                     json=data, headers=self._headers())
-                return rsp.status_code
-            except requests.exceptions.ConnectionError:
-                time.sleep(random.randint(1, min(60, backoff)))
-                backoff *= 2
+                if rsp.status_code == 429:
+                    logger.warning("Received backoff 429 from Archivist, waiting....")
+                    raise RuntimeError("Received backoff from Archivist")
+                else:
+                    return rsp.status_code
+            except (RuntimeError, requests.exceptions.ConnectionError):
+                wait_time = random.randint(1, min(60, backoff))
+                logger.warning("Sleeping {} seconds for Archivist to return....".format(wait_time))
+                time.sleep(wait_time)
+                backoff = backoff * 2
 
     def make_event(self, task, etype, payload):
         """

@@ -185,17 +185,21 @@ class JobDaoImpl : AbstractDao(), JobDao {
     }
 
     override fun getTaskStateCounts(job: JobId): TaskStateCounts {
-        return jdbc.queryForObject(GET_TASK_COUNTS, RowMapper { rs, i ->
-            val map = mapOf(
-                TaskState.Waiting to rs.getInt("int_task_state_0"),
-                TaskState.Running to rs.getInt("int_task_state_1"),
-                TaskState.Success to rs.getInt("int_task_state_2"),
-                TaskState.Failure to rs.getInt("int_task_state_3"),
-                TaskState.Skipped to rs.getInt("int_task_state_4"),
-                TaskState.Queued to rs.getInt("int_task_state_5")
-            )
-            TaskStateCounts(map, rs.getInt("int_task_total_count"))
-        }, job.jobId)
+        return jdbc.queryForObject(
+            GET_TASK_COUNTS,
+            RowMapper { rs, i ->
+                val map = mapOf(
+                    TaskState.Waiting to rs.getInt("int_task_state_0"),
+                    TaskState.Running to rs.getInt("int_task_state_1"),
+                    TaskState.Success to rs.getInt("int_task_state_2"),
+                    TaskState.Failure to rs.getInt("int_task_state_3"),
+                    TaskState.Skipped to rs.getInt("int_task_state_4"),
+                    TaskState.Queued to rs.getInt("int_task_state_5")
+                )
+                TaskStateCounts(map, rs.getInt("int_task_total_count"))
+            },
+            job.jobId
+        )
     }
 
     override fun incrementAssetCounters(job: JobId, counts: AssetCounters): Boolean {
@@ -218,15 +222,19 @@ class JobDaoImpl : AbstractDao(), JobDao {
         )
         jdbc.update("DELETE FROM x_credentials_job WHERE pk_job=?", job.jobId)
         creds.forEach {
-            jdbc.update("INSERT INTO x_credentials_job VALUES (?,?,?,?)",
-                UUID.randomUUID(), it.id, job.jobId, it.type.ordinal)
+            jdbc.update(
+                "INSERT INTO x_credentials_job VALUES (?,?,?,?)",
+                UUID.randomUUID(), it.id, job.jobId, it.type.ordinal
+            )
         }
     }
 
     override fun getCredentialsTypes(job: JobId): List<String> {
-        return jdbc.queryForList("SELECT int_type FROM x_credentials_job WHERE pk_job=?", Int::class.java,
-            job.jobId).map {
-                CredentialsType.values()[it].toString()
+        return jdbc.queryForList(
+            "SELECT int_type FROM x_credentials_job WHERE pk_job=?", Int::class.java,
+            job.jobId
+        ).map {
+            CredentialsType.values()[it].toString()
         }
     }
 
@@ -300,33 +308,33 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         private const val GET_EXPIRED = "$GET " +
             "WHERE " +
-                "job.pk_job = job_count.pk_job " +
+            "job.pk_job = job_count.pk_job " +
             "AND " +
-                "job.int_state IN (?,?,?) " +
+            "job.int_state IN (?,?,?) " +
             "AND " +
-                "job_count.time_updated < ? "
+            "job_count.time_updated < ? "
 
         private const val ASSET_COUNTS_INC = "UPDATE " +
             "job_stat " +
             "SET " +
-                "int_asset_total_count=int_asset_total_count+?," +
-                "int_asset_create_count=int_asset_create_count+?," +
-                "int_asset_replace_count=int_asset_replace_count+? " +
+            "int_asset_total_count=int_asset_total_count+?," +
+            "int_asset_create_count=int_asset_create_count+?," +
+            "int_asset_replace_count=int_asset_replace_count+? " +
             "WHERE " +
-                "pk_job=?"
+            "pk_job=?"
 
         private const val RESUME_PAUSED =
             "UPDATE " +
                 "job " +
-            "SET " +
+                "SET " +
                 "bool_paused='f' " +
-            "WHERE " +
+                "WHERE " +
                 "int_state=? " +
-            "AND " +
+                "AND " +
                 "bool_paused='t' " +
-            "AND " +
+                "AND " +
                 "time_pause_expired < ? " +
-            "AND " +
+                "AND " +
                 "time_pause_expired != -1"
 
         private const val UPDATE = "UPDATE " +
@@ -363,9 +371,9 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "job_count.int_task_state_4," +
                 "job_count.int_task_state_5, " +
                 "job_count.int_task_total_count " +
-            "FROM " +
+                "FROM " +
                 "job_count " +
-            "WHERE " +
+                "WHERE " +
                 "job_count.pk_job = ?"
     }
 }

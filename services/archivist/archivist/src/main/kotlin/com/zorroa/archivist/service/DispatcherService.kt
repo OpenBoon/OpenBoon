@@ -128,7 +128,8 @@ class DispatchQueueManager @Autowired constructor(
     val authServerClient: AuthServerClient,
     val pipelineStoragProperties: PipelineStorageConfiguration,
     val jobService: JobService,
-    val systemStorageService: SystemStorageService
+    val systemStorageService: SystemStorageService,
+    val assetService: AssetService
 ) {
 
     /**
@@ -145,9 +146,12 @@ class DispatchQueueManager @Autowired constructor(
      * Caches a task priority list which is currently just a list of projects
      * sorted by the least number of tasks running first.
      */
-    val cachedDispatchPriority: Supplier<List<DispatchPriority>> = Suppliers.memoizeWithExpiration({
-        dispatcherService.getDispatchPriority()
-    }, cachedDispatchPriorityTimeoutSeconds, TimeUnit.SECONDS)
+    val cachedDispatchPriority: Supplier<List<DispatchPriority>> = Suppliers.memoizeWithExpiration(
+        {
+            dispatcherService.getDispatchPriority()
+        },
+        cachedDispatchPriorityTimeoutSeconds, TimeUnit.SECONDS
+    )
 
     /**
      * Return the next available dispatchable [DispatchTask] or null if there are not any.
@@ -209,6 +213,7 @@ class DispatchQueueManager @Autowired constructor(
      * @param analyst The hostname for the [Analyst] asking for a task.
      */
     fun queueAndDispatchTask(task: DispatchTask, analyst: String): Boolean {
+
         if (queueTask(task, analyst)) {
             meterRegistry.counter(
                 METRICS_KEY, "op", "tasks-queued"
@@ -329,6 +334,21 @@ class DispatcherServiceImpl @Autowired constructor(
         return if (result) {
             taskDao.setHostEndpoint(task, endpoint)
             analystDao.setTaskId(endpoint, task.taskId)
+
+            // If the task is queued with asset IDs then
+            // resolve the asset Ids.
+            withAuth(
+                InternalThreadAuthentication(
+                    task.projectId,
+                    setOf(Permission.AssetsRead)
+                )
+            ) {
+
+                task.script.assetIds?.let {
+                    val assets = assetService.getAll(it)
+                    task.script.assets = assets
+                }
+            }
             true
         } else {
             false
@@ -384,17 +404,18 @@ class DispatcherServiceImpl @Autowired constructor(
             if (!event.manualKill && event.exitStatus == EXIT_STATUS_HARD_FAIL &&
                 newState == TaskState.Failure
             ) {
-                val script = taskDao.getScript(task.taskId)
-                taskErrorDao.batchCreate(task, script.assets?.map {
+
+                taskErrorDao.create(
+                    task,
                     TaskErrorEvent(
-                        it.id,
-                        it.getAttr("source.path"),
-                        "Hard Task failure, exit ${event.exitStatus}",
+                        null,
+                        null,
+                        "Hard task container failure, all assets failed, exit ${event.exitStatus}",
                         "unknown",
                         true,
                         "unknown"
                     )
-                }.orEmpty())
+                )
             }
         }
 
@@ -408,16 +429,19 @@ class DispatcherServiceImpl @Autowired constructor(
             BatchCreateAssetsRequest(event.assets, analyze = false, task = parentTask)
         )
 
-        taskErrorDao.batchCreate(parentTask, result.failed.map {
-            TaskErrorEvent(
-                it["assetId"],
-                it["path"],
-                "${it["failureMessage"] ?: "Unknown ES failure"}",
-                "unknown",
-                true,
-                "index"
-            )
-        })
+        taskErrorDao.batchCreate(
+            parentTask,
+            result.failed.map {
+                TaskErrorEvent(
+                    it["assetId"],
+                    it["path"],
+                    "${it["failureMessage"] ?: "Unknown ES failure"}",
+                    "unknown",
+                    true,
+                    "index"
+                )
+            }
+        )
 
         return assetService.createAnalysisTask(parentTask, result.created, result.exists)
     }

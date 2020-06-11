@@ -113,6 +113,17 @@ resource "kubernetes_secret" "dockerhub" {
   type = "kubernetes.io/dockerconfigjson"
 }
 
+resource "google_storage_bucket_object" "task_env" {
+  bucket = google_storage_bucket.system.name
+  name = "environment/task_env.json"
+  content = <<EOF
+{
+  "CLARIFAI_KEY":  "${var.clarifai-key}"
+}
+EOF
+
+}
+
 ## Enable Google ML APIs
 resource "google_project_service" "video-intelligence" {
   service            = "videointelligence.googleapis.com"
@@ -238,7 +249,6 @@ module "wallet" {
   inception-key-b64       = local.inception-key-b64
   domain                  = var.wallet-domain
   container-tag           = var.container-tag
-  debug                   = var.wallet-debug
   browsable               = var.wallet-browsable-api
   marketplace-project     = "zorroa-public"
   marketplace-credentials = var.marketplace-credentials

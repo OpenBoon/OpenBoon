@@ -133,7 +133,8 @@ class ProjectFilter(
         "name" to "str_name",
         "timeCreated" to "time_created",
         "timeModified" to "time_modified",
-        "id" to "pk_project")
+        "id" to "pk_project"
+    )
 
     @JsonIgnore
     override fun build() {

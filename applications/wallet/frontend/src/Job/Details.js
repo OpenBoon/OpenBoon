@@ -17,7 +17,7 @@ const JobDetails = () => {
     `/api/v1/projects/${projectId}/jobs/${jobId}/`,
   )
 
-  const { name, state, paused, priority, taskCounts: tC } = job
+  const { name, state, paused, priority, assetCounts, taskCounts: tC } = job
 
   const status = paused ? 'Paused' : state
 
@@ -40,7 +40,11 @@ const JobDetails = () => {
       <div css={{ display: 'flex', alignItems: 'center' }}>
         <JobMenu status={status} revalidate={revalidate} />
 
-        <Value legend="Job Status" variant={VARIANTS.PRIMARY}>
+        <Value legend="ID" variant={VARIANTS.PRIMARY}>
+          {jobId}
+        </Value>
+
+        <Value legend="Status" variant={VARIANTS.PRIMARY}>
           {status}
         </Value>
 
@@ -48,7 +52,11 @@ const JobDetails = () => {
           {priority}
         </Value>
 
-        <Value legend="Job Progress" variant={VARIANTS.PRIMARY}>
+        <Value legend="# Assets" variant={VARIANTS.PRIMARY}>
+          {assetCounts.assetTotalCount}
+        </Value>
+
+        <Value legend="Progress" variant={VARIANTS.PRIMARY}>
           <ProgressBar taskCounts={taskCounts} />
         </Value>
       </div>

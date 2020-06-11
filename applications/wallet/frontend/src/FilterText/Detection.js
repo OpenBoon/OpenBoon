@@ -65,6 +65,7 @@ const FilterTextDetection = ({
               {query}
             </span>
           </Button>
+
           <Button
             title="Clear"
             aria-label="Clear Text Detection"
@@ -72,11 +73,7 @@ const FilterTextDetection = ({
               width: BUTTON_SIZE,
               padding: spacing.moderate,
               backgroundColor: colors.structure.coal,
-              ':hover': {
-                svg: {
-                  color: colors.structure.white,
-                },
-              },
+              ':hover': { svg: { color: colors.structure.white } },
             }}
             variant={VARIANTS.NEUTRAL}
             onClick={() => {

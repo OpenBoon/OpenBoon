@@ -14,6 +14,7 @@ import FilterExists from '../FilterExists'
 import FilterFacet from '../FilterFacet'
 import FilterRange from '../FilterRange'
 import FilterLabelConfidence from '../FilterLabelConfidence'
+import FilterSimilarity from '../FilterSimilarity'
 
 import { dispatch, ACTIONS } from './helpers'
 
@@ -133,6 +134,18 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             case 'textContent':
               return (
                 <FilterText
+                  key={`${filter.type}-${index}`}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
+            case 'similarity':
+              return (
+                <FilterSimilarity
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}

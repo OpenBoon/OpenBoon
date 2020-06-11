@@ -8,6 +8,8 @@ import FacetSvg from '../Icons/facet.svg'
 import RangeSvg from '../Icons/range.svg'
 import ExistsSvg from '../Icons/exists.svg'
 import MissingSvg from '../Icons/missing.svg'
+import SimilaritySvg from '../Icons/similarity.svg'
+import TextSvg from '../Icons/text.svg'
 
 const SVG_SIZE = 20
 
@@ -26,6 +28,14 @@ const FilterTitle = ({ filter: { attribute, type, values } }) => {
         ) : (
           <MissingSvg width={SVG_SIZE} color={colors.key.one} />
         ))}
+
+      {type === 'similarity' && (
+        <SimilaritySvg width={SVG_SIZE} color={colors.key.one} />
+      )}
+
+      {type === 'textContent' && (
+        <TextSvg width={SVG_SIZE} color={colors.key.one} />
+      )}
 
       <span
         css={{

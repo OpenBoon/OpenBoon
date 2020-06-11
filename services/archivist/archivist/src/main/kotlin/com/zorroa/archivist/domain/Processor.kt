@@ -63,9 +63,10 @@ class ProcessorFilter(
 
     @JsonIgnore
     override val sortMap: Map<String, String> = mapOf(
-            "id" to "processor.pk_processor",
-            "className" to "processor.str_name",
-            "type" to "processor.str_type")
+        "id" to "processor.pk_processor",
+        "className" to "processor.str_name",
+        "type" to "processor.str_type"
+    )
 
     override fun build() {
 

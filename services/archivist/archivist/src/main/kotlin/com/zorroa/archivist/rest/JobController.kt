@@ -137,7 +137,11 @@ class JobController @Autowired constructor(
         @ApiParam("Type of credentials") @PathVariable type: String
     ): Any {
         return Json.Mapper.readValue(
-            credentialsService.getDecryptedBlobByJob(id,
-                CredentialsType.valueOf(type.toUpperCase())), Json.GENERIC_MAP)
+            credentialsService.getDecryptedBlobByJob(
+                id,
+                CredentialsType.valueOf(type.toUpperCase())
+            ),
+            Json.GENERIC_MAP
+        )
     }
 }
