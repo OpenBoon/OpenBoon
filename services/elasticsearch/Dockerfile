@@ -3,7 +3,7 @@ COPY es-kwconf es-kwconf
 COPY es-similarity es-similarity
 COPY es-similarity-query es-similarity-query
 COPY pom.xml pom.xml
-RUN mvn clean install -Dmaven.test.skip=true
+RUN mvn clean install -q -Dmaven.test.skip=true
 
 FROM docker.elastic.co/elasticsearch/elasticsearch:7.6.2
 
