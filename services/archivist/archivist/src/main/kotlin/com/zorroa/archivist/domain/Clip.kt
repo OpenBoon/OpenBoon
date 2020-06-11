@@ -31,8 +31,8 @@ class Clip(
     val stop: BigDecimal = stop.setScale(3, java.math.RoundingMode.HALF_UP)
 
     @ApiModelProperty("The length of the the clip, this is auto-calculated")
-    val length: BigDecimal = if (stop - start == BigDecimal.ZERO) {
-        BigDecimal.ONE
+    val length: BigDecimal = if (this.start == this.stop) {
+        BigDecimal.ONE.setScale(3, java.math.RoundingMode.HALF_UP)
     } else {
         (this.stop - this.start).setScale(3, java.math.RoundingMode.HALF_UP)
     }

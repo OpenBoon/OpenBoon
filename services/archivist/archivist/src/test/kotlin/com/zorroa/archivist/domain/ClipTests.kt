@@ -51,7 +51,7 @@ class ClipTests() {
     @Test
     fun testClipLength() {
         val clip = Clip("scene", BigDecimal(1023.23), BigDecimal(1056.86))
-        assertEquals(33.63.bd(), clip.length)
+        assertEquals(33.630.bd(), clip.length)
         assertEquals(1023.23.bd(), clip.start)
         assertEquals(1056.86.bd(), clip.stop)
     }

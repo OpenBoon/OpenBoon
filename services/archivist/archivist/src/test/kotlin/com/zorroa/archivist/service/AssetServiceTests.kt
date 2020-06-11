@@ -182,8 +182,8 @@ class AssetServiceTests : AbstractTest() {
         val rsp = assetService.batchCreate(req)
         val assets = assetService.getAll(rsp.created)
 
-        assertEquals(3.0.bd(), assets[0].getAttr<BigDecimal?>("clip.start"))
-        assertEquals(3.0.bd(), assets[0].getAttr<BigDecimal?>("clip.stop"))
+        assertEquals(3.0, assets[0].getAttr<Double?>("clip.start"))
+        assertEquals(3.0, assets[0].getAttr<Double?>("clip.stop"))
         assertEquals("page", assets[0].getAttr<String?>("clip.type"))
         assertEquals("pages", assets[0].getAttr<String?>("clip.track"))
         assertEquals("bLyf1hG1kgdyYYyrdzXgVdBt0ok", assets[0].getAttr<String?>("clip.pile"))
@@ -365,7 +365,10 @@ class AssetServiceTests : AbstractTest() {
             it.setAttr("aux.field", 1)
             it.setAttr("media.type", FileTypes.getType(ext))
             it.setAttr("media.length", 10.732)
-            it.setAttr("clip.type", "full")
+            it.setAttr("clip.timeline", "full")
+            it.setAttr("clip.type", "scene")
+            it.setAttr("clip.start", 0)
+            it.setAttr("clip.stop", 10.732)
             map[it.id] = it.document
         }
 
@@ -425,9 +428,9 @@ class AssetServiceTests : AbstractTest() {
 
         val clip = asset.getAttr("clip", Clip::class.java)
         assertEquals("page", clip?.type)
-        assertEquals(2.0.bd(), clip?.start)
-        assertEquals(2.0.bd(), clip?.stop)
-        assertEquals(1.0.bd(), clip?.length)
+        assertEquals(2.0, clip?.start?.toDouble())
+        assertEquals(2.0, clip?.stop?.toDouble())
+        assertEquals(1.0, clip?.length?.toDouble())
         assertEquals("wU5f6DK02InzXUC600cqI5L8vGM", clip?.pile)
     }
 
@@ -505,9 +508,9 @@ class AssetServiceTests : AbstractTest() {
         )
 
         assertEquals("scene", clip.type)
-        assertEquals(10.24.bd(), clip.start)
-        assertEquals(12.48.bd(), clip.stop)
-        assertEquals(2.24.bd(), clip.length)
+        assertEquals(10.24, clip.start.toDouble())
+        assertEquals(12.48, clip.stop.toDouble())
+        assertEquals(2.24, clip.length.toDouble())
         assertEquals("GV0zsbUZLZo_gWuTUHGOLNqQ7io", clip.pile)
         assertEquals("6UBTOcb7UygVSWstPqYtcgVor_n4HBEY", clip.sourceAssetId)
         assertEquals(sourceAsset.id, clip.sourceAssetId)
