@@ -361,7 +361,7 @@ Array [
               <p
                 className="emotion-11"
               >
-                To create a Data Source, connected to a bucket, choose which types of assets you’d like to process, and select which machine learning modules you’d like to apply to them.
+                Data Sources define the source location of files and the types of Machine Learning analysis to be performed on them. Source files can be located in any of the major cloud provider object stores (GCS, S3, Azure Blob).
               </p>
               <div
                 className="emotion-13"
@@ -372,7 +372,7 @@ Array [
                   onClick={[Function]}
                   onMouseEnter={[Function]}
                 >
-                  + Create a Data Source
+                  + Create Data Source
                 </a>
               </div>
             </div>
@@ -408,7 +408,7 @@ Array [
               <p
                 className="emotion-11"
               >
-                After a Data Source had been created a job kicks off and you can view its progress in the Job Queue. There you can and apply actions like “pause” “cancel” or “retry”. You can also inspect any errors that may have occurred.
+                After a Data Source is created a processing job is launched that performs the Machine Learning analysis and stores the resulting metadata. The Job Queue is where you will monitor the progress of these jobs and manage them.
               </p>
               <div
                 className="emotion-13"
@@ -419,7 +419,7 @@ Array [
                   onClick={[Function]}
                   onMouseEnter={[Function]}
                 >
-                  View Job Queue
+                  Go To Job Queue
                 </a>
               </div>
             </div>
@@ -440,7 +440,7 @@ Array [
                   3
                   : 
                 </span>
-                Inspect Your New Dataset
+                Inspect Your Dataset
               </h4>
               <h5
                 className="emotion-10"
@@ -455,7 +455,7 @@ Array [
               <p
                 className="emotion-11"
               >
-                Once a job has successfully completed then the assets will appear in the Visualizer.  There you can inspect your assets new data, view the dataset in a variety of meaningful ways, and XYZ
+                Once the processing job has successfully completed you can view the results in the Visualizer. The Visualizer is a unified visual tool for inspecting and tuning the metadata output of the Machine Learning analysis.
               </p>
               <div
                 className="emotion-29"
@@ -510,7 +510,7 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              + Create an API Key
+              + Create API Key
             </a>
           </div>
         </div>

@@ -347,8 +347,8 @@ class AssetIdBuilder(val spec: AssetSpec) {
                 digester.update(track.toByteArray())
             }
             val buf = ByteBuffer.allocate(16)
-            buf.putDouble(it.start)
-            buf.putDouble(it.stop)
+            buf.putDouble(it.start.toDouble())
+            buf.putDouble(it.stop.toDouble())
             digester.update(buf.array())
         }
 

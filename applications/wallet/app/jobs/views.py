@@ -247,8 +247,8 @@ class JobTaskViewSet(BaseProjectViewSet):
         def item_modifier(request, task):
             path = reverse('task-detail', kwargs={'project_pk': project_pk, 'pk': task['id']})
             task['url'] = request.build_absolute_uri(path)
-            task['actions'] = {'retry': f'{task["url"]}{task["id"]}/retry/',
-                               'assets': f'{task["url"]}{task["id"]}/assets/'}
+            task['actions'] = {'retry': f'{task["url"]}retry/',
+                               'assets': f'{task["url"]}assets/'}
             task['assetCounts'] = set_asset_total_count(task['assetCounts'])
 
         return self._zmlp_list_from_search(request, item_modifier=item_modifier,
@@ -291,8 +291,19 @@ class TaskViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     @action(detail=True, methods=['get'])
     def assets(self, request, project_pk, pk):
         """Lists all assets associated with a task."""
+        script = request.client.get(f'/api/v1/tasks/{pk}/_script')
+        asset_ids = []
+
+        # New style for task scripts is a flat list of asset ids.
+        if 'assetIds' in script:
+            asset_ids = script['assetIds']
+
+        # Older style for task scripts was a list of asset objects.
+        elif 'assets' in script:
+            asset_ids = [a['id'] for a in script['assets']]
+
         return self._zmlp_list_from_es(request,
-                                       search_filter={'system.taskId': pk},
+                                       search_filter={'query': {'terms': {'_id': asset_ids}}},
                                        base_url='api/v3/assets',
                                        serializer_class=SearchAssetSerializer,
                                        item_modifier=search_asset_modifier,

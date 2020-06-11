@@ -76,11 +76,7 @@ const STYLES = {
       paddingBottom: spacing.hairline,
       ':hover': {
         border: constants.borders.tableRow,
-        div: {
-          svg: {
-            visibility: 'visible',
-          },
-        },
+        svg: { opacity: 1 },
       },
     },
     title: {

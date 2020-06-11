@@ -55,8 +55,7 @@ const ProjectUsagePlan = () => {
               }}
             >
               <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video
-              hours used:
-              {videoUsage.toLocaleString()}
+              Hours: {videoUsage.toLocaleString()}
             </h4>
           </div>
           <div
