@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import PropTypes from 'prop-types'
+import App from 'next/app'
 import getConfig from 'next/config'
 import * as Sentry from '@sentry/browser'
 import 'focus-visible'
@@ -27,25 +27,41 @@ if (ENABLE_SENTRY === 'true') {
   })
 }
 
-const MyApp = ({ Component, pageProps, router: { route }, err = '' }) => {
-  if (route === '/_error') {
-    return <Component {...pageProps} err={err} />
+class MyApp extends App {
+  static async getInitialProps({ Component, ctx }) {
+    const versions = {
+      COMMIT_SHA: process.env.CI_COMMIT_SHA,
+    }
+
+    if (Component.getInitialProps) {
+      const pageProps = await Component.getInitialProps(ctx)
+
+      return { ...versions, pageProps }
+    }
+
+    return { ...versions }
   }
 
-  return (
-    <User initialUser={{}}>
-      <Authentication route={route}>
-        <Component {...pageProps} />
-      </Authentication>
-    </User>
-  )
-}
+  render() {
+    const {
+      Component,
+      pageProps,
+      router: { route },
+      err = '',
+    } = this.props
 
-MyApp.propTypes = {
-  Component: PropTypes.node.isRequired,
-  pageProps: PropTypes.shape({}).isRequired,
-  router: PropTypes.shape({ route: PropTypes.string.isRequired }).isRequired,
-  err: PropTypes.string.isRequired,
+    if (route === '/_error') {
+      return <Component {...pageProps} err={err} />
+    }
+
+    return (
+      <User initialUser={{}}>
+        <Authentication route={route}>
+          <Component {...pageProps} />
+        </Authentication>
+      </User>
+    )
+  }
 }
 
 export default MyApp
