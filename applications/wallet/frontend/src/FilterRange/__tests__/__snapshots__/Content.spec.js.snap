@@ -943,3 +943,187 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
   </div>
 </div>
 `;
+
+exports[`<FilterRangeContent /> should render with no data 1`] = `
+.emotion-7 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-6 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  text-align: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  width: 60%;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-2:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
+}
+
+<div>
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "clip.length",
+        "type": "range",
+        "values": Object {},
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "clip.length",
+          "type": "range",
+          "values": Object {},
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-7"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        0
+      </span>
+      <span>
+        1
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            0,
+            1,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.1}
+        values={
+          Array [
+            0,
+            1,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <label
+        className="emotion-3"
+      >
+        MIN  
+        <input
+          className="emotion-2"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={0}
+        />
+      </label>
+      <label
+        className="emotion-3"
+      >
+        MAX  
+        <input
+          className="emotion-2"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={1}
+        />
+      </label>
+    </div>
+  </div>
+</div>
+`;
