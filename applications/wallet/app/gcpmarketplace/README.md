@@ -17,15 +17,16 @@ marketplace entitlement ID.
 
 ### /marketplace/signup
 Once a user purchases a subscription via marketplace they will be directed to this page to 
-create an account. The page renders a simple form on a GET that asks for the User's google 
-email address to associate with the marketplace subscription. On a POST it expects the 
-completed form and a special JWT from marketplace. The JWT contains the account id 
-information which is used to create MarketplaceAccount object in the db. If this is successful
-it reports back to marketplace via Pub/Sub that the signup flow is complete.
+create an account. Marketplace sends a POST request with a JWT in the form data with 
+information on the Marketplace account. The view detects this type of request and renders
+a form for the user to enter their email address. This form also has a hidden input
+with the JWT. When the view gets a post with the email address and token it creates 
+MarketplaceAccount in the DB and reports back to marketplace via Pub/Sub that the signup 
+flow is complete.
 
 ### /marketplace/signup_success
-The signup form redirects to this page on success. It is a static page with a success message
-that directs the user to return to marketplace to complete setup.
+The signup page above redirects to this page on success. It is a static page with a success 
+message that directs the user to return to marketplace to complete setup.
 
 ## Management Commands
 There are two management commands which start services that are responsible for the main 

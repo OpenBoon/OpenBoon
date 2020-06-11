@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<JobErrorsMenu /> should render properly 1`] = `
+exports[`<JobMenu /> should render properly 1`] = `
 .emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;

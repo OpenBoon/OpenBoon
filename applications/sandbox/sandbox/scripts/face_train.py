@@ -1,5 +1,5 @@
+import zmlp
 from zmlp import app_from_env
-
 from zmlp import DataSetType, DataSet
 
 import numpy as np
@@ -141,17 +141,35 @@ if face_model:
 else:
     face_classifier = None
 
+if st.sidebar.button('Train'):
+    dataset = app.datasets.find_one_dataset(name='face_recognition')
+    try:
+        model = app.models.find_one_model(dataset=dataset)
+    except:
+        model = app.models.create_model(dataset, zmlp.ModelType.FACE_RECOGNITION_KNN)
+    app.models.train_model(model)
+
+if st.sidebar.button('Deploy'):
+    model = app.models.find_one_model(dataset=dataset)
+    if model:
+        module = app.models.publish_model(model)
+        search = app.assets.search(query)
+        app.assets.reprocess_assets(search.assets, modules=[module.name])
+
+
 image_index = st.slider('Image', 0, count-1, 0)
-max_dist = st.sidebar.slider('Max Distance', 100, 2000, 1000)
-draw_boxes = st.sidebar.checkbox('Draw Boxes')
-conf_thresh = st.sidebar.slider('Min Confidence', 0., 1., .01)
+#max_dist = st.sidebar.slider('Max Distance', 100, 2000, 1000)
+max_dist = 1000
+draw_boxes = True
+#conf_thresh = st.sidebar.slider('Min Confidence', 0., 1., .01)
+conf_thresh = .01
 
 min_conf = 0
 max_conf = 1
 
 asset = search.assets[image_index]
 
-img = download_proxy(asset, 2)
+img = download_proxy(asset, 1)
 img_draw = img.copy()
 
 detections = asset.document['analysis']['zvi-face-detection']
@@ -216,3 +234,4 @@ if draw_boxes:
             cv2.rectangle(img_draw, (x1, y1), (x2, y2), color, 2)
 
 st.image(img_draw)
+

@@ -14,9 +14,11 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 enum class CredentialsType(vararg val keys: String) {
-    GCP("type", "project_id", "private_key_id", "private_key", "client_email",
+    GCP(
+        "type", "project_id", "private_key_id", "private_key", "client_email",
         "client_id", "auth_uri", "token_uri", "auth_provider_x509_cert_url",
-        "client_x509_cert_url"),
+        "client_x509_cert_url"
+    ),
     AWS("aws_access_key_id", "aws_secret_access_key"),
     AZURE("connection_string");
 
@@ -30,8 +32,10 @@ enum class CredentialsType(vararg val keys: String) {
     }
 }
 
-@ApiModel("Credentials Spec",
-    description = "Field necessary for creating a new credentials blob.")
+@ApiModel(
+    "Credentials Spec",
+    description = "Field necessary for creating a new credentials blob."
+)
 class CredentialsSpec(
 
     @ApiModelProperty("A unique name for the credentials.")
@@ -109,8 +113,10 @@ class Credentials(
     }
 }
 
-@ApiModel("Credentials Update",
-    description = "The fields that can be updated by credentials update..")
+@ApiModel(
+    "Credentials Update",
+    description = "The fields that can be updated by credentials update.."
+)
 class CredentialsUpdate(
 
     @ApiModelProperty("A name for the credentials")

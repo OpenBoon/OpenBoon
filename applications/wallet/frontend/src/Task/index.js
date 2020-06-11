@@ -4,6 +4,9 @@ import { useRouter } from 'next/router'
 import Breadcrumbs from '../Breadcrumbs'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 import Tabs from '../Tabs'
+import TaskAssets from '../TaskAssets'
+
+import TaskDetails from './Details'
 
 const TASK_URL = '/[projectId]/jobs/[jobId]/tasks/[taskId]'
 
@@ -25,20 +28,19 @@ const Task = () => {
       />
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
-        <Tabs
-          tabs={[
-            { title: 'Log', href: TASK_URL },
-            { title: 'Details', href: `${TASK_URL}/details` },
-            { title: 'Assets', href: `${TASK_URL}/assets` },
-            { title: 'Errors', href: `${TASK_URL}/errors` },
-          ]}
-        />
+        <TaskDetails key={pathname} />
+
+        <Tabs tabs={[{ title: 'Assets', href: `${TASK_URL}/assets` }]} />
 
         {pathname === TASK_URL && 'Log'}
 
         {pathname === `${TASK_URL}/details` && 'Details'}
 
-        {pathname === `${TASK_URL}/assets` && 'Assets'}
+        {pathname === `${TASK_URL}/assets` && (
+          <SuspenseBoundary>
+            <TaskAssets />
+          </SuspenseBoundary>
+        )}
 
         {pathname === `${TASK_URL}/errors` && 'Errors'}
       </SuspenseBoundary>

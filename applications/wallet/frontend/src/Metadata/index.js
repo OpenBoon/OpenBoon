@@ -1,12 +1,10 @@
 import { useRouter } from 'next/router'
 
+import { colors, spacing } from '../Styles'
+
 import SuspenseBoundary from '../SuspenseBoundary'
 
 import MetadataContent from './Content'
-import MetadataSelect from './Select'
-
-export const WIDTH = 400
-export const noop = () => {}
 
 const Metadata = () => {
   const {
@@ -18,7 +16,9 @@ const Metadata = () => {
       <MetadataContent projectId={projectId} assetId={assetId} />
     </SuspenseBoundary>
   ) : (
-    <MetadataSelect />
+    <div css={{ padding: spacing.normal, color: colors.structure.white }}>
+      Select an asset to view its metadata.
+    </div>
   )
 }
 

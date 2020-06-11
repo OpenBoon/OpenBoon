@@ -419,7 +419,7 @@ Array [
                   onClick={[Function]}
                   onMouseEnter={[Function]}
                 >
-                  View Jobs Queue
+                  View Job Queue
                 </a>
               </div>
             </div>

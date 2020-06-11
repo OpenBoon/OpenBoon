@@ -167,9 +167,11 @@ class AwsProjectStorageService constructor(
                 .withExpiration(expireTime)
 
         logSignEvent(path, mediaType, forWrite)
-        return mapOf("uri" to
-            s3Client.generatePresignedUrl(req).toString(),
-            "mediaType" to mediaType)
+        return mapOf(
+            "uri" to
+                s3Client.generatePresignedUrl(req).toString(),
+            "mediaType" to mediaType
+        )
     }
 
     override fun setAttrs(locator: ProjectStorageLocator, attrs: Map<String, Any>): FileStorage {
@@ -196,9 +198,11 @@ class AwsProjectStorageService constructor(
                 logDeleteEvent("${properties.bucket}${it.key}")
             }
         } catch (ex: AmazonS3Exception) {
-            logger.warnEvent(LogObject.PROJECT_STORAGE, LogAction.DELETE,
+            logger.warnEvent(
+                LogObject.PROJECT_STORAGE, LogAction.DELETE,
                 "Failed to delete ${ex.message}",
-                mapOf("entityId" to locator.entityId, "entity" to locator.entity))
+                mapOf("entityId" to locator.entityId, "entity" to locator.entity)
+            )
         }
     }
 

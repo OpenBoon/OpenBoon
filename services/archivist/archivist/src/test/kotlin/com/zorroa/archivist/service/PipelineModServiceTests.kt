@@ -51,12 +51,14 @@ class PipelineModServiceTests : AbstractTest() {
             OpFilter(OpFilterType.SUBSTR, "OfficeImporter")
         )
 
-        spec = PipelineModSpec("test", "A test module",
+        spec = PipelineModSpec(
+            "test", "A test module",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
-            listOf(op1, op2), true)
+            listOf(op1, op2), true
+        )
         mod = pipelineModService.create(spec)
     }
 
@@ -71,41 +73,49 @@ class PipelineModServiceTests : AbstractTest() {
 
     @Test(expected = DataIntegrityViolationException::class)
     fun testCreateDuplicateProjectWithStandardName() {
-        val spec2 = PipelineModSpec("test", "A test module",
+        val spec2 = PipelineModSpec(
+            "test", "A test module",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
-            listOf(), false)
+            listOf(), false
+        )
         pipelineModService.create(spec2)
     }
 
     @Test(expected = DataIntegrityViolationException::class)
     fun testCreateDuplicateProject() {
-        val spec1 = PipelineModSpec("test1", "A test module",
+        val spec1 = PipelineModSpec(
+            "test1", "A test module",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
-            listOf(), false)
-        val spec2 = PipelineModSpec("test1", "A test module",
+            listOf(), false
+        )
+        val spec2 = PipelineModSpec(
+            "test1", "A test module",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
-            listOf(), false)
+            listOf(), false
+        )
         pipelineModService.create(spec1)
         pipelineModService.create(spec2)
     }
 
     @Test(expected = DataIntegrityViolationException::class)
     fun testCreateDuplicateStandard() {
-        val spec2 = PipelineModSpec("test", "A test module",
+        val spec2 = PipelineModSpec(
+            "test", "A test module",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
-            listOf(), true)
+            listOf(), true
+        )
         pipelineModService.create(spec2)
     }
 

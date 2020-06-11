@@ -69,11 +69,13 @@ class PipelineModControllerTests : MockMvcTest() {
         )
 
         val mod = pipelineModService.create(spec)
-        val update = PipelineModUpdate(name = "cats", description = "dogs",
+        val update = PipelineModUpdate(
+            name = "cats", description = "dogs",
             provider = Provider.ZORROA,
             category = Category.ZORROA_STD,
             type = ModType.CLIPIFIER,
-            supportedMedia = listOf(), ops = listOf(op))
+            supportedMedia = listOf(), ops = listOf(op)
+        )
 
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/pipeline-mods/${mod.id}")
@@ -136,10 +138,12 @@ class PipelineModControllerTests : MockMvcTest() {
         pipelineModService.create(spec)
         entityManager.flush()
 
-        val filter = """{
-            "names": ["arg!"]
-        }
-        """.trimIndent()
+        val filter =
+            """
+            {
+                "names": ["arg!"]
+            }
+            """.trimIndent()
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/pipeline-mods/_search")
@@ -156,10 +160,12 @@ class PipelineModControllerTests : MockMvcTest() {
         pipelineModService.create(spec)
         entityManager.flush()
 
-        val filter = """{
-            "names": ["arg!"]
-        }
-        """.trimIndent()
+        val filter =
+            """
+            {
+                "names": ["arg!"]
+            }
+            """.trimIndent()
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/pipeline-mods/_find_one")
@@ -175,10 +181,12 @@ class PipelineModControllerTests : MockMvcTest() {
         pipelineModService.create(spec)
         entityManager.flush()
 
-        val filter = """{
-            "names": ["test"]
-        }
-        """.trimIndent()
+        val filter =
+            """
+            {
+                "names": ["test"]
+            }
+            """
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/pipeline-mods/_find_one")

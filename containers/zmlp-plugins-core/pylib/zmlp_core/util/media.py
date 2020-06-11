@@ -84,11 +84,22 @@ def get_image_metadata(file_path):
     output = re.sub(r"&#\d+;", "", output)
 
     metadata = xmltodict.parse(output).get('ImageSpec')
+    ext_attribs = metadata.get('attrib')
 
-    attribs = metadata.get('attrib')
-    if attribs:
+    if ext_attribs:
+        # We're going to flatten 'ext_attribs' list of ordered dict.
+        # into the main dict.  So we can delete it from here.
         del metadata['attrib']
-        for attrib in attribs:
+
+        def as_list(val):
+            if isinstance(val, (list, set, tuple)):
+                return val
+            else:
+                return [val]
+
+        # This handles all the EXIF tags though the vast
+        # majority are not used.
+        for attrib in as_list(ext_attribs):
             key = attrib['@name']
             if '@description' in attrib:
                 value = attrib['@description']
