@@ -441,6 +441,7 @@ zmlp-dockerhub-build-push-prod:
     - docker pull -q zmlp/apigateway:${SOURCE_TAG}
     - docker pull -q zmlp/py3-base:${SOURCE_TAG}
     - docker pull -q zmlp/py3-client:${SOURCE_TAG}
+    - docker pull -q zmlp/py3-zvi:${SOURCE_TAG}
     - docker pull -q zmlp/py3-sdk:${SOURCE_TAG}
     - docker pull -q zmlp/plugins-base:${SOURCE_TAG}
     - docker pull -q zmlp/plugins-models:${SOURCE_TAG}
