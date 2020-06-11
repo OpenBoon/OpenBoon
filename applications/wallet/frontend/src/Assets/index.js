@@ -17,6 +17,7 @@ import { reducer, INITIAL_STATE } from './reducer'
 import AssetsResize from './Resize'
 import AssetsThumbnail from './Thumbnail'
 import AssetsEmpty from './Empty'
+import AssetsLightbox from './Lightbox'
 
 const SIZE = 100
 const PADDING_SIZE = spacing.small
@@ -91,7 +92,7 @@ const Assets = () => {
 
   const { count: itemCount } = data || {}
 
-  const items = Array.isArray(pageSWRs)
+  const assets = Array.isArray(pageSWRs)
     ? pageSWRs
         // hack while https://github.com/zeit/swr/issues/189 gets fixed
         .slice(0, Math.ceil(itemCount / SIZE))
@@ -102,9 +103,9 @@ const Assets = () => {
     : []
 
   const selectedRow =
-    items.length && selectedId
+    assets.length && selectedId
       ? Math.floor(
-          items.findIndex((item) => item && item.id === selectedId) /
+          assets.findIndex((item) => item && item.id === selectedId) /
             columnCount,
         )
       : ''
@@ -153,6 +154,8 @@ const Assets = () => {
       >
         {pages}
 
+        <AssetsLightbox assets={assets} />
+
         {itemCount === 0 && (
           <AssetsEmpty
             projectId={projectId}
@@ -167,7 +170,7 @@ const Assets = () => {
               {({ height, width }) => (
                 <InfiniteLoader
                   ref={(ref) => setVirtualLoaderRef(ref)}
-                  isItemLoaded={(index) => !!items[index]}
+                  isItemLoaded={(index) => !!assets[index]}
                   itemCount={itemCount}
                   loadMoreItems={loadMore}
                 >
@@ -182,7 +185,7 @@ const Assets = () => {
                       100,
                       adjustedWidth / columnCount,
                     )
-                    const rowCount = Math.ceil(items.length / columnCount)
+                    const rowCount = Math.ceil(assets.length / columnCount)
                     const hasVerticalScrollbar =
                       rowCount * thumbnailSize > height
                     const scrollbarBuffer = hasVerticalScrollbar
@@ -243,7 +246,7 @@ const Assets = () => {
                         {({ columnIndex, rowIndex, style }) => {
                           const index = columnIndex + rowIndex * columnCount
 
-                          if (!items[index]) return null
+                          if (!assets[index]) return null
 
                           return (
                             <div
@@ -257,7 +260,7 @@ const Assets = () => {
                                 }px`,
                               }}
                             >
-                              <AssetsThumbnail asset={items[index]} />
+                              <AssetsThumbnail asset={assets[index]} />
                             </div>
                           )
                         }}
