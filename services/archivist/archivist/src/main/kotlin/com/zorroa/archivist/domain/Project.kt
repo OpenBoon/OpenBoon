@@ -31,6 +31,20 @@ class ProjectSpec(
     val id: UUID? = null
 )
 
+@ApiModel("Project Tier", description = "Specifies in which tier is the Project in.")
+enum class ProjectTier {
+    @ApiModelProperty(" Allows the use of Essentials Modules")
+    ESSENTIALS,
+    @ApiModelProperty(" Allows the use of Premium Modules")
+    PREMIUM
+}
+
+@ApiModel("Project Tier Update", description = "Set new Tier State")
+class ProjectTierUpdate(
+    @ApiModelProperty("Project Tier value to be updated")
+    val tier: ProjectTier
+)
+
 /**
  * Projects represent unique groups of resources provided by ZMLP.
  */
@@ -65,7 +79,11 @@ class Project(
 
     @Column(name = "enabled")
     @ApiModelProperty("Set if the project is enabled")
-    val enabled: Boolean
+    val enabled: Boolean,
+
+    @Column(name = "int_tier")
+    @ApiModelProperty("Project Tier")
+    val tier: ProjectTier
 
 ) {
     override fun equals(other: Any?): Boolean {
