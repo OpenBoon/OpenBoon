@@ -35,6 +35,10 @@ def plot_tsne(search=None,
     if search is None:
         search = app.assets.search({"size": 10000})
 
+    if len(search.assets) < 10:
+        print("Less than 10 assets, returning!")
+        return None, None, None
+
     if len(search.assets) * percentage / 100 > maxPoints:
         percentage = maxPoints * 100 / len(search.assets)
 
@@ -49,6 +53,9 @@ def plot_tsne(search=None,
     imgs = []
 
     if thumbs:
+        tmpdir = 'tmp/'
+        if not os.path.isdir(tmpdir):
+            os.mkdir(tmpdir)
         for a in assets:
             name = 'tmp/' + a.id + '.jpg'
             fullname = './' + name
