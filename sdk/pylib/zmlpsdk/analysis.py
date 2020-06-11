@@ -293,3 +293,25 @@ class SingleLabelAnalysis:
         """
         self.label = label
         self.score = score
+        self.attrs = {}
+
+    def for_json(self):
+        """Returns a dictionary suitable for JSON encoding.
+
+        The ZpsJsonEncoder will call this method automatically.
+
+        Returns:
+            :obj:`dict`: A JSON serializable version of this Document.
+        """
+        predictions = [self.label]
+        predict_count = len(predictions)
+        base = {
+            "label": self.label,
+            "score": self.score,
+            "count": predict_count
+        }
+        base.update(self.attrs)
+        return base
+
+    def __bool__(self):
+        return len(self) > 0
