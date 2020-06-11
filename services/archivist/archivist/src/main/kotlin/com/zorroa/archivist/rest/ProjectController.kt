@@ -104,7 +104,8 @@ class ProjectController constructor(
     @PutMapping(value = ["/api/v1/project/{id}/_update_tier"])
     @ApiOperation("Update Project Tier")
     fun updateProjectTier(
-        @PathVariable id: UUID, @RequestBody(required = true) projectTierUpdate: ProjectTierUpdate
+        @PathVariable id: UUID,
+        @RequestBody(required = true) projectTierUpdate: ProjectTierUpdate
     ): Project {
         projectService.setTier(id, projectTierUpdate.tier)
         return projectService.get(id)
@@ -152,8 +153,8 @@ class ProjectController constructor(
     @ApiOperation("Get the project Settings")
     fun putMyProjectSettings(@RequestBody(required = true) settings: ProjectSettings):
         ProjectSettings {
-        val id = getProjectId()
-        projectService.updateSettings(id, settings)
-        return projectService.getSettings(id)
+            val id = getProjectId()
+            projectService.updateSettings(id, settings)
+            return projectService.getSettings(id)
     }
 }

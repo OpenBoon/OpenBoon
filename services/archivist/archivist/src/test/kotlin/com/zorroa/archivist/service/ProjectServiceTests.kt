@@ -132,7 +132,8 @@ class ProjectServiceTests : AbstractTest() {
 
         projectService.setTier(project.id, ProjectTier.PREMIUM)
         var tierOrdinal = jdbc.queryForObject(
-            "SELECT int_tier FROM project WHERE pk_project=?", Int::class.java, project.id)
+            "SELECT int_tier FROM project WHERE pk_project=?", Int::class.java, project.id
+        )
 
         assertEquals(ProjectTier.PREMIUM, ProjectTier.values()[tierOrdinal])
     }

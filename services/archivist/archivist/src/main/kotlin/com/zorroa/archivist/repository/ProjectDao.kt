@@ -99,8 +99,10 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
     }
 
     override fun updateTier(projectId: UUID, value: ProjectTier): Boolean {
-        return jdbc.update(SET_TIER, value.ordinal, System.currentTimeMillis(),
-            getZmlpActor().toString(), projectId) == 1
+        return jdbc.update(
+            SET_TIER, value.ordinal, System.currentTimeMillis(),
+            getZmlpActor().toString(), projectId
+        ) == 1
     }
 
     companion object {
