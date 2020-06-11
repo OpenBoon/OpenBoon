@@ -26,6 +26,7 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.archivist.util.bd
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -172,7 +173,7 @@ class AssetServiceTests : AbstractTest() {
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
             mapOf("system.hello" to "foo"),
-            clip = Clip("page", 3.0, 3.0, "pages")
+            clip = Clip("page", BigDecimal(3.0), BigDecimal(3.0), "pages")
         )
 
         val req = BatchCreateAssetsRequest(
@@ -181,8 +182,8 @@ class AssetServiceTests : AbstractTest() {
         val rsp = assetService.batchCreate(req)
         val assets = assetService.getAll(rsp.created)
 
-        assertEquals(3.0, assets[0].getAttr<Double?>("clip.start"))
-        assertEquals(3.0, assets[0].getAttr<Double?>("clip.stop"))
+        assertEquals(3.0.bd(), assets[0].getAttr<BigDecimal?>("clip.start"))
+        assertEquals(3.0.bd(), assets[0].getAttr<BigDecimal?>("clip.stop"))
         assertEquals("page", assets[0].getAttr<String?>("clip.type"))
         assertEquals("pages", assets[0].getAttr<String?>("clip.track"))
         assertEquals("bLyf1hG1kgdyYYyrdzXgVdBt0ok", assets[0].getAttr<String?>("clip.pile"))
@@ -424,9 +425,9 @@ class AssetServiceTests : AbstractTest() {
 
         val clip = asset.getAttr("clip", Clip::class.java)
         assertEquals("page", clip?.type)
-        assertEquals(2.0, clip?.start)
-        assertEquals(2.0, clip?.stop)
-        assertEquals(1.0, clip?.length)
+        assertEquals(2.0.bd(), clip?.start)
+        assertEquals(2.0.bd(), clip?.stop)
+        assertEquals(1.0.bd(), clip?.length)
         assertEquals("wU5f6DK02InzXUC600cqI5L8vGM", clip?.pile)
     }
 
@@ -472,16 +473,16 @@ class AssetServiceTests : AbstractTest() {
 
         val spec = AssetSpec(
             "asset:${sourceAsset.id}",
-            clip = Clip("scene", 10.24, 12.48)
+            clip = Clip("scene", 10.24.bd(), 12.48.bd())
         )
 
         val newAsset = Asset()
         val clip = assetService.deriveClip(newAsset, spec)
 
         assertEquals("scene", clip.type)
-        assertEquals(10.24, clip.start)
-        assertEquals(12.48, clip.stop)
-        assertEquals(2.24, clip.length)
+        assertEquals(10.24.bd(), clip.start)
+        assertEquals(12.48.bd(), clip.stop)
+        assertEquals(2.24.bd(), clip.length)
         assertEquals("oZ4r3vjXTNtopNSx_AHN-1WBbQk", clip.pile)
         assertEquals("As2tgiN-NU29FxKczfB8alEvdAuQqgXr", clip.sourceAssetId)
         assertEquals(sourceAsset.id, clip.sourceAssetId)
@@ -491,7 +492,12 @@ class AssetServiceTests : AbstractTest() {
     fun testDeriveClipFromSelf() {
 
         val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v", clip = Clip("scene", 10.24, 12.48)))
+            assets = listOf(
+                AssetSpec(
+                    "gs://cats/cat-movie.m4v",
+                    clip = Clip("scene", 10.24.bd(), 12.48.bd())
+                )
+            )
         )
         val sourceAsset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
         val clip = sourceAsset.getAttr("clip", Clip::class.java) ?: throw IllegalStateException(
@@ -499,9 +505,9 @@ class AssetServiceTests : AbstractTest() {
         )
 
         assertEquals("scene", clip.type)
-        assertEquals(10.24, clip.start)
-        assertEquals(12.48, clip.stop)
-        assertEquals(2.24, clip.length)
+        assertEquals(10.24.bd(), clip.start)
+        assertEquals(12.48.bd(), clip.stop)
+        assertEquals(2.24.bd(), clip.length)
         assertEquals("GV0zsbUZLZo_gWuTUHGOLNqQ7io", clip.pile)
         assertEquals("6UBTOcb7UygVSWstPqYtcgVor_n4HBEY", clip.sourceAssetId)
         assertEquals(sourceAsset.id, clip.sourceAssetId)

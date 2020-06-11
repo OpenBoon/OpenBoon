@@ -65,6 +65,8 @@ fun UUID.prefix(size: Int = 8): String {
  */
 fun String.isUUID(): Boolean = StaticUtils.UUID_REGEXP.matches(this)
 
+fun Double.bd(): BigDecimal = this.toBigDecimal()
+
 /**
  * Utility function for making a bbox.
  */
