@@ -357,20 +357,6 @@ zmlp-dockerhub-build-push-qa:
       changes:
         - "**/*"
 
-zmlp-dockerhub-build-push-master:
-  extends:
-    - zmlp-dockerhub-build-push-latest
-  variables:
-    SOURCE_TAG: qa
-    DOCKER_TAG: stable
-    BUI:D: "false"
-  rules:
-    # Merged to master with any change
-    - if: $CI_COMMIT_BRANCH == "master"
-      changes:
-        - "**/*"
-
-
 zmlp-deploy-development:
   image: google/cloud-sdk
   retry: 1
