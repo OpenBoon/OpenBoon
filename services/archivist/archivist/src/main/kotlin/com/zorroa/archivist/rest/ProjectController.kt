@@ -156,5 +156,5 @@ class ProjectController constructor(
             val id = getProjectId()
             projectService.updateSettings(id, settings)
             return projectService.getSettings(id)
-    }
+        }
 }

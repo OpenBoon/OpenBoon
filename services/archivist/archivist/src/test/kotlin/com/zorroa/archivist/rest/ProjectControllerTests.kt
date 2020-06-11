@@ -257,8 +257,10 @@ class ProjectControllerTests : MockMvcTest() {
         )
             .andExpect(status().isOk)
             .andExpect(
-                jsonPath("$.tier",
-                CoreMatchers.anything())
+                jsonPath(
+                    "$.tier",
+                    CoreMatchers.anything()
+                )
             )
             .andReturn()
     }
