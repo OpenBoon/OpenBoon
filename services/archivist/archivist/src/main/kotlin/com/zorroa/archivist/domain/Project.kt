@@ -6,7 +6,6 @@ import com.zorroa.archivist.util.JdbcUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
 import java.math.BigDecimal
 import java.util.UUID
 import javax.persistence.Column
@@ -214,10 +213,9 @@ class ProjectQuotaCounters {
                 val length = asset.getAttr("media.length", Double::class.java)
                     ?: throw IllegalArgumentException("Video has no length property")
 
-                val clipType = asset.getAttr<String>("clip.type")
-                    ?: throw IllegalStateException("Asset $asset has no clip")
+                val clipTrack = asset.getAttr<String>("clip.track") ?: "full"
 
-                if (clipType == Clip.TYPE_FULL) {
+                if (clipTrack == Clip.TRACK_FULL) {
                     videoLength += length
                     videoFileCount += 1
                     videoClipCount += 1

@@ -96,5 +96,7 @@ class ProjectQuotasDaoTests : AbstractTest() {
         val result = projectQuotasDao.getTimeSeriesCounters(getProjectId(), date1, (date2))
         Json.prettyPrint(result)
         assertEquals(3, result.size)
+        assertEquals(1, result.first().videoClipCount)
+        assertEquals(2, result.last().videoFileCount)
     }
 }
