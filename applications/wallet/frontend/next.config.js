@@ -1,5 +1,7 @@
 const withSourceMaps = require('@zeit/next-source-maps')()
 
+require('dotenv').config()
+
 const {
   ANALYZE,
   CI_COMMIT_SHA,
