@@ -38,8 +38,9 @@ def set_asset_total_count(asset_counts):
 
 
 def task_item_modifier(request, task):
-    task_url = reverse('task-detail', kwargs={'project_pk': task['projectId'],
+    task_path = reverse('task-detail', kwargs={'project_pk': task['projectId'],
                                               'pk': task['id']})
+    task_url = request.build_absolute_uri(task_path)
     task['actions'] = {'retry': f'{task_url}retry/',
                        'assets': f'{task_url}assets/',
                        'script': f'{task_url}script/',
@@ -273,7 +274,7 @@ class TaskErrorViewSet(BaseProjectViewSet):
     def retrieve(self, request, project_pk, pk):
         url = os.path.join(self.zmlp_root_api_path, '_findOne')
         error = request.client.post(url, {'ids': [pk]})
-        self._add_job_name(request.client, error)
+        task_error_item_modifier(request, error)
         serializer = self.get_serializer(data=error)
         if not serializer.is_valid():
             return Response({'detail': serializer.errors}, status=500)
