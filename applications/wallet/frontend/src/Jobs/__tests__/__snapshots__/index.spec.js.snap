@@ -15,7 +15,18 @@ Array [
   >
     Job Queue
   </h2>,
-  .emotion-5 {
+  .emotion-137 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -109,6 +120,21 @@ Array [
   padding-left: 4px;
 }
 
+.emotion-136 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-135 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .emotion-6 {
   text-align: left;
   font-size: 15px;
@@ -133,10 +159,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-135 {
-  height: auto;
 }
 
 .emotion-134 {
@@ -568,7 +590,7 @@ Array [
 }
 
 <div
-    className="emotion-135"
+    className="emotion-137"
   >
     <div
       className="emotion-5"
@@ -604,970 +626,978 @@ Array [
         </div>
       </button>
     </div>
-    <table
-      className="emotion-134"
+    <div
+      className="emotion-136"
     >
-      <thead>
-        <tr>
-          <th
-            className="emotion-6"
-          >
-            Status
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Job Name
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Priority
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Created
-          </th>
-          <th
-            className="emotion-6"
-          >
-            # Assets
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Errors
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Task Progress
-          </th>
-          <th
-            className="emotion-6"
-          >
-            <div
-              className="emotion-13"
-            >
-              <svg
-                data-file-name="gear.svg"
-                width={20}
-              />
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          className="emotion-29"
-          onClick={[Function]}
+      <div
+        className="emotion-135"
+      >
+        <table
+          className="emotion-134"
         >
-          <td>
-            <div
-              className="emotion-15"
-            >
-              In Progress
-            </div>
-          </td>
-          <td>
-            <a
-              className="emotion-16"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956"
+          <thead>
+            <tr>
+              <th
+                className="emotion-6"
+              >
+                Status
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Job Name
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Priority
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Created
+              </th>
+              <th
+                className="emotion-6"
+              >
+                # Assets
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Errors
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Task Progress
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-13"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-29"
               onClick={[Function]}
-              onMouseEnter={[Function]}
             >
-              test-whitespace.json
-            </a>
-          </td>
-          <td
-            className="emotion-17"
-          >
-            100
-          </td>
-          <td>
-            2019-11-07 01:38:36
-          </td>
-          <td
-            className="emotion-17"
-          >
-            4
-          </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <a
-                className="emotion-19"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/errors"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
+              <td>
+                <div
+                  className="emotion-15"
+                >
+                  In Progress
+                </div>
+              </td>
+              <td>
+                <a
+                  className="emotion-16"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test-whitespace.json
+                </a>
+              </td>
+              <td
+                className="emotion-17"
               >
-                <svg
-                  color="#c92300"
-                  data-file-name="warning.svg"
-                  height={20}
-                />
-              </a>
-            </div>
-          </td>
-          <td
-            style={
-              Object {
-                "minWidth": 244,
-                "overflow": "visible",
-              }
-            }
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-26"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-25"
+                100
+              </td>
+              <td>
+                2019-11-07 01:38:36
+              </td>
+              <td
+                className="emotion-17"
+              >
+                4
+              </td>
+              <td>
+                <div
+                  className="emotion-20"
+                >
+                  <a
+                    className="emotion-19"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/errors"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    <svg
+                      color="#c92300"
+                      data-file-name="warning.svg"
+                      height={20}
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "minWidth": 244,
+                    "overflow": "visible",
+                  }
+                }
               >
                 <div
-                  className="emotion-21"
-                />
+                  aria-label="Progress Bar"
+                  className="emotion-26"
+                  onKeyPress={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <div
+                    className="emotion-25"
+                  >
+                    <div
+                      className="emotion-21"
+                    />
+                    <div
+                      className="emotion-22"
+                    />
+                    <div
+                      className="emotion-23"
+                    />
+                    <div
+                      className="emotion-24"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td>
                 <div
-                  className="emotion-22"
-                />
-                <div
-                  className="emotion-23"
-                />
-                <div
-                  className="emotion-24"
-                />
-              </div>
-            </div>
-          </td>
-          <td>
-            <div
-              className="emotion-28"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-27"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-29"
-          onClick={[Function]}
-        >
-          <td>
-            <div
-              className="emotion-30"
-            >
-              Cancelled
-            </div>
-          </td>
-          <td>
-            <a
-              className="emotion-16"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000955"
+                  className="emotion-28"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-27"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-29"
               onClick={[Function]}
-              onMouseEnter={[Function]}
             >
-              test-whitespace.json
-            </a>
-          </td>
-          <td
-            className="emotion-17"
-          >
-            100
-          </td>
-          <td>
-            2019-11-07 01:38:36
-          </td>
-          <td
-            className="emotion-17"
-          >
-            4
-          </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <a
-                className="emotion-19"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000955/errors"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
+              <td>
+                <div
+                  className="emotion-30"
+                >
+                  Cancelled
+                </div>
+              </td>
+              <td>
+                <a
+                  className="emotion-16"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000955"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test-whitespace.json
+                </a>
+              </td>
+              <td
+                className="emotion-17"
               >
-                <svg
-                  color="#c92300"
-                  data-file-name="warning.svg"
-                  height={20}
-                />
-              </a>
-            </div>
-          </td>
-          <td
-            style={
-              Object {
-                "minWidth": 244,
-                "overflow": "visible",
-              }
-            }
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-26"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-25"
+                100
+              </td>
+              <td>
+                2019-11-07 01:38:36
+              </td>
+              <td
+                className="emotion-17"
+              >
+                4
+              </td>
+              <td>
+                <div
+                  className="emotion-20"
+                >
+                  <a
+                    className="emotion-19"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000955/errors"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    <svg
+                      color="#c92300"
+                      data-file-name="warning.svg"
+                      height={20}
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "minWidth": 244,
+                    "overflow": "visible",
+                  }
+                }
               >
                 <div
-                  className="emotion-21"
-                />
+                  aria-label="Progress Bar"
+                  className="emotion-26"
+                  onKeyPress={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <div
+                    className="emotion-25"
+                  >
+                    <div
+                      className="emotion-21"
+                    />
+                    <div
+                      className="emotion-22"
+                    />
+                    <div
+                      className="emotion-23"
+                    />
+                    <div
+                      className="emotion-39"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td>
                 <div
-                  className="emotion-22"
-                />
-                <div
-                  className="emotion-23"
-                />
-                <div
-                  className="emotion-39"
-                />
-              </div>
-            </div>
-          </td>
-          <td>
-            <div
-              className="emotion-28"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-27"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-29"
-          onClick={[Function]}
-        >
-          <td>
-            <div
-              className="emotion-45"
-            >
-              Success
-            </div>
-          </td>
-          <td>
-            <a
-              className="emotion-16"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308a-67c2-1433-8fef-0a580a000955"
+                  className="emotion-28"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-27"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-29"
               onClick={[Function]}
-              onMouseEnter={[Function]}
             >
-              test-whitespace.json
-            </a>
-          </td>
-          <td
-            className="emotion-17"
-          >
-            100
-          </td>
-          <td>
-            2019-11-07 01:36:29
-          </td>
-          <td
-            className="emotion-17"
-          >
-            4
-          </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <a
-                className="emotion-19"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308a-67c2-1433-8fef-0a580a000955/errors"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
+              <td>
+                <div
+                  className="emotion-45"
+                >
+                  Success
+                </div>
+              </td>
+              <td>
+                <a
+                  className="emotion-16"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308a-67c2-1433-8fef-0a580a000955"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test-whitespace.json
+                </a>
+              </td>
+              <td
+                className="emotion-17"
               >
-                <svg
-                  color="#c92300"
-                  data-file-name="warning.svg"
-                  height={20}
-                />
-              </a>
-            </div>
-          </td>
-          <td
-            style={
-              Object {
-                "minWidth": 244,
-                "overflow": "visible",
-              }
-            }
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-26"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-25"
+                100
+              </td>
+              <td>
+                2019-11-07 01:36:29
+              </td>
+              <td
+                className="emotion-17"
+              >
+                4
+              </td>
+              <td>
+                <div
+                  className="emotion-20"
+                >
+                  <a
+                    className="emotion-19"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308a-67c2-1433-8fef-0a580a000955/errors"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    <svg
+                      color="#c92300"
+                      data-file-name="warning.svg"
+                      height={20}
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "minWidth": 244,
+                    "overflow": "visible",
+                  }
+                }
               >
                 <div
-                  className="emotion-21"
-                />
-                <div
-                  className="emotion-52"
-                />
-                <div
-                  className="emotion-53"
-                />
-              </div>
-            </div>
-          </td>
-          <td />
-        </tr>
-        <tr
-          className="emotion-29"
-          onClick={[Function]}
-        >
-          <td>
-            <div
-              className="emotion-57"
-            >
-              Archived
-            </div>
-          </td>
-          <td>
-            <a
-              className="emotion-16"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d53089-67c2-1433-8fef-0a580a000955"
+                  aria-label="Progress Bar"
+                  className="emotion-26"
+                  onKeyPress={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <div
+                    className="emotion-25"
+                  >
+                    <div
+                      className="emotion-21"
+                    />
+                    <div
+                      className="emotion-52"
+                    />
+                    <div
+                      className="emotion-53"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td />
+            </tr>
+            <tr
+              className="emotion-29"
               onClick={[Function]}
-              onMouseEnter={[Function]}
             >
-              test-whitespace.json
-            </a>
-          </td>
-          <td
-            className="emotion-17"
-          >
-            100
-          </td>
-          <td>
-            2019-11-07 01:35:36
-          </td>
-          <td
-            className="emotion-17"
-          >
-            4
-          </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <a
-                className="emotion-19"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d53089-67c2-1433-8fef-0a580a000955/errors"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
+              <td>
+                <div
+                  className="emotion-57"
+                >
+                  Archived
+                </div>
+              </td>
+              <td>
+                <a
+                  className="emotion-16"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d53089-67c2-1433-8fef-0a580a000955"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test-whitespace.json
+                </a>
+              </td>
+              <td
+                className="emotion-17"
               >
-                <svg
-                  color="#c92300"
-                  data-file-name="warning.svg"
-                  height={20}
-                />
-              </a>
-            </div>
-          </td>
-          <td
-            style={
-              Object {
-                "minWidth": 244,
-                "overflow": "visible",
-              }
-            }
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-26"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-25"
+                100
+              </td>
+              <td>
+                2019-11-07 01:35:36
+              </td>
+              <td
+                className="emotion-17"
+              >
+                4
+              </td>
+              <td>
+                <div
+                  className="emotion-20"
+                >
+                  <a
+                    className="emotion-19"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d53089-67c2-1433-8fef-0a580a000955/errors"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    <svg
+                      color="#c92300"
+                      data-file-name="warning.svg"
+                      height={20}
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "minWidth": 244,
+                    "overflow": "visible",
+                  }
+                }
               >
                 <div
-                  className="emotion-21"
-                />
-              </div>
-            </div>
-          </td>
-          <td />
-        </tr>
-        <tr
-          className="emotion-29"
-          onClick={[Function]}
-        >
-          <td>
-            <div
-              className="emotion-67"
-            >
-              Failure
-            </div>
-          </td>
-          <td>
-            <a
-              className="emotion-16"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c0975970-62ef-1f81-83f8-0a580a000954"
+                  aria-label="Progress Bar"
+                  className="emotion-26"
+                  onKeyPress={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <div
+                    className="emotion-25"
+                  >
+                    <div
+                      className="emotion-21"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td />
+            </tr>
+            <tr
+              className="emotion-29"
               onClick={[Function]}
-              onMouseEnter={[Function]}
             >
-              test_officer
-            </a>
-          </td>
-          <td
-            className="emotion-17"
-          >
-            100
-          </td>
-          <td>
-            2019-10-11 21:11:03
-          </td>
-          <td
-            className="emotion-17"
-          >
-            4
-          </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <a
-                className="emotion-19"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c0975970-62ef-1f81-83f8-0a580a000954/errors"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
+              <td>
+                <div
+                  className="emotion-67"
+                >
+                  Failure
+                </div>
+              </td>
+              <td>
+                <a
+                  className="emotion-16"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c0975970-62ef-1f81-83f8-0a580a000954"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test_officer
+                </a>
+              </td>
+              <td
+                className="emotion-17"
               >
-                <svg
-                  color="#c92300"
-                  data-file-name="warning.svg"
-                  height={20}
-                />
-              </a>
-            </div>
-          </td>
-          <td
-            style={
-              Object {
-                "minWidth": 244,
-                "overflow": "visible",
-              }
-            }
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-26"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-25"
+                100
+              </td>
+              <td>
+                2019-10-11 21:11:03
+              </td>
+              <td
+                className="emotion-17"
+              >
+                4
+              </td>
+              <td>
+                <div
+                  className="emotion-20"
+                >
+                  <a
+                    className="emotion-19"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c0975970-62ef-1f81-83f8-0a580a000954/errors"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    <svg
+                      color="#c92300"
+                      data-file-name="warning.svg"
+                      height={20}
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "minWidth": 244,
+                    "overflow": "visible",
+                  }
+                }
               >
                 <div
-                  className="emotion-21"
-                />
-              </div>
-            </div>
-          </td>
-          <td>
-            <div
-              className="emotion-28"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-27"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-29"
-          onClick={[Function]}
-        >
-          <td>
-            <div
-              className="emotion-79"
-            >
-              Paused
-            </div>
-          </td>
-          <td>
-            <a
-              className="emotion-16"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954"
+                  aria-label="Progress Bar"
+                  className="emotion-26"
+                  onKeyPress={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <div
+                    className="emotion-25"
+                  >
+                    <div
+                      className="emotion-21"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div
+                  className="emotion-28"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-27"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-29"
               onClick={[Function]}
-              onMouseEnter={[Function]}
             >
-              test_officer
-            </a>
-          </td>
-          <td
-            className="emotion-17"
-          >
-            100
-          </td>
-          <td>
-            2019-10-11 21:03:27
-          </td>
-          <td
-            className="emotion-17"
-          >
-            4
-          </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <a
-                className="emotion-19"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
+              <td>
+                <div
+                  className="emotion-79"
+                >
+                  Paused
+                </div>
+              </td>
+              <td>
+                <a
+                  className="emotion-16"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  test_officer
+                </a>
+              </td>
+              <td
+                className="emotion-17"
               >
-                <svg
-                  color="#c92300"
-                  data-file-name="warning.svg"
-                  height={20}
-                />
-              </a>
-            </div>
-          </td>
-          <td
-            style={
-              Object {
-                "minWidth": 244,
-                "overflow": "visible",
-              }
-            }
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-26"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-25"
+                100
+              </td>
+              <td>
+                2019-10-11 21:03:27
+              </td>
+              <td
+                className="emotion-17"
+              >
+                4
+              </td>
+              <td>
+                <div
+                  className="emotion-20"
+                >
+                  <a
+                    className="emotion-19"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    <svg
+                      color="#c92300"
+                      data-file-name="warning.svg"
+                      height={20}
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "minWidth": 244,
+                    "overflow": "visible",
+                  }
+                }
               >
                 <div
-                  className="emotion-21"
-                />
-              </div>
-            </div>
-          </td>
-          <td>
-            <div
-              className="emotion-28"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-27"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr
-          className="emotion-29"
-          onClick={[Function]}
-        >
-          <td>
-            <div
-              className="emotion-45"
-            >
-              Success
-            </div>
-          </td>
-          <td>
-            <a
-              className="emotion-16"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/1585ca03-4db0-14d1-8edd-0a580a000926"
+                  aria-label="Progress Bar"
+                  className="emotion-26"
+                  onKeyPress={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <div
+                    className="emotion-25"
+                  >
+                    <div
+                      className="emotion-21"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div
+                  className="emotion-28"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-27"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="emotion-29"
               onClick={[Function]}
-              onMouseEnter={[Function]}
             >
-              flipbook_export_1
-            </a>
-          </td>
-          <td
-            className="emotion-17"
-          >
-            1
-          </td>
-          <td>
-            2019-08-01 22:52:19
-          </td>
-          <td
-            className="emotion-17"
-          >
-            4
-          </td>
-          <td />
-          <td
-            style={
-              Object {
-                "minWidth": 244,
-                "overflow": "visible",
-              }
-            }
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-26"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-25"
+              <td>
+                <div
+                  className="emotion-45"
+                >
+                  Success
+                </div>
+              </td>
+              <td>
+                <a
+                  className="emotion-16"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/1585ca03-4db0-14d1-8edd-0a580a000926"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  flipbook_export_1
+                </a>
+              </td>
+              <td
+                className="emotion-17"
+              >
+                1
+              </td>
+              <td>
+                2019-08-01 22:52:19
+              </td>
+              <td
+                className="emotion-17"
+              >
+                4
+              </td>
+              <td />
+              <td
+                style={
+                  Object {
+                    "minWidth": 244,
+                    "overflow": "visible",
+                  }
+                }
               >
                 <div
-                  className="emotion-95"
-                />
-              </div>
-            </div>
-          </td>
-          <td />
-        </tr>
-        <tr
-          className="emotion-29"
-          onClick={[Function]}
-        >
-          <td>
-            <div
-              className="emotion-45"
-            >
-              Success
-            </div>
-          </td>
-          <td>
-            <a
-              className="emotion-16"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/be47702d-cbd6-1cce-a096-0a580a000920"
+                  aria-label="Progress Bar"
+                  className="emotion-26"
+                  onKeyPress={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <div
+                    className="emotion-25"
+                  >
+                    <div
+                      className="emotion-95"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td />
+            </tr>
+            <tr
+              className="emotion-29"
               onClick={[Function]}
-              onMouseEnter={[Function]}
             >
-              export_7_8_2019
-            </a>
-          </td>
-          <td
-            className="emotion-17"
-          >
-            1
-          </td>
-          <td>
-            2019-07-08 18:53:44
-          </td>
-          <td
-            className="emotion-17"
-          >
-            4
-          </td>
-          <td />
-          <td
-            style={
-              Object {
-                "minWidth": 244,
-                "overflow": "visible",
-              }
-            }
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-26"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-25"
+              <td>
+                <div
+                  className="emotion-45"
+                >
+                  Success
+                </div>
+              </td>
+              <td>
+                <a
+                  className="emotion-16"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/be47702d-cbd6-1cce-a096-0a580a000920"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  export_7_8_2019
+                </a>
+              </td>
+              <td
+                className="emotion-17"
+              >
+                1
+              </td>
+              <td>
+                2019-07-08 18:53:44
+              </td>
+              <td
+                className="emotion-17"
+              >
+                4
+              </td>
+              <td />
+              <td
+                style={
+                  Object {
+                    "minWidth": 244,
+                    "overflow": "visible",
+                  }
+                }
               >
                 <div
-                  className="emotion-21"
-                />
-              </div>
-            </div>
-          </td>
-          <td />
-        </tr>
-        <tr
-          className="emotion-29"
-          onClick={[Function]}
-        >
-          <td>
-            <div
-              className="emotion-45"
-            >
-              Success
-            </div>
-          </td>
-          <td>
-            <a
-              className="emotion-16"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/be47702c-cbd6-1cce-a096-0a580a000920"
+                  aria-label="Progress Bar"
+                  className="emotion-26"
+                  onKeyPress={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <div
+                    className="emotion-25"
+                  >
+                    <div
+                      className="emotion-21"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td />
+            </tr>
+            <tr
+              className="emotion-29"
               onClick={[Function]}
-              onMouseEnter={[Function]}
             >
-              export_7_8_2019___
-            </a>
-          </td>
-          <td
-            className="emotion-17"
-          >
-            1
-          </td>
-          <td>
-            2019-07-08 18:43:03
-          </td>
-          <td
-            className="emotion-17"
-          >
-            4
-          </td>
-          <td />
-          <td
-            style={
-              Object {
-                "minWidth": 244,
-                "overflow": "visible",
-              }
-            }
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-26"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-25"
+              <td>
+                <div
+                  className="emotion-45"
+                >
+                  Success
+                </div>
+              </td>
+              <td>
+                <a
+                  className="emotion-16"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/be47702c-cbd6-1cce-a096-0a580a000920"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  export_7_8_2019___
+                </a>
+              </td>
+              <td
+                className="emotion-17"
+              >
+                1
+              </td>
+              <td>
+                2019-07-08 18:43:03
+              </td>
+              <td
+                className="emotion-17"
+              >
+                4
+              </td>
+              <td />
+              <td
+                style={
+                  Object {
+                    "minWidth": 244,
+                    "overflow": "visible",
+                  }
+                }
               >
                 <div
-                  className="emotion-21"
-                />
-              </div>
-            </div>
-          </td>
-          <td />
-        </tr>
-        <tr
-          className="emotion-29"
-          onClick={[Function]}
-        >
-          <td>
-            <div
-              className="emotion-45"
-            >
-              Success
-            </div>
-          </td>
-          <td>
-            <a
-              className="emotion-16"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd91540-08c1-199f-b899-0a580a00091e"
+                  aria-label="Progress Bar"
+                  className="emotion-26"
+                  onKeyPress={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <div
+                    className="emotion-25"
+                  >
+                    <div
+                      className="emotion-21"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td />
+            </tr>
+            <tr
+              className="emotion-29"
               onClick={[Function]}
-              onMouseEnter={[Function]}
             >
-              sdlc-testdata-import.json
-            </a>
-          </td>
-          <td
-            className="emotion-17"
-          >
-            100
-          </td>
-          <td>
-            2019-07-03 16:49:15
-          </td>
-          <td
-            className="emotion-17"
-          >
-            4
-          </td>
-          <td />
-          <td
-            style={
-              Object {
-                "minWidth": 244,
-                "overflow": "visible",
-              }
-            }
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-26"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-25"
+              <td>
+                <div
+                  className="emotion-45"
+                >
+                  Success
+                </div>
+              </td>
+              <td>
+                <a
+                  className="emotion-16"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd91540-08c1-199f-b899-0a580a00091e"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  sdlc-testdata-import.json
+                </a>
+              </td>
+              <td
+                className="emotion-17"
+              >
+                100
+              </td>
+              <td>
+                2019-07-03 16:49:15
+              </td>
+              <td
+                className="emotion-17"
+              >
+                4
+              </td>
+              <td />
+              <td
+                style={
+                  Object {
+                    "minWidth": 244,
+                    "overflow": "visible",
+                  }
+                }
               >
                 <div
-                  className="emotion-21"
-                />
-              </div>
-            </div>
-          </td>
-          <td />
-        </tr>
-        <tr
-          className="emotion-29"
-          onClick={[Function]}
-        >
-          <td>
-            <div
-              className="emotion-45"
-            >
-              Success
-            </div>
-          </td>
-          <td>
-            <a
-              className="emotion-16"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd9153f-08c1-199f-b899-0a580a00091e"
+                  aria-label="Progress Bar"
+                  className="emotion-26"
+                  onKeyPress={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <div
+                    className="emotion-25"
+                  >
+                    <div
+                      className="emotion-21"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td />
+            </tr>
+            <tr
+              className="emotion-29"
               onClick={[Function]}
-              onMouseEnter={[Function]}
             >
-              sdlc-testdata-import.json
-            </a>
-          </td>
-          <td
-            className="emotion-17"
-          >
-            100
-          </td>
-          <td>
-            2019-07-03 01:29:41
-          </td>
-          <td
-            className="emotion-17"
-          >
-            4
-          </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <a
-                className="emotion-19"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd9153f-08c1-199f-b899-0a580a00091e/errors"
-                onClick={[Function]}
-                onMouseEnter={[Function]}
+              <td>
+                <div
+                  className="emotion-45"
+                >
+                  Success
+                </div>
+              </td>
+              <td>
+                <a
+                  className="emotion-16"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd9153f-08c1-199f-b899-0a580a00091e"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  sdlc-testdata-import.json
+                </a>
+              </td>
+              <td
+                className="emotion-17"
               >
-                <svg
-                  color="#c92300"
-                  data-file-name="warning.svg"
-                  height={20}
-                />
-              </a>
-            </div>
-          </td>
-          <td
-            style={
-              Object {
-                "minWidth": 244,
-                "overflow": "visible",
-              }
-            }
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-26"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-25"
+                100
+              </td>
+              <td>
+                2019-07-03 01:29:41
+              </td>
+              <td
+                className="emotion-17"
+              >
+                4
+              </td>
+              <td>
+                <div
+                  className="emotion-20"
+                >
+                  <a
+                    className="emotion-19"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd9153f-08c1-199f-b899-0a580a00091e/errors"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    <svg
+                      color="#c92300"
+                      data-file-name="warning.svg"
+                      height={20}
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "minWidth": 244,
+                    "overflow": "visible",
+                  }
+                }
               >
                 <div
-                  className="emotion-21"
-                />
-                <div
-                  className="emotion-95"
-                />
-              </div>
-            </div>
-          </td>
-          <td />
-        </tr>
-      </tbody>
-    </table>
+                  aria-label="Progress Bar"
+                  className="emotion-26"
+                  onKeyPress={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <div
+                    className="emotion-25"
+                  >
+                    <div
+                      className="emotion-21"
+                    />
+                    <div
+                      className="emotion-95"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td />
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div>
        
     </div>
@@ -1597,8 +1627,15 @@ Array [
   >
     Job Queue
   </h2>,
-  .emotion-19 {
+  .emotion-21 {
   height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .emotion-5 {
@@ -1693,6 +1730,21 @@ Array [
 
 .emotion-2 {
   padding-left: 4px;
+}
+
+.emotion-20 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-19 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .emotion-18 {
@@ -1825,7 +1877,7 @@ Array [
 }
 
 <div
-    className="emotion-19"
+    className="emotion-21"
   >
     <div
       className="emotion-5"
@@ -1861,94 +1913,96 @@ Array [
         </div>
       </button>
     </div>
-    <table
-      className="emotion-18"
+    <div
+      className="emotion-20"
     >
-      <thead>
-        <tr>
-          <th
-            className="emotion-6"
-          >
-            Status
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Job Name
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Priority
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Created
-          </th>
-          <th
-            className="emotion-6"
-          >
-            # Assets
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Errors
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Task Progress
-          </th>
-          <th
-            className="emotion-6"
-          >
-            <div
-              className="emotion-13"
-            >
-              <svg
-                data-file-name="gear.svg"
-                width={20}
-              />
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          className="emotion-17"
+      <div
+        className="emotion-19"
+      >
+        <table
+          className="emotion-18"
         >
-          <td
-            colSpan={8}
-          >
-            <div
-              className="emotion-16"
-            >
-              <div
-                className="emotion-15"
+          <thead>
+            <tr>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="noJobs.svg"
-                  width={200}
-                />
-                <div>
-                  There are currently no jobs in the queue.
+                Status
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Job Name
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Priority
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Created
+              </th>
+              <th
+                className="emotion-6"
+              >
+                # Assets
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Errors
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Task Progress
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-13"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
                 </div>
-                <div>
-                  Any new job will appear here.
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-17"
+            >
+              <td
+                colSpan={8}
+              >
+                <div
+                  className="emotion-16"
+                >
+                  <div
+                    className="emotion-15"
+                  >
+                    <svg
+                      data-file-name="noJobs.svg"
+                      width={200}
+                    />
+                    <div>
+                      There are currently no jobs in the queue.
+                    </div>
+                    <div>
+                      Any new job will appear here.
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div>
-       
-    </div>
-    <div>
-       
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>,
 ]

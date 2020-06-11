@@ -8,6 +8,8 @@ const STYLES = {
       display: 'flex',
       flexDirection: 'column',
       paddingRight: spacing.giant,
+      paddingTop: spacing.moderate,
+      paddingBottom: spacing.moderate,
     },
   },
   SECONDARY: {

@@ -27,12 +27,13 @@ class AnalystDaoTests : AbstractTest() {
     fun init() {
         authenticateAsAnalyst()
         spec = AnalystSpec(
-                1024,
-                648,
-                1024,
-                0.5f,
-                "unknown",
-                null)
+            1024,
+            648,
+            1024,
+            0.5f,
+            "unknown",
+            null
+        )
         analyst = analystDao.create(spec)
     }
 
@@ -47,15 +48,21 @@ class AnalystDaoTests : AbstractTest() {
 
     @Test
     fun testUpdate() {
-        assertEquals(1, jdbc.update("UPDATE analyst SET int_state=0 WHERE pk_analyst=?",
-                analyst.id))
+        assertEquals(
+            1,
+            jdbc.update(
+                "UPDATE analyst SET int_state=0 WHERE pk_analyst=?",
+                analyst.id
+            )
+        )
         val spec = AnalystSpec(
-                99,
-                99,
-                99,
-                0.1f,
-                "hello",
-                null)
+            99,
+            99,
+            99,
+            0.1f,
+            "hello",
+            null
+        )
         assertTrue(analystDao.update(spec))
         val a2 = analystDao.get(analyst.id)
         assertEquals(spec.totalRamMb, a2.totalRamMb)
@@ -139,12 +146,13 @@ class AnalystDaoTests : AbstractTest() {
     @Test
     fun testGetAllByTaskId() {
         val spec2 = AnalystSpec(
-                1024,
-                648,
-                1024,
-                0.5f,
-                "unknown",
-                UUID.randomUUID())
+            1024,
+            648,
+            1024,
+            0.5f,
+            "unknown",
+            UUID.randomUUID()
+        )
         assertTrue(analystDao.update(spec2))
         assertEquals(1, analystDao.getAll(AnalystFilter(taskIds = listOf(spec2.taskId!!))).size())
         assertEquals(0, analystDao.getAll(AnalystFilter(taskIds = listOf(UUID.randomUUID()))).size())
@@ -154,13 +162,16 @@ class AnalystDaoTests : AbstractTest() {
     fun testGetAllSorted() {
         authenticateAsAnalyst()
         for (i in 1..10) {
-            analystDao.create(AnalystSpec(
+            analystDao.create(
+                AnalystSpec(
                     1024,
                     648,
                     1024,
                     i.toFloat(),
                     "unknown",
-                    null).apply { endpoint = "http://analyst$i:5000" })
+                    null
+                ).apply { endpoint = "http://analyst$i:5000" }
+            )
         }
         var last = 0.0f
         for (analyst in analystDao.getAll(AnalystFilter().apply { sort = listOf("load:a") })) {
@@ -177,10 +188,18 @@ class AnalystDaoTests : AbstractTest() {
 
         // Get Analyst that hasn't pinged in 1 second
         println(Duration.parse("PT1S").toMillis())
-        assertTrue(analystDao.getUnresponsive(AnalystState.Up,
-                Duration.parse("PT1S")).isNotEmpty())
-        assertTrue(analystDao.getUnresponsive(AnalystState.Up,
-                Duration.parse("PT20S")).isEmpty())
+        assertTrue(
+            analystDao.getUnresponsive(
+                AnalystState.Up,
+                Duration.parse("PT1S")
+            ).isNotEmpty()
+        )
+        assertTrue(
+            analystDao.getUnresponsive(
+                AnalystState.Up,
+                Duration.parse("PT20S")
+            ).isEmpty()
+        )
     }
 
     @Test

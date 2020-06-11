@@ -1,6 +1,9 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import fields from '../../Filters/__mocks__/fields'
+import asset from '../../Asset/__mocks__/asset'
+
+import { encode, formatUrl } from '../../Filters/helpers'
 
 import FilterReset from '../Reset'
 
@@ -187,5 +190,47 @@ describe('<FilterReset />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should maintain "ids" when resetting', () => {
+    const filters = [
+      {
+        type: 'similarity',
+        attribute: 'analysis.zvi-image-similarity',
+        values: { ids: [asset.id] },
+      },
+    ]
+    const mockFn = jest.fn()
+    const mockPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockPush)
+    require('swr').__setMockUseSWRResponse({ data: {} })
+
+    const component = TestRenderer.create(
+      <FilterReset
+        projectId={PROJECT_ID}
+        assetId={asset.id}
+        filters={filters}
+        filter={filters[0]}
+        filterIndex={0}
+        onReset={mockFn}
+      />,
+    )
+
+    const query = encode({ filters })
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'Reset' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(mockPush).toHaveBeenCalledWith(
+      {
+        pathname: '/[projectId]/visualizer',
+        query: { projectId: PROJECT_ID, id: asset.id, query },
+      },
+      `/${PROJECT_ID}/visualizer${formatUrl({ id: asset.id, query })}`,
+    )
   })
 })

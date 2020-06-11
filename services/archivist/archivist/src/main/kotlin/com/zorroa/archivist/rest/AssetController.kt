@@ -81,31 +81,31 @@ class AssetController @Autowired constructor(
     fun scroll(@RequestBody(required = false) scroll: Map<String, String>, output: ServletOutputStream):
         ResponseEntity<Resource> {
 
-        val rsp = assetSearchService.scroll(scroll)
-        val output = RawByteArrayOutputStream(1024 * 64)
-        XContentFactory.jsonBuilder(output).use {
-            rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
-        }
+            val rsp = assetSearchService.scroll(scroll)
+            val output = RawByteArrayOutputStream(1024 * 64)
+            XContentFactory.jsonBuilder(output).use {
+                rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
+            }
 
-        return ResponseEntity.ok()
-            .contentLength(output.size().toLong())
-            .body(InputStreamResource(output.toInputStream()))
-    }
+            return ResponseEntity.ok()
+                .contentLength(output.size().toLong())
+                .body(InputStreamResource(output.toInputStream()))
+        }
 
     @PreAuthorize("hasAuthority('AssetsRead')")
     @DeleteMapping("/api/v3/assets/_search/scroll")
     fun clear_scroll(@RequestBody(required = false) scroll: Map<String, String>, output: ServletOutputStream):
         ResponseEntity<Resource> {
-        val rsp = assetSearchService.clearScroll(scroll)
-        val output = RawByteArrayOutputStream(1024 * 1)
-        XContentFactory.jsonBuilder(output).use {
-            rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
-        }
+            val rsp = assetSearchService.clearScroll(scroll)
+            val output = RawByteArrayOutputStream(1024 * 1)
+            XContentFactory.jsonBuilder(output).use {
+                rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
+            }
 
-        return ResponseEntity.ok()
-            .contentLength(output.size().toLong())
-            .body(InputStreamResource(output.toInputStream()))
-    }
+            return ResponseEntity.ok()
+                .contentLength(output.size().toLong())
+                .body(InputStreamResource(output.toInputStream()))
+        }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PostMapping("/api/v3/assets/_search/reprocess")
@@ -158,8 +158,8 @@ class AssetController @Autowired constructor(
     @PostMapping("/api/v3/assets/_batch_create")
     fun batchCreate(@RequestBody request: BatchCreateAssetsRequest):
         BatchCreateAssetsResponse {
-        return assetService.batchCreate(request)
-    }
+            return assetService.batchCreate(request)
+        }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PutMapping("/api/v3/assets/{id}/_index")

@@ -45,6 +45,7 @@ const Panel = ({ openToThe, children }) => {
           <Button
             key={title}
             aria-label={title}
+            title={title}
             variant={VARIANTS.NEUTRAL}
             onClick={() =>
               setOpenPanel({ value: key === openPanel ? '' : key })

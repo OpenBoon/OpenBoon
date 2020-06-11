@@ -7,6 +7,7 @@ import User from '../../User'
 
 import Task from '..'
 
+jest.mock('../../TaskAssets', () => 'TaskAssets')
 jest.mock('../../Pagination', () => 'Pagination')
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
@@ -20,7 +21,7 @@ describe('<Task />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: task,
+      data: { ...task, timeStarted: -1, state: 'Waiting' },
     })
 
     const component = TestRenderer.create(

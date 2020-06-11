@@ -36,10 +36,12 @@ class TaskDaoTests : AbstractTest() {
 
     @Before
     fun init() {
-        val jspec = JobSpec("test_job",
-                emptyZpsScript("test_script"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val jspec = JobSpec(
+            "test_job",
+            emptyZpsScript("test_script"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
 
         job = jobDao.create(jspec, JobType.Import)
         spec = TaskSpec("generator", jspec.script!!)
@@ -141,8 +143,9 @@ class TaskDaoTests : AbstractTest() {
     @Test
     fun testIncrementAssetCounters() {
         val counters = AssetCounters(
-                replaced = 4,
-                created = 6)
+            replaced = 4,
+            created = 6
+        )
 
         assertTrue(taskDao.incrementAssetCounters(task, counters))
 
@@ -162,8 +165,10 @@ class TaskDaoTests : AbstractTest() {
     fun uptimePingTime() {
         val endpoint = "http://localhost:5000"
         assertFalse(taskDao.updatePingTime(task.id, endpoint))
-        jdbc.update("UPDATE task SET int_state=?, str_host=?",
-                TaskState.Running.ordinal, endpoint)
+        jdbc.update(
+            "UPDATE task SET int_state=?, str_host=?",
+            TaskState.Running.ordinal, endpoint
+        )
         assertTrue(taskDao.updatePingTime(task.id, endpoint))
     }
 
@@ -174,8 +179,10 @@ class TaskDaoTests : AbstractTest() {
         val endpoint = "http://localhost:5000"
         val time = System.currentTimeMillis() - (86400 * 1000)
         assertFalse(taskDao.updatePingTime(task.id, endpoint))
-        jdbc.update("UPDATE task SET time_ping=?, int_state=?, str_host=?",
-                time, TaskState.Running.ordinal, endpoint)
+        jdbc.update(
+            "UPDATE task SET time_ping=?, int_state=?, str_host=?",
+            time, TaskState.Running.ordinal, endpoint
+        )
         assertTrue(taskDao.getOrphans(Duration.ofMinutes(1)).isNotEmpty())
     }
 }

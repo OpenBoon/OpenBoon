@@ -65,7 +65,8 @@ class PipelineDaoTests : AbstractTest() {
 
         pipelineDao.setPipelineMods(pl2.id, listOf(mod))
         val count = jdbc.queryForObject(
-            "SELECT COUNT(1) FROM x_module_pipeline WHERE pk_pipeline=?", Int::class.java, pl2.id)
+            "SELECT COUNT(1) FROM x_module_pipeline WHERE pk_pipeline=?", Int::class.java, pl2.id
+        )
         assertEquals(1, count)
     }
 

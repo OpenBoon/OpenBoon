@@ -36,12 +36,14 @@ class CredentialsControllerTests : MockMvcTest() {
 
     @Test
     fun testCreate() {
-        val payload = """{
-            "name": "gcp_service_account",
-            "type": "aws",
-            "blob": "${StringEscapeUtils.escapeJson(TEST_AWS_CREDS)}"
-        }
-        """.trimIndent()
+        val payload =
+            """
+            {
+                "name": "gcp_service_account",
+                "type": "aws",
+                "blob": "${StringEscapeUtils.escapeJson(TEST_AWS_CREDS)}"
+            }
+            """
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/credentials")
@@ -84,10 +86,12 @@ class CredentialsControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdate_noBlob() {
-        val payload = """{
-            "name": "booya"
-        }
-        """.trimIndent()
+        val payload =
+            """
+            {
+                "name": "booya"
+            }
+            """.trimIndent()
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/credentials/${creds.id}")
                 .headers(admin())
@@ -101,11 +105,13 @@ class CredentialsControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdate_withBlob() {
-        val payload = """{
-            "name": "booya",
-            "blob": "${StringEscapeUtils.escapeJson(TEST_AWS_CREDS)}"
-        }
-        """.trimIndent()
+        val payload =
+            """
+            {
+                "name": "booya",
+                "blob": "${StringEscapeUtils.escapeJson(TEST_AWS_CREDS)}"
+            }
+            """
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/credentials/${creds.id}")
                 .headers(admin())

@@ -108,10 +108,12 @@ class GcsProjectStorageService constructor(
         val opts = if (forWrite) {
             arrayOf(
                 Storage.SignUrlOption.withContentType(),
-                Storage.SignUrlOption.httpMethod(HttpMethod.PUT))
+                Storage.SignUrlOption.httpMethod(HttpMethod.PUT)
+            )
         } else {
             arrayOf(
-                Storage.SignUrlOption.httpMethod(HttpMethod.GET))
+                Storage.SignUrlOption.httpMethod(HttpMethod.GET)
+            )
         }
 
         logSignEvent(path, mediaType, forWrite)
@@ -144,8 +146,10 @@ class GcsProjectStorageService constructor(
     override fun recursiveDelete(locator: ProjectDirLocator) {
         val path = locator.getPath()
         val bucket = gcs.get(properties.bucket)
-        val blobs = bucket.list(Storage.BlobListOption.prefix(path),
-            Storage.BlobListOption.pageSize(100))
+        val blobs = bucket.list(
+            Storage.BlobListOption.prefix(path),
+            Storage.BlobListOption.pageSize(100)
+        )
 
         for (blob in blobs.iterateAll()) {
             gcs.delete(blob.blobId)
