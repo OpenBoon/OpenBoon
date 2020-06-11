@@ -15,7 +15,12 @@ requirements = [
     'matplotlib',
     'opencv-python',
     'Pillow',
-    'ipython'
+    'ipython',
+    'opencv_python',
+    'scikit-learn',
+    'bokeh',
+    'holoviews',
+    'MulticoreTSNE'
 ]
 
 setup(
