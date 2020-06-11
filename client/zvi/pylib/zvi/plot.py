@@ -1,5 +1,4 @@
 import os
-import numpy as np
 import cv2
 from MulticoreTSNE import MulticoreTSNE as TSNE
 from sklearn.cluster import KMeans
@@ -16,6 +15,7 @@ from zmlp import app_from_env
 from zvi.hashes import read_hash_as_vectors
 from zvi.proxies import download_proxy
 from zvi.display import is_running_from_ipython
+
 
 def plot_tsne(search=None,
               attr='analysis.zvi-image-similarity.simhash',
@@ -69,8 +69,8 @@ def plot_tsne(search=None,
         PAL = Paired12 + Spectral11
         colormap = []
 
-        for l in kmeans.labels_:
-            colormap.append(PAL[l])
+        for label in kmeans.labels_:
+            colormap.append(PAL[label])
 
         for a in assets:
             legend.append(a.get_attr('source.filename'))
