@@ -604,7 +604,7 @@ Array [
 }
 
 .emotion-74 {
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .emotion-73 {
@@ -614,50 +614,6 @@ Array [
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-}
-
-.emotion-69 {
-  margin: 0;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #2e2e2e;
-  border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-71 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
-}
-
-.emotion-70 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 0;
-  fill: #73b61c;
-}
-
-.emotion-80 {
-  cursor: pointer;
 }
 
 .emotion-132 {
@@ -1253,17 +1209,17 @@ Array [
                         className="emotion-25"
                       >
                         <input
-                          className="emotion-69"
+                          className="emotion-22"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-71"
+                          className="emotion-24"
                         >
                           <svg
-                            className="emotion-70"
+                            className="emotion-23"
                             data-file-name="checkmark.svg"
                             width={20}
                           />
@@ -1286,7 +1242,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-80"
+                  className="emotion-74"
                   onClick={[Function]}
                 >
                   <td>
@@ -1330,7 +1286,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-80"
+                  className="emotion-74"
                   onClick={[Function]}
                 >
                   <td>
@@ -1374,7 +1330,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-80"
+                  className="emotion-74"
                   onClick={[Function]}
                 >
                   <td>
@@ -1450,7 +1406,7 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-80"
+                  className="emotion-74"
                   onClick={[Function]}
                 >
                   <td>
@@ -1494,7 +1450,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-80"
+                  className="emotion-74"
                   onClick={[Function]}
                 >
                   <td>
@@ -1538,7 +1494,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-80"
+                  className="emotion-74"
                   onClick={[Function]}
                 >
                   <td>
@@ -1614,7 +1570,7 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-80"
+                  className="emotion-74"
                   onClick={[Function]}
                 >
                   <td>
@@ -2291,7 +2247,7 @@ Array [
 }
 
 .emotion-92 {
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .emotion-91 {
@@ -2301,50 +2257,6 @@ Array [
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-}
-
-.emotion-87 {
-  margin: 0;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #2e2e2e;
-  border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-89 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
-}
-
-.emotion-88 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 0;
-  fill: #73b61c;
-}
-
-.emotion-98 {
-  cursor: pointer;
 }
 
 .emotion-150 {
@@ -3043,17 +2955,17 @@ Array [
                         className="emotion-43"
                       >
                         <input
-                          className="emotion-87"
+                          className="emotion-40"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-89"
+                          className="emotion-42"
                         >
                           <svg
-                            className="emotion-88"
+                            className="emotion-41"
                             data-file-name="checkmark.svg"
                             width={20}
                           />
@@ -3076,7 +2988,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-98"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
@@ -3120,7 +3032,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-98"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
@@ -3164,7 +3076,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-98"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
@@ -3240,7 +3152,7 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-98"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
@@ -3284,7 +3196,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-98"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
@@ -3328,7 +3240,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-98"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
@@ -3404,7 +3316,7 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-98"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
@@ -4081,7 +3993,7 @@ Array [
 }
 
 .emotion-86 {
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .emotion-85 {
@@ -4091,50 +4003,6 @@ Array [
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-}
-
-.emotion-81 {
-  margin: 0;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #2e2e2e;
-  border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-83 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
-}
-
-.emotion-82 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 0;
-  fill: #73b61c;
-}
-
-.emotion-92 {
-  cursor: pointer;
 }
 
 .emotion-144 {
@@ -4800,17 +4668,17 @@ Array [
                         className="emotion-37"
                       >
                         <input
-                          className="emotion-81"
+                          className="emotion-34"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-83"
+                          className="emotion-36"
                         >
                           <svg
-                            className="emotion-82"
+                            className="emotion-35"
                             data-file-name="checkmark.svg"
                             width={20}
                           />
@@ -4833,7 +4701,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-92"
+                  className="emotion-86"
                   onClick={[Function]}
                 >
                   <td>
@@ -4877,7 +4745,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-92"
+                  className="emotion-86"
                   onClick={[Function]}
                 >
                   <td>
@@ -4921,7 +4789,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-92"
+                  className="emotion-86"
                   onClick={[Function]}
                 >
                   <td>
@@ -4997,7 +4865,7 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-92"
+                  className="emotion-86"
                   onClick={[Function]}
                 >
                   <td>
@@ -5041,7 +4909,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-92"
+                  className="emotion-86"
                   onClick={[Function]}
                 >
                   <td>
@@ -5085,7 +4953,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-92"
+                  className="emotion-86"
                   onClick={[Function]}
                 >
                   <td>
@@ -5161,7 +5029,7 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-92"
+                  className="emotion-86"
                   onClick={[Function]}
                 >
                   <td>
@@ -5838,7 +5706,7 @@ Array [
 }
 
 .emotion-85 {
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .emotion-84 {
@@ -5848,50 +5716,6 @@ Array [
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-}
-
-.emotion-80 {
-  margin: 0;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #2e2e2e;
-  border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-82 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
-}
-
-.emotion-81 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 0;
-  fill: #73b61c;
-}
-
-.emotion-91 {
-  cursor: pointer;
 }
 
 .emotion-143 {
@@ -6552,17 +6376,17 @@ Array [
                         className="emotion-36"
                       >
                         <input
-                          className="emotion-80"
+                          className="emotion-33"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-82"
+                          className="emotion-35"
                         >
                           <svg
-                            className="emotion-81"
+                            className="emotion-34"
                             data-file-name="checkmark.svg"
                             width={20}
                           />
@@ -6585,7 +6409,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-91"
+                  className="emotion-85"
                   onClick={[Function]}
                 >
                   <td>
@@ -6629,7 +6453,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-91"
+                  className="emotion-85"
                   onClick={[Function]}
                 >
                   <td>
@@ -6673,7 +6497,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-91"
+                  className="emotion-85"
                   onClick={[Function]}
                 >
                   <td>
@@ -6749,7 +6573,7 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-91"
+                  className="emotion-85"
                   onClick={[Function]}
                 >
                   <td>
@@ -6793,7 +6617,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-91"
+                  className="emotion-85"
                   onClick={[Function]}
                 >
                   <td>
@@ -6837,7 +6661,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-91"
+                  className="emotion-85"
                   onClick={[Function]}
                 >
                   <td>
@@ -6913,7 +6737,7 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-91"
+                  className="emotion-85"
                   onClick={[Function]}
                 >
                   <td>
