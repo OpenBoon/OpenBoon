@@ -34,17 +34,14 @@ class KnnLabelDetectionClassifier(AssetProcessor):
         prediction = self.classifier.predict([x])
         dist, ind = self.classifier.kneighbors([x], n_neighbors=1, return_distance=True)
 
-        analysis = SingleLabelAnalysis()
         min_distance = self.arg_value('sensitivity')
         dist_result = dist[0][0]
         if dist_result < min_distance:
-            analysis.label = prediction[0]
-            analysis.score = round(1 - dist_result / min_distance, 2)
+            analysis = SingleLabelAnalysis(prediction[0], 1 - dist_result / min_distance)
         else:
-            analysis.label = 'Unrecognized'
-            analysis.score = 0.0
+            analysis = SingleLabelAnalysis('Unrecognized', 0.0)
 
-        asset.set_attr('analysis.' + self.app_model.name, analysis)
+        asset.add_analysis(self.app_model.name, analysis)
 
     def load_model(self):
         """

@@ -283,7 +283,7 @@ class SingleLabelAnalysis:
 
     """
 
-    def __init__(self, label="", score=0.0):
+    def __init__(self, label, score):
         """
         Create a new LabelDetectionSchema instance.
 
@@ -292,8 +292,7 @@ class SingleLabelAnalysis:
             score: (float) score for the label
         """
         self.label = label
-        self.score = score
-        self.attrs = {}
+        self.score = round(score, 3)
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -303,15 +302,11 @@ class SingleLabelAnalysis:
         Returns:
             :obj:`dict`: A JSON serializable version of this Document.
         """
-        predictions = [self.label]
-        predict_count = len(predictions)
         base = {
             "label": self.label,
-            "score": self.score,
-            "count": predict_count
+            "score": self.score
         }
-        base.update(self.attrs)
         return base
 
     def __bool__(self):
-        return len(self) > 0
+        return bool(self.label)
