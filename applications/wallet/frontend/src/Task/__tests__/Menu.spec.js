@@ -6,12 +6,13 @@ const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const JOB_ID = '82d5308b-67c2-1433-8fef-0a580a000955'
+const TASK_ID = '5262c1ef-91ad-1d33-82b6-d6edb1b855c4'
 
 describe('<TaskMenu />', () => {
   it('should render properly', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/api-keys',
-      query: { projectId: PROJECT_ID, jobId: JOB_ID },
+      query: { projectId: PROJECT_ID, jobId: JOB_ID, taskId: TASK_ID },
     })
     const mockFn = jest.fn()
 
@@ -34,7 +35,7 @@ describe('<TaskMenu />', () => {
     expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/jobs/${JOB_ID}/retry/`,
+      `/api/v1/projects/${PROJECT_ID}/tasks/${TASK_ID}/retry/`,
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({

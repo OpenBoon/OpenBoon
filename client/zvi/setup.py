@@ -10,12 +10,18 @@ from datetime import datetime
 # python3 setup.py sdist bdist_wheel
 
 requirements = [
+    'cmake',
     'zmlp',
     'pandas',
     'matplotlib',
     'opencv-python',
     'Pillow',
-    'ipython'
+    'ipython',
+    'opencv_python',
+    'scikit-learn',
+    'bokeh',
+    'holoviews',
+    'MulticoreTSNE'
 ]
 
 setup(

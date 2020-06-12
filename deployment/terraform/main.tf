@@ -113,6 +113,17 @@ resource "kubernetes_secret" "dockerhub" {
   type = "kubernetes.io/dockerconfigjson"
 }
 
+resource "google_storage_bucket_object" "task_env" {
+  bucket = google_storage_bucket.system.name
+  name = "environment/task_env.json"
+  content = <<EOF
+{
+  "CLARIFAI_KEY":  "${var.clarifai-key}"
+}
+EOF
+
+}
+
 ## Enable Google ML APIs
 resource "google_project_service" "video-intelligence" {
   service            = "videointelligence.googleapis.com"

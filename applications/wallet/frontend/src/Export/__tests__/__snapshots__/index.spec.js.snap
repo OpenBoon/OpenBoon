@@ -72,7 +72,7 @@ exports[`<Export /> should render properly 1`] = `
   className="emotion-2"
 >
   <div>
-    Export the metadata for all assets in the current search as CSV. File will download automatically.
+    Export the metadata for all assets in the current search as a CSV file. File will download automatically.
   </div>
   <div
     className="emotion-0"

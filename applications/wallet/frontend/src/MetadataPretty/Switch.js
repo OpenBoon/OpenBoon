@@ -50,12 +50,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
         return (
           <>
             {!!name && (
-              <div
-                css={{
-                  borderTop: constants.borders.divider,
-                  ':hover': { div: { svg: { display: 'inline-block' } } },
-                }}
-              >
+              <div css={{ borderTop: constants.borders.divider }}>
                 <div
                   css={{
                     fontFamily: 'Roboto Condensed',
@@ -69,6 +64,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
                     {formatDisplayName({ name })}
                   </span>
                 </div>
+
                 <div />
               </div>
             )}

@@ -9,6 +9,8 @@ import org.springframework.jdbc.`object`.BatchSqlUpdate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.Types
+import java.time.Instant
+import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
 import java.util.TimeZone
@@ -78,18 +80,14 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
     }
 
     override fun incrementTimeSeriesCounters(date: Date, counts: ProjectQuotaCounters) {
-        val cal: Calendar = Calendar.getInstance()
-        cal.time = date
-        cal.timeZone = TimeZone.getTimeZone("UTC")
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
-        cal.set(Calendar.MILLISECOND, 0)
+        val dateMillis = toHourlyDate(date)
+        val instantUTC = Instant.ofEpochMilli(dateMillis).atZone(ZoneId.of("UTC"))
 
-        val entry = ((cal.get(Calendar.DAY_OF_YEAR) - 1) * 24) + cal.get(Calendar.HOUR_OF_DAY)
-        logger.warn("Updating TimeSeriesCounters $entry ${cal.timeInMillis}")
+        val entry = ((instantUTC.dayOfYear - 1) * 24) + instantUTC.hour
+        logger.warn("Updating TimeSeriesCounters $entry $dateMillis")
         jdbc.update(
             UPDATE_TIMESCALE_COUNTERS,
-            cal.timeInMillis,
+            dateMillis,
             counts.videoFileCount,
             counts.documentFileCount,
             counts.imageFileCount,

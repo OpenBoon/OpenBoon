@@ -39,6 +39,10 @@ variable "zmlp-domain" {
   description = "Domain name of the zmlp api."
 }
 
+variable "clarifai-key" {
+  description = "Secret key to allow access to the Clarifai API."
+}
+
 variable "container-tag" {
   description = "Tag to use for all zvi service docker contianers."
   default = "stable"
