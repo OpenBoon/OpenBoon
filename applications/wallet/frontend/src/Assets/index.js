@@ -96,7 +96,8 @@ const Assets = () => {
         // hack while https://github.com/zeit/swr/issues/189 gets fixed
         .slice(0, Math.ceil(itemCount / SIZE))
         .flatMap((pageSWR) => {
-          const { data: { results } = {} } = pageSWR || {}
+          const { data: d } = pageSWR || {}
+          const { results } = d || {}
           return results
         })
     : []

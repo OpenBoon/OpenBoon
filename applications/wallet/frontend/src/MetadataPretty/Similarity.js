@@ -27,11 +27,11 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
     ],
   })
 
-  const {
-    data: { results },
-  } = useSWR(
+  const { data } = useSWR(
     `/api/v1/projects/${projectId}/searches/query/?query=${query}&from=0&size=10`,
   )
+
+  const { results = [] } = data || {}
 
   return (
     <>

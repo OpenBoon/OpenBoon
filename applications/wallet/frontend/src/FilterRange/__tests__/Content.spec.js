@@ -284,4 +284,26 @@ describe('<FilterRangeContent />', () => {
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InJhbmdlIiwiYXR0cmlidXRlIjoiY2xpcC5sZW5ndGgiLCJ2YWx1ZXMiOnsibWluIjoxLCJtYXgiOjUwLjU2fX1d',
     )
   })
+
+  it('should render with no data', () => {
+    const filter = {
+      type: 'range',
+      attribute: 'clip.length',
+      values: {},
+    }
+
+    require('swr').__setMockUseSWRResponse({})
+
+    const component = TestRenderer.create(
+      <FilterRangeContent
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={[filter]}
+        filter={filter}
+        filterIndex={0}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
