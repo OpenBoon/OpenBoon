@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
-import AriaModal from 'react-aria-modal'
 
 import { spacing, colors, constants } from '../Styles'
 
@@ -28,6 +27,12 @@ const AssetsLightbox = ({ assets }) => {
   const { id: assetId } = assets[index + cursor] || {}
 
   const keydownHandler = ({ code }) => {
+    if (code === 'Escape') {
+      setIsVisible(false)
+
+      setCursor(0)
+    }
+
     if (code === 'Space') {
       setIsVisible((currentIsVisible) => !currentIsVisible)
 
@@ -61,64 +66,61 @@ const AssetsLightbox = ({ assets }) => {
     return () => document.removeEventListener('keydown', keydownHandler)
   })
 
-  if (projectId && assetId) {
+  if (isVisible && projectId && assetId) {
     return (
-      <AriaModal
-        titleId="Asset"
-        getApplicationNode={() => document.getElementById('__next')}
-        underlayColor="rgba(0, 0, 0, 0.9)"
-        onExit={() => setIsVisible(false)}
-        dialogStyle={{ width: '100%' }}
-        mounted={isVisible}
-        focusDialog
-        verticallyCenter
+      <div
+        css={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 999,
+          backgroundColor: constants.overlay,
+        }}
       >
-        <div css={{ width: '100%' }}>
-          <Button
-            variant={VARIANTS.MENU_ITEM}
-            onClick={() => setIsVisible(false)}
-            css={{
-              position: 'absolute',
-              top: spacing.normal,
-              left: spacing.normal,
-              padding: spacing.base,
-              color: colors.structure.steel,
-              backgroundColor: colors.structure.mattGrey,
-              borderRadius: constants.borderRadius.round,
-              ':hover': {
-                color: colors.structure.white,
-              },
-            }}
-          >
-            <CrossSvg width={20} />
-          </Button>
+        <Button
+          variant={VARIANTS.MENU_ITEM}
+          onClick={() => setIsVisible(false)}
+          css={{
+            position: 'absolute',
+            top: spacing.normal,
+            left: spacing.normal,
+            padding: spacing.base,
+            color: colors.structure.steel,
+            backgroundColor: colors.structure.mattGrey,
+            borderRadius: constants.borderRadius.round,
+            ':hover': {
+              color: colors.structure.white,
+            },
+          }}
+        >
+          <CrossSvg width={20} />
+        </Button>
 
-          <div
-            css={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: spacing.spacious,
-              '.ErrorBoundary > div': {
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-              },
-              '.Loading': {
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-              },
-            }}
-          >
-            <SuspenseBoundary>
-              <AssetAsset
-                key={assetId}
-                projectId={projectId}
-                assetId={assetId}
-              />
-            </SuspenseBoundary>
-          </div>
+        <div
+          css={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: spacing.spacious,
+            '.ErrorBoundary > div': {
+              backgroundColor: 'transparent',
+              boxShadow: 'none',
+            },
+            '.Loading': {
+              backgroundColor: 'transparent',
+              boxShadow: 'none',
+            },
+          }}
+        >
+          <SuspenseBoundary>
+            <AssetAsset key={assetId} projectId={projectId} assetId={assetId} />
+          </SuspenseBoundary>
         </div>
-      </AriaModal>
+      </div>
     )
   }
 
