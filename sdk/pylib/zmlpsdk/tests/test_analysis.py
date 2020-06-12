@@ -140,13 +140,9 @@ class ContentDetectionAnalysisTests(TestCase):
 class SingleLabelAnalysisTests(TestCase):
 
     def setUp(self):
-        self.analysis = analysis.SingleLabelAnalysis()
-        self.label = 'cat'
-        self.score = 0.50
+        self.analysis = analysis.SingleLabelAnalysis('cat', 0.50)
 
     def test_add_label_and_score(self):
-        self.analysis.label = self.label
-        self.analysis.score = self.score
         assert 'cat' == self.analysis.label
         assert 0.5 == self.analysis.score
 
