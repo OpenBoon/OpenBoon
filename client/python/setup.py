@@ -19,7 +19,7 @@ requirements = [
 
 setup(
     name='zvi-client',
-    version="1.0.1",
+    version="1.0.0",
     description='Zorroa Visual Intelligence Python Client',
     url='http://www.zorroa.com',
     license='Apache2',
