@@ -37,6 +37,21 @@ def set_asset_total_count(asset_counts):
     return asset_counts
 
 
+def task_item_modifier(request, task):
+    task_path = reverse('task-detail', kwargs={'project_pk': task['projectId'],
+                                               'pk': task['id']})
+    task_url = request.build_absolute_uri(task_path)
+    task['actions'] = {'retry': f'{task_url}retry/',
+                       'assets': f'{task_url}assets/',
+                       'script': f'{task_url}script/',
+                       'errors': f'{task_url}errors/'}
+    task['assetCounts'] = set_asset_total_count(task['assetCounts'])
+
+
+def task_error_item_modifier(request, error):
+    error['jobName'] = request.client.get(f'/api/v1/jobs/{error["jobId"]}')['name']
+
+
 class JobViewSet(BaseProjectViewSet):
     """CRUD operations for ZMLP or ZVI processing jobs."""
     pagination_class = ZMLPFromSizePagination
@@ -244,15 +259,26 @@ class JobTaskViewSet(BaseProjectViewSet):
     serializer_class = TaskSerializer
 
     def list(self, request, project_pk, job_pk):
-        def item_modifier(request, task):
-            path = reverse('task-detail', kwargs={'project_pk': project_pk, 'pk': task['id']})
-            task['url'] = request.build_absolute_uri(path)
-            task['actions'] = {'retry': f'{task["url"]}retry/',
-                               'assets': f'{task["url"]}assets/'}
-            task['assetCounts'] = set_asset_total_count(task['assetCounts'])
-
-        return self._zmlp_list_from_search(request, item_modifier=item_modifier,
+        return self._zmlp_list_from_search(request, item_modifier=task_item_modifier,
                                            search_filter={'jobIds': [job_pk]})
+
+
+class TaskErrorViewSet(BaseProjectViewSet):
+    pagination_class = ZMLPFromSizePagination
+    zmlp_root_api_path = '/api/v1/taskerrors/'
+    serializer_class = TaskErrorSerializer
+
+    def list(self, request, project_pk):
+        return self._zmlp_list_from_search(request, item_modifier=task_error_item_modifier)
+
+    def retrieve(self, request, project_pk, pk):
+        url = os.path.join(self.zmlp_root_api_path, '_findOne')
+        error = request.client.post(url, {'ids': [pk]})
+        task_error_item_modifier(request, error)
+        serializer = self.get_serializer(data=error)
+        if not serializer.is_valid():
+            return Response({'detail': serializer.errors}, status=500)
+        return Response(serializer.validated_data)
 
 
 class TaskViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
@@ -261,13 +287,7 @@ class TaskViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     serializer_class = TaskSerializer
 
     def list(self, request, project_pk):
-        def item_modifier(request, task):
-            item_url = request.build_absolute_uri(request.path)
-            task['actions'] = {'retry': f'{item_url}{task["id"]}/retry/',
-                               'assets': f'{item_url}{task["id"]}/assets/'}
-            task['assetCounts'] = set_asset_total_count(task['assetCounts'])
-
-        return self._zmlp_list_from_search(request, item_modifier=item_modifier)
+        return self._zmlp_list_from_search(request, item_modifier=task_item_modifier)
 
     def retrieve(self, request, project_pk, pk):
         def item_modifier(request, task):
@@ -309,26 +329,17 @@ class TaskViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
                                        item_modifier=search_asset_modifier,
                                        pagination_class=ZMLPFromSizePagination)
 
+    @action(detail=True, methods=['get'])
+    def script(self, request, project_pk, pk):
+        """Returns the script that defines a Task."""
+        script = request.client.get(f'/api/v1/tasks/{pk}/_script')
+        return Response(script)
 
-class TaskErrorViewSet(BaseProjectViewSet):
-    pagination_class = ZMLPFromSizePagination
-    zmlp_root_api_path = '/api/v1/taskerrors/'
-    serializer_class = TaskErrorSerializer
-
-    def list(self, request, project_pk):
-        def item_modifier(request, error):
-            self._add_job_name(request.client, error)
-
-        return self._zmlp_list_from_search(request, item_modifier=item_modifier)
-
-    def retrieve(self, request, project_pk, pk):
-        url = os.path.join(self.zmlp_root_api_path, '_findOne')
-        error = request.client.post(url, {'ids': [pk]})
-        self._add_job_name(request.client, error)
-        serializer = self.get_serializer(data=error)
-        if not serializer.is_valid():
-            return Response({'detail': serializer.errors}, status=500)
-        return Response(serializer.validated_data)
-
-    def _add_job_name(self, client, error):
-        error['jobName'] = client.get(f'/api/v1/jobs/{error["jobId"]}')['name']
+    @action(detail=True, methods=['get'])
+    def errors(self, request, project_pk, pk):
+        """Returns all errors for a Task."""
+        return self._zmlp_list_from_search(request,
+                                           item_modifier=task_error_item_modifier,
+                                           search_filter={'taskIds': [pk]},
+                                           serializer_class=TaskErrorViewSet.serializer_class,
+                                           base_url=TaskErrorViewSet.zmlp_root_api_path)
