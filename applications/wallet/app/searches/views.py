@@ -171,7 +171,9 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
         """
         path = 'api/v3/assets'
-        fields = ['files*',
+        fields = ['id',
+                  'source*',
+                  'files*',
                   'media*']
         filter_boy = FilterBoy()
 

@@ -376,7 +376,9 @@ class TestQuery(BaseFiltersTestCase):
         def mock_list(*args, **kwargs):
             query = kwargs['search_filter']
             assert query == {'sort': {'system.timeCreated': {'order': 'desc'}},
-                             '_source': ['files*',
+                             '_source': ['id',
+                                         'source*',
+                                         'files*',
                                          'media*']}
             return Response(status=status.HTTP_200_OK)
 
