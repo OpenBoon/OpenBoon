@@ -18,24 +18,35 @@ const AssetsQuickView = ({ assets, columnCount }) => {
 
   const [isVisible, setIsVisible] = useState(false)
 
-  const index = assets.findIndex(({ id }) => id === selectedId)
+  const index = assets
+    .filter((a) => a && a.id)
+    .findIndex(({ id }) => id === selectedId)
 
   const { id: previousId } = index > 0 ? assets[index - 1] : {}
-  const { id: nextId } = index < assets.length - 1 ? assets[index + 1] : {}
+  const { id: nextId } =
+    index > -1 && index < assets.length - 1 ? assets[index + 1] : {}
   const { id: previousRowId } =
     index > columnCount - 1 ? assets[index - columnCount] : {}
   const { id: nextRowId } =
-    index < assets.length - columnCount ? assets[index + columnCount] : {}
+    index > -1 && index < assets.length - columnCount
+      ? assets[index + columnCount]
+      : {}
 
-  const keydownHandler = ({ code }) => {
+  const keydownHandler = (event) => {
+    const { code } = event
+
     if (!selectedId) return
 
     if (code === 'Escape') {
       setIsVisible(false)
+
+      event.preventDefault()
     }
 
     if (code === 'Space') {
       setIsVisible((currentIsVisible) => !currentIsVisible)
+
+      event.preventDefault()
     }
 
     if (code === 'ArrowLeft' && previousId) {
@@ -46,6 +57,8 @@ const AssetsQuickView = ({ assets, columnCount }) => {
         },
         `/${projectId}/visualizer${formatUrl({ id: previousId, query })}`,
       )
+
+      event.preventDefault()
     }
 
     if (code === 'ArrowRight' && nextId) {
@@ -56,6 +69,8 @@ const AssetsQuickView = ({ assets, columnCount }) => {
         },
         `/${projectId}/visualizer${formatUrl({ id: nextId, query })}`,
       )
+
+      event.preventDefault()
     }
 
     if (code === 'ArrowUp' && previousRowId) {
@@ -66,6 +81,8 @@ const AssetsQuickView = ({ assets, columnCount }) => {
         },
         `/${projectId}/visualizer${formatUrl({ id: previousRowId, query })}`,
       )
+
+      event.preventDefault()
     }
 
     if (code === 'ArrowDown' && nextRowId) {
@@ -76,6 +93,8 @@ const AssetsQuickView = ({ assets, columnCount }) => {
         },
         `/${projectId}/visualizer${formatUrl({ id: nextRowId, query })}`,
       )
+
+      event.preventDefault()
     }
   }
 

@@ -171,4 +171,21 @@ describe('<AssetsQuickView />', () => {
 
     expect(component.toJSON()).toEqual(null)
   })
+
+  // This seems to happen while page 2 is loading
+  it('should render properly with an undefined asset', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, id: assets.results[2].id },
+    })
+
+    const component = TestRenderer.create(
+      <AssetsQuickView assets={[undefined]} columnCount={2} />,
+    )
+
+    expect(component.toJSON()).toEqual(null)
+  })
 })
