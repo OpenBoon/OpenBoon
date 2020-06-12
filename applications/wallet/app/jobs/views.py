@@ -290,13 +290,7 @@ class TaskViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         return self._zmlp_list_from_search(request, item_modifier=task_item_modifier)
 
     def retrieve(self, request, project_pk, pk):
-        def item_modifier(request, task):
-            item_url = request.build_absolute_uri(request.path)
-            task['actions'] = {'retry': f'{item_url}{task["id"]}/retry/',
-                               'assets': f'{item_url}{task["id"]}/assets/'}
-            task['assetCounts'] = set_asset_total_count(task['assetCounts'])
-
-        return self._zmlp_retrieve(request, pk, item_modifier=item_modifier)
+        return self._zmlp_retrieve(request, pk, item_modifier=task_item_modifier)
 
     @action(detail=True, methods=['put'])
     def retry(self, request, project_pk, pk):
