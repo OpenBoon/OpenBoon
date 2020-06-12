@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from setuptools import setup
-from datetime import datetime
 
 # See https://packaging.python.org/tutorials/packaging-projects/
 # for details about packaging python projects
