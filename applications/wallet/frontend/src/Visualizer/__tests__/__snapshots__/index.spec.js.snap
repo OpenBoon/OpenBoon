@@ -406,6 +406,7 @@ exports[`<Visualizer /> should render properly 1`] = `
               },
             ]
           }
+          columnCount={8}
         />
         <div
           style={
@@ -919,6 +920,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
               },
             ]
           }
+          columnCount={8}
         />
         <div
           style={

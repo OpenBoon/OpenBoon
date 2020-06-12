@@ -154,7 +154,7 @@ const Assets = () => {
       >
         {pages}
 
-        <AssetsLightbox assets={assets} />
+        <AssetsLightbox assets={assets} columnCount={columnCount} />
 
         {itemCount === 0 && (
           <AssetsEmpty

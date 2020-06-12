@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 
 import { spacing, colors, constants } from '../Styles'
 
@@ -9,54 +9,73 @@ import CrossSvg from '../Icons/cross.svg'
 import Button, { VARIANTS } from '../Button'
 import SuspenseBoundary from '../SuspenseBoundary'
 import AssetAsset from '../Asset/Asset'
+import { formatUrl } from '../Filters/helpers'
 
-/* istanbul ignore next */
-const AssetsLightbox = ({ assets }) => {
+const AssetsLightbox = ({ assets, columnCount }) => {
   const {
-    query: { projectId, id: selectedId },
+    query: { projectId, id: selectedId, query },
   } = useRouter()
 
   const [isVisible, setIsVisible] = useState(false)
 
-  const [cursor, setCursor] = useState(0)
+  const index = assets.findIndex(({ id }) => id === selectedId)
 
-  const i = assets.findIndex(({ id }) => id === selectedId)
-
-  const index = i === -1 ? 0 : i
-
-  const { id: assetId } = assets[index + cursor] || {}
+  const { id: previousId } = index > 0 ? assets[index - 1] : {}
+  const { id: nextId } = index < assets.length - 1 ? assets[index + 1] : {}
+  const { id: previousRowId } =
+    index > columnCount - 1 ? assets[index - columnCount] : {}
+  const { id: nextRowId } =
+    index < assets.length - columnCount ? assets[index + columnCount] : {}
 
   const keydownHandler = ({ code }) => {
+    if (!selectedId) return
+
     if (code === 'Escape') {
       setIsVisible(false)
-
-      setCursor(0)
     }
 
     if (code === 'Space') {
       setIsVisible((currentIsVisible) => !currentIsVisible)
-
-      setCursor(0)
     }
 
-    if (code === 'ArrowLeft') {
-      setCursor((currentCursor) => {
-        if (index + currentCursor === 0) {
-          return currentCursor
-        }
-
-        return currentCursor - 1
-      })
+    if (code === 'ArrowLeft' && previousId) {
+      Router.push(
+        {
+          pathname: '/[projectId]/visualizer',
+          query: { projectId, id: previousId, query },
+        },
+        `/${projectId}/visualizer${formatUrl({ id: previousId, query })}`,
+      )
     }
 
-    if (code === 'ArrowRight') {
-      setCursor((currentCursor) => {
-        if (index + currentCursor === assets.length - 1) {
-          return currentCursor
-        }
+    if (code === 'ArrowRight' && nextId) {
+      Router.push(
+        {
+          pathname: '/[projectId]/visualizer',
+          query: { projectId, id: nextId, query },
+        },
+        `/${projectId}/visualizer${formatUrl({ id: nextId, query })}`,
+      )
+    }
 
-        return currentCursor + 1
-      })
+    if (code === 'ArrowUp' && previousRowId) {
+      Router.push(
+        {
+          pathname: '/[projectId]/visualizer',
+          query: { projectId, id: previousRowId, query },
+        },
+        `/${projectId}/visualizer${formatUrl({ id: previousRowId, query })}`,
+      )
+    }
+
+    if (code === 'ArrowDown' && nextRowId) {
+      Router.push(
+        {
+          pathname: '/[projectId]/visualizer',
+          query: { projectId, id: nextRowId, query },
+        },
+        `/${projectId}/visualizer${formatUrl({ id: nextRowId, query })}`,
+      )
     }
   }
 
@@ -66,7 +85,7 @@ const AssetsLightbox = ({ assets }) => {
     return () => document.removeEventListener('keydown', keydownHandler)
   })
 
-  if (isVisible && projectId && assetId) {
+  if (isVisible && projectId && selectedId) {
     return (
       <div
         css={{
@@ -80,6 +99,7 @@ const AssetsLightbox = ({ assets }) => {
         }}
       >
         <Button
+          aria-label="Close"
           variant={VARIANTS.MENU_ITEM}
           onClick={() => setIsVisible(false)}
           css={{
@@ -117,7 +137,11 @@ const AssetsLightbox = ({ assets }) => {
           }}
         >
           <SuspenseBoundary>
-            <AssetAsset key={assetId} projectId={projectId} assetId={assetId} />
+            <AssetAsset
+              key={selectedId}
+              projectId={projectId}
+              assetId={selectedId}
+            />
           </SuspenseBoundary>
         </div>
       </div>
@@ -129,6 +153,7 @@ const AssetsLightbox = ({ assets }) => {
 
 AssetsLightbox.propTypes = {
   assets: PropTypes.arrayOf(PropTypes.object).isRequired,
+  columnCount: PropTypes.number.isRequired,
 }
 
 export default AssetsLightbox
