@@ -39,7 +39,7 @@ def set_asset_total_count(asset_counts):
 
 def task_item_modifier(request, task):
     task_path = reverse('task-detail', kwargs={'project_pk': task['projectId'],
-                                              'pk': task['id']})
+                                               'pk': task['id']})
     task_url = request.build_absolute_uri(task_path)
     task['actions'] = {'retry': f'{task_url}retry/',
                        'assets': f'{task_url}assets/',
