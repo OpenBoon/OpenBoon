@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.security.getProjectId
 
 import org.junit.Test
@@ -121,5 +122,19 @@ class ProjectServiceTests : AbstractTest() {
             "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project1.id
         )
         assertTrue(status)
+    }
+
+    @Test
+    fun testSetTier() {
+        val testSpec = ProjectSpec("project_test")
+        val project = projectService.create(testSpec)
+        assertEquals(ProjectTier.ESSENTIALS, project.tier)
+
+        projectService.setTier(project.id, ProjectTier.PREMIUM)
+        var tierOrdinal = jdbc.queryForObject(
+            "SELECT int_tier FROM project WHERE pk_project=?", Int::class.java, project.id
+        )
+
+        assertEquals(ProjectTier.PREMIUM, ProjectTier.values()[tierOrdinal])
     }
 }

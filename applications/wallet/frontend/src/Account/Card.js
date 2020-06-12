@@ -29,7 +29,7 @@ const AccountCard = ({ projectId, name }) => {
           </div>
           <div css={{ display: 'flex' }}>
             <Link href="/[projectId]" as={`/${projectId}`} passHref>
-              <Button variant={VARIANTS.PRIMARY_SMALL}>View Dashboard</Button>
+              <Button variant={VARIANTS.PRIMARY_SMALL}>Go To Project</Button>
             </Link>
           </div>
         </div>
