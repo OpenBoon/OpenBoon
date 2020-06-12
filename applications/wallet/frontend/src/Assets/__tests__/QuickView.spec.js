@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import AssetsLightbox from '../Lightbox'
+import AssetsQuickView from '../QuickView'
 
 import assets from '../__mocks__/assets'
 
@@ -8,7 +8,7 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
 jest.mock('../../Asset/Asset', () => 'AssetAsset')
 
-describe('<AssetsLightbox />', () => {
+describe('<AssetsQuickView />', () => {
   it('should render properly', () => {
     const mockRouterPush = jest.fn()
 
@@ -19,13 +19,13 @@ describe('<AssetsLightbox />', () => {
     })
 
     const component = TestRenderer.create(
-      <AssetsLightbox assets={assets.results} columnCount={2} />,
+      <AssetsQuickView assets={assets.results} columnCount={2} />,
     )
 
     // useEffect
     act(() => {})
 
-    // Open Lightbox
+    // Open QuickView
     act(() => {
       const event = new KeyboardEvent('keydown', { code: 'Space' })
 
@@ -106,7 +106,7 @@ describe('<AssetsLightbox />', () => {
       `/${PROJECT_ID}/visualizer?id=${assets.results[4].id}`,
     )
 
-    // Close Lightbox
+    // Close QuickView
     act(() => {
       const event = new KeyboardEvent('keydown', { code: 'Escape' })
 
@@ -126,7 +126,7 @@ describe('<AssetsLightbox />', () => {
     })
 
     const component = TestRenderer.create(
-      <AssetsLightbox assets={assets.results} columnCount={2} />,
+      <AssetsQuickView assets={assets.results} columnCount={2} />,
     )
 
     // useEffect
@@ -152,13 +152,13 @@ describe('<AssetsLightbox />', () => {
     })
 
     const component = TestRenderer.create(
-      <AssetsLightbox assets={assets.results} columnCount={2} />,
+      <AssetsQuickView assets={assets.results} columnCount={2} />,
     )
 
     // useEffect
     act(() => {})
 
-    // Open Lightbox
+    // Open QuickView
     act(() => {
       const event = new KeyboardEvent('keydown', { code: 'Space' })
 

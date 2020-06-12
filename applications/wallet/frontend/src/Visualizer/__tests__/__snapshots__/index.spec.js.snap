@@ -336,7 +336,7 @@ exports[`<Visualizer /> should render properly 1`] = `
       <div
         className="emotion-8"
       >
-        <AssetsLightbox
+        <AssetsQuickView
           assets={
             Array [
               Object {
@@ -850,7 +850,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
       <div
         className="emotion-8"
       >
-        <AssetsLightbox
+        <AssetsQuickView
           assets={
             Array [
               Object {

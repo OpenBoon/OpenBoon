@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AssetsLightbox /> should render properly 1`] = `
+exports[`<AssetsQuickView /> should render properly 1`] = `
 .emotion-2 {
   position: absolute;
   top: 0;

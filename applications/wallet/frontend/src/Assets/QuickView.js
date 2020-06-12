@@ -11,7 +11,7 @@ import SuspenseBoundary from '../SuspenseBoundary'
 import AssetAsset from '../Asset/Asset'
 import { formatUrl } from '../Filters/helpers'
 
-const AssetsLightbox = ({ assets, columnCount }) => {
+const AssetsQuickView = ({ assets, columnCount }) => {
   const {
     query: { projectId, id: selectedId, query },
   } = useRouter()
@@ -151,9 +151,9 @@ const AssetsLightbox = ({ assets, columnCount }) => {
   return null
 }
 
-AssetsLightbox.propTypes = {
+AssetsQuickView.propTypes = {
   assets: PropTypes.arrayOf(PropTypes.object).isRequired,
   columnCount: PropTypes.number.isRequired,
 }
 
-export default AssetsLightbox
+export default AssetsQuickView

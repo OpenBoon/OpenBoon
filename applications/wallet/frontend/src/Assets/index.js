@@ -17,7 +17,7 @@ import { reducer, INITIAL_STATE } from './reducer'
 import AssetsResize from './Resize'
 import AssetsThumbnail from './Thumbnail'
 import AssetsEmpty from './Empty'
-import AssetsLightbox from './Lightbox'
+import AssetsQuickView from './QuickView'
 
 const SIZE = 100
 const PADDING_SIZE = spacing.small
@@ -154,7 +154,7 @@ const Assets = () => {
       >
         {pages}
 
-        <AssetsLightbox assets={assets} columnCount={columnCount} />
+        <AssetsQuickView assets={assets} columnCount={columnCount} />
 
         {itemCount === 0 && (
           <AssetsEmpty
