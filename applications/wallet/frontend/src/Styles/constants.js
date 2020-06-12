@@ -58,6 +58,7 @@ const constants = {
   borders,
   opacity,
   boxShadows,
+  overlay: `${colors.structure.black}e6`,
   navbar: {
     height: 44,
   },

@@ -16,14 +16,14 @@ import { formatSeconds } from './helpers'
 const AssetsThumbnail = ({
   asset: {
     id,
-    metadata: {
-      source: { filename },
-    },
+    metadata: { source },
     thumbnailUrl,
     videoProxyUrl,
     videoLength,
   },
 }) => {
+  const { filename } = source || {}
+
   const playerRef = useRef()
 
   const {
@@ -183,7 +183,7 @@ AssetsThumbnail.propTypes = {
         extension: PropTypes.string,
         mimetype: PropTypes.string,
       }),
-    }),
+    }).isRequired,
     thumbnailUrl: PropTypes.string.isRequired,
     assetStyle: PropTypes.oneOf(['image', 'video', 'document']),
     videoLength: PropTypes.number,
