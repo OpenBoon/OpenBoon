@@ -18,19 +18,22 @@ requirements = [
 ]
 
 setup(
-    name='zmlp',
+    name='zvi-client',
     version="1.0.1",
-    description='ZMLP Python Client',
-    url='https://www.zorroa.com',
-    license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
+    description='Zorroa Visual Intelligence Python Client',
+    url='http://www.zorroa.com',
+    license='Apache2',
     package_dir={'': 'pylib'},
     packages=['zmlp', 'zmlp.app', 'zmlp.entity'],
     scripts=[],
+    author="Matthew Chambers",
+    author_email="support@zorroa.com",
+    keywords="machine learning artificial intelligence",
+    python_requires='>=3.4',
 
     classifiers=[
         "Programming Language :: Python :: 3",
-        # "License :: OSI Approved :: MIT License",  # TODO Add license type
-        "Operating System :: OS Independent",        # TODO confirm this
+        "Operating System :: OS Independent"
     ],
 
     include_package_data=True,
