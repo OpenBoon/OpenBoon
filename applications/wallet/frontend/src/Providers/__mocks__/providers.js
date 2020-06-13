@@ -18,7 +18,6 @@ const providers = {
               provider: 'Zorroa',
               category: 'Visual Intelligence',
               supportedMedia: ['Images', 'Video', 'Documents'],
-              restricted: true,
               ops: [
                 {
                   type: 'APPEND',
@@ -50,7 +49,6 @@ const providers = {
               provider: 'Zorroa',
               category: 'Visual Intelligence',
               supportedMedia: ['Images', 'Video', 'Documents'],
-              restricted: false,
               ops: [
                 {
                   type: 'APPEND',
@@ -82,7 +80,6 @@ const providers = {
               provider: 'Zorroa',
               category: 'Visual Intelligence',
               supportedMedia: ['Images', 'Video', 'Documents'],
-              restricted: false,
               ops: [
                 {
                   type: 'APPEND',
@@ -115,7 +112,6 @@ const providers = {
               provider: 'Zorroa',
               category: 'Visual Intelligence',
               supportedMedia: ['Images', 'Video', 'Documents'],
-              restricted: false,
               ops: [
                 {
                   type: 'APPEND',
@@ -153,7 +149,6 @@ const providers = {
               provider: 'Zorroa',
               category: 'Zorroa Timeline Extraction',
               supportedMedia: ['Documents'],
-              restricted: false,
               ops: [
                 {
                   type: 'SET_ARGS',
@@ -177,7 +172,6 @@ const providers = {
               provider: 'Zorroa',
               category: 'Zorroa Timeline Extraction',
               supportedMedia: ['Images'],
-              restricted: false,
               ops: [
                 {
                   type: 'SET_ARGS',
@@ -201,7 +195,6 @@ const providers = {
               provider: 'Zorroa',
               category: 'Zorroa Timeline Extraction',
               supportedMedia: ['Video'],
-              restricted: false,
               ops: [
                 {
                   type: 'APPEND',
@@ -238,7 +231,6 @@ const providers = {
               provider: 'Zorroa',
               category: 'Zorroa Visual Intelligence',
               supportedMedia: ['Images'],
-              restricted: false,
               ops: [
                 {
                   type: 'APPEND',
