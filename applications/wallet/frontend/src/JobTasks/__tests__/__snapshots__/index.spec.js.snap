@@ -113,14 +113,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   position: relative;
 }
 
-.emotion-39 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .emotion-38 {
   width: 100%;
   height: auto;
@@ -703,14 +695,6 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   position: relative;
 }
 
-.emotion-16 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .emotion-6 {
   text-align: left;
   font-size: 15px;
@@ -728,6 +712,14 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
 
 .emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
+}
+
+.emotion-16 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .emotion-15 {

@@ -255,14 +255,6 @@ Array [
   position: relative;
 }
 
-.emotion-22 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .emotion-6 {
   text-align: left;
   font-size: 15px;

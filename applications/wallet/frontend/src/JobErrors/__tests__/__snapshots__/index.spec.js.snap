@@ -113,14 +113,6 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
   position: relative;
 }
 
-.emotion-45 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .emotion-44 {
   width: 100%;
   height: auto;
@@ -960,14 +952,6 @@ exports[`<JobErrors /> should render properly without job errors 1`] = `
   position: relative;
 }
 
-.emotion-18 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .emotion-6 {
   text-align: left;
   font-size: 15px;
@@ -992,6 +976,14 @@ exports[`<JobErrors /> should render properly without job errors 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-18 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .emotion-17 {
