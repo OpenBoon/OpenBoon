@@ -45,19 +45,13 @@ const Task = () => {
 
         {pathname === `${TASK_URL}/details` && 'Details'}
 
-        {pathname === `${TASK_URL}/assets` && (
-          <SuspenseBoundary>
-            <TaskAssets />
-          </SuspenseBoundary>
-        )}
+        {pathname === `${TASK_URL}/assets` && <TaskAssets />}
 
         {pathname === `${TASK_URL}/errors` && (
-          <SuspenseBoundary>
-            <TaskErrors
-              key={refreshParam}
-              parentUrl={`/api/v1/projects/${projectId}/tasks/${taskId}/`}
-            />
-          </SuspenseBoundary>
+          <TaskErrors
+            key={refreshParam}
+            parentUrl={`/api/v1/projects/${projectId}/tasks/${taskId}/`}
+          />
         )}
       </SuspenseBoundary>
     </>

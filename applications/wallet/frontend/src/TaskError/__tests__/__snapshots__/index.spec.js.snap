@@ -299,7 +299,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-19 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -310,16 +310,31 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-9 {
+.emotion-12 {
   padding-right: 64px;
 }
 
 <div
-    className="emotion-19"
+    className="emotion-25"
   >
     <div
-      className="emotion-9"
+      className="emotion-12"
     >
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-0"
+        >
+          Job ID
+          :
+        </div>
+        <div
+          className="emotion-1"
+        >
+          85f0d094-0631-104b-a57e-ce490d54f27a
+        </div>
+      </div>
       <div
         className="emotion-2"
       >
@@ -367,6 +382,21 @@ Array [
       </div>
     </div>
     <div>
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-0"
+        >
+          Phase
+          :
+        </div>
+        <div
+          className="emotion-1"
+        >
+          index
+        </div>
+      </div>
       <div
         className="emotion-2"
       >
@@ -893,7 +923,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-19 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -904,16 +934,31 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-9 {
+.emotion-12 {
   padding-right: 64px;
 }
 
 <div
-    className="emotion-19"
+    className="emotion-25"
   >
     <div
-      className="emotion-9"
+      className="emotion-12"
     >
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-0"
+        >
+          Job ID
+          :
+        </div>
+        <div
+          className="emotion-1"
+        >
+          85f0d094-0631-104b-a57e-ce490d54f27a
+        </div>
+      </div>
       <div
         className="emotion-2"
       >
@@ -961,6 +1006,21 @@ Array [
       </div>
     </div>
     <div>
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-0"
+        >
+          Phase
+          :
+        </div>
+        <div
+          className="emotion-1"
+        >
+          index
+        </div>
+      </div>
       <div
         className="emotion-2"
       >
@@ -1586,7 +1646,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-19 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1597,16 +1657,31 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-9 {
+.emotion-12 {
   padding-right: 64px;
 }
 
 <div
-    className="emotion-19"
+    className="emotion-25"
   >
     <div
-      className="emotion-9"
+      className="emotion-12"
     >
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-0"
+        >
+          Job ID
+          :
+        </div>
+        <div
+          className="emotion-1"
+        >
+          85f0d094-0631-104b-a57e-ce490d54f27a
+        </div>
+      </div>
       <div
         className="emotion-2"
       >
@@ -1654,6 +1729,21 @@ Array [
       </div>
     </div>
     <div>
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-0"
+        >
+          Phase
+          :
+        </div>
+        <div
+          className="emotion-1"
+        >
+          index
+        </div>
+      </div>
       <div
         className="emotion-2"
       >
@@ -2180,7 +2270,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-19 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2191,16 +2281,31 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-9 {
+.emotion-12 {
   padding-right: 64px;
 }
 
 <div
-    className="emotion-19"
+    className="emotion-25"
   >
     <div
-      className="emotion-9"
+      className="emotion-12"
     >
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-0"
+        >
+          Job ID
+          :
+        </div>
+        <div
+          className="emotion-1"
+        >
+          85f0d094-0631-104b-a57e-ce490d54f27a
+        </div>
+      </div>
       <div
         className="emotion-2"
       >
@@ -2248,6 +2353,21 @@ Array [
       </div>
     </div>
     <div>
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-0"
+        >
+          Phase
+          :
+        </div>
+        <div
+          className="emotion-1"
+        >
+          index
+        </div>
+      </div>
       <div
         className="emotion-2"
       >
