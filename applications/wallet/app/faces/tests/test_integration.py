@@ -8,7 +8,7 @@ from zmlp.app.dataset_app import DataSetApp
 from zmlp.app.model_app import ModelApp
 from zmlp.app.asset_app import AssetApp
 from zmlp.app.job_app import JobApp
-from zmlp.client import ZmlpNotFoundException
+from zmlp.client import ZmlpNotFoundException, ZmlpClient
 from zmlp.entity.asset import Asset
 
 from assets.utils import AssetBoxImager
@@ -16,6 +16,16 @@ from faces.views import FaceViewSet
 from wallet.tests.utils import check_response
 
 pytestmark = pytest.mark.django_db
+
+
+def test_list(monkeypatch, project, login, api_client):
+    def mock_post_response(*args, **kwargs):
+        return {'took': 8, 'timed_out': False, '_shards': {'total': 2, 'successful': 2, 'skipped': 0, 'failed': 0}, 'hits': {'total': {'value': 0, 'relation': 'eq'}, 'max_score': None, 'hits': []}}  # noqa
+
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
+    url = reverse('face-list', kwargs={'project_pk': project.id})
+    _json = check_response(api_client.get(url))
+    assert _json['count'] == 0
 
 
 class TestRetrieve:
