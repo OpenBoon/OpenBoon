@@ -280,7 +280,7 @@ class ProjectControllerTests : MockMvcTest() {
             .andExpect(status().isOk)
             .andExpect(
                 jsonPath(
-                    "$.name",
+                    "$.op",
                     CoreMatchers.anything()
                 )
             )
