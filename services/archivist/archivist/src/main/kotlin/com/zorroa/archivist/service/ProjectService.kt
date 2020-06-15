@@ -12,6 +12,7 @@ import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFilter
+import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
@@ -126,6 +127,11 @@ interface ProjectService {
      * Update Project Tier
      */
     fun setTier(projectId: UUID, value: ProjectTier)
+
+    /**
+     * Rename Project
+     */
+    fun rename(projectId: UUID, newName: ProjectNameUpdate)
 }
 
 @Service
@@ -356,6 +362,26 @@ class ProjectServiceImpl constructor(
                 "projectTier" to value
             )
         )
+    }
+
+    override fun rename(projectId: UUID, newName: ProjectNameUpdate) {
+        val project = projectDao.findById(projectId).orElseThrow {
+            EmptyResultDataAccessException("Project not found", 1)
+        }
+
+        if (!projectCustomDao.updateName(projectId, newName.name)) {
+            throw ArchivistException("Project Rename Failed")
+        }
+
+        logger.event(
+            LogObject.PROJECT, LogAction.UPDATE,
+            mapOf(
+                "projectId" to project.id,
+                "projectName" to project.name,
+                "projectNewName" to newName.name
+            )
+        )
+
     }
 
     // This gets called alot so hold onto the values for a while.

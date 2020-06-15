@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.ProjectFilter
+import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.security.getProjectId
@@ -136,5 +137,19 @@ class ProjectServiceTests : AbstractTest() {
         )
 
         assertEquals(ProjectTier.PREMIUM, ProjectTier.values()[tierOrdinal])
+    }
+
+    @Test
+    fun testRename(){
+        val testSpec = ProjectSpec("project_test")
+        val project = projectService.create(testSpec)
+        assertEquals("project_test", project.name)
+
+        projectService.rename(project.id, ProjectNameUpdate("project_test_renamed"));
+        var newName = jdbc.queryForObject(
+            "SELECT str_name FROM project WHERE pk_project=?", String::class.java, project.id
+        )
+
+        assertEquals("project_test_renamed", newName)
     }
 }
