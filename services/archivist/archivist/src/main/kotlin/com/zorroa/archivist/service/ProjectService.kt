@@ -381,7 +381,6 @@ class ProjectServiceImpl constructor(
                 "projectNewName" to newName.name
             )
         )
-
     }
 
     // This gets called alot so hold onto the values for a while.

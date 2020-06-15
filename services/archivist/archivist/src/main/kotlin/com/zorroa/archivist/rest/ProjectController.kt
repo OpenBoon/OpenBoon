@@ -167,5 +167,5 @@ class ProjectController constructor(
             val id = getProjectId()
             projectService.rename(id, nameUpdate)
             return projectService.get(id)
-    }
+        }
 }

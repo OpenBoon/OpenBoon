@@ -140,12 +140,12 @@ class ProjectServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testRename(){
+    fun testRename() {
         val testSpec = ProjectSpec("project_test")
         val project = projectService.create(testSpec)
         assertEquals("project_test", project.name)
 
-        projectService.rename(project.id, ProjectNameUpdate("project_test_renamed"));
+        projectService.rename(project.id, ProjectNameUpdate("project_test_renamed"))
         var newName = jdbc.queryForObject(
             "SELECT str_name FROM project WHERE pk_project=?", String::class.java, project.id
         )
