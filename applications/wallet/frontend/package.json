@@ -105,6 +105,7 @@
   "dependencies": {
     "@emotion/babel-preset-css-prop": "10.0.27",
     "@emotion/core": "10.0.28",
+    "@sentry/apm": "5.17.0",
     "@sentry/browser": "5.17.0",
     "@svgr/webpack": "5.4.0",
     "@zeit/next-source-maps": "0.0.4-canary.1",
