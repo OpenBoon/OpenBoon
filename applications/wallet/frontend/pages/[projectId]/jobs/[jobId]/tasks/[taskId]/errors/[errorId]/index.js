@@ -1,3 +1,3 @@
-import JobError from '../../../../../../../../src/JobError'
+import TaskError from '../../../../../../../../src/TaskError'
 
-export default JobError
+export default TaskError

@@ -5,7 +5,7 @@ import Breadcrumbs from '../Breadcrumbs'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 import Tabs from '../Tabs'
 import TaskAssets from '../TaskAssets'
-import JobErrors from '../JobErrors'
+import TaskErrors from '../TaskErrors'
 
 import TaskDetails from './Details'
 
@@ -53,7 +53,7 @@ const Task = () => {
 
         {pathname === `${TASK_URL}/errors` && (
           <SuspenseBoundary>
-            <JobErrors
+            <TaskErrors
               key={refreshParam}
               parentUrl={`/api/v1/projects/${projectId}/tasks/${taskId}/`}
             />

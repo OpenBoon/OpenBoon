@@ -1262,7 +1262,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  <JobErrors
+  <TaskErrors
     parentUrl="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/tasks/0571517b-5f31-11ea-bb46-6a6895b1a9f6/"
   />,
 ]
