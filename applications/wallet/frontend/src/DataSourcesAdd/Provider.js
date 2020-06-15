@@ -41,7 +41,7 @@ const DataSourcesAddProvider = ({
                   value: module.name,
                   label: module.description,
                   initialValue: false,
-                  isDisabled: module.restricted,
+                  isDisabled: false,
                 })),
               }}
               onClick={onClick}

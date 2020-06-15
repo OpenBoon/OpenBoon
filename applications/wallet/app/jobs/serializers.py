@@ -81,6 +81,8 @@ class TaskErrorSerializer(serializers.Serializer):
 class TaskActionsSerializer(serializers.Serializer):
     retry = serializers.CharField(required=True)
     assets = serializers.CharField(required=True)
+    script = serializers.CharField(required=True)
+    errors = serializers.CharField(required=True)
 
 
 class TaskSerializer(serializers.Serializer):
