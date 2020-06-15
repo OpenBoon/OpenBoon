@@ -20,6 +20,7 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
         }}
       >
         <div>&quot;message&quot;: {message}</div>
+
         {!!stackTrace.length && (
           <>
             <div
@@ -28,6 +29,7 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
                 color: colors.structure.zinc,
               }}
             />
+
             <JsonDisplay json={stackTrace} />
           </>
         )}

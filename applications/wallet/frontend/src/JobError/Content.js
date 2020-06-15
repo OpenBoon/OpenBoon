@@ -18,11 +18,11 @@ const JobErrorContent = () => {
     query: { projectId, errorId },
   } = useRouter()
 
-  const {
-    data: jobError,
-    data: { jobName, fatal, message, taskId, assetId },
-    revalidate,
-  } = useSWR(`/api/v1/projects/${projectId}/task_errors/${errorId}/`)
+  const { data: jobError, revalidate } = useSWR(
+    `/api/v1/projects/${projectId}/task_errors/${errorId}/`,
+  )
+
+  const { jobName, fatal, message, taskId, assetId } = jobError
 
   return (
     <>
@@ -46,19 +46,23 @@ const JobErrorContent = () => {
         tabs={[
           {
             title: 'Stack Trace',
-            href: '/[projectId]/jobs/[jobId]/errors/[errorId]',
+            href: '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]',
           },
           {
             title: 'Asset',
-            href: '/[projectId]/jobs/[jobId]/errors/[errorId]/asset',
+            href:
+              '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]/asset',
           },
         ]}
       />
-      {pathname === '/[projectId]/jobs/[jobId]/errors/[errorId]' && (
+
+      {pathname ===
+        '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]' && (
         <JobErrorStackTrace jobError={jobError} />
       )}
 
-      {pathname === '/[projectId]/jobs/[jobId]/errors/[errorId]/asset' && (
+      {pathname ===
+        '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]/asset' && (
         <SuspenseBoundary>
           <JobErrorAsset assetId={assetId} />
         </SuspenseBoundary>

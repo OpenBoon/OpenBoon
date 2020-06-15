@@ -406,7 +406,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             >
               <a
                 className="emotion-15"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86bc-74b9-1519-b065-d2f0132bc0c8"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86bc-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="AttributeError: 'NoneType' object has no attribute 'startswith'"
@@ -481,7 +481,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             >
               <a
                 className="emotion-15"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86bb-74b9-1519-b065-d2f0132bc0c8"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86bb-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)"
@@ -556,7 +556,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             >
               <a
                 className="emotion-15"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86ba-74b9-1519-b065-d2f0132bc0c8"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86ba-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="AttributeError: 'NoneType' object has no attribute 'startswith'"
@@ -631,7 +631,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             >
               <a
                 className="emotion-15"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86b9-74b9-1519-b065-d2f0132bc0c8"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b9-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="AttributeError: 'NoneType' object has no attribute 'startswith'"
@@ -706,7 +706,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             >
               <a
                 className="emotion-15"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86b8-74b9-1519-b065-d2f0132bc0c8"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b8-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="AttributeError: 'NoneType' object has no attribute 'startswith'"
@@ -781,7 +781,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             >
               <a
                 className="emotion-15"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86b7-74b9-1519-b065-d2f0132bc0c8"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/b81f47e9-7382-1519-b88a-d2f0132bc0c8/errors/916c86b7-74b9-1519-b065-d2f0132bc0c8"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)"

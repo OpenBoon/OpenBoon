@@ -15,7 +15,11 @@ const JobError = () => {
       <Breadcrumbs
         crumbs={[
           { title: 'Job Queue', href: '/[projectId]/jobs' },
-          { title: 'Job Details', href: '/[projectId]/jobs/[jobId]/errors' },
+          { title: 'Job Details', href: '/[projectId]/jobs/[jobId]' },
+          {
+            title: 'Task Details',
+            href: '/[projectId]/jobs/[jobId]/tasks/[taskId]/assets',
+          },
           { title: 'Error Details', href: false },
         ]}
       />

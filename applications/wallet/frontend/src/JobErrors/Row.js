@@ -13,7 +13,16 @@ import { colors, spacing, typography } from '../Styles'
 const JobErrorsRow = ({
   projectId,
   jobId,
-  error: { id: errorId, path, message, processor, fatal, phase, timeCreated },
+  error: {
+    id: errorId,
+    taskId,
+    path,
+    message,
+    processor,
+    fatal,
+    phase,
+    timeCreated,
+  },
   revalidate,
 }) => {
   return (
@@ -23,8 +32,8 @@ const JobErrorsRow = ({
         const { target: { localName } = {} } = event || {}
         if (['a', 'button', 'svg', 'path'].includes(localName)) return
         Router.push(
-          '/[projectId]/jobs/[jobId]/errors/[errorId]',
-          `/${projectId}/jobs/${jobId}/errors/${errorId}`,
+          '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]',
+          `/${projectId}/jobs/${jobId}/tasks/${taskId}/errors/${errorId}`,
         )
       }}
     >
@@ -59,8 +68,8 @@ const JobErrorsRow = ({
       <td>{phase}</td>
       <td style={{ width: '55%' }}>
         <Link
-          href="/[projectId]/jobs/[jobId]/errors/[errorId]"
-          as={`/${projectId}/jobs/${jobId}/errors/${errorId}`}
+          href="/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]"
+          as={`/${projectId}/jobs/${jobId}/tasks/${taskId}/errors/${errorId}`}
           passHref
         >
           <a css={{ ':hover': { textDecoration: 'none' } }} title={message}>
@@ -76,7 +85,7 @@ const JobErrorsRow = ({
       <td>
         <JobErrorsMenu
           projectId={projectId}
-          jobId={jobId}
+          taskId={taskId}
           revalidate={revalidate}
         />
       </td>

@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import { jobErrorFatal, jobErrorNonFatal } from '../__mocks__/jobError'
+import jobError from '../__mocks__/jobError'
 import mockUser from '../../User/__mocks__/user'
 
 import User from '../../User'
@@ -8,9 +8,9 @@ import User from '../../User'
 import JobError from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const JOB_ID = jobErrorFatal.jobId
-const FATAL_ERROR_ID = jobErrorFatal.id
-const NON_FATAL_ERROR_ID = jobErrorNonFatal.id
+const JOB_ID = jobError.jobId
+const TASK_ID = jobError.taskId
+const ERROR_ID = jobError.id
 
 jest.mock('../../JobErrorAsset', () => 'JobErrorAsset')
 jest.mock('../../JsonDisplay', () => 'JsonDisplay')
@@ -18,12 +18,17 @@ jest.mock('../../JsonDisplay', () => 'JsonDisplay')
 describe('<JobError />', () => {
   it('should render properly with a fatal error', () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]',
-      query: { projectId: PROJECT_ID, jobId: JOB_ID, errorId: FATAL_ERROR_ID },
+      pathname: '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]',
+      query: {
+        projectId: PROJECT_ID,
+        jobId: JOB_ID,
+        taskId: TASK_ID,
+        errorId: ERROR_ID,
+      },
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: jobErrorFatal,
+      data: jobError,
     })
 
     const component = TestRenderer.create(
@@ -37,16 +42,17 @@ describe('<JobError />', () => {
 
   it('should render properly with a non-fatal error', async () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]',
+      pathname: '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]',
       query: {
         projectId: PROJECT_ID,
         jobId: JOB_ID,
-        errorId: NON_FATAL_ERROR_ID,
+        taskId: TASK_ID,
+        errorId: jobError.id,
       },
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: jobErrorNonFatal,
+      data: { ...jobError, fatal: false },
     })
 
     const component = TestRenderer.create(
@@ -72,7 +78,7 @@ describe('<JobError />', () => {
     expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/tasks/${jobErrorNonFatal.taskId}/retry/`,
+      `/api/v1/projects/${PROJECT_ID}/tasks/${TASK_ID}/retry/`,
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({
@@ -86,16 +92,18 @@ describe('<JobError />', () => {
 
   it('should render properly with an asset', () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]/asset',
+      pathname:
+        '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]/asset',
       query: {
         projectId: PROJECT_ID,
         jobId: JOB_ID,
-        errorId: FATAL_ERROR_ID,
+        taskId: TASK_ID,
+        errorId: ERROR_ID,
       },
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: jobErrorFatal,
+      data: jobError,
     })
 
     const component = TestRenderer.create(

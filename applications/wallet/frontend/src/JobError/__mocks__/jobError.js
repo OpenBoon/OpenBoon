@@ -1,4 +1,4 @@
-export const jobErrorNonFatal = {
+const jobError = {
   id: '85f0d09b-0631-104b-a57e-ce490d54f27a',
   taskId: 'd2bb6ad3-54d0-11ea-9250-32240f207bfa',
   jobId: '85f0d094-0631-104b-a57e-ce490d54f27a',
@@ -7,7 +7,7 @@ export const jobErrorNonFatal = {
   message:
     'ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]',
   processor: 'unknown',
-  fatal: false,
+  fatal: true,
   analyst: 'not-implemented',
   phase: 'index',
   timeCreated: 1582306669906,
@@ -58,21 +58,4 @@ export const jobErrorNonFatal = {
   ],
 }
 
-export const jobErrorFatal = {
-  id: '85f0d09c-0631-104b-a57e-ce490d54f27a',
-  taskId: 'd2bb6ad3-54d0-11ea-9250-32240f207bfa',
-  jobId: '85f0d094-0631-104b-a57e-ce490d54f27a',
-  assetId: 'HfQ4xpvClTgRHFidgyXRcK01e6u239Lv',
-  path: 'gs://zorroa-dev-data/image/frog.jpeg',
-  message:
-    'ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]',
-  processor: 'unknown',
-  fatal: true,
-  analyst: 'not-implemented',
-  phase: 'index',
-  timeCreated: 1582306669906,
-  jobName: 'Applying modules:  to gs://zorroa-dev-data',
-  stackTrace: [],
-}
-
-export default jobErrorNonFatal
+export default jobError

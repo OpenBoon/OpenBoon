@@ -11,7 +11,10 @@ import JobErrors from '../JobErrors'
 import JobDetails from './Details'
 
 const Job = () => {
-  const { pathname, query } = useRouter()
+  const {
+    pathname,
+    query: { projectId, jobId, refreshParam },
+  } = useRouter()
 
   return (
     <>
@@ -37,11 +40,14 @@ const Job = () => {
         />
 
         {pathname === '/[projectId]/jobs/[jobId]' && (
-          <JobTasks key={query.refreshParam} />
+          <JobTasks key={refreshParam} />
         )}
 
         {pathname === '/[projectId]/jobs/[jobId]/errors' && (
-          <JobErrors key={query.refreshParam} />
+          <JobErrors
+            key={refreshParam}
+            parentUrl={`/api/v1/projects/${projectId}/jobs/${jobId}/`}
+          />
         )}
       </SuspenseBoundary>
     </>

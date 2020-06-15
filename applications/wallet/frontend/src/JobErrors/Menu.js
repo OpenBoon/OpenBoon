@@ -13,7 +13,7 @@ const ACTIONS = [
   },
 ]
 
-const JobErrorsMenu = ({ projectId, jobId, revalidate }) => {
+const JobErrorsMenu = ({ projectId, taskId, revalidate }) => {
   return (
     <Menu open="left" button={ButtonGear}>
       {({ onBlur, onClick }) => (
@@ -28,7 +28,7 @@ const JobErrorsMenu = ({ projectId, jobId, revalidate }) => {
                     onClick()
 
                     await fetcher(
-                      `/api/v1/projects/${projectId}/jobs/${jobId}/${action}/`,
+                      `/api/v1/projects/${projectId}/tasks/${taskId}/${action}/`,
                       { method: 'PUT' },
                     )
 
@@ -49,7 +49,7 @@ const JobErrorsMenu = ({ projectId, jobId, revalidate }) => {
 
 JobErrorsMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
-  jobId: PropTypes.string.isRequired,
+  taskId: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 

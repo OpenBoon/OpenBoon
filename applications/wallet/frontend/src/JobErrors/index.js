@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 
 import Table, { ROLES } from '../Table'
@@ -5,7 +6,7 @@ import Table, { ROLES } from '../Table'
 import JobErrorsEmpty from './Empty'
 import JobErrorsRow from './Row'
 
-const JobErrors = () => {
+const JobErrors = ({ parentUrl }) => {
   const {
     query: { projectId, jobId },
   } = useRouter()
@@ -14,8 +15,8 @@ const JobErrors = () => {
     <Table
       role={ROLES.ML_Tools}
       legend="Errors"
-      url={`/api/v1/projects/${projectId}/jobs/${jobId}/errors/`}
-      refreshKeys={[`/api/v1/projects/${projectId}/jobs/${jobId}/`]}
+      url={`${parentUrl}/errors/`}
+      refreshKeys={[parentUrl]}
       columns={[
         'Error Type',
         'Phase',
@@ -38,6 +39,10 @@ const JobErrors = () => {
       )}
     />
   )
+}
+
+JobErrors.propTypes = {
+  parentUrl: PropTypes.string.isRequired,
 }
 
 export default JobErrors

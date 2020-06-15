@@ -23,7 +23,9 @@ describe('<JobErrors />', () => {
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
-        <JobErrors />
+        <JobErrors
+          parentUrl={`/api/v1/projects/${PROJECT_ID}/jobs/${JOB_ID}/`}
+        />
       </User>,
     )
 
@@ -42,7 +44,9 @@ describe('<JobErrors />', () => {
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
-        <JobErrors />
+        <JobErrors
+          parentUrl={`/api/v1/projects/${PROJECT_ID}/jobs/${JOB_ID}/`}
+        />
       </User>,
     )
 

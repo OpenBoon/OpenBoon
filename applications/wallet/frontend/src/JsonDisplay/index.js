@@ -17,7 +17,7 @@ const JsonDisplay = ({ json }) => (
 )
 
 JsonDisplay.propTypes = {
-  json: PropTypes.shape({}).isRequired,
+  json: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
 }
 
 export default JsonDisplay

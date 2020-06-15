@@ -7,6 +7,7 @@ import User from '../../User'
 
 import Task from '..'
 
+jest.mock('../../JobErrors', () => 'JobErrors')
 jest.mock('../../TaskAssets', () => 'TaskAssets')
 jest.mock('../../Pagination', () => 'Pagination')
 

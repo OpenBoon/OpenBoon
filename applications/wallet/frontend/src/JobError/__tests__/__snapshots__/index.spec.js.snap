@@ -35,7 +35,7 @@ Array [
   color: #808080;
 }
 
-.emotion-6 {
+.emotion-9 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -68,7 +68,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -80,8 +80,25 @@ Array [
         /
       </span>
     </div>
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/assets"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Task Details
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
     <h2
-      className="emotion-6"
+      className="emotion-9"
     >
       Error Details
     </h2>
@@ -330,7 +347,7 @@ Array [
         <div
           className="emotion-1"
         >
-          85f0d09c-0631-104b-a57e-ce490d54f27a
+          85f0d09b-0631-104b-a57e-ce490d54f27a
         </div>
       </div>
       <div
@@ -362,7 +379,7 @@ Array [
         <div
           className="emotion-1"
         >
-          gs://zorroa-dev-data/image/frog.jpeg
+          gs://zorroa-dev-data/image/cat.gif
         </div>
       </div>
       <div
@@ -480,7 +497,7 @@ Array [
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09c-0631-104b-a57e-ce490d54f27a"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -492,7 +509,7 @@ Array [
       >
         <a
           className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09c-0631-104b-a57e-ce490d54f27a/asset"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a/asset"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -501,27 +518,77 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-1 {
+  .emotion-2 {
   font-family: Roboto Mono;
   padding-bottom: 32px;
   height: auto;
 }
 
-.emotion-0 {
+.emotion-1 {
   background-color: #191919;
   padding: 16px;
 }
 
+.emotion-0 {
+  padding-top: 16px;
+  color: #b3b3b3;
+}
+
 <div
-    className="emotion-1"
+    className="emotion-2"
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       <div>
         "message": 
         ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
       </div>
+      <div
+        className="emotion-0"
+      />
+      <JsonDisplay
+        json={
+          Array [
+            Object {
+              "className": "_process",
+              "file": "/opt/app-root/src/analyst/pylib/zplugins/image/importers.py",
+              "lineNumber": 43,
+              "methodName": "path = Path(asset.get_local_source_path())",
+            },
+            Object {
+              "className": "get_local_source_path",
+              "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py",
+              "lineNumber": 220,
+              "methodName": "local_cache_location = self.__source_handler.store_local_cache()",
+            },
+            Object {
+              "className": "store_local_cache",
+              "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py",
+              "lineNumber": 139,
+              "methodName": "self.blob.download_to_filename(local_path)",
+            },
+            Object {
+              "className": "download_to_filename",
+              "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
+              "lineNumber": 759,
+              "methodName": "raw_download=raw_download,",
+            },
+            Object {
+              "className": "download_to_file",
+              "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
+              "lineNumber": 722,
+              "methodName": "_raise_from_invalid_response(exc)",
+            },
+            Object {
+              "className": "_raise_from_invalid_response",
+              "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
+              "lineNumber": 2156,
+              "methodName": "raise exceptions.from_http_status(response.status_code, message, response=response)",
+            },
+          ]
+        }
+      />
     </div>
   </div>,
 ]
@@ -562,7 +629,7 @@ Array [
   color: #808080;
 }
 
-.emotion-6 {
+.emotion-9 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -595,7 +662,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -607,8 +674,25 @@ Array [
         /
       </span>
     </div>
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/assets"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Task Details
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
     <h2
-      className="emotion-6"
+      className="emotion-9"
     >
       Error Details
     </h2>
@@ -1007,7 +1091,7 @@ Array [
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09b-0631-104b-a57e-ce490d54f27a"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -1019,7 +1103,7 @@ Array [
       >
         <a
           className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09b-0631-104b-a57e-ce490d54f27a/asset"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a/asset"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -1139,7 +1223,7 @@ Array [
   color: #808080;
 }
 
-.emotion-6 {
+.emotion-9 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -1172,7 +1256,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -1184,8 +1268,25 @@ Array [
         /
       </span>
     </div>
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/assets"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Task Details
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
     <h2
-      className="emotion-6"
+      className="emotion-9"
     >
       Error Details
     </h2>
@@ -1683,7 +1784,7 @@ Array [
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09b-0631-104b-a57e-ce490d54f27a"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -1695,7 +1796,7 @@ Array [
       >
         <a
           className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09b-0631-104b-a57e-ce490d54f27a/asset"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a/asset"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -1815,7 +1916,7 @@ Array [
   color: #808080;
 }
 
-.emotion-6 {
+.emotion-9 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -1848,7 +1949,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -1860,8 +1961,25 @@ Array [
         /
       </span>
     </div>
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/assets"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Task Details
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
     <h2
-      className="emotion-6"
+      className="emotion-9"
     >
       Error Details
     </h2>
@@ -2110,7 +2228,7 @@ Array [
         <div
           className="emotion-1"
         >
-          85f0d09c-0631-104b-a57e-ce490d54f27a
+          85f0d09b-0631-104b-a57e-ce490d54f27a
         </div>
       </div>
       <div
@@ -2142,7 +2260,7 @@ Array [
         <div
           className="emotion-1"
         >
-          gs://zorroa-dev-data/image/frog.jpeg
+          gs://zorroa-dev-data/image/cat.gif
         </div>
       </div>
       <div
@@ -2260,7 +2378,7 @@ Array [
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09c-0631-104b-a57e-ce490d54f27a"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -2272,7 +2390,7 @@ Array [
       >
         <a
           className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09c-0631-104b-a57e-ce490d54f27a/asset"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a/asset"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -2282,7 +2400,7 @@ Array [
     </ul>
   </nav>,
   <JobErrorAsset
-    assetId="HfQ4xpvClTgRHFidgyXRcK01e6u239Lv"
+    assetId="5o7oiiw9WhA5ZkkOn_KZcMxValbwOBvn"
   />,
 ]
 `;
