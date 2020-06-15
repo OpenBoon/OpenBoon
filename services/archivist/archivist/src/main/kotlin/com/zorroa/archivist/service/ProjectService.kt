@@ -364,14 +364,15 @@ class ProjectServiceImpl constructor(
         )
     }
 
-    override fun rename(projectId: UUID, newName: ProjectNameUpdate) {
-        val project = projectDao.findById(projectId).orElseThrow {
+    override fun rename(projectId: UUID, newName: ProjectNameUpdate){
+        var project = projectDao.findById(projectId).orElseThrow {
             EmptyResultDataAccessException("Project not found", 1)
         }
 
         if (!projectCustomDao.updateName(projectId, newName.name)) {
             throw ArchivistException("Project Rename Failed")
         }
+        enabledCache.invalidate(projectId)
 
         logger.event(
             LogObject.PROJECT, LogAction.UPDATE,
