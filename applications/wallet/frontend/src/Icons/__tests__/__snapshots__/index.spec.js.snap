@@ -61,13 +61,13 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
-        ./accountDashboard.svg
+        ./assets.svg
       </div>
       <div
         className="emotion-1"
       >
         <svg
-          data-file-name="accountDashboard.svg"
+          data-file-name="assets.svg"
           height="100%"
           width="100%"
         />
@@ -180,6 +180,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="dash.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./dashboard.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="dashboard.svg"
           height="100%"
           width="100%"
         />
@@ -580,22 +596,6 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="plus.svg"
-          height="100%"
-          width="100%"
-        />
-      </div>
-    </div>
-    <div
-      className="emotion-2"
-    >
-      <div>
-        ./projectDashboard.svg
-      </div>
-      <div
-        className="emotion-1"
-      >
-        <svg
-          data-file-name="projectDashboard.svg"
           height="100%"
           width="100%"
         />

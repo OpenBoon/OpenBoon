@@ -4,13 +4,12 @@ import Router from 'next/router'
 
 import { colors, spacing, zIndex, constants } from '../Styles'
 
-import ProjectDashboardSvg from '../Icons/projectDashboard.svg'
+import DashboardSvg from '../Icons/dashboard.svg'
 import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'
 import VisualizerSvg from '../Icons/visualizer.svg'
 import KeySvg from '../Icons/key.svg'
 import UsersSvg from '../Icons/users.svg'
-import AccountDashboardSvg from '../Icons/accountDashboard.svg'
 import GearSvg from '../Icons/gear.svg'
 
 import SidebarLink from './Link'
@@ -63,7 +62,7 @@ const Sidebar = forwardRef(
             }}
           >
             <SidebarLink projectId={projectId} href="/[projectId]">
-              <ProjectDashboardSvg width={ICON_WIDTH} aria-hidden />
+              <DashboardSvg width={ICON_WIDTH} aria-hidden />
               Project Dashboard
             </SidebarLink>
 
@@ -103,7 +102,7 @@ const Sidebar = forwardRef(
             }}
           >
             <SidebarLink projectId={projectId} href="/">
-              <AccountDashboardSvg width={ICON_WIDTH} aria-hidden />
+              <DashboardSvg width={ICON_WIDTH} aria-hidden />
               Account Dashboard
             </SidebarLink>
 
