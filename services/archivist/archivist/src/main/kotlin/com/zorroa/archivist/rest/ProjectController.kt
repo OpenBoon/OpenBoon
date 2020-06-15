@@ -162,10 +162,9 @@ class ProjectController constructor(
     @PreAuthorize("hasAuthority('ProjectManage')")
     @PutMapping(value = ["/api/v1/project/_rename"])
     @ApiOperation("Rename Project")
-    fun renameProject(@RequestBody(required = true) nameUpdate: ProjectNameUpdate): Any
-        {
-            val id = getProjectId()
-            projectService.rename(id, nameUpdate)
-            return HttpUtils.status("project", id.toString(), "rename", true)
-        }
+    fun renameProject(@RequestBody(required = true) nameUpdate: ProjectNameUpdate): Any {
+        val id = getProjectId()
+        projectService.rename(id, nameUpdate)
+        return HttpUtils.status("project", id.toString(), "rename", true)
+    }
 }

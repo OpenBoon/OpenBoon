@@ -364,7 +364,7 @@ class ProjectServiceImpl constructor(
         )
     }
 
-    override fun rename(projectId: UUID, newName: ProjectNameUpdate){
+    override fun rename(projectId: UUID, newName: ProjectNameUpdate) {
         var project = projectDao.findById(projectId).orElseThrow {
             EmptyResultDataAccessException("Project not found", 1)
         }
