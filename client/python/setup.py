@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from setuptools import setup
-from datetime import datetime
 
 # See https://packaging.python.org/tutorials/packaging-projects/
 # for details about packaging python projects
@@ -18,19 +17,22 @@ requirements = [
 ]
 
 setup(
-    name='zmlp',
-    version="1.0.1",
-    description='ZMLP Python Client',
-    url='https://www.zorroa.com',
-    license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
+    name='zvi-client',
+    version="1.0.0",
+    description='Zorroa Visual Intelligence Python Client',
+    url='http://www.zorroa.com',
+    license='Apache2',
     package_dir={'': 'pylib'},
     packages=['zmlp', 'zmlp.app', 'zmlp.entity'],
     scripts=[],
+    author="Matthew Chambers",
+    author_email="support@zorroa.com",
+    keywords="machine learning artificial intelligence",
+    python_requires='>=3.4',
 
     classifiers=[
         "Programming Language :: Python :: 3",
-        # "License :: OSI Approved :: MIT License",  # TODO Add license type
-        "Operating System :: OS Independent",        # TODO confirm this
+        "Operating System :: OS Independent"
     ],
 
     include_package_data=True,
