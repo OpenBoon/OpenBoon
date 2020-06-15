@@ -411,6 +411,8 @@ class TestTaskViewSet:
         assert _json['count'] == 2
         assert _json['results'][0]['actions']['retry'] == 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/tasks/59527630-57f2-11ea-b3c8-0242ac120004/retry/'  # noqa
         assert _json['results'][0]['actions']['assets'] == 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/tasks/59527630-57f2-11ea-b3c8-0242ac120004/assets/'  # noqa
+        assert _json['results'][0]['actions']['script'] == 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/tasks/59527630-57f2-11ea-b3c8-0242ac120004/script/'  # noqa
+        assert _json['results'][0]['actions']['errors'] == 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/tasks/59527630-57f2-11ea-b3c8-0242ac120004/errors/'  # noqa
 
     def test_retrieve(self, monkeypatch, api_client, zmlp_project_user, project):
         def mock_get_response(*args, **kwargs):

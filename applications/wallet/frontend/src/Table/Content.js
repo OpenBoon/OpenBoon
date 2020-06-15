@@ -62,7 +62,11 @@ const TableContent = ({
 
       <div css={{ flex: 1, position: 'relative' }}>
         <div
-          css={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+          css={
+            count === 0
+              ? { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }
+              : {}
+          }
         >
           <table
             css={{
