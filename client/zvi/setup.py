@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from setuptools import setup
-from datetime import datetime
 
 # See https://packaging.python.org/tutorials/packaging-projects/
 # for details about packaging python projects
@@ -11,7 +10,7 @@ from datetime import datetime
 
 requirements = [
     'cmake',
-    'zmlp',
+    'zvi-client',
     'pandas',
     'matplotlib',
     'opencv-python',
@@ -26,16 +25,15 @@ requirements = [
 
 setup(
     name='zvi',
-    version='1.0.1',
+    version='1.0.0',
     description='Zorroa Visual Intelligence ML Environment',
     url='https://www.zorroa.com',
-    license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
+    license='Apache2',
     package_dir={'': 'pylib'},
     packages=['zvi'],
     scripts=[],
     classifiers=[
         'Programming Language :: Python :: 3',
-        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent'
     ],
 
