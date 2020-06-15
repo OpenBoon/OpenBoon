@@ -170,6 +170,7 @@ services:
       PG_HOST: postgres
       ZMLP_API_URL: http://api-gateway:80
       INCEPTION_KEY_B64: ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg==
+      GOOGLE_OAUTH_CLIENT_ID: 980622341235-39kks0r3pkl0iotcb8mt6iclbvj98mml
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/api/v1/health"]
       interval: 30s
