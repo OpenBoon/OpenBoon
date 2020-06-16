@@ -65,16 +65,11 @@ const TaskErrorAsset = ({ assetId }) => {
             <FallbackSvg width={ASSET_THUMBNAIL_SIZE} />
           </div>
         )}
+
         <div css={{ paddingLeft: spacing.comfy }}>{filename}</div>
       </div>
-      <div
-        css={{
-          padding: spacing.normal,
-          backgroundColor: colors.structure.coal,
-        }}
-      >
-        <JsonDisplay json={asset} />
-      </div>
+
+      <JsonDisplay json={asset} />
     </div>
   )
 }
