@@ -57,7 +57,7 @@ const MetadataContent = ({ projectId, assetId }) => {
       >
         <div
           css={{
-            fontFamily: 'Roboto Condensed',
+            fontFamily: typography.family.condensed,
             color: colors.structure.steel,
             padding: spacing.normal,
             paddingRight: spacing.base,
@@ -70,7 +70,7 @@ const MetadataContent = ({ projectId, assetId }) => {
           title={assetId}
           css={{
             flex: 1,
-            fontFamily: 'Roboto Mono',
+            fontFamily: typography.family.mono,
             fontSize: typography.size.small,
             lineHeight: typography.height.small,
             color: colors.structure.pebble,
@@ -160,16 +160,7 @@ const MetadataContent = ({ projectId, assetId }) => {
       )}
 
       {displayOption === 'raw json' && (
-        <div
-          css={{
-            height: '100%',
-            overflow: 'auto',
-            backgroundColor: colors.structure.coal,
-            pre: {
-              padding: spacing.normal,
-            },
-          }}
-        >
+        <div css={{ height: '100%', overflow: 'auto' }}>
           <JsonDisplay json={metadata} />
         </div>
       )}

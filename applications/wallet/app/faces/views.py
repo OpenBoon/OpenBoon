@@ -6,9 +6,11 @@ from zmlp import DataSetType, ModelType
 from zmlp.client import ZmlpNotFoundException
 
 from assets.utils import AssetBoxImager
-from faces.serializers import UpdateLabelsSerializer
+from assets.views import AssetViewSet
+from faces.serializers import UpdateLabelsSerializer, FaceAssetSerializer
 from projects.views import BaseProjectViewSet
 from wallet.mixins import ConvertCamelToSnakeViewSetMixin
+from wallet.paginators import ZMLPFromSizePagination
 
 
 class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
@@ -17,6 +19,26 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     analysis_attr = 'analysis.zvi-face-detection'
     dataset_name = 'console_face_recognition'
     serializer_class = UpdateLabelsSerializer
+    pagination_class = ZMLPFromSizePagination
+
+    def list(self, request, project_pk):
+        """This view is only intended for use in the browsable API to give examples of the
+        detail endpoint.
+        """
+        def item_modifier(request, asset):
+            asset['url'] = request.build_absolute_uri(f'{request.path}{asset["_id"]}')
+
+        filter = {
+            'query': {
+                'bool': {
+                    'filter': [{'exists': {'field': 'analysis.zvi-face-detection'}}]
+                }
+            }
+        }
+        return self._zmlp_list_from_es(request, item_modifier=item_modifier,
+                                       search_filter=filter,
+                                       base_url=AssetViewSet.zmlp_root_api_path,
+                                       serializer_class=FaceAssetSerializer)
 
     def retrieve(self, request, project_pk, pk):
         """Given an asset, returns the face predictions and applicable labels for that asset.
