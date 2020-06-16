@@ -5,7 +5,7 @@ import useSWR from 'swr'
 
 import JsonDisplay from '../JsonDisplay'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import FallbackSvg from '../Icons/fallback.svg'
 
@@ -32,7 +32,7 @@ const TaskErrorAsset = ({ assetId }) => {
   return (
     <div
       css={{
-        fontFamily: 'Roboto Mono',
+        fontFamily: typography.family.mono,
         paddingBottom: spacing.spacious,
         height: 'auto',
       }}

@@ -4,7 +4,7 @@ import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
-import { spacing } from '../Styles'
+import { spacing, typography } from '../Styles'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 import FilterReset from '../Filter/Reset'
@@ -98,7 +98,7 @@ const FilterSimilarityContent = ({
             display: 'flex',
             justifyContent: 'space-between',
             paddingBottom: spacing.normal,
-            fontFamily: 'Roboto Mono',
+            fontFamily: typography.family.mono,
           }}
         >
           <span>0.01</span>

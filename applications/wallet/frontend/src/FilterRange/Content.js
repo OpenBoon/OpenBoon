@@ -132,7 +132,7 @@ const FilterRangeContent = ({
             display: 'flex',
             justifyContent: 'space-between',
             paddingBottom: spacing.normal,
-            fontFamily: 'Roboto Mono',
+            fontFamily: typography.family.mono,
           }}
         >
           <span>{formatValue({ attribute, value: resultsMin })}</span>

@@ -65,7 +65,7 @@ const FilterReset = ({
             backgroundPosition: `right top 50%`,
             paddingRight: spacing.comfy,
             color: colors.structure.zinc,
-            fontFamily: 'Roboto Condensed',
+            fontFamily: typography.family.condensed,
             textTransform: 'uppercase',
             cursor: 'pointer',
             ':hover': {
@@ -91,7 +91,7 @@ const FilterReset = ({
           style={{
             width: '100%',
             color: colors.structure.zinc,
-            fontFamily: 'Roboto Condensed',
+            fontFamily: typography.family.condensed,
             textTransform: 'uppercase',
             ':hover': {
               color: colors.structure.white,

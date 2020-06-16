@@ -12,7 +12,7 @@ import AssetDelete from '../AssetDelete'
 
 import FilterSvg from '../Icons/filter.svg'
 import InformationSvg from '../Icons/information.svg'
-import UsersSvg from '../Icons/users.svg'
+import FaceDetectionSvg from '../Icons/faceDetection.svg'
 import UploadSvg from '../Icons/upload.svg'
 import TrashSvg from '../Icons/trash.svg'
 
@@ -63,7 +63,7 @@ const VisualizerContent = () => {
             },
             faceLabeling: {
               title: 'Add Names & Train',
-              icon: <UsersSvg width={ICON_WIDTH} aria-hidden />,
+              icon: <FaceDetectionSvg width={ICON_WIDTH} aria-hidden />,
               content: <FaceLabeling />,
             },
             export: {

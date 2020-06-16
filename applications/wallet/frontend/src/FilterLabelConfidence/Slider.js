@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { spacing } from '../Styles'
+import { spacing, typography } from '../Styles'
 
 import filterShape from '../Filter/shape'
 
@@ -48,7 +48,7 @@ const FilterLabelConfidenceSlider = ({
             display: 'flex',
             justifyContent: 'space-between',
             paddingBottom: spacing.normal,
-            fontFamily: 'Roboto Mono',
+            fontFamily: typography.family.mono,
           }}
         >
           <span>0.00</span>

@@ -39,7 +39,7 @@ const FilterTitle = ({ filter: { attribute, type, values } }) => {
 
       <span
         css={{
-          fontFamily: 'Roboto Mono',
+          fontFamily: typography.family.mono,
           fontSize: typography.size.small,
           lineHeight: typography.height.small,
           paddingLeft: spacing.base,

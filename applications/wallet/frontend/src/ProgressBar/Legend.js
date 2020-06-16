@@ -11,7 +11,7 @@ const ProgressBarLegend = ({ taskCounts }) => {
         display: 'flex',
         backgroundColor: colors.structure.iron,
         borderRadius: constants.borderRadius.small,
-        fontFamily: 'Roboto Condensed',
+        fontFamily: typography.family.condensed,
         paddingLeft: spacing.small,
         paddingRight: spacing.small,
       }}
