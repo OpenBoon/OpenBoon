@@ -12,7 +12,7 @@ const MetadataPrettyNoResults = ({ name }) => {
           },
           padding: spacing.normal,
           paddingBottom: spacing.base,
-          fontFamily: 'Roboto Mono',
+          fontFamily: typography.family.mono,
           fontSize: typography.size.small,
           lineHeight: typography.height.small,
           color: colors.structure.white,

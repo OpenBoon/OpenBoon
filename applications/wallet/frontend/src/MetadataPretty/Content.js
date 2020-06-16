@@ -20,7 +20,7 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
           },
           padding: spacing.normal,
           paddingBottom: spacing.base,
-          fontFamily: 'Roboto Mono',
+          fontFamily: typography.family.mono,
           fontSize: typography.size.small,
           lineHeight: typography.height.small,
           color: colors.structure.white,
@@ -35,7 +35,7 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
           paddingBottom: 0,
           minHeight: COPY_SIZE,
           width: '100%',
-          fontFamily: 'Roboto Condensed',
+          fontFamily: typography.family.condensed,
           textTransform: 'uppercase',
           color: colors.structure.steel,
         }}

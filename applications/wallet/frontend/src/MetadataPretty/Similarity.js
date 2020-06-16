@@ -42,7 +42,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
           },
           padding: spacing.normal,
           paddingBottom: spacing.base,
-          fontFamily: 'Roboto Mono',
+          fontFamily: typography.family.mono,
           fontSize: typography.size.small,
           lineHeight: typography.height.small,
           color: colors.structure.white,
@@ -57,7 +57,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
           paddingBottom: 0,
           minHeight: COPY_SIZE,
           width: '100%',
-          fontFamily: 'Roboto Condensed',
+          fontFamily: typography.family.condensed,
           textTransform: 'uppercase',
           color: colors.structure.steel,
         }}
@@ -78,7 +78,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
           <div
             css={{
               padding: `${spacing.moderate}px ${spacing.normal}px`,
-              fontFamily: 'Roboto Mono',
+              fontFamily: typography.family.mono,
               fontSize: typography.size.small,
               lineHeight: typography.height.small,
               color: colors.structure.white,
@@ -114,7 +114,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
                 borderTop: constants.borders.divider,
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.moderate,
-                fontFamily: 'Roboto Condensed',
+                fontFamily: typography.family.condensed,
                 textTransform: 'uppercase',
                 color: colors.structure.steel,
               }}

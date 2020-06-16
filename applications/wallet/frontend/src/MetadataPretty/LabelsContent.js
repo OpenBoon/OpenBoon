@@ -34,7 +34,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
       >
         <div
           css={{
-            fontFamily: 'Roboto Mono',
+            fontFamily: typography.family.mono,
             fontSize: typography.size.small,
             lineHeight: typography.height.small,
             color: colors.structure.white,
@@ -46,7 +46,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
 
         <table
           css={{
-            fontFamily: 'Roboto Mono',
+            fontFamily: typography.family.mono,
             fontSize: typography.size.small,
             lineHeight: typography.height.small,
             color: colors.structure.white,
@@ -65,7 +65,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
                   <th
                     key={column}
                     css={{
-                      fontFamily: 'Roboto Condensed',
+                      fontFamily: typography.family.condensed,
                       fontWeight: typography.weight.regular,
                       textTransform: 'uppercase',
                       color: colors.structure.steel,
@@ -159,7 +159,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
               css={{
                 minHeight: COPY_SIZE,
                 width: '100%',
-                fontFamily: 'Roboto Condensed',
+                fontFamily: typography.family.condensed,
                 textTransform: 'uppercase',
                 color: colors.structure.steel,
                 borderTop: constants.borders.divider,
