@@ -15,7 +15,7 @@ const TaskErrors = ({ parentUrl }) => {
     <Table
       role={ROLES.ML_Tools}
       legend="Errors"
-      url={`${parentUrl}/errors/`}
+      url={`${parentUrl}errors/`}
       refreshKeys={[parentUrl]}
       columns={[
         'Error Type',
