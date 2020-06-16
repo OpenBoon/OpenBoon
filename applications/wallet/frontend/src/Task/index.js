@@ -45,9 +45,17 @@ const Task = () => {
 
         {pathname === TASK_URL && 'Log'}
 
-        {pathname === `${TASK_URL}/script` && <TaskScript />}
+        {pathname === `${TASK_URL}/script` && (
+          <SuspenseBoundary>
+            <TaskScript />
+          </SuspenseBoundary>
+        )}
 
-        {pathname === `${TASK_URL}/assets` && <TaskAssets />}
+        {pathname === `${TASK_URL}/assets` && (
+          <SuspenseBoundary>
+            <TaskAssets />
+          </SuspenseBoundary>
+        )}
 
         {pathname === `${TASK_URL}/errors` && (
           <TaskErrors
