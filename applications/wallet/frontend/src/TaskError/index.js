@@ -18,7 +18,7 @@ const TaskError = () => {
           { title: 'Job Details', href: '/[projectId]/jobs/[jobId]' },
           {
             title: 'Task Details',
-            href: '/[projectId]/jobs/[jobId]/tasks/[taskId]/assets',
+            href: '/[projectId]/jobs/[jobId]/tasks/[taskId]/script',
           },
           { title: 'Error Details', href: false },
         ]}

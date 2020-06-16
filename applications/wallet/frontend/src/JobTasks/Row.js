@@ -33,8 +33,8 @@ const JobTasksRow = ({
         const { target: { localName } = {} } = event || {}
         if (['a', 'button', 'svg', 'path'].includes(localName)) return
         Router.push(
-          '/[projectId]/jobs/[jobId]/tasks/[taskId]/assets',
-          `/${projectId}/jobs/${jobId}/tasks/${taskId}/assets`,
+          '/[projectId]/jobs/[jobId]/tasks/[taskId]/script',
+          `/${projectId}/jobs/${jobId}/tasks/${taskId}/script`,
         )
       }}
     >
@@ -45,8 +45,8 @@ const JobTasksRow = ({
 
       <td>
         <Link
-          href="/[projectId]/jobs/[jobId]/tasks/[taskId]/assets"
-          as={`/${projectId}/jobs/${jobId}/tasks/${taskId}/assets`}
+          href="/[projectId]/jobs/[jobId]/tasks/[taskId]/script"
+          as={`/${projectId}/jobs/${jobId}/tasks/${taskId}/script`}
           passHref
         >
           <a css={{ ':hover': { textDecoration: 'none' } }} title={taskId}>

@@ -160,16 +160,7 @@ const MetadataContent = ({ projectId, assetId }) => {
       )}
 
       {displayOption === 'raw json' && (
-        <div
-          css={{
-            height: '100%',
-            overflow: 'auto',
-            backgroundColor: colors.structure.coal,
-            pre: {
-              padding: spacing.normal,
-            },
-          }}
-        >
+        <div css={{ height: '100%', overflow: 'auto' }}>
           <JsonDisplay json={metadata} />
         </div>
       )}
