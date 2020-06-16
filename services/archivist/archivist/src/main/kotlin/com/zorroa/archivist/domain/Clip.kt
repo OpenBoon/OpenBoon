@@ -2,11 +2,13 @@ package com.zorroa.archivist.domain
 
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import java.math.BigDecimal
 import java.security.MessageDigest
 import java.util.Base64
 
 @ApiModel(
-    "Clip", description = "Defines a subsection of an Asset that was processed, " +
+    "Clip",
+    description = "Defines a subsection of an Asset that was processed, " +
         "for example a page of a document."
 )
 class Clip(
@@ -14,27 +16,31 @@ class Clip(
     @ApiModelProperty("The type of clip, this is typically 'page' or 'scene' but can be anything")
     val type: String,
 
-    @ApiModelProperty("The starting point of the clip")
-    val start: Double,
+    start: BigDecimal,
 
-    @ApiModelProperty("The ending point of a clip.")
-    val stop: Double,
+    stop: BigDecimal,
 
     @ApiModelProperty("An optional track name for the clip in case case multiple [ClipSpec] configurations collide.")
     val track: String? = null
 ) {
-    init {
-        if (stop - start < 0f) {
-            throw IllegalStateException("Clip stop cannot be behind clip start.")
-        }
-    }
+
+    @ApiModelProperty("The starting point of the clip")
+    val start: BigDecimal = start.setScale(3, java.math.RoundingMode.HALF_UP)
+
+    @ApiModelProperty("The ending point of a clip.")
+    val stop: BigDecimal = stop.setScale(3, java.math.RoundingMode.HALF_UP)
 
     @ApiModelProperty("The length of the the clip, this is auto-calculated")
-    val length = if (stop - start == 0.0) {
-        1.0
+    val length: BigDecimal = if (this.start == this.stop) {
+        BigDecimal.ONE.setScale(3, java.math.RoundingMode.HALF_UP)
     } else {
-        val x = (stop - start)
-        0.01 * kotlin.math.round(x * 100.0)
+        (this.stop - this.start).setScale(3, java.math.RoundingMode.HALF_UP)
+    }
+
+    init {
+        if (stop - start < BigDecimal.ZERO) {
+            throw IllegalStateException("Clip stop cannot be behind clip start.")
+        }
     }
 
     @ApiModelProperty("A unique identifier for a related set of clips on a specific track.  This can be overridden")
@@ -72,8 +78,8 @@ class Clip(
     companion object {
 
         /**
-         * The name of a full video clip.
+         * The track name of a full video clip.
          */
-        const val TYPE_FULL = "full"
+        const val TRACK_FULL = "full"
     }
 }

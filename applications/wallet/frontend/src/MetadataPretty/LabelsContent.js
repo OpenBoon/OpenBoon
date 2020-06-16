@@ -34,7 +34,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
       >
         <div
           css={{
-            fontFamily: 'Roboto Mono',
+            fontFamily: typography.family.mono,
             fontSize: typography.size.small,
             lineHeight: typography.height.small,
             color: colors.structure.white,
@@ -43,9 +43,10 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
         >
           {name}
         </div>
+
         <table
           css={{
-            fontFamily: 'Roboto Mono',
+            fontFamily: typography.family.mono,
             fontSize: typography.size.small,
             lineHeight: typography.height.small,
             color: colors.structure.white,
@@ -64,7 +65,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
                   <th
                     key={column}
                     css={{
-                      fontFamily: 'Roboto Condensed',
+                      fontFamily: typography.family.condensed,
                       fontWeight: typography.weight.regular,
                       textTransform: 'uppercase',
                       color: colors.structure.steel,
@@ -85,6 +86,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
               })}
             </tr>
           </thead>
+
           <tbody>
             {predictions.map((prediction, index) => {
               return (
@@ -140,6 +142,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
           </tbody>
         </table>
       </div>
+
       {tags.length > 0 && (
         <div
           css={{
@@ -147,11 +150,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
             paddingTop: 0,
             ':hover': {
               backgroundColor: colors.signal.electricBlue.background,
-              div: {
-                svg: {
-                  display: 'inline-block',
-                },
-              },
+              svg: { opacity: 1 },
             },
           }}
         >
@@ -160,7 +159,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
               css={{
                 minHeight: COPY_SIZE,
                 width: '100%',
-                fontFamily: 'Roboto Condensed',
+                fontFamily: typography.family.condensed,
                 textTransform: 'uppercase',
                 color: colors.structure.steel,
                 borderTop: constants.borders.divider,
@@ -170,8 +169,10 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
             >
               tags
             </div>
+
             <ButtonCopy value={JSON.stringify(tags)} />
           </div>
+
           <div>
             <Pills>{tags}</Pills>
           </div>

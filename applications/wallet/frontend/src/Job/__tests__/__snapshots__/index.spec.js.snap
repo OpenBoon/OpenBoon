@@ -24,7 +24,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-16 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -58,7 +58,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-13 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -68,7 +68,7 @@ Array [
   position: relative;
 }
 
-.emotion-12 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -76,7 +76,7 @@ Array [
   width: 100%;
 }
 
-.emotion-11 {
+.emotion-17 {
   height: 100%;
   -webkit-flex: 3 0 auto;
   -ms-flex: 3 0 auto;
@@ -84,12 +84,12 @@ Array [
   background-color: #4ac565;
 }
 
-.emotion-11:first-of-type {
+.emotion-17:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-11:last-of-type {
+.emotion-17:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
@@ -185,7 +185,7 @@ Array [
       image_similarity.json
     </h3>
     <div
-      className="emotion-16"
+      className="emotion-22"
     >
       <div
         className="emotion-3"
@@ -214,7 +214,22 @@ Array [
         <div
           className="emotion-4"
         >
-          Job Status
+          ID
+          :
+        </div>
+        <div
+          className="emotion-5"
+        >
+          82d5308b-67c2-1433-8fef-0a580a000956
+        </div>
+      </div>
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-4"
+        >
+          Status
           :
         </div>
         <div
@@ -244,7 +259,22 @@ Array [
         <div
           className="emotion-4"
         >
-          Job Progress
+          # Assets
+          :
+        </div>
+        <div
+          className="emotion-5"
+        >
+          4
+        </div>
+      </div>
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-4"
+        >
+          Progress
           :
         </div>
         <div
@@ -252,7 +282,7 @@ Array [
         >
           <div
             aria-label="Progress Bar"
-            className="emotion-13"
+            className="emotion-19"
             onKeyPress={[Function]}
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
@@ -260,10 +290,10 @@ Array [
             tabIndex="0"
           >
             <div
-              className="emotion-12"
+              className="emotion-18"
             >
               <div
-                className="emotion-11"
+                className="emotion-17"
               />
             </div>
           </div>
@@ -358,7 +388,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          All Tasks
+          Tasks
         </a>
       </li>
       <li
@@ -375,7 +405,9 @@ Array [
       </li>
     </ul>
   </nav>,
-  <JobErrors />,
+  <TaskErrors
+    parentUrl="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/"
+  />,
 ]
 `;
 
@@ -403,7 +435,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-13 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -437,7 +469,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-10 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -447,7 +479,7 @@ Array [
   position: relative;
 }
 
-.emotion-9 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -455,7 +487,7 @@ Array [
   width: 100%;
 }
 
-.emotion-8 {
+.emotion-14 {
   height: 100%;
   -webkit-flex: 3 0 auto;
   -ms-flex: 3 0 auto;
@@ -463,12 +495,12 @@ Array [
   background-color: #4ac565;
 }
 
-.emotion-8:first-of-type {
+.emotion-14:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-8:last-of-type {
+.emotion-14:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
@@ -481,7 +513,7 @@ Array [
       image_similarity.json
     </h3>
     <div
-      className="emotion-13"
+      className="emotion-19"
     >
       <div
         className="emotion-3"
@@ -489,7 +521,22 @@ Array [
         <div
           className="emotion-1"
         >
-          Job Status
+          ID
+          :
+        </div>
+        <div
+          className="emotion-2"
+        >
+          82d5308b-67c2-1433-8fef-0a580a000956
+        </div>
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <div
+          className="emotion-1"
+        >
+          Status
           :
         </div>
         <div
@@ -519,7 +566,22 @@ Array [
         <div
           className="emotion-1"
         >
-          Job Progress
+          # Assets
+          :
+        </div>
+        <div
+          className="emotion-2"
+        >
+          4
+        </div>
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <div
+          className="emotion-1"
+        >
+          Progress
           :
         </div>
         <div
@@ -527,7 +589,7 @@ Array [
         >
           <div
             aria-label="Progress Bar"
-            className="emotion-10"
+            className="emotion-16"
             onKeyPress={[Function]}
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
@@ -535,10 +597,10 @@ Array [
             tabIndex="0"
           >
             <div
-              className="emotion-9"
+              className="emotion-15"
             >
               <div
-                className="emotion-8"
+                className="emotion-14"
               />
             </div>
           </div>
@@ -633,7 +695,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          All Tasks
+          Tasks
         </a>
       </li>
       <li

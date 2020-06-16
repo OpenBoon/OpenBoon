@@ -8,7 +8,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.math.BigDecimal
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.Date
 import java.util.UUID
 import java.util.concurrent.ThreadLocalRandom
@@ -28,7 +29,8 @@ object StaticUtils {
         mapper.dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z")
     }
 
-    val UUID_REGEXP = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", RegexOption.IGNORE_CASE) }
+    val UUID_REGEXP = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", RegexOption.IGNORE_CASE)
+}
 
 private const val SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321"
 
@@ -45,12 +47,10 @@ fun randomString(length: Int = 16): String {
  * Return the given Date with minutes and seconds zeroed out.
  */
 fun toHourlyDate(date: Date?): Long {
-    val time: Calendar = Calendar.getInstance()
-    time.timeInMillis = date?.time ?: Date().time
-    time.set(Calendar.MINUTE, 0)
-    time.set(Calendar.SECOND, 0)
-    time.set(Calendar.MILLISECOND, 0)
-    return time.timeInMillis
+    var dateMilli = date?.time ?: System.currentTimeMillis()
+    return Instant.ofEpochMilli(dateMilli)
+        .truncatedTo(ChronoUnit.HOURS)
+        .toEpochMilli()
 }
 
 /**
@@ -64,6 +64,8 @@ fun UUID.prefix(size: Int = 8): String {
  * Extension function to check if a string is a UUID
  */
 fun String.isUUID(): Boolean = StaticUtils.UUID_REGEXP.matches(this)
+
+fun Double.bd(): BigDecimal = this.toBigDecimal().setScale(3, java.math.RoundingMode.HALF_UP)
 
 /**
  * Utility function for making a bbox.

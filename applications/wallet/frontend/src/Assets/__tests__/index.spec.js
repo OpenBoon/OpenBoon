@@ -9,6 +9,9 @@ import { encode } from '../../Filters/helpers'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = assets.results[0].id
 
+jest.mock('../../Visualizer/Navigation', () => 'VisualizerNavigation')
+jest.mock('../../Asset/Asset', () => 'AssetAsset')
+
 describe('<Assets />', () => {
   it('should render properly while loading', () => {
     require('next/router').__setUseRouter({
@@ -128,5 +131,21 @@ describe('<Assets />', () => {
       },
       `/${PROJECT_ID}/visualizer?id=${ASSET_ID}`,
     )
+  })
+
+  it('should render empty with no filters properly', () => {
+    require('next/router').__setUseRouter({
+      query: {
+        projectId: PROJECT_ID,
+        id: ASSET_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
+    require('swr').__setPageSWRs([{ data: { count: 0, results: [] } }])
+
+    const component = TestRenderer.create(<Assets />)
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

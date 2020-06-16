@@ -97,13 +97,13 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
             "SELECT " +
                 "job.pk_project, " +
                 "SUM(job_count.int_task_state_1) AS priority " +
-            "FROM job " +
+                "FROM job " +
                 "INNER JOIN job_count ON (job.pk_job = job_count.pk_job) " +
-            "WHERE " +
+                "WHERE " +
                 "job.int_state = 0 " +
-            "AND " +
+                "AND " +
                 "job_count.int_task_state_0 > 0 " +
-            "GROUP BY " +
+                "GROUP BY " +
                 "job.pk_project"
 
         private const val GET =
@@ -119,17 +119,17 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 "task.int_run_count," +
                 "task.json_script, " +
                 "task.str_host " +
-            "FROM " +
+                "FROM " +
                 "task " +
                 "INNER JOIN job ON job.pk_job = task.pk_job " +
                 "INNER JOIN job_count ON job.pk_job = job_count.pk_job " +
-            "WHERE " +
+                "WHERE " +
                 "job.int_state=? " +
-            "AND " +
+                "AND " +
                 "job.bool_paused='f' " +
-            "AND " +
+                "AND " +
                 "task.int_state=? " +
-            "AND " +
+                "AND " +
                 "job_count.int_max_running_tasks > job_count.int_task_state_1 + int_task_state_5  "
 
         /**
@@ -141,9 +141,9 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
          */
         private const val GET_BY_PROJ = GET +
             "AND " +
-                "job.pk_project=? " +
+            "job.pk_project=? " +
             "ORDER BY " +
-                "job.int_priority,job.time_created,task.time_created LIMIT ?"
+            "job.int_priority,job.time_created,task.time_created LIMIT ?"
 
         /**
          * Provides FIFO scheduling by high priority job, not org filtered.
@@ -154,8 +154,8 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
          */
         private const val GET_BY_PRIORITY = GET +
             "AND " +
-                "job.int_priority <= ? " +
+            "job.int_priority <= ? " +
             "ORDER BY " +
-                "job.int_priority,job.time_created,task.time_created LIMIT ?"
+            "job.int_priority,job.time_created,task.time_created LIMIT ?"
     }
 }

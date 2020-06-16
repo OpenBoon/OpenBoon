@@ -18,12 +18,13 @@ const ButtonCopy = ({ value }) => {
       variant={BUTTON_VARIANTS.NEUTRAL}
       onClick={setCopied}
       isDisabled={isCopied}
+      css={{ ':focus': { svg: { opacity: 1, color: colors.structure.white } } }}
     >
       <CopySvg
         width={COPY_SIZE}
         color={colors.structure.steel}
         css={{
-          display: 'none',
+          opacity: 0,
           ':hover': { color: colors.structure.white },
         }}
       />

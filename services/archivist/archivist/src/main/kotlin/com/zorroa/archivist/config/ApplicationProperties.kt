@@ -63,7 +63,7 @@ class SpringApplicationProperties : ApplicationProperties {
 
     override fun getString(key: String): String {
         val result = env.getProperty(key)
-                ?: throw ApplicationPropertiesException("Configuration key not found: '$key'")
+            ?: throw ApplicationPropertiesException("Configuration key not found: '$key'")
         return result.trim { it <= ' ' }
     }
 
@@ -88,7 +88,8 @@ class SpringApplicationProperties : ApplicationProperties {
                 result
             } catch (e: Exception) {
                 throw ApplicationPropertiesException(
-                        "Invalid file for '" + key + "', " + e.message, e)
+                    "Invalid file for '" + key + "', " + e.message, e
+                )
             }
         } else {
             value.split(",").map { it.trim() }.filter { it.isNotBlank() }
@@ -101,7 +102,7 @@ class SpringApplicationProperties : ApplicationProperties {
 
     override fun getPath(key: String): Path {
         val result = env.getProperty(key)
-                ?: throw ApplicationPropertiesException("Configuration key not found: '$key'")
+            ?: throw ApplicationPropertiesException("Configuration key not found: '$key'")
         return Paths.get(result.trim()).toAbsolutePath().normalize()
     }
 
@@ -240,7 +241,7 @@ class SpringApplicationProperties : ApplicationProperties {
 
         if (propSource is EnumerablePropertySource<*>) {
             Arrays.asList(*propSource.propertyNames).stream()
-                    .filter { key -> key.startsWith(prefix) }.forEach { key -> result[key] = env.getProperty(key) }
+                .filter { key -> key.startsWith(prefix) }.forEach { key -> result[key] = env.getProperty(key) }
         }
     }
 }

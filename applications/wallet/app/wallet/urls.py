@@ -28,6 +28,7 @@ from apikeys.views import ApikeyViewSet
 from assets.views import (AssetViewSet, FileCategoryViewSet,
                           FileNameViewSet)
 from datasources.views import DataSourceViewSet
+from faces.views import FaceViewSet
 from gcpmarketplace.views import signup_success, SignUpView
 from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
 from modules.views import ModuleViewSet, ProviderViewSet
@@ -66,6 +67,7 @@ projects_router.register('modules', ModuleViewSet, basename='module')
 projects_router.register('providers', ProviderViewSet, basename='provider')
 projects_router.register('searches/export', MetadataExportViewSet, basename='export')
 projects_router.register('searches', SearchViewSet, basename='search')
+projects_router.register('faces', FaceViewSet, basename='face')
 
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')

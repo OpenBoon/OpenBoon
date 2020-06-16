@@ -4,6 +4,8 @@ import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectTier
+import com.zorroa.archivist.domain.ProjectTierUpdate
 import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
@@ -133,10 +135,20 @@ class ProjectControllerTests : MockMvcTest() {
                 .content(Json.serialize(settings))
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.defaultPipelineId", CoreMatchers.equalTo(
-                settings.defaultPipelineId.toString())))
-            .andExpect(jsonPath("$.defaultIndexRouteId",
-                CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())))
+            .andExpect(
+                jsonPath(
+                    "$.defaultPipelineId",
+                    CoreMatchers.equalTo(
+                        settings.defaultPipelineId.toString()
+                    )
+                )
+            )
+            .andExpect(
+                jsonPath(
+                    "$.defaultIndexRouteId",
+                    CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())
+                )
+            )
             .andReturn()
     }
 
@@ -155,10 +167,10 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun testGetMyProjectSettings() {
         mvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/project/_settings")
-                    .headers(admin())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-            )
+            MockMvcRequestBuilders.get("/api/v1/project/_settings")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.defaultPipelineId", CoreMatchers.anything()))
             .andExpect(jsonPath("$.defaultIndexRouteId", CoreMatchers.anything()))
@@ -168,10 +180,10 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun testGetMyProjecQuotas() {
         mvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/project/_quotas")
-                    .headers(admin())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-            )
+            MockMvcRequestBuilders.get("/api/v1/project/_quotas")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.videoSecondsMax", CoreMatchers.anything()))
             .andExpect(jsonPath("$.videoSecondsCount", CoreMatchers.anything()))
@@ -193,10 +205,10 @@ class ProjectControllerTests : MockMvcTest() {
         projectQuotasDao.incrementTimeSeriesCounters(Date(), counters)
 
         mvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/project/_quotas_time_series")
-                    .headers(admin())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-            )
+            MockMvcRequestBuilders.get("/api/v1/project/_quotas_time_series")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$[0].videoSecondsCount", CoreMatchers.anything()))
             .andExpect(jsonPath("$[0].pageCount", CoreMatchers.anything()))
@@ -215,10 +227,41 @@ class ProjectControllerTests : MockMvcTest() {
                 .content(Json.serialize(settings))
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.defaultPipelineId", CoreMatchers.equalTo(
-                settings.defaultPipelineId.toString())))
-            .andExpect(jsonPath("$.defaultIndexRouteId",
-                CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())))
+            .andExpect(
+                jsonPath(
+                    "$.defaultPipelineId",
+                    CoreMatchers.equalTo(
+                        settings.defaultPipelineId.toString()
+                    )
+                )
+            )
+            .andExpect(
+                jsonPath(
+                    "$.defaultIndexRouteId",
+                    CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun updateTier() {
+        val pid = getProjectId()
+        var update = ProjectTierUpdate(ProjectTier.PREMIUM)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/project/$pid/_update_tier")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(update))
+        )
+            .andExpect(status().isOk)
+            .andExpect(
+                jsonPath(
+                    "$.tier",
+                    CoreMatchers.anything()
+                )
+            )
             .andReturn()
     }
 

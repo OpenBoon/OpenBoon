@@ -16,16 +16,15 @@ import { formatSeconds } from './helpers'
 const AssetsThumbnail = ({
   asset: {
     id,
-    metadata: {
-      source: { filename },
-    },
+    metadata: { source },
     thumbnailUrl,
     videoProxyUrl,
     videoLength,
   },
 }) => {
+  const { filename } = source || {}
+
   const playerRef = useRef()
-  let playerPromise
 
   const {
     query: { projectId, id: selectedId, query },
@@ -45,22 +44,6 @@ const AssetsThumbnail = ({
   const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
   const { pathname: videoSrc } = videoProxyUrl ? new URL(videoProxyUrl) : {}
 
-  const play = /* istanbul ignore next */ () => {
-    playerRef.current.currentTime = 0
-    playerPromise = playerRef.current.play()
-  }
-
-  const pause = /* istanbul ignore next */ async () => {
-    if (!playerPromise) return
-
-    try {
-      await playerPromise
-      playerRef.current.pause()
-    } catch (error) {
-      // do nothing
-    }
-  }
-
   return (
     <div
       css={{
@@ -76,9 +59,6 @@ const AssetsThumbnail = ({
             : constants.borders.assetHover,
           'a, button': {
             display: 'flex',
-          },
-          '.videoLength': {
-            display: 'none',
           },
         },
       }}
@@ -104,10 +84,6 @@ const AssetsThumbnail = ({
             <video
               ref={playerRef}
               preload="none"
-              onMouseOver={play}
-              onMouseOut={pause}
-              onFocus={play}
-              onBlur={pause}
               css={{ width: '100%', height: '100%', objectFit: 'contain' }}
               muted
               playsInline
@@ -180,7 +156,6 @@ const AssetsThumbnail = ({
       </Link>
       {videoLength > 0 && (
         <div
-          className="videoLength"
           css={{
             position: 'absolute',
             bottom: spacing.small,
@@ -208,7 +183,7 @@ AssetsThumbnail.propTypes = {
         extension: PropTypes.string,
         mimetype: PropTypes.string,
       }),
-    }),
+    }).isRequired,
     thumbnailUrl: PropTypes.string.isRequired,
     assetStyle: PropTypes.oneOf(['image', 'video', 'document']),
     videoLength: PropTypes.number,

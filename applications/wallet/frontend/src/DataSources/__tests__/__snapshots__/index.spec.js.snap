@@ -164,7 +164,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
@@ -279,14 +279,6 @@ Array [
   -ms-flex: 1;
   flex: 1;
   position: relative;
-}
-
-.emotion-33 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .emotion-6 {
@@ -938,7 +930,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>
@@ -1053,14 +1045,6 @@ Array [
   -ms-flex: 1;
   flex: 1;
   position: relative;
-}
-
-.emotion-33 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .emotion-6 {
@@ -1662,7 +1646,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
     </ul>

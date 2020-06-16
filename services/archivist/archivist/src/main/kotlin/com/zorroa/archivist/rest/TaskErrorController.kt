@@ -38,8 +38,10 @@ class TaskErrorController @Autowired constructor(val jobService: JobService) {
         return jobService.getTaskErrors(filter)
     }
 
-    @ApiOperation("Searches for a single Task Error.",
-        notes = "Throws an error if more than 1 result is returned based on the given filter.")
+    @ApiOperation(
+        "Searches for a single Task Error.",
+        notes = "Throws an error if more than 1 result is returned based on the given filter."
+    )
     @PostMapping(value = ["/api/v1/taskerrors/_findOne"])
     fun findOne(@ApiParam("Search filter.") @RequestBody filter: TaskErrorFilter): TaskError {
         return jobService.findOneTaskError(filter)

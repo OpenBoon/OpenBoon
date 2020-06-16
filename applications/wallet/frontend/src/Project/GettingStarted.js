@@ -23,10 +23,10 @@ const STEPS = [
       </>
     ),
     content:
-      'To create a Data Source, connected to a bucket, ' +
-      'choose which types of assets you’d like to process, ' +
-      'and select which machine learning modules you’d like to apply to them.',
-    cta: '+ Create a Data Source',
+      'Data Sources define the source location of files and the types of ' +
+      'Machine Learning analysis to be performed on them. Source files can be ' +
+      'located in any of the major cloud provider object stores (GCS, S3, Azure Blob).',
+    cta: '+ Create Data Source',
     link: '/[projectId]/data-sources/add',
   },
   {
@@ -39,16 +39,15 @@ const STEPS = [
       </>
     ),
     content:
-      'After a Data Source had been created a job kicks off and you can view ' +
-      'its progress in the Job Queue. There you can and apply actions ' +
-      'like “pause” “cancel” or “retry”. ' +
-      'You can also inspect any errors that may have occurred.',
-    cta: 'View Jobs Queue',
+      'After a Data Source is created a processing job is launched that performs ' +
+      'the Machine Learning analysis and stores the resulting metadata. The Job Queue ' +
+      'is where you will monitor the progress of these jobs and manage them.',
+    cta: 'Go To Job Queue',
     link: '/[projectId]/jobs',
   },
   {
     step: 3,
-    title: 'Inspect Your New Dataset',
+    title: 'Inspect Your Dataset',
     module: (
       <>
         <VisualizerSvg width={ICON_WIDTH} aria-hidden />
@@ -56,9 +55,9 @@ const STEPS = [
       </>
     ),
     content:
-      'Once a job has successfully completed then the assets will appear ' +
-      'in the Visualizer.  There you can inspect your assets new data, ' +
-      'view the dataset in a variety of meaningful ways, and XYZ',
+      'Once the processing job has successfully completed you can view the results in the ' +
+      'Visualizer. The Visualizer is a unified visual tool for inspecting and tuning ' +
+      'the metadata output of the Machine Learning analysis.',
     cta: 'Inspect Assets',
     link: '/[projectId]/visualizer',
   },
@@ -100,9 +99,7 @@ const ProjectGettingStarted = ({ projectId }) => {
                 paddingTop: spacing.normal,
                 display: 'flex',
                 alignItems: 'center',
-                svg: {
-                  marginRight: spacing.base,
-                },
+                svg: { marginRight: spacing.base },
               }}
             >
               {module}

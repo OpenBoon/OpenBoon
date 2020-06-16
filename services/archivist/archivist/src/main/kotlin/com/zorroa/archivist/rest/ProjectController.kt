@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectTierUpdate
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.ProjectService
@@ -99,6 +100,17 @@ class ProjectController constructor(
         return HttpUtils.status("project", id.toString(), "disable", true)
     }
 
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @PutMapping(value = ["/api/v1/project/{id}/_update_tier"])
+    @ApiOperation("Update Project Tier")
+    fun updateProjectTier(
+        @PathVariable id: UUID,
+        @RequestBody(required = true) projectTierUpdate: ProjectTierUpdate
+    ): Project {
+        projectService.setTier(id, projectTierUpdate.tier)
+        return projectService.get(id)
+    }
+
     //
     // Methods that default to the API Keys project Id.
     //
@@ -122,9 +134,11 @@ class ProjectController constructor(
         @RequestParam("start", required = false) start: Long?,
         @RequestParam("stop", required = false) stop: Long?
     ): List<ProjectQuotasTimeSeriesEntry> {
-        return projectService.getQuotasTimeSeries(getProjectId(),
+        return projectService.getQuotasTimeSeries(
+            getProjectId(),
             Date(start ?: System.currentTimeMillis() - 86400000L),
-            Date(stop ?: System.currentTimeMillis()))
+            Date(stop ?: System.currentTimeMillis())
+        )
     }
 
     @PreAuthorize("hasAuthority('ProjectManage')")
@@ -139,8 +153,8 @@ class ProjectController constructor(
     @ApiOperation("Get the project Settings")
     fun putMyProjectSettings(@RequestBody(required = true) settings: ProjectSettings):
         ProjectSettings {
-        val id = getProjectId()
-        projectService.updateSettings(id, settings)
-        return projectService.getSettings(id)
-    }
+            val id = getProjectId()
+            projectService.updateSettings(id, settings)
+            return projectService.getSettings(id)
+        }
 }

@@ -67,8 +67,10 @@ class TaskErrorControllerTests : MockMvcTest() {
             .andReturn()
 
         val content = result.response.contentAsString
-        val log = Json.Mapper.readValue<KPagedList<TaskError>>(content,
-            object : TypeReference<KPagedList<TaskError>>() {})
+        val log = Json.Mapper.readValue<KPagedList<TaskError>>(
+            content,
+            object : TypeReference<KPagedList<TaskError>>() {}
+        )
         assertEquals(1, log.size())
     }
 

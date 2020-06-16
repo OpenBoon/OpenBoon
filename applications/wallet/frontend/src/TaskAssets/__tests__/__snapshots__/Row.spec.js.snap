@@ -1,0 +1,541 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TaskAssetsRow /> should render properly 1`] = `
+.emotion-14 {
+  background-color: #2e2e2e;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-11:hover {
+  cursor: pointer;
+  background-color: #4a4a4a;
+}
+
+.emotion-0 {
+  width: 60px;
+  text-align: center;
+}
+
+.emotion-6 {
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
+}
+
+.emotion-5 {
+  position: relative;
+  border: 4px solid transparent;
+  width: 100%;
+  height: 100%;
+}
+
+.emotion-5:hover {
+  border: 4px solid #ffffff;
+}
+
+.emotion-5:hover a,
+.emotion-5:hover button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #2e2e2e;
+  overflow: hidden;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  display: none;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 4px;
+  background-color: #3b3b3b;
+  opacity: 0.5;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:hover {
+  opacity: 0.8;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  display: none;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  padding: 4px;
+  background-color: #3b3b3b;
+  opacity: 0.5;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-4:hover {
+  opacity: 0.8;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 400;
+  padding-left: 12px;
+}
+
+.emotion-10 {
+  width: 40px;
+  text-align: center;
+}
+
+.emotion-9 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-9:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-9[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-8 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-8:hover {
+  color: #ffffff;
+}
+
+.emotion-13 {
+  height: 600px;
+  overflow: auto;
+}
+
+.emotion-13 .ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-13 .Loading {
+  background-color: transparent;
+  height: 100%;
+  box-shadow: none;
+}
+
+.emotion-12 {
+  background-color: #191919;
+}
+
+.emotion-12 pre {
+  padding: 16px;
+}
+
+<div
+  className="emotion-14"
+>
+  <div
+    className="emotion-11"
+    onClick={[Function]}
+  >
+    <div
+      className="emotion-0"
+    >
+      42
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-5"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <img
+            alt="test_document.docx"
+            className="emotion-1"
+            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
+          />
+        </a>
+        <button
+          aria-label="Find similar images"
+          className="emotion-3"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            color="#ffffff"
+            data-file-name="similarity.svg"
+            width={20}
+          />
+        </button>
+        <a
+          className="emotion-4"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <svg
+            color="#ffffff"
+            data-file-name="expand.svg"
+            width={20}
+          />
+        </a>
+      </div>
+    </div>
+    <h4
+      className="emotion-7"
+    >
+      test_document.docx
+    </h4>
+    <div
+      className="emotion-10"
+    >
+      <button
+        aria-label="Collapse Section"
+        className="emotion-9"
+        onClick={[Function]}
+        type="button"
+      >
+        <svg
+          className="emotion-8"
+          color="#808080"
+          data-file-name="chevron.svg"
+          width={20}
+        />
+      </button>
+    </div>
+  </div>
+  <div
+    className="emotion-13"
+  >
+    <div
+      className="emotion-12"
+    >
+      <div
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "<pre class=\\"__json-pretty__\\" style=\\"margin:0;line-height:1.3;overflow:auto;\\">{
+  \\"<span class=\\"__json-key__\\">system</span>\\": {
+    \\"<span class=\\"__json-key__\\">jobId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"106d4be1-5d95-11ea-baea-364023b135f5\\"</span>,
+    \\"<span class=\\"__json-key__\\">dataSourceId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"10509c20-5d95-11ea-baea-364023b135f5\\"</span>,
+    \\"<span class=\\"__json-key__\\">timeCreated</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"2020-03-03T21:22:24.922700Z\\"</span>,
+    \\"<span class=\\"__json-key__\\">state</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"Analyzed\\"</span>,
+    \\"<span class=\\"__json-key__\\">projectId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"89382033-bcbb-4c8f-81a9-3d0883298a81\\"</span>,
+    \\"<span class=\\"__json-key__\\">taskId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"106e0f32-5d95-11ea-baea-364023b135f5\\"</span>,
+    \\"<span class=\\"__json-key__\\">timeModified</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"2020-03-03T21:22:47.575195Z\\"</span>
+  },
+  \\"<span class=\\"__json-key__\\">source</span>\\": {
+    \\"<span class=\\"__json-key__\\">path</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"gs://zorroa-dev-data/image/TIFF_1MB.tiff\\"</span>,
+    \\"<span class=\\"__json-key__\\">extension</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"tiff\\"</span>,
+    \\"<span class=\\"__json-key__\\">filename</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"TIFF_1MB.tiff\\"</span>,
+    \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image/tiff\\"</span>,
+    \\"<span class=\\"__json-key__\\">filesize</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1131930</span>,
+    \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1867533868</span>,
+    \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff\\"</span>
+  },
+  \\"<span class=\\"__json-key__\\">metrics</span>\\": {
+    \\"<span class=\\"__json-key__\\">pipeline</span>\\": [
+      {
+        \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.core.processors.PreCacheSourceFileProcessor\\"</span>,
+        \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
+        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1621235190</span>,
+        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0.11</span>,
+        \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"2020-03-03T21:22:27.694149\\"</span>
+      },
+      {
+        \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.image.importers.ImageImporter\\"</span>,
+        \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
+        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1426657387</span>,
+        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0.26</span>,
+        \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"2020-03-03T21:22:28.215069\\"</span>
+      },
+      {
+        \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.office.importers.OfficeImporter\\"</span>,
+        \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
+        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">2001473853</span>,
+        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0</span>
+      },
+      {
+        \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.video.VideoImporter\\"</span>,
+        \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
+        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">3310423168</span>,
+        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0</span>
+      },
+      {
+        \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.core.processors.AssertAttributesProcessor\\"</span>,
+        \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
+        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1841569083</span>,
+        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0</span>,
+        \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"2020-03-03T21:22:29.654215\\"</span>
+      }
+    ]
+  },
+  \\"<span class=\\"__json-key__\\">media</span>\\": {
+    \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">650</span>,
+    \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">434</span>,
+    \\"<span class=\\"__json-key__\\">aspect</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1.5</span>,
+    \\"<span class=\\"__json-key__\\">orientation</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"landscape\\"</span>,
+    \\"<span class=\\"__json-key__\\">type</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image\\"</span>,
+    \\"<span class=\\"__json-key__\\">length</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1</span>
+  },
+  \\"<span class=\\"__json-key__\\">clip</span>\\": {
+    \\"<span class=\\"__json-key__\\">type</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"page\\"</span>,
+    \\"<span class=\\"__json-key__\\">start</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1</span>,
+    \\"<span class=\\"__json-key__\\">stop</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1</span>,
+    \\"<span class=\\"__json-key__\\">length</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1</span>,
+    \\"<span class=\\"__json-key__\\">pile</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"pUn6wBxUN7x9JxOxLkvruOyNdYA\\"</span>,
+    \\"<span class=\\"__json-key__\\">sourceAssetId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C\\"</span>
+  },
+  \\"<span class=\\"__json-key__\\">files</span>\\": [
+    {
+      \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image_650x434.jpg\\"</span>,
+      \\"<span class=\\"__json-key__\\">category</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"proxy\\"</span>,
+      \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image/jpeg\\"</span>,
+      \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">89643</span>,
+      \\"<span class=\\"__json-key__\\">attrs</span>\\": {
+        \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">650</span>,
+        \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">434</span>
+      },
+      \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg\\"</span>
+    },
+    {
+      \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image_512x341.jpg\\"</span>,
+      \\"<span class=\\"__json-key__\\">category</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"proxy\\"</span>,
+      \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image/jpeg\\"</span>,
+      \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">60713</span>,
+      \\"<span class=\\"__json-key__\\">attrs</span>\\": {
+        \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">512</span>,
+        \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">341</span>
+      },
+      \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg\\"</span>
+    },
+    {
+      \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image_320x213.jpg\\"</span>,
+      \\"<span class=\\"__json-key__\\">category</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"proxy\\"</span>,
+      \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image/jpeg\\"</span>,
+      \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">30882</span>,
+      \\"<span class=\\"__json-key__\\">attrs</span>\\": {
+        \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">320</span>,
+        \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">213</span>
+      },
+      \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg\\"</span>
+    }
+  ],
+  \\"<span class=\\"__json-key__\\">analysis</span>\\": {
+    \\"<span class=\\"__json-key__\\">zvi</span>\\": {
+      \\"<span class=\\"__json-key__\\">tinyProxy</span>\\": [
+        <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#f3dfc3\\"</span>,
+        <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#f4efd8\\"</span>,
+        <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#c18f46\\"</span>,
+        <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#ebdfbd\\"</span>,
+        <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#ccd3c0\\"</span>,
+        <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#e7d4bb\\"</span>,
+        <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#beae8e\\"</span>,
+        <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#cabf9e\\"</span>,
+        <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#d2c09c\\"</span>
+      ]
+    }
+  },
+  \\"<span class=\\"__json-key__\\">similarity</span>\\": {
+    \\"<span class=\\"__json-key__\\">simhash</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP\\"</span>
+  }
+}</pre>",
+          }
+        }
+        id="json-pretty"
+      />
+    </div>
+  </div>
+</div>
+`;

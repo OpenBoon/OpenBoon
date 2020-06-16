@@ -1,6 +1,6 @@
 # Creates a container that runs a Jupyter notebook server with all the necessary
 # Zorroa libraries installed.
-FROM zmlp/plugins-analysis:latest
+FROM zmlp/py3-zvi:latest
 USER root
 
 # apt install a bunch of binary packages

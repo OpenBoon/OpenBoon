@@ -26,9 +26,7 @@ const FilterRangeContent = ({
   },
   filterIndex,
 }) => {
-  const {
-    data: { results },
-  } = useSWR(
+  const { data } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encode({
       filters: { type, attribute },
     })}`,
@@ -39,13 +37,17 @@ const FilterRangeContent = ({
     },
   )
 
-  const minMaxFix = results.min === results.max ? 0.001 : 0
+  const { results } = data || {}
 
-  const domain = [results.min, results.max + minMaxFix]
+  const { min: resultsMin = 0, max: resultsMax = 1 } = results || {}
+
+  const minMaxFix = resultsMin === resultsMax ? 0.001 : 0
+
+  const domain = [resultsMin, resultsMax + minMaxFix]
 
   const [rangeValues, setRangeValues] = useState([
-    min || results.min,
-    max || results.max + minMaxFix,
+    min || resultsMin,
+    max || resultsMax + minMaxFix,
   ])
   const [inputMin, setInputMin] = useState(rangeValues[0])
   const [inputMax, setInputMax] = useState(rangeValues[1])
@@ -130,12 +132,12 @@ const FilterRangeContent = ({
             display: 'flex',
             justifyContent: 'space-between',
             paddingBottom: spacing.normal,
-            fontFamily: 'Roboto Mono',
+            fontFamily: typography.family.mono,
           }}
         >
-          <span>{formatValue({ attribute, value: results.min })}</span>
+          <span>{formatValue({ attribute, value: resultsMin })}</span>
           <span>
-            {formatValue({ attribute, value: results.max + minMaxFix })}
+            {formatValue({ attribute, value: resultsMax + minMaxFix })}
           </span>
         </div>
         <div css={{ padding: spacing.small }}>

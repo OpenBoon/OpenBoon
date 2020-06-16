@@ -65,11 +65,13 @@ class ProjectQuotasDaoTests : AbstractTest() {
         projectQuotasDao.incrementTimeSeriesCounters(date1, counters)
         projectQuotasDao.incrementTimeSeriesCounters(date2, counters)
         val row = jdbc.queryForMap(
-            "SELECT SUM(int_video_file_count) AS c FROM project_quota_time_series")
+            "SELECT SUM(int_video_file_count) AS c FROM project_quota_time_series"
+        )
         assertEquals(BigDecimal(2), row["c"])
 
         val row2 = jdbc.queryForMap(
-            "SELECT COUNT(1) AS c FROM project_quota_time_series WHERE int_video_file_count > 0")
+            "SELECT COUNT(1) AS c FROM project_quota_time_series WHERE int_video_file_count > 0"
+        )
         assertEquals(BigDecimal(2), row["c"])
     }
 
@@ -94,5 +96,7 @@ class ProjectQuotasDaoTests : AbstractTest() {
         val result = projectQuotasDao.getTimeSeriesCounters(getProjectId(), date1, (date2))
         Json.prettyPrint(result)
         assertEquals(3, result.size)
+        assertEquals(1, result.first().videoClipCount)
+        assertEquals(2, result.last().videoFileCount)
     }
 }

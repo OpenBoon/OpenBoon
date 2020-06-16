@@ -23,6 +23,27 @@ describe('<AssetsThumbnail />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render properly an invalid asset', () => {
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID },
+    })
+
+    const component = TestRenderer.create(
+      <AssetsThumbnail
+        asset={{
+          id: 'zs5GXqqMapHkZpKYewLVNPppddQfaCK-',
+          metadata: {},
+          thumbnailUrl: 'https://dev.console.zvi.zorroa.com/web-proxy.jpg/',
+          assetStyle: null,
+          videoLength: null,
+          videoProxyUrl: null,
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly a video asset', () => {
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID, id: ASSET_ID },

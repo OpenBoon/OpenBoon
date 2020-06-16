@@ -22,8 +22,10 @@ import java.util.UUID
 import java.util.function.Consumer
 import java.util.regex.Pattern
 
-@ApiModel("AssetState",
-    description = "Describes the different states can asset can be in.")
+@ApiModel(
+    "AssetState",
+    description = "Describes the different states can asset can be in."
+)
 enum class AssetState {
 
     @ApiModelProperty("The Asset been created in the database but is pending analysis.")
@@ -33,8 +35,10 @@ enum class AssetState {
     Analyzed
 }
 
-@ApiModel("Asset Spec",
-    description = "Defines all the properties required to create an Asset.")
+@ApiModel(
+    "Asset Spec",
+    description = "Defines all the properties required to create an Asset."
+)
 class AssetSpec(
 
     @ApiModelProperty("The URI location of the asset.")
@@ -69,8 +73,10 @@ class AssetCounters(
     val replaced: Int = 0
 )
 
-@ApiModel("Asset",
-    description = "The file information and all the metadata generated during Analysis.")
+@ApiModel(
+    "Asset",
+    description = "The file information and all the metadata generated during Analysis."
+)
 open class Asset(
 
     @ApiModelProperty("The unique ID of the Asset.")
@@ -112,7 +118,7 @@ open class Asset(
      * @param attr
      * @param <T>
      * @return
-    </T> */
+     </T> */
     fun <T> getAttr(attr: String): T? {
         val current = getContainer(attr, false)
         return getChild(current, Attr.name(attr)) as T?
@@ -137,7 +143,7 @@ open class Asset(
      * @param type
      * @param <T>
      * @return
-    </T> */
+     </T> */
     fun <T> getAttr(attr: String, type: Class<T>): T? {
         val current = getContainer(attr, false)
         return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type)
@@ -151,7 +157,7 @@ open class Asset(
      * @param type
      * @param <T>
      * @return
-    </T> */
+     </T> */
     fun <T> getAttr(attr: String, type: TypeReference<T>): T? {
         val current = getContainer(attr, false)
         return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type)
@@ -341,8 +347,8 @@ class AssetIdBuilder(val spec: AssetSpec) {
                 digester.update(track.toByteArray())
             }
             val buf = ByteBuffer.allocate(16)
-            buf.putDouble(it.start)
-            buf.putDouble(it.stop)
+            buf.putDouble(it.start.toDouble())
+            buf.putDouble(it.stop.toDouble())
             digester.update(buf.array())
         }
 

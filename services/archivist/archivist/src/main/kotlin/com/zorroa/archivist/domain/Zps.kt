@@ -43,7 +43,7 @@ class ZpsScript(
     @ApiModelProperty("List of Processor Refs to add to the 'generate' section of the ZPS Script.")
     var generate: List<ProcessorRef>?,
 
-    @ApiModelProperty("List of Processor Refs to add to the 'over' section of the ZPS Script.")
+    @ApiModelProperty("List of Processor Refs to add to the 'assets' section of the ZPS Script.")
     var assets: List<Asset>?,
 
     @ApiModelProperty("List of Processor Refs to add to the 'execute' section of the ZPS Script.")
@@ -56,7 +56,10 @@ class ZpsScript(
     var type: JobType = JobType.Import,
 
     @ApiModelProperty("Settings for the run of this ZPS Script.")
-    var settings: MutableMap<String, Any?>? = null
+    var settings: MutableMap<String, Any?>? = null,
+
+    @ApiModelProperty("List of Asset IDs that will be resolved at dispatch time.")
+    var assetIds: List<String>? = null
 
 ) {
     /**

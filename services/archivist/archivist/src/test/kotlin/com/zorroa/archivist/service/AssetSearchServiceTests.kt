@@ -48,7 +48,8 @@ class AssetSearchServiceTests : AbstractTest() {
 
         val map = assetSearchService.searchSourceBuilderToMap(ssb)
         val json = Json.Mapper.writeValueAsString(map)
-        val expected = """{"query":{"terms":{"bob":["abc"],"boost":1.0}}}"""
+        val expected =
+            """{"query":{"terms":{"bob":["abc"],"boost":1.0}}}"""
         assertEquals(expected, json)
     }
 
@@ -110,8 +111,11 @@ class AssetSearchServiceTests : AbstractTest() {
         val rsp = assetSearchService.search(search, mapOf("scroll" to arrayOf("5s")))
         assertNotNull(rsp.scrollId)
 
-        val scroll = assetSearchService.scroll(mapOf(
-            "scroll_id" to rsp.scrollId, "scroll" to "5s"))
+        val scroll = assetSearchService.scroll(
+            mapOf(
+                "scroll_id" to rsp.scrollId, "scroll" to "5s"
+            )
+        )
 
         assertNotNull(scroll.scrollId)
         assertEquals(0, scroll.hits.hits.size)
@@ -130,33 +134,37 @@ class AssetSearchServiceTests : AbstractTest() {
 
     @Test
     fun testSimilaritySearch() {
-        val query = """{
-            "query": {
-                "function_score" : {
-                    "functions" : [
-                      {
-                        "script_score" : {
-                          "script" : {
-                            "source" : "similarity",
-                            "lang" : "zorroa-similarity",
-                            "params" : {
-                              "minScore" : 0.50,
-                              "field" : "analysis.zvi-image-similarity.simhash",
-                              "hashes" : ["AABBDD00"]
-                            }
+        val query =
+            """
+            {
+              "query": {
+                "function_score": {
+                  "functions": [
+                    {
+                      "script_score": {
+                        "script": {
+                          "source": "similarity",
+                          "lang": "zorroa-similarity",
+                          "params": {
+                            "minScore": 0.50,
+                            "field": "analysis.zvi-image-similarity.simhash",
+                            "hashes": [
+                              "AABBDD00"
+                            ]
                           }
                         }
                       }
-                    ],
-                    "score_mode" : "multiply",
-                    "boost_mode" : "replace",
-                    "max_boost" : 3.4028235E38,
-                    "min_score" : 0.50,
-                    "boost" : 1.0
-                  }
+                    }
+                  ],
+                  "score_mode": "multiply",
+                  "boost_mode": "replace",
+                  "max_boost": 3.4028235E38,
+                  "min_score": 0.50,
+                  "boost": 1.0
                 }
+              }
             }
-        """.trimIndent()
+        """
 
         Json.prettyPrint(indexRoutingService.getProjectRestClient().getMapping())
 
@@ -167,28 +175,31 @@ class AssetSearchServiceTests : AbstractTest() {
 
     @Test
     fun testSimilaritySearchOnArray() {
-        val query = """
+        val query =
+            """
             {
-            "query": {
+              "query": {
                 "script_score": {
-                    "query": {
-                        "match_all": {}
-                    },
-                    "script": {
-                        "source": "similarity",
-                        "lang": "zorroa-similarity",
-                        "params": {
-                            "minScore": 1.0,
-                            "field": "analysis.zvi-multi-similarity.simhash",
-                            "hashes":  ["CCCCCCCC"]
-                        }
-                    },
-                    "boost": 1.0,
-                    "min_score": 1.0
+                  "query": {
+                    "match_all": {}
+                  },
+                  "script": {
+                    "source": "similarity",
+                    "lang": "zorroa-similarity",
+                    "params": {
+                      "minScore": 1.0,
+                      "field": "analysis.zvi-multi-similarity.simhash",
+                      "hashes": [
+                        "CCCCCCCC"
+                      ]
+                    }
+                  },
+                  "boost": 1.0,
+                  "min_score": 1.0
                 }
+              }
             }
-            }
-        """.trimIndent()
+            """
 
         val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
         assertEquals(1, rsp.hits.hits.size)
@@ -197,28 +208,31 @@ class AssetSearchServiceTests : AbstractTest() {
 
     @Test
     fun testSimilaritySearchOnEmptyField() {
-        val query = """
+        val query =
+            """
             {
-            "query": {
+              "query": {
                 "script_score": {
-                    "query": {
-                        "match_all": {}
-                    },
-                    "script": {
-                        "source": "similarity",
-                        "lang": "zorroa-similarity",
-                        "params": {
-                            "minScore": 1.0,
-                            "field": "analysis.zvi-foo-similarity.simhash",
-                            "hashes":  ["CCCCCCCC"]
-                        }
-                    },
-                    "boost": 1.0,
-                    "min_score": 1.0
+                  "query": {
+                    "match_all": {}
+                  },
+                  "script": {
+                    "source": "similarity",
+                    "lang": "zorroa-similarity",
+                    "params": {
+                      "minScore": 1.0,
+                      "field": "analysis.zvi-foo-similarity.simhash",
+                      "hashes": [
+                        "CCCCCCCC"
+                      ]
+                    }
+                  },
+                  "boost": 1.0,
+                  "min_score": 1.0
                 }
+              }
             }
-            }
-        """.trimIndent()
+            """
 
         val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
         assertEquals(0, rsp.hits.hits.size)
@@ -226,99 +240,117 @@ class AssetSearchServiceTests : AbstractTest() {
 
     @Test
     fun testSimilaritySearch_noHits() {
-        val query = """{
-            "query": {
-                "function_score" : {
-                    "functions" : [
-                      {
-                        "script_score" : {
-                          "script" : {
-                            "source" : "similarity",
-                            "lang" : "zorroa-similarity",
-                            "params" : {
-                              "minScore" : 0.50,
-                              "field" : "analysis.zvi-image-similarity.simhash",
-                              "hashes" : ["PPPPPPPP"]
-                            }
+        val query =
+            """
+            {
+              "query": {
+                "function_score": {
+                  "functions": [
+                    {
+                      "script_score": {
+                        "script": {
+                          "source": "similarity",
+                          "lang": "zorroa-similarity",
+                          "params": {
+                            "minScore": 0.50,
+                            "field": "analysis.zvi-image-similarity.simhash",
+                            "hashes": [
+                              "PPPPPPPP"
+                            ]
                           }
                         }
                       }
-                    ],
-                    "score_mode" : "multiply",
-                    "boost_mode" : "replace",
-                    "max_boost" : 3.4028235E38,
-                    "min_score" : 0.50,
-                    "boost" : 1.0
-                  }
+                    }
+                  ],
+                  "score_mode": "multiply",
+                  "boost_mode": "replace",
+                  "max_boost": 3.4028235E38,
+                  "min_score": 0.50,
+                  "boost": 1.0
                 }
+              }
             }
-        """.trimIndent()
+            """
         val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
         assertEquals(0, rsp.hits.hits.size)
     }
 
     @Test
     fun testKwConfSearch() {
-        val query = """{
-            "query": {
-                "function_score" : {
-                    "functions" : [
-                      {
-                        "script_score" : {
-                          "script" : {
-                            "source" : "kwconf",
-                            "lang" : "zorroa-kwconf",
-                            "params" : {
-                              "range": [0.5, 1.0],
-                              "field" : "analysis.zvi-label-detection.predictions",
-                              "labels" : ["toucan"]
-                            }
+        val query =
+            """
+            {
+              "query": {
+                "function_score": {
+                  "functions": [
+                    {
+                      "script_score": {
+                        "script": {
+                          "source": "kwconf",
+                          "lang": "zorroa-kwconf",
+                          "params": {
+                            "range": [
+                              0.5,
+                              1.0
+                            ],
+                            "field": "analysis.zvi-label-detection.predictions",
+                            "labels": [
+                              "toucan"
+                            ]
                           }
                         }
                       }
-                    ],
-                    "score_mode" : "multiply",
-                    "boost_mode" : "replace",
-                    "max_boost" : 3.4028235E38,
-                    "min_score" : 0.50,
-                    "boost" : 1.0
-                  }
+                    }
+                  ],
+                  "score_mode": "multiply",
+                  "boost_mode": "replace",
+                  "max_boost": 3.4028235E38,
+                  "min_score": 0.50,
+                  "boost": 1.0
                 }
-            }
-        """.trimIndent()
+              }
+            }   
+            """
         val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
         assertEquals(1, rsp.hits.hits.size)
     }
 
     @Test
     fun testKwConfSearch_noHits() {
-        val query = """{
-            "query": {
-                "function_score" : {
-                    "functions" : [
-                      {
-                        "script_score" : {
-                          "script" : {
-                            "source" : "kwconf",
-                            "lang" : "zorroa-kwconf",
-                            "params" : {
-                              "range": [0.1, 0.2],
-                              "field" : "analysis.zvi-label-detection",
-                              "labels" : ["toucan"]
-                            }
+        val query =
+            """
+            {
+              "query": {
+                "function_score": {
+                  "functions": [
+                    {
+                      "script_score": {
+                        "script": {
+                          "source": "kwconf",
+                          "lang": "zorroa-kwconf",
+                          "params": {
+                            "range": [
+                              0.1,
+                              0.2
+                            ],
+                            "field": "analysis.zvi-label-detection",
+                            "labels": [
+                              "toucan"
+                            ]
                           }
                         }
                       }
-                    ],
-                    "score_mode" : "multiply",
-                    "boost_mode" : "replace",
-                    "max_boost" : 3.4028235E38,
-                    "min_score" : 0.50,
-                    "boost" : 1.0
-                  }
+                    }
+                  ],
+                  "score_mode": "multiply",
+                  "boost_mode": "replace",
+                  "max_boost": 3.4028235E38,
+                  "min_score": 0.50,
+                  "boost": 1.0
                 }
+              }
             }
-        """.trimIndent()
+            """
         val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
         assertEquals(0, rsp.hits.hits.size)
     }
