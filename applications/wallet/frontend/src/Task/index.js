@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Breadcrumbs from '../Breadcrumbs'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 import Tabs from '../Tabs'
+import TaskScript from '../TaskScript'
 import TaskAssets from '../TaskAssets'
 import TaskErrors from '../TaskErrors'
 
@@ -36,6 +37,7 @@ const Task = () => {
 
         <Tabs
           tabs={[
+            { title: 'Script', href: `${TASK_URL}/script` },
             { title: 'Assets', href: `${TASK_URL}/assets` },
             { title: 'Errors', href: `${TASK_URL}/errors` },
           ]}
@@ -43,9 +45,17 @@ const Task = () => {
 
         {pathname === TASK_URL && 'Log'}
 
-        {pathname === `${TASK_URL}/details` && 'Details'}
+        {pathname === `${TASK_URL}/script` && (
+          <SuspenseBoundary>
+            <TaskScript />
+          </SuspenseBoundary>
+        )}
 
-        {pathname === `${TASK_URL}/assets` && <TaskAssets />}
+        {pathname === `${TASK_URL}/assets` && (
+          <SuspenseBoundary>
+            <TaskAssets />
+          </SuspenseBoundary>
+        )}
 
         {pathname === `${TASK_URL}/errors` && (
           <TaskErrors

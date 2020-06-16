@@ -6,34 +6,19 @@ import { colors, spacing } from '../Styles'
 
 const TaskErrorStackTrace = ({ taskError: { message, stackTrace } }) => {
   return (
-    <div
-      css={{
-        fontFamily: 'Roboto Mono',
-        paddingBottom: spacing.spacious,
-        height: 'auto',
-      }}
-    >
+    <div css={{ paddingBottom: spacing.spacious }}>
       <div
         css={{
-          backgroundColor: colors.structure.coal,
+          fontFamily: 'Roboto Mono',
           padding: spacing.normal,
+          backgroundColor: colors.structure.coal,
+          wordBreak: 'break-all',
         }}
       >
-        <div>&quot;message&quot;: {message}</div>
-
-        {!!stackTrace.length && (
-          <>
-            <div
-              css={{
-                paddingTop: spacing.normal,
-                color: colors.structure.zinc,
-              }}
-            />
-
-            <JsonDisplay json={stackTrace} />
-          </>
-        )}
+        &quot;message&quot;: {message}
       </div>
+
+      {!!stackTrace.length && <JsonDisplay json={stackTrace} />}
     </div>
   )
 }
