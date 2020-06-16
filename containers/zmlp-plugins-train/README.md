@@ -10,7 +10,7 @@ Contains trainers to be used for training models in ZMLP
 - `Perceptron Label Detector`
     - Trains an MLP (multi-layer perceptron) for image classification
 - `Tensorflow (TF) Transfer Learning (TL) Trainers`
-    - These trainers are used for classification using TL from TF models
+    - These trainers are used for classification using TL from one of the following TF models
         - K-means
         - ResNet50
         - VGG16
