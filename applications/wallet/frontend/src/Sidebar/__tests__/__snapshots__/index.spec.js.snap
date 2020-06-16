@@ -131,7 +131,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         >
           <svg
             aria-hidden={true}
-            data-file-name="projectDashboard.svg"
+            data-file-name="dashboard.svg"
             width={20}
           />
           Project Dashboard
@@ -237,7 +237,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         >
           <svg
             aria-hidden={true}
-            data-file-name="accountDashboard.svg"
+            data-file-name="dashboard.svg"
             width={20}
           />
           Account Dashboard
@@ -404,7 +404,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
         >
           <svg
             aria-hidden={true}
-            data-file-name="projectDashboard.svg"
+            data-file-name="dashboard.svg"
             width={20}
           />
           Project Dashboard
@@ -510,7 +510,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
         >
           <svg
             aria-hidden={true}
-            data-file-name="accountDashboard.svg"
+            data-file-name="dashboard.svg"
             width={20}
           />
           Account Dashboard
