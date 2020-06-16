@@ -710,7 +710,7 @@ class TestProjectUserPost:
         roles = ['ML_Tools', 'User_Admin']
         permissions = view._get_permissions_for_roles(roles)
         expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage',
-                    'DataSourceManage', 'DataQueueManage']
+                    'DataSourceManage', 'DataQueueManage', 'SystemManage']
         assert set(permissions) == set(expected)
         permissions = view._get_permissions_for_roles(['User_Admin'])
         assert permissions == ['ProjectManage']
