@@ -102,12 +102,8 @@ const TaskAssetsRow = ({
       {isOpen && (
         <div
           css={{
-            backgroundColor: colors.structure.coal,
             height: MAX_HEIGHT,
             overflow: 'auto',
-            pre: {
-              padding: spacing.normal,
-            },
             '.ErrorBoundary > div': {
               backgroundColor: 'transparent',
               boxShadow: 'none',

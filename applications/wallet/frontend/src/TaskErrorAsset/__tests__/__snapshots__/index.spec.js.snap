@@ -25,8 +25,11 @@ exports[`<TaskErrorAsset /> should render properly when asset has no proxies 1`]
 }
 
 .emotion-3 {
-  padding: 16px;
   background-color: #191919;
+}
+
+.emotion-3 pre {
+  padding: 16px;
 }
 
 .emotion-0 {
@@ -195,8 +198,11 @@ exports[`<TaskErrorAsset /> should render properly when asset has proxies 1`] = 
 }
 
 .emotion-3 {
-  padding: 16px;
   background-color: #191919;
+}
+
+.emotion-3 pre {
+  padding: 16px;
 }
 
 <div

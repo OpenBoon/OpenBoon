@@ -7,6 +7,7 @@ import User from '../../User'
 
 import Task from '..'
 
+jest.mock('../../TaskScript', () => 'TaskScript')
 jest.mock('../../TaskAssets', () => 'TaskAssets')
 jest.mock('../../TaskErrors', () => 'TaskErrors')
 jest.mock('../../Pagination', () => 'Pagination')
@@ -34,9 +35,9 @@ describe('<Task />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly for Details', () => {
+  it('should render properly for Script', () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs/[jobId]/tasks/[taskId]/details',
+      pathname: '/[projectId]/jobs/[jobId]/tasks/[taskId]/script',
       query: { projectId: PROJECT_ID, jobId: JOB_ID, taskId: task.id },
     })
 
