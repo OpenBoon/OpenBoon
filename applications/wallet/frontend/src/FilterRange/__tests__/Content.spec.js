@@ -41,6 +41,7 @@ describe('<FilterRangeContent />', () => {
 
     const component = TestRenderer.create(
       <FilterRangeContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -90,6 +91,7 @@ describe('<FilterRangeContent />', () => {
 
     const component = TestRenderer.create(
       <FilterRangeContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -121,6 +123,7 @@ describe('<FilterRangeContent />', () => {
 
     const component = TestRenderer.create(
       <FilterRangeContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -213,6 +216,7 @@ describe('<FilterRangeContent />', () => {
 
     const component = TestRenderer.create(
       <FilterRangeContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -296,6 +300,7 @@ describe('<FilterRangeContent />', () => {
 
     const component = TestRenderer.create(
       <FilterRangeContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}

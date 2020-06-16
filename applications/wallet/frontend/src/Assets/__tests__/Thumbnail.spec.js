@@ -10,6 +10,7 @@ const ASSET_ID = assets.results[0].id
 describe('<AssetsThumbnail />', () => {
   it('should render properly a valid asset', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
         query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
@@ -25,6 +26,7 @@ describe('<AssetsThumbnail />', () => {
 
   it('should render properly an invalid asset', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID },
     })
 
@@ -46,6 +48,7 @@ describe('<AssetsThumbnail />', () => {
 
   it('should render properly a video asset', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID, id: ASSET_ID },
     })
 
@@ -58,6 +61,7 @@ describe('<AssetsThumbnail />', () => {
 
   it('should render properly a valid selected asset', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID, id: ASSET_ID },
     })
 
@@ -70,6 +74,7 @@ describe('<AssetsThumbnail />', () => {
 
   it('should render properly an asset without thumbnails', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID },
     })
 
@@ -86,6 +91,7 @@ describe('<AssetsThumbnail />', () => {
     require('next/router').__setMockPushFunction(mockRouterPush)
 
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID },
     })
 
@@ -136,6 +142,7 @@ describe('<AssetsThumbnail />', () => {
     require('next/router').__setMockPushFunction(mockRouterPush)
 
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID, id: ASSET_ID, query: oldQuery },
     })
 

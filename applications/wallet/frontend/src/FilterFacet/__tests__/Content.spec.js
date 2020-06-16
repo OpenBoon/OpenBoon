@@ -32,6 +32,7 @@ describe('<FilterFacetContent />', () => {
 
     const component = TestRenderer.create(
       <FilterFacetContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -104,6 +105,7 @@ describe('<FilterFacetContent />', () => {
 
     const component = TestRenderer.create(
       <FilterFacetContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -152,6 +154,7 @@ describe('<FilterFacetContent />', () => {
 
     const component = TestRenderer.create(
       <FilterFacetContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}

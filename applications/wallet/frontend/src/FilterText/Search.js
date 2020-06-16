@@ -15,6 +15,7 @@ import { dispatch, ACTIONS } from '../Filters/helpers'
 const SVG_SIZE = 20
 
 const FilterTextSearch = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -100,6 +101,7 @@ const FilterTextSearch = ({
             dispatch({
               action: ACTIONS.UPDATE_FILTER,
               payload: {
+                pathname,
                 projectId,
                 assetId,
                 filters,
@@ -138,6 +140,7 @@ const FilterTextSearch = ({
             dispatch({
               action: ACTIONS.DELETE_FILTER,
               payload: {
+                pathname,
                 projectId,
                 assetId,
                 filters,
@@ -158,6 +161,7 @@ const FilterTextSearch = ({
 }
 
 FilterTextSearch.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

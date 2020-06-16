@@ -12,6 +12,7 @@ import { dispatch, ACTIONS } from '../Filters/helpers'
 import { formatOptions } from './helpers'
 
 const FilterReset = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -45,6 +46,7 @@ const FilterReset = ({
             dispatch({
               action: ACTIONS.UPDATE_FILTER,
               payload: {
+                pathname,
                 projectId,
                 assetId,
                 filters,
@@ -108,6 +110,7 @@ const FilterReset = ({
             dispatch({
               action: ACTIONS.UPDATE_FILTER,
               payload: {
+                pathname,
                 projectId,
                 assetId,
                 filters,
@@ -125,6 +128,7 @@ const FilterReset = ({
 }
 
 FilterReset.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
