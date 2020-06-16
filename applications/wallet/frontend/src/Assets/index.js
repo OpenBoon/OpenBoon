@@ -130,6 +130,7 @@ const Assets = () => {
   return (
     <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       {!!itemCount && <VisualizerNavigation itemCount={itemCount} />}
+
       <div
         css={{
           flex: 1,

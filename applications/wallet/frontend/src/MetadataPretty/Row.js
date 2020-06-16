@@ -25,7 +25,7 @@ const MetadataPrettyRow = ({ name, value, path }) => {
     >
       <div
         css={{
-          fontFamily: 'Roboto Condensed',
+          fontFamily: typography.family.condensed,
           color: colors.structure.steel,
           padding: spacing.moderate,
           paddingLeft: spacing.normal,
@@ -42,7 +42,7 @@ const MetadataPrettyRow = ({ name, value, path }) => {
         title={value}
         css={{
           flex: 4,
-          fontFamily: 'Roboto Mono',
+          fontFamily: typography.family.mono,
           fontSize: typography.size.small,
           lineHeight: typography.height.small,
           color: colors.structure.pebble,

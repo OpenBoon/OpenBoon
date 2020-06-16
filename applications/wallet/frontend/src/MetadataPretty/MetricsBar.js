@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing, zIndex } from '../Styles'
+import { colors, constants, spacing, zIndex, typography } from '../Styles'
+
 import ClockSvg from '../Icons/clock.svg'
 
 const PIPELINE_COLORS = [
@@ -135,7 +136,7 @@ const MetadataPrettyMetricsBar = ({ pipeline }) => {
               <div
                 css={{
                   paddingLeft: spacing.base,
-                  fontFamily: 'Roboto Condensed',
+                  fontFamily: typography.family.condensed,
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                 }}

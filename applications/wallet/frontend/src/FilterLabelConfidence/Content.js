@@ -68,7 +68,7 @@ const FilterLabelConfidenceContent = ({
           display: 'flex',
           justifyContent: 'space-between',
           paddingBottom: spacing.base,
-          fontFamily: 'Roboto Condensed',
+          fontFamily: typography.family.condensed,
           color: colors.structure.zinc,
         }}
       >
@@ -155,7 +155,7 @@ const FilterLabelConfidenceContent = ({
                       display: 'flex',
                       justifyContent: 'space-between',
                       padding: spacing.base,
-                      fontFamily: 'Roboto Mono',
+                      fontFamily: typography.family.mono,
                       fontSize: typography.size.small,
                       lineHeight: typography.height.small,
                     }}

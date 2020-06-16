@@ -1,4 +1,4 @@
-import { colors, spacing, constants } from '../Styles'
+import { colors, spacing, constants, typography } from '../Styles'
 
 const Pills = ({ children }) => {
   return children.map((child) => (
@@ -13,7 +13,7 @@ const Pills = ({ children }) => {
         paddingBottom: spacing.small,
         marginRight: spacing.base,
         borderRadius: constants.borderRadius.large,
-        fontFamily: 'Roboto Condensed',
+        fontFamily: typography.family.condensed,
       }}
     >
       {child.includes('_')
