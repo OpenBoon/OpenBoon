@@ -21,6 +21,10 @@ const typography = {
   style: {
     italic: 'italic',
   },
+  family: {
+    mono: 'Roboto Mono',
+    condensed: 'Roboto Condensed',
+  },
 }
 
 export default typography

@@ -6,12 +6,15 @@ import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 import Tabs from '../Tabs'
 
 import JobTasks from '../JobTasks'
-import JobErrors from '../JobErrors'
+import TaskErrors from '../TaskErrors'
 
 import JobDetails from './Details'
 
 const Job = () => {
-  const { pathname, query } = useRouter()
+  const {
+    pathname,
+    query: { projectId, jobId, refreshParam },
+  } = useRouter()
 
   return (
     <>
@@ -37,11 +40,14 @@ const Job = () => {
         />
 
         {pathname === '/[projectId]/jobs/[jobId]' && (
-          <JobTasks key={query.refreshParam} />
+          <JobTasks key={refreshParam} />
         )}
 
         {pathname === '/[projectId]/jobs/[jobId]/errors' && (
-          <JobErrors key={query.refreshParam} />
+          <TaskErrors
+            key={refreshParam}
+            parentUrl={`/api/v1/projects/${projectId}/jobs/${jobId}/`}
+          />
         )}
       </SuspenseBoundary>
     </>

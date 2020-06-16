@@ -9,13 +9,6 @@ import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Button, { VARIANTS } from '../Button'
 
-const ACTIONS = [
-  {
-    name: 'Retry',
-    action: 'retry',
-  },
-]
-
 const TaskMenu = ({ revalidate }) => {
   const {
     pathname,
@@ -40,40 +33,38 @@ const TaskMenu = ({ revalidate }) => {
         {({ onBlur, onClick }) => (
           <div>
             <ul>
-              {ACTIONS.map(({ name, action }) => (
-                <li key={action}>
-                  <Button
-                    variant={VARIANTS.MENU_ITEM}
-                    onBlur={onBlur}
-                    onClick={async () => {
-                      onClick()
+              <li>
+                <Button
+                  variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
+                  onClick={async () => {
+                    onClick()
 
-                      await fetcher(
-                        `/api/v1/projects/${projectId}/tasks/${taskId}/${action}/`,
-                        { method: 'PUT' },
-                      )
+                    await fetcher(
+                      `/api/v1/projects/${projectId}/tasks/${taskId}/retry/`,
+                      { method: 'PUT' },
+                    )
 
-                      revalidate()
+                    revalidate()
 
-                      Router.push(
-                        {
-                          pathname,
-                          query: {
-                            projectId,
-                            jobId,
-                            taskId,
-                            refreshParam: Math.random(),
-                          },
+                    Router.push(
+                      {
+                        pathname,
+                        query: {
+                          projectId,
+                          jobId,
+                          taskId,
+                          refreshParam: Math.random(),
                         },
-                        asPath,
-                      )
-                    }}
-                    isDisabled={false}
-                  >
-                    {name}
-                  </Button>
-                </li>
-              ))}
+                      },
+                      asPath,
+                    )
+                  }}
+                  isDisabled={false}
+                >
+                  Retry
+                </Button>
+              </li>
             </ul>
           </div>
         )}

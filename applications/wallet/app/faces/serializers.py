@@ -9,3 +9,7 @@ class LabelSerializer(serializers.Serializer):
 
 class UpdateLabelsSerializer(serializers.Serializer):
     labels = LabelSerializer(many=True)
+
+
+class FaceAssetSerializer(serializers.Serializer):
+    url = serializers.CharField(required=True)

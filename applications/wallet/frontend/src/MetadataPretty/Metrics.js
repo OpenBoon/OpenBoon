@@ -30,7 +30,7 @@ const MetadataPrettyMetrics = ({ pipeline }) => {
           >
             <div
               css={{
-                fontFamily: 'Roboto Condensed',
+                fontFamily: typography.family.condensed,
                 padding: spacing.normal,
               }}
             >
@@ -39,7 +39,7 @@ const MetadataPrettyMetrics = ({ pipeline }) => {
                 title={processor}
                 css={{
                   paddingTop: spacing.base,
-                  fontFamily: 'Roboto Mono',
+                  fontFamily: typography.family.mono,
                   fontSize: typography.size.small,
                   lineHeight: typography.height.small,
                   overflow: 'hidden',

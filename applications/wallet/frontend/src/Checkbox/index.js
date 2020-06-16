@@ -67,7 +67,7 @@ const STYLES = {
     },
     value: {
       color: colors.structure.zinc,
-      fontFamily: 'Roboto Mono',
+      fontFamily: typography.family.mono,
       fontSize: typography.size.small,
       lineHeight: typography.height.small,
     },

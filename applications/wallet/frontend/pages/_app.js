@@ -2,6 +2,7 @@
 import App from 'next/app'
 import getConfig from 'next/config'
 import * as Sentry from '@sentry/browser'
+import { Integrations as ApmIntegrations } from '@sentry/apm'
 import 'focus-visible'
 
 import User from '../src/User'
@@ -12,6 +13,8 @@ const { publicRuntimeConfig: { ENVIRONMENT, ENABLE_SENTRY } = {} } = getConfig()
 if (ENABLE_SENTRY === 'true') {
   Sentry.init({
     dsn: 'https://09e9c3fc777c469ab784ff4367ff54bb@sentry.io/1848515',
+    integrations: [new ApmIntegrations.Tracing()],
+    tracesSampleRate: 0.25,
     release: process.env.CI_COMMIT_SHA,
     environment: ENVIRONMENT,
     beforeSend(event) {
