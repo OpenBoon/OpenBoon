@@ -12,4 +12,4 @@ class UpdateLabelsSerializer(serializers.Serializer):
 
 
 class FaceAssetSerializer(serializers.Serializer):
-    url = serializers.URLField()
+    url = serializers.CharField(required=True)

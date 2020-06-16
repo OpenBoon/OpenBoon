@@ -26,7 +26,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         detail endpoint.
         """
         def item_modifier(request, asset):
-            asset['url'] = request.build_absolute_uri(f'{request.path}{asset["id"]}')
+            asset['url'] = request.build_absolute_uri(f'{request.path}{asset["_id"]}')
 
         filter = {
             'query': {
