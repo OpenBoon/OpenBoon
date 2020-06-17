@@ -176,8 +176,12 @@ class BaseProjectViewSet(ViewSet):
                 item_modifier(request, item)
             if item_filter and not item_filter(request, item):
                 items_to_remove.append(item)
+
+        # TODO: Need to remove the item_filter option once we can do API key filtering
+        # in ZMLP. This functionality breaks pagination.
         for item in items_to_remove:
             content['list'].remove(item)
+
         if serializer_class:
             serializer = serializer_class(data=content['list'], many=True)
         else:
