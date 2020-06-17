@@ -342,11 +342,10 @@ class SimilarityFilter(BaseFilter):
     def _get_hashes(self):
         """Returns all of the simhashes for the assets given to the filter."""
         ids = self.data['values']['ids']
-        assets = self.zmlp_app.assets.search({'query':{'terms':{'_id': ids}}})
+        assets = self.zmlp_app.assets.search({'query': {'terms': {'_id': ids}}})
         hashes = []
         for asset in assets:
             simhash = asset.get_attr('analysis.zvi-image-similarity.simhash')
             if simhash:
                 hashes.append(simhash)
         return hashes
-
