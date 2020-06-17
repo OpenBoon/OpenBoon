@@ -201,7 +201,7 @@ class TestFilterBoy:
 
     def test_get_filter_from_json(self, filter_boy):
         raw_filter = {'type': 'range', 'attribute': 'source.filesize'}
-        _filter = filter_boy.get_filter_from_json(raw_filter)
+        _filter = filter_boy.get_filter_from_json(raw_filter, None)
 
         assert _filter == RangeFilter(raw_filter)
 
@@ -209,14 +209,14 @@ class TestFilterBoy:
         raw_filter = {'attribute': 'source.filesize'}
 
         with pytest.raises(ParseError) as e:
-            filter_boy.get_filter_from_json(raw_filter)
+            filter_boy.get_filter_from_json(raw_filter, None)
         assert str(e.value.detail) == 'Filter description is missing a `type`.'
 
     def test_get_filter_from_json_raises_parse_error_unknown_type(self, filter_boy):
         raw_filter = {'type': 'foo', 'attribute': 'source.filesize'}
 
         with pytest.raises(ParseError) as e:
-            filter_boy.get_filter_from_json(raw_filter)
+            filter_boy.get_filter_from_json(raw_filter, None)
         assert str(e.value.detail) == 'Unsupported filter `foo` given.'
 
     def test_reduce_filters_to_query_single_filter(self, filter_boy):

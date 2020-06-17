@@ -92,7 +92,7 @@ class FilterBoy(object):
         except ValueError:
             raise ParseError(detail='Unable to decode `filter` querystring.')
 
-        return self.get_filter_from_json(decoded_filter)
+        return self.get_filter_from_json(decoded_filter, request.app)
 
     def get_filters_from_request(self, request):
         """Gets the list of Filters from a request querystring.
@@ -125,14 +125,15 @@ class FilterBoy(object):
 
         filters = []
         for raw_filter in converted_query:
-            filters.append(self.get_filter_from_json(raw_filter))
+            filters.append(self.get_filter_from_json(raw_filter, request.client))
         return filters
 
-    def get_filter_from_json(self, raw_filter):
+    def get_filter_from_json(self, raw_filter, zmlp_app):
         """Converts a raw filter dict into native Wallet object.
 
         Args:
             raw_filter: The raw JSON data that represents the Filter
+            zmlp_app(ZmlpApp): ZMLP App object to pass to the instantiated filter.
 
         Returns:
             Filter: Wallet Filter representation of the raw data.
@@ -158,7 +159,7 @@ class FilterBoy(object):
         if not Filter:
             raise ParseError(detail=f'Unsupported filter `{filter_type}` given.')
 
-        return Filter(raw_filter)
+        return Filter(raw_filter, zmlp_app=zmlp_app)
 
     def reduce_filters_to_query(self, filters):
         """Takes a list of Filters and combines their separate queries into one."""

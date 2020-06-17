@@ -35,8 +35,9 @@ class BaseFilter(object):
     optional_keys = []
     agg_prefix = ''
 
-    def __init__(self, data):
+    def __init__(self, data, zmlp_app=None):
         self.data = data
+        self.zmlp_app = zmlp_app
         self.name = str(uuid.uuid4())
 
     def __eq__(self, other):
@@ -316,13 +317,13 @@ class SimilarityFilter(BaseFilter):
 
     type = 'similarity'
     required_agg_keys = ['attribute']
-    required_query_keys = ['hashes']
+    required_query_keys = ['ids']
     optional_keys = ['values.minScore', 'values.boost']
 
     # No Aggregations needed for this
 
     def get_es_query(self):
-        hashes = self.data['values']['hashes']
+        hashes = self._get_hashes()
         min_score = self.data['values'].get('minScore', 0.75)
         boost = self.data['values'].get('boost', 1.0)
         attribute = f'''{self.data['attribute']}.simhash'''
@@ -337,3 +338,15 @@ class SimilarityFilter(BaseFilter):
                 }
             }
         }
+
+    def _get_hashes(self):
+        """Returns all of the simhashes for the assets given to the filter."""
+        ids = self.data['values']['ids']
+        assets = self.zmlp_app.assets.search({'query':{'terms':{'_id': ids}}})
+        hashes = []
+        for asset in assets:
+            simhash = asset.get_attr('analysis.zvi-image-similarity.simhash')
+            if simhash:
+                hashes.append(simhash)
+        return hashes
+
