@@ -21,8 +21,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
       {
         type: 'similarity',
         attribute: 'analysis.zvi-image-similarity',
-        // TODO: replace `hashes` with `ids` after backend update
-        values: { hashes: [simhash] },
+        values: { ids: [assetId] },
       },
     ],
   })
