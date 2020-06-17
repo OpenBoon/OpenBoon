@@ -1,6 +1,7 @@
 import uuid
 
-from rest_framework.exceptions import ValidationError
+from django.core.exceptions import ImproperlyConfigured
+from rest_framework.exceptions import ValidationError, NotFound
 
 from zmlp.search import SimilarityQuery
 
@@ -35,10 +36,17 @@ class BaseFilter(object):
     optional_keys = []
     agg_prefix = ''
 
-    def __init__(self, data, zmlp_app):
+    def __init__(self, data, zmlp_app=None):
+        """Initializes filter instance.
+
+        Args:
+            data (dict): The initial data
+            zmlp_app (ZmlpApp): A ZMLP App instance, in case connecting to ZMLP is required.
+        """
         self.data = data
         self.zmlp_app = zmlp_app
         self.name = str(uuid.uuid4())
+        self.errors = []
 
     def __eq__(self, other):
         if type(self) == type(other) and self.data == other.data:
@@ -54,22 +62,21 @@ class BaseFilter(object):
         Returns:
             bool: Whether all the required data was given
         """
-        errors = []
 
         for key in self.required_agg_keys:
             if key not in self.data:
-                errors.append({key: 'This value is required.'})
+                self.errors.append({key: 'This value is required.'})
 
         if query:
             if 'values' not in self.data:
-                errors.append({'values': 'This value is required.'})
+                self.errors.append({'values': 'This value is required.'})
             for key in self.required_query_keys:
                 if key not in self.data['values']:
-                    errors.append({key: 'This value is required.'})
+                    self.errors.append({key: 'This value is required.'})
 
-        if errors:
+        if self.errors:
             if raise_exception:
-                raise ValidationError(detail=errors)
+                raise ValidationError(detail=self.errors)
             else:
                 return False
 
@@ -341,8 +348,17 @@ class SimilarityFilter(BaseFilter):
 
     def _get_hashes(self):
         """Returns all of the simhashes for the assets given to the filter."""
+        if self.zmlp_app is None:
+            raise ImproperlyConfigured()
+
         ids = self.data['values']['ids']
         assets = self.zmlp_app.assets.search({'query': {'terms': {'_id': ids}}})
+
+        # Some validation that we got all the ids back
+        if len(set(assets)) != len(set(ids)):
+            raise NotFound(detail={'ids': 'One of the specified assets for '
+                                          'the similarity filter was not found.'})
+
         hashes = []
         for asset in assets:
             simhash = asset.get_attr('analysis.zvi-image-similarity.simhash')

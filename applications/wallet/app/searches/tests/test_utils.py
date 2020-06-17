@@ -145,7 +145,7 @@ class TestFilterBoy:
         response_filter = filter_boy.get_filter_from_request(request)
         assert FacetFilter({"type": "facet",
                             "attribute": "analysis.zvi.tinyProxy"
-                            }, None) == response_filter
+                            }) == response_filter
 
     def test_get_filter_from_request_flow(self, api_factory, filter_boy):
         _filter = {'type': 'range', 'attribute': 'source.filesize'}
@@ -154,7 +154,7 @@ class TestFilterBoy:
         request.query_params = {'filter': encoded_qs}
 
         response_filter = filter_boy.get_filter_from_request(request)
-        assert RangeFilter(_filter, None) == response_filter
+        assert RangeFilter(_filter) == response_filter
 
     def test_get_filter_from_request_raises_invalid_request(self, filter_boy):
         request = Mock()
@@ -183,7 +183,7 @@ class TestFilterBoy:
         request = Mock()
         request.query_params = {'query': encoded_qs}
 
-        expected = [RangeFilter(_filters[0], None), FacetFilter(_filters[1], None)]
+        expected = [RangeFilter(_filters[0]), FacetFilter(_filters[1])]
         filters = filter_boy.get_filters_from_request(request)
         assert filters == expected
 
@@ -203,26 +203,26 @@ class TestFilterBoy:
         raw_filter = {'type': 'range', 'attribute': 'source.filesize'}
         _filter = filter_boy.get_filter_from_json(raw_filter, None)
 
-        assert _filter == RangeFilter(raw_filter, None)
+        assert _filter == RangeFilter(raw_filter)
 
     def test_get_filter_from_json_raises_parse_error(self, filter_boy):
         raw_filter = {'attribute': 'source.filesize'}
 
         with pytest.raises(ParseError) as e:
-            filter_boy.get_filter_from_json(raw_filter, None)
+            filter_boy.get_filter_from_json(raw_filter)
         assert str(e.value.detail) == 'Filter description is missing a `type`.'
 
     def test_get_filter_from_json_raises_parse_error_unknown_type(self, filter_boy):
         raw_filter = {'type': 'foo', 'attribute': 'source.filesize'}
 
         with pytest.raises(ParseError) as e:
-            filter_boy.get_filter_from_json(raw_filter, None)
+            filter_boy.get_filter_from_json(raw_filter)
         assert str(e.value.detail) == 'Unsupported filter `foo` given.'
 
     def test_reduce_filters_to_query_single_filter(self, filter_boy):
         _filter = RangeFilter({'type': 'range',
                                'attribute': 'source.filesize',
-                               'values': {'min': 1, 'max': 100}}, None)
+                               'values': {'min': 1, 'max': 100}})
         expected_query = {'query': {'bool': {'filter': [{'range': {'source.filesize': {'gte': 1, 'lte': 100}}}]}}}  # noqa
         response_query = filter_boy.reduce_filters_to_query([_filter])
         assert expected_query == response_query
@@ -230,10 +230,10 @@ class TestFilterBoy:
     def test_reduce_filters_to_query_multiple_filters(self, filter_boy):
         _filters = [RangeFilter({'type': 'range',
                                  'attribute': 'source.filesize',
-                                 'values': {'min': 1, 'max': 100}}, None),
+                                 'values': {'min': 1, 'max': 100}}),
                     FacetFilter({'type': 'facet',
                                  'attribute': 'source.extension',
-                                 'values': {'facets': ['jpeg', 'tiff']}}, None)]
+                                 'values': {'facets': ['jpeg', 'tiff']}})]
         expected_query = {
             'query': {'bool': {'filter': [{'range': {'source.filesize': {'gte': 1, 'lte': 100}}},
                                           {'terms': {'source.extension': ['jpeg', 'tiff']}}]}}}

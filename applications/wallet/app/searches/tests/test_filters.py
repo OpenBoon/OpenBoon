@@ -1,5 +1,6 @@
 import pytest
 
+from django.core.exceptions import ImproperlyConfigured
 from rest_framework.exceptions import ValidationError
 from zmlp import ZmlpApp, ZmlpClient
 
@@ -33,36 +34,36 @@ class TestBaseFilterClass:
         assert _filter.is_valid()
 
     def test_is_valid_with_raise_exception(self, mock_load_data):
-        _filter = MockFilter(mock_load_data, None)
+        _filter = MockFilter(mock_load_data)
         assert _filter.is_valid(raise_exception=True)
 
     def test_is_valid_no_query_no_exception_missing_key(self, mock_load_data):
         del (mock_load_data['trucks'])
-        _filter = MockFilter(mock_load_data, None)
+        _filter = MockFilter(mock_load_data)
         assert not _filter.is_valid()
 
     def test_is_valid_no_query_raise_exception_missing_key(self, mock_load_data):
         del (mock_load_data['trucks'])
-        _filter = MockFilter(mock_load_data, None)
+        _filter = MockFilter(mock_load_data)
         with pytest.raises(ValidationError):
             _filter.is_valid(raise_exception=True)
 
     def test_is_valid_query_no_exception(self, mock_query_data):
-        _filter = MockFilter(mock_query_data, None)
+        _filter = MockFilter(mock_query_data)
         assert _filter.is_valid(query=True)
 
     def test_is_valid_query_with_raise_exception(self, mock_query_data):
-        _filter = MockFilter(mock_query_data, None)
+        _filter = MockFilter(mock_query_data)
         assert _filter.is_valid(query=True, raise_exception=True)
 
     def test_is_valid_query_no_exception_missing_key(self, mock_query_data):
         del (mock_query_data['values']['dogs'])
-        _filter = MockFilter(mock_query_data, None)
+        _filter = MockFilter(mock_query_data)
         assert not _filter.is_valid(query=True)
 
     def test_is_valid_query_raise_exception_missing_key(self, mock_query_data):
         del (mock_query_data['values']['dogs'])
-        _filter = MockFilter(mock_query_data, None)
+        _filter = MockFilter(mock_query_data)
         with pytest.raises(ValidationError):
             _filter.is_valid(query=True, raise_exception=True)
 
@@ -83,12 +84,12 @@ class FilterBaseTestCase:
 
     def test_is_valid(self, mock_data):
         if self.Filter:
-            _filter = self.Filter(mock_data, None)
+            _filter = self.Filter(mock_data)
             assert _filter.is_valid()
 
     def test_is_valid_for_query(self, mock_query_data):
         if self.Filter:
-            _filter = self.Filter(mock_query_data, None)
+            _filter = self.Filter(mock_query_data)
             assert _filter.is_valid(query=True)
 
 
@@ -108,69 +109,69 @@ class TestExistsFilter(FilterBaseTestCase):
         return data
 
     def test_get_es_agg(self, mock_data):
-        _filter = ExistsFilter(mock_data, None)
+        _filter = ExistsFilter(mock_data)
         with pytest.raises(NotImplementedError):
             _filter.get_es_agg()
 
     def test_get_es_query_exists(self, mock_query_data):
-        _filter = ExistsFilter(mock_query_data, None)
+        _filter = ExistsFilter(mock_query_data)
         query = _filter.get_es_query()
         assert query == {'query': {'bool': {'filter': [{'exists': {'field': 'name'}}]}}}
 
     def test_get_es_query_missing(self, mock_query_data):
         mock_query_data['values']['exists'] = False
-        _filter = ExistsFilter(mock_query_data, None)
+        _filter = ExistsFilter(mock_query_data)
         query = _filter.get_es_query()
         assert query == {'query': {'bool': {'must_not': [{'exists': {'field': 'name'}}]}}}
 
     def test_add_to_empty_query(self, mock_query_data):
-        _filter = ExistsFilter(mock_query_data, None)
+        _filter = ExistsFilter(mock_query_data)
         query = {}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'exists': {'field': 'name'}}]}}}
 
     def test_add_to_pagination_empty_query(self, mock_query_data):
-        _filter = ExistsFilter(mock_query_data, None)
+        _filter = ExistsFilter(mock_query_data)
         query = {'from': 0, 'size': 10}
         query = _filter.add_to_query(query)
         assert query == {'from': 0, 'size': 10,
                          'query': {'bool': {'filter': [{'exists': {'field': 'name'}}]}}}
 
     def test_add_to_empty_query_2(self, mock_query_data):
-        _filter = ExistsFilter(mock_query_data, None)
+        _filter = ExistsFilter(mock_query_data)
         query = {'query': {}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'exists': {'field': 'name'}}]}}}
 
     def test_add_to_empty_bool(self, mock_query_data):
-        _filter = ExistsFilter(mock_query_data, None)
+        _filter = ExistsFilter(mock_query_data)
         query = {'query': {'bool': {}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'exists': {'field': 'name'}}]}}}
 
     def test_add_to_empty_other_query_type(self, mock_query_data):
-        _filter = ExistsFilter(mock_query_data, None)
+        _filter = ExistsFilter(mock_query_data)
         query = {'query': {'stuff': {}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'stuff': {},
                                    'bool': {'filter': [{'exists': {'field': 'name'}}]}}}
 
     def test_add_to_existing_exists_query(self, mock_query_data):
-        _filter = ExistsFilter(mock_query_data, None)
+        _filter = ExistsFilter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'exists': {'field': 'foo'}}]}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'exists': {'field': 'foo'}},
                                                        {'exists': {'field': 'name'}}]}}}
 
     def test_add_to_existing_missing_query(self, mock_query_data):
-        _filter = ExistsFilter(mock_query_data, None)
+        _filter = ExistsFilter(mock_query_data)
         query = {'query': {'bool': {'must_not': [{'exists': {'field': 'foo'}}]}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'exists': {'field': 'name'}}],
                                             'must_not': [{'exists': {'field': 'foo'}}]}}}
 
     def test_add_to_existing_other_query(self, mock_query_data):
-        _filter = ExistsFilter(mock_query_data, None)
+        _filter = ExistsFilter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'terms': ['foo', 'bar']}]}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'terms': ['foo', 'bar']},
@@ -193,7 +194,7 @@ class TestRangeFilter(FilterBaseTestCase):
         return data
 
     def test_get_es_agg(self, mock_data):
-        _filter = RangeFilter(mock_data, None)
+        _filter = RangeFilter(mock_data)
         agg = _filter.get_es_agg()
         name = list(agg['aggs'].keys())[0]
         assert agg == {
@@ -208,7 +209,7 @@ class TestRangeFilter(FilterBaseTestCase):
         }
 
     def test_get_es_query(self, mock_query_data):
-        _filter = RangeFilter(mock_query_data, None)
+        _filter = RangeFilter(mock_query_data)
         query = _filter.get_es_query()
         assert query == {
             'query': {
@@ -228,14 +229,14 @@ class TestRangeFilter(FilterBaseTestCase):
         }
 
     def test_add_to_empty_query(self, mock_query_data):
-        _filter = RangeFilter(mock_query_data, None)
+        _filter = RangeFilter(mock_query_data)
         query = {}
         query = _filter.add_to_query(query)
         assert query == {
             'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 100}}}]}}}  # noqa
 
     def test_add_to_existing_range_query(self, mock_query_data):
-        _filter = RangeFilter(mock_query_data, None)
+        _filter = RangeFilter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'range': {'foo': {'gte': 1, 'lte': 5}}}]}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'range': {'foo': {'gte': 1, 'lte': 5}}},
@@ -243,7 +244,7 @@ class TestRangeFilter(FilterBaseTestCase):
                                                                               'lte': 100}}}]}}}  # noqa
 
     def test_add_to_existing_range_query_same_attr(self, mock_query_data):
-        _filter = RangeFilter(mock_query_data, None)
+        _filter = RangeFilter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 5}}}]}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 5}}},
@@ -251,7 +252,7 @@ class TestRangeFilter(FilterBaseTestCase):
                                                                               'lte': 100}}}]}}}  # noqa
 
     def test_add_to_other_query(self, mock_query_data):
-        _filter = RangeFilter(mock_query_data, None)
+        _filter = RangeFilter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'terms': ['foo', 'bar']}]}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'terms': ['foo', 'bar']},
@@ -275,7 +276,7 @@ class TestFacetFilter(FilterBaseTestCase):
         return data
 
     def test_get_es_agg(self, mock_data):
-        _filter = FacetFilter(mock_data, None)
+        _filter = FacetFilter(mock_data)
         agg = _filter.get_es_agg()
         name = list(agg['aggs'].keys())[0]
         assert agg == {
@@ -292,7 +293,7 @@ class TestFacetFilter(FilterBaseTestCase):
 
     def test_get_es_agg_with_order(self, mock_data):
         mock_data['order'] = 'desc'
-        _filter = FacetFilter(mock_data, None)
+        _filter = FacetFilter(mock_data)
         agg = _filter.get_es_agg()
         name = list(agg['aggs'].keys())[0]
         assert agg == {
@@ -312,7 +313,7 @@ class TestFacetFilter(FilterBaseTestCase):
 
     def test_get_es_agg_with_count(self, mock_data):
         mock_data['minimum_count'] = 10
-        _filter = FacetFilter(mock_data, None)
+        _filter = FacetFilter(mock_data)
         agg = _filter.get_es_agg()
         name = list(agg['aggs'].keys())[0]
         assert agg == {
@@ -329,7 +330,7 @@ class TestFacetFilter(FilterBaseTestCase):
         }
 
     def test_get_es_query(self, mock_query_data):
-        _filter = FacetFilter(mock_query_data, None)
+        _filter = FacetFilter(mock_query_data)
         query = _filter.get_es_query()
         assert query == {
             'query': {
@@ -342,14 +343,14 @@ class TestFacetFilter(FilterBaseTestCase):
         }
 
     def test_add_to_empty_query(self, mock_query_data):
-        _filter = FacetFilter(mock_query_data, None)
+        _filter = FacetFilter(mock_query_data)
         query = {}
         query = _filter.add_to_query(query)
         assert query == {
             'query': {'bool': {'filter': [{'terms': {'my_attr': ['value1', 'value2']}}]}}}  # noqa
 
     def test_add_to_existing_facet_query(self, mock_query_data):
-        _filter = FacetFilter(mock_query_data, None)
+        _filter = FacetFilter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'terms': {'my_attr': ['foo', 'bar']}}]}}}
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'terms': {'my_attr': ['foo', 'bar']}},
@@ -357,7 +358,7 @@ class TestFacetFilter(FilterBaseTestCase):
                                                                               'value2']}}]}}}  # noqa
 
     def test_add_to_other_query(self, mock_query_data):
-        _filter = FacetFilter(mock_query_data, None)
+        _filter = FacetFilter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 100}}}]}}}
         query = _filter.add_to_query(query)
         assert query == {
@@ -382,7 +383,7 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
         return data
 
     def test_get_es_agg(self, mock_data):
-        _filter = LabelConfidenceFilter(mock_data, None)
+        _filter = LabelConfidenceFilter(mock_data)
         agg = _filter.get_es_agg()
         name = list(agg['aggs'].keys())[0]
         assert agg == {
@@ -398,7 +399,7 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
         }
 
     def test_get_es_query(self, mock_query_data):
-        _filter = LabelConfidenceFilter(mock_query_data, None)
+        _filter = LabelConfidenceFilter(mock_query_data)
         query = _filter.get_es_query()
         assert query == {
             'query': {
@@ -424,7 +425,7 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
                         }}]}}}
 
     def test_add_to_query(self, mock_query_data):
-        _filter = LabelConfidenceFilter(mock_query_data, None)
+        _filter = LabelConfidenceFilter(mock_query_data)
         query = {
             'query': {
                 'bool': {
@@ -457,7 +458,7 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
                         }}]}}}
 
     def test_add_to_label_conf_query(self, mock_query_data):
-        _filter = LabelConfidenceFilter(mock_query_data, None)
+        _filter = LabelConfidenceFilter(mock_query_data)
         _filter2 = LabelConfidenceFilter({
             'type': 'labelConfidence',
             'attribute': 'analysis.zvi-object-detection',
@@ -466,7 +467,7 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
                 'min': 0.2,
                 'max': 0.7
             }
-        }, None)
+        })
         query = _filter.get_es_query()
         query = _filter2.add_to_query(query)
         assert query == {
@@ -516,21 +517,21 @@ class TestTextContentFilter(FilterBaseTestCase):
 
     def test_is_valid_no_attr(self):
         _filter = self.Filter({'type': self.Filter.type,
-                               'values': {'query': 'test'}}, None)
+                               'values': {'query': 'test'}})
         assert _filter.is_valid()
         assert _filter.is_valid(query=True)
 
     def test_is_valid_non_analysis_attr(self):
         _filter = self.Filter({'type': self.Filter.type,
                                'attribute': 'one.two.three',
-                               'values': {'query': 'test'}}, None)
+                               'values': {'query': 'test'}})
         assert _filter.is_valid()
         assert _filter.is_valid(query=True)
 
     # No ES Agg to check
 
     def test_get_es_query(self, mock_query_data):
-        _filter = self.Filter(mock_query_data, None)
+        _filter = self.Filter(mock_query_data)
         query = _filter.get_es_query()
         assert query == {
             'query': {
@@ -543,7 +544,7 @@ class TestTextContentFilter(FilterBaseTestCase):
 
     def test_get_es_query_no_attr(self):
         _filter = self.Filter({'type': self.Filter.type,
-                               'values': {'query': 'test'}}, None)
+                               'values': {'query': 'test'}})
         query = _filter.get_es_query()
         assert query == {
             'query': {
@@ -555,7 +556,7 @@ class TestTextContentFilter(FilterBaseTestCase):
     def test_get_es_query_non_analysis_attr(self):
         _filter = self.Filter({'type': self.Filter.type,
                                'attribute': 'one.two',
-                               'values': {'query': 'test'}}, None)
+                               'values': {'query': 'test'}})
         query = _filter.get_es_query()
         assert query == {
             'query': {
@@ -612,6 +613,11 @@ class TestSimilarityFilter(FilterBaseTestCase):
                                                'FPPDBHPPCPAAPCCJBBFDPAGIPPPHCPPPCOBLBBPBNNPPJPJPALLIGBPPMAEHAJBFJPOPPPAPABPEPPPJJPFHGGCPPDKECDPPCOIJPIHCIOEPJPCPBFFIAGPJOFGMCPDAGJMPKFHJDPPPPEDBPPPCKOPPOBALDAPOJPPPPEBPANPAPPGPPPPIPPNPEIPPPPHIDPHHBOPDCKJFPPPKPNJHPJGPFPAGKIKIKPODFGAPGPHPPAJPJPGDCAPPIOCPPPJJEEPPPDPFPKJKJKPDPCEDPJFJPLPBPPGPPNPGLPPMCNCEPDPFFHPAOFBEMPPCLPPIMPMDNNMPOBPCPIMJKDKPPPPPCPPPPPGPPPPPDDCODIPPAAKLEPPPAPGFOPBCMPKEFKBPPBJJFPPPGPIPPBBAPDPBJFPBBPPFDFNDIAPPBGDPJAAPNINPFGPDHPPGPAPCLPAFLPPPPPPPPBPCPFCPFKJNPMBFPPJKJLECLNPPEPEPPPNMPLPCEBPFBPAOELLHICPPMAIHEFNLGPAPPPPFPAPODPGLAFPPPPLPPBDPPCFPPKKNFNANCPEPPJPPPCBLPEPPPDPEMOOGPKPBPPCPMJEOJPDJPMPIEJEIMPBGADPOPPCPBPCPDPONIGPOKGMPJPPBFPEFOAPEFPIHPODPPPGBPAFPPFJCBPAPPKPAAPPDLLHPFEBLPOIMPPDPCPPDAPCPFEPPBOPNGPPHGPPPPPJPNHPIBEPPPPEPAPBDPPPBPIPPGAOKKALEPFMBMPJBPPAPMKMPEPPFPKNJPMPBPEOEPLPPLMDAPPPLAPNPDAPCHPHHPAPPFPPMFPKCBPHBECPDPNPPAPCGPDDPPDPPEPAPNPCNCPFBCKFMPJPFGONPBILPFPFPKGKPPPJIPFBFKEBDCGDIPEBPEPHICPFPPPIHMBOPHFGPPEPANPPPMCPKPPPPPBCPPJPMAFAHBPLEPBIAFPPPABPEPPGAJPPPCPJAFMPDHCPBAPPPPCBCPPPDPHJNAPAPCFMPPPIPEPDPBGOONBPMPMONPONPPPMPFPNPEFCGJBPADHCMPEKPPELKHOPPPDHMFHMPGPLAIPBEDPPPPKBPPFINPFPMPPPPPBPODKPJDBPPGPBKEFLHPPPPCLPBPIPOLPPPAEPAOKPEHOPBPPIDPHEPPPAMPPBPPEHKFGPMPBPPFPHPPPEAPMPLPPNIPPBGBAIPMKKPPLDGPPBAPEPCGPPPPKAMAACFDPENHJPMPPHPAPPMPKABDPBBPPHLJJPAFDEMBLFPPAPGPPPPNAOPBBBPALNPPPPMAIKPOACEGPIPPDMGDAPBLCPPDDPEPPPBGPGAPPMFPFBPPCBKPNBPFCAOBBNPPNEDCPKPOINNBPPPEADPBPPDIBDPPCACBPJPHIBDHICJPHPPCEKPLGPBGKPPJPIPPACPACPNPPPPPPPHKFPJEKPKFFNPPBOFNKPPPDIBPPDPPBEHFCPPPDPIPDMPPGLAPBPHEPBPHCCDHOBEACPBPIPGPPPHBPPCGMPPCCEMPPHFPEDPDHPPGLPAJFNDKPPPPPPNDNOEDPDPDMPIBPOKDPPIPPLCKPMGBKPPPGPPPEMPIPPPDINCPCEFPCJPPGPJPCNAAIPGPKDPJACPHPEAEDPPPPBJJPEIJDFIPLPPCABGPPEDDPFDFBPPPPEDPPLJGPPCPPCPFKPPADPFPPMPPPGNIPBPPGPDPPPPDKIFPPCPGHFEBIGGPPPJCPEDPEPPMPPIPPPGHPPDKHPPDPOPPGPCPPGPAMOHFKFMPOPPJOLFPFFPCJIMPCPPPEAPCHPHMCPDOCDPPPOLJPPPLPNNDGFGCHJEPCPIAPCJNPPPFPCPPPPPPDPDADPJKDCGPPHPPEFPJHCDEPCGAJHGPPOKLPPLPPEGPKPJJPEPGPKIFDJOCPJNPPNGBPBHMBIPPGPPBPDEJBIPJGNCPOPJAOJGPKGJELHCHBFFLPNIBPAINPPOGNPCLCKEPFPPPPPPPPGPBCCPGPDPDBAIEHBEAOCPPCENEADIBFAGMIPPMFPMAPELLBOP']}},  # noqa
                             'boost': 1.0,
                             'min_score': 0.75}}]}}}
+
+    def test_get_es_query_no_app(self, mock_query_data, monkeypatch):
+        _filter = self.Filter(mock_query_data)
+        with pytest.raises(ImproperlyConfigured):
+            _filter.get_es_query()
 
     def test_get_query_with_optionals(self, monkeypatch, zmlp_app):
         monkeypatch.setattr(ZmlpClient, 'post', self.mock_post_return)

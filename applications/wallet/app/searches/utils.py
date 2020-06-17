@@ -128,7 +128,7 @@ class FilterBoy(object):
             filters.append(self.get_filter_from_json(raw_filter, request.app))
         return filters
 
-    def get_filter_from_json(self, raw_filter, zmlp_app):
+    def get_filter_from_json(self, raw_filter, zmlp_app=None):
         """Converts a raw filter dict into native Wallet object.
 
         Args:
