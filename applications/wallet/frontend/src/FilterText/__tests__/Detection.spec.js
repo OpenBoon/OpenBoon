@@ -23,6 +23,7 @@ describe('<FilterTextDetection />', () => {
 
     const component = TestRenderer.create(
       <FilterTextDetection
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -85,6 +86,7 @@ describe('<FilterTextDetection />', () => {
 
     const component = TestRenderer.create(
       <FilterTextDetection
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -115,6 +117,7 @@ describe('<FilterTextDetection />', () => {
 
     const component = TestRenderer.create(
       <FilterTextDetection
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}

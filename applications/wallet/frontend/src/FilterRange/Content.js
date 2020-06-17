@@ -14,6 +14,7 @@ import { formatValue, parseValue } from './helpers'
 import Slider from '../Slider'
 
 const FilterRangeContent = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -69,6 +70,7 @@ const FilterRangeContent = ({
     dispatch({
       action: ACTIONS.UPDATE_FILTER,
       payload: {
+        pathname,
         projectId,
         assetId,
         filters,
@@ -99,6 +101,7 @@ const FilterRangeContent = ({
     dispatch({
       action: ACTIONS.UPDATE_FILTER,
       payload: {
+        pathname,
         projectId,
         assetId,
         filters,
@@ -115,6 +118,7 @@ const FilterRangeContent = ({
   return (
     <div>
       <FilterReset
+        pathname={pathname}
         projectId={projectId}
         assetId={assetId}
         filters={filters}
@@ -155,6 +159,7 @@ const FilterRangeContent = ({
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
+                  pathname,
                   projectId,
                   assetId,
                   filters,
@@ -262,6 +267,7 @@ const FilterRangeContent = ({
 }
 
 FilterRangeContent.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

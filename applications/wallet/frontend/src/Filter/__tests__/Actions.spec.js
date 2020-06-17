@@ -17,6 +17,7 @@ describe('<FilterActions />', () => {
 
     const component = TestRenderer.create(
       <FilterActions
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         filters={filters}
@@ -85,6 +86,7 @@ describe('<FilterActions />', () => {
 
     const component = TestRenderer.create(
       <FilterActions
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         filters={filters}

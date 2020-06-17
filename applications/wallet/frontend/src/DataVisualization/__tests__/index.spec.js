@@ -1,6 +1,7 @@
 import TestRenderer from 'react-test-renderer'
 
 import mockUser from '../../User/__mocks__/user'
+import assets from '../../Assets/__mocks__/assets'
 
 import User from '../../User'
 
@@ -15,6 +16,8 @@ describe('<DataVisualization />', () => {
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID },
     })
+
+    require('swr').__setMockUseSWRResponse({ data: assets })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
