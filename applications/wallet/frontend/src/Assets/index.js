@@ -26,6 +26,7 @@ const PADDING_SIZE = spacing.small
 /* istanbul ignore next */
 const Assets = () => {
   const {
+    pathname,
     query: { projectId, id: selectedId, query },
   } = useRouter()
 
@@ -145,6 +146,7 @@ const Assets = () => {
 
         {itemCount === 0 && (
           <AssetsEmpty
+            pathname={pathname}
             projectId={projectId}
             assetId={selectedId}
             query={query}

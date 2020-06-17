@@ -83,6 +83,7 @@ exports[`<FilterSimilarityContent /> should render a video properly 1`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
@@ -229,6 +230,7 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
@@ -375,6 +377,7 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
@@ -521,6 +524,7 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
@@ -667,6 +671,7 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
@@ -813,6 +818,7 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div

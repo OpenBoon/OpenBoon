@@ -1,13 +1,35 @@
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
+
 import { colors, spacing } from '../Styles'
+
+import { cleanup } from '../Filters/helpers'
 
 import Panel from '../Panel'
 import Filters from '../Filters'
+import VisualizerNavigation from '../Visualizer/Navigation'
 
 import FilterSvg from '../Icons/filter.svg'
 
+import DataVisualizationCreate from './Create'
+
 const ICON_WIDTH = 20
+const FROM = 0
+const SIZE = 100
 
 const DataVisualizationContent = () => {
+  const {
+    query: { projectId, query },
+  } = useRouter()
+
+  const q = cleanup({ query })
+
+  const {
+    data: { count: itemCount },
+  } = useSWR(
+    `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${FROM}&size=${SIZE}`,
+  )
+
   return (
     <div
       css={{
@@ -32,6 +54,12 @@ const DataVisualizationContent = () => {
             },
           }}
         </Panel>
+
+        <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          {!!itemCount && <VisualizerNavigation itemCount={itemCount} />}
+
+          <DataVisualizationCreate />
+        </div>
       </div>
     </div>
   )

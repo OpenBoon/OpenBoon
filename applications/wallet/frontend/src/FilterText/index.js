@@ -10,6 +10,7 @@ import FilterTextSearch from './Search'
 import FilterTextDetection from './Detection'
 
 const FilterText = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -20,6 +21,7 @@ const FilterText = ({
   if (attribute === '') {
     return (
       <FilterTextSearch
+        pathname={pathname}
         projectId={projectId}
         assetId={assetId}
         filters={filters}
@@ -36,6 +38,7 @@ const FilterText = ({
       title={<FilterTitle filter={filter} />}
       actions={
         <FilterActions
+          pathname={pathname}
           projectId={projectId}
           assetId={assetId}
           filters={filters}
@@ -47,6 +50,7 @@ const FilterText = ({
       isResizeable
     >
       <FilterTextDetection
+        pathname={pathname}
         projectId={projectId}
         assetId={assetId}
         filters={filters}
@@ -58,6 +62,7 @@ const FilterText = ({
 }
 
 FilterText.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

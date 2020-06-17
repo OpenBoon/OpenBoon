@@ -21,7 +21,13 @@ import FiltersMenuSection from './MenuSection'
 
 const ICON_SIZE = 20
 
-const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
+const FiltersMenu = ({
+  pathname,
+  projectId,
+  assetId,
+  filters,
+  setIsMenuOpen,
+}) => {
   const { data: fields } = useSWR(
     `/api/v1/projects/${projectId}/searches/fields/`,
   )
@@ -184,6 +190,7 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             dispatch({
               action: ACTIONS.ADD_FILTERS,
               payload: {
+                pathname,
                 projectId,
                 assetId,
                 filters,
@@ -211,6 +218,7 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
 }
 
 FiltersMenu.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
