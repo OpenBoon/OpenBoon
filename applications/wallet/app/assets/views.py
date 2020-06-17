@@ -1,6 +1,6 @@
 import mimetypes
-
 import requests
+
 from django.http import StreamingHttpResponse
 from django.utils.cache import patch_response_headers, patch_cache_control
 from rest_framework import status
@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from assets.serializers import AssetSerializer
-from assets.utils import AssetBoxImager
+from assets.utils import AssetBoxImager, get_best_fullscreen_file_data
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
@@ -17,7 +17,7 @@ def asset_modifier(request, item):
     if '_source' in item:
         item['id'] = item['_id']
         item['metadata'] = item['_source']
-        # We don't need to be passing around the data we just duplicated
+        # No need to be passing around the data we just duplicated
         del(item['_id'])
         del(item['_source'])
     else:
@@ -57,30 +57,13 @@ class AssetViewSet(BaseProjectViewSet):
             return Response(data={'detail': 'Unable to delete asset.'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    @action(detail=False, methods=['post'])
-    def search(self, request, project_pk):
-        """Searches the assets for this project with whichever query is given.
-
-        Pagination arguments are expected in the POST body, rather than the querystring.
-
-            Args:
-                request (Request): Request the view method was given.
-                project_pk (int): The Project ID to search under.
-
-            Returns:
-                Response: DRF Response with the results of the search
-
-            """
-
-        return self._zmlp_list_from_es(request, item_modifier=asset_modifier)
-
     @action(detail=True, methods=['get'])
     def box_images(self, request, project_pk, pk):
         """Special action that returns a portion of the Asset's metadata with base64 encoded
         images anywhere it finds a "bbox" key. When a bbox key is found an image that represents
         that box is generated and added to the metadata next to the "bbox" key as "b64_image".
         By default the entire "analysis" section is returned but the query param "attr" can be
-        used to return only a specific section of the metadata.
+        used to return a specific section of the metadata.
 
         Available Query Params:
 
@@ -111,6 +94,23 @@ class AssetViewSet(BaseProjectViewSet):
         response_data = {attr.split('.')[-1]: imager.get_attr_with_box_images(attr, width=width)}
         return Response(response_data)
 
+    @action(detail=True, methods=['get'])
+    def signed_url(self, request, project_pk, pk):
+        """Helper action to try to determine the best file and return the signed url for it."""
+        # Query for the asset details to get the assets list of files.
+        detail_response = self.retrieve(request, project_pk, pk)
+
+        # Determine the best file to display in fullscreen
+        _file = get_best_fullscreen_file_data(detail_response.data)
+        if not _file:
+            return Response(status=status.HTTP_200_OK, data={'uri': '/icons/fallback_3x.png',
+                                                             'mediaType': 'image/png'})
+
+        # Query for it's signed url
+        path = f'{FileNameViewSet.zmlp_root_api_path}/_sign/{_file["id"]}'
+        response = request.client.get(path)
+        return Response(status=status.HTTP_200_OK, data=response)
+
 
 class FileCategoryViewSet(BaseProjectViewSet):
     zmlp_only = True
@@ -118,13 +118,21 @@ class FileCategoryViewSet(BaseProjectViewSet):
 
 class FileNameViewSet(BaseProjectViewSet):
     zmlp_only = True
-    zmlp_root_api_path = 'api/v3/files/_stream'
+    zmlp_root_api_path = 'api/v3/files'
     lookup_value_regex = '[^/]+'
 
     def retrieve(self, request, project_pk, asset_pk, category_pk, pk):
-        path = f'{self.zmlp_root_api_path}/assets/{asset_pk}/{category_pk}/{pk}'
+        path = f'{self.zmlp_root_api_path}/_stream/assets/{asset_pk}/{category_pk}/{pk}'
         content_type, encoding = mimetypes.guess_type(pk)
         response = StreamingHttpResponse(stream(request, path), content_type=content_type)
         patch_response_headers(response, cache_timeout=86400)
         patch_cache_control(response, private=True)
         return response
+
+    @action(detail=True, methods=['get'])
+    def signed_url(self, request, project_pk, asset_pk, category_pk, pk):
+        """Retrieves the signed URL for the given asset id."""
+        # make the call, bro
+        path = f'{self.zmlp_root_api_path}/_sign/assets/{asset_pk}/{category_pk}/{pk}'
+        response = request.client.get(path)
+        return Response(status=status.HTTP_200_OK, data=response)

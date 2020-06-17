@@ -16,8 +16,8 @@ class ModelType(Enum):
     LABEL_DETECTION_KNN = 0
     """A kmeans fast classification model that works with just a single example."""
 
-    LABEL_DETECTION_RESNET152 = 1
-    """Tensorflow2 and Resnet152 to transfer learning model."""
+    LABEL_DETECTION_RESNET50 = 1
+    """Tensorflow2 and Resnet50V2 to transfer learning model."""
 
     LABEL_DETECTION_VGG16 = 2
     """Tensorflow2 and VGG16 to transfer learning model."""

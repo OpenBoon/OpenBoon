@@ -31,7 +31,8 @@ class PipelineServiceTests : AbstractTest() {
     lateinit var entityManager: EntityManager
 
     val customSpec = PipelineSpec(
-        "test", mode = PipelineMode.CUSTOM, processors = listOf(
+        "test", mode = PipelineMode.CUSTOM,
+        processors = listOf(
             ProcessorRef("com.zorroa.IngestImages", "image-foo"),
             ProcessorRef("com.zorroa.IngestVideo", "image-foo")
         )
@@ -73,9 +74,11 @@ class PipelineServiceTests : AbstractTest() {
         var pipeline = pipelineService.create(customSpec)
         val testMod = createTestModule("test1")
 
-        val updateSpec = PipelineUpdate("cat",
+        val updateSpec = PipelineUpdate(
+            "cat",
             listOf(ProcessorRef("com.zorroa.IngestImages", "image-foo")),
-            listOf(testMod.id))
+            listOf(testMod.id)
+        )
         assertTrue(pipelineService.update(pipeline.id, updateSpec))
         pipeline = pipelineService.get(pipeline.id)
 
@@ -90,9 +93,11 @@ class PipelineServiceTests : AbstractTest() {
         val testMod1 = createTestModule("test1")
         val testMod2 = createTestModule("test2")
 
-        val updateSpec = PipelineUpdate("cat",
+        val updateSpec = PipelineUpdate(
+            "cat",
             listOf(ProcessorRef("com.zorroa.IngestImages", "image-foo")),
-            listOf(testMod1.id, testMod2.id))
+            listOf(testMod1.id, testMod2.id)
+        )
 
         assertTrue(pipelineService.update(pipeline.id, updateSpec))
         pipeline = pipelineService.get(pipeline.id)
@@ -103,7 +108,8 @@ class PipelineServiceTests : AbstractTest() {
     }
 
     fun createTestModule(name: String): PipelineMod {
-        val modSpec = PipelineModSpec(name, "test",
+        val modSpec = PipelineModSpec(
+            name, "test",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,

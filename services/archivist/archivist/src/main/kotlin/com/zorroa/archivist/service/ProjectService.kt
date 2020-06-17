@@ -1,6 +1,9 @@
 package com.zorroa.archivist.service
 
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
@@ -14,6 +17,7 @@ import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.archivist.repository.ProjectDao
@@ -36,12 +40,14 @@ import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.Base64
 import java.util.Date
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 interface ProjectService {
     /**
@@ -105,6 +111,21 @@ interface ProjectService {
      * Get project quota time series info.
      */
     fun getQuotasTimeSeries(projectId: UUID, start: Date, end: Date): List<ProjectQuotasTimeSeriesEntry>
+
+    /**
+     * Enable or disable the project.
+     */
+    fun setEnabled(projectId: UUID, value: Boolean)
+
+    /**
+     * Return true if the project ID is enabled, false if not.
+     */
+    fun isEnabled(id: UUID): Boolean
+
+    /**
+     * Update Project Tier
+     */
+    fun setTier(projectId: UUID, value: ProjectTier)
 }
 
 @Service
@@ -135,14 +156,17 @@ class ProjectServiceImpl constructor(
                 time,
                 time,
                 actor.toString(),
-                actor.toString()
+                actor.toString(),
+                true,
+                ProjectTier.ESSENTIALS
             )
         )
         withAuth(InternalThreadAuthentication(project.id, setOf())) {
             val route = createIndexRoute(project)
             val pipeline = createDefaultPipeline(project)
             projectCustomDao.createSettings(
-                project.id, ProjectSettings(
+                project.id,
+                ProjectSettings(
                     pipeline.id,
                     route.id
                 )
@@ -155,6 +179,8 @@ class ProjectServiceImpl constructor(
             createCryptoKey(project)
             createStandardApiKeys(project)
         }
+
+        enabledCache.invalidate(project.id)
 
         logger.event(
             LogObject.PROJECT, LogAction.CREATE,
@@ -180,7 +206,8 @@ class ProjectServiceImpl constructor(
     override fun getCryptoKey(): String {
         val pid = getProjectId()
         val keys = systemStorageService.fetchObject(
-            "projects/$pid/keys.json", Json.LIST_OF_STRING)
+            "projects/$pid/keys.json", Json.LIST_OF_STRING
+        )
         // If this ever changes, things will break.
         val mod1 = (pid.leastSignificantBits % keys.size).toInt()
         val mod2 = (pid.mostSignificantBits % keys.size).toInt()
@@ -253,7 +280,8 @@ class ProjectServiceImpl constructor(
     private fun createStandardApiKeys(project: Project) {
         logger.info("Creating standard API Keys for project ${project.name}")
         authServerClient.createApiKey(
-            project.id, KnownKeys.JOB_RUNNER, setOf(
+            project.id, KnownKeys.JOB_RUNNER,
+            setOf(
                 Permission.AssetsImport,
                 Permission.AssetsRead,
                 Permission.SystemProjectDecrypt,
@@ -279,8 +307,69 @@ class ProjectServiceImpl constructor(
                 .trim('=')
         }
         systemStorageService.storeObject(
-            "projects/${project.id}/keys.json", result.toList())
+            "projects/${project.id}/keys.json", result.toList()
+        )
     }
+
+    override fun setEnabled(id: UUID, enabled: Boolean) {
+        val project = projectDao.findById(id).orElseThrow {
+            EmptyResultDataAccessException("Project not found", 1)
+        }
+
+        projectCustomDao.setEnabled(project.id, enabled)
+        authServerClient.updateApiKeyEnabledByProject(project.id, enabled)
+        enabledCache.invalidate(project.id)
+        logger.event(
+            LogObject.PROJECT, if (enabled) LogAction.ENABLE else LogAction.DISABLE,
+            mapOf(
+                "projectId" to project.id,
+                "projectName" to project.name
+            )
+        )
+    }
+
+    @Transactional(readOnly = true)
+    override fun isEnabled(id: UUID): Boolean {
+        try {
+            return enabledCache.get(id)
+        } catch (e: Exception) {
+            logger.warn("Unable to check for project enabled status.", e)
+        }
+
+        return false
+    }
+
+    override fun setTier(projectId: UUID, value: ProjectTier) {
+        val project = projectDao.findById(projectId).orElseThrow {
+            EmptyResultDataAccessException("Project not found", 1)
+        }
+
+        if (!projectCustomDao.updateTier(projectId, value)) {
+            throw ArchivistException("Project Tier update failed")
+        }
+
+        logger.event(
+            LogObject.PROJECT, LogAction.UPDATE,
+            mapOf(
+                "projectId" to project.id,
+                "projectName" to project.name,
+                "projectTier" to value
+            )
+        )
+    }
+
+    // This gets called alot so hold onto the values for a while.
+    // Might have to go into redis.
+    private val enabledCache = CacheBuilder.newBuilder()
+        .initialCapacity(32)
+        .concurrencyLevel(2)
+        .expireAfterWrite(1, TimeUnit.MINUTES)
+        .build(object : CacheLoader<UUID, Boolean>() {
+            @Throws(Exception::class)
+            override fun load(projectId: UUID): Boolean {
+                return projectCustomDao.isEnabled(projectId)
+            }
+        })
 
     companion object {
         private val logger = LoggerFactory.getLogger(ProjectServiceImpl::class.java)

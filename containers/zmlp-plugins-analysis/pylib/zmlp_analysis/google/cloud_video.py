@@ -2,11 +2,12 @@ import logging
 import time
 
 import backoff
+import google.cloud.videointelligence_v1p3beta1 as videointelligence
 from google.api_core.exceptions import ResourceExhausted
-from google.cloud import videointelligence
 
 from zmlpsdk import Argument, AssetProcessor, FileTypes, file_storage
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
+from . import cloud_timeline
 from .gcp_client import initialize_gcp_client
 
 logger = logging.getLogger(__name__)
@@ -52,7 +53,6 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                               toolTip=self.tool_tips['detect_objects']))
         self.add_arg(Argument('detect_logos', 'float', default=-1,
                               toolTip=self.tool_tips['detect_logos']))
-
         self.video_intel_client = None
 
     def init(self):
@@ -68,7 +68,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             return -1
 
         # Cannot run on clips without transcoding the clip
-        if asset.get_attr('clip.timeline') != 'full':
+        if asset.get_attr('clip.track') != 'full':
             self.logger.info('Skipping, cannot run processor on clips.')
             return -1
 
@@ -148,10 +148,14 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_labels'),
                                           collapse_labels=True)
+
         process_label_annotations(results.segment_label_annotations)
         process_label_annotations(results.shot_label_annotations)
-        process_label_annotations(results.frame_label_annotations)
+        process_label_annotations(results.shot_presence_label_annotations)
         asset.add_analysis('gcp-video-label-detection', analysis)
+
+        timeline = cloud_timeline.build_label_detection_timeline(results)
+        file_storage.assets.store_timeline(asset, timeline)
 
     def handle_detect_text(self, asset, annotation_result):
         analysis = ContentDetectionAnalysis()
@@ -160,6 +164,9 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         if analysis.content:
             asset.add_analysis('gcp-video-text-detection', analysis)
+
+            timeline = cloud_timeline.build_text_detection_timeline(annotation_result)
+            file_storage.assets.store_timeline(asset, timeline)
 
     def handle_detect_explicit(self, asset, annotation_result):
         analysis = LabelDetectionAnalysis(collapse_labels=True)
@@ -175,6 +182,9 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                 analysis.set_attr('explicit', True)
 
         asset.add_analysis('gcp-video-explicit-detection', analysis)
+
+        timeline = cloud_timeline.build_content_moderation_timeline(annotation_result)
+        file_storage.assets.store_timeline(asset, timeline)
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_tries=3, max_time=3600)
     def _get_video_annotations(self, uri):
@@ -200,6 +210,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             features.append(videointelligence.enums.Feature.LOGO_RECOGNITION)
 
         operation = self.video_intel_client.annotate_video(input_uri=uri, features=features)
+
         while not operation.done():
             logger.info("Waiting on Google Visual Intelligence {}".format(uri))
             time.sleep(0.5)

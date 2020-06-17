@@ -4,11 +4,11 @@ import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
-import FiltersReset from '../Filters/Reset'
-import FiltersSearch from '../Filters/Search'
+import FilterReset from '../Filter/Reset'
+import FilterSearch from '../Filter/Search'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 
@@ -23,6 +23,7 @@ const FilterFacet = ({
     type,
     attribute,
     values: { facets = [] },
+    isDisabled,
   },
   filterIndex,
 }) => {
@@ -30,11 +31,7 @@ const FilterFacet = ({
 
   const encodedFilter = encode({ filters: { type, attribute } })
 
-  const {
-    data: {
-      results: { buckets },
-    },
-  } = useSWR(
+  const { data } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
     {
       revalidateOnFocus: false,
@@ -42,6 +39,9 @@ const FilterFacet = ({
       shouldRetryOnError: false,
     },
   )
+  const { results } = data || {}
+
+  const { buckets = [] } = results || {}
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
 
@@ -49,7 +49,7 @@ const FilterFacet = ({
 
   return (
     <>
-      <FiltersReset
+      <FilterReset
         projectId={projectId}
         assetId={assetId}
         filters={filters}
@@ -58,7 +58,7 @@ const FilterFacet = ({
         onReset={noop}
       />
       <div css={{ height: spacing.moderate }} />
-      <FiltersSearch
+      <FilterSearch
         placeholder="Search facets"
         searchString={searchString}
         onChange={({ value }) => {
@@ -69,13 +69,12 @@ const FilterFacet = ({
         css={{
           display: 'flex',
           justifyContent: 'space-between',
-          paddingTop: spacing.base,
           paddingBottom: spacing.base,
-          fontFamily: 'Roboto Condensed',
+          fontFamily: typography.family.condensed,
           color: colors.structure.zinc,
         }}
       >
-        <div>KEYWORD</div>
+        <div>LABEL</div>
         <div>COUNT</div>
       </div>
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
@@ -138,7 +137,7 @@ const FilterFacet = ({
                       css={{
                         width: `${offset}%`,
                         borderTop:
-                          !isSelected && hasSelections
+                          isDisabled || (!isSelected && hasSelections)
                             ? constants.borders.unselectedFacet
                             : constants.borders.facet,
                       }}
@@ -156,6 +155,9 @@ const FilterFacet = ({
                       display: 'flex',
                       justifyContent: 'space-between',
                       padding: spacing.base,
+                      fontFamily: typography.family.mono,
+                      fontSize: typography.size.small,
+                      lineHeight: typography.height.small,
                     }}
                   >
                     <div>{key}</div>

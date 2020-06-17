@@ -3,14 +3,16 @@ import TestRenderer from 'react-test-renderer'
 import facetAggregate from '../../FilterFacet/__mocks__/aggregate'
 import rangeAggregate from '../../FilterRange/__mocks__/aggregate'
 import labelConfidenceAggregate from '../../FilterLabelConfidence/__mocks__/aggregate'
+import asset from '../../Asset/__mocks__/asset'
 
 import FiltersContent from '../Content'
 
 const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+const ASSET_ID = asset.id
 
-jest.mock('../../Filters/Reset', () => 'FiltersReset')
+jest.mock('../../Filter/Reset', () => 'FilterReset')
 
 describe('<FiltersContent />', () => {
   it('should render the "Exists" filter', () => {
@@ -108,13 +110,32 @@ describe('<FiltersContent />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render the default filter', () => {
-    const mockRouterPush = jest.fn()
-    require('next/router').__setMockPushFunction(mockRouterPush)
+  it('should render the "Similarity Range" filter', () => {
+    require('swr').__setMockUseSWRResponse({ data: asset })
 
     const filters = [
       {
         type: 'similarity',
+        attribute: 'analysis.zvi-image-similarity',
+        values: { ids: [ASSET_ID] },
+      },
+    ]
+
+    const component = TestRenderer.create(
+      <FiltersContent
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={filters}
+        setIsMenuOpen={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render the default filter', () => {
+    const filters = [
+      {
         attribute: '',
         values: {},
       },

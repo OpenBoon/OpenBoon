@@ -17,10 +17,20 @@ from zmlp.client import ZmlpDuplicateException, ZmlpInvalidRequestException
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 from wallet.tests.utils import check_response
 from projects.models import Project, Membership
+from projects.utils import random_project_name
 from projects.serializers import ProjectSerializer
 from projects.views import BaseProjectViewSet, ProjectUserViewSet
 
 pytestmark = pytest.mark.django_db
+
+
+def test_random_name():
+    assert random_project_name()
+
+
+def test_project_with_random_name():
+    project = Project.objects.create()
+    assert project.name
 
 
 def test_project_view_user_does_not_belong_to_project(user, project):
@@ -71,12 +81,20 @@ def test_projects_view_with_projects(project, zmlp_project_user, api_client):
     assert response['results'][0]['name'] == project.name
 
 
+def test_projects_view_inactive_projects(project, zmlp_project_user, api_client):
+    api_client.force_authenticate(zmlp_project_user)
+    project.is_active = False
+    project.save()
+    response = api_client.get(reverse('project-list')).json()
+    assert response['count'] == 0
+
+
 def test_project_serializer_detail(project):
     serializer = ProjectSerializer(project, context={'request': None})
     data = serializer.data
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions',
-                       'modules', 'providers', 'searches', 'export']
+                       'modules', 'providers', 'searches', 'export', 'faces']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
@@ -95,6 +113,7 @@ def test_project_serializer_detail(project):
     assert data['providers'] == f'/api/v1/projects/{project.id}/providers/'
     assert data['searches'] == f'/api/v1/projects/{project.id}/searches/'
     assert data['export'] == f'/api/v1/projects/{project.id}/searches/export/'
+    assert data['faces'] == f'/api/v1/projects/{project.id}/faces/'
 
 
 def test_project_serializer_list(project, project2):
@@ -191,13 +210,6 @@ class TestProjectViewSet:
         assert response.status_code == 403
         assert response.json()['detail'] == ('user is either not a member of Project Zero '
                                              'or the Project has not been created yet.')
-
-    def test_post_create_bad_data(self, project_zero, project_zero_user, api_client):
-        api_client.force_authenticate(project_zero_user)
-        body = {'pointless': 'field'}
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 400
-        assert response.json()['name'][0] == 'This field is required.'
 
     def test_post_create_dup_zmlp_project(self, project_zero, project_zero_user, api_client,
                                           monkeypatch):
@@ -698,7 +710,7 @@ class TestProjectUserPost:
         roles = ['ML_Tools', 'User_Admin']
         permissions = view._get_permissions_for_roles(roles)
         expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage',
-                    'DataSourceManage', 'DataQueueManage']
+                    'DataSourceManage', 'DataQueueManage', 'SystemManage']
         assert set(permissions) == set(expected)
         permissions = view._get_permissions_for_roles(['User_Admin'])
         assert permissions == ['ProjectManage']

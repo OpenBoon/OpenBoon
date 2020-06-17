@@ -207,12 +207,6 @@ class AssetServiceImpl : AssetService {
     lateinit var jobLaunchService: JobLaunchService
 
     @Autowired
-    lateinit var assetSearchService: AssetSearchService
-
-    @Autowired
-    lateinit var dataSetService: DataSetService
-
-    @Autowired
     lateinit var dataSetDao: DataSetDao
 
     override fun getAsset(id: String): Asset {
@@ -226,15 +220,15 @@ class AssetServiceImpl : AssetService {
 
     override fun getValidAssetIds(ids: Collection<String>): Set<String> {
         val rest = indexRoutingService.getProjectRestClient()
-        val req = rest.newSearchBuilder()
+        val req = rest.newSearchRequest()
         val query = QueryBuilders.boolQuery()
             .filter(QueryBuilders.termsQuery("_id", ids))
-        req.source.size(ids.size)
-        req.source.query(query)
-        req.source.fetchSource(false)
+        req.source().size(ids.size)
+        req.source().query(query)
+        req.source().fetchSource(false)
 
         val result = mutableSetOf<String>()
-        val r = rest.client.search(req.request, RequestOptions.DEFAULT)
+        val r = rest.client.search(req, RequestOptions.DEFAULT)
         r.hits.forEach {
             result.add(it.id)
         }
@@ -243,13 +237,13 @@ class AssetServiceImpl : AssetService {
 
     override fun getAll(ids: Collection<String>): List<Asset> {
         val rest = indexRoutingService.getProjectRestClient()
-        val req = rest.newSearchBuilder()
+        val req = rest.newSearchRequest()
         val query = QueryBuilders.boolQuery()
             .must(QueryBuilders.termsQuery("_id", ids))
-        req.source.size(ids.size)
-        req.source.query(query)
+        req.source().size(ids.size)
+        req.source().query(query)
 
-        val r = rest.client.search(req.request, RequestOptions.DEFAULT)
+        val r = rest.client.search(req, RequestOptions.DEFAULT)
         return r.hits.map {
             Asset(it.id, it.sourceAsMap)
         }
@@ -417,7 +411,8 @@ class AssetServiceImpl : AssetService {
         val query = QueryBuilders.termsQuery("_id", ids)
         val rsp = rest.client.deleteByQuery(
             DeleteByQueryRequest(rest.route.indexName)
-                .setQuery(query), RequestOptions.DEFAULT
+                .setQuery(query),
+            RequestOptions.DEFAULT
         )
 
         val projectId = getProjectId()
@@ -466,12 +461,12 @@ class AssetServiceImpl : AssetService {
     ): Job? {
 
         // Validate the assets need reprocessing
-        val assets = getAll(existingAssetIds).filter {
+        val assetIds = getAll(existingAssetIds).filter {
             assetNeedsReprocessing(it, processors)
-        }
+        }.map { it.id }
 
-        val reprocessAssetCount = assets.size
-        val finalAssetList = assets.plus(getAll(createdAssetIds))
+        val reprocessAssetCount = assetIds.size
+        val finalAssetList = assetIds.plus(createdAssetIds)
 
         return if (finalAssetList.isEmpty()) {
             null
@@ -491,21 +486,17 @@ class AssetServiceImpl : AssetService {
         val procCount = parentScript?.execute?.size ?: 0
 
         // Check what assets need reprocessing at all.
-        val assets = getAll(existingAssetIds).filter {
+        val assetIds = getAll(existingAssetIds).filter {
             assetNeedsReprocessing(it, parentScript.execute ?: listOf())
-        }
+        }.map { it.id }.plus(createdAssetIds)
 
-        // Build the final asset list which are the assets that
-        // need additional processing.
-        val finalAssetList = assets.plus(getAll(createdAssetIds))
-
-        return if (finalAssetList.isEmpty()) {
+        return if (assetIds.isEmpty()) {
             null
         } else {
 
-            val name = "Expand with ${finalAssetList.size} assets, $procCount processors."
+            val name = "Expand with ${assetIds.size} assets, $procCount processors."
             val parentScript = jobService.getZpsScript(parentTask.taskId)
-            val newScript = ZpsScript(name, null, finalAssetList, parentScript.execute)
+            val newScript = ZpsScript(name, null, null, parentScript.execute, assetIds = assetIds)
 
             newScript.globalArgs = parentScript.globalArgs
             newScript.type = parentScript.type
@@ -517,15 +508,17 @@ class AssetServiceImpl : AssetService {
              * For the assets that failed to go into ES, add the ES error message
              */
             jobService.incrementAssetCounters(
-                parentTask, AssetCounters(
+                parentTask,
+                AssetCounters(
                     replaced = existingAssetIds.size,
-                    created = createdAssetIds.size)
+                    created = createdAssetIds.size
+                )
             )
 
             logger.event(
                 LogObject.JOB, LogAction.EXPAND,
                 mapOf(
-                    "assetCount" to finalAssetList.size,
+                    "assetCount" to assetIds.size,
                     "parentTaskId" to parentTask.taskId,
                     "taskId" to newTask.id,
                     "jobId" to newTask.jobId
@@ -668,7 +661,8 @@ class AssetServiceImpl : AssetService {
             if (spec.label != null) {
                 if (!dataSetDao.existsByProjectIdAndId(projectId, spec.label.dataSetId)) {
                     throw java.lang.IllegalArgumentException(
-                        "The DataSet Id ${spec.label.dataSetId} does not exist.")
+                        "The DataSet Id ${spec.label.dataSetId} does not exist."
+                    )
                 }
                 asset.addLabels(listOf(spec.label))
             }
@@ -714,7 +708,8 @@ class AssetServiceImpl : AssetService {
         // This happens during deep analysis when a file is being clipped, the first
         // clip/page/scene will be augmented with clip start/stop points.
         if (asset.attrExists("clip") && (
-                !asset.attrExists("clip.sourceAssetId") || !asset.attrExists("clip.pile"))
+            !asset.attrExists("clip.sourceAssetId") || !asset.attrExists("clip.pile")
+            )
         ) {
             val clip = asset.getAttr("clip", Clip::class.java)
                 ?: throw IllegalStateException("Invalid clip data for asset ${asset.id}")
@@ -767,14 +762,17 @@ class AssetServiceImpl : AssetService {
 
     override fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse {
         val bulkSize = 50
-        if (req.add?.size ?: 0 > bulkSize) {
+        val maxAssets = 1000
+        if (req.add?.size ?: 0 > maxAssets) {
             throw IllegalArgumentException(
-                "Cannot add labels to more than 100 assets at a time.")
+                "Cannot add labels to more than $maxAssets assets at a time."
+            )
         }
 
-        if (req.remove?.size ?: 0 > bulkSize) {
+        if (req.remove?.size ?: 0 > maxAssets) {
             throw IllegalArgumentException(
-                "Cannot remove labels from more than 100 assets at a time.")
+                "Cannot remove labels from more than $maxAssets assets at a time."
+            )
         }
 
         // Gather up unique Assets and DataSets
@@ -800,14 +798,14 @@ class AssetServiceImpl : AssetService {
         builder.source.sort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
         builder.source.size(bulkSize)
         builder.request.scroll(TimeValue(60000))
-        builder.source.fetchSource("datasets", null)
+        builder.source.fetchSource("labels", null)
 
         // Build a bulk update.
         val rsp = rest.client.search(builder.request, RequestOptions.DEFAULT)
         val bulk = BulkRequest()
         bulk.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
-        for (asset in AssetIterator(rest.client, rsp, 1000)) {
+        for (asset in AssetIterator(rest.client, rsp, 5000)) {
             val removeLabels = req.remove?.get(asset.id)
             removeLabels?.let {
                 asset.removeLabels(it)

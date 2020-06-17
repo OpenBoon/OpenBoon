@@ -6,10 +6,12 @@ import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectTierUpdate
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.ProjectService
 import com.zorroa.archivist.storage.ProjectStorageService
+import com.zorroa.archivist.util.HttpUtils
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.security.access.prepost.PreAuthorize
@@ -82,6 +84,33 @@ class ProjectController constructor(
         return projectService.getSettings(id)
     }
 
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @PutMapping(value = ["/api/v1/project/{id}/_enable"])
+    @ApiOperation("Set an disabled project to enabled.")
+    fun putEnabled(@PathVariable id: UUID): Any {
+        projectService.setEnabled(id, true)
+        return HttpUtils.status("project", id.toString(), "enable", true)
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @PutMapping(value = ["/api/v1/project/{id}/_disable"])
+    @ApiOperation("Set a disabled project to enabled.")
+    fun putDisabled(@PathVariable id: UUID): Any {
+        projectService.setEnabled(id, false)
+        return HttpUtils.status("project", id.toString(), "disable", true)
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @PutMapping(value = ["/api/v1/project/{id}/_update_tier"])
+    @ApiOperation("Update Project Tier")
+    fun updateProjectTier(
+        @PathVariable id: UUID,
+        @RequestBody(required = true) projectTierUpdate: ProjectTierUpdate
+    ): Project {
+        projectService.setTier(id, projectTierUpdate.tier)
+        return projectService.get(id)
+    }
+
     //
     // Methods that default to the API Keys project Id.
     //
@@ -105,9 +134,11 @@ class ProjectController constructor(
         @RequestParam("start", required = false) start: Long?,
         @RequestParam("stop", required = false) stop: Long?
     ): List<ProjectQuotasTimeSeriesEntry> {
-        return projectService.getQuotasTimeSeries(getProjectId(),
+        return projectService.getQuotasTimeSeries(
+            getProjectId(),
             Date(start ?: System.currentTimeMillis() - 86400000L),
-            Date(stop ?: System.currentTimeMillis()))
+            Date(stop ?: System.currentTimeMillis())
+        )
     }
 
     @PreAuthorize("hasAuthority('ProjectManage')")
@@ -122,8 +153,8 @@ class ProjectController constructor(
     @ApiOperation("Get the project Settings")
     fun putMyProjectSettings(@RequestBody(required = true) settings: ProjectSettings):
         ProjectSettings {
-        val id = getProjectId()
-        projectService.updateSettings(id, settings)
-        return projectService.getSettings(id)
-    }
+            val id = getProjectId()
+            projectService.updateSettings(id, settings)
+            return projectService.getSettings(id)
+        }
 }

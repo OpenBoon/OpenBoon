@@ -31,7 +31,14 @@ variable "google-oauth-client-id" {
 variable "environment" {
 }
 
-variable "fqdn" {}
+variable "domain" {
+}
+
+variable "marketplace-project" {
+}
+
+variable "marketplace-credentials" {
+}
 
 variable "container-tag" {
   default = "latest"
@@ -42,7 +49,7 @@ variable "namespace" {
 }
 
 variable "external-ip-name" {
-  default = "curator-external-ip"
+  default = "wallet-external-ip"
 }
 
 variable "database-name" {
@@ -54,5 +61,9 @@ variable "database-user" {
 }
 
 variable "inception-key-b64" {
+}
+
+variable "browsable" {
+  default = "false"
 }
 

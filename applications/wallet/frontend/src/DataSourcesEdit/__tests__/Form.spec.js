@@ -54,13 +54,6 @@ describe('<DataSourcesEditForm />', () => {
         .props.onClick()
     })
 
-    // Select disabled module
-    act(() => {
-      component.root
-        .findByProps({ type: 'checkbox', value: 'gcp-label-detection' })
-        .props.onClick({ preventDefault: noop })
-    })
-
     // Select module
     act(() => {
       component.root
@@ -127,5 +120,28 @@ describe('<DataSourcesEditForm />', () => {
       '/[projectId]/data-sources?action=edit-datasource-success',
       `/${PROJECT_ID}/data-sources?action=edit-datasource-success`,
     )
+  })
+
+  it('should display an error with an empty source name', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/data-sources/add',
+      query: { projectId: PROJECT_ID, dataSourceId: DATA_SOURCE_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: providers })
+
+    const component = TestRenderer.create(
+      <DataSourcesEditForm
+        initialState={{
+          name: '',
+          uri: dataSource.uri,
+          fileTypes: { video: true },
+          modules: [MODULE.id],
+          errors: { global: '' },
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

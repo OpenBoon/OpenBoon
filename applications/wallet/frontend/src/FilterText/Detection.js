@@ -31,7 +31,7 @@ const FilterTextDetection = ({
 
   if (query && !isEditing) {
     return (
-      <div css={{ padding: `${spacing.normal}px ${spacing.moderate}px` }}>
+      <div css={{ padding: spacing.normal }}>
         <div
           css={{
             display: 'flex',
@@ -65,6 +65,7 @@ const FilterTextDetection = ({
               {query}
             </span>
           </Button>
+
           <Button
             title="Clear"
             aria-label="Clear Text Detection"
@@ -72,14 +73,11 @@ const FilterTextDetection = ({
               width: BUTTON_SIZE,
               padding: spacing.moderate,
               backgroundColor: colors.structure.coal,
-              ':hover': {
-                svg: {
-                  color: colors.structure.white,
-                },
-              },
+              ':hover': { svg: { color: colors.structure.white } },
             }}
             variant={VARIANTS.NEUTRAL}
             onClick={() => {
+              setSearchString('')
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
@@ -108,7 +106,7 @@ const FilterTextDetection = ({
 
   return (
     <form action="" method="post" onSubmit={(event) => event.preventDefault()}>
-      <div css={{ padding: `${spacing.normal}px ${spacing.moderate}px` }}>
+      <div css={{ padding: spacing.normal }}>
         <div
           css={{
             display: 'flex',
@@ -117,6 +115,8 @@ const FilterTextDetection = ({
           }}
         >
           <input
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
             type="search"
             placeholder="Search text"
             value={searchString}
@@ -129,7 +129,12 @@ const FilterTextDetection = ({
               borderBottomLeftRadius: constants.borderRadius.small,
               color: colors.structure.pebble,
               backgroundColor: colors.structure.mattGrey,
-              '&:focus': {
+              ':focus': {
+                outline: constants.borders.outline,
+                border: constants.borders.inputSmall,
+                ':hover': {
+                  border: constants.borders.inputSmall,
+                },
                 color: colors.structure.coal,
                 backgroundColor: colors.structure.white,
               },

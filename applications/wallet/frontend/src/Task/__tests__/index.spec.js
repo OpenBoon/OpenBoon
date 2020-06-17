@@ -7,6 +7,9 @@ import User from '../../User'
 
 import Task from '..'
 
+jest.mock('../../TaskScript', () => 'TaskScript')
+jest.mock('../../TaskAssets', () => 'TaskAssets')
+jest.mock('../../TaskErrors', () => 'TaskErrors')
 jest.mock('../../Pagination', () => 'Pagination')
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
@@ -20,7 +23,7 @@ describe('<Task />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: task,
+      data: { ...task, timeStarted: -1, state: 'Waiting' },
     })
 
     const component = TestRenderer.create(
@@ -32,9 +35,9 @@ describe('<Task />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly for Details', () => {
+  it('should render properly for Script', () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs/[jobId]/tasks/[taskId]/details',
+      pathname: '/[projectId]/jobs/[jobId]/tasks/[taskId]/script',
       query: { projectId: PROJECT_ID, jobId: JOB_ID, taskId: task.id },
     })
 

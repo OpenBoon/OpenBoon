@@ -13,6 +13,7 @@ export const formatUrl = (params = {}) => {
 export const ACTIONS = {
   ADD_FILTERS: 'ADD_FILTERS',
   UPDATE_FILTER: 'UPDATE_FILTER',
+  APPLY_SIMILARITY: 'APPLY_SIMILARITY',
   DELETE_FILTER: 'DELETE_FILTER',
   CLEAR_FILTERS: 'CLEAR_FILTERS',
 }
@@ -43,7 +44,7 @@ export const dispatch = ({ action, payload }) => {
     case ACTIONS.ADD_FILTERS: {
       const { projectId, assetId, filters, newFilters } = payload
 
-      const query = encode({ filters: [...filters, ...newFilters] })
+      const query = encode({ filters: [...newFilters, ...filters] })
 
       Router.push(
         {
@@ -100,6 +101,43 @@ export const dispatch = ({ action, payload }) => {
           query: { projectId, id: assetId, query },
         },
         `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
+      )
+
+      break
+    }
+
+    case ACTIONS.APPLY_SIMILARITY: {
+      const { projectId, assetId, selectedId, query: q } = payload
+
+      const similarityFilter = {
+        type: 'similarity',
+        attribute: 'analysis.zvi-image-similarity',
+        values: { ids: [assetId] },
+        isDisabled: true, // TODO: remove after backend update
+      }
+
+      const filters = decode({ query: q })
+      const similarityFilterIndex = filters.findIndex(
+        (filter) => filter.type === 'similarity',
+      )
+
+      const combinedFilters =
+        similarityFilterIndex === -1
+          ? [similarityFilter, ...filters]
+          : [
+              ...filters.slice(0, similarityFilterIndex),
+              similarityFilter,
+              ...filters.slice(similarityFilterIndex + 1),
+            ]
+
+      const query = encode({ filters: combinedFilters })
+
+      Router.push(
+        {
+          pathname: '/[projectId]/visualizer',
+          query: { projectId, id: selectedId, query },
+        },
+        `/${projectId}/visualizer${formatUrl({ id: selectedId, query })}`,
       )
 
       break

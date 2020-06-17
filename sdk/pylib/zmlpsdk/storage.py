@@ -1,25 +1,185 @@
 import glob
+import gzip
 import hashlib
 import logging
 import os
 import shutil
 import tempfile
+import time
 import urllib
-import requests
+import uuid
+import zipfile
 from pathlib import Path
 from urllib.parse import urlparse
 
-from zmlp import app_from_env, Asset, StoredFile, ZmlpException
+import requests
+
+from zmlp import app_from_env, Asset, StoredFile, ZmlpException, to_json
 from .base import ZmlpEnv
 from .cloud import get_cached_google_storage_client, get_pipeline_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
+from .timeline import Timeline
 
 __all__ = [
-    "file_storage",
-    "ZmlpStorageException"
+    'file_storage',
+    'zip_directory',
+    'ZmlpStorageException'
 ]
 
 logger = logging.getLogger(__name__)
+
+
+def zip_directory(src_dir, dst_file, zip_root_name=""):
+    """
+    A utility function for ziping a directory of files.
+
+    Args:
+        src_dir (str): The source directory.
+        dst_file (str): The destination file.s
+        zip_root_name (str): A optional root directory to place files in the zip.
+    Returns:
+        str: The dst file.
+
+    """
+
+    def zipdir(path, ziph, root_name):
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                zip_entry = os.path.join(root_name, root.replace(path, ""), file)
+                logger.info(f'Adding file to zip: {zip_entry}')
+                ziph.write(os.path.join(root, file), zip_entry)
+
+    src_dir = os.path.abspath(src_dir)
+    zipf = zipfile.ZipFile(dst_file, 'w', zipfile.ZIP_DEFLATED)
+    zipdir(src_dir + '/', zipf, zip_root_name)
+    zipf.close()
+    return dst_file
+
+
+class ModelStorage:
+    """
+    ModelStorage handles installing models into the local model cache.
+    """
+
+    model_ver_file = "/model-version.txt"
+
+    def __init__(self, app, projects):
+        self.app = app
+        self.projects = projects
+
+        # When running within the analyst, our project specific
+        # model cache is mounted here.
+        self.root = os.environ.get("ZVI_MODEL_CACHE", "/tmp/zvi/model-cache")
+
+    @staticmethod
+    def get_model_file_id(model):
+        """
+        Utility method which takes a model instance or model file id (str)
+        and returns the model file id.
+
+        Args:
+            model (mixed): A Model instance or model file id.
+
+        Returns:
+            str: The model file id.
+        """
+        return getattr(model, 'file_id', None) or model
+
+    def get_model_install_path(self, model):
+        """
+        Return the path to where the model should be installed.
+
+        Args:
+            model (mixed): A Model instance or model file id.
+
+        Returns:
+            str: The model install path.
+        """
+        model_file_id = self.get_model_file_id(model)
+        base, ext = os.path.splitext(model_file_id)
+        base = base.replace('/', '_')
+        return os.path.join(self.root, base)
+
+    def install_model(self, model):
+        """
+        Install the given model file.
+
+        Args:
+            model (mixed): The Model instance or the model file id.
+
+        Returns:
+            str: The path to an unzipped model directory.
+
+        """
+        model_file_id = self.get_model_file_id(model)
+        install_path = self.get_model_install_path(model)
+
+        if not self.model_exists(model_file_id):
+            logger.info(f'Installing model into {install_path}')
+            model_zip = self.projects.localize_file(model_file_id)
+            os.makedirs(install_path, exist_ok=True)
+
+            # extract all files
+            with zipfile.ZipFile(model_zip) as z:
+                z.extractall(path=install_path)
+        else:
+            logger.info(f'Utilizing cached model {model_file_id}')
+
+        return install_path
+
+    def model_exists(self, model):
+        """
+        Return true if the model we have exists and its the latest version.
+
+        Args:
+            model (mixed): The Model instance or model file id.
+
+        Returns:
+            bool: True if we have the latest model.
+        """
+        model_file_id = self.get_model_file_id(model)
+        install_path = self.get_model_install_path(model)
+
+        if not os.path.exists(install_path):
+            return False
+
+        try:
+            with(open(install_path + self.model_ver_file, "r")) as fp:
+                this_version = fp.read().strip()
+
+            latest_ver = os.path.dirname(model_file_id) + self.model_ver_file
+            with open(self.projects.localize_file(latest_ver), "r") as fp:
+                latest_version = fp.read().strip()
+
+            if this_version != latest_version:
+                logger.info(f'Found new version of model {model_file_id}, {latest_ver}')
+                return False
+
+        except FileNotFoundError:
+            logger.warning(f"Model is unversioned {model_file_id}")
+
+        return True
+
+    def save_model(self, src_dir, model):
+        """
+        Upload a directory containing model files to cloud storage.
+
+        Args:
+            src_dir (str): The source directory.
+            model (Model): The Model instance.
+
+        Returns:
+            PipelineModule: A PipelineModule for utilizing the model.
+        """
+        file_id = self.get_model_file_id(model)
+        version_file = src_dir + self.model_ver_file
+        with open(version_file, 'w') as fp:
+            fp.write("{}-{}\n".format(time.time(), str(uuid.uuid4())))
+
+        zip_file_path = zip_directory(src_dir, tempfile.mkstemp(prefix="model_", suffix=".zip")[1])
+        self.projects.store_file_by_id(version_file, os.path.dirname(file_id) + self.model_ver_file)
+        self.projects.store_file_by_id(zip_file_path, file_id, precache=False)
+        return self.app.models.publish_model(model)
 
 
 class AssetStorage(object):
@@ -27,7 +187,7 @@ class AssetStorage(object):
     AssetStorage provides ability to store and retrieve files related to the asset.  The
     files are stored in cloud storage.  This is mostly a convenience class around
     the ProjectStorage class, however it performs the extra job or appending the
-    StoredFile to the files namepace.
+    StoredFile to the files namespace.
     """
 
     def __init__(self, app, proj_store):
@@ -94,6 +254,28 @@ class AssetStorage(object):
         asset.add_file(result)
         return result
 
+    def store_timeline(self, asset, timeline):
+        """
+        Store a timeline proxy against the Asset.
+
+        Args:
+            asset (Asset): The asset to store the timeline with.
+            timeline (Timeline): The timeline.
+
+        Returns:
+            StoredFile: The stored file record.
+        """
+        if not isinstance(timeline, Timeline):
+            raise ValueError("The timeline argument must be an instance of a Timeline")
+
+        name = timeline.name + "-timeline.json.gz"
+        jfp, jpath = tempfile.mkstemp(suffix=".json.gz")
+        jbytes = to_json(timeline).encode('utf-8')
+        with gzip.GzipFile(filename=jpath, mode='wb') as zfp:
+            zfp.write(jbytes)
+
+        return self.store_file(jpath, asset, "timeline", rename=name)
+
 
 class ProjectStorage(object):
     """
@@ -104,7 +286,7 @@ class ProjectStorage(object):
         self.app = app
         self.cache = cache
 
-    def store_file_by_id(self, src_path, file_id, attrs=None):
+    def store_file_by_id(self, src_path, file_id, attrs=None, precache=True):
         """
         Store a file using its unique file id.
 
@@ -148,7 +330,9 @@ class ProjectStorage(object):
 
         # Once we have the stored file its precached into the proper cache location
         path = urlparse(str(src_path)).path
-        self.cache.precache_file(result, path)
+
+        if precache:
+            self.cache.precache_file(result, path)
         return result
 
     def store_file(self, src_path, entity, category, rename=None, attrs=None):
@@ -421,6 +605,7 @@ class FileStorage(object):
         self.cache = FileCache(self.app)
         self.projects = ProjectStorage(self.app, self.cache)
         self.assets = AssetStorage(self.app, self.projects)
+        self.models = ModelStorage(self.app, self.projects)
 
     def localize_file(self, rep):
         """

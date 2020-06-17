@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.DataSource
+import com.zorroa.archivist.domain.DataSourceImportOptions
 import com.zorroa.archivist.domain.FileTypes
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
@@ -25,7 +25,7 @@ interface JobLaunchService {
     /**
      * Launch a process/reprocess of a DataSource.
      */
-    fun launchJob(dataSource: DataSource): Job
+    fun launchJob(dataSource: DataSource, options: DataSourceImportOptions): Job
 
     /**
      * Launch a job with a generator.
@@ -43,7 +43,7 @@ interface JobLaunchService {
      */
     fun launchJob(
         name: String,
-        assets: List<Asset>,
+        assets: List<String>,
         pipeline: List<ProcessorRef>,
         settings: Map<String, Any>? = null,
         creds: Set<String>? = null
@@ -68,7 +68,7 @@ class JobLaunchServiceImpl(
     val assetSearchService: AssetSearchService
 ) : JobLaunchService {
 
-    override fun launchJob(dataSource: DataSource): Job {
+    override fun launchJob(dataSource: DataSource, options: DataSourceImportOptions): Job {
         val gen = getGenerator(dataSource.uri)
         val mods = pipelineModService.getByIds(dataSource.modules)
         val modNames = mods.map { it.name }
@@ -80,7 +80,7 @@ class JobLaunchServiceImpl(
         )
 
         script.setSettting("fileTypes", dataSource.fileTypes)
-        script.setSettting("batchSize", batchSize)
+        script.setSettting("batchSize", clampBatchSize(options.batchSize))
 
         val spec = JobSpec(
             name, script,
@@ -105,7 +105,7 @@ class JobLaunchServiceImpl(
 
         val pipeline = pipelineResolverService.resolveModular(req.modules)
         val settings = mapOf(
-            "batchSize" to req.batchSize,
+            "batchSize" to clampBatchSize(req.batchSize),
             "fileTypes" to FileTypes.all
         )
 
@@ -131,7 +131,7 @@ class JobLaunchServiceImpl(
 
     override fun launchJob(
         name: String,
-        assets: List<Asset>,
+        assets: List<String>,
         pipeline: List<ProcessorRef>,
         settings: Map<String, Any>?,
         creds: Set<String>?
@@ -140,7 +140,7 @@ class JobLaunchServiceImpl(
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
 
-        val script = ZpsScript(name, null, assets, pipeline, settings = mergedSettings)
+        val script = ZpsScript(name, null, null, pipeline, settings = mergedSettings, assetIds = assets)
         val spec = JobSpec(name, script, credentials = creds)
         return launchJob(spec)
     }
@@ -149,8 +149,12 @@ class JobLaunchServiceImpl(
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
 
-        val script = ZpsScript(name, null, listOf(Asset()),
-            listOf(processor), settings = mergedSettings)
+        val script = ZpsScript(
+            name, null, null,
+            listOf(processor), settings = mergedSettings,
+            assetIds = listOf("single-iteration")
+        )
+
         val spec = JobSpec(name, script, replace = true, priority = JobPriority.Interactive)
         return launchJob(spec, JobType.Batch)
     }
@@ -175,7 +179,7 @@ class JobLaunchServiceImpl(
      * Return a map of default job settings.
      */
     fun getDefaultJobSettings(): MutableMap<String, Any?> {
-        return mutableMapOf("batchSize" to batchSize)
+        return mutableMapOf("batchSize" to defaultBatchSize)
     }
 
     /**
@@ -198,6 +202,23 @@ class JobLaunchServiceImpl(
     }
 
     companion object {
-        const val batchSize = 20
+        /**
+         * The default number of assets to add to a task.
+         */
+        const val defaultBatchSize = 25
+
+        /**
+         * Minimum batch size.
+         */
+        const val minBatchSize = 10
+
+        /**
+         * Maximum batch size.
+         */
+        const val maxBatchSize = 100
+
+        fun clampBatchSize(batchSize: Int): Int {
+            return batchSize.coerceAtLeast(minBatchSize).coerceAtMost(maxBatchSize)
+        }
     }
 }

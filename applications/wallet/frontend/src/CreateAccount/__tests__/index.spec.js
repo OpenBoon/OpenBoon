@@ -73,6 +73,10 @@ describe('<CreateAccount />', () => {
         .props.onChange({ target: { value: 'MyAwesomePassword' } })
     })
 
+    act(() => {
+      component.root.findByProps({ type: 'checkbox' }).props.onClick()
+    })
+
     // Mock Failure
     fetch.mockResponseOnce('Invalid email', { status: 400 })
 

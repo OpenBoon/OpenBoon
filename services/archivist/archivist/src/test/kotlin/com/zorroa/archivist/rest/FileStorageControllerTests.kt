@@ -39,8 +39,10 @@ class FileStorageControllerTests : MockMvcTest() {
             )
         )
         val id = rsp.created[0]
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS,
-            id, ProjectStorageCategory.PROXY, "bob.jpg")
+        val loc = ProjectFileLocator(
+            ProjectStorageEntity.ASSETS,
+            id, ProjectStorageCategory.PROXY, "bob.jpg"
+        )
         val storage = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         projectStorageService.store(storage)
 
@@ -64,7 +66,8 @@ class FileStorageControllerTests : MockMvcTest() {
             )
         )
         val id = rsp.created[0]
-        val payload = """
+        val payload =
+            """
             {
                 "entityId": "$id",
                 "entity": "assets",
@@ -74,7 +77,7 @@ class FileStorageControllerTests : MockMvcTest() {
                     "foo": "bar"
                 }
             }
-        """.trimIndent()
+            """.trimIndent()
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/files/_signed_upload_uri")
                 .content(payload)
@@ -82,6 +85,34 @@ class FileStorageControllerTests : MockMvcTest() {
                 .headers(job())
         )
             .andExpect(status().isOk)
+            .andExpect(jsonPath("$.uri", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun testGetSignedDownloadUri() {
+
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val rsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                assets = listOf(spec)
+            )
+        )
+        val id = rsp.created[0]
+        val loc = ProjectFileLocator(
+            ProjectStorageEntity.ASSETS,
+            id, ProjectStorageCategory.PROXY, "bob.jpg"
+        )
+        val storage = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
+        projectStorageService.store(storage)
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/files/_sign/assets/$id/proxy/bob.jpg")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.mediaType", CoreMatchers.equalTo("image/jpeg")))
             .andExpect(jsonPath("$.uri", CoreMatchers.anything()))
             .andReturn()
     }
@@ -101,7 +132,8 @@ class FileStorageControllerTests : MockMvcTest() {
             File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
         )
 
-        val payload = """
+        val payload =
+            """
             {
                 "entityId": "$id",
                 "entity": "assets",
@@ -111,7 +143,7 @@ class FileStorageControllerTests : MockMvcTest() {
                     "foo": "bar"
                 }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         val body = MockMultipartFile(
             "body", "",
@@ -159,7 +191,8 @@ class FileStorageControllerTests : MockMvcTest() {
             File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
         )
 
-        val payload = """
+        val payload =
+            """
             {
                 "entityId": "$id",
                 "entity": "assets",
@@ -169,7 +202,7 @@ class FileStorageControllerTests : MockMvcTest() {
                     "foo": "bar"
                 }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         val body = MockMultipartFile(
             "body", "",
@@ -199,7 +232,8 @@ class FileStorageControllerTests : MockMvcTest() {
             File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
         )
 
-        val payload = """
+        val payload =
+            """
             {
                 "entityId": "${ds.id}",
                 "entity": "datasets",
@@ -209,7 +243,7 @@ class FileStorageControllerTests : MockMvcTest() {
                     "foo": "bar"
                 }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         val body = MockMultipartFile(
             "body", "",

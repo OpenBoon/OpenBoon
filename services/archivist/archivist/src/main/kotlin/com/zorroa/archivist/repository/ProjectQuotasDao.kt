@@ -9,6 +9,8 @@ import org.springframework.jdbc.`object`.BatchSqlUpdate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.Types
+import java.time.Instant
+import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
 import java.util.TimeZone
@@ -63,29 +65,29 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
     }
 
     override fun getQuotas(projectId: UUID): ProjectQuotas {
-        return jdbc.queryForObject("SELECT * FROM project_quota WHERE pk_project=?",
-            MAPPER_QUOTA, projectId)
+        return jdbc.queryForObject(
+            "SELECT * FROM project_quota WHERE pk_project=?",
+            MAPPER_QUOTA, projectId
+        )
     }
 
     override fun getTimeSeriesCounters(projectId: UUID, start: Date, end: Date?): List<ProjectQuotasTimeSeriesEntry> {
-        return jdbc.query("SELECT * FROM project_quota_time_series WHERE " +
-            "time >=? AND time <=? AND pk_project=? ORDER BY time ASC",
-            MAPPER_TIME_SERIES, toHourlyDate(start), toHourlyDate(end), projectId)
+        return jdbc.query(
+            "SELECT * FROM project_quota_time_series WHERE " +
+                "time >=? AND time <=? AND pk_project=? ORDER BY time ASC",
+            MAPPER_TIME_SERIES, toHourlyDate(start), toHourlyDate(end), projectId
+        )
     }
 
     override fun incrementTimeSeriesCounters(date: Date, counts: ProjectQuotaCounters) {
-        val cal: Calendar = Calendar.getInstance()
-        cal.time = date
-        cal.timeZone = TimeZone.getTimeZone("UTC")
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
-        cal.set(Calendar.MILLISECOND, 0)
+        val dateMillis = toHourlyDate(date)
+        val instantUTC = Instant.ofEpochMilli(dateMillis).atZone(ZoneId.of("UTC"))
 
-        val entry = ((cal.get(Calendar.DAY_OF_YEAR) - 1) * 24) + cal.get(Calendar.HOUR_OF_DAY)
-        logger.warn("Updating TimeSeriesCounters $entry ${cal.timeInMillis}")
+        val entry = ((instantUTC.dayOfYear - 1) * 24) + instantUTC.hour
+        logger.warn("Updating TimeSeriesCounters $entry $dateMillis")
         jdbc.update(
             UPDATE_TIMESCALE_COUNTERS,
-            cal.timeInMillis,
+            dateMillis,
             counts.videoFileCount,
             counts.documentFileCount,
             counts.imageFileCount,
@@ -104,7 +106,8 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
                 rs.getLong("int_max_video_seconds"),
                 rs.getBigDecimal("float_video_seconds"),
                 rs.getLong("int_max_page_count"),
-                rs.getLong("int_page_count"))
+                rs.getLong("int_page_count")
+            )
         }
 
         private val MAPPER_TIME_SERIES = RowMapper { rs, _ ->

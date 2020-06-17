@@ -2,11 +2,13 @@ package com.zorroa.archivist.domain
 
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import java.math.BigDecimal
 import java.security.MessageDigest
 import java.util.Base64
 
 @ApiModel(
-    "Clip", description = "Defines a subsection of an Asset that was processed, " +
+    "Clip",
+    description = "Defines a subsection of an Asset that was processed, " +
         "for example a page of a document."
 )
 class Clip(
@@ -14,30 +16,34 @@ class Clip(
     @ApiModelProperty("The type of clip, this is typically 'page' or 'scene' but can be anything")
     val type: String,
 
+    start: BigDecimal,
+
+    stop: BigDecimal,
+
+    @ApiModelProperty("An optional track name for the clip in case case multiple [ClipSpec] configurations collide.")
+    val track: String? = null
+) {
+
     @ApiModelProperty("The starting point of the clip")
-    val start: Double,
+    val start: BigDecimal = start.setScale(3, java.math.RoundingMode.HALF_UP)
 
     @ApiModelProperty("The ending point of a clip.")
-    val stop: Double,
+    val stop: BigDecimal = stop.setScale(3, java.math.RoundingMode.HALF_UP)
 
-    @ApiModelProperty("An optional timeline name for the clip in case case multiple [ClipSpec] configurations collide.")
-    val timeline: String? = null
-) {
+    @ApiModelProperty("The length of the the clip, this is auto-calculated")
+    val length: BigDecimal = if (this.start == this.stop) {
+        BigDecimal.ONE.setScale(3, java.math.RoundingMode.HALF_UP)
+    } else {
+        (this.stop - this.start).setScale(3, java.math.RoundingMode.HALF_UP)
+    }
+
     init {
-        if (stop - start < 0f) {
+        if (stop - start < BigDecimal.ZERO) {
             throw IllegalStateException("Clip stop cannot be behind clip start.")
         }
     }
 
-    @ApiModelProperty("The length of the the clip, this is auto-calculated")
-    val length = if (stop - start == 0.0) {
-        1.0
-    } else {
-        val x = (stop - start)
-        0.01 * kotlin.math.round(x * 100.0)
-    }
-
-    @ApiModelProperty("A unique identifier for a related set of clips on a specific timeline.  This can be overridden")
+    @ApiModelProperty("A unique identifier for a related set of clips on a specific track.  This can be overridden")
     var pile: String? = null
 
     @ApiModelProperty("The asset ID used for the clip source", hidden = true)
@@ -48,7 +54,7 @@ class Clip(
      *
      * - source asset id
      * - type
-     * - timeline
+     * - track
      *
      * If any of these values are null then they are skipped.
      */
@@ -59,7 +65,7 @@ class Clip(
         val digester = MessageDigest.getInstance("SHA")
         digester.update(assetId.toByteArray())
         digester.update(type.toByteArray())
-        timeline?.let {
+        track?.let {
             digester.update(it.toByteArray())
         }
         sourceAssetId = assetId
@@ -72,8 +78,8 @@ class Clip(
     companion object {
 
         /**
-         * The name of a full video clip.
+         * The track name of a full video clip.
          */
-        const val TYPE_FULL = "full"
+        const val TRACK_FULL = "full"
     }
 }

@@ -1,3 +1,6 @@
+variable "enabled" {
+}
+
 variable "project" {
 }
 
@@ -43,7 +46,8 @@ variable "google-oauth-client-id" {
 variable "environment" {
 }
 
-variable "fqdn" {}
+variable "fqdn" {
+}
 
 variable "container-tag" {
   default = "latest"

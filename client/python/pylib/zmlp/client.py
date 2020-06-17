@@ -32,8 +32,8 @@ class ZmlpClient(object):
             apikey: An API key in any supported form. (dict, base64 string, or open file handle)
             server: The url of the server to connect to. Defaults to https://api.zmlp.zorroa.com
             project_id: An optional project UUID for API keys with access to multiple projects.
-            max_retries: Maximum number of retries to make if the API
-                server is down, 0 for unlimited.
+            max_retries: Maximum number of retries to make if the API server
+                is down, 0 for unlimited.
         """
         self.apikey = self.__load_apikey(apikey)
         self.server = server
@@ -413,19 +413,19 @@ class SearchResult(object):
         return self.items[idx]
 
 
-def to_json(obj):
+def to_json(obj, indent=None):
     """
     Convert the given object to a JSON string using
     the ZmlpJsonEncoder.
 
     Args:
         obj (mixed): any json serializable python object.
-
+        indent (int): The indentation level for the json, or None for compact.
     Returns:
         str: The serialized object
 
     """
-    val = json.dumps(obj, cls=ZmlpJsonEncoder)
+    val = json.dumps(obj, cls=ZmlpJsonEncoder, indent=indent)
     if logger.getEffectiveLevel() == logging.DEBUG:
         logger.debug("json: %s" % val)
     return val

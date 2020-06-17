@@ -47,7 +47,7 @@ const FiltersMenuSection = ({ path, attribute, value, filters, onClick }) => {
     >
       <h4
         css={{
-          fontFamily: 'Roboto Mono',
+          fontFamily: typography.family.mono,
           fontWeight: typography.weight.regular,
         }}
       >

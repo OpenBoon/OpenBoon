@@ -20,8 +20,8 @@ const JobTasks = () => {
         'Task State',
         'Task ID',
         'Description',
-        'Duration',
         'Started',
+        'Duration',
         'Errors',
       ]}
       expandColumn={3}

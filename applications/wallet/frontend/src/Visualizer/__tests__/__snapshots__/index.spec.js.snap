@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Visualizer /> should render properly 1`] = `
-.emotion-15 {
+.emotion-18 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-14 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -85,6 +85,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #808080;
+  border-radius: 0;
 }
 
 .emotion-0:hover {
@@ -106,6 +107,19 @@ exports[`<Visualizer /> should render properly 1`] = `
   -ms-flex: 1;
   flex: 1;
   background-color: #252525;
+}
+
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .emotion-7 {
@@ -240,7 +254,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-13 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -248,7 +262,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-12 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -259,17 +273,17 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding-left: 1px;
 }
 
-.emotion-9 {
+.emotion-11 {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
 <div
-  className="emotion-15"
+  className="emotion-18"
 >
   <div
-    className="emotion-14"
+    className="emotion-17"
   >
     <div
       className="emotion-3"
@@ -281,6 +295,7 @@ exports[`<Visualizer /> should render properly 1`] = `
           aria-label="Filters"
           className="emotion-0"
           onClick={[Function]}
+          title="Filters"
           type="button"
         >
           <svg
@@ -295,55 +310,135 @@ exports[`<Visualizer /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-7"
+      className="emotion-8"
     >
-      <div
-        style={
-          Object {
-            "height": 0,
-            "overflow": "visible",
-            "width": 0,
-          }
-        }
+      <VisualizerNavigation
+        itemCount={574}
       />
       <div
-        className="emotion-6"
+        className="emotion-7"
       >
-        <button
-          aria-disabled={true}
-          aria-label="Zoom Out"
-          className="emotion-4"
-          onClick={[Function]}
-          type="button"
+        <AssetsQuickView
+          assets={
+            Array [
+              Object {
+                "id": "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+                "metadata": Object {
+                  "source": Object {
+                    "extension": "docx",
+                    "filename": "test_document.docx",
+                    "mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/test_document.docx",
+                  },
+                },
+                "thumbnailUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/",
+              },
+              Object {
+                "id": "3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4",
+                "metadata": Object {
+                  "source": Object {
+                    "extension": "pdf",
+                    "filename": "irr.pdf",
+                    "mimetype": "application/pdf",
+                    "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf",
+                  },
+                },
+                "thumbnailUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/",
+              },
+              Object {
+                "id": "iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo",
+                "metadata": Object {
+                  "source": Object {
+                    "extension": "pdf",
+                    "filename": "irr.pdf",
+                    "mimetype": "application/pdf",
+                    "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf",
+                  },
+                },
+                "thumbnailUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/",
+              },
+              Object {
+                "id": "LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r",
+                "metadata": Object {
+                  "source": Object {
+                    "extension": "pdf",
+                    "filename": "irr.pdf",
+                    "mimetype": "application/pdf",
+                    "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf",
+                  },
+                },
+                "thumbnailUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/",
+              },
+              Object {
+                "assetStyle": "video",
+                "id": "srL8ob5cTpCJjYoKkqqfa2ciyG425dGi",
+                "metadata": Object {
+                  "source": Object {
+                    "checksum": 2431356942,
+                    "extension": "mp4",
+                    "filename": "FatManOnABike1914.mp4",
+                    "filesize": 13168719,
+                    "mimetype": "video/mp4",
+                    "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/mp4/FatManOnABike1914.mp4",
+                  },
+                },
+                "thumbnailUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/",
+                "videoLength": 144.45,
+                "videoProxyUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/",
+              },
+            ]
+          }
+          columnCount={8}
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "overflow": "visible",
+              "width": 0,
+            }
+          }
+        />
+        <div
+          className="emotion-6"
         >
-          <svg
-            data-file-name="circleMinus.svg"
-            width={20}
-          />
-        </button>
-        <button
-          aria-label="Zoom In"
-          className="emotion-5"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="circlePlus.svg"
-            width={20}
-          />
-        </button>
+          <button
+            aria-disabled={true}
+            aria-label="Zoom Out"
+            className="emotion-4"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="circleMinus.svg"
+              width={20}
+            />
+          </button>
+          <button
+            aria-label="Zoom In"
+            className="emotion-5"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="circlePlus.svg"
+              width={20}
+            />
+          </button>
+        </div>
       </div>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-16"
     >
       <div
-        className="emotion-12"
+        className="emotion-15"
       >
         <button
           aria-label="Asset Metadata"
           className="emotion-0"
           onClick={[Function]}
+          title="Asset Metadata"
           type="button"
         >
           <svg
@@ -353,15 +448,42 @@ exports[`<Visualizer /> should render properly 1`] = `
           />
         </button>
         <button
-          aria-label="Export"
+          aria-label="Add Names & Train"
           className="emotion-0"
           onClick={[Function]}
+          title="Add Names & Train"
           type="button"
         >
           <svg
             aria-hidden={true}
-            className="emotion-9"
+            data-file-name="faceDetection.svg"
+            width={20}
+          />
+        </button>
+        <button
+          aria-label="Export"
+          className="emotion-0"
+          onClick={[Function]}
+          title="Export"
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            className="emotion-11"
             data-file-name="upload.svg"
+            width={20}
+          />
+        </button>
+        <button
+          aria-label="Delete"
+          className="emotion-0"
+          onClick={[Function]}
+          title="Delete"
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="trash.svg"
             width={20}
           />
         </button>
@@ -375,7 +497,7 @@ exports[`<Visualizer /> should render properly 1`] = `
 `;
 
 exports[`<Visualizer /> should render selected asset 1`] = `
-.emotion-15 {
+.emotion-18 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -394,7 +516,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   flex-direction: column;
 }
 
-.emotion-14 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -459,6 +581,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #808080;
+  border-radius: 0;
 }
 
 .emotion-0:hover {
@@ -480,6 +603,19 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   -ms-flex: 1;
   flex: 1;
   background-color: #252525;
+}
+
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .emotion-7 {
@@ -614,7 +750,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   color: #808080;
 }
 
-.emotion-13 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -622,7 +758,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-12 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -633,17 +769,17 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding-left: 1px;
 }
 
-.emotion-9 {
+.emotion-11 {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
 <div
-  className="emotion-15"
+  className="emotion-18"
 >
   <div
-    className="emotion-14"
+    className="emotion-17"
   >
     <div
       className="emotion-3"
@@ -655,6 +791,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           aria-label="Filters"
           className="emotion-0"
           onClick={[Function]}
+          title="Filters"
           type="button"
         >
           <svg
@@ -669,55 +806,135 @@ exports[`<Visualizer /> should render selected asset 1`] = `
       </div>
     </div>
     <div
-      className="emotion-7"
+      className="emotion-8"
     >
-      <div
-        style={
-          Object {
-            "height": 0,
-            "overflow": "visible",
-            "width": 0,
-          }
-        }
+      <VisualizerNavigation
+        itemCount={574}
       />
       <div
-        className="emotion-6"
+        className="emotion-7"
       >
-        <button
-          aria-disabled={true}
-          aria-label="Zoom Out"
-          className="emotion-4"
-          onClick={[Function]}
-          type="button"
+        <AssetsQuickView
+          assets={
+            Array [
+              Object {
+                "id": "pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL",
+                "metadata": Object {
+                  "source": Object {
+                    "extension": "docx",
+                    "filename": "test_document.docx",
+                    "mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/test_document.docx",
+                  },
+                },
+                "thumbnailUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/",
+              },
+              Object {
+                "id": "3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4",
+                "metadata": Object {
+                  "source": Object {
+                    "extension": "pdf",
+                    "filename": "irr.pdf",
+                    "mimetype": "application/pdf",
+                    "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf",
+                  },
+                },
+                "thumbnailUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/",
+              },
+              Object {
+                "id": "iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo",
+                "metadata": Object {
+                  "source": Object {
+                    "extension": "pdf",
+                    "filename": "irr.pdf",
+                    "mimetype": "application/pdf",
+                    "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf",
+                  },
+                },
+                "thumbnailUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/",
+              },
+              Object {
+                "id": "LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r",
+                "metadata": Object {
+                  "source": Object {
+                    "extension": "pdf",
+                    "filename": "irr.pdf",
+                    "mimetype": "application/pdf",
+                    "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf",
+                  },
+                },
+                "thumbnailUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/",
+              },
+              Object {
+                "assetStyle": "video",
+                "id": "srL8ob5cTpCJjYoKkqqfa2ciyG425dGi",
+                "metadata": Object {
+                  "source": Object {
+                    "checksum": 2431356942,
+                    "extension": "mp4",
+                    "filename": "FatManOnABike1914.mp4",
+                    "filesize": 13168719,
+                    "mimetype": "video/mp4",
+                    "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/mp4/FatManOnABike1914.mp4",
+                  },
+                },
+                "thumbnailUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/",
+                "videoLength": 144.45,
+                "videoProxyUrl": "https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/",
+              },
+            ]
+          }
+          columnCount={8}
+        />
+        <div
+          style={
+            Object {
+              "height": 0,
+              "overflow": "visible",
+              "width": 0,
+            }
+          }
+        />
+        <div
+          className="emotion-6"
         >
-          <svg
-            data-file-name="circleMinus.svg"
-            width={20}
-          />
-        </button>
-        <button
-          aria-label="Zoom In"
-          className="emotion-5"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="circlePlus.svg"
-            width={20}
-          />
-        </button>
+          <button
+            aria-disabled={true}
+            aria-label="Zoom Out"
+            className="emotion-4"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="circleMinus.svg"
+              width={20}
+            />
+          </button>
+          <button
+            aria-label="Zoom In"
+            className="emotion-5"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="circlePlus.svg"
+              width={20}
+            />
+          </button>
+        </div>
       </div>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-16"
     >
       <div
-        className="emotion-12"
+        className="emotion-15"
       >
         <button
           aria-label="Asset Metadata"
           className="emotion-0"
           onClick={[Function]}
+          title="Asset Metadata"
           type="button"
         >
           <svg
@@ -727,15 +944,42 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           />
         </button>
         <button
-          aria-label="Export"
+          aria-label="Add Names & Train"
           className="emotion-0"
           onClick={[Function]}
+          title="Add Names & Train"
           type="button"
         >
           <svg
             aria-hidden={true}
-            className="emotion-9"
+            data-file-name="faceDetection.svg"
+            width={20}
+          />
+        </button>
+        <button
+          aria-label="Export"
+          className="emotion-0"
+          onClick={[Function]}
+          title="Export"
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            className="emotion-11"
             data-file-name="upload.svg"
+            width={20}
+          />
+        </button>
+        <button
+          aria-label="Delete"
+          className="emotion-0"
+          onClick={[Function]}
+          title="Delete"
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="trash.svg"
             width={20}
           />
         </button>

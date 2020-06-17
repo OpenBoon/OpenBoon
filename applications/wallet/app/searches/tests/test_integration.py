@@ -7,7 +7,7 @@ from unittest.mock import patch, Mock
 
 from searches.models import Search
 from searches.filters import BaseFilter
-from searches.views import MetadataExportViewSet, SearchViewSet
+from searches.views import MetadataExportViewSet, SearchViewSet, search_asset_modifier
 from zmlp import ZmlpClient
 from wallet.tests.utils import check_response
 from wallet.utils import convert_json_to_base64
@@ -272,11 +272,70 @@ class BaseFiltersTestCase(object):
         return convert_json_to_base64([facet_query])
 
 
+class TestSearchAssetModifier:
+
+    @pytest.fixture
+    def mock_request(self, api_factory, project):
+
+        def uri(url):
+            return f'http://testserver{url}'
+
+        mock = Mock(build_absolute_uri=uri)
+        mock.parser_context = {'view': Mock(kwargs={'project_pk': 'asdf'})}
+
+        return mock
+
+    @pytest.fixture
+    def image_item(self):
+        return {'_index': 'x6vghtkcc9t4bi06', '_type': '_doc', '_id': 'lUfjW2IAunzEx-3Rn8vMYyhlkNZGsdtI', '_score': None, '_source': {'files': [{'size': 582248, 'name': 'image_1024x640.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/lUfjW2IAunzEx-3Rn8vMYyhlkNZGsdtI/proxy/image_1024x640.jpg', 'category': 'proxy', 'attrs': {'width': 1024, 'height': 640}}, {'size': 154814, 'name': 'image_512x320.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/lUfjW2IAunzEx-3Rn8vMYyhlkNZGsdtI/proxy/image_512x320.jpg', 'category': 'proxy', 'attrs': {'width': 512, 'height': 320}}, {'size': 162368, 'name': 'web-proxy.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/lUfjW2IAunzEx-3Rn8vMYyhlkNZGsdtI/web-proxy/web-proxy.jpg', 'category': 'web-proxy', 'attrs': {'width': 1024, 'height': 640}}], 'source': {'path': 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/pictures/mountains_239.jpg', 'extension': 'jpg', 'filename': 'mountains_239.jpg', 'checksum': 183104247, 'mimetype': 'image/jpeg', 'filesize': 975478}, 'media': {'orientation': 'landscape', 'aspect': 1.6, 'width': 2560, 'length': 1, 'type': 'image', 'height': 1600}}, 'sort': [1589841573228]}  # noqa
+
+    @pytest.fixture
+    def document_item(self):
+        return {'_index': 'x6vghtkcc9t4bi06', '_type': '_doc', '_id': 'FaFSqlDesCECU8FFj3VlnO64d9u44Vl_', '_score': None, '_source': {'files': [{'size': 430701, 'name': 'image_786x1024.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/FaFSqlDesCECU8FFj3VlnO64d9u44Vl_/proxy/image_786x1024.jpg', 'category': 'proxy', 'attrs': {'width': 786, 'height': 1024}}, {'size': 126192, 'name': 'image_393x512.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/FaFSqlDesCECU8FFj3VlnO64d9u44Vl_/proxy/image_393x512.jpg', 'category': 'proxy', 'attrs': {'width': 393, 'height': 512}}, {'size': 164668, 'name': 'web-proxy.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/FaFSqlDesCECU8FFj3VlnO64d9u44Vl_/web-proxy/web-proxy.jpg', 'category': 'web-proxy', 'attrs': {'width': 786, 'height': 1024}}], 'source': {'path': 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/pdf_test/195213_P4.pdf', 'extension': 'pdf', 'filename': '195213_P4.pdf', 'checksum': 46422929, 'mimetype': 'application/pdf', 'filesize': 1662878}, 'media': {'orientation': 'portrait', 'length': 27, 'width': 611.04, 'type': 'document', 'content': " BCANNEDUNDERGROUND ENGINEERING & ENVIRONMENTAL SOLUTIONS Haley & Aldrich, Inc. 465 Medford Street Suite 2200 Boston, MA 02129-1400 Tel: 617.886.7400 Fax: 617.886.7600 www.HaleyAldrich.com MEMORANDUM 25 July 2001 File No. 12515-220 TO: Massachusetts Department of Environmental Protection - Attn: Hector Laguette, Stephen Johnson C: Wellesley College; Attn: Barry Monahan Wellesley College: Attn: Bonnie Weeks V Richard White & Sons; Attn: Kevin Hines Ropes & Gray; Attn: Peter Alpert FROM: Haley & Aldrich, Inc. Debo Gevalt/R UThSuck/Se a hrroll SUBJECT: Results of the May 01 Groundwater Monitoring Event Former Henry Woods Paint Factory OmFICEs Wellesley, Massachusetts Cleveland Ohio In accordance with our 11 August 2000 memorandum, we continue to maintain a quarterly Dayton groundwater monitoring program at the Uplands portion of the former Henry Woods Paint Ohio Factory Site. Denver Colorado Historical groundwater analytical data for the former Henry Woods Paint Factory (FHWPF) Site (the Site) indicate the presence of dissolved hexavalent chromium (CrVI) in monitoring Detroit Michigan wells and surface water at the Site. The groundwater monitoring program was developed for the Site to collect data that will provide additional information regarding groundwater Hartford Connecticut conditions at the Site and assist in evaluating potential remedial solutions, if required. This memorandum presents the results of the May 2001 monitoring event. The activities Los Angeles conducted during the event are listed below. California Manchester 1. Groundwater level measurements. Groundwater level measurements were made to New Hampshire provide the data required to determine groundwater elevation and flow direction Newark beneath the Site. This data will be evaluated together with data from other quarterly New Jersey events to assess the range of seasonal variation in groundwater flow paths, which will Portland be considered for the proper design of a groundwater treatment system, if necessary. Maine A better understanding of groundwater flow paths may also provide additional insight Rochester into contaminant fate and transport at the Site. New York San Diego 2. Groundwater sampling and analysis. Groundwater samples were collected from 93 California Site monitoring wells and piezometers at the Site during the May 2001 monitoring Tucson Arizona Washington District of Columbia P,'nh4on r e .", 'height': 795.12}}, 'sort': [1589843442885]}  # noqa
+
+    @pytest.fixture
+    def video_item(self):
+        return {'_index': 'x6vghtkcc9t4bi06', '_type': '_doc', '_id': 'mUqByg6ARFdORH1UaO2NH4JvxfN2Wk7W', '_score': None, '_source': {'files': [{'size': 109909, 'name': 'image_640x360.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/mUqByg6ARFdORH1UaO2NH4JvxfN2Wk7W/proxy/image_640x360.jpg', 'category': 'proxy', 'attrs': {'time_offset': 7.52, 'width': 640, 'height': 360}}, {'size': 120644, 'name': 'image_512x288.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/mUqByg6ARFdORH1UaO2NH4JvxfN2Wk7W/proxy/image_512x288.jpg', 'category': 'proxy', 'attrs': {'time_offset': 7.52, 'width': 512, 'height': 288}}, {'size': 39152, 'name': 'web-proxy.jpg', 'mimetype': 'image/jpeg', 'id': 'assets/mUqByg6ARFdORH1UaO2NH4JvxfN2Wk7W/web-proxy/web-proxy.jpg', 'category': 'web-proxy', 'attrs': {'width': 640, 'height': 360}}, {'size': 6800212, 'name': 'video_640x360.mp4', 'mimetype': 'video/mp4', 'id': 'assets/mUqByg6ARFdORH1UaO2NH4JvxfN2Wk7W/proxy/video_640x360.mp4', 'category': 'proxy', 'attrs': {'frameRate': 29.97, 'frames': 452, 'width': 640, 'height': 360}}], 'source': {'path': 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/video/sample_ipad.m4v', 'extension': 'm4v', 'filename': 'sample_ipad.m4v', 'checksum': 2883801597, 'mimetype': 'video/x-m4v', 'filesize': 6192402}, 'media': {'orientation': 'landscape', 'aspect': 1.78, 'width': 640, 'length': 15.048367, 'description': 'A short description of luke sledding in winter.', 'timeCreated': '2016-04-08T15:02:31.000000Z', 'title': 'Luke crashes sled', 'type': 'video', 'height': 360}}, 'sort': [1589843375190]}  # noqa
+
+    def test_add_asset_style_image(self, mock_request, image_item):
+        search_asset_modifier(mock_request, image_item)
+        assert image_item['asset_style'] == 'image'
+
+    def test_add_asset_style_document(self, mock_request, document_item):
+        search_asset_modifier(mock_request, document_item)
+        # Documents should have the image style
+        assert document_item['asset_style'] == 'image'
+
+    def test_add_asset_style_video(self, mock_request, video_item):
+        search_asset_modifier(mock_request, video_item)
+        assert video_item['asset_style'] == 'video'
+
+    def test_add_video_length_for_image(self, mock_request, image_item):
+        search_asset_modifier(mock_request, image_item)
+        assert image_item['video_length'] is None
+
+    def test_add_video_length_for_video(self, mock_request, video_item):
+        search_asset_modifier(mock_request, video_item)
+        assert video_item['video_length'] == 15.048367
+
+    def test_videoUrl_for_image(self, mock_request, image_item):
+        search_asset_modifier(mock_request, image_item)
+        assert image_item['video_proxy_url'] is None
+
+    def test_videoUrl_for_video(self, mock_request, video_item):
+        search_asset_modifier(mock_request, video_item)
+        assert video_item['video_proxy_url'] == 'http://testserver/api/v1/projects/asdf/assets/mUqByg6ARFdORH1UaO2NH4JvxfN2Wk7W/files/category/proxy/name/video_640x360.mp4/'  # noqa
+
+    def test_fullscreen_url_not_included(self, mock_request, video_item):
+        search_asset_modifier(mock_request, video_item)
+        assert 'fullscreen_url' not in video_item
+
+
 class TestQuery(BaseFiltersTestCase):
 
     @pytest.fixture
     def mock_response(self):
-        return {"took":6,"timed_out":False,"_shards":{"total":2,"successful":2,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":0.0,"hits":[{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U","_score":0.0,"_source":{"files":[{"size":119497,"name":"image_744x1024.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_744x1024.jpg","category":"proxy","attrs":{"width":744,"height":1024}},{"size":119497,"name":"web-proxy.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/web-proxy/web-proxy.jpg","category":"web-proxy","attrs":{"width":744,"height":1024}},{"size":43062,"name":"image_372x512.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_372x512.jpg","category":"proxy","attrs":{"width":372,"height":512}},{"size":21318,"name":"image_232x320.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_232x320.jpg","category":"proxy","attrs":{"width":232,"height":320}}],"source":{"path":"gs://zorroa-dev-data/image/singlepage.tiff","extension":"tiff","filename":"singlepage.tiff","checksum":754419346,"mimetype":"image/tiff","filesize":11082}}},{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C","_score":0.0,"_source":{"files":[{"size":89643,"name":"image_650x434.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_650x434.jpg","category":"proxy","attrs":{"width":650,"height":434}},{"size":60713,"name":"image_512x341.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_512x341.jpg","category":"proxy","attrs":{"width":512,"height":341}},{"size":30882,"name":"image_320x213.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_320x213.jpg","category":"proxy","attrs":{"width":320,"height":213}}],"source":{"path":"gs://zorroa-dev-data/image/TIFF_1MB.tiff","extension":"tiff","filename":"TIFF_1MB.tiff","checksum":1867533868,"mimetype":"image/tiff","filesize":1131930}}}]}}  # noqa
+        return {"took":6,"timed_out":False,"_shards":{"total":2,"successful":2,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":0.0,"hits":[{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U","_score":0.0,"_source":{"media":{},"files":[{"size":119497,"name":"image_744x1024.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_744x1024.jpg","category":"proxy","attrs":{"width":744,"height":1024}},{"size":119497,"name":"web-proxy.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/web-proxy/web-proxy.jpg","category":"web-proxy","attrs":{"width":744,"height":1024}},{"size":43062,"name":"image_372x512.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_372x512.jpg","category":"proxy","attrs":{"width":372,"height":512}},{"size":21318,"name":"image_232x320.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_232x320.jpg","category":"proxy","attrs":{"width":232,"height":320}}],"source":{"path":"gs://zorroa-dev-data/image/singlepage.tiff","extension":"tiff","filename":"singlepage.tiff","checksum":754419346,"mimetype":"image/tiff","filesize":11082}}},{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C","_score":0.0,"_source":{"media":{},"files":[{"size":89643,"name":"image_650x434.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_650x434.jpg","category":"proxy","attrs":{"width":650,"height":434}},{"size":60713,"name":"image_512x341.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_512x341.jpg","category":"proxy","attrs":{"width":512,"height":341}},{"size":30882,"name":"image_320x213.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_320x213.jpg","category":"proxy","attrs":{"width":320,"height":213}}],"source":{"path":"gs://zorroa-dev-data/image/TIFF_1MB.tiff","extension":"tiff","filename":"TIFF_1MB.tiff","checksum":1867533868,"mimetype":"image/tiff","filesize":1131930}}}]}}  # noqa
 
     def test_get(self, login, api_client, project, monkeypatch, facet_query_qs, mock_response):
         def _response(*args, **kwargs):
@@ -319,7 +378,8 @@ class TestQuery(BaseFiltersTestCase):
             assert query == {'sort': {'system.timeCreated': {'order': 'desc'}},
                              '_source': ['id',
                                          'source*',
-                                         'files*']}
+                                         'files*',
+                                         'media*']}
             return Response(status=status.HTTP_200_OK)
 
         path = reverse('search-query', kwargs={'project_pk': project.id})
@@ -471,6 +531,7 @@ class TestMetadataExportView:
                             }
                         }
                     ],
+                    "media": {}
                 }
                 yield m
 

@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Slider /> should render properly when muted 1`] = `
+.emotion-0 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  cursor: pointer;
+}
+
+.emotion-1 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
+}
+
+.emotion-2 {
+  padding: 0;
+  margin: 0;
+  border: none;
+  left: 0%;
+  position: absolute;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.emotion-2:hover,
+.emotion-2:active {
+  background-color: #ffffff;
+}
+
+.emotion-3 {
+  padding: 0;
+  margin: 0;
+  border: none;
+  left: 100%;
+  position: absolute;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.emotion-3:hover,
+.emotion-3:active {
+  background-color: #ffffff;
+}
+
+<div
+  style={
+    Object {
+      "position": "relative",
+      "width": "100%",
+    }
+  }
+>
+  <div
+    className="emotion-0"
+    onMouseDown={[Function]}
+    onTouchStart={[Function]}
+  />
+  <div
+    className="emotion-1"
+  />
+  <div>
+    <button
+      aria-valuenow={0}
+      className="emotion-2"
+      onKeyDown={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+      role="slider"
+      type="button"
+    />
+    <button
+      aria-valuenow={100}
+      className="emotion-3"
+      onKeyDown={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+      role="slider"
+      type="button"
+    />
+  </div>
+  <div>
+    <div
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#808080",
+          "cursor": "pointer",
+          "height": 4,
+          "left": "0%",
+          "position": "absolute",
+          "transform": "translate(0%, -50%)",
+          "width": "100%",
+          "zIndex": 1,
+        }
+      }
+    />
+  </div>
+</div>
+`;

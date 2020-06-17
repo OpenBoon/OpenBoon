@@ -13,6 +13,7 @@ import requests
 import urllib3
 
 from .executor import ZpsExecutor
+from .cache import ModelCacheManager
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -112,15 +113,21 @@ class ClusterClient(object):
         data = self.make_event(task, etype, payload)
         logger.debug("POST %s/cluster/_event %s" % (self.remote_url, data))
         # Run forever until server comes back online
-        backoff = 1
+        backoff = 2
         while True:
             try:
                 rsp = requests.post(self.remote_url + "/cluster/_event", verify=False,
                                     json=data, headers=self._headers())
-                return rsp.status_code
-            except requests.exceptions.ConnectionError:
-                time.sleep(random.randint(1, min(60, backoff)))
-                backoff *= 2
+                if rsp.status_code == 429:
+                    logger.warning("Received backoff 429 from Archivist, waiting....")
+                    raise RuntimeError("Received backoff from Archivist")
+                else:
+                    return rsp.status_code
+            except (RuntimeError, requests.exceptions.ConnectionError):
+                wait_time = random.randint(1, min(60, backoff))
+                logger.warning("Sleeping {} seconds for Archivist to return....".format(wait_time))
+                time.sleep(wait_time)
+                backoff = backoff * 2
 
     def make_event(self, task, etype, payload):
         """
@@ -196,6 +203,7 @@ class Executor(object):
 
         self.poll_count = 0
         self.current_task = None
+        self.previous_task = None
         self.first_ping = True
         self.ping_timer = None
         self.poll_timer = None
@@ -208,6 +216,9 @@ class Executor(object):
         # Setup the task poll timer thread.
         if self.poll_timer_seconds:
             self.start_poll_timer()
+
+        # Clear out model cache.
+        ModelCacheManager.instance.clear_cache_root()
 
     def kill_task(self, task_id, new_state, reason):
         """
@@ -229,17 +240,26 @@ class Executor(object):
 
     def run_task(self, task):
         """
-        Create and run a given task.
+        Create and run a the given task.
 
-        :param task:
-        :return:
+        Args:
+            task (dict): A task dictionary.
+
         """
+        # If a previous task was from another project, remove the model cache.
+        if self.previous_task:
+            print(self.previous_task['projectId'])
+            print(task['projectId'])
+            if self.previous_task['projectId'] != task['projectId']:
+                ModelCacheManager.remove_model_cache(self.previous_task)
+
         self.current_task = ZpsExecutor(task, self.client)
         try:
             # blocks until completed or killed
             return self.current_task.run()
         finally:
             self.current_task = None
+            self.previous_task = task
 
     def queue_next_task(self):
         """

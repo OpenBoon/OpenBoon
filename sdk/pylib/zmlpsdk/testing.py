@@ -264,13 +264,19 @@ class TestReactor(object):
         pass
 
     def error(self, *args, **kwargs):
-        pass
+        print(f"Emit Error: {args} {kwargs}")
 
     def performance_report(self, *args):
         pass
 
+    def emit_status(self, text):
+        print(f"Emit Status: '{text}'")
+
+    def progress(self, progress):
+        print(f"Emit Progress: '{progress}'")
+
     def write_event(self, event, payload):
-        print("Event: {}  Payload: {}".format(event, payload))
+        print(f"Emit event: '{event}'  payload: '{payload}'")
 
 
 def zorroa_test_path(rel_path=""):

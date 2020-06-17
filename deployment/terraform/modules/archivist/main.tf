@@ -1,13 +1,11 @@
-resource "google_project_service" "service-usage" {
-  service            = "serviceusage.googleapis.com"
-  disable_on_destroy = false
-}
-
 ## GCS Buckets and Configuration Files
 resource "google_storage_bucket" "data" {
+  lifecycle {
+    prevent_destroy = true
+  }
   name          = "${var.project}-${var.data-bucket-name}"
-  storage_class = "REGIONAL"
-  location      = var.region
+  storage_class = "MULTI_REGIONAL"
+  location      = var.country
   cors {
     origin = ["*"]
     method = ["GET"]
@@ -20,13 +18,10 @@ resource "random_string" "sql-password" {
   special = false
 }
 
-resource "google_project_service" "sqladmin" {
-  service            = "sqladmin.googleapis.com"
-  disable_on_destroy = false
-  depends_on         = [google_project_service.service-usage]
-}
-
 resource "google_sql_database" "archivist" {
+  lifecycle {
+    prevent_destroy = true
+  }
   name     = var.database-name
   instance = var.sql-instance-name
 }
@@ -86,6 +81,9 @@ resource "kubernetes_secret" "archivist-sa-key" {
 ## K8S Deployment
 resource "kubernetes_deployment" "archivist" {
   provider = kubernetes
+  lifecycle {
+    ignore_changes = [spec[0].replicas]
+  }
   metadata {
     name      = "archivist"
     namespace = var.namespace
@@ -94,6 +92,7 @@ resource "kubernetes_deployment" "archivist" {
     }
   }
   spec {
+    replicas = 2
     selector {
       match_labels = {
         app = "archivist"
@@ -228,11 +227,15 @@ resource "kubernetes_deployment" "archivist" {
           }
           env {
             name  = "ANALYST_SHAREDKEY"
-            value = "QjZEQzRDQTgtOUUwRC00NUE1LUFCNjktRUYwQTA4ODc4MTM3Cg"
+            value = var.analyst-shared-key
           }
           env {
             name  = "ZMLP_STORAGE_SYSTEM_BUCKET"
             value = var.system-bucket
+          }
+          env {
+            name = "ARCHIVIST_ES_BACKUP_BUCKET_NAME"
+            value = var.es-backup-bucket-name
           }
         }
       }
@@ -250,14 +253,17 @@ resource "kubernetes_horizontal_pod_autoscaler" "archivist" {
     }
   }
   spec {
-    max_replicas = var.maximum-replicas
-    min_replicas = var.minimum-replicas
+    max_replicas = 2
+    min_replicas = 2
     scale_target_ref {
       api_version = "apps/v1"
       kind        = "Deployment"
       name        = "archivist"
     }
     target_cpu_utilization_percentage = 75
+  }
+  lifecycle {
+    ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
   }
 }
 

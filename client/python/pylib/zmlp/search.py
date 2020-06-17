@@ -34,6 +34,8 @@ class AssetSearchScroller(object):
                 response will contain the entire page, not individual assets.
         """
         self.app = app
+        if search and getattr(search, "to_dict", None):
+            search = search.to_dict()
         self.search = copy.deepcopy(search or {})
         self.timeout = timeout
         self.raw_response = raw_response
@@ -124,8 +126,12 @@ class AssetSearchResult(object):
             search (dict): An ElasticSearch query.
         """
         self.app = app
+        if search and getattr(search, "to_dict", None):
+            search = search.to_dict()
         self.search = search
-        self.result = self.app.client.post("api/v3/assets/_search", self.search)
+        self.result = None
+
+        self._execute_search()
 
     @property
     def assets(self):
@@ -140,9 +146,51 @@ class AssetSearchResult(object):
         hits = self.result.get("hits")
         if not hits:
             return []
-        return [Asset({'id': hit['_id'],
-                       'score': hit['_score'],
-                       'document': hit['_source']}) for hit in hits['hits']]
+        return [Asset.from_hit(hit) for hit in hits['hits']]
+
+    def batches_of(self, batch_size, max_assets=None):
+        """
+        A generator function which returns batches of assets in the
+        given batch size.  This method will optionally page through
+        N pages, yielding arrays of assets as it goes.
+
+        This method is preferred to scrolling for Assets when
+        multiple pages of Assets need to be processed.
+
+        Args:
+            batch_size (int): The size of the batch.
+            max_assets (int): The max number of assets to return, max is 10k
+
+        Returns:
+            generator: A generator that yields batches of Assets.
+
+        """
+        # The maximum we can page through is 10k
+        asset_countdown = max_assets or 10000
+
+        batch = []
+        while True:
+            assets = self.assets
+            if not assets:
+                break
+
+            for asset in assets:
+                batch.append(asset)
+                asset_countdown -= 1
+                if asset_countdown <= 0:
+                    break
+                if len(batch) >= batch_size:
+                    yield batch
+                    batch = []
+
+            if asset_countdown <= 0:
+                break
+
+            self.search['from'] = self.search.get('from', 0) + len(assets)
+            self._execute_search()
+
+        if batch:
+            yield batch
 
     def aggregation(self, name):
         """
@@ -224,8 +272,11 @@ class AssetSearchResult(object):
 
         """
         search = copy.deepcopy(self.search or {})
-        search['from'] = search.get('from', 0) + search.get('size', 32)
+        search['from'] = search.get('from', 0) + len(self.result.get("hits"))
         return AssetSearchResult(self.app, search)
+
+    def _execute_search(self):
+        self.result = self.app.client.post("api/v3/assets/_search", self.search)
 
     def __iter__(self):
         return iter(self.assets)
@@ -301,36 +352,34 @@ class SimilarityQuery:
     """
     def __init__(self, hashes, min_score=0.75, boost=1.0,
                  field="analysis.zvi-image-similarity.simhash"):
-        self.hashes = as_collection(hashes) or []
+        self.hashes = []
+        self.add_hash(hashes)
         self.min_score = min_score
         self.boost = boost
         self.field = field
 
-    def add_hash(self, simhash):
+    def add_hash(self, hashes):
         """
         Add a new hash to the search.
 
         Args:
-            simhash (str): A similarity hash.
+            hashes (mixed): A similarity hash string or an asset.
 
         Returns:
             SimilarityQuery: this instance of SimilarityQuery
         """
-        self.hashes.append(simhash)
+        for simhash in as_collection(hashes) or []:
+            if isinstance(simhash, Asset):
+                self.hashes.append(simhash.get_attr(self.field))
+            else:
+                self.hashes.append(simhash)
         return self
 
     def add_asset(self, asset):
         """
-        Adds the similarity hash for the given asset to this search.
-
-        Args:
-            asset (Asset): The asset
-
-        Returns:
-            SimilarityQuery: this instance of SimilarityQuery
+        See add_hash which handles both hashes and Assets.
         """
-        self.hashes.append(asset.get_attr(self.field))
-        return self
+        return self.add_hash(asset)
 
     def for_json(self):
         return {
@@ -351,3 +400,7 @@ class SimilarityQuery:
                 "min_score": self.min_score
             }
         }
+
+    def __add__(self, simhash):
+        self.add_hash(simhash)
+        return self

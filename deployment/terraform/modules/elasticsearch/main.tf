@@ -1,19 +1,46 @@
-locals {
-  es-cluster-size = min(var.es-cluster-size, 5)
-  es-hosts = [
-    "elasticsearch-0.elasticsearch.${var.namespace}.svc.cluster.local",
-    "elasticsearch-1.elasticsearch.${var.namespace}.svc.cluster.local",
-    "elasticsearch-2.elasticsearch.${var.namespace}.svc.cluster.local",
-    "elasticsearch-3.elasticsearch.${var.namespace}.svc.cluster.local",
-    "elasticsearch-4.elasticsearch.${var.namespace}.svc.cluster.local",
-  ]
-  es-host-string = join(",", slice(local.es-hosts, 0, local.es-cluster-size))
+
+resource "google_storage_bucket" "elasticsearch" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  name = "${var.project}-es-backups"
+  storage_class = "MULTI_REGIONAL"
+  location      = var.country
+  retention_policy {
+    retention_period = 86400 * 29
+  }
+}
+
+resource "google_service_account" "elasticsearch" {
+  project = var.project
+  account_id = "elasticsearch"
+  display_name = "Elasticsearch"
+}
+
+resource "google_project_iam_member" "elasticsearch" {
+  project = var.project
+  role    = "roles/storage.admin"
+  member  = "serviceAccount:${google_service_account.elasticsearch.email}"
+}
+
+resource "google_service_account_key" "elasticsearch" {
+  service_account_id = google_service_account.elasticsearch.name
+}
+
+resource "kubernetes_secret" "elasticsearch" {
+  metadata {
+    name      = "elasticsearch-sa-key"
+    namespace = var.namespace
+  }
+  data = {
+    "credentials.json" = base64decode(google_service_account_key.elasticsearch.private_key)
+  }
 }
 
 resource "google_container_node_pool" "elasticsearch" {
   name               = var.node-pool-name
   cluster            = var.container-cluster-name
-  initial_node_count = local.es-cluster-size
+  initial_node_count = 5
   autoscaling {
     max_node_count = 6
     min_node_count = 5
@@ -40,9 +67,19 @@ resource "google_container_node_pool" "elasticsearch" {
       namespace = var.namespace
     }
   }
+  lifecycle {
+    ignore_changes = [
+      initial_node_count,
+      autoscaling[0].min_node_count,
+      autoscaling[0].max_node_count
+    ]
+  }
 }
 
 resource "kubernetes_storage_class" "elasticsearch" {
+  lifecycle {
+    prevent_destroy = true
+  }
   metadata {
     name = var.storage-class-name
   }
@@ -54,6 +91,10 @@ resource "kubernetes_storage_class" "elasticsearch" {
 
 resource "kubernetes_stateful_set" "elasticsearch-master" {
   provider = kubernetes
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes = [spec[0].replicas]
+  }
   metadata {
     name      = "elasticsearch-master"
     namespace = var.namespace
@@ -135,6 +176,12 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
         image_pull_secrets {
           name = var.image-pull-secret
         }
+        volume {
+          name = "elasticsearch-sa-key"
+          secret {
+            secret_name = "elasticsearch-sa-key"
+          }
+        }
         container {
           name              = "elasticsearch"
           image             = "zmlp/elasticsearch:${var.container-tag}"
@@ -183,6 +230,11 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
             name       = "elasticsearch-data"
             mount_path = "/usr/share/elasticsearch/data"
           }
+          volume_mount {
+            name       = "elasticsearch-sa-key"
+            mount_path = "/secrets/gcs/"
+            read_only  = true
+          }
           resources {
             requests {
               memory = "512Mi"
@@ -199,6 +251,10 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
 
 resource "kubernetes_stateful_set" "elasticsearch-data" {
   provider = kubernetes
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes = [spec[0].replicas]
+  }
   metadata {
     name      = "elasticsearch-data"
     namespace = var.namespace
@@ -281,6 +337,12 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
         image_pull_secrets {
           name = var.image-pull-secret
         }
+        volume {
+          name = "elasticsearch-sa-key"
+          secret {
+            secret_name = "elasticsearch-sa-key"
+          }
+        }
         container {
           name              = "elasticsearch"
           image             = "zmlp/elasticsearch:${var.container-tag}"
@@ -324,6 +386,11 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
           volume_mount {
             name       = "elasticsearch-data"
             mount_path = "/usr/share/elasticsearch/data"
+          }
+          volume_mount {
+            name       = "elasticsearch-sa-key"
+            mount_path = "/secrets/gcs/"
+            read_only  = true
           }
           resources {
             requests {

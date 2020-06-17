@@ -10,6 +10,7 @@ import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModSpec
+import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageEntity
@@ -106,32 +107,48 @@ class ModelServiceImpl(
 
     override fun publishModel(model: Model): PipelineMod {
         val mod = pipelineModService.findByName(model.name, false)
-        if (mod != null) {
-            return mod
-        }
-        val ds = dataSetDao.getOne(model.dataSetId)
-
-        val modspec = PipelineModSpec(
-            model.type.moduleName.replace("%s", ds.name),
-            model.type.description,
-            Provider.CUSTOM,
-            Category.TRAINED,
-            model.type.dataSetType.label,
-            listOf(SupportedMedia.Documents, SupportedMedia.Images),
-            listOf(
-                ModOp(
-                    ModOpType.APPEND,
-                    listOf(
-                        ProcessorRef(
-                            model.type.trainProcessor,
-                            StandardContainers.TRAIN,
-                            model.type.classifyArgs.plus(mapOf("model_file_id" to model.fileId)),
-                            module = model.name
-                        )
+        val ops = listOf(
+            ModOp(
+                ModOpType.APPEND,
+                listOf(
+                    ProcessorRef(
+                        model.type.classifyProcessor,
+                        StandardContainers.ANALYSIS,
+                        model.type.classifyArgs.plus(
+                            mapOf(
+                                "model_id" to model.id.toString(),
+                                "version" to System.currentTimeMillis()
+                            )
+                        ),
+                        module = model.name
                     )
                 )
             )
         )
-        return pipelineModService.create(modspec)
+
+        if (mod != null) {
+            // Set version number to change checksum
+            val update = PipelineModUpdate(
+                mod.name, mod.description, mod.provider,
+                mod.category, mod.type,
+                listOf(SupportedMedia.Documents, SupportedMedia.Images),
+                ops
+            )
+            pipelineModService.update(mod.id, update)
+            return pipelineModService.get(mod.id)
+        } else {
+            val ds = dataSetDao.getOne(model.dataSetId)
+            val modspec = PipelineModSpec(
+                model.type.moduleName.replace("%s", ds.name),
+                model.type.description,
+                Provider.CUSTOM,
+                Category.TRAINED,
+                model.type.dataSetType.label,
+                listOf(SupportedMedia.Documents, SupportedMedia.Images),
+                ops
+            )
+
+            return pipelineModService.create(modspec)
+        }
     }
 }

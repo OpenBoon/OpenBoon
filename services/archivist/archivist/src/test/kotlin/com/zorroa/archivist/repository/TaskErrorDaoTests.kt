@@ -173,16 +173,36 @@ class TaskErrorDaoTests : AbstractTest() {
         val task = createTaskErrors()
         var filter = TaskErrorFilter()
         assertEquals(1, taskErrorDao.count(filter))
-        assertEquals(1, jdbc.queryForObject("SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
-            Int::class.java, task.jobId))
-        assertEquals(1, jdbc.queryForObject("SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
-            Int::class.java, task.id))
+        assertEquals(
+            1,
+            jdbc.queryForObject(
+                "SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
+                Int::class.java, task.jobId
+            )
+        )
+        assertEquals(
+            1,
+            jdbc.queryForObject(
+                "SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
+                Int::class.java, task.id
+            )
+        )
         assertEquals(1, taskErrorDao.deleteAll(task as JobId))
         assertEquals(0, taskErrorDao.count(filter))
-        assertEquals(0, jdbc.queryForObject("SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
-            Int::class.java, task.jobId))
-        assertEquals(0, jdbc.queryForObject("SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
-            Int::class.java, task.id))
+        assertEquals(
+            0,
+            jdbc.queryForObject(
+                "SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
+                Int::class.java, task.jobId
+            )
+        )
+        assertEquals(
+            0,
+            jdbc.queryForObject(
+                "SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
+                Int::class.java, task.id
+            )
+        )
     }
 
     @Test
@@ -190,16 +210,36 @@ class TaskErrorDaoTests : AbstractTest() {
         val task = createTaskErrors()
         var filter = TaskErrorFilter()
         assertEquals(1, taskErrorDao.count(filter))
-        assertEquals(1, jdbc.queryForObject("SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
-            Int::class.java, task.jobId))
-        assertEquals(1, jdbc.queryForObject("SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
-            Int::class.java, task.id))
+        assertEquals(
+            1,
+            jdbc.queryForObject(
+                "SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
+                Int::class.java, task.jobId
+            )
+        )
+        assertEquals(
+            1,
+            jdbc.queryForObject(
+                "SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
+                Int::class.java, task.id
+            )
+        )
         assertEquals(1, taskErrorDao.deleteAll(task as TaskId))
         assertEquals(0, taskErrorDao.count(filter))
-        assertEquals(0, jdbc.queryForObject("SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
-            Int::class.java, task.jobId))
-        assertEquals(0, jdbc.queryForObject("SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
-            Int::class.java, task.id))
+        assertEquals(
+            0,
+            jdbc.queryForObject(
+                "SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
+                Int::class.java, task.jobId
+            )
+        )
+        assertEquals(
+            0,
+            jdbc.queryForObject(
+                "SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
+                Int::class.java, task.id
+            )
+        )
     }
 
     @Test

@@ -1,5 +1,6 @@
 
 resource "kubernetes_deployment" "gcp-marketplace-integration" {
+  count = var.enabled != "" ? 1 : 0
   provider   = kubernetes
   metadata {
     name      = "gcp-marketplace-integration"

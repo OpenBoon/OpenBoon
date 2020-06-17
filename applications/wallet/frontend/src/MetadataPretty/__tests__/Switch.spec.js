@@ -1,8 +1,12 @@
 import TestRenderer from 'react-test-renderer'
 
 import bboxAsset, { boxImagesResponse } from '../../Asset/__mocks__/bboxAsset'
+import assets from '../../Assets/__mocks__/assets'
 
 import MetadataPrettySwitch from '../Switch'
+
+const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+const ASSET_ID = assets.results[0].id
 
 describe('<MetadataPrettySwitch />', () => {
   it('should render regular text values', () => {
@@ -35,6 +39,18 @@ describe('<MetadataPrettySwitch />', () => {
       <MetadataPrettySwitch
         name="zvi-label-detection"
         value={value}
+        path="analysis"
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render label with no predictions properly', () => {
+    const component = TestRenderer.create(
+      <MetadataPrettySwitch
+        name="zvi-label-detection"
+        value={{ type: 'labels', predictions: [] }}
         path="analysis"
       />,
     )
@@ -90,7 +106,34 @@ describe('<MetadataPrettySwitch />', () => {
   })
 
   it('should render similarity detection properly', () => {
+    require('swr').__setMockUseSWRResponse({ data: assets })
+
+    require('next/router').__setUseRouter({
+      query: { id: ASSET_ID, projectId: PROJECT_ID },
+    })
+
     const value = bboxAsset.metadata.analysis['zvi-image-similarity']
+
+    const component = TestRenderer.create(
+      <MetadataPrettySwitch
+        name="zvi-image-similarity"
+        value={value}
+        path="analysis"
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render similarity detection with no data properly', () => {
+    require('swr').__setMockUseSWRResponse({ data: null })
+
+    require('next/router').__setUseRouter({
+      query: { id: ASSET_ID, projectId: PROJECT_ID },
+    })
+
+    const value = bboxAsset.metadata.analysis['zvi-image-similarity']
+
     const component = TestRenderer.create(
       <MetadataPrettySwitch
         name="zvi-image-similarity"

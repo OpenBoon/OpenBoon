@@ -2,12 +2,11 @@ import json
 import logging
 import os
 import threading
-import tempfile
-import shutil
-from pwd import getpwnam
 
 import docker
 import zmq
+
+from .cache import TaskCacheManager, ModelCacheManager
 
 logger = logging.getLogger(__name__)
 
@@ -55,19 +54,6 @@ class ZpsExecutor(object):
         # A roll up of event counts from the various containers
         # that are spawned during processing.
         self.event_counts = {}
-        self.workdir = self.make_workdir()
-
-    def make_workdir(self):
-        path = os.path.join(tempfile.tempdir, "zvi-{}".format(self.task['jobId']))
-        os.makedirs(path, mode=0o777, exist_ok=True)
-        try:
-            zorroa_user = getpwnam("zorroa")
-            os.chown(path, zorroa_user.pw_uid, zorroa_user.pw_gid)
-            logger.info("Created workdir [owner=zorroa] {}".format(path))
-        except Exception:
-            os.chmod(path, 0o777)
-            logger.info("Created workdir {}".format(path))
-        return path
 
     def run(self):
         """
@@ -93,11 +79,7 @@ class ZpsExecutor(object):
             logger.warning("Failed to execute ZPS script, {}".format(e))
             self.exit_status = EXIT_STATUS_HARD_FAIL
         finally:
-            try:
-                logger.info("Cleaning up workdir {}".format(self.workdir))
-                shutil.rmtree(self.workdir)
-            except Exception as e:
-                logger.warning("Failed to to delete task work dir: {}".format(e))
+            TaskCacheManager.remove_task_cache(self.task)
 
             # Emit a task stopped to the archivist
             exit_status = self.get_exit_status()
@@ -133,7 +115,7 @@ class ZpsExecutor(object):
                 # Run containerized generator
                 if not self.container:
                     self.container = DockerContainerWrapper(
-                        self.client, self.task, proc["image"], self.workdir)
+                        self.client, self.task, proc["image"])
                     self.container.wait_for_container()
 
                 self.container.execute_generator(proc, settings)
@@ -234,7 +216,7 @@ class ZpsExecutor(object):
         results = []
         if not self.container:
             self.container = DockerContainerWrapper(
-                self.client, self.task, ref["image"], self.workdir)
+                self.client, self.task, ref["image"])
             self.container.wait_for_container()
 
         if assets:
@@ -311,7 +293,7 @@ class DockerContainerWrapper(object):
 
     """
 
-    def __init__(self, client, task, image, workdir):
+    def __init__(self, client, task, image):
         """
         Create a new DockerContainerWrapper which manages the container process life cycle.
 
@@ -323,7 +305,6 @@ class DockerContainerWrapper(object):
         self.task = task
         self.image = image
         self.client = client
-        self.workdir = workdir
         self.docker_client = docker.from_env()
         self.event_counts = {}
         self.killed = False
@@ -394,24 +375,29 @@ class DockerContainerWrapper(object):
         self.check_killed()
         image = self._pull_image()
 
+        task_cache = TaskCacheManager.create_task_cache(self.task)
+        model_cache = ModelCacheManager.create_model_cache(self.task)
+
         volumes = {
-            self.workdir: {'bind': '/tmp', 'mode': 'rw'}
+            "/tmp": {"bind": "/tmp", "mode": "rw"}
         }
 
         network = self.get_network_id()
         logger.info("Docker network ID: {}".format(network))
 
         if not network:
-            ports = {'{}/tcp'.format(CONTAINER_PORT): CONTAINER_PORT}
+            ports = {"{}/tcp".format(CONTAINER_PORT): CONTAINER_PORT}
         else:
             ports = None
 
         env = self.task.get("env", {})
         env.update({
-            'ZMLP_SERVER': os.environ.get("ZMLP_SERVER"),
-            'OFFICER_URL': os.environ.get('OFFICER_URL'),
+            "ZVI_MODEL_CACHE": model_cache,
+            "TMPDIR": task_cache,
+            "ZMLP_SERVER": os.environ.get("ZMLP_SERVER"),
+            "OFFICER_URL": os.environ.get("OFFICER_URL"),
             # Get threads from task env, or os env.
-            "ANALYST_THREADS": env.get("ANALYST_THREADS", os.environ.get('ANALYST_THREADS'))
+            "ANALYST_THREADS": env.get("ANALYST_THREADS", os.environ.get("ANALYST_THREADS"))
         })
 
         logger.info("starting container {} vols={} network={}".format(self.image, volumes, network))
@@ -424,7 +410,7 @@ class DockerContainerWrapper(object):
 
         logger.info("started container {} tags: {}".format(
             self.container.image.id, self.container.image.tags))
-        logger.info("container work dir: {}".format(self.workdir))
+
         # Sets up a thread which iterates the container logs.
         self.log_thread = threading.Thread(target=self.__tail_container_logs)
         self.log_thread.daemon = True

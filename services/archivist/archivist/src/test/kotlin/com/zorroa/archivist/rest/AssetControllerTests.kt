@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
+import com.zorroa.archivist.domain.DataSetLabel
 import com.zorroa.archivist.domain.DataSetSpec
 import com.zorroa.archivist.domain.DataSetType
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
@@ -12,6 +13,7 @@ import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.DataSetService
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.storage.ProjectStorageService
+import com.zorroa.archivist.util.bbox
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Test
@@ -22,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.io.File
+import kotlin.test.assertEquals
 
 class AssetControllerTests : MockMvcTest() {
 
@@ -92,7 +95,9 @@ class AssetControllerTests : MockMvcTest() {
         val batch = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
         val id = batch.created[0]
 
-        val brokenPayload = """{
+        val brokenPayload =
+            """
+            {
                 "$id": {
                     "doc": {
                         "source": {
@@ -101,7 +106,7 @@ class AssetControllerTests : MockMvcTest() {
                     }
                 }
             }
-        """.trimIndent()
+            """
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_batch_index")
@@ -141,8 +146,12 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.equalTo(false)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.items.length()", CoreMatchers.equalTo(1)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index._id", CoreMatchers.equalTo(asset.id)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index._shards.failed",
-                CoreMatchers.equalTo(0)))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.items[0].index._shards.failed",
+                    CoreMatchers.equalTo(0)
+                )
+            )
     }
 
     @Test
@@ -170,14 +179,16 @@ class AssetControllerTests : MockMvcTest() {
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
         val id = created.created[0]
 
-        val update = """{
+        val update =
+            """
+            {
                 "doc": {
                     "source": {
                         "filename": "cats.png"
                     }
                 }
             }
-        """.trimIndent()
+            """
 
         val res = mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/$id/_update")
@@ -196,7 +207,9 @@ class AssetControllerTests : MockMvcTest() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 
-        val update = """{
+        val update =
+            """
+            {
                 "query": {
                     "match_all": { }
                 },
@@ -204,7 +217,7 @@ class AssetControllerTests : MockMvcTest() {
                     "source": "ctx._source['source']['filename'] = 'test.png'"
                 }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_update_by_query")
@@ -225,7 +238,9 @@ class AssetControllerTests : MockMvcTest() {
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
         val id = created.created[0]
 
-        val update = """{
+        val update =
+            """
+            {
                 "$id": {
                     "doc": {
                         "source": {
@@ -234,7 +249,7 @@ class AssetControllerTests : MockMvcTest() {
                     }
                 }
             }
-        """.trimIndent()
+            """
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_batch_update")
@@ -265,6 +280,52 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
             .andReturn()
+    }
+
+    @Test
+    fun testUpdateLabelsWithBbox() {
+        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LABEL_DETECTION))
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+
+        val req = UpdateAssetLabelsRequest(
+            add = mapOf(
+                created.created[0] to
+                    listOf(ds.getLabel("cat", bbox = bbox(0.0, 0.0, 0.1, 0.1)))
+            )
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/assets/_batch_update_labels")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(req))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+
+        val req2 = UpdateAssetLabelsRequest(
+            add = mapOf(
+                created.created[0] to
+                    listOf(ds.getLabel("dog", bbox = bbox(0.1, 0.1, 0.3, 0.3)))
+            )
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/assets/_batch_update_labels")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(req2))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+
+        authenticate()
+        val asset = assetService.getAsset(created.created[0])
+        val labels = asset.getAttr("labels", DataSetLabel.SET_OF)
+        assertEquals(2, labels?.size)
     }
 
     @Test
@@ -299,11 +360,11 @@ class AssetControllerTests : MockMvcTest() {
         )
 
         mvc.perform(
-                multipart("/api/v3/assets/_batch_upload")
-                    .file(body)
-                    .file(file)
-                    .headers(admin())
-            )
+            multipart("/api/v3/assets/_batch_upload")
+                .file(body)
+                .file(file)
+                .headers(admin())
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.created[0]", CoreMatchers.anything()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.failed.length()", CoreMatchers.equalTo(0)))
@@ -339,11 +400,13 @@ class AssetControllerTests : MockMvcTest() {
                 listOf(
                     AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
                     AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
-                ), state = AssetState.Analyzed
+                ),
+                state = AssetState.Analyzed
             )
         )
 
-        val search = """{ "size": 1, "query": { "match_all": {}} }"""
+        val search =
+            """{ "size": 1, "query": { "match_all": {}} }"""
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_search")
@@ -369,7 +432,8 @@ class AssetControllerTests : MockMvcTest() {
             )
         )
 
-        val search = """{ "size": 1, "query": { "match_all": {}} }"""
+        val search =
+            """{ "size": 1, "query": { "match_all": {}} }"""
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_search?scroll=1m")
@@ -394,7 +458,8 @@ class AssetControllerTests : MockMvcTest() {
             )
         )
 
-        val search = """{ "size": 1, "query": { "match_all": {}} }"""
+        val search =
+            """{ "size": 1, "query": { "match_all": {}} }"""
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_search?scroll=1m")
@@ -419,9 +484,10 @@ class AssetControllerTests : MockMvcTest() {
         )
 
         val search = assetSearchService.search(mapOf(), mapOf("scroll" to arrayOf("1m")))
-        val body = """
+        val body =
+            """
             {"scroll_id": "${search.scrollId}" }
-        """.trimIndent()
+            """.trimIndent()
         mvc.perform(
             MockMvcRequestBuilders.delete("/api/v3/assets/_search/scroll")
                 .headers(admin())
@@ -444,11 +510,13 @@ class AssetControllerTests : MockMvcTest() {
                 listOf(
                     AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
                     AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
-                ), state = AssetState.Analyzed
+                ),
+                state = AssetState.Analyzed
             )
         )
 
-        val search = """{ "modules": ["zvi-label-detection"], "search": { "query": { "match_all": { } } } }"""
+        val search =
+            """{ "modules": ["zvi-label-detection"], "search": { "query": { "match_all": { } } } }"""
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_search/reprocess")
                 .headers(admin())

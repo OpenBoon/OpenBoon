@@ -4,12 +4,14 @@ variable "container-cluster-name" {
 variable "image-pull-secret" {
 }
 
-variable "container-tag" {
-  default = "latest"
+variable "project" {
 }
 
-variable "es-cluster-size" {
-  default = 1
+variable "country" {
+}
+
+variable "container-tag" {
+  default = "latest"
 }
 
 variable "namespace" {
@@ -27,4 +29,3 @@ variable "storage-class-name" {
 variable "ip-address" {
   default = "10.3.240.106"
 }
-

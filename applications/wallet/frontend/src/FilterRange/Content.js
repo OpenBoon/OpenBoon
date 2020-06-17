@@ -4,18 +4,16 @@ import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
-import FiltersReset from '../Filters/Reset'
+import FilterReset from '../Filter/Reset'
 
-import { formatValue } from './helpers'
+import { formatValue, parseValue } from './helpers'
 
-import FilterRangeSlider from './Slider'
+import Slider from '../Slider'
 
-const MIN_WIDTH = 76
-
-const FilterRange = ({
+const FilterRangeContent = ({
   projectId,
   assetId,
   filters,
@@ -24,12 +22,11 @@ const FilterRange = ({
     type,
     attribute,
     values: { min, max },
+    isDisabled,
   },
   filterIndex,
 }) => {
-  const {
-    data: { results },
-  } = useSWR(
+  const { data } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encode({
       filters: { type, attribute },
     })}`,
@@ -40,42 +37,121 @@ const FilterRange = ({
     },
   )
 
-  const domain = [results.min, results.max]
+  const { results } = data || {}
+
+  const { min: resultsMin = 0, max: resultsMax = 1 } = results || {}
+
+  const minMaxFix = resultsMin === resultsMax ? 0.001 : 0
+
+  const domain = [resultsMin, resultsMax + minMaxFix]
 
   const [rangeValues, setRangeValues] = useState([
-    min || results.min,
-    max || results.max,
+    min || resultsMin,
+    max || resultsMax + minMaxFix,
   ])
+  const [inputMin, setInputMin] = useState(rangeValues[0])
+  const [inputMax, setInputMax] = useState(rangeValues[1])
+
+  const saveMinValue = ({ value }) => {
+    const newMin = parseValue({ value })
+
+    if (newMin === rangeValues[0]) return
+
+    if (newMin < domain[0] || newMin > rangeValues[1]) {
+      setInputMin(rangeValues[0])
+      return
+    }
+
+    setInputMin(newMin)
+
+    setRangeValues([newMin, rangeValues[1]])
+
+    dispatch({
+      action: ACTIONS.UPDATE_FILTER,
+      payload: {
+        projectId,
+        assetId,
+        filters,
+        updatedFilter: {
+          type,
+          attribute,
+          values: { min: newMin, max: rangeValues[1] },
+        },
+        filterIndex,
+      },
+    })
+  }
+
+  const saveMaxValue = ({ value }) => {
+    const newMax = parseValue({ value })
+
+    if (newMax === rangeValues[1]) return
+
+    if (newMax < rangeValues[0] || newMax > domain[1]) {
+      setInputMax(rangeValues[1])
+      return
+    }
+
+    setInputMax(newMax)
+
+    setRangeValues([rangeValues[0], newMax])
+
+    dispatch({
+      action: ACTIONS.UPDATE_FILTER,
+      payload: {
+        projectId,
+        assetId,
+        filters,
+        updatedFilter: {
+          type,
+          attribute,
+          values: { min: rangeValues[0], max: newMax },
+        },
+        filterIndex,
+      },
+    })
+  }
 
   return (
     <div>
-      <FiltersReset
+      <FilterReset
         projectId={projectId}
         assetId={assetId}
         filters={filters}
         filter={filter}
         filterIndex={filterIndex}
-        onReset={() => setRangeValues(domain)}
+        onReset={() => {
+          setRangeValues(domain)
+          setInputMin(domain[0])
+          setInputMax(domain[1])
+        }}
       />
       <div css={{ padding: spacing.normal }}>
         <div
           css={{
             display: 'flex',
             justifyContent: 'space-between',
-            paddingBottom: spacing.moderate,
-            fontFamily: 'Roboto Mono',
+            paddingBottom: spacing.normal,
+            fontFamily: typography.family.mono,
           }}
         >
-          <span>{formatValue({ attribute, value: results.min })}</span>
-          <span>{formatValue({ attribute, value: results.max })}</span>
+          <span>{formatValue({ attribute, value: resultsMin })}</span>
+          <span>
+            {formatValue({ attribute, value: resultsMax + minMaxFix })}
+          </span>
         </div>
         <div css={{ padding: spacing.small }}>
-          <FilterRangeSlider
+          <Slider
             step={0.1}
             domain={domain}
             values={rangeValues}
-            onUpdate={(values) => setRangeValues(values)}
-            onChange={([newMin, newMax]) =>
+            isDisabled={!!isDisabled}
+            onUpdate={(values) => {
+              setRangeValues(values)
+              setInputMin(parseValue({ value: values[0] }))
+              setInputMax(parseValue({ value: values[1] }))
+            }}
+            onChange={([newMin, newMax]) => {
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
@@ -90,7 +166,7 @@ const FilterRange = ({
                   filterIndex,
                 },
               })
-            }
+            }}
           />
         </div>
         <div
@@ -101,47 +177,91 @@ const FilterRange = ({
             justifyContent: 'space-around',
           }}
         >
-          <div css={{ display: 'flex', alignItems: 'center' }}>
+          <label css={{ display: 'flex', alignItems: 'center' }}>
             MIN &nbsp;
-            <div
+            <input
+              type="text"
               css={{
-                minWidth: MIN_WIDTH,
-                backgroundColor: colors.structure.lead,
+                textAlign: 'center',
                 paddingLeft: spacing.moderate,
                 paddingRight: spacing.moderate,
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.normal,
-                textAlign: 'center',
+                border: constants.borders.transparent,
                 borderRadius: constants.borderRadius.small,
+                backgroundColor: colors.structure.lead,
+                color: colors.structure.white,
+                width: '60%',
+                ':hover': {
+                  border: constants.borders.tableRow,
+                },
+                ':focus': {
+                  outline: constants.borders.outline,
+                  border: constants.borders.inputSmall,
+                  color: colors.structure.coal,
+                  backgroundColor: colors.structure.white,
+                },
+                '::placeholder': {
+                  fontStyle: typography.style.italic,
+                },
               }}
-            >
-              {formatValue({ attribute, value: rangeValues[0] })}
-            </div>
-          </div>
-          <div css={{ display: 'flex', alignItems: 'center' }}>
+              value={inputMin}
+              onChange={({ target: { value } }) => setInputMin(value)}
+              onKeyPress={({ target: { value }, key }) => {
+                if (key !== 'Enter') return
+                saveMinValue({ value })
+              }}
+              onBlur={({ target: { value } }) => {
+                saveMinValue({ value })
+              }}
+            />
+          </label>
+          <label css={{ display: 'flex', alignItems: 'center' }}>
             MAX &nbsp;
-            <div
+            <input
+              type="text"
               css={{
-                minWidth: MIN_WIDTH,
-                backgroundColor: colors.structure.lead,
+                textAlign: 'center',
                 paddingLeft: spacing.moderate,
                 paddingRight: spacing.moderate,
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.normal,
-                textAlign: 'center',
+                border: constants.borders.transparent,
                 borderRadius: constants.borderRadius.small,
+                backgroundColor: colors.structure.lead,
+                color: colors.structure.white,
+                width: '60%',
+                ':hover': {
+                  border: constants.borders.tableRow,
+                },
+                ':focus': {
+                  outline: constants.borders.outline,
+                  border: constants.borders.inputSmall,
+                  color: colors.structure.coal,
+                  backgroundColor: colors.structure.white,
+                },
+                '::placeholder': {
+                  fontStyle: typography.style.italic,
+                },
               }}
-            >
-              {formatValue({ attribute, value: rangeValues[1] })}
-            </div>
-          </div>
+              value={inputMax}
+              onChange={({ target: { value } }) => setInputMax(value)}
+              onKeyPress={({ target: { value }, key }) => {
+                if (key !== 'Enter') return
+                saveMaxValue({ value })
+              }}
+              onBlur={({ target: { value } }) => {
+                saveMaxValue({ value })
+              }}
+            />
+          </label>
         </div>
       </div>
     </div>
   )
 }
 
-FilterRange.propTypes = {
+FilterRangeContent.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
@@ -149,4 +269,4 @@ FilterRange.propTypes = {
   filterIndex: PropTypes.number.isRequired,
 }
 
-export default FilterRange
+export default FilterRangeContent

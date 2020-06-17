@@ -26,6 +26,7 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.archivist.util.bd
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -59,10 +60,6 @@ class AssetServiceTests : AbstractTest() {
     lateinit var projectStorageService: ProjectStorageService
 
     override fun requiresElasticSearch(): Boolean {
-        return true
-    }
-
-    override fun requiresFieldSets(): Boolean {
         return true
     }
 
@@ -176,7 +173,7 @@ class AssetServiceTests : AbstractTest() {
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
             mapOf("system.hello" to "foo"),
-            clip = Clip("page", 3.0, 3.0, "pages")
+            clip = Clip("page", BigDecimal(3.0), BigDecimal(3.0), "pages")
         )
 
         val req = BatchCreateAssetsRequest(
@@ -188,7 +185,7 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(3.0, assets[0].getAttr<Double?>("clip.start"))
         assertEquals(3.0, assets[0].getAttr<Double?>("clip.stop"))
         assertEquals("page", assets[0].getAttr<String?>("clip.type"))
-        assertEquals("pages", assets[0].getAttr<String?>("clip.timeline"))
+        assertEquals("pages", assets[0].getAttr<String?>("clip.track"))
         assertEquals("bLyf1hG1kgdyYYyrdzXgVdBt0ok", assets[0].getAttr<String?>("clip.pile"))
     }
 
@@ -262,8 +259,10 @@ class AssetServiceTests : AbstractTest() {
 
     @Test(expected = ResponseException::class)
     fun testUpdateAssets_failOnDoesNotExist() {
-        assetService.update("abc",
-            UpdateAssetRequest(mapOf("source" to mapOf("mimetype" to "cat"))))
+        assetService.update(
+            "abc",
+            UpdateAssetRequest(mapOf("source" to mapOf("mimetype" to "cat")))
+        )
     }
 
     @Test(expected = ResponseException::class)
@@ -272,8 +271,10 @@ class AssetServiceTests : AbstractTest() {
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
         val assetId = assetService.batchCreate(batchCreate).created[0]
-        assetService.update(assetId,
-            UpdateAssetRequest(mapOf("source" to mapOf("filename" to mapOf("cat" to "dog")))))
+        assetService.update(
+            assetId,
+            UpdateAssetRequest(mapOf("source" to mapOf("filename" to mapOf("cat" to "dog"))))
+        )
     }
 
     @Test
@@ -281,7 +282,8 @@ class AssetServiceTests : AbstractTest() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec("gs://cats/large-brown-cat.jpg"),
-                AssetSpec("gs://cats/cat-movie.m4v"))
+                AssetSpec("gs://cats/cat-movie.m4v")
+            )
         )
         val createRsp = assetService.batchCreate(batchCreate)
         val asset1 = assetService.getAsset(createRsp.created[0])
@@ -289,9 +291,11 @@ class AssetServiceTests : AbstractTest() {
 
         val update = mapOf(
             asset1.id to UpdateAssetRequest(
-                mapOf("aux" to mapOf("foo" to "bar"))),
+                mapOf("aux" to mapOf("foo" to "bar"))
+            ),
             asset2.id to UpdateAssetRequest(
-                mapOf("source" to mapOf("mimetype" to "cat")))
+                mapOf("source" to mapOf("mimetype" to "cat"))
+            )
         )
         val rsp = assetService.batchUpdate(update)
         assertFalse(rsp.hasFailures())
@@ -301,9 +305,11 @@ class AssetServiceTests : AbstractTest() {
     fun testBatchUpdateAssets_failOnDoesNotExist() {
         val update = mapOf(
             "abc" to UpdateAssetRequest(
-                mapOf("aux" to mapOf("foo" to "bar"))),
+                mapOf("aux" to mapOf("foo" to "bar"))
+            ),
             "123" to UpdateAssetRequest(
-                mapOf("source" to mapOf("mimetype" to "cat")))
+                mapOf("source" to mapOf("mimetype" to "cat"))
+            )
         )
         val rsp = assetService.batchUpdate(update)
         assertTrue("document missing" in rsp.items[0].failureMessage)
@@ -347,7 +353,8 @@ class AssetServiceTests : AbstractTest() {
                 AssetSpec("gs://cats/large-brown-cat.jpg"),
                 AssetSpec("gs://cats/large-brown-cat.mov"),
                 AssetSpec("gs://cats/large-brown-cat.pdf")
-        ))
+            )
+        )
 
         val createRsp = assetService.batchCreate(batchCreate)
         val assets = assetService.getAll(createRsp.created)
@@ -358,7 +365,10 @@ class AssetServiceTests : AbstractTest() {
             it.setAttr("aux.field", 1)
             it.setAttr("media.type", FileTypes.getType(ext))
             it.setAttr("media.length", 10.732)
-            it.setAttr("clip.type", "full")
+            it.setAttr("clip.timeline", "full")
+            it.setAttr("clip.type", "scene")
+            it.setAttr("clip.start", 0)
+            it.setAttr("clip.stop", 10.732)
             map[it.id] = it.document
         }
 
@@ -418,9 +428,9 @@ class AssetServiceTests : AbstractTest() {
 
         val clip = asset.getAttr("clip", Clip::class.java)
         assertEquals("page", clip?.type)
-        assertEquals(2.0, clip?.start)
-        assertEquals(2.0, clip?.stop)
-        assertEquals(1.0, clip?.length)
+        assertEquals(2.0, clip?.start?.toDouble())
+        assertEquals(2.0, clip?.stop?.toDouble())
+        assertEquals(1.0, clip?.length?.toDouble())
         assertEquals("wU5f6DK02InzXUC600cqI5L8vGM", clip?.pile)
     }
 
@@ -466,15 +476,16 @@ class AssetServiceTests : AbstractTest() {
 
         val spec = AssetSpec(
             "asset:${sourceAsset.id}",
-            clip = Clip("scene", 10.24, 12.48))
+            clip = Clip("scene", 10.24.bd(), 12.48.bd())
+        )
 
         val newAsset = Asset()
         val clip = assetService.deriveClip(newAsset, spec)
 
         assertEquals("scene", clip.type)
-        assertEquals(10.24, clip.start)
-        assertEquals(12.48, clip.stop)
-        assertEquals(2.24, clip.length)
+        assertEquals(10.24.bd(), clip.start)
+        assertEquals(12.48.bd(), clip.stop)
+        assertEquals(2.24.bd(), clip.length)
         assertEquals("oZ4r3vjXTNtopNSx_AHN-1WBbQk", clip.pile)
         assertEquals("As2tgiN-NU29FxKczfB8alEvdAuQqgXr", clip.sourceAssetId)
         assertEquals(sourceAsset.id, clip.sourceAssetId)
@@ -484,7 +495,12 @@ class AssetServiceTests : AbstractTest() {
     fun testDeriveClipFromSelf() {
 
         val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v", clip = Clip("scene", 10.24, 12.48)))
+            assets = listOf(
+                AssetSpec(
+                    "gs://cats/cat-movie.m4v",
+                    clip = Clip("scene", 10.24.bd(), 12.48.bd())
+                )
+            )
         )
         val sourceAsset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
         val clip = sourceAsset.getAttr("clip", Clip::class.java) ?: throw IllegalStateException(
@@ -492,9 +508,9 @@ class AssetServiceTests : AbstractTest() {
         )
 
         assertEquals("scene", clip.type)
-        assertEquals(10.24, clip.start)
-        assertEquals(12.48, clip.stop)
-        assertEquals(2.24, clip.length)
+        assertEquals(10.24, clip.start.toDouble())
+        assertEquals(12.48, clip.stop.toDouble())
+        assertEquals(2.24, clip.length.toDouble())
         assertEquals("GV0zsbUZLZo_gWuTUHGOLNqQ7io", clip.pile)
         assertEquals("6UBTOcb7UygVSWstPqYtcgVor_n4HBEY", clip.sourceAssetId)
         assertEquals(sourceAsset.id, clip.sourceAssetId)
@@ -562,12 +578,17 @@ class AssetServiceTests : AbstractTest() {
         )
         // Add a label.
         var asset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
-        assetService.updateLabels(UpdateAssetLabelsRequest(
-            // Validate adding 2 identical labels only adds 1
-            mapOf(asset.id to listOf(
-                DataSetLabel(ds.id, "cat", simhash = "12345"),
-                DataSetLabel(ds.id, "cat", simhash = "12345")))
-        ))
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                // Validate adding 2 identical labels only adds 1
+                mapOf(
+                    asset.id to listOf(
+                        DataSetLabel(ds.id, "cat", simhash = "12345"),
+                        DataSetLabel(ds.id, "cat", simhash = "12345")
+                    )
+                )
+            )
+        )
 
         asset = assetService.getAsset(asset.id)
         var labels = asset.getAttr("labels", DataSetLabel.LIST_OF)
@@ -576,10 +597,12 @@ class AssetServiceTests : AbstractTest() {
         assertEquals("12345", labels?.get(0)?.simhash)
 
         // Remove a label
-        assetService.updateLabels(UpdateAssetLabelsRequest(
-            null,
-            mapOf(asset.id to listOf(DataSetLabel(ds.id, "cat")))
-        ))
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                null,
+                mapOf(asset.id to listOf(DataSetLabel(ds.id, "cat")))
+            )
+        )
 
         asset = assetService.getAsset(asset.id)
         labels = asset.getAttr("labels", DataSetLabel.LIST_OF) ?: listOf()

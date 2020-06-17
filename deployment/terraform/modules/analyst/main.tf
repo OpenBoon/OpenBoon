@@ -3,8 +3,8 @@ resource "google_container_node_pool" "analyst" {
   cluster            = var.container-cluster-name
   initial_node_count = 1
   autoscaling {
-    max_node_count = var.maximum-nodes
-    min_node_count = var.minimum-nodes
+    max_node_count = 3
+    min_node_count = 1
   }
   management {
     auto_repair  = true
@@ -12,6 +12,7 @@ resource "google_container_node_pool" "analyst" {
   }
 
   node_config {
+    preemptible = true
     machine_type = var.machine-type
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
@@ -29,10 +30,25 @@ resource "google_container_node_pool" "analyst" {
       namespace = var.namespace
     }
   }
+  lifecycle {
+    ignore_changes = [
+      initial_node_count,
+      autoscaling[0].min_node_count,
+      autoscaling[0].max_node_count
+    ]
+  }
+}
+
+resource "random_string" "analyst-shared-key" {
+  length = 50
+  special = false
 }
 
 resource "kubernetes_deployment" "analyst" {
   provider = kubernetes
+  lifecycle {
+    ignore_changes = [spec[0].replicas]
+  }
   metadata {
     name      = "analyst"
     namespace = var.namespace
@@ -71,6 +87,12 @@ resource "kubernetes_deployment" "analyst" {
           effect   = "NoSchedule"
         }
         volume {
+          name = "tmp"
+          host_path {
+            path = "/tmp"
+          }
+        }
+        volume {
           name = "dockersock"
           host_path {
             path = "/var/run/docker.sock"
@@ -87,6 +109,10 @@ resource "kubernetes_deployment" "analyst" {
           image             = "zmlp/analyst:${var.container-tag}"
           image_pull_policy = "Always"
           volume_mount {
+            mount_path = "/tmp"
+            name = "tmp"
+          }
+          volume_mount {
             mount_path = "/var/run/docker.sock"
             name = "dockersock"
           }
@@ -101,7 +127,7 @@ resource "kubernetes_deployment" "analyst" {
           }
           env {
             name  = "ANALYST_SHAREDKEY"
-            value = "QjZEQzRDQTgtOUUwRC00NUE1LUFCNjktRUYwQTA4ODc4MTM3Cg"
+            value = random_string.analyst-shared-key.result
           }
           env {
             name = "OFFICER_URL"
@@ -152,14 +178,17 @@ resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
     }
   }
   spec {
-    max_replicas = var.maximum-replicas
-    min_replicas = var.minimum-replicas
+    max_replicas = 2
+    min_replicas = 1
     scale_target_ref {
       api_version = "apps/v1"
       kind        = "Deployment"
       name        = "analyst"
     }
     target_cpu_utilization_percentage = 75
+  }
+  lifecycle {
+    ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
   }
 }
 

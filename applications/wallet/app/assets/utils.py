@@ -1,8 +1,9 @@
 import base64
-
 import cv2
 import numpy as np
 import requests
+
+from django.urls import reverse
 
 
 class AssetBoxImager(object):
@@ -153,3 +154,154 @@ def crop_image_poly(image, poly, width=256, draw=False, color=(255, 0, 0), thick
         resized = np.zeros((width, width, 3), np.uint8)
 
     return resized
+
+
+def get_asset_style(item):
+    """Set the AssetStyle for the frontend. Images and Documents are 'image'.
+
+    Args:
+        item: The specific asset item being acted upon, as returned by ZMLP.
+
+    Returns:
+        str: Whether this asset's source is primarily image or video
+    """
+    try:
+        mimetype_base = item['metadata']['source']['mimetype'].split('/')[0]
+        if mimetype_base == 'video':
+            return 'video'
+        else:
+            return 'image'
+    except (KeyError, IndexError):
+        return None
+
+
+def get_video_length(item):
+    """Sets the video length for an asset for the frontend to use.
+
+    Args:
+        item: The specific asset item being acted upon, as returned by ZMLP.
+
+    Returns:
+        str: The length of this assets video, if it exists.
+    """
+    try:
+        if item['asset_style'] == 'video':
+            return item['metadata']['media']['length']
+        else:
+            return None
+    except KeyError:
+        return None
+
+
+def get_thumbnail_and_video_urls(request, item):
+    """Determines the thumbnail image and video url to use for the frontend.
+
+    For the thumbnail url, if an appropriate web-proxy is not found it will use the
+    fallback image address. For the video url, if a suitable proxy video is not found
+    (it may not have been created yet or the asset is an image) it will return None.
+
+    Args:
+        request: DRF Request object
+        item: The specific asset item being acted upon, as returned by ZMLP.
+
+    Returns:
+        (str, str): Thumbnail and Video url for this asset item.
+    """
+    project_id = request.parser_context['view'].kwargs['project_pk']
+    asset_id = item['id']
+    thumbnail_url = '/icons/fallback_3x.png'
+    thumbnail_category = 'web-proxy'
+    video_proxy_url = None
+    video_proxy_category = 'proxy'
+    video_proxy_mimetype = 'video/mp4'
+    for _file in item['metadata']['files']:
+        if _file['category'] == thumbnail_category:
+            name = _file['name']
+            # If a web-proxy is found, build the file serving url for it
+            thumbnail_url = reverse('file_name-detail', kwargs={'project_pk': project_id,
+                                                                'asset_pk': asset_id,
+                                                                'category_pk': thumbnail_category,
+                                                                'pk': name})
+        if _file['category'] == video_proxy_category and _file['mimetype'] == video_proxy_mimetype:
+            name = _file['name']
+            video_proxy_url = reverse('file_name-detail',
+                                      kwargs={'project_pk': project_id,
+                                              'asset_pk': asset_id,
+                                              'category_pk': video_proxy_category,
+                                              'pk': name})
+    # Regardless of the url being used, make it absolute
+    thumb = request.build_absolute_uri(thumbnail_url)
+    if video_proxy_url:
+        video = request.build_absolute_uri(video_proxy_url)
+    else:
+        video = None
+
+    return thumb, video
+
+
+def get_best_fullscreen_file_data(item):
+    """Helper that looks at an assets files and determines the best one to view fullscreen.
+
+    If no valid file is found for display, returns None.
+
+    Args:
+        item: The specific asset item being acted upon, as returned by ZMLP.
+
+    Return:
+        dict: The file blob that represents the best file for fullscreen viewing. None if
+            a file is not found.
+    """
+    asset_style = get_asset_style(item)
+    best_file = get_largest_proxy(item, asset_style)
+    return best_file
+
+
+def get_largest_proxy(item, mimetype_prefix='image'):
+    """Looks at an assets files, and return the largest proxy file with the specified mimetype.
+
+    Proxy files that are of category 'web-proxy' will be prioritized first.
+
+    Args:
+        item: The specific asset item being acted upon, as return by ZMLP.
+        mimetype_prefix: The mimetype of the proxy that should be looked for. Defaults to images.
+
+    Return:
+        dict: The data for the largest proxy of the given mimetype.
+    """
+    _files = item['metadata']['files']
+    if not _files:
+        # Bail if there are no files to look at
+        return None
+
+    # Filter for the given mimetype
+    def filter_by_mimetype(_file):
+        if _file['mimetype'].startswith(mimetype_prefix):
+            return True
+        return False
+    matching_mimetypes = list(filter(filter_by_mimetype, _files))
+
+    # Sort matching files, largest resolution first
+    def resolution_resolver(_file):
+        return int(_file['attrs'].get('width', 0)) * int(_file['attrs'].get('height', 0))
+    sorted_files = sorted(matching_mimetypes, key=resolution_resolver, reverse=True)
+
+    # Check for web proxies in the sorted files first
+    def filter_for_web_proxies(_file):
+        if _file['category'] == 'web-proxy':
+            return True
+        return False
+    sorted_web_proxies = list(filter(filter_for_web_proxies, sorted_files))
+    if sorted_web_proxies:
+        return sorted_web_proxies[0]
+
+    # Return the just the largest proxy if there are no web-proxies
+    def filter_for_proxies(_file):
+        if _file['category'] == 'proxy':
+            return True
+        return False
+    sorted_proxies = list(filter(filter_for_proxies, sorted_files))
+    if sorted_proxies:
+        return sorted_proxies[0]
+    else:
+        # Managed to not find any web-proxies or proxies
+        return None

@@ -1,6 +1,7 @@
 import colors from './colors'
 
 const borderRadius = {
+  none: 0,
   small: 2,
   medium: 4,
   large: 14,
@@ -16,7 +17,7 @@ const borders = {
   error: `2px solid ${colors.signal.warning.base}`,
   success: `1px solid ${colors.signal.grass.base}`,
   tableRow: `1px solid ${colors.structure.steel}`,
-  inputHover: `1px solid ${colors.structure.white}`,
+  radio: `1px solid ${colors.structure.white}`,
   inputSmall: `1px solid ${colors.key.one}`,
   input: `2px solid ${colors.key.one}`,
   divider: `1px solid ${colors.structure.smoke}`,
@@ -28,6 +29,8 @@ const borders = {
   prettyMetadata: `4px solid ${colors.structure.iron}`,
   facet: `4px solid ${colors.key.one}`,
   unselectedFacet: `4px solid ${colors.structure.steel}`,
+  metrics: `2px solid ${colors.structure.white}`,
+  outline: `thin solid transparent`,
 }
 
 const opacity = {
@@ -55,6 +58,7 @@ const constants = {
   borders,
   opacity,
   boxShadows,
+  overlay: `${colors.structure.black}e6`,
   navbar: {
     height: 44,
   },

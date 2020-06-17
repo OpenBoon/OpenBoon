@@ -27,23 +27,23 @@ enum class ModelType(
     LABEL_DETECTION_KNN(
         "zmlp_train.knn.KnnLabelDetectionTrainer",
         mapOf(),
-        "zmlp_train.knn.KnnLabelDetectionClassifier",
+        "zmlp_analysis.custom.KnnLabelDetectionClassifier",
         mapOf(),
         "custom-%s-label-detection-knn",
         "Fast classification using a KNN algorithm",
         DataSetType.LABEL_DETECTION
     ),
-    LABEL_DETECTION_RESNET152(
+    LABEL_DETECTION_RESNET50(
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
         mapOf(
             "min_concepts" to 2,
             "min_examples" to 5,
             "train-test-ratio" to 3
         ),
-        "zmlp_train.tf2.TensorflowTransferLearningClassifier",
+        "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
-        "custom-%s-label-detection-resnet152",
-        "Classify images using a custom trained ResNet152 model.",
+        "custom-%s-label-detection-resnet50",
+        "Classify images using a custom trained ResNet50V2 model.",
         DataSetType.LABEL_DETECTION
     ),
     LABEL_DETECTION_VGG16(
@@ -53,7 +53,7 @@ enum class ModelType(
             "min_examples" to 5,
             "train-test-ratio" to 3
         ),
-        "zmlp_train.tf2.TensorflowTransferLearningClassifier",
+        "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
         "custom-%s-label-detection-vgg16",
         "Classify images using a custom trained VGG16 model.",
@@ -66,31 +66,33 @@ enum class ModelType(
             "min_examples" to 5,
             "train-test-ratio" to 3
         ),
-        "zmlp_train.tf2.TensorflowTransferLearningClassifier",
+        "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
         "custom-%s-label-detection-mobilenet2",
         "Classify images using a custom trained Mobilenet2 model.",
         DataSetType.LABEL_DETECTION
     ),
     FACE_RECOGNITION_KNN(
-        "zmlp_train.knn.KnnFaceRecognitionTrainer",
+        "zmlp_train.face_rec.KnnFaceRecognitionTrainer",
         mapOf(),
-        "zmlp_train.knn.KnnFaceRecognitionClassifier",
+        "zmlp_analysis.custom.KnnFaceRecognitionClassifier",
         mapOf(),
-        "custom-%s-face-recognition",
+        "custom-%s-face-recognition-knn",
         "Relabel existing ZMLP faces using a KNN Face Recognition model.",
         DataSetType.FACE_RECOGNITION
     );
 
     fun asMap(): Map<String, Any> {
-        return mapOf("name" to name,
+        return mapOf(
+            "name" to name,
             "trainProcessor" to trainProcessor,
             "trainArgs" to trainArgs,
             "classifyProcessor" to classifyProcessor,
             "classifyArgs" to classifyArgs,
             "moduleName" to moduleName,
             "description" to description,
-            "dataSetType" to dataSetType)
+            "dataSetType" to dataSetType
+        )
     }
 }
 
@@ -190,7 +192,8 @@ class ModelFilter(
         "timeCreated" to "model.time_created",
         "timeModified" to "model.time_modified",
         "id" to "model.pk_data_set",
-        "type" to "model.int_type")
+        "type" to "model.int_type"
+    )
 
     @JsonIgnore
     override fun build() {

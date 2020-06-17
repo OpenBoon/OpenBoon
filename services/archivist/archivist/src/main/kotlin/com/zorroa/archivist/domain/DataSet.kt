@@ -7,6 +7,7 @@ import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.JdbcUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import java.math.BigDecimal
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -75,7 +76,7 @@ class DataSet(
     val actorModified: String
 
 ) {
-    fun getLabel(label: String, bbox: List<Float>? = null): DataSetLabel {
+    fun getLabel(label: String, bbox: List<BigDecimal>? = null): DataSetLabel {
         return DataSetLabel(id, label, bbox)
     }
 }
@@ -85,12 +86,15 @@ class DataSetLabel(
     val dataSetId: UUID,
     @ApiModelProperty("The label for the DataSet")
     val label: String,
-    @ApiModelProperty("An optional bounding box")
-    val bbox: List<Float>? = null,
+    bbox: List<BigDecimal>? = null,
     @ApiModelProperty("An an optional simhash for the label")
     val simhash: String? = null
 
 ) {
+
+    @ApiModelProperty("An optional bounding box")
+    val bbox: List<BigDecimal>? = bbox?.map { it.setScale(3, java.math.RoundingMode.HALF_UP) }
+
     companion object {
         val SET_OF: TypeReference<MutableSet<DataSetLabel>> = object :
             TypeReference<MutableSet<DataSetLabel>>() {}
@@ -105,7 +109,6 @@ class DataSetLabel(
 
         if (dataSetId != other.dataSetId) return false
         if (bbox != other.bbox) return false
-
         return true
     }
 
@@ -144,7 +147,8 @@ class DataSetFilter(
         "timeCreated" to "data_set.time_created",
         "timeModified" to "data_set.time_modified",
         "id" to "data_set.pk_data_set",
-        "type" to "data_set.int_type")
+        "type" to "data_set.int_type"
+    )
 
     @JsonIgnore
     override fun build() {

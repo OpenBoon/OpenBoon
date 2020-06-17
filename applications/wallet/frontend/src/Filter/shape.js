@@ -8,9 +8,10 @@ const filterShape = {
     'labelConfidence',
     'textContent',
     'similarity',
-  ]).isRequired,
+  ]),
   attribute: PropTypes.string.isRequired,
   values: PropTypes.shape({}),
+  isDisabled: PropTypes.bool,
 }
 
 export default filterShape

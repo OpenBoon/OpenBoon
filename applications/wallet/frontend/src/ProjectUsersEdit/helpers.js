@@ -8,6 +8,8 @@ export const onSubmit = async ({
   userId,
   state: { roles: r },
 }) => {
+  dispatch({ isLoading: true })
+
   try {
     const roles = Object.keys(r).filter((key) => r[key])
 
@@ -21,6 +23,9 @@ export const onSubmit = async ({
       `/${projectId}/users?action=edit-user-success`,
     )
   } catch (response) {
-    dispatch({ error: 'Something went wrong. Please try again.' })
+    dispatch({
+      isLoading: false,
+      error: 'Something went wrong. Please try again.',
+    })
   }
 }

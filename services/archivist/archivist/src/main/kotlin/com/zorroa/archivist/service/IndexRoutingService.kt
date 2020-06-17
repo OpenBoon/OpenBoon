@@ -7,6 +7,7 @@ import com.zorroa.archivist.clients.EsRestClient
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.EsClientCacheKey
+import com.zorroa.archivist.domain.IndexCluster
 import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
@@ -503,6 +504,10 @@ class EsClientCache {
 
     fun getRestHighLevelClient(url: String): RestHighLevelClient {
         return cache.get(url)
+    }
+
+    fun getRestHighLevelClient(cluster: IndexCluster): RestHighLevelClient {
+        return cache.get(cluster.url)
     }
 
     /**

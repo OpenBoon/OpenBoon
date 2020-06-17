@@ -34,6 +34,8 @@ services:
       context: services/elasticsearch
       args:
         node_type: single
+        MINIO_ACCESS_KEY: qwerty123
+        MINIO_SECRET_KEY: 123qwerty
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -43,6 +45,8 @@ services:
       cluster.name: "zorroa-es-cluster"
       network.host: "0.0.0.0"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+      MINIO_URL: http://minio:9000
+      MINIO_DEFAULT_PROTOCOL: http
 
   # API Gateway
   api-gateway:
@@ -141,6 +145,7 @@ services:
     ports:
       - 5000:5000
     volumes:
+      - "/tmp:/tmp"
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
       ANALYST_DOCKER_PULL: "false"
@@ -160,9 +165,12 @@ services:
         CI_COMMIT_SHA: $CI_COMMIT_SHA
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings
+      DEBUG: "true"
+      BROWSABLE: "true"
       PG_HOST: postgres
       ZMLP_API_URL: http://api-gateway:80
       INCEPTION_KEY_B64: ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg==
+      GOOGLE_OAUTH_CLIENT_ID: 980622341235-39kks0r3pkl0iotcb8mt6iclbvj98mml
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/api/v1/health"]
       interval: 30s
@@ -191,6 +199,14 @@ services:
       - zmlp-py3-base
     build:
       context: client/python
+    command: echo
+
+  zmlp-py3-zvi:
+    image: zmlp/py3-zvi:latest
+    depends_on:
+      - zmlp-py3-client
+    build:
+      context: client/zvi
     command: echo
 
   zmlp-py3-sdk:

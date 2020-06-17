@@ -22,8 +22,10 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testStore() {
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS,
-            "1234", ProjectStorageCategory.SOURCE, "bob.jpg")
+        val loc = ProjectFileLocator(
+            ProjectStorageEntity.ASSETS,
+            "1234", ProjectStorageCategory.SOURCE, "bob.jpg"
+        )
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
         val result = projectStorageService.store(spec)
@@ -40,7 +42,8 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         val result = projectStorageService.store(spec)
         projectStorageService.recursiveDelete(
-            ProjectDirLocator(ProjectStorageEntity.ASSETS, loc.entityId))
+            ProjectDirLocator(ProjectStorageEntity.ASSETS, loc.entityId)
+        )
         // Throws ProjectStorageException
         projectStorageService.fetch(loc)
     }

@@ -169,7 +169,18 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-5 {
+  .emotion-15 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -263,6 +274,13 @@ Array [
   padding-left: 4px;
 }
 
+.emotion-14 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
 .emotion-6 {
   text-align: left;
   font-size: 15px;
@@ -287,10 +305,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-13 {
-  height: auto;
 }
 
 .emotion-12 {
@@ -366,7 +380,7 @@ Array [
 }
 
 <div
-    className="emotion-13"
+    className="emotion-15"
   >
     <div
       className="emotion-5"
@@ -402,56 +416,64 @@ Array [
         </div>
       </button>
     </div>
-    <table
-      className="emotion-12"
+    <div
+      className="emotion-14"
     >
-      <thead>
-        <tr>
-          <th
-            className="emotion-6"
-          >
-            Email
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Roles
-          </th>
-          <th
-            className="emotion-6"
-          >
-            <div
-              className="emotion-8"
-            >
-              <svg
-                data-file-name="gear.svg"
-                width={20}
-              />
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            jane@zorroa.com
-          </td>
-          <td>
-            <span
-              className="emotion-10"
-            >
-              ML Tools
-            </span>
-            <span
-              className="emotion-10"
-            >
-              API Keys
-            </span>
-          </td>
-          <td />
-        </tr>
-      </tbody>
-    </table>
+      <div
+        className="emotion-13"
+      >
+        <table
+          className="emotion-12"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-6"
+              >
+                Email
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Roles
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                jane@zorroa.com
+              </td>
+              <td>
+                <span
+                  className="emotion-10"
+                >
+                  ML Tools
+                </span>
+                <span
+                  className="emotion-10"
+                >
+                  API Keys
+                </span>
+              </td>
+              <td />
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div>
        
     </div>
@@ -581,8 +603,15 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-13 {
+  .emotion-15 {
   height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .emotion-5 {
@@ -677,6 +706,21 @@ Array [
 
 .emotion-2 {
   padding-left: 4px;
+}
+
+.emotion-14 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-13 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .emotion-12 {
@@ -793,7 +837,7 @@ Array [
 }
 
 <div
-    className="emotion-13"
+    className="emotion-15"
   >
     <div
       className="emotion-5"
@@ -829,56 +873,58 @@ Array [
         </div>
       </button>
     </div>
-    <table
-      className="emotion-12"
+    <div
+      className="emotion-14"
     >
-      <thead>
-        <tr>
-          <th
-            className="emotion-6"
-          >
-            Email
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Roles
-          </th>
-          <th
-            className="emotion-6"
-          >
-            <div
-              className="emotion-8"
-            >
-              <svg
-                data-file-name="gear.svg"
-                width={20}
-              />
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          className="emotion-11"
+      <div
+        className="emotion-13"
+      >
+        <table
+          className="emotion-12"
         >
-          <td
-            colSpan={3}
-          >
-            <div
-              className="emotion-10"
+          <thead>
+            <tr>
+              <th
+                className="emotion-6"
+              >
+                Email
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Roles
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-11"
             >
-              No users
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div>
-       
-    </div>
-    <div>
-       
+              <td
+                colSpan={3}
+              >
+                <div
+                  className="emotion-10"
+                >
+                  No users
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>,
 ]
@@ -1053,7 +1099,18 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-5 {
+  .emotion-17 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1147,6 +1204,13 @@ Array [
   padding-left: 4px;
 }
 
+.emotion-16 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
 .emotion-6 {
   text-align: left;
   font-size: 15px;
@@ -1171,10 +1235,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-15 {
-  height: auto;
 }
 
 .emotion-14 {
@@ -1305,7 +1365,7 @@ Array [
 }
 
 <div
-    className="emotion-15"
+    className="emotion-17"
   >
     <div
       className="emotion-5"
@@ -1341,73 +1401,81 @@ Array [
         </div>
       </button>
     </div>
-    <table
-      className="emotion-14"
+    <div
+      className="emotion-16"
     >
-      <thead>
-        <tr>
-          <th
-            className="emotion-6"
-          >
-            Email
-          </th>
-          <th
-            className="emotion-6"
-          >
-            Roles
-          </th>
-          <th
-            className="emotion-6"
-          >
-            <div
-              className="emotion-8"
-            >
-              <svg
-                data-file-name="gear.svg"
-                width={20}
-              />
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            jane@zorroa.com
-          </td>
-          <td>
-            <span
-              className="emotion-10"
-            >
-              ML Tools
-            </span>
-            <span
-              className="emotion-10"
-            >
-              API Keys
-            </span>
-          </td>
-          <td>
-            <div
-              className="emotion-13"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-12"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
+      <div
+        className="emotion-15"
+      >
+        <table
+          className="emotion-14"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-6"
               >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+                Email
+              </th>
+              <th
+                className="emotion-6"
+              >
+                Roles
+              </th>
+              <th
+                className="emotion-6"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                jane@zorroa.com
+              </td>
+              <td>
+                <span
+                  className="emotion-10"
+                >
+                  ML Tools
+                </span>
+                <span
+                  className="emotion-10"
+                >
+                  API Keys
+                </span>
+              </td>
+              <td>
+                <div
+                  className="emotion-13"
+                >
+                  <button
+                    aria-label="Toggle Actions Menu"
+                    className="gear emotion-12"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <svg
+                      data-file-name="gear.svg"
+                      width={20}
+                    />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div>
        
     </div>

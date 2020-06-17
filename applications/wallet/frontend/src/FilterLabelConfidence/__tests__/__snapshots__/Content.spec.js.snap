@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FilterLabelConfidenceContent /> should render with no buckets 1`] = `
+exports[`<FilterLabelConfidenceContent /> should render with no data 1`] = `
 Array [
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {
@@ -32,13 +32,7 @@ Array [
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-0 {
-  padding-bottom: 12px;
-}
-
-<div
-    className="emotion-0"
-  >
+  <div>
     Label prediction confidence score:
      
     All
@@ -57,7 +51,7 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
@@ -115,17 +109,23 @@ Array [
   width: 100%;
   border: 1px solid transparent;
   padding: 12px;
+  padding-left: 32px;
   border-radius: 2px;
   color: #e0e0e0;
   background-color: #2e2e2e;
-  padding-left: 32px;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
   background-repeat: no-repeat,repeat;
   background-position: left 8px top 50%;
   background-size: 20px;
 }
 
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
 .emotion-0:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
@@ -145,10 +145,6 @@ Array [
 
 .emotion-0::placeholder {
   font-style: italic;
-}
-
-.emotion-0:hover {
-  border: 1px solid #808080;
 }
 
 <div
@@ -171,7 +167,6 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-top: 8px;
   padding-bottom: 8px;
   font-family: Roboto Condensed;
   color: #b3b3b3;
@@ -181,7 +176,7 @@ Array [
     className="emotion-0"
   >
     <div>
-      KEYWORD
+      LABEL
     </div>
     <div>
       COUNT
@@ -201,7 +196,7 @@ Array [
 
 exports[`<FilterLabelConfidenceContent /> should select a label 1`] = `
 Array [
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {
@@ -223,13 +218,7 @@ Array [
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-0 {
-  padding-bottom: 12px;
-}
-
-<div
-    className="emotion-0"
-  >
+  <div>
     Label prediction confidence score:
      
     All
@@ -248,7 +237,7 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
@@ -306,17 +295,23 @@ Array [
   width: 100%;
   border: 1px solid transparent;
   padding: 12px;
+  padding-left: 32px;
   border-radius: 2px;
   color: #e0e0e0;
   background-color: #2e2e2e;
-  padding-left: 32px;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
   background-repeat: no-repeat,repeat;
   background-position: left 8px top 50%;
   background-size: 20px;
 }
 
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
 .emotion-0:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
@@ -336,10 +331,6 @@ Array [
 
 .emotion-0::placeholder {
   font-style: italic;
-}
-
-.emotion-0:hover {
-  border: 1px solid #808080;
 }
 
 <div
@@ -362,7 +353,6 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-top: 8px;
   padding-bottom: 8px;
   font-family: Roboto Condensed;
   color: #b3b3b3;
@@ -372,7 +362,7 @@ Array [
     className="emotion-0"
   >
     <div>
-      KEYWORD
+      LABEL
     </div>
     <div>
       COUNT
@@ -468,6 +458,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 .emotion-6 {
@@ -644,7 +637,7 @@ Array [
 
 exports[`<FilterLabelConfidenceContent /> should select a label 2`] = `
 Array [
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {
@@ -666,13 +659,7 @@ Array [
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-0 {
-  padding-bottom: 12px;
-}
-
-<div
-    className="emotion-0"
-  >
+  <div>
     Label prediction confidence score:
      
     All
@@ -691,7 +678,7 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
@@ -749,17 +736,23 @@ Array [
   width: 100%;
   border: 1px solid transparent;
   padding: 12px;
+  padding-left: 32px;
   border-radius: 2px;
   color: #e0e0e0;
   background-color: #2e2e2e;
-  padding-left: 32px;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
   background-repeat: no-repeat,repeat;
   background-position: left 8px top 50%;
   background-size: 20px;
 }
 
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
 .emotion-0:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
@@ -779,10 +772,6 @@ Array [
 
 .emotion-0::placeholder {
   font-style: italic;
-}
-
-.emotion-0:hover {
-  border: 1px solid #808080;
 }
 
 <div
@@ -805,7 +794,6 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-top: 8px;
   padding-bottom: 8px;
   font-family: Roboto Condensed;
   color: #b3b3b3;
@@ -815,7 +803,7 @@ Array [
     className="emotion-0"
   >
     <div>
-      KEYWORD
+      LABEL
     </div>
     <div>
       COUNT
@@ -911,6 +899,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 <ul
@@ -955,7 +946,7 @@ Array [
 
 exports[`<FilterLabelConfidenceContent /> should unselect a label 1`] = `
 Array [
-  <FiltersReset
+  <FilterReset
     assetId=""
     filter={
       Object {
@@ -989,13 +980,7 @@ Array [
     onReset={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-0 {
-  padding-bottom: 12px;
-}
-
-<div
-    className="emotion-0"
-  >
+  <div>
     Label prediction confidence score:
      
     All
@@ -1014,7 +999,7 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   font-family: Roboto Mono;
 }
 
@@ -1072,17 +1057,23 @@ Array [
   width: 100%;
   border: 1px solid transparent;
   padding: 12px;
+  padding-left: 32px;
   border-radius: 2px;
   color: #e0e0e0;
   background-color: #2e2e2e;
-  padding-left: 32px;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
   background-repeat: no-repeat,repeat;
   background-position: left 8px top 50%;
   background-size: 20px;
 }
 
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
 .emotion-0:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
@@ -1102,10 +1093,6 @@ Array [
 
 .emotion-0::placeholder {
   font-style: italic;
-}
-
-.emotion-0:hover {
-  border: 1px solid #808080;
 }
 
 <div
@@ -1128,7 +1115,6 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-top: 8px;
   padding-bottom: 8px;
   font-family: Roboto Condensed;
   color: #b3b3b3;
@@ -1138,7 +1124,7 @@ Array [
     className="emotion-0"
   >
     <div>
-      KEYWORD
+      LABEL
     </div>
     <div>
       COUNT
@@ -1171,6 +1157,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 .emotion-5 {

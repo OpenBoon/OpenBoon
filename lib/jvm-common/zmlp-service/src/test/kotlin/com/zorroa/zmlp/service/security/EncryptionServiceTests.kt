@@ -46,8 +46,11 @@ class EncryptionServiceTests {
 
     @Test
     fun testGetProjectKey() {
-        whenever(systemStorageService.fetchObject(
-            any(), eq(Json.LIST_OF_STRING))).thenReturn(mockKeys)
+        whenever(
+            systemStorageService.fetchObject(
+                any(), eq(Json.LIST_OF_STRING)
+            )
+        ).thenReturn(mockKeys)
 
         val key1 = encryptionService.getProjectKey(8)
         assertEquals("3bc1212bc76p", key1)
@@ -61,8 +64,11 @@ class EncryptionServiceTests {
 
     @Test
     fun testGetProjectKeyWithProjectId() {
-        whenever(systemStorageService.fetchObject(
-            any(), eq(Json.LIST_OF_STRING))).thenReturn(mockKeys)
+        whenever(
+            systemStorageService.fetchObject(
+                any(), eq(Json.LIST_OF_STRING)
+            )
+        ).thenReturn(mockKeys)
 
         val key1 = encryptionService.getProjectKey(actor.projectId, 8)
         assertEquals("3bc1212bc76p", key1)
@@ -76,8 +82,11 @@ class EncryptionServiceTests {
 
     @Test
     fun testEncryptAndDecryptString() {
-        whenever(systemStorageService.fetchObject(
-            any(), eq(Json.LIST_OF_STRING))).thenReturn(mockKeys)
+        whenever(
+            systemStorageService.fetchObject(
+                any(), eq(Json.LIST_OF_STRING)
+            )
+        ).thenReturn(mockKeys)
         val crypted = encryptionService.encryptString("bob", 100)
         val decrypted = encryptionService.decryptString(crypted, 100)
         assertEquals("bob", decrypted)
@@ -85,8 +94,11 @@ class EncryptionServiceTests {
 
     @Test
     fun testEncryptAndDecryptStringWithProjectId() {
-        whenever(systemStorageService.fetchObject(
-            any(), eq(Json.LIST_OF_STRING))).thenReturn(mockKeys)
+        whenever(
+            systemStorageService.fetchObject(
+                any(), eq(Json.LIST_OF_STRING)
+            )
+        ).thenReturn(mockKeys)
         val crypted = encryptionService.encryptString(projectId, "bilbo", 100)
         val decrypted = encryptionService.decryptString(projectId, crypted, 100)
         assertEquals("bilbo", decrypted)

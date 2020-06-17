@@ -18,6 +18,9 @@ const colors = {
       base: '#c92300',
       background: '#ffb6b2',
     },
+    halloween: {
+      base: '#d6680b',
+    },
     canary: {
       base: '#ebb52e',
       strong: '#d6680b',
@@ -40,6 +43,16 @@ const colors = {
     two: '#96c955',
     three: '#5c8f1b',
     four: '#cdf6a8',
+  },
+
+  graph: {
+    rust: '#c54a4a',
+    coral: '#ff7867',
+    marigold: '#f08d03',
+    seafoam: '#00bdc1',
+    iris: '#8f89e7',
+    lilac: '#bb81e1',
+    magenta: '#a03dc7',
   },
 
   transparent: 'transparent',

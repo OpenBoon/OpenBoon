@@ -38,6 +38,7 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #808080;
+  border-radius: 0;
 }
 
 .emotion-0:hover {
@@ -90,11 +91,12 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
       aria-label="Metadata"
       className="emotion-0"
       onClick={[Function]}
+      title="Metadata"
       type="button"
     >
       <svg
         aria-hidden={true}
-        data-file-name="accountDashboard.svg"
+        data-file-name="dashboard.svg"
         width={20}
       />
     </button>
@@ -150,6 +152,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #73b61c;
+  border-radius: 0;
 }
 
 .emotion-6:hover {
@@ -284,9 +287,9 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
 }
 
 .emotion-1 {
-  -webkit-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
-  transform: rotate(0deg);
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 <div
@@ -318,7 +321,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
           <svg
             aria-hidden={true}
             className="emotion-1"
-            data-file-name="paused.svg"
+            data-file-name="doubleChevron.svg"
             width={20}
           />
         </button>
@@ -337,11 +340,12 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
       aria-label="Metadata"
       className="emotion-6"
       onClick={[Function]}
+      title="Metadata"
       type="button"
     >
       <svg
         aria-hidden={true}
-        data-file-name="accountDashboard.svg"
+        data-file-name="dashboard.svg"
         width={20}
       />
     </button>
@@ -409,6 +413,7 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #808080;
+  border-radius: 0;
 }
 
 .emotion-0:hover {
@@ -442,11 +447,12 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
       aria-label="Filters"
       className="emotion-0"
       onClick={[Function]}
+      title="Filters"
       type="button"
     >
       <svg
         aria-hidden={true}
-        data-file-name="accountDashboard.svg"
+        data-file-name="dashboard.svg"
         width={20}
       />
     </button>
@@ -521,6 +527,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   background-color: #252525;
   margin-bottom: 1px;
   color: #73b61c;
+  border-radius: 0;
 }
 
 .emotion-0:hover {
@@ -622,9 +629,9 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
 }
 
 .emotion-4 {
-  -webkit-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  transform: rotate(180deg);
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .emotion-7 {
@@ -651,11 +658,12 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
       aria-label="Filters"
       className="emotion-0"
       onClick={[Function]}
+      title="Filters"
       type="button"
     >
       <svg
         aria-hidden={true}
-        data-file-name="accountDashboard.svg"
+        data-file-name="dashboard.svg"
         width={20}
       />
     </button>
@@ -689,7 +697,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
           <svg
             aria-hidden={true}
             className="emotion-4"
-            data-file-name="paused.svg"
+            data-file-name="doubleChevron.svg"
             width={20}
           />
         </button>

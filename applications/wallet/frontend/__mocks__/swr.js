@@ -10,13 +10,47 @@ export const SWRConfig = ({ children, ...rest }) =>
   createElement('SWRConfig', rest, children)
 
 /**
+ * pagesSWRs
+ */
+
+const { useSWRPages: actualUseSWRPages } = jest.requireActual('swr')
+
+let mockPageSWRs = []
+
+export const __setPageSWRs = (data) => {
+  mockPageSWRs = data
+}
+
+export const useSWRPages = (key, component, offset, deps) => {
+  const { pages, loadMore } = actualUseSWRPages(key, component, offset, deps)
+
+  return {
+    pages,
+    pageSWRs: mockPageSWRs,
+    loadMore,
+  }
+}
+
+/**
  * cache
  */
 
-export const { cache, useSWRPages } = jest.requireActual('swr')
+let mockCacheKeys = []
+
+export const __setMockCacheKeys = (data) => {
+  mockCacheKeys = data
+}
+
+export const cache = {
+  keys: () => {
+    return mockCacheKeys
+  },
+  clear: () => {},
+  delete: () => {},
+}
 
 /**
- * useSWR
+ * mutate
  */
 
 let mockMutateFn = () => {}

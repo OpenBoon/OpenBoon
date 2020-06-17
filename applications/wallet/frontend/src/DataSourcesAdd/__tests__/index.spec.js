@@ -104,13 +104,6 @@ describe('<DataSourcesAdd />', () => {
         .props.onClick()
     })
 
-    // Select disabled module
-    act(() => {
-      component.root
-        .findByProps({ type: 'checkbox', value: 'gcp-label-detection' })
-        .props.onClick({ preventDefault: noop })
-    })
-
     // Select module
     act(() => {
       component.root
@@ -126,7 +119,7 @@ describe('<DataSourcesAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Create Data Source' })
+        .findByProps({ type: 'submit', children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -139,7 +132,7 @@ describe('<DataSourcesAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Create Data Source' })
+        .findByProps({ type: 'submit', children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -149,7 +142,7 @@ describe('<DataSourcesAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Create Data Source' })
+        .findByProps({ type: 'submit', children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -238,7 +231,7 @@ describe('<DataSourcesAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Create Data Source' })
+        .findByProps({ type: 'submit', children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -338,7 +331,7 @@ describe('<DataSourcesAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Create Data Source' })
+        .findByProps({ type: 'submit', children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 

@@ -1,20 +1,24 @@
-import { useReducer, useRef, forwardRef } from 'react'
+import { useRef, forwardRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR, { useSWRPages } from 'swr'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeGrid } from 'react-window'
 
-import { spacing, constants } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import { cleanup } from '../Filters/helpers'
+import { useLocalStorageReducer } from '../LocalStorage/helpers'
 
 import Loading from '../Loading'
+import VisualizerNavigation from '../Visualizer/Navigation'
 
 import { reducer, INITIAL_STATE } from './reducer'
 
 import AssetsResize from './Resize'
 import AssetsThumbnail from './Thumbnail'
+import AssetsEmpty from './Empty'
+import AssetsQuickView from './QuickView'
 
 const SIZE = 100
 const PADDING_SIZE = spacing.small
@@ -22,12 +26,17 @@ const PADDING_SIZE = spacing.small
 /* istanbul ignore next */
 const Assets = () => {
   const {
-    query: { projectId, query },
+    query: { projectId, id: selectedId, query },
   } = useRouter()
 
   const innerRef = useRef()
+  const [virtualLoaderRef, setVirtualLoaderRef] = useState()
 
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const [state, dispatch] = useLocalStorageReducer({
+    key: 'Assets',
+    reducer,
+    initialState: INITIAL_STATE,
+  })
 
   const { columnCount, isMin, isMax } = state
 
@@ -41,7 +50,7 @@ const Assets = () => {
 
       const q = cleanup({ query })
 
-      const { data: { results } = {} } = withSWR(
+      const { data } = withSWR(
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useSWR(
           `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${from}&size=${SIZE}`,
@@ -53,6 +62,8 @@ const Assets = () => {
           },
         ),
       )
+
+      const { results } = data || {}
 
       if (!results) {
         if (offset > 0) return null
@@ -68,7 +79,8 @@ const Assets = () => {
     },
 
     // offset of next page
-    ({ data: { count } }, index) => {
+    ({ data }, index) => {
+      const { count } = data || {}
       const offset = (index + 1) * SIZE
       return offset < count ? index + 1 : null
     },
@@ -77,119 +89,178 @@ const Assets = () => {
     [query],
   )
 
-  const { data: { count: itemCount } = {} } = pageSWRs[0] || {}
+  const { data } = pageSWRs[0] || {}
 
-  const items = Array.isArray(pageSWRs)
+  const { count: itemCount } = data || {}
+
+  const assets = Array.isArray(pageSWRs)
     ? pageSWRs
         // hack while https://github.com/zeit/swr/issues/189 gets fixed
         .slice(0, Math.ceil(itemCount / SIZE))
         .flatMap((pageSWR) => {
-          const { data: { results } = {} } = pageSWR || {}
+          const { data: d } = pageSWR || {}
+          const { results } = d || {}
           return results
         })
     : []
 
+  const selectedRow =
+    assets.length && selectedId
+      ? Math.floor(
+          assets.findIndex((item) => item && item.id === selectedId) /
+            columnCount,
+        )
+      : ''
+
+  useEffect(() => {
+    if (
+      selectedRow &&
+      virtualLoaderRef &&
+      // eslint-disable-next-line no-underscore-dangle
+      virtualLoaderRef._listRef
+    ) {
+      // eslint-disable-next-line no-underscore-dangle
+      virtualLoaderRef._listRef.scrollToItem({
+        align: 'smart',
+        rowIndex: selectedRow,
+      })
+    }
+  })
+
   return (
-    <div
-      css={{
-        flex: 1,
-        position: 'relative',
-        marginBottom: -spacing.mini,
-        boxShadow: constants.boxShadows.assets,
-      }}
-    >
-      {pages}
-      <AutoSizer>
-        {({ height, width }) => (
-          <InfiniteLoader
-            isItemLoaded={(index) => !!items[index]}
-            itemCount={itemCount}
-            loadMoreItems={loadMore}
-          >
-            {({ onItemsRendered, ref }) => {
-              const { parentElement } = (innerRef && innerRef.current) || {}
-              const { offsetWidth = 0, clientWidth = 0 } = parentElement || {}
-              const adjustedWidth = width - PADDING_SIZE * 2
-              const scrollbarSize = offsetWidth - clientWidth
-              const thumbnailSize = Math.max(100, adjustedWidth / columnCount)
-              const rowCount = Math.ceil(items.length / columnCount)
-              const hasVerticalScrollbar = rowCount * thumbnailSize > height
-              const scrollbarBuffer = hasVerticalScrollbar ? scrollbarSize : 0
-              const adjustedThumbnailSize = Math.max(
-                100,
-                (adjustedWidth - scrollbarBuffer) / columnCount,
-              )
-              return (
-                <FixedSizeGrid
-                  innerRef={innerRef}
-                  ref={ref}
-                  onItemsRendered={({
-                    visibleRowStartIndex,
-                    visibleRowStopIndex,
-                    visibleColumnStartIndex,
-                    visibleColumnStopIndex,
-                  }) => {
-                    const visibleStartIndex =
-                      visibleRowStartIndex * columnCount +
-                      visibleColumnStartIndex
+    <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      {!!itemCount && <VisualizerNavigation itemCount={itemCount} />}
 
-                    const visibleStopIndex =
-                      visibleRowStopIndex * columnCount + visibleColumnStopIndex
+      <div
+        css={{
+          flex: 1,
+          position: 'relative',
+          marginBottom: -spacing.mini,
+          boxShadow: constants.boxShadows.assets,
+        }}
+      >
+        {pages}
 
-                    onItemsRendered({
-                      visibleStartIndex,
-                      visibleStopIndex,
-                    })
-                  }}
-                  columnCount={columnCount}
-                  columnWidth={adjustedThumbnailSize}
-                  rowHeight={adjustedThumbnailSize}
-                  rowCount={rowCount}
-                  width={width}
-                  height={height - PADDING_SIZE / 2}
-                  innerElementType={forwardRef(
-                    ({ style, ...rest }, elementRef) => (
-                      <div
-                        ref={elementRef}
-                        style={{
-                          ...style,
-                          width: `${
-                            parseFloat(style.width) + PADDING_SIZE * 2
-                          }px`,
-                          height: `${
-                            parseFloat(style.height) + PADDING_SIZE * 2
-                          }px`,
-                        }}
-                        // eslint-disable-next-line react/jsx-props-no-spreading
-                        {...rest}
-                      />
-                    ),
-                  )}
+        <AssetsQuickView assets={assets} columnCount={columnCount} />
+
+        {itemCount === 0 && (
+          <AssetsEmpty
+            projectId={projectId}
+            assetId={selectedId}
+            query={query}
+          />
+        )}
+
+        {!!itemCount && (
+          <>
+            <AutoSizer>
+              {({ height, width }) => (
+                <InfiniteLoader
+                  ref={(ref) => setVirtualLoaderRef(ref)}
+                  isItemLoaded={(index) => !!assets[index]}
+                  itemCount={itemCount}
+                  loadMoreItems={loadMore}
                 >
-                  {({ columnIndex, rowIndex, style }) => {
-                    const index = columnIndex + rowIndex * columnCount
-
-                    if (!items[index]) return null
-
+                  {({ onItemsRendered, ref }) => {
+                    const { parentElement } =
+                      (innerRef && innerRef.current) || {}
+                    const { offsetWidth = 0, clientWidth = 0 } =
+                      parentElement || {}
+                    const adjustedWidth = width - PADDING_SIZE * 2
+                    const scrollbarSize = offsetWidth - clientWidth
+                    const thumbnailSize = Math.max(
+                      100,
+                      adjustedWidth / columnCount,
+                    )
+                    const rowCount = Math.ceil(assets.length / columnCount)
+                    const hasVerticalScrollbar =
+                      rowCount * thumbnailSize > height
+                    const scrollbarBuffer = hasVerticalScrollbar
+                      ? scrollbarSize
+                      : 0
+                    const adjustedThumbnailSize = Math.max(
+                      100,
+                      (adjustedWidth - scrollbarBuffer) / columnCount,
+                    )
                     return (
-                      <div
-                        style={{
-                          ...style,
-                          top: `${parseFloat(style.top) + PADDING_SIZE}px`,
-                          left: `${parseFloat(style.left) + PADDING_SIZE}px`,
+                      <FixedSizeGrid
+                        innerRef={innerRef}
+                        ref={ref}
+                        onItemsRendered={({
+                          visibleRowStartIndex,
+                          visibleRowStopIndex,
+                          visibleColumnStartIndex,
+                          visibleColumnStopIndex,
+                        }) => {
+                          const visibleStartIndex =
+                            visibleRowStartIndex * columnCount +
+                            visibleColumnStartIndex
+
+                          const visibleStopIndex =
+                            visibleRowStopIndex * columnCount +
+                            visibleColumnStopIndex
+
+                          onItemsRendered({
+                            visibleStartIndex,
+                            visibleStopIndex,
+                          })
                         }}
+                        columnCount={columnCount}
+                        columnWidth={adjustedThumbnailSize}
+                        rowHeight={adjustedThumbnailSize}
+                        rowCount={rowCount}
+                        width={width}
+                        height={height - PADDING_SIZE / 2}
+                        innerElementType={forwardRef(
+                          ({ style, ...rest }, elementRef) => (
+                            <div
+                              ref={elementRef}
+                              style={{
+                                ...style,
+                                width: `${
+                                  parseFloat(style.width) + PADDING_SIZE * 2
+                                }px`,
+                                height: `${
+                                  parseFloat(style.height) + PADDING_SIZE * 2
+                                }px`,
+                              }}
+                              // eslint-disable-next-line react/jsx-props-no-spreading
+                              {...rest}
+                            />
+                          ),
+                        )}
                       >
-                        <AssetsThumbnail asset={items[index]} />
-                      </div>
+                        {({ columnIndex, rowIndex, style }) => {
+                          const index = columnIndex + rowIndex * columnCount
+
+                          if (!assets[index]) return null
+
+                          return (
+                            <div
+                              style={{
+                                ...style,
+                                top: `${
+                                  parseFloat(style.top) + PADDING_SIZE
+                                }px`,
+                                left: `${
+                                  parseFloat(style.left) + PADDING_SIZE
+                                }px`,
+                              }}
+                            >
+                              <AssetsThumbnail asset={assets[index]} />
+                            </div>
+                          )
+                        }}
+                      </FixedSizeGrid>
                     )
                   }}
-                </FixedSizeGrid>
-              )
-            }}
-          </InfiniteLoader>
+                </InfiniteLoader>
+              )}
+            </AutoSizer>
+            <AssetsResize dispatch={dispatch} isMin={isMin} isMax={isMax} />
+          </>
         )}
-      </AutoSizer>
-      <AssetsResize dispatch={dispatch} isMin={isMin} isMax={isMax} />
+      </div>
     </div>
   )
 }

@@ -83,10 +83,8 @@ describe('<ProjectUsersAdd /> helpers', () => {
       )
 
       expect(mockFn).toHaveBeenCalledWith({
-        errors: {
-          name: "This email doesn't work.",
-        },
         isLoading: false,
+        errors: { name: "This email doesn't work." },
       })
     })
   })

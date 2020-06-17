@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import { formatDisplayName } from '../Metadata/helpers'
+
+import SuspenseBoundary from '../SuspenseBoundary'
 
 import MetadataPrettyLabels from './Labels'
 import MetadataPrettyContent from './Content'
@@ -38,21 +40,20 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
         return <MetadataPrettyContent name={name} value={value} />
 
       case 'similarity':
-        return <MetadataPrettySimilarity name={name} value={value} />
+        return (
+          <SuspenseBoundary>
+            <MetadataPrettySimilarity name={name} value={value} />
+          </SuspenseBoundary>
+        )
 
       default:
         return (
           <>
             {!!name && (
-              <div
-                css={{
-                  borderTop: constants.borders.divider,
-                  ':hover': { div: { svg: { display: 'inline-block' } } },
-                }}
-              >
+              <div css={{ borderTop: constants.borders.divider }}>
                 <div
                   css={{
-                    fontFamily: 'Roboto Condensed',
+                    fontFamily: typography.family.condensed,
                     color: colors.structure.steel,
                     padding: spacing.normal,
                     paddingBottom: 0,
@@ -63,6 +64,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
                     {formatDisplayName({ name })}
                   </span>
                 </div>
+
                 <div />
               </div>
             )}

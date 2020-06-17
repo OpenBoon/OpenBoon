@@ -1,6 +1,5 @@
-resource "google_compute_address" "wallet-external" {
+resource "google_compute_global_address" "wallet-external" {
   name         = var.external-ip-name
-  address_type = "EXTERNAL"
 }
 
 resource "random_string" "sql-password" {
@@ -9,6 +8,9 @@ resource "random_string" "sql-password" {
 }
 
 resource "google_sql_database" "wallet" {
+  lifecycle {
+    prevent_destroy = true
+  }
   depends_on = [google_sql_user.wallet]
   name       = var.database-name
   instance   = var.sql-instance-name
@@ -23,6 +25,9 @@ resource "google_sql_user" "wallet" {
 resource "kubernetes_deployment" "wallet" {
   provider   = kubernetes
   depends_on = [google_sql_user.wallet]
+  lifecycle {
+    ignore_changes = [spec[0].replicas]
+  }
   metadata {
     name      = "wallet"
     namespace = var.namespace
@@ -31,7 +36,7 @@ resource "kubernetes_deployment" "wallet" {
     }
   }
   spec {
-    replicas = 2
+    replicas = 1
     selector {
       match_labels = {
         app = "wallet"
@@ -150,7 +155,19 @@ resource "kubernetes_deployment" "wallet" {
           }
           env {
             name  = "FQDN"
-            value = var.fqdn
+            value = "https://${var.domain}"
+          }
+          env {
+            name  = "BROWSABLE"
+            value = var.browsable
+          }
+          env {
+            name = "MARKETPLACE_PROJECT_ID"
+            value = var.marketplace-project
+          }
+          env {
+            name = "MARKETPLACE_CREDENTIALS"
+            value = var.marketplace-credentials
           }
         }
       }
@@ -183,7 +200,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
   name     = "wallet-cert"
   managed {
-    domains = ["wallet.zmlp.zorroa.com"]
+    domains = [var.domain]
   }
 }
 
@@ -194,7 +211,7 @@ resource "kubernetes_ingress" "wallet" {
     annotations = {
       "kubernetes.io/ingress.allow-http"            = "false"
       "ingress.gcp.kubernetes.io/pre-shared-cert"   = google_compute_managed_ssl_certificate.default.name
-      "kubernetes.io/ingress.global-static-ip-name" = google_compute_address.wallet-external.name
+      "kubernetes.io/ingress.global-static-ip-name" = google_compute_global_address.wallet-external.name
     }
   }
   spec {
@@ -216,13 +233,16 @@ resource "kubernetes_horizontal_pod_autoscaler" "wallet" {
   }
   spec {
     max_replicas = 10
-    min_replicas = 2
+    min_replicas = 1
     scale_target_ref {
       api_version = "apps/v1"
       kind        = "Deployment"
       name        = "wallet"
     }
     target_cpu_utilization_percentage = 80
+  }
+  lifecycle {
+    ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
   }
 }
 

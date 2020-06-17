@@ -282,6 +282,24 @@ class Asset(DocumentMixin):
         self.id = data.get("id")
         self.document = data.get("document", {})
         self.score = data.get("score", 0)
+        self.inner_hits = data.get("inner_hits", [])
+
+    @staticmethod
+    def from_hit(hit):
+        """
+        Converts an ElasticSearch hit into an Asset.
+
+        Args:
+            hit (dict): An raw ES document
+
+        Returns:
+            Asset: The Asset.
+        """
+        return Asset({
+            'id': hit['_id'],
+            'score': hit.get('_score', 0),
+            'document': hit.get('_source', {}),
+            'inner_hits': hit.get('inner_hits', [])})
 
     @property
     def uri(self):
@@ -392,6 +410,21 @@ class Asset(DocumentMixin):
             level = -1
         return files[level]
 
+    def get_inner_hits(self, name):
+        """
+        Return any inner hits from a collapse query.
+
+        Args:
+            name (str): The inner hit name.
+
+        Returns:
+            list[Asset]:  A list of Assets.
+        """
+        try:
+            return [Asset.from_hit(hit) for hit in self.inner_hits[name]['hits']['hits']]
+        except KeyError:
+            return []
+
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
 
@@ -428,7 +461,7 @@ class Clip(object):
     processed, for example a particular page of a PDF or a section of a movie.
 
     Each clip of an Asset needs to have a unique type, start, stop, and optionally
-    timeline attributes fo it to be considered a unique clip.
+    track attributes fo it to be considered a unique clip.
 
     """
 
@@ -447,36 +480,36 @@ class Clip(object):
         return Clip('page', page_num, page_num)
 
     @staticmethod
-    def scene(time_in, time_out, timeline):
+    def scene(time_in, time_out, track):
         """
-        Return a video scene Clip with the given in/out points and a timeline name.
+        Return a video scene Clip with the given in/out points and a track name.
 
         Args:
             time_in: (float): The start time of the cut.
             time_out: (float): The end time of the cut.
-            timeline: (str): An timeline label.  Videos can be clipified multiple ways
-                by multiple types of services and labeling them with a timeline is
+            track: (str): An track label.  Videos can be clipified multiple ways
+                by multiple types of services and labeling them with a track is
                 useful for differentiating them.
         Returns:
             Clip: A scene Clip.
 
         """
-        return Clip('scene', time_in, time_out, timeline)
+        return Clip('scene', time_in, time_out, track)
 
-    def __init__(self, type, start, stop, timeline=None):
+    def __init__(self, type, start, stop, track=None):
         """Initialize a new clip.
 
         Args:
             type (str): The clip type, usually 'scene' or 'page' but it can be arbitrary.
             start (float): The start of the clip
             stop (float): The end of the clip,
-            timeline (str): Used when multiple type of clipification on a video occur.
+            track (str): The track the clip belongs to.
         """
 
         self.type = type
         self.start = float(start)
         self.stop = float(stop)
-        self.timeline = timeline
+        self.track = track
 
     def for_json(self):
         """Return a JSON serialized copy.
@@ -485,7 +518,7 @@ class Clip(object):
             :obj:`dict`: A json serializable dict.
         """
         serializable_dict = {}
-        attrs = ['type', 'start', 'stop', 'timeline']
+        attrs = ['type', 'start', 'stop', 'track']
         for attr in attrs:
             if getattr(self, attr, None) is not None:
                 serializable_dict[attr] = getattr(self, attr)

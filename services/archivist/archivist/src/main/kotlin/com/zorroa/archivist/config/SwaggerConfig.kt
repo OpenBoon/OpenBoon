@@ -48,34 +48,34 @@ class SwaggerConfig : WebMvcConfigurer {
     @Bean
     fun api(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage(restBasePackage))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(getApiInfo())
+            .select()
+            .apis(RequestHandlerSelectors.basePackage(restBasePackage))
+            .paths(PathSelectors.any())
+            .build()
+            .apiInfo(getApiInfo())
     }
 
     private fun getApiInfo(): ApiInfo {
 
         return ApiInfo(
-                title,
-                description,
-                version,
-                termOfService,
-                Contact(contactCompanyName, contactCompanyWebsite, contactCompanySupportEmail),
-                licenseName,
-                licenseUrl,
-                Collections.emptyList()
+            title,
+            description,
+            version,
+            termOfService,
+            Contact(contactCompanyName, contactCompanyWebsite, contactCompanySupportEmail),
+            licenseName,
+            licenseUrl,
+            Collections.emptyList()
         )
     }
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
 
         registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/")
+            .addResourceLocations("classpath:/META-INF/resources/")
 
         registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/")
+            .addResourceLocations("classpath:/META-INF/resources/webjars/")
 
         registry.addResourceHandler("**/**").addResourceLocations("/dist/")
     }

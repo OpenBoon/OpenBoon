@@ -33,6 +33,31 @@ class AssetTests(unittest.TestCase):
                 }
             }]
 
+    def test_from_hit(self):
+        asset = Asset.from_hit({
+            "_id": "12345",
+            "_source": {"foo": "bar"},
+            "inner_hits": {
+                "children": {
+                    "hits": {
+                        "hits": [
+                            {
+                                "_id": "45678",
+                                "_source": {
+                                    "bing": "bong"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        })
+
+        assert "12345" == asset.id
+        assert "bar" == asset['foo']
+        assert 1 == len(asset.get_inner_hits("children"))
+        assert 0 == len(asset.get_inner_hits("corn"))
+
     def test_add_file(self):
         asset = Asset({"id": "123"})
         asset.add_file(StoredFile(self.test_files[0]))
@@ -211,14 +236,14 @@ class ClipTests(unittest.TestCase):
         assert clip.start == 1.44
         assert clip.stop == 2.25
         assert clip.type == 'scene'
-        assert clip.timeline == 'shot'
+        assert clip.track == 'shot'
 
     def test_create_clip(self):
         clip = Clip("scene", 1, 2, "faces")
         assert clip.start == 1
         assert clip.stop == 2
         assert clip.type == 'scene'
-        assert clip.timeline == 'faces'
+        assert clip.track == 'faces'
 
 
 class FileTypesTests(unittest.TestCase):

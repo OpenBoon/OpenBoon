@@ -29,6 +29,7 @@ const INITIAL_STATE = {
   credentials: {},
   fileTypes: {},
   modules: {},
+  isLoading: false,
   errors: { global: '', name: '', uri: '' },
 }
 
@@ -172,10 +173,11 @@ const DataSourcesAddForm = () => {
               uri === SOURCES[source].uri ||
               !!errors.uri ||
               isRequiredCredentialsEmpty ||
-              isFileTypesEmpty
+              isFileTypesEmpty ||
+              state.isLoading
             }
           >
-            Create Data Source
+            {state.isLoading ? 'Creating...' : 'Create Data Source'}
           </Button>
         </ButtonGroup>
       </Form>

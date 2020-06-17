@@ -4,27 +4,15 @@ const subscriptions = {
   previous: null,
   results: [
     {
-      id: '86f14610-f269-49aa-951b-b36ffb3564e3',
+      id: 'ead09ed8-9b3d-44f2-beba-26e1ddab87d6',
       project:
-        'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/',
-      limits: {
-        videoHours: 300,
-        imageCount: 30000,
-      },
-      usage: {
-        videoHours: 100,
-        imageCount: 20000,
-      },
-      modules: [
-        'zmlp-classification',
-        'zmlp-face-recognition',
-        'shot-detection',
-        'gcp-vision-text-detection',
-      ],
-      createdDate: '2020-03-12T21:26:23.904904Z',
-      modifiedDate: '2020-03-12T21:26:23.904926Z',
+        'https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/',
+      tier: 'premier',
+      usage: { videoHours: 0, imageCount: 97 },
+      createdDate: '2020-06-02T20:40:08.121642Z',
+      modifiedDate: '2020-06-02T20:40:08.121664Z',
       url:
-        'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/subscriptions/86f14610-f269-49aa-951b-b36ffb3564e3/',
+        'https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/subscriptions/ead09ed8-9b3d-44f2-beba-26e1ddab87d6/',
     },
   ],
 }

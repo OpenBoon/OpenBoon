@@ -1,7 +1,7 @@
 variable "project" {
 }
 
-variable "region" {
+variable "country" {
 }
 
 variable "image-pull-secret" {
@@ -28,20 +28,21 @@ variable "minio-secret-key" {
 variable "system-bucket" {
 }
 
+variable "container-cluster-name" {
+}
+
+variable "analyst-shared-key" {
+}
+
+variable "es-backup-bucket-name" {
+}
+
 variable "data-bucket-name" {
   default = "archivist-data"
 }
 
 variable "container-tag" {
   default = "latest"
-}
-
-variable "minimum-replicas" {
-  default = 2
-}
-
-variable "maximum-replicas" {
-  default = 2
 }
 
 variable "rollout-strategy" {

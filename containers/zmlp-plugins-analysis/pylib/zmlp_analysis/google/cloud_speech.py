@@ -43,7 +43,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         asset = frame.asset
 
         # Cannot run on clips without transcoding the clip
-        if asset.get_attr('clip.timeline') != 'full':
+        if asset.get_attr('clip.track') != 'full':
             self.logger.info('Skipping, cannot run processor on clips.')
             return -1
 

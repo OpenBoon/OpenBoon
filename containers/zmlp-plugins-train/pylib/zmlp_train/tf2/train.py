@@ -9,8 +9,8 @@ from tensorflow.keras.layers import Dropout, Flatten, Dense, BatchNormalization
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 import zmlp
-from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException
-from ..utils.models import upload_model_directory, download_dataset
+from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException, file_storage
+from zmlpsdk.training import download_dataset
 
 
 class TensorflowTransferLearningTrainer(AssetProcessor):
@@ -46,19 +46,17 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         self.check_labels()
 
     def process(self, frame):
-        self.reactor.write_event("status", {
-            "status": "Downloading files in DataSet"
-        })
-        download_dataset(self.app_model.dataset_id, self.base_dir,
+        download_dataset(self.app_model.dataset_id,
+                         "labels_std",
+                         self.base_dir,
                          self.arg_value('train-test-ratio'))
 
-        self.reactor.write_event("status", {
-            "status": "Training model{}".format(self.app_model.file_id)
-        })
+        self.reactor.emit_status("Training model: {}".format(self.app_model.name))
         self.build_model()
         train_gen, test_gen = self.build_generators()
-        self.model.fit_generator(
+        self.model.fit(
             train_gen,
+            callbacks=[TrainingProgressCallback(self.reactor, self.arg_value('epochs'))],
             validation_data=test_gen,
             epochs=self.arg_value('epochs')
         )
@@ -78,29 +76,18 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             labels (list): An array of labels in the correct order.
 
         """
-        self.logger.info('publishing model')
+        self.reactor.emit_status("Saving model: {}".format(self.app_model.name))
         model_dir = tempfile.mkdtemp() + '/' + self.app_model.name
         os.makedirs(model_dir)
 
-        self.logger.info('saving model : {}'.format(model_dir))
         self.model.save(model_dir)
         with open(model_dir + '/labels.txt', 'w') as fp:
             for label in labels:
                 fp.write('{}\n'.format(label))
 
-        # Upload the zipped model to project storage.
-        self.logger.info('uploading model')
-
-        self.reactor.write_event("status", {
-            "status": "Uploading model{}".format(self.app_model.file_id)
-        })
-
-        upload_model_directory(model_dir, self.app_model.file_id)
-
-        self.app.models.publish_model(self.app_model)
-        self.reactor.write_event("status", {
-            "status": "Published model {}".format(self.app_model.file_id)
-        })
+        mod = file_storage.models.save_model(model_dir,  self.app_model)
+        self.reactor.emit_status("Published model: {}".format(self.app_model.name))
+        return mod
 
     def check_labels(self):
         """
@@ -123,10 +110,6 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         """
         Build the Tensorflow model using the base model specified in the args.
         """
-        self.reactor.write_event("status", {
-            "status": "Building model{}".format(self.app_model.file_id)
-        })
-
         base_model = self.get_base_model()
 
         base_model.trainable = False
@@ -177,16 +160,17 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         test_datagen = ImageDataGenerator(rescale=1. / 255.)
 
+        # increasing batch size increases memory usage.
         train_generator = train_datagen.flow_from_directory(
             '{}/set_train/'.format(self.base_dir),
-            batch_size=128,
+            batch_size=2,
             class_mode='categorical',
             target_size=self.img_size
         )
 
         test_generator = test_datagen.flow_from_directory(
             '{}/set_test/'.format(self.base_dir),
-            batch_size=128,
+            batch_size=2,
             class_mode='categorical',
             target_size=self.img_size
         )
@@ -209,13 +193,27 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             return mobilenet_v2.MobileNetV2(weights='imagenet',
                                             include_top=False,
                                             input_shape=(224, 224, 3))
-        elif modl_base == zmlp.ModelType.LABEL_DETECTION_RESNET152:
-            return resnet_v2.ResNet152V2(weights='imagenet',
-                                         include_top=False,
-                                         input_shape=(224, 224, 3))
+        elif modl_base == zmlp.ModelType.LABEL_DETECTION_RESNET50:
+            return resnet_v2.ResNet50V2(weights='imagenet',
+                                        include_top=False,
+                                        input_shape=(224, 224, 3))
         elif modl_base == zmlp.ModelType.LABEL_DETECTION_VGG16:
             return vgg16.VGG16(weights='imagenet',
                                include_top=False,
                                input_shape=(224, 224, 3))
         else:
             raise ZmlpFatalProcessorException('Invalid model: {}'.format(modl_base))
+
+
+class TrainingProgressCallback(tf.keras.callbacks.Callback):
+    """
+    A callback use to log training progress.
+    """
+
+    def __init__(self, reactor, epochs):
+        super(TrainingProgressCallback, self).__init__()
+        self.reactor = reactor
+        self.epochs = epochs
+
+    def on_epoch_begin(self, epoch, logs=None):
+        self.reactor.emit_status('Training epoch {} of {}'.format(epoch, self.epochs))

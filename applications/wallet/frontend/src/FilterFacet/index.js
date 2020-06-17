@@ -5,7 +5,8 @@ import filterShape from '../Filter/shape'
 import { spacing } from '../Styles'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
-import FiltersTitle from '../Filters/Title'
+import FilterTitle from '../Filter/Title'
+import FilterActions from '../Filter/Actions'
 import SuspenseBoundary from '../SuspenseBoundary'
 
 import FilterFacetContent from './Content'
@@ -14,8 +15,9 @@ const FilterFacet = ({ projectId, assetId, filters, filter, filterIndex }) => {
   return (
     <Accordion
       variant={ACCORDION_VARIANTS.FILTER}
-      title={
-        <FiltersTitle
+      title={<FilterTitle filter={filter} />}
+      actions={
+        <FilterActions
           projectId={projectId}
           assetId={assetId}
           filters={filters}
@@ -29,7 +31,7 @@ const FilterFacet = ({ projectId, assetId, filters, filter, filterIndex }) => {
     >
       <div
         css={{
-          padding: `${spacing.normal}px ${spacing.moderate}px`,
+          padding: spacing.normal,
           '.ErrorBoundary > div': {
             backgroundColor: 'transparent',
             boxShadow: 'none',

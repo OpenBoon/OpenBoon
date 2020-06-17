@@ -3,9 +3,11 @@ import requests
 from django.http import StreamingHttpResponse
 from django.urls import reverse
 from rest_framework import status
+from rest_framework.response import Response
 from zmlp import ZmlpClient
 
 from assets.utils import AssetBoxImager
+from assets.views import AssetViewSet
 from wallet.tests.utils import check_response
 
 pytestmark = pytest.mark.django_db
@@ -108,84 +110,41 @@ class TestAssetViewSet:
         content = check_response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
         assert content['detail'] == 'Unable to delete asset.'
 
+    def test_signed_url(self, login, project, api_client, monkeypatch):
 
-class TestAssetSearch:
+        def mock_detail_response(*args, **kwargs):
+            return Response(status=status.HTTP_200_OK, data={'id': 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C', 'metadata': {'system': {'jobId': '8d2603f7-00d4-132f-8681-0242ac120009', 'dataSourceId': '8d2603f6-00d4-132f-8681-0242ac120009', 'timeCreated': '2020-03-03T21:54:02.002039Z', 'state': 'Analyzed', 'projectId': '00000000-0000-0000-0000-000000000000', 'timeModified': '2020-03-03T21:54:23.978500Z', 'taskId': '8d2603f8-00d4-132f-8681-0242ac120009'}, 'files': [{'id': 'this/is/the/id.jpg', 'size': 89643, 'name': 'image_650x434.jpg', 'mimetype': 'image/jpeg', 'category': 'proxy', 'attrs': {'width': 650, 'height': 434}}, {'size': 60713, 'name': 'image_512x341.jpg', 'mimetype': 'image/jpeg', 'category': 'proxy', 'attrs': {'width': 512, 'height': 341}}, {'size': 30882, 'name': 'image_320x213.jpg', 'mimetype': 'image/jpeg', 'category': 'proxy', 'attrs': {'width': 320, 'height': 213}}], 'source': {'path': 'gs://zorroa-dev-data/image/TIFF_1MB.tiff', 'extension': 'tiff', 'filename': 'TIFF_1MB.tiff', 'checksum': 1867533868, 'mimetype': 'image/tiff', 'filesize': 1131930}, 'metrics': {'pipeline': [{'executionTime': 0.52, 'module': 'standard', 'checksum': 1621235190, 'executionDate': '2020-03-03T21:54:04.185632', 'processor': 'zmlp_core.core.processors.PreCacheSourceFileProcessor'}, {'executionTime': 0.5, 'module': 'standard', 'checksum': 1426657387, 'executionDate': '2020-03-03T21:54:06.820102', 'processor': 'zmlp_core.image.importers.ImageImporter'}, {'module': 'standard', 'checksum': 2001473853, 'processor': 'zmlp_core.office.importers.OfficeImporter'}, {'module': 'standard', 'checksum': 3310423168, 'processor': 'zmlp_core.video.VideoImporter'}, {'executionTime': 0.0, 'module': 'standard', 'checksum': 1841569083, 'executionDate': '2020-03-03T21:54:08.449234', 'processor': 'zmlp_core.core.processors.AssertAttributesProcessor'}, {'executionTime': 0.89, 'module': 'standard', 'checksum': 457707303, 'executionDate': '2020-03-03T21:54:09.394490', 'processor': 'zmlp_core.proxy.ImageProxyProcessor'}, {'module': 'standard', 'checksum': 482873147, 'processor': 'zmlp_core.proxy.VideoProxyProcessor'}, {'executionTime': 2.07, 'module': 'standard', 'checksum': 2479952423, 'executionDate': '2020-03-03T21:54:20.533214', 'processor': 'zmlp_analysis.mxnet.ZviSimilarityProcessor'}]}, 'media': {'orientation': 'landscape', 'aspect': 1.5, 'width': 650, 'length': 1, 'type': 'image', 'height': 434}, 'analysis': {'zvi': {'similarity': {'simhash': 'PBPBFHAOBGAHCDGNEBDDCGPDCP'}, 'tinyProxy': ['#f3dfc3', '#f4efd8', '#c18f46', '#ebdfbd', '#ccd3c0', '#e7d4bb', '#beae8e', '#cabf9e', '#d2c09c']}}, 'clip': {'sourceAssetId': 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C', 'stop': 1.0, 'pile': 'pUn6wBxUN7x9JxOxLkvruOyNdYA', 'start': 1.0, 'length': 1.0, 'type': 'page'}}})  # noqa
 
-    @pytest.fixture
-    def response_data(self):
-        return {'took': 6, 'timed_out': False, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}, 'hits': {'total': {'value': 1, 'relation': 'eq'}, 'max_score': 1.0, 'hits': [{'_index': 'g2z7et4hcveue1fu', '_type': '_doc', '_id': 'XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE', '_score': 1.0, '_source': {'system': {'jobId': 'f1ccbf4c-8dee-12fa-a4be-0242ac12000b', 'dataSourceId': 'f1ccbf4b-8dee-12fa-a4be-0242ac12000b', 'timeCreated': '2020-03-31T19:00:39.707636Z', 'state': 'Analyzed', 'projectId': '00000000-0000-0000-0000-000000000000', 'taskId': 'f1ccbf4d-8dee-12fa-a4be-0242ac12000b', 'timeModified': '2020-03-31T19:09:09.702663Z'}, 'source': {'path': 'gs://zorroa-dev-data/image/mulipage.tif', 'extension': 'tif', 'filename': 'mulipage.tif', 'mimetype': 'image/tiff', 'filesize': 810405, 'checksum': 166113922}, 'metrics': {'pipeline': [{'processor': 'zmlp_core.core.PreCacheSourceFileProcessor', 'module': 'standard', 'checksum': 2178814325, 'executionTime': 8.52, 'executionDate': '2020-03-31T19:00:50.934852'}, {'processor': 'zmlp_core.core.FileImportProcessor', 'module': 'standard', 'checksum': 117837444, 'executionTime': 2.16, 'executionDate': '2020-03-31T19:03:41.662065'}, {'processor': 'zmlp_core.proxy.ImageProxyProcessor', 'module': 'standard', 'checksum': 457707303, 'executionTime': 3.85, 'executionDate': '2020-03-31T19:07:16.649375'}, {'processor': 'zmlp_core.proxy.VideoProxyProcessor', 'module': 'standard', 'checksum': 482873147}, {'processor': 'zmlp_analysis.mxnet.ZviSimilarityProcessor', 'module': 'standard', 'checksum': 2479952423, 'executionTime': 7.37, 'executionDate': '2020-03-31T19:08:58.305102'}]}, 'media': {'width': 800, 'height': 600, 'aspect': 1.33, 'orientation': 'landscape', 'type': 'image', 'length': 10}, 'clip': {'type': 'page', 'start': 1.0, 'stop': 1.0, 'length': 1.0, 'pile': 'vQz9dxEUpYvg0AVkXQV_xt2m2tg', 'sourceAssetId': 'XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE'}, 'files': [{'name': 'image_800x600.jpg', 'category': 'proxy', 'mimetype': 'image/jpeg', 'size': 78408, 'attrs': {'width': 800, 'height': 600}}, {'name': 'image_512x384.jpg', 'category': 'proxy', 'mimetype': 'image/jpeg', 'size': 42889, 'attrs': {'width': 512, 'height': 384}}, {'name': 'image_320x240.jpg', 'category': 'proxy', 'mimetype': 'image/jpeg', 'size': 20676, 'attrs': {'width': 320, 'height': 240}}], 'analysis': {'zvi': {'tinyProxy': ['#f9f9f9', '#ffffff', '#ffffff', '#dddddd', '#d3d3d3', '#ffffff', '#ffffff', '#ffffff', '#ffffff'], 'similarity': {'simhash': 'APPPBPPEJMFKPCPGPMBBBDCPPAFPNPGAPCPPLAPLBMACAAPEPPBIPGAPAPBPBCPGAPEOPAOHAPALNIBPIOLIEPBDDBPACAPDBCCPOPPAPADAEDGACPPFBPBAGPPNJLPPPHAHPAPKCAPPGABKIPGBFGCPFBPDNCPBBIPNKBAAPDMAGANDLABOBIAEFFMFEBPPBHJGPPPPPIMNEAPGPPAPNAPCPPLOCPCDGBCKPPFLPGCCLPPPDPPPLAMEJOAAEBAAFIJGCDPFBJDAJILFBABEPGPBCPEAJPAPPPGMPABBPELPPGAGJPPPAACIMLABPCDPFEGADFKDPMCAAJLPEBEDAJFPKBLJCGGBPBPCAALBPGINGBECICIMKAPPDIHCNPABGDPMDIACAJDAJPKAJPEHGBJPAADPCPLEBPAAGBAPELDPPEPMPPPGPHEBBAAPGMOAAPFPFCAAPAIAPMCEPCPPPNLGDCHLGAIAAFDPGPJDJFPGPKFJDNGPEPHPIDPPCCPAJAABHPPJMABPBPBDIAPHCDPPACPAPCPECPFNBOLJPANBAEJFFAFPBDCJFOIPAOBMPAEPBPFCAINAHAAFIEPEPCBHIEBDPIPDPPPBADAIPCNIACMCALBDPPPIPPKAAIPCBPPAEBCEEKOCEALFPPGAFPNFAIAIBIPCPBPFPBDPECCABPEJGAPPADLPPFFPPAAIBCCAPADGAPPEPIPDPAKPOCPNLCAABPLBAPNABEABJPHHHPAHPBHAFBJDPCPPAPPCPEAGDPOFHPACDEAPPBFPBLBPCOADAAADAPIPPPBEAADMDBAAPEFAABPCAACPCMIBPHPPAHPDBBBLIAEELMHOLBEEPPFEDPBEPPPDBGAPGBEFHGAAPBPDIICOBPCOFFPPHAAPGPNCABCIIBKHFGHEPABAGFOKCOPPAOHFBPBPHHAHEPPPKCPGPLCDOEAHGGHLDIPNFKPBACAPAPPDLMEBIAGOAFEAABAPEKDOBLPCCBBLALGPAPAGPJPEPEHHEEBLHBPAPLADDAPDDPPCHPLCPIPILAFCPNFDPAGHPICPPDMOBADPPBPLFJFAPEPPGBBPPFPAPPPNCPBBHOHADPPOJEPPCABBEHPAPLPFOFPMAAPHAIPAHPLDFPPHEPPAIPFIBHFCPPPPPPMGPHAGDAPMCBEPPAPEDPPCAPDDCJBPCBPOLAPPCIFPHOPJCAAPPPMEAPOPAPDPFPLPCPBPCCFPPCACDFPMMPPHAEPMGAPAAPPAPIPAALACAGCAPPPPPIBMAAGLHPCBLGFPPBBABBPPFPPPKPCCPPPBCODNPCKPFBEPPAJHJABBAADCFABAOKPPDPMMCAPBGKPAGACIEAKHAPCBPPLBABBPBIBPABGFPJPAAPJNCBKCACAKPDDAALAAOINPBAPIAPPAAPJBPBPNPDPLFBFKMPFEPPGCCPFLPEIPAEEPPCACPPAPPEFPPPAGKBPPPPFAHHACCBPILCPAABCFPFAPAJBPAHPNKPPAPCBPAPLHAEDCAICPCPCDPPFFABKBPODPPFPNPPEPAAAAIACMFOBFHAPCPPAANIPPJIJPAAIPEKACBEDPAHPPPPPBLJBICBCPADNBPPPPPEDCBABCKAPOEMCANPPPCNDGGBDAIDAPCBBLDEHPHIPPKIPMCNAAPAOMICPKBPFPBGCEPNFNAAKPIPKJMAPAAIAPMLPACPPPMPDCFHEADGPBPDMPDDCDOGABKFANEBMNNPFIAPGIKAPIBCPPADADPPCPJHCBPPCMHPKOCMDDPBPPIPABLFPPMNCFPAAPBOKPJPAEKJHPCEABEPBPFPPBGIHAPGNPHPBABFKMPGEPLGBLDCBCPBPLPEPBAFBPBBBDCAIAAABKCPCFPDPGIFPJPFCDPLPMKPPENPCPPBJHMPLPOBEPGAHBNFPPAMBHDLKCOADPDPHPBOEPPDPDIHDEKPPAMIPBPDKFJPPLAIPPNHPAPPACPACPBPPIPODACDKAHCPDBPPAPAAGDOPBPEPDAAEKCPPAKBBPAOIPDPOGNEDJFDLA'}}}}}]}}  # noqa
+        monkeypatch.setattr(AssetViewSet, 'retrieve', mock_detail_response)
 
-    def test_search(self, login, zmlp_project_user, monkeypatch,
-                    api_client, response_data, project):
+        def mock_response(*args, **kwargs):
+            return {
+                'uri': 'http://minio:9000/project-storage/projects/00000000-0000-0000-0000-000000000000/assets/AjXYVpaVeLsOgpenKKSW8oDB5YuOTWDs/web-proxy/web-proxy.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200602T013235Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=qwerty123%2F20200602%2FUS_WEST_2%2Fs3%2Faws4_request&X-Amz-Signature=acbf9a9b0668b29315f262713742648c1943299e63cb1ea5e6145cf27ad4f95f',  # noqa
+                'mediaType': 'image/jpeg'}
 
-        def mock_data(*args, **kwargs):
-            body = args[-1]
-            assert body['from'] == 0
-            assert body['size'] == 1
-            assert body['query']['prefix']['source.mimetype']['value'] == 'image'
-            return response_data
+        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        asset_id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
+        response = api_client.get(reverse('asset-signed-url',
+                                          kwargs={'project_pk': project.id,
+                                                  'pk': asset_id}))
+        content = check_response(response)
+        assert 'uri' in content
+        assert 'mediaType' in content
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_data)
-        body = {
-            "size": 1,
-            "query": {
-                "prefix": {
-                    "source.mimetype": {
-                        "value": "image"
-                        }
-                    }
-                }
-            }
-        response = api_client.post(reverse('asset-search', kwargs={'project_pk': project.id}), body)
-        search_results = response.json()['results']
-        assert response.status_code == status.HTTP_200_OK
-        assert search_results[0]['id'] == 'XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE'
-        assert search_results[0]['metadata']['source']['mimetype'] == 'image/tiff'
+    def test_signed_url_with_fallback(self, login, project, api_client, monkeypatch):
 
-    def test_search_no_query(self, login, zmlp_project_user, monkeypatch,
-                             api_client, response_data, project):
-        def mock_data(*args, **kwargs):
-            body = args[-1]
-            assert body['from'] == 2
-            assert body['size'] == 1
-            assert 'query' not in body
-            return response_data
+        def mock_detail_response(*args, **kwargs):
+            return Response(status=status.HTTP_200_OK, data={'id': 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C', 'metadata': {'system': {'jobId': '8d2603f7-00d4-132f-8681-0242ac120009', 'dataSourceId': '8d2603f6-00d4-132f-8681-0242ac120009', 'timeCreated': '2020-03-03T21:54:02.002039Z', 'state': 'Analyzed', 'projectId': '00000000-0000-0000-0000-000000000000', 'timeModified': '2020-03-03T21:54:23.978500Z', 'taskId': '8d2603f8-00d4-132f-8681-0242ac120009'}, 'files': [], 'source': {'path': 'gs://zorroa-dev-data/image/TIFF_1MB.tiff', 'extension': 'tiff', 'filename': 'TIFF_1MB.tiff', 'checksum': 1867533868, 'mimetype': 'image/tiff', 'filesize': 1131930}, 'metrics': {'pipeline': [{'executionTime': 0.52, 'module': 'standard', 'checksum': 1621235190, 'executionDate': '2020-03-03T21:54:04.185632', 'processor': 'zmlp_core.core.processors.PreCacheSourceFileProcessor'}, {'executionTime': 0.5, 'module': 'standard', 'checksum': 1426657387, 'executionDate': '2020-03-03T21:54:06.820102', 'processor': 'zmlp_core.image.importers.ImageImporter'}, {'module': 'standard', 'checksum': 2001473853, 'processor': 'zmlp_core.office.importers.OfficeImporter'}, {'module': 'standard', 'checksum': 3310423168, 'processor': 'zmlp_core.video.VideoImporter'}, {'executionTime': 0.0, 'module': 'standard', 'checksum': 1841569083, 'executionDate': '2020-03-03T21:54:08.449234', 'processor': 'zmlp_core.core.processors.AssertAttributesProcessor'}, {'executionTime': 0.89, 'module': 'standard', 'checksum': 457707303, 'executionDate': '2020-03-03T21:54:09.394490', 'processor': 'zmlp_core.proxy.ImageProxyProcessor'}, {'module': 'standard', 'checksum': 482873147, 'processor': 'zmlp_core.proxy.VideoProxyProcessor'}, {'executionTime': 2.07, 'module': 'standard', 'checksum': 2479952423, 'executionDate': '2020-03-03T21:54:20.533214', 'processor': 'zmlp_analysis.mxnet.ZviSimilarityProcessor'}]}, 'media': {'orientation': 'landscape', 'aspect': 1.5, 'width': 650, 'length': 1, 'type': 'image', 'height': 434}, 'analysis': {'zvi': {'similarity': {'simhash': 'PBPBFHAOBGAHCDGNEBDDCGPDCP'}, 'tinyProxy': ['#f3dfc3', '#f4efd8', '#c18f46', '#ebdfbd', '#ccd3c0', '#e7d4bb', '#beae8e', '#cabf9e', '#d2c09c']}}, 'clip': {'sourceAssetId': 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C', 'stop': 1.0, 'pile': 'pUn6wBxUN7x9JxOxLkvruOyNdYA', 'start': 1.0, 'length': 1.0, 'type': 'page'}}})  # noqa
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_data)
-        body = {
-            "size": 1,
-            "from": 2
-            }
-        response = api_client.post(reverse('asset-search', kwargs={'project_pk': project.id}), body)
-        search_results = response.json()['results']
-        assert response.status_code == status.HTTP_200_OK
-        assert search_results[0]['id'] == 'XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE'
-        assert search_results[0]['metadata']['source']['mimetype'] == 'image/tiff'
+        monkeypatch.setattr(AssetViewSet, 'retrieve', mock_detail_response)
 
-    def test_search_addtl_terms(self, login, zmlp_project_user, monkeypatch,
-                                api_client, response_data, project):
-        def mock_data(*args, **kwargs):
-            body = args[-1]
-            assert body['timeout'] == 10
-            assert body['collapse'] == 'true'
-            assert body['suggest'] == 'suggestion'
-            assert body['aggs'] == {'some': {'cool': 'stuff'}}
-            assert body['size'] == 1
-            assert 'query' not in body
-            assert 'extra' not in body
-            return response_data
-
-        monkeypatch.setattr(ZmlpClient, 'post', mock_data)
-        body = {
-            "size": 1,
-            "from": 2,
-            "timeout": 10,
-            'collapse': 'true',
-            'suggest': 'suggestion',
-            'aggs': {'some': {'cool': 'stuff'}}
-        }
-        response = api_client.post(reverse('asset-search', kwargs={'project_pk': project.id}), body)
-        assert response.status_code == status.HTTP_200_OK
+        asset_id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
+        response = api_client.get(reverse('asset-signed-url',
+                                          kwargs={'project_pk': project.id,
+                                                  'pk': asset_id}))
+        content = check_response(response)
+        assert content['uri'] == '/icons/fallback_3x.png'
+        assert content['mediaType'] == 'image/png'
 
 
 class TestFileNameViewSet:
@@ -208,6 +167,23 @@ class TestFileNameViewSet:
         assert isinstance(response, StreamingHttpResponse)
         assert response._headers['cache-control'] == ('Cache-Control', 'max-age=86400, private')
         assert 'expires' in response._headers
+
+    def test_get_signed_url(self, project, api_client, monkeypatch, login):
+
+        def mock_response(*args, **kwargs):
+            return {'uri': 'http://minio:9000/project-storage/projects/00000000-0000-0000-0000-000000000000/assets/AjXYVpaVeLsOgpenKKSW8oDB5YuOTWDs/web-proxy/web-proxy.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200602T013235Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=qwerty123%2F20200602%2FUS_WEST_2%2Fs3%2Faws4_request&X-Amz-Signature=acbf9a9b0668b29315f262713742648c1943299e63cb1ea5e6145cf27ad4f95f', 'mediaType': 'image/jpeg'}  # noqa
+
+        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        asset_id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
+        filename = 'TIFF_1MB.tiff'
+        response = api_client.get(reverse('file_name-signed-url',
+                                          kwargs={'project_pk': project.id,
+                                                  'asset_pk': asset_id,
+                                                  'category_pk': 'proxy',
+                                                  'pk': filename}))
+        content = check_response(response)
+        assert 'uri' in content
+        assert 'mediaType' in content
 
 
 class TestBoxImagesAction:

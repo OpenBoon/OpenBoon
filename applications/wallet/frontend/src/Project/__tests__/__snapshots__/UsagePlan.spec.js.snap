@@ -3,13 +3,13 @@
 exports[`<ProjectUsagePlan /> should not render without subscriptions 1`] = `null`;
 
 exports[`<ProjectUsagePlan /> should render properly 1`] = `
-.emotion-31 {
+.emotion-8 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-30 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -39,16 +39,22 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
   margin-right: 8px;
 }
 
-.emotion-29 {
+.emotion-6 {
   padding: 32px;
 }
 
-.emotion-10 {
+.emotion-1 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-3 {
   border-bottom: 1px solid #4a4a4a;
   padding-bottom: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -59,191 +65,54 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-1 img {
+.emotion-2 img {
   margin-right: 12px;
-}
-
-.emotion-6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  font-family: Roboto Condensed;
-}
-
-.emotion-3 {
-  padding-top: 16px;
-  padding-bottom: 8px;
-  text-align: right;
-  color: #b3b3b3;
-}
-
-.emotion-2 {
-  font-weight: 700;
 }
 
 .emotion-5 {
   padding-top: 16px;
-  padding-bottom: 8px;
-  text-align: right;
-  color: #cdf6a8;
-}
-
-.emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-7 {
-  -webkit-flex: 100;
-  -ms-flex: 100;
-  flex: 100;
-  height: 16px;
-  background-color: #808080;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-8 {
-  -webkit-flex: 200;
-  -ms-flex: 200;
-  flex: 200;
-  height: 16px;
-  background-color: #cdf6a8;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-20 {
-  border-bottom: 1px solid #4a4a4a;
-  padding-top: 16px;
   padding-bottom: 16px;
 }
 
-.emotion-17 {
-  -webkit-flex: 20000;
-  -ms-flex: 20000;
-  flex: 20000;
-  height: 16px;
-  background-color: #808080;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-18 {
-  -webkit-flex: 10000;
-  -ms-flex: 10000;
-  flex: 10000;
-  height: 16px;
-  background-color: #cdf6a8;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-21 {
-  padding-bottom: 4px;
-}
-
-.emotion-26 {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.emotion-22 {
-  font-family: Roboto Mono;
-  color: #b3b3b3;
-  padding-bottom: 2px;
-}
-
-.emotion-28 {
-  padding-top: 16px;
-  color: #b3b3b3;
-}
-
 <div
-  className="emotion-31"
+  className="emotion-8"
 >
   <div
-    className="emotion-30"
+    className="emotion-7"
   >
     <h3
       className="emotion-0"
     >
-      Project Usage Plan
+      Project Tier: Premier
     </h3>
     <div
-      className="emotion-29"
+      className="emotion-6"
     >
+      <h3
+        className="emotion-1"
+      >
+        Usage:
+      </h3>
       <div
-        className="emotion-10"
+        className="emotion-3"
       >
         <h4
-          className="emotion-1"
+          className="emotion-2"
         >
           <img
             alt=""
             src="/icons/videos.png"
             width={32}
           />
-           Video:
-           
-          300
-           hours
+           Video Hours: 
+          0
         </h4>
-        <div>
-          <div
-            className="emotion-6"
-          >
-            <div
-              className="emotion-3"
-            >
-              Used:
-               
-              <span
-                className="emotion-2"
-              >
-                100
-                /hrs
-              </span>
-            </div>
-            <div />
-            <div
-              className="emotion-5"
-            >
-              Available:
-               
-              <span
-                className="emotion-2"
-              >
-                200
-                /hrs
-              </span>
-            </div>
-          </div>
-          <div
-            className="emotion-9"
-          >
-            <div
-              className="emotion-7"
-            />
-            <div
-              className="emotion-8"
-            />
-          </div>
-        </div>
       </div>
       <div
-        className="emotion-20"
+        className="emotion-5"
       >
         <h4
-          className="emotion-1"
+          className="emotion-2"
         >
           <img
             alt=""
@@ -251,87 +120,8 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
             width={32}
           />
            Image / Documents: 
-          30,000
+          97
         </h4>
-        <div>
-          <div
-            className="emotion-6"
-          >
-            <div
-              className="emotion-3"
-            >
-              Used:
-               
-              <span
-                className="emotion-2"
-              >
-                20,000
-                
-              </span>
-            </div>
-            <div />
-            <div
-              className="emotion-5"
-            >
-              Available:
-               
-              <span
-                className="emotion-2"
-              >
-                10,000
-                
-              </span>
-            </div>
-          </div>
-          <div
-            className="emotion-9"
-          >
-            <div
-              className="emotion-17"
-            />
-            <div
-              className="emotion-18"
-            />
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-20"
-      >
-        <h4
-          className="emotion-21"
-        >
-          Additional Modules:
-        </h4>
-        <ul
-          className="emotion-26"
-        >
-          <li
-            className="emotion-22"
-          >
-            zmlp-classification
-          </li>
-          <li
-            className="emotion-22"
-          >
-            zmlp-face-recognition
-          </li>
-          <li
-            className="emotion-22"
-          >
-            shot-detection
-          </li>
-          <li
-            className="emotion-22"
-          >
-            gcp-vision-text-detection
-          </li>
-        </ul>
-      </div>
-      <div
-        className="emotion-28"
-      >
-        Contact your Account Manager to add additional modules and resources to your plan.
       </div>
     </div>
   </div>
@@ -339,13 +129,13 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
 `;
 
 exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
-.emotion-27 {
+.emotion-8 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-26 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -375,16 +165,22 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
   margin-right: 8px;
 }
 
-.emotion-25 {
+.emotion-6 {
   padding: 32px;
 }
 
-.emotion-10 {
+.emotion-1 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-3 {
   border-bottom: 1px solid #4a4a4a;
   padding-bottom: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -395,184 +191,54 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
   align-items: center;
 }
 
-.emotion-1 img {
+.emotion-2 img {
   margin-right: 12px;
-}
-
-.emotion-6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  font-family: Roboto Condensed;
-}
-
-.emotion-3 {
-  padding-top: 16px;
-  padding-bottom: 8px;
-  text-align: right;
-  color: #b3b3b3;
-}
-
-.emotion-2 {
-  font-weight: 700;
 }
 
 .emotion-5 {
   padding-top: 16px;
-  padding-bottom: 8px;
-  text-align: right;
-  color: #cdf6a8;
-}
-
-.emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-7 {
-  -webkit-flex: 100;
-  -ms-flex: 100;
-  flex: 100;
-  height: 16px;
-  background-color: #808080;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-8 {
-  -webkit-flex: 200;
-  -ms-flex: 200;
-  flex: 200;
-  height: 16px;
-  background-color: #cdf6a8;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-20 {
-  border-bottom: 1px solid #4a4a4a;
-  padding-top: 16px;
   padding-bottom: 16px;
 }
 
-.emotion-17 {
-  -webkit-flex: 20000;
-  -ms-flex: 20000;
-  flex: 20000;
-  height: 16px;
-  background-color: #808080;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-18 {
-  -webkit-flex: 10000;
-  -ms-flex: 10000;
-  flex: 10000;
-  height: 16px;
-  background-color: #cdf6a8;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-21 {
-  padding-bottom: 4px;
-}
-
-.emotion-24 {
-  padding-top: 16px;
-  color: #b3b3b3;
-}
-
-.emotion-22 {
-  color: #b3b3b3;
-  font-style: italic;
-}
-
 <div
-  className="emotion-27"
+  className="emotion-8"
 >
   <div
-    className="emotion-26"
+    className="emotion-7"
   >
     <h3
       className="emotion-0"
     >
-      Project Usage Plan
+      Project Tier: Premier
     </h3>
     <div
-      className="emotion-25"
+      className="emotion-6"
     >
+      <h3
+        className="emotion-1"
+      >
+        Usage:
+      </h3>
       <div
-        className="emotion-10"
+        className="emotion-3"
       >
         <h4
-          className="emotion-1"
+          className="emotion-2"
         >
           <img
             alt=""
             src="/icons/videos.png"
             width={32}
           />
-           Video:
-           
-          300
-           hours
+           Video Hours: 
+          0
         </h4>
-        <div>
-          <div
-            className="emotion-6"
-          >
-            <div
-              className="emotion-3"
-            >
-              Used:
-               
-              <span
-                className="emotion-2"
-              >
-                100
-                /hrs
-              </span>
-            </div>
-            <div />
-            <div
-              className="emotion-5"
-            >
-              Available:
-               
-              <span
-                className="emotion-2"
-              >
-                200
-                /hrs
-              </span>
-            </div>
-          </div>
-          <div
-            className="emotion-9"
-          >
-            <div
-              className="emotion-7"
-            />
-            <div
-              className="emotion-8"
-            />
-          </div>
-        </div>
       </div>
       <div
-        className="emotion-20"
+        className="emotion-5"
       >
         <h4
-          className="emotion-1"
+          className="emotion-2"
         >
           <img
             alt=""
@@ -580,68 +246,8 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
             width={32}
           />
            Image / Documents: 
-          30,000
+          97
         </h4>
-        <div>
-          <div
-            className="emotion-6"
-          >
-            <div
-              className="emotion-3"
-            >
-              Used:
-               
-              <span
-                className="emotion-2"
-              >
-                20,000
-                
-              </span>
-            </div>
-            <div />
-            <div
-              className="emotion-5"
-            >
-              Available:
-               
-              <span
-                className="emotion-2"
-              >
-                10,000
-                
-              </span>
-            </div>
-          </div>
-          <div
-            className="emotion-9"
-          >
-            <div
-              className="emotion-17"
-            />
-            <div
-              className="emotion-18"
-            />
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-20"
-      >
-        <h4
-          className="emotion-21"
-        >
-          Additional Modules:
-        </h4>
-        <span
-          className="emotion-22"
-        >
-          None
-        </span>
-      </div>
-      <div
-        className="emotion-24"
-      >
-        Contact your Account Manager to add additional modules and resources to your plan.
       </div>
     </div>
   </div>
@@ -649,13 +255,13 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
 `;
 
 exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
-.emotion-31 {
+.emotion-8 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-30 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -685,16 +291,22 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   margin-right: 8px;
 }
 
-.emotion-29 {
+.emotion-6 {
   padding: 32px;
 }
 
-.emotion-12 {
+.emotion-1 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-3 {
   border-bottom: 1px solid #4a4a4a;
   padding-bottom: 16px;
 }
 
-.emotion-5 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -705,239 +317,54 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   align-items: center;
 }
 
-.emotion-5 img {
+.emotion-2 img {
   margin-right: 12px;
 }
 
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  font-family: Roboto Condensed;
-}
-
-.emotion-7 {
-  padding-top: 16px;
-  padding-bottom: 8px;
-  text-align: right;
-  color: #b3b3b3;
-}
-
-.emotion-6 {
-  font-weight: 700;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-20 {
-  border-bottom: 1px solid #4a4a4a;
+.emotion-5 {
   padding-top: 16px;
   padding-bottom: 16px;
 }
 
-.emotion-21 {
-  padding-bottom: 4px;
-}
-
-.emotion-26 {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.emotion-22 {
-  font-family: Roboto Mono;
-  color: #b3b3b3;
-  padding-bottom: 2px;
-}
-
-.emotion-28 {
-  padding-top: 16px;
-  color: #b3b3b3;
-}
-
-.emotion-4 {
-  padding-bottom: 24px;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-2 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-}
-
-.emotion-1 {
-  font-weight: 400;
-}
-
-.emotion-9 {
-  -webkit-flex: 320;
-  -ms-flex: 320;
-  flex: 320;
-  height: 16px;
-  background-color: #808080;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-10 {
-  -webkit-flex: -20;
-  -ms-flex: -20;
-  flex: -20;
-  height: 16px;
-  background-color: #cdf6a8;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-17 {
-  -webkit-flex: 30040;
-  -ms-flex: 30040;
-  flex: 30040;
-  height: 16px;
-  background-color: #808080;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-18 {
-  -webkit-flex: -40;
-  -ms-flex: -40;
-  flex: -40;
-  height: 16px;
-  background-color: #cdf6a8;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
 <div
-  className="emotion-31"
+  className="emotion-8"
 >
   <div
-    className="emotion-30"
+    className="emotion-7"
   >
     <h3
       className="emotion-0"
     >
-      Project Usage Plan
+      Project Tier: Premier
     </h3>
     <div
-      className="emotion-29"
+      className="emotion-6"
     >
-      <div
-        className="emotion-4"
+      <h3
+        className="emotion-1"
       >
-        <div
-          className="emotion-3"
-        >
-          <svg
-            color="#c92300"
-            data-file-name="warning.svg"
-            height={20}
-          />
-          <div
-            className="emotion-2"
-            role="alert"
-          >
-            <div
-              className="emotion-1"
-            >
-              You are
-               
-              <strong>
-                20
-                 hours over
-              </strong>
-               your video plan
-               and 
-              <strong>
-                40
-                 assets over
-              </strong>
-               your image & documents plan
-              . Contact your Account Manager to add more resources.
-            </div>
-          </div>
-        </div>
-      </div>
+        Usage:
+      </h3>
       <div
-        className="emotion-12"
+        className="emotion-3"
       >
         <h4
-          className="emotion-5"
+          className="emotion-2"
         >
           <img
             alt=""
             src="/icons/videos.png"
             width={32}
           />
-           Video:
-           
-          300
-           hours
+           Video Hours: 
+          320
         </h4>
-        <div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-7"
-            >
-              Used:
-               
-              <span
-                className="emotion-6"
-              >
-                320
-                /hrs
-              </span>
-            </div>
-            <div />
-          </div>
-          <div
-            className="emotion-11"
-          >
-            <div
-              className="emotion-9"
-            />
-            <div
-              className="emotion-10"
-            />
-          </div>
-        </div>
       </div>
       <div
-        className="emotion-20"
+        className="emotion-5"
       >
         <h4
-          className="emotion-5"
+          className="emotion-2"
         >
           <img
             alt=""
@@ -945,75 +372,8 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
             width={32}
           />
            Image / Documents: 
-          30,000
+          30,040
         </h4>
-        <div>
-          <div
-            className="emotion-8"
-          >
-            <div
-              className="emotion-7"
-            >
-              Used:
-               
-              <span
-                className="emotion-6"
-              >
-                30,040
-                
-              </span>
-            </div>
-            <div />
-          </div>
-          <div
-            className="emotion-11"
-          >
-            <div
-              className="emotion-17"
-            />
-            <div
-              className="emotion-18"
-            />
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-20"
-      >
-        <h4
-          className="emotion-21"
-        >
-          Additional Modules:
-        </h4>
-        <ul
-          className="emotion-26"
-        >
-          <li
-            className="emotion-22"
-          >
-            zmlp-classification
-          </li>
-          <li
-            className="emotion-22"
-          >
-            zmlp-face-recognition
-          </li>
-          <li
-            className="emotion-22"
-          >
-            shot-detection
-          </li>
-          <li
-            className="emotion-22"
-          >
-            gcp-vision-text-detection
-          </li>
-        </ul>
-      </div>
-      <div
-        className="emotion-28"
-      >
-        Contact your Account Manager to add additional modules and resources to your plan.
       </div>
     </div>
   </div>

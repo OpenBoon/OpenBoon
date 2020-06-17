@@ -4,7 +4,7 @@ import FilterFacetContent, { noop } from '../Content'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
-jest.mock('../../Filters/Reset', () => 'FiltersReset')
+jest.mock('../../Filter/Reset', () => 'FilterReset')
 
 describe('<FilterFacetContent />', () => {
   it('should select a facet', () => {
@@ -141,20 +141,14 @@ describe('<FilterFacetContent />', () => {
     )
   })
 
-  it('should render with no buckets', () => {
+  it('should render with no data', () => {
     const filter = {
       attribute: 'location.city',
       type: 'facet',
       values: {},
     }
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        results: {
-          buckets: [],
-        },
-      },
-    })
+    require('swr').__setMockUseSWRResponse({})
 
     const component = TestRenderer.create(
       <FilterFacetContent

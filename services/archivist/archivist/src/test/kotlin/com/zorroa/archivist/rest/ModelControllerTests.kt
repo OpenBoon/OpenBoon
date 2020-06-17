@@ -81,10 +81,13 @@ class ModelControllerTests : MockMvcTest() {
     @Test
     fun testFindOne() {
         val model = createTestModel()
-        val filter = """{
-            "names": ["${model.name}"],
-            "ids": ["${model.id}"]
-        }""".trimIndent()
+        val filter =
+            """
+            {
+                "names": ["${model.name}"],
+                "ids": ["${model.id}"]
+            }
+            """
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/models/_find_one")
                 .headers(admin())
@@ -100,10 +103,13 @@ class ModelControllerTests : MockMvcTest() {
     @Test
     fun testSearch() {
         val model = createTestModel()
-        val filter = """{
-            "names": ["${model.name}"],
-            "ids": ["${model.id}"]
-        }""".trimIndent()
+        val filter =
+            """
+            {
+                "names": ["${model.name}"],
+                "ids": ["${model.id}"]
+            }
+            """
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/models/_search")
                 .headers(admin())
@@ -146,17 +152,25 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testTypeInfo() {
-        val type = ModelType.LABEL_DETECTION_RESNET152
+        val type = ModelType.LABEL_DETECTION_RESNET50
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/models/_type/$type")
                 .headers(job())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name",
-                CoreMatchers.equalTo("LABEL_DETECTION_RESNET152")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.dataSetType",
-                CoreMatchers.equalTo("LABEL_DETECTION")))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.name",
+                    CoreMatchers.equalTo("LABEL_DETECTION_RESNET50")
+                )
+            )
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.dataSetType",
+                    CoreMatchers.equalTo("LABEL_DETECTION")
+                )
+            )
             .andReturn()
     }
 }

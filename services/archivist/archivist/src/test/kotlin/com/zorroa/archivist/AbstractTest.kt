@@ -105,10 +105,6 @@ abstract class AbstractTest {
         return false
     }
 
-    fun requiresFieldSets(): Boolean {
-        return false
-    }
-
     @Autowired
     fun setDataSource(dataSource: DataSource) {
         this.jdbc = JdbcTemplate(dataSource)

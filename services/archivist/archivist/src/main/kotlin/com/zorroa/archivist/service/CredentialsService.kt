@@ -121,15 +121,19 @@ class CredentialsServiceImpl(
     override fun getDecryptedBlob(id: UUID): String {
         logger.event(LogObject.CREDENTIALS, LogAction.DECRYPT, mapOf("credentialsId" to id))
         return encryptionService.decryptString(
-            credentialsCustomDao.getEncryptedBlob(id), Credentials.CRYPT_VARIANCE)
+            credentialsCustomDao.getEncryptedBlob(id), Credentials.CRYPT_VARIANCE
+        )
     }
 
     @Transactional(readOnly = true)
     override fun getDecryptedBlobByJob(jobId: UUID, type: CredentialsType): String {
-        logger.event(LogObject.CREDENTIALS, LogAction.DECRYPT,
-            mapOf("jobId" to jobId, "credentialsType" to type.name))
+        logger.event(
+            LogObject.CREDENTIALS, LogAction.DECRYPT,
+            mapOf("jobId" to jobId, "credentialsType" to type.name)
+        )
         return encryptionService.decryptString(
-            credentialsCustomDao.getEncryptedBlobByJob(jobId, type), Credentials.CRYPT_VARIANCE)
+            credentialsCustomDao.getEncryptedBlobByJob(jobId, type), Credentials.CRYPT_VARIANCE
+        )
     }
 
     companion object {

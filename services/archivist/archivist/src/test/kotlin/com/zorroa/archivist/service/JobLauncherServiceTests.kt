@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
+import com.zorroa.archivist.domain.DataSourceImportOptions
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
@@ -71,10 +72,11 @@ class JobLauncherServiceTests : AbstractTest() {
         entityManager.flush()
         entityManager.clear()
         val ds2 = dataSourceService.get(ds.id)
-        val job = jobLaunchService.launchJob(ds2)
+        val job = jobLaunchService.launchJob(ds2, DataSourceImportOptions())
 
         assertEquals(
-            1, jdbc.queryForObject(
+            1,
+            jdbc.queryForObject(
                 "SELECT COUNT(1) FROM x_credentials_job WHERE pk_job=?",
                 Int::class.java, job.jobId
             )
@@ -122,7 +124,7 @@ class JobLauncherServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testLaunchJobWithAssets() {
+    fun testLaunchJobWithAssetIds() {
         val assets = listOf(
             Asset("abc123", mutableMapOf("foo" to "bar")),
             Asset("abc234", mutableMapOf("bing" to "bong"))
@@ -130,10 +132,10 @@ class JobLauncherServiceTests : AbstractTest() {
         val name = "test"
 
         val pipeline = pipelineResolverService.resolve()
-        val job = jobLaunchService.launchJob(name, assets, pipeline)
+        val job = jobLaunchService.launchJob(name, assets.map { it.id }, pipeline)
 
         val tasks = jobService.getTasks(job.id)
         val script = jobService.getZpsScript(tasks.first().id)
-        assertEquals(2, script.assets?.size)
+        assertEquals(2, script.assetIds?.size)
     }
 }

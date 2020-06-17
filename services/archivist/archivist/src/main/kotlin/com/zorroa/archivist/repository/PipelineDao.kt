@@ -1,21 +1,20 @@
 package com.zorroa.archivist.repository
 
-import com.google.common.base.Preconditions
-import com.zorroa.archivist.domain.LIST_OF_PREFS
-import com.zorroa.zmlp.service.logging.LogAction
-import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineFilter
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
+import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
-import com.zorroa.zmlp.service.logging.event
 import com.zorroa.archivist.util.JdbcUtils.insert
-import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.isUUID
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
+import com.zorroa.zmlp.util.Json
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -38,7 +37,6 @@ interface PipelineDao {
 class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
     override fun create(spec: PipelineSpec): Pipeline {
-        Preconditions.checkNotNull(spec.name)
 
         val id = uuid1.generate()
         val time = System.currentTimeMillis()
@@ -69,8 +67,10 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
     override fun setPipelineMods(id: UUID, mods: List<PipelineMod>) {
         jdbc.update("DELETE FROM x_module_pipeline WHERE pk_pipeline=?", id)
         mods?.forEach {
-            jdbc.update("INSERT INTO x_module_pipeline VALUES (?, ?, ?)",
-                UUID.randomUUID(), it.id, id)
+            jdbc.update(
+                "INSERT INTO x_module_pipeline (pk_module, pk_pipeline) VALUES (?, ?)",
+                it.id, id
+            )
         }
     }
 
@@ -105,13 +105,16 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
     override fun update(id: UUID, update: PipelineUpdate): Boolean {
         var updates = jdbc.update(
-            UPDATE, update.name, Json.serializeToString(update.processors), id, getProjectId())
+            UPDATE, update.name, Json.serializeToString(update.processors), id, getProjectId()
+        )
 
         update.modules?.let {
             jdbc.update("DELETE FROM x_module_pipeline WHERE pk_pipeline=?", id)
-            it.forEach {
-                updates += jdbc.update("INSERT INTO x_module_pipeline VALUES (?,?,?)",
-                    UUID.randomUUID(), it, id)
+            it.forEach { mod ->
+                updates += jdbc.update(
+                    "INSERT INTO x_module_pipeline (pk_module, pk_pipeline) VALUES (?,?)",
+                    mod, id
+                )
             }
         }
 
@@ -151,7 +154,7 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
             rs.getObject("pk_project") as UUID,
             rs.getString("str_name"),
             PipelineMode.values()[rs.getInt("int_mode")],
-            Json.Mapper.readValue(rs.getString("json_processors"), LIST_OF_PREFS),
+            Json.Mapper.readValue(rs.getString("json_processors"), ProcessorRef.LIST_OF),
             jdbc.queryForList(
                 "SELECT x.pk_module FROM x_module_pipeline x WHERE x.pk_pipeline=?", UUID::class.java,
                 rs.getObject("pk_pipeline")
@@ -170,10 +173,10 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
         private const val UPDATE = "UPDATE " +
             "pipeline " +
             "SET " +
-                "str_name=?, " +
-                "json_processors=?::jsonb " +
+            "str_name=?, " +
+            "json_processors=?::jsonb " +
             "WHERE " +
-                "pk_pipeline=? AND pk_project=?"
+            "pk_pipeline=? AND pk_project=?"
 
         private val INSERT = insert(
             "pipeline",

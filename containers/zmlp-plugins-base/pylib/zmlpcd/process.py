@@ -234,8 +234,7 @@ class ProcessorWrapper(object):
                 raise ValueError("No file types were supplied in job settings property")
 
             if self.instance:
-                self.reactor.write_event("status",
-                                         {"status": "Running {}".format(self.ref["className"])})
+                self.reactor.emit_status("Running processor {}".format(self.ref["className"]))
                 self.instance.generate(consumer)
                 total_time = round(time.monotonic() - start_time, 2)
                 self.increment_stat("generate_count")
@@ -381,7 +380,7 @@ class ProcessorWrapper(object):
             metrics = []
             asset.set_attr("metrics.pipeline", metrics)
 
-        # We're assumimg that processors are unique here.
+        # We're assuming that processors are unique here.
         # Which isn't always or technically the case, but we
         # could move that direction using group processors.
         def find(lst, value):
@@ -404,8 +403,9 @@ class ProcessorWrapper(object):
         # The checksum needs to be there even if its not processed
         # or else a zero checksums would signal reprocessing.
         metric["checksum"] = self.ref.get("checksum", 0)
+        metric["executionTime"] = 0
 
-        # Only processed processors get a date and execution time.
+        # Only processed processors get a date and a positive executionTime
         if processed:
             metric["executionTime"] = exec_time
             metric["executionDate"] = datetime.datetime.utcnow().isoformat()

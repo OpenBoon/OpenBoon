@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
-import { colors, spacing, constants } from '../Styles'
+
+import { colors, spacing, constants, typography } from '../Styles'
 
 const STATUS_COLORS = {
   InProgress: colors.signal.canary.base,
@@ -23,7 +24,7 @@ const JobsStatus = ({ status }) => {
           status === 'Paused'
             ? colors.signal.canary.base
             : colors.structure.coal,
-        fontFamily: 'Roboto Condensed',
+        fontFamily: typography.family.condensed,
       }}
     >
       {status.replace(/([A-Z])/g, (match) => ` ${match}`).trim()}

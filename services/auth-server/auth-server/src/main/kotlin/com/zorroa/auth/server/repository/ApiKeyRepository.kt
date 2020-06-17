@@ -13,6 +13,8 @@ import javax.sql.DataSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
+import org.springframework.data.jpa.repository.Query
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -25,6 +27,10 @@ interface ApiKeyRepository : JpaRepository<ApiKey, UUID> {
     fun findByProjectIdAndId(id: UUID, projectId: UUID): ApiKey
 
     fun findByAccessKey(accesKey: String): ApiKey?
+
+    @Modifying(clearAutomatically = true)
+    @Query("update ApiKey api set api.enabled = ?1 where api.id = ?2")
+    fun updateEnabledById(enabled: Boolean, id: UUID)
 }
 
 /**
@@ -76,13 +82,15 @@ class ApiKeyCustomRepositoryImpl(
 
     override fun getSigningKey(id: UUID): SigningKey {
         return jdbc.queryForObject(
-            "$GET_SIGNING_KEY WHERE project_id=? AND pk_api_key=?", signingKeyMapper, getProjectId(), id)
+            "$GET_SIGNING_KEY WHERE project_id=? AND pk_api_key=?", signingKeyMapper, getProjectId(), id
+        )
             ?: throw DataRetrievalFailureException("Invalid API Key")
     }
 
     override fun getSigningKey(name: String): SigningKey {
         return jdbc.queryForObject(
-            "$GET_SIGNING_KEY WHERE project_id=? AND name=?", signingKeyMapper, getProjectId(), name)
+            "$GET_SIGNING_KEY WHERE project_id=? AND name=?", signingKeyMapper, getProjectId(), name
+        )
             ?: throw DataRetrievalFailureException("Invalid API Key")
     }
 
@@ -110,7 +118,8 @@ class ApiKeyCustomRepositoryImpl(
     }
 
     private val validationKeyMapper = RowMapper { rs, _ ->
-        ValidationKey(rs.getObject("pk_api_key") as UUID,
+        ValidationKey(
+            rs.getObject("pk_api_key") as UUID,
             rs.getObject("project_id") as UUID,
             rs.getString("access_key"),
             rs.getString("secret_key"),
@@ -127,6 +136,6 @@ class ApiKeyCustomRepositoryImpl(
         const val GET_SIGNING_KEY = "SELECT access_key, secret_key FROM api_key"
         const val GET_VALIDATION_KEY =
             "SELECT pk_api_key, project_id, name, permissions, access_key, secret_key " +
-                "FROM api_key WHERE access_key=?"
+                "FROM api_key WHERE access_key=? and enabled = true"
     }
 }
