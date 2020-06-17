@@ -384,7 +384,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
               <div
                 className="emotion-8"
               >
-                Shows the min, max, mean, median, and mode for the numberical values of a selected field. 
+                Shows the min, max, mean, median, and mode for the numerical values of a selected field. 
               </div>
             </div>
             <div
