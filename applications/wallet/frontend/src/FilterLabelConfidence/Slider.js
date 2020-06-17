@@ -67,7 +67,7 @@ const FilterLabelConfidenceSlider = ({
             onUpdate={(values) => setRangeValues(values)}
             onChange={([newMin, newMax]) =>
               dispatch({
-                action: ACTIONS.UPDATE_FILTER,
+                type: ACTIONS.UPDATE_FILTER,
                 payload: {
                   pathname,
                   projectId,

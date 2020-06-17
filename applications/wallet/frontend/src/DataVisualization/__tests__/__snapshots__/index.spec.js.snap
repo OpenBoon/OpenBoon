@@ -330,7 +330,6 @@ exports[`<DataVisualization /> should render properly 1`] = `
               className="emotion-6"
             >
               <svg
-                color="#ffffff"
                 data-file-name="facet.svg"
                 width={22}
               />
@@ -368,7 +367,6 @@ exports[`<DataVisualization /> should render properly 1`] = `
               className="emotion-6"
             >
               <svg
-                color="#ffffff"
                 data-file-name="range.svg"
                 width={22}
               />

@@ -1,15 +1,19 @@
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 import { colors, spacing } from '../Styles'
 
 import { cleanup } from '../Filters/helpers'
+import { useLocalStorageReducer } from '../LocalStorage/helpers'
 
 import Panel from '../Panel'
 import Filters from '../Filters'
 import VisualizerNavigation from '../Visualizer/Navigation'
 
 import FilterSvg from '../Icons/filter.svg'
+
+import { reducer } from './reducer'
 
 import DataVisualizationCreate from './Create'
 
@@ -29,6 +33,14 @@ const DataVisualizationContent = () => {
   } = useSWR(
     `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${FROM}&size=${SIZE}`,
   )
+
+  const [state, dispatch] = useLocalStorageReducer({
+    key: `DataVisualization.${projectId}`,
+    reducer,
+    initialState: [],
+  })
+
+  const [isCreating, setIsCreating] = useState(state.length === 0)
 
   return (
     <div
@@ -58,7 +70,14 @@ const DataVisualizationContent = () => {
         <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           {!!itemCount && <VisualizerNavigation itemCount={itemCount} />}
 
-          <DataVisualizationCreate />
+          {isCreating ? (
+            <DataVisualizationCreate
+              dispatch={dispatch}
+              setIsCreating={setIsCreating}
+            />
+          ) : (
+            <div>{JSON.stringify(state)}</div>
+          )}
         </div>
       </div>
     </div>

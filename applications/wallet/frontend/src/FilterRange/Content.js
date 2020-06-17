@@ -68,7 +68,7 @@ const FilterRangeContent = ({
     setRangeValues([newMin, rangeValues[1]])
 
     dispatch({
-      action: ACTIONS.UPDATE_FILTER,
+      type: ACTIONS.UPDATE_FILTER,
       payload: {
         pathname,
         projectId,
@@ -99,7 +99,7 @@ const FilterRangeContent = ({
     setRangeValues([rangeValues[0], newMax])
 
     dispatch({
-      action: ACTIONS.UPDATE_FILTER,
+      type: ACTIONS.UPDATE_FILTER,
       payload: {
         pathname,
         projectId,
@@ -157,7 +157,7 @@ const FilterRangeContent = ({
             }}
             onChange={([newMin, newMax]) => {
               dispatch({
-                action: ACTIONS.UPDATE_FILTER,
+                type: ACTIONS.UPDATE_FILTER,
                 payload: {
                   pathname,
                   projectId,

@@ -99,7 +99,7 @@ const FilterTextSearch = ({
           }}
           onClick={() =>
             dispatch({
-              action: ACTIONS.UPDATE_FILTER,
+              type: ACTIONS.UPDATE_FILTER,
               payload: {
                 pathname,
                 projectId,
@@ -138,7 +138,7 @@ const FilterTextSearch = ({
           }}
           onClick={() =>
             dispatch({
-              action: ACTIONS.DELETE_FILTER,
+              type: ACTIONS.DELETE_FILTER,
               payload: {
                 pathname,
                 projectId,

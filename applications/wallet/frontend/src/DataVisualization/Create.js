@@ -1,28 +1,12 @@
-import { colors, spacing, typography, constants } from '../Styles'
+import PropTypes from 'prop-types'
 
-import FacetSvg from '../Icons/facet.svg'
-import RangeSvg from '../Icons/range.svg'
+import { colors, spacing, typography, constants } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
-const ICON_SIZE = 22
+import { TYPES, ACTIONS } from './reducer'
 
-const CHART_TYPES = [
-  {
-    icon: <FacetSvg width={ICON_SIZE} color={colors.structure.white} />,
-    name: 'Facet',
-    legend:
-      'Shows the range of values and the number of each for one for a selected field.',
-  },
-  {
-    icon: <RangeSvg width={ICON_SIZE} color={colors.structure.white} />,
-    name: 'Range',
-    legend:
-      'Shows the min, max, mean, median, and mode for the numerical values of a selected field.',
-  },
-]
-
-const DataVisualizationCreate = () => {
+const DataVisualizationCreate = ({ dispatch, setIsCreating }) => {
   return (
     <div css={{ flex: 1, display: 'flex', padding: spacing.base }}>
       <div
@@ -55,7 +39,7 @@ const DataVisualizationCreate = () => {
           uploading.
         </p>
 
-        {CHART_TYPES.map(({ icon, name, legend }) => {
+        {TYPES.map(({ type, icon, name, legend }) => {
           return (
             <div
               key={name}
@@ -116,7 +100,11 @@ const DataVisualizationCreate = () => {
               >
                 <Button
                   variant={VARIANTS.SECONDARY_SMALL}
-                  onClick={console.warn}
+                  onClick={() => {
+                    dispatch({ type: ACTIONS.CREATE, payload: { type } })
+
+                    setIsCreating(false)
+                  }}
                 >
                   Create
                 </Button>
@@ -127,6 +115,11 @@ const DataVisualizationCreate = () => {
       </div>
     </div>
   )
+}
+
+DataVisualizationCreate.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  setIsCreating: PropTypes.func.isRequired,
 }
 
 export default DataVisualizationCreate
