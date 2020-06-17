@@ -9,7 +9,7 @@ import { dispatch, ACTIONS } from '../Filters/helpers'
 const BUTTON_SIZE = 42
 const ICON_SIZE = 20
 
-const SearchFilter = ({ projectId, assetId, filters }) => {
+const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
   const [searchString, setSearchString] = useState('')
 
   const hasSearch = searchString !== ''
@@ -62,6 +62,7 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
             dispatch({
               action: ACTIONS.ADD_FILTERS,
               payload: {
+                pathname,
                 projectId,
                 assetId,
                 filters,
@@ -103,6 +104,7 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
 }
 
 SearchFilter.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,

@@ -42,13 +42,13 @@ export const cleanup = ({ query }) => {
 export const dispatch = ({ action, payload }) => {
   switch (action) {
     case ACTIONS.ADD_FILTERS: {
-      const { projectId, assetId, filters, newFilters } = payload
+      const { pathname, projectId, assetId, filters, newFilters } = payload
 
       const query = encode({ filters: [...newFilters, ...filters] })
 
       Router.push(
         {
-          pathname: '/[projectId]/visualizer',
+          pathname,
           query: { projectId, id: assetId, query },
         },
         `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
@@ -59,6 +59,7 @@ export const dispatch = ({ action, payload }) => {
 
     case ACTIONS.UPDATE_FILTER: {
       const {
+        pathname,
         projectId,
         assetId,
         filters,
@@ -76,7 +77,7 @@ export const dispatch = ({ action, payload }) => {
 
       Router.push(
         {
-          pathname: '/[projectId]/visualizer',
+          pathname,
           query: { projectId, id: assetId, query },
         },
         `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
@@ -86,7 +87,7 @@ export const dispatch = ({ action, payload }) => {
     }
 
     case ACTIONS.DELETE_FILTER: {
-      const { projectId, assetId, filters, filterIndex } = payload
+      const { pathname, projectId, assetId, filters, filterIndex } = payload
 
       const newFilters = [
         ...filters.slice(0, filterIndex),
@@ -97,7 +98,7 @@ export const dispatch = ({ action, payload }) => {
 
       Router.push(
         {
-          pathname: '/[projectId]/visualizer',
+          pathname,
           query: { projectId, id: assetId, query },
         },
         `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
@@ -107,7 +108,7 @@ export const dispatch = ({ action, payload }) => {
     }
 
     case ACTIONS.APPLY_SIMILARITY: {
-      const { projectId, assetId, selectedId, query: q } = payload
+      const { pathname, projectId, assetId, selectedId, query: q } = payload
 
       const similarityFilter = {
         type: 'similarity',
@@ -134,7 +135,7 @@ export const dispatch = ({ action, payload }) => {
 
       Router.push(
         {
-          pathname: '/[projectId]/visualizer',
+          pathname,
           query: { projectId, id: selectedId, query },
         },
         `/${projectId}/visualizer${formatUrl({ id: selectedId, query })}`,
@@ -144,11 +145,11 @@ export const dispatch = ({ action, payload }) => {
     }
 
     case ACTIONS.CLEAR_FILTERS: {
-      const { projectId, assetId } = payload
+      const { pathname, projectId, assetId } = payload
 
       Router.push(
         {
-          pathname: '/[projectId]/visualizer',
+          pathname,
           query: { projectId, id: assetId },
         },
         `/${projectId}/visualizer${formatUrl({ id: assetId })}`,

@@ -15,6 +15,7 @@ jest.mock('../../Asset/Asset', () => 'AssetAsset')
 describe('<Assets />', () => {
   it('should render properly while loading', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID },
     })
 
@@ -27,6 +28,7 @@ describe('<Assets />', () => {
 
   it('should render properly', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID },
     })
 
@@ -80,6 +82,7 @@ describe('<Assets />', () => {
 
   it('should render empty properly', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID },
     })
 
@@ -96,6 +99,7 @@ describe('<Assets />', () => {
 
     require('next/router').__setMockPushFunction(mockPush)
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
         id: ASSET_ID,
@@ -135,6 +139,7 @@ describe('<Assets />', () => {
 
   it('should render empty with no filters properly', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
         id: ASSET_ID,

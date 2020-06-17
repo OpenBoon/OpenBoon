@@ -20,6 +20,7 @@ describe('<FilterExists />', () => {
 
     const component = TestRenderer.create(
       <FilterExists
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -71,6 +72,7 @@ describe('<FilterExists />', () => {
 
     const component = TestRenderer.create(
       <FilterExists
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}

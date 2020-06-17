@@ -16,6 +16,7 @@ import Slider from '../Slider'
 const THUMBNAIL_SIZE = 74
 
 const FilterSimilarityContent = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -58,6 +59,7 @@ const FilterSimilarityContent = ({
   return (
     <div>
       <FilterReset
+        pathname={pathname}
         projectId={projectId}
         assetId={assetId}
         filters={filters}
@@ -67,6 +69,7 @@ const FilterSimilarityContent = ({
           setValue(0.75)
         }}
       />
+
       <div css={{ padding: spacing.normal }}>
         <div
           css={{
@@ -81,6 +84,7 @@ const FilterSimilarityContent = ({
             alt={name}
           />
         </div>
+
         <div
           css={{
             display: 'flex',
@@ -93,6 +97,7 @@ const FilterSimilarityContent = ({
             Similarity Range: {formatValue({ attribute, value }).toFixed(2)}
           </span>
         </div>
+
         <div
           css={{
             display: 'flex',
@@ -104,6 +109,7 @@ const FilterSimilarityContent = ({
           <span>0.01</span>
           <span>1.00</span>
         </div>
+
         <div css={{ padding: spacing.small }}>
           <Slider
             step={0.01}
@@ -117,6 +123,7 @@ const FilterSimilarityContent = ({
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
+                  pathname,
                   projectId,
                   assetId,
                   filters,
@@ -138,6 +145,7 @@ const FilterSimilarityContent = ({
 }
 
 FilterSimilarityContent.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
