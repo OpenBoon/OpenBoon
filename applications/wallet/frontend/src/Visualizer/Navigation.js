@@ -4,6 +4,8 @@ import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import { formatUrl } from '../Filters/helpers'
+
 import AssetsSvg from '../Icons/assets.svg'
 import ChartsSvg from '../Icons/charts.svg'
 
@@ -12,7 +14,7 @@ const ICON_WIDTH = 20
 const VisualizerNavigation = ({ itemCount }) => {
   const {
     pathname,
-    query: { projectId },
+    query: { projectId, query },
   } = useRouter()
 
   return (
@@ -49,8 +51,11 @@ const VisualizerNavigation = ({ itemCount }) => {
         }}
       >
         <Link
-          href="/[projectId]/visualizer"
-          as={`/${projectId}/visualizer`}
+          href={{
+            pathname: '/[projectId]/visualizer',
+            query: { projectId, query },
+          }}
+          as={`/${projectId}/visualizer${formatUrl({ query })}`}
           passHref
         >
           <a
@@ -74,8 +79,13 @@ const VisualizerNavigation = ({ itemCount }) => {
         />
 
         <Link
-          href="/[projectId]/visualizer/data-visualization"
-          as={`/${projectId}/visualizer/data-visualization`}
+          href={{
+            pathname: '/[projectId]/visualizer/data-visualization',
+            query: { projectId, query },
+          }}
+          as={`/${projectId}/visualizer/data-visualization${formatUrl({
+            query,
+          })}`}
           passHref
         >
           <a

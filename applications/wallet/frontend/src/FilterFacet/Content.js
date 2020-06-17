@@ -15,6 +15,7 @@ import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 export const noop = () => {}
 
 const FilterFacet = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -50,6 +51,7 @@ const FilterFacet = ({
   return (
     <>
       <FilterReset
+        pathname={pathname}
         projectId={projectId}
         assetId={assetId}
         filters={filters}
@@ -57,7 +59,9 @@ const FilterFacet = ({
         filterIndex={filterIndex}
         onReset={noop}
       />
+
       <div css={{ height: spacing.moderate }} />
+
       <FilterSearch
         placeholder="Search facets"
         searchString={searchString}
@@ -65,6 +69,7 @@ const FilterFacet = ({
           setSearchString(value)
         }}
       />
+
       <div
         css={{
           display: 'flex',
@@ -77,6 +82,7 @@ const FilterFacet = ({
         <div>LABEL</div>
         <div>COUNT</div>
       </div>
+
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
         {buckets.map(({ key, docCount = 0 }) => {
           if (!key.toLowerCase().includes(searchString)) return null
@@ -118,6 +124,7 @@ const FilterFacet = ({
                   dispatch({
                     action: ACTIONS.UPDATE_FILTER,
                     payload: {
+                      pathname,
                       projectId,
                       assetId,
                       filters,
@@ -174,6 +181,7 @@ const FilterFacet = ({
 }
 
 FilterFacet.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

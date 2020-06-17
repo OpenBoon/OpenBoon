@@ -20,7 +20,7 @@ def detail_data():
 
 @pytest.fixture
 def list_data():
-    return {'page': {'from': 0, 'size': 50, 'totalCount': 2},
+    return {'page': {'from': 0, 'size': 50, 'totalCount': 3},
             'list': [
                 {'id': '6fab5e59-7793-4986-9c0b-757ed0979abb',
                  'projectId': '00000000-0000-0000-0000-000000000000',
@@ -77,10 +77,9 @@ class TestApikey:
         response = api_client.get(reverse('apikey-list', kwargs={'project_pk': project.id}))
         assert response.status_code == 200
         content = response.json()
-        assert len(content['results']) == 2
+        assert len(content['results']) == 1
         assert 'next' in content
         assert 'previous' in content
-        assert content['count'] == 2
 
     @override_settings(PLATFORM='zmlp')
     def test_get_detail(self, zmlp_project_user, project, api_client, monkeypatch, detail_data):

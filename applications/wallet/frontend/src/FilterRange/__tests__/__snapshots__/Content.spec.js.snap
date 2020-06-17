@@ -107,6 +107,7 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
@@ -297,6 +298,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
@@ -487,6 +489,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
@@ -677,6 +680,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
@@ -867,6 +871,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
@@ -1051,6 +1056,7 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
       ]
     }
     onReset={[Function]}
+    pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div

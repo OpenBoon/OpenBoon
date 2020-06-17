@@ -14,6 +14,7 @@ import Button, { VARIANTS } from '../Button'
 const SVG_SIZE = 20
 
 const FilterActions = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -47,6 +48,7 @@ const FilterActions = ({
           dispatch({
             action: ACTIONS.UPDATE_FILTER,
             payload: {
+              pathname,
               projectId,
               assetId,
               filters,
@@ -84,6 +86,7 @@ const FilterActions = ({
           dispatch({
             action: ACTIONS.DELETE_FILTER,
             payload: {
+              pathname,
               projectId,
               assetId,
               filters,
@@ -103,6 +106,7 @@ const FilterActions = ({
 }
 
 FilterActions.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

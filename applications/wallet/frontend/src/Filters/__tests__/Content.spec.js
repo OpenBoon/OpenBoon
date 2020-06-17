@@ -20,6 +20,7 @@ describe('<FiltersContent />', () => {
 
     const component = TestRenderer.create(
       <FiltersContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={filters}
@@ -37,6 +38,7 @@ describe('<FiltersContent />', () => {
 
     const component = TestRenderer.create(
       <FiltersContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={filters}
@@ -56,6 +58,7 @@ describe('<FiltersContent />', () => {
 
     const component = TestRenderer.create(
       <FiltersContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={filters}
@@ -79,6 +82,7 @@ describe('<FiltersContent />', () => {
 
     const component = TestRenderer.create(
       <FiltersContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={filters}
@@ -100,6 +104,7 @@ describe('<FiltersContent />', () => {
 
     const component = TestRenderer.create(
       <FiltersContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={filters}
@@ -123,6 +128,7 @@ describe('<FiltersContent />', () => {
 
     const component = TestRenderer.create(
       <FiltersContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={filters}
@@ -143,6 +149,7 @@ describe('<FiltersContent />', () => {
 
     const component = TestRenderer.create(
       <FiltersContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={filters}

@@ -21,7 +21,13 @@ import { dispatch, ACTIONS } from './helpers'
 const BUTTON_SIZE = 190
 const ICON_SIZE = 20
 
-const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
+const FiltersContent = ({
+  pathname,
+  projectId,
+  assetId,
+  filters,
+  setIsMenuOpen,
+}) => {
   const hasFilters = filters.length > 0
 
   return (
@@ -62,7 +68,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
               onClick={() => {
                 dispatch({
                   action: ACTIONS.CLEAR_FILTERS,
-                  payload: { projectId, assetId },
+                  payload: { pathname, projectId, assetId },
                 })
               }}
             >
@@ -74,6 +80,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
         <div css={{ height: spacing.small }} />
 
         <SearchFilter
+          pathname={pathname}
           projectId={projectId}
           assetId={assetId}
           filters={filters}
@@ -87,6 +94,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
               return (
                 <FilterExists
                   key={`${filter.type}-${index}`}
+                  pathname={pathname}
                   projectId={projectId}
                   assetId={assetId}
                   filters={filters}
@@ -99,6 +107,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
               return (
                 <FilterFacet
                   key={`${filter.type}-${index}`}
+                  pathname={pathname}
                   projectId={projectId}
                   assetId={assetId}
                   filters={filters}
@@ -111,6 +120,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
               return (
                 <FilterRange
                   key={`${filter.type}-${index}`}
+                  pathname={pathname}
                   projectId={projectId}
                   assetId={assetId}
                   filters={filters}
@@ -123,6 +133,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
               return (
                 <FilterLabelConfidence
                   key={`${filter.type}-${index}`}
+                  pathname={pathname}
                   projectId={projectId}
                   assetId={assetId}
                   filters={filters}
@@ -135,6 +146,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
               return (
                 <FilterText
                   key={`${filter.type}-${index}`}
+                  pathname={pathname}
                   projectId={projectId}
                   assetId={assetId}
                   filters={filters}
@@ -147,6 +159,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
               return (
                 <FilterSimilarity
                   key={`${filter.type}-${index}`}
+                  pathname={pathname}
                   projectId={projectId}
                   assetId={assetId}
                   filters={filters}
@@ -165,6 +178,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
 }
 
 FiltersContent.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

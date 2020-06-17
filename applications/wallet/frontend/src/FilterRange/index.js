@@ -11,13 +11,21 @@ import SuspenseBoundary from '../SuspenseBoundary'
 
 import FilterRangeContent from './Content'
 
-const FilterRange = ({ projectId, assetId, filters, filter, filterIndex }) => {
+const FilterRange = ({
+  pathname,
+  projectId,
+  assetId,
+  filters,
+  filter,
+  filterIndex,
+}) => {
   return (
     <Accordion
       variant={ACCORDION_VARIANTS.FILTER}
       title={<FilterTitle filter={filter} />}
       actions={
         <FilterActions
+          pathname={pathname}
           projectId={projectId}
           assetId={assetId}
           filters={filters}
@@ -44,6 +52,7 @@ const FilterRange = ({ projectId, assetId, filters, filter, filterIndex }) => {
       >
         <SuspenseBoundary>
           <FilterRangeContent
+            pathname={pathname}
             projectId={projectId}
             assetId={assetId}
             filters={filters}
@@ -57,6 +66,7 @@ const FilterRange = ({ projectId, assetId, filters, filter, filterIndex }) => {
 }
 
 FilterRange.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
