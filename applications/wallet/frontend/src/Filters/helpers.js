@@ -114,7 +114,6 @@ export const dispatch = ({ action, payload }) => {
         type: 'similarity',
         attribute: 'analysis.zvi-image-similarity',
         values: { ids: [assetId] },
-        isDisabled: true, // TODO: remove after backend update
       }
 
       const filters = decode({ query: q })
