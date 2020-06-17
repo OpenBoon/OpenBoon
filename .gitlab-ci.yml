@@ -13,6 +13,9 @@ stages:
   - push
   - deploy
 
+include:
+  - template: SAST.gitlab-ci.yml
+
 ########  Wallet  ########
 
 ## Wallet Frontend CI Tests
