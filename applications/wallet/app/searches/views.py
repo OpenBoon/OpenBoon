@@ -163,7 +163,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                 "type": "similarity",
                 "attribute": "analysis.zvi-image-similarity",
                 "values": {
-                    "hashes": ["Simhashes to match"],
+                    "ids": ["Asset IDs to match"],
                     "minScore": 0.75,   # Optional
                     "boost": 1.0        # Optional
                 }
