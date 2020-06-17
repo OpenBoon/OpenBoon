@@ -125,7 +125,7 @@ class FilterBoy(object):
 
         filters = []
         for raw_filter in converted_query:
-            filters.append(self.get_filter_from_json(raw_filter, request.client))
+            filters.append(self.get_filter_from_json(raw_filter, request.app))
         return filters
 
     def get_filter_from_json(self, raw_filter, zmlp_app):
@@ -159,7 +159,7 @@ class FilterBoy(object):
         if not Filter:
             raise ParseError(detail=f'Unsupported filter `{filter_type}` given.')
 
-        return Filter(raw_filter, zmlp_app=zmlp_app)
+        return Filter(raw_filter, zmlp_app)
 
     def reduce_filters_to_query(self, filters):
         """Takes a list of Filters and combines their separate queries into one."""

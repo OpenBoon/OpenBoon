@@ -35,7 +35,7 @@ class BaseFilter(object):
     optional_keys = []
     agg_prefix = ''
 
-    def __init__(self, data, zmlp_app=None):
+    def __init__(self, data, zmlp_app):
         self.data = data
         self.zmlp_app = zmlp_app
         self.name = str(uuid.uuid4())

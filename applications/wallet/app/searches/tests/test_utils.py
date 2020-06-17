@@ -145,7 +145,7 @@ class TestFilterBoy:
         response_filter = filter_boy.get_filter_from_request(request)
         assert FacetFilter({"type": "facet",
                             "attribute": "analysis.zvi.tinyProxy"
-                            }) == response_filter
+                            }, None) == response_filter
 
     def test_get_filter_from_request_flow(self, api_factory, filter_boy):
         _filter = {'type': 'range', 'attribute': 'source.filesize'}
@@ -154,7 +154,7 @@ class TestFilterBoy:
         request.query_params = {'filter': encoded_qs}
 
         response_filter = filter_boy.get_filter_from_request(request)
-        assert RangeFilter(_filter) == response_filter
+        assert RangeFilter(_filter, None) == response_filter
 
     def test_get_filter_from_request_raises_invalid_request(self, filter_boy):
         request = Mock()
@@ -183,7 +183,7 @@ class TestFilterBoy:
         request = Mock()
         request.query_params = {'query': encoded_qs}
 
-        expected = [RangeFilter(_filters[0]), FacetFilter(_filters[1])]
+        expected = [RangeFilter(_filters[0], None), FacetFilter(_filters[1], None)]
         filters = filter_boy.get_filters_from_request(request)
         assert filters == expected
 
@@ -203,7 +203,7 @@ class TestFilterBoy:
         raw_filter = {'type': 'range', 'attribute': 'source.filesize'}
         _filter = filter_boy.get_filter_from_json(raw_filter, None)
 
-        assert _filter == RangeFilter(raw_filter)
+        assert _filter == RangeFilter(raw_filter, None)
 
     def test_get_filter_from_json_raises_parse_error(self, filter_boy):
         raw_filter = {'attribute': 'source.filesize'}
@@ -222,7 +222,7 @@ class TestFilterBoy:
     def test_reduce_filters_to_query_single_filter(self, filter_boy):
         _filter = RangeFilter({'type': 'range',
                                'attribute': 'source.filesize',
-                               'values': {'min': 1, 'max': 100}})
+                               'values': {'min': 1, 'max': 100}}, None)
         expected_query = {'query': {'bool': {'filter': [{'range': {'source.filesize': {'gte': 1, 'lte': 100}}}]}}}  # noqa
         response_query = filter_boy.reduce_filters_to_query([_filter])
         assert expected_query == response_query
@@ -230,10 +230,10 @@ class TestFilterBoy:
     def test_reduce_filters_to_query_multiple_filters(self, filter_boy):
         _filters = [RangeFilter({'type': 'range',
                                  'attribute': 'source.filesize',
-                                 'values': {'min': 1, 'max': 100}}),
+                                 'values': {'min': 1, 'max': 100}}, None),
                     FacetFilter({'type': 'facet',
                                  'attribute': 'source.extension',
-                                 'values': {'facets': ['jpeg', 'tiff']}})]
+                                 'values': {'facets': ['jpeg', 'tiff']}}, None)]
         expected_query = {
             'query': {'bool': {'filter': [{'range': {'source.filesize': {'gte': 1, 'lte': 100}}},
                                           {'terms': {'source.extension': ['jpeg', 'tiff']}}]}}}
