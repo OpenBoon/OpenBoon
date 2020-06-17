@@ -18,7 +18,7 @@ const CHART_TYPES = [
     icon: <RangeSvg width={ICON_SIZE} color={colors.structure.white} />,
     name: 'Range',
     legend:
-      'Shows the min, max, mean, median, and mode for the numerical values of a selected field. ',
+      'Shows the min, max, mean, median, and mode for the numerical values of a selected field.',
   },
 ]
 
