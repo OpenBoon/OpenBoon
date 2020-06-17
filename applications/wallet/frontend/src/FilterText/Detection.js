@@ -14,6 +14,7 @@ const BUTTON_SIZE = 42
 const ICON_SIZE = 20
 
 const FilterTextDetection = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -81,6 +82,7 @@ const FilterTextDetection = ({
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
+                  pathname,
                   projectId,
                   assetId,
                   filters,
@@ -157,6 +159,7 @@ const FilterTextDetection = ({
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
+                  pathname,
                   projectId,
                   assetId,
                   filters,
@@ -197,6 +200,7 @@ const FilterTextDetection = ({
 }
 
 FilterTextDetection.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
