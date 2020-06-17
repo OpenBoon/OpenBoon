@@ -201,7 +201,7 @@ class TestFilterBoy:
 
     def test_get_filter_from_json(self, filter_boy):
         raw_filter = {'type': 'range', 'attribute': 'source.filesize'}
-        _filter = filter_boy.get_filter_from_json(raw_filter)
+        _filter = filter_boy.get_filter_from_json(raw_filter, None)
 
         assert _filter == RangeFilter(raw_filter)
 
