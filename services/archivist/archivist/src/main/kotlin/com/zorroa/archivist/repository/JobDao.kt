@@ -192,7 +192,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
                     TaskState.Success to rs.getInt("int_task_state_2"),
                     TaskState.Failure to rs.getInt("int_task_state_3"),
                     TaskState.Skipped to rs.getInt("int_task_state_4"),
-                    TaskState.Queued to rs.getInt("int_task_state_5")
+                    TaskState.Queued to rs.getInt("int_task_state_5"),
+                    TaskState.Depend to rs.getInt("int_task_state_6")
                 )
                 TaskStateCounts(map, rs.getInt("int_task_total_count"))
             },
@@ -366,6 +367,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "job_count.int_task_state_3," +
                 "job_count.int_task_state_4," +
                 "job_count.int_task_state_5, " +
+                "job_count.int_task_state_6, " +
                 "job_count.int_task_total_count " +
                 "FROM " +
                 "job_count " +
