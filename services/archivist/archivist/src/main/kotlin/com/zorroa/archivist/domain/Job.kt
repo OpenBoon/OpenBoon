@@ -88,7 +88,7 @@ class JobSpec(
     var name: String?,
 
     @ApiModelProperty("ZPS Script this Job will run.")
-    var script: ZpsScript?,
+    var scripts: List<ZpsScript>?,
 
     /**
      * Cannot be specified from external source, can only be set
@@ -120,7 +120,10 @@ class JobSpec(
     val maxRunningTasks: Int = 1024,
 
     @ApiModelProperty("The name of the credentials blobs available to this job.")
-    val credentials: Set<String>? = null
+    val credentials: Set<String>? = null,
+
+    @ApiModelProperty("A list of job IDs to depend on.")
+    val dependOnJobIds: List<UUID>? = null
 )
 
 @ApiModel("Job Update Spec", description = "Attributes required to update a Job.")
@@ -156,9 +159,6 @@ class Job(
 
     @ApiModelProperty("Name of the Job.")
     val name: String,
-
-    @ApiModelProperty("Type of Pipeline this Job will run.")
-    val type: JobType,
 
     @ApiModelProperty("Current state of this Job.")
     val state: JobState,
@@ -208,9 +208,6 @@ class JobFilter(
     @ApiModelProperty("Job UUIDs to match.")
     val ids: List<UUID>? = null,
 
-    @ApiModelProperty("Pipeline Type to match.")
-    val type: JobType? = null,
-
     @ApiModelProperty("States to match.")
     val states: List<JobState>? = null,
 
@@ -229,7 +226,6 @@ class JobFilter(
     override val sortMap: Map<String, String> =
         mapOf(
             "id" to "job.pk_job",
-            "type" to "job.int_type",
             "name" to "job.str_name",
             "timeCreated" to "job.time_created",
             "state" to "job.int_state",
@@ -256,11 +252,6 @@ class JobFilter(
         datasourceIds?.let {
             addToWhere(JdbcUtils.inClause("job.pk_datasource", it.size))
             addToValues(it)
-        }
-
-        if (type != null) {
-            addToWhere("job.int_Type=?")
-            addToValues(type.ordinal)
         }
 
         states?.let {

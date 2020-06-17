@@ -6,6 +6,14 @@ import org.apache.commons.lang3.StringUtils
 
 object JdbcUtils {
 
+    fun select(table: String, vararg cols: String): String {
+        val sb = StringBuilder(1024)
+        sb.append("SELECT ")
+        cols.joinTo(sb, ",")
+        sb.append(" FROM $table")
+        return sb.toString()
+    }
+
     /**
      * Create and return an insert query.  Supports the postgres cast operator (::)
      * for on column names.

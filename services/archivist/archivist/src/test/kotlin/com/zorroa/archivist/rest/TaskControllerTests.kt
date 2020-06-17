@@ -15,6 +15,7 @@ import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
@@ -51,7 +52,7 @@ class TaskControllerTests : MockMvcTest() {
     fun launchJob(): Job {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -226,7 +227,7 @@ class TaskControllerTests : MockMvcTest() {
 
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )

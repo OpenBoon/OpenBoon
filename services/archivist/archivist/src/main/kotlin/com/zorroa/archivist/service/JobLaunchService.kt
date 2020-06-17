@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.FileTypes
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchResponse
@@ -79,11 +78,12 @@ class JobLaunchServiceImpl(
             pipelineResolverService.resolveModular(mods)
         )
 
+        script.setSettting("index", true)
         script.setSettting("fileTypes", dataSource.fileTypes)
         script.setSettting("batchSize", clampBatchSize(options.batchSize))
 
         val spec = JobSpec(
-            name, script,
+            name, listOf(script),
             dataSourceId = dataSource.id,
             credentials = dataSource.credentials.map { it.toString() }.toSet()
         )
@@ -105,6 +105,7 @@ class JobLaunchServiceImpl(
 
         val pipeline = pipelineResolverService.resolveModular(req.modules)
         val settings = mapOf(
+            "index" to true,
             "batchSize" to clampBatchSize(req.batchSize),
             "fileTypes" to FileTypes.all
         )
@@ -125,7 +126,7 @@ class JobLaunchServiceImpl(
         settings?.let { mergedSettings.putAll(it) }
 
         val script = ZpsScript(name, listOf(gen), null, pipeline, settings = mergedSettings)
-        val spec = JobSpec(name, script, credentials = creds)
+        val spec = JobSpec(name, listOf(script), credentials = creds)
         return launchJob(spec)
     }
 
@@ -141,22 +142,23 @@ class JobLaunchServiceImpl(
         settings?.let { mergedSettings.putAll(it) }
 
         val script = ZpsScript(name, null, null, pipeline, settings = mergedSettings, assetIds = assets)
-        val spec = JobSpec(name, script, credentials = creds)
+        val spec = JobSpec(name, listOf(script), credentials = creds)
         return launchJob(spec)
     }
 
     override fun launchTrainingJob(name: String, processor: ProcessorRef, settings: Map<String, Any>?): Job {
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
+        mergedSettings["index"] = false
 
         val script = ZpsScript(
             name, null, null,
             listOf(processor), settings = mergedSettings,
-            assetIds = listOf("single-iteration")
+            assetIds = listOf("training")
         )
 
-        val spec = JobSpec(name, script, replace = true, priority = JobPriority.Interactive)
-        return launchJob(spec, JobType.Batch)
+        val spec = JobSpec(name, listOf(script), replace = true, priority = JobPriority.Interactive)
+        return launchJob(spec)
     }
 
     /**
@@ -164,14 +166,6 @@ class JobLaunchServiceImpl(
      */
     fun launchJob(spec: JobSpec): Job {
         val job = jobService.create(spec)
-        return jobService.get(job.id, forClient = true)
-    }
-
-    /**
-     * Launch a [JobSpec] and return a [Job] suitable for client side use.
-     */
-    fun launchJob(spec: JobSpec, type: JobType): Job {
-        val job = jobService.create(spec, type)
         return jobService.get(job.id, forClient = true)
     }
 
