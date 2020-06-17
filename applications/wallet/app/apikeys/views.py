@@ -17,6 +17,8 @@ class ApikeyViewSet(BaseProjectViewSet):
         def item_filter(request, item):
             if item['name'].startswith('Admin Console Generated Key'):
                 return False
+            if item['name'] == 'job-runner':
+                return False
             return True
         return self._zmlp_list_from_search(request, item_filter=item_filter)
 
