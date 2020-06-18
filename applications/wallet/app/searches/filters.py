@@ -339,7 +339,7 @@ class SimilarityFilter(BaseFilter):
         return {
             'query': {
                 'bool': {
-                    'filter': [
+                    'must': [
                         query.for_json()
                     ]
                 }
