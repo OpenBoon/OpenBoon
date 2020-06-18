@@ -60,6 +60,7 @@ class JobController @Autowired constructor(
         return jobService.findOneJob(filter)
     }
 
+    @PreAuthorize("hasAuthority('SystemManage')")
     @ApiOperation("Create a Job.")
     @PostMapping(value = ["/api/v1/jobs"])
     @Throws(IOException::class)
