@@ -88,10 +88,10 @@ const FiltersMenu = ({
         }}
       >
         <label>
-          Select metadata label filter(s)
+          Select metadata fields to filter
           <input
             type="search"
-            placeholder="Search metadata filters"
+            placeholder="Filter metadata fields"
             value={fieldsFilter}
             onChange={({ target: { value } }) => setFieldsFilter(value)}
             css={{
@@ -184,7 +184,7 @@ const FiltersMenu = ({
         <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
         <Button
-          aria-label="Add Selected Filters"
+          aria-label="Add Field Filters"
           variant={VARIANTS.PRIMARY}
           onClick={() => {
             dispatch({
@@ -210,7 +210,7 @@ const FiltersMenu = ({
           isDisabled={Object.keys(newFilters).length === 0}
         >
           <PlusSvg width={16} />
-          Add Selected Filters
+          Add Field Filters
         </Button>
       </div>
     </div>

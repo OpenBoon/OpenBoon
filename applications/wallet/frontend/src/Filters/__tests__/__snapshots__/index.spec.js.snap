@@ -474,11 +474,11 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
     className="emotion-1"
   >
     <label>
-      Select metadata label filter(s)
+      Select metadata fields to filter
       <input
         className="emotion-0"
         onChange={[Function]}
-        placeholder="Search metadata filters"
+        placeholder="Filter metadata fields"
         type="search"
         value=""
       />
@@ -1281,7 +1281,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
     />
     <button
       aria-disabled={true}
-      aria-label="Add Selected Filters"
+      aria-label="Add Field Filters"
       className="emotion-169"
       onClick={[Function]}
       type="button"
@@ -1290,7 +1290,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
         data-file-name="plus.svg"
         width={16}
       />
-      Add Selected Filters
+      Add Field Filters
     </button>
   </div>
 </div>
@@ -1770,11 +1770,11 @@ exports[`<Filters /> should open the menu 1`] = `
     className="emotion-1"
   >
     <label>
-      Select metadata label filter(s)
+      Select metadata fields to filter
       <input
         className="emotion-0"
         onChange={[Function]}
-        placeholder="Search metadata filters"
+        placeholder="Filter metadata fields"
         type="search"
         value=""
       />
@@ -2110,7 +2110,7 @@ exports[`<Filters /> should open the menu 1`] = `
     />
     <button
       aria-disabled={true}
-      aria-label="Add Selected Filters"
+      aria-label="Add Field Filters"
       className="emotion-66"
       onClick={[Function]}
       type="button"
@@ -2119,7 +2119,7 @@ exports[`<Filters /> should open the menu 1`] = `
         data-file-name="plus.svg"
         width={16}
       />
-      Add Selected Filters
+      Add Field Filters
     </button>
   </div>
 </div>
@@ -2338,7 +2338,7 @@ Array [
         <input
           className="emotion-6"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />

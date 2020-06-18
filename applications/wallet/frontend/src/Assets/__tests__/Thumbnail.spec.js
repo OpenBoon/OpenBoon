@@ -115,14 +115,13 @@ describe('<AssetsThumbnail />', () => {
                 type: 'similarity',
                 attribute: 'analysis.zvi-image-similarity',
                 values: { ids: [ASSET_ID] },
-                isDisabled: true,
               },
             ]),
           ),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsicE53blhqVm50Z2JEUWdQWmhrWHFWVC0yVVJNcXZKTkwiXX0sImlzRGlzYWJsZWQiOnRydWV9XQ==',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsicE53blhqVm50Z2JEUWdQWmhrWHFWVC0yVVJNcXZKTkwiXX19XQ==',
     )
   })
 
@@ -134,7 +133,6 @@ describe('<AssetsThumbnail />', () => {
           type: 'similarity',
           attribute: 'analysis.zvi-image-similarity',
           values: { ids: [ASSET_ID] },
-          isDisabled: true,
         },
       ]),
     )
@@ -166,7 +164,6 @@ describe('<AssetsThumbnail />', () => {
                 type: 'similarity',
                 attribute: 'analysis.zvi-image-similarity',
                 values: { ids: [assets.results[1].id] },
-                isDisabled: true,
               },
             ]),
           ),
@@ -174,7 +171,7 @@ describe('<AssetsThumbnail />', () => {
           projectId: PROJECT_ID,
         },
       },
-      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXX0sImlzRGlzYWJsZWQiOnRydWV9XQ==`,
+      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXX19XQ==`,
     )
   })
 })

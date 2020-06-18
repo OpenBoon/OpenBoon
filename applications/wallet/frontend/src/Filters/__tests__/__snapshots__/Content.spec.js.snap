@@ -287,7 +287,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -1190,7 +1190,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -2346,7 +2346,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -7136,7 +7136,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -8107,7 +8107,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -9010,7 +9010,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -9793,7 +9793,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
