@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFilter
+import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
@@ -157,4 +158,13 @@ class ProjectController constructor(
             projectService.updateSettings(id, settings)
             return projectService.getSettings(id)
         }
+
+    @PreAuthorize("hasAuthority('ProjectManage')")
+    @PutMapping(value = ["/api/v1/project/_rename"])
+    @ApiOperation("Rename Project")
+    fun renameProject(@RequestBody(required = true) nameUpdate: ProjectNameUpdate): Any {
+        val id = getProjectId()
+        projectService.rename(id, nameUpdate)
+        return HttpUtils.status("project", id.toString(), "rename", true)
+    }
 }
