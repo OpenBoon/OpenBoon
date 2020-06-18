@@ -44,7 +44,7 @@ const FilterReset = ({
             onReset()
 
             dispatch({
-              action: ACTIONS.UPDATE_FILTER,
+              type: ACTIONS.UPDATE_FILTER,
               payload: {
                 pathname,
                 projectId,
@@ -108,7 +108,7 @@ const FilterReset = ({
             onReset()
 
             dispatch({
-              action: ACTIONS.UPDATE_FILTER,
+              type: ACTIONS.UPDATE_FILTER,
               payload: {
                 pathname,
                 projectId,

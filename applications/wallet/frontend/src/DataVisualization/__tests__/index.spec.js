@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import mockUser from '../../User/__mocks__/user'
 import assets from '../../Assets/__mocks__/assets'
@@ -24,6 +24,12 @@ describe('<DataVisualization />', () => {
         <DataVisualization />
       </User>,
     )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findAllByProps({ children: 'Create' })[0].props.onClick()
+    })
 
     expect(component.toJSON()).toMatchSnapshot()
   })
