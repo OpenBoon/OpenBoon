@@ -58,7 +58,7 @@ const STEPS = [
       'Once the processing job has successfully completed you can view the results in the ' +
       'Visualizer. The Visualizer is a unified visual tool for inspecting and tuning ' +
       'the metadata output of the Machine Learning analysis.',
-    cta: 'Inspect Assets',
+    cta: 'Go To Visualizer',
     link: '/[projectId]/visualizer',
   },
 ]
