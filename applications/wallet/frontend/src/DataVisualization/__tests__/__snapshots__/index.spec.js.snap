@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<DataVisualization /> should render properly 1`] = `
-.emotion-24 {
+.emotion-26 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-23 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -109,7 +109,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
   background-color: #252525;
 }
 
-.emotion-22 {
+.emotion-24 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -122,7 +122,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-21 {
+.emotion-23 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -133,12 +133,25 @@ exports[`<DataVisualization /> should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-20 {
+.emotion-22 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   padding: 16px;
   background-color: #252525;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-4 {
@@ -150,9 +163,10 @@ exports[`<DataVisualization /> should render properly 1`] = `
   margin: 0;
   padding-top: 8px;
   padding-bottom: 8px;
+  max-width: 600px;
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -162,7 +176,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-6 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -172,7 +186,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
   border-radius: 2px;
 }
 
-.emotion-9 {
+.emotion-11 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -191,20 +205,20 @@ exports[`<DataVisualization /> should render properly 1`] = `
   padding-right: 16px;
 }
 
-.emotion-7 {
+.emotion-9 {
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
 }
 
-.emotion-8 {
+.emotion-10 {
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
   color: #b3b3b3;
 }
 
-.emotion-11 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -215,7 +229,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-10 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -248,34 +262,34 @@ exports[`<DataVisualization /> should render properly 1`] = `
   padding: 8px 16px;
 }
 
-.emotion-10:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited {
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited {
   background-color: #808080;
 }
 
-.emotion-10:hover {
+.emotion-12:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-  className="emotion-24"
+  className="emotion-26"
 >
   <div
-    className="emotion-23"
+    className="emotion-25"
   >
     <div
       className="emotion-3"
@@ -302,32 +316,40 @@ exports[`<DataVisualization /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-22"
+      className="emotion-24"
     >
       <VisualizerNavigation
         itemCount={574}
       />
       <div
-        className="emotion-21"
+        className="emotion-23"
       >
         <div
-          className="emotion-20"
+          className="emotion-22"
         >
-          <h2
-            className="emotion-4"
-          >
-            Create a Data Visualization
-          </h2>
-          <p
-            className="emotion-5"
-          >
-            Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the affect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
-          </p>
           <div
-            className="emotion-12"
+            className="emotion-7"
           >
             <div
               className="emotion-6"
+            >
+              <h2
+                className="emotion-4"
+              >
+                Create a Data Visualization
+              </h2>
+              <p
+                className="emotion-5"
+              >
+                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the affect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
+              </p>
+            </div>
+          </div>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-8"
             >
               <svg
                 data-file-name="facet.svg"
@@ -335,24 +357,24 @@ exports[`<DataVisualization /> should render properly 1`] = `
               />
             </div>
             <div
-              className="emotion-9"
+              className="emotion-11"
             >
               <div
-                className="emotion-7"
+                className="emotion-9"
               >
                 Facet
               </div>
               <div
-                className="emotion-8"
+                className="emotion-10"
               >
                 Shows the range of values and the number of each for one for a selected field.
               </div>
             </div>
             <div
-              className="emotion-11"
+              className="emotion-13"
             >
               <button
-                className="emotion-10"
+                className="emotion-12"
                 onClick={[Function]}
                 type="button"
               >
@@ -361,10 +383,10 @@ exports[`<DataVisualization /> should render properly 1`] = `
             </div>
           </div>
           <div
-            className="emotion-12"
+            className="emotion-14"
           >
             <div
-              className="emotion-6"
+              className="emotion-8"
             >
               <svg
                 data-file-name="range.svg"
@@ -372,24 +394,24 @@ exports[`<DataVisualization /> should render properly 1`] = `
               />
             </div>
             <div
-              className="emotion-9"
+              className="emotion-11"
             >
               <div
-                className="emotion-7"
+                className="emotion-9"
               >
                 Range
               </div>
               <div
-                className="emotion-8"
+                className="emotion-10"
               >
                 Shows the min, max, mean, median, and mode for the numerical values of a selected field.
               </div>
             </div>
             <div
-              className="emotion-11"
+              className="emotion-13"
             >
               <button
-                className="emotion-10"
+                className="emotion-12"
                 onClick={[Function]}
                 type="button"
               >
@@ -405,7 +427,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
 `;
 
 exports[`<DataVisualization /> should render properly 2`] = `
-.emotion-6 {
+.emotion-12 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -424,7 +446,7 @@ exports[`<DataVisualization /> should render properly 2`] = `
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -513,7 +535,7 @@ exports[`<DataVisualization /> should render properly 2`] = `
   background-color: #252525;
 }
 
-.emotion-4 {
+.emotion-10 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -526,11 +548,170 @@ exports[`<DataVisualization /> should render properly 2`] = `
   flex-direction: column;
 }
 
+.emotion-9 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-right: 16px;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited {
+  background-color: #808080;
+}
+
+.emotion-6:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+  margin-right: 16px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  background-color: #808080;
+}
+
+.emotion-7:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-7[aria-disabled=true] {
+  background-color: #808080;
+}
+
 <div
-  className="emotion-6"
+  className="emotion-12"
 >
   <div
-    className="emotion-5"
+    className="emotion-11"
   >
     <div
       className="emotion-3"
@@ -557,13 +738,922 @@ exports[`<DataVisualization /> should render properly 2`] = `
       </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-10"
     >
       <VisualizerNavigation
         itemCount={574}
       />
-      <div>
-        [{"type":"FACET"}]
+      <div
+        className="emotion-9"
+      >
+        <div
+          className="emotion-8"
+        >
+          <button
+            aria-label="Add Chart"
+            className="emotion-6"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-5"
+            >
+              <div
+                className="emotion-4"
+              >
+                <svg
+                  data-file-name="plus.svg"
+                  width={20}
+                />
+              </div>
+              Add Chart
+            </div>
+          </button>
+          <button
+            className="emotion-7"
+            onClick={[Function]}
+            type="button"
+          >
+            Delete All
+          </button>
+        </div>
+        <div>
+          [{"type":"FACET"}]
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<DataVisualization /> should render properly 3`] = `
+.emotion-28 {
+  height: 100%;
+  background-color: #191919;
+  margin-left: -32px;
+  margin-right: -32px;
+  margin-bottom: -32px;
+  padding-top: 1px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-right: 1px;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #252525;
+  margin-bottom: 1px;
+  color: #808080;
+  border-radius: 0;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #252525;
+}
+
+.emotion-26 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-25 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 8px;
+}
+
+.emotion-24 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 16px;
+  background-color: #252525;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-4 {
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.emotion-5 {
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  max-width: 600px;
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 12px;
+  background-color: #4a4a4a;
+  border-radius: 2px;
+}
+
+.emotion-13 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-11 {
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-12 {
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #b3b3b3;
+}
+
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  background-color: #808080;
+}
+
+.emotion-7:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-7[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+<div
+  className="emotion-28"
+>
+  <div
+    className="emotion-27"
+  >
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-2"
+      >
+        <button
+          aria-label="Filters"
+          className="emotion-0"
+          onClick={[Function]}
+          title="Filters"
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="filter.svg"
+            width={20}
+          />
+        </button>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-26"
+    >
+      <VisualizerNavigation
+        itemCount={574}
+      />
+      <div
+        className="emotion-25"
+      >
+        <div
+          className="emotion-24"
+        >
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-6"
+            >
+              <h2
+                className="emotion-4"
+              >
+                Create a Data Visualization
+              </h2>
+              <p
+                className="emotion-5"
+              >
+                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the affect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
+              </p>
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-7"
+                onClick={[Function]}
+                type="button"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-16"
+          >
+            <div
+              className="emotion-10"
+            >
+              <svg
+                data-file-name="facet.svg"
+                width={22}
+              />
+            </div>
+            <div
+              className="emotion-13"
+            >
+              <div
+                className="emotion-11"
+              >
+                Facet
+              </div>
+              <div
+                className="emotion-12"
+              >
+                Shows the range of values and the number of each for one for a selected field.
+              </div>
+            </div>
+            <div
+              className="emotion-15"
+            >
+              <button
+                className="emotion-7"
+                onClick={[Function]}
+                type="button"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-16"
+          >
+            <div
+              className="emotion-10"
+            >
+              <svg
+                data-file-name="range.svg"
+                width={22}
+              />
+            </div>
+            <div
+              className="emotion-13"
+            >
+              <div
+                className="emotion-11"
+              >
+                Range
+              </div>
+              <div
+                className="emotion-12"
+              >
+                Shows the min, max, mean, median, and mode for the numerical values of a selected field.
+              </div>
+            </div>
+            <div
+              className="emotion-15"
+            >
+              <button
+                className="emotion-7"
+                onClick={[Function]}
+                type="button"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<DataVisualization /> should render properly 4`] = `
+.emotion-26 {
+  height: 100%;
+  background-color: #191919;
+  margin-left: -32px;
+  margin-right: -32px;
+  margin-bottom: -32px;
+  padding-top: 1px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-right: 1px;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #252525;
+  margin-bottom: 1px;
+  color: #808080;
+  border-radius: 0;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #252525;
+}
+
+.emotion-24 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-23 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 8px;
+}
+
+.emotion-22 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 16px;
+  background-color: #252525;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-4 {
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.emotion-5 {
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  max-width: 600px;
+}
+
+.emotion-14 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 12px;
+  background-color: #4a4a4a;
+  border-radius: 2px;
+}
+
+.emotion-11 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-9 {
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-10 {
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #b3b3b3;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-12 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-12:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-12[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited {
+  background-color: #808080;
+}
+
+.emotion-12:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-12[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+  className="emotion-26"
+>
+  <div
+    className="emotion-25"
+  >
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-2"
+      >
+        <button
+          aria-label="Filters"
+          className="emotion-0"
+          onClick={[Function]}
+          title="Filters"
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="filter.svg"
+            width={20}
+          />
+        </button>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-24"
+    >
+      <VisualizerNavigation
+        itemCount={574}
+      />
+      <div
+        className="emotion-23"
+      >
+        <div
+          className="emotion-22"
+        >
+          <div
+            className="emotion-7"
+          >
+            <div
+              className="emotion-6"
+            >
+              <h2
+                className="emotion-4"
+              >
+                Create a Data Visualization
+              </h2>
+              <p
+                className="emotion-5"
+              >
+                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the affect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
+              </p>
+            </div>
+          </div>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-8"
+            >
+              <svg
+                data-file-name="facet.svg"
+                width={22}
+              />
+            </div>
+            <div
+              className="emotion-11"
+            >
+              <div
+                className="emotion-9"
+              >
+                Facet
+              </div>
+              <div
+                className="emotion-10"
+              >
+                Shows the range of values and the number of each for one for a selected field.
+              </div>
+            </div>
+            <div
+              className="emotion-13"
+            >
+              <button
+                className="emotion-12"
+                onClick={[Function]}
+                type="button"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-8"
+            >
+              <svg
+                data-file-name="range.svg"
+                width={22}
+              />
+            </div>
+            <div
+              className="emotion-11"
+            >
+              <div
+                className="emotion-9"
+              >
+                Range
+              </div>
+              <div
+                className="emotion-10"
+              >
+                Shows the min, max, mean, median, and mode for the numerical values of a selected field.
+              </div>
+            </div>
+            <div
+              className="emotion-13"
+            >
+              <button
+                className="emotion-12"
+                onClick={[Function]}
+                type="button"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

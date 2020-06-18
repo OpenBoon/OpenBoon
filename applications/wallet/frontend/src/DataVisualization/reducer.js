@@ -22,12 +22,16 @@ export const TYPES = [
 
 export const ACTIONS = {
   CREATE: 'CREATE',
+  CLEAR: 'CLEAR',
 }
 
 export const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE':
       return [...state, { type: action.payload.type }]
+
+    case 'CLEAR':
+      return []
 
     default:
       return state
