@@ -600,7 +600,7 @@ class TestSimilarityFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'filter': [
+                    'must': [
                         {'script_score': {
                             'query': {'match_all': {}},
                             'script': {
@@ -635,7 +635,7 @@ class TestSimilarityFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'filter': [
+                    'must': [
                         {'script_score': {
                             'query': {'match_all': {}},
                             'script': {

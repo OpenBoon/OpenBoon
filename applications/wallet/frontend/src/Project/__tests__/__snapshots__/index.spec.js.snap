@@ -466,7 +466,7 @@ Array [
                   onClick={[Function]}
                   onMouseEnter={[Function]}
                 >
-                  Inspect Assets
+                  Go To Visualizer
                 </a>
               </div>
             </div>
