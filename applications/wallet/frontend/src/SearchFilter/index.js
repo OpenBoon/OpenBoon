@@ -19,7 +19,7 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
       <div css={{ display: 'flex' }}>
         <input
           type="search"
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           value={searchString}
           onChange={({ target: { value } }) => setSearchString(value)}
           css={{
