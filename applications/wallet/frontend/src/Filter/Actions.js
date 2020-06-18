@@ -46,7 +46,7 @@ const FilterActions = ({
           event.stopPropagation()
 
           dispatch({
-            action: ACTIONS.UPDATE_FILTER,
+            type: ACTIONS.UPDATE_FILTER,
             payload: {
               pathname,
               projectId,
@@ -84,7 +84,7 @@ const FilterActions = ({
           event.stopPropagation()
 
           dispatch({
-            action: ACTIONS.DELETE_FILTER,
+            type: ACTIONS.DELETE_FILTER,
             payload: {
               pathname,
               projectId,

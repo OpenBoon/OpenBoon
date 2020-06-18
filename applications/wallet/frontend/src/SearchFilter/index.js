@@ -60,7 +60,7 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
             setSearchString('')
 
             dispatch({
-              action: ACTIONS.ADD_FILTERS,
+              type: ACTIONS.ADD_FILTERS,
               payload: {
                 pathname,
                 projectId,
