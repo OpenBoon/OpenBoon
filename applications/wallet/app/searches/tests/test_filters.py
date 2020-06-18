@@ -404,7 +404,7 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'filter': [
+                    'must': [
                         {'script_score': {
                             'query': {
                                 'terms': {
@@ -441,6 +441,8 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
                 'bool': {
                     'filter': [
                         {'terms': {'my_attr': ['value1', 'value2']}},
+                        ],
+                    'must': [
                         {'script_score': {
                             'query': {
                                 'terms': {
@@ -473,7 +475,7 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'filter': [
+                    'must': [
                         {'script_score': {
                             'query': {
                                 'terms': {
@@ -536,7 +538,7 @@ class TestTextContentFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'filter': [
+                    'must': [
                         {'simple_query_string': {
                             'query': 'possibility',
                             'fields': ['analysis.zvi-text-detection.content']}}
@@ -549,7 +551,7 @@ class TestTextContentFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'filter': [
+                    'must': [
                         {'simple_query_string': {'query': 'test'}}
                     ]}}}
 
@@ -561,7 +563,7 @@ class TestTextContentFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'filter': [
+                    'must': [
                         {'simple_query_string': {
                             'query': 'test',
                             'fields': ['one.two']
