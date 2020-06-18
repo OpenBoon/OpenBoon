@@ -16,8 +16,9 @@ import FilterSvg from '../Icons/filter.svg'
 import { reducer } from './reducer'
 
 import DataVisualizationCreate from './Create'
+import DataVisualizationActions from './Actions'
 
-const ICON_WIDTH = 20
+const ICON_SIZE = 20
 const FROM = 0
 const SIZE = 100
 
@@ -61,7 +62,7 @@ const DataVisualizationContent = () => {
           {{
             filters: {
               title: 'Filters',
-              icon: <FilterSvg width={ICON_WIDTH} aria-hidden />,
+              icon: <FilterSvg width={ICON_SIZE} aria-hidden />,
               content: <Filters />,
             },
           }}
@@ -72,11 +73,26 @@ const DataVisualizationContent = () => {
 
           {isCreating ? (
             <DataVisualizationCreate
+              state={state}
               dispatch={dispatch}
               setIsCreating={setIsCreating}
             />
           ) : (
-            <div>{JSON.stringify(state)}</div>
+            <div
+              css={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                padding: spacing.normal,
+              }}
+            >
+              <DataVisualizationActions
+                dispatch={dispatch}
+                setIsCreating={setIsCreating}
+              />
+
+              <div>{JSON.stringify(state)}</div>
+            </div>
           )}
         </div>
       </div>
