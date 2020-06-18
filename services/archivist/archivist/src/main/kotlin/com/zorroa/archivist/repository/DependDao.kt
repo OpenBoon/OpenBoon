@@ -16,6 +16,8 @@ interface DependDao {
     fun decrementDependCount(depend: Depend)
     fun getWhatDependsOnJob(id: UUID): List<Depend>
     fun getWhatDependsOnTask(id: UUID): List<Depend>
+    fun getWhatJobDependsOn(id: UUID): List<Depend>
+    fun getWhatTaskDependsOn(id: UUID): List<Depend>
     fun resolve(depends: List<Depend>): Int
     fun get(id: UUID): Depend
 }
@@ -95,8 +97,22 @@ class DependDaoImpl : DependDao, AbstractDao() {
         )
     }
 
+    override fun getWhatJobDependsOn(id: UUID): List<Depend> {
+        return jdbc.query(
+            "$SELECT WHERE pk_job_depend_er=? AND int_state=? ORDER BY pk_job_depend_er", MAPPER,
+            id, DependState.Active.ordinal
+        )
+    }
+
+    override fun getWhatTaskDependsOn(id: UUID): List<Depend> {
+        return jdbc.query(
+            "$SELECT WHERE pk_task_depend_er=? AND int_state=? ORDER BY pk_task_depend_er", MAPPER,
+            id, DependState.Active.ordinal
+        )
+    }
+
     override fun resolve(depends: List<Depend>): Int {
-        var result: Int = 1
+        var result = 0
         for (depend in depends) {
             if (jdbc.update(RESOLVE, DependState.Inactive.ordinal, depend.id, DependState.Active.ordinal) == 1) {
                 decrementDependCount(depend)

@@ -123,7 +123,7 @@ class JobSpec(
     val credentials: Set<String>? = null,
 
     @ApiModelProperty("A list of job IDs to depend on.")
-    val dependOnJobIds: List<UUID>? = null
+    var dependOnJobIds: List<UUID>? = null
 )
 
 @ApiModel("Job Update Spec", description = "Attributes required to update a Job.")

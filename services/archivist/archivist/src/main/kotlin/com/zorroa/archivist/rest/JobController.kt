@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.service.CredentialsService
+import com.zorroa.archivist.service.DependService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.zmlp.util.Json
@@ -34,7 +35,8 @@ import java.util.UUID
 @Api(tags = ["Job"], description = "Operations for interacting with jobs.")
 class JobController @Autowired constructor(
     val jobService: JobService,
-    val credentialsService: CredentialsService
+    val credentialsService: CredentialsService,
+    val dependService: DependService
 ) {
 
     @ApiOperation("Search for Jobs.")
@@ -134,7 +136,7 @@ class JobController @Autowired constructor(
     @ApiOperation("Get credentials attached to Job", hidden = true)
     @GetMapping(value = ["/api/v1/jobs/{id}/_credentials/{type}"])
     fun getCredentials(
-        @ApiParam("UUID of the DataSource") @PathVariable id: UUID,
+        @ApiParam("UUID of the Job") @PathVariable id: UUID,
         @ApiParam("Type of credentials") @PathVariable type: String
     ): Any {
         return Json.Mapper.readValue(
@@ -144,5 +146,14 @@ class JobController @Autowired constructor(
             ),
             Json.GENERIC_MAP
         )
+    }
+
+    @ApiOperation("Drop JobOnJob dependencies")
+    @PostMapping(value = ["/api/v1/jobs/{id}/_drop_depends"])
+    fun dropJobDependencies(
+        @ApiParam("UUID of the Job") @PathVariable id: UUID
+    ): Any {
+        val job = jobService.get(id)
+        return mapOf("dropped" to dependService.dropDepends(job))
     }
 }

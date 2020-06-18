@@ -300,4 +300,28 @@ class JobControllerTests : MockMvcTest() {
             )
             .andReturn()
     }
+
+    @Test
+    fun testDropDepends() {
+
+        authenticate()
+        val spec = JobSpec(
+            "test_job_3",
+            emptyZpsScripts("test"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+
+        val job1 = jobService.create(spec)
+        spec.dependOnJobIds = listOf(job1.id)
+        val job2 = jobService.create(spec)
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/jobs/${job2.id}/_drop_depends")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.dropped", CoreMatchers.equalTo(1)))
+    }
 }

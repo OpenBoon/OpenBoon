@@ -19,8 +19,9 @@ import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
-import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.randomString
+import com.zorroa.zmlp.util.Json
+import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -256,5 +257,33 @@ class TaskControllerTests : MockMvcTest() {
             object : TypeReference<KPagedList<TaskError>>() {}
         )
         assertEquals(1, log.size())
+    }
+
+    @Test
+    fun testResolveDepends() {
+        val tasks = emptyZpsScripts("foo")
+        tasks[0].children = emptyZpsScripts("bar")
+        val spec = JobSpec(
+            "test_job2",
+            tasks,
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+
+        val job2 = jobService.create(spec)
+        val dependTask = jobService.getTasks(job2.id).list.find { it.state == TaskState.Depend }
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/tasks/${dependTask?.id}/_drop_depends")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.dropped", CoreMatchers.equalTo(1)))
+            .andReturn()
+
+        authenticate()
+        val updatedTask = jobService.getTask(dependTask!!.id)
+        assertEquals(TaskState.Waiting, updatedTask.state)
     }
 }

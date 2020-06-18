@@ -20,8 +20,10 @@ interface DependService {
     fun createDepend(dependOnTask: Task, dependErTasks: List<Task>)
     fun createDepend(dependErJobId: JobId, dependOnJobIds: List<UUID>)
     fun getDepend(id: UUID): Depend
-    fun resolveDependsOnJob(job: JobId)
-    fun resolveDependsOnTask(task: InternalTask)
+    fun resolveDependsOnJob(job: JobId): Int
+    fun resolveDependsOnTask(task: InternalTask): Int
+    fun dropDepends(job: JobId): Int
+    fun dropDepends(task: InternalTask): Int
 }
 
 @Service
@@ -71,7 +73,7 @@ class DependServiceImpl(val dependDao: DependDao) : DependService {
         return dependDao.get(id)
     }
 
-    override fun resolveDependsOnJob(job: JobId) {
+    override fun resolveDependsOnJob(job: JobId): Int {
         val depends = dependDao.getWhatDependsOnJob(job.jobId)
         if (depends.isNotEmpty()) {
             logger.event(
@@ -81,11 +83,13 @@ class DependServiceImpl(val dependDao: DependDao) : DependService {
                     "jobId" to job.jobId
                 )
             )
-            dependDao.resolve(depends)
+            return dependDao.resolve(depends)
         }
+
+        return 0
     }
 
-    override fun resolveDependsOnTask(task: InternalTask) {
+    override fun resolveDependsOnTask(task: InternalTask): Int {
         val depends = dependDao.getWhatDependsOnTask(task.taskId)
         if (depends.isNotEmpty()) {
             logger.event(
@@ -95,8 +99,44 @@ class DependServiceImpl(val dependDao: DependDao) : DependService {
                     "taskId" to task.taskId
                 )
             )
-            dependDao.resolve(depends)
+            return dependDao.resolve(depends)
         }
+
+        return 0
+    }
+
+    override fun dropDepends(job: JobId): Int {
+
+        val depends = dependDao.getWhatJobDependsOn(job.jobId)
+        if (depends.isNotEmpty()) {
+            logger.event(
+                LogObject.DEPEND, LogAction.RESOLVE,
+                mapOf(
+                    "dependType" to "JobOnJob",
+                    "jobId" to job.jobId
+                )
+            )
+            return dependDao.resolve(depends)
+        }
+
+        return 0
+    }
+
+    override fun dropDepends(task: InternalTask): Int {
+
+        val depends = dependDao.getWhatTaskDependsOn(task.taskId)
+        if (depends.isNotEmpty()) {
+            logger.event(
+                LogObject.DEPEND, LogAction.RESOLVE,
+                mapOf(
+                    "dependType" to "TaskOnTask",
+                    "taskId" to task.taskId
+                )
+            )
+            return dependDao.resolve(depends)
+        }
+
+        return 0
     }
 
     companion object {
