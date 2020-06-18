@@ -29,6 +29,7 @@ interface ProjectCustomDao {
     fun createSettings(projectId: UUID, settings: ProjectSettings)
 
     fun updateTier(projectId: UUID, value: ProjectTier): Boolean
+    fun updateName(projectId: UUID, value: String): Boolean
 }
 
 @Repository
@@ -105,6 +106,13 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
         ) == 1
     }
 
+    override fun updateName(projectId: UUID, value: String): Boolean {
+        return jdbc.update(
+            SET_NAME, value, System.currentTimeMillis(),
+            getZmlpActor().toString(), projectId
+        ) == 1
+    }
+
     companion object {
         const val GET = "SELECT * FROM project"
         const val COUNT = "SELECT COUNT(1) FROM project"
@@ -114,6 +122,8 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
             "SET enabled=?, time_modified=?, actor_modified=? WHERE pk_project=? AND enabled != ?"
         const val SET_TIER = "UPDATE project " +
             "SET int_tier=?, time_modified=?, actor_modified=? WHERE pk_project=?"
+        const val SET_NAME = "UPDATE project " +
+            "SET str_name=?, time_modified=?, actor_modified=? WHERE pk_project=?"
 
         val INSERT_SETTINGS = JdbcUtils.insert(
             "project_settings",

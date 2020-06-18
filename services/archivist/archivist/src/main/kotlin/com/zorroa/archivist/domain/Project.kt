@@ -44,6 +44,12 @@ class ProjectTierUpdate(
     val tier: ProjectTier
 )
 
+@ApiModel("Project Rename", description = "Update Project Name")
+class ProjectNameUpdate(
+    @ApiModelProperty("New Project Name")
+    val name: String
+)
+
 /**
  * Projects represent unique groups of resources provided by ZMLP.
  */
