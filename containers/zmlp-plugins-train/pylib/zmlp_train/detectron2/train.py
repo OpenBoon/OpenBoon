@@ -3,6 +3,7 @@
 import tempfile
 import glob
 import os
+import shutil
 import ntpath
 import numpy as np
 import cv2
@@ -25,15 +26,14 @@ from detectron2.data import (
     MetadataCatalog,
     build_detection_test_loader,
 )
+from detectron2.data.datasets import register_coco_instances
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset
 from detectron2.structures import BoxMode
 
 import zmlp
-from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException
-from zmlp_train.utils.models import (
-    upload_model_directory,
-    download_dataset,
-)
+from zmlpsdk import AssetProcessor, Argument, file_storage
+from zmlpsdk.training import download_dataset
+from zmlp.training import DataSetDownloader
 
 setup_logger()
 
@@ -54,12 +54,12 @@ class Detectron2TransferLearningTrainer(AssetProcessor):
                               toolTip="The min number of concepts needed to train."))
         self.add_arg(Argument("min_examples", "int", required=True, default=10,
                               toolTip="The min number of examples needed to train"))
-        self.add_arg(
-            Argument("train-test-ratio", "int", required=True, default=3,
-                     toolTip="The number of training images vs test images"))
+        self.add_arg(Argument("train-test-ratio", "int", required=True, default=3,
+                              toolTip="The number of training images vs test images"))
         self.app = zmlp.app_from_env()
 
         self.model = None
+        self.dataset = None
         self.labels = None
         self.base_dir = None
         self.cfg = None
@@ -67,34 +67,89 @@ class Detectron2TransferLearningTrainer(AssetProcessor):
 
     def init(self):
         self.app_model = self.app.models.get_model(self.arg_value('model_id'))
-        self.labels = self.app.datasets.get_label_counts(
-            self.app_model.dataset_id)
+        self.epochs = self.arg_value('epochs')
+        self.dataset = self.app_model.dataset_id
+        self.labels = self.app.datasets.get_label_counts(self.dataset)
         self.base_dir = tempfile.mkdtemp('tf2-xfer-learning')
         self.check_labels()
 
     def process(self, frame):
-        self.reactor.write_event("status", {
-            "status": "Downloading files in DataSet"
-        })
-        download_dataset(self.app_model.dataset_id, self.base_dir,
+        download_dataset(self.app_model.dataset_id,
+                         "labels_std",
+                         self.base_dir,
                          self.arg_value('train-test-ratio'))
 
-        self.reactor.write_event("status", {
-            "status": "Training model{}".format(self.app_model.file_id)
-        })
+        self.reactor.emit_status("Training model: {}".format(self.app_model.name))
 
+        self.register_dataset(set_test=False)
+        self.train()
+
+        self.publish_model(self.labels)
+
+    def check_labels(self):
+        """
+        Check the dataset labels to ensure we have enough labels and example images.
+
+        """
+        min_concepts = self.arg_value('min_concepts')
+        min_examples = self.arg_value('min_examples')
+
+        # Do some checks here.
+        if len(self.labels) < min_concepts:
+            raise ValueError('You need at least {} labels to train.'.format(min_concepts))
+
+        for name, count in self.labels.items():
+            if count < min_examples:
+                msg = 'You need at least {} examples to train, {} has  {}'
+                raise ValueError(msg.format(min_examples, name, count))
+
+    def register_dataset(self, set_test=False):
+        """Register COCO Dataset for Detectron2
+
+        Args:
+            set_test: register test dir
+
+        Returns:
+            None
+        """
+        dsl = DataSetDownloader(self.app, self.dataset, 'objects_coco', self.base_dir)
+        dsl.build()
+
+        json_file = os.path.join(self.base_dir, dsl.SET_TRAIN, 'annotations.json')
+        image_root = os.path.join(self.base_dir, dsl.SET_TRAIN, 'images')
+        register_coco_instances("{}_train".format(self.dataset), {}, json_file, image_root)
+
+        if set_test:
+            json_file = os.path.join(self.base_dir, dsl.SET_TEST, 'annotations.json')
+            image_root = os.path.join(self.base_dir, dsl.SET_TEST, 'images')
+            register_coco_instances("{}_test".format(self.dataset), {}, json_file, image_root)
+
+    def train(self):
+        """Start training
+
+        Returns:
+            None
+        """
         self.cfg = self.config(
-            train='{}/set_train/'.format(self.base_dir),
-            test='{}/set_test/'.format(self.base_dir),
-            num_classes=len(self.labels)
+            train="{}_train".format(self.dataset),
+            test="{}_test".format(self.dataset),
+            set_test=False,
+            num_classes=len(self.labels),
+            epochs=self.epochs
         )
-        self.train(self.cfg)
+        self.cfg.OUTPUT_DIR = os.path.join(self.base_dir, 'output')
+        os.makedirs(self.cfg.OUTPUT_DIR, exist_ok=True)
+
+        self.trainer = DefaultTrainer(self.cfg)
+        self.trainer.resume_or_load(resume=False)
+        self.trainer.train()
 
     def config(
             self,
             config_file="",
             train="",
             test="",
+            set_test=False,
             num_classes=0,
             epochs=100,
             lr=0.001,
@@ -102,31 +157,22 @@ class Detectron2TransferLearningTrainer(AssetProcessor):
     ):
         """Set up Detectron2 configs
 
-        Parameters
-        ----------
-        config_file: str
-            base model (default: Mask R-CNN R50-FPN)
-        train: str
-            train dir
-        test: str
-            val dir
-        num_classes: int
-            number of labels
-        epochs: int
-            epochs to run (default: 100)
-        lr: float
-            learning rate (default: 0.001)
-        gamma: float
-            gamma (default: 0.05)
+        Args:
+            config_file: (str) base model
+            train: (str) train dir
+            test: (str) val dir
+            set_test: (bool) add test dir (default: False)
+            num_classes: (int) number of labels
+            epochs: (int) epochs to run (default: 100)
+            lr: (float) learning rate (default: 0.001)
+            gamma: (float) gamma (default: 0.05)
 
-        Returns
-        -------
-        CfgNode
-            Detectron2 CfgNode instance with specified configurations
+        Returns:
+            (CfgNode) Detectron2 CfgNode instance with specified configurations
         """
         if not config_file:
-            config_file = \
-                "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"
+            # config_file = "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"
+            config_file = "COCO-Detection/retinanet_R_50_FPN_1x.yaml"
 
         cfg = get_cfg()
 
@@ -137,9 +183,12 @@ class Detectron2TransferLearningTrainer(AssetProcessor):
         # Model from detectron2's model zoo
         cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(config_file)
 
+        if not torch.cuda.is_available():
+            cfg.MODEL.DEVICE = "cpu"
+
         # Specify datasets to use for training and evaluation
         cfg.DATASETS.TRAIN = (train,)
-        cfg.DATASETS.TEST = (test,)
+        cfg.DATASETS.TEST = (test,) if set_test else ()
         cfg.DATALOADER.NUM_WORKERS = 4
 
         # Optimizer
@@ -164,42 +213,39 @@ class Detectron2TransferLearningTrainer(AssetProcessor):
 
         return cfg
 
-    def train(self, cfg):
-        """Start training
-
-        Parameters
-        ----------
-        cfg: CfgNode
-            model configurations
-
-        Returns
-        -------
-        None
+    def publish_model(self, labels):
         """
-        os.makedirs(self.cfg.OUTPUT_DIR, exist_ok=True)
+        Publishes the trained model and a Pipeline Module which uses it.
 
-        self.trainer = DefaultTrainer(cfg)
-        self.trainer.resume_or_load(resume=False)
-        self.trainer.train()
+        Args:
+            labels (list): An array of labels in the correct order.
+
+        """
+        self.reactor.emit_status("Saving model: {}".format(self.app_model.name))
+        model_dir = tempfile.mkdtemp() + '/' + self.app_model.name
+        os.makedirs(model_dir, exist_ok=True)
+
+        model_pth = os.path.join(self.cfg.OUTPUT_DIR, "model_final.pth")
+        shutil.copy(src=model_pth, dst=model_dir)
+        with open(model_dir + '/labels.txt', 'w') as fp:
+            for label in labels:
+                fp.write('{}\n'.format(label))
+
+        mod = file_storage.models.save_model(model_dir,  self.app_model)
+        self.reactor.emit_status("Published model: {}".format(self.app_model.name))
+        return mod
 
     def evaluate(self, cfg=None, trainer=None, test="", threshold=0.75):
         """Evaluate a trained model
 
-        Parameters
-        ----------
-        cfg: CfgNode
-            model configurations
-        trainer: DefaultTrainer
-            trained model
-        test: str
-            val dir (should be same as cfg's test dir)
-        threshold: float
-            minimum threshold of certainty (default: 0.75)
+        Args:
+            cfg: (CfgNode) model configurations
+            trainer: (DefaultTrainer) trained model
+            test: (str) val dir (should be same as cfg's test dir)
+            threshold: (float) minimum threshold of certainty (default: 0.75)
 
-        Returns
-        -------
-        DefaultPredictor
-            predictor with the given config that runs on single device for a
+        Returns:
+            (DefaultPredictor) predictor with the given config that runs on single device for a
             single input image
         """
         cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")
@@ -215,19 +261,13 @@ class Detectron2TransferLearningTrainer(AssetProcessor):
     def predict(self, cfg=None, predictor=None, img=None):
         """Predict on an image and return result
 
-        Parameters
-        ----------
-        cfg: CfgNode
-            model configurations
-        predictor: DefaultPredictor
-            predictor with the given config (output of self.evaluate)
-        img: str
-            image path
+        Args:
+            cfg: (CfgNode) model configurations
+            predictor: (DefaultPredictor) predictor with the given config (output of self.evaluate)
+            img: (str) image path
 
-        Returns
-        -------
-        ndarray
-            the visualized image of shape (H, W, 3) (RGB) in uint8 type
+        Returns:
+            (ndarray) the visualized image of shape (H, W, 3) (RGB) in uint8 type
         """
         im = cv2.imread(img)
         outputs = predictor(im)
