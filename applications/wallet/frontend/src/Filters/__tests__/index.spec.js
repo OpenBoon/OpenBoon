@@ -40,7 +40,7 @@ describe('<Filters />', () => {
     act(() => {
       component.root
         .findByProps({
-          placeholder: 'Create text filter (search name or field value)',
+          placeholder: 'Type here to create simple text filter',
         })
         .props.onChange({ target: { value: 'Cat' } })
     })
@@ -90,7 +90,7 @@ describe('<Filters />', () => {
     act(() => {
       component.root
         .findByProps({
-          placeholder: 'Create text filter (search name or field value)',
+          placeholder: 'Type here to create simple text filter',
         })
         .props.onChange({ target: { value: 'Cat' } })
     })
@@ -414,7 +414,7 @@ describe('<Filters />', () => {
     // Filter the fields
     act(() => {
       component.root
-        .findByProps({ placeholder: 'Search metadata filters' })
+        .findByProps({ placeholder: 'Filter metadata fields' })
         .props.onChange({ target: { value: 'e' } })
     })
 
@@ -448,7 +448,7 @@ describe('<Filters />', () => {
     // submit
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Add Selected Filters' })
+        .findByProps({ 'aria-label': 'Add Field Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -515,7 +515,7 @@ describe('<Filters />', () => {
     // submit
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Add Selected Filters' })
+        .findByProps({ 'aria-label': 'Add Field Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
