@@ -38,7 +38,10 @@ class ApiKeySpec(
     val projectId: UUID? = null,
 
     @ApiModelProperty("Key enabled status")
-    val enabled: Boolean = true
+    val enabled: Boolean = true,
+
+    @ApiModelProperty("Indicates that is a System Key")
+    val systemKey: Boolean = false
 )
 
 @Entity
@@ -91,7 +94,12 @@ class ApiKey(
 
     @Column(name = "enabled", nullable = false)
     @ApiModelProperty("True if the Key is enabled")
-    val enabled: Boolean
+    val enabled: Boolean,
+
+    @Column(name="system_key")
+    @ApiModelProperty("Indicates that is a System Key")
+    val systemKey: Boolean
+
 ) {
 
     @JsonIgnore
@@ -247,6 +255,7 @@ class ApiKeyFilter(
             where.add(cb.or(*matches.toTypedArray()))
         }
 
+        where.add(cb.equal(root.get<Boolean>("systemKey"), false))
         return where.toTypedArray()
     }
 
