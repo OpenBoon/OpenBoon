@@ -13,7 +13,7 @@ import com.zorroa.archivist.domain.StandardContainers
 import com.zorroa.archivist.domain.ZpsScript
 import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.stereotype.Component
-import java.lang.IllegalArgumentException
+import java.util.UUID
 
 interface JobLaunchService {
     /**
@@ -34,7 +34,8 @@ interface JobLaunchService {
         gen: ProcessorRef,
         pipeline: List<ProcessorRef>,
         settings: Map<String, Any>? = null,
-        creds: Set<String>? = null
+        creds: Set<String>? = null,
+        dependOnJobIds: List<UUID>? = null
     ): Job
 
     /**
@@ -96,7 +97,8 @@ class JobLaunchServiceImpl(
             throw DataRetrievalFailureException("Asset search did not return any assets")
         }
 
-        val name = "Applying modules: ${req.modules.joinToString(",")} to $count assets"
+        val name = req.name
+            ?: "Applying modules: ${req.modules.joinToString(",")} to $count assets"
         val gen = ProcessorRef(
             "zmlp_core.core.generators.AssetSearchGenerator",
             StandardContainers.CORE,
@@ -110,7 +112,18 @@ class JobLaunchServiceImpl(
             "fileTypes" to FileTypes.all
         )
 
-        val job = launchJob(name, gen, pipeline, settings)
+        val mergedSettings = getDefaultJobSettings()
+        settings?.let { mergedSettings.putAll(it) }
+
+        val script = ZpsScript(name, listOf(gen), null, pipeline, settings = mergedSettings)
+        val spec = JobSpec(
+            name,
+            listOf(script),
+            dependOnJobIds = req.dependOnJobIds,
+            replace = req.replace
+        )
+
+        val job = launchJob(spec)
         return ReprocessAssetSearchResponse(job, count)
     }
 
@@ -119,14 +132,20 @@ class JobLaunchServiceImpl(
         gen: ProcessorRef,
         pipeline: List<ProcessorRef>,
         settings: Map<String, Any>?,
-        creds: Set<String>?
+        creds: Set<String>?,
+        dependOnJobIds: List<UUID>?
     ): Job {
 
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
 
         val script = ZpsScript(name, listOf(gen), null, pipeline, settings = mergedSettings)
-        val spec = JobSpec(name, listOf(script), credentials = creds)
+        val spec = JobSpec(
+            name,
+            listOf(script),
+            credentials = creds,
+            dependOnJobIds = dependOnJobIds
+        )
         return launchJob(spec)
     }
 
