@@ -255,7 +255,6 @@ class ApiKeyFilter(
             where.add(cb.or(*matches.toTypedArray()))
         }
 
-        where.add(cb.equal(root.get<Boolean>("systemKey"), false))
         return where.toTypedArray()
     }
 
