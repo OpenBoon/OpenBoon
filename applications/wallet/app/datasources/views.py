@@ -94,7 +94,8 @@ Below are examples of all 3.
         except ZmlpDuplicateException:
             body = {'name': ['A Data Source with that name already exists.']}
             return Response(body, status=409)
-        app.datasource.import_files(datasource)
+        job = app.datasource.import_files(datasource)
+        datasource._data['jobId'] = job.id
         serializer = self.get_serializer(data=datasource._data)
         if not serializer.is_valid():
             return Response({'detail': serializer.errors}, status=500)

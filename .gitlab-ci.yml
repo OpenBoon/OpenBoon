@@ -308,6 +308,7 @@ zmlp-dockerhub-build-push-latest:
     - docker tag zmlp/apigateway:${SOURCE_TAG} zmlp/apigateway:${DOCKER_TAG}
     - docker tag zmlp/py3-base:${SOURCE_TAG} zmlp/py3-base:${DOCKER_TAG}
     - docker tag zmlp/py3-client:${SOURCE_TAG} zmlp/py3-client:${DOCKER_TAG}
+    - docker tag zmlp/py3-zvi:${SOURCE_TAG} zmlp/py3-zvi:${DOCKER_TAG}
     - docker tag zmlp/py3-sdk:${SOURCE_TAG} zmlp/py3-sdk:${DOCKER_TAG}
     - docker tag zmlp/plugins-base:${SOURCE_TAG} zmlp/plugins-base:${DOCKER_TAG}
     - docker tag zmlp/plugins-models:${SOURCE_TAG} zmlp/plugins-models:${DOCKER_TAG}
@@ -324,6 +325,7 @@ zmlp-dockerhub-build-push-latest:
     - docker push zmlp/apigateway:${DOCKER_TAG}
     - docker push zmlp/py3-base:${DOCKER_TAG}
     - docker push zmlp/py3-client:${DOCKER_TAG}
+    - docker push zmlp/py3-zvi:${DOCKER_TAG}
     - docker push zmlp/py3-sdk:${DOCKER_TAG}
     - docker push zmlp/plugins-base:${DOCKER_TAG}
     - docker push zmlp/plugins-models:${DOCKER_TAG}
@@ -354,20 +356,6 @@ zmlp-dockerhub-build-push-qa:
     - if: $CI_COMMIT_BRANCH == "qa"
       changes:
         - "**/*"
-
-zmlp-dockerhub-build-push-master:
-  extends:
-    - zmlp-dockerhub-build-push-latest
-  variables:
-    SOURCE_TAG: qa
-    DOCKER_TAG: stable
-    BUI:D: "false"
-  rules:
-    # Merged to master with any change
-    - if: $CI_COMMIT_BRANCH == "master"
-      changes:
-        - "**/*"
-
 
 zmlp-deploy-development:
   image: google/cloud-sdk
@@ -439,6 +427,7 @@ zmlp-dockerhub-build-push-prod:
     - docker pull -q zmlp/apigateway:${SOURCE_TAG}
     - docker pull -q zmlp/py3-base:${SOURCE_TAG}
     - docker pull -q zmlp/py3-client:${SOURCE_TAG}
+    - docker pull -q zmlp/py3-zvi:${SOURCE_TAG}
     - docker pull -q zmlp/py3-sdk:${SOURCE_TAG}
     - docker pull -q zmlp/plugins-base:${SOURCE_TAG}
     - docker pull -q zmlp/plugins-models:${SOURCE_TAG}
@@ -455,6 +444,7 @@ zmlp-dockerhub-build-push-prod:
     - docker tag zmlp/apigateway:${SOURCE_TAG} zmlp/apigateway:${DOCKER_TAG}
     - docker tag zmlp/py3-base:${SOURCE_TAG} zmlp/py3-base:${DOCKER_TAG}
     - docker tag zmlp/py3-client:${SOURCE_TAG} zmlp/py3-client:${DOCKER_TAG}
+    - docker tag zmlp/py3-zvi:${SOURCE_TAG} zmlp/py3-zvi:${DOCKER_TAG}
     - docker tag zmlp/py3-sdk:${SOURCE_TAG} zmlp/py3-sdk:${DOCKER_TAG}
     - docker tag zmlp/plugins-base:${SOURCE_TAG} zmlp/plugins-base:${DOCKER_TAG}
     - docker tag zmlp/plugins-models:${SOURCE_TAG} zmlp/plugins-models:${DOCKER_TAG}
@@ -471,6 +461,7 @@ zmlp-dockerhub-build-push-prod:
     - docker push zmlp/apigateway:${DOCKER_TAG}
     - docker push zmlp/py3-base:${DOCKER_TAG}
     - docker push zmlp/py3-client:${DOCKER_TAG}
+    - docker push zmlp/py3-zvi:${DOCKER_TAG}
     - docker push zmlp/py3-sdk:${DOCKER_TAG}
     - docker push zmlp/plugins-base:${DOCKER_TAG}
     - docker push zmlp/plugins-models:${DOCKER_TAG}

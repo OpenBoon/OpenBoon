@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { spacing } from '../Styles'
+import { spacing, typography } from '../Styles'
 
 import filterShape from '../Filter/shape'
 
@@ -14,6 +14,7 @@ import Slider from '../Slider'
 import { formatRange } from './helpers'
 
 const FilterLabelConfidenceSlider = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -31,6 +32,7 @@ const FilterLabelConfidenceSlider = ({
   return (
     <>
       <FilterReset
+        pathname={pathname}
         projectId={projectId}
         assetId={assetId}
         filters={filters}
@@ -38,17 +40,19 @@ const FilterLabelConfidenceSlider = ({
         filterIndex={filterIndex}
         onReset={() => setRangeValues([0, 1])}
       />
+
       <div>
         Label prediction confidence score:{' '}
         {formatRange({ min: rangeValues[0], max: rangeValues[1] })}
       </div>
+
       <div css={{ padding: spacing.normal, paddingBottom: spacing.spacious }}>
         <div
           css={{
             display: 'flex',
             justifyContent: 'space-between',
             paddingBottom: spacing.normal,
-            fontFamily: 'Roboto Mono',
+            fontFamily: typography.family.mono,
           }}
         >
           <span>0.00</span>
@@ -65,6 +69,7 @@ const FilterLabelConfidenceSlider = ({
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
+                  pathname,
                   projectId,
                   assetId,
                   filters,
@@ -85,6 +90,7 @@ const FilterLabelConfidenceSlider = ({
 }
 
 FilterLabelConfidenceSlider.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

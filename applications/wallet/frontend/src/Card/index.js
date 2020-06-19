@@ -29,9 +29,7 @@ const Card = ({ header, content }) => {
               borderBottom: constants.borders.tabs,
               display: 'flex',
               alignItems: 'center',
-              svg: {
-                marginRight: spacing.base,
-              },
+              svg: { marginRight: spacing.base },
             }}
           >
             {header}

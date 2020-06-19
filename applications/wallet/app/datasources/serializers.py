@@ -14,6 +14,7 @@ class DataSourceSerializer(serializers.Serializer):
     timeCreated = serializers.IntegerField(default=0)
     timeModified = serializers.IntegerField(default=0)
     url = serializers.CharField(required=False)
+    jobId = serializers.CharField(required=False)
 
 
 class CreateDataSourceSerializer(DataSourceSerializer):

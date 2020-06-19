@@ -113,14 +113,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   position: relative;
 }
 
-.emotion-39 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .emotion-38 {
   width: 100%;
   height: auto;
@@ -326,7 +318,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             <td>
               <a
                 className="emotion-14"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f6/assets"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f6/script"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="c812fa09-5f3a-11ea-bb46-6a6895b1a9f6"
@@ -378,7 +370,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             <td>
               <a
                 className="emotion-14"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82545/assets"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82545/script"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="ea7836f2-44a7-19e1-a67f-1e6fa1f82545"
@@ -422,7 +414,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             <td>
               <a
                 className="emotion-14"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82545/assets"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82545/script"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="ea7836f3-44a7-19e1-a67f-1e6fa1f82545"
@@ -466,7 +458,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             <td>
               <a
                 className="emotion-14"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f9/assets"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f9/script"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="c812fa09-5f3a-11ea-bb46-6a6895b1a9f9"
@@ -510,7 +502,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             <td>
               <a
                 className="emotion-14"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82549/assets"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82549/script"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="ea7836f2-44a7-19e1-a67f-1e6fa1f82549"
@@ -554,7 +546,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             <td>
               <a
                 className="emotion-14"
-                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82549/assets"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82549/script"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
                 title="ea7836f3-44a7-19e1-a67f-1e6fa1f82549"
@@ -703,14 +695,6 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   position: relative;
 }
 
-.emotion-16 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .emotion-6 {
   text-align: left;
   font-size: 15px;
@@ -728,6 +712,14 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
 
 .emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
+}
+
+.emotion-16 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .emotion-15 {

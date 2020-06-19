@@ -124,4 +124,24 @@ describe('<MetadataPrettySwitch />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render similarity detection with no data properly', () => {
+    require('swr').__setMockUseSWRResponse({ data: null })
+
+    require('next/router').__setUseRouter({
+      query: { id: ASSET_ID, projectId: PROJECT_ID },
+    })
+
+    const value = bboxAsset.metadata.analysis['zvi-image-similarity']
+
+    const component = TestRenderer.create(
+      <MetadataPrettySwitch
+        name="zvi-image-similarity"
+        value={value}
+        path="analysis"
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

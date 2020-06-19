@@ -9,6 +9,7 @@ import RangeSvg from '../Icons/range.svg'
 import ExistsSvg from '../Icons/exists.svg'
 import MissingSvg from '../Icons/missing.svg'
 import SimilaritySvg from '../Icons/similarity.svg'
+import TextSvg from '../Icons/text.svg'
 
 const SVG_SIZE = 20
 
@@ -32,9 +33,13 @@ const FilterTitle = ({ filter: { attribute, type, values } }) => {
         <SimilaritySvg width={SVG_SIZE} color={colors.key.one} />
       )}
 
+      {type === 'textContent' && (
+        <TextSvg width={SVG_SIZE} color={colors.key.one} />
+      )}
+
       <span
         css={{
-          fontFamily: 'Roboto Mono',
+          fontFamily: typography.family.mono,
           fontSize: typography.size.small,
           lineHeight: typography.height.small,
           paddingLeft: spacing.base,

@@ -15,22 +15,148 @@ exports[`<Metadata /> should render properly 1`] = `
 
 exports[`<Metadata /> should render selected asset 1`] = `
 Array [
-  .emotion-1 {
+  .emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-0 {
   color: #4a90e2;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
+  >
+    TIFF_1MB.tiff
+  </div>,
+  .emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-5:hover {
+  background-color: #027aff38;
+}
+
+.emotion-5:hover div {
+  color: #ffffff;
+}
+
+.emotion-5:hover div svg {
+  opacity: 1;
+}
+
+.emotion-0 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+  padding-right: 8px;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  color: #e0e0e0;
+  padding: 16px;
+  padding-left: 8px;
+  word-break: break-all;
+}
+
+.emotion-4 {
+  width: 36px;
+  padding: 16px;
+  padding-left: 8px;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
+.emotion-2 {
+  opacity: 0;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+}
+
+<div
+    className="emotion-5"
   >
     <div
       className="emotion-0"
     >
-      TIFF_1MB.tiff
+      ID
+    </div>
+    <div
+      className="emotion-1"
+      title="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+    >
+      vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <button
+        className="emotion-3"
+        onClick={[Function]}
+        title="Copy to Clipboard"
+        type="button"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="copy.svg"
+          width={20}
+        />
+      </button>
     </div>
   </div>,
   .emotion-3 {
@@ -501,22 +627,148 @@ Array [
 
 exports[`<Metadata /> should render selected asset 2`] = `
 Array [
-  .emotion-1 {
+  .emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-0 {
   color: #4a90e2;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-0"
+  >
+    TIFF_1MB.tiff
+  </div>,
+  .emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-5:hover {
+  background-color: #027aff38;
+}
+
+.emotion-5:hover div {
+  color: #ffffff;
+}
+
+.emotion-5:hover div svg {
+  opacity: 1;
+}
+
+.emotion-0 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+  padding-right: 8px;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  color: #e0e0e0;
+  padding: 16px;
+  padding-left: 8px;
+  word-break: break-all;
+}
+
+.emotion-4 {
+  width: 36px;
+  padding: 16px;
+  padding-left: 8px;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
+.emotion-2 {
+  opacity: 0;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+}
+
+<div
+    className="emotion-5"
   >
     <div
       className="emotion-0"
     >
-      TIFF_1MB.tiff
+      ID
+    </div>
+    <div
+      className="emotion-1"
+      title="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+    >
+      vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <button
+        className="emotion-3"
+        onClick={[Function]}
+        title="Copy to Clipboard"
+        type="button"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="copy.svg"
+          width={20}
+        />
+      </button>
     </div>
   </div>,
   .emotion-3 {
@@ -671,11 +923,6 @@ Array [
   .emotion-0 {
   height: 100%;
   overflow: auto;
-  background-color: #191919;
-}
-
-.emotion-0 pre {
-  padding: 16px;
 }
 
 <div

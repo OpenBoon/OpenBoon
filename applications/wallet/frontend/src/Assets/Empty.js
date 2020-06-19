@@ -9,7 +9,7 @@ import Button, { VARIANTS } from '../Button'
 
 import { ACTIONS, dispatch, decode } from '../Filters/helpers'
 
-const AssetsEmpty = ({ projectId, query, assetId }) => {
+const AssetsEmpty = ({ pathname, projectId, query, assetId }) => {
   const filters = query ? decode({ query }) : []
   const hasFilters = filters.length > 0
 
@@ -46,7 +46,7 @@ const AssetsEmpty = ({ projectId, query, assetId }) => {
             onClick={() => {
               dispatch({
                 action: ACTIONS.CLEAR_FILTERS,
-                payload: { projectId, assetId },
+                payload: { pathname, projectId, assetId },
               })
             }}
           >
@@ -94,6 +94,7 @@ AssetsEmpty.defaultProps = {
 }
 
 AssetsEmpty.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   query: PropTypes.string,
   assetId: PropTypes.string,

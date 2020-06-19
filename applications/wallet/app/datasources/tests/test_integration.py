@@ -3,7 +3,7 @@ from uuid import uuid4
 
 import pytest
 from django.urls import reverse
-from zmlp import ZmlpClient
+from zmlp import ZmlpClient, Job
 from zmlp.app import DataSourceApp
 from zmlp.client import ZmlpDuplicateException
 from zmlp import DataSource
@@ -31,7 +31,7 @@ def azure_credentials():
 
 
 def mock_import_files(*args, **kwargs):
-    return None
+    return Job({'id': '1'})
 
 
 def mock_zmlp_create_datasource_post_response(*args, **kwargs):
@@ -64,6 +64,7 @@ def test_datasource_viewset_create(api_client, monkeypatch, project, zmlp_projec
     assert response.status_code == 200
     assert response.json()['credentials'] == []
     assert response.json()['name'] == 'cats'
+    assert response.json()['jobId'] == '1'
 
 
 def test_datasource_viewset_create_gcp_creds(api_client, monkeypatch, project,

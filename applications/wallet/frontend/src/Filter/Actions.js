@@ -14,6 +14,7 @@ import Button, { VARIANTS } from '../Button'
 const SVG_SIZE = 20
 
 const FilterActions = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -31,9 +32,10 @@ const FilterActions = ({
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: constants.borderRadius.small,
-          ':hover': {
+          ':hover, :focus': {
             backgroundColor: colors.structure.smoke,
             svg: {
+              opacity: 1,
               color: isDisabled
                 ? colors.signal.canary.strong
                 : colors.structure.white,
@@ -46,6 +48,7 @@ const FilterActions = ({
           dispatch({
             action: ACTIONS.UPDATE_FILTER,
             payload: {
+              pathname,
               projectId,
               assetId,
               filters,
@@ -60,7 +63,7 @@ const FilterActions = ({
           color={
             isDisabled ? colors.signal.canary.strong : colors.structure.steel
           }
-          css={{ visibility: isDisabled ? '' : 'hidden' }}
+          css={{ opacity: isDisabled ? 1 : 0 }}
         />
       </Button>
 
@@ -72,9 +75,9 @@ const FilterActions = ({
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: constants.borderRadius.small,
-          ':hover': {
+          ':hover, :focus': {
             backgroundColor: colors.structure.smoke,
-            svg: { color: colors.structure.white },
+            svg: { color: colors.structure.white, opacity: 1 },
           },
         }}
         onClick={(event) => {
@@ -83,6 +86,7 @@ const FilterActions = ({
           dispatch({
             action: ACTIONS.DELETE_FILTER,
             payload: {
+              pathname,
               projectId,
               assetId,
               filters,
@@ -94,7 +98,7 @@ const FilterActions = ({
         <CrossSvg
           width={SVG_SIZE}
           color={colors.structure.steel}
-          css={{ visibility: 'hidden' }}
+          css={{ opacity: 0 }}
         />
       </Button>
     </div>
@@ -102,6 +106,7 @@ const FilterActions = ({
 }
 
 FilterActions.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

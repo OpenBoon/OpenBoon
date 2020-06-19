@@ -4,7 +4,7 @@ FROM maven:3.6-jdk-11-slim as build
 RUN mkdir /build
 COPY . /build
 WORKDIR /build
-RUN --mount=type=cache,target=/root/.m2 mvn clean install -Dmaven.test.skip=true
+RUN --mount=type=cache,target=/root/.m2 mvn clean install -q -Dmaven.test.skip=true
 
 FROM openjdk:11-jdk-slim
 RUN apt-get update; apt-get install -y --no-install-recommends python3

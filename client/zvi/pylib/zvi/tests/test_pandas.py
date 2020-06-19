@@ -35,7 +35,11 @@ class PandasTests(unittest.TestCase):
                                     "dataSetId": "ds-id-12345",
                                     "label": "Glion",
                                 }
-                            ]
+                            ],
+                            "media": {
+                                "height": 636,
+                                "width": 960
+                            }
                         }
                     },
                     {
@@ -55,7 +59,11 @@ class PandasTests(unittest.TestCase):
                                     "dataSetId": "ds-id-12345",
                                     "label": "Gandalf",
                                 }
-                            ]
+                            ],
+                            "media": {
+                                "height": 640,
+                                "width": 960
+                            }
                         }
                     },
                     {
@@ -70,6 +78,10 @@ class PandasTests(unittest.TestCase):
                             'analysis': {"zvi-image-similarity": {
                                 "simhash": "CCCCCCCC"}
                             },
+                            "media": {
+                                "height": 640,
+                                "width": 960
+                            }
                         }
                     }
                 ]
@@ -98,3 +110,15 @@ class PandasTests(unittest.TestCase):
         assert list(df.columns) == attrs
         assert df.iloc[1][attrs[1]] == 'BBBBBBBB'  # simhash
         assert not df.iloc[2][attrs[2]]  # no `labels` for last asset
+
+    @patch.object(ZmlpClient, 'post')
+    def test_search_to_df_no_search(self, post_patch):
+        post_patch.return_value = self.mock_search_result
+        df = search_to_df(
+            search=None,
+            attrs=None,
+            descriptor='source.path'
+        )
+
+        assert df.shape == (3, 3)
+        assert list(df.columns) == ['source.path', 'media.height', 'media.width']

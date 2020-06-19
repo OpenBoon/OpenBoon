@@ -26,6 +26,7 @@ describe('<FilterReset />', () => {
 
     const component = TestRenderer.create(
       <FilterReset
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         filters={filters}
@@ -79,6 +80,7 @@ describe('<FilterReset />', () => {
 
     const component = TestRenderer.create(
       <FilterReset
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         filters={filters}
@@ -132,6 +134,7 @@ describe('<FilterReset />', () => {
 
     const component = TestRenderer.create(
       <FilterReset
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         filters={filters}
@@ -180,6 +183,7 @@ describe('<FilterReset />', () => {
 
     const component = TestRenderer.create(
       <FilterReset
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         filters={filters}
@@ -208,6 +212,7 @@ describe('<FilterReset />', () => {
 
     const component = TestRenderer.create(
       <FilterReset
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId={asset.id}
         filters={filters}

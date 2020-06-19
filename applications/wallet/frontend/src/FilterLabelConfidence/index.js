@@ -12,6 +12,7 @@ import SuspenseBoundary from '../SuspenseBoundary'
 import FilterLabelConfidenceContent from './Content'
 
 const FilterLabelConfidence = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -24,6 +25,7 @@ const FilterLabelConfidence = ({
       title={<FilterTitle filter={filter} />}
       actions={
         <FilterActions
+          pathname={pathname}
           projectId={projectId}
           assetId={assetId}
           filters={filters}
@@ -50,6 +52,7 @@ const FilterLabelConfidence = ({
       >
         <SuspenseBoundary>
           <FilterLabelConfidenceContent
+            pathname={pathname}
             projectId={projectId}
             assetId={assetId}
             filters={filters}
@@ -63,6 +66,7 @@ const FilterLabelConfidence = ({
 }
 
 FilterLabelConfidence.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

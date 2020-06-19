@@ -94,7 +94,7 @@ def test_project_serializer_detail(project):
     data = serializer.data
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions',
-                       'modules', 'providers', 'searches', 'export']
+                       'modules', 'providers', 'searches', 'export', 'faces']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
@@ -113,6 +113,7 @@ def test_project_serializer_detail(project):
     assert data['providers'] == f'/api/v1/projects/{project.id}/providers/'
     assert data['searches'] == f'/api/v1/projects/{project.id}/searches/'
     assert data['export'] == f'/api/v1/projects/{project.id}/searches/export/'
+    assert data['faces'] == f'/api/v1/projects/{project.id}/faces/'
 
 
 def test_project_serializer_list(project, project2):
@@ -709,7 +710,7 @@ class TestProjectUserPost:
         roles = ['ML_Tools', 'User_Admin']
         permissions = view._get_permissions_for_roles(roles)
         expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage',
-                    'DataSourceManage', 'DataQueueManage']
+                    'DataSourceManage', 'DataQueueManage', 'SystemManage']
         assert set(permissions) == set(expected)
         permissions = view._get_permissions_for_roles(['User_Admin'])
         assert permissions == ['ProjectManage']

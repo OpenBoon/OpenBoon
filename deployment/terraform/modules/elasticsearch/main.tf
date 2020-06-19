@@ -6,6 +6,9 @@ resource "google_storage_bucket" "elasticsearch" {
   name = "${var.project}-es-backups"
   storage_class = "MULTI_REGIONAL"
   location      = var.country
+  retention_policy {
+    retention_period = 86400 * 29
+  }
 }
 
 resource "google_service_account" "elasticsearch" {

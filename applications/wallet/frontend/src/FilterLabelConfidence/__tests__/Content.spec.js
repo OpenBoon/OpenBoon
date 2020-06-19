@@ -43,6 +43,7 @@ describe('<FilterLabelConfidenceContent />', () => {
 
     const component = TestRenderer.create(
       <FilterLabelConfidenceContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -116,6 +117,7 @@ describe('<FilterLabelConfidenceContent />', () => {
 
     const component = TestRenderer.create(
       <FilterLabelConfidenceContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -179,6 +181,7 @@ describe('<FilterLabelConfidenceContent />', () => {
 
     const component = TestRenderer.create(
       <FilterLabelConfidenceContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -231,6 +234,7 @@ describe('<FilterLabelConfidenceContent />', () => {
 
     const component = TestRenderer.create(
       <FilterLabelConfidenceContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}

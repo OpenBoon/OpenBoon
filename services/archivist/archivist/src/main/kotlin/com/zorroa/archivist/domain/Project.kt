@@ -6,7 +6,6 @@ import com.zorroa.archivist.util.JdbcUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
 import java.math.BigDecimal
 import java.util.UUID
 import javax.persistence.Column
@@ -29,6 +28,20 @@ class ProjectSpec(
      */
     @ApiModelProperty("An optional unique ID for the project.")
     val id: UUID? = null
+)
+
+@ApiModel("Project Tier", description = "Specifies in which tier is the Project in.")
+enum class ProjectTier {
+    @ApiModelProperty(" Allows the use of Essentials Modules")
+    ESSENTIALS,
+    @ApiModelProperty(" Allows the use of Premium Modules")
+    PREMIUM
+}
+
+@ApiModel("Project Tier Update", description = "Set new Tier State")
+class ProjectTierUpdate(
+    @ApiModelProperty("Project Tier value to be updated")
+    val tier: ProjectTier
 )
 
 /**
@@ -65,7 +78,11 @@ class Project(
 
     @Column(name = "enabled")
     @ApiModelProperty("Set if the project is enabled")
-    val enabled: Boolean
+    val enabled: Boolean,
+
+    @Column(name = "int_tier")
+    @ApiModelProperty("Project Tier")
+    val tier: ProjectTier
 
 ) {
     override fun equals(other: Any?): Boolean {
@@ -196,10 +213,9 @@ class ProjectQuotaCounters {
                 val length = asset.getAttr("media.length", Double::class.java)
                     ?: throw IllegalArgumentException("Video has no length property")
 
-                val clipType = asset.getAttr<String>("clip.type")
-                    ?: throw IllegalStateException("Asset $asset has no clip")
+                val clipTrack = asset.getAttr<String>("clip.track") ?: "full"
 
-                if (clipType == Clip.TYPE_FULL) {
+                if (clipTrack == Clip.TRACK_FULL) {
                     videoLength += length
                     videoFileCount += 1
                     videoClipCount += 1

@@ -58,7 +58,7 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
               border: 'none',
             },
             ':nth-of-type(2)': {
-              fontFamily: 'Roboto Mono',
+              fontFamily: typography.family.mono,
             },
           },
           tr: {

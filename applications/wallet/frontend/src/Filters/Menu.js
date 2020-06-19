@@ -21,7 +21,13 @@ import FiltersMenuSection from './MenuSection'
 
 const ICON_SIZE = 20
 
-const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
+const FiltersMenu = ({
+  pathname,
+  projectId,
+  assetId,
+  filters,
+  setIsMenuOpen,
+}) => {
   const { data: fields } = useSWR(
     `/api/v1/projects/${projectId}/searches/fields/`,
   )
@@ -82,10 +88,10 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
         }}
       >
         <label>
-          Select metadata label filter(s)
+          Select metadata fields to filter
           <input
             type="search"
-            placeholder="Search metadata filters"
+            placeholder="Filter metadata fields"
             value={fieldsFilter}
             onChange={({ target: { value } }) => setFieldsFilter(value)}
             css={{
@@ -178,12 +184,13 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
         <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
         <Button
-          aria-label="Add Selected Filters"
+          aria-label="Add Field Filters"
           variant={VARIANTS.PRIMARY}
           onClick={() => {
             dispatch({
               action: ACTIONS.ADD_FILTERS,
               payload: {
+                pathname,
                 projectId,
                 assetId,
                 filters,
@@ -203,7 +210,7 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
           isDisabled={Object.keys(newFilters).length === 0}
         >
           <PlusSvg width={16} />
-          Add Selected Filters
+          Add Field Filters
         </Button>
       </div>
     </div>
@@ -211,6 +218,7 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
 }
 
 FiltersMenu.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

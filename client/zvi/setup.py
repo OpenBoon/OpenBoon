@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from setuptools import setup
-from datetime import datetime
 
 # See https://packaging.python.org/tutorials/packaging-projects/
 # for details about packaging python projects
@@ -10,26 +9,31 @@ from datetime import datetime
 # python3 setup.py sdist bdist_wheel
 
 requirements = [
-    'zmlp',
+    'cmake',
+    'zvi-client',
     'pandas',
     'matplotlib',
     'opencv-python',
     'Pillow',
-    'ipython'
+    'ipython',
+    'opencv_python',
+    'scikit-learn',
+    'bokeh',
+    'holoviews',
+    'MulticoreTSNE'
 ]
 
 setup(
     name='zvi',
-    version='1.0.1',
+    version='1.0.0',
     description='Zorroa Visual Intelligence ML Environment',
     url='https://www.zorroa.com',
-    license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
+    license='Apache2',
     package_dir={'': 'pylib'},
     packages=['zvi'],
     scripts=[],
     classifiers=[
         'Programming Language :: Python :: 3',
-        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent'
     ],
 

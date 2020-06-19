@@ -10,6 +10,7 @@ const ASSET_ID = assets.results[0].id
 describe('<AssetsThumbnail />', () => {
   it('should render properly a valid asset', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
         query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
@@ -23,8 +24,31 @@ describe('<AssetsThumbnail />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render properly an invalid asset', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: { projectId: PROJECT_ID },
+    })
+
+    const component = TestRenderer.create(
+      <AssetsThumbnail
+        asset={{
+          id: 'zs5GXqqMapHkZpKYewLVNPppddQfaCK-',
+          metadata: {},
+          thumbnailUrl: 'https://dev.console.zvi.zorroa.com/web-proxy.jpg/',
+          assetStyle: null,
+          videoLength: null,
+          videoProxyUrl: null,
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly a video asset', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID, id: ASSET_ID },
     })
 
@@ -37,6 +61,7 @@ describe('<AssetsThumbnail />', () => {
 
   it('should render properly a valid selected asset', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID, id: ASSET_ID },
     })
 
@@ -49,6 +74,7 @@ describe('<AssetsThumbnail />', () => {
 
   it('should render properly an asset without thumbnails', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID },
     })
 
@@ -65,6 +91,7 @@ describe('<AssetsThumbnail />', () => {
     require('next/router').__setMockPushFunction(mockRouterPush)
 
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID },
     })
 
@@ -88,14 +115,13 @@ describe('<AssetsThumbnail />', () => {
                 type: 'similarity',
                 attribute: 'analysis.zvi-image-similarity',
                 values: { ids: [ASSET_ID] },
-                isDisabled: true,
               },
             ]),
           ),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsicE53blhqVm50Z2JEUWdQWmhrWHFWVC0yVVJNcXZKTkwiXX0sImlzRGlzYWJsZWQiOnRydWV9XQ==',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsicE53blhqVm50Z2JEUWdQWmhrWHFWVC0yVVJNcXZKTkwiXX19XQ==',
     )
   })
 
@@ -107,7 +133,6 @@ describe('<AssetsThumbnail />', () => {
           type: 'similarity',
           attribute: 'analysis.zvi-image-similarity',
           values: { ids: [ASSET_ID] },
-          isDisabled: true,
         },
       ]),
     )
@@ -115,6 +140,7 @@ describe('<AssetsThumbnail />', () => {
     require('next/router').__setMockPushFunction(mockRouterPush)
 
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID, id: ASSET_ID, query: oldQuery },
     })
 
@@ -138,7 +164,6 @@ describe('<AssetsThumbnail />', () => {
                 type: 'similarity',
                 attribute: 'analysis.zvi-image-similarity',
                 values: { ids: [assets.results[1].id] },
-                isDisabled: true,
               },
             ]),
           ),
@@ -146,7 +171,7 @@ describe('<AssetsThumbnail />', () => {
           projectId: PROJECT_ID,
         },
       },
-      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXX0sImlzRGlzYWJsZWQiOnRydWV9XQ==`,
+      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXX19XQ==`,
     )
   })
 })

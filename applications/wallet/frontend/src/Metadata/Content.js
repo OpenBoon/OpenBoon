@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import { useLocalStorageState } from '../LocalStorage/helpers'
 
+import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import Button, { VARIANTS } from '../Button'
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import JsonDisplay from '../JsonDisplay'
@@ -35,9 +36,61 @@ const MetadataContent = ({ projectId, assetId }) => {
         css={{
           padding: spacing.normal,
           borderBottom: constants.borders.divider,
+          color: colors.signal.sky.base,
         }}
       >
-        <div css={{ color: colors.signal.sky.base }}>{filename}</div>
+        {filename}
+      </div>
+
+      <div
+        css={{
+          display: 'flex',
+          borderBottom: constants.borders.divider,
+          ':hover': {
+            backgroundColor: colors.signal.electricBlue.background,
+            div: {
+              color: colors.structure.white,
+              svg: { opacity: 1 },
+            },
+          },
+        }}
+      >
+        <div
+          css={{
+            fontFamily: typography.family.condensed,
+            color: colors.structure.steel,
+            padding: spacing.normal,
+            paddingRight: spacing.base,
+          }}
+        >
+          ID
+        </div>
+
+        <div
+          title={assetId}
+          css={{
+            flex: 1,
+            fontFamily: typography.family.mono,
+            fontSize: typography.size.small,
+            lineHeight: typography.height.small,
+            color: colors.structure.pebble,
+            padding: spacing.normal,
+            paddingLeft: spacing.base,
+            wordBreak: 'break-all',
+          }}
+        >
+          {assetId}
+        </div>
+
+        <div
+          css={{
+            width: COPY_SIZE + spacing.normal,
+            padding: spacing.normal,
+            paddingLeft: spacing.base,
+          }}
+        >
+          <ButtonCopy value={assetId} />
+        </div>
       </div>
 
       <div
@@ -107,16 +160,7 @@ const MetadataContent = ({ projectId, assetId }) => {
       )}
 
       {displayOption === 'raw json' && (
-        <div
-          css={{
-            height: '100%',
-            overflow: 'auto',
-            backgroundColor: colors.structure.coal,
-            pre: {
-              padding: spacing.normal,
-            },
-          }}
-        >
+        <div css={{ height: '100%', overflow: 'auto' }}>
           <JsonDisplay json={metadata} />
         </div>
       )}

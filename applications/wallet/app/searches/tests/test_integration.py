@@ -410,6 +410,7 @@ class TestAggregate(BaseFiltersTestCase):
             (self, data) = (args[0], args[1])
             self.data = data
             self.name = '0d2a26ea-1006-4e75-8626-b81809a7a021'
+            self.errors = []
 
         monkeypatch.setattr(ZmlpClient, 'post', mock_response)
         monkeypatch.setattr(BaseFilter, '__init__', mock_init)

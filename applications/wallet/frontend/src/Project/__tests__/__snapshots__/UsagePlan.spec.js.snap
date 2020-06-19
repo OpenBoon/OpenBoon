@@ -104,7 +104,7 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
             src="/icons/videos.png"
             width={32}
           />
-           Video hours used:
+           Video Hours: 
           0
         </h4>
       </div>
@@ -230,7 +230,7 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
             src="/icons/videos.png"
             width={32}
           />
-           Video hours used:
+           Video Hours: 
           0
         </h4>
       </div>
@@ -356,7 +356,7 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
             src="/icons/videos.png"
             width={32}
           />
-           Video hours used:
+           Video Hours: 
           320
         </h4>
       </div>
