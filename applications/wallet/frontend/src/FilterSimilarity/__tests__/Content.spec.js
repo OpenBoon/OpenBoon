@@ -31,6 +31,7 @@ describe('<FilterSimilarityContent />', () => {
 
     const component = TestRenderer.create(
       <FilterSimilarityContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -71,6 +72,7 @@ describe('<FilterSimilarityContent />', () => {
 
     const component = TestRenderer.create(
       <FilterSimilarityContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -93,6 +95,7 @@ describe('<FilterSimilarityContent />', () => {
 
     const component = TestRenderer.create(
       <FilterSimilarityContent
+        pathname="/[projectId]/visualizer"
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}

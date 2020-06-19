@@ -12,6 +12,7 @@ const Filters = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const {
+    pathname,
     query: { projectId, id: assetId = '', query },
   } = useRouter()
 
@@ -20,6 +21,7 @@ const Filters = () => {
   return isMenuOpen ? (
     <SuspenseBoundary key={assetId}>
       <FiltersMenu
+        pathname={pathname}
         projectId={projectId}
         assetId={assetId}
         filters={filters}
@@ -28,6 +30,7 @@ const Filters = () => {
     </SuspenseBoundary>
   ) : (
     <FiltersContent
+      pathname={pathname}
       projectId={projectId}
       assetId={assetId}
       filters={filters}

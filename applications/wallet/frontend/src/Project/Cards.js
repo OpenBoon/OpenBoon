@@ -101,7 +101,7 @@ const ProjectCards = () => {
                   passHref
                 >
                   <Button variant={VARIANTS.SECONDARY_SMALL}>
-                    + Create an API Key
+                    + Create API Key
                   </Button>
                 </Link>
               </div>

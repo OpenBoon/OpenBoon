@@ -5,18 +5,20 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeGrid } from 'react-window'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import { cleanup } from '../Filters/helpers'
 import { useLocalStorageReducer } from '../LocalStorage/helpers'
 
 import Loading from '../Loading'
+import VisualizerNavigation from '../Visualizer/Navigation'
 
 import { reducer, INITIAL_STATE } from './reducer'
 
 import AssetsResize from './Resize'
 import AssetsThumbnail from './Thumbnail'
 import AssetsEmpty from './Empty'
+import AssetsQuickView from './QuickView'
 
 const SIZE = 100
 const PADDING_SIZE = spacing.small
@@ -24,6 +26,7 @@ const PADDING_SIZE = spacing.small
 /* istanbul ignore next */
 const Assets = () => {
   const {
+    pathname,
     query: { projectId, id: selectedId, query },
   } = useRouter()
 
@@ -91,20 +94,21 @@ const Assets = () => {
 
   const { count: itemCount } = data || {}
 
-  const items = Array.isArray(pageSWRs)
+  const assets = Array.isArray(pageSWRs)
     ? pageSWRs
         // hack while https://github.com/zeit/swr/issues/189 gets fixed
         .slice(0, Math.ceil(itemCount / SIZE))
         .flatMap((pageSWR) => {
-          const { data: { results } = {} } = pageSWR || {}
+          const { data: d } = pageSWR || {}
+          const { results } = d || {}
           return results
         })
     : []
 
   const selectedRow =
-    items.length && selectedId
+    assets.length && selectedId
       ? Math.floor(
-          items.findIndex((item) => item && item.id === selectedId) /
+          assets.findIndex((item) => item && item.id === selectedId) /
             columnCount,
         )
       : ''
@@ -126,23 +130,8 @@ const Assets = () => {
 
   return (
     <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      {!!itemCount && (
-        <div
-          css={{
-            padding: spacing.base,
-            alignItems: 'center',
-            fontFamily: 'Roboto Condensed',
-            fontSize: typography.size.regular,
-            lineHeight: typography.height.regular,
-            backgroundColor: colors.structure.lead,
-            color: colors.structure.steel,
-            boxShadow: constants.boxShadows.navBar,
-            marginBottom: spacing.hairline,
-          }}
-        >
-          {itemCount} Assets
-        </div>
-      )}
+      {!!itemCount && <VisualizerNavigation itemCount={itemCount} />}
+
       <div
         css={{
           flex: 1,
@@ -153,8 +142,11 @@ const Assets = () => {
       >
         {pages}
 
+        <AssetsQuickView assets={assets} columnCount={columnCount} />
+
         {itemCount === 0 && (
           <AssetsEmpty
+            pathname={pathname}
             projectId={projectId}
             assetId={selectedId}
             query={query}
@@ -167,7 +159,7 @@ const Assets = () => {
               {({ height, width }) => (
                 <InfiniteLoader
                   ref={(ref) => setVirtualLoaderRef(ref)}
-                  isItemLoaded={(index) => !!items[index]}
+                  isItemLoaded={(index) => !!assets[index]}
                   itemCount={itemCount}
                   loadMoreItems={loadMore}
                 >
@@ -182,7 +174,7 @@ const Assets = () => {
                       100,
                       adjustedWidth / columnCount,
                     )
-                    const rowCount = Math.ceil(items.length / columnCount)
+                    const rowCount = Math.ceil(assets.length / columnCount)
                     const hasVerticalScrollbar =
                       rowCount * thumbnailSize > height
                     const scrollbarBuffer = hasVerticalScrollbar
@@ -243,7 +235,7 @@ const Assets = () => {
                         {({ columnIndex, rowIndex, style }) => {
                           const index = columnIndex + rowIndex * columnCount
 
-                          if (!items[index]) return null
+                          if (!assets[index]) return null
 
                           return (
                             <div
@@ -257,7 +249,7 @@ const Assets = () => {
                                 }px`,
                               }}
                             >
-                              <AssetsThumbnail asset={items[index]} />
+                              <AssetsThumbnail asset={assets[index]} />
                             </div>
                           )
                         }}

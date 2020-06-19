@@ -1,0 +1,407 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DataVisualization /> should render properly 1`] = `
+.emotion-24 {
+  height: 100%;
+  background-color: #191919;
+  margin-left: -32px;
+  margin-right: -32px;
+  margin-bottom: -32px;
+  padding-top: 1px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-right: 1px;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #252525;
+  margin-bottom: 1px;
+  color: #808080;
+  border-radius: 0;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #252525;
+}
+
+.emotion-22 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-21 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 8px;
+}
+
+.emotion-20 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 16px;
+  background-color: #252525;
+}
+
+.emotion-4 {
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.emotion-5 {
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 12px;
+  background-color: #4a4a4a;
+  border-radius: 2px;
+}
+
+.emotion-9 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-7 {
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-8 {
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #b3b3b3;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-10[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
+  background-color: #808080;
+}
+
+.emotion-10:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-10[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+  className="emotion-24"
+>
+  <div
+    className="emotion-23"
+  >
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-2"
+      >
+        <button
+          aria-label="Filters"
+          className="emotion-0"
+          onClick={[Function]}
+          title="Filters"
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="filter.svg"
+            width={20}
+          />
+        </button>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-22"
+    >
+      <VisualizerNavigation
+        itemCount={574}
+      />
+      <div
+        className="emotion-21"
+      >
+        <div
+          className="emotion-20"
+        >
+          <h2
+            className="emotion-4"
+          >
+            Create a Data Visualization
+          </h2>
+          <p
+            className="emotion-5"
+          >
+            Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the affect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
+          </p>
+          <div
+            className="emotion-12"
+          >
+            <div
+              className="emotion-6"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="facet.svg"
+                width={22}
+              />
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-7"
+              >
+                Facet
+              </div>
+              <div
+                className="emotion-8"
+              >
+                Shows the range of values and the number of each for one for a selected field.
+              </div>
+            </div>
+            <div
+              className="emotion-11"
+            >
+              <button
+                className="emotion-10"
+                onClick={[Function]}
+                type="button"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-12"
+          >
+            <div
+              className="emotion-6"
+            >
+              <svg
+                color="#ffffff"
+                data-file-name="range.svg"
+                width={22}
+              />
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-7"
+              >
+                Range
+              </div>
+              <div
+                className="emotion-8"
+              >
+                Shows the min, max, mean, median, and mode for the numerical values of a selected field.
+              </div>
+            </div>
+            <div
+              className="emotion-11"
+            >
+              <button
+                className="emotion-10"
+                onClick={[Function]}
+                type="button"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

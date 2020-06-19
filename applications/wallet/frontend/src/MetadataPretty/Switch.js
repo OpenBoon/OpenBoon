@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import { formatDisplayName } from '../Metadata/helpers'
 
@@ -50,15 +50,10 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
         return (
           <>
             {!!name && (
-              <div
-                css={{
-                  borderTop: constants.borders.divider,
-                  ':hover': { div: { svg: { display: 'inline-block' } } },
-                }}
-              >
+              <div css={{ borderTop: constants.borders.divider }}>
                 <div
                   css={{
-                    fontFamily: 'Roboto Condensed',
+                    fontFamily: typography.family.condensed,
                     color: colors.structure.steel,
                     padding: spacing.normal,
                     paddingBottom: 0,
@@ -69,6 +64,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
                     {formatDisplayName({ name })}
                   </span>
                 </div>
+
                 <div />
               </div>
             )}

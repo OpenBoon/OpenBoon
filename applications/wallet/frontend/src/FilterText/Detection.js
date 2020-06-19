@@ -14,6 +14,7 @@ const BUTTON_SIZE = 42
 const ICON_SIZE = 20
 
 const FilterTextDetection = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -65,6 +66,7 @@ const FilterTextDetection = ({
               {query}
             </span>
           </Button>
+
           <Button
             title="Clear"
             aria-label="Clear Text Detection"
@@ -72,11 +74,7 @@ const FilterTextDetection = ({
               width: BUTTON_SIZE,
               padding: spacing.moderate,
               backgroundColor: colors.structure.coal,
-              ':hover': {
-                svg: {
-                  color: colors.structure.white,
-                },
-              },
+              ':hover': { svg: { color: colors.structure.white } },
             }}
             variant={VARIANTS.NEUTRAL}
             onClick={() => {
@@ -84,6 +82,7 @@ const FilterTextDetection = ({
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
+                  pathname,
                   projectId,
                   assetId,
                   filters,
@@ -160,6 +159,7 @@ const FilterTextDetection = ({
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
+                  pathname,
                   projectId,
                   assetId,
                   filters,
@@ -200,6 +200,7 @@ const FilterTextDetection = ({
 }
 
 FilterTextDetection.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

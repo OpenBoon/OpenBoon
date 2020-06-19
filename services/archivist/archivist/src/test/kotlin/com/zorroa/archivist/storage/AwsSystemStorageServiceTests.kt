@@ -2,6 +2,7 @@ package com.zorroa.archivist.storage
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Clip
+import com.zorroa.archivist.util.bd
 import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
 import org.junit.Test
@@ -24,7 +25,7 @@ class AwsSystemStorageServiceTests : AbstractTest() {
 
     @Test
     fun testFetchScalarType() {
-        val clip1 = Clip("foo", 1.0, 2.0, "hats")
+        val clip1 = Clip("foo", 1.0.bd(), 2.0.bd(), "hats")
         systemStorageService.storeObject("/crew/members.json", clip1)
 
         val clip2 = systemStorageService.fetchObject("/crew/members.json", Clip::class.java)

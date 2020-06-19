@@ -14,6 +14,7 @@ import FilterSearch from '../Filter/Search'
 import FilterLabelConfidenceSlider from './Slider'
 
 const FilterLabelConfidenceContent = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -50,12 +51,14 @@ const FilterLabelConfidenceContent = ({
   return (
     <>
       <FilterLabelConfidenceSlider
+        pathname={pathname}
         projectId={projectId}
         assetId={assetId}
         filters={filters}
         filter={filter}
         filterIndex={filterIndex}
       />
+
       <FilterSearch
         placeholder="Search labels"
         searchString={searchString}
@@ -63,18 +66,20 @@ const FilterLabelConfidenceContent = ({
           setSearchString(value)
         }}
       />
+
       <div
         css={{
           display: 'flex',
           justifyContent: 'space-between',
           paddingBottom: spacing.base,
-          fontFamily: 'Roboto Condensed',
+          fontFamily: typography.family.condensed,
           color: colors.structure.zinc,
         }}
       >
         <div>LABEL</div>
         <div>COUNT</div>
       </div>
+
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
         {buckets.map(({ key, docCount = 0 }) => {
           if (!key.toLowerCase().includes(searchString)) return null
@@ -118,6 +123,7 @@ const FilterLabelConfidenceContent = ({
                   dispatch({
                     action: ACTIONS.UPDATE_FILTER,
                     payload: {
+                      pathname,
                       projectId,
                       assetId,
                       filters,
@@ -155,7 +161,7 @@ const FilterLabelConfidenceContent = ({
                       display: 'flex',
                       justifyContent: 'space-between',
                       padding: spacing.base,
-                      fontFamily: 'Roboto Mono',
+                      fontFamily: typography.family.mono,
                       fontSize: typography.size.small,
                       lineHeight: typography.height.small,
                     }}
@@ -174,6 +180,7 @@ const FilterLabelConfidenceContent = ({
 }
 
 FilterLabelConfidenceContent.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

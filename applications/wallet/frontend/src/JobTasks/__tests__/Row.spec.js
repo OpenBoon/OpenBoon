@@ -30,8 +30,8 @@ describe('<JobTasksRow />', () => {
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(
-      '/[projectId]/jobs/[jobId]/tasks/[taskId]/assets',
-      `/${PROJECT_ID}/jobs/${JOB_ID}/tasks/${TASK.id}/assets`,
+      '/[projectId]/jobs/[jobId]/tasks/[taskId]/script',
+      `/${PROJECT_ID}/jobs/${JOB_ID}/tasks/${TASK.id}/script`,
     )
   })
 

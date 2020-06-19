@@ -287,7 +287,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -322,8 +322,8 @@ Array [
   border: 1px solid #808080;
 }
 
-.emotion-21:hover div svg {
-  visibility: visible;
+.emotion-21:hover svg {
+  opacity: 1;
 }
 
 .emotion-9 {
@@ -502,16 +502,93 @@ Array [
   color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-5:hover svg {
+.emotion-5:hover svg,
+.emotion-5:focus svg {
+  opacity: 1;
   color: #ffffff;
 }
 
 .emotion-4 {
-  visibility: hidden;
+  opacity: 0;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7:hover {
+  color: #73b61c;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-7:hover svg,
+.emotion-7:focus svg {
+  color: #ffffff;
+  opacity: 1;
 }
 
 .emotion-20 {
@@ -722,7 +799,7 @@ Array [
           </button>
           <button
             aria-label="Delete Filter"
-            className="emotion-5"
+            className="emotion-7"
             onClick={[Function]}
             type="button"
           >
@@ -759,6 +836,7 @@ Array [
               ]
             }
             onReset={[Function]}
+            pathname="/[projectId]/visualizer"
             projectId="76917058-b147-4556-987a-0a0f11e46d9b"
           />
           <div
@@ -1112,7 +1190,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -1147,8 +1225,8 @@ Array [
   border: 1px solid #808080;
 }
 
-.emotion-59:hover div svg {
-  visibility: visible;
+.emotion-59:hover svg {
+  opacity: 1;
 }
 
 .emotion-9 {
@@ -1327,16 +1405,93 @@ Array [
   color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-5:hover svg {
+.emotion-5:hover svg,
+.emotion-5:focus svg {
+  opacity: 1;
   color: #ffffff;
 }
 
 .emotion-4 {
-  visibility: hidden;
+  opacity: 0;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7:hover {
+  color: #73b61c;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-7:hover svg,
+.emotion-7:focus svg {
+  color: #ffffff;
+  opacity: 1;
 }
 
 .emotion-58 {
@@ -1596,7 +1751,7 @@ Array [
           </button>
           <button
             aria-label="Delete Filter"
-            className="emotion-5"
+            className="emotion-7"
             onClick={[Function]}
             type="button"
           >
@@ -1635,6 +1790,7 @@ Array [
               ]
             }
             onReset={[Function]}
+            pathname="/[projectId]/visualizer"
             projectId="76917058-b147-4556-987a-0a0f11e46d9b"
           />
           <div
@@ -2190,7 +2346,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -2225,8 +2381,8 @@ Array [
   border: 1px solid #808080;
 }
 
-.emotion-659:hover div svg {
-  visibility: visible;
+.emotion-659:hover svg {
+  opacity: 1;
 }
 
 .emotion-9 {
@@ -2405,16 +2561,93 @@ Array [
   color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-5:hover svg {
+.emotion-5:hover svg,
+.emotion-5:focus svg {
+  opacity: 1;
   color: #ffffff;
 }
 
 .emotion-4 {
-  visibility: hidden;
+  opacity: 0;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7:hover {
+  color: #73b61c;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-7:hover svg,
+.emotion-7:focus svg {
+  color: #ffffff;
+  opacity: 1;
 }
 
 .emotion-658 {
@@ -2966,7 +3199,7 @@ Array [
           </button>
           <button
             aria-label="Delete Filter"
-            className="emotion-5"
+            className="emotion-7"
             onClick={[Function]}
             type="button"
           >
@@ -3005,6 +3238,7 @@ Array [
               ]
             }
             onReset={[Function]}
+            pathname="/[projectId]/visualizer"
             projectId="76917058-b147-4556-987a-0a0f11e46d9b"
           />
           <div>
@@ -6902,7 +7136,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -6937,8 +7171,8 @@ Array [
   border: 1px solid #808080;
 }
 
-.emotion-24:hover div svg {
-  visibility: visible;
+.emotion-24:hover svg {
+  opacity: 1;
 }
 
 .emotion-9 {
@@ -7117,16 +7351,93 @@ Array [
   color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-5:hover svg {
+.emotion-5:hover svg,
+.emotion-5:focus svg {
+  opacity: 1;
   color: #ffffff;
 }
 
 .emotion-4 {
-  visibility: hidden;
+  opacity: 0;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7:hover {
+  color: #73b61c;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-7:hover svg,
+.emotion-7:focus svg {
+  color: #ffffff;
+  opacity: 1;
 }
 
 .emotion-23 {
@@ -7355,7 +7666,7 @@ Array [
           </button>
           <button
             aria-label="Delete Filter"
-            className="emotion-5"
+            className="emotion-7"
             onClick={[Function]}
             type="button"
           >
@@ -7395,6 +7706,7 @@ Array [
                 ]
               }
               onReset={[Function]}
+              pathname="/[projectId]/visualizer"
               projectId="76917058-b147-4556-987a-0a0f11e46d9b"
             />
             <div
@@ -7795,7 +8107,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -7830,8 +8142,8 @@ Array [
   border: 1px solid #808080;
 }
 
-.emotion-21:hover div svg {
-  visibility: visible;
+.emotion-21:hover svg {
+  opacity: 1;
 }
 
 .emotion-9 {
@@ -8010,16 +8322,93 @@ Array [
   color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-5:hover svg {
+.emotion-5:hover svg,
+.emotion-5:focus svg {
+  opacity: 1;
   color: #ffffff;
 }
 
 .emotion-4 {
-  visibility: hidden;
+  opacity: 0;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7:hover {
+  color: #73b61c;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-7:hover svg,
+.emotion-7:focus svg {
+  color: #ffffff;
+  opacity: 1;
 }
 
 .emotion-20 {
@@ -8194,7 +8583,7 @@ Array [
           </button>
           <button
             aria-label="Delete Filter"
-            className="emotion-5"
+            className="emotion-7"
             onClick={[Function]}
             type="button"
           >
@@ -8242,6 +8631,7 @@ Array [
                 ]
               }
               onReset={[Function]}
+              pathname="/[projectId]/visualizer"
               projectId="76917058-b147-4556-987a-0a0f11e46d9b"
             />
             <div
@@ -8620,7 +9010,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />
@@ -8655,8 +9045,8 @@ Array [
   border: 1px solid #808080;
 }
 
-.emotion-16:hover div svg {
-  visibility: visible;
+.emotion-16:hover svg {
+  opacity: 1;
 }
 
 .emotion-9 {
@@ -8835,16 +9225,93 @@ Array [
   color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5:focus {
   background-color: #3b3b3b;
 }
 
-.emotion-5:hover svg {
+.emotion-5:hover svg,
+.emotion-5:focus svg {
+  opacity: 1;
   color: #ffffff;
 }
 
 .emotion-4 {
-  visibility: hidden;
+  opacity: 0;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7:hover {
+  color: #73b61c;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-7:hover svg,
+.emotion-7:focus svg {
+  color: #ffffff;
+  opacity: 1;
 }
 
 .emotion-15 {
@@ -8953,6 +9420,11 @@ Array [
         <h4
           className="emotion-3"
         >
+          <svg
+            color="#73b61c"
+            data-file-name="text.svg"
+            width={20}
+          />
           <span
             className="emotion-2"
           >
@@ -8977,7 +9449,7 @@ Array [
           </button>
           <button
             aria-label="Delete Filter"
-            className="emotion-5"
+            className="emotion-7"
             onClick={[Function]}
             type="button"
           >
@@ -9321,7 +9793,7 @@ Array [
         <input
           className="emotion-8"
           onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
+          placeholder="Type here to create simple text filter"
           type="search"
           value=""
         />

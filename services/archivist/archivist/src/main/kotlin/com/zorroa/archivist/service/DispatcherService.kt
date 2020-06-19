@@ -213,6 +213,7 @@ class DispatchQueueManager @Autowired constructor(
      * @param analyst The hostname for the [Analyst] asking for a task.
      */
     fun queueAndDispatchTask(task: DispatchTask, analyst: String): Boolean {
+
         if (queueTask(task, analyst)) {
             meterRegistry.counter(
                 METRICS_KEY, "op", "tasks-queued"
@@ -239,20 +240,6 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZMLP_STORAGE_PIPELINE_SECRETKEY"] = pipelineStoragProperties.secretKey
             task.env["ZMLP_CREDENTIALS_TYPES"] = jobService.getCredentialsTypes(task).joinToString(",")
 
-            // If the task is queued with asset IDs then
-            // resolve the asset Ids.
-            withAuth(
-                InternalThreadAuthentication(
-                    task.projectId,
-                    setOf(Permission.AssetsRead)
-                )
-            ) {
-
-                task.script.assetIds?.let {
-                    val assets = assetService.getAll(it)
-                    task.script.assets = assets
-                }
-            }
             return true
         } else {
             meterRegistry.counter(METRICS_KEY, "op", "tasks-collided").increment()
@@ -347,6 +334,21 @@ class DispatcherServiceImpl @Autowired constructor(
         return if (result) {
             taskDao.setHostEndpoint(task, endpoint)
             analystDao.setTaskId(endpoint, task.taskId)
+
+            // If the task is queued with asset IDs then
+            // resolve the asset Ids.
+            withAuth(
+                InternalThreadAuthentication(
+                    task.projectId,
+                    setOf(Permission.AssetsRead)
+                )
+            ) {
+
+                task.script.assetIds?.let {
+                    val assets = assetService.getAll(it)
+                    task.script.assets = assets
+                }
+            }
             true
         } else {
             false

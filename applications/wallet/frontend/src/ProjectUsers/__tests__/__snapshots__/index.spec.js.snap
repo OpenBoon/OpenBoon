@@ -281,14 +281,6 @@ Array [
   position: relative;
 }
 
-.emotion-13 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .emotion-6 {
   text-align: left;
   font-size: 15px;
@@ -1217,14 +1209,6 @@ Array [
   -ms-flex: 1;
   flex: 1;
   position: relative;
-}
-
-.emotion-15 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .emotion-6 {

@@ -21,17 +21,16 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
       {
         type: 'similarity',
         attribute: 'analysis.zvi-image-similarity',
-        // TODO: replace `hashes` with `ids` after backend update
-        values: { hashes: [simhash] },
+        values: { ids: [assetId] },
       },
     ],
   })
 
-  const {
-    data: { results },
-  } = useSWR(
+  const { data } = useSWR(
     `/api/v1/projects/${projectId}/searches/query/?query=${query}&from=0&size=10`,
   )
+
+  const { results = [] } = data || {}
 
   return (
     <>
@@ -42,7 +41,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
           },
           padding: spacing.normal,
           paddingBottom: spacing.base,
-          fontFamily: 'Roboto Mono',
+          fontFamily: typography.family.mono,
           fontSize: typography.size.small,
           lineHeight: typography.height.small,
           color: colors.structure.white,
@@ -50,37 +49,35 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
       >
         {name}
       </div>
+
       <div
         css={{
           padding: `${spacing.base}px ${spacing.normal}px`,
           paddingBottom: 0,
           minHeight: COPY_SIZE,
           width: '100%',
-          fontFamily: 'Roboto Condensed',
+          fontFamily: typography.family.condensed,
           textTransform: 'uppercase',
           color: colors.structure.steel,
         }}
       >
         simhash
       </div>
+
       <div css={{ paddingBottom: spacing.base }}>
         <div
           css={{
             display: 'flex',
             ':hover': {
               backgroundColor: colors.signal.electricBlue.background,
-              div: {
-                svg: {
-                  display: 'inline-block',
-                },
-              },
+              svg: { opacity: 1 },
             },
           }}
         >
           <div
             css={{
               padding: `${spacing.moderate}px ${spacing.normal}px`,
-              fontFamily: 'Roboto Mono',
+              fontFamily: typography.family.mono,
               fontSize: typography.size.small,
               lineHeight: typography.height.small,
               color: colors.structure.white,
@@ -91,6 +88,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
           >
             {simhash}
           </div>
+
           <div
             css={{
               minWidth: COPY_SIZE + spacing.normal,
@@ -101,6 +99,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
             <ButtonCopy value={simhash} />
           </div>
         </div>
+
         {results.length > 1 && (
           <div
             css={{
@@ -114,13 +113,14 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
                 borderTop: constants.borders.divider,
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.moderate,
-                fontFamily: 'Roboto Condensed',
+                fontFamily: typography.family.condensed,
                 textTransform: 'uppercase',
                 color: colors.structure.steel,
               }}
             >
               Similar Images
             </div>
+
             <div
               css={{
                 display: 'flex',

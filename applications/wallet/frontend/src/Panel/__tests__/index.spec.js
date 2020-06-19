@@ -2,7 +2,7 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import Panel from '..'
 
-import AccountDashboardSvg from '../../Icons/accountDashboard.svg'
+import DashboardSvg from '../../Icons/dashboard.svg'
 
 jest.mock('../../Resizeable', () => 'Resizeable')
 
@@ -13,7 +13,7 @@ describe('<Panel />', () => {
         {{
           filters: {
             title: 'Filters',
-            icon: <AccountDashboardSvg width={20} aria-hidden />,
+            icon: <DashboardSvg width={20} aria-hidden />,
             content: '',
           },
         }}
@@ -68,7 +68,7 @@ describe('<Panel />', () => {
         {{
           metadata: {
             title: 'Metadata',
-            icon: <AccountDashboardSvg width={20} aria-hidden />,
+            icon: <DashboardSvg width={20} aria-hidden />,
             content: '',
           },
         }}

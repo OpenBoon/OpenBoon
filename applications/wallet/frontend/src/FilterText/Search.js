@@ -15,6 +15,7 @@ import { dispatch, ACTIONS } from '../Filters/helpers'
 const SVG_SIZE = 20
 
 const FilterTextSearch = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -32,9 +33,7 @@ const FilterTextSearch = ({
         borderBottom: constants.borders.tabs,
         ':hover': {
           border: constants.borders.tableRow,
-          svg: {
-            visibility: 'visible',
-          },
+          svg: { opacity: 1 },
         },
         padding: spacing.small,
         paddingLeft: spacing.base,
@@ -55,6 +54,7 @@ const FilterTextSearch = ({
         >
           <TextSvg css={{ width: SVG_SIZE, color: colors.key.one }} />
         </div>
+
         <div
           css={{
             flex: 1,
@@ -66,7 +66,7 @@ const FilterTextSearch = ({
         >
           <span
             css={{
-              fontFamily: 'Roboto Mono',
+              fontFamily: typography.family.mono,
               fontSize: typography.size.small,
               lineHeight: typography.height.small,
               paddingLeft: spacing.base,
@@ -78,6 +78,7 @@ const FilterTextSearch = ({
             {query}
           </span>
         </div>
+
         <Button
           aria-label={`${isDisabled ? 'Enable' : 'Disable'} Filter`}
           variant={VARIANTS.ICON}
@@ -86,9 +87,10 @@ const FilterTextSearch = ({
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: constants.borderRadius.small,
-            ':hover': {
+            ':hover, :focus': {
               backgroundColor: colors.structure.smoke,
               svg: {
+                opacity: 1,
                 color: isDisabled
                   ? colors.signal.canary.strong
                   : colors.structure.white,
@@ -99,6 +101,7 @@ const FilterTextSearch = ({
             dispatch({
               action: ACTIONS.UPDATE_FILTER,
               payload: {
+                pathname,
                 projectId,
                 assetId,
                 filters,
@@ -116,11 +119,10 @@ const FilterTextSearch = ({
             color={
               isDisabled ? colors.signal.canary.strong : colors.structure.steel
             }
-            css={{
-              visibility: isDisabled ? '' : 'hidden',
-            }}
+            css={{ opacity: isDisabled ? 1 : 0 }}
           />
         </Button>
+
         <Button
           aria-label="Delete Filter"
           variant={VARIANTS.ICON}
@@ -129,15 +131,16 @@ const FilterTextSearch = ({
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: constants.borderRadius.small,
-            ':hover': {
+            ':hover, :focus': {
               backgroundColor: colors.structure.smoke,
-              svg: { color: colors.structure.white },
+              svg: { opacity: 1, color: colors.structure.white },
             },
           }}
           onClick={() =>
             dispatch({
               action: ACTIONS.DELETE_FILTER,
               payload: {
+                pathname,
                 projectId,
                 assetId,
                 filters,
@@ -149,9 +152,7 @@ const FilterTextSearch = ({
           <CrossSvg
             width={SVG_SIZE}
             color={colors.structure.steel}
-            css={{
-              visibility: 'hidden',
-            }}
+            css={{ opacity: 0 }}
           />
         </Button>
       </div>
@@ -160,6 +161,7 @@ const FilterTextSearch = ({
 }
 
 FilterTextSearch.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

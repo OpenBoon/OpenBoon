@@ -9,9 +9,13 @@ import { encode } from '../../Filters/helpers'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = assets.results[0].id
 
+jest.mock('../../Visualizer/Navigation', () => 'VisualizerNavigation')
+jest.mock('../../Asset/Asset', () => 'AssetAsset')
+
 describe('<Assets />', () => {
   it('should render properly while loading', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID },
     })
 
@@ -24,6 +28,7 @@ describe('<Assets />', () => {
 
   it('should render properly', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID },
     })
 
@@ -77,6 +82,7 @@ describe('<Assets />', () => {
 
   it('should render empty properly', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID },
     })
 
@@ -93,6 +99,7 @@ describe('<Assets />', () => {
 
     require('next/router').__setMockPushFunction(mockPush)
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
         id: ASSET_ID,
@@ -132,6 +139,7 @@ describe('<Assets />', () => {
 
   it('should render empty with no filters properly', () => {
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
         id: ASSET_ID,

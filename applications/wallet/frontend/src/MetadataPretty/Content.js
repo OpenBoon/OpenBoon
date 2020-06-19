@@ -20,7 +20,7 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
           },
           padding: spacing.normal,
           paddingBottom: spacing.base,
-          fontFamily: 'Roboto Mono',
+          fontFamily: typography.family.mono,
           fontSize: typography.size.small,
           lineHeight: typography.height.small,
           color: colors.structure.white,
@@ -28,30 +28,28 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
       >
         {name}
       </div>
+
       <div
         css={{
           padding: `${spacing.base}px ${spacing.normal}px`,
           paddingBottom: 0,
           minHeight: COPY_SIZE,
           width: '100%',
-          fontFamily: 'Roboto Condensed',
+          fontFamily: typography.family.condensed,
           textTransform: 'uppercase',
           color: colors.structure.steel,
         }}
       >
         content
       </div>
+
       <div css={{ paddingBottom: spacing.base }}>
         <div
           css={{
             display: 'flex',
             ':hover': {
               backgroundColor: colors.signal.electricBlue.background,
-              div: {
-                svg: {
-                  display: 'inline-block',
-                },
-              },
+              svg: { opacity: 1 },
             },
           }}
         >
@@ -65,6 +63,7 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
           >
             {content}
           </div>
+
           <div
             css={{
               minWidth: COPY_SIZE + spacing.normal,

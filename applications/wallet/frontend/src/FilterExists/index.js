@@ -20,6 +20,7 @@ const SVG_SIZE = 20
 export const noop = () => {}
 
 const FilterExists = ({
+  pathname,
   projectId,
   assetId,
   filters,
@@ -33,6 +34,7 @@ const FilterExists = ({
       title={<FilterTitle filter={filter} />}
       actions={
         <FilterActions
+          pathname={pathname}
           projectId={projectId}
           assetId={assetId}
           filters={filters}
@@ -46,6 +48,7 @@ const FilterExists = ({
     >
       <div css={{ padding: spacing.normal }}>
         <FilterReset
+          pathname={pathname}
           projectId={projectId}
           assetId={assetId}
           filters={filters}
@@ -94,6 +97,7 @@ const FilterExists = ({
                   dispatch({
                     action: ACTIONS.UPDATE_FILTER,
                     payload: {
+                      pathname,
                       projectId,
                       assetId,
                       filters,
@@ -139,6 +143,7 @@ const FilterExists = ({
 }
 
 FilterExists.propTypes = {
+  pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,

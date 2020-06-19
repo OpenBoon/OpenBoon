@@ -16,17 +16,18 @@ import { formatSeconds } from './helpers'
 const AssetsThumbnail = ({
   asset: {
     id,
-    metadata: {
-      source: { filename },
-    },
+    metadata: { source },
     thumbnailUrl,
     videoProxyUrl,
     videoLength,
   },
 }) => {
+  const { filename } = source || {}
+
   const playerRef = useRef()
 
   const {
+    pathname,
     query: { projectId, id: selectedId, query },
   } = useRouter()
 
@@ -102,6 +103,7 @@ const AssetsThumbnail = ({
           )}
         </Button>
       </Link>
+
       <Button
         aria-label="Find similar images"
         variant={VARIANTS.NEUTRAL}
@@ -121,6 +123,7 @@ const AssetsThumbnail = ({
           dispatch({
             action: ACTIONS.APPLY_SIMILARITY,
             payload: {
+              pathname,
               projectId,
               assetId: id,
               selectedId,
@@ -131,6 +134,7 @@ const AssetsThumbnail = ({
       >
         <SimilaritySvg width={20} color={colors.structure.white} />
       </Button>
+
       <Link
         href={`/[projectId]/visualizer/[id]${queryString}`}
         as={`/${projectId}/visualizer/${id}${queryString}`}
@@ -154,6 +158,7 @@ const AssetsThumbnail = ({
           <ExpandSvg width={20} color={colors.structure.white} />
         </Button>
       </Link>
+
       {videoLength > 0 && (
         <div
           css={{
@@ -183,7 +188,7 @@ AssetsThumbnail.propTypes = {
         extension: PropTypes.string,
         mimetype: PropTypes.string,
       }),
-    }),
+    }).isRequired,
     thumbnailUrl: PropTypes.string.isRequired,
     assetStyle: PropTypes.oneOf(['image', 'video', 'document']),
     videoLength: PropTypes.number,
