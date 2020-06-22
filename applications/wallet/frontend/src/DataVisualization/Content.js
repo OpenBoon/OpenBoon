@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 import { colors, spacing } from '../Styles'
 
 import { cleanup } from '../Filters/helpers'
+import { useLocalStorageReducer } from '../LocalStorage/helpers'
 
 import Panel from '../Panel'
 import Filters from '../Filters'
@@ -11,9 +13,12 @@ import VisualizerNavigation from '../Visualizer/Navigation'
 
 import FilterSvg from '../Icons/filter.svg'
 
-import DataVisualizationCreate from './Create'
+import { reducer } from './reducer'
 
-const ICON_WIDTH = 20
+import DataVisualizationCreate from './Create'
+import DataVisualizationActions from './Actions'
+
+const ICON_SIZE = 20
 const FROM = 0
 const SIZE = 100
 
@@ -29,6 +34,14 @@ const DataVisualizationContent = () => {
   } = useSWR(
     `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${FROM}&size=${SIZE}`,
   )
+
+  const [state, dispatch] = useLocalStorageReducer({
+    key: `DataVisualization.${projectId}`,
+    reducer,
+    initialState: [],
+  })
+
+  const [isCreating, setIsCreating] = useState(state.length === 0)
 
   return (
     <div
@@ -49,7 +62,7 @@ const DataVisualizationContent = () => {
           {{
             filters: {
               title: 'Filters',
-              icon: <FilterSvg width={ICON_WIDTH} aria-hidden />,
+              icon: <FilterSvg width={ICON_SIZE} aria-hidden />,
               content: <Filters />,
             },
           }}
@@ -58,7 +71,29 @@ const DataVisualizationContent = () => {
         <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           {!!itemCount && <VisualizerNavigation itemCount={itemCount} />}
 
-          <DataVisualizationCreate />
+          {isCreating ? (
+            <DataVisualizationCreate
+              state={state}
+              dispatch={dispatch}
+              setIsCreating={setIsCreating}
+            />
+          ) : (
+            <div
+              css={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                padding: spacing.normal,
+              }}
+            >
+              <DataVisualizationActions
+                dispatch={dispatch}
+                setIsCreating={setIsCreating}
+              />
+
+              <div>{JSON.stringify(state)}</div>
+            </div>
+          )}
         </div>
       </div>
     </div>

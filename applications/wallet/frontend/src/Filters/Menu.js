@@ -188,7 +188,7 @@ const FiltersMenu = ({
           variant={VARIANTS.PRIMARY}
           onClick={() => {
             dispatch({
-              action: ACTIONS.ADD_FILTERS,
+              type: ACTIONS.ADD_FILTERS,
               payload: {
                 pathname,
                 projectId,

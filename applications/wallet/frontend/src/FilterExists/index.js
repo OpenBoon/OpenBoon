@@ -95,7 +95,7 @@ const FilterExists = ({
                 variant={VARIANTS.NEUTRAL}
                 onClick={() =>
                   dispatch({
-                    action: ACTIONS.UPDATE_FILTER,
+                    type: ACTIONS.UPDATE_FILTER,
                     payload: {
                       pathname,
                       projectId,
