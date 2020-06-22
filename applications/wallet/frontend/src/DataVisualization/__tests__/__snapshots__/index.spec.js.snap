@@ -778,7 +778,7 @@ exports[`<DataVisualization /> should render properly 2`] = `
           </button>
         </div>
         <div>
-          [{"type":"FACET"}]
+          {"id":"972a8ab5-cdcb-4eea-ada7-f1c88d997fed","type":"FACET"}
         </div>
       </div>
     </div>

@@ -17,6 +17,7 @@ import { reducer } from './reducer'
 
 import DataVisualizationCreate from './Create'
 import DataVisualizationActions from './Actions'
+import Charts from '../Charts'
 
 const ICON_SIZE = 20
 const FROM = 0
@@ -35,13 +36,13 @@ const DataVisualizationContent = () => {
     `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${FROM}&size=${SIZE}`,
   )
 
-  const [state, dispatch] = useLocalStorageReducer({
+  const [charts, dispatch] = useLocalStorageReducer({
     key: `DataVisualization.${projectId}`,
     reducer,
     initialState: [],
   })
 
-  const [isCreating, setIsCreating] = useState(state.length === 0)
+  const [isCreating, setIsCreating] = useState(charts.length === 0)
 
   return (
     <div
@@ -73,7 +74,7 @@ const DataVisualizationContent = () => {
 
           {isCreating ? (
             <DataVisualizationCreate
-              state={state}
+              charts={charts}
               dispatch={dispatch}
               setIsCreating={setIsCreating}
             />
@@ -91,7 +92,7 @@ const DataVisualizationContent = () => {
                 setIsCreating={setIsCreating}
               />
 
-              <div>{JSON.stringify(state)}</div>
+              <Charts charts={charts} />
             </div>
           )}
         </div>
