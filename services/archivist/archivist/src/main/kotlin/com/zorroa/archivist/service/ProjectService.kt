@@ -179,6 +179,7 @@ class ProjectServiceImpl constructor(
             )
             projectStatsDao.createQuotasEntry(project.id)
             projectStatsDao.createIngestTimeSeriesEntries(project.id)
+            authServerClient.createApiKey(getProjectId(), )
         }
 
         txEvent.afterCommit(sync = true) {

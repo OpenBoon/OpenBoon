@@ -149,7 +149,7 @@ class ApiKeyServiceImpl constructor(
 
     override fun delete(apiKey: ApiKey) {
 
-        if(apiKey.systemKey){
+        if (apiKey.systemKey) {
             throw(UnsupportedOperationException("System Keys Cannot be deleted"))
         }
 
