@@ -126,7 +126,8 @@
     "react-window": "1.8.5",
     "react-window-infinite-loader": "1.0.5",
     "swr": "0.2.3",
-    "utf8": "3.0.0"
+    "utf8": "3.0.0",
+    "uuid": "8.1.0"
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
@@ -135,11 +136,11 @@
     "babel-plugin-macros": "2.8.0",
     "bundlesize": "0.18.0",
     "eslint": "7.2.0",
-    "eslint-config-airbnb": "18.1.0",
+    "eslint-config-airbnb": "18.2.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-emotion": "10.0.27",
     "eslint-plugin-import": "2.21.2",
-    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-jsx-a11y": "6.3.1",
     "eslint-plugin-react": "7.20.0",
     "eslint-plugin-react-hooks": "4.0.4",
     "esm": "3.2.25",
@@ -150,7 +151,7 @@
     "jest": "26.0.1",
     "jest-emotion": "10.0.32",
     "jest-fetch-mock": "3.0.3",
-    "lint-staged": "10.2.10",
+    "lint-staged": "10.2.11",
     "morgan": "1.10.0",
     "prettier": "2.0.5",
     "react-test-renderer": "16.13.1",

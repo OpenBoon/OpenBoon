@@ -2,7 +2,6 @@ const job = {
   id: '223fd17d-7028-1519-94a8-d2f0132bc0c8',
   organizationId: '00000000-9998-8888-7777-666666666666',
   name: 'image_similarity.json',
-  type: 'Import',
   state: 'Success',
   assetCounts: {
     assetCreatedCount: 15,

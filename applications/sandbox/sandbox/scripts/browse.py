@@ -8,27 +8,9 @@ import pickle
 import json
 import pandas as pd
 
+from zvi.proxies import download_proxy
+
 spread_attrs = ['source.filename', 'media.width', 'media.height']
-
-def download_proxy(asset, level):
-
-    app = app_from_env()
-
-    proxies = asset.get_files(category="proxy", mimetype="image/", sort_func=lambda f: f.attrs["width"])
-
-
-    if not proxies:
-        return None
-
-    if level >= len(proxies):
-        level = -1
-
-    proxy = proxies[level]
-    img_data = app.assets.download_file(proxy.id)
-    img = np.array(Image.open(img_data))
-    img = cv2.resize(img, None, fx=.5, fy=.5)
-
-    return img
 
 
 def similarity_search(h):
@@ -107,10 +89,14 @@ for a in search.assets:
     name = 'tmp/' + str(a.id) + '.jpg'
     paths.append(name)
     img = download_proxy(a, 0)
+    img = cv2.resize(img, None, fx=.5, fy=.5)
     images.append(img)
 
 caption = list(range(0,len(search.assets)))
-st.image(images, caption=caption)
+try:
+    st.image(images, caption=caption)
+except:
+    pass
 st.sidebar.text("Document Contents")
 if len(search.assets) <= image_index:
     image_index = 0

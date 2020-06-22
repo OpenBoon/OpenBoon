@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 import FacetSvg from '../Icons/facet.svg'
 import RangeSvg from '../Icons/range.svg'
 
@@ -22,12 +24,22 @@ export const TYPES = [
 
 export const ACTIONS = {
   CREATE: 'CREATE',
+  CLEAR: 'CLEAR',
 }
 
 export const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE':
-      return [...state, { type: action.payload.type }]
+      return [
+        {
+          id: uuidv4(),
+          type: action.payload.type,
+        },
+        ...state,
+      ]
+
+    case 'CLEAR':
+      return []
 
     default:
       return state
