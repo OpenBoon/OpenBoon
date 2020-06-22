@@ -94,7 +94,6 @@ exports[`<TaskScript /> should render properly 1`] = `
     }
   ],
   \\"<span class=\\"__json-key__\\">globalArgs</span>\\": {},
-  \\"<span class=\\"__json-key__\\">type</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"Import\\"</span>,
   \\"<span class=\\"__json-key__\\">settings</span>\\": {
     \\"<span class=\\"__json-key__\\">fileTypes</span>\\": [
       <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"bmp\\"</span>,
