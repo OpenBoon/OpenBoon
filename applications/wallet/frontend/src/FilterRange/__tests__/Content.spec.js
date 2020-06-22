@@ -1,17 +1,10 @@
-import { createElement as mockCreateElement } from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
 
 import FilterRangeContent from '../Content'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
-jest.mock('react-compound-slider', () => ({
-  Slider: ({ children, ...rest }) => mockCreateElement('Slider', rest),
-  Rail: () => 'Rail',
-  Handles: () => 'Handles',
-  Tracks: () => 'Tracks',
-}))
-
+jest.mock('../../Slider', () => 'Slider')
 jest.mock('../../Filter/Reset', () => 'FilterReset')
 
 describe('<FilterRangeContent />', () => {

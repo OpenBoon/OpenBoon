@@ -79,7 +79,7 @@
     {
       "//": "app.js",
       "path": ".next/static/**/pages/_app.js",
-      "maxSize": "29 kB"
+      "maxSize": "30 kB"
     },
     {
       "//": "main runtime",
