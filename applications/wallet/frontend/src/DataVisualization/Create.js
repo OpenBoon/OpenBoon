@@ -1,28 +1,12 @@
-import { colors, spacing, typography, constants } from '../Styles'
+import PropTypes from 'prop-types'
 
-import FacetSvg from '../Icons/facet.svg'
-import RangeSvg from '../Icons/range.svg'
+import { colors, spacing, typography, constants } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
-const ICON_SIZE = 22
+import { TYPES, ACTIONS } from './reducer'
 
-const CHART_TYPES = [
-  {
-    icon: <FacetSvg width={ICON_SIZE} color={colors.structure.white} />,
-    name: 'Facet',
-    legend:
-      'Shows the range of values and the number of each for one for a selected field.',
-  },
-  {
-    icon: <RangeSvg width={ICON_SIZE} color={colors.structure.white} />,
-    name: 'Range',
-    legend:
-      'Shows the min, max, mean, median, and mode for the numerical values of a selected field.',
-  },
-]
-
-const DataVisualizationCreate = () => {
+const DataVisualizationCreate = ({ state, dispatch, setIsCreating }) => {
   return (
     <div css={{ flex: 1, display: 'flex', padding: spacing.base }}>
       <div
@@ -32,30 +16,48 @@ const DataVisualizationCreate = () => {
           backgroundColor: colors.structure.lead,
         }}
       >
-        <h2
-          css={{
-            fontSize: typography.size.large,
-            lineHeight: typography.height.large,
-          }}
-        >
-          Create a Data Visualization
-        </h2>
+        <div css={{ display: 'flex' }}>
+          <div css={{ flex: 1 }}>
+            <h2
+              css={{
+                fontSize: typography.size.large,
+                lineHeight: typography.height.large,
+              }}
+            >
+              Create a Data Visualization
+            </h2>
 
-        <p
-          css={{
-            margin: 0,
-            paddingTop: spacing.base,
-            paddingBottom: spacing.base,
-          }}
-        >
-          Data visualizations are representations of specific information from
-          dataset. Adjusting the filters will allow you to dynamically view the
-          affect they have on the search results. Data visualization can be
-          shared with other users in the projects by exporting and then
-          uploading.
-        </p>
+            <p
+              css={{
+                margin: 0,
+                paddingTop: spacing.base,
+                paddingBottom: spacing.base,
+                maxWidth: constants.paragraph.maxWidth,
+              }}
+            >
+              Data visualizations are representations of specific information
+              from dataset. Adjusting the filters will allow you to dynamically
+              view the affect they have on the search results. Data
+              visualization can be shared with other users in the projects by
+              exporting and then uploading.
+            </p>
+          </div>
 
-        {CHART_TYPES.map(({ icon, name, legend }) => {
+          {state.length > 0 && (
+            <div css={{ display: 'flex', alignItems: 'flex-start' }}>
+              <Button
+                variant={VARIANTS.SECONDARY_SMALL}
+                onClick={() => {
+                  setIsCreating(false)
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {TYPES.map(({ type, icon, name, legend }) => {
           return (
             <div
               key={name}
@@ -116,7 +118,11 @@ const DataVisualizationCreate = () => {
               >
                 <Button
                   variant={VARIANTS.SECONDARY_SMALL}
-                  onClick={console.warn}
+                  onClick={() => {
+                    dispatch({ type: ACTIONS.CREATE, payload: { type } })
+
+                    setIsCreating(false)
+                  }}
                 >
                   Create
                 </Button>
@@ -127,6 +133,12 @@ const DataVisualizationCreate = () => {
       </div>
     </div>
   )
+}
+
+DataVisualizationCreate.propTypes = {
+  state: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  setIsCreating: PropTypes.func.isRequired,
 }
 
 export default DataVisualizationCreate

@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import mockUser from '../../User/__mocks__/user'
 import assets from '../../Assets/__mocks__/assets'
@@ -24,6 +24,32 @@ describe('<DataVisualization />', () => {
         <DataVisualization />
       </User>,
     )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Add Visualization
+    act(() => {
+      component.root.findAllByProps({ children: 'Create' })[0].props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Click "Add Chart"
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Add Chart' }).props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Cancel
+    act(() => {
+      component.root.findByProps({ children: 'Cancel' }).props.onClick()
+    })
+
+    // Click "Delete All"
+    act(() => {
+      component.root.findByProps({ children: 'Delete All' }).props.onClick()
+    })
 
     expect(component.toJSON()).toMatchSnapshot()
   })

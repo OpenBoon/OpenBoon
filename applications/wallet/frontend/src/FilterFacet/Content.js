@@ -122,7 +122,7 @@ const FilterFacet = ({
                     newFacets.length > 0 ? { facets: newFacets } : {}
 
                   dispatch({
-                    action: ACTIONS.UPDATE_FILTER,
+                    type: ACTIONS.UPDATE_FILTER,
                     payload: {
                       pathname,
                       projectId,

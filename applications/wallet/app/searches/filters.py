@@ -258,7 +258,7 @@ class LabelConfidenceFilter(BaseFilter):
         return {
             'query': {
                 'bool': {
-                    'filter': [{
+                    'must': [{
                         'script_score': {
                             'query': {
                                 'terms': {f'{attribute}.predictions.label': labels}
@@ -312,7 +312,7 @@ class TextContentFilter(BaseFilter):
         return {
             'query': {
                 'bool': {
-                    'filter': [
+                    'must': [
                         simple_query_string
                     ]
                 }
@@ -339,7 +339,7 @@ class SimilarityFilter(BaseFilter):
         return {
             'query': {
                 'bool': {
-                    'filter': [
+                    'must': [
                         query.for_json()
                     ]
                 }
