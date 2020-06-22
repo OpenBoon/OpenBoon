@@ -11,6 +11,7 @@ const borderRadius = {
 const borders = {
   default: `1px solid ${colors.structure.mattGrey}`,
   transparent: `1px solid transparent`,
+  transparentMedium: `2px solid transparent`,
   separator: `1px solid ${colors.structure.zinc}`,
   spacer: `1px solid ${colors.structure.coal}`,
   tabs: `1px solid ${colors.structure.iron}`,
@@ -18,6 +19,7 @@ const borders = {
   success: `1px solid ${colors.signal.grass.base}`,
   tableRow: `1px solid ${colors.structure.steel}`,
   radio: `1px solid ${colors.structure.white}`,
+  radioMedium: `2px solid ${colors.structure.white}`,
   inputSmall: `1px solid ${colors.key.one}`,
   input: `2px solid ${colors.key.one}`,
   divider: `1px solid ${colors.structure.smoke}`,
