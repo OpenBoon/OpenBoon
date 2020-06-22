@@ -265,15 +265,16 @@ class JobServiceImpl @Autowired constructor(
         val result = taskDao.setState(task, newState, oldState)
         if (result) {
             /**
-             * If the task finished, check and set the job to finished.
+             * If the task finished, resolve depends first.
+             * Then check to see if job is finished, otherwise
+             * the job will finish with waiting frames.
              */
-            if (newState.isFinishedState()) {
-                checkAndSetJobFinished(task)
-            }
             if (newState.isSuccessState()) {
                 dependService.resolveDependsOnTask(task)
             }
-
+            if (newState.isFinishedState()) {
+                checkAndSetJobFinished(task)
+            }
             eventBus.post(TaskStateChangeEvent(task, newState, oldState))
         }
 
