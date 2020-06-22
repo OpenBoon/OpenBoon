@@ -8,6 +8,8 @@ import SuspenseBoundary from '../SuspenseBoundary'
 import ChartRangeContent from './Content'
 
 const ChartRange = ({ chart }) => {
+  if (!chart.attribute) return null
+
   return (
     <Card
       variant={CARD_VARIANTS.DARK}

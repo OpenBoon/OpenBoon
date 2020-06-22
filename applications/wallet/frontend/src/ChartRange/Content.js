@@ -24,14 +24,9 @@ const ChartRangeContent = ({ chart: { type, attribute } }) => {
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encode({
       filters: { type, attribute },
     })}`,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      shouldRetryOnError: false,
-    },
   )
 
-  const { results } = data || {}
+  const { results = [] } = data || {}
 
   return (
     <div
@@ -91,7 +86,7 @@ const ChartRangeContent = ({ chart: { type, attribute } }) => {
           }}
         >
           <Button
-            aria-label="Add Chart"
+            aria-label="Add Filter"
             variant={VARIANTS.NEUTRAL}
             onClick={() => {
               dispatch({

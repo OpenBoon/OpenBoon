@@ -60,7 +60,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ query })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({ query })}`,
       )
 
       break
@@ -76,7 +76,10 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+          id: assetId,
+          query,
+        })}`,
       )
 
       break
@@ -105,7 +108,10 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+          id: assetId,
+          query,
+        })}`,
       )
 
       break
@@ -126,7 +132,10 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+          id: assetId,
+          query,
+        })}`,
       )
 
       break
@@ -168,7 +177,10 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: selectedId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: selectedId, query })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+          id: selectedId,
+          query,
+        })}`,
       )
 
       break
@@ -182,7 +194,9 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+          id: assetId,
+        })}`,
       )
 
       break
