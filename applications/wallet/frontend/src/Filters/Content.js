@@ -67,7 +67,7 @@ const FiltersContent = ({
               isDisabled={filters.length === 0}
               onClick={() => {
                 dispatch({
-                  action: ACTIONS.CLEAR_FILTERS,
+                  type: ACTIONS.CLEAR_FILTERS,
                   payload: { pathname, projectId, assetId },
                 })
               }}
