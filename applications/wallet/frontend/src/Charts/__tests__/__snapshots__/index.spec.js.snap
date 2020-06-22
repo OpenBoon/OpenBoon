@@ -2,7 +2,7 @@
 
 exports[`<Charts /> should render properly for "Facet" 1`] = `
 <div>
-  {"id":"972a8ab5-cdcb-4eea-ada7-f1c88d997fed","type":"FACET"}
+  {"id":"972a8ab5-cdcb-4eea-ada7-f1c88d997fed","type":"facet"}
 </div>
 `;
 
@@ -11,7 +11,7 @@ exports[`<Charts /> should render properly for "Range" 1`] = `
   chart={
     Object {
       "id": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
-      "type": "RANGE",
+      "type": "range",
     }
   }
 />

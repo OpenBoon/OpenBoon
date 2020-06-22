@@ -45,7 +45,16 @@ const STYLES = {
       fontWeight: typography.weight.medium,
       paddingBottom: spacing.comfy,
     },
-    content: {},
+    content: {
+      '.ErrorBoundary > div': {
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
+      },
+      '.Loading': {
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
+      },
+    },
   },
 }
 
