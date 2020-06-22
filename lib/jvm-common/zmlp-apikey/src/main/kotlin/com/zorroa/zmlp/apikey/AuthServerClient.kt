@@ -95,7 +95,7 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         val data = mapOf(
             "name" to name,
             "permissions" to perms,
-            "systemKey" to (systemKey?:false)
+            "systemKey" to (systemKey ?: false)
         )
         return post("auth/v1/apikey", data, projectId)
     }

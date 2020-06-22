@@ -96,7 +96,7 @@ class ApiKey(
     @ApiModelProperty("True if the Key is enabled")
     val enabled: Boolean,
 
-    @Column(name="system_key")
+    @Column(name = "system_key")
     @ApiModelProperty("Indicates that is a System Key")
     val systemKey: Boolean
 
