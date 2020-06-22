@@ -14,6 +14,7 @@ const WIDTH = 20
 const JobTasksStateIcon = ({ state }) => {
   switch (state) {
     case 'Waiting':
+    case 'Depend':
       return <ClockSvg color={colors.structure.white} width={WIDTH} />
 
     case 'Running':
@@ -39,6 +40,7 @@ const JobTasksStateIcon = ({ state }) => {
 JobTasksStateIcon.propTypes = {
   state: PropTypes.oneOf([
     'Waiting',
+    'Depend',
     'Running',
     'Success',
     'Failure',
