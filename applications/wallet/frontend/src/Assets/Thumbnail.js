@@ -121,7 +121,7 @@ const AssetsThumbnail = ({
         }}
         onClick={() => {
           dispatch({
-            action: ACTIONS.APPLY_SIMILARITY,
+            type: ACTIONS.APPLY_SIMILARITY,
             payload: {
               pathname,
               projectId,

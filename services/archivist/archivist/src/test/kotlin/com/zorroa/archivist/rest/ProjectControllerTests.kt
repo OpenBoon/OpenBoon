@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Project
+import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTier
@@ -259,6 +260,27 @@ class ProjectControllerTests : MockMvcTest() {
             .andExpect(
                 jsonPath(
                     "$.tier",
+                    CoreMatchers.anything()
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun rename() {
+        val pid = getProjectId()
+        var update = ProjectNameUpdate("new Name")
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/project/_rename")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(update))
+        )
+            .andExpect(status().isOk)
+            .andExpect(
+                jsonPath(
+                    "$.op",
                     CoreMatchers.anything()
                 )
             )

@@ -121,7 +121,7 @@ const FilterSimilarityContent = ({
             }}
             onChange={([newMinScore]) => {
               dispatch({
-                action: ACTIONS.UPDATE_FILTER,
+                type: ACTIONS.UPDATE_FILTER,
                 payload: {
                   pathname,
                   projectId,

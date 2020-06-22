@@ -39,8 +39,8 @@ export const cleanup = ({ query }) => {
   return encode({ filters })
 }
 
-export const dispatch = ({ action, payload }) => {
-  switch (action) {
+export const dispatch = ({ type, payload }) => {
+  switch (type) {
     case ACTIONS.ADD_FILTERS: {
       const { pathname, projectId, assetId, filters, newFilters } = payload
 

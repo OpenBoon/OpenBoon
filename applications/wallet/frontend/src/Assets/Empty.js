@@ -45,7 +45,7 @@ const AssetsEmpty = ({ pathname, projectId, query, assetId }) => {
             variant={VARIANTS.PRIMARY}
             onClick={() => {
               dispatch({
-                action: ACTIONS.CLEAR_FILTERS,
+                type: ACTIONS.CLEAR_FILTERS,
                 payload: { pathname, projectId, assetId },
               })
             }}
