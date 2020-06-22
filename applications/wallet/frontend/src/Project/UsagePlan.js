@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import { spacing, constants, typography } from '../Styles'
 
-import Card from '../Card'
+import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 
 const IMG_WIDTH = 32
 
@@ -25,6 +25,7 @@ const ProjectUsagePlan = () => {
 
   return (
     <Card
+      variant={CARD_VARIANTS.LIGHT}
       header={`Project Tier: ${
         tier.charAt(0).toUpperCase() + tier.substring(1)
       }`}

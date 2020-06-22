@@ -4,6 +4,8 @@ import Charts from '..'
 
 const CHART_ID = '972a8ab5-cdcb-4eea-ada7-f1c88d997fed'
 
+jest.mock('../../ChartRange', () => 'ChartRange')
+
 describe('<Charts />', () => {
   it('should render properly for "Range"', () => {
     const component = TestRenderer.create(
