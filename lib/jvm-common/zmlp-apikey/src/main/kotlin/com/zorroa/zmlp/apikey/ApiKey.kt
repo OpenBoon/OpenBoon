@@ -82,7 +82,9 @@ class ApiKey(
     @ApiModelProperty("The name of the key.")
     val name: String,
     @ApiModelProperty("The key's permissions.")
-    val permissions: Set<Permission>
+    val permissions: Set<Permission>,
+    @ApiModelProperty("Indicates that is a System Key")
+    val systemKey: Boolean = false
 ) {
 
     override fun toString(): String {
