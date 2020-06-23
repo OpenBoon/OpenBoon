@@ -24,19 +24,37 @@ export const TYPES = [
 
 export const ACTIONS = {
   CREATE: 'CREATE',
+  UPDATE: 'UPDATE',
+  DELETE: 'DELETE',
   CLEAR: 'CLEAR',
 }
 
-export const reducer = (state, action) => {
-  switch (action.type) {
+export const reducer = (state, { type, payload }) => {
+  switch (type) {
     case 'CREATE':
       return [
         {
           id: uuidv4(),
-          type: action.payload.type,
+          type: payload.type,
         },
         ...state,
       ]
+
+    case 'UPDATE': {
+      const { updatedChart, chartIndex } = payload
+
+      return [
+        ...state.slice(0, chartIndex),
+        updatedChart,
+        ...state.slice(chartIndex + 1),
+      ]
+    }
+
+    case 'DELETE': {
+      const { chartIndex } = payload
+
+      return [...state.slice(0, chartIndex), ...state.slice(chartIndex + 1)]
+    }
 
     case 'CLEAR':
       return []
