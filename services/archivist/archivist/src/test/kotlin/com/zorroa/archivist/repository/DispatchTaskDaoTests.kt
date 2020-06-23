@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.TaskExpandEvent
-import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
@@ -96,7 +96,7 @@ class DispatchTaskDaoTests : AbstractTest() {
     fun testGetNextByOrg() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -112,7 +112,7 @@ class DispatchTaskDaoTests : AbstractTest() {
     fun testGetTaskPriority() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -129,7 +129,7 @@ class DispatchTaskDaoTests : AbstractTest() {
     fun launchJob(priority: Int): Job {
         val spec1 = JobSpec(
             "test_job_p$priority",
-            emptyZpsScript("priority_$priority"),
+            emptyZpsScripts("priority_$priority"),
             args = mutableMapOf("captain" to "kirk"),
             priority = priority
         )

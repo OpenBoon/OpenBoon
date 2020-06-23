@@ -100,8 +100,7 @@ class ModelServiceImpl(
             )
         )
         return jobLaunchService.launchTrainingJob(
-            model.trainingJobName, processor,
-            mapOf("index" to false)
+            model.trainingJobName, processor, mapOf()
         )
     }
 
