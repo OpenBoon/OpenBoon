@@ -6,11 +6,12 @@ import filterShape from '../Filter/shape'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import Slider from '../Slider'
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 import FilterReset from '../Filter/Reset'
 
 import { formatValue, parseValue } from './helpers'
+
+import Slider from '../Slider'
 
 const FilterRangeContent = ({
   pathname,
@@ -26,10 +27,10 @@ const FilterRangeContent = ({
   },
   filterIndex,
 }) => {
-  const encodedFilter = encode({ filters: { type, attribute } })
-
   const { data } = useSWR(
-    `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
+    `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encode({
+      filters: { type, attribute },
+    })}`,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,

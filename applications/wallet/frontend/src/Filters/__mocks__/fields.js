@@ -51,7 +51,7 @@ const fields = {
     projectId: ['facet', 'text', 'exists'],
     state: ['facet', 'text', 'exists'],
     taskId: ['facet', 'text', 'exists'],
-    timeCreated: ['exists', 'date'],
+    timeCreated: ['exists'],
     timeModified: ['exists'],
   },
   tmp: ['exists'],
