@@ -9,9 +9,12 @@ import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.DataSourceImportOptions
 import com.zorroa.archivist.domain.DataSourceSpec
+import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.StandardContainers
+import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.domain.emptyZpsScripts
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -101,6 +104,25 @@ class JobLauncherServiceTests : AbstractTest() {
         assertEquals(1, rsp.assetCount)
     }
 
+    @Test
+    fun testLaunchReprocessAssetSearchRename() {
+
+        val spec = AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
+        spec.attrs = mapOf("analysis.zmlp.similarity.vector" to "AABBCC00")
+
+        val batchCreate = BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed)
+        assetService.batchCreate(batchCreate)
+
+        val req = ReprocessAssetSearchRequest(
+            mapOf(),
+            listOf("zvi-label-detection"),
+            name = "boomsauce"
+        )
+        val rsp = jobLaunchService.launchJob(req)
+        assertEquals(req.name, rsp.job.name)
+        assertEquals(1, rsp.assetCount)
+    }
+
     @Test(expected = DataRetrievalFailureException::class)
     fun testLaunchReprocessAssetSearch_noAssetsFailure() {
         val req = ReprocessAssetSearchRequest(
@@ -108,6 +130,36 @@ class JobLauncherServiceTests : AbstractTest() {
             listOf("zmlp-labels")
         )
         jobLaunchService.launchJob(req)
+    }
+
+    @Test
+    fun testLaunchReprocessAssetSearchWithDepends() {
+
+        val spec = AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
+        spec.attrs = mapOf("analysis.zmlp.similarity.vector" to "AABBCC00")
+
+        val batchCreate = BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed)
+        assetService.batchCreate(batchCreate)
+
+        val otherJob = jobService.create(
+            JobSpec(
+                "foo",
+                emptyZpsScripts("foo")
+            )
+        )
+
+        val req = ReprocessAssetSearchRequest(
+            mapOf(),
+            listOf("zvi-label-detection"),
+            dependOnJobIds = listOf(otherJob.id)
+        )
+
+        val rsp = jobLaunchService.launchJob(req)
+        assertEquals("Applying modules: zvi-label-detection to 1 assets", rsp.job.name)
+        assertEquals(1, rsp.assetCount)
+
+        val tasks = jobService.getTasks(rsp.job.id).list
+        assertEquals(TaskState.Depend, tasks[0].state)
     }
 
     @Test

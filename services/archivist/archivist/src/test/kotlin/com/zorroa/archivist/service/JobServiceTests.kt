@@ -4,7 +4,6 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
-import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobFilter
@@ -14,6 +13,7 @@ import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.domain.emptyZpsScripts
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,7 +37,7 @@ class JobServiceTests : AbstractTest() {
     fun init() {
         spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -55,30 +55,79 @@ class JobServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testCreateWithJobDepends() {
+        val spec2 = JobSpec(
+            null,
+            emptyZpsScripts("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar"),
+            dependOnJobIds = listOf(job.id)
+        )
+        val job2 = jobService.create(spec2)
+        val tasks = jobService.getTasks(job2.id)
+        assertEquals(TaskState.Depend, tasks[0].state)
+    }
+
+    @Test
     fun testCreateImport() {
         val spec2 = JobSpec(
             null,
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
-        val job2 = jobService.create(spec2, JobType.Import)
+        val job2 = jobService.create(spec2)
         assertEquals(JobPriority.Standard, job2.priority)
-        assertEquals(JobType.Import, job2.type)
         val tasks = jobService.getTasks(job2.id)
         assertEquals(1, tasks.count())
+    }
+
+    @Test
+    fun testCreateMultipleTasks() {
+        val spec2 = JobSpec(
+            null,
+            listOf(emptyZpsScript("foo"), emptyZpsScript("bar")),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+
+        val job2 = jobService.create(spec2)
+        val tasks = jobService.getTasks(job2.id)
+        assertEquals(2, tasks.count())
+    }
+
+    @Test
+    fun testCreateMultipleTasksWithDepends() {
+
+        val tspec = listOf(
+            emptyZpsScript("foo"),
+            emptyZpsScript("bar")
+        )
+        tspec[0].children = listOf(emptyZpsScript("foo1"))
+        tspec[1].children = listOf(emptyZpsScript("bar"))
+
+        val spec2 = JobSpec(
+            null,
+            tspec,
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+
+        val job2 = jobService.create(spec2)
+        val tasks = jobService.getTasks(job2.id)
+        assertEquals(4, tasks.count())
     }
 
     @Test
     fun testCreateWithAutoName() {
         val spec2 = JobSpec(
             null,
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
         val job2 = jobService.create(spec2)
-        assertTrue("Import" in job2.name)
+        assertTrue("launched" in job2.name)
     }
 
     @Test
@@ -86,7 +135,7 @@ class JobServiceTests : AbstractTest() {
         val name = "bilbo_baggins_v1"
         val spec1 = JobSpec(
             name,
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -95,7 +144,7 @@ class JobServiceTests : AbstractTest() {
 
         val spec2 = JobSpec(
             name,
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             replace = true
         )
         val job2 = jobService.create(spec2)
@@ -171,7 +220,7 @@ class JobServiceTests : AbstractTest() {
 
         val spec2 = JobSpec(
             "test_job2",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             credentials = setOf(creds.id.toString())
         )
         val job2 = jobService.create(spec2)

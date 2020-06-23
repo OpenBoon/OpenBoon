@@ -23,6 +23,7 @@ import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
@@ -548,7 +549,7 @@ class AssetServiceTests : AbstractTest() {
     fun testCreateAnalysisTask() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )

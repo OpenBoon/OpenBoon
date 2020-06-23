@@ -8,7 +8,7 @@ import com.zorroa.archivist.domain.DataSourceUpdate
 
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
-import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -172,7 +172,7 @@ class DataSourceServiceTests : AbstractTest() {
         val ds = dataSourceService.create(spec)
         val jspec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             dataSourceId = ds.id,
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")

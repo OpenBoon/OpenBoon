@@ -499,7 +499,6 @@ class AssetServiceImpl : AssetService {
             val newScript = ZpsScript(name, null, null, parentScript.execute, assetIds = assetIds)
 
             newScript.globalArgs = parentScript.globalArgs
-            newScript.type = parentScript.type
             newScript.settings = parentScript.settings
 
             val newTask = jobService.createTask(parentTask, TaskSpec(name, newScript))
