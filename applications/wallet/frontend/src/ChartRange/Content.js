@@ -102,7 +102,6 @@ const ChartRangeContent = ({ chart: { type, attribute } }) => {
             css={{
               flex: 1,
               display: 'flex',
-              // padding: spacing.normal,
               color: colors.structure.zinc,
               ':hover, :focus': {
                 color: colors.structure.white,
