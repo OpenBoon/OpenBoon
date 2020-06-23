@@ -259,7 +259,7 @@ ROLES = [
 SUPERUSER_EMAIL = 'software@zorroa.com'
 
 # If true a full featured django admin page is available.
-SUPERADMIN = os.environ.get('SUPERUSER_UI')
+SUPERADMIN = os.environ.get('SUPERADMIN') == 'true'
 
 # Google Marketplace Integration Settings
 MARKETPLACE_PROJECT_ID = os.environ.get('MARKETPLACE_PROJECT_ID')

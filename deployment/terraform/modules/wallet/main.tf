@@ -169,6 +169,10 @@ resource "kubernetes_deployment" "wallet" {
             name = "MARKETPLACE_CREDENTIALS"
             value = var.marketplace-credentials
           }
+          env {
+            name = "SUPERADMIN"
+            value = var.superadmin
+          }
         }
       }
     }

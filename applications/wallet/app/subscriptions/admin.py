@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
-from projects.models import Project
 from subscriptions.models import Subscription
 
 
