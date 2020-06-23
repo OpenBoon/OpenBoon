@@ -29,16 +29,19 @@ export const ACTIONS = {
   CLEAR: 'CLEAR',
 }
 
-export const reducer = (state, { type, payload }) => {
-  switch (type) {
-    case 'CREATE':
+export const reducer = (state, { type: actionType, payload }) => {
+  switch (actionType) {
+    case 'CREATE': {
+      const { type } = payload
+
       return [
         {
           id: uuidv4(),
-          type: payload.type,
+          type,
         },
         ...state,
       ]
+    }
 
     case 'UPDATE': {
       const { updatedChart, chartIndex } = payload
