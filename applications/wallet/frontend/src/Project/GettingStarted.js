@@ -10,7 +10,7 @@ import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'
 import VisualizerSvg from '../Icons/visualizer.svg'
 
-const ICON_WIDTH = 20
+const ICON_SIZE = 20
 
 const STEPS = [
   {
@@ -18,7 +18,7 @@ const STEPS = [
     title: 'Create a Data Source',
     module: (
       <>
-        <DataSourcesSvg width={ICON_WIDTH} aria-hidden />
+        <DataSourcesSvg width={ICON_SIZE} aria-hidden />
         Data Sources
       </>
     ),
@@ -34,7 +34,7 @@ const STEPS = [
     title: 'Review Job Progress',
     module: (
       <>
-        <JobQueueSvg width={ICON_WIDTH} aria-hidden />
+        <JobQueueSvg width={ICON_SIZE} aria-hidden />
         Job Queue
       </>
     ),
@@ -50,7 +50,7 @@ const STEPS = [
     title: 'Inspect Your Dataset',
     module: (
       <>
-        <VisualizerSvg width={ICON_WIDTH} aria-hidden />
+        <VisualizerSvg width={ICON_SIZE} aria-hidden />
         Visualizer
       </>
     ),

@@ -525,7 +525,7 @@ Array [
       <svg
         color="#4ac565"
         data-file-name="checkmark.svg"
-        height={20}
+        width={20}
       />
       <div
         className="emotion-0"
