@@ -38,7 +38,6 @@ class SupportUserAdmin(NoDeleteMixin, ModelAdmin):
 
 
 class SupportProjectAdmin(NoDeleteMixin, ProjectAdmin):
-    short_description = 'blah balh'
     inlines = [SubscriptionInline, MembershipInline]
 
 
