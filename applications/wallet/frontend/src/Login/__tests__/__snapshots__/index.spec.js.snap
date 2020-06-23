@@ -394,7 +394,7 @@ exports[`<Login /> should render error 1`] = `
       <svg
         color="#4ac565"
         data-file-name="checkmark.svg"
-        height={20}
+        width={20}
       />
       <div
         className="emotion-0"
@@ -456,7 +456,7 @@ exports[`<Login /> should render error 1`] = `
         <svg
           color="#c92300"
           data-file-name="warning.svg"
-          height={20}
+          width={20}
         />
         <div
           className="emotion-0"
@@ -955,7 +955,7 @@ exports[`<Login /> should render password changed 1`] = `
       <svg
         color="#4ac565"
         data-file-name="checkmark.svg"
-        height={20}
+        width={20}
       />
       <div
         className="emotion-0"
@@ -1487,7 +1487,7 @@ exports[`<Login /> should render properly 1`] = `
       <svg
         color="#4ac565"
         data-file-name="checkmark.svg"
-        height={20}
+        width={20}
       />
       <div
         className="emotion-0"
@@ -2019,7 +2019,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
       <svg
         color="#4ac565"
         data-file-name="checkmark.svg"
-        height={20}
+        width={20}
       />
       <div
         className="emotion-0"
@@ -2551,7 +2551,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
       <svg
         color="#4ac565"
         data-file-name="checkmark.svg"
-        height={20}
+        width={20}
       />
       <div
         className="emotion-0"
