@@ -15,11 +15,3 @@ export const formatFields = ({ fields, type }) => {
     return { ...acc, [field]: child }
   }, {})
 }
-
-export const getCountList = ({ count }) => {
-  if (count === 0) {
-    return []
-  }
-
-  return [count, ...getCountList({ count: count - 1 })]
-}

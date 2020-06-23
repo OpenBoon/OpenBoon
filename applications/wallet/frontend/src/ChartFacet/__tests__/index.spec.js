@@ -7,6 +7,10 @@ import ChartFacet from '..'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const CHART_ID = '972a8ab5-cdcb-4eea-ada7-f1c88d997fed'
 
+jest.mock('../../ChartForm', () => 'ChartForm')
+
+const noop = () => () => {}
+
 describe('<ChartFacet />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({

@@ -5,6 +5,10 @@ import ChartRange from '..'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const CHART_ID = '972a8ab5-cdcb-4eea-ada7-f1c88d997fed'
 
+jest.mock('../../ChartForm', () => 'ChartForm')
+
+const noop = () => () => {}
+
 describe('<ChartRange />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({
@@ -35,7 +39,9 @@ describe('<ChartRange />', () => {
       },
     })
 
-    const component = TestRenderer.create(<ChartRange chart={chart} />)
+    const component = TestRenderer.create(
+      <ChartRange chart={chart} chartIndex={0} dispatch={noop} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -77,7 +83,9 @@ describe('<ChartRange />', () => {
 
     require('swr').__setMockUseSWRResponse({})
 
-    const component = TestRenderer.create(<ChartRange chart={chart} />)
+    const component = TestRenderer.create(
+      <ChartRange chart={chart} chartIndex={0} dispatch={noop} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -122,7 +130,9 @@ describe('<ChartRange />', () => {
       },
     })
 
-    const component = TestRenderer.create(<ChartRange chart={chart} />)
+    const component = TestRenderer.create(
+      <ChartRange chart={chart} chartIndex={0} dispatch={noop} />,
+    )
 
     act(() => {
       component.root.findByProps({ 'aria-label': 'Add Filter' }).props.onClick()
@@ -142,8 +152,10 @@ describe('<ChartRange />', () => {
       type: 'range',
     }
 
-    const component = TestRenderer.create(<ChartRange chart={chart} />)
+    const component = TestRenderer.create(
+      <ChartRange chart={chart} chartIndex={0} dispatch={noop} />,
+    )
 
-    expect(component.toJSON()).toEqual(null)
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

@@ -14,7 +14,7 @@ const ChartFacet = ({ chart, chartIndex, dispatch }) => {
     return (
       <Card
         variant={CARD_VARIANTS.DARK}
-        header={chart.attribute}
+        header=""
         content={
           <ChartForm
             chart={chart}

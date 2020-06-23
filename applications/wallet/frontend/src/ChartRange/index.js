@@ -12,7 +12,17 @@ import ChartRangeContent from './Content'
 const ChartRange = ({ chart, chartIndex, dispatch }) => {
   if (!chart.attribute)
     return (
-      <ChartForm chart={chart} chartIndex={chartIndex} dispatch={dispatch} />
+      <Card
+        variant={CARD_VARIANTS.DARK}
+        header=""
+        content={
+          <ChartForm
+            chart={chart}
+            chartIndex={chartIndex}
+            dispatch={dispatch}
+          />
+        }
+      />
     )
 
   return (

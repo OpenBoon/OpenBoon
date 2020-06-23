@@ -12,10 +12,9 @@ import { capitalizeFirstLetter } from '../Metadata/helpers'
 import { ACTIONS } from '../DataVisualization/reducer'
 
 import ChartFormOptions from './Options'
-import { formatFields, getCountList } from './helpers'
+import { formatFields } from './helpers'
 
 const ICON_SIZE = 20
-const MAX_COUNT = 10
 
 const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
   const {
@@ -23,14 +22,12 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
   } = useRouter()
 
   const [attribute, setAttribute] = useState('')
-  const [count, setCount] = useState(5)
 
   const { data: fields } = useSWR(
     `/api/v1/projects/${projectId}/searches/fields/`,
   )
 
   const filteredFields = formatFields({ fields, type })
-  const countList = getCountList({ count: MAX_COUNT })
 
   return (
     <div
@@ -82,31 +79,8 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
         <option value="" disabled>
           Select metadata type
         </option>
-        <ChartFormOptions fields={filteredFields} type={type} />
+        <ChartFormOptions fields={filteredFields} type={type} path="" />
       </select>
-
-      <div css={{ height: spacing.spacious }} />
-
-      <label htmlFor="visualization-count-selection">
-        Select Number of Values Shown (top {MAX_COUNT} max)
-      </label>
-      <div css={{ display: 'flex' }}>
-        <select
-          id="visualization-count-selection"
-          defaultValue={count}
-          onChange={({ target: { value } }) => {
-            setCount(value)
-          }}
-          css={{
-            flex: 1,
-          }}
-        >
-          {countList.map((value) => (
-            <option>{value}</option>
-          ))}
-        </select>
-        <div css={{ paddingLeft: spacing.comfy, flex: 1 }} />
-      </div>
 
       <div css={{ height: spacing.spacious }} />
 
@@ -122,13 +96,13 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
         <div css={{ width: spacing.base }} />
         <Button
           variant={BUTTON_VARIANTS.PRIMARY}
-          isDisabled={!attribute || !count}
+          isDisabled={!attribute}
           onClick={() =>
             dispatch({
               type: ACTIONS.UPDATE,
               payload: {
                 chartIndex,
-                updatedChart: { ...chart, attribute, count },
+                updatedChart: { ...chart, attribute },
               },
             })
           }
