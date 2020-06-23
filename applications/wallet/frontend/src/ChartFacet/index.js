@@ -5,10 +5,14 @@ import chartShape from '../Chart/shape'
 import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 import SuspenseBoundary from '../SuspenseBoundary'
 
+import ChartForm from '../ChartForm'
+
 import ChartFacetContent from './Content'
 
 const ChartFacet = ({ chart }) => {
-  if (!chart.attribute) return null
+  if (!chart.attribute) {
+    return <ChartForm chart={chart} />
+  }
 
   return (
     <Card

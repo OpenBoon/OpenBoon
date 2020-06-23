@@ -4,6 +4,8 @@ import subscriptionShape from '../Subscription/shape'
 
 import { constants, spacing, typography } from '../Styles'
 
+import { capitalizeFirstLetter } from '../Metadata/helpers'
+
 const IMG_WIDTH = 32
 
 const AccountUsagePlan = ({ subscriptions }) => {
@@ -22,7 +24,7 @@ const AccountUsagePlan = ({ subscriptions }) => {
           paddingBottom: spacing.moderate,
         }}
       >
-        Project Tier: {tier.charAt(0).toUpperCase() + tier.substring(1)}
+        Project Tier: {capitalizeFirstLetter({ word: tier })}
       </div>
       <h3
         css={{

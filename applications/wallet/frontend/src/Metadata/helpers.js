@@ -1,6 +1,9 @@
 import { bytesToSize } from '../Bytes/helpers'
 import { formatPrettyDate } from '../Date/helpers'
 
+export const capitalizeFirstLetter = ({ word }) =>
+  word.charAt(0).toUpperCase() + word.substring(1)
+
 export const formatDisplayName = ({ name }) =>
   name
     // insert a space before all caps
@@ -21,7 +24,7 @@ export const formatDisplayName = ({ name }) =>
       }
 
       // Capitalize first letter
-      return word.charAt(0).toUpperCase() + word.substring(1)
+      return capitalizeFirstLetter({ word })
     })
     .join(' ')
 
