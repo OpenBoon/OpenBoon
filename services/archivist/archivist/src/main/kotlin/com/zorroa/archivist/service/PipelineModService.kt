@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModFilter
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
-import com.zorroa.archivist.domain.SupportedMedia
+import com.zorroa.archivist.domain.FileType
 import com.zorroa.archivist.domain.getStandardModules
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.PipelineModDao
@@ -183,7 +183,7 @@ class PipelineModServiceImpl(
                         val update = PipelineModUpdate(
                             pmod.name, pmod.description, pmod.provider,
                             pmod.category, pmod.type,
-                            pmod.supportedMedia.map { SupportedMedia.valueOf(it) },
+                            pmod.supportedMedia.map { FileType.valueOf(it) },
                             pmod.ops
                         )
                         update(pmod.id, update)

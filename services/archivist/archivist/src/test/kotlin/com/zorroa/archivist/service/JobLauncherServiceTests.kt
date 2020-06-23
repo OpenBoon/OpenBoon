@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.DataSourceImportOptions
 import com.zorroa.archivist.domain.DataSourceSpec
+import com.zorroa.archivist.domain.FileType
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
@@ -49,7 +50,7 @@ class JobLauncherServiceTests : AbstractTest() {
     val dsSpec = DataSourceSpec(
         "dev-data",
         "gs://zorroa-dev-data",
-        fileTypes = listOf("jpg")
+        fileTypes = FileType.allTypes()
     )
 
     @Before
@@ -68,7 +69,7 @@ class JobLauncherServiceTests : AbstractTest() {
         val spec2 = DataSourceSpec(
             "dev-data",
             "gs://zorroa-dev-data",
-            fileTypes = listOf("jpg"),
+            fileTypes = FileType.allTypes(),
             credentials = setOf("test")
         )
         val ds = dataSourceService.create(spec2)

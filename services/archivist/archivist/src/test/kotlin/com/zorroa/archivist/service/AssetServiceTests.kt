@@ -10,7 +10,7 @@ import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.DataSetLabel
 import com.zorroa.archivist.domain.DataSetSpec
 import com.zorroa.archivist.domain.DataSetType
-import com.zorroa.archivist.domain.FileTypes
+import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.ProcessorMetric
@@ -364,7 +364,7 @@ class AssetServiceTests : AbstractTest() {
         assets.forEach {
             val ext = FileUtils.extension(it.getAttr<String>("source.path"))
             it.setAttr("aux.field", 1)
-            it.setAttr("media.type", FileTypes.getType(ext))
+            it.setAttr("media.type", FileExtResolver.getType(ext))
             it.setAttr("media.length", 10.732)
             it.setAttr("clip.timeline", "full")
             it.setAttr("clip.type", "scene")

@@ -10,7 +10,7 @@ import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.Provider
-import com.zorroa.archivist.domain.SupportedMedia
+import com.zorroa.archivist.domain.FileType
 import com.zorroa.archivist.security.getProjectId
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -113,7 +113,7 @@ class PipelineServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(),
             true
         )

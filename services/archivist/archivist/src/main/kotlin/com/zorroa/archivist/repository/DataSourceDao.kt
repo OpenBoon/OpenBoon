@@ -3,15 +3,28 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.domain.Credentials
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceFilter
+import com.zorroa.archivist.domain.FileType
 import com.zorroa.zmlp.service.jpa.StringListConverter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.UUID
+import javax.persistence.AttributeConverter
 
 interface DataSourceDao : JpaRepository<DataSource, UUID> {
     fun getOneByProjectIdAndName(projectId: UUID, name: String): DataSource
     fun getOneByProjectIdAndId(projectId: UUID, id: UUID): DataSource
+}
+
+class FileTypeConverter : AttributeConverter<List<FileType>, String> {
+
+    override fun convertToDatabaseColumn(list: List<FileType>?): String? {
+        return (list ?: FileType.allTypes()).sorted().joinToString(",") { it.name }
+    }
+
+    override fun convertToEntityAttribute(joined: String): List<FileType> {
+        return FileType.fromString(joined)
+    }
 }
 
 interface DataSourceJdbcDao {
@@ -81,7 +94,7 @@ class DataSourceJdbcDaoImpl : AbstractDao(), DataSourceJdbcDao {
             rs.getObject("pk_project") as UUID,
             rs.getString("str_name"),
             rs.getString("str_uri"),
-            converter.convertToEntityAttribute(rs.getString("str_file_types")),
+            FileType.fromString(rs.getString("str_file_types")),
             jdbc.queryForList(
                 "SELECT pk_credentials FROM x_credentials_datasource WHERE pk_datasource=?",
                 UUID::class.java, rs.getObject("pk_datasource")

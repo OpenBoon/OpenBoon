@@ -16,7 +16,7 @@ import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.Provider
 import com.zorroa.archivist.domain.StandardContainers
-import com.zorroa.archivist.domain.SupportedMedia
+import com.zorroa.archivist.domain.FileType
 import com.zorroa.archivist.repository.DataSetDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.ModelDao
@@ -130,7 +130,7 @@ class ModelServiceImpl(
             val update = PipelineModUpdate(
                 mod.name, mod.description, mod.provider,
                 mod.category, mod.type,
-                listOf(SupportedMedia.Documents, SupportedMedia.Images),
+                listOf(FileType.Documents, FileType.Images),
                 ops
             )
             pipelineModService.update(mod.id, update)
@@ -143,7 +143,7 @@ class ModelServiceImpl(
                 Provider.CUSTOM,
                 Category.TRAINED,
                 model.type.dataSetType.label,
-                listOf(SupportedMedia.Documents, SupportedMedia.Images),
+                listOf(FileType.Documents, FileType.Images),
                 ops
             )
 
