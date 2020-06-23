@@ -24,6 +24,8 @@ export const formatFullDate = ({ timestamp }) => {
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`
 }
 
+export const formatISODate = ({ date }) => date.toISOString().slice(0, 10)
+
 export const formatPrettyDate = ({ timestamp }) => {
   const formatOptions = {
     month: '2-digit',

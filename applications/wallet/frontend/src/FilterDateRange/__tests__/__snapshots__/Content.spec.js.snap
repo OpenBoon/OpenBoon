@@ -1,0 +1,1723 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilterDateRangeContent /> should not crash if min equals max 1`] = `
+Array [
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "system.timeCreated",
+        "type": "date",
+        "values": Object {
+          "max": "2020-05-04T00:00:00.000Z",
+          "min": "2020-05-04T00:00:00.000Z",
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "system.timeCreated",
+          "type": "date",
+          "values": Object {
+            "max": "2020-05-04T00:00:00.000Z",
+            "min": "2020-05-04T00:00:00.000Z",
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-10 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-9 {
+  padding-top: 40px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.emotion-2 {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  pointer-events: none;
+}
+
+.emotion-3 {
+  text-align: center;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+}
+
+.emotion-3:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-3:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-3::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-3:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::placeholder {
+  font-style: italic;
+}
+
+.emotion-5 {
+  width: 16px;
+  border-bottom: 2px solid white;
+}
+
+<div
+    className="emotion-10"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        05/04/2020
+      </span>
+      <span>
+        06/10/2020
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            1588550400000,
+            1591747200001,
+          ]
+        }
+        isDisabled={false}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={86400000}
+        values={
+          Array [
+            1588550400000,
+            1588550400001,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-05-04"
+          min="2020-05-04"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-05-04"
+        />
+      </label>
+      <div
+        className="emotion-5"
+      />
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-04"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-05-04"
+        />
+      </label>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<FilterDateRangeContent /> should render with file sizes and reset 1`] = `
+Array [
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "system.timeCreated",
+        "type": "date",
+        "values": Object {
+          "max": "2020-06-10",
+          "min": "2020-05-04",
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "system.timeCreated",
+          "type": "date",
+          "values": Object {
+            "max": "2020-06-10",
+            "min": "2020-05-04",
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-10 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-9 {
+  padding-top: 40px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.emotion-2 {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  pointer-events: none;
+}
+
+.emotion-3 {
+  text-align: center;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+}
+
+.emotion-3:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-3:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-3::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-3:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::placeholder {
+  font-style: italic;
+}
+
+.emotion-5 {
+  width: 16px;
+  border-bottom: 2px solid white;
+}
+
+<div
+    className="emotion-10"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        05/04/2020
+      </span>
+      <span>
+        06/10/2020
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            1588550400000,
+            1591747200000,
+          ]
+        }
+        isDisabled={false}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={86400000}
+        values={
+          Array [
+            1588550400000,
+            1591747200000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-04"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-05-04"
+        />
+      </label>
+      <div
+        className="emotion-5"
+      />
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-04"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-06-10"
+        />
+      </label>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<FilterDateRangeContent /> should render with file sizes and reset 2`] = `
+Array [
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "system.timeCreated",
+        "type": "date",
+        "values": Object {
+          "max": "2020-06-10",
+          "min": "2020-05-04",
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "system.timeCreated",
+          "type": "date",
+          "values": Object {
+            "max": "2020-06-10",
+            "min": "2020-05-04",
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-10 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-9 {
+  padding-top: 40px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.emotion-2 {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  pointer-events: none;
+}
+
+.emotion-3 {
+  text-align: center;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+}
+
+.emotion-3:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-3:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-3::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-3:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::placeholder {
+  font-style: italic;
+}
+
+.emotion-5 {
+  width: 16px;
+  border-bottom: 2px solid white;
+}
+
+<div
+    className="emotion-10"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        05/04/2020
+      </span>
+      <span>
+        06/10/2020
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            1588550400000,
+            1591747200000,
+          ]
+        }
+        isDisabled={false}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={86400000}
+        values={
+          Array [
+            1588636800000,
+            1591747200000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-04"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-05-05"
+        />
+      </label>
+      <div
+        className="emotion-5"
+      />
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-05"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-06-10"
+        />
+      </label>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<FilterDateRangeContent /> should render with file sizes and reset 3`] = `
+Array [
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "system.timeCreated",
+        "type": "date",
+        "values": Object {
+          "max": "2020-06-10",
+          "min": "2020-05-04",
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "system.timeCreated",
+          "type": "date",
+          "values": Object {
+            "max": "2020-06-10",
+            "min": "2020-05-04",
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-10 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-9 {
+  padding-top: 40px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.emotion-2 {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  pointer-events: none;
+}
+
+.emotion-3 {
+  text-align: center;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+}
+
+.emotion-3:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-3:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-3::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-3:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::placeholder {
+  font-style: italic;
+}
+
+.emotion-5 {
+  width: 16px;
+  border-bottom: 2px solid white;
+}
+
+<div
+    className="emotion-10"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        05/04/2020
+      </span>
+      <span>
+        06/10/2020
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            1588550400000,
+            1591747200000,
+          ]
+        }
+        isDisabled={false}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={86400000}
+        values={
+          Array [
+            1588636800000,
+            1591747200000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-04"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-05-05"
+        />
+      </label>
+      <div
+        className="emotion-5"
+      />
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-05"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-06-10"
+        />
+      </label>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<FilterDateRangeContent /> should render with file sizes and reset 4`] = `
+Array [
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "system.timeCreated",
+        "type": "date",
+        "values": Object {
+          "max": "2020-06-10",
+          "min": "2020-05-04",
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "system.timeCreated",
+          "type": "date",
+          "values": Object {
+            "max": "2020-06-10",
+            "min": "2020-05-04",
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-10 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-9 {
+  padding-top: 40px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.emotion-2 {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  pointer-events: none;
+}
+
+.emotion-3 {
+  text-align: center;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+}
+
+.emotion-3:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-3:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-3::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-3:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::placeholder {
+  font-style: italic;
+}
+
+.emotion-5 {
+  width: 16px;
+  border-bottom: 2px solid white;
+}
+
+<div
+    className="emotion-10"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        05/04/2020
+      </span>
+      <span>
+        06/10/2020
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            1588550400000,
+            1591747200000,
+          ]
+        }
+        isDisabled={false}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={86400000}
+        values={
+          Array [
+            1588550400000,
+            1591747200000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-04"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-05-04"
+        />
+      </label>
+      <div
+        className="emotion-5"
+      />
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-04"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-06-10"
+        />
+      </label>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<FilterDateRangeContent /> should render with file sizes and reset 5`] = `
+Array [
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "system.timeCreated",
+        "type": "date",
+        "values": Object {
+          "max": "2020-06-10",
+          "min": "2020-05-04",
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "system.timeCreated",
+          "type": "date",
+          "values": Object {
+            "max": "2020-06-10",
+            "min": "2020-05-04",
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-10 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-9 {
+  padding-top: 40px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.emotion-2 {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  pointer-events: none;
+}
+
+.emotion-3 {
+  text-align: center;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+}
+
+.emotion-3:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-3:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-3::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-3:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::placeholder {
+  font-style: italic;
+}
+
+.emotion-5 {
+  width: 16px;
+  border-bottom: 2px solid white;
+}
+
+<div
+    className="emotion-10"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        05/04/2020
+      </span>
+      <span>
+        06/10/2020
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            1588550400000,
+            1591747200000,
+          ]
+        }
+        isDisabled={false}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={86400000}
+        values={
+          Array [
+            1588550400000,
+            1591747200000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-04"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-05-06"
+        />
+      </label>
+      <div
+        className="emotion-5"
+      />
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-06"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-06-10"
+        />
+      </label>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<FilterDateRangeContent /> should render with file sizes and reset 6`] = `
+Array [
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "system.timeCreated",
+        "type": "date",
+        "values": Object {
+          "max": "2020-06-10",
+          "min": "2020-05-04",
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "system.timeCreated",
+          "type": "date",
+          "values": Object {
+            "max": "2020-06-10",
+            "min": "2020-05-04",
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-10 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-9 {
+  padding-top: 40px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.emotion-2 {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  pointer-events: none;
+}
+
+.emotion-3 {
+  text-align: center;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+}
+
+.emotion-3:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-3:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-3::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-3:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::placeholder {
+  font-style: italic;
+}
+
+.emotion-5 {
+  width: 16px;
+  border-bottom: 2px solid white;
+}
+
+<div
+    className="emotion-10"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        05/04/2020
+      </span>
+      <span>
+        06/10/2020
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            1588550400000,
+            1591747200000,
+          ]
+        }
+        isDisabled={false}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={86400000}
+        values={
+          Array [
+            1588550400000,
+            1591747200000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-08"
+          min="2020-05-04"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-05-06"
+        />
+      </label>
+      <div
+        className="emotion-5"
+      />
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-10"
+          min="2020-05-06"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-06-08"
+        />
+      </label>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<FilterDateRangeContent /> should render with no data 1`] = `
+Array [
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "system.timeCreated",
+        "type": "date",
+        "values": Object {},
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "system.timeCreated",
+          "type": "date",
+          "values": Object {},
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-10 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-9 {
+  padding-top: 40px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.emotion-2 {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  pointer-events: none;
+}
+
+.emotion-3 {
+  text-align: center;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+}
+
+.emotion-3:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-3:focus {
+  outline: thin solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-3::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-3:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-3::placeholder {
+  font-style: italic;
+}
+
+.emotion-5 {
+  width: 16px;
+  border-bottom: 2px solid white;
+}
+
+<div
+    className="emotion-10"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        06/08/2020
+      </span>
+      <span>
+        06/08/2020
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            1591574400000,
+            1591574400000,
+          ]
+        }
+        isDisabled={false}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={86400000}
+        values={
+          Array [
+            1591574400000,
+            1591574400000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-08"
+          min="2020-06-08"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-06-08"
+        />
+      </label>
+      <div
+        className="emotion-5"
+      />
+      <label
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-2"
+          color="#808080"
+          data-file-name="calendar.svg"
+          width={18}
+        />
+        <input
+          className="emotion-3"
+          max="2020-06-08"
+          min="2020-06-08"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="date"
+          value="2020-06-08"
+        />
+      </label>
+    </div>
+  </div>,
+]
+`;
