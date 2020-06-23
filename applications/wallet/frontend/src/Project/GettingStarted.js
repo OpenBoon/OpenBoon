@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { typography, colors, spacing, constants } from '../Styles'
 
-import Card from '../Card'
+import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 import Button, { VARIANTS } from '../Button'
 
 import DataSourcesSvg from '../Icons/datasources.svg'
@@ -66,6 +66,7 @@ const STEPS = [
 const ProjectGettingStarted = ({ projectId }) => {
   return (
     <Card
+      variant={CARD_VARIANTS.LIGHT}
       header="Getting Started"
       content={STEPS.map(({ step, title, module, content, cta, link }) => (
         <div
