@@ -2,16 +2,12 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { colors, spacing } from '../Styles'
+import { spacing } from '../Styles'
 
 import { cleanup } from '../Filters/helpers'
 import { useLocalStorageReducer } from '../LocalStorage/helpers'
 
-import Panel from '../Panel'
-import Filters from '../Filters'
 import VisualizerNavigation from '../Visualizer/Navigation'
-
-import FilterSvg from '../Icons/filter.svg'
 
 import { reducer } from './reducer'
 
@@ -19,7 +15,6 @@ import DataVisualizationCreate from './Create'
 import DataVisualizationActions from './Actions'
 import Charts from '../Charts'
 
-const ICON_SIZE = 20
 const FROM = 0
 const SIZE = 100
 
@@ -45,58 +40,32 @@ const DataVisualizationContent = () => {
   const [isCreating, setIsCreating] = useState(charts.length === 0)
 
   return (
-    <div
-      css={{
-        height: '100%',
-        backgroundColor: colors.structure.coal,
-        marginLeft: -spacing.spacious,
-        marginRight: -spacing.spacious,
-        marginBottom: -spacing.spacious,
-        paddingTop: spacing.hairline,
-        display: 'flex',
-        flex: 1,
-        flexDirection: 'column',
-      }}
-    >
-      <div css={{ display: 'flex', height: '100%', overflowY: 'hidden' }}>
-        <Panel openToThe="right">
-          {{
-            filters: {
-              title: 'Filters',
-              icon: <FilterSvg width={ICON_SIZE} aria-hidden />,
-              content: <Filters />,
-            },
+    <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      {!!itemCount && <VisualizerNavigation itemCount={itemCount} />}
+
+      {isCreating ? (
+        <DataVisualizationCreate
+          charts={charts}
+          dispatch={dispatch}
+          setIsCreating={setIsCreating}
+        />
+      ) : (
+        <div
+          css={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            padding: spacing.normal,
           }}
-        </Panel>
+        >
+          <DataVisualizationActions
+            dispatch={dispatch}
+            setIsCreating={setIsCreating}
+          />
 
-        <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          {!!itemCount && <VisualizerNavigation itemCount={itemCount} />}
-
-          {isCreating ? (
-            <DataVisualizationCreate
-              charts={charts}
-              dispatch={dispatch}
-              setIsCreating={setIsCreating}
-            />
-          ) : (
-            <div
-              css={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                padding: spacing.normal,
-              }}
-            >
-              <DataVisualizationActions
-                dispatch={dispatch}
-                setIsCreating={setIsCreating}
-              />
-
-              <Charts charts={charts} />
-            </div>
-          )}
+          <Charts charts={charts} />
         </div>
-      </div>
+      )}
     </div>
   )
 }
