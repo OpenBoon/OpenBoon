@@ -83,15 +83,9 @@ Array [
             1,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.01}
         values={
           Array [
@@ -270,15 +264,9 @@ Array [
             1,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.01}
         values={
           Array [
@@ -712,15 +700,9 @@ Array [
             1,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.01}
         values={
           Array [
@@ -1034,15 +1016,9 @@ Array [
             1,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.01}
         values={
           Array [
