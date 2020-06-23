@@ -1,6 +1,6 @@
 export const formatFields = ({ fields, type }) => {
   if (Array.isArray(fields)) {
-    if (fields.includes(type.toLowerCase())) {
+    if (fields.includes(type)) {
       return fields
     }
 

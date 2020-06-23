@@ -3,12 +3,14 @@ import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
-import { colors } from '../Styles'
-
 import chartShape from '../Chart/shape'
 
-import ChartFormOptions from './Options'
+import { colors, spacing } from '../Styles'
 
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import { capitalizeFirstLetter } from '../Metadata/helpers'
+
+import ChartFormOptions from './Options'
 import { formatFields, getCountList } from './helpers'
 
 const MAX_COUNT = 10
@@ -35,9 +37,10 @@ const ChartForm = ({ chart: { type } }) => {
         backgroundColor: colors.structure.lead,
         display: 'flex',
         flexDirection: 'column',
+        padding: spacing.comfy,
       }}
     >
-      <h2>{type} Visualization</h2>
+      <h2>{capitalizeFirstLetter({ word: type })} Visualization</h2>
 
       <label htmlFor="metadata-type-selection">Metadata Type</label>
       <select
@@ -53,18 +56,32 @@ const ChartForm = ({ chart: { type } }) => {
       <label htmlFor="visualization-count-selection">
         Select Number of Values Shown (top {MAX_COUNT} max)
       </label>
-      <select
-        id="visualization-count-selection"
-        defaultValue={count}
-        onChange={({ target: { value } }) => {
-          setCount(value)
-        }}
-        css={{ width: '50%' }}
-      >
-        {countList.map((value) => (
-          <option>{value}</option>
-        ))}
-      </select>
+      <div css={{ display: 'flex' }}>
+        <select
+          id="visualization-count-selection"
+          defaultValue={count}
+          onChange={({ target: { value } }) => {
+            setCount(value)
+          }}
+          css={{ flex: 1 }}
+        >
+          {countList.map((value) => (
+            <option>{value}</option>
+          ))}
+        </select>
+        <div css={{ width: spacing.base }} />
+        <div css={{ flex: 1 }} />
+      </div>
+
+      <div css={{ display: 'flex' }}>
+        <Button css={{ flex: 1 }} variant={BUTTON_VARIANTS.SECONDARY}>
+          Cancel
+        </Button>
+        <div css={{ width: spacing.base }} />
+        <Button css={{ flex: 1 }} variant={BUTTON_VARIANTS.PRIMARY}>
+          Save Visualization
+        </Button>
+      </div>
     </div>
   )
 }
