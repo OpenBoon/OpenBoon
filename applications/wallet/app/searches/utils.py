@@ -57,7 +57,7 @@ class FieldUtility(object):
         return None
 
 
-class FilterBoy(object):
+class FilterBuddy(object):
 
     filters = [ExistsFilter,
                FacetFilter,
@@ -85,12 +85,12 @@ class FilterBoy(object):
         try:
             encoded_filter = request.query_params['filter']
         except KeyError:
-            raise InvalidRequestError(detail='No `filter` querystring included.')
+            raise InvalidRequestError(detail='No `filter` query param included.')
 
         try:
             decoded_filter = convert_base64_to_json(encoded_filter)
         except ValueError:
-            raise ParseError(detail='Unable to decode `filter` querystring.')
+            raise ParseError(detail='Unable to decode `filter` query param.')
 
         return self.get_filter_from_json(decoded_filter, request.app)
 
@@ -121,7 +121,7 @@ class FilterBoy(object):
         try:
             converted_query = convert_base64_to_json(encoded_query)
         except ValueError:
-            raise ParseError(detail='Unable to decode `query` querystring.')
+            raise ParseError(detail='Unable to decode `query` query param.')
 
         filters = []
         for raw_filter in converted_query:

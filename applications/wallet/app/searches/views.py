@@ -17,7 +17,7 @@ from searches.models import Search
 from searches.serializers import SearchSerializer, SearchAssetSerializer
 from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import FromSizePagination, ZMLPFromSizePagination
-from .utils import FieldUtility, FilterBoy
+from .utils import FieldUtility, FilterBuddy
 
 
 def search_asset_modifier(request, item):
@@ -175,7 +175,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                   'source*',
                   'files*',
                   'media*']
-        filter_boy = FilterBoy()
+        filter_boy = FilterBuddy()
 
         _filters = filter_boy.get_filters_from_request(request)
         for _filter in _filters:
@@ -240,7 +240,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
         """
         path = 'api/v3/assets/_search'
 
-        filter_service = FilterBoy()
+        filter_service = FilterBuddy()
         _filter = filter_service.get_filter_from_request(request)
         _filter.is_valid(raise_exception=True)
 
@@ -260,7 +260,7 @@ class MetadataExportViewSet(BaseProjectViewSet):
     def _search_for_assets(self, request):
         """Testing seam that returns the results of an asset search."""
         path = 'api/v3/assets'
-        filter_boy = FilterBoy()
+        filter_boy = FilterBuddy()
 
         _filters = filter_boy.get_filters_from_request(request)
         for _filter in _filters:

@@ -4,7 +4,7 @@ from unittest.mock import Mock
 from rest_framework.exceptions import ParseError
 
 from wallet.exceptions import InvalidRequestError
-from searches.utils import FieldUtility, FilterBoy
+from searches.utils import FieldUtility, FilterBuddy
 from searches.filters import RangeFilter, FacetFilter
 from wallet.utils import convert_json_to_base64
 
@@ -132,7 +132,7 @@ class TestFilterBoy:
 
     @pytest.fixture
     def filter_boy(self):
-        return FilterBoy()
+        return FilterBuddy()
 
     def test_is_it_a_good_boy(self, filter_boy):
         assert True
