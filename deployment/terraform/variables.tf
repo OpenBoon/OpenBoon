@@ -83,6 +83,11 @@ variable "wallet-browsable-api" {
   default = "false"
 }
 
+variable "wallet-superadmin" {
+  description = "Turns on a more advanced Django Admin view at /superadmin."
+  default = "false"
+}
+
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"

@@ -252,6 +252,7 @@ module "wallet" {
   browsable               = var.wallet-browsable-api
   marketplace-project     = "zorroa-public"
   marketplace-credentials = var.marketplace-credentials
+  superadmin              = var.wallet-superadmin
 }
 
 module "ml-bbq" {
