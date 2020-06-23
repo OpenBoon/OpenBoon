@@ -1,11 +1,11 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.zorroa.archivist.repository.FileTypeConverter
 import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.zmlp.service.jpa.StringListConverter
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
@@ -30,8 +30,8 @@ class DataSourceSpec(
     @ApiModelProperty("An optional list of credentials blobs to populate import jobs.")
     var credentials: Set<String>? = null,
 
-    @ApiModelProperty("A list of file extensions to filter", example = "[jpg,png]")
-    var fileTypes: List<String>? = null,
+    @ApiModelProperty("A list of file extensions to filter", example = "[images, videos, documents]")
+    var fileTypes: List<FileType> = FileType.allTypes(),
 
     @ApiModelProperty("Pipeline Modules for this DataSource.")
     var modules: Set<String>? = null
@@ -46,15 +46,17 @@ class DataSourceUpdate(
     @ApiModelProperty("The URI the DataSource points to.")
     var uri: String,
 
-    @ApiModelProperty("A list of file extensions to filter", example = "[jpg,png]")
-    @Convert(converter = StringListConverter::class)
-    var fileTypes: List<String>?,
+    /**
+     * Using a List<String> here for now since old data sources will have file ext
+     */
+    @ApiModelProperty("A list of file extensions to filter", example = "[images,videos,documents]")
+    var fileTypes: List<String>,
 
     @ApiModelProperty("An optional list of credentials blobs to populate import jobs.")
     var credentials: Set<String>?,
 
     @ApiModelProperty("Pipeline Modules for this DataSource.")
-    val modules: Set<String>?
+    val modules: Set<String>
 )
 
 @Entity
@@ -79,9 +81,9 @@ class DataSource(
     val uri: String,
 
     @ApiModelProperty("A list of file type filters.")
-    @Convert(converter = StringListConverter::class)
+    @Convert(converter = FileTypeConverter::class)
     @Column(name = "str_file_types")
-    var fileTypes: List<String>?,
+    var fileTypes: List<FileType>,
 
     @ApiModelProperty("A list Credential IDS this datasource will use.")
     @ElementCollection
@@ -119,7 +121,7 @@ class DataSource(
             projectId,
             update.name,
             update.uri,
-            update.fileTypes,
+            FileType.fromArray(update.fileTypes),
             listOf(),
             listOf(),
             timeCreated,
