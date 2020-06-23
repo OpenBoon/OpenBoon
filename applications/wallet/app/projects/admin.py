@@ -16,15 +16,27 @@ def sync_project_with_zmlp(modeladmin, request, queryset):
 @admin.register(Project)
 class ProjectAdmin(ModelAdmin):
     actions = [sync_project_with_zmlp]
+    list_display = ('name', 'id', 'tier', 'is_active')
+    list_filter = ('is_active',)
+    search_fields = ('name', 'id')
+
+    def tier(self, project):
+        if project.subscription:
+            return project.subscription.tier
+        return None
 
     def save_model(self, request, obj, form, change):
         """Creates a new project in the database as well as ZMLP."""
-        obj.sync_with_zmlp(request.user)
         obj.save()
+        obj.sync_with_zmlp(request.user)
 
 
 @admin.register(Membership)
 class MembershipAdmin(ModelAdmin):
+    list_display = ('user', 'project', 'roles')
+    list_display_links = ('user', 'project')
+    list_filter = ('project',)
+    search_fields = ('user__email', 'project__name')
 
     def save_model(self, request, obj, form, change):
         """When adding a membership if no api key is given then a new one is created."""
