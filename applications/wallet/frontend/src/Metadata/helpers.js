@@ -23,7 +23,6 @@ export const formatDisplayName = ({ name }) =>
         return ['File', word.charAt(4).toUpperCase() + word.substring(5)]
       }
 
-      // Capitalize first letter
       return capitalizeFirstLetter({ word })
     })
     .join(' ')
