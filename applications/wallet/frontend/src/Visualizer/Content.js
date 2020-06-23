@@ -16,7 +16,7 @@ import FaceDetectionSvg from '../Icons/faceDetection.svg'
 import UploadSvg from '../Icons/upload.svg'
 import TrashSvg from '../Icons/trash.svg'
 
-const ICON_WIDTH = 20
+const ICON_SIZE = 20
 
 let reloadKey = 0
 
@@ -48,7 +48,7 @@ const VisualizerContent = () => {
           {{
             filters: {
               title: 'Filters',
-              icon: <FilterSvg width={ICON_WIDTH} aria-hidden />,
+              icon: <FilterSvg width={ICON_SIZE} aria-hidden />,
               content: <Filters key={reloadKey} />,
             },
           }}
@@ -58,19 +58,19 @@ const VisualizerContent = () => {
           {{
             metadata: {
               title: 'Asset Metadata',
-              icon: <InformationSvg width={ICON_WIDTH} aria-hidden />,
+              icon: <InformationSvg width={ICON_SIZE} aria-hidden />,
               content: <Metadata />,
             },
             faceLabeling: {
               title: 'Add Names & Train',
-              icon: <FaceDetectionSvg width={ICON_WIDTH} aria-hidden />,
+              icon: <FaceDetectionSvg width={ICON_SIZE} aria-hidden />,
               content: <FaceLabeling />,
             },
             export: {
               title: 'Export',
               icon: (
                 <UploadSvg
-                  width={ICON_WIDTH}
+                  width={ICON_SIZE}
                   css={{ transform: `rotate(180deg)` }}
                   aria-hidden
                 />
@@ -79,7 +79,7 @@ const VisualizerContent = () => {
             },
             delete: {
               title: 'Delete',
-              icon: <TrashSvg width={ICON_WIDTH} aria-hidden />,
+              icon: <TrashSvg width={ICON_SIZE} aria-hidden />,
               content: <AssetDelete key={assetId} />,
             },
           }}

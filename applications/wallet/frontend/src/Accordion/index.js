@@ -10,7 +10,7 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
-const CHEVRON_WIDTH = 20
+const ICON_SIZE = 20
 
 const STYLES = {
   PRIMARY: {
@@ -132,7 +132,7 @@ const Accordion = ({
           onClick={toggle}
         >
           <ChevronSvg
-            width={CHEVRON_WIDTH}
+            width={ICON_SIZE}
             color={colors.structure.steel}
             css={{
               transform: isOpen ? 'rotate(-180deg)' : '',

@@ -11,7 +11,7 @@ import CrossSvg from '../Icons/cross.svg'
 
 import Button, { VARIANTS } from '../Button'
 
-const SVG_SIZE = 20
+const ICON_SIZE = 20
 
 const FilterActions = ({
   pathname,
@@ -59,7 +59,7 @@ const FilterActions = ({
         }}
       >
         <HiddenSvg
-          width={SVG_SIZE}
+          width={ICON_SIZE}
           color={
             isDisabled ? colors.signal.canary.strong : colors.structure.steel
           }
@@ -96,7 +96,7 @@ const FilterActions = ({
         }}
       >
         <CrossSvg
-          width={SVG_SIZE}
+          width={ICON_SIZE}
           color={colors.structure.steel}
           css={{ opacity: 0 }}
         />
