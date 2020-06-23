@@ -10,11 +10,11 @@ const Charts = ({ charts }) => {
     .filter(({ id }) => !!id)
     .map((chart) => {
       switch (chart.type) {
-        case 'FACET': {
+        case 'facet': {
           return <ChartFacet key={chart.id} chart={chart} />
         }
 
-        case 'RANGE': {
+        case 'range': {
           return <ChartRange key={chart.id} chart={chart} />
         }
 
