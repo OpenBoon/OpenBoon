@@ -139,37 +139,6 @@ describe('<FiltersContent />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render the "Date Range" filter', () => {
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        results: {
-          min: '2020-05-04',
-          max: '2020-06-10',
-        },
-      },
-    })
-
-    const filters = [
-      {
-        type: 'date',
-        attribute: 'system.timeCreated',
-        values: {},
-      },
-    ]
-
-    const component = TestRenderer.create(
-      <FiltersContent
-        pathname="/[projectId]/visualizer"
-        projectId={PROJECT_ID}
-        assetId=""
-        filters={filters}
-        setIsMenuOpen={noop}
-      />,
-    )
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
   it('should render the default filter', () => {
     const filters = [
       {

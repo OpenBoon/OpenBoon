@@ -15,7 +15,6 @@ import FilterFacet from '../FilterFacet'
 import FilterRange from '../FilterRange'
 import FilterLabelConfidence from '../FilterLabelConfidence'
 import FilterSimilarity from '../FilterSimilarity'
-import FilterDateRange from '../FilterDateRange'
 
 import { dispatch, ACTIONS } from './helpers'
 
@@ -159,19 +158,6 @@ const FiltersContent = ({
             case 'similarity':
               return (
                 <FilterSimilarity
-                  key={`${filter.type}-${index}`}
-                  pathname={pathname}
-                  projectId={projectId}
-                  assetId={assetId}
-                  filters={filters}
-                  filter={filter}
-                  filterIndex={index}
-                />
-              )
-
-            case 'date':
-              return (
-                <FilterDateRange
                   key={`${filter.type}-${index}`}
                   pathname={pathname}
                   projectId={projectId}

@@ -10,7 +10,6 @@ import ExistsSvg from '../Icons/exists.svg'
 import MissingSvg from '../Icons/missing.svg'
 import SimilaritySvg from '../Icons/similarity.svg'
 import TextSvg from '../Icons/text.svg'
-import CalendarSvg from '../Icons/calendar.svg'
 
 const SVG_SIZE = 20
 
@@ -36,10 +35,6 @@ const FilterTitle = ({ filter: { attribute, type, values } }) => {
 
       {type === 'textContent' && (
         <TextSvg width={SVG_SIZE} color={colors.key.one} />
-      )}
-
-      {type === 'date' && (
-        <CalendarSvg width={SVG_SIZE} color={colors.key.one} />
       )}
 
       <span
