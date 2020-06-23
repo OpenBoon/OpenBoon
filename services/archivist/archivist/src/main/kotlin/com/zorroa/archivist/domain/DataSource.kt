@@ -46,8 +46,11 @@ class DataSourceUpdate(
     @ApiModelProperty("The URI the DataSource points to.")
     var uri: String,
 
+    /**
+     * Using a List<String> here for now since old data sources will have file ext
+     */
     @ApiModelProperty("A list of file extensions to filter", example = "[images,videos,documents]")
-    var fileTypes: List<FileType>,
+    var fileTypes: List<String>,
 
     @ApiModelProperty("An optional list of credentials blobs to populate import jobs.")
     var credentials: Set<String>?,
@@ -118,7 +121,7 @@ class DataSource(
             projectId,
             update.name,
             update.uri,
-            update.fileTypes,
+            FileType.fromArray(update.fileTypes),
             listOf(),
             listOf(),
             timeCreated,

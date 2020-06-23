@@ -91,7 +91,7 @@ class DataSourceServiceTests : AbstractTest() {
         val update = DataSourceUpdate(
             "cats",
             "gs://foo/bar",
-            FileType.allTypes(),
+            listOf("images", "videos", "documents"),
             setOf(),
             setOf()
         )
@@ -99,7 +99,7 @@ class DataSourceServiceTests : AbstractTest() {
 
         val ds2 = dataSourceService.get(ds.id)
         assertEquals(update.name, ds2.name)
-        assertEquals(update.fileTypes, ds2.fileTypes)
+        assertEquals(FileType.fromArray(update.fileTypes), ds2.fileTypes)
         assertEquals(update.uri, ds2.uri)
     }
 
@@ -111,7 +111,7 @@ class DataSourceServiceTests : AbstractTest() {
         val update = DataSourceUpdate(
             "cats",
             "gs://foo/bar",
-            FileType.allTypes(),
+            listOf("images", "videos", "documents"),
             setOf(),
             setOf("zvi-object-detection")
         )
@@ -119,7 +119,7 @@ class DataSourceServiceTests : AbstractTest() {
 
         val ds2 = dataSourceService.get(ds.id)
         assertEquals(update.name, ds2.name)
-        assertEquals(update.fileTypes, ds2.fileTypes)
+        assertEquals(FileType.fromArray(update.fileTypes), ds2.fileTypes)
         assertEquals(update.uri, ds2.uri)
         assertEquals(1, ds2.modules.size)
         assertEquals(1, jdbc.queryForObject("SELECT COUNT(1) FROM x_module_datasource", Int::class.java))
@@ -138,7 +138,7 @@ class DataSourceServiceTests : AbstractTest() {
         val update = DataSourceUpdate(
             "cats",
             "gs://foo/bar",
-            FileType.allTypes(),
+            listOf("images", "videos", "documents"),
             setOf(creds.name),
             setOf()
         )
@@ -146,7 +146,7 @@ class DataSourceServiceTests : AbstractTest() {
 
         val ds2 = dataSourceService.get(ds.id)
         assertEquals(update.name, ds2.name)
-        assertEquals(update.fileTypes, ds2.fileTypes)
+        assertEquals(FileType.fromArray(update.fileTypes), ds2.fileTypes)
         assertEquals(update.uri, ds2.uri)
 
         val credsIds = jdbc.queryForList(

@@ -23,7 +23,7 @@ class FileTypeConverter : AttributeConverter<List<FileType>, String> {
     }
 
     override fun convertToEntityAttribute(joined: String): List<FileType> {
-        return FileType.strToFileTypeArray(joined)
+        return FileType.fromString(joined)
     }
 }
 
@@ -94,7 +94,7 @@ class DataSourceJdbcDaoImpl : AbstractDao(), DataSourceJdbcDao {
             rs.getObject("pk_project") as UUID,
             rs.getString("str_name"),
             rs.getString("str_uri"),
-            FileType.strToFileTypeArray(rs.getString("str_file_types")),
+            FileType.fromString(rs.getString("str_file_types")),
             jdbc.queryForList(
                 "SELECT pk_credentials FROM x_credentials_datasource WHERE pk_datasource=?",
                 UUID::class.java, rs.getObject("pk_datasource")

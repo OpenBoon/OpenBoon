@@ -13,24 +13,40 @@ enum class FileType(val extensions: Set<String>) {
     companion object {
         fun allTypes() = listOf(Images, Videos, Documents)
 
-        fun strToFileTypeArray(types: String): List<FileType> {
-            val types = types.split(',').mapNotNull {
+        fun fromArray(types: List<String>): List<FileType> {
+            val result = types.mapNotNull {
                 try {
                     valueOf(it)
                 } catch (e: Exception) {
-                    if (it == "video") {
-                        Videos
-                    } else {
-                        null
+                    when (it) {
+                        "video" -> {
+                            Videos
+                        }
+                        in FileExtResolver.image -> {
+                            Images
+                        }
+                        in FileExtResolver.video -> {
+                            Videos
+                        }
+                        in FileExtResolver.doc -> {
+                            Documents
+                        }
+                        else -> {
+                            null
+                        }
                     }
                 }
             }
 
-            return if (types.isEmpty()) {
+            return if (result.isEmpty()) {
                 allTypes()
             } else {
-                types
+                result.toSortedSet().toList()
             }
+        }
+
+        fun fromString(types: String): List<FileType> {
+            return fromArray(types.split(','))
         }
     }
 }
