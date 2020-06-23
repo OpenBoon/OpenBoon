@@ -2,7 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceImportOptions
-import com.zorroa.archivist.domain.FileTypes
+import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobSpec
@@ -80,7 +80,7 @@ class JobLaunchServiceImpl(
         )
 
         script.setSettting("index", true)
-        script.setSettting("fileTypes", dataSource.fileTypes)
+        script.setSettting("fileTypes", FileExtResolver.resolve(dataSource.fileTypes))
         script.setSettting("batchSize", clampBatchSize(options.batchSize))
 
         val spec = JobSpec(
@@ -109,7 +109,7 @@ class JobLaunchServiceImpl(
         val settings = mapOf(
             "index" to true,
             "batchSize" to clampBatchSize(req.batchSize),
-            "fileTypes" to FileTypes.all
+            "fileTypes" to FileExtResolver.all
         )
 
         val mergedSettings = getDefaultJobSettings()

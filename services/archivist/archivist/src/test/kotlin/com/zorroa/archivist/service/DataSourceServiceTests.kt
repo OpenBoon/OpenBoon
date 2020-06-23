@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
+import com.zorroa.archivist.domain.FileType
 
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
@@ -39,7 +40,7 @@ class DataSourceServiceTests : AbstractTest() {
     val spec = DataSourceSpec(
         "dev-data",
         "gs://zorroa-dev-data",
-        fileTypes = listOf("jpg")
+        fileTypes = FileType.allTypes()
     )
 
     @Test
@@ -56,7 +57,7 @@ class DataSourceServiceTests : AbstractTest() {
         val spec2 = DataSourceSpec(
             "dev-data",
             "gs://zorroa-dev-data",
-            fileTypes = listOf("jpg"),
+            fileTypes = FileType.allTypes(),
             modules = setOf("zvi-object-detection")
         )
 
@@ -73,7 +74,7 @@ class DataSourceServiceTests : AbstractTest() {
         val spec2 = DataSourceSpec(
             "dev-data",
             "gs://zorroa-dev-data",
-            fileTypes = listOf("jpg"),
+            fileTypes = FileType.allTypes(),
             credentials = setOf("test")
         )
 
@@ -90,7 +91,7 @@ class DataSourceServiceTests : AbstractTest() {
         val update = DataSourceUpdate(
             "cats",
             "gs://foo/bar",
-            listOf("jpg"),
+            FileType.allTypes(),
             setOf(),
             setOf()
         )
@@ -110,7 +111,7 @@ class DataSourceServiceTests : AbstractTest() {
         val update = DataSourceUpdate(
             "cats",
             "gs://foo/bar",
-            listOf("jpg"),
+            FileType.allTypes(),
             setOf(),
             setOf("zvi-object-detection")
         )
@@ -137,7 +138,7 @@ class DataSourceServiceTests : AbstractTest() {
         val update = DataSourceUpdate(
             "cats",
             "gs://foo/bar",
-            listOf("jpg"),
+            FileType.allTypes(),
             setOf(creds.name),
             setOf()
         )
