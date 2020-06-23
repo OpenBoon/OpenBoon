@@ -42,7 +42,7 @@ const FilterExists = ({
           filterIndex={filterIndex}
         />
       }
-      cacheKey={`FilterExists.${attribute}.${filterIndex}`}
+      cacheKey={`FilterExists.${attribute}`}
       isInitiallyOpen
       isResizeable
     >

@@ -32,7 +32,7 @@ const FilterActions = ({
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: constants.borderRadius.small,
-          ':hover, :focus': {
+          ':hover, &.focus-visible:focus': {
             backgroundColor: colors.structure.smoke,
             svg: {
               opacity: 1,
@@ -75,7 +75,7 @@ const FilterActions = ({
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: constants.borderRadius.small,
-          ':hover, :focus': {
+          ':hover, &.focus-visible:focus': {
             backgroundColor: colors.structure.smoke,
             svg: { color: colors.structure.white, opacity: 1 },
           },

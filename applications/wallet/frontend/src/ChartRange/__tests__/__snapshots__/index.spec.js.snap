@@ -141,7 +141,8 @@ exports[`<ChartRange /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  color: #b3b3b3;
+  color: #808080;
+  font-family: Roboto Condensed;
 }
 
 .emotion-14:hover {
@@ -154,7 +155,7 @@ exports[`<ChartRange /> should render properly 1`] = `
 }
 
 .emotion-14:hover,
-.emotion-14:focus {
+.emotion-14.focus-visible:focus {
   color: #ffffff;
 }
 
@@ -417,7 +418,8 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  color: #b3b3b3;
+  color: #808080;
+  font-family: Roboto Condensed;
 }
 
 .emotion-4:hover {
@@ -430,7 +432,7 @@ exports[`<ChartRange /> should render properly without data 1`] = `
 }
 
 .emotion-4:hover,
-.emotion-4:focus {
+.emotion-4.focus-visible:focus {
   color: #ffffff;
 }
 
