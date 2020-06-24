@@ -5,7 +5,7 @@ import chartShape from '../Chart/shape'
 import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 import SuspenseBoundary from '../SuspenseBoundary'
 
-import ChartForm from '../ChartForm/Content'
+import ChartForm from '../ChartForm'
 
 import ChartRangeContent from './Content'
 
