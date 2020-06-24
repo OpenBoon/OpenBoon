@@ -169,7 +169,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-35 {
+  .emotion-32 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -274,7 +274,7 @@ Array [
   padding-left: 4px;
 }
 
-.emotion-34 {
+.emotion-31 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -292,7 +292,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(3) {
+.emotion-6:nth-of-type(0) {
   width: 100%;
 }
 
@@ -307,7 +307,7 @@ Array [
   display: flex;
 }
 
-.emotion-32 {
+.emotion-29 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -315,38 +315,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-32 tr {
+.emotion-29 tr {
   background-color: #252525;
 }
 
-.emotion-32 tr:nth-of-type(2n) {
+.emotion-29 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-32 tr:hover {
+.emotion-29 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-32 tr:hover .gear {
+.emotion-29 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-32 tr:hover td {
+.emotion-29 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-32 tr:hover td:first-of-type {
+.emotion-29 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-32 tr:hover td:last-of-type {
+.emotion-29 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-32 td {
+.emotion-29 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -358,11 +358,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-32 td:first-of-type {
+.emotion-29 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-32 td:last-of-type {
+.emotion-29 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -370,7 +370,7 @@ Array [
 .emotion-14 {
   display: inline-block;
   color: #191919;
-  background-color: #b3b3b3;
+  background-color: #ebb52e;
   padding: 12px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -434,8 +434,20 @@ Array [
   background-color: #808080;
 }
 
+.emotion-26 {
+  display: inline-block;
+  color: #191919;
+  background-color: #b3b3b3;
+  padding: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-right: 8px;
+  border-radius: 14px;
+  font-family: Roboto Condensed;
+}
+
 <div
-    className="emotion-35"
+    className="emotion-32"
   >
     <div
       className="emotion-5"
@@ -472,13 +484,13 @@ Array [
       </button>
     </div>
     <div
-      className="emotion-34"
+      className="emotion-31"
     >
       <div
-        className="emotion-33"
+        className="emotion-30"
       >
         <table
-          className="emotion-32"
+          className="emotion-29"
         >
           <thead>
             <tr>
@@ -547,7 +559,7 @@ Array [
                 <span
                   className="emotion-14"
                 >
-                  jpg
+                  Images
                 </span>
               </td>
               <td>
@@ -589,7 +601,7 @@ Array [
                 <span
                   className="emotion-14"
                 >
-                  jpg
+                  Images
                 </span>
               </td>
               <td>
@@ -631,12 +643,7 @@ Array [
                 <span
                   className="emotion-14"
                 >
-                  jpg
-                </span>
-                <span
-                  className="emotion-14"
-                >
-                  jpeg
+                  Images
                 </span>
               </td>
               <td>
@@ -678,12 +685,7 @@ Array [
                 <span
                   className="emotion-14"
                 >
-                  jpg
-                </span>
-                <span
-                  className="emotion-14"
-                >
-                  jpeg
+                  Images
                 </span>
               </td>
               <td>
@@ -723,14 +725,9 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-14"
+                  className="emotion-26"
                 >
-                  jpg
-                </span>
-                <span
-                  className="emotion-14"
-                >
-                  jpeg
+                  Movies
                 </span>
               </td>
               <td>
@@ -935,7 +932,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-35 {
+  .emotion-32 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1040,7 +1037,7 @@ Array [
   padding-left: 4px;
 }
 
-.emotion-34 {
+.emotion-31 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1058,7 +1055,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(3) {
+.emotion-6:nth-of-type(0) {
   width: 100%;
 }
 
@@ -1073,7 +1070,7 @@ Array [
   display: flex;
 }
 
-.emotion-32 {
+.emotion-29 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -1081,38 +1078,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-32 tr {
+.emotion-29 tr {
   background-color: #252525;
 }
 
-.emotion-32 tr:nth-of-type(2n) {
+.emotion-29 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-32 tr:hover {
+.emotion-29 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-32 tr:hover .gear {
+.emotion-29 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-32 tr:hover td {
+.emotion-29 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-32 tr:hover td:first-of-type {
+.emotion-29 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-32 tr:hover td:last-of-type {
+.emotion-29 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-32 td {
+.emotion-29 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1124,11 +1121,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-32 td:first-of-type {
+.emotion-29 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-32 td:last-of-type {
+.emotion-29 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -1136,7 +1133,7 @@ Array [
 .emotion-14 {
   display: inline-block;
   color: #191919;
-  background-color: #b3b3b3;
+  background-color: #ebb52e;
   padding: 12px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1200,8 +1197,20 @@ Array [
   background-color: #808080;
 }
 
+.emotion-26 {
+  display: inline-block;
+  color: #191919;
+  background-color: #b3b3b3;
+  padding: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-right: 8px;
+  border-radius: 14px;
+  font-family: Roboto Condensed;
+}
+
 <div
-    className="emotion-35"
+    className="emotion-32"
   >
     <div
       className="emotion-5"
@@ -1238,13 +1247,13 @@ Array [
       </button>
     </div>
     <div
-      className="emotion-34"
+      className="emotion-31"
     >
       <div
-        className="emotion-33"
+        className="emotion-30"
       >
         <table
-          className="emotion-32"
+          className="emotion-29"
         >
           <thead>
             <tr>
@@ -1313,7 +1322,7 @@ Array [
                 <span
                   className="emotion-14"
                 >
-                  jpg
+                  Images
                 </span>
               </td>
               <td>
@@ -1355,7 +1364,7 @@ Array [
                 <span
                   className="emotion-14"
                 >
-                  jpg
+                  Images
                 </span>
               </td>
               <td>
@@ -1397,12 +1406,7 @@ Array [
                 <span
                   className="emotion-14"
                 >
-                  jpg
-                </span>
-                <span
-                  className="emotion-14"
-                >
-                  jpeg
+                  Images
                 </span>
               </td>
               <td>
@@ -1444,12 +1448,7 @@ Array [
                 <span
                   className="emotion-14"
                 >
-                  jpg
-                </span>
-                <span
-                  className="emotion-14"
-                >
-                  jpeg
+                  Images
                 </span>
               </td>
               <td>
@@ -1489,14 +1488,9 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-14"
+                  className="emotion-26"
                 >
-                  jpg
-                </span>
-                <span
-                  className="emotion-14"
-                >
-                  jpeg
+                  Movies
                 </span>
               </td>
               <td>
@@ -1842,7 +1836,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(3) {
+.emotion-6:nth-of-type(0) {
   width: 100%;
 }
 

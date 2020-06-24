@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 
-import { formatFullDate } from '../Date/helpers'
+import { colors, spacing, constants, typography } from '../Styles'
 
-import Pills from '../Pills'
+import { formatFullDate } from '../Date/helpers'
+import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
 import DataSourcesMenu from './Menu'
 
@@ -36,7 +37,28 @@ const DataSourcesRow = ({
       <td>{formatFullDate({ timestamp: timeCreated })}</td>
       <td>{formatFullDate({ timestamp: timeModified })}</td>
       <td>
-        <Pills>{fileTypes}</Pills>
+        {fileTypes.map((fileType) => {
+          const { color } =
+            FILE_TYPES.find(({ value }) => value === fileType) || {}
+          return (
+            <span
+              key={fileType}
+              css={{
+                display: 'inline-block',
+                color: colors.structure.coal,
+                backgroundColor: color || colors.structure.zinc,
+                padding: spacing.moderate,
+                paddingTop: spacing.small,
+                paddingBottom: spacing.small,
+                marginRight: spacing.base,
+                borderRadius: constants.borderRadius.large,
+                fontFamily: typography.family.condensed,
+              }}
+            >
+              {fileType}
+            </span>
+          )
+        })}
       </td>
       <td>
         <DataSourcesMenu
