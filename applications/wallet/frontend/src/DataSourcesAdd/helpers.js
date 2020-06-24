@@ -1,5 +1,7 @@
 import Router from 'next/router'
 
+import { colors } from '../Styles'
+
 import { fetcher } from '../Fetch/helpers'
 
 export const FILE_TYPES = [
@@ -8,18 +10,21 @@ export const FILE_TYPES = [
     label: 'Image Files',
     legend: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
     icon: '/icons/images.png',
+    color: colors.signal.canary.base,
   },
   {
     value: 'Documents',
     label: 'Documents (PDF & MS Office)',
     legend: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
     icon: '/icons/documents.png',
+    color: colors.graph.seafoam,
   },
   {
     value: 'Videos',
     label: 'Video Files',
     legend: 'MP4, M4V, MOV, MPG, MPEG, OGG',
     icon: '/icons/videos.png',
+    color: colors.graph.lilac,
   },
 ]
 
