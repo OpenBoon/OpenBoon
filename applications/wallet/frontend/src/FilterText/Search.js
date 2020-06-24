@@ -87,7 +87,7 @@ const FilterTextSearch = ({
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: constants.borderRadius.small,
-            ':hover, :focus': {
+            ':hover, &.focus-visible:focus': {
               backgroundColor: colors.structure.smoke,
               svg: {
                 opacity: 1,
@@ -131,7 +131,7 @@ const FilterTextSearch = ({
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: constants.borderRadius.small,
-            ':hover, :focus': {
+            ':hover, &.focus-visible:focus': {
               backgroundColor: colors.structure.smoke,
               svg: { opacity: 1, color: colors.structure.white },
             },

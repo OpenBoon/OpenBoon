@@ -19,11 +19,11 @@ const ChartRangeContent = ({ chart: { type, attribute } }) => {
     query: { projectId, query },
   } = useRouter()
 
+  const encodedFilter = encode({ filters: { type, attribute } })
+
   const { data } = useSWR(
     // TODO: Update endpoint
-    `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encode({
-      filters: { type, attribute },
-    })}`,
+    `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
   )
 
   const { results = [] } = data || {}
@@ -102,8 +102,9 @@ const ChartRangeContent = ({ chart: { type, attribute } }) => {
             css={{
               flex: 1,
               display: 'flex',
-              color: colors.structure.zinc,
-              ':hover, :focus': {
+              color: colors.structure.steel,
+              fontFamily: typography.family.condensed,
+              ':hover, &.focus-visible:focus': {
                 color: colors.structure.white,
               },
             }}

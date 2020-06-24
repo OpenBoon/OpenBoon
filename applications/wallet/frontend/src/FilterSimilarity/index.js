@@ -33,7 +33,7 @@ const FilterSimilarity = ({
           filterIndex={filterIndex}
         />
       }
-      cacheKey={`FilterSimilarity.${filter.attribute}.${filterIndex}`}
+      cacheKey={`FilterSimilarity.${filter.attribute}`}
       isInitiallyOpen
       isResizeable
     >
