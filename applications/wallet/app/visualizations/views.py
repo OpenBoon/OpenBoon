@@ -20,6 +20,7 @@ class VisualizationViewSet(BaseProjectViewSet):
         *load* - accepts two query parameters. `query` and `visuals`. Used to return the data
             needed to populate a visualization in the UI. 4
         """
+        # TODO: Could be nice to list out available visualizations & their formats.
         return Response(status=status.HTTP_418_IM_A_TEAPOT, data={})
 
     @action(detail=False, methods=['get'])

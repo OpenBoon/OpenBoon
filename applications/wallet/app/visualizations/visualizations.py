@@ -2,10 +2,7 @@ from rest_framework.exceptions import ValidationError
 
 
 class BaseVisualization(object):
-    """Abstract Visualization object all concrete Visualizations should inherit from.
-
-
-    """
+    """Abstract Visualization object all concrete Visualizations should inherit from."""
 
     type = None
     required_keys = []
@@ -24,13 +21,23 @@ class BaseVisualization(object):
 
     @property
     def id(self):
+        """Returns the unique ID for this visualization."""
         return self.data['id']
 
     @property
     def options(self):
+        """Returns the options that were set on this visualization."""
         return self.data.get('options', {})
 
     def is_valid(self, raise_exception=False):
+        """Validates that every required key and options key needed was included.
+
+        Args:
+            raise_exception (bool): If the visualization fails validation, raises an exception.
+
+        Returns:
+            (bool): Whether the visualization has the required data to operate.
+        """
         for key in self.required_keys:
             if key not in self.data:
                 self.errors.append({key: 'This value is required.'})
@@ -48,12 +55,35 @@ class BaseVisualization(object):
         return True
 
     def serialize_response_data(self, data):
+        """Pulls the associated response data out for this visualization and formats it.
+
+        Since multiple aggregations run in a single query, this is a helper to look at
+        a response from the api and determine which component of the response is specific
+        to this visualizations aggregation, and then formats it correctly for the overall
+        response to the frontend by keying it to it's ID.
+
+        Args:
+            data (dict): An entire response body from Elasticsearch.
+
+        Returns:
+            (dict): The response component specific to this visualization.
+        """
         agg_name = f'{self.agg_prefix}#{self.id}'
         response = {'id': self.id,
                     'results': data['aggregations'][agg_name]}
         return response
 
     def get_es_agg(self):
+        """Return the aggregation used to load the data for this visualization.
+
+        Currently, this assumes that each visualization only needs one aggregation. If
+        more than one aggregation, or a different type of query altogether, is needed to
+        retrieve the appropriate data for a visualization, we may need to rework how
+        VizBuddy is building the overall query.
+
+        Returns:
+            (dict): The aggregation component to add to a single Elasticsearch query.
+        """
         raise NotImplementedError()
 
 

@@ -50,7 +50,6 @@ class VizBuddy(object):
         return Visualization(raw_visual, zmlp_app)
 
     def reduce_visualizations_to_query(self, visualizations):
-        # TODO: Figure out how to combine these darn things
         query = {'size': 0, 'aggs': {}}
         for visualization in visualizations:
             agg = visualization.get_es_agg()
