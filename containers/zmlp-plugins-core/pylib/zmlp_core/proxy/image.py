@@ -121,7 +121,7 @@ class ImageProxyProcessor(AssetProcessor):
 
         # Crete the base of the oiiotool shell command.
         oiiotool_command = ['oiiotool', '-q', '-native', '-wildcardoff', source_path,
-                            '--cache', '100', '--clear-keywords',
+                            '--threads', '4', '--cache', '1024', '--clear-keywords',
                             '--nosoftwareattrib', '--eraseattrib', 'thumbnail_image']
         if asset.get_attr('media.clip.type') == 'image':
             start = asset.get_attr('media.clip.start')

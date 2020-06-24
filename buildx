@@ -27,8 +27,6 @@ def main():
     else:
         containers = set()
 
-    pull_base_images()
-
     if args.plugins:
         containers.update(['zmlp-py3-client',
                            'zmlp-py3-zvi',
@@ -111,6 +109,8 @@ def build_dependency_tree(to_build, list_only):
             for item in phase:
                 print(" - {}".format(item))
         return
+
+    pull_base_images()
 
     # Pass #3
     for phase in phases:
