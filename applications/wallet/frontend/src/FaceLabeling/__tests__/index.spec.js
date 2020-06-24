@@ -9,6 +9,8 @@ const ASSET_ID = asset.id
 
 const noop = () => () => {}
 
+jest.mock('../helpers')
+
 describe('<FaceLabeling />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({
@@ -65,6 +67,18 @@ describe('<FaceLabeling />', () => {
     act(() => {
       component.root
         .findByProps({ children: 'Cancel' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    act(() => {
+      component.root
+        .findByProps({ id: 'MNONPMMKPLRLONLJMRLNM' })
+        .props.onChange({ value: 'Jane' })
+    })
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'Save' })
         .props.onClick({ preventDefault: noop })
     })
   })

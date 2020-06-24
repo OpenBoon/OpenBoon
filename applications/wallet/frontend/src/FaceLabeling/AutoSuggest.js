@@ -7,21 +7,24 @@ import { colors, spacing } from '../Styles'
 import Form from '../Form'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import Combobox from '../Combobox'
+import CheckmarkSvg from '../Icons/checkmark.svg'
+
+import { onSave } from './helpers'
 
 const BBOX_SIZE = 64
 
 const INITIAL_STATE = ({ labels }) => ({
   labels,
-  changedLabelsCount: 0,
   isLoading: false,
-  errors: { labels: {} },
+  isSaved: false,
+  errors: { labels: {}, global: '' },
 })
 
 const reducer = (state, action) => ({ ...state, ...action })
 
 let reloadKey = 0
 
-const FaceLabelingAutoSuggest = ({ projectId, predictions }) => {
+const FaceLabelingAutoSuggest = ({ projectId, assetId, predictions }) => {
   const initializedState = INITIAL_STATE({
     labels: predictions.reduce((acc, { simhash, label }) => {
       return { ...acc, [simhash]: label }
@@ -50,6 +53,21 @@ const FaceLabelingAutoSuggest = ({ projectId, predictions }) => {
 
   const isChanged = changedLabelsCount > 0
 
+  const getSaveButtonCopy = () => {
+    if (isChanged) {
+      return 'Save'
+    }
+    if (state.isSaved) {
+      return (
+        <div css={{ display: 'flex' }}>
+          <CheckmarkSvg width={20} />
+          <div>Saved</div>
+        </div>
+      )
+    }
+    return 'Saved'
+  }
+
   return (
     <Form
       style={{
@@ -64,6 +82,7 @@ const FaceLabelingAutoSuggest = ({ projectId, predictions }) => {
         {predictions.map(({ simhash, bbox, b64Image }) => {
           const originalValue = predictions.find((p) => p.simhash === simhash)
             .label
+          const isSaved = !isChanged || state.isSaved
           return (
             <div
               key={simhash}
@@ -97,6 +116,7 @@ const FaceLabelingAutoSuggest = ({ projectId, predictions }) => {
                       ...state.labels,
                       [simhash]: value,
                     },
+                    isSaved,
                   })
                 }}
                 hasError={state.errors.labels[simhash] !== undefined}
@@ -111,7 +131,7 @@ const FaceLabelingAutoSuggest = ({ projectId, predictions }) => {
           variant={BUTTON_VARIANTS.SECONDARY}
           onClick={() => {
             reloadKey += 1
-            dispatch(initializedState)
+            dispatch({ ...initializedState, isSaved: state.isSaved })
           }}
           style={{ flex: 1 }}
           isDisabled={!isChanged}
@@ -123,11 +143,20 @@ const FaceLabelingAutoSuggest = ({ projectId, predictions }) => {
 
         <Button
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={console.warn}
+          onClick={() =>
+            onSave({
+              projectId,
+              assetId,
+              labels: state.labels,
+              predictions,
+              errors: state.errors,
+              dispatch,
+            })
+          }
           style={{ flex: 1 }}
           isDisabled={!isChanged}
         >
-          {isChanged ? 'Save' : 'Saved'}
+          {getSaveButtonCopy()}
         </Button>
       </div>
     </Form>
@@ -136,6 +165,7 @@ const FaceLabelingAutoSuggest = ({ projectId, predictions }) => {
 
 FaceLabelingAutoSuggest.propTypes = {
   projectId: PropTypes.string.isRequired,
+  assetId: PropTypes.string.isRequired,
   predictions: PropTypes.arrayOf(
     PropTypes.shape({ simhash: PropTypes.string.isRequired }),
   ).isRequired,

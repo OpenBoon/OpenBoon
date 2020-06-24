@@ -51,6 +51,7 @@ const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
       </div>
       <FaceLabelingAutoSuggest
         projectId={projectId}
+        assetId={assetId}
         predictions={predictions}
       />
     </>
