@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ChartForm /> should render properly 1`] = `
-.emotion-12 {
+.emotion-13 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-11 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -21,17 +21,17 @@ exports[`<ChartForm /> should render properly 1`] = `
   padding: 16px;
 }
 
-.emotion-10 .ErrorBoundary > div {
+.emotion-11 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-10 .Loading {
+.emotion-11 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -51,12 +51,19 @@ exports[`<ChartForm /> should render properly 1`] = `
   height: 24px;
 }
 
-.emotion-2 {
+.emotion-4 {
   font-weight: 500;
+}
+
+.emotion-2 {
   padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
 }
 
 .emotion-3 {
+  width: 100%;
   padding: 12px 8px;
   background-color: #808080;
   color: #ffffff;
@@ -73,80 +80,18 @@ exports[`<ChartForm /> should render properly 1`] = `
   background-size: 20px;
 }
 
-.emotion-4 {
+.emotion-5 {
   height: 32px;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
-  background-color: #808080;
-}
-
-.emotion-5:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-5[aria-disabled=true] {
-  background-color: #808080;
 }
 
 .emotion-6 {
-  width: 8px;
-}
-
-.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -181,40 +126,102 @@ exports[`<ChartForm /> should render properly 1`] = `
   flex: 1;
 }
 
-.emotion-7:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited {
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited {
+  background-color: #808080;
+}
+
+.emotion-6:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-7 {
+  width: 8px;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
   background-color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-8:hover {
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-  className="emotion-12"
+  className="emotion-13"
 >
   <div
-    className="emotion-11"
+    className="emotion-12"
   >
     <div
-      className="emotion-10"
+      className="emotion-11"
     >
       <div
-        className="emotion-9"
+        className="emotion-10"
       >
         <h2
           className="emotion-0"
@@ -226,190 +233,192 @@ exports[`<ChartForm /> should render properly 1`] = `
           className="emotion-1"
         />
         <label
-          className="emotion-2"
-          htmlFor="metadata-type-selection"
+          className="emotion-4"
         >
-          Metadata Type
-        </label>
-        <select
-          className="emotion-3"
-          defaultValue="system.type"
-          id="metadata-type-selection"
-          onChange={[Function]}
-        >
-          <option
-            disabled={true}
-            value=""
+          <h3
+            className="emotion-2"
           >
-            Select metadata type
-          </option>
-          <optgroup
-            label="Analysis"
+            Metadata Type
+          </h3>
+          <select
+            className="emotion-3"
+            defaultValue="system.type"
+            onChange={[Function]}
           >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select metadata type
+            </option>
             <optgroup
-              label="Zvi"
+              label="Analysis"
+            >
+              <optgroup
+                label="Zvi"
+              >
+                <option
+                  value="analysis.zvi.tinyProxy"
+                >
+                  tinyProxy
+                </option>
+              </optgroup>
+            </optgroup>
+            <optgroup
+              label="Clip"
             >
               <option
-                value="analysis.zvi.tinyProxy"
+                value="clip.pile"
               >
-                tinyProxy
+                pile
+              </option>
+              <option
+                value="clip.sourceAssetId"
+              >
+                sourceAssetId
+              </option>
+              <option
+                value="clip.timeline"
+              >
+                timeline
+              </option>
+              <option
+                value="clip.type"
+              >
+                type
               </option>
             </optgroup>
-          </optgroup>
-          <optgroup
-            label="Clip"
-          >
-            <option
-              value="clip.pile"
+            <optgroup
+              label="Location"
             >
-              pile
-            </option>
-            <option
-              value="clip.sourceAssetId"
+              <option
+                value="location.city"
+              >
+                city
+              </option>
+              <option
+                value="location.code"
+              >
+                code
+              </option>
+              <option
+                value="location.country"
+              >
+                country
+              </option>
+            </optgroup>
+            <optgroup
+              label="Media"
             >
-              sourceAssetId
-            </option>
-            <option
-              value="clip.timeline"
+              <option
+                value="media.author"
+              >
+                author
+              </option>
+              <option
+                value="media.content"
+              >
+                content
+              </option>
+              <option
+                value="media.description"
+              >
+                description
+              </option>
+              <option
+                value="media.keywords"
+              >
+                keywords
+              </option>
+              <option
+                value="media.orientation"
+              >
+                orientation
+              </option>
+              <option
+                value="media.title"
+              >
+                title
+              </option>
+              <option
+                value="media.type"
+              >
+                type
+              </option>
+            </optgroup>
+            <optgroup
+              label="Source"
             >
-              timeline
-            </option>
-            <option
-              value="clip.type"
+              <option
+                value="source.extension"
+              >
+                extension
+              </option>
+              <option
+                value="source.filename"
+              >
+                filename
+              </option>
+              <option
+                value="source.mimetype"
+              >
+                mimetype
+              </option>
+              <option
+                value="source.path"
+              >
+                path
+              </option>
+            </optgroup>
+            <optgroup
+              label="System"
             >
-              type
-            </option>
-          </optgroup>
-          <optgroup
-            label="Location"
-          >
-            <option
-              value="location.city"
-            >
-              city
-            </option>
-            <option
-              value="location.code"
-            >
-              code
-            </option>
-            <option
-              value="location.country"
-            >
-              country
-            </option>
-          </optgroup>
-          <optgroup
-            label="Media"
-          >
-            <option
-              value="media.author"
-            >
-              author
-            </option>
-            <option
-              value="media.content"
-            >
-              content
-            </option>
-            <option
-              value="media.description"
-            >
-              description
-            </option>
-            <option
-              value="media.keywords"
-            >
-              keywords
-            </option>
-            <option
-              value="media.orientation"
-            >
-              orientation
-            </option>
-            <option
-              value="media.title"
-            >
-              title
-            </option>
-            <option
-              value="media.type"
-            >
-              type
-            </option>
-          </optgroup>
-          <optgroup
-            label="Source"
-          >
-            <option
-              value="source.extension"
-            >
-              extension
-            </option>
-            <option
-              value="source.filename"
-            >
-              filename
-            </option>
-            <option
-              value="source.mimetype"
-            >
-              mimetype
-            </option>
-            <option
-              value="source.path"
-            >
-              path
-            </option>
-          </optgroup>
-          <optgroup
-            label="System"
-          >
-            <option
-              value="system.dataSourceId"
-            >
-              dataSourceId
-            </option>
-            <option
-              value="system.jobId"
-            >
-              jobId
-            </option>
-            <option
-              value="system.projectId"
-            >
-              projectId
-            </option>
-            <option
-              value="system.state"
-            >
-              state
-            </option>
-            <option
-              value="system.taskId"
-            >
-              taskId
-            </option>
-          </optgroup>
-        </select>
+              <option
+                value="system.dataSourceId"
+              >
+                dataSourceId
+              </option>
+              <option
+                value="system.jobId"
+              >
+                jobId
+              </option>
+              <option
+                value="system.projectId"
+              >
+                projectId
+              </option>
+              <option
+                value="system.state"
+              >
+                state
+              </option>
+              <option
+                value="system.taskId"
+              >
+                taskId
+              </option>
+            </optgroup>
+          </select>
+        </label>
         <div
-          className="emotion-4"
+          className="emotion-5"
         />
         <div
-          className="emotion-8"
+          className="emotion-9"
         >
           <button
-            className="emotion-5"
+            className="emotion-6"
             onClick={[Function]}
             type="button"
           >
             Cancel
           </button>
           <div
-            className="emotion-6"
+            className="emotion-7"
           />
           <button
-            className="emotion-7"
+            className="emotion-8"
             onClick={[Function]}
             type="button"
           >

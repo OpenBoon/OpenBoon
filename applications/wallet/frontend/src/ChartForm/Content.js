@@ -49,42 +49,49 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
       <div css={{ height: spacing.comfy }} />
 
       <label
-        htmlFor="metadata-type-selection"
         css={{
           fontWeight: typography.weight.medium,
-          paddingBottom: spacing.base,
         }}
       >
-        Metadata Type
+        <h3
+          css={{
+            paddingBottom: spacing.base,
+            fontSize: typography.size.regular,
+            lineHeight: typography.height.regular,
+            fontWeight: typography.weight.medium,
+          }}
+        >
+          Metadata Type
+        </h3>
+        <select
+          defaultValue={attribute}
+          onChange={({ target: { value } }) => {
+            setAttribute(value)
+          }}
+          css={{
+            width: '100%',
+            padding: `${spacing.moderate}px ${spacing.base}px`,
+            backgroundColor: colors.structure.steel,
+            color: colors.structure.white,
+            borderRadius: constants.borderRadius.small,
+            border: 'none',
+            fontSize: typography.size.regular,
+            lineHeight: typography.height.regular,
+            paddingLeft: spacing.moderate,
+            MozAppearance: 'none',
+            WebkitAppearance: 'none',
+            backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+')`,
+            backgroundRepeat: `no-repeat, repeat`,
+            backgroundPosition: `right ${spacing.base}px top 50%`,
+            backgroundSize: ICON_SIZE,
+          }}
+        >
+          <option value="" disabled>
+            Select metadata type
+          </option>
+          <ChartFormOptions fields={filteredFields} type={type} path="" />
+        </select>
       </label>
-      <select
-        id="metadata-type-selection"
-        defaultValue={attribute}
-        onChange={({ target: { value } }) => {
-          setAttribute(value)
-        }}
-        css={{
-          padding: `${spacing.moderate}px ${spacing.base}px`,
-          backgroundColor: colors.structure.steel,
-          color: colors.structure.white,
-          borderRadius: constants.borderRadius.small,
-          border: 'none',
-          fontSize: typography.size.regular,
-          lineHeight: typography.height.regular,
-          paddingLeft: spacing.moderate,
-          MozAppearance: 'none',
-          WebkitAppearance: 'none',
-          backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+')`,
-          backgroundRepeat: `no-repeat, repeat`,
-          backgroundPosition: `right ${spacing.base}px top 50%`,
-          backgroundSize: ICON_SIZE,
-        }}
-      >
-        <option value="" disabled>
-          Select metadata type
-        </option>
-        <ChartFormOptions fields={filteredFields} type={type} path="" />
-      </select>
 
       <div css={{ height: spacing.spacious }} />
 

@@ -6,7 +6,6 @@ const CHART_ID = '972a8ab5-cdcb-4eea-ada7-f1c88d997fed'
 
 jest.mock('../../ChartFacet', () => 'ChartFacet')
 jest.mock('../../ChartRange', () => 'ChartRange')
-jest.mock('../../ChartFacet', () => 'ChartFacet')
 
 const noop = () => () => {}
 

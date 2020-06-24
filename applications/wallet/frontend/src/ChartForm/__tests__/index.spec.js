@@ -30,7 +30,7 @@ describe('<ChartForm />', () => {
     // Select attribute
     act(() => {
       component.root
-        .findByProps({ id: 'metadata-type-selection' })
+        .findByType('select')
         .props.onChange({ target: { value: 'system.type' } })
     })
 
