@@ -39,6 +39,7 @@ from registration.views import UserRegistrationView, UserConfirmationView, \
 from roles.views import RolesViewSet
 from searches.views import SearchViewSet, MetadataExportViewSet
 from subscriptions.views import SubscriptionViewSet
+from visualizations.views import VisualizationViewSet
 from supportadmin.admin import support_admin_site
 from wallet import views as wallet_views
 from wallet.views import MeView
@@ -69,6 +70,7 @@ projects_router.register('providers', ProviderViewSet, basename='provider')
 projects_router.register('searches/export', MetadataExportViewSet, basename='export')
 projects_router.register('searches', SearchViewSet, basename='search')
 projects_router.register('faces', FaceViewSet, basename='face')
+projects_router.register('visualizations', VisualizationViewSet, basename='visualization')
 
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')
