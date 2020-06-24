@@ -62,6 +62,8 @@ class Project(models.Model):
             client.post('/api/v1/projects', body)
         except ZmlpDuplicateException:
             logger.info(f'Project {self.id} already exists in ZMLP')
+        if hasattr(self, 'subscription'):
+            client.put('/api/v1/projects/_update_tier', {'tier': self.subscription.tier.upper()})
 
 
 class Membership(models.Model):
