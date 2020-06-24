@@ -125,7 +125,7 @@ def test_project_serializer_list(project, project2):
     assert [entry['id'] for entry in data] == [project.id, project2.id]
 
 
-def test_project_sync_with_zmlp(monkeypatch, project_zero_user, pr):
+def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
     def mock_post_true(*args, **kwargs):
         return True
 

@@ -86,7 +86,7 @@ class ProjectController constructor(
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
-    @PutMapping(value = ["/api/v1/project/{id}/_enable"])
+    @PutMapping(value = ["/api/v1/projects/{id}/_enable"])
     @ApiOperation("Set an disabled project to enabled.")
     fun putEnabled(@PathVariable id: UUID): Any {
         projectService.setEnabled(id, true)
@@ -94,7 +94,7 @@ class ProjectController constructor(
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
-    @PutMapping(value = ["/api/v1/project/{id}/_disable"])
+    @PutMapping(value = ["/api/v1/projects/{id}/_disable"])
     @ApiOperation("Set a disabled project to enabled.")
     fun putDisabled(@PathVariable id: UUID): Any {
         projectService.setEnabled(id, false)
@@ -102,7 +102,7 @@ class ProjectController constructor(
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
-    @PutMapping(value = ["/api/v1/project/{id}/_update_tier"])
+    @PutMapping(value = ["/api/v1/projects/{id}/_update_tier"])
     @ApiOperation("Update Project Tier")
     fun updateProjectTier(
         @PathVariable id: UUID,
@@ -115,21 +115,21 @@ class ProjectController constructor(
     //
     // Methods that default to the API Keys project Id.
     //
-    @GetMapping(value = ["/api/v1/project"])
+    @GetMapping(value = ["/api/v1/projects"])
     @ApiOperation("Retrieve my current project.")
     fun getMyProject(): Project {
         return projectService.get(getProjectId())
     }
 
     @PreAuthorize("hasAuthority('ProjectManage')")
-    @GetMapping(value = ["/api/v1/project/_quotas"])
+    @GetMapping(value = ["/api/v1/projects/_quotas"])
     @ApiOperation("Retrieve my current project quotas")
     fun getMyProjectQuotas(): ProjectQuotas {
         return projectService.getQuotas(getProjectId())
     }
 
     @PreAuthorize("hasAuthority('ProjectManage')")
-    @GetMapping(value = ["/api/v1/project/_quotas_time_series"])
+    @GetMapping(value = ["/api/v1/projects/_quotas_time_series"])
     @ApiOperation("Retrieve time serious measurements of quota counters")
     fun getMyProjectQuotasTimeSeries(
         @RequestParam("start", required = false) start: Long?,
@@ -143,14 +143,14 @@ class ProjectController constructor(
     }
 
     @PreAuthorize("hasAuthority('ProjectManage')")
-    @GetMapping(value = ["/api/v1/project/_settings"])
+    @GetMapping(value = ["/api/v1/projects/_settings"])
     @ApiOperation("Retrieve my current project.")
     fun getMyProjectSettings(): ProjectSettings {
         return projectService.getSettings(getProjectId())
     }
 
     @PreAuthorize("hasAuthority('ProjectManage')")
-    @PutMapping(value = ["/api/v1/project/_settings"])
+    @PutMapping(value = ["/api/v1/projects/_settings"])
     @ApiOperation("Get the project Settings")
     fun putMyProjectSettings(@RequestBody(required = true) settings: ProjectSettings):
         ProjectSettings {
@@ -160,7 +160,7 @@ class ProjectController constructor(
         }
 
     @PreAuthorize("hasAuthority('ProjectManage')")
-    @PutMapping(value = ["/api/v1/project/_rename"])
+    @PutMapping(value = ["/api/v1/projects/_rename"])
     @ApiOperation("Rename Project")
     fun renameProject(@RequestBody(required = true) nameUpdate: ProjectNameUpdate): Any {
         val id = getProjectId()
