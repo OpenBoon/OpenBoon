@@ -114,7 +114,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Add Data Source
+          Create Data Source
         </a>
       </li>
       <li
@@ -139,7 +139,7 @@ Array [
           "global": "",
         },
         "fileTypes": Object {
-          "images": true,
+          "Images": true,
         },
         "isLoading": false,
         "modules": Array [
