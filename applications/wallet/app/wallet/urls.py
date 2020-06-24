@@ -117,8 +117,7 @@ urlpatterns = [
     path('marketplace/signup/', SignUpView.as_view(), name='gcpmarketplace-signup'),
     path('marketplace/signup_success/', signup_success, name='gcpmarketplace-signup-success'),
 ]
+if settings.SUPERADMIN:
+    urlpatterns.append(path('superadmin/', admin.site.urls))
 urlpatterns += [i[1] for i in BROWSABLE_API_URLS]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-if settings.SUPERADMIN:
-    urlpatterns.append(path('superadmin/', admin.sites.urls))
