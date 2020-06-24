@@ -2,13 +2,17 @@ import os
 import tempfile
 import logging
 
+import backoff
+from google.api_core.exceptions import ResourceExhausted
 from google.cloud import automl_v1beta1 as automl
 
-from zmlpsdk import Argument, AssetProcessor, file_storage
+from zmlpsdk import Argument, AssetProcessor, file_storage, cloud
+
+logging.basicConfig()
 
 
-class AutoMLModelProcessor(AssetProcessor):
-    """Use a pre-trained Google AutoML model to label and score assets."""
+class AutoMLModelTrainer(AssetProcessor):
+    """Create Google AutoML Model"""
 
     tool_tips = {
         'project_id': 'The project ID for the AutoML model (e.g. "zorroa-autoedl")',
@@ -16,21 +20,24 @@ class AutoMLModelProcessor(AssetProcessor):
         'gcp_credentials_path': 'JSON credentials path for GCP',
         'model_id': '(Optional) The model ID for the AutoML model (e.g. "ICN1653624923981482691") '
                     'If this parameter is omitted, the most recently created model will be used.',
-        'display_name': 'Name of the dataset'
+        'display_name': 'Name of the dataset',
+        'project_path': 'Path to data CSV'
     }
 
     def __init__(self):
-        super(AutoMLModelProcessor, self).__init__()
+        super(AutoMLModelTrainer, self).__init__()
         self.add_arg(Argument("project_id", "string", required=True,
-                              toolTip=AutoMLModelProcessor.tool_tips['project_id']))
+                              toolTip=AutoMLModelTrainer.tool_tips['project_id']))
         self.add_arg(Argument("gcp_credentials_path", "string", required=True,
-                              toolTip=AutoMLModelProcessor.tool_tips['gcp_credentials_path']))
+                              toolTip=AutoMLModelTrainer.tool_tips['gcp_credentials_path']))
         self.add_arg(Argument("model_id", "string", required=True,
-                              toolTip=AutoMLModelProcessor.tool_tips['model_id']))
+                              toolTip=AutoMLModelTrainer.tool_tips['model_id']))
         self.add_arg(Argument("display_name", "string", required=True,
-                              toolTip=AutoMLModelProcessor.tool_tips['display_name']))
+                              toolTip=AutoMLModelTrainer.tool_tips['display_name']))
         self.add_arg(Argument("region", "string", default="us-central1",
-                              toolTip=AutoMLModelProcessor.tool_tips['region']))
+                              toolTip=AutoMLModelTrainer.tool_tips['region']))
+        self.add_arg(Argument("project_path", "string",
+                              toolTip=AutoMLModelTrainer.tool_tips['project_path']))
 
         self.model_id = None
         self.model_path = None
@@ -50,6 +57,7 @@ class AutoMLModelProcessor(AssetProcessor):
         self.region = self.arg_value('region')
         self.model_id = self.arg_value('model_id')
         self.display_name = self.arg_value('display_name')
+        self.project_path = self.arg_value('project_path')
 
         self.gcp_credentials_path = self.arg_value('gcp_credentials_path')
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = self.gcp_credentials_path
@@ -78,7 +86,7 @@ class AutoMLModelProcessor(AssetProcessor):
         Returns:
             (str) the parsed name's ID (or its location basename)
         """
-        return name.split("/")[-1]
+        return name.name.split("/")[-1]
 
     def create_dataset(self, project_id, display_name, region="us-central1"):
         """Create an empty dataset that will eventually hold the training data for the model.
@@ -109,15 +117,15 @@ class AutoMLModelProcessor(AssetProcessor):
         )
 
         # Create a dataset with the dataset metadata in the region.
-        response = self.client.create_dataset(project_location, dataset)
-        created_dataset = response.result()
+        created_dataset = self.client.create_dataset(project_location, dataset)
 
         # Display the dataset information
-        logging.debug("Dataset name: {}".format(created_dataset.name))
-        logging.debug("Dataset id: {}".format(created_dataset.name.split("/")[-1]))
+        logging.info("Dataset name: {}".format(created_dataset.name))
+        logging.info("Dataset id: {}".format(created_dataset.name.split("/")[-1]))
 
         return created_dataset
 
+    @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
     def import_dataset(self, project_id, dataset_id, path):
         """Takes as input a .csv file that lists the locations of all training images and the
         proper label for each one
@@ -142,8 +150,8 @@ class AutoMLModelProcessor(AssetProcessor):
         # Import data from the input URI
         response = self.client.import_data(dataset_full_id, input_config)
 
-        logging.debug("Processing import...")
-        logging.debug("Data imported. {}".format(response.result()))
+        logging.info("Processing import...")
+        logging.info("Data imported. {}".format(response.result()))
 
     def create_model(self, project_id, dataset_id, display_name, region="us-central1"):
         """Create and train a model
@@ -177,8 +185,8 @@ class AutoMLModelProcessor(AssetProcessor):
         # Create a model with the model metadata in the region.
         response = self.client.create_model(project_location, model)
 
-        logging.debug("Training operation name: {}".format(response.operation.name))
-        logging.debug("Training started...")
+        logging.info("Training operation name: {}".format(response.operation.name))
+        logging.info("Training started...")
 
         return response
 
@@ -202,3 +210,16 @@ class AutoMLModelProcessor(AssetProcessor):
         pmod = file_storage.models.save_model(model_dir, self.app_model)
         self.reactor.emit_status("Published model {}".format(self.app_model.name))
         return pmod
+
+#
+# class AutoMLDataSetBuilder:
+#     """Build a Dataset in Google AutoML format"""
+#
+#     def __init__(self):
+#         self.client = None
+#
+#     def init(self):
+#         self.client = cloud.get_google_storage_client()
+#
+#     def build_dataset(self):
+#
