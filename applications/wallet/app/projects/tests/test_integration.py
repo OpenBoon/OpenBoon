@@ -705,16 +705,6 @@ class TestProjectUserPost:
         content = response.json()
         assert content['detail'] == 'Invalid request.'
 
-    def test_get_permissions_for_roles(self):
-        view = ProjectUserViewSet()
-        roles = ['ML_Tools', 'User_Admin']
-        permissions = view._get_permissions_for_roles(roles)
-        expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage',
-                    'DataSourceManage', 'DataQueueManage', 'SystemManage']
-        assert set(permissions) == set(expected)
-        permissions = view._get_permissions_for_roles(['User_Admin'])
-        assert permissions == ['ProjectManage']
-
 
 class TestProjectUserPut:
 

@@ -14,6 +14,7 @@ from rest_framework.viewsets import ViewSet, GenericViewSet
 from zmlp import ZmlpClient
 from zmlp.client import ZmlpNotFoundException
 
+from roles.utils import get_permissions_for_roles
 from wallet.utils import convert_base64_to_json
 from apikeys.utils import create_zmlp_api_key
 from projects.clients import ZviClient
@@ -539,33 +540,16 @@ class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
             return Response(data={'detail': 'Roles must be supplied.'},
                             status=status.HTTP_400_BAD_REQUEST)
         membership = self.get_object(pk, project_pk)
-        email = membership.user.username
-        apikey = convert_base64_to_json(membership.apikey)
-        apikey_id = apikey['id']
-        apikey_name = apikey.get('name')
-        if apikey_name == 'admin-key':
-            return Response(data={'detail': 'Unable to modify the admin key.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        # TODO: Replace Delete/Create logic when Auth Server supports PUT
-        # Create new Key first and append epoch time (milli) to get a readable unique name
-        new_permissions = self._get_permissions_for_roles(new_roles)
-        name = self._get_api_key_name(email, project_pk)
-        new_apikey = create_zmlp_api_key(request.client, name, new_permissions, internal=True)
-
-        # Delete old key on success
-        try:
-            response = request.client.delete(f'/auth/v1/apikey/{apikey_id}')
-            if not response.status_code == 200:
+        if membership.roles != new_roles:
+            membership.roles = new_roles
+            try:
+                membership.sync_with_zmlp(request.client)
+            except IOError:
                 return Response(data={'detail': 'Error deleting apikey.'},
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except ZmlpNotFoundException:
-            logger.warning(f'Tried to delete API Key {apikey_id} for user f{request.user.id} '
-                           f'while updating permissions. The API key could not be found.')
-
-        membership.apikey = new_apikey
-        membership.roles = new_roles
-        membership.save()
+            except ValueError:
+                return Response(data={'detail': 'Unable to modify the admin key.'},
+                                status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(membership.user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -573,29 +557,17 @@ class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     def destroy(self, request, project_pk, pk):
         # Remove the User's Membership and delete the associated apikey
         membership = self.get_object(pk, project_pk)
-        apikey = membership.apikey
 
         # Don't allow a User to remove themselves
         if request.user == membership.user:
             return Response(data={'detail': 'Cannot remove yourself from a project.'},
                             status=status.HTTP_403_FORBIDDEN)
 
-        # Delete Users Apikey
-        apikey_readable = True
         try:
-            key_data = convert_base64_to_json(apikey)
-            apikey_id = key_data['id']
-        except (ValueError, KeyError):
-            logger.warning(f'Unable to decode apikey during delete for user {membership.user.id}.')
-            apikey_readable = False
-
-        if apikey_readable:
-            response = request.client.delete(f'/auth/v1/apikey/{apikey_id}')
-            if not response.status_code == 200:
-                return Response(data={'detail': 'Error deleting apikey.'},
-                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        membership.delete()
+            membership.delete_and_sync_with_zmlp(request.client)
+        except IOError:
+            return Response(data={'detail': 'Error deleting apikey.'},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_200_OK)
 
     def _create_project_user(self, request, project_pk, data):
@@ -611,9 +583,6 @@ class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
             return Response(data={'detail': 'Email and Roles are required.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
-        # Determine appropriate permissions for the roles entered
-        permissions = self._get_permissions_for_roles(requested_roles)
-
         # Get the current project and User
         project = self.get_project_object(project_pk)
         try:
@@ -621,10 +590,6 @@ class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         except User.DoesNotExist:
             return Response(data={'detail': 'No user with the given email.'},
                             status=status.HTTP_404_NOT_FOUND)
-
-        # Create an apikey with the given permissions
-        name = self._get_api_key_name(email, project_pk)
-        encoded_apikey = create_zmlp_api_key(request.client, name, permissions, internal=True)
 
         # If the membership already exists return the correct status code.
         try:
@@ -639,31 +604,12 @@ class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
             pass
 
         # Create a membership for given user
-        Membership.objects.create(user=user, project=project, apikey=encoded_apikey,
-                                  roles=requested_roles)
+        membership = Membership(user=user, project=project, roles=requested_roles)
+        membership.sync_with_zmlp(client=request.client)
 
         # Serialize the Resulting user like the Detail endpoint
         serializer = self.get_serializer(user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
-    def _get_permissions_for_roles(self, requested_roles):
-        """Helper method to convert roles to permissions.
 
-        Pulls the appropriate roles from the Settings file and gathers all permissions
-        needed to satisfy the desired roles.
 
-        Args:
-            requested_roles: The roles to look up permissions for.
-
-        Returns:
-            list: The permissions needed for the given roles.
-        """
-        permissions = []
-        for role in settings.ROLES:
-            if role['name'] in requested_roles:
-                permissions.extend(role['permissions'])
-        return list(set(permissions))
-
-    def _get_api_key_name(self, email, project_pk):
-        """Generate a unique name to user for the api key."""
-        return f'{email}_{project_pk}'
