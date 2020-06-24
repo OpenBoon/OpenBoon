@@ -28,8 +28,8 @@ export const onSave = async ({
       }),
     })
 
-    mutate(`/api/v1/projects/${projectId}/faces/${assetId}/`)
-    mutate(`/api/v1/projects/${projectId}/faces/labels`)
+    await mutate(`/api/v1/projects/${projectId}/faces/${assetId}/`)
+    await mutate(`/api/v1/projects/${projectId}/faces/labels`)
 
     dispatch({ isLoading: false })
   } catch (response) {
@@ -51,4 +51,14 @@ export const onSave = async ({
       })
     }
   }
+}
+
+export const getSaveButtonCopy = ({ isChanged, isLoading }) => {
+  if (isLoading) {
+    return 'Saving...'
+  }
+  if (isChanged) {
+    return 'Save'
+  }
+  return 'Saved'
 }

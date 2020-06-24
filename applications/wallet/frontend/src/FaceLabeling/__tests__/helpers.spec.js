@@ -1,4 +1,4 @@
-import { onSave } from '../helpers'
+import { onSave, getSaveButtonCopy } from '../helpers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
@@ -48,7 +48,6 @@ describe('<FaceLabelingForm /> helpers', () => {
       })
 
       expect(mockDispatch).toHaveBeenCalledWith({ isLoading: true })
-      expect(mockDispatch).toHaveBeenLastCalledWith({ isLoading: false })
       expect(mockMutate).toHaveBeenCalledTimes(2)
     })
 
@@ -129,6 +128,17 @@ describe('<FaceLabelingForm /> helpers', () => {
           global: 'Something went wrong. Please try again.',
         },
       })
+    })
+  })
+
+  describe('getSaveButtonCopy', () => {
+    it('should return correct string', () => {
+      expect(getSaveButtonCopy({ isChanged: false, isLoading: true })).toBe(
+        'Saving...',
+      )
+      expect(getSaveButtonCopy({ isChanged: true, isLoading: false })).toBe(
+        'Save',
+      )
     })
   })
 })

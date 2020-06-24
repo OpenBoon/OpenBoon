@@ -8,7 +8,7 @@ import Form from '../Form'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import Combobox from '../Combobox'
 
-import { onSave } from './helpers'
+import { onSave, getSaveButtonCopy } from './helpers'
 
 const BBOX_SIZE = 64
 
@@ -50,6 +50,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
   )
 
   const isChanged = changedLabelsCount > 0
+  const { isLoading } = state
 
   return (
     <Form
@@ -116,7 +117,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
             dispatch(initializedState)
           }}
           style={{ flex: 1 }}
-          isDisabled={!isChanged}
+          isDisabled={!isChanged || isLoading}
         >
           Cancel
         </Button>
@@ -137,9 +138,9 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
             })
           }
           style={{ flex: 1 }}
-          isDisabled={!isChanged}
+          isDisabled={!isChanged || isLoading}
         >
-          {state.isLoading ? 'Saving...' : <>{isChanged ? 'Save' : 'Saved'}</>}
+          <>{getSaveButtonCopy({ isChanged, isLoading })}</>
         </Button>
       </div>
     </Form>
