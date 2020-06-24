@@ -163,7 +163,7 @@ class TestFilterBoy:
         with pytest.raises(InvalidRequestError) as e:
             filter_boy.get_filter_from_request(request)
 
-        assert str(e.value.detail) == 'No `filter` querystring included.'
+        assert str(e.value.detail) == 'No `filter` query param included.'
 
     def test_get_filter_from_request_raises_parse_error(self, filter_boy):
         _filter = {'type': 'range', 'attribute': 'source.filesize'}
@@ -174,7 +174,7 @@ class TestFilterBoy:
         with pytest.raises(ParseError) as e:
             filter_boy.get_filter_from_request(request)
 
-        assert str(e.value.detail) == 'Unable to decode `filter` querystring.'
+        assert str(e.value.detail) == 'Unable to decode `filter` query param.'
 
     def test_get_filters_from_request(self, filter_boy):
         _filters = [{'type': 'range', 'attribute': 'source.filesize'},
@@ -197,7 +197,7 @@ class TestFilterBoy:
         with pytest.raises(ParseError) as e:
             filter_boy.get_filters_from_request(request)
 
-        assert str(e.value.detail) == 'Unable to decode `query` querystring.'
+        assert str(e.value.detail) == 'Unable to decode `query` query param.'
 
     def test_get_filter_from_json(self, filter_boy):
         raw_filter = {'type': 'range', 'attribute': 'source.filesize'}

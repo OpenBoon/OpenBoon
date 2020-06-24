@@ -10,6 +10,7 @@ class BaseVisualization(object):
     type = None
     required_keys = []
     required_option_keys = []
+    agg_prefix = ''
 
     def __init__(self, data, zmlp_app=None):
         self.data = data
@@ -20,6 +21,14 @@ class BaseVisualization(object):
         if type(self) == type(other) and self.data == other.data:
             return True
         return False
+
+    @property
+    def id(self):
+        return self.data['id']
+
+    @property
+    def options(self):
+        return self.data.get('options', {})
 
     def is_valid(self, raise_exception=False):
         for key in self.required_keys:
@@ -39,9 +48,12 @@ class BaseVisualization(object):
         return True
 
     def serialize_response_data(self, data):
-        return data
+        agg_name = f'{self.agg_prefix}#{self.id}'
+        response = {'id': self.id,
+                    'results': data['aggregations'][agg_name]}
+        return response
 
-    def get_query(self):
+    def get_es_agg(self):
         raise NotImplementedError()
 
 
@@ -49,7 +61,33 @@ class RangeVisualization(BaseVisualization):
 
     type = 'range'
     required_keys = ['id', 'attribute']
+    agg_prefix = 'stats'
 
-    def get_query(self):
-        query = {}
+    def get_es_agg(self):
+        attribute = self.data['attribute']
+        return {'stats': {'field': attribute}}
 
+
+class FacetVisualization(BaseVisualization):
+
+    type = 'facet'
+    required_keys = ['id', 'attribute']
+    required_option_keys = []
+    agg_prefix = 'sterms'
+
+    def get_es_agg(self):
+        attribute = self.data['attribute']
+        order = self.options.get('order', 'desc')
+        minimum_count = self.options.get('minimum_count')
+        size = self.options.get('size', 1000)
+        agg = {
+            'terms': {
+                'field': attribute,
+                'size': size,
+                'order': {'_count': order}
+
+            }
+        }
+        if minimum_count:
+            agg['terms']['min_doc_count'] = minimum_count
+        return agg

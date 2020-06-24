@@ -1,22 +1,8 @@
-from django.http import Http404
-from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer
-from flatten_dict import flatten
-from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
-                                   CreateModelMixin, UpdateModelMixin, DestroyModelMixin)
-from rest_framework.viewsets import GenericViewSet
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework_csv.renderers import CSVRenderer
-from zmlp.search import AssetSearchScroller
 
-from assets.views import asset_modifier
-from assets.utils import get_asset_style, get_video_length, get_thumbnail_and_video_urls
 from projects.views import BaseProjectViewSet
-from searches.models import Search
-from searches.serializers import SearchSerializer, SearchAssetSerializer
-from wallet.mixins import ConvertCamelToSnakeViewSetMixin
-from wallet.paginators import FromSizePagination, ZMLPFromSizePagination
 from searches.utils import FieldUtility, FilterBuddy
 from .utils import VizBuddy
 
@@ -27,6 +13,14 @@ class VisualizationViewSet(BaseProjectViewSet):
     pagination_class = None
     serializer_class = None
     field_utility = FieldUtility()
+
+    def list(self, request, project_pk):
+        """Available endpoints for the visualization api:
+
+        *load* - accepts two query parameters. `query` and `visuals`. Used to return the data
+            needed to populate a visualization in the UI. 4
+        """
+        return Response(status=status.HTTP_418_IM_A_TEAPOT, data={})
 
     @action(detail=False, methods=['get'])
     def load(self, request, project_pk):
@@ -48,11 +42,32 @@ class VisualizationViewSet(BaseProjectViewSet):
 
         Both of these query params should be B64 Encoded json object strings.
 
+        Accepted Visualizations:
+
+            Range:
+                {
+                    "type": "range",
+                    "id": "$uniqueIdentifier",
+                    "attribute": "$attribute.dot.path"
+                }
+
+            Facet:
+                {
+                    "type": "facet",
+                    "id": "$uniqueIdentifier",
+                    "attribute": "$attribute.dot.path",
+                    "options": [
+                        "order": "desc",       # Sort order, desc or asc
+                        "size": 10,            # Limit # of facets/buckets returned
+                        "minimum_count": 2     # Min. # of hits a facet needs to be returned
+                    ]
+                }
+
         Args:
             request: The DRF request
             project_pk: The Project ID to run this under
         """
-        path = 'api/v3/assets'
+        path = 'api/v3/assets/_search'
 
         # Determine the query to use based on the given Filters
         filter_buddy = FilterBuddy()
@@ -62,7 +77,7 @@ class VisualizationViewSet(BaseProjectViewSet):
         query = filter_buddy.reduce_filters_to_query(_filters)
 
         # Determine the Visualizations we need to load data for
-        viz_buddy = VizBuddy(query=query)
+        viz_buddy = VizBuddy(filter_query=query)
         visualizations = viz_buddy.get_visualizations_from_request(request)
         for visualization in visualizations:
             visualization.is_valid(raise_exception=True)

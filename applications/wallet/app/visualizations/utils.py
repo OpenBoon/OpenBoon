@@ -10,7 +10,7 @@ class VizBuddy(object):
     visualizations = [RangeVisualization,
                       FacetVisualization]
 
-    def __init__(self, filter_query):
+    def __init__(self, filter_query=None):
         self.filter_query = filter_query
 
     def get_visualizations_from_request(self, request):
@@ -51,7 +51,11 @@ class VizBuddy(object):
 
     def reduce_visualizations_to_query(self, visualizations):
         # TODO: Figure out how to combine these darn things
-        queries = []
+        query = {'size': 0, 'aggs': {}}
         for visualization in visualizations:
-            queries.append(visualization.get_query())
-        return queries
+            agg = visualization.get_es_agg()
+            query['aggs'][visualization.id] = agg
+
+        if self.filter_query:
+            query['query'] = self.filter_query['query']
+        return query
