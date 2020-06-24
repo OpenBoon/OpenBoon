@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<FaceLabelingFormSave /> should render when isLoading 1`] = `"Saving..."`;

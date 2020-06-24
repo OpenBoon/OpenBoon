@@ -8,8 +8,6 @@ import Form from '../Form'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import Combobox from '../Combobox'
 
-import FaceLabelingFormSave from './FormSave'
-
 import { onSave } from './helpers'
 
 const BBOX_SIZE = 64
@@ -141,10 +139,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
           style={{ flex: 1 }}
           isDisabled={!isChanged}
         >
-          <FaceLabelingFormSave
-            isChanged={isChanged}
-            isLoading={state.isLoading}
-          />
+          {state.isLoading ? 'Saving...' : <>{isChanged ? 'Save' : 'Saved'}</>}
         </Button>
       </div>
     </Form>
