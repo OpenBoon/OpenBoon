@@ -503,12 +503,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -581,12 +581,12 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -1503,12 +1503,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -1581,12 +1581,12 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -2406,12 +2406,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -2484,12 +2484,12 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -2693,6 +2693,17 @@ Array [
 .emotion-27 {
   height: 4px;
   width: 66%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-50 {
+  width: 0%;
+  border-top: 4px solid #73b61c;
+}
+
+.emotion-51 {
+  height: 4px;
+  width: 100%;
   border-top: 1px solid #3b3b3b;
 }
 
@@ -3032,10 +3043,10 @@ Array [
                     className="emotion-16"
                   >
                     <div
-                      className="emotion-26"
+                      className="emotion-50"
                     />
                     <div
-                      className="emotion-27"
+                      className="emotion-51"
                     />
                   </div>
                   <div
@@ -3045,7 +3056,7 @@ Array [
                       Zermatt
                     </div>
                     <div>
-                      1
+                      0
                     </div>
                   </div>
                 </div>
@@ -3562,12 +3573,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -3640,12 +3651,12 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -8352,12 +8363,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -8430,12 +8441,12 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -9323,12 +9334,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -9401,12 +9412,12 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -10226,12 +10237,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -10304,12 +10315,12 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }

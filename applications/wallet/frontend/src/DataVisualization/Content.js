@@ -56,6 +56,7 @@ const DataVisualizationContent = () => {
             display: 'flex',
             flexDirection: 'column',
             padding: spacing.normal,
+            overflow: 'auto',
           }}
         >
           <DataVisualizationActions
@@ -63,7 +64,9 @@ const DataVisualizationContent = () => {
             setIsCreating={setIsCreating}
           />
 
-          <Charts charts={charts} />
+          <div css={{ display: 'flex', flexWrap: 'wrap' }}>
+            <Charts charts={charts} />
+          </div>
         </div>
       )}
     </div>

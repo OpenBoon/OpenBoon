@@ -10,7 +10,7 @@ const aggregate = {
       { key: 'La Habana Vieja', docCount: 1 },
       { key: 'North Glendale', docCount: 1 },
       { key: 'Saalfelden am Steinernen Meer', docCount: 1 },
-      { key: 'Zermatt', docCount: 1 },
+      { key: 'Zermatt' },
     ],
   },
 }
