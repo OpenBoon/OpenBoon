@@ -2696,6 +2696,17 @@ Array [
   border-top: 1px solid #3b3b3b;
 }
 
+.emotion-50 {
+  width: 0%;
+  border-top: 4px solid #73b61c;
+}
+
+.emotion-51 {
+  height: 4px;
+  width: 100%;
+  border-top: 1px solid #3b3b3b;
+}
+
 <div
     className="emotion-60"
   >
@@ -3032,10 +3043,10 @@ Array [
                     className="emotion-16"
                   >
                     <div
-                      className="emotion-26"
+                      className="emotion-50"
                     />
                     <div
-                      className="emotion-27"
+                      className="emotion-51"
                     />
                   </div>
                   <div
@@ -3045,7 +3056,7 @@ Array [
                       Zermatt
                     </div>
                     <div>
-                      1
+                      0
                     </div>
                   </div>
                 </div>

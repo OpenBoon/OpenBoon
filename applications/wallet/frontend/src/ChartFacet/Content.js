@@ -172,7 +172,7 @@ const ChartFacetContent = ({ chart: { type, attribute } }) => {
         }}
       >
         <Button
-          aria-label="Add Filter"
+          aria-label="Add Field Filter"
           variant={VARIANTS.NEUTRAL}
           onClick={() => {
             dispatch({
