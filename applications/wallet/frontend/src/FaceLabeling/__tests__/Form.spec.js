@@ -1,10 +1,10 @@
 import TestRenderer from 'react-test-renderer'
-import FaceLabelingAutoSuggest from '../AutoSuggest'
+import FaceLabelingForm from '../Form'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 
-describe('<FaceLabelingAutoSuggest />', () => {
+describe('<FaceLabelingForm />', () => {
   it('should render with no data', () => {
     require('swr').__setMockUseSWRResponse({})
 
@@ -19,7 +19,7 @@ describe('<FaceLabelingAutoSuggest />', () => {
     ]
 
     const component = TestRenderer.create(
-      <FaceLabelingAutoSuggest
+      <FaceLabelingForm
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         predictions={predictions}

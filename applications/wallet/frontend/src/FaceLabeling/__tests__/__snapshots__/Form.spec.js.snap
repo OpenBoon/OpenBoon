@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FaceLabelingAutoSuggest /> should render with no data 1`] = `
+exports[`<FaceLabelingForm /> should render with no data 1`] = `
 .emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -275,6 +275,7 @@ exports[`<FaceLabelingAutoSuggest /> should render with no data 1`] = `
     />
     <button
       aria-disabled={true}
+      aria-label="Save"
       className="emotion-7"
       onClick={[Function]}
       type="button"

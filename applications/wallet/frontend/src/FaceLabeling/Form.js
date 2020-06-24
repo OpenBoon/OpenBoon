@@ -7,7 +7,7 @@ import { colors, spacing } from '../Styles'
 import Form from '../Form'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import Combobox from '../Combobox'
-import CheckmarkSvg from '../Icons/checkmark.svg'
+import FaceLabelingFormSave from './FormSave'
 
 import { onSave } from './helpers'
 
@@ -16,7 +16,6 @@ const BBOX_SIZE = 64
 const INITIAL_STATE = ({ labels }) => ({
   labels,
   isLoading: false,
-  isSaved: false,
   errors: { labels: {}, global: '' },
 })
 
@@ -24,7 +23,7 @@ const reducer = (state, action) => ({ ...state, ...action })
 
 let reloadKey = 0
 
-const FaceLabelingAutoSuggest = ({ projectId, assetId, predictions }) => {
+const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
   const initializedState = INITIAL_STATE({
     labels: predictions.reduce((acc, { simhash, label }) => {
       return { ...acc, [simhash]: label }
@@ -53,21 +52,6 @@ const FaceLabelingAutoSuggest = ({ projectId, assetId, predictions }) => {
 
   const isChanged = changedLabelsCount > 0
 
-  const getSaveButtonCopy = () => {
-    if (isChanged) {
-      return 'Save'
-    }
-    if (state.isSaved) {
-      return (
-        <div css={{ display: 'flex' }}>
-          <CheckmarkSvg width={20} />
-          <div>Saved</div>
-        </div>
-      )
-    }
-    return 'Saved'
-  }
-
   return (
     <Form
       style={{
@@ -82,7 +66,7 @@ const FaceLabelingAutoSuggest = ({ projectId, assetId, predictions }) => {
         {predictions.map(({ simhash, bbox, b64Image }) => {
           const originalValue = predictions.find((p) => p.simhash === simhash)
             .label
-          const isSaved = !isChanged || state.isSaved
+
           return (
             <div
               key={simhash}
@@ -116,7 +100,6 @@ const FaceLabelingAutoSuggest = ({ projectId, assetId, predictions }) => {
                       ...state.labels,
                       [simhash]: value,
                     },
-                    isSaved,
                   })
                 }}
                 hasError={state.errors.labels[simhash] !== undefined}
@@ -142,6 +125,7 @@ const FaceLabelingAutoSuggest = ({ projectId, assetId, predictions }) => {
         <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
         <Button
+          aria-label="Save"
           variant={BUTTON_VARIANTS.PRIMARY}
           onClick={() =>
             onSave({
@@ -156,14 +140,17 @@ const FaceLabelingAutoSuggest = ({ projectId, assetId, predictions }) => {
           style={{ flex: 1 }}
           isDisabled={!isChanged}
         >
-          {getSaveButtonCopy()}
+          <FaceLabelingFormSave
+            isChanged={isChanged}
+            isLoading={state.isLoading}
+          />
         </Button>
       </div>
     </Form>
   )
 }
 
-FaceLabelingAutoSuggest.propTypes = {
+FaceLabelingForm.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   predictions: PropTypes.arrayOf(
@@ -171,4 +158,4 @@ FaceLabelingAutoSuggest.propTypes = {
   ).isRequired,
 }
 
-export default FaceLabelingAutoSuggest
+export default FaceLabelingForm

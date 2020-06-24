@@ -64,6 +64,8 @@ describe('<FaceLabeling />', () => {
         .props.onChange({ value: 'Jane' })
     })
 
+    expect(component.toJSON()).toMatchSnapshot()
+
     act(() => {
       component.root
         .findByProps({ children: 'Cancel' })
@@ -78,8 +80,10 @@ describe('<FaceLabeling />', () => {
 
     act(() => {
       component.root
-        .findByProps({ children: 'Save' })
+        .findByProps({ 'aria-label': 'Save' })
         .props.onClick({ preventDefault: noop })
     })
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })
