@@ -11,6 +11,7 @@ export const formatUrl = (params = {}) => {
 }
 
 export const ACTIONS = {
+  ADD_VALUE: 'ADD_VALUE',
   ADD_FILTER: 'ADD_FILTER',
   ADD_FILTERS: 'ADD_FILTERS',
   UPDATE_FILTER: 'UPDATE_FILTER',
@@ -42,6 +43,43 @@ export const cleanup = ({ query }) => {
 
 export const dispatch = ({ type, payload }) => {
   switch (type) {
+    case ACTIONS.ADD_VALUE: {
+      const { pathname, projectId, filter, query: q } = payload
+
+      const filters = decode({ query: q })
+
+      const filterIndex = filters.findIndex(
+        ({ attribute }) => attribute === filter.attribute,
+      )
+
+      if (filterIndex === -1) {
+        dispatch({
+          type: ACTIONS.ADD_FILTER,
+          payload: {
+            pathname,
+            projectId,
+            filter,
+            query: q,
+          },
+        })
+
+        break
+      }
+
+      dispatch({
+        type: ACTIONS.UPDATE_FILTER,
+        payload: {
+          pathname,
+          projectId,
+          filters,
+          updatedFilter: filter,
+          filterIndex,
+        },
+      })
+
+      break
+    }
+
     case ACTIONS.ADD_FILTER: {
       const { pathname, projectId, filter, query: q } = payload
 

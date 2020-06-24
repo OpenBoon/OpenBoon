@@ -68,7 +68,7 @@ const MetadataPrettyMetricsBar = ({ pipeline }) => {
                 minWidth: MIN_WIDTH,
                 backgroundColor: PIPELINE_COLORS[colorIndex],
                 border: '2px solid transparent',
-                ':hover, :focus': {
+                ':hover, &.focus-visible:focus': {
                   position: 'relative',
                   height: HOVER_HEIGHT,
                   top: -2,

@@ -29,7 +29,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-0:hover,
-.emotion-0:focus {
+.emotion-0.focus-visible:focus {
   position: relative;
   height: 13px;
   top: -2px;
@@ -58,7 +58,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-1:hover,
-.emotion-1:focus {
+.emotion-1.focus-visible:focus {
   position: relative;
   height: 13px;
   top: -2px;
@@ -87,7 +87,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-2:hover,
-.emotion-2:focus {
+.emotion-2.focus-visible:focus {
   position: relative;
   height: 13px;
   top: -2px;
@@ -116,7 +116,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-3:hover,
-.emotion-3:focus {
+.emotion-3.focus-visible:focus {
   position: relative;
   height: 13px;
   top: -2px;
@@ -145,7 +145,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
 }
 
 .emotion-4:hover,
-.emotion-4:focus {
+.emotion-4.focus-visible:focus {
   position: relative;
   height: 13px;
   top: -2px;
