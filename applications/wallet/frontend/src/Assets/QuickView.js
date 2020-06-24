@@ -33,7 +33,13 @@ const AssetsQuickView = ({ assets, columnCount }) => {
       : {}
 
   const keydownHandler = (event) => {
-    const { code } = event
+    const {
+      code,
+      target: { tagName },
+    } = event
+
+    /* istanbul ignore next */
+    if (tagName === 'INPUT') return
 
     if (!selectedId) return
 

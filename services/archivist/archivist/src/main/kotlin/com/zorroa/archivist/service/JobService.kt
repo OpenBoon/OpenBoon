@@ -6,11 +6,9 @@ import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.JobId
-import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
-import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
@@ -41,7 +39,6 @@ import java.util.concurrent.TimeUnit
 
 interface JobService {
     fun create(spec: JobSpec): Job
-    fun create(spec: JobSpec, type: JobType): Job
     fun get(id: UUID, forClient: Boolean = false): Job
     fun getTask(id: UUID): Task
     fun getTasks(jobId: UUID): KPagedList<Task>
@@ -85,35 +82,17 @@ class JobServiceImpl @Autowired constructor(
     @Autowired
     private lateinit var credentialsService: CredentialsService
 
+    @Autowired
+    private lateinit var dependService: DependService
+
     override fun create(spec: JobSpec): Job {
-        if (spec.script != null) {
-            val type = if (spec.script?.type == null) {
-                JobType.Import
-            } else {
-                spec.script!!.type
-            }
-
-            return create(spec, type)
-        } else {
-            throw IllegalArgumentException("Cannot launch job without script to determine type")
-        }
-    }
-
-    override fun create(spec: JobSpec, type: JobType): Job {
         val user = getZmlpActor()
         if (spec.name == null) {
             val date = Date()
-            spec.name = "${type.name} job launched by ${user.projectId} on $date"
+            spec.name = "Job launched by ${user.projectId} on $date"
         }
 
-        /**
-         * Up the priority on export jobs to Interactive priority.
-         */
-        if (type == JobType.Export && spec.priority > JobPriority.Interactive) {
-            spec.priority = JobPriority.Interactive
-        }
-
-        val job = jobDao.create(spec, type)
+        val job = jobDao.create(spec)
 
         if (spec.replace) {
             /**
@@ -139,13 +118,13 @@ class JobServiceImpl @Autowired constructor(
             }
         }
 
-        spec.script?.let { script ->
-            // Execute may be empty
-            if (type == JobType.Import) {
-                script.setSettting("index", true)
-            }
-            script.execute = pipelineResolverService.resolveCustom(script.execute)
-            taskDao.create(job, TaskSpec(zpsTaskName(script), script))
+        spec.scripts?.forEach {
+            createTask(job, it)
+        }
+
+        spec.dependOnJobIds?.let {
+            // Might have to check status of job.
+            dependService.createDepend(job, it)
         }
 
         logger.event(
@@ -161,6 +140,17 @@ class JobServiceImpl @Autowired constructor(
         }
 
         return get(job.id)
+    }
+
+    fun createTask(job: Job, script: ZpsScript): Task {
+        script.execute = pipelineResolverService.resolveCustom(script.execute)
+        val task = taskDao.create(job, TaskSpec(zpsTaskName(script), script))
+
+        script.children?.forEach {
+            val childTask = createTask(job, it)
+            dependService.createDepend(task, listOf(childTask))
+        }
+        return task
     }
 
     override fun updateJob(job: Job, spec: JobUpdateSpec): Boolean {
@@ -275,8 +265,13 @@ class JobServiceImpl @Autowired constructor(
         val result = taskDao.setState(task, newState, oldState)
         if (result) {
             /**
-             * If the task finished, check and set the job to finished.
+             * If the task finished, resolve depends first.
+             * Then check to see if job is finished, otherwise
+             * the job will finish with waiting frames.
              */
+            if (newState.isSuccessState()) {
+                dependService.resolveDependsOnTask(task)
+            }
             if (newState.isFinishedState()) {
                 checkAndSetJobFinished(task)
             }
@@ -346,7 +341,10 @@ class JobServiceImpl @Autowired constructor(
             } else {
                 JobState.Success
             }
-            return setJobState(job, newState, JobState.InProgress)
+            if (setJobState(job, newState, JobState.InProgress)) {
+                dependService.resolveDependsOnJob(job)
+                return true
+            }
         }
         return false
     }
