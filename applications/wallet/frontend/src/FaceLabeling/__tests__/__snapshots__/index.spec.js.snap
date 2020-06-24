@@ -394,11 +394,12 @@ Array [
       />
       <button
         aria-disabled={true}
-        aria-label="Save"
         className="emotion-7"
         onClick={[Function]}
         type="button"
-      />
+      >
+        Saved
+      </button>
     </div>
   </form>,
 ]
@@ -770,11 +771,12 @@ Array [
         className="emotion-6"
       />
       <button
-        aria-label="Save"
         className="emotion-7"
         onClick={[Function]}
         type="button"
-      />
+      >
+        Save
+      </button>
     </div>
   </form>,
 ]
@@ -1146,11 +1148,12 @@ Array [
         className="emotion-6"
       />
       <button
-        aria-label="Save"
         className="emotion-7"
         onClick={[Function]}
         type="button"
-      />
+      >
+        Save
+      </button>
     </div>
   </form>,
 ]

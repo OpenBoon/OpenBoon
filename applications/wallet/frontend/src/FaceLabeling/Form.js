@@ -125,7 +125,6 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
         <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
         <Button
-          aria-label="Save"
           variant={BUTTON_VARIANTS.PRIMARY}
           onClick={() =>
             onSave({
@@ -140,7 +139,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
           style={{ flex: 1 }}
           isDisabled={!isChanged || isLoading}
         >
-          <>{getSaveButtonCopy({ isChanged, isLoading })}</>
+          {getSaveButtonCopy({ isChanged, isLoading })}
         </Button>
       </div>
     </Form>

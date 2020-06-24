@@ -9,8 +9,6 @@ const ASSET_ID = asset.id
 
 const noop = () => () => {}
 
-jest.mock('../helpers')
-
 describe('<FaceLabeling />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({
@@ -34,7 +32,7 @@ describe('<FaceLabeling />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render selected asset with predictions', () => {
+  it('should render selected asset with predictions', async () => {
     require('swr').__setMockUseSWRResponse({
       data: {
         ...asset,
@@ -78,9 +76,9 @@ describe('<FaceLabeling />', () => {
         .props.onChange({ value: 'Jane' })
     })
 
-    act(() => {
+    await act(async () => {
       component.root
-        .findByProps({ 'aria-label': 'Save' })
+        .findByProps({ children: 'Save' })
         .props.onClick({ preventDefault: noop })
     })
 
