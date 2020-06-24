@@ -114,7 +114,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
           variant={BUTTON_VARIANTS.SECONDARY}
           onClick={() => {
             reloadKey += 1
-            dispatch({ ...initializedState, isSaved: state.isSaved })
+            dispatch(initializedState)
           }}
           style={{ flex: 1 }}
           isDisabled={!isChanged}
