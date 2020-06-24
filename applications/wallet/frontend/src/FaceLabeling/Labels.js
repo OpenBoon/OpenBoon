@@ -4,6 +4,7 @@ import useSWR from 'swr'
 import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+
 import FaceLabelingForm from './Form'
 
 const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {

@@ -1,4 +1,5 @@
 import TestRenderer from 'react-test-renderer'
+
 import FaceLabelingFormSave from '../FormSave'
 
 describe('<FaceLabelingFormSave />', () => {
