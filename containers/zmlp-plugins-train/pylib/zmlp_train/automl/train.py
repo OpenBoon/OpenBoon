@@ -6,7 +6,7 @@ import backoff
 from google.api_core.exceptions import ResourceExhausted
 from google.cloud import automl_v1beta1 as automl
 
-from zmlpsdk import Argument, AssetProcessor, file_storage, cloud
+from zmlpsdk import Argument, AssetProcessor, file_storage
 
 logging.basicConfig()
 
