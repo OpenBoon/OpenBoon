@@ -52,6 +52,6 @@ class MembershipAdmin(ModelAdmin):
         obj.save()
 
     def delete_model(self, request, obj):
+        """When deleting a Membership the ZMLP API key associated with it is deleted too."""
         client = get_zmlp_superuser_client(request.user, project_id=str(obj.project.id))
         obj.delete_and_sync_with_zmlp(client)
-

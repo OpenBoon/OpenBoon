@@ -12,11 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, GenericViewSet
 from zmlp import ZmlpClient
-from zmlp.client import ZmlpNotFoundException
 
-from roles.utils import get_permissions_for_roles
-from wallet.utils import convert_base64_to_json
-from apikeys.utils import create_zmlp_api_key
 from projects.clients import ZviClient
 from projects.models import Membership, Project
 from projects.permissions import ManagerUserPermissions
@@ -610,6 +606,3 @@ class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         # Serialize the Resulting user like the Detail endpoint
         serializer = self.get_serializer(user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-
-
-
