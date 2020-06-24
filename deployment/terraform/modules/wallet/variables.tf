@@ -67,3 +67,7 @@ variable "browsable" {
   default = "false"
 }
 
+variable "superadmin" {
+  default = "false"
+}
+

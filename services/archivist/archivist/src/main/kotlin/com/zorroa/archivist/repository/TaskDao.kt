@@ -82,7 +82,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             ps.setLong(5, time)
             ps.setLong(6, time)
             ps.setLong(7, time)
-            ps.setString(8, Json.serializeToString(spec.script, "{}"))
+            ps.setString(8, Json.serializeToString(spec.script?.copyWithoutChildren(), "{}"))
             ps.setInt(9, 0)
             ps
         }

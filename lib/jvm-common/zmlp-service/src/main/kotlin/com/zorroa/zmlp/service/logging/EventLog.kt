@@ -39,7 +39,8 @@ enum class LogAction {
     SIGN_FOR_WRITE,
     SIGN_FOR_READ,
     ENABLE,
-    DISABLE
+    DISABLE,
+    RESOLVE
 }
 
 /**
@@ -65,7 +66,8 @@ enum class LogObject {
     DATASET,
     CLUSTER_SNAPSHOT,
     CLUSTER_SNAPSHOT_POLICY,
-    CLUSTER_REPOSITORY
+    CLUSTER_REPOSITORY,
+    DEPEND
 }
 
 /**

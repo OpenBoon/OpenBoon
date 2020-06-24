@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.DataSet
 import com.zorroa.archivist.domain.DataSetSpec
 import com.zorroa.archivist.domain.DataSetType
 import com.zorroa.archivist.domain.JobState
-import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.ModOpType
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelFilter
@@ -65,7 +64,6 @@ class ModelServiceTests : AbstractTest() {
         val job = modelService.trainModel(model1, ModelTrainingArgs())
 
         assertEquals(model1.trainingJobName, job.name)
-        assertEquals(JobType.Batch, job.type)
         assertEquals(JobState.InProgress, job.state)
         assertEquals(1, job.priority)
     }

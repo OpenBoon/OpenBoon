@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { colors, spacing } from '../Styles'
 
-import Card from '../Card'
+import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 import Button, { VARIANTS } from '../Button'
 import Bouncer, { ROLES } from '../Bouncer'
 
@@ -33,6 +33,7 @@ const ProjectCards = () => {
       }}
     >
       <Card
+        variant={CARD_VARIANTS.LIGHT}
         header=""
         content={
           <>
@@ -76,6 +77,7 @@ const ProjectCards = () => {
 
       <Bouncer role={ROLES.API_Keys}>
         <Card
+          variant={CARD_VARIANTS.LIGHT}
           header={
             <h3>
               <KeySvg width={20} aria-hidden color={colors.structure.zinc} />

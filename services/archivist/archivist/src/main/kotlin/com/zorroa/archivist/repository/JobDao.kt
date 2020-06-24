@@ -8,7 +8,6 @@ import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
-import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
@@ -25,7 +24,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 interface JobDao {
-    fun create(spec: JobSpec, type: JobType): Job
+    fun create(spec: JobSpec): Job
     fun update(job: JobId, update: JobUpdateSpec): Boolean
     fun get(id: UUID, forClient: Boolean = false): Job
     fun setState(job: JobId, newState: JobState, oldState: JobState?): Boolean
@@ -44,7 +43,7 @@ interface JobDao {
 @Repository
 class JobDaoImpl : AbstractDao(), JobDao {
 
-    override fun create(spec: JobSpec, type: JobType): Job {
+    override fun create(spec: JobSpec): Job {
         if (spec.name == null) {
             throw IllegalArgumentException("The job name cannot be null.")
         }
@@ -67,16 +66,15 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps.setObject(3, spec.dataSourceId)
             ps.setString(4, spec.name)
             ps.setInt(5, JobState.InProgress.ordinal)
-            ps.setInt(6, type.ordinal)
+            ps.setLong(6, time)
             ps.setLong(7, time)
-            ps.setLong(8, time)
+            ps.setLong(8, -1)
             ps.setLong(9, -1)
-            ps.setLong(10, -1)
-            ps.setString(11, Json.serializeToString(spec.args, "{}"))
-            ps.setString(12, Json.serializeToString(spec.env, "{}"))
-            ps.setInt(13, spec.priority)
-            ps.setBoolean(14, spec.paused)
-            ps.setLong(15, pauseUntil)
+            ps.setString(10, Json.serializeToString(spec.args, "{}"))
+            ps.setString(11, Json.serializeToString(spec.env, "{}"))
+            ps.setInt(12, spec.priority)
+            ps.setBoolean(13, spec.paused)
+            ps.setLong(14, pauseUntil)
             ps
         }
 
@@ -194,7 +192,8 @@ class JobDaoImpl : AbstractDao(), JobDao {
                     TaskState.Success to rs.getInt("int_task_state_2"),
                     TaskState.Failure to rs.getInt("int_task_state_3"),
                     TaskState.Skipped to rs.getInt("int_task_state_4"),
-                    TaskState.Queued to rs.getInt("int_task_state_5")
+                    TaskState.Queued to rs.getInt("int_task_state_5"),
+                    TaskState.Depend to rs.getInt("int_task_state_6")
                 )
                 TaskStateCounts(map, rs.getInt("int_task_total_count"))
             },
@@ -285,7 +284,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 rs.getObject("pk_project") as UUID,
                 rs.getObject("pk_datasource") as UUID?,
                 rs.getString("str_name"),
-                JobType.values()[rs.getInt("int_type")],
                 state,
                 null,
                 null,
@@ -350,7 +348,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
             "pk_datasource",
             "str_name",
             "int_state",
-            "int_type",
             "time_created",
             "time_modified",
             "time_started",
@@ -370,6 +367,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "job_count.int_task_state_3," +
                 "job_count.int_task_state_4," +
                 "job_count.int_task_state_5, " +
+                "job_count.int_task_state_6, " +
                 "job_count.int_task_total_count " +
                 "FROM " +
                 "job_count " +

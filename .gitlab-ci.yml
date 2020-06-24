@@ -437,6 +437,7 @@ zmlp-dockerhub-build-push-prod:
     - docker pull -q zmlp/jvm-common:${SOURCE_TAG}
     - docker pull -q zmlp/ml-bbq:${SOURCE_TAG}
     - docker pull -q zmlp/plugins-train:${SOURCE_TAG}
+    - docker pull -q zmlp/wallet:${SOURCE_TAG}
     - docker tag zmlp/archivist:${SOURCE_TAG} zmlp/archivist:${DOCKER_TAG}
     - docker tag zmlp/officer:${SOURCE_TAG} zmlp/officer:${DOCKER_TAG}
     - docker tag zmlp/elasticsearch:${SOURCE_TAG} zmlp/elasticsearch:${DOCKER_TAG}
@@ -454,6 +455,7 @@ zmlp-dockerhub-build-push-prod:
     - docker tag zmlp/jvm-common:${SOURCE_TAG} zmlp/jvm-common:${DOCKER_TAG}
     - docker tag zmlp/ml-bbq:${SOURCE_TAG} zmlp/ml-bbq:${DOCKER_TAG}
     - docker tag zmlp/plugins-train:${SOURCE_TAG} zmlp/plugins-train:${DOCKER_TAG}
+    - docker tag zmlp/wallet:${SOURCE_TAG} zmlp/wallet:${DOCKER_TAG}
     - docker push zmlp/archivist:${DOCKER_TAG}
     - docker push zmlp/officer:${DOCKER_TAG}
     - docker push zmlp/elasticsearch:${DOCKER_TAG}
@@ -471,6 +473,7 @@ zmlp-dockerhub-build-push-prod:
     - docker push zmlp/jvm-common:${DOCKER_TAG}
     - docker push zmlp/ml-bbq:${DOCKER_TAG}
     - docker push zmlp/plugins-train:${DOCKER_TAG}
+    - docker push zmlp/wallet:${DOCKER_TAG}
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
       when: manual

@@ -18,6 +18,7 @@ import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.CredentialsService
 import com.zorroa.zmlp.util.Json
@@ -49,7 +50,7 @@ class JobControllerTests : MockMvcTest() {
     fun init() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -76,7 +77,7 @@ class JobControllerTests : MockMvcTest() {
     fun testCreate() {
         val spec = JobSpec(
             "test_job_2",
-            emptyZpsScript("test"),
+            emptyZpsScripts("test"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -191,7 +192,7 @@ class JobControllerTests : MockMvcTest() {
 
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -255,7 +256,7 @@ class JobControllerTests : MockMvcTest() {
     private fun jobSpec(name: String): JobSpec {
         return JobSpec(
             "${name}_job",
-            emptyZpsScript("${name}_script"),
+            emptyZpsScripts("${name}_script"),
             args = mutableMapOf("${name}_arg" to 1),
             env = mutableMapOf("${name}_env_var" to "${name}_env_value")
         )
@@ -272,7 +273,7 @@ class JobControllerTests : MockMvcTest() {
 
         val spec2 = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar"),
             credentials = setOf("test")
@@ -298,5 +299,29 @@ class JobControllerTests : MockMvcTest() {
                 )
             )
             .andReturn()
+    }
+
+    @Test
+    fun testDropDepends() {
+
+        authenticate()
+        val spec = JobSpec(
+            "test_job_3",
+            emptyZpsScripts("test"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+
+        val job1 = jobService.create(spec)
+        spec.dependOnJobIds = listOf(job1.id)
+        val job2 = jobService.create(spec)
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/jobs/${job2.id}/_drop_depends")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.dropped", CoreMatchers.equalTo(1)))
     }
 }

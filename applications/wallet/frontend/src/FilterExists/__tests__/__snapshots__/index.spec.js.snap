@@ -193,12 +193,12 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -271,12 +271,12 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -791,12 +791,12 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -869,12 +869,12 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }

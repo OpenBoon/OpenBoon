@@ -33,7 +33,7 @@ const FilterText = ({
 
   return (
     <Accordion
-      cacheKey={`FilterText.${attribute}.${filterIndex}`}
+      cacheKey={`FilterText.${attribute}`}
       variant={ACCORDION_VARIANTS.FILTER}
       title={<FilterTitle filter={filter} />}
       actions={

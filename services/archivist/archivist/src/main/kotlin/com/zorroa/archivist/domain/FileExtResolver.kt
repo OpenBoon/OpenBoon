@@ -1,21 +1,60 @@
 package com.zorroa.archivist.domain
 
 import org.apache.tika.Tika
-import java.lang.IllegalArgumentException
 
 /**
  * An enum class to define media groups.
  */
-enum class SupportedMedia {
-    Images,
-    Video,
-    Documents
+enum class FileType(val extensions: Set<String>) {
+    Images(FileExtResolver.image),
+    Videos(FileExtResolver.video),
+    Documents(FileExtResolver.doc);
+
+    companion object {
+        fun allTypes() = listOf(Images, Videos, Documents)
+
+        fun fromArray(types: List<String>): List<FileType> {
+            val result = types.mapNotNull {
+                try {
+                    valueOf(it)
+                } catch (e: Exception) {
+                    when (it) {
+                        "video" -> {
+                            Videos
+                        }
+                        in FileExtResolver.image -> {
+                            Images
+                        }
+                        in FileExtResolver.video -> {
+                            Videos
+                        }
+                        in FileExtResolver.doc -> {
+                            Documents
+                        }
+                        else -> {
+                            null
+                        }
+                    }
+                }
+            }
+
+            return if (result.isEmpty()) {
+                allTypes()
+            } else {
+                result.toSortedSet().toList()
+            }
+        }
+
+        fun fromString(types: String): List<FileType> {
+            return fromArray(types.split(','))
+        }
+    }
 }
 
 /**
  * A singleton object for supported file types.
  */
-object FileTypes {
+object FileExtResolver {
 
     val tika = Tika()
 
@@ -73,25 +112,25 @@ object FileTypes {
         return (ext in image || ext in video || ext in doc)
     }
 
-    fun resolve(types: Collection<String>?): List<String> {
+    /**
+     * Resolves List<FileType> into file extensions.
+     */
+    fun resolve(types: List<FileType>): List<String> {
         if (types.isNullOrEmpty()) {
             return all
         }
 
         val result = mutableListOf<String>()
         for (type in types) {
-            when {
-                type == "images" -> {
+            when (type) {
+                FileType.Images -> {
                     result.addAll(image)
                 }
-                type == "videos" -> {
+                FileType.Videos -> {
                     result.addAll(video)
                 }
-                type == "documents" -> {
+                FileType.Documents -> {
                     result.addAll(doc)
-                }
-                isSupported(type) -> {
-                    result.add(type)
                 }
                 else -> {
                     throw IllegalArgumentException("Invalid file type: $type")
