@@ -13,7 +13,7 @@ import Button, { VARIANTS } from '../Button'
 import { openContactForm } from '../Zendesk/helpers'
 
 const SIZE = 28
-const CHEVRON_WIDTH = 20
+const ICON_SIZE = 20
 
 const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
   return (
@@ -62,7 +62,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                 }`}
               </div>
               <ChevronSvg
-                width={CHEVRON_WIDTH}
+                width={ICON_SIZE}
                 color={colors.structure.steel}
                 css={{
                   marginLeft: spacing.base,

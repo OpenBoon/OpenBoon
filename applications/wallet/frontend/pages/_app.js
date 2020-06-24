@@ -4,6 +4,7 @@ import getConfig from 'next/config'
 import * as Sentry from '@sentry/browser'
 import { Integrations as ApmIntegrations } from '@sentry/apm'
 import 'focus-visible'
+import '@reach/combobox/styles.css'
 
 import User from '../src/User'
 import Authentication from '../src/Authentication'

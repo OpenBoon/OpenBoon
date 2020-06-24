@@ -427,7 +427,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
 `;
 
 exports[`<DataVisualization /> should render properly 2`] = `
-.emotion-12 {
+.emotion-13 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -446,7 +446,7 @@ exports[`<DataVisualization /> should render properly 2`] = `
   flex-direction: column;
 }
 
-.emotion-11 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -535,7 +535,7 @@ exports[`<DataVisualization /> should render properly 2`] = `
   background-color: #252525;
 }
 
-.emotion-10 {
+.emotion-11 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -548,7 +548,7 @@ exports[`<DataVisualization /> should render properly 2`] = `
   flex-direction: column;
 }
 
-.emotion-9 {
+.emotion-10 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -560,6 +560,7 @@ exports[`<DataVisualization /> should render properly 2`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   padding: 16px;
+  overflow: auto;
 }
 
 .emotion-8 {
@@ -707,11 +708,21 @@ exports[`<DataVisualization /> should render properly 2`] = `
   background-color: #808080;
 }
 
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
 <div
-  className="emotion-12"
+  className="emotion-13"
 >
   <div
-    className="emotion-11"
+    className="emotion-12"
   >
     <div
       className="emotion-3"
@@ -738,13 +749,13 @@ exports[`<DataVisualization /> should render properly 2`] = `
       </div>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-11"
     >
       <VisualizerNavigation
         itemCount={574}
       />
       <div
-        className="emotion-9"
+        className="emotion-10"
       >
         <div
           className="emotion-8"
@@ -777,9 +788,9 @@ exports[`<DataVisualization /> should render properly 2`] = `
             Delete All
           </button>
         </div>
-        <div>
-          [{"type":"FACET"}]
-        </div>
+        <div
+          className="emotion-9"
+        />
       </div>
     </div>
   </div>

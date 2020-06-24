@@ -72,7 +72,6 @@ const taskScript = {
     },
   ],
   globalArgs: {},
-  type: 'Import',
   settings: {
     fileTypes: [
       'bmp',

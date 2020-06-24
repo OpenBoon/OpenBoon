@@ -14,7 +14,7 @@ import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.Provider
-import com.zorroa.archivist.domain.SupportedMedia
+import com.zorroa.archivist.domain.FileType
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
@@ -49,7 +49,7 @@ class PipelineControllerTests : MockMvcTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.SET_ARGS,

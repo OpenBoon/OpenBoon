@@ -5,10 +5,11 @@ import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
+import com.zorroa.archivist.domain.FileType
 
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
-import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,7 +40,7 @@ class DataSourceServiceTests : AbstractTest() {
     val spec = DataSourceSpec(
         "dev-data",
         "gs://zorroa-dev-data",
-        fileTypes = listOf("jpg")
+        fileTypes = FileType.allTypes()
     )
 
     @Test
@@ -56,7 +57,7 @@ class DataSourceServiceTests : AbstractTest() {
         val spec2 = DataSourceSpec(
             "dev-data",
             "gs://zorroa-dev-data",
-            fileTypes = listOf("jpg"),
+            fileTypes = FileType.allTypes(),
             modules = setOf("zvi-object-detection")
         )
 
@@ -73,7 +74,7 @@ class DataSourceServiceTests : AbstractTest() {
         val spec2 = DataSourceSpec(
             "dev-data",
             "gs://zorroa-dev-data",
-            fileTypes = listOf("jpg"),
+            fileTypes = FileType.allTypes(),
             credentials = setOf("test")
         )
 
@@ -90,7 +91,7 @@ class DataSourceServiceTests : AbstractTest() {
         val update = DataSourceUpdate(
             "cats",
             "gs://foo/bar",
-            listOf("jpg"),
+            listOf("images", "videos", "documents"),
             setOf(),
             setOf()
         )
@@ -98,7 +99,7 @@ class DataSourceServiceTests : AbstractTest() {
 
         val ds2 = dataSourceService.get(ds.id)
         assertEquals(update.name, ds2.name)
-        assertEquals(update.fileTypes, ds2.fileTypes)
+        assertEquals(FileType.fromArray(update.fileTypes), ds2.fileTypes)
         assertEquals(update.uri, ds2.uri)
     }
 
@@ -110,7 +111,7 @@ class DataSourceServiceTests : AbstractTest() {
         val update = DataSourceUpdate(
             "cats",
             "gs://foo/bar",
-            listOf("jpg"),
+            listOf("images", "videos", "documents"),
             setOf(),
             setOf("zvi-object-detection")
         )
@@ -118,7 +119,7 @@ class DataSourceServiceTests : AbstractTest() {
 
         val ds2 = dataSourceService.get(ds.id)
         assertEquals(update.name, ds2.name)
-        assertEquals(update.fileTypes, ds2.fileTypes)
+        assertEquals(FileType.fromArray(update.fileTypes), ds2.fileTypes)
         assertEquals(update.uri, ds2.uri)
         assertEquals(1, ds2.modules.size)
         assertEquals(1, jdbc.queryForObject("SELECT COUNT(1) FROM x_module_datasource", Int::class.java))
@@ -137,7 +138,7 @@ class DataSourceServiceTests : AbstractTest() {
         val update = DataSourceUpdate(
             "cats",
             "gs://foo/bar",
-            listOf("jpg"),
+            listOf("images", "videos", "documents"),
             setOf(creds.name),
             setOf()
         )
@@ -145,7 +146,7 @@ class DataSourceServiceTests : AbstractTest() {
 
         val ds2 = dataSourceService.get(ds.id)
         assertEquals(update.name, ds2.name)
-        assertEquals(update.fileTypes, ds2.fileTypes)
+        assertEquals(FileType.fromArray(update.fileTypes), ds2.fileTypes)
         assertEquals(update.uri, ds2.uri)
 
         val credsIds = jdbc.queryForList(
@@ -172,7 +173,7 @@ class DataSourceServiceTests : AbstractTest() {
         val ds = dataSourceService.create(spec)
         val jspec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             dataSourceId = ds.id,
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")

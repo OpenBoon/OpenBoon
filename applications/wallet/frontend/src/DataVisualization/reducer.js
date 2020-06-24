@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 import FacetSvg from '../Icons/facet.svg'
 import RangeSvg from '../Icons/range.svg'
 
@@ -5,14 +7,14 @@ const ICON_SIZE = 22
 
 export const TYPES = [
   {
-    type: 'FACET',
+    type: 'facet',
     icon: <FacetSvg width={ICON_SIZE} />,
     name: 'Facet',
     legend:
       'Shows the range of values and the number of each for one for a selected field.',
   },
   {
-    type: 'RANGE',
+    type: 'range',
     icon: <RangeSvg width={ICON_SIZE} />,
     name: 'Range',
     legend:
@@ -28,7 +30,13 @@ export const ACTIONS = {
 export const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE':
-      return [...state, { type: action.payload.type }]
+      return [
+        {
+          id: uuidv4(),
+          type: action.payload.type,
+        },
+        ...state,
+      ]
 
     case 'CLEAR':
       return []

@@ -9,7 +9,7 @@ import { formatUrl } from '../Filters/helpers'
 import AssetsSvg from '../Icons/assets.svg'
 import ChartsSvg from '../Icons/charts.svg'
 
-const ICON_WIDTH = 20
+const ICON_SIZE = 20
 
 const VisualizerNavigation = ({ itemCount }) => {
   const {
@@ -66,7 +66,7 @@ const VisualizerNavigation = ({ itemCount }) => {
                   : colors.structure.steel,
             }}
           >
-            <AssetsSvg width={ICON_WIDTH} aria-hidden /> Assets
+            <AssetsSvg width={ICON_SIZE} aria-hidden /> Assets
           </a>
         </Link>
 
@@ -96,7 +96,7 @@ const VisualizerNavigation = ({ itemCount }) => {
                   : colors.structure.steel,
             }}
           >
-            <ChartsSvg width={ICON_WIDTH} aria-hidden /> Data Visualization
+            <ChartsSvg width={ICON_SIZE} aria-hidden /> Data Visualization
           </a>
         </Link>
       </div>

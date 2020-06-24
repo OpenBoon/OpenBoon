@@ -9,7 +9,6 @@ const jobs = {
       id: '82d5308b-67c2-1433-8fef-0a580a000956',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
-      type: 'Import',
       state: 'InProgress',
       assetCounts: {
         assetCreatedCount: 0,
@@ -42,7 +41,6 @@ const jobs = {
       id: '82d5308b-67c2-1433-8fef-0a580a000955',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
-      type: 'Import',
       state: 'Cancelled',
       assetCounts: {
         assetCreatedCount: 0,
@@ -75,7 +73,6 @@ const jobs = {
       id: '82d5308a-67c2-1433-8fef-0a580a000955',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
-      type: 'Import',
       state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,
@@ -108,7 +105,6 @@ const jobs = {
       id: '82d53089-67c2-1433-8fef-0a580a000955',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
-      type: 'Import',
       state: 'Archived',
       assetCounts: {
         assetCreatedCount: 0,
@@ -141,7 +137,6 @@ const jobs = {
       id: 'c0975970-62ef-1f81-83f8-0a580a000954',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test_officer',
-      type: 'Import',
       state: 'Failure',
       assetCounts: {
         assetCreatedCount: 0,
@@ -174,7 +169,6 @@ const jobs = {
       id: 'c097596f-62ef-1f81-83f8-0a580a000954',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test_officer',
-      type: 'Import',
       state: 'InProgress',
       assetCounts: {
         assetCreatedCount: 0,
@@ -207,7 +201,6 @@ const jobs = {
       id: '1585ca03-4db0-14d1-8edd-0a580a000926',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'flipbook_export_1',
-      type: 'Export',
       state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,
@@ -240,7 +233,6 @@ const jobs = {
       id: 'be47702d-cbd6-1cce-a096-0a580a000920',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'export_7_8_2019',
-      type: 'Export',
       state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,
@@ -273,7 +265,6 @@ const jobs = {
       id: 'be47702c-cbd6-1cce-a096-0a580a000920',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'export_7_8_2019___',
-      type: 'Export',
       state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,
@@ -306,7 +297,6 @@ const jobs = {
       id: 'acd91540-08c1-199f-b899-0a580a00091e',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'sdlc-testdata-import.json',
-      type: 'Import',
       state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,
@@ -339,7 +329,6 @@ const jobs = {
       id: 'acd9153f-08c1-199f-b899-0a580a00091e',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'sdlc-testdata-import.json',
-      type: 'Import',
       state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,

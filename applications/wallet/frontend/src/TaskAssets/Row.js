@@ -15,7 +15,7 @@ import ChevronSvg from '../Icons/chevron.svg'
 import TaskAssetsMetadata from './Metadata'
 
 const THUMBNAIL_SIZE = 100
-const CHEVRON_WIDTH = 20
+const ICON_SIZE = 20
 const MAX_HEIGHT = 600
 
 const TaskAssetsRow = ({
@@ -54,9 +54,7 @@ const TaskAssetsRow = ({
         }}
         onClick={toggle}
       >
-        <div css={{ width: CHEVRON_WIDTH * 3, textAlign: 'center' }}>
-          {index}
-        </div>
+        <div css={{ width: ICON_SIZE * 3, textAlign: 'center' }}>{index}</div>
 
         <div
           css={{
@@ -81,14 +79,14 @@ const TaskAssetsRow = ({
           {filename}
         </h4>
 
-        <div css={{ width: CHEVRON_WIDTH * 2, textAlign: 'center' }}>
+        <div css={{ width: ICON_SIZE * 2, textAlign: 'center' }}>
           <Button
             aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
             variant={BUTTON_VARIANTS.NEUTRAL}
             onClick={toggle}
           >
             <ChevronSvg
-              width={CHEVRON_WIDTH}
+              width={ICON_SIZE}
               color={colors.structure.steel}
               css={{
                 transform: isOpen ? 'rotate(-180deg)' : '',

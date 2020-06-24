@@ -14,7 +14,7 @@ import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.FileTypes
+import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
@@ -499,7 +499,6 @@ class AssetServiceImpl : AssetService {
             val newScript = ZpsScript(name, null, null, parentScript.execute, assetIds = assetIds)
 
             newScript.globalArgs = parentScript.globalArgs
-            newScript.type = parentScript.type
             newScript.settings = parentScript.settings
 
             val newTask = jobService.createTask(parentTask, TaskSpec(name, newScript))
@@ -671,7 +670,7 @@ class AssetServiceImpl : AssetService {
             asset.setAttr("source.filename", FileUtils.filename(spec.uri))
             asset.setAttr("source.extension", FileUtils.extension(spec.uri))
 
-            val mediaType = FileTypes.getMediaType(spec.uri)
+            val mediaType = FileExtResolver.getMediaType(spec.uri)
             asset.setAttr("source.mimetype", mediaType)
 
             asset.setAttr("system.projectId", projectId)

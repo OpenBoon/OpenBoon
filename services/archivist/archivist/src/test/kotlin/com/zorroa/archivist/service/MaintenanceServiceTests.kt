@@ -1,12 +1,12 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.domain.AnalystSpec
 import com.zorroa.archivist.domain.AnalystState
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
 import org.junit.Test
@@ -99,7 +99,7 @@ class MaintenanceServiceTests : AbstractTest() {
         ).count()
         val jspec = JobSpec(
             "test_job",
-            emptyZpsScript("test_script"),
+            emptyZpsScripts("test_script"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )

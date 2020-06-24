@@ -126,15 +126,9 @@ exports[`<FilterSimilarityContent /> should render a video properly 1`] = `
             1,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.01}
         values={
           Array [
@@ -273,15 +267,9 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
             1,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.01}
         values={
           Array [
@@ -420,15 +408,9 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
             1,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.01}
         values={
           Array [
@@ -567,15 +549,9 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
             1,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.01}
         values={
           Array [
@@ -714,15 +690,9 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
             1,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.01}
         values={
           Array [
@@ -861,15 +831,9 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
             1,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.01}
         values={
           Array [

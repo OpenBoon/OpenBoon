@@ -3,14 +3,14 @@ import Link from 'next/link'
 
 import { typography, colors, spacing, constants } from '../Styles'
 
-import Card from '../Card'
+import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 import Button, { VARIANTS } from '../Button'
 
 import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'
 import VisualizerSvg from '../Icons/visualizer.svg'
 
-const ICON_WIDTH = 20
+const ICON_SIZE = 20
 
 const STEPS = [
   {
@@ -18,7 +18,7 @@ const STEPS = [
     title: 'Create a Data Source',
     module: (
       <>
-        <DataSourcesSvg width={ICON_WIDTH} aria-hidden />
+        <DataSourcesSvg width={ICON_SIZE} aria-hidden />
         Data Sources
       </>
     ),
@@ -34,7 +34,7 @@ const STEPS = [
     title: 'Review Job Progress',
     module: (
       <>
-        <JobQueueSvg width={ICON_WIDTH} aria-hidden />
+        <JobQueueSvg width={ICON_SIZE} aria-hidden />
         Job Queue
       </>
     ),
@@ -50,7 +50,7 @@ const STEPS = [
     title: 'Inspect Your Dataset',
     module: (
       <>
-        <VisualizerSvg width={ICON_WIDTH} aria-hidden />
+        <VisualizerSvg width={ICON_SIZE} aria-hidden />
         Visualizer
       </>
     ),
@@ -66,6 +66,7 @@ const STEPS = [
 const ProjectGettingStarted = ({ projectId }) => {
   return (
     <Card
+      variant={CARD_VARIANTS.LIGHT}
       header="Getting Started"
       content={STEPS.map(({ step, title, module, content, cta, link }) => (
         <div

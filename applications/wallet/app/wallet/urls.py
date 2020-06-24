@@ -39,6 +39,7 @@ from registration.views import UserRegistrationView, UserConfirmationView, \
 from roles.views import RolesViewSet
 from searches.views import SearchViewSet, MetadataExportViewSet
 from subscriptions.views import SubscriptionViewSet
+from supportadmin.admin import support_admin_site
 from wallet import views as wallet_views
 from wallet.views import MeView
 from wallet.views import WalletAPIRootView, LoginView, LogoutView
@@ -102,7 +103,7 @@ BROWSABLE_API_URLS = [
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', support_admin_site.urls),
     path('api/v1/login/', LoginView.as_view(), name='api-login'),
     path('api/v1/', include(router.urls)),
     path('api/v1/', include(users_router.urls)),
@@ -116,3 +117,6 @@ urlpatterns = [
 ]
 urlpatterns += [i[1] for i in BROWSABLE_API_URLS]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.SUPERADMIN:
+    urlpatterns.append(path('superadmin/', admin.sites.urls))
