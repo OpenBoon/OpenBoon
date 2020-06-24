@@ -903,7 +903,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="images"
+            value="Images"
           />
           <div
             className="emotion-24"
@@ -950,7 +950,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="documents"
+            value="Documents"
           />
           <div
             className="emotion-24"
@@ -997,7 +997,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="videos"
+            value="Videos"
           />
           <div
             className="emotion-24"
@@ -2649,7 +2649,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="images"
+            value="Images"
           />
           <div
             className="emotion-42"
@@ -2696,7 +2696,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="documents"
+            value="Documents"
           />
           <div
             className="emotion-42"
@@ -2743,7 +2743,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="videos"
+            value="Videos"
           />
           <div
             className="emotion-42"
@@ -4362,7 +4362,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="images"
+            value="Images"
           />
           <div
             className="emotion-36"
@@ -4409,7 +4409,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="documents"
+            value="Documents"
           />
           <div
             className="emotion-36"
@@ -4456,7 +4456,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="videos"
+            value="Videos"
           />
           <div
             className="emotion-36"
@@ -6070,7 +6070,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="images"
+            value="Images"
           />
           <div
             className="emotion-35"
@@ -6117,7 +6117,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="documents"
+            value="Documents"
           />
           <div
             className="emotion-35"
@@ -6164,7 +6164,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="videos"
+            value="Videos"
           />
           <div
             className="emotion-35"

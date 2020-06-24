@@ -33,7 +33,7 @@ const FilterLabelConfidence = ({
           filterIndex={filterIndex}
         />
       }
-      cacheKey={`FilterLabelConfidence.${filter.attribute}.${filterIndex}`}
+      cacheKey={`FilterLabelConfidence.${filter.attribute}`}
       isInitiallyOpen
       isResizeable
     >

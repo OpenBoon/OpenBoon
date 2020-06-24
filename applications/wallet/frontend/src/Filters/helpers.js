@@ -11,6 +11,8 @@ export const formatUrl = (params = {}) => {
 }
 
 export const ACTIONS = {
+  ADD_VALUE: 'ADD_VALUE',
+  ADD_FILTER: 'ADD_FILTER',
   ADD_FILTERS: 'ADD_FILTERS',
   UPDATE_FILTER: 'UPDATE_FILTER',
   APPLY_SIMILARITY: 'APPLY_SIMILARITY',
@@ -41,6 +43,67 @@ export const cleanup = ({ query }) => {
 
 export const dispatch = ({ type, payload }) => {
   switch (type) {
+    case ACTIONS.ADD_VALUE: {
+      const { pathname, projectId, filter, query: q } = payload
+
+      const filters = decode({ query: q })
+
+      const filterIndex = filters.findIndex(
+        ({ attribute }) => attribute === filter.attribute,
+      )
+
+      if (filterIndex === -1) {
+        dispatch({
+          type: ACTIONS.ADD_FILTER,
+          payload: {
+            pathname,
+            projectId,
+            filter,
+            query: q,
+          },
+        })
+
+        break
+      }
+
+      dispatch({
+        type: ACTIONS.UPDATE_FILTER,
+        payload: {
+          pathname,
+          projectId,
+          filters,
+          updatedFilter: filter,
+          filterIndex,
+        },
+      })
+
+      break
+    }
+
+    case ACTIONS.ADD_FILTER: {
+      const { pathname, projectId, filter, query: q } = payload
+
+      const filters = decode({ query: q })
+
+      const filterIndex = filters.findIndex(
+        ({ attribute }) => attribute === filter.attribute,
+      )
+
+      if (filterIndex > -1) break
+
+      const query = encode({ filters: [filter, ...filters] })
+
+      Router.push(
+        {
+          pathname,
+          query: { projectId, query },
+        },
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({ query })}`,
+      )
+
+      break
+    }
+
     case ACTIONS.ADD_FILTERS: {
       const { pathname, projectId, assetId, filters, newFilters } = payload
 
@@ -51,7 +114,10 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+          id: assetId,
+          query,
+        })}`,
       )
 
       break
@@ -80,7 +146,10 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+          id: assetId,
+          query,
+        })}`,
       )
 
       break
@@ -101,7 +170,10 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+          id: assetId,
+          query,
+        })}`,
       )
 
       break
@@ -110,16 +182,22 @@ export const dispatch = ({ type, payload }) => {
     case ACTIONS.APPLY_SIMILARITY: {
       const { pathname, projectId, assetId, selectedId, query: q } = payload
 
-      const similarityFilter = {
-        type: 'similarity',
-        attribute: 'analysis.zvi-image-similarity',
-        values: { ids: [assetId] },
-      }
-
       const filters = decode({ query: q })
+
       const similarityFilterIndex = filters.findIndex(
         (filter) => filter.type === 'similarity',
       )
+
+      const minScore =
+        similarityFilterIndex > -1
+          ? filters[similarityFilterIndex].values.minScore || 0.75
+          : 0.75
+
+      const similarityFilter = {
+        type: 'similarity',
+        attribute: 'analysis.zvi-image-similarity',
+        values: { ids: [assetId], minScore },
+      }
 
       const combinedFilters =
         similarityFilterIndex === -1
@@ -137,7 +215,10 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: selectedId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: selectedId, query })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+          id: selectedId,
+          query,
+        })}`,
       )
 
       break
@@ -151,7 +232,9 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+          id: assetId,
+        })}`,
       )
 
       break

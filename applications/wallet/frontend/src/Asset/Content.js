@@ -15,7 +15,7 @@ import TrashSvg from '../Icons/trash.svg'
 
 import AssetAsset from './Asset'
 
-const ICON_WIDTH = 20
+const ICON_SIZE = 20
 
 const AssetContent = () => {
   const {
@@ -92,12 +92,12 @@ const AssetContent = () => {
           {{
             metadata: {
               title: 'Asset Metadata',
-              icon: <InformationSvg width={ICON_WIDTH} aria-hidden />,
+              icon: <InformationSvg width={ICON_SIZE} aria-hidden />,
               content: <Metadata />,
             },
             delete: {
               title: 'Delete',
-              icon: <TrashSvg width={ICON_WIDTH} aria-hidden />,
+              icon: <TrashSvg width={ICON_SIZE} aria-hidden />,
               content: <AssetDelete />,
             },
           }}

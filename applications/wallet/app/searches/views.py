@@ -35,8 +35,10 @@ def search_asset_modifier(request, item):
     item['video_proxy_url'] = video_proxy_url
 
     # Cleanup
-    del(item['metadata']['files'])
-    del(item['metadata']['media'])
+    if 'files' in item['metadata']:
+        del(item['metadata']['files'])
+    if 'media' in item['metadata']:
+        del(item['metadata']['media'])
 
 
 class SearchViewSet(ConvertCamelToSnakeViewSetMixin,

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { colors, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
-import Card from '../Card'
+import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 
 import AccountUsagePlan from './UsagePlan'
 
@@ -16,6 +16,7 @@ const AccountCard = ({ projectId, name }) => {
 
   return (
     <Card
+      variant={CARD_VARIANTS.LIGHT}
       header={
         <div css={{ padding: spacing.normal }}>
           <h3 css={{ paddingBottom: spacing.base }}>Project: {name}</h3>

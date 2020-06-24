@@ -20,10 +20,8 @@ describe('<FaceLabeling />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render selected asset with no predictions', () => {
-    require('swr').__setMockUseSWRResponse({
-      data: { ...asset, 'zvi-face-detection': null },
-    })
+  it('should render selected asset with no data', () => {
+    require('swr').__setMockUseSWRResponse({})
 
     require('next/router').__setUseRouter({
       query: { id: ASSET_ID, projectId: PROJECT_ID },
@@ -38,19 +36,15 @@ describe('<FaceLabeling />', () => {
     require('swr').__setMockUseSWRResponse({
       data: {
         ...asset,
-        'zvi-face-detection': {
-          count: 3,
-          type: 'labels',
-          predictions: [
-            {
-              score: 0.999,
-              bbox: [0.38, 0.368, 0.484, 0.584],
-              label: 'face1',
-              simhash: 'MNONPMMKPLRLONLJMRLNM',
-              b64_image: 'data:image/png;base64',
-            },
-          ],
-        },
+        predictions: [
+          {
+            score: 0.999,
+            bbox: [0.38, 0.368, 0.484, 0.584],
+            label: 'face1',
+            simhash: 'MNONPMMKPLRLONLJMRLNM',
+            b64_image: 'data:image/png;base64',
+          },
+        ],
       },
     })
 
@@ -65,7 +59,7 @@ describe('<FaceLabeling />', () => {
     act(() => {
       component.root
         .findByProps({ id: 'MNONPMMKPLRLONLJMRLNM' })
-        .props.onChange({ target: { value: 'Jane' } })
+        .props.onChange({ value: 'Jane' })
     })
 
     act(() => {

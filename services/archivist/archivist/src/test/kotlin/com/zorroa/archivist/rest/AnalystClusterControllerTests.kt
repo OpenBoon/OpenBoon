@@ -13,7 +13,7 @@ import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.TaskExpandEvent
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStoppedEvent
-import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatchQueueManager
@@ -52,7 +52,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
     fun launchJob(): Job {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -359,7 +359,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
     fun testQueue() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )

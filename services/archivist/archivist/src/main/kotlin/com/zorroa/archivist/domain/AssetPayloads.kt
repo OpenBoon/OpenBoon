@@ -119,7 +119,16 @@ class ReprocessAssetSearchRequest(
     val modules: List<String>,
 
     @ApiModelProperty("The number of assets to run per batch.")
-    val batchSize: Int = 64
+    val batchSize: Int = 64,
+
+    @ApiModelProperty("A nane for the job")
+    val name: String? = null,
+
+    @ApiModelProperty("Set to true to kill a job with the same name")
+    val replace: Boolean = false,
+
+    @ApiModelProperty("The number of assets to run per batch.")
+    val dependOnJobIds: List<UUID>? = null
 )
 
 @ApiModel(

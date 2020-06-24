@@ -49,7 +49,7 @@ class DataSourceControllerTests : MockMvcTest() {
     @Test
     fun testUpdate() {
         val ds = dataSourceService.create(testSpec)
-        val update = DataSourceUpdate("spock", "gs://foo/bar", ds.fileTypes, setOf(), setOf())
+        val update = DataSourceUpdate("spock", "gs://foo/bar", listOf("images"), setOf(), setOf())
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/data-sources/${ds.id}")
                 .headers(admin())
