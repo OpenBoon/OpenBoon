@@ -31,7 +31,7 @@ describe('<DataSourcesEditForm />', () => {
         initialState={{
           name: dataSource.name,
           uri: dataSource.uri,
-          fileTypes: { video: true },
+          fileTypes: { Videos: true },
           modules: [MODULE.id],
           errors: { global: '' },
         }}
@@ -50,7 +50,7 @@ describe('<DataSourcesEditForm />', () => {
     // Select file type
     act(() => {
       component.root
-        .findByProps({ type: 'checkbox', value: 'images' })
+        .findByProps({ type: 'checkbox', value: 'Images' })
         .props.onClick()
     })
 
@@ -111,7 +111,7 @@ describe('<DataSourcesEditForm />', () => {
       body: JSON.stringify({
         name: 'My Updated Data Source',
         uri: 'gs://zorroa-dev-data/images',
-        fileTypes: ['video', 'images'],
+        fileTypes: ['Videos', 'Images'],
         modules: [MODULE.name, 'zvi-label-detection'],
       }),
     })
@@ -135,7 +135,7 @@ describe('<DataSourcesEditForm />', () => {
         initialState={{
           name: '',
           uri: dataSource.uri,
-          fileTypes: { video: true },
+          fileTypes: { Videos: true },
           modules: [MODULE.id],
           errors: { global: '' },
         }}

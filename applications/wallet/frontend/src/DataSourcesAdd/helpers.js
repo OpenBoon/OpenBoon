@@ -4,25 +4,22 @@ import { fetcher } from '../Fetch/helpers'
 
 export const FILE_TYPES = [
   {
-    value: 'images',
+    value: 'Images',
     label: 'Image Files',
     legend: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
     icon: '/icons/images.png',
-    identifier: 'jpg',
   },
   {
-    value: 'documents',
+    value: 'Documents',
     label: 'Documents (PDF & MS Office)',
     legend: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
     icon: '/icons/documents.png',
-    identifier: 'pdf',
   },
   {
-    value: 'videos',
+    value: 'Videos',
     label: 'Video Files',
     legend: 'MP4, M4V, MOV, MPG, MPEG, OGG',
     icon: '/icons/videos.png',
-    identifier: 'mp4',
   },
 ]
 
