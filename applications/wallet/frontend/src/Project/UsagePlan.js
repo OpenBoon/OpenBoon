@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { spacing, constants, typography } from '../Styles'
 
 import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
-import { capitalizeFirstLetter } from '../Metadata/helpers'
+import { capitalizeFirstLetter } from '../Text/helpers'
 
 const IMG_WIDTH = 32
 

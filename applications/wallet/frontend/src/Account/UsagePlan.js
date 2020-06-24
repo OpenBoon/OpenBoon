@@ -4,7 +4,7 @@ import subscriptionShape from '../Subscription/shape'
 
 import { constants, spacing, typography } from '../Styles'
 
-import { capitalizeFirstLetter } from '../Metadata/helpers'
+import { capitalizeFirstLetter } from '../Text/helpers'
 
 const IMG_WIDTH = 32
 

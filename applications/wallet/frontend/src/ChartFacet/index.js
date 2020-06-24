@@ -12,17 +12,7 @@ import ChartFacetContent from './Content'
 const ChartFacet = ({ chart, chartIndex, dispatch }) => {
   if (!chart.attribute) {
     return (
-      <Card
-        variant={CARD_VARIANTS.DARK}
-        header=""
-        content={
-          <ChartForm
-            chart={chart}
-            chartIndex={chartIndex}
-            dispatch={dispatch}
-          />
-        }
-      />
+      <ChartForm chart={chart} chartIndex={chartIndex} dispatch={dispatch} />
     )
   }
 

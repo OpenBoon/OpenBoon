@@ -8,7 +8,7 @@ import chartShape from '../Chart/shape'
 import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import { capitalizeFirstLetter } from '../Metadata/helpers'
+import { capitalizeFirstLetter } from '../Text/helpers'
 import { ACTIONS } from '../DataVisualization/reducer'
 
 import ChartFormOptions from './Options'
@@ -34,26 +34,6 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
       css={{
         display: 'flex',
         flexDirection: 'column',
-        label: {
-          fontWeight: typography.weight.medium,
-          paddingBottom: spacing.base,
-        },
-        select: {
-          padding: `${spacing.moderate}px ${spacing.base}px`,
-          backgroundColor: colors.structure.steel,
-          color: colors.structure.white,
-          borderRadius: constants.borderRadius.small,
-          border: 'none',
-          fontSize: typography.size.regular,
-          lineHeight: typography.height.regular,
-          paddingLeft: spacing.moderate,
-          MozAppearance: 'none',
-          WebkitAppearance: 'none',
-          backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+')`,
-          backgroundRepeat: `no-repeat, repeat`,
-          backgroundPosition: `right ${spacing.base}px top 50%`,
-          backgroundSize: ICON_SIZE,
-        },
       }}
     >
       <h2
@@ -68,12 +48,36 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
 
       <div css={{ height: spacing.comfy }} />
 
-      <label htmlFor="metadata-type-selection">Metadata Type</label>
+      <label
+        htmlFor="metadata-type-selection"
+        css={{
+          fontWeight: typography.weight.medium,
+          paddingBottom: spacing.base,
+        }}
+      >
+        Metadata Type
+      </label>
       <select
         id="metadata-type-selection"
         defaultValue={attribute}
         onChange={({ target: { value } }) => {
           setAttribute(value)
+        }}
+        css={{
+          padding: `${spacing.moderate}px ${spacing.base}px`,
+          backgroundColor: colors.structure.steel,
+          color: colors.structure.white,
+          borderRadius: constants.borderRadius.small,
+          border: 'none',
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
+          paddingLeft: spacing.moderate,
+          MozAppearance: 'none',
+          WebkitAppearance: 'none',
+          backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+')`,
+          backgroundRepeat: `no-repeat, repeat`,
+          backgroundPosition: `right ${spacing.base}px top 50%`,
+          backgroundSize: ICON_SIZE,
         }}
       >
         <option value="" disabled>
@@ -84,16 +88,19 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
 
       <div css={{ height: spacing.spacious }} />
 
-      <div css={{ display: 'flex', button: { flex: 1 } }}>
+      <div css={{ display: 'flex' }}>
         <Button
           variant={BUTTON_VARIANTS.SECONDARY}
           onClick={() =>
             dispatch({ type: ACTIONS.DELETE, payload: { chartIndex } })
           }
+          css={{ flex: 1 }}
         >
           Cancel
         </Button>
+
         <div css={{ width: spacing.base }} />
+
         <Button
           variant={BUTTON_VARIANTS.PRIMARY}
           isDisabled={!attribute}
@@ -106,6 +113,7 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
               },
             })
           }
+          css={{ flex: 1 }}
         >
           Save Visualization
         </Button>

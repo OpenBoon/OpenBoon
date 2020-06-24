@@ -4,19 +4,19 @@ describe('<DataVisualization /> reducer', () => {
   it('should UPDATE', () => {
     expect(
       JSON.stringify(
-        reducer([{ id: 1 }, { id: 2, type: 'facet' }, { id: 3 }], {
+        reducer([{ id: 'a' }, { id: 'b', type: 'facet' }, { id: 'c' }], {
           type: 'UPDATE',
           payload: {
-            updatedChart: { id: 2, type: 'facet', attribute: 'system.type' },
+            updatedChart: { id: 'b', type: 'facet', attribute: 'system.type' },
             chartIndex: 1,
           },
         }),
       ),
     ).toEqual(
       JSON.stringify([
-        { id: 1 },
-        { id: 2, type: 'facet', attribute: 'system.type' },
-        { id: 3 },
+        { id: 'a' },
+        { id: 'b', type: 'facet', attribute: 'system.type' },
+        { id: 'c' },
       ]),
     )
   })
@@ -24,14 +24,14 @@ describe('<DataVisualization /> reducer', () => {
   it('should DELETE', () => {
     expect(
       JSON.stringify(
-        reducer([{ id: 1 }, { id: 2, type: 'facet' }, { id: 3 }], {
+        reducer([{ id: 'a' }, { id: 'b', type: 'facet' }, { id: 'c' }], {
           type: 'DELETE',
           payload: {
             chartIndex: 1,
           },
         }),
       ),
-    ).toEqual(JSON.stringify([{ id: 1 }, { id: 3 }]))
+    ).toEqual(JSON.stringify([{ id: 'a' }, { id: 'c' }]))
   })
 
   it('should default', () => {

@@ -1,12 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ChartRange /> should not render without an attribute 1`] = `
-.emotion-10 {
-  padding-right: 32px;
-  padding-bottom: 32px;
-  width: 470px;
-}
-
 .emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -15,38 +9,24 @@ exports[`<ChartRange /> should not render without an attribute 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  background-color: #252525;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
-  border-radius: 2px;
-  padding: 16px;
 }
 
-.emotion-8 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
+.emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
 }
 
-.emotion-8 .Loading {
-  background-color: transparent;
-  box-shadow: none;
+.emotion-1 {
+  height: 24px;
 }
 
-.emotion-7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-7 label {
+.emotion-2 {
   font-weight: 500;
   padding-bottom: 8px;
 }
 
-.emotion-7 select {
+.emotion-3 {
   padding: 12px 8px;
   background-color: #808080;
   color: #ffffff;
@@ -63,90 +43,15 @@ exports[`<ChartRange /> should not render without an attribute 1`] = `
   background-size: 20px;
 }
 
-.emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-}
-
-.emotion-1 {
-  height: 24px;
-}
-
-.emotion-2 {
+.emotion-4 {
   height: 32px;
 }
 
-.emotion-6 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-6 button {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-3,
-.emotion-3:hover,
-.emotion-3:visited {
-  background-color: #808080;
-}
-
-.emotion-3:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-3[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-4 {
-  width: 8px;
 }
 
 .emotion-5 {
@@ -176,9 +81,12 @@ exports[`<ChartRange /> should not render without an attribute 1`] = `
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: not-allowed;
+  cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-5:hover {
@@ -193,82 +101,134 @@ exports[`<ChartRange /> should not render without an attribute 1`] = `
 .emotion-5,
 .emotion-5:hover,
 .emotion-5:visited {
-  background-color: #73b61c;
+  background-color: #808080;
 }
 
 .emotion-5:hover {
-  background-color: #96c955;
+  background-color: #b3b3b3;
 }
 
 .emotion-5[aria-disabled=true] {
   background-color: #808080;
 }
 
+.emotion-6 {
+  width: 8px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  background-color: #73b61c;
+}
+
+.emotion-7:hover {
+  background-color: #96c955;
+}
+
+.emotion-7[aria-disabled=true] {
+  background-color: #808080;
+}
+
 <div
-  className="emotion-10"
+  className="emotion-9"
 >
-  <div
-    className="emotion-9"
+  <h2
+    className="emotion-0"
   >
-    <div
-      className="emotion-8"
+    Range
+     Visualization
+  </h2>
+  <div
+    className="emotion-1"
+  />
+  <label
+    className="emotion-2"
+    htmlFor="metadata-type-selection"
+  >
+    Metadata Type
+  </label>
+  <select
+    className="emotion-3"
+    defaultValue=""
+    id="metadata-type-selection"
+    onChange={[Function]}
+  >
+    <option
+      disabled={true}
+      value=""
     >
-      <div
-        className="emotion-7"
-      >
-        <h2
-          className="emotion-0"
-        >
-          Range
-           Visualization
-        </h2>
-        <div
-          className="emotion-1"
-        />
-        <label
-          htmlFor="metadata-type-selection"
-        >
-          Metadata Type
-        </label>
-        <select
-          defaultValue=""
-          id="metadata-type-selection"
-          onChange={[Function]}
-        >
-          <option
-            disabled={true}
-            value=""
-          >
-            Select metadata type
-          </option>
-        </select>
-        <div
-          className="emotion-2"
-        />
-        <div
-          className="emotion-6"
-        >
-          <button
-            className="emotion-3"
-            onClick={[Function]}
-            type="button"
-          >
-            Cancel
-          </button>
-          <div
-            className="emotion-4"
-          />
-          <button
-            aria-disabled={true}
-            className="emotion-5"
-            onClick={[Function]}
-            type="button"
-          >
-            Save Visualization
-          </button>
-        </div>
-      </div>
-    </div>
+      Select metadata type
+    </option>
+  </select>
+  <div
+    className="emotion-4"
+  />
+  <div
+    className="emotion-8"
+  >
+    <button
+      className="emotion-5"
+      onClick={[Function]}
+      type="button"
+    >
+      Cancel
+    </button>
+    <div
+      className="emotion-6"
+    />
+    <button
+      aria-disabled={true}
+      className="emotion-7"
+      onClick={[Function]}
+      type="button"
+    >
+      Save Visualization
+    </button>
   </div>
 </div>
 `;

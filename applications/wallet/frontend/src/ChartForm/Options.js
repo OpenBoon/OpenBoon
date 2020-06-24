@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import chartShape from '../Chart/shape'
 
-import { capitalizeFirstLetter } from '../Metadata/helpers'
+import { capitalizeFirstLetter } from '../Text/helpers'
 
 const ChartFormOptions = ({ fields, type, path }) => {
   return Object.keys(fields).map((option) => {
