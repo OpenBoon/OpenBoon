@@ -17,13 +17,19 @@ def sync_project_with_zmlp(modeladmin, request, queryset):
 @admin.register(Project)
 class ProjectAdmin(ModelAdmin):
     actions = [sync_project_with_zmlp]
-    list_display = ('name', 'id', 'tier', 'is_active')
+    list_display = ('name', 'id', 'tier', 'usage', 'is_active')
     list_filter = ('is_active',)
     search_fields = ('name', 'id')
 
     def tier(self, project):
         if project.subscription:
             return project.subscription.tier
+        return None
+
+    def usage(self, project):
+        if project.subscription:
+            usage = project.subscription.usage()
+            return f'{usage["video_hours"]} video hours/{usage["image_count"]} images'
         return None
 
     def save_model(self, request, obj, form, change):
