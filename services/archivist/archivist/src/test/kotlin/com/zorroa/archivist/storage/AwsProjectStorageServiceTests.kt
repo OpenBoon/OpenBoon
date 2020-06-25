@@ -79,8 +79,19 @@ class AwsProjectStorageServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testEncodedLocation() {
+    fun testNotAlphaNumericFileName() {
         val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob test.txt")
+
+        var expected = "s3://project-storage-test/projects/00000000-0000-0000-0000-000000000000/assets/1234/source/${URLEncoder.encode("bob test.txt", StandardCharsets.UTF_8.toString())}"
+
+        val rsp = projectStorageService.getNativeUri(loc)
+        Json.prettyPrint(rsp)
+        assertEquals(expected, rsp)
+    }
+
+    @Test
+    fun testEncodedLocation() {
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob%20test.txt")
 
         var expected = "s3://project-storage-test/projects/00000000-0000-0000-0000-000000000000/assets/1234/source/${URLEncoder.encode("bob test.txt", StandardCharsets.UTF_8.toString())}"
 
