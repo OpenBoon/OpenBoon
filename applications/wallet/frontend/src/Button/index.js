@@ -130,6 +130,15 @@ const STYLES = {
       color: colors.structure.steel,
     },
   },
+  CARD_ICON: {
+    padding: spacing.mini,
+    ':hover': {
+      backgroundColor: colors.structure.steel,
+    },
+    '&[aria-disabled=true]': {
+      color: colors.structure.steel,
+    },
+  },
 }
 
 export const VARIANTS = Object.keys(STYLES).reduce(

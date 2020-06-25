@@ -241,4 +241,34 @@ describe('<ChartFacet />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should delete', () => {
+    const mockDispatch = jest.fn()
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer/data-visualization',
+      query: { projectId: PROJECT_ID },
+    })
+
+    const chart = {
+      id: CHART_ID,
+      type: 'facet',
+      attribute: 'system.type',
+    }
+
+    const component = TestRenderer.create(
+      <ChartFacet chart={chart} chartIndex={0} dispatch={mockDispatch} />,
+    )
+
+    act(() => {
+      component.root.findByProps({ title: 'Delete Chart' }).props.onClick()
+    })
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: 'DELETE',
+      payload: {
+        chartIndex: 0,
+      },
+    })
+  })
 })

@@ -34,6 +34,7 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
       css={{
         display: 'flex',
         flexDirection: 'column',
+        paddingTop: spacing.base,
       }}
     >
       <h2
