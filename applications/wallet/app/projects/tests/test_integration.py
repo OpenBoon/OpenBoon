@@ -5,21 +5,21 @@ from base64 import b64encode
 from uuid import uuid4
 
 import pytest
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseForbidden, Http404
 from django.test import RequestFactory, override_settings
 from django.urls import reverse
-from django.core.exceptions import ValidationError
 from rest_framework import status
 from rest_framework.response import Response
 from zmlp import ZmlpClient
 from zmlp.client import ZmlpDuplicateException, ZmlpInvalidRequestException
 
-from wallet.utils import convert_base64_to_json, convert_json_to_base64
-from wallet.tests.utils import check_response
 from projects.models import Project, Membership
-from projects.utils import random_project_name
 from projects.serializers import ProjectSerializer
-from projects.views import BaseProjectViewSet, ProjectUserViewSet
+from projects.utils import random_project_name
+from projects.views import BaseProjectViewSet
+from wallet.tests.utils import check_response
+from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
 pytestmark = pytest.mark.django_db
 
@@ -705,16 +705,6 @@ class TestProjectUserPost:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
         assert content['detail'] == 'Invalid request.'
-
-    def test_get_permissions_for_roles(self):
-        view = ProjectUserViewSet()
-        roles = ['ML_Tools', 'User_Admin']
-        permissions = view._get_permissions_for_roles(roles)
-        expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage',
-                    'DataSourceManage', 'DataQueueManage', 'SystemManage']
-        assert set(permissions) == set(expected)
-        permissions = view._get_permissions_for_roles(['User_Admin'])
-        assert permissions == ['ProjectManage']
 
 
 class TestProjectUserPut:
