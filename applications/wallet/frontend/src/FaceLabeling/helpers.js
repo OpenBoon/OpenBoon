@@ -10,13 +10,18 @@ export const onSave = async ({
   errors,
   dispatch,
 }) => {
-  const newLabels = predictions.map(({ bbox, simhash }) => {
-    return {
-      bbox,
-      simhash,
-      label: labels[simhash],
-    }
-  })
+  const newLabels = predictions
+    .filter(
+      // filter out labels that are the same as the predicted label in order to not save
+      ({ simhash, label }) => label !== labels[simhash],
+    )
+    .map(({ bbox, simhash }) => {
+      return {
+        bbox,
+        simhash,
+        label: labels[simhash],
+      }
+    })
 
   try {
     dispatch({ isLoading: true, errors: { ...errors, global: '' } })
