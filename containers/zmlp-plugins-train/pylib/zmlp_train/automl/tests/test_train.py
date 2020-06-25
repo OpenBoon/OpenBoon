@@ -1,9 +1,8 @@
 import os
 import logging
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch
 
 from google.cloud import automl_v1beta1 as automl
-from google.api_core.operation import Operation
 
 from zmlp.app import ModelApp
 from zmlp.entity import Model, PipelineMod, StoredFile
@@ -26,8 +25,8 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
     @patch.object(ModelApp, 'get_model')
     @patch.object(automl.AutoMlClient, 'deploy_model')
     @patch.object(file_storage.projects, "store_file_by_id")
-    def test_process(self, upload_patch, deploy_patch, model_patch, pub_patch, dataset_id_patch,
-                     create_model_patch, import_patch):
+    def do_not_test_model_eval(self, upload_patch, deploy_patch, model_patch, pub_patch,
+                               dataset_id_patch, create_model_patch, import_patch):
         # Prep the frame, asset, and proxy
         toucan_fname = zorroa_test_data('training/test_dsy.jpg').split("file://")[-1]
         asset = TestAsset(toucan_fname)
