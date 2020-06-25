@@ -4,7 +4,8 @@ import useSWR from 'swr'
 import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import FaceLabelingAutoSuggest from './AutoSuggest'
+
+import FaceLabelingForm from './Form'
 
 const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
   const { data: asset } = useSWR(
@@ -49,8 +50,9 @@ const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
       >
         {filename}
       </div>
-      <FaceLabelingAutoSuggest
+      <FaceLabelingForm
         projectId={projectId}
+        assetId={assetId}
         predictions={predictions}
       />
     </>

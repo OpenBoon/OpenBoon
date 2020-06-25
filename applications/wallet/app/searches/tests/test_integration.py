@@ -352,6 +352,21 @@ class TestQuery(BaseFiltersTestCase):
         # Should only be the requested fields on this request
         assert list(content['results'][0]['metadata']) == ['source']
 
+    def test_get_md_missing_media(self, login, api_client, project, monkeypatch, facet_query_qs):
+        def _response(*args, **kwargs):
+            return {"took":6,"timed_out":False,"_shards":{"total":2,"successful":2,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":0.0,"hits":[{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U","_score":0.0,"_source":{"files":[{"size":119497,"name":"image_744x1024.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_744x1024.jpg","category":"proxy","attrs":{"width":744,"height":1024}},{"size":119497,"name":"web-proxy.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/web-proxy/web-proxy.jpg","category":"web-proxy","attrs":{"width":744,"height":1024}},{"size":43062,"name":"image_372x512.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_372x512.jpg","category":"proxy","attrs":{"width":372,"height":512}},{"size":21318,"name":"image_232x320.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_232x320.jpg","category":"proxy","attrs":{"width":232,"height":320}}],"source":{"path":"gs://zorroa-dev-data/image/singlepage.tiff","extension":"tiff","filename":"singlepage.tiff","checksum":754419346,"mimetype":"image/tiff","filesize":11082}}},{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C","_score":0.0,"_source":{"media":{},"files":[{"size":89643,"name":"image_650x434.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_650x434.jpg","category":"proxy","attrs":{"width":650,"height":434}},{"size":60713,"name":"image_512x341.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_512x341.jpg","category":"proxy","attrs":{"width":512,"height":341}},{"size":30882,"name":"image_320x213.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_320x213.jpg","category":"proxy","attrs":{"width":320,"height":213}}],"source":{"path":"gs://zorroa-dev-data/image/TIFF_1MB.tiff","extension":"tiff","filename":"TIFF_1MB.tiff","checksum":1867533868,"mimetype":"image/tiff","filesize":1131930}}}]}}  # noqa
+
+        monkeypatch.setattr(ZmlpClient, 'post', _response)
+        response = api_client.get(reverse('search-query', kwargs={'project_pk': project.id}),
+                                  {'query': facet_query_qs})
+
+        content = check_response(response, status=status.HTTP_200_OK)
+        assert content['count'] == 2
+        assert 'next' in content
+        assert 'previous' in content
+        # Should only be the requested fields on this request
+        assert list(content['results'][0]['metadata']) == ['source']
+
     def test_get_empty_query(self, login, api_client, project, monkeypatch, mock_response):
         def _response(*args, **kwargs):
             return mock_response
@@ -370,7 +385,7 @@ class TestQuery(BaseFiltersTestCase):
         response = api_client.get(reverse('search-query', kwargs={'project_pk': project.id}),
                                   {'query': facet_query_qs})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'Unable to decode `query` querystring.'
+        assert content['detail'] == 'Unable to decode `query` query param.'
 
     def test_empty_query_sorts(self, login, api_client, project):
         def mock_list(*args, **kwargs):
@@ -424,14 +439,14 @@ class TestAggregate(BaseFiltersTestCase):
     def test_get_missing_querystring(self, login, api_client, project, range_agg_qs):
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}))
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'No `filter` querystring included.'
+        assert content['detail'] == 'No `filter` query param included.'
 
     def test_get_bad_querystring_encoding(self, login, api_client, project, range_agg_qs):
         range_agg_qs = 'thisisnolongerencodedright' + range_agg_qs.decode('utf-8')
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': range_agg_qs})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'Unable to decode `filter` querystring.'
+        assert content['detail'] == 'Unable to decode `filter` query param.'
 
     def test_get_missing_filter_type(self, login, api_client, project, range_agg):
         del(range_agg['type'])
