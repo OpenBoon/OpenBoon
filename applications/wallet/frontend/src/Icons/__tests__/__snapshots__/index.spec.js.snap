@@ -9,7 +9,7 @@ exports[`<Icons /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-101 {
+.emotion-103 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -55,7 +55,7 @@ exports[`<Icons /> should render properly 1`] = `
     Icons
   </h2>
   <div
-    className="emotion-101"
+    className="emotion-103"
   >
     <div
       className="emotion-2"
@@ -532,6 +532,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="key.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./largeLogo.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="largeLogo.svg"
           height="100%"
           width="100%"
         />
