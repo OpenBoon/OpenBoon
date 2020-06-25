@@ -9,7 +9,7 @@ import ProjectSwitcher from '../ProjectSwitcher'
 
 import HamburgerSvg from './hamburger.svg'
 
-const LOGO_WIDTH = 110
+const LOGO_WIDTH = 59
 
 const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
   return (
@@ -55,7 +55,11 @@ const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
 
         <Link href="/" passHref>
           <a
-            css={{ paddingLeft: spacing.base, paddingRight: spacing.base }}
+            css={{
+              paddingLeft: spacing.base,
+              paddingRight: spacing.base,
+              display: 'flex',
+            }}
             aria-label="Home"
           >
             <LogoSvg width={LOGO_WIDTH} />
