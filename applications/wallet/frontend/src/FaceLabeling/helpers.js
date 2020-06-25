@@ -12,7 +12,7 @@ export const onSave = async ({
 }) => {
   const newLabels = predictions
     .filter(
-      // filter out labels that are the same as the predicted label in order to not save
+      // filter out labels that are the same as the predicted label
       ({ simhash, label }) => label !== labels[simhash],
     )
     .map(({ bbox, simhash }) => {
