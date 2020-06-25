@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, spacing } from '../Styles'
 
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-
+import FaceLabelingTrainApply from './TrainApply'
 import FaceLabelingForm from './Form'
 
 const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
@@ -18,33 +17,9 @@ const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
     },
   } = asset
 
-  const {
-    data: { unappliedChanges },
-  } = useSWR(`/api/v1/projects/${projectId}/faces/unapplied_changes/`)
-
   return (
     <>
-      <div
-        css={{
-          padding: spacing.normal,
-          borderBottom: constants.borders.divider,
-        }}
-      >
-        <span>
-          Once a name has been added to a face, training can begin. Names can
-          continue to be edited as needed.
-        </span>
-
-        <div css={{ height: spacing.normal }} />
-
-        <Button
-          variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={console.warn}
-          isDisabled={!unappliedChanges}
-        >
-          Train &amp; Apply
-        </Button>
-      </div>
+      <FaceLabelingTrainApply projectId={projectId} />
 
       <div
         css={{
@@ -54,6 +29,7 @@ const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
       >
         {filename}
       </div>
+
       <FaceLabelingForm
         projectId={projectId}
         assetId={assetId}
