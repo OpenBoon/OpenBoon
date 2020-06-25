@@ -1,0 +1,432 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChartForm /> should render properly 1`] = `
+.emotion-13 {
+  padding-right: 32px;
+  padding-bottom: 32px;
+  width: 470px;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #252525;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  border-radius: 2px;
+  padding: 16px;
+}
+
+.emotion-11 .ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-11 .Loading {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-1 {
+  height: 24px;
+}
+
+.emotion-4 {
+  font-weight: 500;
+}
+
+.emotion-2 {
+  padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-3 {
+  width: 100%;
+  padding: 12px 8px;
+  background-color: #808080;
+  color: #ffffff;
+  border-radius: 2px;
+  border: none;
+  font-size: 15px;
+  line-height: 19px;
+  padding-left: 12px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  background-position: right 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-5 {
+  height: 32px;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited {
+  background-color: #808080;
+}
+
+.emotion-6:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-7 {
+  width: 8px;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
+  background-color: #73b61c;
+}
+
+.emotion-8:hover {
+  background-color: #96c955;
+}
+
+.emotion-8[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+  className="emotion-13"
+>
+  <div
+    className="emotion-12"
+  >
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-10"
+      >
+        <h2
+          className="emotion-0"
+        >
+          Facet
+           Visualization
+        </h2>
+        <div
+          className="emotion-1"
+        />
+        <label
+          className="emotion-4"
+        >
+          <h3
+            className="emotion-2"
+          >
+            Metadata Type
+          </h3>
+          <select
+            className="emotion-3"
+            defaultValue="system.type"
+            onChange={[Function]}
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select metadata type
+            </option>
+            <optgroup
+              label="Analysis"
+            >
+              <optgroup
+                label="Zvi"
+              >
+                <option
+                  value="analysis.zvi.tinyProxy"
+                >
+                  tinyProxy
+                </option>
+              </optgroup>
+            </optgroup>
+            <optgroup
+              label="Clip"
+            >
+              <option
+                value="clip.pile"
+              >
+                pile
+              </option>
+              <option
+                value="clip.sourceAssetId"
+              >
+                sourceAssetId
+              </option>
+              <option
+                value="clip.timeline"
+              >
+                timeline
+              </option>
+              <option
+                value="clip.type"
+              >
+                type
+              </option>
+            </optgroup>
+            <optgroup
+              label="Location"
+            >
+              <option
+                value="location.city"
+              >
+                city
+              </option>
+              <option
+                value="location.code"
+              >
+                code
+              </option>
+              <option
+                value="location.country"
+              >
+                country
+              </option>
+            </optgroup>
+            <optgroup
+              label="Media"
+            >
+              <option
+                value="media.author"
+              >
+                author
+              </option>
+              <option
+                value="media.content"
+              >
+                content
+              </option>
+              <option
+                value="media.description"
+              >
+                description
+              </option>
+              <option
+                value="media.keywords"
+              >
+                keywords
+              </option>
+              <option
+                value="media.orientation"
+              >
+                orientation
+              </option>
+              <option
+                value="media.title"
+              >
+                title
+              </option>
+              <option
+                value="media.type"
+              >
+                type
+              </option>
+            </optgroup>
+            <optgroup
+              label="Source"
+            >
+              <option
+                value="source.extension"
+              >
+                extension
+              </option>
+              <option
+                value="source.filename"
+              >
+                filename
+              </option>
+              <option
+                value="source.mimetype"
+              >
+                mimetype
+              </option>
+              <option
+                value="source.path"
+              >
+                path
+              </option>
+            </optgroup>
+            <optgroup
+              label="System"
+            >
+              <option
+                value="system.dataSourceId"
+              >
+                dataSourceId
+              </option>
+              <option
+                value="system.jobId"
+              >
+                jobId
+              </option>
+              <option
+                value="system.projectId"
+              >
+                projectId
+              </option>
+              <option
+                value="system.state"
+              >
+                state
+              </option>
+              <option
+                value="system.taskId"
+              >
+                taskId
+              </option>
+            </optgroup>
+          </select>
+        </label>
+        <div
+          className="emotion-5"
+        />
+        <div
+          className="emotion-9"
+        >
+          <button
+            className="emotion-6"
+            onClick={[Function]}
+            type="button"
+          >
+            Cancel
+          </button>
+          <div
+            className="emotion-7"
+          />
+          <button
+            className="emotion-8"
+            onClick={[Function]}
+            type="button"
+          >
+            Save Visualization
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
