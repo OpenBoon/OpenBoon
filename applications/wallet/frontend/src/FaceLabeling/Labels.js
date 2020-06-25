@@ -18,6 +18,10 @@ const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
     },
   } = asset
 
+  const {
+    data: { unappliedChanges },
+  } = useSWR(`/api/v1/projects/${projectId}/faces/unapplied_changes/`)
+
   return (
     <>
       <div
@@ -36,7 +40,7 @@ const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
         <Button
           variant={BUTTON_VARIANTS.PRIMARY}
           onClick={console.warn}
-          isDisabled
+          isDisabled={!unappliedChanges}
         >
           Train &amp; Apply
         </Button>

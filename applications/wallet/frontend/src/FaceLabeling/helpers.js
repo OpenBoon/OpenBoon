@@ -29,7 +29,8 @@ export const onSave = async ({
     })
 
     await mutate(`/api/v1/projects/${projectId}/faces/${assetId}/`)
-    await mutate(`/api/v1/projects/${projectId}/faces/labels`)
+    await mutate(`/api/v1/projects/${projectId}/faces/labels/`)
+    await mutate(`/api/v1/projects/${projectId}/faces/unapplied_changes/`)
 
     dispatch({ isLoading: false })
   } catch (response) {

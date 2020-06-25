@@ -45,6 +45,7 @@ describe('<FaceLabeling />', () => {
             b64_image: 'data:image/png;base64',
           },
         ],
+        unappliedChanges: false,
       },
     })
 
