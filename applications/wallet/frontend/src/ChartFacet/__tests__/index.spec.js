@@ -7,6 +7,10 @@ import ChartFacet from '..'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const CHART_ID = '972a8ab5-cdcb-4eea-ada7-f1c88d997fed'
 
+jest.mock('../../ChartForm', () => 'ChartForm')
+
+const noop = () => () => {}
+
 describe('<ChartFacet />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({
@@ -26,7 +30,9 @@ describe('<ChartFacet />', () => {
 
     require('swr').__setMockUseSWRResponse({ data: aggregate })
 
-    const component = TestRenderer.create(<ChartFacet chart={chart} />)
+    const component = TestRenderer.create(
+      <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -70,7 +76,9 @@ describe('<ChartFacet />', () => {
 
     require('swr').__setMockUseSWRResponse({})
 
-    const component = TestRenderer.create(<ChartFacet chart={chart} />)
+    const component = TestRenderer.create(
+      <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -93,7 +101,9 @@ describe('<ChartFacet />', () => {
 
     require('swr').__setMockUseSWRResponse({ data: aggregate })
 
-    const component = TestRenderer.create(<ChartFacet chart={chart} />)
+    const component = TestRenderer.create(
+      <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
+    )
 
     act(() => {
       component.root.findByProps({ 'aria-label': 'Brooklyn' }).props.onClick()
@@ -147,7 +157,9 @@ describe('<ChartFacet />', () => {
 
     require('swr').__setMockUseSWRResponse({ data: aggregate })
 
-    const component = TestRenderer.create(<ChartFacet chart={chart} />)
+    const component = TestRenderer.create(
+      <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
+    )
 
     act(() => {
       component.root.findByProps({ 'aria-label': 'Zermatt' }).props.onClick()
@@ -201,7 +213,9 @@ describe('<ChartFacet />', () => {
 
     require('swr').__setMockUseSWRResponse({ data: aggregate })
 
-    const component = TestRenderer.create(<ChartFacet chart={chart} />)
+    const component = TestRenderer.create(
+      <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
+    )
 
     act(() => {
       component.root.findByProps({ 'aria-label': 'Brooklyn' }).props.onClick()
@@ -210,7 +224,7 @@ describe('<ChartFacet />', () => {
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
-  it('should not render without an attribute', () => {
+  it('should render without an attribute', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer/data-visualization',
       query: { projectId: PROJECT_ID },
@@ -221,8 +235,10 @@ describe('<ChartFacet />', () => {
       type: 'facet',
     }
 
-    const component = TestRenderer.create(<ChartFacet chart={chart} />)
+    const component = TestRenderer.create(
+      <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
+    )
 
-    expect(component.toJSON()).toEqual(null)
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })
