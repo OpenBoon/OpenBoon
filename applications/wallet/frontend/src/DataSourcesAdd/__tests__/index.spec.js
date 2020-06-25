@@ -100,7 +100,7 @@ describe('<DataSourcesAdd />', () => {
     // Select file type
     act(() => {
       component.root
-        .findByProps({ type: 'checkbox', value: 'images' })
+        .findByProps({ type: 'checkbox', value: 'Images' })
         .props.onClick()
     })
 
@@ -162,7 +162,7 @@ describe('<DataSourcesAdd />', () => {
         name: 'My Data Source',
         uri: 'gs://zorroa-dev-data',
         credentials: {},
-        fileTypes: ['images'],
+        fileTypes: ['Images'],
         modules: ['zvi-label-detection'],
       }),
     })
@@ -224,7 +224,7 @@ describe('<DataSourcesAdd />', () => {
     // Select file type
     act(() => {
       component.root
-        .findByProps({ type: 'checkbox', value: 'images' })
+        .findByProps({ type: 'checkbox', value: 'Images' })
         .props.onClick()
     })
 
@@ -254,7 +254,7 @@ describe('<DataSourcesAdd />', () => {
           type: 'GCP',
           service_account_json_key: 'jkdT9Uherdozguie89FHIJS',
         },
-        fileTypes: ['images'],
+        fileTypes: ['Images'],
         modules: [],
       }),
     })
@@ -324,7 +324,7 @@ describe('<DataSourcesAdd />', () => {
     // Select file type
     act(() => {
       component.root
-        .findByProps({ type: 'checkbox', value: 'images' })
+        .findByProps({ type: 'checkbox', value: 'Images' })
         .props.onClick()
     })
 
@@ -355,7 +355,7 @@ describe('<DataSourcesAdd />', () => {
           aws_access_key_id: 'sdlkmsoijes;kfjnskajnre',
           aws_secret_access_key: 'sdkjfipuenkjrfewrf',
         },
-        fileTypes: ['images'],
+        fileTypes: ['Images'],
         modules: [],
       }),
     })

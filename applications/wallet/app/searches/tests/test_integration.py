@@ -385,7 +385,7 @@ class TestQuery(BaseFiltersTestCase):
         response = api_client.get(reverse('search-query', kwargs={'project_pk': project.id}),
                                   {'query': facet_query_qs})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'Unable to decode `query` querystring.'
+        assert content['detail'] == 'Unable to decode `query` query param.'
 
     def test_empty_query_sorts(self, login, api_client, project):
         def mock_list(*args, **kwargs):
@@ -439,14 +439,14 @@ class TestAggregate(BaseFiltersTestCase):
     def test_get_missing_querystring(self, login, api_client, project, range_agg_qs):
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}))
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'No `filter` querystring included.'
+        assert content['detail'] == 'No `filter` query param included.'
 
     def test_get_bad_querystring_encoding(self, login, api_client, project, range_agg_qs):
         range_agg_qs = 'thisisnolongerencodedright' + range_agg_qs.decode('utf-8')
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': range_agg_qs})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'Unable to decode `filter` querystring.'
+        assert content['detail'] == 'Unable to decode `filter` query param.'
 
     def test_get_missing_filter_type(self, login, api_client, project, range_agg):
         del(range_agg['type'])
