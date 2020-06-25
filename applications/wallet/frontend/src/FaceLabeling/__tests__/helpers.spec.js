@@ -131,7 +131,7 @@ describe('<FaceLabelingForm /> helpers', () => {
     })
   })
 
-  describe('getSaveButtonCopy', () => {
+  describe('getSaveButtonCopy()', () => {
     it('should return correct string', () => {
       expect(getSaveButtonCopy({ isChanged: false, isLoading: true })).toBe(
         'Saving...',
