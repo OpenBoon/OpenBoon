@@ -1,6 +1,7 @@
 import pytest
 
 from roles.serializers import RoleSerializer
+from roles.utils import get_permissions_for_roles
 
 
 class TestRoleSerializer():
@@ -29,3 +30,12 @@ class TestRoleSerializer():
         assert not serializer.is_valid()
         errors = serializer.errors
         assert str(errors[1]['permissions'][0]) == 'Ensure this field has at least 1 elements.'
+
+    def test_get_permissions_for_roles(self):
+        roles = ['ML_Tools', 'User_Admin']
+        permissions = get_permissions_for_roles(roles)
+        expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage',
+                    'DataSourceManage', 'DataQueueManage', 'SystemManage']
+        assert set(permissions) == set(expected)
+        permissions = get_permissions_for_roles(['User_Admin'])
+        assert permissions == ['ProjectManage']
