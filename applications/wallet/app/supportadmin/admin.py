@@ -48,7 +48,6 @@ class SupportUserAdmin(NoDeleteMixin, ModelAdmin):
 
     def save_related(self, request, form, formsets, change):
         user = form.instance
-        # client = project.get_zmlp_super_client()
 
         # If any of the Memberships are going to be deleted remove their API keys.
         if change:

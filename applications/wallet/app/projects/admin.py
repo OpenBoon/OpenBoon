@@ -38,12 +38,6 @@ class ProjectAdmin(ModelAdmin):
         obj.sync_with_zmlp(request.user)
 
 
-def sync_membership_with_zmlp(modeladmin, request, queryset):
-    """Admin action that syncs a Wallet project with ZMLP."""
-    for membership in queryset:
-        membership.sync_with_zmlp(request.user)
-
-
 @admin.register(Membership)
 class MembershipAdmin(ModelAdmin):
     list_display = ('user', 'project', 'roles')
