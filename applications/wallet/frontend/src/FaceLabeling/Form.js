@@ -32,7 +32,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
 
   const [state, dispatch] = useReducer(reducer, initializedState)
 
-  const { data } = useSWR(`/api/v1/projects/${projectId}/faces/labels`, {
+  const { data } = useSWR(`/api/v1/projects/${projectId}/faces/labels/`, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     shouldRetryOnError: false,
