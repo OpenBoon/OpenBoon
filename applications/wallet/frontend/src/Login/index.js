@@ -17,7 +17,7 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import LoginWithGoogle from './WithGoogle'
 
 const WIDTH = 446
-const LOGO_WIDTH = 143
+const LOGO_WIDTH = 59
 
 const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
   const {

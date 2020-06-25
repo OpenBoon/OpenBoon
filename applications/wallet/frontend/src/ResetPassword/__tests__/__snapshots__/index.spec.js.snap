@@ -49,7 +49,7 @@ exports[`<ResetPassword /> should render <ResetPasswordConfirm /> 1`] = `
     <svg
       className="emotion-0"
       data-file-name="logo.svg"
-      width={143}
+      width={59}
     />
     <ResetPasswordConfirm
       token="123"
@@ -228,7 +228,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
     <svg
       className="emotion-0"
       data-file-name="logo.svg"
-      width={143}
+      width={59}
     />
     <h3
       className="emotion-1"

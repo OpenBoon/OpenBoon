@@ -14,7 +14,7 @@ import { CURRENT_POLICIES_DATE, onSubmit } from './helpers'
 import PoliciesForm from './Form'
 
 const WIDTH = 446
-const LOGO_WIDTH = 143
+const LOGO_WIDTH = 59
 
 const INITIAL_STATE = {
   isChecked: false,

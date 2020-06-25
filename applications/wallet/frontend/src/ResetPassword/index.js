@@ -9,7 +9,7 @@ import ResetPasswordRequest from './Request'
 import ResetPasswordConfirm from './Confirm'
 
 const WIDTH = 446
-const LOGO_WIDTH = 143
+const LOGO_WIDTH = 59
 
 const ResetPassword = () => {
   const {
