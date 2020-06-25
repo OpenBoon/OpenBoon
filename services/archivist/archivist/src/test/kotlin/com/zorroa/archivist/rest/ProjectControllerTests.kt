@@ -156,7 +156,7 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun testGetMyProject() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/project")
+            MockMvcRequestBuilders.get("/api/v1/projects")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
