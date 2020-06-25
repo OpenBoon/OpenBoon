@@ -8,6 +8,8 @@ exports[`<Charts /> should render properly for "Facet" 1`] = `
       "type": "facet",
     }
   }
+  chartIndex={0}
+  dispatch={[Function]}
 />
 `;
 
@@ -19,5 +21,7 @@ exports[`<Charts /> should render properly for "Range" 1`] = `
       "type": "range",
     }
   }
+  chartIndex={0}
+  dispatch={[Function]}
 />
 `;

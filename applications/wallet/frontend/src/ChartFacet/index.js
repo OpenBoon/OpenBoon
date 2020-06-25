@@ -1,14 +1,20 @@
 import PropTypes from 'prop-types'
+import SuspenseBoundary from '../SuspenseBoundary'
 
 import chartShape from '../Chart/shape'
 
 import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
-import SuspenseBoundary from '../SuspenseBoundary'
+
+import ChartForm from '../ChartForm'
 
 import ChartFacetContent from './Content'
 
-const ChartFacet = ({ chart }) => {
-  if (!chart.attribute) return null
+const ChartFacet = ({ chart, chartIndex, dispatch }) => {
+  if (!chart.attribute) {
+    return (
+      <ChartForm chart={chart} chartIndex={chartIndex} dispatch={dispatch} />
+    )
+  }
 
   return (
     <Card
@@ -25,6 +31,8 @@ const ChartFacet = ({ chart }) => {
 
 ChartFacet.propTypes = {
   chart: PropTypes.shape(chartShape).isRequired,
+  chartIndex: PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default ChartFacet

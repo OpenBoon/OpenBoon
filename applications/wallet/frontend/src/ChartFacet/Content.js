@@ -118,46 +118,63 @@ const ChartFacetContent = ({ chart: { type, attribute } }) => {
                   })
                 }}
               >
-                <div css={{ width: '100%' }}>
-                  <div css={{ display: 'flex' }}>
-                    <div
-                      css={{
-                        width: `${offset}%`,
-                        backgroundColor: COLORS[colorIndex],
-                      }}
-                    />
-                    <div
-                      css={{
-                        height: BAR_HEIGHT,
-                        width: `${100 - offset}%`,
-                        borderTop: constants.borders.divider,
-                      }}
-                    />
-                  </div>
+                <div css={{ width: '100%', display: 'flex' }}>
                   <div
                     css={{
                       display: 'flex',
-                      justifyContent: 'space-between',
-                      padding: spacing.base,
-                      fontFamily: typography.family.mono,
-                      fontSize: typography.size.small,
-                      lineHeight: typography.height.small,
+                      flexDirection: 'column',
+                      flex: 1,
+                      overflow: 'hidden',
                     }}
                   >
-                    <div>{key}</div>
-                    <div>{docCount}</div>
+                    <div css={{ flex: 1, display: 'flex' }}>
+                      <div
+                        css={{
+                          width: `${offset}%`,
+                          backgroundColor: COLORS[colorIndex],
+                        }}
+                      />
+                      <div
+                        css={{
+                          height: BAR_HEIGHT,
+                          width: `${100 - offset}%`,
+                          borderTop: constants.borders.divider,
+                        }}
+                      />
+                    </div>
+                    <div
+                      css={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        padding: spacing.base,
+                        fontFamily: typography.family.mono,
+                        fontSize: typography.size.small,
+                        lineHeight: typography.height.small,
+                      }}
+                    >
+                      <div
+                        css={{
+                          overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {key}
+                      </div>
+                      <div css={{ paddingLeft: spacing.base }}>{docCount}</div>
+                    </div>
                   </div>
-                </div>
-                <div
-                  css={{
-                    marginTop: BAR_HEIGHT,
-                    padding: ICON_PADDING,
-                    color: colors.transparent,
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <FilterSvg width={ICON_SIZE} />
+                  <div
+                    css={{
+                      marginTop: BAR_HEIGHT,
+                      padding: ICON_PADDING,
+                      color: colors.transparent,
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <FilterSvg width={ICON_SIZE} />
+                  </div>
                 </div>
               </Button>
             </li>

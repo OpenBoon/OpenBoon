@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ChartFacet /> should render properly 1`] = `
-.emotion-59 {
+.emotion-80 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-58 {
+.emotion-79 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -28,17 +28,17 @@ exports[`<ChartFacet /> should render properly 1`] = `
   padding-bottom: 24px;
 }
 
-.emotion-57 .ErrorBoundary > div {
+.emotion-78 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-57 .Loading {
+.emotion-78 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-56 {
+.emotion-77 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -63,13 +63,13 @@ exports[`<ChartFacet /> should render properly 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-51 {
+.emotion-72 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-8 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -111,31 +111,52 @@ exports[`<ChartFacet /> should render properly 1`] = `
   color: #ffffff;
 }
 
-.emotion-8:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   background-color: #027aff38;
   color: #ffffff;
 }
 
-.emotion-8:hover svg,
-.emotion-8.focus-visible:focus svg {
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg {
   color: #ffffff;
 }
 
-.emotion-6 {
+.emotion-10 {
   width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
 }
 
 .emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -153,7 +174,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -168,7 +189,17 @@ exports[`<ChartFacet /> should render properly 1`] = `
   line-height: 18px;
 }
 
-.emotion-7 {
+.emotion-5 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-6 {
+  padding-left: 8px;
+}
+
+.emotion-9 {
   margin-top: 4px;
   padding: 4px;
   color: transparent;
@@ -182,55 +213,55 @@ exports[`<ChartFacet /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-9 {
+.emotion-12 {
   width: 67%;
   background-color: #a03dc7;
 }
 
-.emotion-10 {
+.emotion-13 {
   height: 4px;
   width: 33%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-16 {
+.emotion-22 {
   width: 34%;
   background-color: #d6680b;
 }
 
-.emotion-17 {
+.emotion-23 {
   height: 4px;
   width: 66%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-23 {
+.emotion-32 {
   width: 34%;
   background-color: #ebb52e;
 }
 
-.emotion-30 {
+.emotion-42 {
   width: 34%;
   background-color: #00bdc1;
 }
 
-.emotion-37 {
+.emotion-52 {
   width: 34%;
   background-color: #c54a4a;
 }
 
-.emotion-44 {
+.emotion-62 {
   width: 0%;
   background-color: #ff7867;
 }
 
-.emotion-45 {
+.emotion-63 {
   height: 4px;
   width: 100%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-55 {
+.emotion-76 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -245,7 +276,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-54 {
+.emotion-75 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -285,21 +316,21 @@ exports[`<ChartFacet /> should render properly 1`] = `
   font-family: Roboto Condensed;
 }
 
-.emotion-54:hover {
+.emotion-75:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-54[aria-disabled=true] {
+.emotion-75[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-54:hover,
-.emotion-54.focus-visible:focus {
+.emotion-75:hover,
+.emotion-75.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-53 {
+.emotion-74 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -310,7 +341,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-52 {
+.emotion-73 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -319,10 +350,10 @@ exports[`<ChartFacet /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-59"
+  className="emotion-80"
 >
   <div
-    className="emotion-58"
+    className="emotion-79"
   >
     <h3
       className="emotion-0"
@@ -330,10 +361,10 @@ exports[`<ChartFacet /> should render properly 1`] = `
       location.city
     </h3>
     <div
-      className="emotion-57"
+      className="emotion-78"
     >
       <div
-        className="emotion-56"
+        className="emotion-77"
       >
         <div
           className="emotion-1"
@@ -346,310 +377,366 @@ exports[`<ChartFacet /> should render properly 1`] = `
           </div>
         </div>
         <ul
-          className="emotion-51"
+          className="emotion-72"
         >
           <li>
             <button
               aria-label="Tyngsboro"
-              className="emotion-8"
+              className="emotion-11"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-6"
+                className="emotion-10"
               >
                 <div
-                  className="emotion-4"
+                  className="emotion-8"
                 >
                   <div
-                    className="emotion-2"
-                  />
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-2"
+                    />
+                    <div
+                      className="emotion-3"
+                    />
+                  </div>
                   <div
-                    className="emotion-3"
-                  />
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      Tyngsboro
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      3
+                    </div>
+                  </div>
                 </div>
                 <div
-                  className="emotion-5"
+                  className="emotion-9"
                 >
-                  <div>
-                    Tyngsboro
-                  </div>
-                  <div>
-                    3
-                  </div>
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
                 </div>
-              </div>
-              <div
-                className="emotion-7"
-              >
-                <svg
-                  data-file-name="filter.svg"
-                  width={20}
-                />
               </div>
             </button>
           </li>
           <li>
             <button
               aria-label="Brooklyn"
-              className="emotion-8"
+              className="emotion-11"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-6"
+                className="emotion-10"
               >
                 <div
-                  className="emotion-4"
+                  className="emotion-8"
                 >
                   <div
-                    className="emotion-9"
-                  />
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-12"
+                    />
+                    <div
+                      className="emotion-13"
+                    />
+                  </div>
                   <div
-                    className="emotion-10"
-                  />
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      Brooklyn
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      2
+                    </div>
+                  </div>
                 </div>
                 <div
-                  className="emotion-5"
+                  className="emotion-9"
                 >
-                  <div>
-                    Brooklyn
-                  </div>
-                  <div>
-                    2
-                  </div>
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
                 </div>
-              </div>
-              <div
-                className="emotion-7"
-              >
-                <svg
-                  data-file-name="filter.svg"
-                  width={20}
-                />
               </div>
             </button>
           </li>
           <li>
             <button
               aria-label="Cát Bà"
-              className="emotion-8"
+              className="emotion-11"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-6"
+                className="emotion-10"
               >
                 <div
-                  className="emotion-4"
+                  className="emotion-8"
                 >
                   <div
-                    className="emotion-16"
-                  />
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-22"
+                    />
+                    <div
+                      className="emotion-23"
+                    />
+                  </div>
                   <div
-                    className="emotion-17"
-                  />
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      Cát Bà
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      1
+                    </div>
+                  </div>
                 </div>
                 <div
-                  className="emotion-5"
+                  className="emotion-9"
                 >
-                  <div>
-                    Cát Bà
-                  </div>
-                  <div>
-                    1
-                  </div>
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
                 </div>
-              </div>
-              <div
-                className="emotion-7"
-              >
-                <svg
-                  data-file-name="filter.svg"
-                  width={20}
-                />
               </div>
             </button>
           </li>
           <li>
             <button
               aria-label="La Habana Vieja"
-              className="emotion-8"
+              className="emotion-11"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-6"
+                className="emotion-10"
               >
                 <div
-                  className="emotion-4"
+                  className="emotion-8"
                 >
                   <div
-                    className="emotion-23"
-                  />
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-32"
+                    />
+                    <div
+                      className="emotion-23"
+                    />
+                  </div>
                   <div
-                    className="emotion-17"
-                  />
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      La Habana Vieja
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      1
+                    </div>
+                  </div>
                 </div>
                 <div
-                  className="emotion-5"
+                  className="emotion-9"
                 >
-                  <div>
-                    La Habana Vieja
-                  </div>
-                  <div>
-                    1
-                  </div>
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
                 </div>
-              </div>
-              <div
-                className="emotion-7"
-              >
-                <svg
-                  data-file-name="filter.svg"
-                  width={20}
-                />
               </div>
             </button>
           </li>
           <li>
             <button
               aria-label="North Glendale"
-              className="emotion-8"
+              className="emotion-11"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-6"
+                className="emotion-10"
               >
                 <div
-                  className="emotion-4"
+                  className="emotion-8"
                 >
                   <div
-                    className="emotion-30"
-                  />
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-42"
+                    />
+                    <div
+                      className="emotion-23"
+                    />
+                  </div>
                   <div
-                    className="emotion-17"
-                  />
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      North Glendale
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      1
+                    </div>
+                  </div>
                 </div>
                 <div
-                  className="emotion-5"
+                  className="emotion-9"
                 >
-                  <div>
-                    North Glendale
-                  </div>
-                  <div>
-                    1
-                  </div>
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
                 </div>
-              </div>
-              <div
-                className="emotion-7"
-              >
-                <svg
-                  data-file-name="filter.svg"
-                  width={20}
-                />
               </div>
             </button>
           </li>
           <li>
             <button
               aria-label="Saalfelden am Steinernen Meer"
-              className="emotion-8"
+              className="emotion-11"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-6"
+                className="emotion-10"
               >
                 <div
-                  className="emotion-4"
+                  className="emotion-8"
                 >
                   <div
-                    className="emotion-37"
-                  />
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-52"
+                    />
+                    <div
+                      className="emotion-23"
+                    />
+                  </div>
                   <div
-                    className="emotion-17"
-                  />
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      Saalfelden am Steinernen Meer
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      1
+                    </div>
+                  </div>
                 </div>
                 <div
-                  className="emotion-5"
+                  className="emotion-9"
                 >
-                  <div>
-                    Saalfelden am Steinernen Meer
-                  </div>
-                  <div>
-                    1
-                  </div>
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
                 </div>
-              </div>
-              <div
-                className="emotion-7"
-              >
-                <svg
-                  data-file-name="filter.svg"
-                  width={20}
-                />
               </div>
             </button>
           </li>
           <li>
             <button
               aria-label="Zermatt"
-              className="emotion-8"
+              className="emotion-11"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-6"
+                className="emotion-10"
               >
                 <div
-                  className="emotion-4"
+                  className="emotion-8"
                 >
                   <div
-                    className="emotion-44"
-                  />
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-62"
+                    />
+                    <div
+                      className="emotion-63"
+                    />
+                  </div>
                   <div
-                    className="emotion-45"
-                  />
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      Zermatt
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      0
+                    </div>
+                  </div>
                 </div>
                 <div
-                  className="emotion-5"
+                  className="emotion-9"
                 >
-                  <div>
-                    Zermatt
-                  </div>
-                  <div>
-                    0
-                  </div>
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
                 </div>
-              </div>
-              <div
-                className="emotion-7"
-              >
-                <svg
-                  data-file-name="filter.svg"
-                  width={20}
-                />
               </div>
             </button>
           </li>
         </ul>
         <div
-          className="emotion-55"
+          className="emotion-76"
         >
           <button
             aria-label="Add Field Filter"
-            className="emotion-54"
+            className="emotion-75"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-53"
+              className="emotion-74"
             >
               <div
-                className="emotion-52"
+                className="emotion-73"
               >
                 <svg
                   data-file-name="filter.svg"
@@ -881,4 +968,17 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
     </div>
   </div>
 </div>
+`;
+
+exports[`<ChartFacet /> should render without an attribute 1`] = `
+<ChartForm
+  chart={
+    Object {
+      "id": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
+      "type": "facet",
+    }
+  }
+  chartIndex={0}
+  dispatch={[Function]}
+/>
 `;

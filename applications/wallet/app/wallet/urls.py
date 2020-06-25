@@ -39,6 +39,7 @@ from registration.views import UserRegistrationView, UserConfirmationView, \
 from roles.views import RolesViewSet
 from searches.views import SearchViewSet, MetadataExportViewSet
 from subscriptions.views import SubscriptionViewSet
+from visualizations.views import VisualizationViewSet
 from supportadmin.admin import support_admin_site
 from wallet import views as wallet_views
 from wallet.views import MeView
@@ -69,6 +70,7 @@ projects_router.register('providers', ProviderViewSet, basename='provider')
 projects_router.register('searches/export', MetadataExportViewSet, basename='export')
 projects_router.register('searches', SearchViewSet, basename='search')
 projects_router.register('faces', FaceViewSet, basename='face')
+projects_router.register('visualizations', VisualizationViewSet, basename='visualization')
 
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')
@@ -115,8 +117,7 @@ urlpatterns = [
     path('marketplace/signup/', SignUpView.as_view(), name='gcpmarketplace-signup'),
     path('marketplace/signup_success/', signup_success, name='gcpmarketplace-signup-success'),
 ]
+if settings.SUPERADMIN:
+    urlpatterns.append(path('superadmin/', admin.site.urls))
 urlpatterns += [i[1] for i in BROWSABLE_API_URLS]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-if settings.SUPERADMIN:
-    urlpatterns.append(path('superadmin/', admin.sites.urls))

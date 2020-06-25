@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FaceLabelingAutoSuggest /> should render with no data 1`] = `
-.emotion-9 {
+exports[`<FaceLabelingForm /> should render with no data 1`] = `
+Array [
+  "",
+  .emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -200,87 +202,88 @@ exports[`<FaceLabelingAutoSuggest /> should render with no data 1`] = `
 }
 
 <form
-  action=""
-  className="emotion-9"
-  method="post"
-  onSubmit={[Function]}
->
-  <div>
-    <div
-      className="emotion-4"
-    >
-      <img
-        alt={
-          Array [
-            0.38,
-            0.368,
-            0.484,
-            0.584,
-          ]
-        }
-        className="emotion-0"
-        title={
-          Array [
-            0.38,
-            0.368,
-            0.484,
-            0.584,
-          ]
-        }
-      />
+    action=""
+    className="emotion-9"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div>
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
+        <img
+          alt={
+            Array [
+              0.38,
+              0.368,
+              0.484,
+              0.584,
+            ]
+          }
+          className="emotion-0"
+          title={
+            Array [
+              0.38,
+              0.368,
+              0.484,
+              0.584,
+            ]
+          }
+        />
         <div
-          className="emotion-1"
+          className="emotion-3"
         >
-          Name:
-        </div>
-        <div
-          data-reach-combobox=""
-        >
-          <input
-            aria-autocomplete="both"
-            aria-controls="listbox--1"
-            aria-expanded={false}
-            aria-haspopup="listbox"
-            className="emotion-2"
-            data-reach-combobox-input=""
-            id="MNONPMMKPLRLONLJMRLNM"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            role="combobox"
-            value="face1"
-          />
+          <div
+            className="emotion-1"
+          >
+            Name:
+          </div>
+          <div
+            data-reach-combobox=""
+          >
+            <input
+              aria-autocomplete="both"
+              aria-controls="listbox--1"
+              aria-expanded={false}
+              aria-haspopup="listbox"
+              className="emotion-2"
+              data-reach-combobox-input=""
+              id="MNONPMMKPLRLONLJMRLNM"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              role="combobox"
+              value="face1"
+            />
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    className="emotion-8"
-  >
-    <button
-      aria-disabled={true}
-      className="emotion-5"
-      onClick={[Function]}
-      type="button"
-    >
-      Cancel
-    </button>
     <div
-      className="emotion-6"
-    />
-    <button
-      aria-disabled={true}
-      className="emotion-7"
-      onClick={[Function]}
-      type="button"
+      className="emotion-8"
     >
-      Saved
-    </button>
-  </div>
-</form>
+      <button
+        aria-disabled={true}
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+      <div
+        className="emotion-6"
+      />
+      <button
+        aria-disabled={true}
+        className="emotion-7"
+        onClick={[Function]}
+        type="button"
+      >
+        Saved
+      </button>
+    </div>
+  </form>,
+]
 `;

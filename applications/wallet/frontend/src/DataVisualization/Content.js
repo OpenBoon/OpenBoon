@@ -65,7 +65,7 @@ const DataVisualizationContent = () => {
           />
 
           <div css={{ display: 'flex', flexWrap: 'wrap' }}>
-            <Charts charts={charts} />
+            <Charts charts={charts} dispatch={dispatch} />
           </div>
         </div>
       )}
