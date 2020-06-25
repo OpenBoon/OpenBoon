@@ -248,7 +248,7 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun updateTier() {
         val pid = getProjectId()
-        var update = ProjectTierUpdate(ProjectTier.PREMIUM)
+        var update = ProjectTierUpdate(ProjectTier.PREMIER)
 
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/projects/$pid/_update_tier")

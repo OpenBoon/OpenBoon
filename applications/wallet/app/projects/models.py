@@ -65,7 +65,8 @@ class Project(models.Model):
         except ZmlpDuplicateException:
             logger.info(f'Project {self.id} already exists in ZMLP')
         if hasattr(self, 'subscription'):
-            client.put(f'/api/v1/projects/{self.id}/_update_tier', {'tier': self.subscription.tier.upper()})
+            client.put(f'/api/v1/projects/{self.id}/_update_tier',
+                       {'tier': self.subscription.tier.upper()})
 
 
 class Membership(models.Model):
@@ -99,6 +100,10 @@ class Membership(models.Model):
             client(ZmlpClient): Client used to communicate with ZMLP.
 
         """
+        # TODO: Remove this logic when the Superuser does not use the inception key.
+        if self.user.email == settings.SUPERUSER_EMAIL:
+            return
+
         if not self.apikey:
             self.apikey = create_zmlp_api_key(client,
                                               self._get_api_key_name(),
