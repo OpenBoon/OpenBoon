@@ -5,34 +5,30 @@ import chartShape from '../Chart/shape'
 
 import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 
-import ChartForm from '../ChartForm'
+import ChartFormContent from './Content'
 
-import ChartFacetContent from './Content'
-
-const ChartFacet = ({ chart, chartIndex, dispatch }) => {
-  if (!chart.attribute) {
-    return (
-      <ChartForm chart={chart} chartIndex={chartIndex} dispatch={dispatch} />
-    )
-  }
-
+const ChartForm = ({ chart, chartIndex, dispatch }) => {
   return (
     <Card
       variant={CARD_VARIANTS.DARK}
-      header={chart.attribute}
+      header=""
       content={
         <SuspenseBoundary>
-          <ChartFacetContent chart={chart} />
+          <ChartFormContent
+            chart={chart}
+            chartIndex={chartIndex}
+            dispatch={dispatch}
+          />
         </SuspenseBoundary>
       }
     />
   )
 }
 
-ChartFacet.propTypes = {
+ChartForm.propTypes = {
   chart: PropTypes.shape(chartShape).isRequired,
   chartIndex: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired,
 }
 
-export default ChartFacet
+export default ChartForm

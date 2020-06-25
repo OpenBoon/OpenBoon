@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<ChartRange /> should not render without an attribute 1`] = `
+<ChartForm
+  chart={
+    Object {
+      "id": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
+      "type": "range",
+    }
+  }
+  chartIndex={0}
+  dispatch={[Function]}
+/>
+`;
+
 exports[`<ChartRange /> should render properly 1`] = `
 .emotion-19 {
   padding-right: 32px;
