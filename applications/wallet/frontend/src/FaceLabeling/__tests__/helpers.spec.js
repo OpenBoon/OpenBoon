@@ -47,7 +47,10 @@ describe('<FaceLabelingForm /> helpers', () => {
           '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
       })
 
-      expect(mockDispatch).toHaveBeenCalledWith({ isLoading: true })
+      expect(mockDispatch).toHaveBeenCalledWith({
+        isLoading: true,
+        errors: { ...ERRORS, global: '' },
+      })
       expect(mockMutate).toHaveBeenCalledTimes(2)
     })
 
@@ -83,7 +86,10 @@ describe('<FaceLabelingForm /> helpers', () => {
         body:
           '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
       })
-      expect(mockDispatch).toHaveBeenCalledWith({ isLoading: true })
+      expect(mockDispatch).toHaveBeenCalledWith({
+        isLoading: true,
+        errors: { ...ERRORS, global: '' },
+      })
       expect(mockDispatch).toHaveBeenLastCalledWith({
         isLoading: false,
         errors: { labels: {}, global: 'Error message' },
@@ -120,7 +126,10 @@ describe('<FaceLabelingForm /> helpers', () => {
           '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
       })
 
-      expect(mockDispatch).toHaveBeenCalledWith({ isLoading: true })
+      expect(mockDispatch).toHaveBeenCalledWith({
+        isLoading: true,
+        errors: { ...ERRORS, global: '' },
+      })
       expect(mockDispatch).toHaveBeenLastCalledWith({
         isLoading: false,
         errors: {

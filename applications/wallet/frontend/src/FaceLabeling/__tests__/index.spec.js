@@ -76,6 +76,12 @@ describe('<FaceLabeling />', () => {
         .props.onChange({ value: 'Jane' })
     })
 
+    fetch.mockRejectOnce(
+      JSON.stringify({
+        labels: [{ nonFieldErrors: ['Error Message'] }],
+      }),
+    )
+
     await act(async () => {
       component.root
         .findByProps({ children: 'Save' })

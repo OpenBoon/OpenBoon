@@ -19,7 +19,7 @@ export const onSave = async ({
   })
 
   try {
-    dispatch({ isLoading: true })
+    dispatch({ isLoading: true, errors: { ...errors, global: '' } })
 
     await fetcher(`/api/v1/projects/${projectId}/faces/${assetId}/save/`, {
       method: 'POST',

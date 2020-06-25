@@ -4,6 +4,7 @@ import useSWR from 'swr'
 
 import { colors, spacing } from '../Styles'
 
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Form from '../Form'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import Combobox from '../Combobox'
@@ -53,96 +54,105 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
   const { isLoading } = state
 
   return (
-    <Form
-      style={{
-        padding: spacing.normal,
-        width: '100%',
-        height: '100%',
-        overflow: 'auto',
-        backgroundColor: colors.structure.coal,
-      }}
-    >
-      <div>
-        {predictions.map(({ simhash, bbox, b64Image }) => {
-          const originalValue = predictions.find((p) => p.simhash === simhash)
-            .label
+    <>
+      {state.errors.global && (
+        <div css={{ padding: spacing.normal, paddingTop: 0 }}>
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            {state.errors.global}
+          </FlashMessage>
+        </div>
+      )}
+      <Form
+        style={{
+          padding: spacing.normal,
+          width: '100%',
+          height: '100%',
+          overflow: 'auto',
+          backgroundColor: colors.structure.coal,
+        }}
+      >
+        <div>
+          {predictions.map(({ simhash, bbox, b64Image }) => {
+            const originalValue = predictions.find((p) => p.simhash === simhash)
+              .label
 
-          return (
-            <div
-              key={simhash}
-              css={{
-                display: 'flex',
-                alignItems: 'center',
-                paddingBottom: spacing.normal,
-              }}
-            >
-              <img
+            return (
+              <div
+                key={simhash}
                 css={{
-                  maxHeight: BBOX_SIZE,
-                  width: BBOX_SIZE,
-                  objectFit: 'contain',
-                  marginRight: spacing.normal,
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingBottom: spacing.normal,
                 }}
-                alt={bbox}
-                title={bbox}
-                src={b64Image}
-              />
-              <Combobox
-                key={reloadKey}
-                id={simhash}
-                inputLabel="Name:"
-                options={possibleLabels}
-                originalValue={originalValue}
-                currentValue={state.labels[simhash]}
-                onChange={({ value }) => {
-                  return dispatch({
-                    labels: {
-                      ...state.labels,
-                      [simhash]: value,
-                    },
-                  })
-                }}
-                hasError={state.errors.labels[simhash] !== undefined}
-                errorMessage={state.errors.labels[simhash]}
-              />
-            </div>
-          )
-        })}
-      </div>
-      <div css={{ display: 'flex' }}>
-        <Button
-          variant={BUTTON_VARIANTS.SECONDARY}
-          onClick={() => {
-            reloadKey += 1
-            dispatch(initializedState)
-          }}
-          style={{ flex: 1 }}
-          isDisabled={!isChanged || isLoading}
-        >
-          Cancel
-        </Button>
+              >
+                <img
+                  css={{
+                    maxHeight: BBOX_SIZE,
+                    width: BBOX_SIZE,
+                    objectFit: 'contain',
+                    marginRight: spacing.normal,
+                  }}
+                  alt={bbox}
+                  title={bbox}
+                  src={b64Image}
+                />
+                <Combobox
+                  key={reloadKey}
+                  id={simhash}
+                  inputLabel="Name:"
+                  options={possibleLabels}
+                  originalValue={originalValue}
+                  currentValue={state.labels[simhash]}
+                  onChange={({ value }) => {
+                    return dispatch({
+                      labels: {
+                        ...state.labels,
+                        [simhash]: value,
+                      },
+                    })
+                  }}
+                  hasError={state.errors.labels[simhash] !== undefined}
+                  errorMessage={state.errors.labels[simhash]}
+                />
+              </div>
+            )
+          })}
+        </div>
+        <div css={{ display: 'flex' }}>
+          <Button
+            variant={BUTTON_VARIANTS.SECONDARY}
+            onClick={() => {
+              reloadKey += 1
+              dispatch(initializedState)
+            }}
+            style={{ flex: 1 }}
+            isDisabled={!isChanged || isLoading}
+          >
+            Cancel
+          </Button>
 
-        <div css={{ width: spacing.base, minWidth: spacing.base }} />
+          <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
-        <Button
-          variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() =>
-            onSave({
-              projectId,
-              assetId,
-              labels: state.labels,
-              predictions,
-              errors: state.errors,
-              dispatch,
-            })
-          }
-          style={{ flex: 1 }}
-          isDisabled={!isChanged || isLoading}
-        >
-          {getSaveButtonCopy({ isChanged, isLoading })}
-        </Button>
-      </div>
-    </Form>
+          <Button
+            variant={BUTTON_VARIANTS.PRIMARY}
+            onClick={() =>
+              onSave({
+                projectId,
+                assetId,
+                labels: state.labels,
+                predictions,
+                errors: state.errors,
+                dispatch,
+              })
+            }
+            style={{ flex: 1 }}
+            isDisabled={!isChanged || isLoading}
+          >
+            {getSaveButtonCopy({ isChanged, isLoading })}
+          </Button>
+        </div>
+      </Form>
+    </>
   )
 }
 

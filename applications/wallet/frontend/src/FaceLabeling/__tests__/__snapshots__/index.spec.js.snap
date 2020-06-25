@@ -120,6 +120,7 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
+  "",
   .emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -499,6 +500,7 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
+  "",
   .emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -875,6 +877,53 @@ Array [
     className="emotion-0"
   >
     TIFF_1MB.tiff
+  </div>,
+  .emotion-2 {
+  padding: 16px;
+  padding-top: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#c92300"
+        data-file-name="warning.svg"
+        width={20}
+      />
+      <div
+        className="emotion-0"
+        role="alert"
+      >
+        Something went wrong. Please try again.
+      </div>
+    </div>
   </div>,
   .emotion-9 {
   display: -webkit-box;
