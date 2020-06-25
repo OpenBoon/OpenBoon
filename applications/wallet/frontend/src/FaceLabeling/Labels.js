@@ -3,8 +3,8 @@ import useSWR from 'swr'
 
 import { colors, spacing } from '../Styles'
 
-import FaceLabelingTrainApply from './TrainApply'
 import FaceLabelingForm from './Form'
+import FaceLabelingTrainApply from './TrainApply'
 
 const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
   const { data: asset } = useSWR(
