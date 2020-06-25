@@ -1,5 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import aggregate from '../__mocks__/aggregate'
+
 import ChartRange from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
@@ -26,18 +28,7 @@ describe('<ChartRange />', () => {
 
     require('next/router').__setMockPushFunction(mockRouterPush)
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        count: 584,
-        results: {
-          count: 580,
-          min: 180,
-          max: 8525.0,
-          avg: 899.5689655172414,
-          sum: 521750.0,
-        },
-      },
-    })
+    require('swr').__setMockUseSWRResponse({ data: aggregate })
 
     const component = TestRenderer.create(
       <ChartRange chart={chart} chartIndex={0} dispatch={noop} />,
@@ -117,18 +108,7 @@ describe('<ChartRange />', () => {
 
     require('next/router').__setMockPushFunction(mockRouterPush)
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        count: 584,
-        results: {
-          count: 580,
-          min: 180,
-          max: 8525.0,
-          avg: 899.5689655172414,
-          sum: 521750.0,
-        },
-      },
-    })
+    require('swr').__setMockUseSWRResponse({ data: aggregate })
 
     const component = TestRenderer.create(
       <ChartRange chart={chart} chartIndex={0} dispatch={noop} />,

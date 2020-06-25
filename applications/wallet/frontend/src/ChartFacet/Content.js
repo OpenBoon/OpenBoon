@@ -6,7 +6,14 @@ import { constants, spacing, typography, colors } from '../Styles'
 
 import chartShape from '../Chart/shape'
 
-import { encode, decode, ACTIONS, dispatch } from '../Filters/helpers'
+import {
+  encode,
+  cleanup,
+  formatUrl,
+  decode,
+  ACTIONS,
+  dispatch,
+} from '../Filters/helpers'
 import Button, { VARIANTS } from '../Button'
 
 import FilterSvg from '../Icons/filter.svg'
@@ -29,22 +36,27 @@ const COLORS = [
   colors.signal.grass.base,
 ]
 
-const ChartFacetContent = ({ chart: { type, attribute } }) => {
+const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
   const {
     pathname,
     query: { projectId, query },
   } = useRouter()
 
-  const encodedFilter = encode({ filters: { type, attribute } })
+  const visuals = encode({
+    filters: [{ type, id, attribute, options: { size: 20 } }],
+  })
 
-  const { data } = useSWR(
-    // TODO: Update endpoint
-    `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
+  const q = cleanup({ query })
+
+  const params = formatUrl({ query: q, visuals })
+
+  const { data = [] } = useSWR(
+    `/api/v1/projects/${projectId}/visualizations/load/${params}`,
   )
 
-  const { results } = data || {}
+  const { results = {} } = data.find((r) => r.id === id) || {}
 
-  const { buckets = [] } = results || {}
+  const { buckets = [] } = results
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
 
