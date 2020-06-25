@@ -1165,8 +1165,8 @@ Array [
           >
             <input
               aria-autocomplete="both"
-              aria-controls="listbox--5"
-              aria-expanded={true}
+              aria-controls="listbox--9"
+              aria-expanded={false}
               aria-haspopup="listbox"
               className="emotion-2"
               data-reach-combobox-input=""
