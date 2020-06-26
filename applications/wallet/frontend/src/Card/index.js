@@ -26,12 +26,9 @@ const STYLES = {
     content: { padding: spacing.spacious },
   },
   DARK: {
-    spacer: {
-      paddingRight: spacing.spacious,
-      paddingBottom: spacing.spacious,
-      width: constants.form.maxWidth,
-    },
+    spacer: { height: '100%' },
     container: {
+      height: '100%',
       display: 'flex',
       flexDirection: 'column',
       backgroundColor: colors.structure.lead,
