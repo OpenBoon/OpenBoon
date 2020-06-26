@@ -9,6 +9,7 @@ import { ACTIONS } from '../DataVisualization/reducer'
 
 import Button, { VARIANTS } from '../Button'
 
+const ICON_SIZE = 20
 const ICON_PADDING = 6
 
 const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
@@ -20,7 +21,6 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
         paddingTop: spacing.mini,
         ':hover': {
           button: {
-            color: colors.structure.white,
             svg: { opacity: 1 },
           },
         },
@@ -45,13 +45,13 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
           svg: {
             color: colors.structure.steel,
           },
-          ':focus, :hover, &.focus-visible:focus': {
+          ':focus, :hover': {
             svg: { opacity: 1, color: colors.structure.white },
             backgroundColor: colors.structure.smoke,
           },
         }}
       >
-        <PenSvg width={20} css={{ opacity: 0 }} />
+        <PenSvg width={ICON_SIZE} css={{ opacity: 0 }} />
       </Button>
       <div css={{ width: spacing.mini }} />
       <Button
@@ -63,7 +63,7 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
           svg: {
             color: colors.structure.steel,
           },
-          ':focus, :hover, &.focus-visible:focus': {
+          ':focus, :hover': {
             svg: { opacity: 1, color: colors.structure.white },
             backgroundColor: colors.structure.smoke,
           },
@@ -72,7 +72,7 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
           dispatch({ type: ACTIONS.DELETE, payload: { chartIndex } })
         }
       >
-        <CrossSvg width={20} css={{ opacity: 0 }} />
+        <CrossSvg width={ICON_SIZE} css={{ opacity: 0 }} />
       </Button>
     </div>
   )

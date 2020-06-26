@@ -41,10 +41,6 @@ exports[`<ChartFacet /> should render properly 1`] = `
   padding-top: 2px;
 }
 
-.emotion-6:hover button {
-  color: #ffffff;
-}
-
 .emotion-6:hover button svg {
   opacity: 1;
 }
@@ -106,14 +102,12 @@ exports[`<ChartFacet /> should render properly 1`] = `
 }
 
 .emotion-2:focus,
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-2:hover {
   background-color: #3b3b3b;
 }
 
 .emotion-2:focus svg,
-.emotion-2:hover svg,
-.emotion-2.focus-visible:focus svg {
+.emotion-2:hover svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -929,10 +923,6 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   padding-top: 2px;
 }
 
-.emotion-6:hover button {
-  color: #ffffff;
-}
-
 .emotion-6:hover button svg {
   opacity: 1;
 }
@@ -994,14 +984,12 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
 }
 
 .emotion-2:focus,
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-2:hover {
   background-color: #3b3b3b;
 }
 
 .emotion-2:focus svg,
-.emotion-2:hover svg,
-.emotion-2.focus-visible:focus svg {
+.emotion-2:hover svg {
   opacity: 1;
   color: #ffffff;
 }
