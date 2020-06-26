@@ -2,6 +2,7 @@ import os
 import time
 import tempfile
 import logging
+import pandas as pd
 
 import backoff
 from google.api_core.exceptions import ResourceExhausted
@@ -42,6 +43,7 @@ class AutoMLModelTrainer(AssetProcessor):
         self.add_arg(Argument("model_path", "string",
                               toolTip=AutoMLModelTrainer.tool_tips['project_path']))
 
+        self.app_model = None
         self.model_id = None
         self.model_path = None
         self.client = None
@@ -53,6 +55,7 @@ class AutoMLModelTrainer(AssetProcessor):
         self.gcp_credentials_path = None
 
         self.region = None
+        self.df = None
 
     def init(self):
         self.app_model = self.app.models.get_model(self.arg_value('model_id'))
@@ -63,22 +66,27 @@ class AutoMLModelTrainer(AssetProcessor):
         self.project_path = self.arg_value('project_path')
         self.model_path = self.arg_value('model_path')
 
+        # set Google credentials from arg
         self.gcp_credentials_path = self.arg_value('gcp_credentials_path')
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = self.gcp_credentials_path
 
         self.client = automl.AutoMlClient()
+        self.df = pd.read_csv(self.project_path, header=None)
 
     def process(self, frame):
+        # create empty dataset from project ID
         self.dataset = self.create_dataset(self.project_id, self.display_name, self.region)
         dataset_id = self._get_id(self.dataset)
 
+        # import dataset from project_path CSV file
         self.import_dataset(self.project_id, dataset_id, self.project_path, self.region)
 
+        # create/train model
         self.model = self.create_model(self.project_id, dataset_id, self.display_name, self.region)
-        # self.model_path = self.model.operation.name
-        # model_id = self.model.operation.name.split("/")[-1]  # self._get_id(self.model.operation)
+        model_id = self.model_path or self._get_id(self.model.operation)
 
-        self.publish_model(self.model_path)
+        # publish model
+        self.publish_model(model_id)
 
     @staticmethod
     def _get_id(name):
@@ -124,8 +132,8 @@ class AutoMLModelTrainer(AssetProcessor):
         created_dataset = self.client.create_dataset(project_location, dataset)
 
         # Display the dataset information
-        print("Dataset name: {}".format(created_dataset.name))
-        print("Dataset id: {}".format(created_dataset.name.split("/")[-1]))
+        logging.debug("Dataset name: {}".format(created_dataset.name))
+        logging.debug("Dataset id: {}".format(created_dataset.name.split("/")[-1]))
 
         return created_dataset
 
@@ -157,7 +165,7 @@ class AutoMLModelTrainer(AssetProcessor):
 
         self.reactor.emit_status("Processing import...")
         self.reactor.emit_status("Data imported. {}".format(response.result()))
-        self.reactor.emit_status("Total import time: {}".format(time.time()-start_time))
+        logging.debug("Total import time: {}".format(time.time()-start_time))
 
     def create_model(self, project_id, dataset_id, display_name, region="us-central1"):
         """Create and train a model
@@ -194,7 +202,7 @@ class AutoMLModelTrainer(AssetProcessor):
         self.reactor.emit_status("Training started...")
 
         self.reactor.emit_status("Training complete. {}".format(response.result()))
-        self.reactor.emit_status("Total training time: {}".format(time.time() - start_time))
+        logging.debug("Total training time: {}".format(time.time() - start_time))
 
         return response
 
@@ -211,6 +219,13 @@ class AutoMLModelTrainer(AssetProcessor):
         model_dir = tempfile.mkdtemp() + '/' + self.app_model.name
         os.makedirs(model_dir)
 
+        # add labels.txt from DataFrame
+        labels = self.df[1].unique()
+        with open(os.path.join(model_dir, "_labels.txt"), "w") as fp:
+            for label in labels:
+                fp.write("{}\n".format(label))
+        self.reactor.emit_status("Labels are in " + model_dir + "_labels.txt")
+
         # deploy model
         model_full_id = self.client.model_path(self.project_id, self.region, model)
         self.client.deploy_model(model_full_id)
@@ -219,16 +234,3 @@ class AutoMLModelTrainer(AssetProcessor):
         pmod = file_storage.models.save_model(model_dir, self.app_model)
         self.reactor.emit_status("Published model {}".format(self.app_model.name))
         return pmod
-
-#
-# class AutoMLDataSetBuilder:
-#     """Build a Dataset in Google AutoML format"""
-#
-#     def __init__(self):
-#         self.client = None
-#
-#     def init(self):
-#         self.client = cloud.get_google_storage_client()
-#
-#     def build_dataset(self):
-#

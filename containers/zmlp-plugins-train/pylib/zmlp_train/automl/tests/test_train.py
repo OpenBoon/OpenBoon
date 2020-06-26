@@ -25,8 +25,8 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
     @patch.object(ModelApp, 'get_model')
     @patch.object(automl.AutoMlClient, 'deploy_model')
     @patch.object(file_storage.projects, "store_file_by_id")
-    def do_not_test_model_eval(self, upload_patch, deploy_patch, model_patch, pub_patch,
-                               dataset_id_patch, create_model_patch, import_patch):
+    def test_process(self, upload_patch, deploy_patch, model_patch, pub_patch, dataset_id_patch,
+                     create_model_patch, import_patch):
         # Prep the frame, asset, and proxy
         toucan_fname = zorroa_test_data('training/test_dsy.jpg').split("file://")[-1]
         asset = TestAsset(toucan_fname)
@@ -40,20 +40,20 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
         model_patch.return_value = Model({
             'id': model_id,
             'dataSetId': ds_id,
-            'type': "LABEL_DETECTION_PERCEPTRON",
+            'type': "AUTOML",
             'fileId': 'models/{}/foo/bar'.format(model_id),
             'name': name
         })
         import_patch.return_value = None
-        dataset_id_patch.return_value = "ICN443750798342488064"
+        dataset_id_patch.return_value = "ICN977145879209181184"
         create_model_patch.return_value = None
         deploy_patch.return_value = None
         upload_patch.return_value = StoredFile({"id": "12345"})
 
         # Prep the processor
         self.processor = AutoMLModelTrainer()
-        project_id = 'zorroa-dev-rg'
-        creds_path = os.path.join(zorroa_test_data(), 'creds', 'zorroa-dev-rg-access.json')
+        project_id = 'zorroa-poc-dev'
+        creds_path = os.path.join(zorroa_test_data(), 'creds', 'zorroa-poc-dev-access.json')
         creds_path = creds_path.split("file://")[-1]
         args = {
             'project_id': project_id,
@@ -62,7 +62,7 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
             'gcp_credentials_path': creds_path,
             'display_name': name,
             'project_path': 'gs://{}-vcm/csv/csv_some_data.csv'.format(project_id),
-            'model_path': "ICN655064838573129728"
+            'model_path': "ICN94225947477147648"
         }
         self.init_processor(self.processor, args)
 
