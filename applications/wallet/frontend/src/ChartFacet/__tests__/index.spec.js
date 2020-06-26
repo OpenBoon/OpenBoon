@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import aggregate from '../../FilterFacet/__mocks__/aggregate'
+import aggregate from '../__mocks__/aggregate'
 
 import ChartFacet from '..'
 

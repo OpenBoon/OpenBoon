@@ -66,6 +66,10 @@ exports[`<Layout /> should render properly 1`] = `
 .emotion-1 {
   padding-left: 8px;
   padding-right: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-8 {
@@ -213,7 +217,7 @@ exports[`<Layout /> should render properly 1`] = `
       >
         <svg
           data-file-name="logo.svg"
-          width={110}
+          width={59}
         />
       </a>
       <ProjectSwitcher
@@ -331,6 +335,10 @@ exports[`<Layout /> should render properly 2`] = `
 .emotion-1 {
   padding-left: 8px;
   padding-right: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-8 {
@@ -478,7 +486,7 @@ exports[`<Layout /> should render properly 2`] = `
       >
         <svg
           data-file-name="logo.svg"
-          width={110}
+          width={59}
         />
       </a>
       <ProjectSwitcher

@@ -131,7 +131,8 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
 
           <Button
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() =>
+            onClick={() => {
+              reloadKey += 1
               onSave({
                 projectId,
                 assetId,
@@ -140,7 +141,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
                 errors: state.errors,
                 dispatch,
               })
-            }
+            }}
             style={{ flex: 1 }}
             isDisabled={!isChanged || isLoading}
           >
