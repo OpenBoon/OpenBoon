@@ -3,38 +3,42 @@ import { Responsive, WidthProvider } from 'react-grid-layout'
 
 import chartShape from '../Chart/shape'
 
+import { spacing } from '../Styles'
+
+import { useLocalStorageState } from '../LocalStorage/helpers'
+
 import ChartFacet from '../ChartFacet'
 import ChartRange from '../ChartRange'
 
+import { MIN_ROW_HEIGHT, breakpoints, cols, setAllLayouts } from './helpers'
+
 const ResponsiveGridLayout = WidthProvider(Responsive)
 
-const BREAKPOINTS = ['sm', 'md', 'lg']
-const MIN_COL_WIDTH = 350
-
-const breakpoints = BREAKPOINTS.reduce(
-  (acc, bp, index) => ({ ...acc, [bp]: MIN_COL_WIDTH * (index + 1) }),
-  {},
-)
-
-const cols = BREAKPOINTS.reduce(
-  (acc, bp, index) => ({ ...acc, [bp]: index + 1 }),
-  {},
-)
-
 const Charts = ({ charts, dispatch }) => {
-  const layouts = charts.map(({ id }, index) => ({
-    i: id,
-    x: index,
-    y: 0,
-    w: 1,
-    h: 2,
-  }))
+  const initialLayouts = {
+    lg: charts.map(({ id }) => ({
+      i: id,
+      x: 0,
+      y: 0,
+      w: 1,
+      h: 4,
+      minH: 4,
+    })),
+  }
+
+  const [layouts, setLayouts] = useLocalStorageState({
+    key: '__TODO__',
+    initialValue: initialLayouts,
+  })
 
   return (
     <ResponsiveGridLayout
-      layouts={{ lg: layouts }}
+      layouts={layouts}
       breakpoints={breakpoints}
       cols={cols}
+      margin={[spacing.normal, spacing.normal]}
+      rowHeight={MIN_ROW_HEIGHT}
+      onLayoutChange={setAllLayouts({ setLayouts })}
     >
       {charts
         .filter(({ id }) => !!id)
