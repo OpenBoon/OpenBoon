@@ -1,6 +1,10 @@
-const BREAKPOINTS = [...new Array(10)].map((_, index) => index)
+const FOUR_K = 4096
 
-const MIN_COL_WIDTH = 250
+const MIN_COL_WIDTH = 100
+
+const MAX_COLS = Math.ceil(FOUR_K / MIN_COL_WIDTH)
+
+const BREAKPOINTS = [...new Array(MAX_COLS)].map((_, index) => index)
 
 export const MIN_ROW_HEIGHT = 50
 
@@ -20,8 +24,8 @@ export const setAllLayouts = ({ setLayouts }) => (_, allLayouts) => {
       ...acc,
       [bp]: values.map((v) => ({
         ...v,
-        w: v.w > 2 ? v.w : 2,
-        minW: 2,
+        w: v.w > 4 ? v.w : 4,
+        minW: 4,
         h: v.h > 4 ? v.h : 4,
         minH: 4,
       })),

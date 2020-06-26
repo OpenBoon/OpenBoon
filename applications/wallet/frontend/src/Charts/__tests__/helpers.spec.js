@@ -11,7 +11,7 @@ describe('<Charts /> helpers', () => {
 
       expect(mockFn).toHaveBeenCalledWith({
         value: {
-          lg: [{ w: 2, minW: 2, h: 4, minH: 4 }],
+          lg: [{ w: 4, minW: 4, h: 4, minH: 4 }],
         },
       })
     })
@@ -20,12 +20,12 @@ describe('<Charts /> helpers', () => {
       const mockFn = jest.fn()
 
       setAllLayouts({ setLayouts: mockFn })(null, {
-        lg: [{ w: 4, minW: 2, h: 6, minH: 4 }],
+        lg: [{ w: 4, minW: 4, h: 6, minH: 4 }],
       })
 
       expect(mockFn).toHaveBeenCalledWith({
         value: {
-          lg: [{ w: 4, minW: 2, h: 6, minH: 4 }],
+          lg: [{ w: 4, minW: 4, h: 6, minH: 4 }],
         },
       })
     })
