@@ -9,15 +9,15 @@ import { ACTIONS } from '../DataVisualization/reducer'
 
 import Button, { VARIANTS } from '../Button'
 
-const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
-  const splitAttribute = attribute.split('.')
-  const title = splitAttribute[splitAttribute.length - 1]
+const ICON_PADDING = 6
 
+const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
   return (
     <div
       css={{
         display: 'flex',
         alignItems: 'center',
+        paddingTop: spacing.mini,
         ':hover': {
           button: {
             color: colors.structure.white,
@@ -34,47 +34,43 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
           fontWeight: typography.weight.medium,
         }}
       >
-        {title}
+        {attribute}
       </h3>
       <Button
         title="Edit Chart"
-        variant={VARIANTS.CARD_ICON}
+        variant={VARIANTS.NEUTRAL}
         css={{
-          ':focus': {
-            svg: { opacity: 1, color: colors.structure.white },
+          padding: ICON_PADDING,
+          svg: {
+            color: colors.structure.steel,
           },
-          ':hover': {
+          ':focus, :hover, &.focus-visible:focus': {
             svg: { opacity: 1, color: colors.structure.white },
+            backgroundColor: colors.structure.smoke,
           },
         }}
       >
-        <EditSvg
-          width={20}
-          color={colors.structure.steel}
-          css={{ opacity: 0 }}
-        />
+        <EditSvg width={20} css={{ opacity: 0 }} />
       </Button>
       <div css={{ width: spacing.mini }} />
       <Button
         title="Delete Chart"
-        variant={VARIANTS.CARD_ICON}
+        variant={VARIANTS.NEUTRAL}
         css={{
-          ':focus': {
-            svg: { opacity: 1, color: colors.structure.white },
+          padding: ICON_PADDING,
+          svg: {
+            color: colors.structure.steel,
           },
-          ':hover': {
+          ':focus, :hover, &.focus-visible:focus': {
             svg: { opacity: 1, color: colors.structure.white },
+            backgroundColor: colors.structure.smoke,
           },
         }}
         onClick={() =>
           dispatch({ type: ACTIONS.DELETE, payload: { chartIndex } })
         }
       >
-        <CrossSvg
-          width={20}
-          color={colors.structure.steel}
-          css={{ opacity: 0 }}
-        />
+        <CrossSvg width={20} css={{ opacity: 0 }} />
       </Button>
     </div>
   )
