@@ -129,6 +129,7 @@
     "react-window": "1.8.5",
     "react-window-infinite-loader": "1.0.5",
     "swr": "0.2.3",
+    "use-resize-observer": "6.1.0",
     "utf8": "3.0.0",
     "uuid": "8.1.0"
   },

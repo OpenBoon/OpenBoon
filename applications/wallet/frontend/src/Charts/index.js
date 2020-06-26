@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
-import { Responsive, WidthProvider } from 'react-grid-layout'
+import useResizeObserver from 'use-resize-observer'
+import { Responsive as ResponsiveGridLayout } from 'react-grid-layout'
 
 import chartShape from '../Chart/shape'
 
@@ -12,9 +13,9 @@ import ChartRange from '../ChartRange'
 
 import { MIN_ROW_HEIGHT, breakpoints, cols, setAllLayouts } from './helpers'
 
-const ResponsiveGridLayout = WidthProvider(Responsive)
-
 const Charts = ({ charts, dispatch }) => {
+  const { ref, width = 1200 } = useResizeObserver()
+
   const initialLayouts = {
     9: charts.map(({ id }) => ({
       i: id,
@@ -33,47 +34,51 @@ const Charts = ({ charts, dispatch }) => {
   })
 
   return (
-    <ResponsiveGridLayout
-      layouts={layouts}
-      breakpoints={breakpoints}
-      cols={cols}
-      margin={[spacing.normal, spacing.normal]}
-      rowHeight={MIN_ROW_HEIGHT}
-      onLayoutChange={setAllLayouts({ setLayouts })}
-    >
-      {charts
-        .filter(({ id }) => !!id)
-        .map((chart, index) => {
-          switch (chart.type) {
-            case 'facet': {
-              return (
-                <div key={chart.id}>
-                  <ChartFacet
-                    chart={chart}
-                    chartIndex={index}
-                    dispatch={dispatch}
-                  />
-                </div>
-              )
-            }
+    <div ref={ref}>
+      <ResponsiveGridLayout
+        width={width}
+        layouts={layouts}
+        breakpoints={breakpoints}
+        cols={cols}
+        margin={[spacing.normal, spacing.normal]}
+        containerPadding={[0, 0]}
+        rowHeight={MIN_ROW_HEIGHT}
+        onLayoutChange={setAllLayouts({ setLayouts })}
+      >
+        {charts
+          .filter(({ id }) => !!id)
+          .map((chart, index) => {
+            switch (chart.type) {
+              case 'facet': {
+                return (
+                  <div key={chart.id}>
+                    <ChartFacet
+                      chart={chart}
+                      chartIndex={index}
+                      dispatch={dispatch}
+                    />
+                  </div>
+                )
+              }
 
-            case 'range': {
-              return (
-                <div key={chart.id}>
-                  <ChartRange
-                    chart={chart}
-                    chartIndex={index}
-                    dispatch={dispatch}
-                  />
-                </div>
-              )
-            }
+              case 'range': {
+                return (
+                  <div key={chart.id}>
+                    <ChartRange
+                      chart={chart}
+                      chartIndex={index}
+                      dispatch={dispatch}
+                    />
+                  </div>
+                )
+              }
 
-            default:
-              return null
-          }
-        })}
-    </ResponsiveGridLayout>
+              default:
+                return null
+            }
+          })}
+      </ResponsiveGridLayout>
+    </div>
   )
 }
 
