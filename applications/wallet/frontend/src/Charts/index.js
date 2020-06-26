@@ -1,29 +1,41 @@
 import PropTypes from 'prop-types'
-import GridLayout from 'react-grid-layout'
+import { Responsive, WidthProvider } from 'react-grid-layout'
 
 import chartShape from '../Chart/shape'
 
 import ChartFacet from '../ChartFacet'
 import ChartRange from '../ChartRange'
 
+const ResponsiveGridLayout = WidthProvider(Responsive)
+
+const BREAKPOINTS = ['sm', 'md', 'lg']
+const MIN_COL_WIDTH = 350
+
+const breakpoints = BREAKPOINTS.reduce(
+  (acc, bp, index) => ({ ...acc, [bp]: MIN_COL_WIDTH * (index + 1) }),
+  {},
+)
+
+const cols = BREAKPOINTS.reduce(
+  (acc, bp, index) => ({ ...acc, [bp]: index + 1 }),
+  {},
+)
+
 const Charts = ({ charts, dispatch }) => {
-  const layout = charts.map(({ id }, index) => ({
+  const layouts = charts.map(({ id }, index) => ({
     i: id,
-    x: 0,
-    y: index,
+    x: index,
+    y: 0,
     w: 1,
     h: 2,
   }))
 
-  // console.warn({ layout })
-
   return (
-    <GridLayout
-      className="layout"
-      layout={layout}
-      width={798}
-      rowHeight={50}
-      cols={6}
+    <ResponsiveGridLayout
+      layouts={{ lg: layouts }}
+      breakpoints={breakpoints}
+      cols={cols}
+      // rowHeight={10}
     >
       {charts
         .filter(({ id }) => !!id)
@@ -57,7 +69,7 @@ const Charts = ({ charts, dispatch }) => {
               return null
           }
         })}
-    </GridLayout>
+    </ResponsiveGridLayout>
   )
 }
 

@@ -64,7 +64,7 @@ const DataVisualizationContent = () => {
             setIsCreating={setIsCreating}
           />
 
-          <div css={{ display: 'flex', flexWrap: 'wrap' }}>
+          <div css={{ flex: 1 }}>
             <Charts charts={charts} dispatch={dispatch} />
           </div>
         </div>

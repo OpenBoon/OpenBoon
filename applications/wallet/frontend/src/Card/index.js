@@ -26,7 +26,7 @@ const STYLES = {
     content: { padding: spacing.spacious },
   },
   DARK: {
-    spacer: { height: '100%' },
+    spacer: { height: '100%', overflow: 'hidden' },
     container: {
       height: '100%',
       display: 'flex',
