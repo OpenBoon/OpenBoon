@@ -6,6 +6,9 @@ import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.FileUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.UUID
 
 /**
@@ -141,18 +144,25 @@ class ProjectFileLocator(
     val entity: ProjectStorageEntity,
     val entityId: String,
     override val category: String,
-    override val name: String,
+    override var name: String,
     @JsonIgnore
     val projectId: UUID? = null
 ) : ProjectStorageLocator {
 
+    val encodedName: String
+
+    init {
+        name = URLDecoder.decode(name, StandardCharsets.UTF_8.toString())
+        encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8.toString())
+    }
+
     override fun getPath(): String {
         val pid = projectId ?: getProjectId()
-        return "projects/$pid/${entity.pathName()}/$entityId/$category/$name"
+        return "projects/$pid/${entity.pathName()}/$entityId/$category/$encodedName"
     }
 
     override fun getFileId(): String {
-        return "${entity.pathName()}/$entityId/$category/$name"
+        return "${entity.pathName()}/$entityId/$category/$encodedName"
     }
 }
 
