@@ -9,7 +9,7 @@ exports[`<Icons /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-103 {
+.emotion-105 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -55,7 +55,7 @@ exports[`<Icons /> should render properly 1`] = `
     Icons
   </h2>
   <div
-    className="emotion-103"
+    className="emotion-105"
   >
     <div
       className="emotion-2"
