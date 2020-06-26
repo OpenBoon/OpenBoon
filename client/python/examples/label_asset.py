@@ -15,7 +15,6 @@ def main():
 
     args = parser.parse_args()
 
-    #assets = app.assets.search({"query": {"term": {"source.path": args.path}}}).assets
     dataset = app.datasets.find_one_dataset(name=args.dataset)
     app.assets.update_labels(args.id, dataset.make_label(args.label))
 
