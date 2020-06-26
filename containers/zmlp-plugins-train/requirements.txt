@@ -8,3 +8,4 @@ pillow
 pandas
 google-cloud
 google-cloud-automl
+gcsfs
