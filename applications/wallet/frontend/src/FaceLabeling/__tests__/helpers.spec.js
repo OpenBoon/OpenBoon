@@ -51,7 +51,7 @@ describe('<FaceLabelingForm /> helpers', () => {
         isLoading: true,
         errors: { ...ERRORS, global: '' },
       })
-      expect(mockMutate).toHaveBeenCalledTimes(2)
+      expect(mockMutate).toHaveBeenCalledTimes(3)
     })
 
     it('should set a global error message when the response contains an error message', async () => {

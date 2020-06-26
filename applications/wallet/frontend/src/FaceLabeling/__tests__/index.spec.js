@@ -9,6 +9,8 @@ const ASSET_ID = asset.id
 
 const noop = () => () => {}
 
+jest.mock('../TrainApply', () => 'FaceLabelingTrainApply')
+
 describe('<FaceLabeling />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({
