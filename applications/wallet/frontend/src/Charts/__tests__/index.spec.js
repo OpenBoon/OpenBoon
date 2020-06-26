@@ -39,6 +39,6 @@ describe('<Charts />', () => {
       <Charts charts={[{ id: CHART_ID }]} chartIndex={0} dispatch={noop} />,
     )
 
-    expect(component.toJSON()).toEqual(null)
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

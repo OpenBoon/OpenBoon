@@ -1,27 +1,222 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Charts /> should render properly for "Facet" 1`] = `
-<ChartFacet
-  chart={
-    Object {
-      "id": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
-      "type": "facet",
+<div>
+  <ResponsiveGridLayout
+    breakpoints={
+      Object {
+        "0": 250,
+        "1": 500,
+        "2": 750,
+        "3": 1000,
+        "4": 1250,
+        "5": 1500,
+        "6": 1750,
+        "7": 2000,
+        "8": 2250,
+        "9": 2500,
+      }
     }
-  }
-  chartIndex={0}
-  dispatch={[Function]}
-/>
+    cols={
+      Object {
+        "0": 1,
+        "1": 2,
+        "2": 3,
+        "3": 4,
+        "4": 5,
+        "5": 6,
+        "6": 7,
+        "7": 8,
+        "8": 9,
+        "9": 10,
+      }
+    }
+    containerPadding={
+      Array [
+        0,
+        0,
+      ]
+    }
+    layouts={
+      Object {
+        "9": Array [
+          Object {
+            "h": 4,
+            "i": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
+            "minH": 4,
+            "minW": 2,
+            "w": 2,
+            "x": 0,
+            "y": 0,
+          },
+        ],
+      }
+    }
+    margin={
+      Array [
+        16,
+        16,
+      ]
+    }
+    onLayoutChange={[Function]}
+    rowHeight={50}
+    width={1200}
+  >
+    <div>
+      <ChartFacet
+        chart={
+          Object {
+            "id": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
+            "type": "facet",
+          }
+        }
+        chartIndex={0}
+        dispatch={[Function]}
+      />
+    </div>
+  </ResponsiveGridLayout>
+</div>
 `;
 
 exports[`<Charts /> should render properly for "Range" 1`] = `
-<ChartRange
-  chart={
-    Object {
-      "id": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
-      "type": "range",
+<div>
+  <ResponsiveGridLayout
+    breakpoints={
+      Object {
+        "0": 250,
+        "1": 500,
+        "2": 750,
+        "3": 1000,
+        "4": 1250,
+        "5": 1500,
+        "6": 1750,
+        "7": 2000,
+        "8": 2250,
+        "9": 2500,
+      }
     }
-  }
-  chartIndex={0}
-  dispatch={[Function]}
-/>
+    cols={
+      Object {
+        "0": 1,
+        "1": 2,
+        "2": 3,
+        "3": 4,
+        "4": 5,
+        "5": 6,
+        "6": 7,
+        "7": 8,
+        "8": 9,
+        "9": 10,
+      }
+    }
+    containerPadding={
+      Array [
+        0,
+        0,
+      ]
+    }
+    layouts={
+      Object {
+        "9": Array [
+          Object {
+            "h": 4,
+            "i": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
+            "minH": 4,
+            "minW": 2,
+            "w": 2,
+            "x": 0,
+            "y": 0,
+          },
+        ],
+      }
+    }
+    margin={
+      Array [
+        16,
+        16,
+      ]
+    }
+    onLayoutChange={[Function]}
+    rowHeight={50}
+    width={1200}
+  >
+    <div>
+      <ChartRange
+        chart={
+          Object {
+            "id": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
+            "type": "range",
+          }
+        }
+        chartIndex={0}
+        dispatch={[Function]}
+      />
+    </div>
+  </ResponsiveGridLayout>
+</div>
+`;
+
+exports[`<Charts /> should render properly for "Unknown" 1`] = `
+<div>
+  <ResponsiveGridLayout
+    breakpoints={
+      Object {
+        "0": 250,
+        "1": 500,
+        "2": 750,
+        "3": 1000,
+        "4": 1250,
+        "5": 1500,
+        "6": 1750,
+        "7": 2000,
+        "8": 2250,
+        "9": 2500,
+      }
+    }
+    cols={
+      Object {
+        "0": 1,
+        "1": 2,
+        "2": 3,
+        "3": 4,
+        "4": 5,
+        "5": 6,
+        "6": 7,
+        "7": 8,
+        "8": 9,
+        "9": 10,
+      }
+    }
+    containerPadding={
+      Array [
+        0,
+        0,
+      ]
+    }
+    layouts={
+      Object {
+        "9": Array [
+          Object {
+            "h": 4,
+            "i": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
+            "minH": 4,
+            "minW": 2,
+            "w": 2,
+            "x": 0,
+            "y": 0,
+          },
+        ],
+      }
+    }
+    margin={
+      Array [
+        16,
+        16,
+      ]
+    }
+    onLayoutChange={[Function]}
+    rowHeight={50}
+    width={1200}
+  />
+</div>
 `;
