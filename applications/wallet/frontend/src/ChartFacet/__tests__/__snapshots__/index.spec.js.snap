@@ -465,14 +465,15 @@ exports[`<ChartFacet /> should render properly 1`] = `
           location.city
         </h3>
         <button
+          aria-label="Edit Chart"
           className="emotion-2"
           onClick={[Function]}
-          title="Edit Chart"
+          title="Edit"
           type="button"
         >
           <svg
             className="emotion-1"
-            data-file-name="edit.svg"
+            data-file-name="pen.svg"
             width={20}
           />
         </button>
@@ -480,9 +481,10 @@ exports[`<ChartFacet /> should render properly 1`] = `
           className="emotion-3"
         />
         <button
+          aria-label="Delete Chart"
           className="emotion-2"
           onClick={[Function]}
-          title="Delete Chart"
+          title="Delete"
           type="button"
         >
           <svg
@@ -1159,14 +1161,15 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
           location.city
         </h3>
         <button
+          aria-label="Edit Chart"
           className="emotion-2"
           onClick={[Function]}
-          title="Edit Chart"
+          title="Edit"
           type="button"
         >
           <svg
             className="emotion-1"
-            data-file-name="edit.svg"
+            data-file-name="pen.svg"
             width={20}
           />
         </button>
@@ -1174,9 +1177,10 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
           className="emotion-3"
         />
         <button
+          aria-label="Delete Chart"
           className="emotion-2"
           onClick={[Function]}
-          title="Delete Chart"
+          title="Delete"
           type="button"
         >
           <svg

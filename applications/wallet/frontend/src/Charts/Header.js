@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import EditSvg from '../Icons/edit.svg'
+import PenSvg from '../Icons/pen.svg'
 import CrossSvg from '../Icons/cross.svg'
 
 import { colors, spacing, typography } from '../Styles'
@@ -37,7 +37,8 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
         {attribute}
       </h3>
       <Button
-        title="Edit Chart"
+        title="Edit"
+        aria-label="Edit Chart"
         variant={VARIANTS.NEUTRAL}
         css={{
           padding: ICON_PADDING,
@@ -50,11 +51,12 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
           },
         }}
       >
-        <EditSvg width={20} css={{ opacity: 0 }} />
+        <PenSvg width={20} css={{ opacity: 0 }} />
       </Button>
       <div css={{ width: spacing.mini }} />
       <Button
-        title="Delete Chart"
+        title="Delete"
+        aria-label="Delete Chart"
         variant={VARIANTS.NEUTRAL}
         css={{
           padding: ICON_PADDING,

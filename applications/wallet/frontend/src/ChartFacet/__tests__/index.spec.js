@@ -261,7 +261,9 @@ describe('<ChartFacet />', () => {
     )
 
     act(() => {
-      component.root.findByProps({ title: 'Delete Chart' }).props.onClick()
+      component.root
+        .findByProps({ 'aria-label': 'Delete Chart' })
+        .props.onClick()
     })
 
     expect(mockDispatch).toHaveBeenCalledWith({
