@@ -10,13 +10,18 @@ export const onSave = async ({
   errors,
   dispatch,
 }) => {
-  const newLabels = predictions.map(({ bbox, simhash }) => {
-    return {
-      bbox,
-      simhash,
-      label: labels[simhash],
-    }
-  })
+  const newLabels = predictions
+    .filter(
+      // filter out labels that are the same as the predicted label
+      ({ simhash, label }) => label !== labels[simhash],
+    )
+    .map(({ bbox, simhash }) => {
+      return {
+        bbox,
+        simhash,
+        label: labels[simhash],
+      }
+    })
 
   try {
     dispatch({ isLoading: true, errors: { ...errors, global: '' } })
@@ -29,7 +34,8 @@ export const onSave = async ({
     })
 
     await mutate(`/api/v1/projects/${projectId}/faces/${assetId}/`)
-    await mutate(`/api/v1/projects/${projectId}/faces/labels`)
+    await mutate(`/api/v1/projects/${projectId}/faces/labels/`)
+    await mutate(`/api/v1/projects/${projectId}/faces/unapplied_changes/`)
 
     dispatch({ isLoading: false })
   } catch (response) {
