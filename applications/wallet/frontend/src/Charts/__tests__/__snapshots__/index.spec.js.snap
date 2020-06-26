@@ -99,21 +99,7 @@ exports[`<Charts /> should render properly for "Facet" 1`] = `
         0,
       ]
     }
-    layouts={
-      Object {
-        "9": Array [
-          Object {
-            "h": 4,
-            "i": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
-            "minH": 4,
-            "minW": 2,
-            "w": 2,
-            "x": 0,
-            "y": 0,
-          },
-        ],
-      }
-    }
+    layouts={Object {}}
     margin={
       Array [
         16,
@@ -239,21 +225,7 @@ exports[`<Charts /> should render properly for "Range" 1`] = `
         0,
       ]
     }
-    layouts={
-      Object {
-        "9": Array [
-          Object {
-            "h": 4,
-            "i": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
-            "minH": 4,
-            "minW": 2,
-            "w": 2,
-            "x": 0,
-            "y": 0,
-          },
-        ],
-      }
-    }
+    layouts={Object {}}
     margin={
       Array [
         16,
@@ -379,21 +351,7 @@ exports[`<Charts /> should render properly for "Unknown" 1`] = `
         0,
       ]
     }
-    layouts={
-      Object {
-        "9": Array [
-          Object {
-            "h": 4,
-            "i": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
-            "minH": 4,
-            "minW": 2,
-            "w": 2,
-            "x": 0,
-            "y": 0,
-          },
-        ],
-      }
-    }
+    layouts={Object {}}
     margin={
       Array [
         16,

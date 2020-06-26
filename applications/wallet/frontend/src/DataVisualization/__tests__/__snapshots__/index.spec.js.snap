@@ -797,6 +797,7 @@ exports[`<DataVisualization /> should render properly 2`] = `
               ]
             }
             dispatch={[Function]}
+            projectId="76917058-b147-4556-987a-0a0f11e46d9b"
           />
         </div>
       </div>

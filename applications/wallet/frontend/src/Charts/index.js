@@ -13,24 +13,12 @@ import ChartRange from '../ChartRange'
 
 import { MIN_ROW_HEIGHT, breakpoints, cols, setAllLayouts } from './helpers'
 
-const Charts = ({ charts, dispatch }) => {
+const Charts = ({ projectId, charts, dispatch }) => {
   const { ref, width = 1200 } = useResizeObserver()
 
-  const initialLayouts = {
-    9: charts.map(({ id }) => ({
-      i: id,
-      x: 0,
-      y: 0,
-      w: 2,
-      minW: 2,
-      h: 4,
-      minH: 4,
-    })),
-  }
-
   const [layouts, setLayouts] = useLocalStorageState({
-    key: '__TODO__',
-    initialValue: initialLayouts,
+    key: `Charts.${projectId}`,
+    initialValue: {},
   })
 
   return (
@@ -83,6 +71,7 @@ const Charts = ({ charts, dispatch }) => {
 }
 
 Charts.propTypes = {
+  projectId: PropTypes.string.isRequired,
   charts: PropTypes.arrayOf(PropTypes.shape(chartShape).isRequired).isRequired,
   dispatch: PropTypes.func.isRequired,
 }
