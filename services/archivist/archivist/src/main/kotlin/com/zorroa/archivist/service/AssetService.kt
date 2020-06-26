@@ -472,7 +472,8 @@ class AssetServiceImpl : AssetService {
             null
         } else {
             val name = "Analyze ${createdAssetIds.size} created assets, $reprocessAssetCount existing files."
-            jobLaunchService.launchJob(name, finalAssetList, processors, creds = creds)
+            jobLaunchService.launchJob(name, finalAssetList, processors,
+                                       creds = creds, settings = mapOf("index" to true))
         }
     }
 
