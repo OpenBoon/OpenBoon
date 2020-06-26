@@ -23,6 +23,8 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         # These are the base args
         self.add_arg(Argument("model_id", "str", required=True,
                               toolTip="The model Id"))
+        self.add_arg(Argument("deploy", "bool", default=False,
+                              toolTip="Automatically deploy the model onto assets."))
 
         # These can be set optionally.
         self.add_arg(Argument("epochs", "int", required=True, default=10,
@@ -85,7 +87,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             for label in labels:
                 fp.write('{}\n'.format(label))
 
-        mod = file_storage.models.save_model(model_dir,  self.app_model)
+        mod = file_storage.models.save_model(model_dir,  self.app_model, self.arg_value('deploy'))
         self.reactor.emit_status("Published model: {}".format(self.app_model.name))
         return mod
 

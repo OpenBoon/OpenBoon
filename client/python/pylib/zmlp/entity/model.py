@@ -13,19 +13,13 @@ class ModelType(Enum):
     Types of models that can be Trained.
     """
 
-    LABEL_DETECTION_KNN = 0
-    """A kmeans fast classification model that works with just a single example."""
+    ZVI_CLUSTERING = 0
+    """A KMeans clustering model for quickly clustering assets into general groups."""
 
-    LABEL_DETECTION_RESNET50 = 1
-    """Tensorflow2 and Resnet50V2 to transfer learning model."""
+    ZVI_LABEL_DETECTION = 1
+    """Retrain the ResNet50 convolutional neural network with your own labels."""
 
-    LABEL_DETECTION_VGG16 = 2
-    """Tensorflow2 and VGG16 to transfer learning model."""
-
-    LABEL_DETECTION_MOBILENET2 = 3
-    """Tensorflow2 and Mobilenet2 to transfer learning model."""
-
-    FACE_RECOGNITION_KNN = 4
+    ZVI_FACE_RECOGNITION = 2
     """Face Recognition model using a KNN classifier."""
 
 
