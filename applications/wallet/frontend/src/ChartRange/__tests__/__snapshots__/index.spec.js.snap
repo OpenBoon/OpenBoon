@@ -98,6 +98,8 @@ exports[`<ChartRange /> should render properly 1`] = `
   padding: 12px;
   padding-left: 16px;
   padding-right: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-11 {
