@@ -1,6 +1,6 @@
-const BREAKPOINTS = ['sm', 'md', 'lg']
+const BREAKPOINTS = [...new Array(10)].map((_, index) => index)
 
-const MIN_COL_WIDTH = 350
+const MIN_COL_WIDTH = 250
 
 export const MIN_ROW_HEIGHT = 50
 
@@ -18,7 +18,13 @@ export const setAllLayouts = ({ setLayouts }) => (_, allLayouts) => {
   const value = Object.entries(allLayouts).reduce(
     (acc, [bp, values]) => ({
       ...acc,
-      [bp]: values.map((v) => ({ ...v, h: v.h > 4 ? v.h : 4, minH: 4 })),
+      [bp]: values.map((v) => ({
+        ...v,
+        w: v.w > 2 ? v.w : 2,
+        minW: 2,
+        h: v.h > 4 ? v.h : 4,
+        minH: 4,
+      })),
     }),
     {},
   )

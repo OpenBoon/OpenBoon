@@ -16,11 +16,12 @@ const ResponsiveGridLayout = WidthProvider(Responsive)
 
 const Charts = ({ charts, dispatch }) => {
   const initialLayouts = {
-    lg: charts.map(({ id }) => ({
+    9: charts.map(({ id }) => ({
       i: id,
       x: 0,
       y: 0,
-      w: 1,
+      w: 2,
+      minW: 2,
       h: 4,
       minH: 4,
     })),
