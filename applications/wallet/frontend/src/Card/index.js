@@ -43,6 +43,8 @@ const STYLES = {
       paddingBottom: spacing.comfy,
     },
     content: {
+      overflow: 'hidden',
+      flex: 1,
       '.ErrorBoundary > div': {
         backgroundColor: 'transparent',
         boxShadow: 'none',

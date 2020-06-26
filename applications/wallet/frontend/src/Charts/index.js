@@ -35,7 +35,6 @@ const Charts = ({ charts, dispatch }) => {
       layouts={{ lg: layouts }}
       breakpoints={breakpoints}
       cols={cols}
-      // rowHeight={10}
     >
       {charts
         .filter(({ id }) => !!id)
