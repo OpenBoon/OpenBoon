@@ -1,0 +1,235 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FaceLabelingTrain /> should properly render help information 1`] = `
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #73b61c;
+}
+
+.emotion-0:hover {
+  background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  color: #808080;
+  margin-left: 8px;
+}
+
+.emotion-1:hover {
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.emotion-3 {
+  position: absolute;
+  top: 47px;
+  left: 0;
+  z-index: 1;
+  background-color: #4a4a4a;
+  border: 1px solid #ffffff;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+<div
+  className="emotion-4"
+>
+  <button
+    className="emotion-0"
+    onClick={[Function]}
+    type="button"
+  >
+    Override Current Training & Re-apply
+  </button>
+  <div
+    className="emotion-2"
+  >
+    <svg
+      aria-label="Training Help"
+      className="emotion-1"
+      data-file-name="help.svg"
+      onKeyPress={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      role="button"
+      tabIndex="0"
+      width={20}
+    />
+  </div>
+  <div
+    className="emotion-3"
+  >
+    Overriding the training that is currently in progress will stop and replace it with any new changes made.
+  </div>
+</div>
+`;
+
+exports[`<FaceLabelingTrain /> should render properly 1`] = `
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #73b61c;
+}
+
+.emotion-0:hover {
+  background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  color: #808080;
+  margin-left: 8px;
+}
+
+.emotion-1:hover {
+  color: #ffffff;
+  cursor: pointer;
+}
+
+<div
+  className="emotion-3"
+>
+  <button
+    className="emotion-0"
+    onClick={[Function]}
+    type="button"
+  >
+    Override Current Training & Re-apply
+  </button>
+  <div
+    className="emotion-2"
+  >
+    <svg
+      aria-label="Training Help"
+      className="emotion-1"
+      data-file-name="help.svg"
+      onKeyPress={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      role="button"
+      tabIndex="0"
+      width={20}
+    />
+  </div>
+</div>
+`;
