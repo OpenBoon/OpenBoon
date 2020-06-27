@@ -15,7 +15,7 @@ ds_id = "ds-id-12345"
 
 class KnnLabelDetectionTrainerTests(PluginUnitTestCase):
 
-    @patch.object(ModelApp, 'publish_model')
+    @patch.object(file_storage.models, 'publish_model')
     @patch.object(ModelApp, 'get_model')
     @patch.object(AssetApp, 'scroll_search')
     @patch.object(file_storage.projects, "store_file_by_id")

@@ -2,14 +2,12 @@ import os
 import tempfile
 
 import tensorflow as tf
-from tensorflow.keras.applications import mobilenet_v2 as mobilenet_v2
 from tensorflow.keras.applications import resnet_v2 as resnet_v2
-from tensorflow.keras.applications import vgg16 as vgg16
 from tensorflow.keras.layers import Dropout, Flatten, Dense, BatchNormalization
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 import zmlp
-from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException, file_storage
+from zmlpsdk import AssetProcessor, Argument, file_storage
 from zmlpsdk.training import download_dataset
 
 
@@ -181,7 +179,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
     def get_base_model(self):
         """
-        Using the 'base_model' arg, choose the base model for transfer learning/
+        Return the base tensorflow model.
 
         Returns:
             Model: A tensorflow model.
@@ -190,21 +188,9 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             ZmlpFatalProcessorException: If the model is not fouond/
 
         """
-        modl_base = self.app_model.type
-        if modl_base == zmlp.ModelType.LABEL_DETECTION_MOBILENET2:
-            return mobilenet_v2.MobileNetV2(weights='imagenet',
-                                            include_top=False,
-                                            input_shape=(224, 224, 3))
-        elif modl_base == zmlp.ModelType.LABEL_DETECTION_RESNET50:
-            return resnet_v2.ResNet50V2(weights='imagenet',
-                                        include_top=False,
-                                        input_shape=(224, 224, 3))
-        elif modl_base == zmlp.ModelType.LABEL_DETECTION_VGG16:
-            return vgg16.VGG16(weights='imagenet',
-                               include_top=False,
-                               input_shape=(224, 224, 3))
-        else:
-            raise ZmlpFatalProcessorException('Invalid model: {}'.format(modl_base))
+        return resnet_v2.ResNet50V2(weights='imagenet',
+                                    include_top=False,
+                                    input_shape=(224, 224, 3))
 
 
 class TrainingProgressCallback(tf.keras.callbacks.Callback):
