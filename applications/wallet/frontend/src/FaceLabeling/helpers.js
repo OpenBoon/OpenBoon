@@ -2,6 +2,15 @@ import { mutate } from 'swr'
 
 import { fetcher } from '../Fetch/helpers'
 
+export const getSaveButtonCopy = ({ isChanged, isLoading }) => {
+  if (isLoading) {
+    return 'Saving...'
+  }
+  if (isChanged) {
+    return 'Save'
+  }
+  return 'Saved'
+}
 export const onSave = async ({
   projectId,
   assetId,
@@ -59,12 +68,29 @@ export const onSave = async ({
   }
 }
 
-export const getSaveButtonCopy = ({ isChanged, isLoading }) => {
-  if (isLoading) {
-    return 'Saving...'
+export const onTrain = async ({ projectId, dispatch }) => {
+  try {
+    dispatch({ isTraining: true, isTrainingSuccess: false, error: '' })
+
+    await fetcher(`api/v1/projects/${projectId}/faces/train`, {
+      method: 'POST',
+      body: JSON.stringify({}),
+    })
+
+    await mutate(`/api/v1/projects/${projectId}/faces/unapplied_changes/`)
+
+    dispatch({
+      isTraining: false,
+      isTrainingSuccess: true,
+      showHelpInfo: false,
+    })
+  } catch (response) {
+    // TODO: update when api is updated
+    dispatch({
+      isTraining: false,
+      isTrainingSuccess: false,
+      showHelpInfo: false,
+      error: 'Something went wrong. Please try again.',
+    })
   }
-  if (isChanged) {
-    return 'Save'
-  }
-  return 'Saved'
 }
