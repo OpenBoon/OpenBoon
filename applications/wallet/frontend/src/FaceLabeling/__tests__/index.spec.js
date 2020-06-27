@@ -9,6 +9,8 @@ const ASSET_ID = asset.id
 
 const noop = () => () => {}
 
+jest.mock('../TrainApply', () => 'FaceLabelingTrainApply')
+
 describe('<FaceLabeling />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({
@@ -32,7 +34,7 @@ describe('<FaceLabeling />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render selected asset with predictions', () => {
+  it('should render selected asset with predictions', async () => {
     require('swr').__setMockUseSWRResponse({
       data: {
         ...asset,
@@ -62,10 +64,32 @@ describe('<FaceLabeling />', () => {
         .props.onChange({ value: 'Jane' })
     })
 
+    expect(component.toJSON()).toMatchSnapshot()
+
     act(() => {
       component.root
         .findByProps({ children: 'Cancel' })
         .props.onClick({ preventDefault: noop })
     })
+
+    act(() => {
+      component.root
+        .findByProps({ id: 'MNONPMMKPLRLONLJMRLNM' })
+        .props.onChange({ value: 'Jane' })
+    })
+
+    fetch.mockRejectOnce(
+      JSON.stringify({
+        labels: [{ nonFieldErrors: ['Error Message'] }],
+      }),
+    )
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Save' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

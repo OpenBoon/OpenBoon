@@ -142,10 +142,6 @@ class FileStorageController(
             throw IllegalArgumentException("The category ${locator.category} must be alpha numeric")
         }
 
-        if (!REGEX_NAME.matches(locator.name)) {
-            throw IllegalArgumentException("The name ${locator.name} must be alpha numeric")
-        }
-
         try {
             when (locator.entity) {
                 ProjectStorageEntity.ASSETS -> {

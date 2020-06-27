@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, spacing } from '../Styles'
 
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import FaceLabelingAutoSuggest from './AutoSuggest'
+import FaceLabelingForm from './Form'
+import FaceLabelingTrainApply from './TrainApply'
 
 const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
   const { data: asset } = useSWR(
@@ -19,27 +19,7 @@ const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
 
   return (
     <>
-      <div
-        css={{
-          padding: spacing.normal,
-          borderBottom: constants.borders.divider,
-        }}
-      >
-        <span>
-          Once a name has been added to a face, training can begin. Names can
-          continue to be edited as needed.
-        </span>
-
-        <div css={{ height: spacing.normal }} />
-
-        <Button
-          variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={console.warn}
-          isDisabled
-        >
-          Train &amp; Apply
-        </Button>
-      </div>
+      <FaceLabelingTrainApply projectId={projectId} />
 
       <div
         css={{
@@ -49,8 +29,10 @@ const FaceLabelingLabels = ({ projectId, assetId, predictions }) => {
       >
         {filename}
       </div>
-      <FaceLabelingAutoSuggest
+
+      <FaceLabelingForm
         projectId={projectId}
+        assetId={assetId}
         predictions={predictions}
       />
     </>

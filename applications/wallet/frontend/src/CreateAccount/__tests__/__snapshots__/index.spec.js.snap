@@ -44,6 +44,10 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 .emotion-0 {
   padding-left: 8px;
   padding-right: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-47 {
@@ -392,7 +396,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
       >
         <svg
           data-file-name="logo.svg"
-          width={110}
+          width={59}
         />
       </a>
     </div>
@@ -714,6 +718,10 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 .emotion-0 {
   padding-left: 8px;
   padding-right: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-44 {
@@ -1031,7 +1039,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
       >
         <svg
           data-file-name="logo.svg"
-          width={110}
+          width={59}
         />
       </a>
     </div>

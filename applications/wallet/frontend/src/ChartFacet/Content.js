@@ -6,7 +6,14 @@ import { constants, spacing, typography, colors } from '../Styles'
 
 import chartShape from '../Chart/shape'
 
-import { encode, decode, ACTIONS, dispatch } from '../Filters/helpers'
+import {
+  encode,
+  cleanup,
+  formatUrl,
+  decode,
+  ACTIONS,
+  dispatch,
+} from '../Filters/helpers'
 import Button, { VARIANTS } from '../Button'
 
 import FilterSvg from '../Icons/filter.svg'
@@ -29,22 +36,27 @@ const COLORS = [
   colors.signal.grass.base,
 ]
 
-const ChartFacetContent = ({ chart: { type, attribute } }) => {
+const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
   const {
     pathname,
     query: { projectId, query },
   } = useRouter()
 
-  const encodedFilter = encode({ filters: { type, attribute } })
+  const visuals = encode({
+    filters: [{ type, id, attribute, options: { size: 20 } }],
+  })
 
-  const { data } = useSWR(
-    // TODO: Update endpoint
-    `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
+  const q = cleanup({ query })
+
+  const params = formatUrl({ query: q, visuals })
+
+  const { data = [] } = useSWR(
+    `/api/v1/projects/${projectId}/visualizations/load/${params}`,
   )
 
-  const { results } = data || {}
+  const { results = {} } = data.find((r) => r.id === id) || {}
 
-  const { buckets = [] } = results || {}
+  const { buckets = [] } = results
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
 
@@ -118,46 +130,63 @@ const ChartFacetContent = ({ chart: { type, attribute } }) => {
                   })
                 }}
               >
-                <div css={{ width: '100%' }}>
-                  <div css={{ display: 'flex' }}>
-                    <div
-                      css={{
-                        width: `${offset}%`,
-                        backgroundColor: COLORS[colorIndex],
-                      }}
-                    />
-                    <div
-                      css={{
-                        height: BAR_HEIGHT,
-                        width: `${100 - offset}%`,
-                        borderTop: constants.borders.divider,
-                      }}
-                    />
-                  </div>
+                <div css={{ width: '100%', display: 'flex' }}>
                   <div
                     css={{
                       display: 'flex',
-                      justifyContent: 'space-between',
-                      padding: spacing.base,
-                      fontFamily: typography.family.mono,
-                      fontSize: typography.size.small,
-                      lineHeight: typography.height.small,
+                      flexDirection: 'column',
+                      flex: 1,
+                      overflow: 'hidden',
                     }}
                   >
-                    <div>{key}</div>
-                    <div>{docCount}</div>
+                    <div css={{ flex: 1, display: 'flex' }}>
+                      <div
+                        css={{
+                          width: `${offset}%`,
+                          backgroundColor: COLORS[colorIndex],
+                        }}
+                      />
+                      <div
+                        css={{
+                          height: BAR_HEIGHT,
+                          width: `${100 - offset}%`,
+                          borderTop: constants.borders.divider,
+                        }}
+                      />
+                    </div>
+                    <div
+                      css={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        padding: spacing.base,
+                        fontFamily: typography.family.mono,
+                        fontSize: typography.size.small,
+                        lineHeight: typography.height.small,
+                      }}
+                    >
+                      <div
+                        css={{
+                          overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {key}
+                      </div>
+                      <div css={{ paddingLeft: spacing.base }}>{docCount}</div>
+                    </div>
                   </div>
-                </div>
-                <div
-                  css={{
-                    marginTop: BAR_HEIGHT,
-                    padding: ICON_PADDING,
-                    color: colors.transparent,
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <FilterSvg width={ICON_SIZE} />
+                  <div
+                    css={{
+                      marginTop: BAR_HEIGHT,
+                      padding: ICON_PADDING,
+                      color: colors.transparent,
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <FilterSvg width={ICON_SIZE} />
+                  </div>
                 </div>
               </Button>
             </li>

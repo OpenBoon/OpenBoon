@@ -242,13 +242,13 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-18 {
+  .emotion-24 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-5 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -286,21 +286,21 @@ Array [
   color: #ffffff;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   background-color: #027aff38;
   color: #ffffff;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 100%;
 }
 
@@ -322,7 +322,7 @@ Array [
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-3 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -337,18 +337,28 @@ Array [
   line-height: 18px;
 }
 
+.emotion-3 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-4 {
+  padding-left: 8px;
+}
+
 <ul
-    className="emotion-18"
+    className="emotion-24"
   >
     <li>
       <button
         aria-label="Tyngsboro"
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
@@ -361,12 +371,16 @@ Array [
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               Tyngsboro
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               0
             </div>
           </div>
@@ -376,12 +390,12 @@ Array [
     <li>
       <button
         aria-label="Brooklyn"
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
@@ -394,12 +408,16 @@ Array [
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               Brooklyn
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               0
             </div>
           </div>
@@ -409,12 +427,12 @@ Array [
     <li>
       <button
         aria-label="Cát Bà"
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
@@ -427,12 +445,16 @@ Array [
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               Cát Bà
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               0
             </div>
           </div>
@@ -560,13 +582,13 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-6 {
+  .emotion-8 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-5 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -604,21 +626,21 @@ Array [
   color: #ffffff;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   background-color: #027aff38;
   color: #ffffff;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 100%;
 }
 
@@ -640,7 +662,7 @@ Array [
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-3 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -655,18 +677,28 @@ Array [
   line-height: 18px;
 }
 
+.emotion-3 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-4 {
+  padding-left: 8px;
+}
+
 <ul
-    className="emotion-6"
+    className="emotion-8"
   >
     <li>
       <button
         aria-label="Tyngsboro"
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
@@ -679,12 +711,16 @@ Array [
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               Tyngsboro
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               0
             </div>
           </div>
@@ -816,13 +852,13 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-18 {
+  .emotion-24 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 100%;
 }
 
@@ -844,7 +880,7 @@ Array [
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-3 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -859,7 +895,17 @@ Array [
   line-height: 18px;
 }
 
-.emotion-5 {
+.emotion-3 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-4 {
+  padding-left: 8px;
+}
+
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -898,21 +944,21 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   background-color: #027aff38;
   color: #ffffff;
 }
 
-.emotion-11 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -950,37 +996,37 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-11:hover {
+.emotion-15:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11:hover {
+.emotion-15:hover {
   background-color: #027aff38;
   color: #ffffff;
 }
 
-.emotion-6 {
+.emotion-8 {
   width: 0%;
   border-top: 4px solid #808080;
 }
 
 <ul
-    className="emotion-18"
+    className="emotion-24"
   >
     <li>
       <button
         aria-label="Tyngsboro"
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
@@ -993,12 +1039,16 @@ Array [
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               Tyngsboro
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               0
             </div>
           </div>
@@ -1008,30 +1058,34 @@ Array [
     <li>
       <button
         aria-label="Brooklyn"
-        className="emotion-11"
+        className="emotion-15"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
           >
             <div
-              className="emotion-6"
+              className="emotion-8"
             />
             <div
               className="emotion-1"
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               Brooklyn
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               0
             </div>
           </div>
@@ -1041,30 +1095,34 @@ Array [
     <li>
       <button
         aria-label="Cát Bà"
-        className="emotion-11"
+        className="emotion-15"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
           >
             <div
-              className="emotion-6"
+              className="emotion-8"
             />
             <div
               className="emotion-1"
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               Cát Bà
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               0
             </div>
           </div>

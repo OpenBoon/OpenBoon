@@ -167,8 +167,16 @@ const FilterFacet = ({
                       lineHeight: typography.height.small,
                     }}
                   >
-                    <div>{key}</div>
-                    <div>{docCount}</div>
+                    <div
+                      css={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {key}
+                    </div>
+                    <div css={{ paddingLeft: spacing.base }}>{docCount}</div>
                   </div>
                 </div>
               </Button>
