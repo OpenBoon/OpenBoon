@@ -14,7 +14,7 @@ from urllib.parse import urlparse
 
 import requests
 
-from zmlp import app_from_env, Asset, StoredFile, ZmlpException, to_json
+from zmlp import app_from_env, Asset, StoredFile, PipelineMod, ZmlpException, to_json, util
 from .base import ZmlpEnv
 from .cloud import get_cached_google_storage_client, get_pipeline_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
@@ -160,14 +160,14 @@ class ModelStorage:
 
         return True
 
-    def save_model(self, src_dir, model):
+    def save_model(self, src_dir, model, deploy):
         """
         Upload a directory containing model files to cloud storage.
 
         Args:
             src_dir (str): The source directory.
             model (Model): The Model instance.
-
+            deploy (bool): Launch an expand task to deploy the model using the deploy search.
         Returns:
             PipelineModule: A PipelineModule for utilizing the model.
         """
@@ -179,7 +179,24 @@ class ModelStorage:
         zip_file_path = zip_directory(src_dir, tempfile.mkstemp(prefix="model_", suffix=".zip")[1])
         self.projects.store_file_by_id(version_file, os.path.dirname(file_id) + self.model_ver_file)
         self.projects.store_file_by_id(zip_file_path, file_id, precache=False)
-        return self.app.models.publish_model(model)
+        mod = self.publish_model(model)
+        if deploy:
+            self.app.models.deploy_model(model)
+        return mod
+
+    def publish_model(self, model):
+        """
+        Publish the given model.  The model must have been trained before.  This
+        will make the model available for execution using a PipelineModel
+
+        Args:
+            model (Model): The Model instance or a unique Model id.
+
+        Returns:
+            PipelineMod: A PipelineMod which can be used to execute the model on Data.
+        """
+        mid = util.as_id(model)
+        return PipelineMod(self.app.client.post(f'/api/v3/models/{mid}/_publish'))
 
 
 class AssetStorage(object):

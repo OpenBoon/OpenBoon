@@ -1,11 +1,14 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.JdbcUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import org.hibernate.annotations.Type
+import org.hibernate.annotations.TypeDef
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -24,16 +27,17 @@ enum class ModelType(
     val description: String,
     val dataSetType: DataSetType
 ) {
-    LABEL_DETECTION_KNN(
+    ZVI_CLUSTERING(
         "zmlp_train.knn.KnnLabelDetectionTrainer",
         mapOf(),
         "zmlp_analysis.custom.KnnLabelDetectionClassifier",
         mapOf(),
-        "custom-%s-label-detection-knn",
-        "Fast classification using a KNN algorithm",
+        "zvi-%s-cluster",
+        "Classify images using a clustering algorithm. " +
+            "This is good for general groups like cats and dogs but not for specific breeds.",
         DataSetType.LABEL_DETECTION
     ),
-    LABEL_DETECTION_RESNET50(
+    ZVI_LABEL_DETECTION(
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
         mapOf(
             "min_concepts" to 2,
@@ -42,43 +46,17 @@ enum class ModelType(
         ),
         "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
-        "custom-%s-label-detection-resnet50",
-        "Classify images using a custom trained ResNet50V2 model.",
+        "zvi-%s-label-detection",
+        "Classify images using a custom trained deep learning model.",
         DataSetType.LABEL_DETECTION
     ),
-    LABEL_DETECTION_VGG16(
-        "zmlp_train.tf2.TensorflowTransferLearningTrainer",
-        mapOf(
-            "min_concepts" to 2,
-            "min_examples" to 5,
-            "train-test-ratio" to 3
-        ),
-        "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
-        mapOf(),
-        "custom-%s-label-detection-vgg16",
-        "Classify images using a custom trained VGG16 model.",
-        DataSetType.LABEL_DETECTION
-    ),
-    LABEL_DETECTION_MOBILENET2(
-        "zmlp_train.tf2.TensorflowTransferLearningTrainer",
-        mapOf(
-            "min_concepts" to 2,
-            "min_examples" to 5,
-            "train-test-ratio" to 3
-        ),
-        "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
-        mapOf(),
-        "custom-%s-label-detection-mobilenet2",
-        "Classify images using a custom trained Mobilenet2 model.",
-        DataSetType.LABEL_DETECTION
-    ),
-    FACE_RECOGNITION_KNN(
+    ZVI_FACE_RECOGNITION(
         "zmlp_train.face_rec.KnnFaceRecognitionTrainer",
         mapOf(),
         "zmlp_analysis.custom.KnnFaceRecognitionClassifier",
         mapOf(),
-        "custom-%s-face-recognition-knn",
-        "Relabel existing ZMLP faces using a KNN Face Recognition model.",
+        "zvi-%s-face-recognition",
+        "Relabel existing ZVI faces using a KNN Face Recognition model.",
         DataSetType.FACE_RECOGNITION
     );
 
@@ -96,18 +74,43 @@ enum class ModelType(
     }
 }
 
+@ApiModel("ModelTrainingArgs", description = "Arguments set to the training processor.")
 class ModelTrainingArgs(
-    val publish: Boolean = true
+
+    @ApiModelProperty("Set to true if the model should be published, defaults to true.")
+    val publish: Boolean = true,
+
+    @ApiModelProperty("Deploy the model to production.")
+    val deploy: Boolean = false,
+
+    @ApiModelProperty("Apply the model to the validation set")
+    val validate: Boolean = false
+)
+
+@ApiModel("ModelTrainingArgs", description = "Arguments set to the training processor.")
+class ModelApplyRequest(
+
+    @ApiModelProperty("An search to apply the model to. Defaults to the model deploy search.")
+    val search: Map<String, Any>? = null,
+
+    @ApiModelProperty("Excluded labeled data.")
+    val excludeTrainingSet: Boolean = true,
+
+    // TODO move
+    @ApiModelProperty("Append the task to the given job, otherwise launch a new job.", hidden = true)
+    val jobId: UUID? = null
 )
 
 class ModelSpec(
     val dataSetId: UUID,
-    val type: ModelType
+    val type: ModelType,
+    val deploySearch: Map<String, Any> = Model.matchAllSearch
 
 )
 
 @Entity
 @Table(name = "model")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType::class)
 @ApiModel("Model", description = "A model can be trained from a DataSet")
 class Model(
 
@@ -139,6 +142,10 @@ class Model(
     @ApiModelProperty("True if the model is trained.")
     val ready: Boolean,
 
+    @Type(type = "jsonb")
+    @Column(name = "json_search_deploy", columnDefinition = "JSON")
+    val deploySearch: Map<String, Any>,
+
     @Column(name = "time_created")
     @ApiModelProperty("The time the Model was created.")
     val timeCreated: Long,
@@ -167,6 +174,10 @@ class Model(
 
     override fun hashCode(): Int {
         return id.hashCode()
+    }
+
+    companion object {
+        val matchAllSearch = mapOf<String, Any>("query" to mapOf("match_all" to emptyMap<String, Any>()))
     }
 }
 
