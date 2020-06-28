@@ -303,8 +303,9 @@ class SingleLabelAnalysis:
             :obj:`dict`: A JSON serializable version of this Document.
         """
         base = {
-            "label": self.label,
-            "score": self.score
+            'label': self.label,
+            'score': self.score,
+            'type': 'clusters'
         }
         return base
 

@@ -284,7 +284,7 @@ class AssetServiceImpl : AssetService {
     }
 
     override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
-        if (request.assets.size > 100) {
+        if (request.assets.size > 128) {
             throw IllegalArgumentException("Cannot create more than 100 assets at a time.")
         }
 
