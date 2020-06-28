@@ -1,12 +1,12 @@
 package com.zorroa.archivist.service
 
+import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceImportOptions
-import com.zorroa.archivist.domain.FileTypes
+import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchResponse
@@ -14,9 +14,15 @@ import com.zorroa.archivist.domain.StandardContainers
 import com.zorroa.archivist.domain.ZpsScript
 import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.stereotype.Component
-import java.lang.IllegalArgumentException
+import java.util.UUID
 
 interface JobLaunchService {
+
+    /**
+     * Get a task for reprocessing assets.
+     */
+    fun getReprocessTask(req: ReprocessAssetSearchRequest, count: Long? = null): ZpsScript
+
     /**
      * Launch an asset search reprocess request.
      */
@@ -35,7 +41,8 @@ interface JobLaunchService {
         gen: ProcessorRef,
         pipeline: List<ProcessorRef>,
         settings: Map<String, Any>? = null,
-        creds: Set<String>? = null
+        creds: Set<String>? = null,
+        dependOnJobIds: List<UUID>? = null
     ): Job
 
     /**
@@ -79,11 +86,12 @@ class JobLaunchServiceImpl(
             pipelineResolverService.resolveModular(mods)
         )
 
-        script.setSettting("fileTypes", dataSource.fileTypes)
+        script.setSettting("index", true)
+        script.setSettting("fileTypes", FileExtResolver.resolve(dataSource.fileTypes))
         script.setSettting("batchSize", clampBatchSize(options.batchSize))
 
         val spec = JobSpec(
-            name, script,
+            name, listOf(script),
             dataSourceId = dataSource.id,
             credentials = dataSource.credentials.map { it.toString() }.toSet()
         )
@@ -95,21 +103,16 @@ class JobLaunchServiceImpl(
         if (count == 0L) {
             throw DataRetrievalFailureException("Asset search did not return any assets")
         }
+        val script = getReprocessTask(req, count)
 
-        val name = "Applying modules: ${req.modules.joinToString(",")} to $count assets"
-        val gen = ProcessorRef(
-            "zmlp_core.core.generators.AssetSearchGenerator",
-            StandardContainers.CORE,
-            args = mapOf("search" to req.search)
+        val spec = JobSpec(
+            script.name,
+            listOf(script),
+            dependOnJobIds = req.dependOnJobIds,
+            replace = req.replace
         )
 
-        val pipeline = pipelineResolverService.resolveModular(req.modules)
-        val settings = mapOf(
-            "batchSize" to clampBatchSize(req.batchSize),
-            "fileTypes" to FileTypes.all
-        )
-
-        val job = launchJob(name, gen, pipeline, settings)
+        val job = launchJob(spec)
         return ReprocessAssetSearchResponse(job, count)
     }
 
@@ -118,14 +121,20 @@ class JobLaunchServiceImpl(
         gen: ProcessorRef,
         pipeline: List<ProcessorRef>,
         settings: Map<String, Any>?,
-        creds: Set<String>?
+        creds: Set<String>?,
+        dependOnJobIds: List<UUID>?
     ): Job {
 
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
 
         val script = ZpsScript(name, listOf(gen), null, pipeline, settings = mergedSettings)
-        val spec = JobSpec(name, script, credentials = creds)
+        val spec = JobSpec(
+            name,
+            listOf(script),
+            credentials = creds,
+            dependOnJobIds = dependOnJobIds
+        )
         return launchJob(spec)
     }
 
@@ -141,22 +150,50 @@ class JobLaunchServiceImpl(
         settings?.let { mergedSettings.putAll(it) }
 
         val script = ZpsScript(name, null, null, pipeline, settings = mergedSettings, assetIds = assets)
-        val spec = JobSpec(name, script, credentials = creds)
+        val spec = JobSpec(name, listOf(script), credentials = creds)
         return launchJob(spec)
     }
 
     override fun launchTrainingJob(name: String, processor: ProcessorRef, settings: Map<String, Any>?): Job {
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
+        mergedSettings["index"] = false
 
         val script = ZpsScript(
-            name, null, null,
-            listOf(processor), settings = mergedSettings,
-            assetIds = listOf("single-iteration")
+            name, null, listOf(Asset("train")),
+            listOf(processor), settings = mergedSettings
         )
 
-        val spec = JobSpec(name, script, replace = true, priority = JobPriority.Interactive)
-        return launchJob(spec, JobType.Batch)
+        val spec = JobSpec(name, listOf(script), replace = true, priority = JobPriority.Interactive)
+        return launchJob(spec)
+    }
+
+    override fun getReprocessTask(req: ReprocessAssetSearchRequest, count: Long?): ZpsScript {
+
+        val assetCount = count ?: assetSearchService.count(req.search)
+        if (assetCount == 0L) {
+            throw DataRetrievalFailureException("Asset search did not return any assets")
+        }
+
+        val name = req.name
+            ?: "Applying modules: ${req.modules.joinToString(",")} to $assetCount assets"
+        val gen = ProcessorRef(
+            "zmlp_core.core.generators.AssetSearchGenerator",
+            StandardContainers.CORE,
+            args = mapOf("search" to req.search)
+        )
+
+        val pipeline = pipelineResolverService.resolveModular(req.modules)
+        val settings = mapOf(
+            "index" to true,
+            "batchSize" to clampBatchSize(req.batchSize),
+            "fileTypes" to FileExtResolver.resolve(req.fileTypes)
+        )
+
+        val mergedSettings = getDefaultJobSettings()
+        settings?.let { mergedSettings.putAll(it) }
+
+        return ZpsScript(name, listOf(gen), null, pipeline, settings = mergedSettings)
     }
 
     /**
@@ -164,14 +201,6 @@ class JobLaunchServiceImpl(
      */
     fun launchJob(spec: JobSpec): Job {
         val job = jobService.create(spec)
-        return jobService.get(job.id, forClient = true)
-    }
-
-    /**
-     * Launch a [JobSpec] and return a [Job] suitable for client side use.
-     */
-    fun launchJob(spec: JobSpec, type: JobType): Job {
-        val job = jobService.create(spec, type)
         return jobService.get(job.id, forClient = true)
     }
 
@@ -215,7 +244,7 @@ class JobLaunchServiceImpl(
         /**
          * Maximum batch size.
          */
-        const val maxBatchSize = 100
+        const val maxBatchSize = 128
 
         fun clampBatchSize(batchSize: Int): Int {
             return batchSize.coerceAtLeast(minBatchSize).coerceAtMost(maxBatchSize)

@@ -36,7 +36,6 @@ class JobSerializer(serializers.Serializer):
     projectId = serializers.CharField(default="")
     dataSourceId = serializers.CharField(default="")
     name = serializers.CharField(required=True)
-    type = serializers.CharField(required=True)
     state = serializers.CharField(required=True)
     assetCounts = AssetCountsSerializer(required=True)
     taskCounts = TaskCountsSerializer(required=True)

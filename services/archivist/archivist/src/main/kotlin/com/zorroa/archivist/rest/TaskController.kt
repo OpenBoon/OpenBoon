@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.TaskFilter
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.archivist.service.DependService
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
@@ -36,6 +37,7 @@ import java.util.concurrent.ExecutionException
 class TaskController @Autowired constructor(
     val jobService: JobService,
     val dispatcherService: DispatcherService,
+    val dependService: DependService,
     val taskDao: TaskDao
 ) {
 
@@ -115,5 +117,14 @@ class TaskController @Autowired constructor(
             filter
         }
         return jobService.getTaskErrors(fixedFilter)
+    }
+
+    @ApiOperation("Drop TaskOnTask dependencies")
+    @PostMapping(value = ["/api/v1/tasks/{id}/_drop_depends"])
+    fun dropDropDependencies(
+        @ApiParam("UUID of the Task") @PathVariable id: UUID
+    ): Any {
+        val task = jobService.getTask(id)
+        return mapOf("dropped" to dependService.dropDepends(task))
     }
 }

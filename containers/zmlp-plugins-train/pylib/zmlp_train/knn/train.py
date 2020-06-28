@@ -15,16 +15,19 @@ class KnnLabelDetectionTrainer(AssetProcessor):
     def __init__(self):
         super(KnnLabelDetectionTrainer, self).__init__()
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
+        self.add_arg(Argument("deploy", "bool", default=False,
+                              toolTip="Automatically deploy the model onto assets."))
         self.app_model = None
 
     def init(self):
+        self.logger.info("Fetching model {}".format(self.arg_value('model_id')))
         self.app_model = self.app.models.get_model(self.arg_value('model_id'))
 
     def process(self, frame):
         self.reactor.emit_status("Searching DataSet Labels")
         query = {
             '_source': ['labels.*', 'analysis.zvi-image-similarity.*'],
-            'size': 25,
+            'size': 50,
             'query': {
                 'nested': {
                     'path': 'labels',
@@ -102,6 +105,6 @@ class KnnLabelDetectionTrainer(AssetProcessor):
         with open(os.path.join(model_dir, 'knn_classifier.pickle'), 'wb') as fp:
             pickle.dump(classifier, fp)
 
-        pmod = file_storage.models.save_model(model_dir, self.app_model)
+        pmod = file_storage.models.save_model(model_dir, self.app_model, self.arg_value('deploy'))
         self.reactor.emit_status("Published model {}".format(self.app_model.name))
         return pmod

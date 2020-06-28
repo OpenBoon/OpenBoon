@@ -16,7 +16,10 @@ import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.Provider
 import com.zorroa.archivist.domain.StandardContainers
-import com.zorroa.archivist.domain.SupportedMedia
+import com.zorroa.archivist.domain.FileType
+import com.zorroa.archivist.domain.ModelApplyRequest
+import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
+import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.repository.DataSetDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.ModelDao
@@ -24,8 +27,11 @@ import com.zorroa.archivist.repository.ModelJdbcDao
 import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.zmlp.util.Json
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.lang.IllegalArgumentException
 import java.util.UUID
 
 interface ModelService {
@@ -35,6 +41,8 @@ interface ModelService {
     fun find(filter: ModelFilter): KPagedList<Model>
     fun findOne(filter: ModelFilter): Model
     fun publishModel(model: Model): PipelineMod
+    fun deployModel(model: Model, req: ModelApplyRequest): Job
+    fun wrapSearchToExcludeLabels(model: Model, search: Map<String, Any>): Map<String, Any>
 }
 
 @Service
@@ -44,6 +52,7 @@ class ModelServiceImpl(
     val modelJdbcDao: ModelJdbcDao,
     val dataSetDao: DataSetDao,
     val jobLaunchService: JobLaunchService,
+    val jobService: JobService,
     val pipelineModService: PipelineModService
 ) : ModelService {
 
@@ -66,6 +75,7 @@ class ModelServiceImpl(
             locator.getFileId(),
             "Train $name",
             false,
+            spec.deploySearch, // VALIDATE THIS PARSES.
             time,
             time,
             actor.toString(),
@@ -91,18 +101,50 @@ class ModelServiceImpl(
     }
 
     override fun trainModel(model: Model, args: ModelTrainingArgs): Job {
-        val processor = ProcessorRef(
-            model.type.trainProcessor, "zmlp/plugins-train",
-            model.type.trainArgs.plus(
-                mutableMapOf(
-                    "model_id" to model.id.toString()
-                )
+
+        val trainArgs = model.type.trainArgs.plus(
+            mutableMapOf(
+                "model_id" to model.id.toString(),
+                "deploy" to args.deploy
             )
         )
-        return jobLaunchService.launchTrainingJob(
-            model.trainingJobName, processor,
-            mapOf("index" to false)
+
+        logger.info("Launching train job ${model.type.trainProcessor} $trainArgs")
+
+        val processor = ProcessorRef(
+            model.type.trainProcessor, "zmlp/plugins-train", trainArgs
         )
+        return jobLaunchService.launchTrainingJob(
+            model.trainingJobName, processor, mapOf()
+        )
+    }
+
+    override fun deployModel(model: Model, req: ModelApplyRequest): Job {
+        val name = "Deploying model ${model.name}"
+        var search = req.search ?: model.deploySearch
+        if (req.excludeTrainingSet) {
+            search = wrapSearchToExcludeLabels(model, search)
+        }
+
+        val repro = ReprocessAssetSearchRequest(
+            search,
+            listOf(model.name),
+            name = name,
+            replace = true
+        )
+
+        return if (req.jobId == null) {
+            val rsp = jobLaunchService.launchJob(repro)
+            return rsp.job
+        } else {
+            val job = jobService.get(req.jobId, forClient = false)
+            if (job.projectId != getProjectId()) {
+                throw IllegalArgumentException("Unknown job Id ${job.id}")
+            }
+            val script = jobLaunchService.getReprocessTask(repro)
+            jobService.createTask(job, TaskSpec(name, script))
+            job
+        }
     }
 
     override fun publishModel(model: Model): PipelineMod {
@@ -131,7 +173,7 @@ class ModelServiceImpl(
             val update = PipelineModUpdate(
                 mod.name, mod.description, mod.provider,
                 mod.category, mod.type,
-                listOf(SupportedMedia.Documents, SupportedMedia.Images),
+                listOf(FileType.Documents, FileType.Images),
                 ops
             )
             pipelineModService.update(mod.id, update)
@@ -144,11 +186,40 @@ class ModelServiceImpl(
                 Provider.CUSTOM,
                 Category.TRAINED,
                 model.type.dataSetType.label,
-                listOf(SupportedMedia.Documents, SupportedMedia.Images),
+                listOf(FileType.Documents, FileType.Images),
                 ops
             )
 
             return pipelineModService.create(modspec)
         }
+    }
+
+    override fun wrapSearchToExcludeLabels(model: Model, search: Map<String, Any>): Map<String, Any> {
+        val emptySearch = mapOf("match_all" to mapOf<String, Any>())
+        val query = Json.serializeToString(search.getOrDefault("query", emptySearch))
+
+        val wrapper =
+            """
+            {
+            	"bool": {
+            		"must": $query,
+            		"must_not": {
+            			"nested" : {
+            				"path": "labels",
+            				"query" : {
+            					"term": { "labels.dataSetId": "${model.dataSetId}" }
+            				}
+            			}
+            		}
+            	}
+            }
+        """.trimIndent()
+        val result = search.toMutableMap()
+        result["query"] = Json.Mapper.readValue(wrapper, Json.GENERIC_MAP)
+        return result
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(ModelServiceImpl::class.java)
     }
 }

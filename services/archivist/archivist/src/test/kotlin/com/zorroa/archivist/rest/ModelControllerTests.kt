@@ -38,7 +38,7 @@ class ModelControllerTests : MockMvcTest() {
     fun createTestModel(): Model {
         val mspec = ModelSpec(
             dataSet.id,
-            ModelType.LABEL_DETECTION_MOBILENET2
+            ModelType.ZVI_LABEL_DETECTION
         )
         return modelService.createModel(mspec)
     }
@@ -48,7 +48,7 @@ class ModelControllerTests : MockMvcTest() {
 
         val mspec = ModelSpec(
             dataSet.id,
-            ModelType.LABEL_DETECTION_MOBILENET2
+            ModelType.ZVI_LABEL_DETECTION
         )
 
         mvc.perform(
@@ -152,7 +152,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testTypeInfo() {
-        val type = ModelType.LABEL_DETECTION_RESNET50
+        val type = ModelType.ZVI_LABEL_DETECTION
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/models/_type/$type")
                 .headers(job())
@@ -162,7 +162,7 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.name",
-                    CoreMatchers.equalTo("LABEL_DETECTION_RESNET50")
+                    CoreMatchers.equalTo("ZVI_LABEL_DETECTION")
                 )
             )
             .andExpect(

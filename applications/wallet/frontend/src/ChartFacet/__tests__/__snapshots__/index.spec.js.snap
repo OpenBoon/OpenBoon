@@ -1,0 +1,984 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChartFacet /> should render properly 1`] = `
+.emotion-80 {
+  padding-right: 32px;
+  padding-bottom: 32px;
+  width: 470px;
+}
+
+.emotion-79 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #252525;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  border-radius: 2px;
+  padding: 16px;
+}
+
+.emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-bottom: 24px;
+}
+
+.emotion-78 .ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-78 .Loading {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-77 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  padding-right: 28px;
+  font-family: Roboto Condensed;
+  color: #b3b3b3;
+}
+
+.emotion-72 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.emotion-11 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  color: #ffffff;
+}
+
+.emotion-11:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-11[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
+  background-color: #027aff38;
+  color: #ffffff;
+}
+
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg {
+  color: #ffffff;
+}
+
+.emotion-10 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  width: 100%;
+  background-color: #4a90e2;
+}
+
+.emotion-3 {
+  height: 4px;
+  width: 0%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.emotion-5 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-6 {
+  padding-left: 8px;
+}
+
+.emotion-9 {
+  margin-top: 4px;
+  padding: 4px;
+  color: transparent;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-12 {
+  width: 67%;
+  background-color: #a03dc7;
+}
+
+.emotion-13 {
+  height: 4px;
+  width: 33%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-22 {
+  width: 34%;
+  background-color: #d6680b;
+}
+
+.emotion-23 {
+  height: 4px;
+  width: 66%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-32 {
+  width: 34%;
+  background-color: #ebb52e;
+}
+
+.emotion-42 {
+  width: 34%;
+  background-color: #00bdc1;
+}
+
+.emotion-52 {
+  width: 34%;
+  background-color: #c54a4a;
+}
+
+.emotion-62 {
+  width: 0%;
+  background-color: #ff7867;
+}
+
+.emotion-63 {
+  height: 4px;
+  width: 100%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-76 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-75 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: #808080;
+  font-family: Roboto Condensed;
+}
+
+.emotion-75:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-75[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-75:hover,
+.emotion-75.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-74 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-73 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+<div
+  className="emotion-80"
+>
+  <div
+    className="emotion-79"
+  >
+    <h3
+      className="emotion-0"
+    >
+      location.city
+    </h3>
+    <div
+      className="emotion-78"
+    >
+      <div
+        className="emotion-77"
+      >
+        <div
+          className="emotion-1"
+        >
+          <div>
+            LABEL
+          </div>
+          <div>
+            COUNT
+          </div>
+        </div>
+        <ul
+          className="emotion-72"
+        >
+          <li>
+            <button
+              aria-label="Tyngsboro"
+              className="emotion-11"
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="emotion-10"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <div
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-2"
+                    />
+                    <div
+                      className="emotion-3"
+                    />
+                  </div>
+                  <div
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      Tyngsboro
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      3
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-9"
+                >
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
+                </div>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button
+              aria-label="Brooklyn"
+              className="emotion-11"
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="emotion-10"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <div
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-12"
+                    />
+                    <div
+                      className="emotion-13"
+                    />
+                  </div>
+                  <div
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      Brooklyn
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      2
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-9"
+                >
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
+                </div>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button
+              aria-label="Cát Bà"
+              className="emotion-11"
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="emotion-10"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <div
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-22"
+                    />
+                    <div
+                      className="emotion-23"
+                    />
+                  </div>
+                  <div
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      Cát Bà
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      1
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-9"
+                >
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
+                </div>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button
+              aria-label="La Habana Vieja"
+              className="emotion-11"
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="emotion-10"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <div
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-32"
+                    />
+                    <div
+                      className="emotion-23"
+                    />
+                  </div>
+                  <div
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      La Habana Vieja
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      1
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-9"
+                >
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
+                </div>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button
+              aria-label="North Glendale"
+              className="emotion-11"
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="emotion-10"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <div
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-42"
+                    />
+                    <div
+                      className="emotion-23"
+                    />
+                  </div>
+                  <div
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      North Glendale
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      1
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-9"
+                >
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
+                </div>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button
+              aria-label="Saalfelden am Steinernen Meer"
+              className="emotion-11"
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="emotion-10"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <div
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-52"
+                    />
+                    <div
+                      className="emotion-23"
+                    />
+                  </div>
+                  <div
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      Saalfelden am Steinernen Meer
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      1
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-9"
+                >
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
+                </div>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button
+              aria-label="Zermatt"
+              className="emotion-11"
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="emotion-10"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <div
+                    className="emotion-4"
+                  >
+                    <div
+                      className="emotion-62"
+                    />
+                    <div
+                      className="emotion-63"
+                    />
+                  </div>
+                  <div
+                    className="emotion-7"
+                  >
+                    <div
+                      className="emotion-5"
+                    >
+                      Zermatt
+                    </div>
+                    <div
+                      className="emotion-6"
+                    >
+                      0
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="emotion-9"
+                >
+                  <svg
+                    data-file-name="filter.svg"
+                    width={20}
+                  />
+                </div>
+              </div>
+            </button>
+          </li>
+        </ul>
+        <div
+          className="emotion-76"
+        >
+          <button
+            aria-label="Add Field Filter"
+            className="emotion-75"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-74"
+            >
+              <div
+                className="emotion-73"
+              >
+                <svg
+                  data-file-name="filter.svg"
+                  width={20}
+                />
+              </div>
+              Add Field Filter
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChartFacet /> should render properly without data 1`] = `
+.emotion-10 {
+  padding-right: 32px;
+  padding-bottom: 32px;
+  width: 470px;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #252525;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  border-radius: 2px;
+  padding: 16px;
+}
+
+.emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-bottom: 24px;
+}
+
+.emotion-8 .ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-8 .Loading {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  padding-right: 28px;
+  font-family: Roboto Condensed;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: #808080;
+  font-family: Roboto Condensed;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+<div
+  className="emotion-10"
+>
+  <div
+    className="emotion-9"
+  >
+    <h3
+      className="emotion-0"
+    >
+      location.city
+    </h3>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-7"
+      >
+        <div
+          className="emotion-1"
+        >
+          <div>
+            LABEL
+          </div>
+          <div>
+            COUNT
+          </div>
+        </div>
+        <ul
+          className="emotion-2"
+        />
+        <div
+          className="emotion-6"
+        >
+          <button
+            aria-label="Add Field Filter"
+            className="emotion-5"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-4"
+            >
+              <div
+                className="emotion-3"
+              >
+                <svg
+                  data-file-name="filter.svg"
+                  width={20}
+                />
+              </div>
+              Add Field Filter
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChartFacet /> should render without an attribute 1`] = `
+<ChartForm
+  chart={
+    Object {
+      "id": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
+      "type": "facet",
+    }
+  }
+  chartIndex={0}
+  dispatch={[Function]}
+/>
+`;

@@ -2,7 +2,7 @@ scikit-learn
 scipy
 mxnet
 protobuf
-tensorflow==2.1.0
+tensorflow==2.2.0
 opencv-python-headless
 opencv-contrib-python-headless
 google-api-core

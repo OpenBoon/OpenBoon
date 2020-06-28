@@ -33,7 +33,7 @@ const FilterRange = ({
           filterIndex={filterIndex}
         />
       }
-      cacheKey={`FilterRange.${filter.attribute}.${filterIndex}`}
+      cacheKey={`FilterRange.${filter.attribute}`}
       isInitiallyOpen
       isResizeable
     >

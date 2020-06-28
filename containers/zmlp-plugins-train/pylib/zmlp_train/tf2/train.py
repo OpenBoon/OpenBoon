@@ -1,15 +1,15 @@
 import os
 import tempfile
 
+import matplotlib.pyplot as plt
 import tensorflow as tf
-from tensorflow.keras.applications import mobilenet_v2 as mobilenet_v2
 from tensorflow.keras.applications import resnet_v2 as resnet_v2
-from tensorflow.keras.applications import vgg16 as vgg16
-from tensorflow.keras.layers import Dropout, Flatten, Dense, BatchNormalization
+from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
+from tensorflow.keras.optimizers import Adamax
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 import zmlp
-from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException, file_storage
+from zmlpsdk import AssetProcessor, Argument, file_storage
 from zmlpsdk.training import download_dataset
 
 
@@ -23,6 +23,8 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         # These are the base args
         self.add_arg(Argument("model_id", "str", required=True,
                               toolTip="The model Id"))
+        self.add_arg(Argument("deploy", "bool", default=False,
+                              toolTip="Automatically deploy the model onto assets."))
 
         # These can be set optionally.
         self.add_arg(Argument("epochs", "int", required=True, default=10,
@@ -39,6 +41,12 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         self.labels = None
         self.base_dir = None
 
+        # Fine tune the base model after the nth layer.
+        self.fine_tune_at = 100
+
+        # Number of epochs for fine tuning.
+        self.fine_tune_epochs = 5
+
     def init(self):
         self.app_model = self.app.models.get_model(self.arg_value('model_id'))
         self.labels = self.app.datasets.get_label_counts(self.app_model.dataset_id)
@@ -52,14 +60,8 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
                          self.arg_value('train-test-ratio'))
 
         self.reactor.emit_status("Training model: {}".format(self.app_model.name))
-        self.build_model()
         train_gen, test_gen = self.build_generators()
-        self.model.fit(
-            train_gen,
-            callbacks=[TrainingProgressCallback(self.reactor, self.arg_value('epochs'))],
-            validation_data=test_gen,
-            epochs=self.arg_value('epochs')
-        )
+        self.train_model(train_gen, test_gen)
 
         # Build the label list
         labels = [None] * len(self.labels)
@@ -67,6 +69,36 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             labels[int(idx)] = label
 
         self.publish_model(labels)
+
+    def plot_history(self, history, name):
+        self.logger.info('Saving history plot.')
+        acc = history.history['accuracy']
+        val_acc = history.history['val_accuracy']
+
+        loss = history.history['loss']
+        val_loss = history.history['val_loss']
+
+        plt.figure(figsize=(8, 8))
+        plt.subplot(2, 1, 1)
+        plt.plot(acc, label='Training Accuracy')
+        plt.plot(val_acc, label='Validation Accuracy')
+        plt.legend(loc='lower right')
+        plt.ylabel('Accuracy')
+        plt.ylim([min(plt.ylim()), 1])
+        plt.title('Training and Validation Accuracy')
+
+        plt.subplot(2, 1, 2)
+        plt.plot(loss, label='Training Loss')
+        plt.plot(val_loss, label='Validation Loss')
+        plt.legend(loc='upper right')
+        plt.ylabel('Cross Entropy')
+        plt.ylim([0, 1.0])
+        plt.title('Training and Validation Loss')
+        plt.xlabel('epoch')
+        fname = f'/tmp/{name}.png'
+        plt.savefig(fname)
+
+        file_storage.projects.store_file(fname, self.app_model, 'zvi_label_detection')
 
     def publish_model(self, labels):
         """
@@ -76,7 +108,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             labels (list): An array of labels in the correct order.
 
         """
-        self.reactor.emit_status("Saving model: {}".format(self.app_model.name))
+        self.reactor.emit_status('Saving model: {}'.format(self.app_model.name))
         model_dir = tempfile.mkdtemp() + '/' + self.app_model.name
         os.makedirs(model_dir)
 
@@ -85,8 +117,8 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             for label in labels:
                 fp.write('{}\n'.format(label))
 
-        mod = file_storage.models.save_model(model_dir,  self.app_model)
-        self.reactor.emit_status("Published model: {}".format(self.app_model.name))
+        mod = file_storage.models.save_model(model_dir,  self.app_model, self.arg_value('deploy'))
+        self.reactor.emit_status('Published model: {}'.format(self.app_model.name))
         return mod
 
     def check_labels(self):
@@ -106,38 +138,62 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
                 msg = 'You need at least {} examples to train, {} has  {}'
                 raise ValueError(msg.format(min_examples, name, count))
 
-    def build_model(self):
+    def train_model(self, train_gen, test_gen):
         """
-        Build the Tensorflow model using the base model specified in the args.
-        """
-        base_model = self.get_base_model()
+        Build and train Tensorflow model using the base model specified in the args.
 
+        """
+
+        # Make a new model from the base ResNet50 model.
+        base_model = self.get_base_model()
         base_model.trainable = False
-        for layer in base_model.layers:
-            layer.trainable = False
 
         self.model = tf.keras.models.Sequential([
             base_model,
-
-            Flatten(),
-            Dense(512, activation='relu'),
-            BatchNormalization(),
-            Dropout(0.5),
-
-            Dense(64, activation='relu'),
-            BatchNormalization(),
-            Dropout(0.5),
+            tf.keras.layers.Conv2D(32, 3, activation='relu'),
+            tf.keras.layers.Dropout(0.2),
+            GlobalAveragePooling2D(),
             Dense(len(self.labels), activation='softmax')
         ])
 
         self.model.summary()
-        self.logger.info('Compiling...')
 
+        self.logger.info('Compiling...')
         self.model.compile(
-            optimizer='adam',
+            optimizer=Adamax(),
             loss='categorical_crossentropy',
-            metrics=['acc']
+            metrics=['accuracy']
         )
+
+        self.logger.info('Training...')
+        history = self.model.fit(
+            train_gen,
+            callbacks=[TrainingProgressCallback(self.reactor, self.arg_value('epochs'))],
+            validation_data=test_gen,
+            epochs=self.arg_value('epochs')
+        )
+
+        self.plot_history(history, "history")
+
+        # Now that we've trained our new layers, we're going to actually lightly retrain
+        # all layers after the 100th layer in ResNet50.
+        base_model.trainable = True
+
+        # Freezes all the layers before the `fine_tune_at` layer
+        for layer in base_model.layers[:self.fine_tune_at]:
+            layer.trainable = False
+
+        self.model.compile(loss='categorical_crossentropy',
+                           optimizer=Adamax(1e-5),
+                           metrics=['accuracy'])
+
+        history_fine = self.model.fit(train_gen,
+                                      epochs=self.fine_tune_epochs,
+                                      validation_data=test_gen,
+                                      callbacks=[TrainingProgressCallback(
+                                          self.reactor, self.fine_tune_epochs)])
+
+        self.plot_history(history_fine, "history-fine-tune")
 
     def build_generators(self):
         """
@@ -163,14 +219,14 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         # increasing batch size increases memory usage.
         train_generator = train_datagen.flow_from_directory(
             '{}/set_train/'.format(self.base_dir),
-            batch_size=2,
+            batch_size=8,
             class_mode='categorical',
             target_size=self.img_size
         )
 
         test_generator = test_datagen.flow_from_directory(
             '{}/set_test/'.format(self.base_dir),
-            batch_size=2,
+            batch_size=8,
             class_mode='categorical',
             target_size=self.img_size
         )
@@ -179,7 +235,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
     def get_base_model(self):
         """
-        Using the 'base_model' arg, choose the base model for transfer learning/
+        Return the base tensorflow model.
 
         Returns:
             Model: A tensorflow model.
@@ -188,21 +244,9 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             ZmlpFatalProcessorException: If the model is not fouond/
 
         """
-        modl_base = self.app_model.type
-        if modl_base == zmlp.ModelType.LABEL_DETECTION_MOBILENET2:
-            return mobilenet_v2.MobileNetV2(weights='imagenet',
-                                            include_top=False,
-                                            input_shape=(224, 224, 3))
-        elif modl_base == zmlp.ModelType.LABEL_DETECTION_RESNET50:
-            return resnet_v2.ResNet50V2(weights='imagenet',
-                                        include_top=False,
-                                        input_shape=(224, 224, 3))
-        elif modl_base == zmlp.ModelType.LABEL_DETECTION_VGG16:
-            return vgg16.VGG16(weights='imagenet',
-                               include_top=False,
-                               input_shape=(224, 224, 3))
-        else:
-            raise ZmlpFatalProcessorException('Invalid model: {}'.format(modl_base))
+        return resnet_v2.ResNet50V2(weights='imagenet',
+                                    include_top=False,
+                                    input_shape=(224, 224, 3))
 
 
 class TrainingProgressCallback(tf.keras.callbacks.Callback):

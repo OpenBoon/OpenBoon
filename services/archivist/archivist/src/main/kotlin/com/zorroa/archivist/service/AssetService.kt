@@ -14,7 +14,7 @@ import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.FileTypes
+import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
@@ -284,7 +284,7 @@ class AssetServiceImpl : AssetService {
     }
 
     override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
-        if (request.assets.size > 100) {
+        if (request.assets.size > 128) {
             throw IllegalArgumentException("Cannot create more than 100 assets at a time.")
         }
 
@@ -472,7 +472,9 @@ class AssetServiceImpl : AssetService {
             null
         } else {
             val name = "Analyze ${createdAssetIds.size} created assets, $reprocessAssetCount existing files."
-            jobLaunchService.launchJob(name, finalAssetList, processors, creds = creds)
+            jobLaunchService.launchJob(
+                name, finalAssetList, processors, creds = creds, settings = mapOf("index" to true)
+            )
         }
     }
 
@@ -499,7 +501,6 @@ class AssetServiceImpl : AssetService {
             val newScript = ZpsScript(name, null, null, parentScript.execute, assetIds = assetIds)
 
             newScript.globalArgs = parentScript.globalArgs
-            newScript.type = parentScript.type
             newScript.settings = parentScript.settings
 
             val newTask = jobService.createTask(parentTask, TaskSpec(name, newScript))
@@ -671,7 +672,7 @@ class AssetServiceImpl : AssetService {
             asset.setAttr("source.filename", FileUtils.filename(spec.uri))
             asset.setAttr("source.extension", FileUtils.extension(spec.uri))
 
-            val mediaType = FileTypes.getMediaType(spec.uri)
+            val mediaType = FileExtResolver.getMediaType(spec.uri)
             asset.setAttr("source.mimetype", mediaType)
 
             asset.setAttr("system.projectId", projectId)

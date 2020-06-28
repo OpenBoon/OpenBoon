@@ -51,7 +51,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.ZORROA,
             Category.ZORROA_TL,
             ModType.CLIPIFIER,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.SET_ARGS,
@@ -68,7 +68,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.ZORROA,
             Category.ZORROA_TL,
             ModType.CLIPIFIER,
-            listOf(SupportedMedia.Images),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.SET_ARGS,
@@ -84,7 +84,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.OBJECT_DETECTION,
-            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -104,7 +104,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.FACE_RECOGNITION,
-            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -124,7 +124,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -140,11 +140,11 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "zvi-text-detection",
-            "Utilize OCR technology to detect text on an image.",
+            "Utilize OCR technology to detect text in documents.",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.TEXT_DETECTION,
-            listOf(SupportedMedia.Images),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -164,7 +164,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -185,7 +185,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -206,7 +206,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -228,7 +228,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -248,7 +248,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModType.OBJECT_DETECTION,
-            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -268,7 +268,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModType.LOGO_DETECTION,
-            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -283,12 +283,52 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
+            "gcp-image-text-detection",
+            "Detect text within an image, including photographic ones.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VISION,
+            ModType.TEXT_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.CloudVisionDetectImageText",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "gcp-document-text-detection",
+            "Utilize OCR technology to detect text in documents.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VISION,
+            ModType.TEXT_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.CloudVisionDetectDocumentText",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
             "gcp-landmark-detection",
             "Detect popular natural and man-made structures within an image.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModType.LANDMARK_DETECTION,
-            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -308,7 +348,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VIDEO,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Video),
+            listOf(FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -333,7 +373,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VIDEO,
             ModType.LOGO_DETECTION,
-            listOf(SupportedMedia.Video),
+            listOf(FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -354,7 +394,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VIDEO,
             ModType.OBJECT_DETECTION,
-            listOf(SupportedMedia.Video),
+            listOf(FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -375,7 +415,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VIDEO,
             ModType.EXPLICIT_DETECTION,
-            listOf(SupportedMedia.Video),
+            listOf(FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -396,7 +436,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VIDEO,
             ModType.TEXT_DETECTION,
-            listOf(SupportedMedia.Video),
+            listOf(FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -417,7 +457,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_S2TEXT,
             ModType.SPEECH_RECOGNITION,
-            listOf(SupportedMedia.Video),
+            listOf(FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,

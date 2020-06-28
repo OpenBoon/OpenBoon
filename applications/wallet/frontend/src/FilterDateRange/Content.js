@@ -100,7 +100,7 @@ const FilterDateRangeContent = ({
     setDateValues([date, dateValues[1]])
 
     dispatch({
-      action: ACTIONS.UPDATE_FILTER,
+      type: ACTIONS.UPDATE_FILTER,
       payload: {
         pathname,
         projectId,
@@ -136,7 +136,7 @@ const FilterDateRangeContent = ({
     setDateValues([dateValues[0], date])
 
     dispatch({
-      action: ACTIONS.UPDATE_FILTER,
+      type: ACTIONS.UPDATE_FILTER,
       payload: {
         pathname,
         projectId,
@@ -193,7 +193,7 @@ const FilterDateRangeContent = ({
             }}
             onChange={([newMin, newMax]) => {
               dispatch({
-                action: ACTIONS.UPDATE_FILTER,
+                type: ACTIONS.UPDATE_FILTER,
                 payload: {
                   pathname,
                   projectId,

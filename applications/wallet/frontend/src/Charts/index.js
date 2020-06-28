@@ -5,17 +5,31 @@ import chartShape from '../Chart/shape'
 import ChartFacet from '../ChartFacet'
 import ChartRange from '../ChartRange'
 
-const Charts = ({ charts }) => {
+const Charts = ({ charts, dispatch }) => {
   return charts
     .filter(({ id }) => !!id)
-    .map((chart) => {
+    .map((chart, index) => {
       switch (chart.type) {
-        case 'FACET': {
-          return <ChartFacet key={chart.id} chart={chart} />
+        case 'facet': {
+          return (
+            <ChartFacet
+              key={chart.id}
+              chart={chart}
+              chartIndex={index}
+              dispatch={dispatch}
+            />
+          )
         }
 
-        case 'RANGE': {
-          return <ChartRange key={chart.id} chart={chart} />
+        case 'range': {
+          return (
+            <ChartRange
+              key={chart.id}
+              chart={chart}
+              chartIndex={index}
+              dispatch={dispatch}
+            />
+          )
         }
 
         default:
@@ -26,6 +40,7 @@ const Charts = ({ charts }) => {
 
 Charts.propTypes = {
   charts: PropTypes.arrayOf(PropTypes.shape(chartShape).isRequired).isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default Charts

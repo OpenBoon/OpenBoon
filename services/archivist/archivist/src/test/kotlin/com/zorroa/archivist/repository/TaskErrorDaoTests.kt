@@ -13,6 +13,7 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskId
 import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.util.LongRangeFilter
 import com.zorroa.archivist.util.randomString
 import org.junit.Test
@@ -36,7 +37,7 @@ class TaskErrorDaoTests : AbstractTest() {
     fun testCreate() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -62,7 +63,7 @@ class TaskErrorDaoTests : AbstractTest() {
     fun testCreateWithNullStackTrace() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -88,7 +89,7 @@ class TaskErrorDaoTests : AbstractTest() {
     fun testBatchCreate() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -109,7 +110,7 @@ class TaskErrorDaoTests : AbstractTest() {
     fun testCreateNoFile() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -132,7 +133,7 @@ class TaskErrorDaoTests : AbstractTest() {
     fun createTaskErrors(): Task {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )

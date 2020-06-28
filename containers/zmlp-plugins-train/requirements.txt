@@ -9,3 +9,4 @@ pandas
 google-cloud
 google-cloud-automl
 gcsfs
+tensorflow==2.2.0
