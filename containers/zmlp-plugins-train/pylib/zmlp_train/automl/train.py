@@ -42,6 +42,8 @@ class AutoMLModelTrainer(AssetProcessor):
                               toolTip=AutoMLModelTrainer.tool_tips['project_path']))
         self.add_arg(Argument("model_path", "string",
                               toolTip=AutoMLModelTrainer.tool_tips['project_path']))
+        self.add_arg(Argument("deploy", "bool", default=False,
+                              toolTip="Automatically deploy the model onto assets."))
 
         self.app_model = None
         self.model_id = None
@@ -231,6 +233,6 @@ class AutoMLModelTrainer(AssetProcessor):
         self.client.deploy_model(model_full_id)
 
         # publish
-        pmod = file_storage.models.save_model(model_dir, self.app_model)
+        pmod = file_storage.models.save_model(model_dir, self.app_model, self.arg_value('deploy'))
         self.reactor.emit_status("Published model {}".format(self.app_model.name))
         return pmod

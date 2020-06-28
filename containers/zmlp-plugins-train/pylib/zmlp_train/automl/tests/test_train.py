@@ -21,7 +21,7 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
     @patch.object(AutoMLModelTrainer, 'import_dataset')
     @patch.object(AutoMLModelTrainer, 'create_model')
     @patch.object(AutoMLModelTrainer, '_get_id')
-    @patch.object(ModelApp, 'publish_model')
+    @patch.object(file_storage.models, 'publish_model')
     @patch.object(ModelApp, 'get_model')
     @patch.object(automl.AutoMlClient, 'deploy_model')
     @patch.object(file_storage.projects, "store_file_by_id")
