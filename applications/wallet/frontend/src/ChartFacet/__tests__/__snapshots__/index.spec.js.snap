@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ChartFacet /> should render properly 1`] = `
-.emotion-80 {
+.emotion-87 {
   height: 100%;
   overflow: hidden;
 }
 
-.emotion-79 {
+.emotion-86 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -19,33 +19,125 @@ exports[`<ChartFacet /> should render properly 1`] = `
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
   border-radius: 2px;
   padding: 16px;
+  padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-7 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-bottom: 24px;
 }
 
-.emotion-78 {
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 2px;
+}
+
+.emotion-6:hover button svg {
+  opacity: 1;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 6px;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2 svg {
+  color: #808080;
+}
+
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-2:hover svg,
+.emotion-2.focus-visible:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
+.emotion-1 {
+  opacity: 0;
+}
+
+.emotion-3 {
+  width: 2px;
+}
+
+.emotion-85 {
   overflow: hidden;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-78 .ErrorBoundary > div {
+.emotion-85 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-78 .Loading {
+.emotion-85 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-77 {
+.emotion-84 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -60,7 +152,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
   flex: 1;
 }
 
-.emotion-1 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -75,7 +167,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-72 {
+.emotion-79 {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -85,7 +177,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
   flex: 1;
 }
 
-.emotion-11 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -127,27 +219,27 @@ exports[`<ChartFacet /> should render properly 1`] = `
   color: #ffffff;
 }
 
-.emotion-11:hover {
+.emotion-18:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-18[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11:hover,
-.emotion-11.focus-visible:focus {
+.emotion-18:hover,
+.emotion-18.focus-visible:focus {
   background-color: #027aff38;
   color: #ffffff;
 }
 
-.emotion-11:hover svg,
-.emotion-11.focus-visible:focus svg {
+.emotion-18:hover svg,
+.emotion-18.focus-visible:focus svg {
   color: #ffffff;
 }
 
-.emotion-10 {
+.emotion-17 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -155,7 +247,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
   display: flex;
 }
 
-.emotion-8 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -169,7 +261,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
   overflow: hidden;
 }
 
-.emotion-4 {
+.emotion-11 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -179,18 +271,18 @@ exports[`<ChartFacet /> should render properly 1`] = `
   display: flex;
 }
 
-.emotion-2 {
+.emotion-9 {
   width: 100%;
   background-color: #4a90e2;
 }
 
-.emotion-3 {
+.emotion-10 {
   height: 4px;
   width: 0%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-7 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -205,17 +297,17 @@ exports[`<ChartFacet /> should render properly 1`] = `
   line-height: 18px;
 }
 
-.emotion-5 {
+.emotion-12 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-6 {
+.emotion-13 {
   padding-left: 8px;
 }
 
-.emotion-9 {
+.emotion-16 {
   margin-top: 4px;
   padding: 4px;
   color: transparent;
@@ -229,55 +321,55 @@ exports[`<ChartFacet /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-12 {
+.emotion-19 {
   width: 67%;
   background-color: #a03dc7;
 }
 
-.emotion-13 {
+.emotion-20 {
   height: 4px;
   width: 33%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-22 {
+.emotion-29 {
   width: 34%;
   background-color: #d6680b;
 }
 
-.emotion-23 {
+.emotion-30 {
   height: 4px;
   width: 66%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-32 {
+.emotion-39 {
   width: 34%;
   background-color: #ebb52e;
 }
 
-.emotion-42 {
+.emotion-49 {
   width: 34%;
   background-color: #00bdc1;
 }
 
-.emotion-52 {
+.emotion-59 {
   width: 34%;
   background-color: #c54a4a;
 }
 
-.emotion-62 {
+.emotion-69 {
   width: 0%;
   background-color: #ff7867;
 }
 
-.emotion-63 {
+.emotion-70 {
   height: 4px;
   width: 100%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-76 {
+.emotion-83 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -292,7 +384,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-75 {
+.emotion-82 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -332,21 +424,21 @@ exports[`<ChartFacet /> should render properly 1`] = `
   font-family: Roboto Condensed;
 }
 
-.emotion-75:hover {
+.emotion-82:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-75[aria-disabled=true] {
+.emotion-82[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-75:hover,
-.emotion-75.focus-visible:focus {
+.emotion-82:hover,
+.emotion-82.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-74 {
+.emotion-81 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -357,7 +449,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-73 {
+.emotion-80 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -366,24 +458,61 @@ exports[`<ChartFacet /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-80"
+  className="emotion-87"
 >
   <div
-    className="emotion-79"
+    className="emotion-86"
   >
-    <h3
-      className="emotion-0"
-    >
-      location.city
-    </h3>
     <div
-      className="emotion-78"
+      className="emotion-7"
     >
       <div
-        className="emotion-77"
+        className="emotion-6"
+      >
+        <h3
+          className="emotion-0"
+        >
+          location.city
+        </h3>
+        <button
+          aria-label="Edit Chart"
+          className="emotion-2"
+          onClick={[Function]}
+          title="Edit"
+          type="button"
+        >
+          <svg
+            className="emotion-1"
+            data-file-name="pen.svg"
+            width={20}
+          />
+        </button>
+        <div
+          className="emotion-3"
+        />
+        <button
+          aria-label="Delete Chart"
+          className="emotion-2"
+          onClick={[Function]}
+          title="Delete"
+          type="button"
+        >
+          <svg
+            className="emotion-1"
+            data-file-name="cross.svg"
+            width={20}
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      className="emotion-85"
+    >
+      <div
+        className="emotion-84"
       >
         <div
-          className="emotion-1"
+          className="emotion-8"
         >
           <div>
             LABEL
@@ -393,48 +522,48 @@ exports[`<ChartFacet /> should render properly 1`] = `
           </div>
         </div>
         <ul
-          className="emotion-72"
+          className="emotion-79"
         >
           <li>
             <button
               aria-label="Tyngsboro"
-              className="emotion-11"
+              className="emotion-18"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-10"
+                className="emotion-17"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-4"
+                    className="emotion-11"
                   >
                     <div
-                      className="emotion-2"
+                      className="emotion-9"
                     />
                     <div
-                      className="emotion-3"
+                      className="emotion-10"
                     />
                   </div>
                   <div
-                    className="emotion-7"
+                    className="emotion-14"
                   >
                     <div
-                      className="emotion-5"
+                      className="emotion-12"
                     >
                       Tyngsboro
                     </div>
                     <div
-                      className="emotion-6"
+                      className="emotion-13"
                     >
                       3
                     </div>
                   </div>
                 </div>
                 <div
-                  className="emotion-9"
+                  className="emotion-16"
                 >
                   <svg
                     data-file-name="filter.svg"
@@ -447,43 +576,43 @@ exports[`<ChartFacet /> should render properly 1`] = `
           <li>
             <button
               aria-label="Brooklyn"
-              className="emotion-11"
+              className="emotion-18"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-10"
+                className="emotion-17"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-4"
+                    className="emotion-11"
                   >
                     <div
-                      className="emotion-12"
+                      className="emotion-19"
                     />
                     <div
-                      className="emotion-13"
+                      className="emotion-20"
                     />
                   </div>
                   <div
-                    className="emotion-7"
+                    className="emotion-14"
                   >
                     <div
-                      className="emotion-5"
+                      className="emotion-12"
                     >
                       Brooklyn
                     </div>
                     <div
-                      className="emotion-6"
+                      className="emotion-13"
                     >
                       2
                     </div>
                   </div>
                 </div>
                 <div
-                  className="emotion-9"
+                  className="emotion-16"
                 >
                   <svg
                     data-file-name="filter.svg"
@@ -496,43 +625,43 @@ exports[`<ChartFacet /> should render properly 1`] = `
           <li>
             <button
               aria-label="Cát Bà"
-              className="emotion-11"
+              className="emotion-18"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-10"
+                className="emotion-17"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-4"
+                    className="emotion-11"
                   >
                     <div
-                      className="emotion-22"
+                      className="emotion-29"
                     />
                     <div
-                      className="emotion-23"
+                      className="emotion-30"
                     />
                   </div>
                   <div
-                    className="emotion-7"
+                    className="emotion-14"
                   >
                     <div
-                      className="emotion-5"
+                      className="emotion-12"
                     >
                       Cát Bà
                     </div>
                     <div
-                      className="emotion-6"
+                      className="emotion-13"
                     >
                       1
                     </div>
                   </div>
                 </div>
                 <div
-                  className="emotion-9"
+                  className="emotion-16"
                 >
                   <svg
                     data-file-name="filter.svg"
@@ -545,43 +674,43 @@ exports[`<ChartFacet /> should render properly 1`] = `
           <li>
             <button
               aria-label="La Habana Vieja"
-              className="emotion-11"
+              className="emotion-18"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-10"
+                className="emotion-17"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-4"
+                    className="emotion-11"
                   >
                     <div
-                      className="emotion-32"
+                      className="emotion-39"
                     />
                     <div
-                      className="emotion-23"
+                      className="emotion-30"
                     />
                   </div>
                   <div
-                    className="emotion-7"
+                    className="emotion-14"
                   >
                     <div
-                      className="emotion-5"
+                      className="emotion-12"
                     >
                       La Habana Vieja
                     </div>
                     <div
-                      className="emotion-6"
+                      className="emotion-13"
                     >
                       1
                     </div>
                   </div>
                 </div>
                 <div
-                  className="emotion-9"
+                  className="emotion-16"
                 >
                   <svg
                     data-file-name="filter.svg"
@@ -594,43 +723,43 @@ exports[`<ChartFacet /> should render properly 1`] = `
           <li>
             <button
               aria-label="North Glendale"
-              className="emotion-11"
+              className="emotion-18"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-10"
+                className="emotion-17"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-4"
+                    className="emotion-11"
                   >
                     <div
-                      className="emotion-42"
+                      className="emotion-49"
                     />
                     <div
-                      className="emotion-23"
+                      className="emotion-30"
                     />
                   </div>
                   <div
-                    className="emotion-7"
+                    className="emotion-14"
                   >
                     <div
-                      className="emotion-5"
+                      className="emotion-12"
                     >
                       North Glendale
                     </div>
                     <div
-                      className="emotion-6"
+                      className="emotion-13"
                     >
                       1
                     </div>
                   </div>
                 </div>
                 <div
-                  className="emotion-9"
+                  className="emotion-16"
                 >
                   <svg
                     data-file-name="filter.svg"
@@ -643,43 +772,43 @@ exports[`<ChartFacet /> should render properly 1`] = `
           <li>
             <button
               aria-label="Saalfelden am Steinernen Meer"
-              className="emotion-11"
+              className="emotion-18"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-10"
+                className="emotion-17"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-4"
+                    className="emotion-11"
                   >
                     <div
-                      className="emotion-52"
+                      className="emotion-59"
                     />
                     <div
-                      className="emotion-23"
+                      className="emotion-30"
                     />
                   </div>
                   <div
-                    className="emotion-7"
+                    className="emotion-14"
                   >
                     <div
-                      className="emotion-5"
+                      className="emotion-12"
                     >
                       Saalfelden am Steinernen Meer
                     </div>
                     <div
-                      className="emotion-6"
+                      className="emotion-13"
                     >
                       1
                     </div>
                   </div>
                 </div>
                 <div
-                  className="emotion-9"
+                  className="emotion-16"
                 >
                   <svg
                     data-file-name="filter.svg"
@@ -692,43 +821,43 @@ exports[`<ChartFacet /> should render properly 1`] = `
           <li>
             <button
               aria-label="Zermatt"
-              className="emotion-11"
+              className="emotion-18"
               onClick={[Function]}
               type="button"
             >
               <div
-                className="emotion-10"
+                className="emotion-17"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-4"
+                    className="emotion-11"
                   >
                     <div
-                      className="emotion-62"
+                      className="emotion-69"
                     />
                     <div
-                      className="emotion-63"
+                      className="emotion-70"
                     />
                   </div>
                   <div
-                    className="emotion-7"
+                    className="emotion-14"
                   >
                     <div
-                      className="emotion-5"
+                      className="emotion-12"
                     >
                       Zermatt
                     </div>
                     <div
-                      className="emotion-6"
+                      className="emotion-13"
                     >
                       0
                     </div>
                   </div>
                 </div>
                 <div
-                  className="emotion-9"
+                  className="emotion-16"
                 >
                   <svg
                     data-file-name="filter.svg"
@@ -740,19 +869,19 @@ exports[`<ChartFacet /> should render properly 1`] = `
           </li>
         </ul>
         <div
-          className="emotion-76"
+          className="emotion-83"
         >
           <button
             aria-label="Add Field Filter"
-            className="emotion-75"
+            className="emotion-82"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-74"
+              className="emotion-81"
             >
               <div
-                className="emotion-73"
+                className="emotion-80"
               >
                 <svg
                   data-file-name="filter.svg"
@@ -770,12 +899,12 @@ exports[`<ChartFacet /> should render properly 1`] = `
 `;
 
 exports[`<ChartFacet /> should render properly without data 1`] = `
-.emotion-10 {
+.emotion-17 {
   height: 100%;
   overflow: hidden;
 }
 
-.emotion-9 {
+.emotion-16 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -788,33 +917,125 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
   border-radius: 2px;
   padding: 16px;
+  padding-top: 8px;
 }
 
-.emotion-0 {
+.emotion-7 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-bottom: 24px;
 }
 
-.emotion-8 {
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 2px;
+}
+
+.emotion-6:hover button svg {
+  opacity: 1;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 6px;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2 svg {
+  color: #808080;
+}
+
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-2:hover svg,
+.emotion-2.focus-visible:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
+.emotion-1 {
+  opacity: 0;
+}
+
+.emotion-3 {
+  width: 2px;
+}
+
+.emotion-15 {
   overflow: hidden;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-8 .ErrorBoundary > div {
+.emotion-15 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-8 .Loading {
+.emotion-15 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-7 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -829,7 +1050,7 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   flex: 1;
 }
 
-.emotion-1 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -844,7 +1065,7 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-9 {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -854,7 +1075,7 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   flex: 1;
 }
 
-.emotion-6 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -869,7 +1090,7 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   align-items: center;
 }
 
-.emotion-5 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -909,21 +1130,21 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   font-family: Roboto Condensed;
 }
 
-.emotion-5:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover,
-.emotion-5.focus-visible:focus {
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-4 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -934,7 +1155,7 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -943,24 +1164,61 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
 }
 
 <div
-  className="emotion-10"
+  className="emotion-17"
 >
   <div
-    className="emotion-9"
+    className="emotion-16"
   >
-    <h3
-      className="emotion-0"
-    >
-      location.city
-    </h3>
     <div
-      className="emotion-8"
+      className="emotion-7"
     >
       <div
-        className="emotion-7"
+        className="emotion-6"
+      >
+        <h3
+          className="emotion-0"
+        >
+          location.city
+        </h3>
+        <button
+          aria-label="Edit Chart"
+          className="emotion-2"
+          onClick={[Function]}
+          title="Edit"
+          type="button"
+        >
+          <svg
+            className="emotion-1"
+            data-file-name="pen.svg"
+            width={20}
+          />
+        </button>
+        <div
+          className="emotion-3"
+        />
+        <button
+          aria-label="Delete Chart"
+          className="emotion-2"
+          onClick={[Function]}
+          title="Delete"
+          type="button"
+        >
+          <svg
+            className="emotion-1"
+            data-file-name="cross.svg"
+            width={20}
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      className="emotion-15"
+    >
+      <div
+        className="emotion-14"
       >
         <div
-          className="emotion-1"
+          className="emotion-8"
         >
           <div>
             LABEL
@@ -970,22 +1228,22 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
           </div>
         </div>
         <ul
-          className="emotion-2"
+          className="emotion-9"
         />
         <div
-          className="emotion-6"
+          className="emotion-13"
         >
           <button
             aria-label="Add Field Filter"
-            className="emotion-5"
+            className="emotion-12"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-4"
+              className="emotion-11"
             >
               <div
-                className="emotion-3"
+                className="emotion-10"
               >
                 <svg
                   data-file-name="filter.svg"
