@@ -36,6 +36,8 @@ class LabelDetectionPerceptronTrainer(AssetProcessor):
         self.add_arg(
             Argument("model_id", "str", required=True, toolTip="The model Id")
         )
+        self.add_arg(Argument("deploy", "bool", default=False,
+                              toolTip="Automatically deploy the model onto assets."))
         self.add_arg(
             Argument("attr", "str",
                      required=True,
@@ -195,7 +197,7 @@ class LabelDetectionPerceptronTrainer(AssetProcessor):
         logging.debug("Use these two files with the PerceptronClassifier processor")
 
         # publish
-        pmod = file_storage.models.save_model(model_dir, self.app_model)
+        pmod = file_storage.models.save_model(model_dir, self.app_model, self.arg_value('deploy'))
         self.reactor.emit_status(
             "Published model {}".format(self.app_model.name))
         return pmod

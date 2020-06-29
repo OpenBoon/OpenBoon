@@ -1,5 +1,5 @@
 
-from tensorflow.keras.applications.imagenet_utils import preprocess_input
+from tensorflow.keras.applications.resnet_v2 import preprocess_input
 
 from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.analysis import LabelDetectionAnalysis

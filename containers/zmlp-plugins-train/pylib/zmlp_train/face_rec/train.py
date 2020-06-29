@@ -17,6 +17,8 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
     def __init__(self):
         super(KnnFaceRecognitionTrainer, self).__init__()
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
+        self.add_arg(Argument("deploy", "bool", default=False,
+                              toolTip="Automatically deploy the model onto assets."))
         self.app_model = None
 
     def init(self):
@@ -28,7 +30,7 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
         })
         query = {
             '_source': 'labels.*',
-            'size': 25,
+            'size': 50,
             'query': {
                 'nested': {
                     'path': 'labels',
@@ -104,6 +106,7 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
         with open(os.path.join(model_dir, 'face_classifier.pickle'), 'wb') as fp:
             pickle.dump(classifier, fp)
 
-        mod = file_storage.models.save_model(model_dir, self.app_model)
+        mod = file_storage.models.save_model(model_dir, self.app_model, self.arg_value('deploy'))
         self.reactor.emit_status("Published model {}".format(self.app_model.name))
+
         return mod
