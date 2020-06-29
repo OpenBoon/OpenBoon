@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FaceLabelingTrainApply /> should render properly when there are no unapplied changes and no training jobs 1`] = `
+exports[`<FaceLabelingTrainApply /> should render properly when there are no unapplied changes and no training job 1`] = `
 .emotion-2 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
