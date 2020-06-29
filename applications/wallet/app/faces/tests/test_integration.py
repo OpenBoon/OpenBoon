@@ -194,7 +194,7 @@ class TestUnappliedChanges:
         path = reverse('face-unapplied-changes', kwargs={'project_pk': project.id})
         response = api_client.get(path)
         content = check_response(response)
-        assert content == {'unappliedChanges': False}
+        assert content == {'unappliedChanges': True}
 
 
 class TestLabels:
