@@ -45,7 +45,7 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
           svg: {
             color: colors.structure.steel,
           },
-          ':focus, :hover': {
+          ':hover, &.focus-visible:focus': {
             svg: { opacity: 1, color: colors.structure.white },
             backgroundColor: colors.structure.smoke,
           },
@@ -63,7 +63,7 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
           svg: {
             color: colors.structure.steel,
           },
-          ':focus, :hover': {
+          ':hover, &.focus-visible:focus': {
             svg: { opacity: 1, color: colors.structure.white },
             backgroundColor: colors.structure.smoke,
           },
