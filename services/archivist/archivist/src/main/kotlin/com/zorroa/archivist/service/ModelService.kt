@@ -21,6 +21,7 @@ import com.zorroa.archivist.domain.ModelApplyRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.repository.DataSetDao
+import com.zorroa.archivist.repository.DataSetJdbcDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.ModelDao
 import com.zorroa.archivist.repository.ModelJdbcDao
@@ -51,6 +52,7 @@ class ModelServiceImpl(
     val modelDao: ModelDao,
     val modelJdbcDao: ModelJdbcDao,
     val dataSetDao: DataSetDao,
+    val dataSetJdbcDao: DataSetJdbcDao,
     val jobLaunchService: JobLaunchService,
     val jobService: JobService,
     val pipelineModService: PipelineModService
@@ -110,6 +112,8 @@ class ModelServiceImpl(
         )
 
         logger.info("Launching train job ${model.type.trainProcessor} $trainArgs")
+
+        dataSetJdbcDao.updateModified(model.dataSetId, false)
 
         val processor = ProcessorRef(
             model.type.trainProcessor, "zmlp/plugins-train", trainArgs

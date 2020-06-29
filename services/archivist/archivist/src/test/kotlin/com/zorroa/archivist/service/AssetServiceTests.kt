@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
+import com.zorroa.archivist.domain.DataSetFilter
 import com.zorroa.archivist.domain.DataSetLabel
 import com.zorroa.archivist.domain.DataSetSpec
 import com.zorroa.archivist.domain.DataSetType
@@ -55,7 +56,7 @@ class AssetServiceTests : AbstractTest() {
     lateinit var dispatcherService: DispatcherService
 
     @Autowired
-    lateinit var dataSetSetService: DataSetService
+    lateinit var dataSetService: DataSetService
 
     @Autowired
     lateinit var projectStorageService: ProjectStorageService
@@ -192,7 +193,7 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testBatchCreateAssetsWithLabel() {
-        val ds = dataSetSetService.create(DataSetSpec("hobbits", DataSetType.LABEL_DETECTION))
+        val ds = dataSetService.create(DataSetSpec("hobbits", DataSetType.LABEL_DETECTION))
 
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
@@ -573,7 +574,7 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LABEL_DETECTION))
+        val ds = dataSetService.create(DataSetSpec("test", DataSetType.LABEL_DETECTION))
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
         )
@@ -590,6 +591,9 @@ class AssetServiceTests : AbstractTest() {
                 )
             )
         )
+
+        val modifiedDataSet = dataSetService.findOne(DataSetFilter(listOf(ds.id)))
+        assertEquals(true, modifiedDataSet.modified)
 
         asset = assetService.getAsset(asset.id)
         var labels = asset.getAttr("labels", DataSetLabel.LIST_OF)

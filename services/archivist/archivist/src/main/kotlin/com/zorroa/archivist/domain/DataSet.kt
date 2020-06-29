@@ -73,7 +73,11 @@ class DataSet(
 
     @Column(name = "actor_modified")
     @ApiModelProperty("The key that last made the last modification to this data set.")
-    val actorModified: String
+    val actorModified: String,
+
+    @Column(name = "bool_modified")
+    @ApiModelProperty("Indicates if the Dataset has been modified and needs retrain")
+    val modified: Boolean
 
 ) {
     fun getLabel(label: String, bbox: List<BigDecimal>? = null): DataSetLabel {
