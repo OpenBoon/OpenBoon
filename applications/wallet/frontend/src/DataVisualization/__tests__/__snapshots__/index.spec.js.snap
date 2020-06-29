@@ -709,13 +709,9 @@ exports[`<DataVisualization /> should render properly 2`] = `
 }
 
 .emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 <div
@@ -791,15 +787,17 @@ exports[`<DataVisualization /> should render properly 2`] = `
         <div
           className="emotion-9"
         >
-          <ChartForm
-            chart={
-              Object {
-                "id": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
-                "type": "facet",
-              }
+          <Charts
+            charts={
+              Array [
+                Object {
+                  "id": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
+                  "type": "facet",
+                },
+              ]
             }
-            chartIndex={0}
             dispatch={[Function]}
+            projectId="76917058-b147-4556-987a-0a0f11e46d9b"
           />
         </div>
       </div>

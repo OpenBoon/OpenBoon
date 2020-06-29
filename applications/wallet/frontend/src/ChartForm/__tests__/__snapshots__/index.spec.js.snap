@@ -2,12 +2,12 @@
 
 exports[`<ChartForm /> should render properly 1`] = `
 .emotion-13 {
-  padding-right: 32px;
-  padding-bottom: 32px;
-  width: 470px;
+  height: 100%;
+  overflow: hidden;
 }
 
 .emotion-12 {
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -19,6 +19,13 @@ exports[`<ChartForm /> should render properly 1`] = `
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
   border-radius: 2px;
   padding: 16px;
+}
+
+.emotion-11 {
+  overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-11 .ErrorBoundary > div {

@@ -70,6 +70,9 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
       css={{
         display: 'flex',
         flexDirection: 'column',
+        overflow: 'hidden',
+        height: '100%',
+        flex: 1,
       }}
     >
       <div
@@ -86,7 +89,15 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
         <div>COUNT</div>
       </div>
 
-      <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
+      <ul
+        css={{
+          margin: 0,
+          padding: 0,
+          listStyle: 'none',
+          overflowY: 'auto',
+          flex: 1,
+        }}
+      >
         {buckets.map(({ key, docCount = 0 }, index) => {
           const colorIndex = index % COLORS.length
 
