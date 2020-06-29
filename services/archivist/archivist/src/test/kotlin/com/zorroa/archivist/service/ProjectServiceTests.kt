@@ -131,12 +131,12 @@ class ProjectServiceTests : AbstractTest() {
         val project = projectService.create(testSpec)
         assertEquals(ProjectTier.ESSENTIALS, project.tier)
 
-        projectService.setTier(project.id, ProjectTier.PREMIUM)
+        projectService.setTier(project.id, ProjectTier.PREMIER)
         var tierOrdinal = jdbc.queryForObject(
             "SELECT int_tier FROM project WHERE pk_project=?", Int::class.java, project.id
         )
 
-        assertEquals(ProjectTier.PREMIUM, ProjectTier.values()[tierOrdinal])
+        assertEquals(ProjectTier.PREMIER, ProjectTier.values()[tierOrdinal])
     }
 
     @Test

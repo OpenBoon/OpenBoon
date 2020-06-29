@@ -34,8 +34,8 @@ class ProjectSpec(
 enum class ProjectTier {
     @ApiModelProperty(" Allows the use of Essentials Modules")
     ESSENTIALS,
-    @ApiModelProperty(" Allows the use of Premium Modules")
-    PREMIUM
+    @ApiModelProperty(" Allows the use of Premier Modules")
+    PREMIER
 }
 
 @ApiModel("Project Tier Update", description = "Set new Tier State")
