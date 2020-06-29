@@ -197,7 +197,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     def unapplied_changes(self, request, project_pk):
         """Returns whether the dataset has been updated but assets not reprocessed."""
         # TODO: Figure out how to return whether there are unapplied changes or not.
-        data = {'unapplied_changes': False}
+        data = {'unapplied_changes': True}
         return Response(status=status.HTTP_200_OK, data=data)
 
     @action(detail=False, methods=['get'])
