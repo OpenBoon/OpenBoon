@@ -10,6 +10,8 @@ from zmlp_train.automl import AutoMLModelTrainer
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_data
 
+CREDS = os.path.join(zorroa_test_data(), 'creds', 'zorroa-poc-dev-access.json').split("file://")[-1]
+
 logging.basicConfig()
 
 model_id = "model-id-12345"
@@ -17,6 +19,12 @@ ds_id = "ds-id-12345"
 
 
 class AutoMLModelProcessorTests(PluginUnitTestCase):
+
+    def setUp(self):
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = CREDS
+
+    def tearDown(self):
+        del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
     @patch.object(AutoMLModelTrainer, 'import_dataset')
     @patch.object(AutoMLModelTrainer, 'create_model')
@@ -53,13 +61,10 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
         # Prep the processor
         self.processor = AutoMLModelTrainer()
         project_id = 'zorroa-poc-dev'
-        creds_path = os.path.join(zorroa_test_data(), 'creds', 'zorroa-poc-dev-access.json')
-        creds_path = creds_path.split("file://")[-1]
         args = {
             'project_id': project_id,
             'region': 'us-central1',
             'model_id': model_id,
-            'gcp_credentials_path': creds_path,
             'display_name': name,
             'project_path': 'gs://{}-vcm/csv/csv_some_data.csv'.format(project_id),
             'model_path': "ICN94225947477147648"

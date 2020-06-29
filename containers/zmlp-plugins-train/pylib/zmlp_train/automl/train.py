@@ -19,7 +19,6 @@ class AutoMLModelTrainer(AssetProcessor):
     tool_tips = {
         'project_id': 'The project ID for the AutoML model (e.g. "zorroa-autoedl")',
         'region': 'The region ID for the AutoML model (e.g. "us-central1")',
-        'gcp_credentials_path': 'JSON credentials path for GCP',
         'model_id': '(Optional) The model ID for the AutoML model (e.g. "ICN1653624923981482691") '
                     'If this parameter is omitted, the most recently created model will be used.',
         'display_name': 'Name of the dataset',
@@ -30,8 +29,6 @@ class AutoMLModelTrainer(AssetProcessor):
         super(AutoMLModelTrainer, self).__init__()
         self.add_arg(Argument("project_id", "string", required=True,
                               toolTip=AutoMLModelTrainer.tool_tips['project_id']))
-        self.add_arg(Argument("gcp_credentials_path", "string", required=True,
-                              toolTip=AutoMLModelTrainer.tool_tips['gcp_credentials_path']))
         self.add_arg(Argument("model_id", "string", required=True,
                               toolTip=AutoMLModelTrainer.tool_tips['model_id']))
         self.add_arg(Argument("display_name", "string", required=True,
@@ -54,7 +51,6 @@ class AutoMLModelTrainer(AssetProcessor):
         self.project_id = None
         self.project_path = None
         self.display_name = None
-        self.gcp_credentials_path = None
 
         self.region = None
         self.df = None
@@ -67,10 +63,6 @@ class AutoMLModelTrainer(AssetProcessor):
         self.display_name = self.arg_value('display_name')
         self.project_path = self.arg_value('project_path')
         self.model_path = self.arg_value('model_path')
-
-        # set Google credentials from arg
-        self.gcp_credentials_path = self.arg_value('gcp_credentials_path')
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = self.gcp_credentials_path
 
         self.client = automl.AutoMlClient()
         self.df = pd.read_csv(self.project_path, header=None)
