@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import chartShape from '../Chart/shape'
@@ -11,11 +12,19 @@ import ChartsHeader from '../Charts/Header'
 import ChartRangeContent from './Content'
 
 const ChartRange = ({ chart, chartIndex, dispatch }) => {
+  const [isEditing, setIsEditing] = useState(false)
+
   const { attribute } = chart
 
-  if (!attribute) {
+  if (!attribute || isEditing) {
     return (
-      <ChartForm chart={chart} chartIndex={chartIndex} dispatch={dispatch} />
+      <ChartForm
+        chart={chart}
+        chartIndex={chartIndex}
+        dispatch={dispatch}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+      />
     )
   }
 
@@ -27,6 +36,7 @@ const ChartRange = ({ chart, chartIndex, dispatch }) => {
           attribute={attribute}
           chartIndex={chartIndex}
           dispatch={dispatch}
+          setIsEditing={setIsEditing}
         />
       }
       content={

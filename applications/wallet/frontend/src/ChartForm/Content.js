@@ -16,12 +16,19 @@ import { formatFields } from './helpers'
 
 const ICON_SIZE = 20
 
-const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
+const ChartFormContent = ({
+  chart,
+  chart: { type },
+  chartIndex,
+  dispatch,
+  isEditing,
+  setIsEditing,
+}) => {
   const {
     query: { projectId },
   } = useRouter()
 
-  const [attribute, setAttribute] = useState('')
+  const [attribute, setAttribute] = useState(chart.attribute || '')
 
   const { data: fields } = useSWR(
     `/api/v1/projects/${projectId}/searches/fields/`,
@@ -99,9 +106,13 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
       <div css={{ display: 'flex' }}>
         <Button
           variant={BUTTON_VARIANTS.SECONDARY}
-          onClick={() =>
+          onClick={() => {
+            if (isEditing) {
+              setIsEditing(false)
+              return
+            }
             dispatch({ type: ACTIONS.DELETE, payload: { chartIndex } })
-          }
+          }}
           css={{ flex: 1 }}
         >
           Cancel
@@ -112,7 +123,7 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
         <Button
           variant={BUTTON_VARIANTS.PRIMARY}
           isDisabled={!attribute}
-          onClick={() =>
+          onClick={() => {
             dispatch({
               type: ACTIONS.UPDATE,
               payload: {
@@ -120,7 +131,8 @@ const ChartFormContent = ({ chart, chart: { type }, chartIndex, dispatch }) => {
                 updatedChart: { ...chart, attribute },
               },
             })
-          }
+            setIsEditing(false)
+          }}
           css={{ flex: 1 }}
         >
           Save Visualization
@@ -134,6 +146,8 @@ ChartFormContent.propTypes = {
   chart: PropTypes.shape(chartShape).isRequired,
   chartIndex: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired,
+  isEditing: PropTypes.bool.isRequired,
+  setIsEditing: PropTypes.func.isRequired,
 }
 
 export default ChartFormContent
