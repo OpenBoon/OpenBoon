@@ -178,7 +178,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
-    'EXCEPTION_HANDLER': 'wallet.exceptions.zmlp_exception_handler'
+    'EXCEPTION_HANDLER': 'wallet.exceptions.zmlp_exception_handler',
+    'JSON_UNDERSCOREIZE': {
+        'no_underscore_before_number': True,
+    }
 }
 
 if os.environ.get('BROWSABLE') == 'true':
