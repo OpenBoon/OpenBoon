@@ -79,14 +79,16 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
 
         return assets
 
-    @patch.object(ModelApp, 'publish_model')
+    @patch.object(file_storage.models, 'publish_model')
     @patch.object(ModelApp, 'get_model')
     @patch.object(DataSetApp, 'get_label_counts')
     @patch('zmlp_train.tf2.train.download_dataset', download_dataset)
     @patch.object(file_storage.models, 'save_model')
-    def test_process(self, upload_patch, labels_patch, model_patch, pub_patch):
+    @patch.object(file_storage.projects, 'store_file')
+    def test_process(self, store_plot_patch, upload_patch, labels_patch, model_patch, pub_patch):
         self.prep_assets()
-        name = 'custom-flowers-label-detection-tf2-xfer-mobilenet2'
+        name = 'zvi-flowers-label-detection'
+        store_plot_patch.side_effect = [{}, {}]
         pub_patch.return_value = PipelineMod({
             'id': "12345",
             'name': name
@@ -94,7 +96,7 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
         model_patch.return_value = Model({
             'id': self.model_id,
             'dataSetId': self.ds_id,
-            'type': "LABEL_DETECTION_MOBILENET2",
+            'type': "ZVI_LABEL_DETECTION",
             'fileId': 'models/{}/foo/bar'.format(self.model_id),
             'name': name
         })

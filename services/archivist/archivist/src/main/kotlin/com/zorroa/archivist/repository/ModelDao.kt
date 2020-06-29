@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelFilter
 import com.zorroa.archivist.domain.ModelType
+import com.zorroa.zmlp.util.Json
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -70,6 +71,7 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
             rs.getString("str_file_id"),
             rs.getString("str_job_name"),
             rs.getBoolean("bool_trained"),
+            Json.Mapper.readValue(rs.getString("json_search_deploy"), Json.GENERIC_MAP),
             rs.getLong("time_created"),
             rs.getLong("time_modified"),
             rs.getString("actor_created"),

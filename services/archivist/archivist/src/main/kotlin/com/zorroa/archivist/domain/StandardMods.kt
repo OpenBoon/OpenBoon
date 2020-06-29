@@ -140,7 +140,7 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "zvi-text-detection",
-            "Utilize OCR technology to detect text on an image.",
+            "Utilize OCR technology to detect text in documents.",
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.TEXT_DETECTION,
@@ -275,6 +275,46 @@ fun getStandardModules(): List<PipelineModSpec> {
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.google.CloudVisionDetectLogos",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "gcp-image-text-detection",
+            "Detect text within an image, including photographic ones.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VISION,
+            ModType.TEXT_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.CloudVisionDetectImageText",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "gcp-document-text-detection",
+            "Utilize OCR technology to detect text in documents.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VISION,
+            ModType.TEXT_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.CloudVisionDetectDocumentText",
                             StandardContainers.ANALYSIS
                         )
                     )

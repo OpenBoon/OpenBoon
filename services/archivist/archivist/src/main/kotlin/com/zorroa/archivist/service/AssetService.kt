@@ -284,7 +284,7 @@ class AssetServiceImpl : AssetService {
     }
 
     override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
-        if (request.assets.size > 100) {
+        if (request.assets.size > 128) {
             throw IllegalArgumentException("Cannot create more than 100 assets at a time.")
         }
 
@@ -472,7 +472,9 @@ class AssetServiceImpl : AssetService {
             null
         } else {
             val name = "Analyze ${createdAssetIds.size} created assets, $reprocessAssetCount existing files."
-            jobLaunchService.launchJob(name, finalAssetList, processors, creds = creds)
+            jobLaunchService.launchJob(
+                name, finalAssetList, processors, creds = creds, settings = mapOf("index" to true)
+            )
         }
     }
 

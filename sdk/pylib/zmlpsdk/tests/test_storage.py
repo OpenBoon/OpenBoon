@@ -9,7 +9,7 @@ import pytest
 from minio.api import Minio
 
 import zmlp
-from zmlp import StoredFile, DataSet, ZmlpClient, PipelineMod
+from zmlp import StoredFile, DataSet, ZmlpClient, PipelineMod, Job
 from zmlp.app import ModelApp
 from zmlpsdk import storage, timeline
 from zmlpsdk.testing import zorroa_test_data, TestAsset
@@ -358,8 +358,9 @@ class ModelStorageTests(TestCase):
     @patch.object(ZmlpClient, 'put')
     @patch('requests.put')
     @patch.object(ZmlpClient, 'post')
-    @patch.object(ModelApp, 'publish_model')
-    def test_save_model(self, publish_patch, post_patch, req_put_patch, put_patch):
+    @patch.object(storage.ModelStorage, 'publish_model')
+    @patch.object(ModelApp, 'deploy_model')
+    def test_save_model(self, deploy_patch, publish_patch, post_patch, req_put_patch, put_patch):
         post_patch.return_value = {
             'uri': "http://localhost:9999/foo/bar/signed",
             'mediaType': "image/jpeg"
@@ -373,9 +374,10 @@ class ModelStorageTests(TestCase):
         publish_patch.return_value = PipelineMod({
             'id': '12345'
         })
+        deploy_patch.return_value = Job({"id": "abcde"})
 
         cur_dir = os.path.dirname(__file__) + '/extracted_model'
-        mod = self.fs.models.save_model(cur_dir, "foo/bar/bing/model.zip")
+        mod = self.fs.models.save_model(cur_dir, "foo/bar/bing/model.zip", deploy=True)
 
         assert '12345' == mod.id
 

@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.Model
+import com.zorroa.archivist.domain.ModelApplyRequest
 import com.zorroa.archivist.domain.ModelFilter
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
@@ -68,5 +69,12 @@ class ModelController(
     fun publish(@PathVariable id: UUID): PipelineMod {
         val model = modelService.getModel(id)
         return modelService.publishModel(model)
+    }
+
+    @ApiOperation("Deploy the model and apply to given search.")
+    @PostMapping("/api/v3/models/{id}/_deploy")
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    fun apply(@PathVariable id: UUID, @RequestBody req: ModelApplyRequest): Job {
+        return modelService.deployModel(modelService.getModel(id), req)
     }
 }

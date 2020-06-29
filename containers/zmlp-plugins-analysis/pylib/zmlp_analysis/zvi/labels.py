@@ -1,7 +1,6 @@
 import numpy as np
 import tensorflow
 import tensorflow.keras.applications.resnet_v2 as resnet_v2
-import tensorflow.keras.applications.vgg16 as vgg_16
 from tensorflow.keras.applications.imagenet_utils import decode_predictions
 from tensorflow.keras.layers import Input
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
@@ -19,7 +18,7 @@ class ZviLabelDetectionProcessor(AssetProcessor):
     """
 
     def init(self):
-        self.model = Resnet152ImageClassifier()
+        self.model = Resnet50ImageClassifier()
 
     def process(self, frame):
         asset = frame.asset
@@ -33,27 +32,15 @@ class ZviLabelDetectionProcessor(AssetProcessor):
         asset.add_analysis('zvi-label-detection', analysis)
 
 
-class Resnet152ImageClassifier:
+class Resnet50ImageClassifier:
     def __init__(self):
-        self.model = resnet_v2.ResNet152V2(
+        self.model = resnet_v2.ResNet50V2(
             weights='imagenet', input_tensor=Input(shape=(224, 224, 3)))
         self.model.compile(loss='mse', optimizer='rmsprop')
 
     def predict(self, path):
         img = load_image(path)
         result = self.model.predict(resnet_v2.preprocess_input(img))
-        return decode_predictions(result)[0]
-
-
-class VGG16ImageClassifier:
-    def __init__(self):
-        self.model = vgg_16.VGG16(
-            weights='imagenet', input_tensor=Input(shape=(224, 224, 3)))
-        self.model.compile(loss='mse', optimizer='rmsprop')
-
-    def predict(self, path):
-        img = load_image(path)
-        result = self.model.predict(vgg_16.preprocess_input(img))
         return decode_predictions(result)[0]
 
 
