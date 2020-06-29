@@ -57,6 +57,9 @@ const StylesReset = () => (
           position: 'absolute',
           width: '1px',
         },
+        '.react-grid-item.react-grid-placeholder': {
+          backgroundColor: colors.key.one,
+        },
       }}
     />
     <Global
