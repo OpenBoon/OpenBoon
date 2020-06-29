@@ -26,18 +26,16 @@ const STYLES = {
     content: { padding: spacing.spacious },
   },
   DARK: {
-    spacer: {
-      paddingRight: spacing.spacious,
-      paddingBottom: spacing.spacious,
-      width: constants.form.maxWidth,
-    },
+    spacer: { height: '100%', overflow: 'hidden' },
     container: {
+      height: '100%',
       display: 'flex',
       flexDirection: 'column',
       backgroundColor: colors.structure.lead,
       boxShadow: constants.boxShadows.tableRow,
       borderRadius: constants.borderRadius.small,
       padding: spacing.normal,
+      paddingTop: spacing.base,
     },
     header: {
       fontSize: typography.size.medium,
@@ -46,6 +44,8 @@ const STYLES = {
       paddingBottom: spacing.comfy,
     },
     content: {
+      overflow: 'hidden',
+      flex: 1,
       '.ErrorBoundary > div': {
         backgroundColor: 'transparent',
         boxShadow: 'none',

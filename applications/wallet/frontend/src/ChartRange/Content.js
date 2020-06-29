@@ -71,6 +71,8 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
               padding: spacing.moderate,
               paddingLeft: spacing.normal,
               paddingRight: spacing.normal,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
             }}
           >
             {value.toLocaleString()}
