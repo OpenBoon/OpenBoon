@@ -12,7 +12,7 @@ import Button, { VARIANTS } from '../Button'
 const ICON_SIZE = 20
 const ICON_PADDING = 6
 
-const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
+const ChartsHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
   return (
     <div
       css={{
@@ -50,6 +50,9 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch }) => {
             backgroundColor: colors.structure.smoke,
           },
         }}
+        onClick={() => {
+          setIsEditing(true)
+        }}
       >
         <PenSvg width={ICON_SIZE} css={{ opacity: 0 }} />
       </Button>
@@ -82,6 +85,7 @@ ChartsHeader.propTypes = {
   attribute: PropTypes.string.isRequired,
   chartIndex: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired,
+  setIsEditing: PropTypes.func.isRequired,
 }
 
 export default ChartsHeader

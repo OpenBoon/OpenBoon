@@ -1,5 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<ChartFacet /> should edit 1`] = `
+<ChartForm
+  chart={
+    Object {
+      "attribute": "system.type",
+      "id": "972a8ab5-cdcb-4eea-ada7-f1c88d997fed",
+      "type": "facet",
+    }
+  }
+  chartIndex={0}
+  dispatch={[Function]}
+  isEditing={true}
+  setIsEditing={[Function]}
+/>
+`;
+
 exports[`<ChartFacet /> should render properly 1`] = `
 .emotion-87 {
   height: 100%;
@@ -1270,5 +1286,7 @@ exports[`<ChartFacet /> should render without an attribute 1`] = `
   }
   chartIndex={0}
   dispatch={[Function]}
+  isEditing={false}
+  setIsEditing={[Function]}
 />
 `;

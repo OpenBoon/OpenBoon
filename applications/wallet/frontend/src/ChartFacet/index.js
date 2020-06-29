@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import SuspenseBoundary from '../SuspenseBoundary'
 
@@ -11,11 +12,19 @@ import ChartsHeader from '../Charts/Header'
 import ChartFacetContent from './Content'
 
 const ChartFacet = ({ chart, chartIndex, dispatch }) => {
+  const [isEditing, setIsEditing] = useState(false)
+
   const { attribute } = chart
 
-  if (!attribute) {
+  if (!attribute || isEditing) {
     return (
-      <ChartForm chart={chart} chartIndex={chartIndex} dispatch={dispatch} />
+      <ChartForm
+        chart={chart}
+        chartIndex={chartIndex}
+        dispatch={dispatch}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+      />
     )
   }
 
@@ -27,6 +36,7 @@ const ChartFacet = ({ chart, chartIndex, dispatch }) => {
           attribute={attribute}
           chartIndex={chartIndex}
           dispatch={dispatch}
+          setIsEditing={setIsEditing}
         />
       }
       content={

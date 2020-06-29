@@ -273,4 +273,27 @@ describe('<ChartFacet />', () => {
       },
     })
   })
+
+  it('should edit', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer/data-visualization',
+      query: { projectId: PROJECT_ID },
+    })
+
+    const chart = {
+      id: CHART_ID,
+      type: 'facet',
+      attribute: 'system.type',
+    }
+
+    const component = TestRenderer.create(
+      <ChartFacet chart={chart} chartIndex={0} dispatch={noop} />,
+    )
+
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Edit Chart' }).props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
