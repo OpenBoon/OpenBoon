@@ -5,6 +5,8 @@ import * as Sentry from '@sentry/browser'
 import { Integrations as ApmIntegrations } from '@sentry/apm'
 import 'focus-visible'
 import '@reach/combobox/styles.css'
+import 'react-grid-layout/css/styles.css'
+import 'react-resizable/css/styles.css'
 
 import User from '../src/User'
 import Authentication from '../src/Authentication'
