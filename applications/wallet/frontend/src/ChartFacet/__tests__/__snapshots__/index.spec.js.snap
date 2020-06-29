@@ -2,12 +2,12 @@
 
 exports[`<ChartFacet /> should render properly 1`] = `
 .emotion-87 {
-  padding-right: 32px;
-  padding-bottom: 32px;
-  width: 470px;
+  height: 100%;
+  overflow: hidden;
 }
 
 .emotion-86 {
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -120,6 +120,13 @@ exports[`<ChartFacet /> should render properly 1`] = `
   width: 2px;
 }
 
+.emotion-85 {
+  overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
 .emotion-85 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
@@ -138,6 +145,11 @@ exports[`<ChartFacet /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-8 {
@@ -159,6 +171,10 @@ exports[`<ChartFacet /> should render properly 1`] = `
   margin: 0;
   padding: 0;
   list-style: none;
+  overflow-y: auto;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-18 {
@@ -884,12 +900,12 @@ exports[`<ChartFacet /> should render properly 1`] = `
 
 exports[`<ChartFacet /> should render properly without data 1`] = `
 .emotion-17 {
-  padding-right: 32px;
-  padding-bottom: 32px;
-  width: 470px;
+  height: 100%;
+  overflow: hidden;
 }
 
 .emotion-16 {
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1002,6 +1018,13 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   width: 2px;
 }
 
+.emotion-15 {
+  overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
 .emotion-15 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
@@ -1020,6 +1043,11 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-8 {
@@ -1041,6 +1069,10 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   margin: 0;
   padding: 0;
   list-style: none;
+  overflow-y: auto;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-13 {
