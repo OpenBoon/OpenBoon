@@ -51,6 +51,7 @@ class TestRetrieve:
 
         content = check_response(response, status.HTTP_200_OK)
         predictions = content['predictions']
+        assert content['filename'] == 'P4131158.jpg'
         assert len(predictions) == 1
         assert predictions[0]['label'] == 'Danny'
         assert predictions[0]['modified'] is True
@@ -68,6 +69,7 @@ class TestRetrieve:
 
         content = check_response(response, status.HTTP_200_OK)
         predictions = content['predictions']
+        assert content['filename'] == 'P4131158.jpg'
         assert len(predictions) == 0
 
     def test_get_no_predictions(self, login, api_client, project, asset_data):
@@ -82,6 +84,7 @@ class TestRetrieve:
 
         content = check_response(response, status.HTTP_200_OK)
         predictions = content['predictions']
+        assert content['filename'] == 'P4131158.jpg'
         assert len(predictions) == 0
 
     def test_get_no_labels(self, login, api_client, project, asset_data, imager_return):
@@ -97,6 +100,7 @@ class TestRetrieve:
 
         content = check_response(response, status.HTTP_200_OK)
         predictions = content['predictions']
+        assert content['filename'] == 'P4131158.jpg'
         assert len(predictions) == 1
         assert predictions[0]['label'] == 'face0'
         assert predictions[0]['modified'] is False
@@ -169,32 +173,24 @@ class TestTrain:
         assert content
 
 
-class TestTrainingJob:
+class TestStatus:
 
     def test_get(self, login, api_client, project):
-        path = reverse('face-training-job', kwargs={'project_pk': project.id})
+        path = reverse('face-status', kwargs={'project_pk': project.id})
         with patch.object(JobApp, 'find_jobs') as find_mock:
-            find_mock.return_value = [Mock(id='test', name='Applying modules: custom-console_face_recognition-face-recognition-knn')]  # noqa
+            find_mock.return_value = [Mock(id='test',
+                                           name='Applying modules: custom-console_face_recognition-face-recognition-knn')]  # noqa
             response = api_client.get(path)
         content = check_response(response)
-        assert content == {'jobId': 'test'}
+        assert content == {'unappliedChanges': True, 'jobId': 'test'}
 
     def test_get_no_job(self, login, api_client, project):
-        path = reverse('face-training-job', kwargs={'project_pk': project.id})
+        path = reverse('face-status', kwargs={'project_pk': project.id})
         with patch.object(JobApp, 'find_jobs') as find_mock:
             find_mock.return_value = []
             response = api_client.get(path)
         content = check_response(response)
-        assert content == {'jobId': ''}
-
-
-class TestUnappliedChanges:
-
-    def test_get(self, login, api_client, project):
-        path = reverse('face-unapplied-changes', kwargs={'project_pk': project.id})
-        response = api_client.get(path)
-        content = check_response(response)
-        assert content == {'unappliedChanges': True}
+        assert content == {'unappliedChanges': True, 'jobId': ''}
 
 
 class TestLabels:
