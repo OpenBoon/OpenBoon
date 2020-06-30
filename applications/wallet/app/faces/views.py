@@ -205,23 +205,6 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         return Response(status=status.HTTP_200_OK, data={'unapplied_changes': changes,
                                                          'job_id': job_id})
 
-    # @action(detail=False, methods=['get'])
-    # def training_job(self, request, project_pk):
-    #     """Returns the ID of any running face reprocessing job."""
-    #     name_prefix = ('Train zvi-console_face_recognition-face-recognition')
-    #     running_jobs = request.app.jobs.find_jobs(state='InProgress')
-    #     for job in running_jobs:
-    #         if job.name.startswith(name_prefix):
-    #             return Response(status=status.HTTP_200_OK, data={'job_id': job.id})
-    #     return Response(status=status.HTTP_200_OK, data={'job_id': ''})
-    #
-    # @action(detail=False, methods=['get'])
-    # def unapplied_changes(self, request, project_pk):
-    #     """Returns whether the dataset has been updated but assets not reprocessed."""
-    #     # TODO: Figure out how to return whether there are unapplied changes or not.
-    #     data = {'unapplied_changes': True}
-    #     return Response(status=status.HTTP_200_OK, data=data)
-
     @action(detail=False, methods=['get'])
     def labels(self, request, project_pk):
         """Gives the list of labels for the face recognition dataset and their usage count."""
