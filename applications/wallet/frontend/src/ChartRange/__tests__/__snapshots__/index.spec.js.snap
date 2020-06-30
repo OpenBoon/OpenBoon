@@ -69,7 +69,6 @@ exports[`<ChartRange /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding-top: 2px;
 }
 
 .emotion-6:hover button svg {
@@ -499,7 +498,6 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding-top: 2px;
 }
 
 .emotion-6:hover button svg {

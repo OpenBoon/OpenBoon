@@ -7,7 +7,7 @@ import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 import SuspenseBoundary from '../SuspenseBoundary'
 
 import ChartForm from '../ChartForm'
-import ChartsHeader from '../Charts/Header'
+import ChartHeader from '../Chart/Header'
 
 import ChartRangeContent from './Content'
 
@@ -32,7 +32,7 @@ const ChartRange = ({ chart, chartIndex, dispatch }) => {
     <Card
       variant={CARD_VARIANTS.DARK}
       header={
-        <ChartsHeader
+        <ChartHeader
           attribute={attribute}
           chartIndex={chartIndex}
           dispatch={dispatch}

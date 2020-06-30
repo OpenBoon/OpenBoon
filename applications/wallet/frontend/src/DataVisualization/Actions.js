@@ -10,7 +10,7 @@ import { ACTIONS } from './reducer'
 
 const ICON_SIZE = 20
 
-const DataVisualizationActions = ({ dispatch, setIsCreating }) => {
+const DataVisualizationActions = ({ dispatch, setIsCreating, setLayouts }) => {
   return (
     <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
       <Button
@@ -34,6 +34,8 @@ const DataVisualizationActions = ({ dispatch, setIsCreating }) => {
         onClick={() => {
           dispatch({ type: ACTIONS.CLEAR })
 
+          setLayouts({ value: {} })
+
           setIsCreating(true)
         }}
         css={{ marginRight: spacing.normal }}
@@ -47,6 +49,7 @@ const DataVisualizationActions = ({ dispatch, setIsCreating }) => {
 DataVisualizationActions.propTypes = {
   dispatch: PropTypes.func.isRequired,
   setIsCreating: PropTypes.func.isRequired,
+  setLayouts: PropTypes.func.isRequired,
 }
 
 export default DataVisualizationActions
