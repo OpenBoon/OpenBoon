@@ -42,7 +42,6 @@ class AutoMLModelTrainer(AssetProcessor):
         self.model_path = None
         self.client = None
 
-        self.dataset = None
         self.project_id = None
         self.project_path = None
         self.display_name = None
@@ -63,8 +62,8 @@ class AutoMLModelTrainer(AssetProcessor):
 
     def process(self, frame):
         # create empty dataset from project ID
-        self.dataset = self.create_dataset(self.project_id, self.display_name, self.region)
-        dataset_id = self._get_id(self.dataset)
+        dataset = self.create_dataset(self.project_id, self.display_name, self.region)
+        dataset_id = self._get_id(dataset)
 
         # import dataset from project_path CSV file
         self.import_dataset(self.project_id, dataset_id, self.project_path, self.region)
