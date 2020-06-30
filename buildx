@@ -20,6 +20,8 @@ def main():
                         help='Build zmlp-plugins-analysis and SDK requirements')
     parser.add_argument('--list', '-l', action='store_true',
                         help='Output list of containers')
+    parser.add_argument('--threads', '-t', type=int, default=8,
+                        help='Maximum number of parallel builds')
 
     args = parser.parse_args()
     if args.containers:
@@ -55,7 +57,7 @@ def main():
                            'zmlp-plugins-base',
                            'zmlp-plugins-analysis'])
 
-    build_dependency_tree(containers, args.list)
+    build_dependency_tree(containers, args.list, args.threads)
 
 
 def pull_base_images():
@@ -72,7 +74,7 @@ def pull_base_images():
         subprocess.call(['docker', 'pull', image], shell=False)
 
 
-def build_dependency_tree(to_build, list_only):
+def build_dependency_tree(to_build, list_only, threads=8):
     env = os.environ
     env['DOCKER_CLI_EXPERIMENTAL'] = 'enabled'
     with open('docker-compose.yml') as fp:
@@ -112,17 +114,23 @@ def build_dependency_tree(to_build, list_only):
 
     pull_base_images()
 
+    def chunks(lst, n):
+        for i in range(0, len(lst), n):
+            yield lst[i:i + n]
+
     # Pass #3
     for phase in phases:
         if to_build:
             phase = to_build.intersection(phase)
         if not phase:
             continue
-        # Adding --no-cache won't use the stupid maven cache.
-        cmd = ['docker', 'buildx', 'bake', '-f', 'docker-compose.yml']
-        cmd.extend(phase)
-        print('Building {}'.format(phase))
-        subprocess.check_call(cmd, shell=False, env=env)
+
+        for chunk in chunks(list(phase), threads):
+            # Adding --no-cache won't use the stupid maven cache.
+            cmd = ['docker', 'buildx', 'bake', '-f', 'docker-compose.yml']
+            cmd.extend(chunk)
+            print('Building {}'.format(chunk))
+            subprocess.check_call(cmd, shell=False, env=env)
 
 
 if __name__ == '__main__':
