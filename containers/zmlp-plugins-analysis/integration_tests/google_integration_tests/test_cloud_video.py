@@ -2,7 +2,7 @@ import os
 import pytest
 from unittest.mock import patch
 
-from zmlp_analysis.google.cloud_video import AsyncVideoIntelligenceProcessor
+from zmlp_analysis.google_cloud.cloud_video import AsyncVideoIntelligenceProcessor
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
 

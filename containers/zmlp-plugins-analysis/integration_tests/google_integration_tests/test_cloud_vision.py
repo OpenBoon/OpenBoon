@@ -6,8 +6,8 @@ from unittest.mock import patch
 import pytest
 
 from zmlp import ZmlpClient, StoredFile
-from zmlp_analysis.google.cloud_vision import *
-from zmlp_analysis.google.cloud_vision import file_storage
+from zmlp_analysis.google_cloud.cloud_vision import *
+from zmlp_analysis.google_cloud.cloud_vision import file_storage
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, \
     get_prediction_labels, get_mock_stored_file

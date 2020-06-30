@@ -3,7 +3,7 @@ import json
 
 from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
 
-from zmlp_analysis.google import cloud_timeline
+from zmlp_analysis.google_cloud import cloud_timeline
 from zmlpsdk.testing import PluginUnitTestCase
 from zmlp import to_json
 

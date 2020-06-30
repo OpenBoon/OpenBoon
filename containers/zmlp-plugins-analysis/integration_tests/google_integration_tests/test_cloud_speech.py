@@ -7,7 +7,7 @@ from zmlp import StoredFile
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_mock_stored_file
 
-from zmlp_analysis.google.cloud_speech import AsyncSpeechToTextProcessor
+from zmlp_analysis.google_cloud.cloud_speech import AsyncSpeechToTextProcessor
 
 CREDS = os.path.join(os.path.dirname(__file__)) + '/gcp-creds.json'
 

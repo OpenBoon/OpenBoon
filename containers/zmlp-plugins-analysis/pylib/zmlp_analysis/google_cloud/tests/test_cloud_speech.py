@@ -2,7 +2,7 @@ import logging
 from unittest.mock import patch
 
 from zmlp import StoredFile
-from zmlp_analysis.google.cloud_speech import AsyncSpeechToTextProcessor
+from zmlp_analysis.google_cloud.cloud_speech import AsyncSpeechToTextProcessor
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_mock_stored_file
 

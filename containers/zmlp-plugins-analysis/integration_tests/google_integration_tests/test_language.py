@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from zmlp_analysis.google.cloud_lang import CloudNaturalLanguageProcessor
+from zmlp_analysis.google_cloud.cloud_lang import CloudNaturalLanguageProcessor
 
 from zmlpsdk.testing import TestAsset, PluginUnitTestCase
 from zmlpsdk.base import Frame

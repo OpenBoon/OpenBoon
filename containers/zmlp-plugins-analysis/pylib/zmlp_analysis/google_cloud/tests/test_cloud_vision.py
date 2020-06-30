@@ -4,8 +4,8 @@ from unittest.mock import patch
 from google.cloud.vision import types
 
 from zmlp import ZmlpClient
-from zmlp_analysis.google.cloud_vision import *
-from zmlp_analysis.google.cloud_vision import file_storage
+from zmlp_analysis.google_cloud.cloud_vision import *
+from zmlp_analysis.google_cloud.cloud_vision import file_storage
 from zmlpsdk import Frame, ZmlpProcessorException
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset, \
     get_prediction_labels, get_mock_stored_file, zorroa_test_path
