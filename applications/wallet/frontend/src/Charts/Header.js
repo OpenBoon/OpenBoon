@@ -18,7 +18,6 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
       css={{
         display: 'flex',
         alignItems: 'center',
-        paddingTop: spacing.mini,
         ':hover': {
           button: {
             svg: { opacity: 1 },
@@ -36,6 +35,7 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
       >
         {attribute}
       </h3>
+
       <Button
         title="Edit"
         aria-label="Edit Chart"
@@ -56,7 +56,9 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
       >
         <PenSvg width={ICON_SIZE} css={{ opacity: 0 }} />
       </Button>
+
       <div css={{ width: spacing.mini }} />
+
       <Button
         title="Delete"
         aria-label="Delete Chart"
