@@ -6,7 +6,7 @@ import { constants, spacing } from '../Styles'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
-import FaceLabelingMessages from './Messages'
+import FaceLabelingMessage from './Message'
 
 const FaceLabelingTrainApply = ({ projectId }) => {
   const jobIdRef = useRef()
@@ -32,7 +32,7 @@ const FaceLabelingTrainApply = ({ projectId }) => {
         borderBottom: constants.borders.divider,
       }}
     >
-      <FaceLabelingMessages
+      <FaceLabelingMessage
         projectId={projectId}
         previousJobId={jobIdRef.current}
         currentJobId={jobId}

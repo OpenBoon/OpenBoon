@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FaceLabelingMessages /> should render properly when there is no previous or current job 1`] = `null`;
+exports[`<FaceLabelingMessage /> should render properly when there is no previous or current job 1`] = `null`;
 
-exports[`<FaceLabelingMessages /> should render properly when there there is a training job 1`] = `
+exports[`<FaceLabelingMessage /> should render properly when there there is a training job 1`] = `
 .emotion-3 {
   padding-bottom: 16px;
 }
@@ -64,7 +64,7 @@ exports[`<FaceLabelingMessages /> should render properly when there there is a t
 </div>
 `;
 
-exports[`<FaceLabelingMessages /> should render properly when there was a previous training job but no current job 1`] = `
+exports[`<FaceLabelingMessage /> should render properly when there was a previous training job but no current job 1`] = `
 .emotion-2 {
   padding-bottom: 16px;
 }
