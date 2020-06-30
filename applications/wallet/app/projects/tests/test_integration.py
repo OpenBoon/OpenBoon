@@ -16,8 +16,7 @@ from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.utils import random_project_name
 from projects.views import BaseProjectViewSet
-from wallet.utils import (convert_base64_to_json, convert_json_to_base64,
-    get_zmlp_superuser_client)
+from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
 pytestmark = pytest.mark.django_db
 
@@ -135,7 +134,6 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
         raise KeyError('')
 
     # Test a successful sync.
-    client = get_zmlp_superuser_client()
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
     project = Project.objects.create(name='test', id=uuid4())
     project.sync_with_zmlp()
