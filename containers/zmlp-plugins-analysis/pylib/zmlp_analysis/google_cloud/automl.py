@@ -1,4 +1,5 @@
 import re
+import logging
 
 import backoff
 from google.api_core.exceptions import ResourceExhausted
@@ -6,6 +7,121 @@ from google.cloud import automl_v1beta1 as automl
 
 from zmlpsdk import Argument, AssetProcessor
 from zmlpsdk.proxy import get_proxy_level_path
+from zmlpsdk.analysis import LabelDetectionAnalysis
+
+logging.basicConfig()
+
+
+class AutoMLModelClassifier(AssetProcessor):
+    """Create Google AutoML Model"""
+
+    tool_tips = {
+        'project_id': 'The project ID for the AutoML model (e.g. "zorroa-autoedl")',
+        'region': 'The region ID for the AutoML model (e.g. "us-central1")',
+        'model_path': 'Path to data CSV'
+    }
+
+    def __init__(self):
+        super(AutoMLModelClassifier, self).__init__()
+        self.add_arg(Argument("project_id", "string", required=True,
+                              toolTip=AutoMLModelClassifier.tool_tips['project_id']))
+        self.add_arg(Argument("region", "string", default="us-central1",
+                              toolTip=AutoMLModelClassifier.tool_tips['region']))
+        self.add_arg(Argument("model_id", "string", required=True,
+                              toolTip="The model Id"))
+        self.add_arg(Argument("model_path", "string",
+                              toolTip=AutoMLModelClassifier.tool_tips['model_path']))
+        self.add_arg(Argument("score_threshold", "string", default="0.8",
+                              toolTip="score threshold as a float in string format"))
+
+        self.app_model = None
+        self.client = None
+
+        self.project_id = None
+        self.region = None
+        self.model_path = None
+
+    def init(self):
+        self.app_model = self.app.models.get_model(self.arg_value('model_id'))
+        self.project_id = self.arg_value('project_id')
+        self.region = self.arg_value('region')
+        self.model_path = self.arg_value('model_path')
+        self.score_threshold = self.arg_value('score_threshold')
+
+        self.client = automl.PredictionServiceClient()
+
+    def process(self, frame):
+        # create empty dataset from project ID
+        dataset = self.create_dataset(self.project_id, self.display_name, self.region)
+        dataset_id = self._get_id(dataset)
+
+        # import dataset from project_path CSV file
+        self.import_dataset(self.project_id, dataset_id, self.project_path, self.region)
+
+        # create/train model
+        self.model = self.create_model(self.project_id, dataset_id, self.display_name, self.region)
+        model_id = self.model_path or self._get_id(self.model.operation)
+
+        # publish model
+        self.publish_model(model_id)
+
+        asset = frame.asset
+        predictions = self.predict(asset)
+
+        self.reactor.emit_status("Prediction results:")
+        analysis = LabelDetectionAnalysis()
+        for prediction in predictions.payload:
+            label = prediction.display_name
+            score = prediction.classification.score
+
+            self.reactor.emit_status("Predicted class name: {}".format(label))
+            self.reactor.emit_status("Predicted class score: {}".format(score))
+
+            analysis.add_label_and_score(label, score)
+
+        asset.add_analysis(self.app_model.name, analysis)
+
+    def predict(self, asset):
+        """ Make a prediction for an image path
+        params is additional domain-specific parameters.
+        score_threshold is used to filter the result
+        https://cloud.google.com/automl/docs/reference/rpc/google.cloud.automl.v1#predictrequest
+
+        Args:
+            asset (Frame.asset): asset to be predicted
+
+        Returns:
+            PredictResponse: prediction result
+        """
+        # Get the full path of the model.
+        model_full_id = self.client.model_path(self.project_id, self.region, self.model_id)
+
+        # Read the file.
+        content = self._create_paylod(asset)
+
+        image = automl.types.Image(image_bytes=content)
+        payload = automl.types.ExamplePayload(image=image)
+        params = {"score_threshold": self.score_threshold}
+
+        response = self.client.predict(model_full_id, payload, params)
+        return response
+
+    def _create_paylod(self, asset, level=1):
+        """Create image payload for prediction
+
+        Args:
+            asset (Frame.asset): asset to be predicted
+            level (int): The proxy level, the larger the number the bigger the file
+
+        Returns:
+            (str) image content
+        """
+        file_path = get_proxy_level_path(asset, level)
+
+        with open(file_path, "rb") as fh:
+            content = fh.read()
+
+        return content
 
 
 class AutoMLModelProcessor(AssetProcessor):
