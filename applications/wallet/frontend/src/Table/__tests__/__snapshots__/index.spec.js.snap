@@ -253,7 +253,7 @@ exports[`<Table /> should render properly without data 1`] = `
           className="emotion-1"
           color="#ffffff"
           data-file-name="refresh.svg"
-          width={20}
+          height={20}
         />
         <div
           className="emotion-2"

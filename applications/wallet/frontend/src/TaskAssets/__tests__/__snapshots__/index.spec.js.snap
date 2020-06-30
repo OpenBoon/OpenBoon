@@ -531,7 +531,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
           className="emotion-1"
           color="#ffffff"
           data-file-name="refresh.svg"
-          width={20}
+          height={20}
         />
         <div
           className="emotion-2"
@@ -584,7 +584,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
@@ -596,7 +596,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
           </div>
@@ -619,7 +619,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               className="emotion-14"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -664,7 +664,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
@@ -676,7 +676,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
           </div>
@@ -699,7 +699,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               className="emotion-14"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -744,7 +744,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
@@ -756,7 +756,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
           </div>
@@ -779,7 +779,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               className="emotion-14"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -824,7 +824,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
@@ -836,7 +836,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
           </div>
@@ -859,7 +859,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               className="emotion-14"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -913,7 +913,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
@@ -925,7 +925,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
             <div
@@ -953,7 +953,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
               className="emotion-14"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -974,7 +974,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
       <svg
         className="emotion-73"
         data-file-name="chevron.svg"
-        width={16}
+        height={16}
       />
     </button>
     <div
@@ -998,7 +998,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
       <svg
         className="emotion-77"
         data-file-name="chevron.svg"
-        width={16}
+        height={16}
       />
     </a>
   </div>

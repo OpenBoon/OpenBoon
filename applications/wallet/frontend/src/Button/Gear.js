@@ -6,6 +6,8 @@ import Button, { VARIANTS } from '.'
 
 import GearSvg from '../Icons/gear.svg'
 
+const ICON_SIZE = 20
+
 const ButtonGear = ({ onBlur, onClick }) => (
   <Button
     aria-label="Toggle Actions Menu"
@@ -25,7 +27,7 @@ const ButtonGear = ({ onBlur, onClick }) => (
     onClick={onClick}
     isDisabled={false}
   >
-    <GearSvg width={20} />
+    <GearSvg height={ICON_SIZE} />
   </Button>
 )
 

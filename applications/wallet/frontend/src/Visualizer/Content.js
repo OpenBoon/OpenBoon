@@ -48,7 +48,7 @@ const VisualizerContent = () => {
           {{
             filters: {
               title: 'Filters',
-              icon: <FilterSvg width={ICON_SIZE} aria-hidden />,
+              icon: <FilterSvg height={ICON_SIZE} />,
               content: <Filters key={reloadKey} />,
             },
           }}
@@ -58,28 +58,27 @@ const VisualizerContent = () => {
           {{
             metadata: {
               title: 'Asset Metadata',
-              icon: <InformationSvg width={ICON_SIZE} aria-hidden />,
+              icon: <InformationSvg height={ICON_SIZE} />,
               content: <Metadata />,
             },
             faceLabeling: {
               title: 'Add Names & Train',
-              icon: <FaceDetectionSvg width={ICON_SIZE} aria-hidden />,
+              icon: <FaceDetectionSvg height={ICON_SIZE} />,
               content: <FaceLabeling />,
             },
             export: {
               title: 'Export',
               icon: (
                 <UploadSvg
-                  width={ICON_SIZE}
+                  height={ICON_SIZE}
                   css={{ transform: `rotate(180deg)` }}
-                  aria-hidden
                 />
               ),
               content: <Export />,
             },
             delete: {
               title: 'Delete',
-              icon: <TrashSvg width={ICON_SIZE} aria-hidden />,
+              icon: <TrashSvg height={ICON_SIZE} />,
               content: <AssetDelete key={assetId} />,
             },
           }}

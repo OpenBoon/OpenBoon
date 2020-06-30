@@ -55,7 +55,7 @@ Array [
       <svg
         color="#4ac565"
         data-file-name="checkmark.svg"
-        width={20}
+        height={20}
       />
       <div
         className="emotion-0"
@@ -405,7 +405,7 @@ Array [
             className="emotion-1"
             color="#ffffff"
             data-file-name="refresh.svg"
-            width={20}
+            height={20}
           />
           <div
             className="emotion-2"
@@ -445,7 +445,7 @@ Array [
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </th>
@@ -862,7 +862,7 @@ Array [
             className="emotion-1"
             color="#ffffff"
             data-file-name="refresh.svg"
-            width={20}
+            height={20}
           />
           <div
             className="emotion-2"
@@ -902,7 +902,7 @@ Array [
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </th>
@@ -985,7 +985,7 @@ Array [
       <svg
         color="#4ac565"
         data-file-name="checkmark.svg"
-        width={20}
+        height={20}
       />
       <div
         className="emotion-0"
@@ -1390,7 +1390,7 @@ Array [
             className="emotion-1"
             color="#ffffff"
             data-file-name="refresh.svg"
-            width={20}
+            height={20}
           />
           <div
             className="emotion-2"
@@ -1430,7 +1430,7 @@ Array [
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </th>
@@ -1466,7 +1466,7 @@ Array [
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>

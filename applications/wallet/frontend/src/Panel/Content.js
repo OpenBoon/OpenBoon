@@ -63,11 +63,10 @@ const PanelContent = ({
             }}
           >
             <DoubleChevronSvg
-              width={ICON_SIZE}
+              height={ICON_SIZE}
               css={{
                 transform: `rotate(${openToThe === 'left' ? -90 : 90}deg)`,
               }}
-              aria-hidden
             />
           </Button>
         </div>

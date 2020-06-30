@@ -54,7 +54,7 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
           setIsEditing(true)
         }}
       >
-        <PenSvg width={ICON_SIZE} css={{ opacity: 0 }} />
+        <PenSvg height={ICON_SIZE} css={{ opacity: 0 }} />
       </Button>
 
       <div css={{ width: spacing.mini }} />
@@ -77,7 +77,7 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
           dispatch({ type: ACTIONS.DELETE, payload: { chartIndex } })
         }
       >
-        <CrossSvg width={ICON_SIZE} css={{ opacity: 0 }} />
+        <CrossSvg height={ICON_SIZE} css={{ opacity: 0 }} />
       </Button>
     </div>
   )
