@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import FaceLabelingTrainApply from '../TrainApply'
 
@@ -13,6 +13,44 @@ describe('<FaceLabelingTrainApply />', () => {
     const component = TestRenderer.create(
       <FaceLabelingTrainApply projectId={PROJECT_ID} />,
     )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when there are unapplied changes', async () => {
+    require('swr').__setMockUseSWRResponse({
+      data: { unappliedChanges: true },
+    })
+
+    const component = TestRenderer.create(
+      <FaceLabelingTrainApply projectId={PROJECT_ID} />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    await act(async () => {
+      component.root.findByProps({ children: 'Train & Apply' }).props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when there is an error', async () => {
+    require('swr').__setMockUseSWRResponse({
+      data: { unappliedChanges: true },
+    })
+
+    const component = TestRenderer.create(
+      <FaceLabelingTrainApply projectId={PROJECT_ID} />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    fetch.mockRejectOnce()
+
+    await act(async () => {
+      component.root.findByProps({ children: 'Train & Apply' }).props.onClick()
+    })
 
     expect(component.toJSON()).toMatchSnapshot()
   })

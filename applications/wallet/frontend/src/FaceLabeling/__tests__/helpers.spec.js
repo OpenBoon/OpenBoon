@@ -1,4 +1,4 @@
-import { onSave, getSaveButtonCopy } from '../helpers'
+import { getSaveButtonCopy, onSave, onTrain } from '../helpers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
@@ -15,6 +15,17 @@ const PREDICTIONS = [
 const ERRORS = { labels: {}, global: '' }
 
 describe('<FaceLabelingForm /> helpers', () => {
+  describe('getSaveButtonCopy()', () => {
+    it('should return correct string', () => {
+      expect(getSaveButtonCopy({ isChanged: false, isLoading: true })).toBe(
+        'Saving...',
+      )
+      expect(getSaveButtonCopy({ isChanged: true, isLoading: false })).toBe(
+        'Save',
+      )
+    })
+  })
+
   describe('onSave()', () => {
     it('should update the asset labels', async () => {
       const mockDispatch = jest.fn()
@@ -140,14 +151,48 @@ describe('<FaceLabelingForm /> helpers', () => {
     })
   })
 
-  describe('getSaveButtonCopy()', () => {
-    it('should return correct string', () => {
-      expect(getSaveButtonCopy({ isChanged: false, isLoading: true })).toBe(
-        'Saving...',
-      )
-      expect(getSaveButtonCopy({ isChanged: true, isLoading: false })).toBe(
-        'Save',
-      )
+  describe('onTrain()', () => {
+    it('should start traning', async () => {
+      const mockDispatch = jest.fn()
+      const mockMutate = jest.fn()
+
+      require('swr').__setMockMutateFn(mockMutate)
+
+      fetch.mockResponseOnce(JSON.stringify({}))
+
+      await onTrain({ projectId: PROJECT_ID, dispatch: mockDispatch })
+
+      expect(mockDispatch.mock.calls[0][0]).toEqual({
+        isTraining: true,
+        isTrainingSuccess: false,
+        error: '',
+      })
+      expect(mockMutate).toHaveBeenCalledTimes(1)
+      expect(mockDispatch.mock.calls[1][0]).toEqual({
+        isTraining: false,
+        isTrainingSuccess: true,
+        showHelpInfo: false,
+      })
+    })
+
+    it('should set a returned error message', async () => {
+      const mockDispatch = jest.fn()
+
+      fetch.mockRejectOnce(Promise.resolve({}))
+
+      await onTrain({ projectId: PROJECT_ID, dispatch: mockDispatch })
+
+      expect(mockDispatch.mock.calls[0][0]).toEqual({
+        isTraining: true,
+        isTrainingSuccess: false,
+        error: '',
+      })
+      expect(mockDispatch.mock.calls[1][0]).toEqual({
+        isTraining: false,
+        isTrainingSuccess: false,
+        showHelpInfo: false,
+        error: 'Something went wrong. Please try again.',
+      })
     })
   })
 })
