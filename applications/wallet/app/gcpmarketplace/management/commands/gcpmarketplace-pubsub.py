@@ -151,7 +151,8 @@ class MessageHandler(object):
 
             # Create the Project, Subscription and MarketplaceEntitlement.
             project = Project.objects.create()
-            project.sync_with_zmlp(self.superuser)
+            client = get_zmlp_superuser_client(project_id=str(project.id))
+            project.sync_with_zmlp(client)
             tier = entitlement_data['plan']
             Subscription.objects.create(project=project, tier=tier)
             entitlement_name = self._get_entitlement_name(entitlement_id)
@@ -163,7 +164,6 @@ class MessageHandler(object):
             for role in settings.ROLES:
                 permissions += role['permissions']
             roles = [r['name'] for r in settings.ROLES]
-            client = get_zmlp_superuser_client(self.superuser, project_id=str(project.id))
             if not Membership.objects.filter(project=project, user=user).exists():
                 membership = Membership(project=project, user=user, roles=roles)
                 membership.apikey = create_zmlp_api_key(client, 'new project admin',

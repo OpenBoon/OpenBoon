@@ -192,6 +192,7 @@ REST_AUTH_SERIALIZERS = {
 # General Application Configuration
 ZMLP_API_URL = os.environ.get('ZMLP_API_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
+INCEPTION_KEY_B64 = os.environ.get('INCEPTION_KEY_B64')
 
 # Google OAUTH2
 GOOGLE_OAUTH_CLIENT_ID = os.environ.get(
