@@ -19,8 +19,6 @@ class AutoMLModelTrainer(AssetProcessor):
     tool_tips = {
         'project_id': 'The project ID for the AutoML model (e.g. "zorroa-autoedl")',
         'region': 'The region ID for the AutoML model (e.g. "us-central1")',
-        'model_id': '(Optional) The model ID for the AutoML model (e.g. "ICN1653624923981482691") '
-                    'If this parameter is omitted, the most recently created model will be used.',
         'display_name': 'Name of the dataset',
         'project_path': 'Path to data CSV'
     }
@@ -29,8 +27,6 @@ class AutoMLModelTrainer(AssetProcessor):
         super(AutoMLModelTrainer, self).__init__()
         self.add_arg(Argument("project_id", "string", required=True,
                               toolTip=AutoMLModelTrainer.tool_tips['project_id']))
-        self.add_arg(Argument("model_id", "string", required=True,
-                              toolTip=AutoMLModelTrainer.tool_tips['model_id']))
         self.add_arg(Argument("display_name", "string", required=True,
                               toolTip=AutoMLModelTrainer.tool_tips['display_name']))
         self.add_arg(Argument("region", "string", default="us-central1",
@@ -43,7 +39,6 @@ class AutoMLModelTrainer(AssetProcessor):
                               toolTip="Automatically deploy the model onto assets."))
 
         self.app_model = None
-        self.model_id = None
         self.model_path = None
         self.client = None
 
@@ -59,7 +54,6 @@ class AutoMLModelTrainer(AssetProcessor):
         self.app_model = self.app.models.get_model(self.arg_value('model_id'))
         self.project_id = self.arg_value('project_id')
         self.region = self.arg_value('region')
-        self.model_id = self.arg_value('model_id')
         self.display_name = self.arg_value('display_name')
         self.project_path = self.arg_value('project_path')
         self.model_path = self.arg_value('model_path')
