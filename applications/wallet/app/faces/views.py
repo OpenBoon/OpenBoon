@@ -178,17 +178,15 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         model = self._get_model(app, dataset)
 
         # Train the model
-        app.models.train_model(model)
-        # TODO: Insert the Job dependency work once that is ready
+        # TODO: Add filtering query for what to reprocess once it's avilable.
+        job = app.models.train_model(model, deploy=True)
 
-        result = self._reprocess_face_assets(app, model)
-        return Response(status=status.HTTP_200_OK, data=result)
+        return Response(status=status.HTTP_200_OK, data=job._data)
 
     @action(detail=False, methods=['get'])
     def training_job(self, request, project_pk):
         """Returns the ID of any running face reprocessing job."""
-        name_prefix = ('Applying modules: '
-                       'custom-console_face_recognition-face-recognition-knn')
+        name_prefix = ('Train zvi-console_face_recognition-face-recognition')
         running_jobs = request.app.jobs.find_jobs(state='InProgress')
         for job in running_jobs:
             if job.name.startswith(name_prefix):
@@ -199,7 +197,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     def unapplied_changes(self, request, project_pk):
         """Returns whether the dataset has been updated but assets not reprocessed."""
         # TODO: Figure out how to return whether there are unapplied changes or not.
-        data = {'unapplied_changes': False}
+        data = {'unapplied_changes': True}
         return Response(status=status.HTTP_200_OK, data=data)
 
     @action(detail=False, methods=['get'])
@@ -229,16 +227,5 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         try:
             model = app.models.find_one_model(dataset=dataset)
         except ZmlpNotFoundException:
-            model = app.models.create_model(dataset, ModelType.FACE_RECOGNITION_KNN)
+            model = app.models.create_model(dataset, ModelType.ZVI_FACE_RECOGNITION)
         return model
-
-    def _reprocess_face_assets(self, app, model):
-        """Launch the job for reprocessing assets with the new model. Mainly a testing seam."""
-        # Apply the model - this is almost certainly not working right being run
-        # back to back with the training job
-        module = app.models.publish_model(model)
-        # only run it on assets where Facial detection already ran
-        query = {"sort": "source.filename",
-                 "query": {"exists": {"field": "analysis.zvi-face-detection.type"}}}
-        search = app.assets.search(query)
-        return app.assets.reprocess_assets(search.assets, modules=[module.name])

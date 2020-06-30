@@ -52,12 +52,12 @@ class TestVisualizationsViewSet:
 
         content = check_response(response)
         assert content[0]['id'] == 'myFacet'
-        assert content[0]['results']['doc_count_error_upper_bound'] == 0
-        assert content[0]['results']['sum_other_doc_count'] == 0
+        assert content[0]['results']['docCountErrorUpperBound'] == 0
+        assert content[0]['results']['sumOtherDocCount'] == 0
         assert content[0]['results']['buckets'] == [
-            {'key': 'landscape', 'doc_count': 54},
-            {'key': 'portrait', 'doc_count': 12},
-            {'key': 'square', 'doc_count': 6}
+            {'key': 'landscape', 'docCount': 54},
+            {'key': 'portrait', 'docCount': 12},
+            {'key': 'square', 'docCount': 6}
         ]
 
     def test_load_both(self, zmlp_project_membership, login, api_client, project, monkeypatch):
@@ -79,12 +79,12 @@ class TestVisualizationsViewSet:
         assert content[0]['results']['avg'] == 1.2333333608176973
         assert content[0]['results']['sum'] == 88.8000019788742
         assert content[1]['id'] == 'myFacet'
-        assert content[1]['results']['doc_count_error_upper_bound'] == 0
-        assert content[1]['results']['sum_other_doc_count'] == 0
+        assert content[1]['results']['docCountErrorUpperBound'] == 0
+        assert content[1]['results']['sumOtherDocCount'] == 0
         assert content[1]['results']['buckets'] == [
-            {'key': 'landscape', 'doc_count': 54},
-            {'key': 'portrait', 'doc_count': 12},
-            {'key': 'square', 'doc_count': 6}
+            {'key': 'landscape', 'docCount': 54},
+            {'key': 'portrait', 'docCount': 12},
+            {'key': 'square', 'docCount': 6}
         ]
 
     def test_load_both_with_query(self, zmlp_project_membership, login, api_client,
@@ -111,12 +111,12 @@ class TestVisualizationsViewSet:
         assert content[0]['results']['avg'] == 1.2416363900358027
         assert content[0]['results']['sum'] == 68.29000145196915
         assert content[1]['id'] == 'myFacet'
-        assert content[1]['results']['doc_count_error_upper_bound'] == 0
-        assert content[1]['results']['sum_other_doc_count'] == 0
+        assert content[1]['results']['docCountErrorUpperBound'] == 0
+        assert content[1]['results']['sumOtherDocCount'] == 0
         assert content[1]['results']['buckets'] == [
-            {'key': 'landscape', 'doc_count': 42},
-            {'key': 'portrait', 'doc_count': 10},
-            {'key': 'square', 'doc_count': 3}
+            {'key': 'landscape', 'docCount': 42},
+            {'key': 'portrait', 'docCount': 10},
+            {'key': 'square', 'docCount': 3}
         ]
 
     def test_load_bad_visual(self, zmlp_project_membership, login, api_client, project):

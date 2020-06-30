@@ -35,6 +35,7 @@ const STYLES = {
       boxShadow: constants.boxShadows.tableRow,
       borderRadius: constants.borderRadius.small,
       padding: spacing.normal,
+      paddingTop: spacing.base,
     },
     header: {
       fontSize: typography.size.medium,

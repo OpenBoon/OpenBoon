@@ -153,6 +153,34 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
         project.sync_with_zmlp(project_zero_user)
 
 
+def test_project_sync_with_zmlp_with_subscription(monkeypatch, project_zero_user,
+                                                  project_zero_subscription):
+    def mock_post_true(*args, **kwargs):
+        return True
+
+    def mock_post_duplicate(*args, **kwargs):
+        raise ZmlpDuplicateException({})
+
+    def mock_post_exception(*args, **kwargs):
+        raise KeyError('')
+
+    # Test a successful sync.
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
+    project = Project.objects.create(name='test', id=uuid4())
+    project.sync_with_zmlp(project_zero_user)
+
+    # Test a sync when the project already exists in zmlp.
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_duplicate)
+    project = Project.objects.create(name='test', id=uuid4())
+    project.sync_with_zmlp(project_zero_user)
+
+    # Test a failure.
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_exception)
+    project = Project.objects.create(name='test', id=uuid4())
+    with pytest.raises(KeyError):
+        project.sync_with_zmlp(project_zero_user)
+
+
 def test_project_managers(project):
     assert Project.objects.all().count() == 1
     assert str(project.id) == str(Project.objects.first().id)
