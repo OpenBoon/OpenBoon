@@ -10,12 +10,12 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
 
 class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
-    @patch('zmlp_analysis.google.cloud_video.videointelligence.'
+    @patch('zmlp_analysis.google_cloud.cloud_video.videointelligence.'
            'VideoIntelligenceServiceClient', autospec=True)
     def setUp(self, mock_videointelligence_client):
         self.mock_videointelligence_client = mock_videointelligence_client
 
-    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+    @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_logos(self, store_blob_patch, annot_patch):
@@ -40,7 +40,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 'Ford Motor Company' in get_prediction_labels(analysis)
         assert 16 == analysis['count']
 
-    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+    @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')
@@ -66,7 +66,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 'stage' in get_prediction_labels(analysis)
         assert 14 == analysis['count']
 
-    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+    @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')
@@ -92,7 +92,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 'sanitation, toilets and poop' in analysis['content']
         assert 20 == analysis['words']
 
-    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+    @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_objects(self, blob_patch, annot_patch):
@@ -116,7 +116,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 'person' in get_prediction_labels(analysis)
         assert 4 == analysis['count']
 
-    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+    @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')

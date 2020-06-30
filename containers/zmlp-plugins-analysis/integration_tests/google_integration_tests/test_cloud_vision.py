@@ -22,7 +22,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
     def tearDown(self):
         del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     def test_image_text_processor(self, native_patch, localize_patch, proxy_patch):
@@ -39,7 +39,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         assert 'Giants Franchise History' in analysis['content']
         assert 41 == analysis['words']
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     def test_document_text_processor(self, native_patch, localize_patch, proxy_patch):
@@ -56,7 +56,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         assert 'content' in analysis['type']
         assert 12 == analysis['words']
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     def test_landmark_detection(self, native_patch, localize_patch, proxy_patch):
@@ -74,7 +74,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         assert 'Champ de Mars' in get_prediction_labels(analysis)
         assert 2 == analysis['count']
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     def test_explicit_detection(self, native_patch, localize_patch, proxy_patch):
@@ -94,7 +94,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         assert 'violence' in get_prediction_labels(analysis)
         assert 3 == analysis['count']
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     def test_face_detection(self, native_patch, localize_patch, proxy_patch):
@@ -111,7 +111,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         assert 1 == analysis['count']
         assert 'labels' == analysis['type']
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     def test_logo_detection(self, native_patch, localize_patch, proxy_patch):
@@ -128,7 +128,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         assert 7 == analysis['count']
         assert 'labels' == analysis['type']
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     def test_label_detection(self, native_patch, localize_patch, proxy_patch):
@@ -145,7 +145,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         assert 10 == analysis['count']
         assert 'labels' == analysis['type']
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     def test_object_detection(self, native_patch, localize_patch, proxy_patch):

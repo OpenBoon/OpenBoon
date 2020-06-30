@@ -10,7 +10,7 @@ from zmlpsdk import Frame, ZmlpProcessorException
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset, \
     get_prediction_labels, get_mock_stored_file, zorroa_test_path
 
-patch_path = 'zmlp_analysis.google.cloud_vision.vision.ImageAnnotatorClient'
+patch_path = 'zmlp_analysis.google_cloud.cloud_vision.vision.ImageAnnotatorClient'
 
 TOUCAN = zorroa_test_path("images/set01/toucan.jpg")
 EIFFEL = zorroa_test_path("images/set08/eiffel_tower.jpg")
@@ -351,7 +351,7 @@ class MockImageAnnotatorClient:
 
 class CloudVisionDetectLabelsTests(PluginUnitTestCase):
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
@@ -375,7 +375,7 @@ class CloudVisionDetectLabelsTests(PluginUnitTestCase):
 
 class CloudVisionDetectLandmarkTests(PluginUnitTestCase):
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
@@ -398,7 +398,7 @@ class CloudVisionDetectLandmarkTests(PluginUnitTestCase):
 
 class CloudVisionDetectExplicitTests(PluginUnitTestCase):
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
@@ -422,7 +422,7 @@ class CloudVisionDetectExplicitTests(PluginUnitTestCase):
 
 class CloudVisionDetectFacesTests(PluginUnitTestCase):
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
@@ -443,7 +443,7 @@ class CloudVisionDetectFacesTests(PluginUnitTestCase):
 
 class CloudVisionDetectImageTextTests(PluginUnitTestCase):
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
@@ -465,7 +465,7 @@ class CloudVisionDetectImageTextTests(PluginUnitTestCase):
 
 class TestCloudVisionDetectObjects(PluginUnitTestCase):
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
@@ -487,7 +487,7 @@ class TestCloudVisionDetectObjects(PluginUnitTestCase):
 
 class CloudVisionDetectDocumentTextTests(PluginUnitTestCase):
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google_cloud.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
