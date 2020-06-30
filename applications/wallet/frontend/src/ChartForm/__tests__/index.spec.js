@@ -56,7 +56,12 @@ describe('<ChartForm />', () => {
       type: 'UPDATE',
       payload: {
         chartIndex: 0,
-        updatedChart: { id: CHART_ID, type: 'facet', attribute: 'system.type' },
+        updatedChart: {
+          id: CHART_ID,
+          type: 'facet',
+          attribute: 'system.type',
+          values: '10',
+        },
       },
     })
     expect(mockSetIsEditing).toHaveBeenCalledWith(false)
@@ -96,6 +101,13 @@ describe('<ChartForm />', () => {
         .props.onChange({ target: { value: 'clip.pile' } })
     })
 
+    // Set Values
+    act(() => {
+      component.root
+        .findByProps({ type: 'number' })
+        .props.onChange({ target: { value: '5' } })
+    })
+
     // Save chart
     act(() => {
       component.root
@@ -107,7 +119,12 @@ describe('<ChartForm />', () => {
       type: 'UPDATE',
       payload: {
         chartIndex: 0,
-        updatedChart: { id: CHART_ID, type: 'facet', attribute: 'clip.pile' },
+        updatedChart: {
+          id: CHART_ID,
+          type: 'facet',
+          attribute: 'clip.pile',
+          values: '5',
+        },
       },
     })
     expect(mockSetIsEditing).toHaveBeenCalledWith(false)
@@ -121,7 +138,7 @@ describe('<ChartForm />', () => {
 
     const chart = {
       id: CHART_ID,
-      type: 'facet',
+      type: 'range',
     }
 
     require('swr').__setMockUseSWRResponse({ data: fields })
