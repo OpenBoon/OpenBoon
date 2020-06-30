@@ -27,7 +27,7 @@ class ProjectAdmin(ModelAdmin):
         return None
 
     def usage(self, project):
-        if project.subscription:
+        if hasattr(project, 'subscription'):
             usage = project.subscription.usage()
             return f'{usage["video_hours"]} video hours/{usage["image_count"]} images'
         return None
