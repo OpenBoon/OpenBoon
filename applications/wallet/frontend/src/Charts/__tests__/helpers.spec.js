@@ -5,13 +5,16 @@ describe('<Charts /> helpers', () => {
     it('should set min dimensions', () => {
       const mockFn = jest.fn()
 
-      setAllLayouts({ setLayouts: mockFn })(null, {
-        lg: [{}],
+      setAllLayouts({
+        charts: [{ id: 'abc', type: 'facet' }],
+        setLayouts: mockFn,
+      })(null, {
+        lg: [{ i: 'abc' }],
       })
 
       expect(mockFn).toHaveBeenCalledWith({
         value: {
-          lg: [{ w: 4, minW: 4, h: 4, minH: 4 }],
+          lg: [{ i: 'abc', w: 4, minW: 4, h: 5, minH: 5 }],
         },
       })
     })
@@ -19,7 +22,7 @@ describe('<Charts /> helpers', () => {
     it('should not ovveride set dimensions', () => {
       const mockFn = jest.fn()
 
-      setAllLayouts({ setLayouts: mockFn })(null, {
+      setAllLayouts({ charts: [], setLayouts: mockFn })(null, {
         lg: [{ w: 6, minW: 4, h: 6, minH: 4 }],
       })
 

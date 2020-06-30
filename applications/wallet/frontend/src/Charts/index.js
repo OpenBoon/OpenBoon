@@ -6,20 +6,13 @@ import chartShape from '../Chart/shape'
 
 import { spacing } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
-
 import ChartFacet from '../ChartFacet'
 import ChartRange from '../ChartRange'
 
 import { MIN_ROW_HEIGHT, breakpoints, cols, setAllLayouts } from './helpers'
 
-const Charts = ({ projectId, charts, dispatch }) => {
+const Charts = ({ charts, layouts, dispatch, setLayouts }) => {
   const { ref, width = 1200 } = useResizeObserver()
-
-  const [layouts, setLayouts] = useLocalStorageState({
-    key: `Charts.${projectId}`,
-    initialValue: {},
-  })
 
   return (
     <div ref={ref}>
@@ -31,7 +24,7 @@ const Charts = ({ projectId, charts, dispatch }) => {
         margin={[spacing.normal, spacing.normal]}
         containerPadding={[0, 0]}
         rowHeight={MIN_ROW_HEIGHT}
-        onLayoutChange={setAllLayouts({ setLayouts })}
+        onLayoutChange={setAllLayouts({ charts, setLayouts })}
       >
         {charts
           .filter(({ id }) => !!id)
@@ -71,9 +64,10 @@ const Charts = ({ projectId, charts, dispatch }) => {
 }
 
 Charts.propTypes = {
-  projectId: PropTypes.string.isRequired,
-  charts: PropTypes.arrayOf(PropTypes.shape(chartShape).isRequired).isRequired,
+  charts: PropTypes.arrayOf(PropTypes.shape(chartShape)).isRequired,
+  layouts: PropTypes.shape({}).isRequired,
   dispatch: PropTypes.func.isRequired,
+  setLayouts: PropTypes.func.isRequired,
 }
 
 export default Charts
