@@ -161,38 +161,12 @@ class TestTrain:
         path = reverse('face-train', kwargs={'project_pk': project.id})
         with patch.object(FaceViewSet, '_get_dataset'):
             with patch.object(FaceViewSet, '_get_model'):
-                with patch.object(ModelApp, 'train_model'):
-                    with patch.object(FaceViewSet, '_reprocess_face_assets') as reprocess_mock:
-                        reprocess_mock.return_value = {'id': 'test'}
-                        response = api_client.post(path)
+                with patch.object(ModelApp, 'train_model') as train_mock:
+                    train_mock.return_value = Mock(_data={'id': 'test'})
+                    response = api_client.post(path)
 
         content = check_response(response)
         assert content
-
-    def test_reprocess_assets(self):
-        # This test is a little absurd but it covers the flow
-        view = FaceViewSet()
-        app_mock = Mock()
-        model = Mock()
-        module_mock = Mock()
-        publish_mock = Mock(return_value=module_mock)
-        search_results_mock = Mock()
-        search_mock = Mock(return_value=search_results_mock)
-        reprocess_mock = Mock()
-
-        app_mock.models = Mock()
-        app_mock.models.publish_model = publish_mock
-        app_mock.assets = Mock()
-        app_mock.assets.search = search_mock
-        app_mock.assets.reprocess_assets = reprocess_mock
-
-        view._reprocess_face_assets(app_mock, model)
-
-        publish_mock.assert_called_once_with(model)
-        search_mock.assert_called_once_with({"sort": "source.filename",
-                                             "query": {"exists": {"field": "analysis.zvi-face-detection.type"}}})  # noqa
-        reprocess_mock.assert_called_once_with(search_results_mock.assets,
-                                               modules=[module_mock.name])
 
 
 class TestTrainingJob:
@@ -220,7 +194,7 @@ class TestUnappliedChanges:
         path = reverse('face-unapplied-changes', kwargs={'project_pk': project.id})
         response = api_client.get(path)
         content = check_response(response)
-        assert content == {'unappliedChanges': False}
+        assert content == {'unappliedChanges': True}
 
 
 class TestLabels:
@@ -303,4 +277,4 @@ class TestHelpers:
         result = view._get_model(app_mock, dataset_mock)
         assert result
         find_one_model_mock.assert_called_once_with(dataset=dataset_mock)
-        create_model_mock.assert_called_once_with(dataset_mock, ModelType.FACE_RECOGNITION_KNN)
+        create_model_mock.assert_called_once_with(dataset_mock, ModelType.ZVI_FACE_RECOGNITION)

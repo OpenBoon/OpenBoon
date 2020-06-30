@@ -6,6 +6,7 @@ from rest_framework.test import APIClient, APIRequestFactory
 
 
 from projects.models import Project, Membership
+from subscriptions.models import Subscription
 
 
 @pytest.fixture(scope='session')
@@ -85,6 +86,11 @@ def project_zero_membership(project_zero, superuser, zmlp_apikey):
     apikey = b64encode(zmlp_apikey).decode('utf-8')
     return Membership.objects.create(user=superuser, project=project_zero,
                                      apikey=apikey, roles=['ML_Tools', 'API_Key', 'User_Admin'])
+
+
+@pytest.fixture
+def project_zero_subscription(project_zero):
+    return Subscription.objects.create(project=project_zero)
 
 
 @pytest.fixture
