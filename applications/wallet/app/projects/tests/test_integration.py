@@ -1,7 +1,5 @@
 import base64
 import copy
-import json
-from base64 import b64encode
 from uuid import uuid4
 
 import pytest
@@ -18,7 +16,6 @@ from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.utils import random_project_name
 from projects.views import BaseProjectViewSet
-from wallet.tests.utils import check_response
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
 pytestmark = pytest.mark.django_db
@@ -139,18 +136,18 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
     # Test a successful sync.
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
     project = Project.objects.create(name='test', id=uuid4())
-    project.sync_with_zmlp(project_zero_user)
+    project.sync_with_zmlp()
 
     # Test a sync when the project already exists in zmlp.
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_duplicate)
     project = Project.objects.create(name='test', id=uuid4())
-    project.sync_with_zmlp(project_zero_user)
+    project.sync_with_zmlp()
 
     # Test a failure.
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_exception)
     project = Project.objects.create(name='test', id=uuid4())
     with pytest.raises(KeyError):
-        project.sync_with_zmlp(project_zero_user)
+        project.sync_with_zmlp()
 
 
 def test_project_sync_with_zmlp_with_subscription(monkeypatch, project_zero_user,
@@ -188,119 +185,6 @@ def test_project_managers(project):
     project.save()
     assert Project.objects.all().count() == 0
     assert Project.all_objects.all().count() == 1
-
-
-class TestProjectViewSet:
-
-    @pytest.fixture
-    def project_zero(self):
-        return Project.objects.get_or_create(id='00000000-0000-0000-0000-000000000000',
-                                             name='Project Zero')[0]
-
-    @pytest.fixture
-    def project_zero_membership(self, user, project_zero):
-        apikey = {
-            "name": "admin-key",
-            "projectId": "00000000-0000-0000-0000-000000000000",
-            "keyId": "123455678-a920-40ab-a251-a123b17df1ba",
-            "sharedKey": "notyourbusiness",
-            "permissions": [
-                "SuperAdmin", "ProjectAdmin", "AssetsRead", "AssetsImport"
-            ]
-        }
-        apikey = b64encode(json.dumps(apikey).encode('utf-8')).decode('utf-8')
-        return Membership.objects.create(user=user, project=project_zero, apikey=apikey)
-
-    @pytest.fixture
-    def project_zero_user(self, user, project_zero_membership):
-        return user
-
-    def test_post_create(self, project_zero, project_zero_user, api_client, monkeypatch):
-
-        def mock_api_response(*args, **kwargs):
-            return True
-
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
-        api_client.force_authenticate(project_zero_user)
-
-        with pytest.raises(Project.DoesNotExist):
-            Project.objects.get(name='Create Project Test')
-
-        body = {'name': 'Create Project Test'}
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 201
-        project = Project.objects.get(name='Create Project Test')
-        assert project.name == 'Create Project Test'
-
-    def test_post_create_no_project_zero(self, project, zmlp_project_user, api_client):
-        api_client.force_authenticate(zmlp_project_user)
-        body = {'name': 'Test Project'}
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 403
-        assert response.json()['detail'] == ('user is either not a member of Project Zero '
-                                             'or the Project has not been created yet.')
-
-    def test_post_create_dup_zmlp_project(self, project_zero, project_zero_user, api_client,
-                                          monkeypatch):
-
-        def mock_api_response(*args, **kwargs):
-            raise ZmlpDuplicateException(data={'msg': 'Duplicate'})
-
-        api_client.force_authenticate(project_zero_user)
-        body = {'name': 'Create Project Test'}
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
-
-        with pytest.raises(Project.DoesNotExist):
-            Project.objects.get(name='Create Project Test')
-
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 201
-        project = Project.objects.get(name='Create Project Test')
-        assert project.name == 'Create Project Test'
-
-    def test_post_create_dup_in_both(self, project_zero, project_zero_user, api_client,
-                                     monkeypatch):
-
-        def mock_api_response(*args, **kwargs):
-            raise ZmlpDuplicateException(data={'msg': 'Duplicate'})
-
-        api_client.force_authenticate(project_zero_user)
-        Project.objects.create(id='af29eb00-9adc-45be-8be4-50589211d300',
-                               name='Test Project').save()
-        body = {'id': 'af29eb00-9adc-45be-8be4-50589211d300',
-                'name': 'Test Project'}
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
-
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 400
-        assert response.json()['detail'][0] == ('A project with this id already '
-                                                'exists in Wallet and ZMLP.')
-
-    def test_post_create_already_in_wallet_diff_name(self, login, project_zero, project_zero_user,
-                                                     api_client):
-        Project.objects.create(id='af29eb00-9adc-45be-8be4-50589211d300',
-                               name='Test Project').save()
-        body = {'id': 'af29eb00-9adc-45be-8be4-50589211d300',
-                'name': 'Totally Different Name'}
-
-        response = api_client.post(reverse('project-list'), body)
-        content = check_response(response, status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == ('A project with this id and a different name '
-                                     'already exists in Wallet. Send the correct name '
-                                     'or edit the Project in the Django Admin.')
-
-    def test_post_bad_id(self, project_zero, project_zero_user, api_client, monkeypatch):
-
-        def mock_api_response(*args, **kwargs):
-            return True
-
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
-        api_client.force_authenticate(project_zero_user)
-
-        body = {'id': 'zadscadfa', 'name': 'Test'}
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 400
-        assert response.json()['id'][0] == 'Must be a valid UUID.'
 
 
 @pytest.fixture
