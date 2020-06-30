@@ -1,12 +1,12 @@
 import { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
-import Link from 'next/link'
 
-import { colors, constants, spacing } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+
+import FaceLabelingMessages from './Messages'
 
 const FaceLabelingTrainApply = ({ projectId }) => {
   const jobIdRef = useRef()
@@ -23,7 +23,7 @@ const FaceLabelingTrainApply = ({ projectId }) => {
 
   useEffect(() => {
     jobIdRef.current = jobId
-  })
+  }, [jobId])
 
   return (
     <div
@@ -32,37 +32,11 @@ const FaceLabelingTrainApply = ({ projectId }) => {
         borderBottom: constants.borders.divider,
       }}
     >
-      {jobId && (
-        <>
-          <FlashMessage variant={FLASH_VARIANTS.PROCESSING}>
-            Face training in progress.{' '}
-            <Link
-              href="/[projectId]/jobs/[jobId]"
-              as={`/${projectId}/jobs/${jobId}`}
-              passHref
-            >
-              <a
-                css={{
-                  color: colors.signal.sky.base,
-                  ':hover': { textDecoration: 'none' },
-                }}
-              >
-                Check status.
-              </a>
-            </Link>
-          </FlashMessage>
-          <div css={{ paddingBottom: spacing.normal }} />
-        </>
-      )}
-
-      {!!jobIdRef.current && !jobId && (
-        <>
-          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Face training complete.
-          </FlashMessage>
-          <div css={{ paddingBottom: spacing.normal }} />
-        </>
-      )}
+      <FaceLabelingMessages
+        projectId={projectId}
+        previousJobId={jobIdRef.current}
+        currentJobId={jobId}
+      />
 
       <span>
         Once a name has been added to a face, training can begin. Names can
