@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import Link from 'next/link'
@@ -8,13 +9,21 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 
 const FaceLabelingTrainApply = ({ projectId }) => {
+  const jobIdRef = useRef()
+
   const {
     data: { unappliedChanges },
   } = useSWR(`/api/v1/projects/${projectId}/faces/unapplied_changes/`)
 
   const {
     data: { jobId },
-  } = useSWR(`/api/v1/projects/${projectId}/faces/training_job/`)
+  } = useSWR(`/api/v1/projects/${projectId}/faces/training_job/`, {
+    refreshInterval: 3000,
+  })
+
+  useEffect(() => {
+    jobIdRef.current = jobId
+  })
 
   return (
     <div
@@ -45,6 +54,16 @@ const FaceLabelingTrainApply = ({ projectId }) => {
           <div css={{ paddingBottom: spacing.normal }} />
         </>
       )}
+
+      {!!jobIdRef.current && !jobId && (
+        <>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Face training complete.
+          </FlashMessage>
+          <div css={{ paddingBottom: spacing.normal }} />
+        </>
+      )}
+
       <span>
         Once a name has been added to a face, training can begin. Names can
         continue to be edited as needed.
