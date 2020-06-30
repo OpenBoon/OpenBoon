@@ -47,15 +47,13 @@ class Project(models.Model):
         """
         return get_zmlp_superuser_client(project_id=str(self.id))
 
-    def sync_with_zmlp(self, client):
+    def sync_with_zmlp(self):
         """Tries to create a project in ZMLP with the same name and ID. This syncs the projects
         between the Wallet DB and ZMLP and is a necessary step for any project to function
         correctly.
 
-        Args:
-            client (ZmlpClient): Client used for communicating with ZMLP.
-
         """
+        client = get_zmlp_superuser_client(self.id)
         body = {'name': self.name, 'id': str(self.id)}
         try:
             client.post('/api/v1/projects', body)

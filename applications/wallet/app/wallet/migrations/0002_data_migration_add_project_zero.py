@@ -46,7 +46,7 @@ def create_project_zero(apps, schema_editor):
 @backoff.on_exception(backoff.expo, requests.exceptions.ConnectionError, max_time=300)
 def sync_project(project_zero, membership):
     try:
-        project_zero.sync_with_zmlp(get_zmlp_superuser_client())
+        project_zero.sync_with_zmlp()
         membership.sync_with_zmlp(project_zero.get_zmlp_super_client())
     except Exception:
         raise requests.exceptions.ConnectionError()

@@ -152,7 +152,7 @@ class MessageHandler(object):
             # Create the Project, Subscription and MarketplaceEntitlement.
             project = Project.objects.create()
             client = get_zmlp_superuser_client(project_id=str(project.id))
-            project.sync_with_zmlp(client)
+            project.sync_with_zmlp()
             tier = entitlement_data['plan']
             Subscription.objects.create(project=project, tier=tier)
             entitlement_name = self._get_entitlement_name(entitlement_id)

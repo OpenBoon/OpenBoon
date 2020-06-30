@@ -9,7 +9,7 @@ def sync_project_with_zmlp(modeladmin, request, queryset):
     """Admin action that syncs a Wallet project with ZMLP."""
     for project in queryset:
         client = get_zmlp_superuser_client(project_id=str(project.id))
-        project.sync_with_zmlp(client)
+        project.sync_with_zmlp()
         for membership in project.membership_set.all():
             membership.sync_with_zmlp(client)
 
@@ -35,7 +35,7 @@ class ProjectAdmin(ModelAdmin):
     def save_model(self, request, obj, form, change):
         """Creates a new project in the database as well as ZMLP."""
         obj.save()
-        obj.sync_with_zmlp(obj.get_zmlp_super_client())
+        obj.sync_with_zmlp()
 
 
 @admin.register(Membership)

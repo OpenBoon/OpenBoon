@@ -28,7 +28,7 @@ class Command(BaseCommand):
             if not project.is_active:
                 project.is_active = True
                 project.save()
-            project.sync_with_zmlp(client)
+            project.sync_with_zmlp()
             try:
                 subscription = Subscription.objects.get(project=project)
                 subscription.video_hours_limit = options['video_hours_limit']

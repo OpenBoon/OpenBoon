@@ -16,8 +16,8 @@ from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.utils import random_project_name
 from projects.views import BaseProjectViewSet
-from wallet.utils import convert_base64_to_json, convert_json_to_base64, \
-    get_zmlp_superuser_client
+from wallet.utils import (convert_base64_to_json, convert_json_to_base64,
+    get_zmlp_superuser_client)
 
 pytestmark = pytest.mark.django_db
 
@@ -138,18 +138,18 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
     client = get_zmlp_superuser_client()
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
     project = Project.objects.create(name='test', id=uuid4())
-    project.sync_with_zmlp(client)
+    project.sync_with_zmlp()
 
     # Test a sync when the project already exists in zmlp.
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_duplicate)
     project = Project.objects.create(name='test', id=uuid4())
-    project.sync_with_zmlp(client)
+    project.sync_with_zmlp()
 
     # Test a failure.
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_exception)
     project = Project.objects.create(name='test', id=uuid4())
     with pytest.raises(KeyError):
-        project.sync_with_zmlp(client)
+        project.sync_with_zmlp()
 
 
 def test_project_managers(project):
