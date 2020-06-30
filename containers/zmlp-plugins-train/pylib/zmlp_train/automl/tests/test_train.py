@@ -64,6 +64,7 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
         args = {
             'project_id': project_id,
             'region': 'us-central1',
+            'model_id': model_id,
             'display_name': name,
             'project_path': 'gs://{}-vcm/csv/csv_some_data.csv'.format(project_id),
             'model_path': "ICN94225947477147648"

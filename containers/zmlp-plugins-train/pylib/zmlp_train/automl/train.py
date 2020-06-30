@@ -27,6 +27,8 @@ class AutoMLModelTrainer(AssetProcessor):
         super(AutoMLModelTrainer, self).__init__()
         self.add_arg(Argument("project_id", "string", required=True,
                               toolTip=AutoMLModelTrainer.tool_tips['project_id']))
+        self.add_arg(Argument("model_id", "string", required=True,
+                              toolTip="The model Id"))
         self.add_arg(Argument("display_name", "string", required=True,
                               toolTip=AutoMLModelTrainer.tool_tips['display_name']))
         self.add_arg(Argument("region", "string", default="us-central1",
