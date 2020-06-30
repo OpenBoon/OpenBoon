@@ -83,8 +83,13 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         app = request.app
         client = request.client
         asset = app.assets.get_asset(pk)
+
+        # Get the filename, setup return structure
+        data = {'filename': asset.get_attr('source.filename'),
+                'predictions': ''}
+
         if not asset.get_attr(self.analysis_attr):
-            return Response(status=status.HTTP_200_OK, data={'predictions': []})
+            return Response(status=status.HTTP_200_OK, data=data)
         dataset = self._get_dataset(app)
 
         # Get the bboxes for each prediction
@@ -109,7 +114,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
                     prediction['label'] = label['label']
                     prediction['modified'] = True
 
-        data = {'predictions': predictions}
+        data['predictions'] = predictions
         return Response(status=status.HTTP_200_OK, data=data)
 
     @action(detail=True, methods=['post'])
@@ -184,21 +189,38 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         return Response(status=status.HTTP_200_OK, data=job._data)
 
     @action(detail=False, methods=['get'])
-    def training_job(self, request, project_pk):
-        """Returns the ID of any running face reprocessing job."""
+    def status(self, request, project_pk):
+        """Returns any running reprocessing job and whether there are unapplied changes."""
+        # Check for jobs
         name_prefix = ('Train zvi-console_face_recognition-face-recognition')
         running_jobs = request.app.jobs.find_jobs(state='InProgress')
+        job_id = ''
         for job in running_jobs:
             if job.name.startswith(name_prefix):
-                return Response(status=status.HTTP_200_OK, data={'job_id': job.id})
-        return Response(status=status.HTTP_200_OK, data={'job_id': ''})
+                job_id = job.id
 
-    @action(detail=False, methods=['get'])
-    def unapplied_changes(self, request, project_pk):
-        """Returns whether the dataset has been updated but assets not reprocessed."""
-        # TODO: Figure out how to return whether there are unapplied changes or not.
-        data = {'unapplied_changes': True}
-        return Response(status=status.HTTP_200_OK, data=data)
+        # Check for unapplied changes - always True until we can use real logic
+        # to check for this. True allows us to use the Train & Apply button in the UI.
+        changes = True
+        return Response(status=status.HTTP_200_OK, data={'unapplied_changes': changes,
+                                                         'job_id': job_id})
+
+    # @action(detail=False, methods=['get'])
+    # def training_job(self, request, project_pk):
+    #     """Returns the ID of any running face reprocessing job."""
+    #     name_prefix = ('Train zvi-console_face_recognition-face-recognition')
+    #     running_jobs = request.app.jobs.find_jobs(state='InProgress')
+    #     for job in running_jobs:
+    #         if job.name.startswith(name_prefix):
+    #             return Response(status=status.HTTP_200_OK, data={'job_id': job.id})
+    #     return Response(status=status.HTTP_200_OK, data={'job_id': ''})
+    #
+    # @action(detail=False, methods=['get'])
+    # def unapplied_changes(self, request, project_pk):
+    #     """Returns whether the dataset has been updated but assets not reprocessed."""
+    #     # TODO: Figure out how to return whether there are unapplied changes or not.
+    #     data = {'unapplied_changes': True}
+    #     return Response(status=status.HTTP_200_OK, data=data)
 
     @action(detail=False, methods=['get'])
     def labels(self, request, project_pk):
