@@ -12,7 +12,7 @@ import Button, { VARIANTS } from '../Button'
 const ICON_SIZE = 20
 const ICON_PADDING = 6
 
-const ChartsHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
+const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
   return (
     <div
       css={{
@@ -83,11 +83,11 @@ const ChartsHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
   )
 }
 
-ChartsHeader.propTypes = {
+ChartHeader.propTypes = {
   attribute: PropTypes.string.isRequired,
   chartIndex: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired,
   setIsEditing: PropTypes.func.isRequired,
 }
 
-export default ChartsHeader
+export default ChartHeader
