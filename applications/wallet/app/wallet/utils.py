@@ -20,7 +20,8 @@ def get_zmlp_superuser_client(project_id=None):
     """
     apikey = settings.INCEPTION_KEY_B64
     if project_id:
-        return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL, project_id=project_id)
+        return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL,
+                          project_id=str(project_id))
     else:
         return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL)
 
