@@ -61,7 +61,7 @@ class SignUpView(View):
 
         # TODO: Make audience configurable.
         idinfo = id_token.verify_token(token, requests.Request(), certs_url=issuer,
-                                       audience='zvi.zorroa.com')
+                                       audience='console.zvi.zorroa.com')
 
         if idinfo['iss'] != issuer:
             raise PermissionDenied('Wrong issuer.')
