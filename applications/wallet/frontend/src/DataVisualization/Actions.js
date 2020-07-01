@@ -10,7 +10,7 @@ import { ACTIONS } from './reducer'
 
 const ICON_SIZE = 20
 
-const DataVisualizationActions = ({ dispatch, setIsCreating }) => {
+const DataVisualizationActions = ({ dispatch, setIsCreating, setLayouts }) => {
   return (
     <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
       <Button
@@ -23,7 +23,7 @@ const DataVisualizationActions = ({ dispatch, setIsCreating }) => {
       >
         <div css={{ display: 'flex', alignItems: 'center' }}>
           <div css={{ display: 'flex', paddingRight: spacing.small }}>
-            <PlusSvg width={ICON_SIZE} />
+            <PlusSvg height={ICON_SIZE} />
           </div>
           Add Chart
         </div>
@@ -33,6 +33,8 @@ const DataVisualizationActions = ({ dispatch, setIsCreating }) => {
         variant={VARIANTS.SECONDARY_SMALL}
         onClick={() => {
           dispatch({ type: ACTIONS.CLEAR })
+
+          setLayouts({ value: {} })
 
           setIsCreating(true)
         }}
@@ -47,6 +49,7 @@ const DataVisualizationActions = ({ dispatch, setIsCreating }) => {
 DataVisualizationActions.propTypes = {
   dispatch: PropTypes.func.isRequired,
   setIsCreating: PropTypes.func.isRequired,
+  setLayouts: PropTypes.func.isRequired,
 }
 
 export default DataVisualizationActions

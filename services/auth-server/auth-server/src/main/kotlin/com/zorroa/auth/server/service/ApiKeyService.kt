@@ -73,7 +73,8 @@ class ApiKeyServiceImpl constructor(
             time, time,
             actor.toString(),
             actor.toString(),
-            spec.enabled
+            spec.enabled,
+            spec.systemKey
         )
 
         logger.event(
@@ -111,7 +112,8 @@ class ApiKeyServiceImpl constructor(
             apiKey.timeCreated, time,
             apiKey.actorCreated,
             actor.toString(),
-            spec.enabled
+            spec.enabled,
+            spec.systemKey
         )
 
         logger.event(
@@ -132,7 +134,7 @@ class ApiKeyServiceImpl constructor(
 
     @Transactional(readOnly = true)
     override fun findAll(): List<ApiKey> {
-        return apiKeyRepository.findAllByProjectId(getProjectId())
+        return apiKeyRepository.findAllByProjectIdAndSystemKey(getProjectId(), false)
     }
 
     @Transactional(readOnly = true)
@@ -146,6 +148,11 @@ class ApiKeyServiceImpl constructor(
     }
 
     override fun delete(apiKey: ApiKey) {
+
+        if (apiKey.systemKey) {
+            throw(UnsupportedOperationException("System Keys Cannot be deleted"))
+        }
+
         logger.event(
             LogObject.API_KEY, LogAction.DELETE,
             mapOf(

@@ -25,6 +25,7 @@ const Jobs = () => {
         legend="Jobs"
         url={`/api/v1/projects/${projectId}/jobs/`}
         refreshKeys={[]}
+        refreshButton
         columns={[
           'Status',
           'Job Name',

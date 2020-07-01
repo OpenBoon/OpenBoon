@@ -181,7 +181,7 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
       className="emotion-0"
       color="#d6680b"
       data-file-name="hidden.svg"
-      width={20}
+      height={20}
     />
   </button>
   <button
@@ -194,7 +194,7 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
       className="emotion-2"
       color="#808080"
       data-file-name="cross.svg"
-      width={20}
+      height={20}
     />
   </button>
 </div>
@@ -377,7 +377,7 @@ exports[`<FilterActions /> should render properly 1`] = `
       className="emotion-0"
       color="#808080"
       data-file-name="hidden.svg"
-      width={20}
+      height={20}
     />
   </button>
   <button
@@ -390,7 +390,7 @@ exports[`<FilterActions /> should render properly 1`] = `
       className="emotion-0"
       color="#808080"
       data-file-name="cross.svg"
-      width={20}
+      height={20}
     />
   </button>
 </div>
@@ -573,7 +573,7 @@ exports[`<FilterActions /> should render properly 2`] = `
       className="emotion-0"
       color="#808080"
       data-file-name="hidden.svg"
-      width={20}
+      height={20}
     />
   </button>
   <button
@@ -586,7 +586,7 @@ exports[`<FilterActions /> should render properly 2`] = `
       className="emotion-0"
       color="#808080"
       data-file-name="cross.svg"
-      width={20}
+      height={20}
     />
   </button>
 </div>
@@ -769,7 +769,7 @@ exports[`<FilterActions /> should render properly 3`] = `
       className="emotion-0"
       color="#808080"
       data-file-name="hidden.svg"
-      width={20}
+      height={20}
     />
   </button>
   <button
@@ -782,7 +782,7 @@ exports[`<FilterActions /> should render properly 3`] = `
       className="emotion-0"
       color="#808080"
       data-file-name="cross.svg"
-      width={20}
+      height={20}
     />
   </button>
 </div>

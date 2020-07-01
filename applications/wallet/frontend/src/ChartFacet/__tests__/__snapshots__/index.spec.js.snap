@@ -54,7 +54,6 @@ exports[`<ChartFacet /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding-top: 2px;
 }
 
 .emotion-6:hover button svg {
@@ -500,7 +499,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
           <svg
             className="emotion-1"
             data-file-name="pen.svg"
-            width={20}
+            height={20}
           />
         </button>
         <div
@@ -516,7 +515,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
           <svg
             className="emotion-1"
             data-file-name="cross.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
@@ -583,7 +582,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
                 >
                   <svg
                     data-file-name="filter.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </div>
@@ -632,7 +631,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
                 >
                   <svg
                     data-file-name="filter.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </div>
@@ -681,7 +680,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
                 >
                   <svg
                     data-file-name="filter.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </div>
@@ -730,7 +729,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
                 >
                   <svg
                     data-file-name="filter.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </div>
@@ -779,7 +778,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
                 >
                   <svg
                     data-file-name="filter.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </div>
@@ -828,7 +827,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
                 >
                   <svg
                     data-file-name="filter.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </div>
@@ -877,7 +876,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
                 >
                   <svg
                     data-file-name="filter.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </div>
@@ -901,7 +900,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
               >
                 <svg
                   data-file-name="filter.svg"
-                  width={20}
+                  height={20}
                 />
               </div>
               Add Field Filter
@@ -952,7 +951,6 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding-top: 2px;
 }
 
 .emotion-6:hover button svg {
@@ -1206,7 +1204,7 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
           <svg
             className="emotion-1"
             data-file-name="pen.svg"
-            width={20}
+            height={20}
           />
         </button>
         <div
@@ -1222,7 +1220,7 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
           <svg
             className="emotion-1"
             data-file-name="cross.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
@@ -1263,7 +1261,7 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
               >
                 <svg
                   data-file-name="filter.svg"
-                  width={20}
+                  height={20}
                 />
               </div>
               Add Field Filter

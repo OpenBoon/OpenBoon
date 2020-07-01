@@ -7,6 +7,8 @@ import chartShape from '../Chart/shape'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import Form from '../Form'
+import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import { capitalizeFirstLetter } from '../Text/helpers'
 import { ACTIONS } from '../DataVisualization/reducer'
@@ -29,6 +31,7 @@ const ChartFormContent = ({
   } = useRouter()
 
   const [attribute, setAttribute] = useState(chart.attribute || '')
+  const [values, setValues] = useState(chart.values || '10')
 
   const { data: fields } = useSWR(
     `/api/v1/projects/${projectId}/searches/fields/`,
@@ -37,11 +40,10 @@ const ChartFormContent = ({
   const filteredFields = formatFields({ fields, type })
 
   return (
-    <div
-      css={{
-        display: 'flex',
-        flexDirection: 'column',
-        paddingTop: spacing.base,
+    <Form
+      style={{
+        width: 'auto',
+        padding: 0,
       }}
     >
       <h2
@@ -56,27 +58,15 @@ const ChartFormContent = ({
 
       <div css={{ height: spacing.comfy }} />
 
-      <label
-        css={{
-          fontWeight: typography.weight.medium,
-        }}
-      >
-        <h3
-          css={{
-            paddingBottom: spacing.base,
-            fontSize: typography.size.regular,
-            lineHeight: typography.height.regular,
-            fontWeight: typography.weight.medium,
-          }}
-        >
-          Metadata Type
-        </h3>
+      <label css={{ color: colors.structure.zinc }}>
+        Metadata Type
         <select
           defaultValue={attribute}
           onChange={({ target: { value } }) => {
             setAttribute(value)
           }}
           css={{
+            marginTop: spacing.base,
             width: '100%',
             padding: `${spacing.moderate}px ${spacing.base}px`,
             backgroundColor: colors.structure.steel,
@@ -101,7 +91,24 @@ const ChartFormContent = ({
         </select>
       </label>
 
-      <div css={{ height: spacing.spacious }} />
+      {type === 'range' && <div css={{ height: spacing.spacious }} />}
+
+      {type === 'facet' && (
+        <>
+          <div css={{ height: spacing.normal }} />
+
+          <Input
+            id="values"
+            variant={INPUT_VARIANTS.SECONDARY}
+            label="Number of Values Shown"
+            type="number"
+            value={values}
+            onChange={({ target: { value } }) => setValues(value)}
+            hasError={false}
+            errorMessage=""
+          />
+        </>
+      )}
 
       <div css={{ display: 'flex' }}>
         <Button
@@ -128,7 +135,7 @@ const ChartFormContent = ({
               type: ACTIONS.UPDATE,
               payload: {
                 chartIndex,
-                updatedChart: { ...chart, attribute },
+                updatedChart: { ...chart, attribute, values },
               },
             })
             setIsEditing(false)
@@ -138,7 +145,7 @@ const ChartFormContent = ({
           Save Visualization
         </Button>
       </div>
-    </div>
+    </Form>
   )
 }
 

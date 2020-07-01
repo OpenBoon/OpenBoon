@@ -132,7 +132,7 @@ const Accordion = ({
           onClick={toggle}
         >
           <ChevronSvg
-            width={ICON_SIZE}
+            height={ICON_SIZE}
             color={colors.structure.steel}
             css={{
               transform: isOpen ? 'rotate(-180deg)' : '',

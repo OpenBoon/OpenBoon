@@ -13,6 +13,8 @@ import KeySvg from '../Icons/key.svg'
 import ProjectUsagePlan from './UsagePlan'
 import ProjectGettingStarted from './GettingStarted'
 
+const ICON_SIZE = 20
+
 const ProjectCards = () => {
   const {
     query: { projectId },
@@ -80,7 +82,7 @@ const ProjectCards = () => {
           variant={CARD_VARIANTS.LIGHT}
           header={
             <h3>
-              <KeySvg width={20} aria-hidden color={colors.structure.zinc} />
+              <KeySvg height={ICON_SIZE} color={colors.structure.zinc} />
               Project API Keys
             </h3>
           }

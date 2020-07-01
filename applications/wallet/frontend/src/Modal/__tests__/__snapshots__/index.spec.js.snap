@@ -210,7 +210,7 @@ exports[`<Modal /> should render properly 1`] = `
         <svg
           color="#ffffff"
           data-file-name="cross.svg"
-          width={20}
+          height={20}
         />
       </div>
     </header>

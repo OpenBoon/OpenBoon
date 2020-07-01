@@ -172,7 +172,8 @@ abstract class AbstractTest {
             authServerClient.createApiKey(
                 capture<UUID>(proj),
                 any(),
-                capture<Set<Permission>>(permissions)
+                capture<Set<Permission>>(permissions),
+                any()
             )
         ).then {
             ApiKey(
@@ -181,7 +182,8 @@ abstract class AbstractTest {
                 randomString(24),
                 randomString(64),
                 "key-name",
-                permissions.value
+                permissions.value,
+                false
             )
         }
 
