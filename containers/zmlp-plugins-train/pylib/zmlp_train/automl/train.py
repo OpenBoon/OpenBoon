@@ -177,7 +177,7 @@ class AutoMLModelTrainer(AssetProcessor):
 
         # A resource that represents Google Cloud Platform location.
         project_location = self.client.location_path(project_id, region)
-        metadata = automl.types.ImageClassificationModelMetadata(train_budget=100)
+        metadata = automl.types.ImageClassificationModelMetadata(train_budget=1)
         model = automl.types.Model(
             display_name=display_name,
             dataset_id=dataset_id,
