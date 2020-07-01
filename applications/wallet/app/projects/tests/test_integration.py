@@ -21,6 +21,14 @@ from wallet.utils import convert_base64_to_json, convert_json_to_base64
 pytestmark = pytest.mark.django_db
 
 
+def mock_put_disable_project(*args, **kwargs):
+    return {'type': 'project', 'id': '00000000-0000-0000-0000-000000000000', 'op': 'disable', 'success': True}  # noqa
+
+
+def mock_put_enable_project(*args, **kwargs):
+    return {'type': 'project', 'id': '00000000-0000-0000-0000-000000000000', 'op': 'enable', 'success': True}  # noqa
+
+
 def test_random_name():
     assert random_project_name()
 
@@ -133,10 +141,20 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
     def mock_post_exception(*args, **kwargs):
         raise KeyError('')
 
+    def mock_put_failed_enable(*args, **kwargs):
+        return {'type': 'project', 'id': '00000000-0000-0000-0000-000000000000', 'op': 'enable',
+                'success': False}
+
     # Test a successful sync.
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
+    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
     project = Project.objects.create(name='test', id=uuid4())
     project.sync_with_zmlp()
+
+    # Test a disabled project.
+    project.is_active = False
+    project.save()
+    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
 
     # Test a sync when the project already exists in zmlp.
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_duplicate)
@@ -147,6 +165,12 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_exception)
     project = Project.objects.create(name='test', id=uuid4())
     with pytest.raises(KeyError):
+        project.sync_with_zmlp()
+
+    # Test failed status sync.
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
+    monkeypatch.setattr(ZmlpClient, 'put', mock_put_failed_enable)
+    with pytest.raises(IOError):
         project.sync_with_zmlp()
 
 
@@ -163,6 +187,7 @@ def test_project_sync_with_zmlp_with_subscription(monkeypatch, project_zero_user
 
     # Test a successful sync.
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
+    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
     project = Project.objects.create(name='test', id=uuid4())
     project.sync_with_zmlp()
 
