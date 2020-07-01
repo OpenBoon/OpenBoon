@@ -40,7 +40,7 @@ const FaceLabelingTrainApply = ({ projectId }) => {
     >
       <FaceLabelingMessage
         projectId={projectId}
-        previousJobId={jobIdRef.current}
+        previousJobId={jobIdRef.current || ''}
         currentJobId={jobId}
         error={error}
       />
