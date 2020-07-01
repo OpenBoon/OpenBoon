@@ -35,6 +35,7 @@ const ApiKeys = () => {
         legend="Keys"
         url={`/api/v1/projects/${projectId}/api_keys/`}
         refreshKeys={[]}
+        refreshButton={false}
         columns={['API Key Name', 'Permissions', '#Actions#']}
         expandColumn={2}
         renderEmpty="No api keys"

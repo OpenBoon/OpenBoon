@@ -13,6 +13,7 @@ describe('<Table />', () => {
         legend="Stuff"
         url=""
         refreshKeys={[]}
+        refreshButton={false}
         columns={['ColumnOne, ColumnTwo']}
         expandColumn={2}
         renderEmpty="Empty"
