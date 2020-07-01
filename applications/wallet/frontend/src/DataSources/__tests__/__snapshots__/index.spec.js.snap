@@ -55,7 +55,7 @@ Array [
       <svg
         color="#4ac565"
         data-file-name="checkmark.svg"
-        width={20}
+        height={20}
       />
       <div
         className="emotion-0"
@@ -169,7 +169,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-32 {
+  .emotion-28 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -180,7 +180,7 @@ Array [
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -203,85 +203,14 @@ Array [
   font-weight: 400;
 }
 
-.emotion-4 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
-  background-color: #73b61c;
-}
-
-.emotion-4:hover {
-  background-color: #96c955;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 {
-  padding-left: 4px;
-}
-
-.emotion-31 {
+.emotion-27 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-6 {
+.emotion-2 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -292,22 +221,22 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(0) {
+.emotion-2:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-2:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-29 {
+.emotion-25 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -315,38 +244,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-29 tr {
+.emotion-25 tr {
   background-color: #252525;
 }
 
-.emotion-29 tr:nth-of-type(2n) {
+.emotion-25 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-29 tr:hover {
+.emotion-25 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-29 tr:hover .gear {
+.emotion-25 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-29 tr:hover td {
+.emotion-25 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-29 tr:hover td:first-of-type {
+.emotion-25 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-29 tr:hover td:last-of-type {
+.emotion-25 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-29 td {
+.emotion-25 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -358,16 +287,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-29 td:first-of-type {
+.emotion-25 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-29 td:last-of-type {
+.emotion-25 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-14 {
+.emotion-10 {
   display: inline-block;
   color: #191919;
   background-color: #ebb52e;
@@ -379,11 +308,11 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-16 {
+.emotion-12 {
   position: relative;
 }
 
-.emotion-15 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -420,21 +349,21 @@ Array [
   border-radius: 32px;
 }
 
-.emotion-15:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-15:hover {
+.emotion-11:hover {
   color: #ffffff !important;
   background-color: #808080;
 }
 
-.emotion-26 {
+.emotion-22 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -447,10 +376,10 @@ Array [
 }
 
 <div
-    className="emotion-32"
+    className="emotion-28"
   >
     <div
-      className="emotion-5"
+      className="emotion-1"
     >
       <h3
         className="emotion-0"
@@ -460,79 +389,57 @@ Array [
         : 
         5
       </h3>
-      <button
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-3"
-        >
-          <svg
-            className="emotion-1"
-            color="#ffffff"
-            data-file-name="refresh.svg"
-            width={20}
-          />
-          <div
-            className="emotion-2"
-          >
-            Refresh 
-            Sources
-          </div>
-        </div>
-      </button>
     </div>
     <div
-      className="emotion-31"
+      className="emotion-27"
     >
       <div
-        className="emotion-30"
+        className="emotion-26"
       >
         <table
-          className="emotion-29"
+          className="emotion-25"
         >
           <thead>
             <tr>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Name
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Source Type
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Path
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Date Created
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Date Modified
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 File Types
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 <div
-                  className="emotion-12"
+                  className="emotion-8"
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </th>
@@ -557,25 +464,25 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-14"
+                  className="emotion-10"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>
@@ -599,25 +506,25 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-14"
+                  className="emotion-10"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>
@@ -641,25 +548,25 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-14"
+                  className="emotion-10"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>
@@ -683,25 +590,25 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-14"
+                  className="emotion-10"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>
@@ -725,25 +632,25 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-26"
+                  className="emotion-22"
                 >
                   Movies
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>
@@ -818,7 +725,7 @@ Array [
       <svg
         color="#4ac565"
         data-file-name="checkmark.svg"
-        width={20}
+        height={20}
       />
       <div
         className="emotion-0"
@@ -932,7 +839,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-32 {
+  .emotion-28 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -943,7 +850,7 @@ Array [
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -966,85 +873,14 @@ Array [
   font-weight: 400;
 }
 
-.emotion-4 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
-  background-color: #73b61c;
-}
-
-.emotion-4:hover {
-  background-color: #96c955;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 {
-  padding-left: 4px;
-}
-
-.emotion-31 {
+.emotion-27 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-6 {
+.emotion-2 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -1055,22 +891,22 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(0) {
+.emotion-2:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-2:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-29 {
+.emotion-25 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -1078,38 +914,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-29 tr {
+.emotion-25 tr {
   background-color: #252525;
 }
 
-.emotion-29 tr:nth-of-type(2n) {
+.emotion-25 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-29 tr:hover {
+.emotion-25 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-29 tr:hover .gear {
+.emotion-25 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-29 tr:hover td {
+.emotion-25 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-29 tr:hover td:first-of-type {
+.emotion-25 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-29 tr:hover td:last-of-type {
+.emotion-25 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-29 td {
+.emotion-25 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1121,16 +957,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-29 td:first-of-type {
+.emotion-25 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-29 td:last-of-type {
+.emotion-25 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-14 {
+.emotion-10 {
   display: inline-block;
   color: #191919;
   background-color: #ebb52e;
@@ -1142,11 +978,11 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-16 {
+.emotion-12 {
   position: relative;
 }
 
-.emotion-15 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1183,21 +1019,21 @@ Array [
   border-radius: 32px;
 }
 
-.emotion-15:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-15:hover {
+.emotion-11:hover {
   color: #ffffff !important;
   background-color: #808080;
 }
 
-.emotion-26 {
+.emotion-22 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -1210,10 +1046,10 @@ Array [
 }
 
 <div
-    className="emotion-32"
+    className="emotion-28"
   >
     <div
-      className="emotion-5"
+      className="emotion-1"
     >
       <h3
         className="emotion-0"
@@ -1223,79 +1059,57 @@ Array [
         : 
         5
       </h3>
-      <button
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-3"
-        >
-          <svg
-            className="emotion-1"
-            color="#ffffff"
-            data-file-name="refresh.svg"
-            width={20}
-          />
-          <div
-            className="emotion-2"
-          >
-            Refresh 
-            Sources
-          </div>
-        </div>
-      </button>
     </div>
     <div
-      className="emotion-31"
+      className="emotion-27"
     >
       <div
-        className="emotion-30"
+        className="emotion-26"
       >
         <table
-          className="emotion-29"
+          className="emotion-25"
         >
           <thead>
             <tr>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Name
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Source Type
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Path
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Date Created
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Date Modified
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 File Types
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 <div
-                  className="emotion-12"
+                  className="emotion-8"
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </th>
@@ -1320,25 +1134,25 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-14"
+                  className="emotion-10"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>
@@ -1362,25 +1176,25 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-14"
+                  className="emotion-10"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>
@@ -1404,25 +1218,25 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-14"
+                  className="emotion-10"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>
@@ -1446,25 +1260,25 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-14"
+                  className="emotion-10"
                 >
                   Images
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>
@@ -1488,25 +1302,25 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-26"
+                  className="emotion-22"
                 >
                   Movies
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>
@@ -1645,7 +1459,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-19 {
+  .emotion-15 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1656,7 +1470,7 @@ Array [
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1679,85 +1493,14 @@ Array [
   font-weight: 400;
 }
 
-.emotion-4 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
-  background-color: #73b61c;
-}
-
-.emotion-4:hover {
-  background-color: #96c955;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 {
-  padding-left: 4px;
-}
-
-.emotion-18 {
+.emotion-14 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-17 {
+.emotion-13 {
   position: absolute;
   top: 0;
   left: 0;
@@ -1765,7 +1508,7 @@ Array [
   bottom: 0;
 }
 
-.emotion-16 {
+.emotion-12 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -1773,38 +1516,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-16 tr {
+.emotion-12 tr {
   background-color: #252525;
 }
 
-.emotion-16 tr:nth-of-type(2n) {
+.emotion-12 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-16 tr:hover {
+.emotion-12 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-16 tr:hover .gear {
+.emotion-12 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-16 tr:hover td {
+.emotion-12 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-16 tr:hover td:first-of-type {
+.emotion-12 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-16 tr:hover td:last-of-type {
+.emotion-12 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-16 td {
+.emotion-12 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1816,16 +1559,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-16 td:first-of-type {
+.emotion-12 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-16 td:last-of-type {
+.emotion-12 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-2 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -1836,27 +1579,27 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(0) {
+.emotion-2:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-2:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-15 {
+.emotion-11 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-14 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1879,10 +1622,10 @@ Array [
 }
 
 <div
-    className="emotion-19"
+    className="emotion-15"
   >
     <div
-      className="emotion-5"
+      className="emotion-1"
     >
       <h3
         className="emotion-0"
@@ -1892,79 +1635,57 @@ Array [
         : 
         0
       </h3>
-      <button
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-3"
-        >
-          <svg
-            className="emotion-1"
-            color="#ffffff"
-            data-file-name="refresh.svg"
-            width={20}
-          />
-          <div
-            className="emotion-2"
-          >
-            Refresh 
-            Sources
-          </div>
-        </div>
-      </button>
     </div>
     <div
-      className="emotion-18"
+      className="emotion-14"
     >
       <div
-        className="emotion-17"
+        className="emotion-13"
       >
         <table
-          className="emotion-16"
+          className="emotion-12"
         >
           <thead>
             <tr>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Name
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Source Type
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Path
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Date Created
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Date Modified
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 File Types
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 <div
-                  className="emotion-12"
+                  className="emotion-8"
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </th>
@@ -1972,13 +1693,13 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-15"
+              className="emotion-11"
             >
               <td
                 colSpan={7}
               >
                 <div
-                  className="emotion-14"
+                  className="emotion-10"
                 >
                   No data sources
                 </div>

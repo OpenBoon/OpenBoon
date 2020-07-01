@@ -18,30 +18,30 @@ const FilterTitle = ({ filter: { attribute, type, values } }) => {
   return (
     <>
       {(type === 'facet' || type === 'labelConfidence') && (
-        <FacetSvg width={ICON_SIZE} color={colors.key.one} />
+        <FacetSvg height={ICON_SIZE} color={colors.key.one} />
       )}
 
       {type === 'range' && (
-        <RangeSvg width={ICON_SIZE} color={colors.key.one} />
+        <RangeSvg height={ICON_SIZE} color={colors.key.one} />
       )}
 
       {type === 'exists' &&
         (values && values.exists ? (
-          <ExistsSvg width={ICON_SIZE} color={colors.key.one} />
+          <ExistsSvg height={ICON_SIZE} color={colors.key.one} />
         ) : (
-          <MissingSvg width={ICON_SIZE} color={colors.key.one} />
+          <MissingSvg height={ICON_SIZE} color={colors.key.one} />
         ))}
 
       {type === 'similarity' && (
-        <SimilaritySvg width={ICON_SIZE} color={colors.key.one} />
+        <SimilaritySvg height={ICON_SIZE} color={colors.key.one} />
       )}
 
       {type === 'textContent' && (
-        <TextSvg width={ICON_SIZE} color={colors.key.one} />
+        <TextSvg height={ICON_SIZE} color={colors.key.one} />
       )}
 
       {type === 'date' && (
-        <CalendarSvg width={ICON_SIZE} color={colors.key.one} />
+        <CalendarSvg height={ICON_SIZE} color={colors.key.one} />
       )}
 
       <span

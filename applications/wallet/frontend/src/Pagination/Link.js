@@ -8,6 +8,7 @@ import { spacing, constants, colors } from '../Styles'
 import ChevronSvg from '../Icons/chevron.svg'
 
 const BORDER_RADIUS = constants.borderRadius.small
+const ICON_SIZE = 16
 
 const PaginationLink = ({ currentPage, totalPages, direction }) => {
   const { pathname, query } = useRouter()
@@ -37,7 +38,7 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
     return (
       <button type="button" css={styles} disabled>
         <ChevronSvg
-          width={16}
+          height={ICON_SIZE}
           css={{
             color: colors.structure.coal,
             transform: `rotate(${isPrev ? '' : '-'}90deg)`,
@@ -59,7 +60,7 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
     <Link href={href} as={as} passHref>
       <a css={styles} rel={direction}>
         <ChevronSvg
-          width={16}
+          height={ICON_SIZE}
           css={{
             color: colors.structure.white,
             transform: `rotate(${isPrev ? '' : '-'}90deg)`,

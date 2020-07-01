@@ -9,6 +9,8 @@ import { colors, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
+const ICON_SIZE = 20
+
 const rotate = keyframes`
   from { transform:rotate(0deg); }
   to { transform:rotate(360deg); }
@@ -36,7 +38,7 @@ const TableRefresh = ({ onClick, legend, refreshKeys }) => {
         }}
       >
         <RefreshSvg
-          width={20}
+          height={ICON_SIZE}
           color={colors.structure.white}
           css={{ animation: clicked ? `${rotate} 1s linear 2` : '' }}
         />

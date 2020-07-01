@@ -2,7 +2,6 @@ import logging
 import uuid
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
 from django_cryptography.fields import encrypt
 from multiselectfield import MultiSelectField
@@ -46,27 +45,35 @@ class Project(models.Model):
         of the logged in user.
 
         """
-        user = User.objects.get(email=settings.SUPERUSER_EMAIL)
-        return get_zmlp_superuser_client(user, project_id=str(self.id))
+        return get_zmlp_superuser_client(project_id=str(self.id))
 
-    def sync_with_zmlp(self, syncing_user):
+    def sync_with_zmlp(self):
         """Tries to create a project in ZMLP with the same name and ID. This syncs the projects
         between the Wallet DB and ZMLP and is a necessary step for any project to function
         correctly.
 
-        Args:
-            syncing_user (User): User that is attempting to sync this project with ZMLP.
-
         """
-        client = get_zmlp_superuser_client(syncing_user)
+        client = get_zmlp_superuser_client(self.id)
+
+        # Create the project if it doesn't already exist.
         body = {'name': self.name, 'id': str(self.id)}
         try:
             client.post('/api/v1/projects', body)
         except ZmlpDuplicateException:
             logger.info(f'Project {self.id} already exists in ZMLP')
+
+        # Sync the project tier.
         if hasattr(self, 'subscription'):
             client.put(f'/api/v1/projects/{self.id}/_update_tier',
                        {'tier': self.subscription.tier.upper()})
+
+        # Sync the project status.
+        if self.is_active:
+            project_status_response = client.put(f'/api/v1/projects/{self.id}/_enable', {})
+        else:
+            project_status_response = client.put(f'/api/v1/projects/{self.id}/_disable', {})
+        if not project_status_response.get('success'):
+            raise IOError(f'Unable to sync project {self.id} status.')
 
 
 class Membership(models.Model):
@@ -100,10 +107,6 @@ class Membership(models.Model):
             client(ZmlpClient): Client used to communicate with ZMLP.
 
         """
-        # TODO: Remove this logic when the Superuser does not use the inception key.
-        if self.user.email == settings.SUPERUSER_EMAIL:
-            return
-
         if not self.apikey:
             self.apikey = create_zmlp_api_key(client,
                                               self._get_api_key_name(),

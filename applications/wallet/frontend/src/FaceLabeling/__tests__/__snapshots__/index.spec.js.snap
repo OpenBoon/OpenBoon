@@ -678,7 +678,7 @@ Array [
       <svg
         color="#c92300"
         data-file-name="warning.svg"
-        width={20}
+        height={20}
       />
       <div
         className="emotion-0"

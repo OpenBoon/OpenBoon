@@ -97,7 +97,7 @@ const FilterTextDetection = ({
             }}
           >
             <CrossSvg
-              width={ICON_SIZE}
+              height={ICON_SIZE}
               css={{ color: colors.structure.steel }}
             />
           </Button>
@@ -189,7 +189,7 @@ const FilterTextDetection = ({
             }}
           >
             <SearchSvg
-              width={ICON_SIZE}
+              height={ICON_SIZE}
               css={{ color: colors.structure.white }}
             />
           </button>

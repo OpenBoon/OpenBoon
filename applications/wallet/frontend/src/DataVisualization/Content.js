@@ -5,7 +5,10 @@ import useSWR from 'swr'
 import { spacing } from '../Styles'
 
 import { cleanup } from '../Filters/helpers'
-import { useLocalStorageReducer } from '../LocalStorage/helpers'
+import {
+  useLocalStorageReducer,
+  useLocalStorageState,
+} from '../LocalStorage/helpers'
 
 import VisualizerNavigation from '../Visualizer/Navigation'
 
@@ -37,6 +40,11 @@ const DataVisualizationContent = () => {
     initialState: [],
   })
 
+  const [layouts, setLayouts] = useLocalStorageState({
+    key: `Charts.${projectId}`,
+    initialValue: {},
+  })
+
   const [isCreating, setIsCreating] = useState(charts.length === 0)
 
   return (
@@ -62,10 +70,17 @@ const DataVisualizationContent = () => {
           <DataVisualizationActions
             dispatch={dispatch}
             setIsCreating={setIsCreating}
+            setLayouts={setLayouts}
           />
 
           <div css={{ flex: 1 }}>
-            <Charts projectId={projectId} charts={charts} dispatch={dispatch} />
+            <Charts
+              projectId={projectId}
+              charts={charts}
+              layouts={layouts}
+              dispatch={dispatch}
+              setLayouts={setLayouts}
+            />
           </div>
         </div>
       )}
