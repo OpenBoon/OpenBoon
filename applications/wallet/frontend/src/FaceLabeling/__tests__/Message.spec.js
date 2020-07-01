@@ -12,6 +12,7 @@ describe('<FaceLabelingMessage />', () => {
         projectId={PROJECT_ID}
         previousJobId=""
         currentJobId={JOB_ID}
+        error=""
       />,
     )
 
@@ -24,6 +25,7 @@ describe('<FaceLabelingMessage />', () => {
         projectId={PROJECT_ID}
         previousJobId={JOB_ID}
         currentJobId=""
+        error=""
       />,
     )
 
@@ -36,6 +38,20 @@ describe('<FaceLabelingMessage />', () => {
         projectId={PROJECT_ID}
         previousJobId=""
         currentJobId=""
+        error=""
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when there is an error', () => {
+    const component = TestRenderer.create(
+      <FaceLabelingMessage
+        projectId={PROJECT_ID}
+        previousJobId=""
+        currentJobId=""
+        error="Error"
       />,
     )
 
