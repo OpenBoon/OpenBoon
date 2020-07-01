@@ -9,9 +9,8 @@ User = get_user_model()
 
 
 def sync_project_with_zmlp(apps, schema_editor):
-    admin = User.objects.get(email=settings.SUPERUSER_EMAIL)
     for project in Project.objects.all():
-        project.sync_with_zmlp(admin)
+        project.sync_with_zmlp()
 
 
 class Migration(migrations.Migration):
