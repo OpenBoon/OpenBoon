@@ -12,12 +12,8 @@ const FaceLabelingTrainApply = ({ projectId }) => {
   const jobIdRef = useRef()
 
   const {
-    data: { unappliedChanges },
-  } = useSWR(`/api/v1/projects/${projectId}/faces/unapplied_changes/`)
-
-  const {
-    data: { jobId },
-  } = useSWR(`/api/v1/projects/${projectId}/faces/training_job/`, {
+    data: { jobId, unappliedChanges },
+  } = useSWR(`/api/v1/projects/${projectId}/faces/status/`, {
     refreshInterval: 3000,
   })
 
