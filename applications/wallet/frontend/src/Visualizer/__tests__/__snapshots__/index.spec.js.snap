@@ -79,6 +79,9 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -299,9 +302,8 @@ exports[`<Visualizer /> should render properly 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="filter.svg"
-            width={20}
+            height={20}
           />
         </button>
         <div
@@ -411,7 +413,7 @@ exports[`<Visualizer /> should render properly 1`] = `
           >
             <svg
               data-file-name="circleMinus.svg"
-              width={20}
+              height={20}
             />
           </button>
           <button
@@ -422,7 +424,7 @@ exports[`<Visualizer /> should render properly 1`] = `
           >
             <svg
               data-file-name="circlePlus.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -442,9 +444,8 @@ exports[`<Visualizer /> should render properly 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="information.svg"
-            width={20}
+            height={20}
           />
         </button>
         <button
@@ -455,9 +456,8 @@ exports[`<Visualizer /> should render properly 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="faceDetection.svg"
-            width={20}
+            height={20}
           />
         </button>
         <button
@@ -468,10 +468,9 @@ exports[`<Visualizer /> should render properly 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             className="emotion-11"
             data-file-name="upload.svg"
-            width={20}
+            height={20}
           />
         </button>
         <button
@@ -482,9 +481,8 @@ exports[`<Visualizer /> should render properly 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="trash.svg"
-            width={20}
+            height={20}
           />
         </button>
         <div
@@ -575,6 +573,9 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -795,9 +796,8 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="filter.svg"
-            width={20}
+            height={20}
           />
         </button>
         <div
@@ -907,7 +907,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           >
             <svg
               data-file-name="circleMinus.svg"
-              width={20}
+              height={20}
             />
           </button>
           <button
@@ -918,7 +918,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           >
             <svg
               data-file-name="circlePlus.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -938,9 +938,8 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="information.svg"
-            width={20}
+            height={20}
           />
         </button>
         <button
@@ -951,9 +950,8 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="faceDetection.svg"
-            width={20}
+            height={20}
           />
         </button>
         <button
@@ -964,10 +962,9 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             className="emotion-11"
             data-file-name="upload.svg"
-            width={20}
+            height={20}
           />
         </button>
         <button
@@ -978,9 +975,8 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="trash.svg"
-            width={20}
+            height={20}
           />
         </button>
         <div

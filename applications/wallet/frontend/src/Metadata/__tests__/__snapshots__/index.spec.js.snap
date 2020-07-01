@@ -154,7 +154,7 @@ Array [
           className="emotion-2"
           color="#808080"
           data-file-name="copy.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>
@@ -422,7 +422,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -449,7 +449,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -476,7 +476,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -503,7 +503,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -530,7 +530,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -557,7 +557,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -584,7 +584,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -611,7 +611,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -766,7 +766,7 @@ Array [
           className="emotion-2"
           color="#808080"
           data-file-name="copy.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>

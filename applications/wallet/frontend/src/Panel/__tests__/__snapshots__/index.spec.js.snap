@@ -32,6 +32,9 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -95,9 +98,8 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
       type="button"
     >
       <svg
-        aria-hidden={true}
         data-file-name="dashboard.svg"
-        width={20}
+        height={20}
       />
     </button>
     <div
@@ -146,6 +148,9 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -319,10 +324,9 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             className="emotion-1"
             data-file-name="doubleChevron.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
@@ -344,9 +348,8 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
       type="button"
     >
       <svg
-        aria-hidden={true}
         data-file-name="dashboard.svg"
-        width={20}
+        height={20}
       />
     </button>
     <div
@@ -407,6 +410,9 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -451,9 +457,8 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
       type="button"
     >
       <svg
-        aria-hidden={true}
         data-file-name="dashboard.svg"
-        width={20}
+        height={20}
       />
     </button>
     <div
@@ -521,6 +526,9 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -662,9 +670,8 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
       type="button"
     >
       <svg
-        aria-hidden={true}
         data-file-name="dashboard.svg"
-        width={20}
+        height={20}
       />
     </button>
     <div
@@ -695,10 +702,9 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             className="emotion-4"
             data-file-name="doubleChevron.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>

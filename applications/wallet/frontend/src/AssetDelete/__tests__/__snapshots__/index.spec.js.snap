@@ -363,7 +363,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
       <svg
         color="#c92300"
         data-file-name="warning.svg"
-        width={20}
+        height={20}
       />
       <div
         className="emotion-0"
@@ -445,7 +445,7 @@ exports[`<AssetDelete /> should render properly when asset is deleted 1`] = `
     <svg
       color="#4ac565"
       data-file-name="checkmark.svg"
-      width={20}
+      height={20}
     />
     <div
       className="emotion-0"

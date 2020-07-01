@@ -146,7 +146,7 @@ Array [
             className="emotion-1"
             color="#808080"
             data-file-name="copy.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
@@ -660,7 +660,7 @@ Array [
           className="emotion-1"
           color="#808080"
           data-file-name="copy.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>
@@ -857,7 +857,7 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
         className="emotion-2"
         color="#808080"
         data-file-name="copy.svg"
-        width={20}
+        height={20}
       />
     </button>
   </div>
@@ -1004,7 +1004,7 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
         className="emotion-2"
         color="#808080"
         data-file-name="copy.svg"
-        width={20}
+        height={20}
       />
     </button>
   </div>
@@ -1395,7 +1395,7 @@ Array [
             className="emotion-1"
             color="#808080"
             data-file-name="copy.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
@@ -1438,7 +1438,7 @@ Array [
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
@@ -1450,7 +1450,7 @@ Array [
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
           </div>
@@ -1482,7 +1482,7 @@ Array [
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
@@ -1494,7 +1494,7 @@ Array [
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
           </div>
@@ -1526,7 +1526,7 @@ Array [
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
@@ -1538,7 +1538,7 @@ Array [
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
           </div>
@@ -1579,7 +1579,7 @@ Array [
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
@@ -1591,7 +1591,7 @@ Array [
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
             <div
@@ -1757,7 +1757,7 @@ Array [
             className="emotion-1"
             color="#808080"
             data-file-name="copy.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>

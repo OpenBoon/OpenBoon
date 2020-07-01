@@ -68,7 +68,8 @@ const AssetContent = () => {
             }}
           >
             <div css={{ display: 'flex' }}>
-              <CrossSvg width={20} />
+              <CrossSvg height={ICON_SIZE} />
+
               <span
                 css={{
                   paddingLeft: spacing.base,
@@ -92,12 +93,12 @@ const AssetContent = () => {
           {{
             metadata: {
               title: 'Asset Metadata',
-              icon: <InformationSvg width={ICON_SIZE} aria-hidden />,
+              icon: <InformationSvg height={ICON_SIZE} />,
               content: <Metadata />,
             },
             delete: {
               title: 'Delete',
-              icon: <TrashSvg width={ICON_SIZE} aria-hidden />,
+              icon: <TrashSvg height={ICON_SIZE} />,
               content: <AssetDelete />,
             },
           }}
