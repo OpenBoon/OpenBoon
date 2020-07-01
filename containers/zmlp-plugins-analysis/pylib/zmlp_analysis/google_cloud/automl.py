@@ -2,7 +2,7 @@ import re
 import logging
 
 import backoff
-from google.api_core.exceptions import ResourceExhausted
+from google.api_core.exceptions import ResourceExhausted, GoogleAPICallError
 from google.cloud import automl_v1beta1 as automl
 
 from zmlpsdk import Argument, AssetProcessor
@@ -31,7 +31,7 @@ class AutoMLModelClassifier(AssetProcessor):
                               toolTip="The model Id"))
         self.add_arg(Argument("model_path", "string",
                               toolTip=AutoMLModelClassifier.tool_tips['model_path']))
-        self.add_arg(Argument("score_threshold", "string", default="0.8",
+        self.add_arg(Argument("score_threshold", "string", default="0.5",
                               toolTip="score threshold as a float in string format"))
 
         self.app_model = None
@@ -54,14 +54,14 @@ class AutoMLModelClassifier(AssetProcessor):
         asset = frame.asset
         predictions = self.predict(asset)
 
-        self.reactor.emit_status("Prediction results:")
+        logging.debug("Prediction results:")
         analysis = LabelDetectionAnalysis()
-        for prediction in predictions.payload:
+        for prediction in predictions:
             label = prediction.display_name
             score = prediction.classification.score
 
-            self.reactor.emit_status("Predicted class name: {}".format(label))
-            self.reactor.emit_status("Predicted class score: {}".format(score))
+            logging.debug("Predicted class name: {}".format(label))
+            logging.debug("Predicted class score: {}".format(score))
 
             analysis.add_label_and_score(label, score)
 
@@ -89,8 +89,16 @@ class AutoMLModelClassifier(AssetProcessor):
         payload = automl.types.ExamplePayload(image=image)
         params = {"score_threshold": self.score_threshold}
 
-        response = self.client.predict(model_full_id, payload, params)
-        return response
+        try:
+            response = self.client.predict(model_full_id, payload, params)
+        except GoogleAPICallError:
+            deploy_response = self.client.deploy_model(model_full_id)
+            self.reactor.emit_status("Re-deploying...")
+
+            self.reactor.emit_status("Deployment complete. {}".format(deploy_response.result()))
+            response = self.client.predict(model_full_id, payload, params)
+
+        return response.payload
 
     def _create_payload(self, asset, level=1):
         """Create image payload for prediction

@@ -2,22 +2,23 @@
 
 import os
 import logging
+import pytest
 from unittest.mock import patch
 
 from zmlp.app import ModelApp
 from zmlp.entity import Model
 from zmlpsdk import Frame
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, zorroa_test_path, TestAsset
 from ..automl import AutoMLVisionModelProcessor, AutoMLModelClassifier
 
 logging.basicConfig()
-CREDS = os.path.join(zorroa_test_data(), 'creds', 'zorroa-poc-dev-access.json').split("file://")[-1]
+CREDS = zorroa_test_path('creds/zorroa-poc-dev-access.json')
 
 
 class AutoMLVisionUnitTests(PluginUnitTestCase):
     ds_id = "ds-id-12345"
     model_id = "model-id-12345"
-    toucan_fname = zorroa_test_data('images/set01/toucan.jpg').split("file://")[-1]
+    toucan_fname = zorroa_test_path("training/test_dsy.jpg")
 
     def setUp(self):
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = CREDS
@@ -61,13 +62,14 @@ class AutoMLVisionUnitTests(PluginUnitTestCase):
     @patch.object(ModelApp, "get_model")
     @patch("zmlp_analysis.google_cloud.automl.get_proxy_level_path")
     def test_process(self, proxy_patch, model_patch):
+        model_name = "flowers"
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
                 "dataSetId": self.ds_id,
                 "type": "LABEL_DETECTION_MOBILENET2",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
-                "name": "flowers",
+                "name": model_name,
             }
         )
         proxy_patch.return_value = self.toucan_fname
@@ -80,7 +82,8 @@ class AutoMLVisionUnitTests(PluginUnitTestCase):
             'project_id': 'zorroa-poc-dev',
             'region': 'us-central1',
             'model_id': self.model_id,
-            'model_path': 'ICN94225947477147648'
+            'model_path': 'ICN94225947477147648',
+            'score_threshold': "0.1"
         }
         self.init_processor(self.processor, args)
 
@@ -88,9 +91,10 @@ class AutoMLVisionUnitTests(PluginUnitTestCase):
         self.processor.process(frame)
 
         # Get the results
-        scores = frame.asset.get_attr('analysis.google.automl_vision.vision_01')
-        self.processor.logger.info(scores)
+        scores = frame.asset.get_attr('analysis.{}'.format(model_name))
 
         # Check the number of keys
-        self.assertEqual(len(scores.keys()), 1)
-        self.assertAlmostEqual(scores['fruit'], 0.9670690298080444)
+        assert list(scores.keys()) == ['type', 'count', 'predictions']
+        for prediction in scores['predictions']:
+            assert prediction['label'] == 'daisy'
+            assert prediction['score'] == pytest.approx(0.99, rel=1e-2)
