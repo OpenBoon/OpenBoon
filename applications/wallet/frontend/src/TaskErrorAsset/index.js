@@ -62,7 +62,7 @@ const TaskErrorAsset = ({ assetId }) => {
               border: constants.borders.tableRow,
             }}
           >
-            <FallbackSvg width={ASSET_THUMBNAIL_SIZE} />
+            <FallbackSvg height={ASSET_THUMBNAIL_SIZE} />
           </div>
         )}
 

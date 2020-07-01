@@ -683,7 +683,7 @@ exports[`<Assets /> should render properly 1`] = `
       >
         <svg
           data-file-name="circleMinus.svg"
-          width={20}
+          height={20}
         />
       </button>
       <button
@@ -694,7 +694,7 @@ exports[`<Assets /> should render properly 1`] = `
       >
         <svg
           data-file-name="circlePlus.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>
@@ -877,7 +877,7 @@ exports[`<Assets /> should render properly 2`] = `
       >
         <svg
           data-file-name="circleMinus.svg"
-          width={20}
+          height={20}
         />
       </button>
       <button
@@ -889,7 +889,7 @@ exports[`<Assets /> should render properly 2`] = `
       >
         <svg
           data-file-name="circlePlus.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>
@@ -1073,7 +1073,7 @@ exports[`<Assets /> should render properly 3`] = `
       >
         <svg
           data-file-name="circleMinus.svg"
-          width={20}
+          height={20}
         />
       </button>
       <button
@@ -1084,7 +1084,7 @@ exports[`<Assets /> should render properly 3`] = `
       >
         <svg
           data-file-name="circlePlus.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>

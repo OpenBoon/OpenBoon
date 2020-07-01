@@ -352,9 +352,8 @@ Array [
                 className="emotion-10"
               >
                 <svg
-                  aria-hidden={true}
                   data-file-name="datasources.svg"
-                  width={20}
+                  height={20}
                 />
                 Data Sources
               </h5>
@@ -399,9 +398,8 @@ Array [
                 className="emotion-10"
               >
                 <svg
-                  aria-hidden={true}
                   data-file-name="jobQueue.svg"
-                  width={20}
+                  height={20}
                 />
                 Job Queue
               </h5>
@@ -446,9 +444,8 @@ Array [
                 className="emotion-10"
               >
                 <svg
-                  aria-hidden={true}
                   data-file-name="visualizer.svg"
-                  width={20}
+                  height={20}
                 />
                 Visualizer
               </h5>
@@ -485,10 +482,9 @@ Array [
         >
           <h3>
             <svg
-              aria-hidden={true}
               color="#b3b3b3"
               data-file-name="key.svg"
-              width={20}
+              height={20}
             />
             Project API Keys
           </h3>

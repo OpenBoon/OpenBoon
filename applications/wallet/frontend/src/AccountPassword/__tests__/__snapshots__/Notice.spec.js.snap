@@ -420,7 +420,7 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
         <svg
           color="#c92300"
           data-file-name="warning.svg"
-          width={20}
+          height={20}
         />
         <div
           className="emotion-19"

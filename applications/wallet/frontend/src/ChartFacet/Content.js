@@ -196,7 +196,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
                       justifyContent: 'center',
                     }}
                   >
-                    <FilterSvg width={ICON_SIZE} />
+                    <FilterSvg height={ICON_SIZE} />
                   </div>
                 </div>
               </Button>
@@ -237,7 +237,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
         >
           <div css={{ display: 'flex', alignItems: 'center' }}>
             <div css={{ display: 'flex', paddingRight: spacing.small }}>
-              <FilterSvg width={ICON_SIZE} />
+              <FilterSvg height={ICON_SIZE} />
             </div>
             Add Field Filter
           </div>

@@ -10,6 +10,8 @@ import ErrorWarningSvg from '../Icons/errorWarning.svg'
 import TaskErrorsMenu from './Menu'
 import { colors, spacing, typography } from '../Styles'
 
+const ICON_SIZE = 18
+
 const TaskErrorsRow = ({
   projectId,
   jobId,
@@ -54,12 +56,18 @@ const TaskErrorsRow = ({
         >
           {fatal ? (
             <>
-              <ErrorFatalSvg width={18} color={colors.signal.warning.base} />
+              <ErrorFatalSvg
+                height={ICON_SIZE}
+                color={colors.signal.warning.base}
+              />
               <span>Fatal</span>
             </>
           ) : (
             <>
-              <ErrorWarningSvg width={18} color={colors.signal.canary.strong} />
+              <ErrorWarningSvg
+                height={ICON_SIZE}
+                color={colors.signal.canary.strong}
+              />
               <span>Warning</span>
             </>
           )}

@@ -181,7 +181,7 @@ exports[`<JobMenu /> should render properly 1`] = `
       Modify Job
       <svg
         data-file-name="chevron.svg"
-        width={20}
+        height={20}
       />
     </button>
     <div

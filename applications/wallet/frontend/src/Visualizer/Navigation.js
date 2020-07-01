@@ -66,7 +66,7 @@ const VisualizerNavigation = ({ itemCount }) => {
                   : colors.structure.steel,
             }}
           >
-            <AssetsSvg width={ICON_SIZE} aria-hidden /> Assets
+            <AssetsSvg height={ICON_SIZE} /> Assets
           </a>
         </Link>
 
@@ -96,7 +96,7 @@ const VisualizerNavigation = ({ itemCount }) => {
                   : colors.structure.steel,
             }}
           >
-            <ChartsSvg width={ICON_SIZE} aria-hidden /> Data Visualization
+            <ChartsSvg height={ICON_SIZE} /> Data Visualization
           </a>
         </Link>
       </div>

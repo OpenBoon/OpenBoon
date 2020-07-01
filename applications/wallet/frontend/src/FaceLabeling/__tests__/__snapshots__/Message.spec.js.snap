@@ -101,7 +101,7 @@ exports[`<FaceLabelingMessage /> should render properly when there was a previou
     <svg
       color="#4ac565"
       data-file-name="checkmark.svg"
-      width={20}
+      height={20}
     />
     <div
       className="emotion-0"

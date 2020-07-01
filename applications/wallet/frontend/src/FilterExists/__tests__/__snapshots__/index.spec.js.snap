@@ -451,7 +451,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
         className="emotion-0"
         color="#808080"
         data-file-name="chevron.svg"
-        width={20}
+        height={20}
       />
     </button>
     <h4
@@ -460,7 +460,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
       <svg
         color="#73b61c"
         data-file-name="missing.svg"
-        width={20}
+        height={20}
       />
       <span
         className="emotion-2"
@@ -481,7 +481,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
           className="emotion-4"
           color="#808080"
           data-file-name="hidden.svg"
-          width={20}
+          height={20}
         />
       </button>
       <button
@@ -494,7 +494,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
           className="emotion-4"
           color="#808080"
           data-file-name="cross.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>
@@ -549,7 +549,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
             >
               <svg
                 data-file-name="exists.svg"
-                width={20}
+                height={20}
               />
               <div
                 className="emotion-10"
@@ -569,7 +569,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
             >
               <svg
                 data-file-name="missing.svg"
-                width={20}
+                height={20}
               />
               <div
                 className="emotion-10"
@@ -1049,7 +1049,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
         className="emotion-0"
         color="#808080"
         data-file-name="chevron.svg"
-        width={20}
+        height={20}
       />
     </button>
     <h4
@@ -1058,7 +1058,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
       <svg
         color="#73b61c"
         data-file-name="exists.svg"
-        width={20}
+        height={20}
       />
       <span
         className="emotion-2"
@@ -1079,7 +1079,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
           className="emotion-4"
           color="#808080"
           data-file-name="hidden.svg"
-          width={20}
+          height={20}
         />
       </button>
       <button
@@ -1092,7 +1092,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
           className="emotion-4"
           color="#808080"
           data-file-name="cross.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>
@@ -1147,7 +1147,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
             >
               <svg
                 data-file-name="exists.svg"
-                width={20}
+                height={20}
               />
               <div
                 className="emotion-10"
@@ -1167,7 +1167,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
             >
               <svg
                 data-file-name="missing.svg"
-                width={20}
+                height={20}
               />
               <div
                 className="emotion-10"
