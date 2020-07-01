@@ -36,11 +36,7 @@ def create_project_zero(apps, schema_editor):
                                                   roles=[r['name'] for r in settings.ROLES])[0]
 
     # Sync Project Zero to Zmlp
-    try:
-        sync_project(project_zero, membership)
-
-    except requests.exceptions.ConnectionError:
-        logger.error('Unable to sync Project Zero to ZMLP, please check.')
+    sync_project(project_zero, membership)
 
 
 @backoff.on_exception(backoff.expo, requests.exceptions.ConnectionError, max_time=300)
