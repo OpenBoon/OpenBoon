@@ -16,6 +16,7 @@ const JobTasks = () => {
       legend="Tasks"
       url={`/api/v1/projects/${projectId}/jobs/${jobId}/tasks/`}
       refreshKeys={[`/api/v1/projects/${projectId}/jobs/${jobId}/`]}
+      refreshButton
       columns={[
         'Task State',
         'Task ID',

@@ -143,7 +143,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-24 {
+  .emotion-20 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -154,7 +154,7 @@ Array [
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -177,85 +177,14 @@ Array [
   font-weight: 400;
 }
 
-.emotion-4 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
-  background-color: #73b61c;
-}
-
-.emotion-4:hover {
-  background-color: #96c955;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 {
-  padding-left: 4px;
-}
-
-.emotion-23 {
+.emotion-19 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-6 {
+.emotion-2 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -266,22 +195,22 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-2:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-2:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-21 {
+.emotion-17 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -289,38 +218,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-21 tr {
+.emotion-17 tr {
   background-color: #252525;
 }
 
-.emotion-21 tr:nth-of-type(2n) {
+.emotion-17 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-21 tr:hover {
+.emotion-17 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-21 tr:hover .gear {
+.emotion-17 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-21 tr:hover td {
+.emotion-17 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-21 tr:hover td:first-of-type {
+.emotion-17 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-21 tr:hover td:last-of-type {
+.emotion-17 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-21 td {
+.emotion-17 td {
   max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -332,16 +261,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-21 td:first-of-type {
+.emotion-17 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-21 td:last-of-type {
+.emotion-17 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-10 {
+.emotion-6 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -353,11 +282,11 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-16 {
+.emotion-12 {
   position: relative;
 }
 
-.emotion-15 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -394,25 +323,25 @@ Array [
   border-radius: 32px;
 }
 
-.emotion-15:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-15:hover {
+.emotion-11:hover {
   color: #ffffff !important;
   background-color: #808080;
 }
 
 <div
-    className="emotion-24"
+    className="emotion-20"
   >
     <div
-      className="emotion-5"
+      className="emotion-1"
     >
       <h3
         className="emotion-0"
@@ -422,55 +351,33 @@ Array [
         : 
         2
       </h3>
-      <button
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-3"
-        >
-          <svg
-            className="emotion-1"
-            color="#ffffff"
-            data-file-name="refresh.svg"
-            height={20}
-          />
-          <div
-            className="emotion-2"
-          >
-            Refresh 
-            Keys
-          </div>
-        </div>
-      </button>
     </div>
     <div
-      className="emotion-23"
+      className="emotion-19"
     >
       <div
-        className="emotion-22"
+        className="emotion-18"
       >
         <table
-          className="emotion-21"
+          className="emotion-17"
         >
           <thead>
             <tr>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 API Key Name
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Permissions
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-4"
                 >
                   <svg
                     data-file-name="gear.svg"
@@ -487,38 +394,38 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                    Assets Read
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                    Assets Import
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                    Project Files Read
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                    System Project Decrypt
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                    Project Files Write
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -537,23 +444,23 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                    Api Key Manage
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                    Project Manage
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-16"
+                  className="emotion-12"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-15"
+                    className="gear emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
@@ -723,7 +630,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-15 {
+  .emotion-11 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -734,7 +641,7 @@ Array [
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -757,85 +664,14 @@ Array [
   font-weight: 400;
 }
 
-.emotion-4 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
-  background-color: #73b61c;
-}
-
-.emotion-4:hover {
-  background-color: #96c955;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 {
-  padding-left: 4px;
-}
-
-.emotion-14 {
+.emotion-10 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-13 {
+.emotion-9 {
   position: absolute;
   top: 0;
   left: 0;
@@ -843,7 +679,7 @@ Array [
   bottom: 0;
 }
 
-.emotion-12 {
+.emotion-8 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -851,38 +687,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-12 tr {
+.emotion-8 tr {
   background-color: #252525;
 }
 
-.emotion-12 tr:nth-of-type(2n) {
+.emotion-8 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-12 tr:hover {
+.emotion-8 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-12 tr:hover .gear {
+.emotion-8 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-12 tr:hover td {
+.emotion-8 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-12 tr:hover td:first-of-type {
+.emotion-8 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-12 tr:hover td:last-of-type {
+.emotion-8 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-12 td {
+.emotion-8 td {
   max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -894,16 +730,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-12 td:first-of-type {
+.emotion-8 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-12 td:last-of-type {
+.emotion-8 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-2 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -914,27 +750,27 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-2:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-2:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-7 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-10 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -957,10 +793,10 @@ Array [
 }
 
 <div
-    className="emotion-15"
+    className="emotion-11"
   >
     <div
-      className="emotion-5"
+      className="emotion-1"
     >
       <h3
         className="emotion-0"
@@ -970,55 +806,33 @@ Array [
         : 
         0
       </h3>
-      <button
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-3"
-        >
-          <svg
-            className="emotion-1"
-            color="#ffffff"
-            data-file-name="refresh.svg"
-            height={20}
-          />
-          <div
-            className="emotion-2"
-          >
-            Refresh 
-            Keys
-          </div>
-        </div>
-      </button>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-10"
     >
       <div
-        className="emotion-13"
+        className="emotion-9"
       >
         <table
-          className="emotion-12"
+          className="emotion-8"
         >
           <thead>
             <tr>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 API Key Name
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Permissions
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-4"
                 >
                   <svg
                     data-file-name="gear.svg"
@@ -1030,13 +844,13 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-11"
+              className="emotion-7"
             >
               <td
                 colSpan={3}
               >
                 <div
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                   No api keys
                 </div>
