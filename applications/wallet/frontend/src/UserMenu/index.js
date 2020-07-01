@@ -36,7 +36,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
             onClick={onClick}
             isDisabled={false}
           >
-            <div css={{ display: 'flex' }}>
+            <div css={{ display: 'flex', alignItems: 'center' }}>
               <div
                 css={{
                   display: 'flex',
@@ -62,7 +62,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                 }`}
               </div>
               <ChevronSvg
-                width={ICON_SIZE}
+                height={ICON_SIZE}
                 color={colors.structure.steel}
                 css={{
                   marginLeft: spacing.base,

@@ -336,7 +336,7 @@ exports[`<ChartRange /> should render properly 1`] = `
           <svg
             className="emotion-1"
             data-file-name="pen.svg"
-            width={20}
+            height={20}
           />
         </button>
         <div
@@ -352,7 +352,7 @@ exports[`<ChartRange /> should render properly 1`] = `
           <svg
             className="emotion-1"
             data-file-name="cross.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
@@ -446,7 +446,7 @@ exports[`<ChartRange /> should render properly 1`] = `
                 >
                   <svg
                     data-file-name="filter.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
                 Add Filter
@@ -748,7 +748,7 @@ exports[`<ChartRange /> should render properly without data 1`] = `
           <svg
             className="emotion-1"
             data-file-name="pen.svg"
-            width={20}
+            height={20}
           />
         </button>
         <div
@@ -764,7 +764,7 @@ exports[`<ChartRange /> should render properly without data 1`] = `
           <svg
             className="emotion-1"
             data-file-name="cross.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
@@ -798,7 +798,7 @@ exports[`<ChartRange /> should render properly without data 1`] = `
                 >
                   <svg
                     data-file-name="filter.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
                 Add Filter

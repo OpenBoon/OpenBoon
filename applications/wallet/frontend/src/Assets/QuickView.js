@@ -11,6 +11,8 @@ import SuspenseBoundary from '../SuspenseBoundary'
 import AssetAsset from '../Asset/Asset'
 import { formatUrl } from '../Filters/helpers'
 
+const ICON_SIZE = 20
+
 const AssetsQuickView = ({ assets, columnCount }) => {
   const {
     query: { projectId, id: selectedId, query },
@@ -140,7 +142,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
             },
           }}
         >
-          <CrossSvg width={20} />
+          <CrossSvg height={ICON_SIZE} />
         </Button>
 
         <div

@@ -22,6 +22,7 @@ const PIPELINE_COLORS = [
 const CONTAINER_HEIGHT = 9
 const HOVER_HEIGHT = 13
 const MIN_WIDTH = 8
+const ICON_SIZE = 20
 
 const MetadataPrettyMetricsBar = ({ pipeline }) => {
   const [legend, setLegend] = useState({})
@@ -115,7 +116,7 @@ const MetadataPrettyMetricsBar = ({ pipeline }) => {
               }}
             >
               <div css={{ display: 'flex', alignItems: 'center' }}>
-                <ClockSvg width={20} />
+                <ClockSvg height={ICON_SIZE} />
                 <div
                   css={{
                     paddingLeft: spacing.base,

@@ -48,7 +48,7 @@ exports[`<TaskErrorAsset /> should render properly when asset has no proxies 1`]
     >
       <svg
         data-file-name="fallback.svg"
-        width={48}
+        height={48}
       />
     </div>
     <div

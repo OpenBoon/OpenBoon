@@ -309,7 +309,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
           className="emotion-1"
           color="#ffffff"
           data-file-name="refresh.svg"
-          width={20}
+          height={20}
         />
         <div
           className="emotion-2"
@@ -369,7 +369,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               >
                 <svg
                   data-file-name="gear.svg"
-                  width={20}
+                  height={20}
                 />
               </div>
             </th>
@@ -387,7 +387,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 <svg
                   color="#d6680b"
                   data-file-name="errorWarning.svg"
-                  width={18}
+                  height={18}
                 />
                 <span>
                   Warning
@@ -445,7 +445,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </button>
               </div>
@@ -462,7 +462,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 <svg
                   color="#c92300"
                   data-file-name="errorFatal.svg"
-                  width={18}
+                  height={18}
                 />
                 <span>
                   Fatal
@@ -520,7 +520,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </button>
               </div>
@@ -537,7 +537,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 <svg
                   color="#d6680b"
                   data-file-name="errorWarning.svg"
-                  width={18}
+                  height={18}
                 />
                 <span>
                   Warning
@@ -595,7 +595,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </button>
               </div>
@@ -612,7 +612,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 <svg
                   color="#c92300"
                   data-file-name="errorFatal.svg"
-                  width={18}
+                  height={18}
                 />
                 <span>
                   Fatal
@@ -670,7 +670,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </button>
               </div>
@@ -687,7 +687,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 <svg
                   color="#d6680b"
                   data-file-name="errorWarning.svg"
-                  width={18}
+                  height={18}
                 />
                 <span>
                   Warning
@@ -745,7 +745,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </button>
               </div>
@@ -762,7 +762,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 <svg
                   color="#d6680b"
                   data-file-name="errorWarning.svg"
-                  width={18}
+                  height={18}
                 />
                 <span>
                   Warning
@@ -820,7 +820,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </button>
               </div>
@@ -1115,7 +1115,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
           className="emotion-1"
           color="#ffffff"
           data-file-name="refresh.svg"
-          width={20}
+          height={20}
         />
         <div
           className="emotion-2"
@@ -1175,7 +1175,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
               >
                 <svg
                   data-file-name="gear.svg"
-                  width={20}
+                  height={20}
                 />
               </div>
             </th>

@@ -12,11 +12,11 @@ const ICON_SIZE = 20
 const STYLES = {
   SUCCESS: {
     backgroundColor: colors.signal.grass.background,
-    icon: <CheckmarkSvg width={ICON_SIZE} color={colors.signal.grass.base} />,
+    icon: <CheckmarkSvg height={ICON_SIZE} color={colors.signal.grass.base} />,
   },
   ERROR: {
     backgroundColor: colors.signal.warning.background,
-    icon: <WarningSvg width={ICON_SIZE} color={colors.signal.warning.base} />,
+    icon: <WarningSvg height={ICON_SIZE} color={colors.signal.warning.base} />,
   },
   PROCESSING: {
     backgroundColor: colors.signal.sky.background,
