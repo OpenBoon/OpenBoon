@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
@@ -5,10 +6,24 @@ import { constants, spacing } from '../Styles'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
+import FaceLabelingMessage from './Message'
+
 const FaceLabelingTrainApply = ({ projectId }) => {
+  const jobIdRef = useRef()
+
   const {
     data: { unappliedChanges },
   } = useSWR(`/api/v1/projects/${projectId}/faces/unapplied_changes/`)
+
+  const {
+    data: { jobId },
+  } = useSWR(`/api/v1/projects/${projectId}/faces/training_job/`, {
+    refreshInterval: 3000,
+  })
+
+  useEffect(() => {
+    jobIdRef.current = jobId
+  }, [jobId])
 
   return (
     <div
@@ -17,6 +32,12 @@ const FaceLabelingTrainApply = ({ projectId }) => {
         borderBottom: constants.borders.divider,
       }}
     >
+      <FaceLabelingMessage
+        projectId={projectId}
+        previousJobId={jobIdRef.current}
+        currentJobId={jobId}
+      />
+
       <span>
         Once a name has been added to a face, training can begin. Names can
         continue to be edited as needed.
@@ -27,7 +48,7 @@ const FaceLabelingTrainApply = ({ projectId }) => {
         onClick={console.warn}
         isDisabled={!unappliedChanges}
       >
-        Train &amp; Apply
+        {jobId ? 'Override Current Training & Re-apply' : 'Train & Apply'}
       </Button>
     </div>
   )

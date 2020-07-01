@@ -364,7 +364,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
               <svg
                 className="emotion-4"
                 data-file-name="checkmark.svg"
-                width={20}
+                height={20}
               />
             </div>
           </div>

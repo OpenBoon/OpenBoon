@@ -394,65 +394,6 @@ class ProjectViewSet(ConvertCamelToSnakeViewSetMixin,
     def get_queryset(self):
         return self.request.user.projects.filter(is_active=True)
 
-    @transaction.atomic
-    def create(self, request):
-        """
-        Creates a project in both Wallet and ZMLP. Only the SuperUser, who has an
-        API Key/Membership to the original Project Zero project can successfully
-        create a project through this view.
-
-        If an instance is brand new, use the Django Admin panel to create a Project Zero
-        project with ID: `00000000-0000-0000-0000-000000000000`, and then create the
-        subsequent membership for that project using the ZMLP Inception Key.
-
-        If a requested Project does not exist in either ZMLP or Wallet it will be created.
-        If the Project exists in both locations a 400 response will be returned. This
-        allows for the projects between both platforms to be synced.
-
-        *Note* This endpoint does not work for ZVI configured instances.
-
-        Args:
-            request: DRF request object
-
-        Returns:
-            DRF Response object on whether or not the request succeeded.
-        """
-        # Create it in Django first using the standard DRF pattern
-        exists_in_wallet = False
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            project = serializer.save()
-        else:
-            try:
-                if serializer.errors['id'][0].code == 'unique':
-                    project = Project.objects.get(id=serializer.data['id'],
-                                                  name=serializer.data['name'])
-                    if project:
-                        # If it already exists in Wallet let's wait and check if it
-                        # needs to be created in ZMLP
-                        exists_in_wallet = True
-                else:
-                    # If it's not an expected error let's immediately raise
-                    serializer.is_valid(raise_exception=True)
-            except (KeyError, IndexError):
-                # If the errors didn't match what we were expecting let's also raise
-                serializer.is_valid(raise_exception=True)
-            except Project.DoesNotExist:
-                return Response(data={'detail': 'A project with this id and a different name '
-                                                'already exists in Wallet. Send the correct name '
-                                                'or edit the Project in the Django Admin.'},
-                                status=status.HTTP_400_BAD_REQUEST)
-
-        # Create it in ZMLP now
-        project.sync_with_zmlp(request.user)
-
-        if exists_in_wallet:
-            return Response(data={'detail': ["A project with this id already "
-                                             "exists in Wallet and ZMLP."]},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
 
 class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     """Users who are Members of this Project.

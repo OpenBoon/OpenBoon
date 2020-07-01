@@ -8,14 +8,14 @@ const ICON_SIZE = 22
 export const TYPES = [
   {
     type: 'facet',
-    icon: <FacetSvg width={ICON_SIZE} />,
+    icon: <FacetSvg height={ICON_SIZE} />,
     name: 'Facet',
     legend:
       'Shows the range of values and the number of each for one for a selected field.',
   },
   {
     type: 'range',
-    icon: <RangeSvg width={ICON_SIZE} />,
+    icon: <RangeSvg height={ICON_SIZE} />,
     name: 'Range',
     legend:
       'Shows the min, max, mean, median, and mode for the numerical values of a selected field.',

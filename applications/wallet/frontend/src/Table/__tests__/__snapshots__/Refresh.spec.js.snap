@@ -84,7 +84,7 @@ exports[`<Refresh /> should render properly 1`] = `
       className="emotion-0"
       color="#ffffff"
       data-file-name="refresh.svg"
-      width={20}
+      height={20}
     />
     <div
       className="emotion-1"
@@ -199,7 +199,7 @@ exports[`<Refresh /> should render properly 2`] = `
       className="emotion-0"
       color="#ffffff"
       data-file-name="refresh.svg"
-      width={20}
+      height={20}
     />
     <div
       className="emotion-1"
@@ -295,7 +295,7 @@ exports[`<Refresh /> should render properly 3`] = `
       className="emotion-0"
       color="#ffffff"
       data-file-name="refresh.svg"
-      width={20}
+      height={20}
     />
     <div
       className="emotion-1"

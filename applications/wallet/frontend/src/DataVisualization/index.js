@@ -38,7 +38,7 @@ const DataVisualization = () => {
               {{
                 filters: {
                   title: 'Filters',
-                  icon: <FilterSvg width={ICON_SIZE} aria-hidden />,
+                  icon: <FilterSvg height={ICON_SIZE} />,
                   content: <Filters />,
                 },
               }}

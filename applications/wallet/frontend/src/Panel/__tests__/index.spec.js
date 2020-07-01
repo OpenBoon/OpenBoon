@@ -4,6 +4,8 @@ import Panel from '..'
 
 import DashboardSvg from '../../Icons/dashboard.svg'
 
+const ICON_SIZE = 20
+
 jest.mock('../../Resizeable', () => 'Resizeable')
 
 describe('<Panel />', () => {
@@ -13,7 +15,7 @@ describe('<Panel />', () => {
         {{
           filters: {
             title: 'Filters',
-            icon: <DashboardSvg width={20} aria-hidden />,
+            icon: <DashboardSvg height={ICON_SIZE} />,
             content: '',
           },
         }}
@@ -68,7 +70,7 @@ describe('<Panel />', () => {
         {{
           metadata: {
             title: 'Metadata',
-            icon: <DashboardSvg width={20} aria-hidden />,
+            icon: <DashboardSvg height={ICON_SIZE} />,
             content: '',
           },
         }}

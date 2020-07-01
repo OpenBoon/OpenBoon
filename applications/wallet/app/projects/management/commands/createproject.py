@@ -22,13 +22,13 @@ class Command(BaseCommand):
         parser.add_argument('admin_user', type=str)
 
     def handle(self, *args, **options):
-        superuser = User.objects.get(email=settings.SUPERUSER_EMAIL)
         with transaction.atomic():
             project = Project.all_objects.get_or_create(id=options['id'], name=options['name'])[0]
+            client = get_zmlp_superuser_client(project_id=str(project.id))
             if not project.is_active:
                 project.is_active = True
                 project.save()
-            project.sync_with_zmlp(superuser)
+            project.sync_with_zmlp()
             try:
                 subscription = Subscription.objects.get(project=project)
                 subscription.video_hours_limit = options['video_hours_limit']
@@ -43,7 +43,7 @@ class Command(BaseCommand):
             for role in settings.ROLES:
                 permissions += role['permissions']
             roles = [r['name'] for r in settings.ROLES]
-            client = get_zmlp_superuser_client(superuser, project_id=str(project.id))
+
             if not Membership.objects.filter(project=project, user=user).exists():
                 membership = Membership(project=project, user=user, roles=roles)
                 membership.apikey = create_zmlp_api_key(client, 'new project admin', permissions,
