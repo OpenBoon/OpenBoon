@@ -3,7 +3,6 @@ import useSWR from 'swr'
 
 import { colors, spacing, typography, constants } from '../Styles'
 
-import TableRefresh from '../Table/Refresh'
 import Pagination from '../Pagination'
 
 import TaskAssetsEmpty from './Empty'
@@ -21,7 +20,6 @@ const TaskAssets = () => {
 
   const {
     data: { count = 0, results },
-    revalidate,
   } = useSWR(
     `/api/v1/projects/${projectId}/tasks/${taskId}/assets/?from=${from}&size=${SIZE}`,
   )
@@ -50,8 +48,6 @@ const TaskAssets = () => {
         >
           Number of Assets: {count}
         </h3>
-
-        <TableRefresh onClick={revalidate} refreshKeys={[]} legend="Assets" />
       </div>
 
       <div css={{ boxShadow: constants.boxShadows.default }}>
