@@ -59,6 +59,17 @@ export const onSave = async ({
   }
 }
 
+export const onTrain = async ({ projectId, setError }) => {
+  try {
+    setError('')
+    await fetcher(`/api/v1/projects/${projectId}/faces/train/`, {
+      method: 'POST',
+    })
+  } catch (error) {
+    setError('Something went wrong. Please try again.')
+  }
+}
+
 export const getSaveButtonCopy = ({ isChanged, isLoading }) => {
   if (isLoading) {
     return 'Saving...'

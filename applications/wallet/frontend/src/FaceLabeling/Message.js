@@ -5,7 +5,20 @@ import { colors, spacing } from '../Styles'
 
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 
-const FaceLabelingMessage = ({ projectId, previousJobId, currentJobId }) => {
+const FaceLabelingMessage = ({
+  projectId,
+  previousJobId,
+  currentJobId,
+  error,
+}) => {
+  if (error) {
+    return (
+      <div css={{ paddingBottom: spacing.normal }}>
+        <FlashMessage variant={FLASH_VARIANTS.ERROR}>{error}</FlashMessage>
+      </div>
+    )
+  }
+
   if (currentJobId) {
     return (
       <div css={{ paddingBottom: spacing.normal }}>
@@ -43,6 +56,7 @@ FaceLabelingMessage.propTypes = {
   projectId: PropTypes.string.isRequired,
   previousJobId: PropTypes.string.isRequired,
   currentJobId: PropTypes.string.isRequired,
+  error: PropTypes.string.isRequired,
 }
 
 export default FaceLabelingMessage
