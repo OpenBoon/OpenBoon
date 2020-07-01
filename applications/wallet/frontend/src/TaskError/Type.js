@@ -5,6 +5,8 @@ import ErrorWarningSvg from '../Icons/errorWarning.svg'
 
 import { colors, spacing, typography } from '../Styles'
 
+const ICON_SIZE = 18
+
 const TaskErrorType = ({ fatal }) => {
   return (
     <div
@@ -15,9 +17,15 @@ const TaskErrorType = ({ fatal }) => {
     >
       <div css={{ paddingRight: spacing.base }}>
         {fatal ? (
-          <ErrorFatalSvg width={18} color={colors.signal.warning.base} />
+          <ErrorFatalSvg
+            height={ICON_SIZE}
+            color={colors.signal.warning.base}
+          />
         ) : (
-          <ErrorWarningSvg width={18} color={colors.signal.canary.strong} />
+          <ErrorWarningSvg
+            height={ICON_SIZE}
+            color={colors.signal.canary.strong}
+          />
         )}
       </div>
       <div

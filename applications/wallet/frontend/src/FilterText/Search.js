@@ -115,7 +115,7 @@ const FilterTextSearch = ({
           }
         >
           <HiddenSvg
-            width={ICON_SIZE}
+            height={ICON_SIZE}
             color={
               isDisabled ? colors.signal.canary.strong : colors.structure.steel
             }
@@ -150,7 +150,7 @@ const FilterTextSearch = ({
           }
         >
           <CrossSvg
-            width={ICON_SIZE}
+            height={ICON_SIZE}
             color={colors.structure.steel}
             css={{ opacity: 0 }}
           />

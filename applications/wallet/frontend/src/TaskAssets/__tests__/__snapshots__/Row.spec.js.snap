@@ -356,7 +356,7 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
           <svg
             color="#ffffff"
             data-file-name="similarity.svg"
-            width={20}
+            height={20}
           />
         </button>
         <a
@@ -368,7 +368,7 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
           <svg
             color="#ffffff"
             data-file-name="expand.svg"
-            width={20}
+            height={20}
           />
         </a>
       </div>
@@ -391,7 +391,7 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
           className="emotion-8"
           color="#808080"
           data-file-name="chevron.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>

@@ -6,6 +6,8 @@ const MAX_COLS = Math.ceil(FOUR_K / MIN_COL_WIDTH)
 
 const BREAKPOINTS = [...new Array(MAX_COLS)].map((_, index) => index)
 
+const MIN_ROWS = { range: 4, facet: 5 }
+
 export const MIN_ROW_HEIGHT = 50
 
 export const breakpoints = BREAKPOINTS.reduce(
@@ -18,17 +20,23 @@ export const cols = BREAKPOINTS.reduce(
   {},
 )
 
-export const setAllLayouts = ({ setLayouts }) => (_, allLayouts) => {
+export const setAllLayouts = ({ charts, setLayouts }) => (_, allLayouts) => {
   const value = Object.entries(allLayouts).reduce(
     (acc, [bp, values]) => ({
       ...acc,
-      [bp]: values.map((v) => ({
-        ...v,
-        w: v.w > 4 ? v.w : 4,
-        minW: 4,
-        h: v.h > 4 ? v.h : 4,
-        minH: 4,
-      })),
+      [bp]: values.map((v) => {
+        const { type } = charts.find((c) => c.id === v.i) || {}
+
+        const minH = MIN_ROWS[type] || 4
+
+        return {
+          ...v,
+          w: v.w > 4 ? v.w : 4,
+          minW: 4,
+          h: v.h > minH ? v.h : minH,
+          minH,
+        }
+      }),
     }),
     {},
   )

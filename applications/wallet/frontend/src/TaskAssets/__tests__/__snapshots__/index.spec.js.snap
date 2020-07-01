@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TaskAssets /> should render properly 1`] = `
-.emotion-80 {
+.emotion-76 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -12,7 +12,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -35,87 +35,16 @@ exports[`<TaskAssets /> should render properly 1`] = `
   font-weight: 400;
 }
 
-.emotion-4 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
-  background-color: #73b61c;
-}
-
-.emotion-4:hover {
-  background-color: #96c955;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 {
-  padding-left: 4px;
-}
-
-.emotion-72 {
+.emotion-68 {
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-18 {
+.emotion-14 {
   background-color: #2e2e2e;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-17 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -126,42 +55,42 @@ exports[`<TaskAssets /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-17:hover {
+.emotion-13:hover {
   cursor: pointer;
   background-color: #4a4a4a;
 }
 
-.emotion-6 {
+.emotion-2 {
   width: 60px;
   text-align: center;
 }
 
-.emotion-12 {
+.emotion-8 {
   width: 100px;
   min-width: 100px;
   height: 100px;
 }
 
-.emotion-11 {
+.emotion-7 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
 }
 
-.emotion-11:hover {
+.emotion-7:hover {
   border: 4px solid #ffffff;
 }
 
-.emotion-11:hover a,
-.emotion-11:hover button {
+.emotion-7:hover a,
+.emotion-7:hover button {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-8 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -210,22 +139,22 @@ exports[`<TaskAssets /> should render properly 1`] = `
   overflow: hidden;
 }
 
-.emotion-8:hover {
+.emotion-4:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-3 {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.emotion-9 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -265,20 +194,20 @@ exports[`<TaskAssets /> should render properly 1`] = `
   opacity: 0.5;
 }
 
-.emotion-9:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-9[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-9:hover {
+.emotion-5:hover {
   opacity: 0.8;
 }
 
-.emotion-10 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -318,20 +247,20 @@ exports[`<TaskAssets /> should render properly 1`] = `
   opacity: 0.5;
 }
 
-.emotion-10:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-10:hover {
+.emotion-6:hover {
   opacity: 0.8;
 }
 
-.emotion-13 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -345,12 +274,12 @@ exports[`<TaskAssets /> should render properly 1`] = `
   padding-left: 12px;
 }
 
-.emotion-16 {
+.emotion-12 {
   width: 40px;
   text-align: center;
 }
 
-.emotion-15 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -383,20 +312,20 @@ exports[`<TaskAssets /> should render properly 1`] = `
   padding: 0;
 }
 
-.emotion-15:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-14:hover {
+.emotion-10:hover {
   color: #ffffff;
 }
 
-.emotion-63 {
+.emotion-59 {
   position: absolute;
   bottom: 4px;
   left: 4px;
@@ -405,7 +334,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   background-color: #ffffff80;
 }
 
-.emotion-79 {
+.emotion-75 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -416,7 +345,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   justify-content: flex-end;
 }
 
-.emotion-74 {
+.emotion-70 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -434,21 +363,21 @@ exports[`<TaskAssets /> should render properly 1`] = `
   border-bottom-right-radius: 0;
 }
 
-.emotion-74:hover {
+.emotion-70:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
   cursor: not-allowed;
 }
 
-.emotion-73 {
+.emotion-69 {
   color: #191919;
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-75 {
+.emotion-71 {
   padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -462,7 +391,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-76 {
+.emotion-72 {
   padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -475,7 +404,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-78 {
+.emotion-74 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -493,14 +422,14 @@ exports[`<TaskAssets /> should render properly 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-78:hover {
+.emotion-74:hover {
   opacity: 0.5;
   -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
 
-.emotion-77 {
+.emotion-73 {
   color: #ffffff;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -508,10 +437,10 @@ exports[`<TaskAssets /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-80"
+  className="emotion-76"
 >
   <div
-    className="emotion-5"
+    className="emotion-1"
   >
     <h3
       className="emotion-0"
@@ -519,76 +448,54 @@ exports[`<TaskAssets /> should render properly 1`] = `
       Number of Assets: 
       574
     </h3>
-    <button
-      className="emotion-4"
-      onClick={[Function]}
-      type="button"
-    >
-      <div
-        className="emotion-3"
-      >
-        <svg
-          className="emotion-1"
-          color="#ffffff"
-          data-file-name="refresh.svg"
-          width={20}
-        />
-        <div
-          className="emotion-2"
-        >
-          Refresh 
-          Assets
-        </div>
-      </div>
-    </button>
   </div>
   <div
-    className="emotion-72"
+    className="emotion-68"
   >
     <div
-      className="emotion-18"
+      className="emotion-14"
     >
       <div
-        className="emotion-17"
+        className="emotion-13"
         onClick={[Function]}
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           1
         </div>
         <div
-          className="emotion-12"
+          className="emotion-8"
         >
           <div
-            className="emotion-11"
+            className="emotion-7"
           >
             <a
-              className="emotion-8"
+              className="emotion-4"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="test_document.docx"
-                className="emotion-7"
+                className="emotion-3"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-9"
+              className="emotion-5"
               onClick={[Function]}
               type="button"
             >
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
-              className="emotion-10"
+              className="emotion-6"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -596,79 +503,79 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
           </div>
         </div>
         <h4
-          className="emotion-13"
+          className="emotion-9"
         >
           test_document.docx
         </h4>
         <div
-          className="emotion-16"
+          className="emotion-12"
         >
           <button
             aria-label="Expand Section"
-            className="emotion-15"
+            className="emotion-11"
             onClick={[Function]}
             type="button"
           >
             <svg
-              className="emotion-14"
+              className="emotion-10"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
       </div>
     </div>
     <div
-      className="emotion-18"
+      className="emotion-14"
     >
       <div
-        className="emotion-17"
+        className="emotion-13"
         onClick={[Function]}
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           2
         </div>
         <div
-          className="emotion-12"
+          className="emotion-8"
         >
           <div
-            className="emotion-11"
+            className="emotion-7"
           >
             <a
-              className="emotion-8"
+              className="emotion-4"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="irr.pdf"
-                className="emotion-7"
+                className="emotion-3"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-9"
+              className="emotion-5"
               onClick={[Function]}
               type="button"
             >
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
-              className="emotion-10"
+              className="emotion-6"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -676,79 +583,79 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
           </div>
         </div>
         <h4
-          className="emotion-13"
+          className="emotion-9"
         >
           irr.pdf
         </h4>
         <div
-          className="emotion-16"
+          className="emotion-12"
         >
           <button
             aria-label="Expand Section"
-            className="emotion-15"
+            className="emotion-11"
             onClick={[Function]}
             type="button"
           >
             <svg
-              className="emotion-14"
+              className="emotion-10"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
       </div>
     </div>
     <div
-      className="emotion-18"
+      className="emotion-14"
     >
       <div
-        className="emotion-17"
+        className="emotion-13"
         onClick={[Function]}
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           3
         </div>
         <div
-          className="emotion-12"
+          className="emotion-8"
         >
           <div
-            className="emotion-11"
+            className="emotion-7"
           >
             <a
-              className="emotion-8"
+              className="emotion-4"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="irr.pdf"
-                className="emotion-7"
+                className="emotion-3"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-9"
+              className="emotion-5"
               onClick={[Function]}
               type="button"
             >
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
-              className="emotion-10"
+              className="emotion-6"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo?id=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -756,79 +663,79 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
           </div>
         </div>
         <h4
-          className="emotion-13"
+          className="emotion-9"
         >
           irr.pdf
         </h4>
         <div
-          className="emotion-16"
+          className="emotion-12"
         >
           <button
             aria-label="Expand Section"
-            className="emotion-15"
+            className="emotion-11"
             onClick={[Function]}
             type="button"
           >
             <svg
-              className="emotion-14"
+              className="emotion-10"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
       </div>
     </div>
     <div
-      className="emotion-18"
+      className="emotion-14"
     >
       <div
-        className="emotion-17"
+        className="emotion-13"
         onClick={[Function]}
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           4
         </div>
         <div
-          className="emotion-12"
+          className="emotion-8"
         >
           <div
-            className="emotion-11"
+            className="emotion-7"
           >
             <a
-              className="emotion-8"
+              className="emotion-4"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="irr.pdf"
-                className="emotion-7"
+                className="emotion-3"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-9"
+              className="emotion-5"
               onClick={[Function]}
               type="button"
             >
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
-              className="emotion-10"
+              className="emotion-6"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r?id=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -836,61 +743,61 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
           </div>
         </div>
         <h4
-          className="emotion-13"
+          className="emotion-9"
         >
           irr.pdf
         </h4>
         <div
-          className="emotion-16"
+          className="emotion-12"
         >
           <button
             aria-label="Expand Section"
-            className="emotion-15"
+            className="emotion-11"
             onClick={[Function]}
             type="button"
           >
             <svg
-              className="emotion-14"
+              className="emotion-10"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
       </div>
     </div>
     <div
-      className="emotion-18"
+      className="emotion-14"
     >
       <div
-        className="emotion-17"
+        className="emotion-13"
         onClick={[Function]}
       >
         <div
-          className="emotion-6"
+          className="emotion-2"
         >
           5
         </div>
         <div
-          className="emotion-12"
+          className="emotion-8"
         >
           <div
-            className="emotion-11"
+            className="emotion-7"
           >
             <a
-              className="emotion-8"
+              className="emotion-4"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <video
-                className="emotion-7"
+                className="emotion-3"
                 controlsList="nodownload nofullscreen noremoteplayback"
                 disablePictureInPicture={true}
                 muted={true}
@@ -906,18 +813,18 @@ exports[`<TaskAssets /> should render properly 1`] = `
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-9"
+              className="emotion-5"
               onClick={[Function]}
               type="button"
             >
               <svg
                 color="#ffffff"
                 data-file-name="similarity.svg"
-                width={20}
+                height={20}
               />
             </button>
             <a
-              className="emotion-10"
+              className="emotion-6"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -925,35 +832,35 @@ exports[`<TaskAssets /> should render properly 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="expand.svg"
-                width={20}
+                height={20}
               />
             </a>
             <div
-              className="emotion-63"
+              className="emotion-59"
             >
               2:24
             </div>
           </div>
         </div>
         <h4
-          className="emotion-13"
+          className="emotion-9"
         >
           FatManOnABike1914.mp4
         </h4>
         <div
-          className="emotion-16"
+          className="emotion-12"
         >
           <button
             aria-label="Expand Section"
-            className="emotion-15"
+            className="emotion-11"
             onClick={[Function]}
             type="button"
           >
             <svg
-              className="emotion-14"
+              className="emotion-10"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -964,41 +871,41 @@ exports[`<TaskAssets /> should render properly 1`] = `
      
   </div>
   <div
-    className="emotion-79"
+    className="emotion-75"
   >
     <button
-      className="emotion-74"
+      className="emotion-70"
       disabled={true}
       type="button"
     >
       <svg
-        className="emotion-73"
+        className="emotion-69"
         data-file-name="chevron.svg"
-        width={16}
+        height={16}
       />
     </button>
     <div
-      className="emotion-75"
+      className="emotion-71"
     >
       1
     </div>
     <div
-      className="emotion-76"
+      className="emotion-72"
     >
       of 
       29
     </div>
     <a
-      className="emotion-78"
+      className="emotion-74"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/tasks/5262c1ef-91ad-1d33-82b6-d6edb1b855c4?page=2"
       onClick={[Function]}
       onMouseEnter={[Function]}
       rel="next"
     >
       <svg
-        className="emotion-77"
+        className="emotion-73"
         data-file-name="chevron.svg"
-        width={16}
+        height={16}
       />
     </a>
   </div>

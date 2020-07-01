@@ -17,6 +17,7 @@ const TaskErrors = ({ parentUrl }) => {
       legend="Errors"
       url={`${parentUrl}errors/`}
       refreshKeys={[parentUrl]}
+      refreshButton={false}
       columns={[
         'Error Type',
         'Phase',

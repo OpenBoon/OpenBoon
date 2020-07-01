@@ -240,7 +240,7 @@ Array [
             Modify Task
             <svg
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -682,7 +682,7 @@ Array [
             Modify Task
             <svg
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -1130,7 +1130,7 @@ Array [
             Modify Task
             <svg
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -1556,7 +1556,7 @@ Array [
             Modify Task
             <svg
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>

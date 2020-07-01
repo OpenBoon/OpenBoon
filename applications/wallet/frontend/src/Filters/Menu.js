@@ -177,7 +177,7 @@ const FiltersMenu = ({
             svg: { marginRight: spacing.base },
           }}
         >
-          <CrossSvg width={18} />
+          <CrossSvg height={18} />
           Cancel
         </Button>
 
@@ -209,7 +209,7 @@ const FiltersMenu = ({
           }}
           isDisabled={Object.keys(newFilters).length === 0}
         >
-          <PlusSvg width={16} />
+          <PlusSvg height={16} />
           Add Field Filters
         </Button>
       </div>

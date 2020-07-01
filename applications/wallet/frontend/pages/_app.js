@@ -3,6 +3,9 @@ import App from 'next/app'
 import getConfig from 'next/config'
 import * as Sentry from '@sentry/browser'
 import { Integrations as ApmIntegrations } from '@sentry/apm'
+import { CacheProvider } from '@emotion/core'
+import createCache from '@emotion/cache'
+
 import 'focus-visible'
 import '@reach/combobox/styles.css'
 import 'react-grid-layout/css/styles.css'
@@ -10,6 +13,11 @@ import 'react-resizable/css/styles.css'
 
 import User from '../src/User'
 import Authentication from '../src/Authentication'
+
+const emotionCache = createCache({
+  key: 'emotion-cache',
+  prefix: false,
+})
 
 const { publicRuntimeConfig: { ENVIRONMENT, ENABLE_SENTRY } = {} } = getConfig()
 
@@ -61,11 +69,13 @@ class MyApp extends App {
     }
 
     return (
-      <User initialUser={{}}>
-        <Authentication route={route}>
-          <Component {...pageProps} />
-        </Authentication>
-      </User>
+      <CacheProvider value={emotionCache}>
+        <User initialUser={{}}>
+          <Authentication route={route}>
+            <Component {...pageProps} />
+          </Authentication>
+        </User>
+      </CacheProvider>
     )
   }
 }

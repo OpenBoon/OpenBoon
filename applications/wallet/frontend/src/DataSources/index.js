@@ -53,6 +53,7 @@ const DataSources = () => {
         legend="Sources"
         url={`/api/v1/projects/${projectId}/data_sources/`}
         refreshKeys={[]}
+        refreshButton={false}
         columns={[
           'Name',
           'Source Type',

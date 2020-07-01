@@ -62,32 +62,32 @@ const Sidebar = forwardRef(
             }}
           >
             <SidebarLink projectId={projectId} href="/[projectId]">
-              <DashboardSvg width={ICON_SIZE} aria-hidden />
+              <DashboardSvg height={ICON_SIZE} />
               Project Dashboard
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/data-sources">
-              <DataSourcesSvg width={ICON_SIZE} aria-hidden />
+              <DataSourcesSvg height={ICON_SIZE} />
               Data Sources
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/jobs">
-              <JobQueueSvg width={ICON_SIZE} aria-hidden />
+              <JobQueueSvg height={ICON_SIZE} />
               Job Queue
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/visualizer">
-              <VisualizerSvg width={ICON_SIZE} aria-hidden />
+              <VisualizerSvg height={ICON_SIZE} />
               Visualizer
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/api-keys">
-              <KeySvg width={ICON_SIZE} aria-hidden />
+              <KeySvg height={ICON_SIZE} />
               API Keys
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/users">
-              <UsersSvg width={ICON_SIZE} aria-hidden />
+              <UsersSvg height={ICON_SIZE} />
               User Admin
             </SidebarLink>
           </ul>
@@ -102,12 +102,12 @@ const Sidebar = forwardRef(
             }}
           >
             <SidebarLink projectId={projectId} href="/">
-              <DashboardSvg width={ICON_SIZE} aria-hidden />
+              <DashboardSvg height={ICON_SIZE} />
               Account Dashboard
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/account">
-              <GearSvg width={ICON_SIZE} aria-hidden />
+              <GearSvg height={ICON_SIZE} />
               Account
             </SidebarLink>
           </ul>

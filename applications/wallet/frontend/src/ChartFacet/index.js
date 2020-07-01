@@ -7,7 +7,7 @@ import chartShape from '../Chart/shape'
 import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 
 import ChartForm from '../ChartForm'
-import ChartsHeader from '../Charts/Header'
+import ChartHeader from '../Chart/Header'
 
 import ChartFacetContent from './Content'
 
@@ -32,7 +32,7 @@ const ChartFacet = ({ chart, chartIndex, dispatch }) => {
     <Card
       variant={CARD_VARIANTS.DARK}
       header={
-        <ChartsHeader
+        <ChartHeader
           attribute={attribute}
           chartIndex={chartIndex}
           dispatch={dispatch}
