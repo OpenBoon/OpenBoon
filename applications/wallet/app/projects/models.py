@@ -107,10 +107,6 @@ class Membership(models.Model):
             client(ZmlpClient): Client used to communicate with ZMLP.
 
         """
-        # TODO: Remove this logic when the Superuser does not use the inception key.
-        if self.user.email == settings.SUPERUSER_EMAIL:
-            return
-
         if not self.apikey:
             self.apikey = create_zmlp_api_key(client,
                                               self._get_api_key_name(),
