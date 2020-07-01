@@ -39,7 +39,7 @@ Array [
 <div
     className="emotion-0"
   >
-    TIFF_1MB.tiff
+    AssetFilename.doc
   </div>,
   "",
   .emotion-9 {
@@ -340,7 +340,7 @@ Array [
 <div
     className="emotion-0"
   >
-    TIFF_1MB.tiff
+    AssetFilename.doc
   </div>,
   "",
   .emotion-9 {
@@ -639,7 +639,7 @@ Array [
 <div
     className="emotion-0"
   >
-    TIFF_1MB.tiff
+    AssetFilename.doc
   </div>,
   .emotion-2 {
   padding: 16px;

@@ -37,7 +37,7 @@ describe('<FaceLabeling />', () => {
   it('should render selected asset with predictions', async () => {
     require('swr').__setMockUseSWRResponse({
       data: {
-        ...asset,
+        filename: 'AssetFilename.doc',
         predictions: [
           {
             score: 0.999,
