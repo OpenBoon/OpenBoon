@@ -51,20 +51,6 @@ class AutoMLModelClassifier(AssetProcessor):
         self.client = automl.PredictionServiceClient()
 
     def process(self, frame):
-        # create empty dataset from project ID
-        dataset = self.create_dataset(self.project_id, self.display_name, self.region)
-        dataset_id = self._get_id(dataset)
-
-        # import dataset from project_path CSV file
-        self.import_dataset(self.project_id, dataset_id, self.project_path, self.region)
-
-        # create/train model
-        self.model = self.create_model(self.project_id, dataset_id, self.display_name, self.region)
-        model_id = self.model_path or self._get_id(self.model.operation)
-
-        # publish model
-        self.publish_model(model_id)
-
         asset = frame.asset
         predictions = self.predict(asset)
 
@@ -94,10 +80,10 @@ class AutoMLModelClassifier(AssetProcessor):
             PredictResponse: prediction result
         """
         # Get the full path of the model.
-        model_full_id = self.client.model_path(self.project_id, self.region, self.model_id)
+        model_full_id = self.client.model_path(self.project_id, self.region, self.model_path)
 
         # Read the file.
-        content = self._create_paylod(asset)
+        content = self._create_payload(asset)
 
         image = automl.types.Image(image_bytes=content)
         payload = automl.types.ExamplePayload(image=image)
@@ -106,7 +92,7 @@ class AutoMLModelClassifier(AssetProcessor):
         response = self.client.predict(model_full_id, payload, params)
         return response
 
-    def _create_paylod(self, asset, level=1):
+    def _create_payload(self, asset, level=1):
         """Create image payload for prediction
 
         Args:
