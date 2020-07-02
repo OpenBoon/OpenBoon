@@ -105,7 +105,7 @@ class ModelApplyRequest(
     val search: Map<String, Any>? = null,
 
     @ApiModelProperty("Don't filter the training set from the search.")
-    val analyzeTrainingSet : Boolean = false,
+    val analyzeTrainingSet: Boolean = false,
 
     // TODO move
     @ApiModelProperty("Append the task to the given job, otherwise launch a new job.", hidden = true)
