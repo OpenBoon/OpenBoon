@@ -14,7 +14,6 @@ logging.basicConfig()
 
 
 class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
-    ds_id = "ds-id-12345"
     model_id = "model-id-12345"
     base_dir = os.path.dirname(__file__)
 
@@ -34,10 +33,10 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "dataSetId": self.ds_id,
-                "type": "LABEL_DETECTION_MOBILENET2",
+                "type": "ZVI_LABEL_DETECTION",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": name,
+                "moduleName": name
             }
         )
 

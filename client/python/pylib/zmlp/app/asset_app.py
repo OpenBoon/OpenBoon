@@ -212,7 +212,7 @@ class AssetApp(object):
         }
         return self.app.client.delete("/api/v3/assets/_batch_delete", body)
 
-    def search(self, search=None):
+    def search(self, search=None, fetch_source=True):
         """
         Perform an asset search using the ElasticSearch query DSL.
 
@@ -225,9 +225,11 @@ class AssetApp(object):
         Returns:
             AssetSearchResult - an AssetSearchResult instance.
         """
+        if not fetch_source:
+            search['_source'] = False
         return AssetSearchResult(self.app, search)
 
-    def scroll_search(self, search=None, timeout="1m"):
+    def scroll_search(self, search=None, timeout="1m", topn=None):
         """
         Perform an asset scrolled search using the ElasticSearch query DSL.
 
@@ -301,12 +303,12 @@ class AssetApp(object):
 
     def update_labels(self, assets, add_labels=None, remove_labels=None):
         """
-        Update the DataSet labels on the given array of assets.
+        Update the Labels on the given array of assets.
 
         Args:
             assets (mixed): An Asset, asset ID, or a list of either type.
-            add_labels (list[DataSetLabel]): A DataSetLabel or list of DataSetLabels to add.
-            remove_labels (list[DataSetLabel]): A DataSetLabels or list of DataSetLabels to remove.
+            add_labels (list[Label]): A Label or list of Label to add.
+            remove_labels (list[Label]): A Label or list of Label to remove.
         Returns:
             dict: An request status dict
 

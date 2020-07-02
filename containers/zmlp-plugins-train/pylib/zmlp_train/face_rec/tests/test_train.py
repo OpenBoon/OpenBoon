@@ -10,7 +10,6 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset
 logging.basicConfig()
 
 model_id = "model-id-12345"
-ds_id = "ds-id-12345"
 
 
 class KnnFaceRecognitionTrainerTests(PluginUnitTestCase):
@@ -28,7 +27,6 @@ class KnnFaceRecognitionTrainerTests(PluginUnitTestCase):
         })
         model_patch.return_value = Model({
             'id': model_id,
-            'dataSetId': ds_id,
             'type': "FACE_RECOGNITION_KNN",
             'fileId': 'models/{}/foo/bar'.format(model_id),
             'name': name
@@ -54,13 +52,13 @@ mock_search_result = [
             },
             "labels": [
                 {
-                    "dataSetId": ds_id,
+                    "modelId": model_id,
                     "label": "Gandalf",
                     "bbox": [0, 0, 1, 1],
                     "simhash": "AAAAAAAA"
                 },
                 {
-                    "dataSetId": ds_id,
+                    "modelId": model_id,
                     "label": "Bilbo",
                     "bbox": [0.5, 0.5, 1, 1],
                     "simhash": "CCCCCCCC"
@@ -79,13 +77,13 @@ mock_search_result = [
             },
             "labels": [
                 {
-                    "dataSetId": ds_id,
+                    "modelId": model_id,
                     "label": "Glion",
                     "bbox": [0, 0, 1, 1],
                     "simhash": "BBBBBBBB"
                 },
                 {
-                    "dataSetId": ds_id,
+                    "modelId": model_id,
                     "label": "Frodo",
                     "bbox": [0.5, 0.5, 1, 1],
                     "simhash": "DDDDDDDD"
