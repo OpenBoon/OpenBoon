@@ -93,6 +93,7 @@ resource "kubernetes_deployment" "wallet" {
           liveness_probe {
             initial_delay_seconds = 30
             period_seconds        = 5
+            timeout_seconds       = 10
             http_get {
               scheme = "HTTP"
               path   = "/api/v1/health/"
@@ -113,12 +114,12 @@ resource "kubernetes_deployment" "wallet" {
           }
           resources {
             limits {
-              memory = "2Gi"
-              cpu    = 2
+              memory = "4Gi"
+              cpu    = 4
             }
             requests {
-              memory = "256Mi"
-              cpu    = 1
+              memory = "2Gi"
+              cpu    = 2
             }
           }
           env {
