@@ -64,8 +64,8 @@ class AutoMLModelTrainer(AssetProcessor):
         self.import_dataset(self.project_id, dataset_id, self.project_path)
 
         # create/train model
-        self.model = self.create_model(self.project_id, dataset_id, self.display_name)
-        model_id = self.model_path or self._get_id(self.model.operation)
+        model = self.create_model(self.project_id, dataset_id, self.display_name)
+        model_id = self.model_path or self._get_id(model.operation)
 
         # publish model
         self.publish_model(model_id)
@@ -95,7 +95,7 @@ class AutoMLModelTrainer(AssetProcessor):
         """Parse a response name for its ID
 
         Args:
-            name: AutoML class (e.g. Dataset or Model class)
+            name (str): AutoML class (e.g. Dataset or Model class)
 
         Returns:
             (str) the parsed name's ID (or its location basename)
@@ -111,9 +111,9 @@ class AutoMLModelTrainer(AssetProcessor):
         https://cloud.google.com/automl/docs/reference/rpc/google.cloud.automl.v1#classificationtype
 
         Args:
-            project_id: GC Project ID
-            display_name: Project name
-            region: GC Region ID (default: us-central1)
+            project_id (str): GC Project ID
+            display_name (str): Project name
+            region (str): GC Region ID (default: us-central1)
 
         Returns:
             (google.cloud.automl_v1beta1.types.Dataset) Dataset metadata
@@ -145,10 +145,10 @@ class AutoMLModelTrainer(AssetProcessor):
         proper label for each one
 
         Args:
-            project_id: GC Project ID
-            dataset_id: Dataset ID
-            path: Path to CSV
-            region: GC Region ID (default: us-central1)
+            project_id (str): GC Project ID
+            dataset_id (str): Dataset ID
+            path (str): Path to CSV
+            region (str): GC Region ID (default: us-central1)
 
         Returns:
             None
@@ -178,10 +178,10 @@ class AutoMLModelTrainer(AssetProcessor):
         https://cloud.google.com/automl/docs/reference/rpc/google.cloud.automl.v1#imageclassificationmodelmetadata
 
         Args:
-            project_id: GC Project ID
-            dataset_id: Dataset ID
-            display_name: Project name
-            region: GC Region ID (default: us-central1)
+            project_id (str): GC Project ID
+            dataset_id (str): Dataset ID
+            display_name (str): Project name
+            region (str): GC Region ID (default: us-central1)
 
         Returns:
             (google.cloud.automl_v1.types.Model¶) Model metadata
@@ -212,7 +212,8 @@ class AutoMLModelTrainer(AssetProcessor):
         """Publish the model.
 
         Args:
-            model: Full Model ID
+            model (str): Full Model ID
+            region (str):  GC Region ID (default: us-central1)
 
         Returns:
             PipelineMod: The published Pipeline Module.
