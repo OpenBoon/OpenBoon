@@ -8,9 +8,9 @@ from zmlp.app import ModelApp
 from zmlp.entity import Model, PipelineMod, StoredFile
 from zmlp_train.automl import AutoMLModelTrainer
 from zmlpsdk import Frame, file_storage
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_data
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
 
-CREDS = os.path.join(zorroa_test_data(), 'creds', 'zorroa-poc-dev-access.json').split("file://")[-1]
+CREDS = zorroa_test_path('creds/zorroa-poc-dev-access.json')
 
 logging.basicConfig()
 
@@ -36,7 +36,7 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
     def test_process(self, upload_patch, deploy_patch, model_patch, pub_patch, dataset_id_patch,
                      create_model_patch, import_patch):
         # Prep the frame, asset, and proxy
-        toucan_fname = zorroa_test_data('training/test_dsy.jpg').split("file://")[-1]
+        toucan_fname = zorroa_test_path('training/test_dsy.jpg')
         asset = TestAsset(toucan_fname)
         frame = Frame(asset)
 
@@ -62,8 +62,6 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
         self.processor = AutoMLModelTrainer()
         project_id = 'zorroa-poc-dev'
         args = {
-            'project_id': project_id,
-            'region': 'us-central1',
             'model_id': model_id,
             'display_name': name,
             'project_path': 'gs://{}-vcm/csv/csv_some_data.csv'.format(project_id),

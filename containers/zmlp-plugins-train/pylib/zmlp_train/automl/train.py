@@ -1,6 +1,7 @@
 import os
 import time
 import tempfile
+import json
 import logging
 import pandas as pd
 
@@ -17,22 +18,16 @@ class AutoMLModelTrainer(AssetProcessor):
     """Create Google AutoML Model"""
 
     tool_tips = {
-        'project_id': 'The project ID for the AutoML model (e.g. "zorroa-autoedl")',
-        'region': 'The region ID for the AutoML model (e.g. "us-central1")',
         'display_name': 'Name of the dataset',
         'project_path': 'Path to data CSV'
     }
 
     def __init__(self):
         super(AutoMLModelTrainer, self).__init__()
-        self.add_arg(Argument("project_id", "string", required=True,
-                              toolTip=AutoMLModelTrainer.tool_tips['project_id']))
         self.add_arg(Argument("model_id", "string", required=True,
                               toolTip="The model Id"))
         self.add_arg(Argument("display_name", "string", required=True,
                               toolTip=AutoMLModelTrainer.tool_tips['display_name']))
-        self.add_arg(Argument("region", "string", default="us-central1",
-                              toolTip=AutoMLModelTrainer.tool_tips['region']))
         self.add_arg(Argument("project_path", "string",
                               toolTip=AutoMLModelTrainer.tool_tips['project_path']))
         self.add_arg(Argument("model_path", "string",
@@ -48,13 +43,11 @@ class AutoMLModelTrainer(AssetProcessor):
         self.project_path = None
         self.display_name = None
 
-        self.region = None
         self.df = None
 
     def init(self):
         self.app_model = self.app.models.get_model(self.arg_value('model_id'))
-        self.project_id = self.arg_value('project_id')
-        self.region = self.arg_value('region')
+        self.project_id = self._get_project_id()
         self.display_name = self.arg_value('display_name')
         self.project_path = self.arg_value('project_path')
         self.model_path = self.arg_value('model_path')
@@ -64,18 +57,38 @@ class AutoMLModelTrainer(AssetProcessor):
 
     def process(self, frame):
         # create empty dataset from project ID
-        dataset = self.create_dataset(self.project_id, self.display_name, self.region)
+        dataset = self.create_dataset(self.project_id, self.display_name)
         dataset_id = self._get_id(dataset)
 
         # import dataset from project_path CSV file
-        self.import_dataset(self.project_id, dataset_id, self.project_path, self.region)
+        self.import_dataset(self.project_id, dataset_id, self.project_path)
 
         # create/train model
-        self.model = self.create_model(self.project_id, dataset_id, self.display_name, self.region)
+        self.model = self.create_model(self.project_id, dataset_id, self.display_name)
         model_id = self.model_path or self._get_id(self.model.operation)
 
         # publish model
         self.publish_model(model_id)
+
+    @staticmethod
+    def _get_project_id():
+        """Get Project ID for a GC Project
+
+        Returns:
+            (str) Project ID (e.g. 'zorroa-poc-dev')
+        """
+        # If this is running in a cloud function, then GCP_PROJECT should be defined
+        if 'GCP_PROJECT' in os.environ:
+            project_id = os.environ['GCP_PROJECT']
+        # else if this is running locally then GOOGLE_APPLICATION_CREDENTIALS should be defined
+        elif 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
+            with open(os.environ['GOOGLE_APPLICATION_CREDENTIALS'], 'r') as fp:
+                credentials = json.load(fp)
+            project_id = credentials['project_id']
+        else:
+            raise Exception('Failed to determine project_id')
+
+        return project_id
 
     @staticmethod
     def _get_id(name):
@@ -195,7 +208,7 @@ class AutoMLModelTrainer(AssetProcessor):
 
         return response
 
-    def publish_model(self, model):
+    def publish_model(self, model, region="us-central1"):
         """Publish the model.
 
         Args:
@@ -216,7 +229,7 @@ class AutoMLModelTrainer(AssetProcessor):
         self.reactor.emit_status("Labels are in " + model_dir + "_labels.txt")
 
         # deploy model
-        model_full_id = self.client.model_path(self.project_id, self.region, model)
+        model_full_id = self.client.model_path(self.project_id, region, model)
         self.client.deploy_model(model_full_id)
 
         # publish
