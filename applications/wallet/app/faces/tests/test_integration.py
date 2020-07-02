@@ -235,7 +235,7 @@ class TestHelpers:
         models_mock = Mock(find_one_model=find_one_model_mock,
                            create_model=create_model_mock)
         app_mock.models = models_mock
-        result = view._get_model(app_mock, dataset_mock)
+        result = view._get_model(app_mock)
         assert result
         find_one_model_mock.assert_called_once_with(dataset=dataset_mock)
         create_model_mock.assert_not_called()
@@ -247,7 +247,7 @@ class TestHelpers:
         models_mock = Mock(find_one_model=find_one_model_mock,
                            create_model=create_model_mock)
         app_mock.models = models_mock
-        result = view._get_model(app_mock, dataset_mock)
+        result = view._get_model(app_mock)
         assert result
         find_one_model_mock.assert_called_once_with(dataset=dataset_mock)
         create_model_mock.assert_called_once_with(dataset_mock, ModelType.ZVI_FACE_RECOGNITION)
