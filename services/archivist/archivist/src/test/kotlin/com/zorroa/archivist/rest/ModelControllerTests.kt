@@ -165,8 +165,8 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
-                    "$.[0].name",
-                    CoreMatchers.equalTo("ZVI_LABEL_DETECTION")
+                    "$[0].name",
+                    CoreMatchers.equalTo("ZVI_KNN_CLASSIFIER")
                 )
             )
             .andReturn()
