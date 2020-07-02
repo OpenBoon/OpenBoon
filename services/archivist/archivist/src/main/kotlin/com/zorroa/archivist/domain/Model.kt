@@ -1,14 +1,17 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.core.type.TypeReference
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.zmlp.util.Json
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
+import java.math.BigDecimal
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -25,30 +28,37 @@ enum class ModelType(
     val classifyArgs: Map<String, Any>,
     val moduleName: String,
     val description: String,
-    val dataSetType: DataSetType
+    val pipelineModType: String,
+    val provider: String,
+    val runOnTrainingSet: Boolean
 ) {
-    ZVI_CLUSTERING(
+    ZVI_KNN_CLASSIFIER(
         "zmlp_train.knn.KnnLabelDetectionTrainer",
         mapOf(),
         "zmlp_analysis.custom.KnnLabelDetectionClassifier",
         mapOf(),
         "zvi-%s-cluster",
-        "Classify images using a clustering algorithm. " +
-            "This is good for general groups like cats and dogs but not for specific breeds.",
-        DataSetType.LABEL_DETECTION
+        "Classify images or documents using a KNN classifer.  This type of model generates " +
+            "a single prediction which can be used to quickly organize assets into general groups." +
+            "The KNN classifier works with just a single image and label.",
+        ModType.LABEL_DETECTION,
+        Provider.ZORROA,
+        true
     ),
     ZVI_LABEL_DETECTION(
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
         mapOf(
-            "min_concepts" to 2,
-            "min_examples" to 5,
-            "train-test-ratio" to 3
+            "train-test-ratio" to 4
         ),
         "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
         "zvi-%s-label-detection",
-        "Classify images using a custom trained deep learning model.",
-        DataSetType.LABEL_DETECTION
+        "Classify images or documents using a custom strained CNN deep learning algorithm.  This type of model" +
+            "generates multiple predictions and can be trained to identify very specific features. " +
+            "The label detection classifier requires at least 2 concepts with 10 labeled images each. ",
+        ModType.LABEL_DETECTION,
+        Provider.ZORROA,
+        false
     ),
     ZVI_FACE_RECOGNITION(
         "zmlp_train.face_rec.KnnFaceRecognitionTrainer",
@@ -57,7 +67,9 @@ enum class ModelType(
         mapOf(),
         "zvi-%s-face-recognition",
         "Relabel existing ZVI faces using a KNN Face Recognition model.",
-        DataSetType.FACE_RECOGNITION
+        ModType.FACE_RECOGNITION,
+        Provider.ZORROA,
+        true
     );
 
     fun asMap(): Map<String, Any> {
@@ -68,8 +80,7 @@ enum class ModelType(
             "classifyProcessor" to classifyProcessor,
             "classifyArgs" to classifyArgs,
             "moduleName" to moduleName,
-            "description" to description,
-            "dataSetType" to dataSetType
+            "description" to description
         )
     }
 }
@@ -83,54 +94,64 @@ class ModelTrainingArgs(
     @ApiModelProperty("Deploy the model to production.")
     val deploy: Boolean = false,
 
-    @ApiModelProperty("Apply the model to the validation set")
-    val validate: Boolean = false
+    @ApiModelProperty("Additional training args passed to processor.")
+    val args: Map<String, Any>? = null
 )
 
-@ApiModel("ModelTrainingArgs", description = "Arguments set to the training processor.")
+@ApiModel("ModelApplyRequest", description = "Arguments set to the training processor.")
 class ModelApplyRequest(
 
-    @ApiModelProperty("An search to apply the model to. Defaults to the model deploy search.")
+    @ApiModelProperty("A search to apply the model to. Defaults to the model deploy search.")
     val search: Map<String, Any>? = null,
 
-    @ApiModelProperty("Excluded labeled data.")
-    val excludeTrainingSet: Boolean = true,
+    @ApiModelProperty("Don't filter the training set from the search.")
+    val analyzeTrainingSet : Boolean = false,
 
     // TODO move
     @ApiModelProperty("Append the task to the given job, otherwise launch a new job.", hidden = true)
     val jobId: UUID? = null
 )
 
+@ApiModel("ModelSpec", description = "Arguments required to create a new model")
 class ModelSpec(
-    val dataSetId: UUID,
-    val type: ModelType,
-    val deploySearch: Map<String, Any> = Model.matchAllSearch
 
+    @ApiModelProperty("The name of the model")
+    val name: String,
+
+    @ApiModelProperty("The type of mode")
+    val type: ModelType,
+
+    @ApiModelProperty("A model tag used to generate a PipelineMod name.")
+    val moduleName: String? = null,
+
+    @ApiModelProperty("The search used to deploy the model.")
+    val deploySearch: Map<String, Any> = ModelSearch.MATCH_ALL
 )
 
 @Entity
 @Table(name = "model")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType::class)
-@ApiModel("Model", description = "A model can be trained from a DataSet")
+@ApiModel("Model", description = "Models are used to make predictions.")
 class Model(
 
     @Id
     @Column(name = "pk_model")
-    @ApiModelProperty("The unique ID of the DataSet")
+    @ApiModelProperty("The unique ID of the Model")
     val id: UUID,
 
     @Column(name = "pk_project")
     val projectId: UUID,
 
-    @Column(name = "pk_data_set")
-    val dataSetId: UUID,
-
     @Column(name = "int_type")
     val type: ModelType,
 
     @Column(name = "str_name")
-    @ApiModelProperty("The name of the Pipeline Module that will be created when training is complete")
+    @ApiModelProperty("A name for the model, like 'bob's tree classifier'.")
     val name: String,
+
+    @Column(name = "str_module")
+    @ApiModelProperty("The name of the pipeline module and analysis namespace.")
+    val moduleName: String,
 
     @Column(name = "str_file_id")
     val fileId: String,
@@ -163,6 +184,11 @@ class Model(
     val actorModified: String
 
 ) {
+    @JsonIgnore
+    fun getLabel(label: String, bbox: List<BigDecimal>? = null): Label {
+        return Label(id, label, bbox = bbox)
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Model) return false
@@ -187,9 +213,6 @@ class ModelFilter(
     @ApiModelProperty("The Model IDs to match.")
     val ids: List<UUID>? = null,
 
-    @ApiModelProperty("The DataSet IDs to match.")
-    val dataSetIds: List<UUID>? = null,
-
     @ApiModelProperty("The Model names to match")
     val names: List<String>? = null,
 
@@ -202,8 +225,9 @@ class ModelFilter(
         "name" to "model.str_name",
         "timeCreated" to "model.time_created",
         "timeModified" to "model.time_modified",
-        "id" to "model.pk_data_set",
-        "type" to "model.int_type"
+        "id" to "model.pk_model",
+        "type" to "model.int_type",
+        "moduleName" to "model.str_module"
     )
 
     @JsonIgnore
@@ -221,11 +245,6 @@ class ModelFilter(
             addToValues(it)
         }
 
-        dataSetIds?.let {
-            addToWhere(JdbcUtils.inClause("model.pk_data_set", it.size))
-            addToValues(it)
-        }
-
         names?.let {
             addToWhere(JdbcUtils.inClause("model.str_name", it.size))
             addToValues(it)
@@ -237,3 +256,87 @@ class ModelFilter(
         }
     }
 }
+
+enum class LabelScope {
+    TRAIN,
+    TEST
+}
+
+object ModelSearch {
+
+    val MATCH_ALL = mapOf<String, Any>("query" to mapOf("match_all" to emptyMap<String, Any>()))
+
+    fun getTestSearch(model: Model): Map<String, Any> {
+        return Json.Mapper.readValue(
+            """
+            {
+                "bool": {
+                    "filter": {
+                        "nested" : {
+                            "path": "labels",
+                            "query" : {
+                                "term": { 
+                                    "labels.scope": "${LabelScope.TEST.name}" ,
+                                    "labels.modelId": "${model.id}"
+                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        """,
+            Json.GENERIC_MAP
+        )
+    }
+}
+
+@ApiModel("Label", description = "A Label which denotes a ground truth classification.")
+class Label(
+    @ApiModelProperty("The ID of the Model")
+    val modelId: UUID,
+    @ApiModelProperty("The label for the Asset")
+    val label: String,
+    @ApiModelProperty("The scope of the label.")
+    val scope: LabelScope = LabelScope.TRAIN,
+    bbox: List<BigDecimal>? = null,
+    @ApiModelProperty("An an optional simhash for the label")
+    val simhash: String? = null
+
+) {
+
+    @ApiModelProperty("An optional bounding box")
+    val bbox: List<BigDecimal>? = bbox?.map { it.setScale(3, java.math.RoundingMode.HALF_UP) }
+
+    companion object {
+        val SET_OF: TypeReference<MutableSet<Label>> = object :
+            TypeReference<MutableSet<Label>>() {}
+
+        val LIST_OF: TypeReference<List<Label>> = object :
+            TypeReference<List<Label>>() {}
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Label) return false
+
+        if (modelId != other.modelId) return false
+        if (bbox != other.bbox) return false
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = modelId.hashCode()
+        result = 31 * result + (bbox?.hashCode() ?: 0)
+        return result
+    }
+}
+
+@ApiModel("ModelApplyResponse", description = "The reponse to applying a model, either for testing or productions")
+class ModelApplyResponse(
+
+    @ApiModelProperty("Tbe number of Assets that will be processed.")
+    val assetCount: Long,
+
+    @ApiModelProperty("The ID of the job that is processing Assets.")
+    val job: Job? = null
+)

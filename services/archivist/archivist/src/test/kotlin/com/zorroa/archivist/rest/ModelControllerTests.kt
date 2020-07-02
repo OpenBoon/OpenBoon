@@ -1,13 +1,9 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
-import com.zorroa.archivist.domain.DataSet
-import com.zorroa.archivist.domain.DataSetSpec
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelType
-import com.zorroa.archivist.domain.DataSetType
-import com.zorroa.archivist.service.DataSetService
 import com.zorroa.archivist.service.ModelService
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
@@ -21,33 +17,22 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 class ModelControllerTests : MockMvcTest() {
 
     @Autowired
-    lateinit var dataSetService: DataSetService
-
-    @Autowired
     lateinit var modelService: ModelService
 
-    val dsSpec = DataSetSpec("dog-breeds", DataSetType.LABEL_DETECTION)
+    val modelSpec = ModelSpec("Dog Breeds", ModelType.ZVI_LABEL_DETECTION)
 
-    lateinit var dataSet: DataSet
+    lateinit var model: Model
 
     @Before
     fun init() {
-        dataSet = dataSetService.create(dsSpec)
-    }
-
-    fun createTestModel(): Model {
-        val mspec = ModelSpec(
-            dataSet.id,
-            ModelType.ZVI_LABEL_DETECTION
-        )
-        return modelService.createModel(mspec)
+        model = modelService.createModel(modelSpec)
     }
 
     @Test
     fun testCreate() {
 
         val mspec = ModelSpec(
-            dataSet.id,
+            "test",
             ModelType.ZVI_LABEL_DETECTION
         )
 
@@ -59,13 +44,18 @@ class ModelControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo(mspec.type.name)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.dataSetId", CoreMatchers.equalTo(mspec.dataSetId.toString())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(mspec.name)))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.moduleName",
+                    CoreMatchers.equalTo("zvi-test-label-detection")
+                )
+            )
             .andReturn()
     }
 
     @Test
     fun testGet() {
-        val model = createTestModel()
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/models/${model.id}")
@@ -74,13 +64,12 @@ class ModelControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo(model.type.name)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.dataSetId", CoreMatchers.equalTo(model.dataSetId.toString())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(model.name)))
             .andReturn()
     }
 
     @Test
     fun testFindOne() {
-        val model = createTestModel()
         val filter =
             """
             {
@@ -96,13 +85,13 @@ class ModelControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo(model.type.name)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.dataSetId", CoreMatchers.equalTo(model.dataSetId.toString())))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(model.name)))
             .andReturn()
     }
 
     @Test
     fun testSearch() {
-        val model = createTestModel()
+
         val filter =
             """
             {
@@ -124,7 +113,6 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testTrain() {
-        val model = createTestModel()
         val body = mapOf<String, Any>()
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_train")
@@ -139,14 +127,13 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testPublish() {
-        val model = createTestModel()
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_publish")
                 .headers(job())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(model.name)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(model.moduleName)))
             .andReturn()
     }
 
@@ -163,12 +150,6 @@ class ModelControllerTests : MockMvcTest() {
                 MockMvcResultMatchers.jsonPath(
                     "$.name",
                     CoreMatchers.equalTo("ZVI_LABEL_DETECTION")
-                )
-            )
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.dataSetType",
-                    CoreMatchers.equalTo("LABEL_DETECTION")
                 )
             )
             .andReturn()
