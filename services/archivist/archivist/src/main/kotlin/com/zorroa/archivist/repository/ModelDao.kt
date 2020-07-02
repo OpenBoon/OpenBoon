@@ -13,6 +13,7 @@ import java.util.UUID
 interface ModelDao : JpaRepository<Model, UUID> {
 
     fun getOneByProjectIdAndId(projectId: UUID, id: UUID): Model
+    fun existsByProjectIdAndId(projectId: UUID, id: UUID): Boolean
 }
 
 interface ModelJdbcDao {
@@ -65,9 +66,9 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
         Model(
             rs.getObject("pk_model") as UUID,
             rs.getObject("pk_project") as UUID,
-            rs.getObject("pk_data_set") as UUID,
             ModelType.values()[rs.getInt("int_type")],
             rs.getString("str_name"),
+            rs.getString("str_module"),
             rs.getString("str_file_id"),
             rs.getString("str_job_name"),
             rs.getBoolean("bool_trained"),

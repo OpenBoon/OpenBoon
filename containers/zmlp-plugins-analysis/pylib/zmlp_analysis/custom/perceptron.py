@@ -61,6 +61,8 @@ class LabelDetectionPerceptionClassifier(AssetProcessor):
         image_classify_metadata = {}
 
         # Take the top two results
+        # WARNING - TODO
+        # This all has to be updated to use a proper analysis/prediction structure.
         for i in range(0, 2):
             image_classify_metadata["pred" + str(i)] = labels[i]
             image_classify_metadata["prob" + str(i)] = scores[i]
@@ -69,7 +71,7 @@ class LabelDetectionPerceptionClassifier(AssetProcessor):
         image_classify_metadata["model"] = self.arg_value("model")
         image_classify_metadata["keywords"] = kw
         image_classify_metadata["confidence"] = scores[0]
-        asset.add_analysis("imageClassify", image_classify_metadata)
+        asset.add_analysis(self.app_model.module_name, image_classify_metadata)
 
     def get_labels(*args):
         """Retrieve labels from labels txt file

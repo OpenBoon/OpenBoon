@@ -101,7 +101,12 @@ class LabelDetectionPerceptronTrainer(AssetProcessor):
                 'nested': {
                     'path': 'labels',
                     'query': {
-                        'term': {'labels.dataSetId': self.app_model.dataset_id}
+                        'bool': {
+                            'must': [
+                                {'term': {'labels.modelId': self.app_model.id}},
+                                {'term': {'labels.scope': 'TRAIN'}}
+                            ]
+                        }
                     }
                 }
             }
@@ -110,7 +115,7 @@ class LabelDetectionPerceptronTrainer(AssetProcessor):
         search = self.app.assets.scroll_search(query)
         for asset in search:
             for labels in asset['labels']:
-                if labels['dataSetId'] == self.app_model.dataset_id:
+                if labels['modelId'] == self.app_model.id:
                     charhash = asset.get_attr(simhash)
                     label = labels['label']
                     num_hash = [

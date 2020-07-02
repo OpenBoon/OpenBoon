@@ -17,7 +17,7 @@ object Category {
     const val ZORROA_TL = "Zorroa Timeline Extraction"
     const val ZORROA_STD = "Zorroa Visual Intelligence"
     const val CLARIFAI_STD = "Clarifai Public"
-    const val TRAINED = "Custom Model"
+    const val TRAINED = "Custom Models"
 }
 
 object Provider {
@@ -38,6 +38,7 @@ object ModType {
     const val EXPLICIT_DETECTION = "Explicit Detection"
     const val TEXT_DETECTION = "Text Detection (OCR)"
     const val SPEECH_RECOGNITION = "Speech Recognition"
+    const val CLUSTERING = "Clustering"
 }
 
 /**

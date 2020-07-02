@@ -1,19 +1,16 @@
-import pytest
 from unittest.mock import Mock, patch
-from django.urls import reverse
-from rest_framework import status
 
-from zmlp import DataSetType, ModelType
-from zmlp.app.dataset_app import DataSetApp
-from zmlp.app.model_app import ModelApp
-from zmlp.app.asset_app import AssetApp
-from zmlp.app.job_app import JobApp
-from zmlp.client import ZmlpNotFoundException, ZmlpClient
-from zmlp.entity.asset import Asset
-
+import pytest
 from assets.utils import AssetBoxImager
+from django.urls import reverse
 from faces.views import FaceViewSet
+from rest_framework import status
 from wallet.tests.utils import check_response
+
+from zmlp import ModelType, Asset
+from zmlp.app import AssetApp, JobApp, ModelApp
+from zmlp.client import ZmlpNotFoundException, ZmlpClient
+
 
 pytestmark = pytest.mark.django_db
 
@@ -41,11 +38,11 @@ class TestRetrieve:
     def test_get(self, login, api_client, project, asset_data, imager_return):
         asset_id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
         path = reverse('face-detail', kwargs={'project_pk': project.id, 'pk': asset_id})
-        asset_data['document']['labels'] = [{'dataSetId': '8016939e-4372-1e4b-a5f9-0242ac13000a', 'bbox': [0.313, 0.439, 0.394, 0.571], 'label': 'Danny', 'simhash': 'OMNKMMKPPJNMQNNOLJMLMMLOMMLLG'}]  # noqa
+        asset_data['document']['labels'] = [{'modelId': '8016939e-4372-1e4b-a5f9-0242ac13000a', 'bbox': [0.313, 0.439, 0.394, 0.571], 'label': 'Danny', 'simhash': 'OMNKMMKPPJNMQNNOLJMLMMLOMMLLG'}]  # noqa
         asset = Asset(asset_data)
-        dataset = Mock(id='8016939e-4372-1e4b-a5f9-0242ac13000a')
+        model = Mock(id='8016939e-4372-1e4b-a5f9-0242ac13000a')
         with patch.object(AssetApp, 'get_asset', return_value=asset):
-            with patch.object(FaceViewSet, '_get_dataset', return_value=dataset):
+            with patch.object(FaceViewSet, '_get_model', return_value=model):
                 with patch.object(AssetBoxImager, 'get_attr_with_box_images', return_value=imager_return):  # noqa
                     response = api_client.get(path)
 
@@ -62,9 +59,9 @@ class TestRetrieve:
         # Remove the analysis metadata for face detection
         del(asset_data['document']['analysis']['zvi-face-detection'])
         asset = Asset(asset_data)
-        dataset = Mock()
+        model = Mock()
         with patch.object(AssetApp, 'get_asset', return_value=asset):
-            with patch.object(FaceViewSet, '_get_dataset', return_value=dataset):
+            with patch.object(FaceViewSet, '_get_model', return_value=model):
                 response = api_client.get(path)
 
         content = check_response(response, status.HTTP_200_OK)
@@ -77,9 +74,9 @@ class TestRetrieve:
         path = reverse('face-detail', kwargs={'project_pk': project.id, 'pk': asset_id})
         asset_data['document']['analysis']['zvi-face-detection']['predictions'] = []
         asset = Asset(asset_data)
-        dataset = Mock()
+        model = Mock()
         with patch.object(AssetApp, 'get_asset', return_value=asset):
-            with patch.object(FaceViewSet, '_get_dataset', return_value=dataset):
+            with patch.object(FaceViewSet, '_get_model', return_value=model):
                 response = api_client.get(path)
 
         content = check_response(response, status.HTTP_200_OK)
@@ -91,9 +88,9 @@ class TestRetrieve:
         asset_id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
         path = reverse('face-detail', kwargs={'project_pk': project.id, 'pk': asset_id})
         asset = Asset(asset_data)
-        dataset = Mock()
+        model = Mock()
         with patch.object(AssetApp, 'get_asset', return_value=asset):
-            with patch.object(FaceViewSet, '_get_dataset', return_value=dataset):
+            with patch.object(FaceViewSet, '_get_model', return_value=model):
                 with patch.object(AssetBoxImager, 'get_attr_with_box_images',
                                   return_value=imager_return):  # noqa
                     response = api_client.get(path)
@@ -124,14 +121,14 @@ class TestSave:
         }
         asset = Asset(asset_data)
 
-        from zmlp.entity.dataset import DataSetLabel
-        label = DataSetLabel('8016939e-4372-1e4b-a5f9-0242ac13000a', 'Danny',
-                             bbox=[0.313, 0.439, 0.394, 0.571],
-                             simhash="OMNKMMKPPJNKKMOLOMNLNNRLLLKLKQJLJNPNLKLMNRLPONMOGLMMLOLOM")
-        dataset = Mock(make_label=Mock(return_value=label))
+        from zmlp.entity.model import Label
+        label = Label('8016939e-4372-1e4b-a5f9-0242ac13000a', 'Danny',
+                      bbox=[0.313, 0.439, 0.394, 0.571],
+                      simhash="OMNKMMKPPJNKKMOLOMNLNNRLLLKLKQJLJNPNLKLMNRLPONMOGLMMLOLOM")
+        model = Mock(make_label=Mock(return_value=label))
 
         with patch.object(AssetApp, 'get_asset', return_value=asset):
-            with patch.object(FaceViewSet, '_get_dataset', return_value=dataset):
+            with patch.object(FaceViewSet, '_get_model', return_value=model):
                 with patch.object(AssetApp, 'update_labels'):
                     response = api_client.post(path, body)
 
@@ -145,14 +142,14 @@ class TestSave:
         }
         asset = Asset(asset_data)
 
-        from zmlp.entity.dataset import DataSetLabel
-        label = DataSetLabel('8016939e-4372-1e4b-a5f9-0242ac13000a', 'Danny',
-                             bbox=[0.313, 0.439, 0.394, 0.571],
-                             simhash="OMNKMMKPPJNKKMOLOMNLNNRLLLKLKQJLJNPNLKLMNRLPONMOGLMMLOLOM")
-        dataset = Mock(make_label=Mock(return_value=label))
+        from zmlp.entity.model import Label
+        label = Label('8016939e-4372-1e4b-a5f9-0242ac13000a', 'Danny',
+                      bbox=[0.313, 0.439, 0.394, 0.571],
+                      simhash="OMNKMMKPPJNKKMOLOMNLNNRLLLKLKQJLJNPNLKLMNRLPONMOGLMMLOLOM")
+        model = Mock(make_label=Mock(return_value=label))
 
         with patch.object(AssetApp, 'get_asset', return_value=asset):
-            with patch.object(FaceViewSet, '_get_dataset', return_value=dataset):
+            with patch.object(FaceViewSet, '_get_model', return_value=model):
                 with patch.object(AssetApp, 'update_labels'):
                     response = api_client.post(path, body)
 
@@ -163,7 +160,7 @@ class TestTrain:
 
     def test_post(self, login, api_client, project):
         path = reverse('face-train', kwargs={'project_pk': project.id})
-        with patch.object(FaceViewSet, '_get_dataset'):
+        with patch.object(FaceViewSet, '_get_model'):
             with patch.object(FaceViewSet, '_get_model'):
                 with patch.object(ModelApp, 'train_model') as train_mock:
                     train_mock.return_value = Mock(_data={'id': 'test'})
@@ -197,8 +194,8 @@ class TestLabels:
 
     def test_get(self, login, api_client, project):
         path = reverse('face-labels', kwargs={'project_pk': project.id})
-        with patch.object(FaceViewSet, '_get_dataset') as get_dataset_mock:
-            with patch.object(DataSetApp, 'get_label_counts') as get_label_counts_mock:
+        with patch.object(FaceViewSet, '_get_model') as get_dataset_mock:
+            with patch.object(ModelApp, 'get_label_counts') as get_label_counts_mock:
                 get_dataset_mock.return_value = Mock()
                 get_label_counts_mock.return_value = {'Danny': 3, 'Donna': 2}
 
@@ -210,8 +207,8 @@ class TestLabels:
 
     def test_get_no_labels(self, login, api_client, project):
         path = reverse('face-labels', kwargs={'project_pk': project.id})
-        with patch.object(FaceViewSet, '_get_dataset') as get_dataset_mock:
-            with patch.object(DataSetApp, 'get_label_counts') as get_label_counts_mock:
+        with patch.object(FaceViewSet, '_get_model') as get_dataset_mock:
+            with patch.object(ModelApp, 'get_label_counts') as get_label_counts_mock:
                 get_dataset_mock.return_value = Mock()
                 get_label_counts_mock.return_value = {}
 
@@ -231,46 +228,24 @@ class TestHelpers:
     def app_mock(self):
         return Mock()
 
-    def test_get_dataset_existing(self, view, app_mock):
-        find_one_dataset_mock = Mock(return_value=True)
-        create_dataset_mock = Mock()
-        app_mock.datasets = Mock(find_one_dataset=find_one_dataset_mock,
-                                 create_dataset=create_dataset_mock)
-        result = view._get_dataset(app_mock)
-        assert result
-        find_one_dataset_mock.assert_called_once_with(name=view.dataset_name)
-        create_dataset_mock.assert_not_called()
-
-    def test_get_dataset_missing(self, view, app_mock):
-        find_one_dataset_mock = Mock(side_effect=ZmlpNotFoundException(data={}))
-        create_dataset_mock = Mock()
-        app_mock.datasets = Mock(find_one_dataset=find_one_dataset_mock,
-                                 create_dataset=create_dataset_mock)
-        result = view._get_dataset(app_mock)
-        assert result
-        find_one_dataset_mock.assert_called_once_with(name=view.dataset_name)
-        create_dataset_mock.assert_called_once_with(view.dataset_name, DataSetType.FACE_RECOGNITION)
-
     def test_get_model_existing(self, view, app_mock):
-        dataset_mock = Mock()
         create_model_mock = Mock(return_valuel=True)
         find_one_model_mock = Mock()
         models_mock = Mock(find_one_model=find_one_model_mock,
                            create_model=create_model_mock)
         app_mock.models = models_mock
-        result = view._get_model(app_mock, dataset_mock)
+        result = view._get_model(app_mock)
         assert result
-        find_one_model_mock.assert_called_once_with(dataset=dataset_mock)
+        find_one_model_mock.assert_called_once()
         create_model_mock.assert_not_called()
 
     def test_get_model_missing(self, view, app_mock):
-        dataset_mock = Mock()
         create_model_mock = Mock(return_valuel=True)
         find_one_model_mock = Mock(side_effect=ZmlpNotFoundException(data={}))
         models_mock = Mock(find_one_model=find_one_model_mock,
                            create_model=create_model_mock)
         app_mock.models = models_mock
-        result = view._get_model(app_mock, dataset_mock)
+        result = view._get_model(app_mock)
         assert result
-        find_one_model_mock.assert_called_once_with(dataset=dataset_mock)
-        create_model_mock.assert_called_once_with(dataset_mock, ModelType.ZVI_FACE_RECOGNITION)
+        find_one_model_mock.assert_called_once()
+        create_model_mock.assert_called_once_with(view.model_name, ModelType.ZVI_FACE_RECOGNITION)
