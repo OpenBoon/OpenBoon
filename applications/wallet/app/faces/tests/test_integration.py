@@ -229,7 +229,6 @@ class TestHelpers:
         return Mock()
 
     def test_get_model_existing(self, view, app_mock):
-        dataset_mock = Mock()
         create_model_mock = Mock(return_valuel=True)
         find_one_model_mock = Mock()
         models_mock = Mock(find_one_model=find_one_model_mock,
@@ -237,11 +236,10 @@ class TestHelpers:
         app_mock.models = models_mock
         result = view._get_model(app_mock)
         assert result
-        find_one_model_mock.assert_called_once_with(dataset=dataset_mock)
+        find_one_model_mock.assert_called_once()
         create_model_mock.assert_not_called()
 
     def test_get_model_missing(self, view, app_mock):
-        dataset_mock = Mock()
         create_model_mock = Mock(return_valuel=True)
         find_one_model_mock = Mock(side_effect=ZmlpNotFoundException(data={}))
         models_mock = Mock(find_one_model=find_one_model_mock,
@@ -249,5 +247,5 @@ class TestHelpers:
         app_mock.models = models_mock
         result = view._get_model(app_mock)
         assert result
-        find_one_model_mock.assert_called_once_with(dataset=dataset_mock)
-        create_model_mock.assert_called_once_with(dataset_mock, ModelType.ZVI_FACE_RECOGNITION)
+        find_one_model_mock.assert_called_once()
+        create_model_mock.assert_called_once_with(view.model_name, ModelType.ZVI_FACE_RECOGNITION)

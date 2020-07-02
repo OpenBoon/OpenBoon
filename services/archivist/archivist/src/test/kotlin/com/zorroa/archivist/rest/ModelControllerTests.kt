@@ -141,7 +141,7 @@ class ModelControllerTests : MockMvcTest() {
     fun testTypeInfo() {
         val type = ModelType.ZVI_LABEL_DETECTION
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v3/models/_type/$type")
+            MockMvcRequestBuilders.get("/api/v3/models/_types/$type")
                 .headers(job())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -149,6 +149,23 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.name",
+                    CoreMatchers.equalTo("ZVI_LABEL_DETECTION")
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testGetTypes() {
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/models/_types")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.[0].name",
                     CoreMatchers.equalTo("ZVI_LABEL_DETECTION")
                 )
             )

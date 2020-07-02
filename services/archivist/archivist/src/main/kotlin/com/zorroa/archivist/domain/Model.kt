@@ -75,12 +75,11 @@ enum class ModelType(
     fun asMap(): Map<String, Any> {
         return mapOf(
             "name" to name,
-            "trainProcessor" to trainProcessor,
-            "trainArgs" to trainArgs,
-            "classifyProcessor" to classifyProcessor,
-            "classifyArgs" to classifyArgs,
             "moduleName" to moduleName,
-            "description" to description
+            "description" to description,
+            "mlType" to pipelineModType,
+            "provider" to provider,
+            "runOnTrainingSet" to runOnTrainingSet
         )
     }
 }

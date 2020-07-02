@@ -48,9 +48,15 @@ class ModelController(
     }
 
     @ApiOperation("Get Information about a model type.")
-    @GetMapping(value = ["/api/v3/models/_type/{name}"])
+    @GetMapping(value = ["/api/v3/models/_types/{name}"])
     fun getType(@PathVariable name: String): Map<String, Any> {
         return ModelType.valueOf(name).asMap()
+    }
+
+    @ApiOperation("Get Information about a model type.")
+    @GetMapping(value = ["/api/v3/models/_types"])
+    fun getTypes(@PathVariable name: String): Any {
+        return ModelType.values().map { it.asMap() }
     }
 
     @ApiOperation("Search for Models.")
