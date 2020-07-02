@@ -31,6 +31,7 @@ import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.DataSetDao
+import com.zorroa.archivist.repository.DataSetJdbcDao
 import com.zorroa.archivist.security.CoroutineAuthentication
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageException
@@ -208,6 +209,9 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var dataSetDao: DataSetDao
+
+    @Autowired
+    lateinit var dataSetJdbcDao: DataSetJdbcDao
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -820,14 +824,27 @@ class AssetServiceImpl : AssetService {
             }
         }
         val result = rest.client.bulk(bulk, RequestOptions.DEFAULT)
+
         if (result.hasFailures()) {
             logger.warn("Some failures occurred during asset labeling operation {}")
             for (f in result.items) {
                 if (f.isFailed) {
+                    // Remove all failed
+                    allAssetIds.minus(f.id)
                     logger.warn("Asset ${f.id} failed to update label ${f.failureMessage}")
                 }
             }
         }
+
+        // Update DataSets Modified State
+        allAssetIds.forEach { assets ->
+            req?.add?.get(assets)?.let { itList ->
+                itList.forEach {
+                    dataSetJdbcDao.updateModified(it.dataSetId, true)
+                }
+            }
+        }
+
         return result
     }
 

@@ -85,7 +85,8 @@ class DataSetServiceImpl(
             time,
             time,
             actor.toString(),
-            actor.toString()
+            actor.toString(),
+            false
         )
         dataSetDao.save(ts)
         logger.event(LogObject.DATASET, LogAction.CREATE, mapOf("dataSetId" to id))

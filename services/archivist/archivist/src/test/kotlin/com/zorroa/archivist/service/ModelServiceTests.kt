@@ -5,6 +5,8 @@ import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.DataSet
+import com.zorroa.archivist.domain.DataSetFilter
+import com.zorroa.archivist.domain.DataSetLabel
 import com.zorroa.archivist.domain.DataSetSpec
 import com.zorroa.archivist.domain.DataSetType
 import com.zorroa.archivist.domain.JobState
@@ -16,6 +18,7 @@ import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
 import com.zorroa.archivist.domain.ModelType
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.util.Json
 import org.junit.Test
@@ -76,10 +79,44 @@ class ModelServiceTests : AbstractTest() {
     fun testTrainModel() {
         val model1 = create()
         val job = modelService.trainModel(model1, ModelTrainingArgs())
+        dataSetService.get(model1.dataSetId).modified
 
+        assertEquals(false, dataSetService.get(model1.dataSetId).modified)
         assertEquals(model1.trainingJobName, job.name)
         assertEquals(JobState.InProgress, job.state)
         assertEquals(1, job.priority)
+    }
+
+    @Test
+    fun testUpdateDataSetModified() {
+        val model1 = create()
+
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
+        )
+        // Add a label.
+        var asset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                mapOf(
+                    asset.id to listOf(
+                        DataSetLabel(dataSet.id, "cat", simhash = "12345")
+                    )
+                )
+            )
+        )
+
+        // Must be set to true when a label is added
+        var modifiedDatSet = dataSetService.findOne(DataSetFilter(listOf(dataSet.id)))
+
+        assertEquals(true, modifiedDatSet.modified)
+
+        val job = modelService.trainModel(model1, ModelTrainingArgs())
+
+        modifiedDatSet = dataSetService.findOne(DataSetFilter(listOf(dataSet.id)))
+
+        // Must be set to false when a model is retrained
+        assertEquals(false, modifiedDatSet.modified)
     }
 
     @Test(expected = EmptyResultDataAccessException::class)

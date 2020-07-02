@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.domain.DataSet
 import com.zorroa.archivist.domain.DataSetFilter
 import com.zorroa.archivist.domain.DataSetType
+import com.zorroa.archivist.security.getZmlpActor
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -35,6 +36,11 @@ interface DataSetJdbcDao {
      * The [Project] filter is applied automatically.
      */
     fun count(filter: DataSetFilter): Long
+
+    /**
+     * Update [DataSet] modified state.
+     */
+    fun updateModified(dataSetID: UUID, modified: Boolean): Boolean
 }
 
 @Repository
@@ -45,6 +51,10 @@ class DataSetJdbcDaoImpl : AbstractDao(), DataSetJdbcDao {
             filter.getQuery(COUNT, forCount = true),
             Long::class.java, *filter.getValues(forCount = true)
         )
+    }
+
+    override fun updateModified(dataSetID: UUID, modified: Boolean): Boolean {
+        return jdbc.update(SET_MODIFIED, System.currentTimeMillis(), getZmlpActor().toString(), modified, dataSetID) == 1
     }
 
     override fun findOne(filter: DataSetFilter): DataSet {
@@ -71,7 +81,8 @@ class DataSetJdbcDaoImpl : AbstractDao(), DataSetJdbcDao {
             rs.getLong("time_created"),
             rs.getLong("time_modified"),
             rs.getString("actor_created"),
-            rs.getString("actor_modified")
+            rs.getString("actor_modified"),
+            rs.getBoolean("bool_modified")
         )
     }
 
@@ -79,5 +90,8 @@ class DataSetJdbcDaoImpl : AbstractDao(), DataSetJdbcDao {
 
         const val GET = "SELECT * FROM data_set"
         const val COUNT = "SELECT COUNT(1) FROM data_set"
+
+        const val SET_MODIFIED = "UPDATE data_set SET time_modified=?, actor_modified=?, " +
+            "bool_modified=? WHERE pk_data_set=?"
     }
 }
