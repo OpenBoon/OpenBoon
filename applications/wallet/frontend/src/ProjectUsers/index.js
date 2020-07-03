@@ -47,6 +47,7 @@ const ProjectUsers = () => {
         legend="Users"
         url={`/api/v1/projects/${projectId}/users/`}
         refreshKeys={[]}
+        refreshButton={false}
         columns={['Email', 'Roles', '#Actions#']}
         expandColumn={2}
         renderEmpty="No users"

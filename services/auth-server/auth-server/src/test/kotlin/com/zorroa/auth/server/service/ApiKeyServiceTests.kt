@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ApiKeyServiceTests : AbstractTest() {
@@ -41,6 +42,7 @@ class ApiKeyServiceTests : AbstractTest() {
         assertEquals(spec.name, key.name)
         assertEquals(getProjectId(), key.projectId)
         assertTrue(Permission.AssetsRead.name in key.permissions)
+        assertEquals(false, key.systemKey)
     }
 
     @Test
@@ -130,10 +132,11 @@ class ApiKeyServiceTests : AbstractTest() {
         apiKeyService.create(ApiKeySpec("try1", setOf(Permission.AssetsRead)))
         apiKeyService.create(ApiKeySpec("try2", setOf(Permission.AssetsRead)))
         apiKeyService.create(ApiKeySpec("try3", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("trySystemKey", setOf(Permission.AssetsRead), systemKey = true))
 
         val keys = apiKeyService.search(ApiKeyFilter(namePrefixes = listOf("test", "try")))
 
-        assertEquals(6, keys.list.size)
+        assertEquals(7, keys.list.size)
     }
 
     @Test
@@ -183,9 +186,19 @@ class ApiKeyServiceTests : AbstractTest() {
             "test",
             setOf(Permission.AssetsRead)
         )
+
+        val specSystemKey = ApiKeySpec(
+            "testSystemKey",
+            setOf(Permission.AssetsRead),
+            systemKey = true
+        )
+
         val key1 = apiKeyService.create(spec)
+        val key2 = apiKeyService.create(specSystemKey)
+
         val all = apiKeyService.findAll()
         assertTrue(key1 in all)
+        assertFalse(key2 in all)
     }
 
     @Test(expected = EmptyResultDataAccessException::class)
@@ -197,5 +210,30 @@ class ApiKeyServiceTests : AbstractTest() {
         val key1 = apiKeyService.create(spec)
         apiKeyService.delete(key1)
         apiKeyService.get(key1.id)
+    }
+
+    @Test(expected = UnsupportedOperationException::class)
+    fun testDeleteSystemKey() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead),
+            systemKey = true
+        )
+        val key1 = apiKeyService.create(spec)
+        apiKeyService.delete(key1)
+    }
+
+    @Test
+    fun testFindSystemKeyById() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead),
+            systemKey = true
+        )
+        val key1 = apiKeyService.create(spec)
+        val get = apiKeyService.get(key1.id)
+
+        assertEquals(key1.name, get.name)
+        assertEquals(key1.id, get.id)
     }
 }

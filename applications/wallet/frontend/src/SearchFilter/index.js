@@ -90,7 +90,7 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
           }}
         >
           <PlusSvg
-            width={ICON_SIZE}
+            height={ICON_SIZE}
             css={{
               color: hasSearch
                 ? colors.structure.white

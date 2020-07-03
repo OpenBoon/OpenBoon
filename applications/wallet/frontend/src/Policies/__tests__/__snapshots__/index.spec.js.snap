@@ -277,7 +277,7 @@ exports[`<Policies /> should render properly 1`] = `
         <svg
           color="#c92300"
           data-file-name="warning.svg"
-          width={20}
+          height={20}
         />
         <div
           className="emotion-2"
@@ -336,7 +336,7 @@ exports[`<Policies /> should render properly 1`] = `
               <svg
                 className="emotion-7"
                 data-file-name="checkmark.svg"
-                width={20}
+                height={20}
               />
             </div>
           </div>

@@ -911,7 +911,7 @@ Array [
             <svg
               className="emotion-23"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -958,7 +958,7 @@ Array [
             <svg
               className="emotion-23"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -1005,7 +1005,7 @@ Array [
             <svg
               className="emotion-23"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -1067,7 +1067,7 @@ Array [
               className="emotion-53"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -1147,7 +1147,7 @@ Array [
               className="emotion-53"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -1221,7 +1221,7 @@ Array [
                           <svg
                             className="emotion-23"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1265,7 +1265,7 @@ Array [
                           <svg
                             className="emotion-23"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1309,7 +1309,7 @@ Array [
                           <svg
                             className="emotion-23"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1353,7 +1353,7 @@ Array [
                           <svg
                             className="emotion-23"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1429,7 +1429,7 @@ Array [
                           <svg
                             className="emotion-23"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1473,7 +1473,7 @@ Array [
                           <svg
                             className="emotion-23"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1517,7 +1517,7 @@ Array [
                           <svg
                             className="emotion-23"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1593,7 +1593,7 @@ Array [
                           <svg
                             className="emotion-23"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -2657,7 +2657,7 @@ Array [
             <svg
               className="emotion-41"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -2704,7 +2704,7 @@ Array [
             <svg
               className="emotion-41"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -2751,7 +2751,7 @@ Array [
             <svg
               className="emotion-41"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -2813,7 +2813,7 @@ Array [
               className="emotion-71"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -2893,7 +2893,7 @@ Array [
               className="emotion-71"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -2967,7 +2967,7 @@ Array [
                           <svg
                             className="emotion-41"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -3011,7 +3011,7 @@ Array [
                           <svg
                             className="emotion-41"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -3055,7 +3055,7 @@ Array [
                           <svg
                             className="emotion-41"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -3099,7 +3099,7 @@ Array [
                           <svg
                             className="emotion-41"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -3175,7 +3175,7 @@ Array [
                           <svg
                             className="emotion-41"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -3219,7 +3219,7 @@ Array [
                           <svg
                             className="emotion-41"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -3263,7 +3263,7 @@ Array [
                           <svg
                             className="emotion-41"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -3339,7 +3339,7 @@ Array [
                           <svg
                             className="emotion-41"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -4370,7 +4370,7 @@ Array [
             <svg
               className="emotion-35"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -4417,7 +4417,7 @@ Array [
             <svg
               className="emotion-35"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -4464,7 +4464,7 @@ Array [
             <svg
               className="emotion-35"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -4526,7 +4526,7 @@ Array [
               className="emotion-65"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -4606,7 +4606,7 @@ Array [
               className="emotion-65"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -4680,7 +4680,7 @@ Array [
                           <svg
                             className="emotion-35"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -4724,7 +4724,7 @@ Array [
                           <svg
                             className="emotion-35"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -4768,7 +4768,7 @@ Array [
                           <svg
                             className="emotion-35"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -4812,7 +4812,7 @@ Array [
                           <svg
                             className="emotion-35"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -4888,7 +4888,7 @@ Array [
                           <svg
                             className="emotion-35"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -4932,7 +4932,7 @@ Array [
                           <svg
                             className="emotion-35"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -4976,7 +4976,7 @@ Array [
                           <svg
                             className="emotion-35"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -5052,7 +5052,7 @@ Array [
                           <svg
                             className="emotion-35"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -6078,7 +6078,7 @@ Array [
             <svg
               className="emotion-34"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -6125,7 +6125,7 @@ Array [
             <svg
               className="emotion-34"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -6172,7 +6172,7 @@ Array [
             <svg
               className="emotion-34"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -6234,7 +6234,7 @@ Array [
               className="emotion-64"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -6314,7 +6314,7 @@ Array [
               className="emotion-64"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -6388,7 +6388,7 @@ Array [
                           <svg
                             className="emotion-34"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -6432,7 +6432,7 @@ Array [
                           <svg
                             className="emotion-34"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -6476,7 +6476,7 @@ Array [
                           <svg
                             className="emotion-34"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -6520,7 +6520,7 @@ Array [
                           <svg
                             className="emotion-34"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -6596,7 +6596,7 @@ Array [
                           <svg
                             className="emotion-34"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -6640,7 +6640,7 @@ Array [
                           <svg
                             className="emotion-34"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -6684,7 +6684,7 @@ Array [
                           <svg
                             className="emotion-34"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -6760,7 +6760,7 @@ Array [
                           <svg
                             className="emotion-34"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>

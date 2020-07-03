@@ -187,6 +187,9 @@ exports[`<Asset /> should handle no query 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -234,7 +237,7 @@ exports[`<Asset /> should handle no query 1`] = `
       >
         <svg
           data-file-name="cross.svg"
-          width={20}
+          height={20}
         />
         <span
           className="emotion-0"
@@ -273,9 +276,8 @@ exports[`<Asset /> should handle no query 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="information.svg"
-            width={20}
+            height={20}
           />
         </button>
         <button
@@ -286,9 +288,8 @@ exports[`<Asset /> should handle no query 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="trash.svg"
-            width={20}
+            height={20}
           />
         </button>
         <div
@@ -487,6 +488,9 @@ exports[`<Asset /> should render properly 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -534,7 +538,7 @@ exports[`<Asset /> should render properly 1`] = `
       >
         <svg
           data-file-name="cross.svg"
-          width={20}
+          height={20}
         />
         <span
           className="emotion-0"
@@ -566,9 +570,8 @@ exports[`<Asset /> should render properly 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="information.svg"
-            width={20}
+            height={20}
           />
         </button>
         <button
@@ -579,9 +582,8 @@ exports[`<Asset /> should render properly 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="trash.svg"
-            width={20}
+            height={20}
           />
         </button>
         <div
@@ -780,6 +782,9 @@ exports[`<Asset /> should render videos properly 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none;
   padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -827,7 +832,7 @@ exports[`<Asset /> should render videos properly 1`] = `
       >
         <svg
           data-file-name="cross.svg"
-          width={20}
+          height={20}
         />
         <span
           className="emotion-0"
@@ -866,9 +871,8 @@ exports[`<Asset /> should render videos properly 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="information.svg"
-            width={20}
+            height={20}
           />
         </button>
         <button
@@ -879,9 +883,8 @@ exports[`<Asset /> should render videos properly 1`] = `
           type="button"
         >
           <svg
-            aria-hidden={true}
             data-file-name="trash.svg"
-            width={20}
+            height={20}
           />
         </button>
         <div

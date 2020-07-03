@@ -93,7 +93,7 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
       <svg
         className="emotion-0"
         data-file-name="chevron.svg"
-        width={20}
+        height={20}
       />
     </div>
   </button>
@@ -277,7 +277,7 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
       <svg
         className="emotion-0"
         data-file-name="chevron.svg"
-        width={20}
+        height={20}
       />
     </div>
   </button>

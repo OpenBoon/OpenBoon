@@ -6,6 +6,7 @@ import Button, { VARIANTS } from '../Button'
 import { spacing, colors } from '../Styles'
 
 const WIDTH = 200
+const ICON_SIZE = 20
 
 const MenuButton = ({ onBlur, onClick, legend }) => (
   <Button
@@ -36,7 +37,7 @@ const MenuButton = ({ onBlur, onClick, legend }) => (
     isDisabled={false}
   >
     {legend}
-    <ChevronSvg width={20} />
+    <ChevronSvg height={ICON_SIZE} />
   </Button>
 )
 

@@ -149,7 +149,7 @@ exports[`<JobsMenu /> should render properly 1`] = `
   >
     <svg
       data-file-name="gear.svg"
-      width={20}
+      height={20}
     />
   </button>
   <div
