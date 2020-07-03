@@ -396,8 +396,8 @@ class AssetServiceImpl : AssetService {
                 logger.event(
                     LogObject.ASSET,
                     LogAction.ERROR,
-                    mapOf("assetNotIndexed" to id,
-                        "cause" to ex.message)
+                    mapOf( "assetNotIndexed" to id,
+                        "cause" to ex.message )
                 )
             }
 
@@ -731,11 +731,9 @@ class AssetServiceImpl : AssetService {
             asset.removeAttr(it)
         }
 
-
         // Assets must have media type in order to Increment Project Ingest Counters
-        if(!asset.attrExists("media.type"))
+        if (!asset.attrExists("media.type"))
             throw IllegalStateException("Asset ${asset.id} must have a media type")
-
 
         // Got back a clip but it has no pile which means it's in its own pile.
         // This happens during deep analysis when a file is being clipped, the first

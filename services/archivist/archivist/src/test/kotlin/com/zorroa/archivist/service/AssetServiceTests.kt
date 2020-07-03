@@ -326,8 +326,7 @@ class AssetServiceTests : AbstractTest() {
         val createRsp = assetService.batchCreate(batchCreate)
         var asset = assetService.getAsset(createRsp.created[0])
         asset.setAttr("aux.field", 1)
-        asset.setAttr("media.type", FileUtils.extension(asset.getAttr<String>("source.path")))
-
+        asset.setAttr("media.type", "image")
 
         assetService.index(asset.id, asset.document)
         asset = assetService.getAsset(createRsp.created[0])
