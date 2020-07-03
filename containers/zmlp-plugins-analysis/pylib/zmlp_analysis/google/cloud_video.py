@@ -5,7 +5,7 @@ import backoff
 import google.cloud.videointelligence_v1p3beta1 as videointelligence
 from google.api_core.exceptions import ResourceExhausted
 
-from zmlpsdk import Argument, AssetProcessor, FileTypes, file_storage
+from zmlpsdk import Argument, AssetProcessor, FileTypes, file_storage, proxy
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
 from . import cloud_timeline
 from .gcp_client import initialize_gcp_client
@@ -23,7 +23,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
     tool_tips = {
         'detect_labels': tip,
-        'detect_text': "Set to true to enable text detetecction.",
+        'detect_text': "Set to true to enable text detection.",
         'detect_objects': tip,
         'detect_logos': tip,
         'detect_explicit': 'An integer level of confidence to tag as explicit. 0=disabled, max=5'
@@ -63,10 +63,6 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
 
-        if not asset.get_attr('source.path').startswith('gs://'):
-            self.logger.info('Skipping, video must be in a GCS bucket.')
-            return -1
-
         # Cannot run on clips without transcoding the clip
         if asset.get_attr('clip.track') != 'full':
             self.logger.info('Skipping, cannot run processor on clips.')
@@ -78,7 +74,12 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                 'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
             return
 
-        annotation_result = self._get_video_annotations(asset.get_attr('source.path'))
+        # You can't run this on the source because our google creds
+        # don't allow us access to other people's buckets. Using the
+        # customer creds would use their VidInt quota, which would
+        # be badd, mmmkay.
+        proxy_uri = self.get_video_proxy_uri(asset)
+        annotation_result = self._get_video_annotations(proxy_uri)
         file_storage.assets.store_blob(annotation_result.SerializeToString(),
                                        asset,
                                        'gcp',
@@ -98,6 +99,10 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         if self.arg_value('detect_explicit') != -1:
             self.handle_detect_explicit(asset, annotation_result)
+
+    def get_video_proxy_uri(self, asset):
+        video_proxy = proxy.get_proxy_level(asset, 3, mimetype="video")
+        return file_storage.assets.get_native_uri(video_proxy)
 
     def handle_detect_logos(self, asset, results):
         """
