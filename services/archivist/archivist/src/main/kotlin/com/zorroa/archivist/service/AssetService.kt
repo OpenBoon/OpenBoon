@@ -13,11 +13,10 @@ import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
-import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileExtResolver
+import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectFileLocator
@@ -27,6 +26,7 @@ import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.domain.ZpsScript
@@ -46,6 +46,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.elasticsearch.action.DocWriteRequest
+import org.elasticsearch.action.bulk.BulkItemResponse
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.bulk.BulkResponse
 import org.elasticsearch.action.support.WriteRequest
@@ -373,27 +374,48 @@ class AssetServiceImpl : AssetService {
         // A set of IDs where the stat changed to Analyzed.
         val stateChangedIds = mutableSetOf<String>()
 
-        docs.forEach { (id, doc) ->
+        val listOfFailedAssets: ArrayList<BulkItemResponse> = arrayListOf()
 
-            val asset = prepAssetForUpdate(id, doc)
-            if (setAnalyzed && !asset.isAnalyzed()) {
-                asset.setAttr("system.state", AssetState.Analyzed.name)
-                stateChangedIds.add(id)
+        docs.forEach { (id, doc) ->
+            var asset: Asset? = null
+            try {
+                asset = prepAssetForUpdate(id, doc)
+                if (setAnalyzed && !asset.isAnalyzed()) {
+                    asset.setAttr("system.state", AssetState.Analyzed.name)
+                    stateChangedIds.add(id)
+                }
+            } catch (ex: IllegalStateException) {
+                listOfFailedAssets.add(
+                    BulkItemResponse(
+                        0,
+                        DocWriteRequest.OpType.INDEX,
+                        BulkItemResponse.Failure("0", "INDEX", id, IllegalArgumentException(ex))
+                    )
+                )
+
+                logger.event(
+                    LogObject.ASSET,
+                    LogAction.ERROR,
+                    mapOf("assetNotIndexed" to id,
+                        "cause" to ex.message)
+                )
             }
 
             /*
              * Index here vs update because otherwise the new doc will
              * be merge of the old one and the new one.
              */
-            bulk.add(
-                rest.newIndexRequest(id)
-                    .source(doc)
-                    .opType(DocWriteRequest.OpType.INDEX)
-            )
+            asset?.let {
+                bulk.add(
+                    rest.newIndexRequest(id)
+                        .source(doc)
+                        .opType(DocWriteRequest.OpType.INDEX)
+                )
+            }
         }
 
         logger.event(
-            LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to docs.size)
+            LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to bulk.numberOfActions())
         )
 
         val rsp = rest.client.bulk(bulk, RequestOptions.DEFAULT)
@@ -402,7 +424,11 @@ class AssetServiceImpl : AssetService {
             incrementProjectIngestCounters(stateChangedIds.intersect(successIds), docs)
         }
 
-        return rsp
+        return BulkResponse(
+            rsp.items.plus(listOfFailedAssets),
+            rsp.took.millis,
+            rsp.ingestTookInMillis
+        )
     }
 
     override fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse {
@@ -704,6 +730,12 @@ class AssetServiceImpl : AssetService {
         removeFieldsOnUpdate.forEach {
             asset.removeAttr(it)
         }
+
+
+        // Assets must have media type in order to Increment Project Ingest Counters
+        if(!asset.attrExists("media.type"))
+            throw IllegalStateException("Asset ${asset.id} must have a media type")
+
 
         // Got back a clip but it has no pile which means it's in its own pile.
         // This happens during deep analysis when a file is being clipped, the first
