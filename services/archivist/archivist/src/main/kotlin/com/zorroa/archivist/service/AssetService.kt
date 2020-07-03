@@ -392,12 +392,13 @@ class AssetServiceImpl : AssetService {
                         BulkItemResponse.Failure("0", "INDEX", id, IllegalArgumentException(ex))
                     )
                 )
-
                 logger.event(
                     LogObject.ASSET,
                     LogAction.ERROR,
-                    mapOf( "assetNotIndexed" to id,
-                        "cause" to ex.message )
+                    mapOf(
+                        "assetNotIndexed" to id,
+                        "cause" to ex.message
+                    )
                 )
             }
 
