@@ -6,7 +6,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from zmlpsdk import AssetProcessor, Argument
+from zmlpsdk import AssetProcessor, Argument, StopWatch
 from zmlpsdk.storage import file_storage
 from ..util.media import get_output_dimension, media_size, store_media_proxy
 
@@ -26,7 +26,7 @@ class ImageProxyProcessor(AssetProcessor):
     def __init__(self):
         super(ImageProxyProcessor, self).__init__()
         self.created_proxy_count = 0
-        self.add_arg(Argument('sizes', 'list[int]', default=[1024, 512],
+        self.add_arg(Argument('sizes', 'list[int]', default=[1280, 512],
                               toolTip=self.toolTips['sizes']))
         self.add_arg(Argument('file_type', 'str', default='jpg',
                               toolTip=self.toolTips['file_type']))
@@ -91,16 +91,14 @@ class ImageProxyProcessor(AssetProcessor):
             output_path = str(proxy_descriptors[0][2])
             shutil.copy(file_storage.localize_file(asset), output_path)
         elif proxy_descriptors:
-            self.logger.info('oiiotool command to create proxies: %s' % oiiotool_command)
-            subprocess.check_call(oiiotool_command,
-                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            self.logger.debug('create proxies: %s' % oiiotool_command)
+            with StopWatch("Create ML proxies"):
+                subprocess.check_call(oiiotool_command,
+                                      stdout=subprocess.DEVNULL,
+                                      stderr=subprocess.DEVNULL)
             self.created_proxy_count += len(proxy_descriptors)
         else:
             self.logger.info('All proxies already exist. No proxies will be created.')
-
-        # Strip specific exif tags
-        for (_, _, output_path) in proxy_descriptors:
-            self.strip_tags(output_path)
 
         return proxy_descriptors
 
@@ -122,7 +120,8 @@ class ImageProxyProcessor(AssetProcessor):
         # Crete the base of the oiiotool shell command.
         oiiotool_command = ['oiiotool', '-q', '-native', '-wildcardoff', source_path,
                             '--threads', '4', '--cache', '1024', '--clear-keywords',
-                            '--nosoftwareattrib', '--eraseattrib', 'thumbnail_image']
+                            '--nosoftwareattrib', '--eraseattrib', 'thumbnail_image',
+                            '--eraseattrib', 'Exif:.*', '--eraseattrib', 'IPTC:.*']
         if asset.get_attr('media.clip.type') == 'image':
             start = asset.get_attr('media.clip.start')
             if start:
@@ -133,7 +132,7 @@ class ImageProxyProcessor(AssetProcessor):
             oiiotool_command.extend([
                 '--resize:filter=%s' % self.arg_value('resize_filter'),
                 '%sx%s' % (width, height),
-                '--autocc', '--quality', '100'
+                '--autocc', '--quality', '95'
             ])
             oiiotool_command.extend(self.arg_value('output_args'))
             oiiotool_command.extend(['-o', str(output_path)])
@@ -152,7 +151,6 @@ class ImageProxyProcessor(AssetProcessor):
         Returns:
             A list of (width, height) pairs with the proxy sizes.
         """
-        self.logger.info("Existing proxies: %s" % asset.get_files())
         source_width, source_height = self._get_source_dimensions(asset)
         tmp_dir = Path(tempfile.mkdtemp(prefix="proxy-"))
         # Determine list of (width, height) for proxies to be made.
@@ -244,6 +242,7 @@ class ImageProxyProcessor(AssetProcessor):
             "4:2:0",
             "-define",
             "jpeg:dct-method=float",
+            "-auto-orient",
             "-strip",
             "-quality",
             "85",
@@ -254,34 +253,13 @@ class ImageProxyProcessor(AssetProcessor):
             str(output_path)
         ]
 
-        logger.info("Running cmd: {}".format(" ".join(cmd)))
-        subprocess.check_call(cmd, shell=False)
+        logger.debug("Running cmd: {}".format(" ".join(cmd)))
+        with StopWatch("Create web proxy"):
+            subprocess.check_call(cmd, shell=False)
         attrs = {"width": size[0], "height": size[1]}
         prx = file_storage.assets.store_file(output_path, asset, "web-proxy",
                                              "web-proxy.jpg", attrs)
         return prx
-
-    def strip_tags(self, path):
-        """
-        Use exiftool to strip all unnecessary image tags.  Keep
-        the color profile and orientation.
-        Args:
-            path:
-
-        Returns:
-
-        """
-        cmd = ["exiftool",
-               "-all=",
-               "-overwrite_original",
-               "-TagsFromFile",
-               "@",
-               "-ColorSpaceTags",
-               "-Orientation",
-               str(path)]
-
-        logger.info("Stripping Tags: {}".format(cmd))
-        subprocess.check_call(cmd, shell=False)
 
 
 ProxySelection = collections.namedtuple('name', '')

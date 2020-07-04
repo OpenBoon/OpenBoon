@@ -36,7 +36,7 @@ def media_size(path):
                str(path)]
 
         try:
-            logger.info("running command: %s" % cmd)
+            logger.debug("running command: %s" % cmd)
             size = check_output(cmd, shell=False).decode().split("x")
             return int(size[0]), int(size[1])
         except CalledProcessError:
@@ -49,7 +49,7 @@ def media_size(path):
         # could be decompression bomb DOS attack.
         cmd = ["oiiotool", "-q", "--wildcardoff", "--info", str(path)]
         try:
-            logger.info("running command: %s" % cmd)
+            logger.debug("running command: %s" % cmd)
             line = [e for e in
                     check_output(cmd, shell=False, stderr=DEVNULL).decode().split(" ") if e]
             idx = line.index("x")
@@ -75,7 +75,7 @@ def get_image_metadata(file_path):
            '--info:format=xml:verbose=1',
            str(file_path)]
 
-    logger.info("running command: %s" % cmd)
+    logger.debug("running command: %s" % cmd)
 
     # Have to remove bad unicode chars with decode
     output = check_output(cmd, shell=False, stderr=DEVNULL)
@@ -165,7 +165,7 @@ def ffprobe(src_path):
            '-show_format',
            str(src_path)]
 
-    logger.info("running command: %s" % cmd)
+    logger.debug("running command: %s" % cmd)
     ffprobe_result = check_output(cmd, shell=False)
     return json.loads(ffprobe_result)
 
@@ -263,15 +263,21 @@ def store_media_proxy(asset, path, proxy_type, size=None, attrs=None):
     if not ext:
         raise ValueError('The path to the proxy file has no extension, but one is required.')
 
-    proxy_attrs = asset.get_attr('tmp.{}_proxy_source_attrs'.format(proxy_type)) or {}
+    # Combine all the attts
+    final_attrs = {}
+
+    proxy_attrs = asset.get_attr('tmp.{}_proxy_source_attrs'.format(proxy_type))
+    if proxy_attrs:
+        final_attrs.update(proxy_attrs)
+
     if attrs:
-        proxy_attrs.update(attrs)
+        final_attrs.update(attrs)
 
     # If the proxy is a video type, get some video details.
     if proxy_type == 'video':
         props = get_video_metadata(path)
         size = (props['width'], props['height'])
-        proxy_attrs.update({
+        final_attrs.update({
             'frames': props['frames'],
             'frameRate': props['frameRate'],
             'width': props['width'],
@@ -280,12 +286,12 @@ def store_media_proxy(asset, path, proxy_type, size=None, attrs=None):
     if not size:
         size = media_size(path)
 
-    if 'width' not in proxy_attrs:
-        proxy_attrs['width'] = size[0]
-        proxy_attrs['height'] = size[1]
+    if 'width' not in final_attrs:
+        final_attrs['width'] = size[0]
+        final_attrs['height'] = size[1]
 
     name = '{}_{}x{}{}'.format(proxy_type, size[0], size[1], ext)
-    return file_storage.assets.store_file(path, asset, 'proxy', rename=name, attrs=proxy_attrs)
+    return file_storage.assets.store_file(path, asset, 'proxy', rename=name, attrs=final_attrs)
 
 
 class MediaInfo:
