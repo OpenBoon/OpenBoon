@@ -17,6 +17,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
     libglib2.0-0 \
     imagemagick \
     exiftool \
+    mediainfo \
      --no-install-recommends
 
 RUN mkdir /build
