@@ -14,7 +14,7 @@ TOUCAN = zorroa_test_data("images/set01/toucan.jpg")
 BEER = zorroa_test_data("images/set02/beer_kettle_01.jpg")
 VIDEO = zorroa_test_data("video/dc.webm")
 
-logging.basicConfig()
+logging.basicConfig(level=logging.INFO)
 
 
 class ProxyIngestorUnitTestCase(PluginUnitTestCase):
