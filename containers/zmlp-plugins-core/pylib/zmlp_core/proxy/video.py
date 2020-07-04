@@ -1,7 +1,7 @@
 import subprocess
 import tempfile
 
-from zmlpsdk.base import AssetProcessor
+from zmlpsdk import AssetProcessor, StopWatch
 from zmlpsdk.storage import file_storage
 from ..util.media import store_media_proxy, MediaInfo
 
@@ -62,9 +62,9 @@ class VideoProxyProcessor(AssetProcessor):
             cmd.extend(('-vf', 'pad=ceil(iw/2)*2:ceil(ih/2)*2'))
         cmd.append(dst_path)
 
-        self.logger.info(f'Transcoding video for streaming {src_path}')
         self.logger.debug(f'Running: {cmd}')
-        subprocess.check_call(cmd)
+        with StopWatch("Transcode video proxy"):
+            subprocess.check_call(cmd, shell=False)
         store_media_proxy(asset, dst_path, 'video', None, {'transcode': 'full'})
 
     def optimize_source(self, asset):
@@ -82,14 +82,15 @@ class VideoProxyProcessor(AssetProcessor):
             '-vcodec', 'copy',
             dst_path
         ]
-        self.logger.info(f'Optimizing H264 video for streaming {src_path}')
+
         self.logger.debug(f'Running: {cmd}')
-        subprocess.check_call(cmd)
+        with StopWatch("Optimize video proxy"):
+            subprocess.check_call(cmd, shell=False)
         store_media_proxy(asset, dst_path, 'video', None, {'transcode': 'optimize'})
 
     def copy_source(self, asset):
-        self.logger.info('Copying source video for streaming {src_path}')
-        src_path = file_storage.localize_file(asset)
+        with StopWatch("Copy video proxy"):
+            src_path = file_storage.localize_file(asset)
         store_media_proxy(asset, src_path, 'video', None, {'transcode': 'none'})
 
     def get_transcoding_process(self, asset):
