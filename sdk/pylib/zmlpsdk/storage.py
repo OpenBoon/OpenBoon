@@ -538,6 +538,7 @@ class FileCache(object):
 
         # GCS buckets
         elif parsed_uri.scheme == 'gs':
+            # This client uses customer creds.
             gcs_client = get_cached_google_storage_client()
             bucket = gcs_client.get_bucket(parsed_uri.netloc)
             blob = bucket.blob(parsed_uri.path[1:])

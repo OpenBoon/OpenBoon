@@ -1,0 +1,19 @@
+{
+  "description": "Add the modelId field to labels.",
+  "patch": {
+    "properties": {
+      "labels": {
+        "dynamic": "strict",
+        "type": "nested",
+        "properties": {
+          "modelId": {
+            "type": "keyword"
+          },
+          "scope": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}

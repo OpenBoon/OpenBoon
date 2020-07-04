@@ -35,7 +35,7 @@ def id_generator(size=6, chars=string.ascii_uppercase):
 
 
 class LabelDetectionClassifiersUnitTests(PluginUnitTestCase):
-    ds_id = "ds-id-12345"
+
     model_id = "model-id-12345"
     base_dir = os.path.dirname(__file__)
     test_shash = id_generator(size=2048)
@@ -75,10 +75,10 @@ class LabelDetectionClassifiersUnitTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "dataSetId": self.ds_id,
-                "type": "LABEL_DETECTION_MOBILENET2",
+                "type": "ZVI_LABEL_DETECTION",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": "pets",
+                "moduleName": "zvi-pets"
             }
         )
         args = {"model_id": self.model_id, "attr": "shash"}
@@ -92,4 +92,4 @@ class LabelDetectionClassifiersUnitTests(PluginUnitTestCase):
 
             # since all hashes are random, prediction could be either dog or
             # cat so just need to check that it made a prediction at all
-            assert asset.get_attr("analysis")["imageClassify"]["pred0"]
+            assert asset.get_attr("analysis")["zvi-pets"]["pred0"]

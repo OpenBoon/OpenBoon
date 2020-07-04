@@ -15,15 +15,15 @@ class AssetTests {
 
         asset.addLabels(
             listOf(
-                DataSetLabel(ds1, "frog", bbox = bbox(0.023123, 0.12345, 0.2312323, 0.678565))
+                Label(ds1, "frog", bbox = bbox(0.023123, 0.12345, 0.2312323, 0.678565))
             )
         )
         asset.addLabels(
             listOf(
-                DataSetLabel(ds2, "dog", bbox = bbox(0.100, 0.08932, 0.7732, 0.29233))
+                Label(ds2, "dog", bbox = bbox(0.100, 0.08932, 0.7732, 0.29233))
             )
         )
 
-        assertEquals(2, asset.getAttr("labels", DataSetLabel.SET_OF)?.size)
+        assertEquals(2, asset.getAttr("labels", Label.SET_OF)?.size)
     }
 }

@@ -50,8 +50,8 @@ class AssetSpec(
     @ApiModelProperty("Optional clip metadata specifies the portion of the asset to process.")
     var clip: Clip? = null,
 
-    @ApiModelProperty("Optional DataSet label which puts the asset in the given DataSet.")
-    val label: DataSetLabel? = null,
+    @ApiModelProperty("Optional Model label which puts the asset in the given Model.")
+    val label: Label? = null,
 
     @ApiModelProperty("An optional unique ID for the asset to override the auto-generated ID.")
     val id: String? = null,
@@ -194,21 +194,22 @@ open class Asset(
     /**
      * Adds the given labels to the asset's document.
      */
-    fun addLabels(labels: Collection<DataSetLabel>) {
-        val allLabels = getAttr("labels", DataSetLabel.SET_OF) ?: mutableSetOf()
+    fun addLabels(labels: Collection<Label>) {
+        val allLabels = getAttr("labels", Label.SET_OF) ?: mutableSetOf()
         // Remove the labels first because if the label value
         // changes then it won't get added.  This basically
         // replaces a label for an existing tag.
         allLabels.removeAll(labels)
         allLabels.addAll(labels)
         setAttr("labels", allLabels)
+        Json.prettyPrint(allLabels)
     }
 
     /**
      * Adds the given labels to the asset's document.
      */
-    fun removeLabels(labels: Collection<DataSetLabel>) {
-        val allLabels = getAttr("labels", DataSetLabel.SET_OF) ?: mutableSetOf()
+    fun removeLabels(labels: Collection<Label>) {
+        val allLabels = getAttr("labels", Label.SET_OF) ?: mutableSetOf()
         allLabels.removeAll(labels)
         setAttr("labels", allLabels)
     }
