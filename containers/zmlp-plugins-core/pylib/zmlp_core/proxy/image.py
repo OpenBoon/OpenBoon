@@ -8,7 +8,7 @@ from pathlib import Path
 
 from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.storage import file_storage
-from ..util.media import get_output_dimension, media_size, store_asset_proxy
+from ..util.media import get_output_dimension, media_size, store_media_proxy
 
 logger = logging.getLogger(__file__)
 
@@ -61,7 +61,7 @@ class ImageProxyProcessor(AssetProcessor):
 
         proxy_paths = self._create_proxy_images(asset)
         for width, height, path in proxy_paths:
-            store_asset_proxy(asset, path, (width, height))
+            store_media_proxy(asset, path,  'image', (width, height))
 
         # Make web optimized
         width, height, path = proxy_paths[0]

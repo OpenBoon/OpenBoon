@@ -499,10 +499,15 @@ class FileCache(object):
         """
         _, suffix = os.path.splitext(sfile.name)
         cache_path = self.get_path(sfile.id, suffix)
-
         precache_path = urlparse(str(src_path)).path
         logger.info("Pre-caching {} to {}".format(precache_path, cache_path))
-        shutil.copy(urlparse(precache_path).path, cache_path)
+
+        # If the tmp file is in the task cache, just symlink it into file storage cache.
+        if src_path.startswith(os.environ.get("TMPDIR", "/tmp")):
+            logger.info("Symlinking")
+            os.symlink(src_path, cache_path)
+        else:
+            shutil.copy(urlparse(precache_path).path, cache_path)
         return cache_path
 
     def localize_uri(self, uri):
