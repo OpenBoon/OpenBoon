@@ -394,7 +394,8 @@ class ProcessorWrapper(object):
         if metric_idx == -1:
             metric = {
                 "processor": class_name,
-                "module": self.ref.get("module")
+                "module": self.ref.get("module"),
+                "executionTime": 0
             }
             metrics.append(metric)
         else:
