@@ -403,7 +403,6 @@ class ProcessorWrapper(object):
         # The checksum needs to be there even if its not processed
         # or else a zero checksums would signal reprocessing.
         metric["checksum"] = self.ref.get("checksum", 0)
-        metric["executionTime"] = 0
 
         # Only processed processors get a date and a positive executionTime
         if processed:
