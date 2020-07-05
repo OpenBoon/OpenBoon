@@ -441,6 +441,10 @@ class ProjectStorage(object):
         cache_path = self.cache.get_path(file_id, suffix)
 
         if not os.path.exists(cache_path):
+            try:
+                os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+            except Exception as e:
+                logger.warning(f"Failed to create cache path dir: {cache_path}", e)
             logger.info("localizing file: {}".format(file_id))
             self.app.client.stream('/api/v3/files/_stream/{}'.format(file_id), cache_path)
         return cache_path
