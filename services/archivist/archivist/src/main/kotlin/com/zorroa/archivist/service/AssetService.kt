@@ -419,16 +419,20 @@ class AssetServiceImpl : AssetService {
             LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to bulk.numberOfActions())
         )
 
-        val rsp = rest.client.bulk(bulk, RequestOptions.DEFAULT)
-        if (stateChangedIds.isNotEmpty()) {
-            val successIds = rsp.filter { !it.isFailed }.map { it.id }
-            incrementProjectIngestCounters(stateChangedIds.intersect(successIds), docs)
+        var rsp : BulkResponse? = null
+
+        if(bulk.numberOfActions() > 0) {
+            rsp = rest.client.bulk(bulk, RequestOptions.DEFAULT)
+            if (stateChangedIds.isNotEmpty()) {
+                val successIds = rsp.filter { !it.isFailed }.map { it.id }
+                incrementProjectIngestCounters(stateChangedIds.intersect(successIds), docs)
+            }
         }
 
         return BulkResponse(
-            rsp.items.plus(listOfFailedAssets),
-            rsp.took.millis,
-            rsp.ingestTookInMillis
+            rsp?.items?.plus(listOfFailedAssets) ?: listOfFailedAssets.toTypedArray() ,
+            rsp?.took?.millis ?: 0,
+            rsp?.ingestTookInMillis?: 0
         )
     }
 
@@ -734,7 +738,9 @@ class AssetServiceImpl : AssetService {
 
         // Assets must have media type in order to Increment Project Ingest Counters
         if (!asset.attrExists("media.type")) {
-            val ext = FileUtils.extension(asset.getAttr<String>("source.path"))
+            val ext = FileUtils.extension(
+                (asset.getAttr<String>("source.path"))
+            )
             asset.setAttr("media.type", FileExtResolver.getType(ext))
         }
 

@@ -103,6 +103,9 @@ class AssetControllerTests : MockMvcTest() {
                         "source": {
                             "filename": "cats.png"
                         }
+                    },
+                    "media": {
+                        "type": "image"
                     }
                 }
             }
