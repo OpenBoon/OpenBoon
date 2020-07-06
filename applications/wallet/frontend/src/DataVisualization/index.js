@@ -5,12 +5,9 @@ import { colors, spacing } from '../Styles'
 import Panel from '../Panel'
 import Filters from '../Filters'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
-
-import FilterSvg from '../Icons/filter.svg'
+import FiltersIcon from '../Filters/Icon'
 
 import DataVisualizationContent from './Content'
-
-const ICON_SIZE = 20
 
 const DataVisualization = () => {
   return (
@@ -38,7 +35,7 @@ const DataVisualization = () => {
               {{
                 filters: {
                   title: 'Filters',
-                  icon: <FilterSvg height={ICON_SIZE} />,
+                  icon: <FiltersIcon />,
                   content: <Filters />,
                 },
               }}
