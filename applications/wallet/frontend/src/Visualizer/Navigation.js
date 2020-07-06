@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { formatQueryParams } from '../Fetch/helpers'
+import { getQueryString } from '../Fetch/helpers'
 
 import AssetsSvg from '../Icons/assets.svg'
 import ChartsSvg from '../Icons/charts.svg'
@@ -55,7 +55,7 @@ const VisualizerNavigation = ({ itemCount }) => {
             pathname: '/[projectId]/visualizer',
             query: { projectId, query },
           }}
-          as={`/${projectId}/visualizer${formatQueryParams({ query })}`}
+          as={`/${projectId}/visualizer${getQueryString({ query })}`}
           passHref
         >
           <a
@@ -83,7 +83,7 @@ const VisualizerNavigation = ({ itemCount }) => {
             pathname: '/[projectId]/visualizer/data-visualization',
             query: { projectId, query },
           }}
-          as={`/${projectId}/visualizer/data-visualization${formatQueryParams({
+          as={`/${projectId}/visualizer/data-visualization${getQueryString({
             query,
           })}`}
           passHref

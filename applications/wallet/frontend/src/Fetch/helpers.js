@@ -1,6 +1,6 @@
 import { mutate } from 'swr'
 
-export const formatQueryParams = (params = {}) => {
+export const getQueryString = (params = {}) => {
   const queryString = Object.keys(params)
     .filter((p) => params[p])
     .map((p) => `${p}=${params[p]}`)

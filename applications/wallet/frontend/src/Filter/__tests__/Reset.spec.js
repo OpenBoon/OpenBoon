@@ -4,7 +4,7 @@ import fields from '../../Filters/__mocks__/fields'
 import asset from '../../Asset/__mocks__/asset'
 
 import { encode } from '../../Filters/helpers'
-import { formatQueryParams } from '../../Fetch/helpers'
+import { getQueryString } from '../../Fetch/helpers'
 
 import FilterReset from '../Reset'
 
@@ -236,7 +236,7 @@ describe('<FilterReset />', () => {
         pathname: '/[projectId]/visualizer',
         query: { projectId: PROJECT_ID, id: asset.id, query },
       },
-      `/${PROJECT_ID}/visualizer${formatQueryParams({ id: asset.id, query })}`,
+      `/${PROJECT_ID}/visualizer${getQueryString({ id: asset.id, query })}`,
     )
   })
 })

@@ -9,7 +9,7 @@ import CrossSvg from '../Icons/cross.svg'
 import Button, { VARIANTS } from '../Button'
 import SuspenseBoundary from '../SuspenseBoundary'
 import AssetAsset from '../Asset/Asset'
-import { formatQueryParams } from '../Fetch/helpers'
+import { getQueryString } from '../Fetch/helpers'
 
 const ICON_SIZE = 20
 
@@ -63,7 +63,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           pathname: '/[projectId]/visualizer',
           query: { projectId, id: previousId, query },
         },
-        `/${projectId}/visualizer${formatQueryParams({
+        `/${projectId}/visualizer${getQueryString({
           id: previousId,
           query,
         })}`,
@@ -78,7 +78,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           pathname: '/[projectId]/visualizer',
           query: { projectId, id: nextId, query },
         },
-        `/${projectId}/visualizer${formatQueryParams({ id: nextId, query })}`,
+        `/${projectId}/visualizer${getQueryString({ id: nextId, query })}`,
       )
 
       event.preventDefault()
@@ -90,7 +90,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           pathname: '/[projectId]/visualizer',
           query: { projectId, id: previousRowId, query },
         },
-        `/${projectId}/visualizer${formatQueryParams({
+        `/${projectId}/visualizer${getQueryString({
           id: previousRowId,
           query,
         })}`,
@@ -105,7 +105,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           pathname: '/[projectId]/visualizer',
           query: { projectId, id: nextRowId, query },
         },
-        `/${projectId}/visualizer${formatQueryParams({
+        `/${projectId}/visualizer${getQueryString({
           id: nextRowId,
           query,
         })}`,

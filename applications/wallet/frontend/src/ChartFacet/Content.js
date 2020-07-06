@@ -7,7 +7,7 @@ import { constants, spacing, typography, colors } from '../Styles'
 import chartShape from '../Chart/shape'
 
 import { encode, cleanup, decode, ACTIONS, dispatch } from '../Filters/helpers'
-import { formatQueryParams } from '../Fetch/helpers'
+import { getQueryString } from '../Fetch/helpers'
 import Button, { VARIANTS } from '../Button'
 
 import FilterSvg from '../Icons/filter.svg'
@@ -42,10 +42,10 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
 
   const q = cleanup({ query })
 
-  const params = formatQueryParams({ query: q, visuals })
+  const queryString = getQueryString({ query: q, visuals })
 
   const { data = [] } = useSWR(
-    `/api/v1/projects/${projectId}/visualizations/load/${params}`,
+    `/api/v1/projects/${projectId}/visualizations/load/${queryString}`,
   )
 
   const { results = {} } = data.find((r) => r.id === id) || {}

@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-import { fetcher, formatQueryParams } from '../Fetch/helpers'
+import { fetcher, getQueryString } from '../Fetch/helpers'
 
 export const getInitialModules = ({
   initialState: { modules: existingModules },
@@ -44,14 +44,14 @@ export const onSubmit = async ({
       },
     )
 
-    const queryParams = formatQueryParams({
+    const queryString = getQueryString({
       action: 'edit-datasource-success',
       jobId,
     })
 
     Router.push(
-      `/[projectId]/data-sources${queryParams}`,
-      `/${projectId}/data-sources${queryParams}`,
+      `/[projectId]/data-sources${queryString}`,
+      `/${projectId}/data-sources${queryString}`,
     )
   } catch (response) {
     try {

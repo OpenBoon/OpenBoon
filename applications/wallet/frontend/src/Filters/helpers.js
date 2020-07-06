@@ -1,7 +1,7 @@
 import Router from 'next/router'
 import utf8 from 'utf8'
 
-import { formatQueryParams } from '../Fetch/helpers'
+import { getQueryString } from '../Fetch/helpers'
 
 export const ACTIONS = {
   ADD_VALUE: 'ADD_VALUE',
@@ -91,7 +91,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, query },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
+        `${pathname.replace('[projectId]', projectId)}${getQueryString({
           query,
         })}`,
       )
@@ -109,7 +109,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
+        `${pathname.replace('[projectId]', projectId)}${getQueryString({
           id: assetId,
           query,
         })}`,
@@ -141,7 +141,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
+        `${pathname.replace('[projectId]', projectId)}${getQueryString({
           id: assetId,
           query,
         })}`,
@@ -165,7 +165,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
+        `${pathname.replace('[projectId]', projectId)}${getQueryString({
           id: assetId,
           query,
         })}`,
@@ -210,7 +210,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: selectedId, query },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
+        `${pathname.replace('[projectId]', projectId)}${getQueryString({
           id: selectedId,
           query,
         })}`,
@@ -227,7 +227,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
+        `${pathname.replace('[projectId]', projectId)}${getQueryString({
           id: assetId,
         })}`,
       )

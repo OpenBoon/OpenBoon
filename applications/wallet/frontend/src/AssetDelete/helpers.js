@@ -1,7 +1,7 @@
 import { cache } from 'swr'
 import Router from 'next/router'
 
-import { fetcher, formatQueryParams } from '../Fetch/helpers'
+import { fetcher, getQueryString } from '../Fetch/helpers'
 
 export const onDelete = async ({
   projectId,
@@ -29,7 +29,7 @@ export const onDelete = async ({
         pathname: '/[projectId]/visualizer',
         query: { query, id: '', action: 'delete-asset-success' },
       },
-      `/${projectId}/visualizer${formatQueryParams({
+      `/${projectId}/visualizer${getQueryString({
         id: '',
         query,
         action: 'delete-asset-success',

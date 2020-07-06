@@ -1,4 +1,4 @@
-import { fetcher, formatQueryParams } from '../helpers'
+import { fetcher, getQueryString } from '../helpers'
 
 describe('<Fetch /> helpers', () => {
   describe('fetcher()', () => {
@@ -53,9 +53,9 @@ describe('<Fetch /> helpers', () => {
     })
   })
 
-  describe('formatQueryParams()', () => {
+  describe('getQueryString()', () => {
     it('should return an empty string with no query params', () => {
-      expect(formatQueryParams()).toEqual('')
+      expect(getQueryString()).toEqual('')
     })
   })
 })

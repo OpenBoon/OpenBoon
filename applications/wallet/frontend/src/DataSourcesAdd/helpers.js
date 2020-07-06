@@ -2,7 +2,7 @@ import Router from 'next/router'
 
 import { colors } from '../Styles'
 
-import { fetcher, formatQueryParams } from '../Fetch/helpers'
+import { fetcher, getQueryString } from '../Fetch/helpers'
 
 export const FILE_TYPES = [
   {
@@ -63,14 +63,14 @@ export const onSubmit = async ({
       },
     )
 
-    const queryParams = formatQueryParams({
+    const queryString = getQueryString({
       action: 'add-datasource-success',
       jobId,
     })
 
     Router.push(
-      `/[projectId]/data-sources${queryParams}`,
-      `/${projectId}/data-sources${queryParams}`,
+      `/[projectId]/data-sources${queryString}`,
+      `/${projectId}/data-sources${queryString}`,
     )
   } catch (response) {
     try {
