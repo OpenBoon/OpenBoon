@@ -326,7 +326,6 @@ class AssetServiceTests : AbstractTest() {
         val createRsp = assetService.batchCreate(batchCreate)
         var asset = assetService.getAsset(createRsp.created[0])
         asset.setAttr("aux.field", 1)
-        asset.setAttr("media.type", "image")
 
         assetService.index(asset.id, asset.document)
         asset = assetService.getAsset(createRsp.created[0])
@@ -342,7 +341,6 @@ class AssetServiceTests : AbstractTest() {
         val createRsp = assetService.batchCreate(batchCreate)
         val asset = assetService.getAll(createRsp.created)[0]
         asset.setAttr("aux.field", 1)
-        asset.setAttr("media.type", "image")
 
         val batchIndex = mapOf(asset.id to asset.document)
         val indexRsp = assetService.batchIndex(batchIndex)
@@ -398,7 +396,8 @@ class AssetServiceTests : AbstractTest() {
                 AssetSpec("gs://cats/large-brown-cat.jpg"),
                 AssetSpec("gs://cats/large-brown-cat.mov"),
                 AssetSpec("gs://cats/large-brown-cat-no-type.jpg"),
-                AssetSpec("gs://cats/large-brown-cat.pdf")
+                AssetSpec("gs://cats/large-brown-cat.pdf"),
+                AssetSpec( "gs://cats/large-brown-cat-no-type-noext")
             )
         )
 
@@ -407,11 +406,8 @@ class AssetServiceTests : AbstractTest() {
         val map = mutableMapOf<String, MutableMap<String, Any>>()
 
         assets.forEach {
-            val ext = FileUtils.extension(it.getAttr<String>("source.path"))
-            it.setAttr("media.type", FileExtResolver.getType(ext))
             map[it.id] = it.document
         }
-        assets[2].removeAttr("media.type")
 
         val indexRsp = assetService.batchIndex(map, true)
 
@@ -420,7 +416,8 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(false, indexRsp.items[0].isFailed)
         assertEquals(false, indexRsp.items[1].isFailed)
         assertEquals(false, indexRsp.items[2].isFailed)
-        assertEquals(true, indexRsp.items[3].isFailed)
+        assertEquals(false, indexRsp.items[3].isFailed)
+        assertEquals(true, indexRsp.items[4].isFailed)
     }
 
     @Test
@@ -432,7 +429,6 @@ class AssetServiceTests : AbstractTest() {
         var asset = assetService.getAll(createRsp.created)[0]
         asset.setAttr("aux.field", 1)
         asset.setAttr("tmp.field", 1)
-        asset.setAttr("media.type", "image")
 
         val batchIndex = mapOf(asset.id to asset.document)
         val indexRsp = assetService.batchIndex(batchIndex)
@@ -451,7 +447,6 @@ class AssetServiceTests : AbstractTest() {
         val createRsp = assetService.batchCreate(batchCreate)
         var asset = assetService.getAsset(createRsp.created[0])
         asset.setAttr("clip", mapOf("type" to "page", "start" to 2f, "stop" to 2f))
-        asset.setAttr("media.type", "image")
 
         val batchIndex = mapOf(asset.id to asset.document)
         assetService.batchIndex(batchIndex)

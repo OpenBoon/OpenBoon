@@ -384,7 +384,7 @@ class AssetServiceImpl : AssetService {
                     asset.setAttr("system.state", AssetState.Analyzed.name)
                     stateChangedIds.add(id)
                 }
-            } catch (ex: IllegalStateException) {
+            } catch (ex: IllegalArgumentException) {
                 listOfFailedAssets.add(
                     BulkItemResponse(
                         0,
@@ -733,8 +733,10 @@ class AssetServiceImpl : AssetService {
         }
 
         // Assets must have media type in order to Increment Project Ingest Counters
-        if (!asset.attrExists("media.type"))
-            throw IllegalStateException("Asset ${asset.id} must have a media type")
+        if (!asset.attrExists("media.type")) {
+            val ext = FileUtils.extension(asset.getAttr<String>("source.path"))
+            asset.setAttr("media.type", FileExtResolver.getType(ext))
+        }
 
         // Got back a clip but it has no pile which means it's in its own pile.
         // This happens during deep analysis when a file is being clipped, the first
