@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
-import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.AssetIdBuilder
 import com.zorroa.archivist.domain.AssetIterator
 import com.zorroa.archivist.domain.AssetMetrics
@@ -26,7 +25,6 @@ import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.Task
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.domain.ZpsScript
@@ -507,18 +505,7 @@ class AssetServiceImpl : AssetService {
             newScript.globalArgs = parentScript.globalArgs
             newScript.settings = parentScript.settings
 
-            val newTask = jobService.createTask(parentTask, TaskSpec(name, newScript))
-
-            /**
-             * For the assets that failed to go into ES, add the ES error message
-             */
-            jobService.incrementAssetCounters(
-                parentTask,
-                AssetCounters(
-                    replaced = existingAssetIds.size,
-                    created = createdAssetIds.size
-                )
-            )
+            val newTask = jobService.createTask(parentTask, newScript)
 
             logger.event(
                 LogObject.JOB, LogAction.EXPAND,
