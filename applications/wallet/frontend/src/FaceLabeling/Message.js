@@ -20,6 +20,7 @@ const FaceLabelingMessage = ({
     if (!previousJobId && jobId) {
       setPreviousJobId(jobId)
     }
+
     // jobId goes from "123" to ""
     // Training is complete, reset the cache
     if (previousJobId && !jobId) {
