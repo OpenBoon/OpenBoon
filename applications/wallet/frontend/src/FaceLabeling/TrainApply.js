@@ -49,7 +49,9 @@ const FaceLabelingTrainApply = ({ projectId }) => {
         Once a name has been added to a face, training can begin. Names can
         continue to be edited as needed.
       </span>
+
       <div css={{ height: spacing.normal }} />
+
       <Button
         variant={BUTTON_VARIANTS.PRIMARY}
         onClick={() => onTrain({ projectId, setError })}

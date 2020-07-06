@@ -37,7 +37,7 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
     <svg
       color="#c92300"
       data-file-name="warning.svg"
-      width={20}
+      height={20}
     />
     <div
       className="emotion-0"
@@ -92,7 +92,7 @@ exports[`<FaceLabelingMessage /> should render properly when there there is a tr
     <svg
       color="#4a90e2"
       data-file-name="generating.svg"
-      width={20}
+      height={20}
     />
     <div
       className="emotion-1"

@@ -20,7 +20,7 @@ const STYLES = {
   },
   PROCESSING: {
     backgroundColor: colors.signal.sky.background,
-    icon: <GeneratingSvg width={ICON_SIZE} color={colors.signal.sky.base} />,
+    icon: <GeneratingSvg height={ICON_SIZE} color={colors.signal.sky.base} />,
   },
 }
 
