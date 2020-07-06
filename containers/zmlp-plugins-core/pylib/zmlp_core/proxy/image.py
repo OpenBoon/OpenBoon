@@ -16,30 +16,19 @@ logger = logging.getLogger(__file__)
 class ImageProxyProcessor(AssetProcessor):
     toolTips = {
         'sizes': 'Sizes of the proxies to create.',
-        'file_type': 'File type of the proxies to create.',
-        'resize_filter': 'Filter to use.',
-        'output_args': 'Extra arguments for oiio.'
+        'web_proxy_size': 'Size of web proxy'
     }
 
-    VALID_FILE_TYPES = {'jpg': 'image/jpeg', 'png': 'image/png'}
+    ml_quality = "95"
+    web_quality = "85"
 
     def __init__(self):
         super(ImageProxyProcessor, self).__init__()
         self.created_proxy_count = 0
         self.add_arg(Argument('sizes', 'list[int]', default=[1280, 512],
                               toolTip=self.toolTips['sizes']))
-        self.add_arg(Argument('file_type', 'str', default='jpg',
-                              toolTip=self.toolTips['file_type']))
-        self.add_arg(Argument('resize_filter', 'str', default='lanczos3',
-                              toolTip=self.toolTips['resize_filter']))
-        self.add_arg(Argument('output_args', 'list[str]', default=[],
-                              toolTip=self.toolTips['output_args']))
-
-    def init(self):
-        file_type = self.arg_value('file_type')
-        if file_type not in self.VALID_FILE_TYPES:
-            raise ValueError('"%s" is not a valid type (%s)' %
-                             (file_type, self.VALID_FILE_TYPES.keys()))
+        self.add_arg(Argument('web_proxy_size', 'int', default=1024,
+                              toolTip=self.toolTips['web_proxy_size']))
 
     def process(self, frame):
         # Inherits parent docstring.
@@ -55,9 +44,6 @@ class ImageProxyProcessor(AssetProcessor):
             self.logger.info('No suitable proxy path found for asset "{}"'
                              .format(asset.get_attr('source.path')))
             return
-
-        self.logger.info('Creating %s proxies for %s.' % (self.arg_value('file_type'),
-                                                          source_path))
 
         proxy_paths = self._create_proxy_images(asset)
         for width, height, path in proxy_paths:
@@ -119,22 +105,22 @@ class ImageProxyProcessor(AssetProcessor):
 
         # Crete the base of the oiiotool shell command.
         oiiotool_command = ['oiiotool', '-q', '-native', '-wildcardoff', source_path,
-                            '--threads', '4', '--cache', '1024', '--clear-keywords',
+                            '--threads', '3', '--cache', '1024', '--clear-keywords',
                             '--nosoftwareattrib', '--eraseattrib', 'thumbnail_image',
                             '--eraseattrib', 'Exif:.*', '--eraseattrib', 'IPTC:.*']
-        if asset.get_attr('media.clip.type') == 'image':
-            start = asset.get_attr('media.clip.start')
+
+        if not asset.get_attr('tmp.proxy_source_image') and asset.get_attr('clip.type') == 'page':
+            start = asset.get_attr('clip.start')
             if start:
                 page = start - 1
                 oiiotool_command.extend(['--subimage', str(int(page))])
         for (width, height, output_path) in proxy_descriptors:
             # We need to create a proxy so add an output to the oiiotool command.
             oiiotool_command.extend([
-                '--resize:filter=%s' % self.arg_value('resize_filter'),
+                '--resize:filter=lanczos3',
                 '%sx%s' % (width, height),
-                '--autocc', '--quality', '95'
+                '--autocc', '--quality', self.ml_quality
             ])
-            oiiotool_command.extend(self.arg_value('output_args'))
             oiiotool_command.extend(['-o', str(output_path)])
         return oiiotool_command
 
@@ -155,10 +141,9 @@ class ImageProxyProcessor(AssetProcessor):
         tmp_dir = Path(tempfile.mkdtemp(prefix="proxy-"))
         # Determine list of (width, height) for proxies to be made.
         proxy_sizes = []
-        for size in self._get_valid_sizes(source_width, source_height):
+        for size in self._get_valid_sizes(source_width, source_height, self.arg_value('sizes')):
             width, height = get_output_dimension(size, source_width, source_height)
-            output_path = tmp_dir.joinpath('%s_%sx%s.%s' %
-                                           (asset.id, width, height, self.arg_value('file_type')))
+            output_path = tmp_dir.joinpath('%s_%sx%s.jpg' % (asset.id, width, height))
             proxy_sizes.append((width, height, output_path))
 
         return proxy_sizes
@@ -199,7 +184,7 @@ class ImageProxyProcessor(AssetProcessor):
             return file_storage.localize_file(asset)
         return None
 
-    def _get_valid_sizes(self, width, height):
+    def _get_valid_sizes(self, width, height, sizes):
         """Based on the sizes provided to the processor the valid sizes to create proxies
         of are returned.
 
@@ -212,7 +197,7 @@ class ImageProxyProcessor(AssetProcessor):
         """
         valid_sizes = []
         longest_edge = max(width, height)
-        for size in self.arg_value('sizes'):
+        for size in sizes:
             # Can't use a set here, maintaining order
             _size = min(size, longest_edge)
             if _size not in valid_sizes:
@@ -222,7 +207,7 @@ class ImageProxyProcessor(AssetProcessor):
             valid_sizes.append(longest_edge)
         return sorted(valid_sizes, reverse=True)
 
-    def make_web_optimized_proxy(self, asset, src_path, size):
+    def make_web_optimized_proxy(self, asset, src_path, src_size):
         """
         Make a web optimized proxy the same size as the largest proxy.
 
@@ -235,9 +220,16 @@ class ImageProxyProcessor(AssetProcessor):
         tmp_dir = tempfile.mkdtemp()
         output_path = os.path.join(tmp_dir, "web-optimized-proxy.jpg")
 
+        valid_size = self._get_valid_sizes(
+            src_size[0], src_size[1], [self.arg_value('web_proxy_size')])[0]
+        width, height = get_output_dimension(valid_size,
+                                             src_size[0], src_size[1])
+
         cmd = [
             "convert",
             str(src_path),
+            "-resize",
+            "%dx%d" % (width, height),
             "-sampling-factor",
             "4:2:0",
             "-define",
@@ -245,7 +237,7 @@ class ImageProxyProcessor(AssetProcessor):
             "-auto-orient",
             "-strip",
             "-quality",
-            "85",
+            self.web_quality,
             "-interlace",
             "JPEG",
             "-colorspace",
@@ -256,7 +248,7 @@ class ImageProxyProcessor(AssetProcessor):
         logger.debug("Running cmd: {}".format(" ".join(cmd)))
         with StopWatch("Create web proxy"):
             subprocess.check_call(cmd, shell=False)
-        attrs = {"width": size[0], "height": size[1]}
+        attrs = {"width": width, "height": height}
         prx = file_storage.assets.store_file(output_path, asset, "web-proxy",
                                              "web-proxy.jpg", attrs)
         return prx
