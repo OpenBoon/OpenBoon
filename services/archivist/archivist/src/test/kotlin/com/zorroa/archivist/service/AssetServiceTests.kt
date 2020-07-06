@@ -397,7 +397,7 @@ class AssetServiceTests : AbstractTest() {
                 AssetSpec("gs://cats/large-brown-cat.mov"),
                 AssetSpec("gs://cats/large-brown-cat-no-type.jpg"),
                 AssetSpec("gs://cats/large-brown-cat.pdf"),
-                AssetSpec( "gs://cats/large-brown-cat-no-type-noext")
+                AssetSpec("gs://cats/large-brown-cat-no-type-noext")
             )
         )
 
