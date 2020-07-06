@@ -9,8 +9,6 @@ from zmlpsdk import AssetProcessor
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-tensorflow.config.set_visible_devices([], 'GPU')
-
 
 class ZviLabelDetectionProcessor(AssetProcessor):
     """
@@ -18,6 +16,7 @@ class ZviLabelDetectionProcessor(AssetProcessor):
     """
 
     def init(self):
+        tensorflow.config.set_visible_devices([], 'GPU')
         self.model = Resnet50ImageClassifier()
 
     def process(self, frame):
