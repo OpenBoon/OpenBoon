@@ -4,7 +4,6 @@ import useSWR from 'swr'
 import { colors, spacing } from '../Styles'
 
 import FaceLabelingForm from './Form'
-import FaceLabelingTrainApply from './TrainApply'
 
 const FaceLabelingContent = ({ projectId, assetId }) => {
   const { data } = useSWR(`/api/v1/projects/${projectId}/faces/${assetId}/`)
@@ -22,8 +21,6 @@ const FaceLabelingContent = ({ projectId, assetId }) => {
 
   return (
     <>
-      <FaceLabelingTrainApply projectId={projectId} />
-
       <div
         css={{
           padding: spacing.normal,

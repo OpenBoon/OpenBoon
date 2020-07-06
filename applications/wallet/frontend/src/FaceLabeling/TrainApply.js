@@ -23,7 +23,9 @@ const FaceLabelingTrainApply = ({ projectId }) => {
     if (!!jobIdRef.current && !jobId) {
       cache
         .keys()
-        .filter((key) => key.includes('/faces'))
+        .filter(
+          (key) => key.includes('/faces/') && !key.includes('/faces/status/'),
+        )
         .forEach((key) => cache.delete(key))
     }
     jobIdRef.current = jobId
