@@ -1,14 +1,7 @@
 import Router from 'next/router'
 import utf8 from 'utf8'
 
-export const formatUrl = (params = {}) => {
-  const queryString = Object.keys(params)
-    .filter((p) => params[p])
-    .map((p) => `${p}=${params[p]}`)
-    .join('&')
-
-  return queryString ? `?${queryString}` : ''
-}
+import { formatQueryParams } from '../Fetch/helpers'
 
 export const ACTIONS = {
   ADD_VALUE: 'ADD_VALUE',
@@ -98,7 +91,9 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, query },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatUrl({ query })}`,
+        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
+          query,
+        })}`,
       )
 
       break
@@ -114,7 +109,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
           id: assetId,
           query,
         })}`,
@@ -146,7 +141,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
           id: assetId,
           query,
         })}`,
@@ -170,7 +165,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId, query },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
           id: assetId,
           query,
         })}`,
@@ -215,7 +210,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: selectedId, query },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
           id: selectedId,
           query,
         })}`,
@@ -232,7 +227,7 @@ export const dispatch = ({ type, payload }) => {
           pathname,
           query: { projectId, id: assetId },
         },
-        `${pathname.replace('[projectId]', projectId)}${formatUrl({
+        `${pathname.replace('[projectId]', projectId)}${formatQueryParams({
           id: assetId,
         })}`,
       )

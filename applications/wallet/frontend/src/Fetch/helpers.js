@@ -1,5 +1,14 @@
 import { mutate } from 'swr'
 
+export const formatQueryParams = (params = {}) => {
+  const queryString = Object.keys(params)
+    .filter((p) => params[p])
+    .map((p) => `${p}=${params[p]}`)
+    .join('&')
+
+  return queryString ? `?${queryString}` : ''
+}
+
 export const getCsrfToken = () => {
   if (typeof document === 'undefined') return ''
 
