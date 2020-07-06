@@ -6,6 +6,7 @@ import com.zorroa.auth.server.domain.ApiKeySpec
 import com.zorroa.auth.server.security.getProjectId
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
+import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -123,6 +124,24 @@ class ApiKeyServiceTests : AbstractTest() {
         // No keys should be found.
         assertEquals(0, keys.list.size)
     }
+
+    @Test
+    fun testSearchSystemKey() {
+
+        apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("system", setOf(Permission.AssetsRead), systemKey = true))
+
+        var keys = apiKeyService.search(ApiKeyFilter())
+
+        assertEquals(3, keys.list.size)
+
+        keys = apiKeyService.search(ApiKeyFilter(systemKey = true))
+        assertEquals(1, keys.list.size)
+
+        keys = apiKeyService.search(ApiKeyFilter(systemKey = false))
+        assertEquals(2, keys.list.size)
+    }
+
     @Test
     fun testSearchByPrefix() {
 
@@ -135,7 +154,6 @@ class ApiKeyServiceTests : AbstractTest() {
         apiKeyService.create(ApiKeySpec("trySystemKey", setOf(Permission.AssetsRead), systemKey = true))
 
         val keys = apiKeyService.search(ApiKeyFilter(namePrefixes = listOf("test", "try")))
-
         assertEquals(7, keys.list.size)
     }
 
