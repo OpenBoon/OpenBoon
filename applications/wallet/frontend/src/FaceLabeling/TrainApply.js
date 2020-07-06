@@ -1,6 +1,6 @@
-import { useRef, useEffect, useState } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
-import useSWR, { cache } from 'swr'
+import useSWR from 'swr'
 
 import { constants, spacing } from '../Styles'
 
@@ -11,25 +11,13 @@ import FaceLabelingMessage from './Message'
 import { onTrain } from './helpers'
 
 const FaceLabelingTrainApply = ({ projectId }) => {
-  const jobIdRef = useRef()
-
   const {
     data: { jobId, unappliedChanges },
   } = useSWR(`/api/v1/projects/${projectId}/faces/status/`, {
     refreshInterval: 3000,
   })
 
-  useEffect(() => {
-    if (!!jobIdRef.current && !jobId) {
-      cache
-        .keys()
-        .filter(
-          (key) => key.includes('/faces/') && !key.includes('/faces/status/'),
-        )
-        .forEach((key) => cache.delete(key))
-    }
-    jobIdRef.current = jobId
-  }, [jobId])
+  const [previousJobId, setPreviousJobId] = useState(jobId)
 
   const [error, setError] = useState('')
 
@@ -42,9 +30,10 @@ const FaceLabelingTrainApply = ({ projectId }) => {
     >
       <FaceLabelingMessage
         projectId={projectId}
-        previousJobId={jobIdRef.current || ''}
-        currentJobId={jobId}
+        previousJobId={previousJobId}
+        jobId={jobId}
         error={error}
+        setPreviousJobId={setPreviousJobId}
       />
 
       <span>
@@ -59,7 +48,9 @@ const FaceLabelingTrainApply = ({ projectId }) => {
         onClick={() => onTrain({ projectId, setError })}
         isDisabled={!unappliedChanges}
       >
-        {jobId ? 'Override Current Training & Re-apply' : 'Train & Apply'}
+        {jobId && unappliedChanges
+          ? 'Override Current Training & Re-apply'
+          : 'Train & Apply'}
       </Button>
     </div>
   )

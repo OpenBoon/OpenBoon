@@ -69,10 +69,11 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   className="emotion-2"
 >
   <FaceLebalingMessage
-    currentJobId="1a1d45af-7477-1396-ae57-a618e8efb91f"
     error=""
-    previousJobId=""
+    jobId="1a1d45af-7477-1396-ae57-a618e8efb91f"
+    previousJobId="1a1d45af-7477-1396-ae57-a618e8efb91f"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    setPreviousJobId={[Function]}
   />
   <span>
     Once a name has been added to a face, training can begin. Names can continue to be edited as needed.
@@ -159,10 +160,11 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   className="emotion-2"
 >
   <FaceLebalingMessage
-    currentJobId=""
     error=""
+    jobId=""
     previousJobId=""
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    setPreviousJobId={[Function]}
   />
   <span>
     Once a name has been added to a face, training can begin. Names can continue to be edited as needed.
@@ -250,10 +252,11 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   className="emotion-2"
 >
   <FaceLebalingMessage
-    currentJobId=""
     error=""
+    jobId=""
     previousJobId=""
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    setPreviousJobId={[Function]}
   />
   <span>
     Once a name has been added to a face, training can begin. Names can continue to be edited as needed.

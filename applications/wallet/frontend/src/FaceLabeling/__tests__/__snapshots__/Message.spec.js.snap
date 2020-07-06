@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FaceLabelingMessage /> should render properly when there is an error 1`] = `
+exports[`<FaceLabelingMessage /> should render properly when a training job just finished 1`] = `
 .emotion-2 {
   padding-bottom: 16px;
 }
@@ -23,7 +23,7 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #ffb6b2;
+  background-color: #d7f2de;
   border-radius: 2px;
   padding: 12px;
 }
@@ -35,23 +35,21 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
     className="emotion-1"
   >
     <svg
-      color="#c92300"
-      data-file-name="warning.svg"
+      color="#4ac565"
+      data-file-name="checkmark.svg"
       height={20}
     />
     <div
       className="emotion-0"
       role="alert"
     >
-      Error
+      Face training complete.
     </div>
   </div>
 </div>
 `;
 
-exports[`<FaceLabelingMessage /> should render properly when there is no previous or current job 1`] = `null`;
-
-exports[`<FaceLabelingMessage /> should render properly when there there is a training job 1`] = `
+exports[`<FaceLabelingMessage /> should render properly when a training job just started 1`] = `
 @keyframes animation-0 {
   from {
     -webkit-transform: rotate(0deg);
@@ -133,7 +131,7 @@ exports[`<FaceLabelingMessage /> should render properly when there there is a tr
 </div>
 `;
 
-exports[`<FaceLabelingMessage /> should render properly when there was a previous training job but no current job 1`] = `
+exports[`<FaceLabelingMessage /> should render properly when there is an error 1`] = `
 .emotion-2 {
   padding-bottom: 16px;
 }
@@ -156,7 +154,7 @@ exports[`<FaceLabelingMessage /> should render properly when there was a previou
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #ffb6b2;
   border-radius: 2px;
   padding: 12px;
 }
@@ -168,15 +166,15 @@ exports[`<FaceLabelingMessage /> should render properly when there was a previou
     className="emotion-1"
   >
     <svg
-      color="#4ac565"
-      data-file-name="checkmark.svg"
+      color="#c92300"
+      data-file-name="warning.svg"
       height={20}
     />
     <div
       className="emotion-0"
       role="alert"
     >
-      Face training complete.
+      Error
     </div>
   </div>
 </div>
