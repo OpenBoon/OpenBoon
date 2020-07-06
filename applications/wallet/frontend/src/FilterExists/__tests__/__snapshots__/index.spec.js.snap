@@ -102,10 +102,13 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
@@ -700,10 +703,13 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
