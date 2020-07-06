@@ -1,13 +1,19 @@
+import pytest
 from pathlib import Path
+from unittest.mock import patch
 
 from zmlp_core.video.importers import VideoImporter
-from zmlpsdk import Frame, ZmlpProcessorException
+from zmlpsdk import Frame, ZmlpProcessorException, ZmlpFatalProcessorException
 from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
-
+from zmlp.app import ProjectApp
+from zmlp import Project
 
 class VideoImporterUnitTestCase(PluginUnitTestCase):
 
-    def setUp(self):
+    @patch.object(ProjectApp, 'get_project')
+    def setUp(self, get_project_patch):
+        get_project_patch.return_value = Project(
+            {"id": "1234", "name": "foo", "tier": "PREMIER"})
         self.movie_path = zorroa_test_data('video/sample_ipad.m4v')
         self.frame = Frame(TestAsset(self.movie_path))
         self.processor = self.init_processor(VideoImporter(), {})
@@ -79,3 +85,16 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
 
         # Verify proxy source is created.
         assert Path(asset.get_attr('tmp.proxy_source_image')).suffix == '.jpg'
+
+    @patch.object(ProjectApp, 'get_project')
+    def test_process_fail_on_premier_check(self, get_project_patch):
+        get_project_patch.return_value = Project(
+            {"id": "1234", "name": "foo", "tier": "ESSENTIALS"})
+
+        movie_path = zorroa_test_data('mxf/freeMXF-mxf1.mxf')
+        asset = TestAsset(movie_path)
+        frame = Frame(asset)
+        processor = self.init_processor(VideoImporter(), {})
+
+        with pytest.raises(ZmlpFatalProcessorException):
+            processor.process(frame)
