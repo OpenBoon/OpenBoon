@@ -82,6 +82,9 @@ exports[`<ChartRange /> should render properly 1`] = `
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
+  padding-right: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
@@ -511,6 +514,9 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
+  padding-right: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
