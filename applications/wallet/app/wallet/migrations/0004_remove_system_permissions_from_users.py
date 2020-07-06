@@ -13,11 +13,10 @@ logger = logging.getLogger(__name__)
 def recreate_user_memberships(apps, schema_editor):
     for user in User.objects.all():
         for membership in user.memberships.all():
-            if 'ML_Tools' in membership.roles:
-                superuser_client = get_zmlp_superuser_client(membership.project.id)
-                membership.sync_with_zmlp(superuser_client)
-                logger.info(f'Cycled apikey for {user.username} on project '
-                            f'{membership.project.name}')
+            superuser_client = get_zmlp_superuser_client(membership.project.id)
+            membership.sync_with_zmlp(superuser_client)
+            logger.info(f'Cycled apikey for {user.username} on project '
+                        f'{membership.project.name}')
 
 
 class Migration(migrations.Migration):
