@@ -166,7 +166,11 @@ DataSourcesEditForm.propTypes = {
   initialState: PropTypes.shape({
     name: PropTypes.string.isRequired,
     uri: PropTypes.string.isRequired,
-    fileTypes: PropTypes.object.isRequired,
+    fileTypes: PropTypes.shape({
+      Images: PropTypes.bool,
+      Videos: PropTypes.bool,
+      Documents: PropTypes.bool,
+    }).isRequired,
     modules: PropTypes.arrayOf(PropTypes.string).isRequired,
     errors: PropTypes.shape({ global: PropTypes.string }).isRequired,
   }).isRequired,
