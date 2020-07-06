@@ -419,9 +419,9 @@ class AssetServiceImpl : AssetService {
             LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to bulk.numberOfActions())
         )
 
-        var rsp : BulkResponse? = null
+        var rsp: BulkResponse? = null
 
-        if(bulk.numberOfActions() > 0) {
+        if (bulk.numberOfActions() > 0) {
             rsp = rest.client.bulk(bulk, RequestOptions.DEFAULT)
             if (stateChangedIds.isNotEmpty()) {
                 val successIds = rsp.filter { !it.isFailed }.map { it.id }
@@ -430,9 +430,9 @@ class AssetServiceImpl : AssetService {
         }
 
         return BulkResponse(
-            rsp?.items?.plus(listOfFailedAssets) ?: listOfFailedAssets.toTypedArray() ,
+            rsp?.items?.plus(listOfFailedAssets) ?: listOfFailedAssets.toTypedArray(),
             rsp?.took?.millis ?: 0,
-            rsp?.ingestTookInMillis?: 0
+            rsp?.ingestTookInMillis ?: 0
         )
     }
 
