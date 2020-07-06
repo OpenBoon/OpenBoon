@@ -15,6 +15,11 @@ const FaceLabelingMessage = ({
   setPreviousJobId,
 }) => {
   useEffect(() => {
+    // jobId goes from "" to "123"
+    // Training has started, update previousJobId
+    if (!previousJobId && jobId) {
+      setPreviousJobId(jobId)
+    }
     // jobId goes from "123" to ""
     // Training is complete, reset the cache
     if (previousJobId && !jobId) {
@@ -25,13 +30,7 @@ const FaceLabelingMessage = ({
         )
         .forEach((key) => cache.delete(key))
     }
-  }, [previousJobId, jobId])
-
-  // jobId goes from "" to "123"
-  // Training has started, update previousJobId
-  if (!previousJobId && jobId) {
-    setPreviousJobId(jobId)
-  }
+  }, [previousJobId, jobId, setPreviousJobId])
 
   if (error) {
     return (

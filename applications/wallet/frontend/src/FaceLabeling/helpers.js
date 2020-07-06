@@ -35,7 +35,6 @@ export const onSave = async ({
 
     await mutate(`/api/v1/projects/${projectId}/faces/${assetId}/`)
     await mutate(`/api/v1/projects/${projectId}/faces/labels/`)
-    await mutate(`/api/v1/projects/${projectId}/faces/status/`)
 
     dispatch({ isLoading: false })
   } catch (response) {
@@ -62,6 +61,16 @@ export const onSave = async ({
 export const onTrain = async ({ projectId, setError }) => {
   try {
     setError('')
+
+    mutate(
+      `/api/v1/projects/${projectId}/faces/status/`,
+      {
+        unappliedChanges: false,
+        jobId: 'true',
+      },
+      false,
+    )
+
     await fetcher(`/api/v1/projects/${projectId}/faces/train/`, {
       method: 'POST',
     })
@@ -74,8 +83,10 @@ export const getSaveButtonCopy = ({ isChanged, isLoading }) => {
   if (isLoading) {
     return 'Saving...'
   }
+
   if (isChanged) {
     return 'Save'
   }
+
   return 'Saved'
 }

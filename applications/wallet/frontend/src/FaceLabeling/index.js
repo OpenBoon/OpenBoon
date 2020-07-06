@@ -17,7 +17,7 @@ const FaceLabeling = () => {
       <FaceLabelingTrainApply projectId={projectId} />
 
       {assetId ? (
-        <SuspenseBoundary key={assetId}>
+        <SuspenseBoundary>
           <FaceLabelingContent projectId={projectId} assetId={assetId} />
         </SuspenseBoundary>
       ) : (

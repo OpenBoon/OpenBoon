@@ -22,6 +22,9 @@ describe('<FaceLabelingMessage />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // useEffect
+    act(() => {})
+
     expect(mockFn).toHaveBeenCalledWith(JOB_ID)
   })
 
@@ -44,10 +47,10 @@ describe('<FaceLabelingMessage />', () => {
       />,
     )
 
+    expect(component.toJSON()).toMatchSnapshot()
+
     // useEffect
     act(() => {})
-
-    expect(component.toJSON()).toMatchSnapshot()
 
     expect(mockFn).not.toHaveBeenCalled()
 

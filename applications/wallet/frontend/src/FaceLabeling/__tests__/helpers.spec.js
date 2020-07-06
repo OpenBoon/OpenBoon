@@ -34,9 +34,11 @@ describe('<FaceLabelingForm /> helpers', () => {
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
+
       expect(fetch.mock.calls[0][0]).toEqual(
         `/api/v1/projects/${PROJECT_ID}/faces/${ASSET_ID}/save/`,
       )
+
       expect(fetch.mock.calls[0][1]).toEqual({
         method: 'POST',
         headers: {
@@ -51,7 +53,8 @@ describe('<FaceLabelingForm /> helpers', () => {
         isLoading: true,
         errors: { ...ERRORS, global: '' },
       })
-      expect(mockMutate).toHaveBeenCalledTimes(3)
+
+      expect(mockMutate).toHaveBeenCalledTimes(2)
     })
 
     it('should set a global error message when the response contains an error message', async () => {
@@ -74,9 +77,11 @@ describe('<FaceLabelingForm /> helpers', () => {
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
+
       expect(fetch.mock.calls[0][0]).toEqual(
         `/api/v1/projects/${PROJECT_ID}/faces/${ASSET_ID}/save/`,
       )
+
       expect(fetch.mock.calls[0][1]).toEqual({
         method: 'POST',
         headers: {
@@ -86,10 +91,12 @@ describe('<FaceLabelingForm /> helpers', () => {
         body:
           '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
       })
+
       expect(mockDispatch).toHaveBeenCalledWith({
         isLoading: true,
         errors: { ...ERRORS, global: '' },
       })
+
       expect(mockDispatch).toHaveBeenLastCalledWith({
         isLoading: false,
         errors: { labels: {}, global: 'Error message' },
@@ -113,9 +120,11 @@ describe('<FaceLabelingForm /> helpers', () => {
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
+
       expect(fetch.mock.calls[0][0]).toEqual(
         `/api/v1/projects/${PROJECT_ID}/faces/${ASSET_ID}/save/`,
       )
+
       expect(fetch.mock.calls[0][1]).toEqual({
         method: 'POST',
         headers: {
@@ -130,6 +139,7 @@ describe('<FaceLabelingForm /> helpers', () => {
         isLoading: true,
         errors: { ...ERRORS, global: '' },
       })
+
       expect(mockDispatch).toHaveBeenLastCalledWith({
         isLoading: false,
         errors: {
@@ -147,10 +157,13 @@ describe('<FaceLabelingForm /> helpers', () => {
       await onTrain({ projectId: PROJECT_ID, setError: mockSetError })
 
       expect(fetch.mock.calls.length).toEqual(1)
+
       expect(fetch.mock.calls[0][0]).toEqual(
         `/api/v1/projects/${PROJECT_ID}/faces/train/`,
       )
+
       expect(mockSetError.mock.calls[0][0]).toEqual('')
+
       expect(mockSetError.mock.calls.length).toEqual(1)
     })
 
@@ -162,10 +175,13 @@ describe('<FaceLabelingForm /> helpers', () => {
       await onTrain({ projectId: PROJECT_ID, setError: mockSetError })
 
       expect(fetch.mock.calls.length).toEqual(1)
+
       expect(fetch.mock.calls[0][0]).toEqual(
         `/api/v1/projects/${PROJECT_ID}/faces/train/`,
       )
+
       expect(mockSetError.mock.calls[0][0]).toEqual('')
+
       expect(mockSetError.mock.calls[1][0]).toEqual(
         'Something went wrong. Please try again.',
       )
@@ -177,6 +193,7 @@ describe('<FaceLabelingForm /> helpers', () => {
       expect(getSaveButtonCopy({ isChanged: false, isLoading: true })).toBe(
         'Saving...',
       )
+
       expect(getSaveButtonCopy({ isChanged: true, isLoading: false })).toBe(
         'Save',
       )

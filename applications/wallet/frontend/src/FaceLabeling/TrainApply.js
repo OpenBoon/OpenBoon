@@ -45,7 +45,9 @@ const FaceLabelingTrainApply = ({ projectId }) => {
 
       <Button
         variant={BUTTON_VARIANTS.PRIMARY}
-        onClick={() => onTrain({ projectId, setError })}
+        onClick={() => {
+          onTrain({ projectId, setError })
+        }}
         isDisabled={!unappliedChanges}
       >
         {jobId && unappliedChanges
