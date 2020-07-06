@@ -16,7 +16,6 @@ import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobUpdateSpec
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.repository.KPagedList
@@ -159,7 +158,7 @@ class JobControllerTests : MockMvcTest() {
 
     @Test
     fun testRetryAllFailures() {
-        val t = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+        val t = jobService.createTask(job, emptyZpsScript("bar"))
         jobService.getTasks(job.id).list.forEach {
             assertTrue(jobService.setTaskState(it, TaskState.Failure, null))
         }
@@ -197,7 +196,7 @@ class JobControllerTests : MockMvcTest() {
             env = mutableMapOf("foo" to "bar")
         )
         val job = jobService.create(spec)
-        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+        val task = jobService.createTask(job, emptyZpsScript("bar"))
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(

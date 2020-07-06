@@ -142,16 +142,12 @@ class TaskDaoTests : AbstractTest() {
 
     @Test
     fun testIncrementAssetCounters() {
-        val counters = AssetCounters(
-            replaced = 4,
-            created = 6
-        )
+        val counters = AssetCounters(10)
 
         assertTrue(taskDao.incrementAssetCounters(task, counters))
 
         val map = jdbc.queryForMap("SELECT * FROM task_stat WHERE pk_task=?", task.id)
-        assertEquals(counters.created, map["int_asset_create_count"])
-        assertEquals(counters.replaced, map["int_asset_replace_count"])
+        assertEquals(counters.total, map["int_asset_total_count"])
     }
 
     @Test
