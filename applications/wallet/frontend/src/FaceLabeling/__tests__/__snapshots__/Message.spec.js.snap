@@ -1,5 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<FaceLabelingMessage /> should render properly when there is an error 1`] = `
+.emotion-2 {
+  padding-bottom: 16px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+<div
+  className="emotion-2"
+>
+  <div
+    className="emotion-1"
+  >
+    <svg
+      color="#c92300"
+      data-file-name="warning.svg"
+      width={20}
+    />
+    <div
+      className="emotion-0"
+      role="alert"
+    >
+      Error
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<FaceLabelingMessage /> should render properly when there is no previous or current job 1`] = `null`;
 
 exports[`<FaceLabelingMessage /> should render properly when there there is a training job 1`] = `
