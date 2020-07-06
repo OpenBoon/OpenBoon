@@ -225,10 +225,8 @@ class ApiKeyFilter(
     @ApiModelProperty("Key name prefixes to match.")
     val namePrefixes: List<String>? = null,
 
-
     @ApiModelProperty("Set to true to show sysstem keys.", hidden = true)
     val systemKey: Boolean? = null
-
 
 ) : AbstractJpaFilter<ApiKey>() {
 

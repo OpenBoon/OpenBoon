@@ -6,7 +6,6 @@ import com.zorroa.auth.server.domain.ApiKeySpec
 import com.zorroa.auth.server.security.getProjectId
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
-import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
