@@ -8,6 +8,7 @@ from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlp.app import ProjectApp
 from zmlp import Project
 
+
 class VideoImporterUnitTestCase(PluginUnitTestCase):
 
     @patch.object(ProjectApp, 'get_project')
