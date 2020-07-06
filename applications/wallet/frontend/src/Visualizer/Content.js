@@ -9,8 +9,8 @@ import Metadata from '../Metadata'
 import FaceLabeling from '../FaceLabeling'
 import Export from '../Export'
 import AssetDelete from '../AssetDelete'
+import FiltersIcon from '../Filters/Icon'
 
-import FilterSvg from '../Icons/filter.svg'
 import InformationSvg from '../Icons/information.svg'
 import FaceDetectionSvg from '../Icons/faceDetection.svg'
 import UploadSvg from '../Icons/upload.svg'
@@ -48,7 +48,7 @@ const VisualizerContent = () => {
           {{
             filters: {
               title: 'Filters',
-              icon: <FilterSvg height={ICON_SIZE} />,
+              icon: <FiltersIcon />,
               content: <Filters key={reloadKey} />,
             },
           }}
