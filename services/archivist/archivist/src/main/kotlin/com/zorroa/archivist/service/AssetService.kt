@@ -31,6 +31,7 @@ import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.ModelDao
+import com.zorroa.archivist.repository.ModelJdbcDao
 import com.zorroa.archivist.security.CoroutineAuthentication
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageException
@@ -208,6 +209,10 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var modelDao: ModelDao
+
+    @Autowired
+    lateinit var modelJdbcDao: ModelJdbcDao
+
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -785,11 +790,16 @@ class AssetServiceImpl : AssetService {
 
         // Validate the models we're adding are legit.
         val projectId = getProjectId()
+        val models = mutableSetOf<UUID>()
         addLabels.forEach {
             if (!modelDao.existsByProjectIdAndId(projectId, it)) {
                 throw IllegalArgumentException("ModelId $it not found")
             }
+            else {
+                models.add(it)
+            }
         }
+        models.forEach { modelJdbcDao.markAsReady(it, false) }
 
         // Build a search for assets.
         val rest = indexRoutingService.getProjectRestClient()

@@ -206,6 +206,7 @@ class ModelServiceImpl(
                 ops
             )
 
+            modelJdbcDao.markAsReady(model.id, true)
             return pipelineModService.create(modspec)
         }
     }
