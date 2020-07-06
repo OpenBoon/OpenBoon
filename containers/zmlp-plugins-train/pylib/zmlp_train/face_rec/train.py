@@ -26,7 +26,7 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
 
     def process(self, frame):
         self.reactor.write_event("status", {
-            "status": "Searching Dataset Labels"
+            "status": "Searching for labels"
         })
         query = {
             '_source': 'labels.*',
@@ -35,7 +35,12 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
                 'nested': {
                     'path': 'labels',
                     'query': {
-                        'term': {'labels.dataSetId': self.app_model.dataset_id}
+                        'bool': {
+                            'must': [
+                                {'term': {'labels.modelId': self.app_model.id}},
+                                {'term': {'labels.scope': 'TRAIN'}}
+                            ]
+                        }
                     }
                 }
             }
@@ -44,7 +49,7 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
         face_model = []
         for asset in self.app.assets.scroll_search(query):
             for label in asset['labels']:
-                if label['dataSetId'] == self.app_model.dataset_id:
+                if label['modelId'] == self.app_model.id:
                     face_model.append({'simhash': label['simhash'], 'label': label['label']})
 
         if not face_model:

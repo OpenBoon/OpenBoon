@@ -223,7 +223,10 @@ class ApiKeyFilter(
      * A list of unique names.
      */
     @ApiModelProperty("Key name prefixes to match.")
-    val namePrefixes: List<String>? = null
+    val namePrefixes: List<String>? = null,
+
+    @ApiModelProperty("Set to true to show sysstem keys.", hidden = true)
+    val systemKey: Boolean? = null
 
 ) : AbstractJpaFilter<ApiKey>() {
 
@@ -253,6 +256,10 @@ class ApiKeyFilter(
                 cb.like(root.get("name"), "$v%")
             }
             where.add(cb.or(*matches.toTypedArray()))
+        }
+
+        systemKey?.let {
+            where.add(cb.equal(root.get<Boolean>("systemKey"), it))
         }
 
         return where.toTypedArray()

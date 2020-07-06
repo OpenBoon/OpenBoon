@@ -36,7 +36,7 @@ def media_size(path):
                str(path)]
 
         try:
-            logger.info("running command: %s" % cmd)
+            logger.debug("running command: %s" % cmd)
             size = check_output(cmd, shell=False).decode().split("x")
             return int(size[0]), int(size[1])
         except CalledProcessError:
@@ -49,7 +49,7 @@ def media_size(path):
         # could be decompression bomb DOS attack.
         cmd = ["oiiotool", "-q", "--wildcardoff", "--info", str(path)]
         try:
-            logger.info("running command: %s" % cmd)
+            logger.debug("running command: %s" % cmd)
             line = [e for e in
                     check_output(cmd, shell=False, stderr=DEVNULL).decode().split(" ") if e]
             idx = line.index("x")
@@ -75,7 +75,7 @@ def get_image_metadata(file_path):
            '--info:format=xml:verbose=1',
            str(file_path)]
 
-    logger.info("running command: %s" % cmd)
+    logger.debug("running command: %s" % cmd)
 
     # Have to remove bad unicode chars with decode
     output = check_output(cmd, shell=False, stderr=DEVNULL)
@@ -165,7 +165,7 @@ def ffprobe(src_path):
            '-show_format',
            str(src_path)]
 
-    logger.info("running command: %s" % cmd)
+    logger.debug("running command: %s" % cmd)
     ffprobe_result = check_output(cmd, shell=False)
     return json.loads(ffprobe_result)
 
@@ -198,6 +198,7 @@ def get_video_metadata(src_path):
             # Set the dimensions
             result['width'] = stream.get('width')
             result['height'] = stream.get('height')
+            result['videoCodec'] = stream.get('codec_name')
 
     # Set the video duration.
     duration = props.get('format', {}).get('duration')
@@ -243,16 +244,17 @@ def set_resolution_attrs(asset, width, height):
     asset.set_attr('media.orientation', orientation)
 
 
-def store_asset_proxy(asset, path, size, type="image", attrs=None):
+def store_media_proxy(asset, path, proxy_type, size=None, attrs=None):
     """
-    A convenience function that adds a proxy file to the Asset and
-    uploads the file to ZMLP storage.
+    A convenience function that adds a media proxy file to the Asset and
+    uploads the file to ZMLP storage.  Media proxies always have
+    a height and a width.
 
     Args:
         asset (Asset): The purpose of the file, ex proxy.
         path (str): The local path to the file.
-        size (tuple of int): a tuple of width, height
-        type (str): The media type
+        proxy_type (str): The type of proxy, image or video.
+        size (tuple of int): a tuple of width, height, None will auto-detect size
         attrs (dict): Additional media attrs
     Returns:
         dict: a ZMLP file storage dict.
@@ -260,11 +262,77 @@ def store_asset_proxy(asset, path, size, type="image", attrs=None):
     _, ext = os.path.splitext(path)
     if not ext:
         raise ValueError('The path to the proxy file has no extension, but one is required.')
-    name = '{}_{}x{}{}'.format(type, size[0], size[1], ext)
-    proxy_attrs = asset.get_attr('tmp.{}_proxy_source_attrs'.format(type)) or {}
-    proxy_attrs['width'] = size[0]
-    proxy_attrs['height'] = size[1]
-    if attrs:
-        proxy_attrs.update(attrs)
 
-    return file_storage.assets.store_file(path, asset, 'proxy', rename=name, attrs=proxy_attrs)
+    # Combine all the attts
+    final_attrs = {}
+
+    proxy_attrs = asset.get_attr('tmp.{}_proxy_source_attrs'.format(proxy_type))
+    if proxy_attrs:
+        final_attrs.update(proxy_attrs)
+
+    if attrs:
+        final_attrs.update(attrs)
+
+    # If the proxy is a video type, get some video details.
+    if proxy_type == 'video':
+        props = get_video_metadata(path)
+        size = (props['width'], props['height'])
+        final_attrs.update({
+            'frames': props['frames'],
+            'frameRate': props['frameRate'],
+            'width': props['width'],
+            'height': props['height']})
+
+    if not size:
+        size = media_size(path)
+
+    if 'width' not in final_attrs:
+        final_attrs['width'] = size[0]
+        final_attrs['height'] = size[1]
+
+    name = '{}_{}x{}{}'.format(proxy_type, size[0], size[1], ext)
+    return file_storage.assets.store_file(path, asset, 'proxy', rename=name, attrs=final_attrs)
+
+
+class MediaInfo:
+    """
+    Simple wrapper around the mediainfo tool.  Eventually this tool will be
+    used for detecting image properties.
+    """
+
+    def __init__(self, path):
+        cmd = [
+            'mediainfo',
+            '-f',
+            '--Output=JSON',
+            path
+        ]
+        self.attrs = json.loads(check_output(cmd, shell=False))
+
+    def is_streamable(self):
+        """
+        Return true of the video file's moov atom is at the front of the
+        fike, aka +faststart.
+
+        Returns:
+            bool: true if the video file is streamable.
+        """
+        entry = self.track('general')
+        return entry.get('IsStreamable', 'No') == 'Yes'
+
+    def track(self, ttype):
+        """
+        Get info for the given track. The possible types
+        are general, video, and audio.
+
+        Args:
+            ttype (str): The track type.
+
+        Returns:
+            dict: An arbitrary dictionary of data.
+        """
+        ttype = ttype.lower()
+        for track in self.attrs['media']['track']:
+            if track.get("@type").lower() == ttype:
+                return track
+        return None

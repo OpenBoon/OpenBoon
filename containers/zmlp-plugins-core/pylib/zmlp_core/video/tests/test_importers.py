@@ -21,6 +21,7 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
             'height': 360, 'width': 640,
             'orientation': 'landscape',
             'aspect': 1.78, 'type': 'video',
+            'videoCodec': 'h264',
             'timeCreated': '2016-04-08T15:02:31.000000Z'
         }
 

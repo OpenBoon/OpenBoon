@@ -43,7 +43,7 @@ class VideoImporter(AssetProcessor):
             probe = get_video_metadata(path)
 
             # Required attributes
-            for key in ['width', 'height', 'length']:
+            for key in ['width', 'height', 'length', 'videoCodec']:
                 try:
                     asset.set_attr("media.{}".format(key), probe[key])
                 except KeyError:

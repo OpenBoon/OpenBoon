@@ -30,7 +30,8 @@ import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.repository.DataSetDao
+import com.zorroa.archivist.repository.ModelDao
+import com.zorroa.archivist.repository.ModelJdbcDao
 import com.zorroa.archivist.security.CoroutineAuthentication
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageException
@@ -178,7 +179,7 @@ interface AssetService {
     ): Task?
 
     /**
-     * Update the Assets contained in the [UpdateAssetLabelsRequest] with provided [DataSet] labels.
+     * Update the Assets contained in the [UpdateAssetLabelsRequest] with provided [Model] labels.
      */
     fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse
 }
@@ -208,7 +209,10 @@ class AssetServiceImpl : AssetService {
     lateinit var jobLaunchService: JobLaunchService
 
     @Autowired
-    lateinit var dataSetDao: DataSetDao
+    lateinit var modelDao: ModelDao
+
+    @Autowired
+    lateinit var modelJdbcDao: ModelJdbcDao
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -691,9 +695,9 @@ class AssetServiceImpl : AssetService {
             }
 
             if (spec.label != null) {
-                if (!dataSetDao.existsByProjectIdAndId(projectId, spec.label.dataSetId)) {
+                if (!modelDao.existsByProjectIdAndId(projectId, spec.label.modelId)) {
                     throw java.lang.IllegalArgumentException(
-                        "The DataSet Id ${spec.label.dataSetId} does not exist."
+                        "The Model Id ${spec.label.modelId} does not exist."
                     )
                 }
                 asset.addLabels(listOf(spec.label))
@@ -815,20 +819,24 @@ class AssetServiceImpl : AssetService {
             )
         }
 
-        // Gather up unique Assets and DataSets
+        // Gather up unique Assets and Model
         val allAssetIds = (req.add?.keys ?: setOf()) + (req.remove?.keys ?: setOf())
-        val addDataSets = mutableSetOf<UUID>()
+        val addLabels = mutableSetOf<UUID>()
         req.add?.values?.forEach { labels ->
-            addDataSets.addAll(labels.map { it.dataSetId })
+            addLabels.addAll(labels.map { it.modelId })
         }
 
-        // Validate the datasets we're adding are legit.
+        // Validate the models we're adding are legit.
         val projectId = getProjectId()
-        addDataSets.forEach {
-            if (!dataSetDao.existsByProjectIdAndId(projectId, it)) {
-                throw IllegalArgumentException("DataSetId $it not found")
+        val models = mutableSetOf<UUID>()
+        addLabels.forEach {
+            if (!modelDao.existsByProjectIdAndId(projectId, it)) {
+                throw IllegalArgumentException("ModelId $it not found")
+            } else {
+                models.add(it)
             }
         }
+        models.forEach { modelJdbcDao.markAsReady(it, false) }
 
         // Build a search for assets.
         val rest = indexRoutingService.getProjectRestClient()
@@ -896,6 +904,6 @@ class AssetServiceImpl : AssetService {
          * just stored on the document.
          */
         val removeFieldsOnCreate =
-            setOf("system", "source", "files", "elements", "metrics", "datasets", "analysis")
+            setOf("system", "source", "files", "elements", "metrics", "labels", "analysis")
     }
 }
