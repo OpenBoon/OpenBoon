@@ -22,12 +22,14 @@ class ModelDaoTests : AbstractTest() {
         val model = modelService.createModel(ModelSpec("foo", ModelType.ZVI_LABEL_DETECTION))
         modelJdbcDao.markAsReady(model.id, true)
         var trained = jdbc.queryForObject(
-            "SELECT bool_trained FROM model WHERE pk_model=?", Boolean::class.java, model.id)
+            "SELECT bool_trained FROM model WHERE pk_model=?", Boolean::class.java, model.id
+        )
         assertTrue(trained)
 
         modelJdbcDao.markAsReady(model.id, false)
         trained = jdbc.queryForObject(
-            "SELECT bool_trained FROM model WHERE pk_model=?", Boolean::class.java, model.id)
+            "SELECT bool_trained FROM model WHERE pk_model=?", Boolean::class.java, model.id
+        )
         assertFalse(trained)
     }
 }

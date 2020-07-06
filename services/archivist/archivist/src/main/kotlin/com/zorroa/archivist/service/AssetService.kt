@@ -213,7 +213,6 @@ class AssetServiceImpl : AssetService {
     @Autowired
     lateinit var modelJdbcDao: ModelJdbcDao
 
-
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
         val rsp = rest.client.get(rest.newGetRequest(id), RequestOptions.DEFAULT)
@@ -794,8 +793,7 @@ class AssetServiceImpl : AssetService {
         addLabels.forEach {
             if (!modelDao.existsByProjectIdAndId(projectId, it)) {
                 throw IllegalArgumentException("ModelId $it not found")
-            }
-            else {
+            } else {
                 models.add(it)
             }
         }

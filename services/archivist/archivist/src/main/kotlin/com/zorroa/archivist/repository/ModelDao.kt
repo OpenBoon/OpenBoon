@@ -39,13 +39,13 @@ interface ModelJdbcDao {
     /**
      * Mark a model as ready.
      */
-    fun markAsReady(modelId: UUID, value:Boolean)
+    fun markAsReady(modelId: UUID, value: Boolean)
 }
 
 @Repository
 class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
 
-    override fun markAsReady(modelId: UUID, value:Boolean) {
+    override fun markAsReady(modelId: UUID, value: Boolean) {
         jdbc.update("UPDATE model SET bool_trained=? WHERE pk_model=?", value, modelId)
     }
 
