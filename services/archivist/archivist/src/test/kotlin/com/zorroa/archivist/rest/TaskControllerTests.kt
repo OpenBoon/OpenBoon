@@ -5,6 +5,7 @@ import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
@@ -18,6 +19,7 @@ import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.randomString
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
@@ -39,6 +41,9 @@ class TaskControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var taskErrorDao: TaskErrorDao
+
+    @Autowired
+    lateinit var projectStorageService: ProjectStorageService
 
     lateinit var task: Task
 
@@ -207,6 +212,24 @@ class TaskControllerTests : MockMvcTest() {
 
         val script = deserialize(result, ZpsScript::class.java)
         assertEquals("bar", script.name)
+    }
+
+    @Test
+    fun testGetLogFile() {
+
+        val locator = task.getLogFileLocation()
+        projectStorageService.store(ProjectStorageSpec(locator, mapOf(), "foo".toByteArray()))
+
+        val result = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/tasks/${task.id}/_log")
+                .headers(admin())
+                .contentType(MediaType.TEXT_PLAIN)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val content = result.response.contentAsString
+        assertTrue(content.contains("foo"))
     }
 
     @Test

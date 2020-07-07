@@ -9,12 +9,15 @@ import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.service.DependService
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.HttpUtils
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.Resource
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -38,6 +41,7 @@ class TaskController @Autowired constructor(
     val jobService: JobService,
     val dispatcherService: DispatcherService,
     val dependService: DependService,
+    val projectStorageService: ProjectStorageService,
     val taskDao: TaskDao
 ) {
 
@@ -89,7 +93,6 @@ class TaskController @Autowired constructor(
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
     fun skip(@ApiParam("UUID of the Task.") @PathVariable id: UUID): Any {
-
         return HttpUtils.status(
             "Task", id, "skip",
             dispatcherService.skipTask(jobService.getInternalTask(id))
@@ -102,6 +105,15 @@ class TaskController @Autowired constructor(
     @Throws(ExecutionException::class, IOException::class)
     fun getScript(@ApiParam("UUID of the Task.") @PathVariable id: UUID): ZpsScript {
         return jobService.getZpsScript(id)
+    }
+
+    @ApiOperation("Get the pipeline script the Task will run.")
+    @GetMapping(value = ["/api/v1/tasks/{id}/_log"])
+    @ResponseBody
+    @Throws(ExecutionException::class, IOException::class)
+    fun streamLog(@ApiParam("UUID of the Task.") @PathVariable id: UUID): ResponseEntity<Resource> {
+        val task = jobService.getTask(id)
+        return projectStorageService.stream(task.getLogFileLocation())
     }
 
     @ApiOperation("Get a list of the Task's errors.")
