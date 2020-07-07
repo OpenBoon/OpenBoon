@@ -100,29 +100,54 @@ class Membership(models.Model):
         """Returns a ZMLP Client using the apikey for this Membership."""
         return ZmlpClient(self.apikey, server=settings.ZMLP_API_URL)
 
-    def sync_with_zmlp(self, client):
+    def sync_with_zmlp(self, client=None, force=False):
         """Syncs the permissions requested in Wallet with ZMLP by updating the api key.
 
         Args:
-            client(ZmlpClient): Client used to communicate with ZMLP.
+            client (ZmlpClient): Client used to communicate with ZMLP. If not set, it will
+                create a superuser client with this memberships project set.
+            force (bool): If set to True, will create a new apikey even if they currently
+                match.
 
         """
+        apikey_name = self._get_api_key_name()
+        wallet_desired_permissions = get_permissions_for_roles(self.roles)
+        if not client:
+            client = self.project.get_zmlp_super_client()
+
         if not self.apikey:
-            self.apikey = create_zmlp_api_key(client,
-                                              self._get_api_key_name(),
-                                              get_permissions_for_roles(self.roles),
+            self.apikey = create_zmlp_api_key(client, apikey_name, wallet_desired_permissions,
                                               internal=True)
             self.save()
         else:
+            # Check to make sure Wallet roles/permissions currently match
             apikey_json = convert_base64_to_json(self.apikey)
-            apikey_id = apikey_json['id']
-            zmlp_permissions = apikey_json.get('permissions')
-            wallet_permissions = get_permissions_for_roles(self.roles)
-            if zmlp_permissions != wallet_permissions:
+            try:
+                apikey_id = apikey_json['id']
+            except (TypeError, KeyError):
+                internally_consistent = False
+            else:
+                zmlp_permissions = apikey_json.get('permissions')
+                internally_consistent = zmlp_permissions == wallet_desired_permissions
+
+            # Check to make sure the key still matches what's in ZMLP
+            externally_consistent = True
+            try:
+                response = client.get(f'/auth/v1/apikey/{apikey_id}')
+            except ZmlpNotFoundException:
+                logger.warning(f'The API Key {apikey_id} for user f{self.user.id} could not be '
+                               f'found in ZMLP, it will be recreated.')
+                externally_consistent = False
+            # Compare Wallet and ZMLP permissions
+            if wallet_desired_permissions != response.get('permissions'):
+                externally_consistent = False
+
+            # Recreate the key in ZMLP, delete the old one, and save the new one
+            if not internally_consistent or not externally_consistent or force:
                 if apikey_json.get('name') == 'admin-key':
                     raise ValueError('Modifying the admin-key is not allowed.')
-                new_apikey = create_zmlp_api_key(client, self._get_api_key_name(),
-                                                 wallet_permissions, internal=True)
+                new_apikey = create_zmlp_api_key(client, apikey_name, wallet_desired_permissions,
+                                                 internal=True)
                 try:
                     response = client.delete(f'/auth/v1/apikey/{apikey_id}')
                     if not response.status_code == 200:
