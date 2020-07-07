@@ -64,13 +64,7 @@ class AssetSpec(
 class AssetCounters(
 
     @ApiModelProperty("Total number of assets.")
-    val total: Int = 0,
-
-    @ApiModelProperty("Total number of assets created.")
-    val created: Int = 0,
-
-    @ApiModelProperty("Total number of assets replaced")
-    val replaced: Int = 0
+    val total: Int
 )
 
 @ApiModel(

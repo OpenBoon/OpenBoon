@@ -43,7 +43,7 @@ interface JobService {
     fun getTask(id: UUID): Task
     fun getTasks(jobId: UUID): KPagedList<Task>
     fun getInternalTask(id: UUID): InternalTask
-    fun createTask(job: JobId, spec: TaskSpec): Task
+    fun createTask(job: JobId, spec: ZpsScript): Task
     fun getAll(filter: JobFilter?): KPagedList<Job>
     fun incrementAssetCounters(task: InternalTask, counts: AssetCounters)
     fun setJobState(job: JobId, newState: JobState, oldState: JobState?): Boolean
@@ -142,9 +142,22 @@ class JobServiceImpl @Autowired constructor(
         return get(job.id)
     }
 
-    fun createTask(job: Job, script: ZpsScript): Task {
+    override fun createTask(job: JobId, script: ZpsScript): Task {
         script.execute = pipelineResolverService.resolveCustom(script.execute)
         val task = taskDao.create(job, TaskSpec(zpsTaskName(script), script))
+
+        incrementAssetCounters(
+            task,
+            AssetCounters(script.assetIds?.size ?: 0)
+        )
+
+        logger.event(
+            LogObject.TASK, LogAction.CREATE,
+            mapOf(
+                "taskId" to task.id,
+                "taskName" to task.name
+            )
+        )
 
         script.children?.forEach {
             val childTask = createTask(job, it)
@@ -221,21 +234,6 @@ class JobServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun getZpsScript(id: UUID): ZpsScript {
         return taskDao.getScript(id)
-    }
-
-    override fun createTask(job: JobId, spec: TaskSpec): Task {
-
-        val newTask = taskDao.create(job, spec)
-
-        logger.event(
-            LogObject.TASK, LogAction.CREATE,
-            mapOf(
-                "taskId" to newTask.id,
-                "taskName" to newTask.name
-            )
-        )
-
-        return newTask
     }
 
     override fun incrementAssetCounters(task: InternalTask, counts: AssetCounters) {

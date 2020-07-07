@@ -89,7 +89,7 @@ def system_prune(full):
     Args:
         full (true): Prune everything, even non-dangling images.
     """
-    cmd = ['docker', 'system', 'prune', '-f', '-a']
+    cmd = ['docker', 'system', 'prune', '-f']
     if full:
         cmd.append('-a')
     subprocess.call(cmd, shell=False)

@@ -12,7 +12,6 @@ import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskId
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.util.LongRangeFilter
 import com.zorroa.archivist.util.randomString
@@ -42,7 +41,7 @@ class TaskErrorDaoTests : AbstractTest() {
             env = mutableMapOf("foo" to "bar")
         )
         val job = jobService.create(spec)
-        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+        val task = jobService.createTask(job, emptyZpsScript("bar"))
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(
@@ -68,7 +67,7 @@ class TaskErrorDaoTests : AbstractTest() {
             env = mutableMapOf("foo" to "bar")
         )
         val job = jobService.create(spec)
-        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+        val task = jobService.createTask(job, emptyZpsScript("bar"))
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(
@@ -94,7 +93,7 @@ class TaskErrorDaoTests : AbstractTest() {
             env = mutableMapOf("foo" to "bar")
         )
         val job = jobService.create(spec)
-        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+        val task = jobService.createTask(job, emptyZpsScript("bar"))
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(
@@ -115,7 +114,7 @@ class TaskErrorDaoTests : AbstractTest() {
             env = mutableMapOf("foo" to "bar")
         )
         val job = jobService.create(spec)
-        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+        val task = jobService.createTask(job, emptyZpsScript("bar"))
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(
@@ -138,7 +137,7 @@ class TaskErrorDaoTests : AbstractTest() {
             env = mutableMapOf("foo" to "bar")
         )
         val job = jobService.create(spec)
-        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+        val task = jobService.createTask(job, emptyZpsScript("bar"))
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(

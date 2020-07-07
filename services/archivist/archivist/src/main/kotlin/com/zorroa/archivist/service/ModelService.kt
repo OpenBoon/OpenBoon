@@ -19,7 +19,6 @@ import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.StandardContainers
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.ModelDao
 import com.zorroa.archivist.repository.ModelJdbcDao
@@ -159,7 +158,7 @@ class ModelServiceImpl(
                 throw IllegalArgumentException("Unknown job Id ${job.id}")
             }
             val script = jobLaunchService.getReprocessTask(repro)
-            jobService.createTask(job, TaskSpec(name, script))
+            jobService.createTask(job, script)
             ModelApplyResponse(count, job)
         }
     }
