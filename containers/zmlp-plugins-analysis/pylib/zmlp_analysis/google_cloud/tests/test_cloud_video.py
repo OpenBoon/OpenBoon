@@ -5,7 +5,7 @@ from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
 
 from zmlp_analysis.google_cloud.cloud_video import AsyncVideoIntelligenceProcessor
 from zmlpsdk import Frame, file_storage
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels, zorroa_test_path
 
 
 class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
@@ -14,10 +14,15 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
            'VideoIntelligenceServiceClient', autospec=True)
     def setUp(self, mock_videointelligence_client):
         self.mock_videointelligence_client = mock_videointelligence_client
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = \
+            zorroa_test_path('creds/zorroa-poc-dev-access.json')
+
+    def tearDown(self):
+        del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
     @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
-    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+    @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_logos(self, store_blob_patch, proxy_patch, annot_patch):
@@ -44,7 +49,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
     @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
-    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+    @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')
@@ -73,7 +78,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
     @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
-    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+    @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')
@@ -102,7 +107,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
     @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
-    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+    @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
     def test_detect_objects(self, blob_patch, proxy_patch, annot_patch):
@@ -130,7 +135,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
     @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
-    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+    @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')
