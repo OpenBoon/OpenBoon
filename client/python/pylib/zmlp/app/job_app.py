@@ -325,7 +325,7 @@ class JobApp:
         Returns:
             dict: The script in dictionary form.
         """
-        return self.app.client.stream('/api/v1/tasks/{}/_log'.format(as_id(task), dst_path))
+        return self.app.client.stream('/api/v1/tasks/{}/_log'.format(as_id(task)), dst_path)
 
     def iterate_task_log(self, task):
         """
