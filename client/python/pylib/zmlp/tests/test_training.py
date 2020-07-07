@@ -1,12 +1,15 @@
 import json
 import os
+import csv
 import tempfile
 import unittest
 from unittest.mock import patch
+from google.cloud import storage as gcs
 
 from zmlp import ZmlpClient, ZmlpApp, DataSet
 from zmlp.app import AssetApp, DataSetApp
 from zmlp.training import DataSetDownloader
+from zmlpsdk.testing import zorroa_test_path
 
 key_dict = {
     'projectId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
@@ -20,6 +23,11 @@ class ZmlpDataSetDownloader(unittest.TestCase):
 
     def setUp(self):
         self.app = ZmlpApp(key_dict)
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = \
+            zorroa_test_path('creds/zorroa-poc-dev-access.json')
+
+    def tearDown(self):
+        del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
     @patch.object(DataSetApp, 'get_dataset')
     @patch.object(ZmlpClient, 'get')
@@ -128,6 +136,41 @@ class ZmlpDataSetDownloader(unittest.TestCase):
         with open(os.path.join(d, dsl.SET_TEST, 'annotations.csv')) as fp:
             count = len(fp.readlines())
         assert 2 == count
+
+    @patch.object(DataSetApp, 'get_dataset')
+    @patch.object(AssetApp, 'download_file')
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    @patch.object(ZmlpClient, 'get')
+    @patch.object(DataSetDownloader, '_get_project_id')
+    @patch.object(gcs.Client, 'list_blobs')
+    @patch.object(csv, 'writer')
+    def test_build_automl_dataset(self, write_patch, gcs_patch, project_id_patch, get_patch,
+                                  post_patch, del_patch, dl_patch, get_ds_patch):
+        project_id = 'zorroa-poc-dev-vcm'
+        get_ds_patch.return_value = DataSet({'id': '12345', 'type': 'LabelDetection'})
+        get_patch.return_value = {
+            'goats': 100,
+            'hobbits': 12,
+            'wizards': 45,
+            'dwarfs': 9
+        }
+        post_patch.side_effect = [mock_search_result_labels, {'hits': {'hits': []}}]
+        del_patch.return_value = {}
+        dl_patch.return_value = b'foo'
+        project_id_patch.return_value = project_id
+        gcs_patch.return_value = []
+        write_patch.return_value = None
+
+        d = tempfile.mkdtemp()
+        dsl = DataSetDownloader(self.app, '12345', 'objects_automl', d)
+        dsl.build()
+
+        # check that file was written and uploaded to GCS
+        filename = 'csv/data.csv'
+        storage_client = gcs.Client()
+        bucket = storage_client.bucket(project_id)
+        assert gcs.Blob(bucket=bucket, name=filename).exists(storage_client)
 
 
 mock_search_result_objects = {

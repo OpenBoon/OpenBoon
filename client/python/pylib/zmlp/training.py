@@ -2,6 +2,9 @@
 import os
 import logging
 import json
+import csv
+
+from google.cloud import storage as gcs
 
 logger = logging.getLogger(__name__)
 
@@ -90,6 +93,8 @@ class DataSetDownloader:
             self._build_objects_coco_format(pool)
         elif self.style == "objects_keras":
             self._build_objects_keras_format(pool)
+        elif self.style == "objects_automl":
+            self._build_automl_dataset()
         else:
             raise ValueError("{} not supported by the DataSetDownloader".format(format))
 
@@ -342,6 +347,82 @@ class DataSetDownloader:
                 result.append(ds_label)
         return result
 
+    def _build_automl_dataset(self):
+        """
+        Write a DataSet in a AutoML training structure.
+
+        Returns:
+            str: A path to an annotation file.
+        """
+        formats = ['jpeg', 'png', 'gif', 'bmp', 'ico']
+        data = []
+        gcp_project_id = self._get_project_id()
+
+        storage_client = gcs.Client()
+
+        local_csv_path = os.path.join(self.dst_dir, 'data.csv')
+        with open(local_csv_path, "w") as fp:
+            for asset in self.app.assets.scroll_search(self.query, timeout='5m'):
+                prefix = 'asset/{}'.format(asset.id)
+                ds_labels = self._get_dataset_labels(asset)
+                label = ds_labels[0].get('label')
+
+                for blob in storage_client.list_blobs(gcp_project_id, prefix=prefix):
+                # for blob in storage_client.list_blobs('zorroa-poc-dev-vcm', prefix='vision_01'):
+                    content_type = blob.content_type.split('/')[-1]
+                    # skip directories and non-image files
+                    if blob.name.endswith("/") or not any(content_type in f for f in formats):
+                        continue
+                    full_proxy_path = 'gs://{}/{}/{}'.format(gcp_project_id, prefix, blob.name)
+                    logging.debug(full_proxy_path)
+
+                    data = [full_proxy_path, label]
+                    str_line = "{}\n".format(",".join(data))
+                    fp.write(str_line)
+
+        # writing the data into the file
+        gcs_csv_path = 'csv/data.csv'
+        self._upload_to_gcs_bucket(storage_client, gcp_project_id, gcs_csv_path, local_csv_path)
+
+    @staticmethod
+    def _get_project_id():
+        """Get Project ID for a GC Project
+
+        Returns:
+            (str) Project ID (e.g. 'zorroa-poc-dev')
+        """
+        # If this is running in a cloud function, then GCP_PROJECT should be defined
+        if 'GCP_PROJECT' in os.environ:
+            project_id = os.environ['GCP_PROJECT']
+        # else if this is running locally then GOOGLE_APPLICATION_CREDENTIALS should be defined
+        elif 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
+            with open(os.environ['GOOGLE_APPLICATION_CREDENTIALS'], 'r') as fp:
+                credentials = json.load(fp)
+            project_id = credentials['project_id']
+        else:
+            raise Exception('Failed to determine project_id')
+
+        return project_id
+
+    @staticmethod
+    def _upload_to_gcs_bucket(storage_client, bucket_name, blob_path, local_path):
+        """
+        Write local file to GCS bucket
+
+        Args:
+            storage_client: GCS Client
+            bucket_name: bucket name (e.g. project_id)
+            blob_path: path where file will be uploaded (excluding 'gs://bucket_name/')
+            local_path: path to local file
+
+        Returns:
+            None
+        """
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(blob_path)
+
+        blob.upload_from_filename(local_path)
+        logging.debug("File {} uploaded to {}.".format(local_path, blob_path))
 
 class CocoAnnotationFileBuilder:
     """
