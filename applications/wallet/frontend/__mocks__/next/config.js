@@ -4,7 +4,7 @@ dotenv.config()
 
 const getConfig = () => ({
   serverRuntimeConfig: process.env,
-  publicRuntimeConfig: process.env,
+  publicRuntimeConfig: { ...process.env, ENVIRONMENT: 'localdev' },
 })
 
 export default getConfig
