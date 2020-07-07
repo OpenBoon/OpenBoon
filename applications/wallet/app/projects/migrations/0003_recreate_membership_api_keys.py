@@ -26,6 +26,8 @@ def recreate_membership_api_keys(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('projects', '0002_auto_20200528_2041'),
+        ('subscriptions', '0002_auto_20200528_2041'),
         ('wallet', '0004_remove_system_permissions_from_users'),
     ]
 

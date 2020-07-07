@@ -20,7 +20,7 @@ def detail_data():
 
 @pytest.fixture
 def list_data():
-    return [{'id': '591ae0c6-5e1e-48ca-929a-3bee4f16b363', 'projectId': '00000000-0000-0000-0000-000000000000', 'accessKey': 'r0fN72Qu59PaJV0-aEebkA', 'secretKey': 'ENCRYPTED', 'name': 'test-key', 'permissions': ['AssetsDelete', 'DataSourceManage', 'ProjectManage', 'DataQueueManage', 'AssetsImport', 'AssetsRead'], 'timeCreated': 1593729216924, 'timeModified': 1593729216924, 'actorCreated': 'ba4003f0-81e3-4a99-8921-4cec6e7f4b2f/Admin Console Generated Key - f7e17680-f261-4738-8c22-cfad20fb4acd - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': 'ba4003f0-81e3-4a99-8921-4cec6e7f4b2f/Admin Console Generated Key - f7e17680-f261-4738-8c22-cfad20fb4acd - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'enabled': True, 'systemKey': False}]  # noqa
+    return {'page': {'from': 0, 'size': 50, 'totalCount': 2}, 'list': [{'id': 'a98360ed-3a2d-45b5-93cb-414e69cedf8d', 'projectId': '00000000-0000-0000-0000-000000000000', 'accessKey': 'JKrceu3wiSsRLSP4-F2_vg', 'secretKey': 'ENCRYPTED', 'name': 'Test', 'permissions': ['AssetsRead', 'DataSourceManage', 'AssetsDelete', 'DataQueueManage', 'AssetsImport', 'ProjectManage'], 'timeCreated': 1594157746720, 'timeModified': 1594157746720, 'actorCreated': '48a6795d-b6ee-4485-9e84-1a920c6071d5/Admin Console Generated Key - 07c31bde-7781-4223-8e4f-083c3e670ab8 - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': '48a6795d-b6ee-4485-9e84-1a920c6071d5/Admin Console Generated Key - 07c31bde-7781-4223-8e4f-083c3e670ab8 - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'enabled': True, 'systemKey': False}, {'id': '48a6795d-b6ee-4485-9e84-1a920c6071d5', 'projectId': '00000000-0000-0000-0000-000000000000', 'accessKey': 'ySJvNu3s01uveGUDxAf5ug', 'secretKey': 'ENCRYPTED', 'name': 'Admin Console Generated Key - 07c31bde-7781-4223-8e4f-083c3e670ab8 - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'permissions': ['AssetsRead', 'DataSourceManage', 'AssetsDelete', 'DataQueueManage', 'ProjectManage', 'AssetsImport'], 'timeCreated': 1594157552802, 'timeModified': 1594157552802, 'actorCreated': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key', 'actorModified': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key', 'enabled': True, 'systemKey': False}]}  # noqa
 
 
 class TestApikey:
@@ -31,13 +31,13 @@ class TestApikey:
         def mock_api_response(*args, **kwargs):
             return list_data
 
-        monkeypatch.setattr(ZmlpClient, 'get', mock_api_response)
+        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         response = api_client.get(reverse('apikey-list', kwargs={'project_pk': project.id}))
         assert response.status_code == 200
         content = response.json()
-        assert len(content['results']) == 1
+        assert len(content['results']) == 2
 
     @override_settings(PLATFORM='zmlp')
     def test_get_detail(self, zmlp_project_user, project, api_client, monkeypatch, detail_data):

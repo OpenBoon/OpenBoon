@@ -125,10 +125,14 @@ class Membership(models.Model):
             try:
                 apikey_id = apikey_json['id']
             except (TypeError, KeyError):
-                internally_consistent = False
+                # If there's no id, just recreate it.
+                self.apikey = create_zmlp_api_key(client, apikey_name, wallet_desired_permissions,
+                                                  internal=True)
+                self.save()
+                return
             else:
-                zmlp_permissions = apikey_json.get('permissions')
-                internally_consistent = zmlp_permissions == wallet_desired_permissions
+                apikey_permissions = apikey_json.get('permissions')
+                internally_consistent = set(apikey_permissions) == set(wallet_desired_permissions)
 
             # Check to make sure the key still matches what's in ZMLP
             externally_consistent = True
@@ -138,8 +142,11 @@ class Membership(models.Model):
                 logger.warning(f'The API Key {apikey_id} for user f{self.user.id} could not be '
                                f'found in ZMLP, it will be recreated.')
                 externally_consistent = False
+                zmlp_permissions = []
+            else:
+                zmlp_permissions = response.get('permissions', [])
             # Compare Wallet and ZMLP permissions
-            if wallet_desired_permissions != response.get('permissions'):
+            if set(wallet_desired_permissions) != set(zmlp_permissions):
                 externally_consistent = False
 
             # Recreate the key in ZMLP, delete the old one, and save the new one
