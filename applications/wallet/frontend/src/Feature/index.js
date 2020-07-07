@@ -7,11 +7,18 @@ import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import { parseFeatureFlags } from './helpers'
 
+export const ENVS = {
+  LOCAL: 'localdev',
+  DEV: 'zvi-dev',
+  QA: 'zvi-qa',
+  PROD: 'zvi-prod',
+}
+
 const {
   publicRuntimeConfig: { ENVIRONMENT },
 } = getConfig()
 
-const Feature = ({ flag, env, children }) => {
+const Feature = ({ flag, envs, children }) => {
   const {
     query: { flags },
   } = useRouter()
@@ -42,7 +49,7 @@ const Feature = ({ flag, env, children }) => {
   }
 
   // Enabled environment
-  if (env.includes(ENVIRONMENT)) {
+  if (envs.includes(ENVIRONMENT)) {
     return children
   }
 
@@ -51,9 +58,7 @@ const Feature = ({ flag, env, children }) => {
 
 Feature.propTypes = {
   flag: PropTypes.string.isRequired,
-  env: PropTypes.arrayOf(
-    PropTypes.oneOf(['localdev', 'zvi-dev', 'zvi-qa', 'zvi-prod']),
-  ).isRequired,
+  envs: PropTypes.arrayOf(PropTypes.oneOf(Object.values(ENVS))).isRequired,
 }
 
 export default Feature
