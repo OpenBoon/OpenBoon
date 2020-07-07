@@ -279,7 +279,7 @@ Array [
         aria-disabled={true}
         className="emotion-7"
         onClick={[Function]}
-        type="button"
+        type="submit"
       >
         Saved
       </button>

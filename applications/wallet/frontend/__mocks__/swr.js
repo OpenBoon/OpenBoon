@@ -41,12 +41,20 @@ export const __setMockCacheKeys = (data) => {
   mockCacheKeys = data
 }
 
+let mockCacheDeleteFn = () => {}
+
+export const __setMockCacheDeleteFn = (fn) => {
+  mockCacheDeleteFn = fn
+}
+
 export const cache = {
   keys: () => {
     return mockCacheKeys
   },
   clear: () => {},
-  delete: () => {},
+  delete: (...args) => {
+    mockCacheDeleteFn(...args)
+  },
 }
 
 /**

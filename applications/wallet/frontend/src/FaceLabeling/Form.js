@@ -130,6 +130,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
           <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
           <Button
+            type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => {
               reloadKey += 1
