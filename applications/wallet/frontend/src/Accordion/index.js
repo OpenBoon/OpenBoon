@@ -146,7 +146,10 @@ const Accordion = ({
             fontSize: typography.size.medium,
             lineHeight: typography.height.medium,
             paddingLeft: spacing.moderate,
+            paddingRight: spacing.base,
             display: 'flex',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           }}
         >
           {title}

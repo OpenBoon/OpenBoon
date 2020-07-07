@@ -5,17 +5,23 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow.keras.applications import resnet_v2 as resnet_v2
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
-from tensorflow.keras.optimizers import Adamax
+from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 import zmlp
 from zmlpsdk import AssetProcessor, Argument, file_storage
-from zmlpsdk.training import download_dataset
+from zmlpsdk.training import download_labeled_images
 
 
 class TensorflowTransferLearningTrainer(AssetProcessor):
     img_size = (224, 224)
     file_types = None
+
+    min_concepts = 2
+    """The minimum number of concepts needed to train."""
+
+    min_examples = 10
+    """The minimum number of concepts needed to train."""
 
     def __init__(self):
         super(TensorflowTransferLearningTrainer, self).__init__()
@@ -27,37 +33,32 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
                               toolTip="Automatically deploy the model onto assets."))
 
         # These can be set optionally.
-        self.add_arg(Argument("epochs", "int", required=True, default=10,
+        self.add_arg(Argument("epochs", "int", required=True, default=12,
                               toolTip="The number of training epochs"))
-        self.add_arg(Argument("min_concepts", "int", required=True, default=2,
-                              toolTip="The min number of concepts needed to train."))
-        self.add_arg(Argument("min_examples", "int", required=True, default=10,
-                              toolTip="The min number of examples needed to train"))
-        self.add_arg(Argument("train-test-ratio", "int", required=True, default=3,
+        self.add_arg(Argument("training_set_split", "int", required=True, default=3,
                               toolTip="The number of training images vs test images"))
+        self.add_arg(Argument("fine_tune_at_layer", "int", required=True, default=100,
+                              toolTip="The layer to start find-tuning at."))
+        self.add_arg(Argument("fine_tune_epochs", "int", required=True, default=7,
+                              toolTip="The number of fine-tuning epochs."))
+
         self.app = zmlp.app_from_env()
 
         self.model = None
         self.labels = None
         self.base_dir = None
 
-        # Fine tune the base model after the nth layer.
-        self.fine_tune_at = 100
-
-        # Number of epochs for fine tuning.
-        self.fine_tune_epochs = 5
-
     def init(self):
         self.app_model = self.app.models.get_model(self.arg_value('model_id'))
-        self.labels = self.app.datasets.get_label_counts(self.app_model.dataset_id)
+        self.labels = self.app.models.get_label_counts(self.app_model)
         self.base_dir = tempfile.mkdtemp('tf2-xfer-learning')
         self.check_labels()
 
     def process(self, frame):
-        download_dataset(self.app_model.dataset_id,
-                         "labels_std",
-                         self.base_dir,
-                         self.arg_value('train-test-ratio'))
+        download_labeled_images(self.app_model,
+                                "labels_std",
+                                self.base_dir,
+                                self.arg_value('training_set_split'))
 
         self.reactor.emit_status("Training model: {}".format(self.app_model.name))
         train_gen, test_gen = self.build_generators()
@@ -98,7 +99,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         fname = f'/tmp/{name}.png'
         plt.savefig(fname)
 
-        file_storage.projects.store_file(fname, self.app_model, 'zvi_label_detection')
+        file_storage.projects.store_file(fname, self.app_model, self.app_model.module_name)
 
     def publish_model(self, labels):
         """
@@ -123,20 +124,17 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
     def check_labels(self):
         """
-        Check the dataset labels to ensure we have enough labels and example images.
+        Check the labels to ensure we have enough labels and example images.
 
         """
-        min_concepts = self.arg_value('min_concepts')
-        min_examples = self.arg_value('min_examples')
-
         # Do some checks here.
-        if len(self.labels) < min_concepts:
-            raise ValueError('You need at least {} labels to train.'.format(min_concepts))
+        if len(self.labels) < self.min_concepts:
+            raise ValueError('You need at least {} labels to train.'.format(self.min_concepts))
 
         for name, count in self.labels.items():
-            if count < min_examples:
+            if count < self.min_examples:
                 msg = 'You need at least {} examples to train, {} has  {}'
-                raise ValueError(msg.format(min_examples, name, count))
+                raise ValueError(msg.format(self.min_examples, name, count))
 
     def train_model(self, train_gen, test_gen):
         """
@@ -160,7 +158,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         self.logger.info('Compiling...')
         self.model.compile(
-            optimizer=Adamax(),
+            optimizer=Adam(),
             loss='categorical_crossentropy',
             metrics=['accuracy']
         )
@@ -175,23 +173,30 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         self.plot_history(history, "history")
 
+        # Number of epochs for fine tuning.
+        fine_tune_at_layer = self.arg_value('fine_tune_at_layer')
+        fine_tune_epochs = self.arg_value('fine_tune_epochs')
+
+        if fine_tune_epochs <= 0:
+            return
+
         # Now that we've trained our new layers, we're going to actually lightly retrain
         # all layers after the 100th layer in ResNet50.
         base_model.trainable = True
 
-        # Freezes all the layers before the `fine_tune_at` layer
-        for layer in base_model.layers[:self.fine_tune_at]:
+        # Freezes all the layers before the `fine_tune_at_layer` layer
+        for layer in base_model.layers[:fine_tune_at_layer]:
             layer.trainable = False
 
         self.model.compile(loss='categorical_crossentropy',
-                           optimizer=Adamax(1e-5),
+                           optimizer=Adam(1e-4),
                            metrics=['accuracy'])
 
         history_fine = self.model.fit(train_gen,
-                                      epochs=self.fine_tune_epochs,
+                                      epochs=fine_tune_epochs,
                                       validation_data=test_gen,
                                       callbacks=[TrainingProgressCallback(
-                                          self.reactor, self.fine_tune_epochs)])
+                                          self.reactor, fine_tune_epochs)])
 
         self.plot_history(history_fine, "history-fine-tune")
 
@@ -225,7 +230,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         )
 
         test_generator = test_datagen.flow_from_directory(
-            '{}/set_test/'.format(self.base_dir),
+            '{}/set_validate/'.format(self.base_dir),
             batch_size=8,
             class_mode='categorical',
             target_size=self.img_size
@@ -233,9 +238,10 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         return train_generator, test_generator
 
-    def get_base_model(self):
+    @staticmethod
+    def get_base_model():
         """
-        Return the base tensorflow model.
+        Return the base ResNet50 model.
 
         Returns:
             Model: A tensorflow model.

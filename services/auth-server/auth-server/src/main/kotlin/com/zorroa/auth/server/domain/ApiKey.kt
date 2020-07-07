@@ -38,7 +38,10 @@ class ApiKeySpec(
     val projectId: UUID? = null,
 
     @ApiModelProperty("Key enabled status")
-    val enabled: Boolean = true
+    val enabled: Boolean = true,
+
+    @ApiModelProperty("Indicates that is a System Key")
+    val systemKey: Boolean = false
 )
 
 @Entity
@@ -91,7 +94,12 @@ class ApiKey(
 
     @Column(name = "enabled", nullable = false)
     @ApiModelProperty("True if the Key is enabled")
-    val enabled: Boolean
+    val enabled: Boolean,
+
+    @Column(name = "system_key")
+    @ApiModelProperty("Indicates that is a System Key")
+    val systemKey: Boolean
+
 ) {
 
     @JsonIgnore
@@ -215,7 +223,10 @@ class ApiKeyFilter(
      * A list of unique names.
      */
     @ApiModelProperty("Key name prefixes to match.")
-    val namePrefixes: List<String>? = null
+    val namePrefixes: List<String>? = null,
+
+    @ApiModelProperty("Set to true to show sysstem keys.", hidden = true)
+    val systemKey: Boolean? = null
 
 ) : AbstractJpaFilter<ApiKey>() {
 
@@ -245,6 +256,10 @@ class ApiKeyFilter(
                 cb.like(root.get("name"), "$v%")
             }
             where.add(cb.or(*matches.toTypedArray()))
+        }
+
+        systemKey?.let {
+            where.add(cb.equal(root.get<Boolean>("systemKey"), it))
         }
 
         return where.toTypedArray()
