@@ -113,10 +113,14 @@ Below are examples of all 3.
         return self._zmlp_retrieve(request, pk)
 
     def update(self, request, project_pk, pk):
-        response = self._zmlp_update(request, pk)
+        self._zmlp_update(request, pk)
         datasource = request.app.datasource.get_datasource(pk)
-        request.app.datasource.import_files(datasource)
-        return response
+        job = request.app.datasource.import_files(datasource)
+        datasource._data['jobId'] = job.id
+        serializer = self.get_serializer(data=datasource._data)
+        if not serializer.is_valid():
+            return Response({'detail': serializer.errors}, status=500)
+        return Response(serializer.validated_data)
 
     def destroy(self, request, project_pk, pk):
         return self._zmlp_destroy(request, pk)
