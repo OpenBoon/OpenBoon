@@ -4,19 +4,14 @@ import logging
 
 from django.contrib.auth import get_user_model
 from django.db import migrations
-from wallet.utils import get_zmlp_superuser_client
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
 def recreate_user_memberships(apps, schema_editor):
-    for user in User.objects.all():
-        for membership in user.memberships.all():
-            superuser_client = get_zmlp_superuser_client(membership.project.id)
-            membership.sync_with_zmlp(superuser_client)
-            logger.info(f'Cycled apikey for {user.username} on project '
-                        f'{membership.project.name}')
+    # This migration was no good.
+    return
 
 
 class Migration(migrations.Migration):
