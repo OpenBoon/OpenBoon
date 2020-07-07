@@ -31,6 +31,9 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
           fontSize: typography.size.medium,
           lineHeight: typography.height.medium,
           fontWeight: typography.weight.medium,
+          paddingRight: spacing.base,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
         }}
       >
         {attribute}

@@ -24,7 +24,7 @@ class KnnLabelDetectionTrainer(AssetProcessor):
         self.app_model = self.app.models.get_model(self.arg_value('model_id'))
 
     def process(self, frame):
-        self.reactor.emit_status("Searching DataSet Labels")
+        self.reactor.emit_status("Searching Model Training Set")
         query = {
             '_source': ['labels.*', 'analysis.zvi-image-similarity.*'],
             'size': 50,
@@ -32,7 +32,12 @@ class KnnLabelDetectionTrainer(AssetProcessor):
                 'nested': {
                     'path': 'labels',
                     'query': {
-                        'term': {'labels.dataSetId': self.app_model.dataset_id}
+                        'bool': {
+                            'must': [
+                                {'term': {'labels.modelId': self.app_model.id}},
+                                {'term': {'labels.scope': 'TRAIN'}},
+                            ]
+                        }
                     }
                 }
             }
@@ -41,7 +46,7 @@ class KnnLabelDetectionTrainer(AssetProcessor):
         classifier_hashes = []
         for asset in self.app.assets.scroll_search(query):
             for label in asset['labels']:
-                if label['dataSetId'] == self.app_model.dataset_id:
+                if label['modelId'] == self.app_model.id:
                     classifier_hashes.append({'simhash': asset.get_attr(
                             'analysis.zvi-image-similarity.simhash'),
                             'label': label['label']})

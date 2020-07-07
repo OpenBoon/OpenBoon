@@ -441,6 +441,10 @@ class ProjectStorage(object):
         cache_path = self.cache.get_path(file_id, suffix)
 
         if not os.path.exists(cache_path):
+            try:
+                os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+            except Exception as e:
+                logger.warning(f"Failed to create cache path dir: {cache_path}", e)
             logger.info("localizing file: {}".format(file_id))
             self.app.client.stream('/api/v3/files/_stream/{}'.format(file_id), cache_path)
         return cache_path
@@ -499,10 +503,19 @@ class FileCache(object):
         """
         _, suffix = os.path.splitext(sfile.name)
         cache_path = self.get_path(sfile.id, suffix)
-
         precache_path = urlparse(str(src_path)).path
-        logger.info("Pre-caching {} to {}".format(precache_path, cache_path))
-        shutil.copy(urlparse(precache_path).path, cache_path)
+
+        # If the tmp file is in the task cache, just symlink it into file storage cache.
+        if src_path.startswith(os.environ.get("TMPDIR", "/tmp")):
+            symlinked = True
+            os.symlink(src_path, cache_path)
+        else:
+            symlinked = False
+            shutil.copy(urlparse(precache_path).path, cache_path)
+
+        name = os.path.basename(src_path)
+        logger.info(f'Pre-caching {name}, linked: {symlinked}')
+
         return cache_path
 
     def localize_uri(self, uri):
@@ -538,6 +551,7 @@ class FileCache(object):
 
         # GCS buckets
         elif parsed_uri.scheme == 'gs':
+            # This client uses customer creds.
             gcs_client = get_cached_google_storage_client()
             bucket = gcs_client.get_bucket(parsed_uri.netloc)
             blob = bucket.blob(parsed_uri.path[1:])

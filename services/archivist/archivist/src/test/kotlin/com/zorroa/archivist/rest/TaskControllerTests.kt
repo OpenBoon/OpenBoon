@@ -11,7 +11,6 @@ import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.TaskFilter
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.emptyZpsScript
@@ -47,7 +46,7 @@ class TaskControllerTests : MockMvcTest() {
     fun init() {
         val job = launchJob()
         // create additional task
-        task = jobService.createTask(job, TaskSpec("bar", emptyZpsScript("bar")))
+        task = jobService.createTask(job, emptyZpsScript("bar"))
     }
 
     fun launchJob(): Job {
@@ -233,7 +232,7 @@ class TaskControllerTests : MockMvcTest() {
             env = mutableMapOf("foo" to "bar")
         )
         val job = jobService.create(spec)
-        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+        val task = jobService.createTask(job, emptyZpsScript("bar"))
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(

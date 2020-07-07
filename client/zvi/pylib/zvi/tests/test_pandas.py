@@ -32,7 +32,7 @@ class PandasTests(unittest.TestCase):
                             },
                             "labels": [
                                 {
-                                    "dataSetId": "ds-id-12345",
+                                    "modelId": "ds-id-12345",
                                     "label": "Glion",
                                 }
                             ],
@@ -56,7 +56,7 @@ class PandasTests(unittest.TestCase):
                             },
                             "labels": [
                                 {
-                                    "dataSetId": "ds-id-12345",
+                                    "modelId": "ds-id-12345",
                                     "label": "Gandalf",
                                 }
                             ],

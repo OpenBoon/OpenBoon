@@ -17,17 +17,19 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
     @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
+    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+           'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
-    def test_detect_logos(self, store_blob_patch, annot_patch):
+    def test_detect_logos(self, store_blob_patch, proxy_patch, annot_patch):
+        uri = 'gs://zorroa-dev-data/video/mustang.mp4'
         store_blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-logos.dat")
-
+        proxy_patch.return_value = uri
         processor = self.init_processor(
             AsyncVideoIntelligenceProcessor(), {
                 'detect_logos': 0.5,
             })
 
-        uri = 'gs://zorroa-dev-data/video/mustang.mp4'
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
         asset.set_attr('clip.track', 'full')
@@ -42,19 +44,22 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
     @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
+    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+           'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')
-    def test_detect_labels(self, store_tl_patch, store_blob_patch, annot_patch):
+    def test_detect_labels(self, store_tl_patch, store_blob_patch, proxy_patch, annot_patch):
+        uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         store_tl_patch.return_value = None
         store_blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-labels.dat")
+        proxy_patch.return_value = uri
 
         processor = self.init_processor(
             AsyncVideoIntelligenceProcessor(), {
                 'detect_labels': 0.5
             })
 
-        uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
         asset.set_attr('clip.track', 'full')
@@ -68,19 +73,22 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
     @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
+    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+           'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')
-    def test_detect_text(self, store_tl_patch, store_blob_patch, annot_patch):
+    def test_detect_text(self, store_tl_patch, store_blob_patch, proxy_patch, annot_patch):
+        uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         store_tl_patch.return_value = None
         store_blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-text.dat")
+        proxy_patch.return_value = uri
 
         processor = self.init_processor(
             AsyncVideoIntelligenceProcessor(), {
                 'detect_text': 0.5
             })
 
-        uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
         asset.set_attr('clip.track', 'full')
@@ -94,10 +102,14 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
     @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
+    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+           'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
-    def test_detect_objects(self, blob_patch, annot_patch):
+    def test_detect_objects(self, blob_patch, proxy_patch, annot_patch):
+        uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-objects.dat")
+        proxy_patch.return_value = uri
 
         processor = self.init_processor(AsyncVideoIntelligenceProcessor(), {
             'detect_objects': 0.25,
@@ -118,18 +130,21 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
     @patch('zmlp_analysis.google_cloud.cloud_video.AsyncVideoIntelligenceProcessor.'
            '_get_video_annotations')
+    @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
+           'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')
-    def test_detect_explicit(self, store_tl_patch, blob_patch, annot_patch):
+    def test_detect_explicit(self, store_tl_patch, blob_patch, proxy_patch, annot_patch):
+        uri = 'gs://zorroa-dev-data/video/model.mp4'
         store_tl_patch.return_value = None
         blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-explicit.dat")
+        proxy_patch.return_value = uri
 
         processor = self.init_processor(AsyncVideoIntelligenceProcessor(), {
             'detect_explicit': 3,
         })
 
-        uri = 'gs://zorroa-dev-data/video/model.mp4'
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
         asset.set_attr('clip.track', 'full')

@@ -47,7 +47,7 @@ class MembershipAdmin(ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         """When adding a membership if no api key is given then a new one is created."""
-        obj.sync_with_zmlp(self.project.get_zmlp_super_client())
+        obj.sync_with_zmlp(obj.project.get_zmlp_super_client())
         obj.save()
 
     def delete_model(self, request, obj):

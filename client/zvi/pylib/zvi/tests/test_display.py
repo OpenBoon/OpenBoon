@@ -32,7 +32,7 @@ class DisplayTests(unittest.TestCase):
                             },
                             "labels": [
                                 {
-                                    "dataSetId": "ds-id-12345",
+                                    "model": "ds-id-12345",
                                     "label": "Glion",
                                 }
                             ],
@@ -55,7 +55,7 @@ class DisplayTests(unittest.TestCase):
                             },
                             "labels": [
                                 {
-                                    "dataSetId": "ds-id-12345",
+                                    "modelId": "ds-id-12345",
                                     "label": "Gandalf",
                                 }
                             ],
@@ -78,7 +78,7 @@ class DisplayTests(unittest.TestCase):
                             },
                             "labels": [
                                 {
-                                    "dataSetId": "ds-id-12345",
+                                    "modelId": "ds-id-12345",
                                     "label": "Gandalf",
                                 }
                             ],

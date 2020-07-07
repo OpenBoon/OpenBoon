@@ -11,7 +11,6 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.zmlp.util.Json
@@ -41,7 +40,7 @@ class TaskErrorControllerTests : MockMvcTest() {
             env = mutableMapOf("foo" to "bar")
         )
         val job = jobService.create(spec)
-        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+        val task = jobService.createTask(job, emptyZpsScript("bar"))
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(

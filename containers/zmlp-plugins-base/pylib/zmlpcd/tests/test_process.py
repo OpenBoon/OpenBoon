@@ -169,6 +169,19 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert 10 == metrics["executionTime"]
         assert None is not metrics["executionDate"]
 
+    def test_apply_metrics_process_false(self):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": TEST_IMAGE
+        }
+        frame = Frame(TestAsset())
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.apply_metrics(frame.asset, True, 10, None)
+        wrapper.apply_metrics(frame.asset, False, 10, None)
+        metrics = frame.asset["metrics"]["pipeline"][0]
+        assert 10 == metrics["executionTime"]
+
     @patch.object(Reactor, 'check_expand')
     def test_teardown_processor(self, react_patch):
         req = {
