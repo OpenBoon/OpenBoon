@@ -51,10 +51,13 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-4 {
@@ -182,10 +185,13 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-4 {
@@ -327,10 +333,13 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 <div

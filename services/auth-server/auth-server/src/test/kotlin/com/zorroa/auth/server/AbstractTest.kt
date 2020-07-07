@@ -65,7 +65,8 @@ abstract class AbstractTest {
             System.currentTimeMillis(),
             "bob/123",
             "bob/123",
-            true
+            true,
+            false
         )
         val validationKey = keySpec.getValidationKey()
 

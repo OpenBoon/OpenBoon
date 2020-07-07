@@ -53,7 +53,8 @@ class AuthServerClientTests {
                 "accessKey": "abc123",
                 "secretKey": "abc123",
                 "name": "foo",
-                "permissions": ["AssetsImport"]
+                "permissions": ["AssetsImport"],
+                "systemKey":"false"
             }
             """.trimIndent()
 
@@ -69,6 +70,7 @@ class AuthServerClientTests {
         assertEquals(UUID.fromString("11eaad16-d355-4006-90e4-6bd100c3cd81"), apikey.id)
         assertEquals("foo", apikey.name)
         assertEquals(setOf(Permission.AssetsImport), apikey.permissions)
+        assertEquals(false, apikey.systemKey)
     }
 
     @Test

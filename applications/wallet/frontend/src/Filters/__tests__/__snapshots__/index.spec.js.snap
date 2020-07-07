@@ -165,10 +165,13 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-170 {
@@ -1461,10 +1464,13 @@ exports[`<Filters /> should open the menu 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-67 {

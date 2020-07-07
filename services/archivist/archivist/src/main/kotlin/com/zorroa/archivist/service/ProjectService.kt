@@ -293,7 +293,8 @@ class ProjectServiceImpl constructor(
                 Permission.SystemProjectDecrypt,
                 Permission.ProjectFilesRead,
                 Permission.ProjectFilesWrite
-            )
+            ),
+            true
         )
     }
 

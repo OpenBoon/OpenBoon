@@ -1,8 +1,6 @@
 import logging
 from unittest.mock import patch
 
-import pytest
-
 from zmlp import StoredFile
 from zmlp_core.proxy.image import ImageProxyProcessor
 from zmlpsdk import Frame
@@ -13,8 +11,10 @@ TOUCAN_PATH = zorroa_test_data("images/set01/toucan.jpg", uri=False)
 TOUCAN = zorroa_test_data("images/set01/toucan.jpg")
 BEER = zorroa_test_data("images/set02/beer_kettle_01.jpg")
 VIDEO = zorroa_test_data("video/dc.webm")
+TOUCAN = zorroa_test_data("images/set01/toucan.jpg")
+TIFF = zorroa_test_data("office/multipage_tiff_small.tif")
 
-logging.basicConfig()
+logging.basicConfig(level=logging.DEBUG)
 
 
 class ProxyIngestorUnitTestCase(PluginUnitTestCase):
@@ -24,7 +24,6 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.frame.asset.set_attr("media.type", "image")
         self.frame.asset.set_attr('media.width', 512)
         self.frame.asset.set_attr('media.height', 341)
-        self.frame.asset.set_attr('tmp.proxy_source_image', TOUCAN)
         self.processor = self.init_processor(ImageProxyProcessor(), {})
 
         self.storage_patch1 = {
@@ -44,10 +43,19 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.storage_patch3 = self.storage_patch1.copy()
         self.storage_patch3["id"] = "foo/bar/web-proxy/web-proxy.jpg"
 
-    def test_init(self):
-        with pytest.raises(ValueError) as error:
-            self.init_processor(ImageProxyProcessor(), {'file_type': 'butts'})
-        assert '"butts" is not a valid type' in error.value.args[0]
+    @patch.object(ProjectStorage, 'store_file')
+    def test_process_multi_page(self, store_patch):
+        self.frame.asset.set_attr("clip.length", 5)
+        self.frame.asset.set_attr("clip.start", 1)
+        self.frame.asset.set_attr("source.path", TIFF)
+        self.frame.asset.set_attr("media.length", 3)
+        self.frame.asset.set_attr('media.width', 3264)
+        self.frame.asset.set_attr('media.height', 2448)
+        store_patch.side_effect = [StoredFile(self.storage_patch1),
+                                   StoredFile(self.storage_patch2),
+                                   StoredFile(self.storage_patch3)]
+        self.processor.process(self.frame)
+        assert len(self.frame.asset.get_attr('files')) == 3
 
     @patch.object(ProjectStorage, 'store_file')
     def test_process_large(self, store_patch):
@@ -62,6 +70,17 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
 
     @patch.object(ProjectStorage, 'store_file')
     def test_process_small(self, post_patch):
+        post_patch.side_effect = [
+            StoredFile(self.storage_patch1),
+            StoredFile(self.storage_patch2),
+            StoredFile(self.storage_patch3)]
+        self.processor.process(self.frame)
+        assert len(self.frame.asset.get_attr('files')) == 2
+
+    @patch.object(ProjectStorage, 'store_file')
+    def test_process_super_small(self, post_patch):
+        self.frame.asset.set_attr('media.width', 256)
+        self.frame.asset.set_attr('media.height', 128)
         post_patch.side_effect = [
             StoredFile(self.storage_patch1),
             StoredFile(self.storage_patch2),
@@ -105,24 +124,6 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.processor.process(frame)
         assert not frame.asset.get_attr("files")
 
-    @patch.object(ProjectStorage, 'store_file')
-    def test_process_asset_without_media_namespace(self, post_patch):
-        post_patch.side_effect = [StoredFile(self.storage_patch1),
-                                  StoredFile(self.storage_patch2),
-                                  StoredFile(self.storage_patch3)]
-        self.frame.asset.set_attr('media', {})
-        self.processor.process(self.frame)
-
-        assert len(self.frame.asset.get_attr('files')) == 2
-
-    @patch.object(ProjectStorage, 'store_file')
-    def test_create_web_optimized_proxy(self, store_patch):
-        store_patch.return_value = StoredFile(self.storage_patch1)
-        prx = self.processor.make_web_optimized_proxy(self.frame.asset,
-                                                      TOUCAN_PATH, (100, 100))
-
-        assert StoredFile(self.storage_patch1) == prx
-
     def test_get_valid_sizes(self):
-        assert self.processor._get_valid_sizes(800, 600) == [800, 512]
-        assert self.processor._get_valid_sizes(100, 50) == [100]
+        assert self.processor._get_valid_sizes(800, 600, [1280, 512]) == [800, 512]
+        assert self.processor._get_valid_sizes(100, 50, [1280, 512]) == [100]
