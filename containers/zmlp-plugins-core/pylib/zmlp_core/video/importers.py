@@ -2,7 +2,7 @@ import tempfile
 import os
 from pathlib import Path
 
-from zmlp import Clip
+from zmlp import Clip, ProjectTier
 from zmlpsdk.storage import file_storage
 from zmlpsdk.base import AssetProcessor, ZmlpProcessorException, FileTypes, \
     ZmlpFatalProcessorException
@@ -20,6 +20,10 @@ class VideoImporter(AssetProcessor):
 
     def __init__(self):
         super(VideoImporter, self).__init__()
+        self.project = None
+
+    def init(self):
+        self.project = self.app.projects.get_project()
 
     def process(self, frame):
         asset = frame.asset
@@ -41,6 +45,11 @@ class VideoImporter(AssetProcessor):
         if not has_media_type:
             path = file_storage.localize_file(asset)
             probe = get_video_metadata(path)
+
+            if probe['videoCodec'] != 'h264' and self.project.tier != ProjectTier.PREMIER:
+                raise ZmlpFatalProcessorException(
+                    "Essentials project tier does not include transcoding "
+                    "non web optimized video.")
 
             # Required attributes
             for key in ['width', 'height', 'length', 'videoCodec']:
