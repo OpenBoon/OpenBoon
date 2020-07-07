@@ -10,18 +10,16 @@ from zmlp_train.automl import AutoMLModelTrainer
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
 
-CREDS = zorroa_test_path('creds/zorroa-poc-dev-access.json')
-
 logging.basicConfig()
-
-model_id = "model-id-12345"
-ds_id = "ds-id-12345"
 
 
 class AutoMLModelProcessorTests(PluginUnitTestCase):
+    model_id = "model-id-12345"
+    ds_id = "ds-id-12345"
 
     def setUp(self):
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = CREDS
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = \
+            zorroa_test_path('creds/zorroa-poc-dev-access.json')
 
     def tearDown(self):
         del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
@@ -36,8 +34,8 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
     def test_process(self, upload_patch, deploy_patch, model_patch, pub_patch, dataset_id_patch,
                      create_model_patch, import_patch):
         # Prep the frame, asset, and proxy
-        toucan_fname = zorroa_test_path('training/test_dsy.jpg')
-        asset = TestAsset(toucan_fname)
+        daisy_fname = zorroa_test_path('training/test_dsy.jpg')
+        asset = TestAsset(daisy_fname)
         frame = Frame(asset)
 
         name = "flowers"
@@ -46,10 +44,10 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
             'name': name
         })
         model_patch.return_value = Model({
-            'id': model_id,
-            'dataSetId': ds_id,
+            'id': self.model_id,
+            'dataSetId': self.ds_id,
             'type': "AUTOML",
-            'fileId': 'models/{}/foo/bar'.format(model_id),
+            'fileId': 'models/{}/foo/bar'.format(self.model_id),
             'name': name
         })
         import_patch.return_value = None
@@ -62,7 +60,7 @@ class AutoMLModelProcessorTests(PluginUnitTestCase):
         self.processor = AutoMLModelTrainer()
         project_id = 'zorroa-poc-dev'
         args = {
-            'model_id': model_id,
+            'model_id': self.model_id,
             'display_name': name,
             'project_path': 'gs://{}-vcm/csv/csv_some_data.csv'.format(project_id),
             'model_path': "ICN94225947477147648"
