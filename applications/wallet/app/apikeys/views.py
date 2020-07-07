@@ -14,13 +14,8 @@ class ApikeyViewSet(BaseProjectViewSet):
     zmlp_only = True
 
     def list(self, request, project_pk):
-        def item_filter(request, item):
-            if item['name'].startswith('Admin Console Generated Key'):
-                return False
-            if item['name'] == 'job-runner':
-                return False
-            return True
-        return self._zmlp_list_from_search(request, item_filter=item_filter)
+        # TODO: Add a filter for systemKey when ZMLP is updated.
+        return self._zmlp_list_from_search(request)
 
     def retrieve(self, request, project_pk, pk):
         return self._zmlp_retrieve(request, pk)

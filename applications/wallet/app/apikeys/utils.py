@@ -20,7 +20,7 @@ def create_zmlp_api_key(client, name, permissions, encode_b64=True, internal=Fal
     """
     if internal:
         name = f'Admin Console Generated Key - {uuid.uuid4()} - {name}'
-    body = {'name': name, 'permissions': permissions}
+    body = {'name': name, 'permissions': permissions, 'systemKey': internal}
     apikey = client.post('/auth/v1/apikey', body)
     apikey.update(client.get(f'/auth/v1/apikey/{apikey["id"]}/_download'))
     if encode_b64:
