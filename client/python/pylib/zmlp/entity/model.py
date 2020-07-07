@@ -63,6 +63,14 @@ class Model(BaseEntity):
         """The file ID of the trained model"""
         return self._data['fileId']
 
+    @property
+    def ready(self):
+        """
+        True if the model is fully trained and ready to use.
+        Adding new labels will set ready to false.
+        """
+        return self._data['ready']
+
     def make_label(self, label, bbox=None, simhash=None, scope=None):
         """
         Make an instance of a Label which can be used to label assets.
