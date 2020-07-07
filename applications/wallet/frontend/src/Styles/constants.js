@@ -1,4 +1,11 @@
+import { keyframes } from '@emotion/core'
+
 import colors from './colors'
+
+const rotate = keyframes`
+  from { transform:rotate(0deg); }
+  to { transform:rotate(360deg); }
+`
 
 const borderRadius = {
   none: 0,
@@ -75,6 +82,10 @@ const constants = {
   },
   paragraph: {
     maxWidth: 600,
+  },
+  animations: {
+    infiniteRotation: `${rotate} 2s linear infinite`,
+    dualRotation: `${rotate} 1s linear 2`,
   },
 }
 

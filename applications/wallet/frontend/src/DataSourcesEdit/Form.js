@@ -115,6 +115,7 @@ const DataSourcesEditForm = ({ initialState }) => {
           }))}
           variant={CHECKBOX_VARIANTS.INLINE}
         />
+
         <div css={{ height: spacing.base }} />
 
         <SectionTitle>Add Additional Analysis</SectionTitle>
