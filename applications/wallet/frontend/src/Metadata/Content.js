@@ -112,7 +112,6 @@ const MetadataContent = ({ projectId, assetId }) => {
               key={value}
               style={{
                 borderRadius: 0,
-                border: constants.borders.regular.transparent,
                 paddingTop: spacing.base,
                 paddingBottom: spacing.base,
                 paddingLeft: spacing.moderate,
