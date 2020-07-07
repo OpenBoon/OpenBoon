@@ -2,7 +2,6 @@
 import os
 import logging
 import json
-import csv
 
 from google.cloud import storage as gcs
 
@@ -367,8 +366,8 @@ class DataSetDownloader:
                 ds_labels = self._get_dataset_labels(asset)
                 label = ds_labels[0].get('label')
 
-                for blob in storage_client.list_blobs(gcp_project_id, prefix=prefix):
                 # for blob in storage_client.list_blobs('zorroa-poc-dev-vcm', prefix='vision_01'):
+                for blob in storage_client.list_blobs(gcp_project_id, prefix=prefix):
                     content_type = blob.content_type.split('/')[-1]
                     # skip directories and non-image files
                     if blob.name.endswith("/") or not any(content_type in f for f in formats):
@@ -423,6 +422,7 @@ class DataSetDownloader:
 
         blob.upload_from_filename(local_path)
         logging.debug("File {} uploaded to {}.".format(local_path, blob_path))
+
 
 class CocoAnnotationFileBuilder:
     """
