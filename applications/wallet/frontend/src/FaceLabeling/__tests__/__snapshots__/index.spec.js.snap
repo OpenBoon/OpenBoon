@@ -1,29 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FaceLabeling /> should render properly 1`] = `
-.emotion-0 {
+Array [
+  <FaceLabelingTrainApply
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-0 {
   padding: 16px;
   color: #ffffff;
 }
 
 <div
-  className="emotion-0"
->
-  Select an asset to start adding names to faces and train your model.
-</div>
+    className="emotion-0"
+  >
+    Select an asset to start adding names to faces and train your model.
+  </div>,
+]
 `;
 
 exports[`<FaceLabeling /> should render selected asset with no data 1`] = `
-.emotion-0 {
+Array [
+  <FaceLabelingTrainApply
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-0 {
   padding: 16px;
   color: #ffffff;
 }
 
 <div
-  className="emotion-0"
->
-  No faces have been detected in this asset for naming and training. Please select another asset.
-</div>
+    className="emotion-0"
+  >
+    No faces have been detected in this asset for naming and training. Please select another asset.
+  </div>,
+]
 `;
 
 exports[`<FaceLabeling /> should render selected asset with predictions 1`] = `
@@ -39,7 +49,7 @@ Array [
 <div
     className="emotion-0"
   >
-    TIFF_1MB.tiff
+    AssetFilename.jpg
   </div>,
   "",
   .emotion-9 {
@@ -318,7 +328,7 @@ Array [
         aria-disabled={true}
         className="emotion-7"
         onClick={[Function]}
-        type="button"
+        type="submit"
       >
         Saved
       </button>
@@ -340,7 +350,7 @@ Array [
 <div
     className="emotion-0"
   >
-    TIFF_1MB.tiff
+    AssetFilename.jpg
   </div>,
   "",
   .emotion-9 {
@@ -617,7 +627,7 @@ Array [
       <button
         className="emotion-7"
         onClick={[Function]}
-        type="button"
+        type="submit"
       >
         Save
       </button>
@@ -639,7 +649,7 @@ Array [
 <div
     className="emotion-0"
   >
-    TIFF_1MB.tiff
+    AssetFilename.jpg
   </div>,
   .emotion-2 {
   padding: 16px;
@@ -962,7 +972,7 @@ Array [
       <button
         className="emotion-7"
         onClick={[Function]}
-        type="button"
+        type="submit"
       >
         Save
       </button>

@@ -1,4 +1,4 @@
-import { onSave, getSaveButtonCopy } from '../helpers'
+import { onSave, onTrain, getSaveButtonCopy } from '../helpers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
@@ -34,9 +34,11 @@ describe('<FaceLabelingForm /> helpers', () => {
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
+
       expect(fetch.mock.calls[0][0]).toEqual(
         `/api/v1/projects/${PROJECT_ID}/faces/${ASSET_ID}/save/`,
       )
+
       expect(fetch.mock.calls[0][1]).toEqual({
         method: 'POST',
         headers: {
@@ -51,6 +53,7 @@ describe('<FaceLabelingForm /> helpers', () => {
         isLoading: true,
         errors: { ...ERRORS, global: '' },
       })
+
       expect(mockMutate).toHaveBeenCalledTimes(3)
     })
 
@@ -74,9 +77,11 @@ describe('<FaceLabelingForm /> helpers', () => {
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
+
       expect(fetch.mock.calls[0][0]).toEqual(
         `/api/v1/projects/${PROJECT_ID}/faces/${ASSET_ID}/save/`,
       )
+
       expect(fetch.mock.calls[0][1]).toEqual({
         method: 'POST',
         headers: {
@@ -86,10 +91,12 @@ describe('<FaceLabelingForm /> helpers', () => {
         body:
           '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
       })
+
       expect(mockDispatch).toHaveBeenCalledWith({
         isLoading: true,
         errors: { ...ERRORS, global: '' },
       })
+
       expect(mockDispatch).toHaveBeenLastCalledWith({
         isLoading: false,
         errors: { labels: {}, global: 'Error message' },
@@ -113,9 +120,11 @@ describe('<FaceLabelingForm /> helpers', () => {
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
+
       expect(fetch.mock.calls[0][0]).toEqual(
         `/api/v1/projects/${PROJECT_ID}/faces/${ASSET_ID}/save/`,
       )
+
       expect(fetch.mock.calls[0][1]).toEqual({
         method: 'POST',
         headers: {
@@ -130,6 +139,7 @@ describe('<FaceLabelingForm /> helpers', () => {
         isLoading: true,
         errors: { ...ERRORS, global: '' },
       })
+
       expect(mockDispatch).toHaveBeenLastCalledWith({
         isLoading: false,
         errors: {
@@ -140,11 +150,50 @@ describe('<FaceLabelingForm /> helpers', () => {
     })
   })
 
+  describe('onTrain()', () => {
+    it('should start a training job', async () => {
+      const mockSetError = jest.fn()
+
+      await onTrain({ projectId: PROJECT_ID, setError: mockSetError })
+
+      expect(fetch.mock.calls.length).toEqual(1)
+
+      expect(fetch.mock.calls[0][0]).toEqual(
+        `/api/v1/projects/${PROJECT_ID}/faces/train/`,
+      )
+
+      expect(mockSetError.mock.calls[0][0]).toEqual('')
+
+      expect(mockSetError.mock.calls.length).toEqual(1)
+    })
+
+    it('should set an error message', async () => {
+      const mockSetError = jest.fn()
+
+      fetch.mockRejectOnce()
+
+      await onTrain({ projectId: PROJECT_ID, setError: mockSetError })
+
+      expect(fetch.mock.calls.length).toEqual(1)
+
+      expect(fetch.mock.calls[0][0]).toEqual(
+        `/api/v1/projects/${PROJECT_ID}/faces/train/`,
+      )
+
+      expect(mockSetError.mock.calls[0][0]).toEqual('')
+
+      expect(mockSetError.mock.calls[1][0]).toEqual(
+        'Something went wrong. Please try again.',
+      )
+    })
+  })
+
   describe('getSaveButtonCopy()', () => {
     it('should return correct string', () => {
       expect(getSaveButtonCopy({ isChanged: false, isLoading: true })).toBe(
         'Saving...',
       )
+
       expect(getSaveButtonCopy({ isChanged: true, isLoading: false })).toBe(
         'Save',
       )
