@@ -2,7 +2,7 @@ import Router from 'next/router'
 
 import { colors } from '../Styles'
 
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, getQueryString } from '../Fetch/helpers'
 
 export const FILE_TYPES = [
   {
@@ -47,22 +47,30 @@ export const onSubmit = async ({
   )
 
   try {
-    await fetcher(`/api/v1/projects/${projectId}/data_sources/`, {
-      method: 'POST',
-      body: JSON.stringify({
-        name,
-        uri,
-        credentials: Object.keys(parsedCredentials).length
-          ? { type: source, ...parsedCredentials }
-          : {},
-        fileTypes: Object.keys(fileTypes).filter((f) => fileTypes[f]),
-        modules: Object.keys(modules).filter((m) => modules[m]),
-      }),
+    const { jobId } = await fetcher(
+      `/api/v1/projects/${projectId}/data_sources/`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          name,
+          uri,
+          credentials: Object.keys(parsedCredentials).length
+            ? { type: source, ...parsedCredentials }
+            : {},
+          fileTypes: Object.keys(fileTypes).filter((f) => fileTypes[f]),
+          modules: Object.keys(modules).filter((m) => modules[m]),
+        }),
+      },
+    )
+
+    const queryString = getQueryString({
+      action: 'add-datasource-success',
+      jobId,
     })
 
     Router.push(
-      '/[projectId]/data-sources?action=add-datasource-success',
-      `/${projectId}/data-sources?action=add-datasource-success`,
+      `/[projectId]/data-sources${queryString}`,
+      `/${projectId}/data-sources${queryString}`,
     )
   } catch (response) {
     try {
