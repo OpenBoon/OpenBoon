@@ -39,6 +39,7 @@ import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.storage.PipelineStorageConfiguration
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.getTags
@@ -129,7 +130,8 @@ class DispatchQueueManager @Autowired constructor(
     val pipelineStoragProperties: PipelineStorageConfiguration,
     val jobService: JobService,
     val systemStorageService: SystemStorageService,
-    val assetService: AssetService
+    val assetService: AssetService,
+    val storageService: ProjectStorageService
 ) {
 
     /**
@@ -239,6 +241,12 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZMLP_STORAGE_PIPELINE_ACCESSKEY"] = pipelineStoragProperties.accessKey
             task.env["ZMLP_STORAGE_PIPELINE_SECRETKEY"] = pipelineStoragProperties.secretKey
             task.env["ZMLP_CREDENTIALS_TYPES"] = jobService.getCredentialsTypes(task).joinToString(",")
+
+            withAuth(InternalThreadAuthentication(task.projectId, setOf())) {
+                task.logFile = storageService.getSignedUrl(
+                    task.getLogFileLocation(), true, 1, TimeUnit.DAYS
+                ).getValue("uri").toString()
+            }
 
             return true
         } else {

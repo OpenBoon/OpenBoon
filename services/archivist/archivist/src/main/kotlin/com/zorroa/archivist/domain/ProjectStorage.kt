@@ -31,8 +31,12 @@ enum class ProjectStorageEntity {
     /**
      * The stored file is associated with a dataset.
      */
-    MODELS;
+    MODELS,
 
+    /**
+     * The stored file is associated with a job.
+     */
+    JOB;
     /**
      * The name of the entity used in file paths or unique Ids.  Note the trailing 's'.
      */

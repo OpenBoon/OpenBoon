@@ -8,7 +8,7 @@ import zmq
 
 from .cache import TaskCacheManager, ModelCacheManager
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('task')
 
 # The default container port
 CONTAINER_PORT = 5001
