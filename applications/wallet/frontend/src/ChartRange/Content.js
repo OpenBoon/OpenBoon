@@ -61,7 +61,7 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
           </div>
           <div
             css={{
-              border: constants.borders.divider,
+              border: constants.borders.regular.smoke,
               borderRadius: constants.borderRadius.small,
               padding: spacing.moderate,
               paddingLeft: spacing.normal,

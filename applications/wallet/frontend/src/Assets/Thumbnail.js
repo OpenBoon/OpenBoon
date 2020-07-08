@@ -53,13 +53,13 @@ const AssetsThumbnail = ({
         position: 'relative',
         border: isSelected
           ? constants.borders.assetSelected
-          : constants.borders.assetInactive,
+          : constants.borders.large.transparent,
         width: '100%',
         height: '100%',
         ':hover': {
           border: isSelected
             ? constants.borders.assetSelected
-            : constants.borders.assetHover,
+            : constants.borders.large.white,
           'a, button': {
             display: 'flex',
           },

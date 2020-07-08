@@ -144,15 +144,15 @@ const FilterLabelConfidenceContent = ({
                         width: `${offset}%`,
                         borderTop:
                           isDisabled || (!isSelected && hasSelections)
-                            ? constants.borders.unselectedFacet
-                            : constants.borders.facet,
+                            ? constants.borders.large.steel
+                            : constants.borders.keyOneLarge,
                       }}
                     />
                     <div
                       css={{
                         height: 4,
                         width: `${100 - offset}%`,
-                        borderTop: constants.borders.divider,
+                        borderTop: constants.borders.regular.smoke,
                       }}
                     />
                   </div>

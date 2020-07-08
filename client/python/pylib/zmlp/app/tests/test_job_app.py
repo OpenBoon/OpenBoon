@@ -1,4 +1,5 @@
 # flake8: noqa
+import os
 import datetime
 import logging
 import unittest
@@ -6,6 +7,7 @@ from unittest.mock import patch
 
 from zmlp import ZmlpClient, ZmlpApp
 from zmlp.entity import Job, Task
+
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -179,6 +181,26 @@ class ZmlpJobAppTests(unittest.TestCase):
         assert script['script'] == 'foo'
         script = self.app.jobs.get_task_script(Task(mock_task_data))
         assert script['script'] == 'foo'
+
+    @patch.object(ZmlpClient, 'stream')
+    def test_download_task_log(self, stream_patch):
+        log_file = "/tmp/task.log"
+        try:
+            os.unlink(log_file)
+        except FileNotFoundError:
+            pass
+
+        stream_patch.return_value = log_file
+        self.assertEquals(log_file, self.app.jobs.download_task_log("12345", log_file))
+
+    @patch.object(ZmlpClient, 'stream_text')
+    def test_iterate_task_log(self, stream_patch):
+        stream_patch.return_value = (a for a in [b"test", b"test",  b"test"])
+        count = 0
+        for line in self.app.jobs.iterate_task_log("12345"):
+            self.assertEqual(b"test", line)
+            count += 1
+        self.assertEqual(3, count)
 
     def assert_task(self, task):
         assert mock_task_data['id'] == task.id

@@ -12,7 +12,7 @@ const MetadataPrettyRow = ({ name, value, path }) => {
       css={{
         display: 'flex',
         '&:not(:first-of-type)': {
-          borderTop: constants.borders.divider,
+          borderTop: constants.borders.regular.smoke,
         },
         ':hover': {
           backgroundColor: colors.signal.electricBlue.background,

@@ -39,13 +39,7 @@ const ProjectCards = () => {
         header=""
         content={
           <>
-            <h3
-              css={{
-                paddingBottom: spacing.base,
-              }}
-            >
-              Project: {name}
-            </h3>
+            <h3 css={{ paddingBottom: spacing.base }}>Project: {name}</h3>
             <div
               css={{
                 color: colors.structure.zinc,
