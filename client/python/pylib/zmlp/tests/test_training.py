@@ -7,7 +7,6 @@ from unittest.mock import patch
 from zmlp import ZmlpClient, ZmlpApp, Model
 from zmlp.app import AssetApp, ModelApp
 from zmlp.training import TrainingSetDownloader
-from zmlpsdk.testing import zorroa_test_path
 
 key_dict = {
     'projectId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
@@ -18,15 +17,6 @@ key_dict = {
 
 
 class TrainingSetDownloaderTests(unittest.TestCase):
-
-    def setUp(self):
-        self.app = ZmlpApp(key_dict)
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = \
-            zorroa_test_path('creds/zorroa-poc-dev-access.json')
-
-    def tearDown(self):
-        del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
-
     @patch.object(ModelApp, 'get_model')
     @patch.object(ZmlpClient, 'get')
     def test_setup_labels_std_base_dir(self, get_patch, get_model_patch):
