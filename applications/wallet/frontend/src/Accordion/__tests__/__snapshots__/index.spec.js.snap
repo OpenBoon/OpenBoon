@@ -68,7 +68,7 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
 }
 
 .emotion-4:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-4:hover svg {

@@ -11,6 +11,7 @@ const colors = {
     zinc: '#b3b3b3',
     pebble: '#e0e0e0',
     white: '#ffffff',
+    transparent: 'transparent',
   },
 
   signal: {

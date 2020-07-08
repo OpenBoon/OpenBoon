@@ -25,7 +25,7 @@ const FaceLabelingTrainApply = ({ projectId }) => {
     <div
       css={{
         padding: spacing.normal,
-        borderBottom: constants.borders.divider,
+        borderBottom: constants.borders.regular.smoke,
       }}
     >
       <FaceLabelingMessage

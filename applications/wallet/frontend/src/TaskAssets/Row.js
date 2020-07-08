@@ -40,7 +40,7 @@ const TaskAssetsRow = ({
     <div
       css={{
         backgroundColor: colors.structure.mattGrey,
-        borderBottom: constants.borders.divider,
+        borderBottom: constants.borders.regular.smoke,
       }}
     >
       <div

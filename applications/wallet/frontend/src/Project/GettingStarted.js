@@ -75,7 +75,8 @@ const ProjectGettingStarted = ({ projectId }) => {
         >
           <div
             css={{
-              borderBottom: step === STEPS.length ? 0 : constants.borders.tabs,
+              borderBottom:
+                step === STEPS.length ? 0 : constants.borders.regular.iron,
             }}
           >
             <h4
