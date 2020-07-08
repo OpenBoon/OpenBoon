@@ -205,8 +205,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
         return jdbc.update(
             ASSET_COUNTS_INC,
             counts.total,
-            counts.created,
-            counts.replaced,
             job.jobId
         ) == 1
     }
@@ -270,8 +268,9 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         private inline fun buildAssetCounts(rs: ResultSet): Map<String, Int> {
             val result = mutableMapOf<String, Int>()
-            result["assetCreatedCount"] = rs.getInt("int_asset_create_count")
-            result["assetReplacedCount"] = rs.getInt("int_asset_replace_count")
+            result["assetTotalCount"] = rs.getInt("int_asset_total_count")
+            result["assetCreatedCount"] = 0
+            result["assetReplacedCount"] = 0
             result["assetWarningCount"] = rs.getInt("int_asset_warning_count")
             result["assetErrorCount"] = rs.getInt("int_asset_error_count")
             return result
@@ -315,9 +314,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         private const val ASSET_COUNTS_INC = "UPDATE " +
             "job_stat " +
             "SET " +
-            "int_asset_total_count=int_asset_total_count+?," +
-            "int_asset_create_count=int_asset_create_count+?," +
-            "int_asset_replace_count=int_asset_replace_count+? " +
+            "int_asset_total_count=int_asset_total_count+? " +
             "WHERE " +
             "pk_job=?"
 

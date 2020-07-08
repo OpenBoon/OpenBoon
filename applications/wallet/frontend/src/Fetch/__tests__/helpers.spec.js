@@ -1,4 +1,4 @@
-import { fetcher } from '../helpers'
+import { fetcher, getQueryString } from '../helpers'
 
 describe('<Fetch /> helpers', () => {
   describe('fetcher()', () => {
@@ -50,6 +50,12 @@ describe('<Fetch /> helpers', () => {
       expect(data).toEqual({})
 
       expect(mockMutate).toHaveBeenCalledWith({})
+    })
+  })
+
+  describe('getQueryString()', () => {
+    it('should return an empty string with no query params', () => {
+      expect(getQueryString()).toEqual('')
     })
   })
 })

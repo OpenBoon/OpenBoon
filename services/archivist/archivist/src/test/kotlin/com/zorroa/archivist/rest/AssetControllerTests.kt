@@ -5,12 +5,12 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
-import com.zorroa.archivist.domain.DataSetLabel
-import com.zorroa.archivist.domain.DataSetSpec
-import com.zorroa.archivist.domain.DataSetType
+import com.zorroa.archivist.domain.Label
+import com.zorroa.archivist.domain.ModelSpec
+import com.zorroa.archivist.domain.ModelType
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.service.AssetSearchService
-import com.zorroa.archivist.service.DataSetService
+import com.zorroa.archivist.service.ModelService
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.bbox
@@ -38,7 +38,7 @@ class AssetControllerTests : MockMvcTest() {
     lateinit var pipelineModService: PipelineModService
 
     @Autowired
-    lateinit var dataSetSetService: DataSetService
+    lateinit var modelService: ModelService
 
     @Test
     fun testBatchCreate() {
@@ -263,7 +263,7 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LABEL_DETECTION))
+        val ds = modelService.createModel(ModelSpec("test", ModelType.ZVI_KNN_CLASSIFIER))
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 
@@ -284,7 +284,7 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateLabelsWithBbox() {
-        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LABEL_DETECTION))
+        val ds = modelService.createModel(ModelSpec("test", ModelType.ZVI_KNN_CLASSIFIER))
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 
@@ -324,7 +324,7 @@ class AssetControllerTests : MockMvcTest() {
 
         authenticate()
         val asset = assetService.getAsset(created.created[0])
-        val labels = asset.getAttr("labels", DataSetLabel.SET_OF)
+        val labels = asset.getAttr("labels", Label.SET_OF)
         assertEquals(2, labels?.size)
     }
 

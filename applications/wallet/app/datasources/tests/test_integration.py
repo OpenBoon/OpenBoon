@@ -223,6 +223,7 @@ def test_datasource_viewset_update(api_client, monkeypatch, zmlp_project_user, p
     response = api_client.put(reverse('datasource-detail', kwargs=kwargs), data)
     assert response.status_code == 200
     assert response.json() == data
+    assert response.json()['jobId'] == '1'
 
 
 def test_datasource_viewset_update_bad_data(api_client, monkeypatch, zmlp_project_user,

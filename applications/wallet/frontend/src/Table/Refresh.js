@@ -1,20 +1,14 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { keyframes } from '@emotion/core'
 import { mutate } from 'swr'
 
 import RefreshSvg from '../Icons/refresh.svg'
 
-import { colors, spacing } from '../Styles'
+import { colors, spacing, constants } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
 const ICON_SIZE = 20
-
-const rotate = keyframes`
-  from { transform:rotate(0deg); }
-  to { transform:rotate(360deg); }
-`
 
 const TableRefresh = ({ onClick, legend, refreshKeys }) => {
   const [clicked, setClicked] = useState(false)
@@ -40,7 +34,7 @@ const TableRefresh = ({ onClick, legend, refreshKeys }) => {
         <RefreshSvg
           height={ICON_SIZE}
           color={colors.structure.white}
-          css={{ animation: clicked ? `${rotate} 1s linear 2` : '' }}
+          css={{ animation: clicked ? constants.animations.dualRotation : '' }}
         />
         <div css={{ paddingLeft: spacing.small }}>Refresh {legend}</div>
       </div>

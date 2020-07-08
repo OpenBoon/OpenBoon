@@ -9,7 +9,7 @@ import pytest
 from minio.api import Minio
 
 import zmlp
-from zmlp import StoredFile, DataSet, ZmlpClient, PipelineMod, Job
+from zmlp import StoredFile, ZmlpClient, PipelineMod, Job, Model
 from zmlp.app import ModelApp
 from zmlpsdk import storage, timeline
 from zmlpsdk.testing import zorroa_test_data, TestAsset
@@ -259,7 +259,7 @@ class TestProjectStorage(TestCase):
         }
 
         path = os.path.dirname(__file__) + '/fake_model.dat'
-        ds = DataSet({"id": "12345"})
+        ds = Model({"id": "12345"})
         result = self.fs.projects.store_file(
             path, ds, 'face_model', rename='celebs.dat')
         assert 'celebs.dat' == result.name
@@ -279,7 +279,7 @@ class TestProjectStorage(TestCase):
             'name': 'fake_model.dat',
             'category': 'fake'
         }
-        ds = DataSet({"id": "12345"})
+        ds = Model({"id": "12345"})
         path = os.path.dirname(__file__) + '/fake_model.dat'
         result = self.fs.projects.store_file(path, ds, 'model', 'fake_model.dat')
         assert 'fake_model.dat' == result.name
