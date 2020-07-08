@@ -103,6 +103,7 @@ const Assets = () => {
           const { results } = d || {}
           return results
         })
+        .filter((a) => a && a.id)
     : []
 
   const selectedRow =
