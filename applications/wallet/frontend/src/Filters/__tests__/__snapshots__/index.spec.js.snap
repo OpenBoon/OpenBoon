@@ -496,6 +496,7 @@ exports[`<Filters /> should open the menu 1`] = `
       <div
         className="emotion-5"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -640,6 +641,7 @@ exports[`<Filters /> should open the menu 1`] = `
       <div
         className="emotion-5"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -667,6 +669,7 @@ exports[`<Filters /> should open the menu 1`] = `
       <div
         className="emotion-5"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -694,6 +697,7 @@ exports[`<Filters /> should open the menu 1`] = `
       <div
         className="emotion-5"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -721,6 +725,7 @@ exports[`<Filters /> should open the menu 1`] = `
       <div
         className="emotion-5"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -748,6 +753,7 @@ exports[`<Filters /> should open the menu 1`] = `
       <div
         className="emotion-5"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -775,6 +781,7 @@ exports[`<Filters /> should open the menu 1`] = `
       <div
         className="emotion-5"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"

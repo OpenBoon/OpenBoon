@@ -125,7 +125,13 @@ const Accordion = ({
 
   return (
     <div css={STYLES[variant].container}>
-      <div css={STYLES[variant].title} onClick={toggle}>
+      <div
+        css={STYLES[variant].title}
+        style={
+          !isOpen && variant === VARIANTS.PRIMARY ? { border: 'none' } : {}
+        }
+        onClick={toggle}
+      >
         <Button
           aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
           variant={BUTTON_VARIANTS.NEUTRAL}
