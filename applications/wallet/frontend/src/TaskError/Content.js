@@ -48,11 +48,13 @@ const TaskErrorContent = () => {
             title: 'Stack Trace',
             href: '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]',
           },
-          {
-            title: 'Asset',
-            href:
-              '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]/asset',
-          },
+          assetId
+            ? {
+                title: 'Asset',
+                href:
+                  '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]/asset',
+              }
+            : {},
         ]}
       />
 
