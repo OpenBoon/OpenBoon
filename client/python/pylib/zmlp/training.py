@@ -96,6 +96,8 @@ class TrainingSetDownloader:
             self._build_objects_coco_format(pool)
         elif self.style == "objects_keras":
             self._build_objects_keras_format(pool)
+        elif self.style == "objects_automl":
+            return self._build_automl_dataset()
         else:
             raise ValueError("{} not supported by the TrainingSetDownloader".format(format))
 
@@ -347,6 +349,91 @@ class TrainingSetDownloader:
             if ds_label.get('modelId') == self.model.id:
                 result.append(ds_label)
         return result
+
+    def _build_automl_dataset(self):
+        """
+        Write a DataSet in a AutoML training structure.
+
+        Returns:
+            str: A path to data file.
+        """
+        local_csv_path = os.path.join(self.dst_dir, 'data.csv')
+        with open(local_csv_path, "w") as fp:
+            for asset in self.app.assets.scroll_search(self.query, timeout='5m'):
+                # get label
+                ds_labels = self._get_labels(asset)
+                label = ds_labels[0].get('label')
+
+                # get proxy uri
+                proxy_uri = self._get_img_proxy(asset)
+
+                # write to CSV
+                data = [proxy_uri, label]
+                str_line = "{}\n".format(",".join(data))
+                fp.write(str_line)
+
+        return local_csv_path
+
+    def _get_img_proxy(self, asset):
+        """
+        Get a URI to the img proxy
+
+        Args:
+            asset: (Asset): The asset to find an audio proxy for.
+
+        Returns:
+            str: A URI to the smallest image proxy if not empty else empty string
+        """
+        img_proxies = asset.get_files(
+            mimetype="image/",
+            category='proxy',
+            sort_func=lambda f: f.attrs.get('width', 0)
+        )
+        if img_proxies:
+            img_proxy = img_proxies[0]  # get the smallest proxy
+            return self.app.client.get('/api/v3/files/_locate/{}'.format(img_proxy.id))['uri']
+            # return file_storage.assets.get_native_uri(img_proxy)
+        return ''
+
+    @staticmethod
+    def _get_project_id():
+        """Get Project ID for a GC Project
+
+        Returns:
+            (str) Project ID (e.g. 'zorroa-poc-dev')
+        """
+        # If this is running in a cloud function, then GCP_PROJECT should be defined
+        if 'GCP_PROJECT' in os.environ:
+            project_id = os.environ['GCP_PROJECT']
+        # else if this is running locally then GOOGLE_APPLICATION_CREDENTIALS should be defined
+        elif 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
+            with open(os.environ['GOOGLE_APPLICATION_CREDENTIALS'], 'r') as fp:
+                credentials = json.load(fp)
+            project_id = credentials['project_id']
+        else:
+            raise Exception('Failed to determine project_id')
+
+        return project_id
+
+    @staticmethod
+    def _upload_to_gcs_bucket(storage_client, bucket_name, blob_path, local_path):
+        """
+        Write local file to GCS bucket
+
+        Args:
+            storage_client: GCS Client
+            bucket_name: bucket name (e.g. project_id)
+            blob_path: path where file will be uploaded (excluding 'gs://bucket_name/')
+            local_path: path to local file
+
+        Returns:
+            None
+        """
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(blob_path)
+
+        blob.upload_from_filename(local_path)
+        logging.debug("File {} uploaded to {}.".format(local_path, blob_path))
 
 
 class CocoAnnotationFileBuilder:

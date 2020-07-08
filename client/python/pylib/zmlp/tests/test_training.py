@@ -17,7 +17,6 @@ key_dict = {
 
 
 class TrainingSetDownloaderTests(unittest.TestCase):
-
     def setUp(self):
         self.app = ZmlpApp(key_dict)
 
@@ -128,6 +127,26 @@ class TrainingSetDownloaderTests(unittest.TestCase):
         with open(os.path.join(d, dsl.SET_VALIDATION, 'annotations.csv')) as fp:
             count = len(fp.readlines())
         assert 2 == count
+
+    @patch.object(ModelApp, 'get_model')
+    @patch.object(AssetApp, 'download_file')
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    @patch.object(ZmlpClient, 'get')
+    def test_build_automl_format(self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
+        get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
+        get_patch.return_value = {'uri': 'gs://foo/assets/123/proxy/proxy_400x400.jpg'}
+
+        post_patch.side_effect = [mock_search_result_labels, {'hits': {'hits': []}}]
+        del_patch.return_value = {}
+        dl_patch.return_value = b'foo'
+
+        d = tempfile.mkdtemp()
+        dsl = TrainingSetDownloader(self.app, '12345', 'objects_automl', d)
+        path = dsl.build()
+
+        # check that csv is not empty
+        assert os.stat(path).st_size > 0
 
 
 mock_search_result_objects = {
