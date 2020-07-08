@@ -3,8 +3,6 @@ import os
 import logging
 import json
 
-from google.cloud import storage as gcs
-
 logger = logging.getLogger(__name__)
 
 __all__ = [
@@ -99,7 +97,7 @@ class TrainingSetDownloader:
         elif self.style == "objects_keras":
             self._build_objects_keras_format(pool)
         elif self.style == "objects_automl":
-            self._build_automl_dataset()
+            return self._build_automl_dataset()
         else:
             raise ValueError("{} not supported by the TrainingSetDownloader".format(format))
 
@@ -357,37 +355,45 @@ class TrainingSetDownloader:
         Write a DataSet in a AutoML training structure.
 
         Returns:
-            str: A path to an annotation file.
+            str: A path to data file.
         """
-        formats = ['jpeg', 'png', 'gif', 'bmp', 'ico']
-        data = []
-        gcp_project_id = self._get_project_id()
-
-        storage_client = gcs.Client()
-
         local_csv_path = os.path.join(self.dst_dir, 'data.csv')
         with open(local_csv_path, "w") as fp:
             for asset in self.app.assets.scroll_search(self.query, timeout='5m'):
-                prefix = 'asset/{}'.format(asset.id)
-                ds_labels = self._get_dataset_labels(asset)
+                # get label
+                ds_labels = self._get_labels(asset)
                 label = ds_labels[0].get('label')
 
-                # for blob in storage_client.list_blobs('zorroa-poc-dev-vcm', prefix='vision_01'):
-                for blob in storage_client.list_blobs(gcp_project_id, prefix=prefix):
-                    content_type = blob.content_type.split('/')[-1]
-                    # skip directories and non-image files
-                    if blob.name.endswith("/") or not any(content_type in f for f in formats):
-                        continue
-                    full_proxy_path = 'gs://{}/{}/{}'.format(gcp_project_id, prefix, blob.name)
-                    logging.debug(full_proxy_path)
+                # get proxy uri
+                proxy_uri = self._get_img_proxy(asset)
 
-                    data = [full_proxy_path, label]
-                    str_line = "{}\n".format(",".join(data))
-                    fp.write(str_line)
+                # write to CSV
+                data = [proxy_uri, label]
+                str_line = "{}\n".format(",".join(data))
+                fp.write(str_line)
 
-        # writing the data into the file
-        gcs_csv_path = 'csv/data.csv'
-        self._upload_to_gcs_bucket(storage_client, gcp_project_id, gcs_csv_path, local_csv_path)
+        return local_csv_path
+
+    def _get_img_proxy(self, asset):
+        """
+        Get a URI to the img proxy
+
+        Args:
+            asset: (Asset): The asset to find an audio proxy for.
+
+        Returns:
+            str: A URI to the smallest image proxy if not empty else empty string
+        """
+        img_proxies = asset.get_files(
+            mimetype="image/",
+            category='proxy',
+            sort_func=lambda f: f.attrs.get('width', 0)
+        )
+        if img_proxies:
+            img_proxy = img_proxies[0]  # get the smallest proxy
+            return self.app.client.get('/api/v3/files/_locate/{}'.format(img_proxy.id))['uri']
+            # return file_storage.assets.get_native_uri(img_proxy)
+        return ''
 
     @staticmethod
     def _get_project_id():

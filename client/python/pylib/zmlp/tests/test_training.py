@@ -1,10 +1,8 @@
 import json
 import os
-import csv
 import tempfile
 import unittest
 from unittest.mock import patch
-from google.cloud import storage as gcs
 
 from zmlp import ZmlpClient, ZmlpApp, Model
 from zmlp.app import AssetApp, ModelApp
@@ -137,40 +135,25 @@ class TrainingSetDownloaderTests(unittest.TestCase):
             count = len(fp.readlines())
         assert 2 == count
 
-    @patch.object(DataSetApp, 'get_dataset')
+    @patch.object(ModelApp, 'get_model')
     @patch.object(AssetApp, 'download_file')
     @patch.object(ZmlpClient, 'delete')
     @patch.object(ZmlpClient, 'post')
     @patch.object(ZmlpClient, 'get')
-    @patch.object(DataSetDownloader, '_get_project_id')
-    @patch.object(gcs.Client, 'list_blobs')
-    @patch.object(csv, 'writer')
-    def test_build_automl_dataset(self, write_patch, gcs_patch, project_id_patch, get_patch,
-                                  post_patch, del_patch, dl_patch, get_ds_patch):
-        project_id = 'zorroa-poc-dev-vcm'
-        get_ds_patch.return_value = DataSet({'id': '12345', 'type': 'LabelDetection'})
-        get_patch.return_value = {
-            'goats': 100,
-            'hobbits': 12,
-            'wizards': 45,
-            'dwarfs': 9
-        }
+    def test_build_automl_format(self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
+        get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
+        get_patch.return_value = {'uri': 'gs://foo/assets/123/proxy/proxy_400x400.jpg'}
+
         post_patch.side_effect = [mock_search_result_labels, {'hits': {'hits': []}}]
         del_patch.return_value = {}
         dl_patch.return_value = b'foo'
-        project_id_patch.return_value = project_id
-        gcs_patch.return_value = []
-        write_patch.return_value = None
 
         d = tempfile.mkdtemp()
-        dsl = DataSetDownloader(self.app, '12345', 'objects_automl', d)
-        dsl.build()
+        dsl = TrainingSetDownloader(self.app, '12345', 'objects_automl', d)
+        path = dsl.build()
 
-        # check that file was written and uploaded to GCS
-        filename = 'csv/data.csv'
-        storage_client = gcs.Client()
-        bucket = storage_client.bucket(project_id)
-        assert gcs.Blob(bucket=bucket, name=filename).exists(storage_client)
+        # check that csv is not empty
+        assert os.stat(path).st_size > 0
 
 
 mock_search_result_objects = {
