@@ -18,7 +18,7 @@ const MetadataPrettyLabels = ({ name, value: { predictions } }) => {
       <div
         css={{
           '&:not(:first-of-type)': {
-            borderTop: constants.borders.largeDivider,
+            borderTop: constants.borders.large.smoke,
           },
           '> div.ErrorBoundary': {
             padding: `${spacing.normal}px ${spacing.moderate}px`,

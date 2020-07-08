@@ -84,7 +84,7 @@ const FiltersMenu = ({
           display: 'flex',
           flexDirection: 'column',
           padding: spacing.moderate,
-          borderBottom: constants.borders.divider,
+          borderBottom: constants.borders.regular.smoke,
         }}
       >
         <label>
@@ -97,18 +97,18 @@ const FiltersMenu = ({
             css={{
               marginTop: spacing.base,
               width: '100%',
-              border: constants.borders.transparent,
+              border: constants.borders.regular.transparent,
               padding: spacing.moderate,
               paddingLeft: spacing.spacious,
               borderRadius: constants.borderRadius.small,
               color: colors.structure.pebble,
               backgroundColor: colors.structure.mattGrey,
               ':hover': {
-                border: constants.borders.tableRow,
+                border: constants.borders.regular.steel,
               },
               ':focus': {
-                outline: constants.borders.outline,
-                border: constants.borders.inputSmall,
+                outline: constants.borders.regular.transparent,
+                border: constants.borders.keyOneRegular,
                 color: colors.structure.coal,
                 backgroundColor: colors.structure.white,
                 backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==')`,

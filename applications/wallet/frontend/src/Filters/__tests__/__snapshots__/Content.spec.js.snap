@@ -193,7 +193,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -319,7 +319,7 @@ Array [
 }
 
 .emotion-27:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-27:hover svg {
@@ -754,7 +754,7 @@ Array [
 }
 
 .emotion-17:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -1196,7 +1196,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -1322,7 +1322,7 @@ Array [
 }
 
 .emotion-21:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-21:hover svg {
@@ -2102,7 +2102,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -2228,7 +2228,7 @@ Array [
 }
 
 .emotion-73:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-73:hover svg {
@@ -2551,7 +2551,7 @@ Array [
 }
 
 .emotion-11:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -3310,7 +3310,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -3436,7 +3436,7 @@ Array [
 }
 
 .emotion-659:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-659:hover svg {
@@ -3741,7 +3741,7 @@ Array [
 }
 
 .emotion-17:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -8103,7 +8103,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -8229,7 +8229,7 @@ Array [
 }
 
 .emotion-24:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-24:hover svg {
@@ -8653,7 +8653,7 @@ Array [
 }
 
 .emotion-16:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -9077,7 +9077,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -9203,7 +9203,7 @@ Array [
 }
 
 .emotion-21:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-21:hover svg {
@@ -9983,7 +9983,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -10109,7 +10109,7 @@ Array [
 }
 
 .emotion-16:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-16:hover svg {
@@ -10418,7 +10418,7 @@ Array [
 }
 
 .emotion-10:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -10769,7 +10769,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;

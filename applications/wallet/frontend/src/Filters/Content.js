@@ -36,7 +36,7 @@ const FiltersContent = ({
       <div
         css={{
           padding: spacing.small,
-          borderBottom: constants.borders.divider,
+          borderBottom: constants.borders.regular.smoke,
         }}
       >
         <div css={{ display: 'flex' }}>

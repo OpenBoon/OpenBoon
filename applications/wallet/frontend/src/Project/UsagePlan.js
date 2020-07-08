@@ -41,7 +41,7 @@ const ProjectUsagePlan = () => {
           </h3>
           <div
             css={{
-              borderBottom: constants.borders.tabs,
+              borderBottom: constants.borders.regular.iron,
               paddingBottom: spacing.normal,
             }}
           >
