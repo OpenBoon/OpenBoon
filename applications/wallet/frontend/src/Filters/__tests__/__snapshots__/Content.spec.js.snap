@@ -790,6 +790,7 @@ Array [
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -1759,6 +1760,7 @@ Array [
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -2735,6 +2737,7 @@ Array [
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -4214,6 +4217,7 @@ Array [
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -8684,6 +8688,7 @@ Array [
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -9604,6 +9609,7 @@ Array [
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -10473,6 +10479,7 @@ Array [
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"

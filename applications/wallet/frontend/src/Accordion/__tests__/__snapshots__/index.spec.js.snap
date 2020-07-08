@@ -111,6 +111,7 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
   <div
     className="emotion-3"
     onClick={[Function]}
+    style={Object {}}
   >
     <button
       aria-label="Expand Section"
@@ -234,6 +235,7 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
   <div
     className="emotion-3"
     onClick={[Function]}
+    style={Object {}}
   >
     <button
       aria-label="Expand Section"
@@ -348,6 +350,11 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
   <div
     className="emotion-3"
     onClick={[Function]}
+    style={
+      Object {
+        "border": "none",
+      }
+    }
   >
     <button
       aria-label="Expand Section"
