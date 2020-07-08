@@ -34,7 +34,9 @@ const STYLES = {
 }
 
 const BORDER_STYLES = ({ hasError }) => ({
-  border: hasError ? constants.borders.error : constants.borders.transparent,
+  border: hasError
+    ? constants.borders.error
+    : constants.borders.regular.transparent,
   borderWidth: BORDER_WIDTH,
 })
 

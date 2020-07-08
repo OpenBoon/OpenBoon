@@ -15,7 +15,7 @@ exports[`Combobox should render properly 1`] = `
 .emotion-1 {
   width: 100%;
   padding: 8px;
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   background-color: #3b3b3b;
   color: #ffffff;
   font-weight: 500;
@@ -80,7 +80,7 @@ exports[`Combobox should render properly with error 1`] = `
 .emotion-1 {
   width: 100%;
   padding: 8px;
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   background-color: #3b3b3b;
   color: #ffffff;
   font-weight: 500;

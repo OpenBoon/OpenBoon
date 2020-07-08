@@ -20,7 +20,7 @@ const STYLES = {
     },
     title: {
       display: 'flex',
-      borderBottom: constants.borders.tabs,
+      borderBottom: constants.borders.regular.iron,
       paddingTop: spacing.normal,
       paddingBottom: spacing.normal,
       paddingLeft: spacing.moderate,
@@ -71,7 +71,7 @@ const STYLES = {
   FILTER: {
     container: {
       backgroundColor: colors.structure.lead,
-      border: constants.borders.transparent,
+      border: constants.borders.regular.transparent,
       borderBottom: constants.borders.regular.smoke,
       paddingBottom: spacing.hairline,
       ':hover': {

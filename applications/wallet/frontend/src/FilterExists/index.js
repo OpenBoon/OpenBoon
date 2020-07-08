@@ -66,7 +66,7 @@ const FilterExists = ({
           <div
             css={{
               display: 'flex',
-              border: constants.borders.tableRow,
+              border: constants.borders.regular.steel,
               borderRadius: constants.borderRadius.small,
             }}
           >

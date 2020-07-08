@@ -20,7 +20,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
         css={{
           width: '100%',
           '&:not(:first-of-type)': {
-            borderTop: constants.borders.prettyMetadata,
+            borderTop: constants.borders.large.iron,
           },
         }}
       >

@@ -97,17 +97,17 @@ const FiltersMenu = ({
             css={{
               marginTop: spacing.base,
               width: '100%',
-              border: constants.borders.transparent,
+              border: constants.borders.regular.transparent,
               padding: spacing.moderate,
               paddingLeft: spacing.spacious,
               borderRadius: constants.borderRadius.small,
               color: colors.structure.pebble,
               backgroundColor: colors.structure.mattGrey,
               ':hover': {
-                border: constants.borders.tableRow,
+                border: constants.borders.regular.steel,
               },
               ':focus': {
-                outline: constants.borders.outline,
+                outline: constants.borders.regular.transparent,
                 border: constants.borders.inputSmall,
                 color: colors.structure.coal,
                 backgroundColor: colors.structure.white,

@@ -35,28 +35,12 @@ const newBorders = Object.entries(borderWidths).reduce((acc, [name, size]) => {
 console.log(newBorders)
 
 const borders = {
-  default: `1px solid ${colors.structure.mattGrey}`,
-  transparent: `1px solid transparent`,
-  transparentMedium: `2px solid transparent`,
-  separator: `1px solid ${colors.structure.zinc}`,
-  spacer: `1px solid ${colors.structure.coal}`,
-  tabs: `1px solid ${colors.structure.iron}`,
   error: `2px solid ${colors.signal.warning.base}`,
   success: `1px solid ${colors.signal.grass.base}`,
-  tableRow: `1px solid ${colors.structure.steel}`,
-  radio: `1px solid ${colors.structure.white}`,
-  radioMedium: `2px solid ${colors.structure.white}`,
   inputSmall: `1px solid ${colors.key.one}`,
   input: `2px solid ${colors.key.one}`,
-  pill: `2px solid ${colors.structure.steel}`,
-  assetInactive: `4px solid ${colors.transparent}`,
-  assetHover: `4px solid ${colors.structure.white}`,
   assetSelected: `4px solid ${colors.signal.electricBlue.base}`,
-  prettyMetadata: `4px solid ${colors.structure.iron}`,
   facet: `4px solid ${colors.key.one}`,
-  unselectedFacet: `4px solid ${colors.structure.steel}`,
-  metrics: `2px solid ${colors.structure.white}`,
-  outline: `thin solid transparent`,
   ...newBorders,
 }
 

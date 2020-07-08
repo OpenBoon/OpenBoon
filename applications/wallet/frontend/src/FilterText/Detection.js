@@ -125,14 +125,14 @@ const FilterTextDetection = ({
             onChange={({ target: { value } }) => setSearchString(value)}
             css={{
               flex: 1,
-              border: constants.borders.transparent,
+              border: constants.borders.regular.transparent,
               padding: spacing.moderate,
               borderTopLeftRadius: constants.borderRadius.small,
               borderBottomLeftRadius: constants.borderRadius.small,
               color: colors.structure.pebble,
               backgroundColor: colors.structure.mattGrey,
               ':focus': {
-                outline: constants.borders.outline,
+                outline: constants.borders.regular.transparent,
                 border: constants.borders.inputSmall,
                 ':hover': {
                   border: constants.borders.inputSmall,
@@ -141,7 +141,7 @@ const FilterTextDetection = ({
                 backgroundColor: colors.structure.white,
               },
               ':hover': {
-                border: constants.borders.tableRow,
+                border: constants.borders.regular.steel,
               },
               paddingLeft: spacing.moderate,
               '::placeholder': {

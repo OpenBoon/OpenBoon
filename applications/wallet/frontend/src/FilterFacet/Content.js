@@ -145,7 +145,7 @@ const FilterFacet = ({
                         width: `${offset}%`,
                         borderTop:
                           isDisabled || (!isSelected && hasSelections)
-                            ? constants.borders.unselectedFacet
+                            ? constants.borders.large.steel
                             : constants.borders.facet,
                       }}
                     />

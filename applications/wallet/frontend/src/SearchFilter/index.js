@@ -24,7 +24,7 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
           onChange={({ target: { value } }) => setSearchString(value)}
           css={{
             flex: 1,
-            border: constants.borders.transparent,
+            border: constants.borders.regular.transparent,
             padding: spacing.moderate,
             paddingLeft: spacing.spacious,
             borderTopLeftRadius: constants.borderRadius.small,
@@ -32,10 +32,10 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
             color: colors.structure.pebble,
             backgroundColor: colors.structure.coal,
             ':hover': {
-              border: constants.borders.tableRow,
+              border: constants.borders.regular.steel,
             },
             ':focus': {
-              outline: constants.borders.outline,
+              outline: constants.borders.regular.transparent,
               border: constants.borders.inputSmall,
               color: colors.structure.coal,
               backgroundColor: colors.structure.white,
