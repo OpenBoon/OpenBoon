@@ -152,7 +152,7 @@ const FilterLabelConfidenceContent = ({
                       css={{
                         height: 4,
                         width: `${100 - offset}%`,
-                        borderTop: constants.borders.divider,
+                        borderTop: constants.borders.regular.smoke,
                       }}
                     />
                   </div>

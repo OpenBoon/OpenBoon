@@ -42,7 +42,7 @@ const STYLES = {
       backgroundColor: colors.structure.lead,
       borderRadius: constants.borderRadius.small,
       ':last-of-type > div:last-of-type': {
-        borderBottom: constants.borders.divider,
+        borderBottom: constants.borders.regular.smoke,
       },
       ':first-of-type > div': {
         borderTop: 'none',
@@ -50,7 +50,7 @@ const STYLES = {
     },
     title: {
       display: 'flex',
-      borderTop: constants.borders.divider,
+      borderTop: constants.borders.regular.smoke,
       paddingTop: spacing.moderate,
       paddingBottom: spacing.moderate,
       paddingLeft: spacing.moderate,
@@ -72,7 +72,7 @@ const STYLES = {
     container: {
       backgroundColor: colors.structure.lead,
       border: constants.borders.transparent,
-      borderBottom: constants.borders.divider,
+      borderBottom: constants.borders.regular.smoke,
       paddingBottom: spacing.hairline,
       ':hover': {
         border: constants.borders.regular.smoke,

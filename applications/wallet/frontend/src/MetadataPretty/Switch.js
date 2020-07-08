@@ -50,7 +50,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
         return (
           <>
             {!!name && (
-              <div css={{ borderTop: constants.borders.divider }}>
+              <div css={{ borderTop: constants.borders.regular.smoke }}>
                 <div
                   css={{
                     fontFamily: typography.family.condensed,

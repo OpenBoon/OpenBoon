@@ -16,7 +16,7 @@ const FiltersMenuOption = ({ option, label, filters, onClick }) => {
       key={option}
       css={{
         marginLeft: OFFSET,
-        borderTop: constants.borders.divider,
+        borderTop: constants.borders.regular.smoke,
         ':first-of-type': {
           borderTop: 'none',
         },

@@ -84,7 +84,7 @@ const FiltersMenu = ({
           display: 'flex',
           flexDirection: 'column',
           padding: spacing.moderate,
-          borderBottom: constants.borders.divider,
+          borderBottom: constants.borders.regular.smoke,
         }}
       >
         <label>

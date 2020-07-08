@@ -65,7 +65,7 @@ const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
                 display: 'flex',
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.normal,
-                borderBottom: constants.borders.divider,
+                borderBottom: constants.borders.regular.smoke,
               }}
             >
               <div

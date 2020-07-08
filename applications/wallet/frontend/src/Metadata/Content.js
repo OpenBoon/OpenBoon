@@ -35,7 +35,7 @@ const MetadataContent = ({ projectId, assetId }) => {
       <div
         css={{
           padding: spacing.normal,
-          borderBottom: constants.borders.divider,
+          borderBottom: constants.borders.regular.smoke,
           color: colors.signal.sky.base,
         }}
       >
@@ -45,7 +45,7 @@ const MetadataContent = ({ projectId, assetId }) => {
       <div
         css={{
           display: 'flex',
-          borderBottom: constants.borders.divider,
+          borderBottom: constants.borders.regular.smoke,
           ':hover': {
             backgroundColor: colors.signal.electricBlue.background,
             div: {
@@ -94,7 +94,10 @@ const MetadataContent = ({ projectId, assetId }) => {
       </div>
 
       <div
-        css={{ padding: spacing.base, borderBottom: constants.borders.divider }}
+        css={{
+          padding: spacing.base,
+          borderBottom: constants.borders.regular.smoke,
+        }}
       >
         <div
           css={{
