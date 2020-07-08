@@ -421,7 +421,7 @@ describe('<Filters />', () => {
     // Expand Clip Section
     act(() => {
       component.root
-        .findAllByProps({ 'aria-label': 'Expand Section' })[2]
+        .findAllByProps({ 'aria-label': 'Expand Section' })[3]
         .props.onClick({ preventDefault: noop })
     })
 
@@ -499,11 +499,9 @@ describe('<Filters />', () => {
     // Expand Location Section
     act(() => {
       component.root
-        .findAllByProps({ 'aria-label': 'Expand Section' })[2]
+        .findAllByProps({ 'aria-label': 'Expand Section' })[6]
         .props.onClick({ preventDefault: noop })
     })
-
-    expect(component.toJSON()).toMatchSnapshot()
 
     // enable last checkbox
     act(() => {
