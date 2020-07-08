@@ -260,7 +260,7 @@ const FilterDateRangeContent = ({
                 },
                 ':focus': {
                   outline: constants.borders.regular.transparent,
-                  border: constants.borders.inputSmall,
+                  border: constants.borders.keyOneRegular,
                   color: colors.structure.coal,
                   backgroundColor: colors.structure.white,
                 },
@@ -319,7 +319,7 @@ const FilterDateRangeContent = ({
                 },
                 ':focus': {
                   outline: constants.borders.regular.transparent,
-                  border: constants.borders.inputSmall,
+                  border: constants.borders.keyOneRegular,
                   color: colors.structure.coal,
                   backgroundColor: colors.structure.white,
                 },

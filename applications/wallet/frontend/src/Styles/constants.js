@@ -35,12 +35,11 @@ const newBorders = Object.entries(borderWidths).reduce((acc, [name, size]) => {
 console.log(newBorders)
 
 const borders = {
+  keyOneRegular: `1px solid ${colors.key.one}`,
+  keyOneMedium: `2px solid ${colors.key.one}`,
+  keyOneLarge: `4px solid ${colors.key.one}`,
   error: `2px solid ${colors.signal.warning.base}`,
-  success: `1px solid ${colors.signal.grass.base}`,
-  inputSmall: `1px solid ${colors.key.one}`,
-  input: `2px solid ${colors.key.one}`,
   assetSelected: `4px solid ${colors.signal.electricBlue.base}`,
-  facet: `4px solid ${colors.key.one}`,
   ...newBorders,
 }
 

@@ -24,7 +24,7 @@ const STYLES = {
     color: colors.structure.white,
     backgroundColor: colors.structure.smoke,
     '&:focus': {
-      border: constants.borders.input,
+      border: constants.borders.keyOneMedium,
       backgroundColor: colors.structure.white,
       outline: colors.key.one,
       color: colors.structure.black,

@@ -133,9 +133,9 @@ const FilterTextDetection = ({
               backgroundColor: colors.structure.mattGrey,
               ':focus': {
                 outline: constants.borders.regular.transparent,
-                border: constants.borders.inputSmall,
+                border: constants.borders.keyOneRegular,
                 ':hover': {
-                  border: constants.borders.inputSmall,
+                  border: constants.borders.keyOneRegular,
                 },
                 color: colors.structure.coal,
                 backgroundColor: colors.structure.white,

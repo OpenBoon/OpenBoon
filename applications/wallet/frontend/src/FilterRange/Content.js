@@ -201,7 +201,7 @@ const FilterRangeContent = ({
                 },
                 ':focus': {
                   outline: constants.borders.regular.transparent,
-                  border: constants.borders.inputSmall,
+                  border: constants.borders.keyOneRegular,
                   color: colors.structure.coal,
                   backgroundColor: colors.structure.white,
                 },
@@ -240,7 +240,7 @@ const FilterRangeContent = ({
                 },
                 ':focus': {
                   outline: constants.borders.regular.transparent,
-                  border: constants.borders.inputSmall,
+                  border: constants.borders.keyOneRegular,
                   color: colors.structure.coal,
                   backgroundColor: colors.structure.white,
                 },

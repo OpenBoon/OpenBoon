@@ -13,7 +13,7 @@ const BASE = ({ isDisabled }) => ({
   width: '100%',
   cursor: isDisabled ? 'not-allowed' : '',
   '&:focus': {
-    border: constants.borders.input,
+    border: constants.borders.keyOneMedium,
     outline: colors.key.one,
   },
 })

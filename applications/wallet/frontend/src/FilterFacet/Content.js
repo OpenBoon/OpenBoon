@@ -146,7 +146,7 @@ const FilterFacet = ({
                         borderTop:
                           isDisabled || (!isSelected && hasSelections)
                             ? constants.borders.large.steel
-                            : constants.borders.facet,
+                            : constants.borders.keyOneLarge,
                       }}
                     />
                     <div
