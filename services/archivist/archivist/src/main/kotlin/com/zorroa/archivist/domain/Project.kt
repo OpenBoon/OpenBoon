@@ -234,7 +234,6 @@ class ProjectQuotaCounters {
     var deletedVideoClipCount: Int = 0
     var deletedPageCount: Int = 0
 
-
     /**
      * Introspect the asset and increment the internal counters.
      */
@@ -274,8 +273,9 @@ class ProjectQuotaCounters {
      * Introspect the asset and increment the internal counters for deletion.
      */
     fun countForDeletion(asset: Asset) {
-        val mediaType = asset.getAttr<String>("media.type") ?:
-            FileExtResolver.getType(FileUtils.extension(asset.getAttr<String>("source.path")))
+        val mediaType = asset.getAttr<String>("media.type") ?:  FileExtResolver.getType(
+            FileUtils.extension(asset.getAttr<String>("source.path"))
+        )
 
         when (mediaType) {
             "video" -> {

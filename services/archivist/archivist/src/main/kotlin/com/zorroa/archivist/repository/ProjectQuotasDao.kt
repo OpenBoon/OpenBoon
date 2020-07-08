@@ -159,9 +159,9 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
                 "float_deleted_video_seconds=float_deleted_video_seconds+?, " +
                 "int_deleted_video_file_count=int_deleted_video_file_count+?, " +
                 "int_deleted_document_file_count=int_deleted_document_file_count+?, " +
-                "int_deleted_image_file_count=int_deleted_image_file_count+?, "+
-                "int_deleted_video_clip_count=int_deleted_video_clip_count+?, "+
-                "int_deleted_page_count=int_deleted_page_count+? "+
+                "int_deleted_image_file_count=int_deleted_image_file_count+?, " +
+                "int_deleted_video_clip_count=int_deleted_video_clip_count+?, " +
+                "int_deleted_page_count=int_deleted_page_count+? " +
                 "WHERE " +
                 "pk_project=? AND int_entry=?"
     }

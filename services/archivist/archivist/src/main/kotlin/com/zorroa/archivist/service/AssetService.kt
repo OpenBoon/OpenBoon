@@ -431,13 +431,12 @@ class AssetServiceImpl : AssetService {
 
         val projectQuotaCounters = ProjectQuotaCounters()
         for (removed in removed) {
-            projectQuotaCounters.countForDeletion(deletedAssets.find {it.id == removed}!!)
+            projectQuotaCounters.countForDeletion(deletedAssets.find { it.id == removed }!!)
             logger.event(
                 LogObject.ASSET, LogAction.DELETE, mapOf("assetId" to removed)
             )
         }
         projectService.incrementQuotaCounters(projectQuotaCounters)
-
 
         // Background removal of files into a co-routine.
         GlobalScope.launch(Dispatchers.IO + CoroutineAuthentication(SecurityContextHolder.getContext())) {
