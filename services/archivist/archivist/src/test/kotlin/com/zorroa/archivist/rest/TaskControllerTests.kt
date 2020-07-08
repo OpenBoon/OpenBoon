@@ -233,14 +233,14 @@ class TaskControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testGetLogFile404() {
+    fun testGetLogFile204() {
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/tasks/${task.id}/_log")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
-            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            .andExpect(MockMvcResultMatchers.status().`is`(204))
             .andReturn()
     }
 
