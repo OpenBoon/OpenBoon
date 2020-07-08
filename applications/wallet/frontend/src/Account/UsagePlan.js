@@ -50,7 +50,7 @@ const AccountUsagePlan = ({ subscriptions }) => {
             },
           }}
         >
-          <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video Hours:
+          <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video Hours:{' '}
           {videoUsage.toLocaleString()}
         </h4>
       </div>
