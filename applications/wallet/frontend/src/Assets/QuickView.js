@@ -20,9 +20,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
 
   const [isVisible, setIsVisible] = useState(false)
 
-  const index = assets
-    .filter((a) => a && a.id)
-    .findIndex(({ id }) => id === selectedId)
+  const index = assets.findIndex(({ id }) => id === selectedId)
 
   const { id: previousId } = index > 0 ? assets[index - 1] : {}
   const { id: nextId } =
