@@ -128,7 +128,7 @@ class ApiKeyServiceTests : AbstractTest() {
     fun testSearchSystemKey() {
 
         apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
-        apiKeyService.create(ApiKeySpec("system", setOf(Permission.AssetsRead), systemKey = true))
+        apiKeyService.create(ApiKeySpec("job-runner", setOf(Permission.AssetsRead)))
 
         var keys = apiKeyService.search(ApiKeyFilter())
 
@@ -150,10 +150,10 @@ class ApiKeyServiceTests : AbstractTest() {
         apiKeyService.create(ApiKeySpec("try1", setOf(Permission.AssetsRead)))
         apiKeyService.create(ApiKeySpec("try2", setOf(Permission.AssetsRead)))
         apiKeyService.create(ApiKeySpec("try3", setOf(Permission.AssetsRead)))
-        apiKeyService.create(ApiKeySpec("trySystemKey", setOf(Permission.AssetsRead), systemKey = true))
+        apiKeyService.create(ApiKeySpec("try4", setOf(Permission.AssetsRead), hidden = true))
 
         val keys = apiKeyService.search(ApiKeyFilter(namePrefixes = listOf("test", "try")))
-        assertEquals(7, keys.list.size)
+        assertEquals(6, keys.list.size)
     }
 
     @Test
@@ -204,14 +204,14 @@ class ApiKeyServiceTests : AbstractTest() {
             setOf(Permission.AssetsRead)
         )
 
-        val specSystemKey = ApiKeySpec(
-            "testSystemKey",
+        val specHiddenKey = ApiKeySpec(
+            "testHiddenKey",
             setOf(Permission.AssetsRead),
-            systemKey = true
+            hidden = true
         )
 
         val key1 = apiKeyService.create(spec)
-        val key2 = apiKeyService.create(specSystemKey)
+        val key2 = apiKeyService.create(specHiddenKey)
 
         val all = apiKeyService.findAll()
         assertTrue(key1 in all)
@@ -232,9 +232,8 @@ class ApiKeyServiceTests : AbstractTest() {
     @Test(expected = UnsupportedOperationException::class)
     fun testDeleteSystemKey() {
         val spec = ApiKeySpec(
-            "test",
-            setOf(Permission.AssetsRead),
-            systemKey = true
+            "job-runner",
+            setOf(Permission.AssetsRead)
         )
         val key1 = apiKeyService.create(spec)
         apiKeyService.delete(key1)
@@ -243,14 +242,25 @@ class ApiKeyServiceTests : AbstractTest() {
     @Test
     fun testFindSystemKeyById() {
         val spec = ApiKeySpec(
-            "test",
-            setOf(Permission.AssetsRead),
-            systemKey = true
+            "job-runner",
+            setOf(Permission.AssetsRead)
         )
         val key1 = apiKeyService.create(spec)
         val get = apiKeyService.get(key1.id)
 
+        assertTrue(key1.systemKey)
         assertEquals(key1.name, get.name)
         assertEquals(key1.id, get.id)
+    }
+
+    @Test
+    fun testCreateHiddenKey() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead),
+            hidden = true
+        )
+        val key1 = apiKeyService.create(spec)
+        assertTrue(key1.hidden)
     }
 }

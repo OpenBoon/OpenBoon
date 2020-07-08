@@ -27,3 +27,13 @@ console.error = (message, ...args) => {
   error.apply(console, [message, ...args])
   throw new Error('Please fix console.error below')
 }
+
+/**
+ * localStorage
+ */
+
+beforeEach(() => {
+  if (typeof localStorage !== 'undefined') {
+    localStorage.clear()
+  }
+})

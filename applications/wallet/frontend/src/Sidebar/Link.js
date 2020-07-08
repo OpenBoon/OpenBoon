@@ -10,7 +10,7 @@ const SidebarLink = ({ projectId, href, children }) => {
   const isCurrentPage = pathname === href
 
   return (
-    <li css={{ borderBottom: constants.borders.transparent }}>
+    <li css={{ borderBottom: constants.borders.regular.transparent }}>
       <Link href={href} as={href.replace('[projectId]', projectId)} passHref>
         <a
           css={{

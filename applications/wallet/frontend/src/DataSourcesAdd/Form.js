@@ -136,6 +136,7 @@ const DataSourcesAddForm = () => {
           }))}
           variant={CHECKBOX_VARIANTS.INLINE}
         />
+
         <div css={{ height: spacing.base }} />
 
         <SectionTitle>Select Analysis</SectionTitle>

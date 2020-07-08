@@ -314,3 +314,28 @@ class JobApp:
             dict: The script in dictionary form.
         """
         return self.app.client.get('/api/v1/tasks/{}/_script'.format(as_id(task)))
+
+    def download_task_log(self, task, dst_path):
+        """
+        Download the task log file to the given file path.
+
+        Args:
+            task: (str): The Task or task id.
+            dst_path (str): The path to the destination file.
+        Returns:
+            dict: The script in dictionary form.
+        """
+        return self.app.client.stream('/api/v1/tasks/{}/_log'.format(as_id(task)), dst_path)
+
+    def iterate_task_log(self, task):
+        """
+        Return a generator that can be used to iterate a task log file.
+
+        Args:
+            task: (str): The Task or task id.
+
+        Returns:
+            generator: A generator which yields each line of a log file.
+
+        """
+        return self.app.client.stream_text('/api/v1/tasks/{}/_log'.format(as_id(task)))

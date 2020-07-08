@@ -100,6 +100,11 @@ open class InternalTask(
     override fun toString(): String {
         return "<Task id='$taskId' name='$name'/>"
     }
+
+    @JsonIgnore
+    fun getLogFileLocation(): ProjectFileLocator {
+        return ProjectFileLocator(ProjectStorageEntity.JOB, jobId.toString(), "logs", "$taskId.log")
+    }
 }
 
 @ApiModel("Task", description = "Describes a Task.")

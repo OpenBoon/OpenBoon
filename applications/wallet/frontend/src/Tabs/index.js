@@ -13,7 +13,7 @@ const Tabs = ({ tabs }) => {
           padding: 0,
           margin: 0,
           display: 'flex',
-          borderBottom: constants.borders.tabs,
+          borderBottom: constants.borders.regular.iron,
         }}
       >
         {tabs.map(({ title, href }) => (

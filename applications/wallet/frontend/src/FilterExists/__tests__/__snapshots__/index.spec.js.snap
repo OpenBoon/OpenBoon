@@ -9,7 +9,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 }
 
 .emotion-21:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-21:hover svg {
@@ -443,6 +443,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   <div
     className="emotion-9"
     onClick={[Function]}
+    style={Object {}}
   >
     <button
       aria-label="Collapse Section"
@@ -610,7 +611,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 }
 
 .emotion-21:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-21:hover svg {
@@ -1044,6 +1045,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   <div
     className="emotion-9"
     onClick={[Function]}
+    style={Object {}}
   >
     <button
       aria-label="Collapse Section"

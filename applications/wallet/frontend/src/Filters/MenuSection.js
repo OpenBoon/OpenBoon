@@ -35,7 +35,7 @@ const FiltersMenuSection = ({ path, attribute, value, filters, onClick }) => {
         padding: spacing.moderate,
         paddingTop: spacing.base,
         paddingBottom: spacing.base,
-        borderTop: constants.borders.largeDivider,
+        borderTop: constants.borders.large.smoke,
         ':first-of-type': {
           paddingTop: 0,
           borderTop: 'none',

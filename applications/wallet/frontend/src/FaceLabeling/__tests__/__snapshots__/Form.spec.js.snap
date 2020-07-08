@@ -55,7 +55,7 @@ Array [
 .emotion-2 {
   width: 100%;
   padding: 8px;
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   background-color: #3b3b3b;
   color: #ffffff;
   font-weight: 500;
@@ -279,7 +279,7 @@ Array [
         aria-disabled={true}
         className="emotion-7"
         onClick={[Function]}
-        type="button"
+        type="submit"
       >
         Saved
       </button>

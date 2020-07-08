@@ -38,7 +38,7 @@ const AccountUsagePlan = ({ subscriptions }) => {
       <div
         css={{
           paddingBottom: spacing.normal,
-          borderBottom: constants.borders.tabs,
+          borderBottom: constants.borders.regular.iron,
         }}
       >
         <h4
@@ -50,7 +50,7 @@ const AccountUsagePlan = ({ subscriptions }) => {
             },
           }}
         >
-          <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video Hours:
+          <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video Hours:{' '}
           {videoUsage.toLocaleString()}
         </h4>
       </div>

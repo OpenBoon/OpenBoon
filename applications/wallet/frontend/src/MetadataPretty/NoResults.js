@@ -8,7 +8,7 @@ const MetadataPrettyNoResults = ({ name }) => {
       <div
         css={{
           '&:not(:first-of-type)': {
-            borderTop: constants.borders.largeDivider,
+            borderTop: constants.borders.large.smoke,
           },
           padding: spacing.normal,
           paddingBottom: spacing.base,
