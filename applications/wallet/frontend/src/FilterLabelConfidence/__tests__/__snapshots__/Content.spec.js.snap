@@ -36,7 +36,7 @@ Array [
   <div>
     Label prediction confidence score:
      
-    All
+    N/A
   </div>,
   .emotion-2 {
   padding: 16px;
@@ -83,7 +83,7 @@ Array [
             1,
           ]
         }
-        isDisabled={false}
+        isDisabled={true}
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
@@ -217,7 +217,7 @@ Array [
   <div>
     Label prediction confidence score:
      
-    All
+    N/A
   </div>,
   .emotion-2 {
   padding: 16px;
@@ -264,7 +264,7 @@ Array [
             1,
           ]
         }
-        isDisabled={false}
+        isDisabled={true}
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
@@ -653,7 +653,7 @@ Array [
   <div>
     Label prediction confidence score:
      
-    All
+    N/A
   </div>,
   .emotion-2 {
   padding: 16px;
@@ -700,7 +700,7 @@ Array [
             1,
           ]
         }
-        isDisabled={false}
+        isDisabled={true}
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
