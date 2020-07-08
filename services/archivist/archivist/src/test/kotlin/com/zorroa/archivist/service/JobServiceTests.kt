@@ -11,7 +11,6 @@ import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.Task
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.emptyZpsScripts
 import org.junit.Before
@@ -43,7 +42,7 @@ class JobServiceTests : AbstractTest() {
         )
 
         job = jobService.create(spec)
-        task = jobService.createTask(job, TaskSpec("bar", emptyZpsScript("bar")))
+        task = jobService.createTask(job, emptyZpsScript("bar"))
     }
 
     @Test
@@ -166,20 +165,15 @@ class JobServiceTests : AbstractTest() {
     fun testIncrementAssetCounts() {
 
         val counters = AssetCounters(
-            total = 10,
-            replaced = 4,
-            created = 6
+            total = 10
         )
 
         jobService.incrementAssetCounters(task, counters)
 
         val map = jdbc.queryForMap("SELECT * FROM task_stat WHERE pk_task=?", task.id)
-        assertEquals(counters.created, map["int_asset_create_count"])
-        assertEquals(counters.replaced, map["int_asset_replace_count"])
+        assertEquals(counters.total, map["int_asset_total_count"])
 
         val map2 = jdbc.queryForMap("SELECT * FROM job_stat WHERE pk_job=?", task.jobId)
-        assertEquals(counters.created, map2["int_asset_create_count"])
-        assertEquals(counters.replaced, map2["int_asset_replace_count"])
         assertEquals(counters.total, map2["int_asset_total_count"])
     }
 

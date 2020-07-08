@@ -6,9 +6,9 @@ import unittest
 from unittest.mock import patch
 from google.cloud import storage as gcs
 
-from zmlp import ZmlpClient, ZmlpApp, DataSet
-from zmlp.app import AssetApp, DataSetApp
-from zmlp.training import DataSetDownloader
+from zmlp import ZmlpClient, ZmlpApp, Model
+from zmlp.app import AssetApp, ModelApp
+from zmlp.training import TrainingSetDownloader
 from zmlpsdk.testing import zorroa_test_path
 
 key_dict = {
@@ -19,7 +19,7 @@ key_dict = {
 }
 
 
-class ZmlpDataSetDownloader(unittest.TestCase):
+class TrainingSetDownloaderTests(unittest.TestCase):
 
     def setUp(self):
         self.app = ZmlpApp(key_dict)
@@ -29,10 +29,10 @@ class ZmlpDataSetDownloader(unittest.TestCase):
     def tearDown(self):
         del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
-    @patch.object(DataSetApp, 'get_dataset')
+    @patch.object(ModelApp, 'get_model')
     @patch.object(ZmlpClient, 'get')
-    def test_setup_labels_std_base_dir(self, get_patch, data_dataset_patch):
-        data_dataset_patch.return_value = DataSet({'id': '12345', 'type': 'LabelDetection'})
+    def test_setup_labels_std_base_dir(self, get_patch, get_model_patch):
+        get_model_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
         get_patch.return_value = {
             'goats': 100,
             'hobbits': 12,
@@ -40,29 +40,29 @@ class ZmlpDataSetDownloader(unittest.TestCase):
             'dwarfs': 9
         }
         d = tempfile.mkdtemp()
-        dsl = DataSetDownloader(self.app, '12345', 'objects_coco', d)
+        dsl = TrainingSetDownloader(self.app, '12345', 'objects_coco', d)
         dsl._setup_labels_std_base_dir()
 
         dirs = os.listdir(d)
         assert 'set_train' in dirs
-        assert 'set_test' in dirs
+        assert 'set_validate' in dirs
 
         labels1 = os.listdir(d + '/set_train')
         assert 4 == len(labels1)
         assert ['dwarfs', 'goats', 'hobbits', 'wizards'] == sorted(labels1)
 
-        labels2 = os.listdir(d + '/set_test')
+        labels2 = os.listdir(d + '/set_validate')
         assert 4 == len(labels2)
         assert ['dwarfs', 'goats', 'hobbits', 'wizards'] == sorted(labels2)
 
-    @patch.object(DataSetApp, 'get_dataset')
+    @patch.object(ModelApp, 'get_model')
     @patch.object(AssetApp, 'download_file')
     @patch.object(ZmlpClient, 'delete')
     @patch.object(ZmlpClient, 'post')
     @patch.object(ZmlpClient, 'get')
     def test_build_labels_std_format(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
-        get_ds_patch.return_value = DataSet({'id': '12345', 'type': 'LABEL_DETECTION'})
+        get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
         get_patch.return_value = {
             'goats': 100,
             'hobbits': 12,
@@ -74,28 +74,28 @@ class ZmlpDataSetDownloader(unittest.TestCase):
         dl_patch.return_value = b'foo'
 
         d = tempfile.mkdtemp()
-        dsl = DataSetDownloader(self.app, '12345', 'labels_std', d)
+        dsl = TrainingSetDownloader(self.app, '12345', 'labels_std', d)
         dsl.build()
 
-    @patch.object(DataSetApp, 'get_dataset')
+    @patch.object(ModelApp, 'get_model')
     @patch.object(AssetApp, 'download_file')
     @patch.object(ZmlpClient, 'delete')
     @patch.object(ZmlpClient, 'post')
     @patch.object(ZmlpClient, 'get')
     def test_download_object_detection(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
-        get_ds_patch.return_value = DataSet({'id': '12345', 'type': 'OBJECT_DETECTION'})
+        get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
 
         post_patch.side_effect = [mock_search_result_objects, {'hits': {'hits': []}}]
         del_patch.return_value = {}
         dl_patch.return_value = b'foo'
 
         d = tempfile.mkdtemp()
-        dsl = DataSetDownloader(self.app, '12345', 'objects_coco', d)
+        dsl = TrainingSetDownloader(self.app, '12345', 'objects_coco', d)
         dsl.build()
         with open(os.path.join(d, dsl.SET_TRAIN, 'annotations.json')) as fp:
             train_annotations = json.load(fp)
-        with open(os.path.join(d, dsl.SET_TEST, 'annotations.json')) as fp:
+        with open(os.path.join(d, dsl.SET_VALIDATION, 'annotations.json')) as fp:
             test_annotations = json.load(fp)
 
         assert 2 == len(train_annotations['images'])
@@ -107,21 +107,21 @@ class ZmlpDataSetDownloader(unittest.TestCase):
         assert 6 == len(train_annotations['annotations'])
         assert 2 == len(test_annotations['annotations'])
 
-    @patch.object(DataSetApp, 'get_dataset')
+    @patch.object(ModelApp, 'get_model')
     @patch.object(AssetApp, 'download_file')
     @patch.object(ZmlpClient, 'delete')
     @patch.object(ZmlpClient, 'post')
     @patch.object(ZmlpClient, 'get')
     def test_build_objects_keras_format(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
-        get_ds_patch.return_value = DataSet({'id': '12345', 'type': 'OBJECT_DETECTION'})
+        get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
 
         post_patch.side_effect = [mock_search_result_objects, {'hits': {'hits': []}}]
         del_patch.return_value = {}
         dl_patch.return_value = b'foo'
 
         d = tempfile.mkdtemp()
-        dsl = DataSetDownloader(self.app, '12345', 'objects_keras', d)
+        dsl = TrainingSetDownloader(self.app, '12345', 'objects_keras', d)
         dsl.build()
 
         with open(os.path.join(d, 'classes.csv')) as fp:
@@ -133,7 +133,7 @@ class ZmlpDataSetDownloader(unittest.TestCase):
             count = len(fp.readlines())
         assert 6 == count
 
-        with open(os.path.join(d, dsl.SET_TEST, 'annotations.csv')) as fp:
+        with open(os.path.join(d, dsl.SET_VALIDATION, 'annotations.csv')) as fp:
             count = len(fp.readlines())
         assert 2 == count
 
@@ -204,22 +204,22 @@ mock_search_result_objects = {
                     ],
                     "labels": [
                         {
-                            "dataSetId": "12345",
+                            "modelId": "12345",
                             "label": "wizard",
                             "bbox": [0.5, 0.5, 0.6, 0.6]
                         },
                         {
-                            "dataSetId": "12345",
+                            "modelId": "12345",
                             "label": "dwarf",
                             "bbox": [0.0, 0.0, 0.3, 0.3]
                         },
                         {
-                            "dataSetId": "12345",
+                            "modelId": "12345",
                             "label": "wizard",
                             "bbox": [0.2, 0.5, 0.2, 0.6]
                         },
                         {
-                            "dataSetId": "12345",
+                            "modelId": "12345",
                             "label": "dwarf",
                             "bbox": [0.1, 0.3, 0.3, 0.4]
                         }
@@ -249,22 +249,22 @@ mock_search_result_objects = {
                     ],
                     "labels": [
                         {
-                            "dataSetId": "12345",
+                            "modelId": "12345",
                             "label": "wizard",
                             "bbox": [0.5, 0.5, 0.6, 0.6]
                         },
                         {
-                            "dataSetId": "12345",
+                            "modelId": "12345",
                             "label": "dwarf",
                             "bbox": [0.0, 0.0, 0.3, 0.3]
                         },
                         {
-                            "dataSetId": "12345",
+                            "modelId": "12345",
                             "label": "wizard",
                             "bbox": [0.2, 0.5, 0.2, 0.6]
                         },
                         {
-                            "dataSetId": "12345",
+                            "modelId": "12345",
                             "label": "dwarf",
                             "bbox": [0.1, 0.3, 0.3, 0.4]
                         }
@@ -306,7 +306,7 @@ mock_search_result_labels = {
                     ],
                     "labels": [
                         {
-                            "dataSetId": "12345",
+                            "modelId": "12345",
                             "label": "wizard"
                         }
                     ]
@@ -335,7 +335,7 @@ mock_search_result_labels = {
                     ],
                     "labels": [
                         {
-                            "dataSetId": "12345",
+                            "modelId": "12345",
                             "label": "hobbit"
                         }
                     ]

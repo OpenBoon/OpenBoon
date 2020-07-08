@@ -10,19 +10,19 @@ def main():
     parser = argparse.ArgumentParser(description='Label Asset')
 
     parser.add_argument('id', help="Asset id")
-    parser.add_argument('dataset', help="The dataset name")
+    parser.add_argument('model', help="The model name")
     parser.add_argument('label', help="The label")
 
     args = parser.parse_args()
 
-    dataset = app.datasets.find_one_dataset(name=args.dataset)
-    app.assets.update_labels(args.id, dataset.make_label(args.label))
+    model = app.models.find_one_model(name=args.model)
+    app.assets.update_labels(args.id, model.make_label(args.label))
 
     print("Labels")
     print("---------------------------------------------------")
     print("%-25s count" % "Label")
     print("---------------------------------------------------")
-    for label, count in app.datasets.get_label_counts(dataset).items():
+    for label, count in app.models.get_label_counts(model).items():
         print("%-25s %d" % (label, count))
 
 

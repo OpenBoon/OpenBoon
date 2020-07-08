@@ -1,15 +1,14 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
-import SuspenseBoundary from '../SuspenseBoundary'
 import { colors, spacing } from '../Styles'
 
-import FaceLabelingLabels from './Labels'
+import FaceLabelingForm from './Form'
 
 const FaceLabelingContent = ({ projectId, assetId }) => {
   const { data } = useSWR(`/api/v1/projects/${projectId}/faces/${assetId}/`)
 
-  const { predictions = [] } = data || {}
+  const { filename, predictions = [] } = data || {}
 
   if (predictions.length < 1) {
     return (
@@ -21,13 +20,22 @@ const FaceLabelingContent = ({ projectId, assetId }) => {
   }
 
   return (
-    <SuspenseBoundary>
-      <FaceLabelingLabels
+    <>
+      <div
+        css={{
+          padding: spacing.normal,
+          color: colors.signal.sky.base,
+        }}
+      >
+        {filename}
+      </div>
+
+      <FaceLabelingForm
         projectId={projectId}
         assetId={assetId}
         predictions={predictions}
       />
-    </SuspenseBoundary>
+    </>
   )
 }
 

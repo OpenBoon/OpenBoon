@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, getQueryString } from '../Fetch/helpers'
 
 export const getInitialModules = ({
   initialState: { modules: existingModules },
@@ -30,7 +30,7 @@ export const onSubmit = async ({
   dispatch({ isLoading: true })
 
   try {
-    await fetcher(
+    const { jobId } = await fetcher(
       `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/`,
       {
         method: 'PUT',
@@ -44,9 +44,14 @@ export const onSubmit = async ({
       },
     )
 
+    const queryString = getQueryString({
+      action: 'edit-datasource-success',
+      jobId,
+    })
+
     Router.push(
-      '/[projectId]/data-sources?action=edit-datasource-success',
-      `/${projectId}/data-sources?action=edit-datasource-success`,
+      `/[projectId]/data-sources${queryString}`,
+      `/${projectId}/data-sources${queryString}`,
     )
   } catch (response) {
     try {

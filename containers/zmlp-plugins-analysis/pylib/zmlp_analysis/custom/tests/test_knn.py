@@ -15,10 +15,10 @@ class KnnLabelDetectionClassifierTests(PluginUnitTestCase):
         localize_patch.return_value = zorroa_test_path('training/model_knn.zip')
         get_model_patch.return_value = Model({
             'id': '12345',
-            'dataSetId': '12345',
-            'type': "LABEL_DETECTION_KNN",
+            'type': 'ZVI_LABEL_DETECTION',
             'fileId': 'models/foo/knn/12345',
-            'name': "foo"
+            'name': 'foo',
+            'moduleName': 'foo'
         })
 
         asset = TestAsset()

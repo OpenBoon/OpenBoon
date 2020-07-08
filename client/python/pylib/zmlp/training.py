@@ -1,4 +1,4 @@
-"""Classes to support training with DataSets"""
+"""Classes to support training with Models"""
 import os
 import logging
 import json
@@ -8,24 +8,25 @@ from google.cloud import storage as gcs
 logger = logging.getLogger(__name__)
 
 __all__ = [
-    'DataSetDownloader'
+    'TrainingSetDownloader'
 ]
 
 
-class DataSetDownloader:
+class TrainingSetDownloader:
     """
-    The DataSetDownloader class handles writing out the images in a
-    DataSet to local disk for model training purposes.
+    The TrainingSetDownloader class handles writing out the images labeled
+    for model training to local disk.  The Assets are automatically sorted
+    into train and validation sets.
 
-    Multiple directory layouts are supported based on the DataSet type.
+    Multiple directory layouts are supported based on the Model type.
 
     Examples:
 
         # Label Detection Layout
-        base_dir/flowers/set_train/daisy
-        base_dir/flowers/set_train/rose
-        base_dir/flowers/set_test/daisy
-        base_dir/flowers/set_test/rose
+        base_dir/flowers/set_validate/daisy
+        base_dir/flowers/set_validate/rose
+        base_dir/flowers/set_validate/daisy
+        base_dir/flowers/set_validate/rose
 
         # Object Detection Layout is a COCO compatible layout
         base_dir/set_train/images/*
@@ -37,38 +38,43 @@ class DataSetDownloader:
     SET_TRAIN = "set_train"
     """Directory name for training images"""
 
-    SET_TEST = "set_test"
+    SET_VALIDATION = "set_validate"
     """Directory name for test images"""
 
-    def __init__(self, app, dataset, style, dst_dir, train_test_ratio=4):
+    def __init__(self, app,  model, style, dst_dir, training_set_split=4):
         """
-        Create a new DataSetDownloader.
+        Create a new TrainingImageDownloader.
 
         Args:
             app: (ZmlpApp): A ZmlpApp instance.
-            dataset: (DataSet): A DataSet or unique DataSet ID.
+            model: (Model): A Model or unique Model ID.
             style: (str): The output style: labels_std, objects_keras, objects_coco
             dst_dir (str): A destination directory to write the files into.
-            train_test_ratio (int): The number of images in the training
+            training_set_split (int): The number of images in the training
                 set for every image in the test set.
         """
         self.app = app
-        self.dataset = app.datasets.get_dataset(dataset)
+        self.model = app.models.get_model(model)
         self.style = style
         self.dst_dir = dst_dir
-        self.train_test_ratio = train_test_ratio
+        self.training_set_split = training_set_split
 
         self.labels = {}
         self.label_distrib = {}
 
         self.query = {
-            'size': 32,
+            'size': 64,
             '_source': ['labels', 'files'],
             'query': {
                 'nested': {
                     'path': 'labels',
                     'query': {
-                        'term': {'labels.dataSetId': self.dataset.id}
+                        'bool': {
+                            'must': [
+                                {'term': {'labels.modelId': self.model.id}},
+                                {'term': {'labels.scope': 'TRAIN'}}
+                            ]
+                        }
                     }
                 }
             }
@@ -78,7 +84,7 @@ class DataSetDownloader:
 
     def build(self, pool=None):
         """
-        Downloads the files in the DataSet to local disk.
+        Downloads the files labeled for training a Model to local disk.
 
         Args:
             labels_std, objects_keras, objects_coco
@@ -95,7 +101,7 @@ class DataSetDownloader:
         elif self.style == "objects_automl":
             self._build_automl_dataset()
         else:
-            raise ValueError("{} not supported by the DataSetDownloader".format(format))
+            raise ValueError("{} not supported by the TrainingSetDownloader".format(format))
 
     def _build_labels_std_format(self, pool):
 
@@ -107,7 +113,7 @@ class DataSetDownloader:
                 logger.warning('{} did not have a suitable thumbnail'.format(asset))
                 continue
 
-            ds_labels = self._get_dataset_labels(asset)
+            ds_labels = self._get_labels(asset)
             if not ds_labels:
                 logger.warning('{} did not have any labels'.format(asset))
                 continue
@@ -129,7 +135,7 @@ class DataSetDownloader:
 
     def _build_objects_coco_format(self, pool=None):
         """
-        Write a DataSet in a COCO object detection training structure.
+        Write a labeled assets in a COCO object detection training structure.
 
         Args:
             pool (multiprocessing.Pool): A multi-processing pool for downloading really fast.
@@ -149,7 +155,7 @@ class DataSetDownloader:
                 logger.warning('{} did not have a suitable thumbnail'.format(asset))
                 continue
 
-            ds_labels = self._get_dataset_labels(asset)
+            ds_labels = self._get_labels(asset)
             if not ds_labels:
                 logger.warning('{} did not have any labels'.format(asset))
                 continue
@@ -184,22 +190,22 @@ class DataSetDownloader:
                 if set_type == self.SET_TRAIN:
                     coco.add_to_training_set(image, category, annotation)
                 else:
-                    coco.add_to_test_set(image, category, annotation)
+                    coco.add_to_validation_set(image, category, annotation)
 
         # Write out the annotations files.
         with open(os.path.join(self.dst_dir, self.SET_TRAIN, "annotations.json"), "w") as fp:
             logger.debug("Writing training set annotations to {}".format(fp.name))
             json.dump(coco.get_training_annotations(), fp)
 
-        with open(os.path.join(self.dst_dir, self.SET_TEST, "annotations.json"), "w") as fp:
+        with open(os.path.join(self.dst_dir, self.SET_VALIDATION, "annotations.json"), "w") as fp:
             logger.debug("Writing test set annotations to {}".format(fp.name))
-            json.dump(coco.get_test_annotations(), fp)
+            json.dump(coco.get_validation_annotations(), fp)
 
     def _build_objects_keras_format(self, pool=None):
         self._setup_objects_keras_base_dir()
 
         fp_train = open(os.path.join(self.dst_dir, self.SET_TRAIN, "annotations.csv"), "w")
-        fp_test = open(os.path.join(self.dst_dir, self.SET_TEST, "annotations.csv"), "w")
+        fp_test = open(os.path.join(self.dst_dir, self.SET_VALIDATION, "annotations.csv"), "w")
         unique_labels = set()
 
         try:
@@ -210,7 +216,7 @@ class DataSetDownloader:
                     logger.warning('{} did not have a suitable thumbnail'.format(asset))
                     continue
 
-                ds_labels = self._get_dataset_labels(asset)
+                ds_labels = self._get_labels(asset)
                 if not ds_labels:
                     logger.warning('{} did not have any labels'.format(asset))
                     continue
@@ -280,30 +286,30 @@ class DataSetDownloader:
 
     def _setup_labels_std_base_dir(self):
         """
-        Sets up a directory structure for storing the files in the DataSet.
+        Sets up a directory structure for storing files used to train a model..
 
         The structure is basically:
             set_train/<label>/<img file>
             set_test/<label>/<img file>
         """
-        self.labels = self.app.datasets.get_label_counts(self.dataset.id)
+        self.labels = self.app.models.get_label_counts(self.model)
 
         # This is layout #1, we need to add darknet layout for object detection.
-        dirs = (self.SET_TRAIN, self.SET_TEST)
+        dirs = (self.SET_TRAIN, self.SET_VALIDATION)
         for set_name in dirs:
             os.makedirs('{}/{}'.format(self.dst_dir, set_name), exist_ok=True)
             for label in self.labels.keys():
                 os.makedirs(os.path.join(self.dst_dir, set_name, label), exist_ok=True)
 
-        logger.info('DataSetDownloader setup, using {} labels'.format(len(self.labels)))
+        logger.info('TrainingSetDownloader setup, using {} labels'.format(len(self.labels)))
 
     def _setup_objects_coco_base_dir(self):
-        dirs = (self.SET_TRAIN, self.SET_TEST)
+        dirs = (self.SET_TRAIN, self.SET_VALIDATION)
         for set_name in dirs:
             os.makedirs(os.path.join(self.dst_dir, set_name, 'images'), exist_ok=True)
 
     def _setup_objects_keras_base_dir(self):
-        dirs = (self.SET_TRAIN, self.SET_TEST)
+        dirs = (self.SET_TRAIN, self.SET_VALIDATION)
         for set_name in dirs:
             os.makedirs(os.path.join(self.dst_dir, set_name, 'images'), exist_ok=True)
 
@@ -316,25 +322,25 @@ class DataSetDownloader:
             label (str): The label name.
 
         Returns:
-            str: Either set_test or set_test, depending on the train_test_ratio property.
+            str: Either set_validation or set_test, depending on the training_set_split property.
 
         """
         value = self.label_distrib.get(label, -1) + 1
         self.label_distrib[label] = value
-        if value % self.train_test_ratio == 0:
-            return self.SET_TEST
+        if value % self.training_set_split == 0:
+            return self.SET_VALIDATION
         else:
             return self.SET_TRAIN
 
-    def _get_dataset_labels(self, asset):
+    def _get_labels(self, asset):
         """
-        Get the current dataset label for the given asset.
+        Get the current model label for the given asset.
 
         Args:
             asset (Asset): The asset to check.
 
         Returns:
-            list[dict]: The labels in this DataSet
+            list[dict]: The labels for training a model.
 
         """
         ds_labels = asset.get_attr('labels')
@@ -342,7 +348,7 @@ class DataSetDownloader:
             return []
         result = []
         for ds_label in ds_labels:
-            if ds_label.get('dataSetId') == self.dataset.id:
+            if ds_label.get('modelId') == self.model.id:
                 result.append(ds_label)
         return result
 
@@ -442,7 +448,7 @@ class CocoAnnotationFileBuilder:
             "cat_set": {}
         }
 
-        self.test_set = {
+        self.validation_set = {
             "output": {
                 "type": "instances",
                 "images": [],
@@ -464,7 +470,7 @@ class CocoAnnotationFileBuilder:
         """
         self._add_to_set(self.train_set, img, cat, annotation)
 
-    def add_to_test_set(self, img, cat, annotation):
+    def add_to_validation_set(self, img, cat, annotation):
         """
         Add the image, category and annotation to the test set.
 
@@ -474,7 +480,7 @@ class CocoAnnotationFileBuilder:
             annotation: (dict): A COCO annotation dict.
 
         """
-        self._add_to_set(self.test_set, img, cat, annotation)
+        self._add_to_set(self.validation_set, img, cat, annotation)
 
     def _add_to_set(self, dataset, img, cat, annotation):
         """
@@ -516,11 +522,11 @@ class CocoAnnotationFileBuilder:
         """
         return self.train_set['output']
 
-    def get_test_annotations(self):
+    def get_validation_annotations(self):
         """
         Return a structure suitable for a COCO annotations file.
 
         Returns:
             dict: The test annoations.
         """
-        return self.test_set['output']
+        return self.validation_set['output']

@@ -24,7 +24,7 @@ enum class ProjectStorageEntity {
     ASSETS,
 
     /**
-     * The stored file is associated with a dataset.
+     * The stored file is associated with a dataset. This is deprecated.
      */
     DATASETS,
 
