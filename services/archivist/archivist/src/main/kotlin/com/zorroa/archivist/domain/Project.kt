@@ -273,7 +273,7 @@ class ProjectQuotaCounters {
      * Introspect the asset and increment the internal counters for deletion.
      */
     fun countForDeletion(asset: Asset) {
-        val mediaType = asset.getAttr<String>("media.type") ?:  FileExtResolver.getType(
+        val mediaType = asset.getAttr<String>("media.type") ?: FileExtResolver.getType(
             FileUtils.extension(asset.getAttr<String>("source.path"))
         )
 
