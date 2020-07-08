@@ -32,8 +32,6 @@ const newBorders = Object.entries(borderWidths).reduce((acc, [name, size]) => {
   }
 }, {})
 
-console.log(newBorders)
-
 const borders = {
   keyOneRegular: `1px solid ${colors.key.one}`,
   keyOneMedium: `2px solid ${colors.key.one}`,
