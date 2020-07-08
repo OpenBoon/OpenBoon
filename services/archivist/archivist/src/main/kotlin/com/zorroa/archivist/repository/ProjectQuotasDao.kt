@@ -59,7 +59,9 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
         jdbc.update(
             UPDATE_QUOTAS,
             counts.videoLength,
+            counts.deletedVideoLength,
             counts.pageCount,
+            counts.deletedPageCount,
             getProjectId()
         )
     }
@@ -94,6 +96,12 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
             counts.videoLength,
             counts.pageCount,
             counts.videoClipCount,
+            counts.deletedVideoLength,
+            counts.deletedVideoFileCount,
+            counts.deletedDocumentFileCount,
+            counts.deletedImageFileCount,
+            counts.deletedVideoClipCount,
+            counts.deletedPageCount,
             getProjectId(),
             entry
         )
@@ -105,8 +113,10 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
             ProjectQuotas(
                 rs.getLong("int_max_video_seconds"),
                 rs.getBigDecimal("float_video_seconds"),
+                rs.getBigDecimal("float_deleted_video_seconds"),
                 rs.getLong("int_max_page_count"),
-                rs.getLong("int_page_count")
+                rs.getLong("int_page_count"),
+                rs.getLong("int_deleted_page_count")
             )
         }
 
@@ -118,14 +128,22 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
                 rs.getLong("int_video_file_count"),
                 rs.getLong("int_document_file_count"),
                 rs.getLong("int_image_file_count"),
-                rs.getLong("int_video_clip_count")
+                rs.getLong("int_video_clip_count"),
+                rs.getBigDecimal("float_deleted_video_seconds"),
+                rs.getLong("int_deleted_video_file_count"),
+                rs.getLong("int_deleted_document_file_count"),
+                rs.getLong("int_deleted_image_file_count"),
+                rs.getLong("int_deleted_video_clip_count"),
+                rs.getLong("int_deleted_page_count")
             )
         }
 
         const val UPDATE_QUOTAS = "UPDATE " +
             "project_quota SET " +
-            "float_video_seconds=float_video_seconds+?," +
-            "int_page_count=int_page_count+? " +
+            "float_video_seconds=float_video_seconds+?, " +
+            "float_deleted_video_seconds=float_deleted_video_seconds+?, " +
+            "int_page_count=int_page_count+?, " +
+            "int_deleted_page_count=int_deleted_page_count+? " +
             "WHERE pk_project=?"
 
         const val UPDATE_TIMESCALE_COUNTERS =
@@ -137,7 +155,13 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
                 "int_image_file_count=int_image_file_count+?," +
                 "float_video_seconds=float_video_seconds+?," +
                 "int_page_count=int_page_count+?," +
-                "int_video_clip_count=int_video_clip_count+? " +
+                "int_video_clip_count=int_video_clip_count+?, " +
+                "float_deleted_video_seconds=float_deleted_video_seconds+?, " +
+                "int_deleted_video_file_count=int_deleted_video_file_count+?, " +
+                "int_deleted_document_file_count=int_deleted_document_file_count+?, " +
+                "int_deleted_image_file_count=int_deleted_image_file_count+?, "+
+                "int_deleted_video_clip_count=int_deleted_video_clip_count+?, "+
+                "int_deleted_page_count=int_deleted_page_count+? "+
                 "WHERE " +
                 "pk_project=? AND int_entry=?"
     }

@@ -2,6 +2,7 @@ package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.repository.KDaoFilter
+import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.JdbcUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
@@ -169,11 +170,17 @@ class ProjectQuotas(
     @ApiModelProperty("The current amount of video ingested, in seconds. ")
     val videoSecondsCount: BigDecimal,
 
+    @ApiModelProperty("The current number of deleted videos, in seconds. ")
+    val deletedVideoSecondsCount: BigDecimal,
+
     @ApiModelProperty("The maximum number of pages ingested.")
     val pageMax: Long,
 
     @ApiModelProperty("The current number of pages ingested.")
-    val pageCount: Long
+    val pageCount: Long,
+
+    @ApiModelProperty("The current number of deleted pages.")
+    val deletedPageCount: Long
 )
 
 @ApiModel("ProjectQuotasTimeSeriesEntry", description = "Quota gauges rolled up to the hour.")
@@ -191,7 +198,19 @@ class ProjectQuotasTimeSeriesEntry(
     @ApiModelProperty("The number of unique image files ingested during this interval.")
     val imageFileCount: Long,
     @ApiModelProperty("The number of unique video clips ingested during this interval.")
-    val videoClipCount: Long
+    val videoClipCount: Long,
+    @ApiModelProperty("The amount of deleted video during this interval.")
+    val deletedVideoSecondsCount: BigDecimal,
+    @ApiModelProperty("The number of deleted video files during this interval.")
+    val deletedVideoFileCount: Long,
+    @ApiModelProperty("The number of deleted document files during this interval.")
+    val deletedDocumentFileCount: Long,
+    @ApiModelProperty("The number of deleted image files during this interval.")
+    val deletedImageFileCount: Long,
+    @ApiModelProperty("The number of deleted video clips during this interval.")
+    val deletedVideoClipCount: Long,
+    @ApiModelProperty("Th number of deleted Pages during this interval.")
+    val deletedPageCount: Long
 )
 
 /**
@@ -207,6 +226,14 @@ class ProjectQuotaCounters {
     var videoFileCount: Int = 0
     var imageFileCount: Int = 0
     var documentFileCount: Int = 0
+
+    var deletedVideoLength: Double = 0.0
+    var deletedVideoFileCount: Int = 0
+    var deletedDocumentFileCount: Int = 0
+    var deletedImageFileCount: Int = 0
+    var deletedVideoClipCount: Int = 0
+    var deletedPageCount: Int = 0
+
 
     /**
      * Introspect the asset and increment the internal counters.
@@ -236,6 +263,42 @@ class ProjectQuotaCounters {
             "image" -> {
                 pageCount += 1
                 imageFileCount += 1
+            }
+            else -> {
+                throw IllegalArgumentException("The asset has no media.type property.")
+            }
+        }
+    }
+
+    /**
+     * Introspect the asset and increment the internal counters for deletion.
+     */
+    fun countForDeletion(asset: Asset) {
+        val mediaType = asset.getAttr<String>("media.type") ?:
+            FileExtResolver.getType(FileUtils.extension(asset.getAttr<String>("source.path")))
+
+        when (mediaType) {
+            "video" -> {
+                val length = asset.getAttr("media.length", Double::class.java)
+                    ?: throw IllegalArgumentException("Video has no length property")
+
+                val clipTrack = asset.getAttr<String>("clip.track") ?: "full"
+
+                if (clipTrack == Clip.TRACK_FULL) {
+                    deletedVideoLength += length
+                    deletedVideoFileCount += 1
+                    deletedVideoClipCount += 1
+                } else {
+                    deletedVideoClipCount += 1
+                }
+            }
+            "document" -> {
+                deletedPageCount += 1
+                deletedDocumentFileCount += 1
+            }
+            "image" -> {
+                deletedPageCount += 1
+                deletedImageFileCount += 1
             }
             else -> {
                 throw IllegalArgumentException("The asset has no media.type property.")

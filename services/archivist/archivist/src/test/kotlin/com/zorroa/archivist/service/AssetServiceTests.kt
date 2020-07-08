@@ -24,6 +24,7 @@ import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.domain.emptyZpsScripts
+import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
@@ -59,6 +60,9 @@ class AssetServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var projectStorageService: ProjectStorageService
+
+    @Autowired
+    lateinit var projectQuotasDao: ProjectQuotasDao
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -246,6 +250,15 @@ class AssetServiceTests : AbstractTest() {
 
         val rsp = assetService.batchDelete(setOf(assetId))
         Thread.sleep(1000)
+
+        var quotaTimeSeries = jdbc.queryForMap(
+            "SELECT * FROM project_quota_time_series WHERE int_deleted_image_file_count > 0 limit 1"
+        )
+        assertEquals(1L, quotaTimeSeries["int_deleted_image_file_count"])
+        assertEquals(1L, quotaTimeSeries["int_deleted_page_count"])
+
+        var quota = projectQuotasDao.getQuotas(getProjectId())
+        assertEquals(1L, quota.deletedPageCount)
     }
 
     @Test
