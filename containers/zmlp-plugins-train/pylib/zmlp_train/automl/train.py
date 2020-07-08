@@ -30,8 +30,6 @@ class AutoMLModelTrainer(AssetProcessor):
                               toolTip="The model Id"))
         self.add_arg(Argument("display_name", "string", required=True,
                               toolTip=AutoMLModelTrainer.tool_tips['display_name']))
-        self.add_arg(Argument("project_path", "string",
-                              toolTip=AutoMLModelTrainer.tool_tips['project_path']))
         self.add_arg(Argument("model_path", "string",
                               toolTip=AutoMLModelTrainer.tool_tips['project_path']))
         self.add_arg(Argument("deploy", "bool", default=False,
@@ -51,11 +49,9 @@ class AutoMLModelTrainer(AssetProcessor):
         self.app_model = self.app.models.get_model(self.arg_value('model_id'))
         self.project_id = self._get_project_id()
         self.display_name = self.arg_value('display_name')
-        self.project_path = self.arg_value('project_path')
         self.model_path = self.arg_value('model_path')
 
         self.client = automl.AutoMlClient()
-        self.df = pd.read_csv(self.project_path, header=None)
 
     def process(self, frame):
         # create empty dataset from project ID
@@ -73,6 +69,7 @@ class AutoMLModelTrainer(AssetProcessor):
         model_id = self.model_path or self._get_id(model.operation)
 
         # publish model
+        self.df = pd.read_csv(self.project_path, header=None)
         self.publish_model(model_id)
 
     @staticmethod
@@ -112,7 +109,7 @@ class AutoMLModelTrainer(AssetProcessor):
         Write a DataSet in a AutoML training structure.
 
         Returns:
-            str: A path to an annotation file.
+            str: A path to the data file.
         """
         storage_client = gcs.Client()
 
@@ -123,7 +120,9 @@ class AutoMLModelTrainer(AssetProcessor):
 
         # writing the data into the file
         gcs_csv_path = 'csv/data.csv'
-        self._upload_to_gcs_bucket(storage_client, self.project_id, gcs_csv_path, local_csv_path)
+        gcs_path = self._upload_to_gcs_bucket(storage_client, self.project_id, gcs_csv_path,
+                                              local_csv_path)
+        return gcs_path
 
     @staticmethod
     def _upload_to_gcs_bucket(storage_client, bucket_name, blob_path, local_path):
@@ -137,13 +136,14 @@ class AutoMLModelTrainer(AssetProcessor):
             local_path: path to local file
 
         Returns:
-            None
+            (str) Entire blob path (gs://bucket_name/...)
         """
         bucket = storage_client.bucket(bucket_name)
         blob = bucket.blob(blob_path)
 
         blob.upload_from_filename(local_path)
         logging.debug("File {} uploaded to {}.".format(local_path, blob_path))
+        return 'gs://{}/{}'.format(bucket_name, blob_path)
 
     def create_dataset(self, project_id, display_name, region="us-central1"):
         """Create an empty dataset that will eventually hold the training data for the model.
