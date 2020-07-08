@@ -131,7 +131,7 @@ class Membership(models.Model):
                 self.save()
                 return
             else:
-                apikey_permissions = apikey_json.get('permissions')
+                apikey_permissions = apikey_json.get('permissions', [])
                 internally_consistent = set(apikey_permissions) == set(wallet_desired_permissions)
 
             # Check to make sure the key still matches what's in ZMLP
