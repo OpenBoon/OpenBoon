@@ -1,11 +1,7 @@
-import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import getConfig from 'next/config'
-import { useRouter } from 'next/router'
 
 import { useLocalStorageState } from '../LocalStorage/helpers'
-
-import { parseFeatureFlags } from './helpers'
 
 export const ENVS = {
   LOCAL: 'localdev',
@@ -14,29 +10,15 @@ export const ENVS = {
   PROD: 'zvi-prod',
 }
 
-const {
-  publicRuntimeConfig: { ENVIRONMENT },
-} = getConfig()
-
 const Feature = ({ flag, envs, children }) => {
   const {
-    query: { flags },
-  } = useRouter()
+    publicRuntimeConfig: { ENVIRONMENT },
+  } = getConfig()
 
-  const [featureFlags, setFeatureFlags] = useLocalStorageState({
+  const [featureFlags] = useLocalStorageState({
     key: 'FeatureFlags',
     initialValue: {},
   })
-
-  useEffect(() => {
-    if (flags) {
-      const parsedFlags = parseFeatureFlags({ flags })
-
-      setFeatureFlags({ value: { ...featureFlags, ...parsedFlags } })
-    }
-    // Only run this effect on component mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   // Disabled flag
   if (featureFlags[flag] === false) {
@@ -48,8 +30,13 @@ const Feature = ({ flag, envs, children }) => {
     return children
   }
 
-  // Enabled environment
+  // Enabled environments
   if (envs.includes(ENVIRONMENT)) {
+    return children
+  }
+
+  // Enabled environments by default
+  if ([ENVS.LOCAL, ENVS.DEV].includes(ENVIRONMENT)) {
     return children
   }
 
