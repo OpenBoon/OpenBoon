@@ -40,8 +40,8 @@ class ApiKeySpec(
     @ApiModelProperty("Key enabled status")
     val enabled: Boolean = true,
 
-    @ApiModelProperty("Indicates that is a System Key")
-    val systemKey: Boolean = false
+    @ApiModelProperty("Indicates that is a hidden key", hidden = true)
+    val hidden: Boolean = false
 )
 
 @Entity
@@ -97,8 +97,12 @@ class ApiKey(
     val enabled: Boolean,
 
     @Column(name = "system_key")
-    @ApiModelProperty("Indicates that is a System Key")
-    val systemKey: Boolean
+    @ApiModelProperty("Indicates that is a System Key", hidden = true)
+    val systemKey: Boolean,
+
+    @Column(name = "hidden")
+    @ApiModelProperty("Indicates that is a hidden key", hidden = true)
+    val hidden: Boolean
 
 ) {
 
@@ -225,7 +229,7 @@ class ApiKeyFilter(
     @ApiModelProperty("Key name prefixes to match.")
     val namePrefixes: List<String>? = null,
 
-    @ApiModelProperty("Set to true to show sysstem keys.", hidden = true)
+    @ApiModelProperty("Set to true to show system keys.", hidden = true)
     val systemKey: Boolean? = null
 
 ) : AbstractJpaFilter<ApiKey>() {
@@ -234,6 +238,7 @@ class ApiKeyFilter(
         val where = mutableListOf<Predicate>()
 
         where.add(cb.equal(root.get<UUID>("projectId"), getProjectId()))
+        where.add(cb.equal(root.get<Boolean>("hidden"), false))
 
         ids?.let {
             val ic: CriteriaBuilder.In<UUID> = cb.`in`(root.get("id"))
