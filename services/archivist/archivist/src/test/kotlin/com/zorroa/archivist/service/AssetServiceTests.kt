@@ -250,15 +250,6 @@ class AssetServiceTests : AbstractTest() {
 
         val rsp = assetService.batchDelete(setOf(assetId))
         Thread.sleep(1000)
-
-        var quotaTimeSeries = jdbc.queryForMap(
-            "SELECT * FROM project_quota_time_series WHERE int_deleted_image_file_count > 0 limit 1"
-        )
-        assertEquals(1L, quotaTimeSeries["int_deleted_image_file_count"])
-        assertEquals(1L, quotaTimeSeries["int_deleted_page_count"])
-
-        var quota = projectQuotasDao.getQuotas(getProjectId())
-        assertEquals(1L, quota.deletedPageCount)
     }
 
     @Test
@@ -405,6 +396,36 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(BigDecimal("10.73"), counts["float_video_seconds"])
         assertEquals(2L, time["int_page_count"])
         assertEquals(1L, time["int_video_clip_count"])
+    }
+
+
+    @Test
+    fun testBatchDeleteWithProjectCounters() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cat/large-brown-cat.jpg"),
+                AssetSpec("gs://cat/large-brown-cat.mov", attrs = mutableMapOf( "media.length" to 10.732)),
+                AssetSpec("gs://cat/large-brown-cat.pdf")
+            )
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        val assets = assetService.getAll(createRsp.created)
+        val map = mutableMapOf<String, MutableMap<String, Any>>()
+
+        assetService.batchDelete(createRsp.created.toSet())
+        var quotaTimeSeries = jdbc.queryForMap(
+            "SELECT * FROM project_quota_time_series WHERE int_deleted_image_file_count > 0 limit 1"
+        )
+        assertEquals(1L, quotaTimeSeries["int_deleted_image_file_count"])
+        assertEquals(1L, quotaTimeSeries["int_deleted_document_file_count"])
+        assertEquals(1L, quotaTimeSeries["int_deleted_video_file_count"])
+        assertEquals(BigDecimal("10.73"), quotaTimeSeries["float_deleted_video_seconds"])
+        assertEquals(1L, quotaTimeSeries["int_deleted_video_clip_count"])
+        assertEquals(2L, quotaTimeSeries["int_deleted_page_count"])
+
+        var quota = projectQuotasDao.getQuotas(getProjectId())
+        assertEquals(2L, quota.deletedPageCount)
+        assertEquals(BigDecimal("10.73"), quota.deletedVideoSecondsCount)
     }
 
     @Test
