@@ -15,6 +15,25 @@ const borderRadius = {
   round: 32,
 }
 
+const borderWidths = { regular: '1px', medium: '2px', large: '4px' }
+
+const newBorders = Object.entries(borderWidths).reduce((acc, [name, size]) => {
+  return {
+    ...acc,
+    [name]: Object.entries(colors.structure).reduce(
+      (acc2, [colorName, colorHex]) => {
+        return {
+          ...acc2,
+          [colorName]: `${size} solid ${colorHex}`,
+        }
+      },
+      {},
+    ),
+  }
+}, {})
+
+console.log(newBorders)
+
 const borders = {
   default: `1px solid ${colors.structure.mattGrey}`,
   transparent: `1px solid transparent`,
@@ -40,6 +59,7 @@ const borders = {
   unselectedFacet: `4px solid ${colors.structure.steel}`,
   metrics: `2px solid ${colors.structure.white}`,
   outline: `thin solid transparent`,
+  ...newBorders,
 }
 
 const opacity = {

@@ -75,7 +75,7 @@ const STYLES = {
       borderBottom: constants.borders.divider,
       paddingBottom: spacing.hairline,
       ':hover': {
-        border: constants.borders.tableRow,
+        border: constants.borders.regular.smoke,
         svg: { opacity: 1 },
       },
     },
