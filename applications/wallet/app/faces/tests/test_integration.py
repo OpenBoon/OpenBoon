@@ -174,20 +174,24 @@ class TestStatus:
 
     def test_get(self, login, api_client, project):
         path = reverse('face-status', kwargs={'project_pk': project.id})
-        with patch.object(JobApp, 'find_jobs') as find_mock:
-            find_mock.return_value = [Mock(id='test',
-                                           name='Applying modules: custom-console_face_recognition-face-recognition-knn')]  # noqa
-            response = api_client.get(path)
+        with patch.object(FaceViewSet, '_get_model') as get_model_mock:
+            get_model_mock.return_value = Mock(ready=False)
+            with patch.object(JobApp, 'find_jobs') as find_mock:
+                find_mock.return_value = [Mock(id='test',
+                                               name='Applying modules: custom-console_face_recognition-face-recognition-knn')]  # noqa
+                response = api_client.get(path)
         content = check_response(response)
         assert content == {'unappliedChanges': True, 'jobId': 'test'}
 
     def test_get_no_job(self, login, api_client, project):
         path = reverse('face-status', kwargs={'project_pk': project.id})
-        with patch.object(JobApp, 'find_jobs') as find_mock:
-            find_mock.return_value = []
-            response = api_client.get(path)
+        with patch.object(FaceViewSet, '_get_model') as get_model_mock:
+            get_model_mock.return_value = Mock(ready=True)
+            with patch.object(JobApp, 'find_jobs') as find_mock:
+                find_mock.return_value = []
+                response = api_client.get(path)
         content = check_response(response)
-        assert content == {'unappliedChanges': True, 'jobId': ''}
+        assert content == {'unappliedChanges': False, 'jobId': ''}
 
 
 class TestLabels:

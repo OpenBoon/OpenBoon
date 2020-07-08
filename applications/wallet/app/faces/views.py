@@ -190,9 +190,11 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     @action(detail=False, methods=['get'])
     def status(self, request, project_pk):
         """Returns any running reprocessing job and whether there are unapplied changes."""
+        app = request.app
+
         # Check for jobs
         name_prefix = f'Train {self.model_name}'
-        running_jobs = request.app.jobs.find_jobs(state='InProgress')
+        running_jobs = app.jobs.find_jobs(state='InProgress')
         job_id = ''
         for job in running_jobs:
             if job.name.startswith(name_prefix):
@@ -200,7 +202,9 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
 
         # Check for unapplied changes - always True until we can use real logic
         # to check for this. True allows us to use the Train & Apply button in the UI.
-        changes = True
+        # Unapplied changes is the opposite of the model.ready property
+        model = self._get_model(app)
+        changes = not model.ready
         return Response(status=status.HTTP_200_OK, data={'unapplied_changes': changes,
                                                          'job_id': job_id})
 
