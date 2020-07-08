@@ -73,8 +73,8 @@ const MetadataPrettyMetricsBar = ({ pipeline }) => {
                   position: 'relative',
                   height: HOVER_HEIGHT,
                   top: -2,
-                  border: constants.borders.metrics,
-                  outline: constants.borders.outline,
+                  border: constants.borders.medium.white,
+                  outline: constants.borders.regular.transparent,
                 },
                 '&:first-of-type': {
                   borderTopLeftRadius: constants.borderRadius.small,

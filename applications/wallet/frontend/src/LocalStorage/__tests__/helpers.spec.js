@@ -3,11 +3,20 @@ import TestRenderer, { act } from 'react-test-renderer'
 import { useLocalStorageState, useLocalStorageReducer } from '../helpers'
 
 describe('<LocalStorage /> helpers', () => {
+  const { getItem, setItem, clear } = localStorage
+
   const mockSet = jest.fn()
   const mockGet = jest.fn()
+  const mockClear = jest.fn()
 
   Object.defineProperty(window, 'localStorage', {
-    value: { setItem: mockSet, getItem: mockGet },
+    value: { setItem: mockSet, getItem: mockGet, clear: mockClear },
+  })
+
+  afterAll(() => {
+    Object.defineProperty(window, 'localStorage', {
+      value: { setItem, getItem, clear },
+    })
   })
 
   describe('useLocalStorageState()', () => {

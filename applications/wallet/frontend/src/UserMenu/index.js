@@ -78,7 +78,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
             <div
               css={{
                 padding: spacing.normal,
-                borderBottom: constants.borders.separator,
+                borderBottom: constants.borders.regular.zinc,
               }}
             >
               <div css={{ fontWeight: typography.weight.bold }}>
@@ -86,7 +86,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
               </div>
               <div>{email}</div>
             </div>
-            <ul css={{ borderBottom: constants.borders.separator }}>
+            <ul css={{ borderBottom: constants.borders.regular.zinc }}>
               <li>
                 <Link href="/account" passHref>
                   <Button

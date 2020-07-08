@@ -9,7 +9,7 @@ import CrossSvg from '../Icons/cross.svg'
 import Button, { VARIANTS } from '../Button'
 import SuspenseBoundary from '../SuspenseBoundary'
 import AssetAsset from '../Asset/Asset'
-import { formatUrl } from '../Filters/helpers'
+import { getQueryString } from '../Fetch/helpers'
 
 const ICON_SIZE = 20
 
@@ -20,9 +20,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
 
   const [isVisible, setIsVisible] = useState(false)
 
-  const index = assets
-    .filter((a) => a && a.id)
-    .findIndex(({ id }) => id === selectedId)
+  const index = assets.findIndex(({ id }) => id === selectedId)
 
   const { id: previousId } = index > 0 ? assets[index - 1] : {}
   const { id: nextId } =
@@ -63,7 +61,10 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           pathname: '/[projectId]/visualizer',
           query: { projectId, id: previousId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: previousId, query })}`,
+        `/${projectId}/visualizer${getQueryString({
+          id: previousId,
+          query,
+        })}`,
       )
 
       event.preventDefault()
@@ -75,7 +76,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           pathname: '/[projectId]/visualizer',
           query: { projectId, id: nextId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: nextId, query })}`,
+        `/${projectId}/visualizer${getQueryString({ id: nextId, query })}`,
       )
 
       event.preventDefault()
@@ -87,7 +88,10 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           pathname: '/[projectId]/visualizer',
           query: { projectId, id: previousRowId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: previousRowId, query })}`,
+        `/${projectId}/visualizer${getQueryString({
+          id: previousRowId,
+          query,
+        })}`,
       )
 
       event.preventDefault()
@@ -99,7 +103,10 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           pathname: '/[projectId]/visualizer',
           query: { projectId, id: nextRowId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: nextRowId, query })}`,
+        `/${projectId}/visualizer${getQueryString({
+          id: nextRowId,
+          query,
+        })}`,
       )
 
       event.preventDefault()

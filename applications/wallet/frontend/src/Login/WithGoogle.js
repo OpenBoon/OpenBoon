@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { keyframes } from '@emotion/core'
 
 import { colors, constants, spacing } from '../Styles'
 
@@ -17,11 +16,6 @@ const GOOGLE_COLORS = {
   default: '#318AF5',
   hover: '#0053C4',
 }
-
-const rotate = keyframes`
-  from { transform:rotate(0deg); }
-  to { transform:rotate(360deg); }
-`
 
 const LoginWithGoogle = ({ googleAuth, hasGoogleLoaded, onSubmit }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -88,7 +82,7 @@ const LoginWithGoogle = ({ googleAuth, hasGoogleLoaded, onSubmit }) => {
             {isLoading ? (
               <GeneratingSvg
                 height={HEIGHT}
-                css={{ animation: `${rotate} 2s linear infinite` }}
+                css={{ animation: constants.animations.infiniteRotation }}
               />
             ) : (
               <GoogleLogoSvg height={HEIGHT} />

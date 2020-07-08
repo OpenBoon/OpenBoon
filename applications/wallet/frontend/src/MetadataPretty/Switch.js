@@ -20,7 +20,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
         css={{
           width: '100%',
           '&:not(:first-of-type)': {
-            borderTop: constants.borders.prettyMetadata,
+            borderTop: constants.borders.large.iron,
           },
         }}
       >
@@ -50,7 +50,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
         return (
           <>
             {!!name && (
-              <div css={{ borderTop: constants.borders.divider }}>
+              <div css={{ borderTop: constants.borders.regular.smoke }}>
                 <div
                   css={{
                     fontFamily: typography.family.condensed,

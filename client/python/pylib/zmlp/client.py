@@ -79,11 +79,10 @@ class ZmlpClient(object):
                                     headers=self.headers(), stream=True)
             if not response.ok:
                 raise ZmlpClientException(
-                    "Failed to stream asset: %s" % response)
+                    "Failed to stream text: %s" % response)
 
-            for line in response.iter_lines():
-                if line:
-                    yield line
+            for line in response.iter_lines(decode_unicode=True):
+                yield line
 
         except requests.exceptions.ConnectionError as e:
             raise ZmlpConnectionException(e)

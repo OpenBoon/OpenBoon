@@ -208,7 +208,6 @@ Array [
   background-color: transparent;
   padding: 0;
   border-radius: 0;
-  border: 1px solid transparent;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 12px;
@@ -263,7 +262,6 @@ Array [
   background-color: transparent;
   padding: 0;
   border-radius: 0;
-  border: 1px solid transparent;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 12px;
@@ -414,6 +412,7 @@ Array [
       <div
         className="emotion-3"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -441,6 +440,7 @@ Array [
       <div
         className="emotion-3"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -468,6 +468,7 @@ Array [
       <div
         className="emotion-3"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -495,6 +496,7 @@ Array [
       <div
         className="emotion-3"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -522,6 +524,7 @@ Array [
       <div
         className="emotion-3"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -549,6 +552,7 @@ Array [
       <div
         className="emotion-3"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -576,6 +580,7 @@ Array [
       <div
         className="emotion-3"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -603,6 +608,7 @@ Array [
       <div
         className="emotion-3"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Expand Section"
@@ -823,7 +829,6 @@ Array [
   background-color: transparent;
   padding: 0;
   border-radius: 0;
-  border: 1px solid transparent;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 12px;
@@ -878,7 +883,6 @@ Array [
   background-color: transparent;
   padding: 0;
   border-radius: 0;
-  border: 1px solid transparent;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 12px;

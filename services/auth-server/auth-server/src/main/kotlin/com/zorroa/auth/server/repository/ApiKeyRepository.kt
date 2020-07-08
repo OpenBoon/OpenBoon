@@ -24,7 +24,7 @@ interface ApiKeyRepository : JpaRepository<ApiKey, UUID> {
 
     fun findAllByProjectId(projectId: UUID): List<ApiKey>
 
-    fun findAllByProjectIdAndSystemKey(projectId: UUID, systemKey: Boolean): List<ApiKey>
+    fun findAllByProjectIdAndHidden(projectId: UUID, hidden: Boolean): List<ApiKey>
 
     fun findByProjectIdAndId(id: UUID, projectId: UUID): ApiKey
 

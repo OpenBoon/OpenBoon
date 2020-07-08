@@ -14,7 +14,6 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
-import com.google.cloud.storage.StorageException
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectStorageLocator
@@ -116,15 +115,15 @@ class AwsProjectStorageService constructor(
 
     override fun stream(locator: ProjectStorageLocator): ResponseEntity<Resource> {
         val path = locator.getPath()
-        val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path))
 
         return try {
+            val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path))
             ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(s3obj.objectMetadata.contentType))
                 .contentLength(s3obj.objectMetadata.instanceLength)
                 .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
                 .body(InputStreamResource(s3obj.objectContent))
-        } catch (e: StorageException) {
+        } catch (e: Exception) {
             ResponseEntity.noContent().build()
         }
     }

@@ -11,16 +11,16 @@ const ComboboxInput = ({ id, value, hasError, onChange, onBlur }) => {
       css={{
         width: '100%',
         padding: spacing.base,
-        outline: constants.borders.outline,
+        outline: constants.borders.regular.transparent,
         backgroundColor: colors.structure.smoke,
         color: colors.structure.white,
         fontWeight: typography.weight.medium,
         border: hasError
           ? constants.borders.error
-          : constants.borders.transparentMedium,
+          : constants.borders.medium.transparent,
         borderRadius: constants.borderRadius.small,
         ':hover': {
-          border: constants.borders.radioMedium,
+          border: constants.borders.medium.white,
         },
         ':focus': {
           backgroundColor: colors.structure.white,

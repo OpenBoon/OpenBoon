@@ -74,7 +74,8 @@ class ApiKeyServiceImpl constructor(
             actor.toString(),
             actor.toString(),
             spec.enabled,
-            spec.systemKey
+            spec.name in systemKeys,
+            spec.hidden
         )
 
         logger.event(
@@ -98,9 +99,18 @@ class ApiKeyServiceImpl constructor(
             validatePermissionsCanBeAssigned(spec.permissions)
         }
 
+        if (spec.name in systemKeys) {
+            throw UnsupportedOperationException("This key cannot be changed.")
+        }
+
         val time = System.currentTimeMillis()
         val actor = getZmlpActor()
         val apiKey: ApiKey = get(id)
+        val hidden = if (apiKey.systemKey) {
+            true
+        } else {
+            spec.hidden
+        }
 
         val key = ApiKey(
             apiKey.id,
@@ -113,7 +123,8 @@ class ApiKeyServiceImpl constructor(
             apiKey.actorCreated,
             actor.toString(),
             spec.enabled,
-            spec.systemKey
+            apiKey.systemKey,
+            hidden
         )
 
         logger.event(
@@ -134,7 +145,7 @@ class ApiKeyServiceImpl constructor(
 
     @Transactional(readOnly = true)
     override fun findAll(): List<ApiKey> {
-        return apiKeyRepository.findAllByProjectIdAndSystemKey(getProjectId(), false)
+        return apiKeyRepository.findAllByProjectIdAndHidden(getProjectId(), false)
     }
 
     @Transactional(readOnly = true)
@@ -150,7 +161,7 @@ class ApiKeyServiceImpl constructor(
     override fun delete(apiKey: ApiKey) {
 
         if (apiKey.systemKey) {
-            throw(UnsupportedOperationException("System Keys Cannot be deleted"))
+            throw UnsupportedOperationException("System Keys Cannot be deleted")
         }
 
         logger.event(
@@ -164,6 +175,7 @@ class ApiKeyServiceImpl constructor(
     }
 
     override fun updateEnabled(apiKey: ApiKey, enabled: Boolean) {
+
         logger.event(
             LogObject.API_KEY, if (enabled) LogAction.ENABLE else LogAction.DISABLE,
             mapOf(
@@ -193,5 +205,7 @@ class ApiKeyServiceImpl constructor(
 
     companion object {
         private val logger = LoggerFactory.getLogger(ApiKeyServiceImpl::class.java)
+
+        private val systemKeys: Set<String> = setOf("job-runner")
     }
 }

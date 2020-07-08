@@ -29,10 +29,10 @@ const FilterTextSearch = ({
   return (
     <div
       css={{
-        border: constants.borders.transparent,
-        borderBottom: constants.borders.tabs,
+        border: constants.borders.regular.transparent,
+        borderBottom: constants.borders.regular.iron,
         ':hover': {
-          border: constants.borders.tableRow,
+          border: constants.borders.regular.steel,
           svg: { opacity: 1 },
         },
         padding: spacing.small,

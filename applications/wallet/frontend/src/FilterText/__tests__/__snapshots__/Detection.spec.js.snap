@@ -190,7 +190,7 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
 }
 
 .emotion-0:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -305,7 +305,7 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
 }
 
 .emotion-0:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
