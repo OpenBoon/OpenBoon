@@ -8,8 +8,10 @@ import pandas as pd
 import backoff
 from google.api_core.exceptions import ResourceExhausted
 from google.cloud import automl_v1beta1 as automl
+from google.cloud import storage as gcs
 
 from zmlpsdk import Argument, AssetProcessor, file_storage
+from zmlp.training import TrainingSetDownloader as tsd
 
 logging.basicConfig()
 
@@ -60,6 +62,9 @@ class AutoMLModelTrainer(AssetProcessor):
         dataset = self.create_dataset(self.project_id, self.display_name)
         dataset_id = self._get_id(dataset)
 
+        # build and return CSV file
+        self.project_path = self._build_dataset()
+
         # import dataset from project_path CSV file
         self.import_dataset(self.project_id, dataset_id, self.project_path)
 
@@ -95,12 +100,50 @@ class AutoMLModelTrainer(AssetProcessor):
         """Parse a response name for its ID
 
         Args:
-            name (str): AutoML class (e.g. Dataset or Model class)
+            name (Object): AutoML class (e.g. Dataset or Model class)
 
         Returns:
             (str) the parsed name's ID (or its location basename)
         """
         return name.name.split("/")[-1]
+
+    def _build_dataset(self):
+        """
+        Write a DataSet in a AutoML training structure.
+
+        Returns:
+            str: A path to an annotation file.
+        """
+        storage_client = gcs.Client()
+
+        # build CSV file
+        d = tempfile.mkdtemp()
+        dsl = tsd(self.app, '12345', 'objects_automl', d)
+        local_csv_path = dsl.build()
+
+        # writing the data into the file
+        gcs_csv_path = 'csv/data.csv'
+        self._upload_to_gcs_bucket(storage_client, self.project_id, gcs_csv_path, local_csv_path)
+
+    @staticmethod
+    def _upload_to_gcs_bucket(storage_client, bucket_name, blob_path, local_path):
+        """
+        Write local file to GCS bucket
+
+        Args:
+            storage_client: GCS Client
+            bucket_name: bucket name (e.g. project_id)
+            blob_path: path where file will be uploaded (excluding 'gs://bucket_name/')
+            local_path: path to local file
+
+        Returns:
+            None
+        """
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(blob_path)
+
+        blob.upload_from_filename(local_path)
+        logging.debug("File {} uploaded to {}.".format(local_path, blob_path))
 
     def create_dataset(self, project_id, display_name, region="us-central1"):
         """Create an empty dataset that will eventually hold the training data for the model.
