@@ -108,8 +108,7 @@ class ApiKeyServiceImpl constructor(
         val apiKey: ApiKey = get(id)
         val hidden = if (apiKey.systemKey) {
             true
-        }
-        else {
+        } else {
             spec.hidden
         }
 
@@ -208,6 +207,5 @@ class ApiKeyServiceImpl constructor(
         private val logger = LoggerFactory.getLogger(ApiKeyServiceImpl::class.java)
 
         private val systemKeys: Set<String> = setOf("job-runner")
-
     }
 }

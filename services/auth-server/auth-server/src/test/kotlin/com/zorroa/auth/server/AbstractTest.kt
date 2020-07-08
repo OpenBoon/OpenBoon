@@ -65,7 +65,7 @@ abstract class AbstractTest {
             System.currentTimeMillis(),
             "bob/123",
             "bob/123",
-            enabled=true,
+            enabled = true,
             systemKey = false,
             hidden = false
         )
