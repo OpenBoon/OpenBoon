@@ -14,8 +14,7 @@ class ApikeyViewSet(BaseProjectViewSet):
     zmlp_only = True
 
     def list(self, request, project_pk):
-        # TODO: Add a filter for systemKey when ZMLP is updated.
-        return self._zmlp_list_from_search(request, search_filter={'systemKey': False})
+        return self._zmlp_list_from_search(request)
 
     def retrieve(self, request, project_pk, pk):
         return self._zmlp_retrieve(request, pk)
