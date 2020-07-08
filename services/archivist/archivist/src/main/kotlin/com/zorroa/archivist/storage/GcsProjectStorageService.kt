@@ -6,7 +6,6 @@ import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.HttpMethod
 import com.google.cloud.storage.Storage
-import com.google.cloud.storage.StorageException
 import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.ProjectDirLocator
