@@ -33,7 +33,7 @@ const AccountPasswordNotice = () => {
       <div
         css={{
           width: constants.form.maxWidth,
-          border: constants.borders.divider,
+          border: constants.borders.regular.smoke,
           borderRadius: constants.borderRadius.small,
           padding: spacing.spacious,
         }}

@@ -39,7 +39,7 @@ const PanelContent = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: spacing.base,
-            borderBottom: constants.borders.divider,
+            borderBottom: constants.borders.regular.smoke,
           }}
         >
           <h2

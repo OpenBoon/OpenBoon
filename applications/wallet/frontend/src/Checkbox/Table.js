@@ -52,7 +52,7 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
             fontWeight: typography.weight.medium,
           },
           td: {
-            borderTop: constants.borders.tabs,
+            borderTop: constants.borders.regular.iron,
             verticalAlign: 'top',
             ':first-of-type': {
               border: 'none',
@@ -75,7 +75,7 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
           },
           'tr:last-of-type': {
             td: {
-              borderBottom: constants.borders.tabs,
+              borderBottom: constants.borders.regular.iron,
               ':first-of-type': {
                 border: 'none',
               },
