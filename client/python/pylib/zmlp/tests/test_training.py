@@ -17,6 +17,9 @@ key_dict = {
 
 
 class TrainingSetDownloaderTests(unittest.TestCase):
+    def setUp(self):
+        self.app = ZmlpApp(key_dict)
+
     @patch.object(ModelApp, 'get_model')
     @patch.object(ZmlpClient, 'get')
     def test_setup_labels_std_base_dir(self, get_patch, get_model_patch):
