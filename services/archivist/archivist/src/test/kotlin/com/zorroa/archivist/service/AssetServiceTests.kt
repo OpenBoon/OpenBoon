@@ -398,13 +398,12 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(1L, time["int_video_clip_count"])
     }
 
-
     @Test
     fun testBatchDeleteWithProjectCounters() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec("gs://cat/large-brown-cat.jpg"),
-                AssetSpec("gs://cat/large-brown-cat.mov", attrs = mutableMapOf( "media.length" to 10.732)),
+                AssetSpec("gs://cat/large-brown-cat.mov", attrs = mutableMapOf("media.length" to 10.732)),
                 AssetSpec("gs://cat/large-brown-cat.pdf")
             )
         )
