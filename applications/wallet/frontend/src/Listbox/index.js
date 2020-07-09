@@ -94,7 +94,7 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
             }}
           >
             <input
-              aria-label="Search metadata type"
+              aria-label="Filter options"
               type="search"
               value={searchString}
               onChange={({ target: { value: searchValue } }) =>
