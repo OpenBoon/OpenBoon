@@ -40,5 +40,30 @@ describe('<FaceLabelingTrainApply />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Training Help' })
+        .props.onKeyPress()
+    })
+
+    // expect(mockDispatch.mock.calls[0][0]).toEqual(true)
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Training Help' })
+        .props.onMouseEnter()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Training Help' })
+        .props.onMouseLeave()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })
