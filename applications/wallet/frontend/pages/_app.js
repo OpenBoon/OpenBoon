@@ -1,8 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import App from 'next/app'
 import getConfig from 'next/config'
+import Router from 'next/router'
 import * as Sentry from '@sentry/browser'
 import { Integrations as ApmIntegrations } from '@sentry/apm'
+import { timestampWithMs } from '@sentry/utils'
 import { CacheProvider } from '@emotion/core'
 import createCache from '@emotion/cache'
 
@@ -15,6 +17,8 @@ import 'react-resizable/css/styles.css'
 import User from '../src/User'
 import Authentication from '../src/Authentication'
 
+import { getPathname } from '../src/Fetch/helpers'
+
 const emotionCache = createCache({
   key: 'emotion-cache',
   prefix: false,
@@ -22,11 +26,24 @@ const emotionCache = createCache({
 
 const { publicRuntimeConfig: { ENVIRONMENT, ENABLE_SENTRY } = {} } = getConfig()
 
+Router.events.on('routeChangeStart', (pathname) => {
+  ApmIntegrations.Tracing.finishIdleTransaction(timestampWithMs())
+  ApmIntegrations.Tracing.startIdleTransaction({
+    name: getPathname({ pathname }),
+    op: 'navigation',
+  })
+})
+
 if (ENABLE_SENTRY === 'true') {
   Sentry.init({
     dsn: 'https://09e9c3fc777c469ab784ff4367ff54bb@sentry.io/1848515',
-    integrations: [new ApmIntegrations.Tracing()],
-    tracesSampleRate: 0.25,
+    integrations: [
+      new ApmIntegrations.Tracing({
+        beforeNavigate: getPathname,
+        startTransactionOnLocationChange: false,
+      }),
+    ],
+    tracesSampleRate: 1,
     release: process.env.CI_COMMIT_SHA,
     environment: ENVIRONMENT,
     beforeSend(event) {

@@ -1,4 +1,4 @@
-import { fetcher, getQueryString } from '../helpers'
+import { fetcher, getQueryString, getPathname } from '../helpers'
 
 describe('<Fetch /> helpers', () => {
   describe('fetcher()', () => {
@@ -56,6 +56,40 @@ describe('<Fetch /> helpers', () => {
   describe('getQueryString()', () => {
     it('should return an empty string with no query params', () => {
       expect(getQueryString()).toEqual('')
+    })
+  })
+
+  describe('getPathname()', () => {
+    it('should return a pathname', () => {
+      expect(getPathname({ pathname: '/' })).toEqual('/')
+    })
+
+    it('should strip query params', () => {
+      expect(getPathname({ pathname: '/?foo=bar' })).toEqual('/')
+    })
+
+    it('should strip the projectId', () => {
+      expect(
+        getPathname({ pathname: '/a0952c03-cc04-461c-a367-9ffae8c4199a' }),
+      ).toEqual('/<projectId>')
+    })
+
+    it('should camelCase', () => {
+      expect(
+        getPathname({
+          pathname:
+            '/a0952c03-cc04-461c-a367-9ffae8c4199a/data-sources/81ca313d-dc65-1391-9fe9-1aeeeaea6f33/edit',
+        }),
+      ).toEqual('/<projectId>/data-sources/<dataSourceId>/edit')
+    })
+
+    it('should strip recursively', () => {
+      expect(
+        getPathname({
+          pathname:
+            '/a0952c03-cc04-461c-a367-9ffae8c4199a/jobs/bc8e8b24-7aa2-1f49-a1c6-420403fdacd8/tasks/bc8e92b5-7aa2-1f49-a1c6-420403fdacd8/errors/91325a65-cf73-17a9-bd8f-76ee1900ec47',
+        }),
+      ).toEqual('/<projectId>/jobs/<jobId>/tasks/<taskId>/errors/<errorId>')
     })
   })
 })
