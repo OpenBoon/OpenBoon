@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   ListboxInput,
   ListboxButton,
@@ -5,6 +6,7 @@ import {
   ListboxPopover,
 } from '@reach/listbox'
 import PropTypes from 'prop-types'
+import deepfilter from 'deep-filter'
 
 import listboxShape from './shape'
 
@@ -18,6 +20,24 @@ const ICON_SIZE = 20
 const MAX_HEIGHT = 350
 
 const Listbox = ({ label, options, onChange, value, placeholder }) => {
+  const [searchString, setSearchString] = useState('')
+
+  const filteredOptions = deepfilter(options, (option, prop) => {
+    if (!searchString) return true
+
+    if (typeof prop === 'string' && typeof option === 'string') {
+      return prop.toLowerCase().includes(searchString)
+    }
+
+    if (typeof option === 'object' && Object.keys(option).length === 0) {
+      return false
+    }
+
+    return true
+  })
+
+  const hasResults = Object.keys(filteredOptions).length !== 0
+
   return (
     <label>
       <div
@@ -36,15 +56,11 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
         css={{
           width: '100%',
           display: 'flex',
-          outline: constants.borders.regular.transparent,
-          border: 'none',
           backgroundColor: colors.structure.steel,
-          borderRadius: constants.borderRadius.small,
-          cursor: 'pointer',
-          color: colors.structure.white,
           fontSize: typography.size.regular,
           lineHeight: typography.height.regular,
           fontWeight: typography.weight.medium,
+          borderRadius: constants.borderRadius.small,
         }}
         onChange={(v) => onChange({ value: v })}
       >
@@ -69,28 +85,53 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
               outline: 'none',
               boxShadow: 'none',
             },
+            marginTop: -2,
             backgroundColor: colors.structure.steel,
-            padding: 0,
-            outline: 'none',
             border: 'none',
+            padding: 0,
+            borderBottomRightRadius: constants.borderRadius.small,
+            borderBottomLeftRadius: constants.borderRadius.small,
+            overflow: 'hidden',
+            boxShadow: constants.boxShadows.dropdown,
           }}
         >
-          <ListboxList
+          <div
             css={{
-              margin: 0,
-              overflow: 'auto',
-              height: 'auto',
-              maxHeight: MAX_HEIGHT,
-              backgroundColor: colors.structure.steel,
-              color: colors.structure.white,
-              borderRadius: constants.borderRadius.small,
-              fontWeight: typography.weight.medium,
-              paddingTop: spacing.base,
-              paddingBottom: spacing.base,
+              padding: spacing.small,
             }}
           >
-            <ListboxOptions options={options} />
-          </ListboxList>
+            <input
+              type="search"
+              value={searchString}
+              onChange={({ target: { value: searchValue } }) =>
+                setSearchString(searchValue)
+              }
+              css={{
+                outline: 'none',
+                width: '100%',
+                padding: `${spacing.moderate}px ${spacing.base}px`,
+                borderRadius: constants.borderRadius.small,
+              }}
+            />
+          </div>
+
+          {hasResults && (
+            <ListboxList
+              css={{
+                margin: 0,
+                overflow: 'auto',
+                maxHeight: MAX_HEIGHT,
+                backgroundColor: colors.structure.steel,
+                color: colors.structure.white,
+                fontWeight: typography.weight.medium,
+                paddingTop: spacing.base,
+                paddingBottom: spacing.base,
+              }}
+            >
+              <ListboxOptions options={filteredOptions} nestedCount={0} />
+            </ListboxList>
+          )}
+          {!hasResults && <div css={{ padding: spacing.base }}>No Results</div>}
         </ListboxPopover>
       </ListboxInput>
     </label>

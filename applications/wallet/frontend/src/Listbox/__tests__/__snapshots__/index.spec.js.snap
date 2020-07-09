@@ -9,21 +9,17 @@ exports[`Listbox should render properly 1`] = `
   font-weight: 500;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  outline: 1px solid transparent;
-  border: none;
   background-color: #808080;
-  border-radius: 2px;
-  cursor: pointer;
-  color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  border-radius: 2px;
 }
 
 .emotion-1 {
@@ -46,26 +42,39 @@ exports[`Listbox should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-3 {
+.emotion-5 {
+  margin-top: -2px;
   background-color: #808080;
-  padding: 0;
-  outline: none;
   border: none;
+  padding: 0;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-3:focus-within {
+.emotion-5:focus-within {
   outline: none;
   box-shadow: none;
 }
 
+.emotion-3 {
+  padding: 4px;
+}
+
 .emotion-2 {
+  outline: none;
+  width: 100%;
+  padding: 12px 8px;
+  border-radius: 2px;
+}
+
+.emotion-4 {
   margin: 0;
   overflow: auto;
-  height: auto;
   max-height: 350px;
   background-color: #808080;
   color: #ffffff;
-  border-radius: 2px;
   font-weight: 500;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -78,7 +87,7 @@ exports[`Listbox should render properly 1`] = `
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-4"
+    className="emotion-6"
     defaultValue=""
     onChange={[Function]}
   >
@@ -94,12 +103,23 @@ exports[`Listbox should render properly 1`] = `
       Select Type
     </ListboxButton>
     <ListboxPopover
-      className="emotion-3"
+      className="emotion-5"
     >
+      <div
+        className="emotion-3"
+      >
+        <input
+          className="emotion-2"
+          onChange={[Function]}
+          type="search"
+          value=""
+        />
+      </div>
       <ListboxList
-        className="emotion-2"
+        className="emotion-4"
       >
         <ListboxOptions
+          nestedCount={0}
           options={
             Object {
               "analysis": Object {
@@ -158,21 +178,17 @@ exports[`Listbox should render properly 2`] = `
   font-weight: 500;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  outline: 1px solid transparent;
-  border: none;
   background-color: #808080;
-  border-radius: 2px;
-  cursor: pointer;
-  color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  border-radius: 2px;
 }
 
 .emotion-1 {
@@ -195,29 +211,35 @@ exports[`Listbox should render properly 2`] = `
   padding: 8px;
 }
 
-.emotion-3 {
+.emotion-5 {
+  margin-top: -2px;
   background-color: #808080;
-  padding: 0;
-  outline: none;
   border: none;
+  padding: 0;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-3:focus-within {
+.emotion-5:focus-within {
   outline: none;
   box-shadow: none;
 }
 
+.emotion-3 {
+  padding: 4px;
+}
+
 .emotion-2 {
-  margin: 0;
-  overflow: auto;
-  height: auto;
-  max-height: 350px;
-  background-color: #808080;
-  color: #ffffff;
+  outline: none;
+  width: 100%;
+  padding: 12px 8px;
   border-radius: 2px;
-  font-weight: 500;
-  padding-top: 8px;
-  padding-bottom: 8px;
+}
+
+.emotion-4 {
+  padding: 8px;
 }
 
 <label>
@@ -227,7 +249,7 @@ exports[`Listbox should render properly 2`] = `
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-4"
+    className="emotion-6"
     defaultValue=""
     onChange={[Function]}
   >
@@ -243,51 +265,286 @@ exports[`Listbox should render properly 2`] = `
       Select Type
     </ListboxButton>
     <ListboxPopover
-      className="emotion-3"
+      className="emotion-5"
     >
+      <div
+        className="emotion-3"
+      >
+        <input
+          className="emotion-2"
+          onChange={[Function]}
+          type="search"
+          value="qwerty"
+        />
+      </div>
+      <div
+        className="emotion-4"
+      >
+        No Results
+      </div>
+    </ListboxPopover>
+  </ListboxInput>
+</label>
+`;
+
+exports[`Listbox should render properly 3`] = `
+.emotion-0 {
+  padding-bottom: 8px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-6 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border-radius: 2px;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  border: none;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.emotion-5 {
+  margin-top: -2px;
+  background-color: #808080;
+  border: none;
+  padding: 0;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px 0 #000000;
+}
+
+.emotion-5:focus-within {
+  outline: none;
+  box-shadow: none;
+}
+
+.emotion-3 {
+  padding: 4px;
+}
+
+.emotion-2 {
+  outline: none;
+  width: 100%;
+  padding: 12px 8px;
+  border-radius: 2px;
+}
+
+.emotion-4 {
+  margin: 0;
+  overflow: auto;
+  max-height: 350px;
+  background-color: #808080;
+  color: #ffffff;
+  font-weight: 500;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+<label>
+  <div
+    className="emotion-0"
+  >
+    Metadata Type
+  </div>
+  <ListboxInput
+    className="emotion-6"
+    defaultValue=""
+    onChange={[Function]}
+  >
+    <ListboxButton
+      arrow={
+        <Unknown
+          color="#ffffff"
+          height={20}
+        />
+      }
+      className="emotion-1"
+    >
+      Select Type
+    </ListboxButton>
+    <ListboxPopover
+      className="emotion-5"
+    >
+      <div
+        className="emotion-3"
+      >
+        <input
+          className="emotion-2"
+          onChange={[Function]}
+          type="search"
+          value="time"
+        />
+      </div>
       <ListboxList
-        className="emotion-2"
+        className="emotion-4"
       >
         <ListboxOptions
+          nestedCount={0}
           options={
             Object {
-              "analysis": Object {
-                "zvi": Object {
-                  "tinyProxy": "analysis.zvi.tinyProxy",
-                },
-              },
               "clip": Object {
-                "pile": "clip.pile",
-                "sourceAssetId": "clip.sourceAssetId",
                 "timeline": "clip.timeline",
-                "type": "clip.type",
               },
-              "location": Object {
-                "city": "location.city",
-                "code": "location.code",
-                "country": "location.country",
-              },
-              "media": Object {
-                "author": "media.author",
-                "content": "media.content",
-                "description": "media.description",
-                "keywords": "media.keywords",
-                "orientation": "media.orientation",
-                "title": "media.title",
-                "type": "media.type",
-              },
-              "source": Object {
-                "extension": "source.extension",
-                "filename": "source.filename",
-                "mimetype": "source.mimetype",
-                "path": "source.path",
-              },
-              "system": Object {
-                "dataSourceId": "system.dataSourceId",
-                "jobId": "system.jobId",
-                "projectId": "system.projectId",
-                "state": "system.state",
-                "taskId": "system.taskId",
+            }
+          }
+        />
+      </ListboxList>
+    </ListboxPopover>
+  </ListboxInput>
+</label>
+`;
+
+exports[`Listbox should render properly 4`] = `
+.emotion-0 {
+  padding-bottom: 8px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-6 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border-radius: 2px;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  border: none;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.emotion-5 {
+  margin-top: -2px;
+  background-color: #808080;
+  border: none;
+  padding: 0;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px 0 #000000;
+}
+
+.emotion-5:focus-within {
+  outline: none;
+  box-shadow: none;
+}
+
+.emotion-3 {
+  padding: 4px;
+}
+
+.emotion-2 {
+  outline: none;
+  width: 100%;
+  padding: 12px 8px;
+  border-radius: 2px;
+}
+
+.emotion-4 {
+  margin: 0;
+  overflow: auto;
+  max-height: 350px;
+  background-color: #808080;
+  color: #ffffff;
+  font-weight: 500;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+<label>
+  <div
+    className="emotion-0"
+  >
+    Metadata Type
+  </div>
+  <ListboxInput
+    className="emotion-6"
+    defaultValue=""
+    onChange={[Function]}
+  >
+    <ListboxButton
+      arrow={
+        <Unknown
+          color="#ffffff"
+          height={20}
+        />
+      }
+      className="emotion-1"
+    >
+      Select Type
+    </ListboxButton>
+    <ListboxPopover
+      className="emotion-5"
+    >
+      <div
+        className="emotion-3"
+      >
+        <input
+          className="emotion-2"
+          onChange={[Function]}
+          type="search"
+          value="time"
+        />
+      </div>
+      <ListboxList
+        className="emotion-4"
+      >
+        <ListboxOptions
+          nestedCount={0}
+          options={
+            Object {
+              "clip": Object {
+                "timeline": "clip.timeline",
               },
             }
           }
@@ -307,21 +564,17 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   font-weight: 500;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  outline: 1px solid transparent;
-  border: none;
   background-color: #808080;
-  border-radius: 2px;
-  cursor: pointer;
-  color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  border-radius: 2px;
 }
 
 .emotion-1 {
@@ -344,26 +597,39 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   padding: 8px;
 }
 
-.emotion-3 {
+.emotion-5 {
+  margin-top: -2px;
   background-color: #808080;
-  padding: 0;
-  outline: none;
   border: none;
+  padding: 0;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-3:focus-within {
+.emotion-5:focus-within {
   outline: none;
   box-shadow: none;
 }
 
+.emotion-3 {
+  padding: 4px;
+}
+
 .emotion-2 {
+  outline: none;
+  width: 100%;
+  padding: 12px 8px;
+  border-radius: 2px;
+}
+
+.emotion-4 {
   margin: 0;
   overflow: auto;
-  height: auto;
   max-height: 350px;
   background-color: #808080;
   color: #ffffff;
-  border-radius: 2px;
   font-weight: 500;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -376,8 +642,8 @@ exports[`Listbox should render properly with existing attribute 1`] = `
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-4"
-    defaultValue="system.timeCreated"
+    className="emotion-6"
+    defaultValue="clip.timeline"
     onChange={[Function]}
   >
     <ListboxButton
@@ -389,15 +655,26 @@ exports[`Listbox should render properly with existing attribute 1`] = `
       }
       className="emotion-1"
     >
-      timeCreated
+      timeline
     </ListboxButton>
     <ListboxPopover
-      className="emotion-3"
+      className="emotion-5"
     >
+      <div
+        className="emotion-3"
+      >
+        <input
+          className="emotion-2"
+          onChange={[Function]}
+          type="search"
+          value=""
+        />
+      </div>
       <ListboxList
-        className="emotion-2"
+        className="emotion-4"
       >
         <ListboxOptions
+          nestedCount={0}
           options={
             Object {
               "analysis": Object {

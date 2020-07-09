@@ -22,14 +22,30 @@ describe('Listbox', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // search non-existent value
     act(() => {
       component.root
-        .findByType('ListboxInput')
-        .props.onChange('system.timeCreated')
+        .findByProps({ type: 'search' })
+        .props.onChange({ target: { value: 'qwerty' } })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
-    expect(mockOnChange).toBeCalledWith({ value: 'system.timeCreated' })
+
+    // search existing value
+    act(() => {
+      component.root
+        .findByProps({ type: 'search' })
+        .props.onChange({ target: { value: 'time' } })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByType('ListboxInput').props.onChange('clip.timeline')
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+    expect(mockOnChange).toBeCalledWith({ value: 'clip.timeline' })
   })
 
   it('should render properly with existing attribute', () => {
@@ -40,8 +56,8 @@ describe('Listbox', () => {
         label="Metadata Type"
         options={options}
         onChange={mockOnChange}
-        value="system.timeCreated"
-        placeholder="timeCreated"
+        value="clip.timeline"
+        placeholder="timeline"
       />,
     )
 
