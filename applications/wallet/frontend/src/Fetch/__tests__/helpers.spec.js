@@ -74,7 +74,7 @@ describe('<Fetch /> helpers', () => {
       ).toEqual('/<projectId>')
     })
 
-    it('should camelCalse', () => {
+    it('should camelCase', () => {
       expect(
         getPathname({
           pathname:
