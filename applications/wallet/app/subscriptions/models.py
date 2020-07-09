@@ -37,7 +37,7 @@ class Subscription(models.Model):
     def usage_last_hour(self):
         """Returns usage information from the last hour for the project."""
         client = self.project.get_zmlp_super_client()
-        all_usage = client.get('/api/v1/projects/_quotas_time_series')
+        all_usage = client.get('/api/v1/project/_quotas_time_series')
         if not all_usage:
             return None
         usage = all_usage[-1]
