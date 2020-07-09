@@ -120,7 +120,7 @@ exports[`Listbox should render properly 1`] = `
         className="emotion-3"
       >
         <input
-          aria-label="Search metadata type"
+          aria-label="Filter options"
           className="emotion-2"
           onChange={[Function]}
           type="search"
@@ -294,7 +294,7 @@ exports[`Listbox should render properly 2`] = `
         className="emotion-3"
       >
         <input
-          aria-label="Search metadata type"
+          aria-label="Filter options"
           className="emotion-2"
           onChange={[Function]}
           type="search"
@@ -431,7 +431,7 @@ exports[`Listbox should render properly 3`] = `
         className="emotion-3"
       >
         <input
-          aria-label="Search metadata type"
+          aria-label="Filter options"
           className="emotion-2"
           onChange={[Function]}
           type="search"
@@ -577,7 +577,7 @@ exports[`Listbox should render properly 4`] = `
         className="emotion-3"
       >
         <input
-          aria-label="Search metadata type"
+          aria-label="Filter options"
           className="emotion-2"
           onChange={[Function]}
           type="search"
@@ -723,7 +723,7 @@ exports[`Listbox should render properly with existing attribute 1`] = `
         className="emotion-3"
       >
         <input
-          aria-label="Search metadata type"
+          aria-label="Filter options"
           className="emotion-2"
           onChange={[Function]}
           type="search"
