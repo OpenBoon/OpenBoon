@@ -98,6 +98,7 @@ resource "kubernetes_deployment" "wallet" {
               path   = "/api/v1/health/"
               port   = "80"
             }
+            timeout_seconds = 5
           }
           readiness_probe {
             initial_delay_seconds = 30
