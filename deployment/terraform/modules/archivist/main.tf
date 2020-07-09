@@ -173,6 +173,7 @@ resource "kubernetes_deployment" "archivist" {
           liveness_probe {
             initial_delay_seconds = 120
             period_seconds        = 30
+            timeout_seconds = 5
             http_get {
               scheme = "HTTP"
               path   = "/monitor/health"
