@@ -8,6 +8,7 @@ import createCache from '@emotion/cache'
 
 import 'focus-visible'
 import '@reach/combobox/styles.css'
+import '@reach/listbox/styles.css'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 

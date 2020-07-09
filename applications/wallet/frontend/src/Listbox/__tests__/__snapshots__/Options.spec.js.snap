@@ -1,0 +1,633 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ListboxOptions /> should render a nested list properly 1`] = `
+Array [
+  .emotion-5 {
+  list-style: none;
+  padding-left: 0;
+  padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-4 {
+  padding-bottom: 2px;
+}
+
+.emotion-0 {
+  padding-left: 8px;
+}
+
+.emotion-1 {
+  padding-left: 24px;
+}
+
+.emotion-3 {
+  padding: 0;
+}
+
+.emotion-3:hover {
+  background-color: #b3b3b3;
+  cursor: pointer;
+}
+
+.emotion-2 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 40px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+<ul
+    aria-labelledby="analysis"
+    className="emotion-5"
+    role="group"
+  >
+    <li
+      className="emotion-4"
+      role="presentation"
+    >
+      <span
+        className="emotion-0"
+      >
+        analysis
+      </span>
+      <ul
+        aria-labelledby="zvi"
+        className="emotion-5"
+        role="group"
+      >
+        <li
+          className="emotion-4"
+          role="presentation"
+        >
+          <span
+            className="emotion-1"
+          >
+            zvi
+          </span>
+          <ul
+            className="emotion-3"
+          >
+            <ListboxOption
+              className="emotion-2"
+              value="analysis.zvi.tinyProxy"
+            >
+              tinyProxy
+            </ListboxOption>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>,
+  .emotion-10 {
+  list-style: none;
+  padding-left: 0;
+  padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-9 {
+  padding-bottom: 2px;
+}
+
+.emotion-0 {
+  padding-left: 8px;
+}
+
+.emotion-2 {
+  padding: 0;
+}
+
+.emotion-2:hover {
+  background-color: #b3b3b3;
+  cursor: pointer;
+}
+
+.emotion-1 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 24px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+<ul
+    aria-labelledby="clip"
+    className="emotion-10"
+    role="group"
+  >
+    <li
+      className="emotion-9"
+      role="presentation"
+    >
+      <span
+        className="emotion-0"
+      >
+        clip
+      </span>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="clip.pile"
+        >
+          pile
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="clip.sourceAssetId"
+        >
+          sourceAssetId
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="clip.timeline"
+        >
+          timeline
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="clip.type"
+        >
+          type
+        </ListboxOption>
+      </ul>
+    </li>
+  </ul>,
+  .emotion-8 {
+  list-style: none;
+  padding-left: 0;
+  padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-7 {
+  padding-bottom: 2px;
+}
+
+.emotion-0 {
+  padding-left: 8px;
+}
+
+.emotion-2 {
+  padding: 0;
+}
+
+.emotion-2:hover {
+  background-color: #b3b3b3;
+  cursor: pointer;
+}
+
+.emotion-1 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 24px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+<ul
+    aria-labelledby="location"
+    className="emotion-8"
+    role="group"
+  >
+    <li
+      className="emotion-7"
+      role="presentation"
+    >
+      <span
+        className="emotion-0"
+      >
+        location
+      </span>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="location.city"
+        >
+          city
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="location.code"
+        >
+          code
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="location.country"
+        >
+          country
+        </ListboxOption>
+      </ul>
+    </li>
+  </ul>,
+  .emotion-16 {
+  list-style: none;
+  padding-left: 0;
+  padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-15 {
+  padding-bottom: 2px;
+}
+
+.emotion-0 {
+  padding-left: 8px;
+}
+
+.emotion-2 {
+  padding: 0;
+}
+
+.emotion-2:hover {
+  background-color: #b3b3b3;
+  cursor: pointer;
+}
+
+.emotion-1 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 24px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+<ul
+    aria-labelledby="media"
+    className="emotion-16"
+    role="group"
+  >
+    <li
+      className="emotion-15"
+      role="presentation"
+    >
+      <span
+        className="emotion-0"
+      >
+        media
+      </span>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="media.author"
+        >
+          author
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="media.content"
+        >
+          content
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="media.description"
+        >
+          description
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="media.keywords"
+        >
+          keywords
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="media.orientation"
+        >
+          orientation
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="media.title"
+        >
+          title
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="media.type"
+        >
+          type
+        </ListboxOption>
+      </ul>
+    </li>
+  </ul>,
+  .emotion-10 {
+  list-style: none;
+  padding-left: 0;
+  padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-9 {
+  padding-bottom: 2px;
+}
+
+.emotion-0 {
+  padding-left: 8px;
+}
+
+.emotion-2 {
+  padding: 0;
+}
+
+.emotion-2:hover {
+  background-color: #b3b3b3;
+  cursor: pointer;
+}
+
+.emotion-1 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 24px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+<ul
+    aria-labelledby="source"
+    className="emotion-10"
+    role="group"
+  >
+    <li
+      className="emotion-9"
+      role="presentation"
+    >
+      <span
+        className="emotion-0"
+      >
+        source
+      </span>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="source.extension"
+        >
+          extension
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="source.filename"
+        >
+          filename
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="source.mimetype"
+        >
+          mimetype
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="source.path"
+        >
+          path
+        </ListboxOption>
+      </ul>
+    </li>
+  </ul>,
+  .emotion-12 {
+  list-style: none;
+  padding-left: 0;
+  padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-11 {
+  padding-bottom: 2px;
+}
+
+.emotion-0 {
+  padding-left: 8px;
+}
+
+.emotion-2 {
+  padding: 0;
+}
+
+.emotion-2:hover {
+  background-color: #b3b3b3;
+  cursor: pointer;
+}
+
+.emotion-1 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 24px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+<ul
+    aria-labelledby="system"
+    className="emotion-12"
+    role="group"
+  >
+    <li
+      className="emotion-11"
+      role="presentation"
+    >
+      <span
+        className="emotion-0"
+      >
+        system
+      </span>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="system.dataSourceId"
+        >
+          dataSourceId
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="system.jobId"
+        >
+          jobId
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="system.projectId"
+        >
+          projectId
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="system.state"
+        >
+          state
+        </ListboxOption>
+      </ul>
+      <ul
+        className="emotion-2"
+      >
+        <ListboxOption
+          className="emotion-1"
+          value="system.taskId"
+        >
+          taskId
+        </ListboxOption>
+      </ul>
+    </li>
+  </ul>,
+]
+`;
+
+exports[`<ListboxOptions /> should render a non-nested list properly 1`] = `
+Array [
+  .emotion-1 {
+  padding: 0;
+}
+
+.emotion-1:hover {
+  background-color: #b3b3b3;
+  cursor: pointer;
+}
+
+.emotion-0 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 24px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+<ul
+    className="emotion-1"
+  >
+    <ListboxOption
+      className="emotion-0"
+      value="fields"
+    >
+      fields
+    </ListboxOption>
+  </ul>,
+  .emotion-1 {
+  padding: 0;
+}
+
+.emotion-1:hover {
+  background-color: #b3b3b3;
+  cursor: pointer;
+}
+
+.emotion-0 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 24px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+<ul
+    className="emotion-1"
+  >
+    <ListboxOption
+      className="emotion-0"
+      value="media"
+    >
+      media
+    </ListboxOption>
+  </ul>,
+]
+`;
