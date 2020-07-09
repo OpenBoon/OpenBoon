@@ -46,6 +46,7 @@ resource "kubernetes_deployment" "api-gateway" {
               path   = "/monitor/health"
               port   = "80"
             }
+            timeout_seconds = 5
           }
           readiness_probe {
             failure_threshold     = 6
@@ -63,11 +64,11 @@ resource "kubernetes_deployment" "api-gateway" {
           resources {
             limits {
               memory = "2Gi"
-              cpu    = 0.5
+              cpu    = 2
             }
             requests {
               memory = "512Mi"
-              cpu    = 0.2
+              cpu    = 1
             }
           }
           env {
