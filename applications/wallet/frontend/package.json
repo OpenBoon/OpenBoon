@@ -104,7 +104,7 @@
     {
       "//": "all pages and chunks",
       "path": ".next/static/**/!(framework|commons|_app|_error|main|polyfill|webpack)*.js",
-      "maxSize": "33 kB"
+      "maxSize": "37 kB"
     }
   ],
   "dependencies": {
@@ -112,6 +112,7 @@
     "@emotion/cache": "10.0.29",
     "@emotion/core": "10.0.28",
     "@reach/combobox": "0.10.5",
+    "@reach/listbox": "0.10.5",
     "@sentry/apm": "5.19.0",
     "@sentry/browser": "5.19.0",
     "@svgr/webpack": "5.4.0",
