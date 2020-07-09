@@ -6,7 +6,6 @@ import {
   ListboxPopover,
 } from '@reach/listbox'
 import PropTypes from 'prop-types'
-import deepfilter from 'deep-filter'
 
 import listboxShape from './shape'
 
@@ -15,6 +14,7 @@ import ChevronSvg from '../Icons/chevron.svg'
 import { constants, spacing, colors, typography } from '../Styles'
 
 import ListboxOptions from './Options'
+import { getFilteredOptions } from './helpers'
 
 const ICON_SIZE = 20
 const MAX_HEIGHT = 350
@@ -22,24 +22,18 @@ const MAX_HEIGHT = 350
 const Listbox = ({ label, options, onChange, value, placeholder }) => {
   const [searchString, setSearchString] = useState('')
 
-  const filteredOptions = deepfilter(options, (option, prop) => {
-    if (!searchString) return true
-
-    if (typeof prop === 'string' && typeof option === 'string') {
-      return prop.toLowerCase().includes(searchString)
-    }
-
-    if (typeof option === 'object' && Object.keys(option).length === 0) {
-      return false
-    }
-
-    return true
-  })
+  const filteredOptions = getFilteredOptions({ options, searchString })
 
   const hasResults = Object.keys(filteredOptions).length !== 0
 
   return (
-    <label>
+    <label
+      css={{
+        '[data-reach-listbox-input][data-state="expanded"]': {
+          borderRadius: `${constants.borderRadius.small}px ${constants.borderRadius.small}px 0 0`,
+        },
+      }}
+    >
       <div
         css={{
           paddingBottom: spacing.base,
@@ -85,7 +79,6 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
               outline: 'none',
               boxShadow: 'none',
             },
-            marginTop: -2,
             backgroundColor: colors.structure.steel,
             border: 'none',
             padding: 0,
@@ -101,16 +94,22 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
             }}
           >
             <input
+              aria-label="Search metadata type"
               type="search"
               value={searchString}
               onChange={({ target: { value: searchValue } }) =>
                 setSearchString(searchValue)
               }
               css={{
-                outline: 'none',
                 width: '100%',
                 padding: `${spacing.moderate}px ${spacing.base}px`,
                 borderRadius: constants.borderRadius.small,
+                boxShadow: constants.boxShadows.input,
+                border: constants.borders.medium.transparent,
+                '&:focus': {
+                  border: constants.borders.keyOneMedium,
+                  outline: colors.key.one,
+                },
               }}
             />
           </div>

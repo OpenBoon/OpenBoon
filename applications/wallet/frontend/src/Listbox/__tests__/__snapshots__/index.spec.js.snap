@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Listbox should render properly 1`] = `
+.emotion-7 [data-reach-listbox-input][data-state="expanded"] {
+  border-radius: 2px 2px 0 0;
+}
+
 .emotion-0 {
   padding-bottom: 8px;
   color: #ffffff;
@@ -43,7 +47,6 @@ exports[`Listbox should render properly 1`] = `
 }
 
 .emotion-5 {
-  margin-top: -2px;
   background-color: #808080;
   border: none;
   padding: 0;
@@ -63,10 +66,16 @@ exports[`Listbox should render properly 1`] = `
 }
 
 .emotion-2 {
-  outline: none;
   width: 100%;
   padding: 12px 8px;
   border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  border: 2px solid transparent;
+}
+
+.emotion-2:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
 }
 
 .emotion-4 {
@@ -80,7 +89,9 @@ exports[`Listbox should render properly 1`] = `
   padding-bottom: 8px;
 }
 
-<label>
+<label
+  className="emotion-7"
+>
   <div
     className="emotion-0"
   >
@@ -109,6 +120,7 @@ exports[`Listbox should render properly 1`] = `
         className="emotion-3"
       >
         <input
+          aria-label="Search metadata type"
           className="emotion-2"
           onChange={[Function]}
           type="search"
@@ -170,6 +182,10 @@ exports[`Listbox should render properly 1`] = `
 `;
 
 exports[`Listbox should render properly 2`] = `
+.emotion-7 [data-reach-listbox-input][data-state="expanded"] {
+  border-radius: 2px 2px 0 0;
+}
+
 .emotion-0 {
   padding-bottom: 8px;
   color: #ffffff;
@@ -212,7 +228,6 @@ exports[`Listbox should render properly 2`] = `
 }
 
 .emotion-5 {
-  margin-top: -2px;
   background-color: #808080;
   border: none;
   padding: 0;
@@ -232,17 +247,25 @@ exports[`Listbox should render properly 2`] = `
 }
 
 .emotion-2 {
-  outline: none;
   width: 100%;
   padding: 12px 8px;
   border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  border: 2px solid transparent;
+}
+
+.emotion-2:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
 }
 
 .emotion-4 {
   padding: 8px;
 }
 
-<label>
+<label
+  className="emotion-7"
+>
   <div
     className="emotion-0"
   >
@@ -271,6 +294,7 @@ exports[`Listbox should render properly 2`] = `
         className="emotion-3"
       >
         <input
+          aria-label="Search metadata type"
           className="emotion-2"
           onChange={[Function]}
           type="search"
@@ -288,6 +312,10 @@ exports[`Listbox should render properly 2`] = `
 `;
 
 exports[`Listbox should render properly 3`] = `
+.emotion-7 [data-reach-listbox-input][data-state="expanded"] {
+  border-radius: 2px 2px 0 0;
+}
+
 .emotion-0 {
   padding-bottom: 8px;
   color: #ffffff;
@@ -330,7 +358,6 @@ exports[`Listbox should render properly 3`] = `
 }
 
 .emotion-5 {
-  margin-top: -2px;
   background-color: #808080;
   border: none;
   padding: 0;
@@ -350,10 +377,16 @@ exports[`Listbox should render properly 3`] = `
 }
 
 .emotion-2 {
-  outline: none;
   width: 100%;
   padding: 12px 8px;
   border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  border: 2px solid transparent;
+}
+
+.emotion-2:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
 }
 
 .emotion-4 {
@@ -367,7 +400,9 @@ exports[`Listbox should render properly 3`] = `
   padding-bottom: 8px;
 }
 
-<label>
+<label
+  className="emotion-7"
+>
   <div
     className="emotion-0"
   >
@@ -396,6 +431,7 @@ exports[`Listbox should render properly 3`] = `
         className="emotion-3"
       >
         <input
+          aria-label="Search metadata type"
           className="emotion-2"
           onChange={[Function]}
           type="search"
@@ -422,6 +458,10 @@ exports[`Listbox should render properly 3`] = `
 `;
 
 exports[`Listbox should render properly 4`] = `
+.emotion-7 [data-reach-listbox-input][data-state="expanded"] {
+  border-radius: 2px 2px 0 0;
+}
+
 .emotion-0 {
   padding-bottom: 8px;
   color: #ffffff;
@@ -464,7 +504,6 @@ exports[`Listbox should render properly 4`] = `
 }
 
 .emotion-5 {
-  margin-top: -2px;
   background-color: #808080;
   border: none;
   padding: 0;
@@ -484,10 +523,16 @@ exports[`Listbox should render properly 4`] = `
 }
 
 .emotion-2 {
-  outline: none;
   width: 100%;
   padding: 12px 8px;
   border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  border: 2px solid transparent;
+}
+
+.emotion-2:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
 }
 
 .emotion-4 {
@@ -501,7 +546,9 @@ exports[`Listbox should render properly 4`] = `
   padding-bottom: 8px;
 }
 
-<label>
+<label
+  className="emotion-7"
+>
   <div
     className="emotion-0"
   >
@@ -530,6 +577,7 @@ exports[`Listbox should render properly 4`] = `
         className="emotion-3"
       >
         <input
+          aria-label="Search metadata type"
           className="emotion-2"
           onChange={[Function]}
           type="search"
@@ -556,6 +604,10 @@ exports[`Listbox should render properly 4`] = `
 `;
 
 exports[`Listbox should render properly with existing attribute 1`] = `
+.emotion-7 [data-reach-listbox-input][data-state="expanded"] {
+  border-radius: 2px 2px 0 0;
+}
+
 .emotion-0 {
   padding-bottom: 8px;
   color: #ffffff;
@@ -598,7 +650,6 @@ exports[`Listbox should render properly with existing attribute 1`] = `
 }
 
 .emotion-5 {
-  margin-top: -2px;
   background-color: #808080;
   border: none;
   padding: 0;
@@ -618,10 +669,16 @@ exports[`Listbox should render properly with existing attribute 1`] = `
 }
 
 .emotion-2 {
-  outline: none;
   width: 100%;
   padding: 12px 8px;
   border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  border: 2px solid transparent;
+}
+
+.emotion-2:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
 }
 
 .emotion-4 {
@@ -635,7 +692,9 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   padding-bottom: 8px;
 }
 
-<label>
+<label
+  className="emotion-7"
+>
   <div
     className="emotion-0"
   >
@@ -664,6 +723,7 @@ exports[`Listbox should render properly with existing attribute 1`] = `
         className="emotion-3"
       >
         <input
+          aria-label="Search metadata type"
           className="emotion-2"
           onChange={[Function]}
           type="search"
