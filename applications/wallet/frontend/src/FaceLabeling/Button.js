@@ -2,9 +2,9 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, zIndex } from '../Styles'
-import HelpSvg from '../Icons/help.svg'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import HelpSvg from '../Icons/help.svg'
 
 import { onTrain } from './helpers'
 
@@ -31,6 +31,7 @@ const FaceLabelingButton = ({
           ? 'Override Current Training & Re-apply'
           : 'Train & Apply'}
       </Button>
+
       {jobId && unappliedChanges && (
         <div css={{ display: 'flex' }}>
           <HelpSvg
@@ -49,6 +50,7 @@ const FaceLabelingButton = ({
           />
         </div>
       )}
+
       {jobId && unappliedChanges && showHelpInfo && (
         <div
           css={{
