@@ -196,7 +196,7 @@ class IndexClusterMonitor(
             return
         }
         syncedClusters.add(cluster.id)
-        
+
         val routes = indexRouteDao.getAll(cluster)
         for (route in routes) {
             try {
