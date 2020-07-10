@@ -27,11 +27,6 @@ Array [
   padding: 0;
 }
 
-.emotion-3:hover {
-  background-color: #b3b3b3;
-  cursor: pointer;
-}
-
 .emotion-2 {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -39,6 +34,11 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
+}
+
+.emotion-2:hover {
+  background: #b3b3b3;
+  cursor: pointer;
 }
 
 <ul
@@ -104,11 +104,6 @@ Array [
   padding: 0;
 }
 
-.emotion-2:hover {
-  background-color: #b3b3b3;
-  cursor: pointer;
-}
-
 .emotion-1 {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -116,6 +111,11 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
+}
+
+.emotion-1:hover {
+  background: #b3b3b3;
+  cursor: pointer;
 }
 
 <ul
@@ -195,11 +195,6 @@ Array [
   padding: 0;
 }
 
-.emotion-2:hover {
-  background-color: #b3b3b3;
-  cursor: pointer;
-}
-
 .emotion-1 {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -207,6 +202,11 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
+}
+
+.emotion-1:hover {
+  background: #b3b3b3;
+  cursor: pointer;
 }
 
 <ul
@@ -276,11 +276,6 @@ Array [
   padding: 0;
 }
 
-.emotion-2:hover {
-  background-color: #b3b3b3;
-  cursor: pointer;
-}
-
 .emotion-1 {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -288,6 +283,11 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
+}
+
+.emotion-1:hover {
+  background: #b3b3b3;
+  cursor: pointer;
 }
 
 <ul
@@ -397,11 +397,6 @@ Array [
   padding: 0;
 }
 
-.emotion-2:hover {
-  background-color: #b3b3b3;
-  cursor: pointer;
-}
-
 .emotion-1 {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -409,6 +404,11 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
+}
+
+.emotion-1:hover {
+  background: #b3b3b3;
+  cursor: pointer;
 }
 
 <ul
@@ -488,11 +488,6 @@ Array [
   padding: 0;
 }
 
-.emotion-2:hover {
-  background-color: #b3b3b3;
-  cursor: pointer;
-}
-
 .emotion-1 {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -500,6 +495,11 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
+}
+
+.emotion-1:hover {
+  background: #b3b3b3;
+  cursor: pointer;
 }
 
 <ul
@@ -577,11 +577,6 @@ Array [
   padding: 0;
 }
 
-.emotion-1:hover {
-  background-color: #b3b3b3;
-  cursor: pointer;
-}
-
 .emotion-0 {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -589,6 +584,11 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
+}
+
+.emotion-0:hover {
+  background: #b3b3b3;
+  cursor: pointer;
 }
 
 <ul
@@ -605,11 +605,6 @@ Array [
   padding: 0;
 }
 
-.emotion-1:hover {
-  background-color: #b3b3b3;
-  cursor: pointer;
-}
-
 .emotion-0 {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -617,6 +612,11 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
+}
+
+.emotion-0:hover {
+  background: #b3b3b3;
+  cursor: pointer;
 }
 
 <ul
