@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.IndexClusterFilter
 import com.zorroa.archivist.domain.IndexClusterSpec
 import com.zorroa.archivist.domain.IndexClusterState
 import com.zorroa.archivist.repository.IndexClusterDao
+import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
@@ -15,6 +16,7 @@ import org.elasticsearch.client.Request
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
@@ -149,14 +151,20 @@ class IndexClusterServiceImpl constructor(
 @Component
 class IndexClusterMonitor(
     val indexClusterDao: IndexClusterDao,
+    val indexRouteDao: IndexRouteDao,
     val indexClusterService: IndexClusterService,
     val clusterBackupService: ClusterBackupService
 
 ) {
 
+    @Autowired
+    lateinit var indexRoutingService: IndexRoutingService
+
     var pingTimer: Timer = setupClusterPingTimer()
 
     val backupsEnabled = mutableSetOf<UUID>()
+
+    val syncedRoutes = mutableSetOf<UUID>()
 
     fun setupClusterPingTimer(): Timer {
         return fixedRateTimer(
@@ -173,8 +181,30 @@ class IndexClusterMonitor(
     fun pingAllClusters() {
         for (cluster in indexClusterDao.getAll()) {
             if (pingCluster(cluster)) {
-                // If we can ping it, ensure backups enabled.
+
+                // Migrate to new index versions.
+                syncIndexRoutes(cluster)
+
+                // Ensure backups enabled.
                 enableBackups(cluster)
+            }
+        }
+    }
+
+    fun syncIndexRoutes(cluster: IndexCluster) {
+        if (cluster.id in syncedRoutes) {
+            return
+        }
+
+        val routes = indexRouteDao.getAll(cluster)
+        for (route in routes) {
+            try {
+                // we'll put this here so it doesn't keep tring
+                // on a failuree.
+                syncedRoutes.add(route.id)
+                indexRoutingService.syncAllIndexRoutes(cluster)
+            } catch (e: Exception) {
+                logger.warn("Unable to sync index ${route.clusterUrl}", e)
             }
         }
     }
