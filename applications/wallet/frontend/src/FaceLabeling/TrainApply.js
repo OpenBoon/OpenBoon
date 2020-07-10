@@ -41,6 +41,7 @@ const FaceLabelingTrainApply = ({ projectId }) => {
       <div css={{ height: spacing.normal }} />
 
       <FaceLabelingButton
+        key={jobId}
         projectId={projectId}
         jobId={jobId}
         unappliedChanges={unappliedChanges}
