@@ -11,16 +11,7 @@ const ListboxOptions = ({ options, nestedCount }) => {
 
     if (typeof value === 'string') {
       return (
-        <ul
-          key={value}
-          css={{
-            padding: 0,
-            ':hover': {
-              backgroundColor: colors.structure.zinc,
-              cursor: 'pointer',
-            },
-          }}
-        >
+        <ul key={value} css={{ padding: 0 }}>
           <ListboxOption
             value={value}
             css={{
@@ -32,6 +23,10 @@ const ListboxOptions = ({ options, nestedCount }) => {
               fontSize: typography.size.regular,
               lineHeight: typography.height.regular,
               fontWeight: typography.weight.regular,
+              ':hover': {
+                background: colors.structure.zinc,
+                cursor: 'pointer',
+              },
             }}
           >
             {key}
