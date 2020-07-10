@@ -51,10 +51,13 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-4 {
@@ -65,7 +68,7 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
 }
 
 .emotion-4:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-4:hover svg {
@@ -108,6 +111,7 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
   <div
     className="emotion-3"
     onClick={[Function]}
+    style={Object {}}
   >
     <button
       aria-label="Expand Section"
@@ -119,7 +123,7 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
         className="emotion-0"
         color="#808080"
         data-file-name="chevron.svg"
-        width={20}
+        height={20}
       />
     </button>
     <h4
@@ -182,10 +186,13 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-4 {
@@ -228,6 +235,7 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
   <div
     className="emotion-3"
     onClick={[Function]}
+    style={Object {}}
   >
     <button
       aria-label="Expand Section"
@@ -239,7 +247,7 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
         className="emotion-0"
         color="#808080"
         data-file-name="chevron.svg"
-        width={20}
+        height={20}
       />
     </button>
     <h4
@@ -327,10 +335,13 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 <div
@@ -339,6 +350,11 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
   <div
     className="emotion-3"
     onClick={[Function]}
+    style={
+      Object {
+        "border": "none",
+      }
+    }
   >
     <button
       aria-label="Expand Section"
@@ -350,7 +366,7 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
         className="emotion-0"
         color="#808080"
         data-file-name="chevron.svg"
-        width={20}
+        height={20}
       />
     </button>
     <h4

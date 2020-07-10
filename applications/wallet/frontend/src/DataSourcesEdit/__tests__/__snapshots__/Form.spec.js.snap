@@ -168,6 +168,60 @@ Array [
   color: #b3b3b3;
 }
 
+.emotion-39 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: not-allowed;
+  padding-bottom: 16px;
+  padding-left: 16px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-31 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 2px;
+  cursor: not-allowed;
+}
+
+.emotion-33 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: not-allowed;
+}
+
+.emotion-32 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+  fill: #73b61c;
+}
+
 .emotion-41 {
   height: 8px;
 }
@@ -263,10 +317,13 @@ Array [
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-50 {
@@ -423,46 +480,6 @@ Array [
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-}
-
-.emotion-60 {
-  margin: 0;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
-  border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-62 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
-}
-
-.emotion-61 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 100;
-  fill: #73b61c;
 }
 
 .emotion-71 {
@@ -708,7 +725,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="images"
+            value="Images"
           />
           <div
             className="emotion-15"
@@ -716,7 +733,7 @@ Array [
             <svg
               className="emotion-14"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -755,7 +772,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="documents"
+            value="Documents"
           />
           <div
             className="emotion-15"
@@ -763,7 +780,7 @@ Array [
             <svg
               className="emotion-14"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -792,25 +809,25 @@ Array [
         </div>
       </label>
       <label
-        className="emotion-21"
+        className="emotion-39"
       >
         <div
           className="emotion-16"
         >
           <input
-            className="emotion-13"
-            defaultChecked={false}
+            className="emotion-31"
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
-            value="videos"
+            value="Videos"
           />
           <div
-            className="emotion-15"
+            className="emotion-33"
           >
             <svg
-              className="emotion-14"
+              className="emotion-32"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -861,6 +878,7 @@ Array [
         <div
           className="emotion-47"
           onClick={[Function]}
+          style={Object {}}
         >
           <button
             aria-label="Collapse Section"
@@ -872,7 +890,7 @@ Array [
               className="emotion-44"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -941,6 +959,7 @@ Array [
         <div
           className="emotion-47"
           onClick={[Function]}
+          style={Object {}}
         >
           <button
             aria-label="Collapse Section"
@@ -952,7 +971,7 @@ Array [
               className="emotion-44"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -1014,19 +1033,19 @@ Array [
                         className="emotion-16"
                       >
                         <input
-                          className="emotion-60"
+                          className="emotion-31"
                           defaultChecked={true}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-62"
+                          className="emotion-33"
                         >
                           <svg
-                            className="emotion-61"
+                            className="emotion-32"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1070,7 +1089,7 @@ Array [
                           <svg
                             className="emotion-14"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1114,7 +1133,7 @@ Array [
                           <svg
                             className="emotion-14"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1158,7 +1177,7 @@ Array [
                           <svg
                             className="emotion-14"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1234,7 +1253,7 @@ Array [
                           <svg
                             className="emotion-14"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1278,7 +1297,7 @@ Array [
                           <svg
                             className="emotion-14"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1322,7 +1341,7 @@ Array [
                           <svg
                             className="emotion-14"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1398,7 +1417,7 @@ Array [
                           <svg
                             className="emotion-14"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -1638,6 +1657,60 @@ Array [
   color: #b3b3b3;
 }
 
+.emotion-38 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: not-allowed;
+  padding-bottom: 16px;
+  padding-left: 16px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-30 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 2px;
+  cursor: not-allowed;
+}
+
+.emotion-32 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: not-allowed;
+}
+
+.emotion-31 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+  fill: #73b61c;
+}
+
 .emotion-40 {
   height: 8px;
 }
@@ -1733,10 +1806,13 @@ Array [
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-49 {
@@ -1893,46 +1969,6 @@ Array [
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-}
-
-.emotion-59 {
-  margin: 0;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
-  border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-61 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
-}
-
-.emotion-60 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 100;
-  fill: #73b61c;
 }
 
 .emotion-70 {
@@ -2146,7 +2182,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="images"
+            value="Images"
           />
           <div
             className="emotion-14"
@@ -2154,7 +2190,7 @@ Array [
             <svg
               className="emotion-13"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -2193,7 +2229,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="documents"
+            value="Documents"
           />
           <div
             className="emotion-14"
@@ -2201,7 +2237,7 @@ Array [
             <svg
               className="emotion-13"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -2230,25 +2266,25 @@ Array [
         </div>
       </label>
       <label
-        className="emotion-20"
+        className="emotion-38"
       >
         <div
           className="emotion-15"
         >
           <input
-            className="emotion-12"
-            defaultChecked={false}
+            className="emotion-30"
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
-            value="videos"
+            value="Videos"
           />
           <div
-            className="emotion-14"
+            className="emotion-32"
           >
             <svg
-              className="emotion-13"
+              className="emotion-31"
               data-file-name="checkmark.svg"
-              width={20}
+              height={20}
             />
           </div>
         </div>
@@ -2299,6 +2335,7 @@ Array [
         <div
           className="emotion-46"
           onClick={[Function]}
+          style={Object {}}
         >
           <button
             aria-label="Collapse Section"
@@ -2310,7 +2347,7 @@ Array [
               className="emotion-43"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -2379,6 +2416,7 @@ Array [
         <div
           className="emotion-46"
           onClick={[Function]}
+          style={Object {}}
         >
           <button
             aria-label="Collapse Section"
@@ -2390,7 +2428,7 @@ Array [
               className="emotion-43"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </button>
           <h4
@@ -2452,19 +2490,19 @@ Array [
                         className="emotion-15"
                       >
                         <input
-                          className="emotion-59"
+                          className="emotion-30"
                           defaultChecked={true}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-61"
+                          className="emotion-32"
                         >
                           <svg
-                            className="emotion-60"
+                            className="emotion-31"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -2508,7 +2546,7 @@ Array [
                           <svg
                             className="emotion-13"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -2552,7 +2590,7 @@ Array [
                           <svg
                             className="emotion-13"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -2596,7 +2634,7 @@ Array [
                           <svg
                             className="emotion-13"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -2672,7 +2710,7 @@ Array [
                           <svg
                             className="emotion-13"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -2716,7 +2754,7 @@ Array [
                           <svg
                             className="emotion-13"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -2760,7 +2798,7 @@ Array [
                           <svg
                             className="emotion-13"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>
@@ -2836,7 +2874,7 @@ Array [
                           <svg
                             className="emotion-13"
                             data-file-name="checkmark.svg"
-                            width={20}
+                            height={20}
                           />
                         </div>
                       </div>

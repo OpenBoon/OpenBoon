@@ -11,6 +11,7 @@ import TableException from './Exception'
 import TableRefresh from './Refresh'
 
 const SIZE = 20
+const ICON_SIZE = 20
 
 const TableContent = ({
   url,
@@ -20,6 +21,7 @@ const TableContent = ({
   renderRow,
   legend,
   refreshKeys,
+  refreshButton,
 }) => {
   const {
     query: { page = 1 },
@@ -53,11 +55,13 @@ const TableContent = ({
         >
           Number of {legend}: {count}
         </h3>
-        <TableRefresh
-          onClick={revalidate}
-          refreshKeys={refreshKeys}
-          legend={legend}
-        />
+        {refreshButton && (
+          <TableRefresh
+            onClick={revalidate}
+            refreshKeys={refreshKeys}
+            legend={legend}
+          />
+        )}
       </div>
 
       <div css={{ flex: 1, position: 'relative' }}>
@@ -87,14 +91,14 @@ const TableContent = ({
                     color: colors.structure.zinc,
                   },
                   td: {
-                    border: constants.borders.tableRow,
+                    border: constants.borders.regular.steel,
                     borderLeft: '0',
                     borderRight: '0',
                     '&:first-of-type': {
-                      borderLeft: constants.borders.tableRow,
+                      borderLeft: constants.borders.regular.steel,
                     },
                     '&:last-of-type': {
-                      borderRight: constants.borders.tableRow,
+                      borderRight: constants.borders.regular.steel,
                     },
                   },
                 },
@@ -107,14 +111,14 @@ const TableContent = ({
                 fontWeight: typography.weight.extraLight,
                 color: colors.structure.pebble,
                 padding: `${spacing.base}px ${spacing.normal}px`,
-                border: constants.borders.transparent,
+                border: constants.borders.regular.transparent,
                 borderLeft: '0',
                 borderRight: '0',
                 ':first-of-type': {
-                  borderLeft: constants.borders.transparent,
+                  borderLeft: constants.borders.regular.transparent,
                 },
                 ':last-of-type': {
-                  borderRight: constants.borders.transparent,
+                  borderRight: constants.borders.regular.transparent,
                   overflow: 'visible',
                 },
               },
@@ -133,16 +137,16 @@ const TableContent = ({
                       color: colors.structure.pebble,
                       backgroundColor: colors.structure.iron,
                       padding: `${spacing.moderate}px ${spacing.normal}px`,
-                      borderBottom: constants.borders.default,
+                      borderBottom: constants.borders.regular.mattGrey,
                       [`:nth-of-type(${expandColumn})`]: { width: '100%' },
                       '&:not(:last-child)': {
-                        borderRight: constants.borders.default,
+                        borderRight: constants.borders.regular.mattGrey,
                       },
                     }}
                   >
                     {column === '#Actions#' ? (
                       <div css={{ display: 'flex' }}>
-                        <GearSvg width={20} />
+                        <GearSvg height={ICON_SIZE} />
                       </div>
                     ) : (
                       column
@@ -186,6 +190,7 @@ TableContent.propTypes = {
   renderRow: PropTypes.func.isRequired,
   legend: PropTypes.string.isRequired,
   refreshKeys: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  refreshButton: PropTypes.bool.isRequired,
 }
 
 export default TableContent

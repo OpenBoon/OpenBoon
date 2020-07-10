@@ -61,19 +61,19 @@ class DataSourceController(
         return dataSourceService.get(id)
     }
 
-    @ApiOperation("Search for datasources.")
+    @ApiOperation("Search for DataSources.")
     @PostMapping("/api/v1/data-sources/_search")
     fun find(@RequestBody(required = false) filter: DataSourceFilter?): KPagedList<DataSource> {
         return dataSourceJdbcDao.find(filter ?: DataSourceFilter())
     }
 
-    @ApiOperation("Find a single DataSet")
+    @ApiOperation("Find a single DataSource")
     @PostMapping("/api/v1/data-sources/_findOne")
     fun findOneV1(@RequestBody(required = false) filter: DataSourceFilter?): DataSource {
         return dataSourceJdbcDao.findOne(filter ?: DataSourceFilter())
     }
 
-    @ApiOperation("Find a single DataSet")
+    @ApiOperation("Find a single DataSource")
     @PostMapping("/api/v1/data-sources/_find_one")
     fun findOneV3(@RequestBody(required = false) filter: DataSourceFilter?): DataSource {
         return dataSourceJdbcDao.findOne(filter ?: DataSourceFilter())

@@ -5,7 +5,7 @@ import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import { zIndex } from '../Styles'
 
-const DRAG_WIDTH = 20
+const DRAG_WIDTH = 4
 
 let originX
 

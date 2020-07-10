@@ -22,7 +22,12 @@ class AuthServerClientException(message: String) : RuntimeException(message)
 
 interface AuthServerClient {
     fun authenticate(jwtToken: String, projectId: UUID? = null): ZmlpActor
-    fun createApiKey(project: UUID, name: String, perms: Collection<Permission>): ApiKey
+    fun createApiKey(
+        project: UUID,
+        name: String,
+        perms: Collection<Permission>,
+        hidden: Boolean = false
+    ): ApiKey
     fun getApiKey(projectId: UUID, name: String): ApiKey
     fun getSigningKey(projectId: UUID, name: String): SigningKey
     fun updateApiKeyEnabledByProject(projectId: UUID, enabled: Boolean)
@@ -91,10 +96,16 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         }
     }
 
-    override fun createApiKey(projectId: UUID, name: String, perms: Collection<Permission>): ApiKey {
+    override fun createApiKey(
+        projectId: UUID,
+        name: String,
+        perms: Collection<Permission>,
+        hidden: Boolean
+    ): ApiKey {
         val data = mapOf(
             "name" to name,
-            "permissions" to perms
+            "permissions" to perms,
+            "hidden" to hidden
         )
         return post("auth/v1/apikey", data, projectId)
     }

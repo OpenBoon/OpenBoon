@@ -1,6 +1,6 @@
-image: docker:18.09.8-dind # A Docker 19 based image does not work on Gitlab shared runners (November 2019)
+image: docker:19-dind
 services:
-  - docker:18.09.8-dind
+  - docker:19-dind
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_HOST: tcp://localhost:2375
@@ -85,7 +85,7 @@ wallet-dockerhub-build-push-latest:
   image: zmlp/docker-buildx
   stage: push
   services:
-    - docker:19.03-dind
+    - docker:19-dind
   variables:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
@@ -241,7 +241,7 @@ plugin-container-tests:
   image: zmlp/docker-buildx
   stage: test
   services:
-    - docker:19.03-dind
+    - docker:19-dind
   variables:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
@@ -288,7 +288,7 @@ zmlp-dockerhub-build-push-latest:
   image: zmlp/docker-buildx
   stage: push
   services:
-    - docker:19.03-dind
+    - docker:19-dind
   variables:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
@@ -300,7 +300,7 @@ zmlp-dockerhub-build-push-latest:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
-    - ./buildx
+    - ./buildx -t 1
     - docker tag zmlp/archivist:${SOURCE_TAG} zmlp/archivist:${DOCKER_TAG}
     - docker tag zmlp/officer:${SOURCE_TAG} zmlp/officer:${DOCKER_TAG}
     - docker tag zmlp/elasticsearch:${SOURCE_TAG} zmlp/elasticsearch:${DOCKER_TAG}
@@ -408,7 +408,7 @@ zmlp-dockerhub-build-push-prod:
   image: zmlp/docker-buildx
   stage: push
   services:
-    - docker:19.03-dind
+    - docker:19-dind
   variables:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
@@ -437,6 +437,7 @@ zmlp-dockerhub-build-push-prod:
     - docker pull -q zmlp/jvm-common:${SOURCE_TAG}
     - docker pull -q zmlp/ml-bbq:${SOURCE_TAG}
     - docker pull -q zmlp/plugins-train:${SOURCE_TAG}
+    - docker pull -q zmlp/wallet:${SOURCE_TAG}
     - docker tag zmlp/archivist:${SOURCE_TAG} zmlp/archivist:${DOCKER_TAG}
     - docker tag zmlp/officer:${SOURCE_TAG} zmlp/officer:${DOCKER_TAG}
     - docker tag zmlp/elasticsearch:${SOURCE_TAG} zmlp/elasticsearch:${DOCKER_TAG}
@@ -454,6 +455,7 @@ zmlp-dockerhub-build-push-prod:
     - docker tag zmlp/jvm-common:${SOURCE_TAG} zmlp/jvm-common:${DOCKER_TAG}
     - docker tag zmlp/ml-bbq:${SOURCE_TAG} zmlp/ml-bbq:${DOCKER_TAG}
     - docker tag zmlp/plugins-train:${SOURCE_TAG} zmlp/plugins-train:${DOCKER_TAG}
+    - docker tag zmlp/wallet:${SOURCE_TAG} zmlp/wallet:${DOCKER_TAG}
     - docker push zmlp/archivist:${DOCKER_TAG}
     - docker push zmlp/officer:${DOCKER_TAG}
     - docker push zmlp/elasticsearch:${DOCKER_TAG}
@@ -471,6 +473,7 @@ zmlp-dockerhub-build-push-prod:
     - docker push zmlp/jvm-common:${DOCKER_TAG}
     - docker push zmlp/ml-bbq:${DOCKER_TAG}
     - docker push zmlp/plugins-train:${DOCKER_TAG}
+    - docker push zmlp/wallet:${DOCKER_TAG}
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
       when: manual

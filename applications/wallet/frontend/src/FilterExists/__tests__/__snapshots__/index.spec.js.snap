@@ -9,7 +9,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 }
 
 .emotion-21:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-21:hover svg {
@@ -102,10 +102,13 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
@@ -193,12 +196,12 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -271,12 +274,12 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -440,6 +443,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   <div
     className="emotion-9"
     onClick={[Function]}
+    style={Object {}}
   >
     <button
       aria-label="Collapse Section"
@@ -451,7 +455,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
         className="emotion-0"
         color="#808080"
         data-file-name="chevron.svg"
-        width={20}
+        height={20}
       />
     </button>
     <h4
@@ -460,7 +464,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
       <svg
         color="#73b61c"
         data-file-name="missing.svg"
-        width={20}
+        height={20}
       />
       <span
         className="emotion-2"
@@ -481,7 +485,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
           className="emotion-4"
           color="#808080"
           data-file-name="hidden.svg"
-          width={20}
+          height={20}
         />
       </button>
       <button
@@ -494,7 +498,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
           className="emotion-4"
           color="#808080"
           data-file-name="cross.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>
@@ -549,7 +553,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
             >
               <svg
                 data-file-name="exists.svg"
-                width={20}
+                height={20}
               />
               <div
                 className="emotion-10"
@@ -569,7 +573,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
             >
               <svg
                 data-file-name="missing.svg"
-                width={20}
+                height={20}
               />
               <div
                 className="emotion-10"
@@ -607,7 +611,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 }
 
 .emotion-21:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-21:hover svg {
@@ -700,10 +704,13 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
@@ -791,12 +798,12 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -869,12 +876,12 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -1038,6 +1045,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   <div
     className="emotion-9"
     onClick={[Function]}
+    style={Object {}}
   >
     <button
       aria-label="Collapse Section"
@@ -1049,7 +1057,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
         className="emotion-0"
         color="#808080"
         data-file-name="chevron.svg"
-        width={20}
+        height={20}
       />
     </button>
     <h4
@@ -1058,7 +1066,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
       <svg
         color="#73b61c"
         data-file-name="exists.svg"
-        width={20}
+        height={20}
       />
       <span
         className="emotion-2"
@@ -1079,7 +1087,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
           className="emotion-4"
           color="#808080"
           data-file-name="hidden.svg"
-          width={20}
+          height={20}
         />
       </button>
       <button
@@ -1092,7 +1100,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
           className="emotion-4"
           color="#808080"
           data-file-name="cross.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>
@@ -1147,7 +1155,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
             >
               <svg
                 data-file-name="exists.svg"
-                width={20}
+                height={20}
               />
               <div
                 className="emotion-10"
@@ -1167,7 +1175,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
             >
               <svg
                 data-file-name="missing.svg"
-                width={20}
+                height={20}
               />
               <div
                 className="emotion-10"

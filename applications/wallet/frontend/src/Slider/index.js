@@ -15,6 +15,8 @@ const TRACK_HEIGHT = 4
 const HANDLE_WIDTH = 8
 const HANDLE_HEIGHT = 24
 
+export const noop = () => {}
+
 const Slider = ({ step, domain, values, isDisabled, onUpdate, onChange }) => {
   return (
     <ReactSlider
@@ -22,8 +24,8 @@ const Slider = ({ step, domain, values, isDisabled, onUpdate, onChange }) => {
       step={step}
       domain={domain}
       rootStyle={{ position: 'relative', width: '100%' }}
-      onUpdate={onUpdate}
-      onChange={onChange}
+      onUpdate={isDisabled ? noop : onUpdate}
+      onChange={isDisabled ? noop : onChange}
       values={values}
     >
       <Rail>
@@ -35,9 +37,9 @@ const Slider = ({ step, domain, values, isDisabled, onUpdate, onChange }) => {
                 width: '100%',
                 height: RAIL_HEIGHT,
                 transform: 'translate(0%, -50%)',
-                cursor: 'pointer',
+                cursor: isDisabled ? 'not-allowed' : 'pointer',
               }}
-              {...getRailProps()}
+              {...(isDisabled ? {} : getRailProps())}
             />
             <div
               css={{
@@ -52,64 +54,66 @@ const Slider = ({ step, domain, values, isDisabled, onUpdate, onChange }) => {
           </>
         )}
       </Rail>
-      <Handles>
-        {({ handles, getHandleProps }) => (
-          <div>
-            {handles.map(({ id, value, percent }) => (
-              <button
-                key={id}
-                type="button"
-                role="slider"
-                aria-valuemin={domain.min}
-                aria-valuemax={domain.max}
-                aria-valuenow={value}
-                css={{
-                  padding: 0,
-                  margin: 0,
-                  border: 'none',
-                  left: `${percent}%`,
-                  position: 'absolute',
-                  transform: 'translate(-50%, -50%)',
-                  zIndex: 2,
-                  width: HANDLE_WIDTH,
-                  height: HANDLE_HEIGHT,
-                  backgroundColor: colors.structure.steel,
-                  borderRadius: 1,
-                  cursor: 'pointer',
-                  ':hover, :active': {
-                    backgroundColor: colors.structure.white,
-                  },
-                }}
-                {...getHandleProps(id)}
-              />
-            ))}
-          </div>
-        )}
-      </Handles>
-      <Tracks left={false} right={values.length === 1}>
-        {({ tracks, getTrackProps }) => (
-          <div>
-            {tracks.map(({ id, source, target }) => (
-              <div
-                key={id}
-                style={{
-                  position: 'absolute',
-                  transform: 'translate(0%, -50%)',
-                  height: TRACK_HEIGHT,
-                  zIndex: 1,
-                  backgroundColor: isDisabled
-                    ? colors.structure.steel
-                    : colors.key.one,
-                  cursor: 'pointer',
-                  left: `${source.percent}%`,
-                  width: `${target.percent - source.percent}%`,
-                }}
-                {...getTrackProps()}
-              />
-            ))}
-          </div>
-        )}
-      </Tracks>
+      {!isDisabled && (
+        <Handles>
+          {({ handles, getHandleProps }) => (
+            <div>
+              {handles.map(({ id, value, percent }) => (
+                <button
+                  key={id}
+                  type="button"
+                  role="slider"
+                  aria-valuemin={domain.min}
+                  aria-valuemax={domain.max}
+                  aria-valuenow={value}
+                  css={{
+                    padding: 0,
+                    margin: 0,
+                    border: 'none',
+                    left: `${percent}%`,
+                    position: 'absolute',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 2,
+                    width: HANDLE_WIDTH,
+                    height: HANDLE_HEIGHT,
+                    backgroundColor: colors.structure.steel,
+                    borderRadius: 1,
+                    cursor: 'pointer',
+                    ':hover, :active': {
+                      backgroundColor: colors.structure.white,
+                    },
+                  }}
+                  {...getHandleProps(id)}
+                />
+              ))}
+            </div>
+          )}
+        </Handles>
+      )}
+      {!isDisabled && (
+        <Tracks left={false} right={values.length === 1}>
+          {({ tracks, getTrackProps }) => (
+            <div>
+              {tracks.map(({ id, source, target }) => (
+                <div
+                  key={id}
+                  style={{
+                    position: 'absolute',
+                    transform: 'translate(0%, -50%)',
+                    height: TRACK_HEIGHT,
+                    zIndex: 1,
+                    backgroundColor: colors.key.one,
+                    cursor: 'pointer',
+                    left: `${source.percent}%`,
+                    width: `${target.percent - source.percent}%`,
+                  }}
+                  {...getTrackProps()}
+                />
+              ))}
+            </div>
+          )}
+        </Tracks>
+      )}
     </ReactSlider>
   )
 }

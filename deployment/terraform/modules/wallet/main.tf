@@ -98,6 +98,7 @@ resource "kubernetes_deployment" "wallet" {
               path   = "/api/v1/health/"
               port   = "80"
             }
+            timeout_seconds = 5
           }
           readiness_probe {
             initial_delay_seconds = 30
@@ -168,6 +169,10 @@ resource "kubernetes_deployment" "wallet" {
           env {
             name = "MARKETPLACE_CREDENTIALS"
             value = var.marketplace-credentials
+          }
+          env {
+            name = "SUPERADMIN"
+            value = var.superadmin
           }
         }
       }

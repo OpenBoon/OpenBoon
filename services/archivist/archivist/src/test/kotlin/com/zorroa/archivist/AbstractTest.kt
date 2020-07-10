@@ -172,7 +172,8 @@ abstract class AbstractTest {
             authServerClient.createApiKey(
                 capture<UUID>(proj),
                 any(),
-                capture<Set<Permission>>(permissions)
+                capture<Set<Permission>>(permissions),
+                any()
             )
         ).then {
             ApiKey(
@@ -181,7 +182,8 @@ abstract class AbstractTest {
                 randomString(24),
                 randomString(64),
                 "key-name",
-                permissions.value
+                permissions.value,
+                false
             )
         }
 
@@ -274,16 +276,17 @@ abstract class AbstractTest {
         return imagePaths.mapNotNull { path ->
             if (!path.contains(subdir) || !formats.contains(FileUtils.extension(path).toLowerCase())) {
                 null
-            }
-            val asset = AssetSpec(path)
-            asset.attrs = mapOf(
-                "media" to mapOf(
-                    "width" to 1024,
-                    "height" to 1024,
-                    "title" to "Picture of $path"
+            } else {
+                val asset = AssetSpec(path)
+                asset.attrs = mapOf(
+                    "media" to mapOf(
+                        "width" to 1024,
+                        "height" to 1024,
+                        "title" to "Picture of $path"
+                    )
                 )
-            )
-            asset
+                asset
+            }
         }
     }
 

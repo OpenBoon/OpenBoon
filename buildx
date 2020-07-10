@@ -20,14 +20,18 @@ def main():
                         help='Build zmlp-plugins-analysis and SDK requirements')
     parser.add_argument('--list', '-l', action='store_true',
                         help='Output list of containers')
+    parser.add_argument('--threads', '-t', type=int, default=8,
+                        help='Maximum number of parallel builds')
+    parser.add_argument('--system-prune', '-s', action='store_true',
+                        help='Do a system prune')
+    parser.add_argument('--full-system-prune', '-f', action='store_true',
+                        help='Do a full system prune, including non-dangling images')
 
     args = parser.parse_args()
     if args.containers:
         containers = set(args.containers)
     else:
         containers = set()
-
-    pull_base_images()
 
     if args.plugins:
         containers.update(['zmlp-py3-client',
@@ -57,7 +61,10 @@ def main():
                            'zmlp-plugins-base',
                            'zmlp-plugins-analysis'])
 
-    build_dependency_tree(containers, args.list)
+    if args.system_prune or args.full_system_prune:
+        system_prune(args.full_system_prune)
+
+    build_dependency_tree(containers, args.list, args.threads)
 
 
 def pull_base_images():
@@ -66,15 +73,29 @@ def pull_base_images():
     because using --no-cache also disabled the buildx cache.
     """
     images = [
-        "ubuntu:eoan",
-        "maven:3.6-jdk-11-slim",
-        "openjdk:11-jdk-slim"
+        'ubuntu:eoan',
+        'maven:3.6-jdk-11-slim',
+        'openjdk:11-jdk-slim',
+        'nginx:mainline'
     ]
     for image in images:
         subprocess.call(['docker', 'pull', image], shell=False)
 
 
-def build_dependency_tree(to_build, list_only):
+def system_prune(full):
+    """
+    Do a system prune.
+
+    Args:
+        full (true): Prune everything, even non-dangling images.
+    """
+    cmd = ['docker', 'system', 'prune', '-f']
+    if full:
+        cmd.append('-a')
+    subprocess.call(cmd, shell=False)
+
+
+def build_dependency_tree(to_build, list_only, threads=8):
     env = os.environ
     env['DOCKER_CLI_EXPERIMENTAL'] = 'enabled'
     with open('docker-compose.yml') as fp:
@@ -112,17 +133,25 @@ def build_dependency_tree(to_build, list_only):
                 print(" - {}".format(item))
         return
 
+    pull_base_images()
+
+    def chunks(lst, n):
+        for i in range(0, len(lst), n):
+            yield lst[i:i + n]
+
     # Pass #3
     for phase in phases:
         if to_build:
             phase = to_build.intersection(phase)
         if not phase:
             continue
-        # Adding --no-cache won't use the stupid maven cache.
-        cmd = ['docker', 'buildx', 'bake', '-f', 'docker-compose.yml']
-        cmd.extend(phase)
-        print('Building {}'.format(phase))
-        subprocess.check_call(cmd, shell=False, env=env)
+
+        for chunk in chunks(list(phase), threads):
+            # Adding --no-cache won't use the stupid maven cache.
+            cmd = ['docker', 'buildx', 'bake', '-f', 'docker-compose.yml']
+            cmd.extend(chunk)
+            print('Building {}'.format(chunk))
+            subprocess.check_call(cmd, shell=False, env=env)
 
 
 if __name__ == '__main__':

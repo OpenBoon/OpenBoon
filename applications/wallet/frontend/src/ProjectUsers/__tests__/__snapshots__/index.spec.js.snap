@@ -169,7 +169,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-15 {
+  .emotion-11 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -180,7 +180,7 @@ Array [
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -203,85 +203,14 @@ Array [
   font-weight: 400;
 }
 
-.emotion-4 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
-  background-color: #73b61c;
-}
-
-.emotion-4:hover {
-  background-color: #96c955;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 {
-  padding-left: 4px;
-}
-
-.emotion-14 {
+.emotion-10 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-6 {
+.emotion-2 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -292,22 +221,22 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-2:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-2:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-12 {
+.emotion-8 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -315,38 +244,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-12 tr {
+.emotion-8 tr {
   background-color: #252525;
 }
 
-.emotion-12 tr:nth-of-type(2n) {
+.emotion-8 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-12 tr:hover {
+.emotion-8 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-12 tr:hover .gear {
+.emotion-8 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-12 tr:hover td {
+.emotion-8 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-12 tr:hover td:first-of-type {
+.emotion-8 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-12 tr:hover td:last-of-type {
+.emotion-8 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-12 td {
+.emotion-8 td {
   max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -358,16 +287,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-12 td:first-of-type {
+.emotion-8 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-12 td:last-of-type {
+.emotion-8 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-10 {
+.emotion-6 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -380,10 +309,10 @@ Array [
 }
 
 <div
-    className="emotion-15"
+    className="emotion-11"
   >
     <div
-      className="emotion-5"
+      className="emotion-1"
     >
       <h3
         className="emotion-0"
@@ -393,59 +322,37 @@ Array [
         : 
         1
       </h3>
-      <button
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-3"
-        >
-          <svg
-            className="emotion-1"
-            color="#ffffff"
-            data-file-name="refresh.svg"
-            width={20}
-          />
-          <div
-            className="emotion-2"
-          >
-            Refresh 
-            Users
-          </div>
-        </div>
-      </button>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-10"
     >
       <div
-        className="emotion-13"
+        className="emotion-9"
       >
         <table
-          className="emotion-12"
+          className="emotion-8"
         >
           <thead>
             <tr>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Email
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Roles
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-4"
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </th>
@@ -458,12 +365,12 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                   ML Tools
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                   API Keys
                 </span>
@@ -603,7 +510,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-15 {
+  .emotion-11 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -614,7 +521,7 @@ Array [
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -637,85 +544,14 @@ Array [
   font-weight: 400;
 }
 
-.emotion-4 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
-  background-color: #73b61c;
-}
-
-.emotion-4:hover {
-  background-color: #96c955;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 {
-  padding-left: 4px;
-}
-
-.emotion-14 {
+.emotion-10 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-13 {
+.emotion-9 {
   position: absolute;
   top: 0;
   left: 0;
@@ -723,7 +559,7 @@ Array [
   bottom: 0;
 }
 
-.emotion-12 {
+.emotion-8 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -731,38 +567,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-12 tr {
+.emotion-8 tr {
   background-color: #252525;
 }
 
-.emotion-12 tr:nth-of-type(2n) {
+.emotion-8 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-12 tr:hover {
+.emotion-8 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-12 tr:hover .gear {
+.emotion-8 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-12 tr:hover td {
+.emotion-8 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-12 tr:hover td:first-of-type {
+.emotion-8 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-12 tr:hover td:last-of-type {
+.emotion-8 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-12 td {
+.emotion-8 td {
   max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -774,16 +610,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-12 td:first-of-type {
+.emotion-8 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-12 td:last-of-type {
+.emotion-8 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-6 {
+.emotion-2 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -794,27 +630,27 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-2:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-2:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-7 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-10 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -837,10 +673,10 @@ Array [
 }
 
 <div
-    className="emotion-15"
+    className="emotion-11"
   >
     <div
-      className="emotion-5"
+      className="emotion-1"
     >
       <h3
         className="emotion-0"
@@ -850,59 +686,37 @@ Array [
         : 
         0
       </h3>
-      <button
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-3"
-        >
-          <svg
-            className="emotion-1"
-            color="#ffffff"
-            data-file-name="refresh.svg"
-            width={20}
-          />
-          <div
-            className="emotion-2"
-          >
-            Refresh 
-            Users
-          </div>
-        </div>
-      </button>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-10"
     >
       <div
-        className="emotion-13"
+        className="emotion-9"
       >
         <table
-          className="emotion-12"
+          className="emotion-8"
         >
           <thead>
             <tr>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Email
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Roles
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-4"
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </th>
@@ -910,13 +724,13 @@ Array [
           </thead>
           <tbody>
             <tr
-              className="emotion-11"
+              className="emotion-7"
             >
               <td
                 colSpan={3}
               >
                 <div
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                   No users
                 </div>
@@ -1099,7 +913,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-17 {
+  .emotion-13 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1110,7 +924,7 @@ Array [
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1133,85 +947,14 @@ Array [
   font-weight: 400;
 }
 
-.emotion-4 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
-  background-color: #73b61c;
-}
-
-.emotion-4:hover {
-  background-color: #96c955;
-}
-
-.emotion-4[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 {
-  padding-left: 4px;
-}
-
-.emotion-16 {
+.emotion-12 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-6 {
+.emotion-2 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -1222,22 +965,22 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-2:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-2:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-14 {
+.emotion-10 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -1245,38 +988,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-14 tr {
+.emotion-10 tr {
   background-color: #252525;
 }
 
-.emotion-14 tr:nth-of-type(2n) {
+.emotion-10 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-14 tr:hover {
+.emotion-10 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-14 tr:hover .gear {
+.emotion-10 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-14 tr:hover td {
+.emotion-10 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-14 tr:hover td:first-of-type {
+.emotion-10 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-14 tr:hover td:last-of-type {
+.emotion-10 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-14 td {
+.emotion-10 td {
   max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1288,16 +1031,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-14 td:first-of-type {
+.emotion-10 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-14 td:last-of-type {
+.emotion-10 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-10 {
+.emotion-6 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -1309,11 +1052,11 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-13 {
+.emotion-9 {
   position: relative;
 }
 
-.emotion-12 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1350,25 +1093,25 @@ Array [
   border-radius: 32px;
 }
 
-.emotion-12:hover {
+.emotion-8:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-12:hover {
+.emotion-8:hover {
   color: #ffffff !important;
   background-color: #808080;
 }
 
 <div
-    className="emotion-17"
+    className="emotion-13"
   >
     <div
-      className="emotion-5"
+      className="emotion-1"
     >
       <h3
         className="emotion-0"
@@ -1378,59 +1121,37 @@ Array [
         : 
         1
       </h3>
-      <button
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-3"
-        >
-          <svg
-            className="emotion-1"
-            color="#ffffff"
-            data-file-name="refresh.svg"
-            width={20}
-          />
-          <div
-            className="emotion-2"
-          >
-            Refresh 
-            Users
-          </div>
-        </div>
-      </button>
     </div>
     <div
-      className="emotion-16"
+      className="emotion-12"
     >
       <div
-        className="emotion-15"
+        className="emotion-11"
       >
         <table
-          className="emotion-14"
+          className="emotion-10"
         >
           <thead>
             <tr>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Email
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 Roles
               </th>
               <th
-                className="emotion-6"
+                className="emotion-2"
               >
                 <div
-                  className="emotion-8"
+                  className="emotion-4"
                 >
                   <svg
                     data-file-name="gear.svg"
-                    width={20}
+                    height={20}
                   />
                 </div>
               </th>
@@ -1443,30 +1164,30 @@ Array [
               </td>
               <td>
                 <span
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                   ML Tools
                 </span>
                 <span
-                  className="emotion-10"
+                  className="emotion-6"
                 >
                   API Keys
                 </span>
               </td>
               <td>
                 <div
-                  className="emotion-13"
+                  className="emotion-9"
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-12"
+                    className="gear emotion-8"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
                       data-file-name="gear.svg"
-                      width={20}
+                      height={20}
                     />
                   </button>
                 </div>

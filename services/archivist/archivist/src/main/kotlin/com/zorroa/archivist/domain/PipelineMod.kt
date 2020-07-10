@@ -153,7 +153,7 @@ class PipelineModUpdate(
     val type: String,
 
     @ApiModelProperty("The types of media this module can handle.")
-    val supportedMedia: List<SupportedMedia>,
+    val supportedMedia: List<FileType>,
 
     @ApiModelProperty("A list of operations to apply to the pipeline")
     val ops: List<ModOp>
@@ -178,7 +178,7 @@ class PipelineModSpec(
     val type: String,
 
     @ApiModelProperty("The types of media this module can handle.")
-    val supportedMedia: List<SupportedMedia>,
+    val supportedMedia: List<FileType>,
 
     @ApiModelProperty("A list of operations to apply to the pipeline")
     val ops: List<ModOp>,

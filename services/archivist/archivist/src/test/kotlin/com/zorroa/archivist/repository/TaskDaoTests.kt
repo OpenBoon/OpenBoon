@@ -5,12 +5,12 @@ import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskFilter
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.emptyZpsScripts
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,13 +38,13 @@ class TaskDaoTests : AbstractTest() {
     fun init() {
         val jspec = JobSpec(
             "test_job",
-            emptyZpsScript("test_script"),
+            emptyZpsScripts("test_script"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
 
-        job = jobDao.create(jspec, JobType.Import)
-        spec = TaskSpec("generator", jspec.script!!)
+        job = jobDao.create(jspec)
+        spec = TaskSpec("generator", jspec.scripts!![0])
         task = taskDao.create(job, spec)
     }
 
@@ -142,16 +142,12 @@ class TaskDaoTests : AbstractTest() {
 
     @Test
     fun testIncrementAssetCounters() {
-        val counters = AssetCounters(
-            replaced = 4,
-            created = 6
-        )
+        val counters = AssetCounters(10)
 
         assertTrue(taskDao.incrementAssetCounters(task, counters))
 
         val map = jdbc.queryForMap("SELECT * FROM task_stat WHERE pk_task=?", task.id)
-        assertEquals(counters.created, map["int_asset_create_count"])
-        assertEquals(counters.replaced, map["int_asset_replace_count"])
+        assertEquals(counters.total, map["int_asset_total_count"])
     }
 
     @Test

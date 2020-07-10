@@ -59,10 +59,10 @@ const TaskErrorAsset = ({ assetId }) => {
           <div
             css={{
               color: colors.structure.steel,
-              border: constants.borders.tableRow,
+              border: constants.borders.regular.steel,
             }}
           >
-            <FallbackSvg width={ASSET_THUMBNAIL_SIZE} />
+            <FallbackSvg height={ASSET_THUMBNAIL_SIZE} />
           </div>
         )}
 

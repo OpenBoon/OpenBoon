@@ -4,23 +4,28 @@ import { colors, constants, typography, spacing } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import WarningSvg from '../Icons/warning.svg'
+import GeneratingSvg from '../Icons/generating.svg'
 
 const PADDING = spacing.moderate
-const ICON_HEIGHT = 20
+const ICON_SIZE = 20
 
 const STYLES = {
   SUCCESS: {
-    border: constants.borders.success,
     backgroundColor: colors.signal.grass.background,
-    icon: (
-      <CheckmarkSvg height={ICON_HEIGHT} color={colors.signal.grass.base} />
-    ),
+    icon: <CheckmarkSvg height={ICON_SIZE} color={colors.signal.grass.base} />,
   },
   ERROR: {
-    border: constants.borders.error,
     backgroundColor: colors.signal.warning.background,
+    icon: <WarningSvg height={ICON_SIZE} color={colors.signal.warning.base} />,
+  },
+  PROCESSING: {
+    backgroundColor: colors.signal.sky.background,
     icon: (
-      <WarningSvg height={ICON_HEIGHT} color={colors.signal.warning.base} />
+      <GeneratingSvg
+        height={ICON_SIZE}
+        color={colors.signal.sky.base}
+        css={{ animation: constants.animations.infiniteRotation }}
+      />
     ),
   },
 }

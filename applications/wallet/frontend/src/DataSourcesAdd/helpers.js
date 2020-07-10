@@ -1,28 +1,30 @@
 import Router from 'next/router'
 
-import { fetcher } from '../Fetch/helpers'
+import { colors } from '../Styles'
+
+import { fetcher, getQueryString } from '../Fetch/helpers'
 
 export const FILE_TYPES = [
   {
-    value: 'images',
+    value: 'Images',
     label: 'Image Files',
     legend: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
     icon: '/icons/images.png',
-    identifier: 'jpg',
+    color: colors.signal.canary.base,
   },
   {
-    value: 'documents',
+    value: 'Documents',
     label: 'Documents (PDF & MS Office)',
     legend: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
     icon: '/icons/documents.png',
-    identifier: 'pdf',
+    color: colors.graph.seafoam,
   },
   {
-    value: 'videos',
+    value: 'Videos',
     label: 'Video Files',
     legend: 'MP4, M4V, MOV, MPG, MPEG, OGG',
     icon: '/icons/videos.png',
-    identifier: 'mp4',
+    color: colors.graph.lilac,
   },
 ]
 
@@ -45,22 +47,30 @@ export const onSubmit = async ({
   )
 
   try {
-    await fetcher(`/api/v1/projects/${projectId}/data_sources/`, {
-      method: 'POST',
-      body: JSON.stringify({
-        name,
-        uri,
-        credentials: Object.keys(parsedCredentials).length
-          ? { type: source, ...parsedCredentials }
-          : {},
-        fileTypes: Object.keys(fileTypes).filter((f) => fileTypes[f]),
-        modules: Object.keys(modules).filter((m) => modules[m]),
-      }),
+    const { jobId } = await fetcher(
+      `/api/v1/projects/${projectId}/data_sources/`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          name,
+          uri,
+          credentials: Object.keys(parsedCredentials).length
+            ? { type: source, ...parsedCredentials }
+            : {},
+          fileTypes: Object.keys(fileTypes).filter((f) => fileTypes[f]),
+          modules: Object.keys(modules).filter((m) => modules[m]),
+        }),
+      },
+    )
+
+    const queryString = getQueryString({
+      action: 'add-datasource-success',
+      jobId,
     })
 
     Router.push(
-      '/[projectId]/data-sources?action=add-datasource-success',
-      `/${projectId}/data-sources?action=add-datasource-success`,
+      `/[projectId]/data-sources${queryString}`,
+      `/${projectId}/data-sources${queryString}`,
     )
   } catch (response) {
     try {

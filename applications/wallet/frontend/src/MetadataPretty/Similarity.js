@@ -37,7 +37,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
       <div
         css={{
           '&:not(:first-of-type)': {
-            borderTop: constants.borders.largeDivider,
+            borderTop: constants.borders.large.smoke,
           },
           padding: spacing.normal,
           paddingBottom: spacing.base,
@@ -110,7 +110,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
           >
             <div
               css={{
-                borderTop: constants.borders.divider,
+                borderTop: constants.borders.regular.smoke,
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.moderate,
                 fontFamily: typography.family.condensed,

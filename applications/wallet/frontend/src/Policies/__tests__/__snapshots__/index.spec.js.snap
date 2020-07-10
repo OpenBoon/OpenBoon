@@ -260,8 +260,8 @@ exports[`<Policies /> should render properly 1`] = `
   >
     <svg
       className="emotion-0"
-      data-file-name="logo.svg"
-      width={143}
+      data-file-name="largeLogo.svg"
+      width={180}
     />
     <h3
       className="emotion-1"
@@ -336,7 +336,7 @@ exports[`<Policies /> should render properly 1`] = `
               <svg
                 className="emotion-7"
                 data-file-name="checkmark.svg"
-                width={20}
+                height={20}
               />
             </div>
           </div>

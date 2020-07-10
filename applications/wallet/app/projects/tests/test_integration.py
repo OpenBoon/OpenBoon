@@ -1,27 +1,33 @@
 import base64
 import copy
-import json
-from base64 import b64encode
 from uuid import uuid4
 
 import pytest
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseForbidden, Http404
 from django.test import RequestFactory, override_settings
 from django.urls import reverse
-from django.core.exceptions import ValidationError
 from rest_framework import status
 from rest_framework.response import Response
 from zmlp import ZmlpClient
-from zmlp.client import ZmlpDuplicateException, ZmlpInvalidRequestException
+from zmlp.client import (ZmlpDuplicateException, ZmlpInvalidRequestException,
+                         ZmlpNotFoundException)
 
-from wallet.utils import convert_base64_to_json, convert_json_to_base64
-from wallet.tests.utils import check_response
 from projects.models import Project, Membership
-from projects.utils import random_project_name
 from projects.serializers import ProjectSerializer
-from projects.views import BaseProjectViewSet, ProjectUserViewSet
+from projects.utils import random_project_name
+from projects.views import BaseProjectViewSet
+from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
 pytestmark = pytest.mark.django_db
+
+
+def mock_put_disable_project(*args, **kwargs):
+    return {'type': 'project', 'id': '00000000-0000-0000-0000-000000000000', 'op': 'disable', 'success': True}  # noqa
+
+
+def mock_put_enable_project(*args, **kwargs):
+    return {'type': 'project', 'id': '00000000-0000-0000-0000-000000000000', 'op': 'enable', 'success': True}  # noqa
 
 
 def test_random_name():
@@ -94,7 +100,7 @@ def test_project_serializer_detail(project):
     data = serializer.data
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions',
-                       'modules', 'providers', 'searches', 'export', 'faces']
+                       'modules', 'providers', 'searches', 'export', 'faces', 'visualizations']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
@@ -114,6 +120,7 @@ def test_project_serializer_detail(project):
     assert data['searches'] == f'/api/v1/projects/{project.id}/searches/'
     assert data['export'] == f'/api/v1/projects/{project.id}/searches/export/'
     assert data['faces'] == f'/api/v1/projects/{project.id}/faces/'
+    assert data['visualizations'] == f'/api/v1/projects/{project.id}/visualizations/'
 
 
 def test_project_serializer_list(project, project2):
@@ -135,21 +142,66 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
     def mock_post_exception(*args, **kwargs):
         raise KeyError('')
 
+    def mock_put_failed_enable(*args, **kwargs):
+        return {'type': 'project', 'id': '00000000-0000-0000-0000-000000000000', 'op': 'enable',
+                'success': False}
+
     # Test a successful sync.
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
+    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
     project = Project.objects.create(name='test', id=uuid4())
-    project.sync_with_zmlp(project_zero_user)
+    project.sync_with_zmlp()
+
+    # Test a disabled project.
+    project.is_active = False
+    project.save()
+    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
 
     # Test a sync when the project already exists in zmlp.
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_duplicate)
     project = Project.objects.create(name='test', id=uuid4())
-    project.sync_with_zmlp(project_zero_user)
+    project.sync_with_zmlp()
 
     # Test a failure.
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_exception)
     project = Project.objects.create(name='test', id=uuid4())
     with pytest.raises(KeyError):
-        project.sync_with_zmlp(project_zero_user)
+        project.sync_with_zmlp()
+
+    # Test failed status sync.
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
+    monkeypatch.setattr(ZmlpClient, 'put', mock_put_failed_enable)
+    with pytest.raises(IOError):
+        project.sync_with_zmlp()
+
+
+def test_project_sync_with_zmlp_with_subscription(monkeypatch, project_zero_user,
+                                                  project_zero_subscription):
+    def mock_post_true(*args, **kwargs):
+        return True
+
+    def mock_post_duplicate(*args, **kwargs):
+        raise ZmlpDuplicateException({})
+
+    def mock_post_exception(*args, **kwargs):
+        raise KeyError('')
+
+    # Test a successful sync.
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
+    monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
+    project = Project.objects.create(name='test', id=uuid4())
+    project.sync_with_zmlp()
+
+    # Test a sync when the project already exists in zmlp.
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_duplicate)
+    project = Project.objects.create(name='test', id=uuid4())
+    project.sync_with_zmlp()
+
+    # Test a failure.
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_exception)
+    project = Project.objects.create(name='test', id=uuid4())
+    with pytest.raises(KeyError):
+        project.sync_with_zmlp()
 
 
 def test_project_managers(project):
@@ -159,119 +211,6 @@ def test_project_managers(project):
     project.save()
     assert Project.objects.all().count() == 0
     assert Project.all_objects.all().count() == 1
-
-
-class TestProjectViewSet:
-
-    @pytest.fixture
-    def project_zero(self):
-        return Project.objects.get_or_create(id='00000000-0000-0000-0000-000000000000',
-                                             name='Project Zero')[0]
-
-    @pytest.fixture
-    def project_zero_membership(self, user, project_zero):
-        apikey = {
-            "name": "admin-key",
-            "projectId": "00000000-0000-0000-0000-000000000000",
-            "keyId": "123455678-a920-40ab-a251-a123b17df1ba",
-            "sharedKey": "notyourbusiness",
-            "permissions": [
-                "SuperAdmin", "ProjectAdmin", "AssetsRead", "AssetsImport"
-            ]
-        }
-        apikey = b64encode(json.dumps(apikey).encode('utf-8')).decode('utf-8')
-        return Membership.objects.create(user=user, project=project_zero, apikey=apikey)
-
-    @pytest.fixture
-    def project_zero_user(self, user, project_zero_membership):
-        return user
-
-    def test_post_create(self, project_zero, project_zero_user, api_client, monkeypatch):
-
-        def mock_api_response(*args, **kwargs):
-            return True
-
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
-        api_client.force_authenticate(project_zero_user)
-
-        with pytest.raises(Project.DoesNotExist):
-            Project.objects.get(name='Create Project Test')
-
-        body = {'name': 'Create Project Test'}
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 201
-        project = Project.objects.get(name='Create Project Test')
-        assert project.name == 'Create Project Test'
-
-    def test_post_create_no_project_zero(self, project, zmlp_project_user, api_client):
-        api_client.force_authenticate(zmlp_project_user)
-        body = {'name': 'Test Project'}
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 403
-        assert response.json()['detail'] == ('user is either not a member of Project Zero '
-                                             'or the Project has not been created yet.')
-
-    def test_post_create_dup_zmlp_project(self, project_zero, project_zero_user, api_client,
-                                          monkeypatch):
-
-        def mock_api_response(*args, **kwargs):
-            raise ZmlpDuplicateException(data={'msg': 'Duplicate'})
-
-        api_client.force_authenticate(project_zero_user)
-        body = {'name': 'Create Project Test'}
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
-
-        with pytest.raises(Project.DoesNotExist):
-            Project.objects.get(name='Create Project Test')
-
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 201
-        project = Project.objects.get(name='Create Project Test')
-        assert project.name == 'Create Project Test'
-
-    def test_post_create_dup_in_both(self, project_zero, project_zero_user, api_client,
-                                     monkeypatch):
-
-        def mock_api_response(*args, **kwargs):
-            raise ZmlpDuplicateException(data={'msg': 'Duplicate'})
-
-        api_client.force_authenticate(project_zero_user)
-        Project.objects.create(id='af29eb00-9adc-45be-8be4-50589211d300',
-                               name='Test Project').save()
-        body = {'id': 'af29eb00-9adc-45be-8be4-50589211d300',
-                'name': 'Test Project'}
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
-
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 400
-        assert response.json()['detail'][0] == ('A project with this id already '
-                                                'exists in Wallet and ZMLP.')
-
-    def test_post_create_already_in_wallet_diff_name(self, login, project_zero, project_zero_user,
-                                                     api_client):
-        Project.objects.create(id='af29eb00-9adc-45be-8be4-50589211d300',
-                               name='Test Project').save()
-        body = {'id': 'af29eb00-9adc-45be-8be4-50589211d300',
-                'name': 'Totally Different Name'}
-
-        response = api_client.post(reverse('project-list'), body)
-        content = check_response(response, status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == ('A project with this id and a different name '
-                                     'already exists in Wallet. Send the correct name '
-                                     'or edit the Project in the Django Admin.')
-
-    def test_post_bad_id(self, project_zero, project_zero_user, api_client, monkeypatch):
-
-        def mock_api_response(*args, **kwargs):
-            return True
-
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
-        api_client.force_authenticate(project_zero_user)
-
-        body = {'id': 'zadscadfa', 'name': 'Test'}
-        response = api_client.post(reverse('project-list'), body)
-        assert response.status_code == 400
-        assert response.json()['id'][0] == 'Must be a valid UUID.'
 
 
 @pytest.fixture
@@ -705,16 +644,6 @@ class TestProjectUserPost:
         content = response.json()
         assert content['detail'] == 'Invalid request.'
 
-    def test_get_permissions_for_roles(self):
-        view = ProjectUserViewSet()
-        roles = ['ML_Tools', 'User_Admin']
-        permissions = view._get_permissions_for_roles(roles)
-        expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage',
-                    'DataSourceManage', 'DataQueueManage', 'SystemManage']
-        assert set(permissions) == set(expected)
-        permissions = view._get_permissions_for_roles(['User_Admin'])
-        assert permissions == ['ProjectManage']
-
 
 class TestProjectUserPut:
 
@@ -777,8 +706,12 @@ class TestProjectUserPut:
         def mock_delete_response(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
 
+        def mock_get_response(*args, **kwargs):
+            return {'permissions': ['AssetsWrite']}
+
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
         monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
@@ -866,6 +799,11 @@ class TestProjectUserPut:
     def test_inception_key(self, project, zmlp_project_user, monkeypatch, inception_key,
                            zmlp_project_membership, api_client, django_user_model):
 
+        def get_mock_response(*args, **kwargs):
+            return {}
+
+        monkeypatch.setattr(ZmlpClient, 'get', get_mock_response)
+
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com',
                                                          'letmein')  # noqa
         apikey = convert_json_to_base64(inception_key).decode('utf-8')
@@ -882,6 +820,12 @@ class TestProjectUserPut:
 
 
 class TestMembershipModel:
+
+    @pytest.fixture
+    def apikey_data(self, data):
+        data['permissions'] = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'DataSourceManage',
+                               'DataQueueManage']
+        return data
 
     @pytest.fixture
     def clean_membership(self, zmlp_project_user, project):
@@ -913,3 +857,173 @@ class TestMembershipModel:
         with pytest.raises(ValidationError) as excinfo:
             membership.full_clean()
         assert 'is not a valid choice.' in str(excinfo)
+
+    def test_sync_project_no_apikey(self, zmlp_project_user, project, data, clean_membership,
+                                    monkeypatch):
+
+        def post_mock_response(*args, **kwargs):
+            return data
+
+        def post_get_response(*args, **kwargs):
+            return data
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.full_clean()
+        membership.save()
+        assert membership.apikey == ''
+        membership.sync_with_zmlp()
+        assert membership.apikey == convert_json_to_base64(data).decode('utf-8')
+
+    def test_sync_project_apikey_all_match(self, zmlp_project_user, project, apikey_data,
+                                           clean_membership, monkeypatch):
+
+        def post_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def post_get_response(*args, **kwargs):
+            return apikey_data
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(apikey_data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp()
+        assert membership.apikey == convert_json_to_base64(apikey_data).decode('utf-8')
+
+    def test_sync_project_apikey_no_id(self, zmlp_project_user, project, apikey_data,
+                                       clean_membership, monkeypatch):
+        data = copy.deepcopy(apikey_data)
+        del(apikey_data['id'])
+
+        def post_mock_response(*args, **kwargs):
+            return data
+
+        def post_get_response(*args, **kwargs):
+            return apikey_data
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(apikey_data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp()
+        assert membership.apikey == convert_json_to_base64(data).decode('utf-8')
+
+    def test_sync_internally_inconsistent(self, zmlp_project_user, project, apikey_data,
+                                          clean_membership, monkeypatch):
+
+        data = copy.deepcopy(apikey_data)
+        data['permissions'] = ['AssetsRead']
+
+        def post_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def get_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def delete_mock_response(*args, **kwargs):
+            return Response(status=status.HTTP_200_OK)
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', get_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp()
+        assert membership.apikey == convert_json_to_base64(apikey_data).decode('utf-8')
+
+    def test_sync_externally_inconsistent(self, zmlp_project_user, project, apikey_data,
+                                          clean_membership, monkeypatch):
+
+        data = copy.deepcopy(apikey_data)
+        data['permissions'] = ['AssetsRead']
+
+        def post_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def get_mock_response(*args, **kwargs):
+            if args[-1].endswith('_download'):
+                return apikey_data
+            else:
+                return data
+
+        def delete_mock_response(*args, **kwargs):
+            return Response(status=status.HTTP_200_OK)
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', get_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(apikey_data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp()
+        assert membership.apikey == convert_json_to_base64(apikey_data).decode('utf-8')
+
+    def test_sync_consistent_with_force(self, zmlp_project_user, project, apikey_data,
+                                        clean_membership, monkeypatch):
+
+        def post_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def post_get_response(*args, **kwargs):
+            return apikey_data
+
+        def delete_mock_response(*args, **kwargs):
+            return Response(status=status.HTTP_200_OK)
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(apikey_data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp(force=True)
+        assert membership.apikey == convert_json_to_base64(apikey_data).decode('utf-8')
+
+    def test_sync_not_in_zmlp(self, zmlp_project_user, project, apikey_data, clean_membership,
+                              monkeypatch):
+
+        def post_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def post_get_response(*args, **kwargs):
+            if args[-1].endswith('_download'):
+                return apikey_data
+            else:
+                raise ZmlpNotFoundException({})
+
+        def delete_mock_response(*args, **kwargs):
+            return Response(status=status.HTTP_200_OK)
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(apikey_data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp(force=True)
+        assert membership.apikey == convert_json_to_base64(apikey_data).decode('utf-8')

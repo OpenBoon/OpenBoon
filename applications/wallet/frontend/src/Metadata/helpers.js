@@ -1,5 +1,6 @@
 import { bytesToSize } from '../Bytes/helpers'
 import { formatPrettyDate } from '../Date/helpers'
+import { capitalizeFirstLetter } from '../Text/helpers'
 
 export const formatDisplayName = ({ name }) =>
   name
@@ -20,8 +21,7 @@ export const formatDisplayName = ({ name }) =>
         return ['File', word.charAt(4).toUpperCase() + word.substring(5)]
       }
 
-      // Capitalize first letter
-      return word.charAt(0).toUpperCase() + word.substring(1)
+      return capitalizeFirstLetter({ word })
     })
     .join(' ')
 

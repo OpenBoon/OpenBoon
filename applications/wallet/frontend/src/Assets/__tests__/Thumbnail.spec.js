@@ -114,14 +114,14 @@ describe('<AssetsThumbnail />', () => {
               {
                 type: 'similarity',
                 attribute: 'analysis.zvi-image-similarity',
-                values: { ids: [ASSET_ID] },
+                values: { ids: [ASSET_ID], minScore: 0.75 },
               },
             ]),
           ),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsicE53blhqVm50Z2JEUWdQWmhrWHFWVC0yVVJNcXZKTkwiXX19XQ==',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsicE53blhqVm50Z2JEUWdQWmhrWHFWVC0yVVJNcXZKTkwiXSwibWluU2NvcmUiOjAuNzV9fV0=',
     )
   })
 
@@ -163,7 +163,7 @@ describe('<AssetsThumbnail />', () => {
               {
                 type: 'similarity',
                 attribute: 'analysis.zvi-image-similarity',
-                values: { ids: [assets.results[1].id] },
+                values: { ids: [assets.results[1].id], minScore: 0.75 },
               },
             ]),
           ),
@@ -171,7 +171,7 @@ describe('<AssetsThumbnail />', () => {
           projectId: PROJECT_ID,
         },
       },
-      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXX19XQ==`,
+      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXSwibWluU2NvcmUiOjAuNzV9fV0=`,
     )
   })
 })

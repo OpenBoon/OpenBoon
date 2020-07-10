@@ -10,7 +10,7 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
-const CHEVRON_WIDTH = 20
+const ICON_SIZE = 20
 
 const STYLES = {
   PRIMARY: {
@@ -20,7 +20,7 @@ const STYLES = {
     },
     title: {
       display: 'flex',
-      borderBottom: constants.borders.tabs,
+      borderBottom: constants.borders.regular.iron,
       paddingTop: spacing.normal,
       paddingBottom: spacing.normal,
       paddingLeft: spacing.moderate,
@@ -42,7 +42,7 @@ const STYLES = {
       backgroundColor: colors.structure.lead,
       borderRadius: constants.borderRadius.small,
       ':last-of-type > div:last-of-type': {
-        borderBottom: constants.borders.divider,
+        borderBottom: constants.borders.regular.smoke,
       },
       ':first-of-type > div': {
         borderTop: 'none',
@@ -50,7 +50,7 @@ const STYLES = {
     },
     title: {
       display: 'flex',
-      borderTop: constants.borders.divider,
+      borderTop: constants.borders.regular.smoke,
       paddingTop: spacing.moderate,
       paddingBottom: spacing.moderate,
       paddingLeft: spacing.moderate,
@@ -71,11 +71,11 @@ const STYLES = {
   FILTER: {
     container: {
       backgroundColor: colors.structure.lead,
-      border: constants.borders.transparent,
-      borderBottom: constants.borders.divider,
+      border: constants.borders.regular.transparent,
+      borderBottom: constants.borders.regular.smoke,
       paddingBottom: spacing.hairline,
       ':hover': {
-        border: constants.borders.tableRow,
+        border: constants.borders.regular.smoke,
         svg: { opacity: 1 },
       },
     },
@@ -125,14 +125,20 @@ const Accordion = ({
 
   return (
     <div css={STYLES[variant].container}>
-      <div css={STYLES[variant].title} onClick={toggle}>
+      <div
+        css={STYLES[variant].title}
+        style={
+          !isOpen && variant === VARIANTS.PRIMARY ? { border: 'none' } : {}
+        }
+        onClick={toggle}
+      >
         <Button
           aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
           variant={BUTTON_VARIANTS.NEUTRAL}
           onClick={toggle}
         >
           <ChevronSvg
-            width={CHEVRON_WIDTH}
+            height={ICON_SIZE}
             color={colors.structure.steel}
             css={{
               transform: isOpen ? 'rotate(-180deg)' : '',
@@ -146,7 +152,10 @@ const Accordion = ({
             fontSize: typography.size.medium,
             lineHeight: typography.height.medium,
             paddingLeft: spacing.moderate,
+            paddingRight: spacing.base,
             display: 'flex',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           }}
         >
           {title}

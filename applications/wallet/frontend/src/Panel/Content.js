@@ -8,7 +8,7 @@ import Button, { VARIANTS } from '../Button'
 import Resizeable from '../Resizeable'
 
 const MIN_WIDTH = 400
-const ICON_WIDTH = 20
+const ICON_SIZE = 20
 
 const PanelContent = ({
   openToThe,
@@ -39,7 +39,7 @@ const PanelContent = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: spacing.base,
-            borderBottom: constants.borders.divider,
+            borderBottom: constants.borders.regular.smoke,
           }}
         >
           <h2
@@ -63,11 +63,10 @@ const PanelContent = ({
             }}
           >
             <DoubleChevronSvg
-              width={ICON_WIDTH}
+              height={ICON_SIZE}
               css={{
                 transform: `rotate(${openToThe === 'left' ? -90 : 90}deg)`,
               }}
-              aria-hidden
             />
           </Button>
         </div>

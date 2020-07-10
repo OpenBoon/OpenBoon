@@ -17,6 +17,8 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
     def __init__(self):
         super(KnnFaceRecognitionTrainer, self).__init__()
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
+        self.add_arg(Argument("deploy", "bool", default=False,
+                              toolTip="Automatically deploy the model onto assets."))
         self.app_model = None
 
     def init(self):
@@ -24,16 +26,21 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
 
     def process(self, frame):
         self.reactor.write_event("status", {
-            "status": "Searching Dataset Labels"
+            "status": "Searching for labels"
         })
         query = {
             '_source': 'labels.*',
-            'size': 25,
+            'size': 50,
             'query': {
                 'nested': {
                     'path': 'labels',
                     'query': {
-                        'term': {'labels.dataSetId': self.app_model.dataset_id}
+                        'bool': {
+                            'must': [
+                                {'term': {'labels.modelId': self.app_model.id}},
+                                {'term': {'labels.scope': 'TRAIN'}}
+                            ]
+                        }
                     }
                 }
             }
@@ -42,7 +49,7 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
         face_model = []
         for asset in self.app.assets.scroll_search(query):
             for label in asset['labels']:
-                if label['dataSetId'] == self.app_model.dataset_id:
+                if label['modelId'] == self.app_model.id:
                     face_model.append({'simhash': label['simhash'], 'label': label['label']})
 
         if not face_model:
@@ -104,6 +111,7 @@ class KnnFaceRecognitionTrainer(AssetProcessor):
         with open(os.path.join(model_dir, 'face_classifier.pickle'), 'wb') as fp:
             pickle.dump(classifier, fp)
 
-        mod = file_storage.models.save_model(model_dir, self.app_model)
+        mod = file_storage.models.save_model(model_dir, self.app_model, self.arg_value('deploy'))
         self.reactor.emit_status("Published model {}".format(self.app_model.name))
+
         return mod

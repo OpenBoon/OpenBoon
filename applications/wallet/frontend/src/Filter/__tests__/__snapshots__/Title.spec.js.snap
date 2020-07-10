@@ -5,7 +5,7 @@ Array [
   <svg
     color="#73b61c"
     data-file-name="range.svg"
-    width={20}
+    height={20}
   />,
   .emotion-0 {
   font-family: Roboto Mono;

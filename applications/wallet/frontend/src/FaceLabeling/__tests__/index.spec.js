@@ -9,6 +9,8 @@ const ASSET_ID = asset.id
 
 const noop = () => () => {}
 
+jest.mock('../TrainApply', () => 'FaceLabelingTrainApply')
+
 describe('<FaceLabeling />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({
@@ -20,10 +22,8 @@ describe('<FaceLabeling />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render selected asset with no predictions', () => {
-    require('swr').__setMockUseSWRResponse({
-      data: { ...asset, 'zvi-face-detection': null },
-    })
+  it('should render selected asset with no data', () => {
+    require('swr').__setMockUseSWRResponse({})
 
     require('next/router').__setUseRouter({
       query: { id: ASSET_ID, projectId: PROJECT_ID },
@@ -34,23 +34,19 @@ describe('<FaceLabeling />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render selected asset with predictions', () => {
+  it('should render selected asset with predictions', async () => {
     require('swr').__setMockUseSWRResponse({
       data: {
-        ...asset,
-        'zvi-face-detection': {
-          count: 3,
-          type: 'labels',
-          predictions: [
-            {
-              score: 0.999,
-              bbox: [0.38, 0.368, 0.484, 0.584],
-              label: 'face1',
-              simhash: 'MNONPMMKPLRLONLJMRLNM',
-              b64_image: 'data:image/png;base64',
-            },
-          ],
-        },
+        filename: 'AssetFilename.jpg',
+        predictions: [
+          {
+            score: 0.999,
+            bbox: [0.38, 0.368, 0.484, 0.584],
+            label: 'face1',
+            simhash: 'MNONPMMKPLRLONLJMRLNM',
+            b64_image: 'data:image/png;base64',
+          },
+        ],
       },
     })
 
@@ -65,13 +61,35 @@ describe('<FaceLabeling />', () => {
     act(() => {
       component.root
         .findByProps({ id: 'MNONPMMKPLRLONLJMRLNM' })
-        .props.onChange({ target: { value: 'Jane' } })
+        .props.onChange({ value: 'Jane' })
     })
+
+    expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
       component.root
         .findByProps({ children: 'Cancel' })
         .props.onClick({ preventDefault: noop })
     })
+
+    act(() => {
+      component.root
+        .findByProps({ id: 'MNONPMMKPLRLONLJMRLNM' })
+        .props.onChange({ value: 'Jane' })
+    })
+
+    fetch.mockRejectOnce(
+      JSON.stringify({
+        labels: [{ nonFieldErrors: ['Error Message'] }],
+      }),
+    )
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Save' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

@@ -99,9 +99,6 @@ class CellsDocument(options: RenderRequest, inputStream: InputStream) : Document
             metadata["timeCreated"] = convertDate(props.createdTime?.toDate())
             metadata["length"] = workbook.worksheets.count
 
-            val worksheet = workbook.worksheets[page.coerceAtLeast(0)]
-            metadata["description"] = worksheet.name
-
             val output = ReversibleByteArrayOutputStream()
             Json.mapper.writeValue(output, metadata)
             ioHandler.writeMetadata(page, output)

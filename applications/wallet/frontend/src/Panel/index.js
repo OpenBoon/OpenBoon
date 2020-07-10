@@ -52,6 +52,7 @@ const Panel = ({ openToThe, children }) => {
             }
             isDisabled={false}
             style={{
+              flex: 'none',
               padding: spacing.base,
               paddingTop: spacing.normal,
               paddingBottom: spacing.normal,

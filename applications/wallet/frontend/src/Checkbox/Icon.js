@@ -5,6 +5,8 @@ import { colors, constants } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 
+const ICON_SIZE = 20
+
 const getBorder = ({ isChecked, isDisabled }) => {
   if (isDisabled && isChecked) return 'none'
 
@@ -49,7 +51,7 @@ const CheckboxIcon = ({ size, value, isChecked, isDisabled, onClick }) => (
       }}
     >
       <CheckmarkSvg
-        width={20}
+        height={ICON_SIZE}
         css={{
           path: {
             transition: 'all .3s ease',

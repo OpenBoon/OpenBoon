@@ -35,6 +35,15 @@ fun emptyZpsScript(name: String): ZpsScript {
     )
 }
 
+fun emptyZpsScripts(name: String): List<ZpsScript> {
+    return listOf(
+        ZpsScript(
+            name,
+            null, null, null
+        )
+    )
+}
+
 @ApiModel("ZPS Script", description = "Describes a ZPS script that can be run by the Analysts.")
 class ZpsScript(
     @ApiModelProperty("Name of the ZPS Script.")
@@ -52,14 +61,14 @@ class ZpsScript(
     @ApiModelProperty("Global arguments to apply to the Processors.")
     var globalArgs: MutableMap<String, Any>? = mutableMapOf(),
 
-    @ApiModelProperty("Type of pipeline to run", allowableValues = "import,batch")
-    var type: JobType = JobType.Import,
-
     @ApiModelProperty("Settings for the run of this ZPS Script.")
     var settings: MutableMap<String, Any?>? = null,
 
     @ApiModelProperty("List of Asset IDs that will be resolved at dispatch time.")
-    var assetIds: List<String>? = null
+    var assetIds: List<String>? = null,
+
+    @ApiModelProperty("A list of dependent child scripts")
+    var children: List<ZpsScript>? = null
 
 ) {
     /**
@@ -92,6 +101,10 @@ class ZpsScript(
         globalArgs?.let {
             it[key] = value
         }
+    }
+
+    fun copyWithoutChildren(): ZpsScript {
+        return ZpsScript(name, generate, assets, execute, globalArgs, settings, assetIds)
     }
 }
 

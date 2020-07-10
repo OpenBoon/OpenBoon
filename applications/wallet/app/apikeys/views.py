@@ -14,13 +14,7 @@ class ApikeyViewSet(BaseProjectViewSet):
     zmlp_only = True
 
     def list(self, request, project_pk):
-        def item_filter(request, item):
-            if item['name'].startswith('Admin Console Generated Key'):
-                return False
-            if item['name'] == 'job-runner':
-                return False
-            return True
-        return self._zmlp_list_from_search(request, item_filter=item_filter)
+        return self._zmlp_list_from_search(request)
 
     def retrieve(self, request, project_pk, pk):
         return self._zmlp_retrieve(request, pk)
@@ -31,7 +25,8 @@ class ApikeyViewSet(BaseProjectViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
         apikey = create_zmlp_api_key(request.client, serializer.validated_data['name'],
-                                     serializer.validated_data['permissions'], encode_b64=False)
+                                     serializer.validated_data['permissions'], encode_b64=False,
+                                     internal=serializer.validated_data.get('internal', False))
         slim_key = {'accessKey': apikey['accessKey'],
                     'secretKey': apikey['secretKey']}
         return Response(status=status.HTTP_201_CREATED, data=slim_key)

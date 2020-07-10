@@ -242,7 +242,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           className="emotion-1"
           color="#ffffff"
           data-file-name="refresh.svg"
-          width={20}
+          height={20}
         />
         <div
           className="emotion-2"
@@ -307,7 +307,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
               <svg
                 color="#ffffff"
                 data-file-name="clock.svg"
-                width={20}
+                height={20}
               />
               <span
                 className="emotion-12"
@@ -359,7 +359,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
               <svg
                 color="#ebb52e"
                 data-file-name="generating.svg"
-                width={20}
+                height={20}
               />
               <span
                 className="emotion-12"
@@ -403,7 +403,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
               <svg
                 color="#4ac565"
                 data-file-name="checkmark.svg"
-                width={20}
+                height={20}
               />
               <span
                 className="emotion-12"
@@ -447,7 +447,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
               <svg
                 color="#c92300"
                 data-file-name="crossSmall.svg"
-                width={20}
+                height={20}
               />
               <span
                 className="emotion-12"
@@ -491,7 +491,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
               <svg
                 color="#808080"
                 data-file-name="paused.svg"
-                width={20}
+                height={20}
               />
               <span
                 className="emotion-12"
@@ -535,7 +535,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
               <svg
                 color="#4a90e2"
                 data-file-name="squareSquareSquare.svg"
-                width={20}
+                height={20}
               />
               <span
                 className="emotion-12"
@@ -851,7 +851,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
           className="emotion-1"
           color="#ffffff"
           data-file-name="refresh.svg"
-          width={20}
+          height={20}
         />
         <div
           className="emotion-2"

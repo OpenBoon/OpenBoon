@@ -2,7 +2,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, DataSet, ModelType, Model
+from zmlp import ZmlpClient, ModelType, Model
 from .util import get_zmlp_app
 
 logging.basicConfig(level=logging.DEBUG)
@@ -18,8 +18,7 @@ class ModelAppTests(unittest.TestCase):
         self.model_data = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
-            'dataSetId': 'abc123',
-            'type': 'LABEL_DETECTION_MOBILENET2',
+            'type': 'ZVI_LABEL_DETECTION',
             'fileId': '/abc/123/345/foo.zip'
         }
 
@@ -44,8 +43,7 @@ class ModelAppTests(unittest.TestCase):
     @patch.object(ZmlpClient, 'post')
     def test_create_model(self, post_patch):
         post_patch.return_value = self.model_data
-        ds = DataSet({"id": "12345"})
-        model = self.app.models.create_model(ds, ModelType.LABEL_DETECTION_MOBILENET2)
+        model = self.app.models.create_model('test', ModelType.ZVI_LABEL_DETECTION)
         self.assert_model(model)
 
     @patch.object(ZmlpClient, 'post')
@@ -61,20 +59,38 @@ class ModelAppTests(unittest.TestCase):
         assert job_data['name'] == job.name
 
     @patch.object(ZmlpClient, 'post')
-    def test_publish_model(self, post_patch):
-        mod_data = {
+    def test_deploy_model(self, post_patch):
+        job_data = {
             "id": "12345",
-            "name": "foo-bar"
+            "name": "job-foo-bar"
         }
-        post_patch.return_value = mod_data
+        post_patch.return_value = job_data
         model = Model(self.model_data)
-        mod = self.app.models.publish_model(model)
-        assert mod_data['id'] == mod.id
-        assert mod_data['name'] == mod.name
+        mod = self.app.models.deploy_model(model)
+        assert job_data['id'] == mod.id
+        assert job_data['name'] == mod.name
 
     def assert_model(self, model):
         assert self.model_data['id'] == model.id
         assert self.model_data['name'] == model.name
-        assert self.model_data['dataSetId'] == model.dataset_id
         assert self.model_data['type'] == model.type.name
         assert self.model_data['fileId'] == model.file_id
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_label_counts(self, get_patch):
+        value = {
+            "dog": 1,
+            "cat": 2
+        }
+        get_patch.return_value = value
+        rsp = self.app.models.get_label_counts(Model({"id": "foo"}))
+        assert value == rsp
+
+    @patch.object(ZmlpClient, 'get')
+    def test_download_labeled_images(self, get_patch):
+        raw = {"id": "12345", "type": "ZVI_LABEL_DETECTION"}
+        model = Model(raw)
+        get_patch.return_value = raw
+        dl = self.app.models.download_labeled_images(model, "objects_coco", "/tmp/dstest")
+        assert "/tmp/dstest" == dl.dst_dir
+        assert "12345" == dl.model.id

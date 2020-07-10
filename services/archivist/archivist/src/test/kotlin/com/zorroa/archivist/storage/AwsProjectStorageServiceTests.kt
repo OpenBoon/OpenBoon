@@ -9,6 +9,8 @@ import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 
@@ -74,5 +76,27 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val rsp = projectStorageService.getSignedUrl(loc, true, 60, TimeUnit.MINUTES)
         Json.prettyPrint(rsp)
+    }
+
+    @Test
+    fun testNotAlphaNumericFileName() {
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob test.txt")
+
+        var expected = "s3://project-storage-test/projects/00000000-0000-0000-0000-000000000000/assets/1234/source/${URLEncoder.encode("bob test.txt", StandardCharsets.UTF_8.toString())}"
+
+        val rsp = projectStorageService.getNativeUri(loc)
+        Json.prettyPrint(rsp)
+        assertEquals(expected, rsp)
+    }
+
+    @Test
+    fun testEncodedLocation() {
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob%20test.txt")
+
+        var expected = "s3://project-storage-test/projects/00000000-0000-0000-0000-000000000000/assets/1234/source/${URLEncoder.encode("bob test.txt", StandardCharsets.UTF_8.toString())}"
+
+        val rsp = projectStorageService.getNativeUri(loc)
+        Json.prettyPrint(rsp)
+        assertEquals(expected, rsp)
     }
 }

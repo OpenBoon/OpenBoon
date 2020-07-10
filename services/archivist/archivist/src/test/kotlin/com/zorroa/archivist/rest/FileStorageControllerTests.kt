@@ -3,13 +3,13 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.DataSetSpec
-import com.zorroa.archivist.domain.DataSetType
+import com.zorroa.archivist.domain.ModelSpec
+import com.zorroa.archivist.domain.ModelType
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
-import com.zorroa.archivist.service.DataSetService
+import com.zorroa.archivist.service.ModelService
 import com.zorroa.archivist.storage.ProjectStorageService
 import org.hamcrest.CoreMatchers
 import org.junit.Test
@@ -28,7 +28,7 @@ class FileStorageControllerTests : MockMvcTest() {
     lateinit var projectStorageService: ProjectStorageService
 
     @Autowired
-    lateinit var dataSetService: DataSetService
+    lateinit var modelService: ModelService
 
     @Test
     fun testSteamFile() {
@@ -224,9 +224,9 @@ class FileStorageControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testUploadFileToDataSet() {
+    fun testUploadLabeledModel() {
 
-        val ds = dataSetService.create(DataSetSpec("foo", DataSetType.LABEL_DETECTION))
+        val ds = modelService.createModel(ModelSpec("foo", ModelType.ZVI_LABEL_DETECTION))
         val file = MockMultipartFile(
             "file", "toucan.jpg", "image/jpeg",
             File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
@@ -236,7 +236,7 @@ class FileStorageControllerTests : MockMvcTest() {
             """
             {
                 "entityId": "${ds.id}",
-                "entity": "datasets",
+                "entity": "models",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {

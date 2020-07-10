@@ -97,7 +97,7 @@ const FilterTextDetection = ({
             }}
           >
             <CrossSvg
-              width={ICON_SIZE}
+              height={ICON_SIZE}
               css={{ color: colors.structure.steel }}
             />
           </Button>
@@ -125,23 +125,23 @@ const FilterTextDetection = ({
             onChange={({ target: { value } }) => setSearchString(value)}
             css={{
               flex: 1,
-              border: constants.borders.transparent,
+              border: constants.borders.regular.transparent,
               padding: spacing.moderate,
               borderTopLeftRadius: constants.borderRadius.small,
               borderBottomLeftRadius: constants.borderRadius.small,
               color: colors.structure.pebble,
               backgroundColor: colors.structure.mattGrey,
               ':focus': {
-                outline: constants.borders.outline,
-                border: constants.borders.inputSmall,
+                outline: constants.borders.regular.transparent,
+                border: constants.borders.keyOneRegular,
                 ':hover': {
-                  border: constants.borders.inputSmall,
+                  border: constants.borders.keyOneRegular,
                 },
                 color: colors.structure.coal,
                 backgroundColor: colors.structure.white,
               },
               ':hover': {
-                border: constants.borders.tableRow,
+                border: constants.borders.regular.steel,
               },
               paddingLeft: spacing.moderate,
               '::placeholder': {
@@ -189,7 +189,7 @@ const FilterTextDetection = ({
             }}
           >
             <SearchSvg
-              width={ICON_SIZE}
+              height={ICON_SIZE}
               css={{ color: colors.structure.white }}
             />
           </button>

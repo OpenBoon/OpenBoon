@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { css } from '@emotion/core'
 
 import { zIndex, colors } from '../Styles'
 
@@ -9,7 +8,7 @@ const SidebarOverlay = ({ isSidebarOpen, setSidebarOpen }) => (
     role="button"
     aria-label="Close Sidebar Menu"
     tabIndex="-1"
-    css={css({
+    css={{
       position: 'fixed',
       top: 0,
       left: 0,
@@ -21,7 +20,7 @@ const SidebarOverlay = ({ isSidebarOpen, setSidebarOpen }) => (
       transition: isSidebarOpen
         ? 'opacity ease-in-out .3s, width ease-in 0s 0s'
         : 'opacity ease-in-out .3s, width ease-in 0s .3s',
-    })}
+    }}
     onClick={() => setSidebarOpen(false)}
     onKeyDown={() => setSidebarOpen(false)}
   />

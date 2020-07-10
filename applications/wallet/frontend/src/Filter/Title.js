@@ -10,31 +10,38 @@ import ExistsSvg from '../Icons/exists.svg'
 import MissingSvg from '../Icons/missing.svg'
 import SimilaritySvg from '../Icons/similarity.svg'
 import TextSvg from '../Icons/text.svg'
+import CalendarSvg from '../Icons/calendar.svg'
 
-const SVG_SIZE = 20
+const ICON_SIZE = 20
 
 const FilterTitle = ({ filter: { attribute, type, values } }) => {
   return (
     <>
       {(type === 'facet' || type === 'labelConfidence') && (
-        <FacetSvg width={SVG_SIZE} color={colors.key.one} />
+        <FacetSvg height={ICON_SIZE} color={colors.key.one} />
       )}
 
-      {type === 'range' && <RangeSvg width={SVG_SIZE} color={colors.key.one} />}
+      {type === 'range' && (
+        <RangeSvg height={ICON_SIZE} color={colors.key.one} />
+      )}
 
       {type === 'exists' &&
         (values && values.exists ? (
-          <ExistsSvg width={SVG_SIZE} color={colors.key.one} />
+          <ExistsSvg height={ICON_SIZE} color={colors.key.one} />
         ) : (
-          <MissingSvg width={SVG_SIZE} color={colors.key.one} />
+          <MissingSvg height={ICON_SIZE} color={colors.key.one} />
         ))}
 
       {type === 'similarity' && (
-        <SimilaritySvg width={SVG_SIZE} color={colors.key.one} />
+        <SimilaritySvg height={ICON_SIZE} color={colors.key.one} />
       )}
 
       {type === 'textContent' && (
-        <TextSvg width={SVG_SIZE} color={colors.key.one} />
+        <TextSvg height={ICON_SIZE} color={colors.key.one} />
+      )}
+
+      {type === 'date' && (
+        <CalendarSvg height={ICON_SIZE} color={colors.key.one} />
       )}
 
       <span

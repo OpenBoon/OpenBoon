@@ -12,7 +12,6 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset
 logging.basicConfig()
 
 model_id = "model-id-12345"
-ds_id = "ds-id-12345"
 
 
 class LabelDetectionPerceptronTrainerTests(PluginUnitTestCase):
@@ -35,7 +34,7 @@ class LabelDetectionPerceptronTrainerTests(PluginUnitTestCase):
                     },
                     "labels": [
                         {
-                            "dataSetId": ds_id,
+                            "modelId": model_id,
                             "label": self.class_names[random.randint(0, 1)],
                         }
                     ]
@@ -43,7 +42,7 @@ class LabelDetectionPerceptronTrainerTests(PluginUnitTestCase):
             }) for _ in range(100)
         ]
 
-    @patch.object(ModelApp, 'publish_model')
+    @patch.object(file_storage.models, 'publish_model')
     @patch.object(ModelApp, 'get_model')
     @patch.object(AssetApp, 'scroll_search')
     @patch.object(file_storage.projects, "store_file_by_id")
@@ -56,7 +55,6 @@ class LabelDetectionPerceptronTrainerTests(PluginUnitTestCase):
         })
         model_patch.return_value = Model({
             'id': model_id,
-            'dataSetId': ds_id,
             'type': "LABEL_DETECTION_PERCEPTRON",
             'fileId': 'models/{}/foo/bar'.format(model_id),
             'name': name

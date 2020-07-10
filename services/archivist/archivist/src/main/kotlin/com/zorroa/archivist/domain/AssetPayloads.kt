@@ -119,7 +119,19 @@ class ReprocessAssetSearchRequest(
     val modules: List<String>,
 
     @ApiModelProperty("The number of assets to run per batch.")
-    val batchSize: Int = 64
+    val batchSize: Int = 128,
+
+    @ApiModelProperty("A name for the job")
+    val name: String? = null,
+
+    @ApiModelProperty("Set to true to kill a job with the same name")
+    val replace: Boolean = false,
+
+    @ApiModelProperty("The number of assets to run per batch.")
+    val dependOnJobIds: List<UUID>? = null,
+
+    @ApiModelProperty("Filter by file types, defaults to all types.")
+    var fileTypes: List<FileType> = FileType.allTypes()
 )
 
 @ApiModel(
@@ -141,11 +153,11 @@ class ReprocessAssetSearchResponse(
 )
 class UpdateAssetLabelsRequest(
 
-    @ApiModelProperty("The labels to add.  Supplying a new label for an existing DataSet overwrites it.")
-    val add: Map<String, List<DataSetLabel>>? = null,
+    @ApiModelProperty("The labels to add.  Supplying a new label for an existing Model overwrites it.")
+    val add: Map<String, List<Label>>? = null,
 
     @ApiModelProperty("The labels to remove.")
-    val remove: Map<String, List<DataSetLabel>>? = null
+    val remove: Map<String, List<Label>>? = null
 )
 
 @ApiModel(

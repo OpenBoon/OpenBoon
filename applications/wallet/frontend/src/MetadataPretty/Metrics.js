@@ -24,7 +24,7 @@ const MetadataPrettyMetrics = ({ pipeline }) => {
             css={{
               width: '100%',
               '&:not(:first-of-type)': {
-                borderTop: constants.borders.prettyMetadata,
+                borderTop: constants.borders.large.iron,
               },
             }}
           >

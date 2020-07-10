@@ -6,7 +6,7 @@ import Button, { VARIANTS } from '../Button'
 
 import { TYPES, ACTIONS } from './reducer'
 
-const DataVisualizationCreate = ({ state, dispatch, setIsCreating }) => {
+const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
   return (
     <div css={{ flex: 1, display: 'flex', padding: spacing.base }}>
       <div
@@ -43,7 +43,7 @@ const DataVisualizationCreate = ({ state, dispatch, setIsCreating }) => {
             </p>
           </div>
 
-          {state.length > 0 && (
+          {charts.length > 0 && (
             <div css={{ display: 'flex', alignItems: 'flex-start' }}>
               <Button
                 variant={VARIANTS.SECONDARY_SMALL}
@@ -65,7 +65,7 @@ const DataVisualizationCreate = ({ state, dispatch, setIsCreating }) => {
                 display: 'flex',
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.normal,
-                borderBottom: constants.borders.divider,
+                borderBottom: constants.borders.regular.smoke,
               }}
             >
               <div
@@ -136,7 +136,7 @@ const DataVisualizationCreate = ({ state, dispatch, setIsCreating }) => {
 }
 
 DataVisualizationCreate.propTypes = {
-  state: PropTypes.arrayOf(PropTypes.object).isRequired,
+  charts: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatch: PropTypes.func.isRequired,
   setIsCreating: PropTypes.func.isRequired,
 }

@@ -17,7 +17,7 @@ class Tier(models.TextChoices):
 
 class Subscription(models.Model):
     """Represents the purchased plan for a given Project"""
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     project = models.OneToOneField(Project, on_delete=models.CASCADE)
     tier = models.CharField(max_length=20, choices=Tier.choices, default=Tier.ESSENTIALS)
     created_date = models.DateTimeField(auto_now_add=True)

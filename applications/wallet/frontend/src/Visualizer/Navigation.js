@@ -4,12 +4,12 @@ import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { formatUrl } from '../Filters/helpers'
+import { getQueryString } from '../Fetch/helpers'
 
 import AssetsSvg from '../Icons/assets.svg'
 import ChartsSvg from '../Icons/charts.svg'
 
-const ICON_WIDTH = 20
+const ICON_SIZE = 20
 
 const VisualizerNavigation = ({ itemCount }) => {
   const {
@@ -55,7 +55,7 @@ const VisualizerNavigation = ({ itemCount }) => {
             pathname: '/[projectId]/visualizer',
             query: { projectId, query },
           }}
-          as={`/${projectId}/visualizer${formatUrl({ query })}`}
+          as={`/${projectId}/visualizer${getQueryString({ query })}`}
           passHref
         >
           <a
@@ -66,7 +66,7 @@ const VisualizerNavigation = ({ itemCount }) => {
                   : colors.structure.steel,
             }}
           >
-            <AssetsSvg width={ICON_WIDTH} aria-hidden /> Assets
+            <AssetsSvg height={ICON_SIZE} /> Assets
           </a>
         </Link>
 
@@ -74,7 +74,7 @@ const VisualizerNavigation = ({ itemCount }) => {
           css={{
             marginTop: spacing.base,
             marginBottom: spacing.base,
-            borderLeft: constants.borders.spacer,
+            borderLeft: constants.borders.regular.coal,
           }}
         />
 
@@ -83,7 +83,7 @@ const VisualizerNavigation = ({ itemCount }) => {
             pathname: '/[projectId]/visualizer/data-visualization',
             query: { projectId, query },
           }}
-          as={`/${projectId}/visualizer/data-visualization${formatUrl({
+          as={`/${projectId}/visualizer/data-visualization${getQueryString({
             query,
           })}`}
           passHref
@@ -96,7 +96,7 @@ const VisualizerNavigation = ({ itemCount }) => {
                   : colors.structure.steel,
             }}
           >
-            <ChartsSvg width={ICON_WIDTH} aria-hidden /> Data Visualization
+            <ChartsSvg height={ICON_SIZE} /> Data Visualization
           </a>
         </Link>
       </div>

@@ -12,7 +12,7 @@ import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.Provider
-import com.zorroa.archivist.domain.SupportedMedia
+import com.zorroa.archivist.domain.FileType
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
@@ -103,7 +103,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -116,7 +116,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.LAST,
@@ -145,7 +145,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -164,7 +164,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -182,7 +182,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -211,7 +211,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -234,7 +234,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.REMOVE,
@@ -255,7 +255,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.REPLACE,
@@ -276,7 +276,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.ADD_BEFORE,
@@ -297,7 +297,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.ADD_AFTER,
@@ -318,7 +318,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.SET_ARGS,
@@ -339,7 +339,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.REMOVE,
@@ -361,7 +361,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(
                 ModOp(
                     ModOpType.REMOVE,

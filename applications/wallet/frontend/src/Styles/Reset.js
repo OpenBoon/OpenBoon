@@ -31,6 +31,10 @@ const StylesReset = () => (
           fontFamily: 'inherit',
         },
         'h1, h2, h3, h4': { margin: 0, padding: 0 },
+        h3: {
+          fontSize: typography.size.medium,
+          lineHeight: typography.height.medium,
+        },
         a: {
           color: colors.structure.white,
           textDecoration: 'none',
@@ -56,6 +60,9 @@ const StylesReset = () => (
           padding: '0',
           position: 'absolute',
           width: '1px',
+        },
+        '.react-grid-item.react-grid-placeholder': {
+          backgroundColor: colors.key.one,
         },
       }}
     />

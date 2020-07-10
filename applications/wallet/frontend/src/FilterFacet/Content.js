@@ -145,15 +145,15 @@ const FilterFacet = ({
                         width: `${offset}%`,
                         borderTop:
                           isDisabled || (!isSelected && hasSelections)
-                            ? constants.borders.unselectedFacet
-                            : constants.borders.facet,
+                            ? constants.borders.large.steel
+                            : constants.borders.keyOneLarge,
                       }}
                     />
                     <div
                       css={{
                         height: 4,
                         width: `${100 - offset}%`,
-                        borderTop: constants.borders.divider,
+                        borderTop: constants.borders.regular.smoke,
                       }}
                     />
                   </div>
@@ -167,8 +167,16 @@ const FilterFacet = ({
                       lineHeight: typography.height.small,
                     }}
                   >
-                    <div>{key}</div>
-                    <div>{docCount}</div>
+                    <div
+                      css={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {key}
+                    </div>
+                    <div css={{ paddingLeft: spacing.base }}>{docCount}</div>
                   </div>
                 </div>
               </Button>

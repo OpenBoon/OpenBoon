@@ -6,7 +6,6 @@ import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.HttpMethod
 import com.google.cloud.storage.Storage
-import com.google.cloud.storage.StorageException
 import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.ProjectDirLocator
@@ -71,15 +70,15 @@ class GcsProjectStorageService constructor(
 
     override fun stream(locator: ProjectStorageLocator): ResponseEntity<Resource> {
         val blobId = getBlobId(locator)
-        val blob = gcs.get(blobId)
 
         return try {
+            val blob = gcs.get(blobId)
             ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(blob.contentType))
                 .contentLength(blob.size)
                 .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
                 .body(InputStreamResource(Channels.newInputStream(blob.reader())))
-        } catch (e: StorageException) {
+        } catch (e: Exception) {
             ResponseEntity.noContent().build()
         }
     }

@@ -24,7 +24,7 @@ class ZviFaceDetectionProcessor(AssetProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        p_path = get_proxy_level_path(asset, 1)
+        p_path = get_proxy_level_path(asset, 3)
         img = cv2.imread(p_path)
 
         rects, confidences = self.mtcnn.detect(img)

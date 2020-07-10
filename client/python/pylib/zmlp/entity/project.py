@@ -1,8 +1,23 @@
+from enum import Enum
+
 from .base import BaseEntity
 
 __all__ = [
-    'Project'
+    'Project',
+    'ProjectTier'
 ]
+
+
+class ProjectTier(Enum):
+    """
+    ProjectTiers determine which features are available to a project.s
+    """
+
+    ESSENTIALS = 0
+    """Allows the use of essentials features."""
+
+    PREMIER = 1
+    """Allows the use of premier features."""
 
 
 class Project(BaseEntity):
@@ -22,3 +37,8 @@ class Project(BaseEntity):
     def id(self):
         """The project's unique id."""
         return self._data['id']
+
+    @property
+    def tier(self):
+        """The project billing tier"""
+        return ProjectTier[self._data['tier']]

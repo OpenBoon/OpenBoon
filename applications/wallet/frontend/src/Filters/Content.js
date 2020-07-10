@@ -15,6 +15,7 @@ import FilterFacet from '../FilterFacet'
 import FilterRange from '../FilterRange'
 import FilterLabelConfidence from '../FilterLabelConfidence'
 import FilterSimilarity from '../FilterSimilarity'
+import FilterDateRange from '../FilterDateRange'
 
 import { dispatch, ACTIONS } from './helpers'
 
@@ -35,7 +36,7 @@ const FiltersContent = ({
       <div
         css={{
           padding: spacing.small,
-          borderBottom: constants.borders.divider,
+          borderBottom: constants.borders.regular.smoke,
         }}
       >
         <div css={{ display: 'flex' }}>
@@ -51,7 +52,7 @@ const FiltersContent = ({
           >
             <div css={{ display: 'flex', alignItems: 'center' }}>
               <div css={{ display: 'flex', paddingRight: spacing.small }}>
-                <PlusSvg width={ICON_SIZE} />
+                <PlusSvg height={ICON_SIZE} />
               </div>
               Add Metadata Filters
             </div>
@@ -158,6 +159,19 @@ const FiltersContent = ({
             case 'similarity':
               return (
                 <FilterSimilarity
+                  key={`${filter.type}-${index}`}
+                  pathname={pathname}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
+            case 'date':
+              return (
+                <FilterDateRange
                   key={`${filter.type}-${index}`}
                   pathname={pathname}
                   projectId={projectId}

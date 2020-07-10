@@ -30,7 +30,8 @@ enum class TaskState {
     Success,
     Failure,
     Skipped,
-    Queued;
+    Queued,
+    Depend;
 
     /**
      * Return true of the TaskState is Running or Queued
@@ -52,6 +53,10 @@ enum class TaskState {
 
     fun isFinishedState(): Boolean {
         return this == Success || this == Failure || this == Skipped
+    }
+
+    fun isSuccessState(): Boolean {
+        return this == Success || this == Skipped
     }
 }
 
@@ -94,6 +99,11 @@ open class InternalTask(
 ) : TaskId, JobId {
     override fun toString(): String {
         return "<Task id='$taskId' name='$name'/>"
+    }
+
+    @JsonIgnore
+    fun getLogFileLocation(): ProjectFileLocator {
+        return ProjectFileLocator(ProjectStorageEntity.JOB, jobId.toString(), "logs", "$taskId.log")
     }
 }
 

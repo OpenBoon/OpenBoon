@@ -64,7 +64,7 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
 }
 
 .emotion-2:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -133,15 +133,9 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
             1.001,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.1}
         values={
           Array [
@@ -249,7 +243,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
 }
 
 .emotion-2:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -324,15 +318,9 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
             8525,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.1}
         values={
           Array [
@@ -440,7 +428,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
 }
 
 .emotion-2:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -515,15 +503,9 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
             8525,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.1}
         values={
           Array [
@@ -631,7 +613,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
 }
 
 .emotion-2:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -706,15 +688,9 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
             8525,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.1}
         values={
           Array [
@@ -822,7 +798,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
 }
 
 .emotion-2:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -897,15 +873,9 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
             8525,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.1}
         values={
           Array [
@@ -1013,7 +983,7 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
 }
 
 .emotion-2:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -1082,15 +1052,9 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
             1,
           ]
         }
-        mode={2}
+        isDisabled={false}
         onChange={[Function]}
         onUpdate={[Function]}
-        rootStyle={
-          Object {
-            "position": "relative",
-            "width": "100%",
-          }
-        }
         step={0.1}
         values={
           Array [

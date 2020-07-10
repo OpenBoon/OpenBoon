@@ -26,7 +26,7 @@ const RadioIcon = ({ value, isChecked }) => {
           borderRadius: RADIO_BUTTON_SIZE,
           width: RADIO_BUTTON_SIZE,
           height: RADIO_BUTTON_SIZE,
-          border: constants.borders.radio,
+          border: constants.borders.regular.white,
         }}
       />
       <div

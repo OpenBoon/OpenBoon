@@ -214,7 +214,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
     <svg
       color="#ffffff"
       data-file-name="similarity.svg"
-      width={20}
+      height={20}
     />
   </button>
   <a
@@ -226,7 +226,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
     <svg
       color="#ffffff"
       data-file-name="expand.svg"
-      width={20}
+      height={20}
     />
   </a>
 </div>
@@ -446,7 +446,7 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
     <svg
       color="#ffffff"
       data-file-name="similarity.svg"
-      width={20}
+      height={20}
     />
   </button>
   <a
@@ -458,7 +458,7 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
     <svg
       color="#ffffff"
       data-file-name="expand.svg"
-      width={20}
+      height={20}
     />
   </a>
 </div>
@@ -696,7 +696,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
     <svg
       color="#ffffff"
       data-file-name="similarity.svg"
-      width={20}
+      height={20}
     />
   </button>
   <a
@@ -708,7 +708,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
     <svg
       color="#ffffff"
       data-file-name="expand.svg"
-      width={20}
+      height={20}
     />
   </a>
   <div
@@ -933,7 +933,7 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
     <svg
       color="#ffffff"
       data-file-name="similarity.svg"
-      width={20}
+      height={20}
     />
   </button>
   <a
@@ -945,7 +945,7 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
     <svg
       color="#ffffff"
       data-file-name="expand.svg"
-      width={20}
+      height={20}
     />
   </a>
 </div>
@@ -1164,7 +1164,7 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
     <svg
       color="#ffffff"
       data-file-name="similarity.svg"
-      width={20}
+      height={20}
     />
   </button>
   <a
@@ -1176,7 +1176,7 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
     <svg
       color="#ffffff"
       data-file-name="expand.svg"
-      width={20}
+      height={20}
     />
   </a>
 </div>

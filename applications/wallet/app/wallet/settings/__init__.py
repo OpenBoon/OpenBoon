@@ -178,7 +178,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
-    'EXCEPTION_HANDLER': 'wallet.exceptions.zmlp_exception_handler'
+    'EXCEPTION_HANDLER': 'wallet.exceptions.zmlp_exception_handler',
+    'JSON_UNDERSCOREIZE': {
+        'no_underscore_before_number': True,
+    }
 }
 
 if os.environ.get('BROWSABLE') == 'true':
@@ -192,6 +195,7 @@ REST_AUTH_SERIALIZERS = {
 # General Application Configuration
 ZMLP_API_URL = os.environ.get('ZMLP_API_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
+INCEPTION_KEY_B64 = os.environ.get('INCEPTION_KEY_B64')
 
 # Google OAUTH2
 GOOGLE_OAUTH_CLIENT_ID = os.environ.get(
@@ -246,7 +250,7 @@ ROLES = [
     {'name': 'ML_Tools',
      'description': 'Provides access to the Job Queue, Data Sources, and Visualizer.',
      'permissions': ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'DataSourceManage',
-                     'DataQueueManage', 'SystemManage']},
+                     'DataQueueManage']},
     {'name': 'API_Keys',
      'description': 'Provides access to API Key provisioning.',
      'permissions': ['ProjectManage']},
@@ -257,6 +261,9 @@ ROLES = [
 
 # The registered email address of the superuser for this instance.
 SUPERUSER_EMAIL = 'software@zorroa.com'
+
+# If true a full featured django admin page is available.
+SUPERADMIN = os.environ.get('SUPERADMIN') == 'true'
 
 # Google Marketplace Integration Settings
 MARKETPLACE_PROJECT_ID = os.environ.get('MARKETPLACE_PROJECT_ID')

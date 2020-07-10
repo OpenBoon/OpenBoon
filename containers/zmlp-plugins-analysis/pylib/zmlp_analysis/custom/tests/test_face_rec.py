@@ -15,8 +15,8 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
         localize_patch.return_value = zorroa_test_path('training')
         get_model_patch.return_value = Model({
             'id': '12345',
-            'dataSetId': '12345',
-            'type': "FACE_RECOGNITION_KNN",
+            'modelId': '12345',
+            'type': "ZVI_FACE_RECOGNITION",
             'fileId': 'models/foo/bar/12345',
             'name': "foo"
         })

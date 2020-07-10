@@ -13,7 +13,7 @@ import Button, { VARIANTS } from '../Button'
 import { openContactForm } from '../Zendesk/helpers'
 
 const SIZE = 28
-const CHEVRON_WIDTH = 20
+const ICON_SIZE = 20
 
 const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
   return (
@@ -36,7 +36,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
             onClick={onClick}
             isDisabled={false}
           >
-            <div css={{ display: 'flex' }}>
+            <div css={{ display: 'flex', alignItems: 'center' }}>
               <div
                 css={{
                   display: 'flex',
@@ -62,7 +62,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                 }`}
               </div>
               <ChevronSvg
-                width={CHEVRON_WIDTH}
+                height={ICON_SIZE}
                 color={colors.structure.steel}
                 css={{
                   marginLeft: spacing.base,
@@ -78,7 +78,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
             <div
               css={{
                 padding: spacing.normal,
-                borderBottom: constants.borders.separator,
+                borderBottom: constants.borders.regular.zinc,
               }}
             >
               <div css={{ fontWeight: typography.weight.bold }}>
@@ -86,7 +86,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
               </div>
               <div>{email}</div>
             </div>
-            <ul css={{ borderBottom: constants.borders.separator }}>
+            <ul css={{ borderBottom: constants.borders.regular.zinc }}>
               <li>
                 <Link href="/account" passHref>
                   <Button

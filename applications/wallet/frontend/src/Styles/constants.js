@@ -1,4 +1,11 @@
+import { keyframes } from '@emotion/core'
+
 import colors from './colors'
+
+const rotate = keyframes`
+  from { transform:rotate(0deg); }
+  to { transform:rotate(360deg); }
+`
 
 const borderRadius = {
   none: 0,
@@ -8,29 +15,30 @@ const borderRadius = {
   round: 32,
 }
 
+const borderWidths = { regular: '1px', medium: '2px', large: '4px' }
+
+const newBorders = Object.entries(borderWidths).reduce((acc, [name, size]) => {
+  return {
+    ...acc,
+    [name]: Object.entries(colors.structure).reduce(
+      (acc2, [colorName, colorHex]) => {
+        return {
+          ...acc2,
+          [colorName]: `${size} solid ${colorHex}`,
+        }
+      },
+      {},
+    ),
+  }
+}, {})
+
 const borders = {
-  default: `1px solid ${colors.structure.mattGrey}`,
-  transparent: `1px solid transparent`,
-  separator: `1px solid ${colors.structure.zinc}`,
-  spacer: `1px solid ${colors.structure.coal}`,
-  tabs: `1px solid ${colors.structure.iron}`,
+  keyOneRegular: `1px solid ${colors.key.one}`,
+  keyOneMedium: `2px solid ${colors.key.one}`,
+  keyOneLarge: `4px solid ${colors.key.one}`,
   error: `2px solid ${colors.signal.warning.base}`,
-  success: `1px solid ${colors.signal.grass.base}`,
-  tableRow: `1px solid ${colors.structure.steel}`,
-  radio: `1px solid ${colors.structure.white}`,
-  inputSmall: `1px solid ${colors.key.one}`,
-  input: `2px solid ${colors.key.one}`,
-  divider: `1px solid ${colors.structure.smoke}`,
-  largeDivider: `4px solid ${colors.structure.smoke}`,
-  pill: `2px solid ${colors.structure.steel}`,
-  assetInactive: `4px solid ${colors.transparent}`,
-  assetHover: `4px solid ${colors.structure.white}`,
   assetSelected: `4px solid ${colors.signal.electricBlue.base}`,
-  prettyMetadata: `4px solid ${colors.structure.iron}`,
-  facet: `4px solid ${colors.key.one}`,
-  unselectedFacet: `4px solid ${colors.structure.steel}`,
-  metrics: `2px solid ${colors.structure.white}`,
-  outline: `thin solid transparent`,
+  ...newBorders,
 }
 
 const opacity = {
@@ -73,6 +81,10 @@ const constants = {
   },
   paragraph: {
     maxWidth: 600,
+  },
+  animations: {
+    infiniteRotation: `${rotate} 2s linear infinite`,
+    dualRotation: `${rotate} 1s linear 2`,
   },
 }
 

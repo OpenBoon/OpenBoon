@@ -99,7 +99,7 @@ exports[`<Checkbox /> should render properly 1`] = `
       <svg
         className="emotion-1"
         data-file-name="checkmark.svg"
-        width={20}
+        height={20}
       />
     </div>
   </div>
@@ -214,7 +214,7 @@ exports[`<Checkbox /> should render properly 2`] = `
       <svg
         className="emotion-1"
         data-file-name="checkmark.svg"
-        width={20}
+        height={20}
       />
     </div>
   </div>
@@ -330,7 +330,7 @@ exports[`<Checkbox /> should render properly checked and disabled 1`] = `
       <svg
         className="emotion-1"
         data-file-name="checkmark.svg"
-        width={20}
+        height={20}
       />
     </div>
   </div>
@@ -446,7 +446,7 @@ exports[`<Checkbox /> should render properly disabled 1`] = `
       <svg
         className="emotion-1"
         data-file-name="checkmark.svg"
-        width={20}
+        height={20}
       />
     </div>
   </div>
