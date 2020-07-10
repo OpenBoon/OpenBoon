@@ -94,3 +94,15 @@ export const getSaveButtonCopy = ({ isChanged, isLoading }) => {
 
   return 'Saved'
 }
+
+export const getHelpInfoCopy = ({ jobId, unappliedChanges }) => {
+  if (jobId && unappliedChanges) {
+    return 'Overriding the training that is currently in progress will stop and replace it with any new changes made.'
+  }
+
+  if (jobId && !unappliedChanges) {
+    return 'Training in progress. No action can be taken.'
+  }
+
+  return 'Train model with saved labels and apply new predictions.'
+}

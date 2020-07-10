@@ -1,4 +1,4 @@
-import { onSave, onTrain, getSaveButtonCopy } from '../helpers'
+import { onSave, onTrain, getSaveButtonCopy, getHelpInfoCopy } from '../helpers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
@@ -196,6 +196,18 @@ describe('<FaceLabelingForm /> helpers', () => {
 
       expect(getSaveButtonCopy({ isChanged: true, isLoading: false })).toBe(
         'Save',
+      )
+    })
+  })
+
+  describe('getHelpInfoCopy()', () => {
+    it('should return correct string', () => {
+      expect(
+        getHelpInfoCopy({ jobId: 'someId', unappliedChanges: false }),
+      ).toBe('Training in progress. No action can be taken.')
+
+      expect(getHelpInfoCopy({ jobId: '', unappliedChanges: false })).toBe(
+        'Train model with saved labels and apply new predictions.',
       )
     })
   })
