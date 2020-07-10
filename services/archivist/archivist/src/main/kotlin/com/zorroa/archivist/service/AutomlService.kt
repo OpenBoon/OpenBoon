@@ -96,7 +96,8 @@ class AutomlServiceImpl(
                         // Publish the model.
                         withAuth(InternalThreadAuthentication(session.projectId, setOf())) {
                             val model = modelService.getModel(session.modelId)
-                            modelService.publishModel(model, mapOf("automlModelId" to gmod.name))
+                            modelService.publishModel(model,
+                                mapOf("automl_model_id" to gmod.name))
                         }
                     }
                 } catch (e: Exception) {
