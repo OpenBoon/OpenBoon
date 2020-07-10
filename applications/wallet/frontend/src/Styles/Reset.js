@@ -58,7 +58,7 @@ const StylesReset = () => (
           backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTMuOSA0bDEuNCAxLjQtNC4yIDQuMiA0LjIgNC4yLTEuNCAxLjRMOS43IDExbC00LjIgNC4yTDQgMTMuOWw0LjItNC4yTDQgNS40IDUuNCA0bDQuMiA0LjJMMTMuOSA0eiIgLz4KPC9zdmc+Cg==')`,
           backgroundRepeat: `no-repeat, repeat`,
           backgroundPosition: `right top 50%`,
-          backgroundColor: colors.structure.white,
+          backgroundColor: colors.structure.transparent,
           color: colors.structure.coal,
           cursor: 'pointer',
         },
