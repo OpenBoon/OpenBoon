@@ -41,7 +41,7 @@ class KnnLabelDetectionClassifier(AssetProcessor):
         else:
             analysis = SingleLabelAnalysis('Unrecognized', 0.0)
 
-        asset.add_analysis(self.app_model.name, analysis)
+        asset.add_analysis(self.app_model.module_name, analysis)
 
     def load_model(self):
         """

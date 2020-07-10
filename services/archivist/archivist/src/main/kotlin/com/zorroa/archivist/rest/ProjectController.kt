@@ -86,7 +86,7 @@ class ProjectController constructor(
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
-    @PutMapping(value = ["/api/v1/project/{id}/_enable"])
+    @PutMapping(value = ["/api/v1/projects/{id}/_enable"])
     @ApiOperation("Set an disabled project to enabled.")
     fun putEnabled(@PathVariable id: UUID): Any {
         projectService.setEnabled(id, true)
@@ -94,7 +94,7 @@ class ProjectController constructor(
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
-    @PutMapping(value = ["/api/v1/project/{id}/_disable"])
+    @PutMapping(value = ["/api/v1/projects/{id}/_disable"])
     @ApiOperation("Set a disabled project to enabled.")
     fun putDisabled(@PathVariable id: UUID): Any {
         projectService.setEnabled(id, false)
@@ -102,7 +102,7 @@ class ProjectController constructor(
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
-    @PutMapping(value = ["/api/v1/project/{id}/_update_tier"])
+    @PutMapping(value = ["/api/v1/projects/{id}/_update_tier"])
     @ApiOperation("Update Project Tier")
     fun updateProjectTier(
         @PathVariable id: UUID,

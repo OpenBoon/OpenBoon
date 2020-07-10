@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from zmlp import DataSetType, ModelType
+from zmlp import ModelType
 from zmlp.client import ZmlpNotFoundException
 
 from assets.utils import AssetBoxImager
@@ -17,7 +17,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     zmlp_only = True
     zmlp_root_api_path = 'api/v3/assets/'
     analysis_attr = 'analysis.zvi-face-detection'
-    dataset_name = 'console_face_recognition'
+    model_name = 'console_face_recognition'
     serializer_class = UpdateLabelsSerializer
     pagination_class = ZMLPFromSizePagination
 
@@ -83,9 +83,14 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         app = request.app
         client = request.client
         asset = app.assets.get_asset(pk)
+
+        # Get the filename, setup return structure
+        data = {'filename': asset.get_attr('source.filename'),
+                'predictions': ''}
+
         if not asset.get_attr(self.analysis_attr):
-            return Response(status=status.HTTP_200_OK, data={'predictions': []})
-        dataset = self._get_dataset(app)
+            return Response(status=status.HTTP_200_OK, data=data)
+        model = self._get_model(app)
 
         # Get the bboxes for each prediction
         imager = AssetBoxImager(asset, client)
@@ -93,11 +98,11 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         predictions = imager.get_attr_with_box_images(self.analysis_attr,
                                                       width=width)['predictions']
 
-        # Filter existing labels to only those for this dataset
+        # Filter existing labels to only those for this model
         labels = asset.document.get('labels', [])
         filtered_labels = []
         for label in labels:
-            if label['dataSetId'] == dataset.id:
+            if label['modelId'] == model.id:
                 filtered_labels.append(label)
 
         # Match existing filtered labels with the bbox predictions, and mark them as modified
@@ -109,7 +114,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
                     prediction['label'] = label['label']
                     prediction['modified'] = True
 
-        data = {'predictions': predictions}
+        data['predictions'] = predictions
         return Response(status=status.HTTP_200_OK, data=data)
 
     @action(detail=True, methods=['post'])
@@ -142,13 +147,13 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         app = request.app
         data = serializer.validated_data
         asset = app.assets.get_asset(pk)
-        dataset = self._get_dataset(app)
+        model = self._get_model(app)
 
         # Generate labels for every given update
         labels_to_apply = []
         for label_update in data['labels']:
-            label = dataset.make_label(label_update['label'], bbox=label_update['bbox'],
-                                       simhash=label_update['simhash'])
+            label = model.make_label(label_update['label'], bbox=label_update['bbox'],
+                                     simhash=label_update['simhash'])
             labels_to_apply.append(label)
 
         if labels_to_apply:
@@ -163,7 +168,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         """Creates a model and reprocesses all assets with face detection using it.
 
         This creates two processing job. The first trains the model off of all the
-        labels in the face recognition dataset. The second reprocesses all the assets
+        labels in the face recognition model. The second reprocesses all the assets
         with previously created model.
 
         Args:
@@ -174,40 +179,41 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
             (Response): Returns a 200 response if the jobs are launched successfully.
         """
         app = request.app
-        dataset = self._get_dataset(app)
-        model = self._get_model(app, dataset)
+        model = self._get_model(app)
 
         # Train the model
-        app.models.train_model(model)
-        # TODO: Insert the Job dependency work once that is ready
+        # TODO: Add filtering query for what to reprocess once it's avilable.
+        job = app.models.train_model(model, deploy=True)
 
-        result = self._reprocess_face_assets(app, model)
-        return Response(status=status.HTTP_200_OK, data=result)
+        return Response(status=status.HTTP_200_OK, data=job._data)
 
     @action(detail=False, methods=['get'])
-    def training_job(self, request, project_pk):
-        """Returns the ID of any running face reprocessing job."""
-        name_prefix = ('Applying modules: '
-                       'custom-console_face_recognition-face-recognition-knn')
-        running_jobs = request.app.jobs.find_jobs(state='InProgress')
+    def status(self, request, project_pk):
+        """Returns any running reprocessing job and whether there are unapplied changes."""
+        app = request.app
+
+        # Check for jobs
+        name_prefix = f'Train {self.model_name}'
+        running_jobs = app.jobs.find_jobs(state='InProgress')
+        job_id = ''
         for job in running_jobs:
             if job.name.startswith(name_prefix):
-                return Response(status=status.HTTP_200_OK, data={'job_id': job.id})
-        return Response(status=status.HTTP_200_OK, data={'job_id': ''})
+                job_id = job.id
 
-    @action(detail=False, methods=['get'])
-    def unapplied_changes(self, request, project_pk):
-        """Returns whether the dataset has been updated but assets not reprocessed."""
-        # TODO: Figure out how to return whether there are unapplied changes or not.
-        data = {'unapplied_changes': False}
-        return Response(status=status.HTTP_200_OK, data=data)
+        # Check for unapplied changes - always True until we can use real logic
+        # to check for this. True allows us to use the Train & Apply button in the UI.
+        # Unapplied changes is the opposite of the model.ready property
+        model = self._get_model(app)
+        changes = not model.ready
+        return Response(status=status.HTTP_200_OK, data={'unapplied_changes': changes,
+                                                         'job_id': job_id})
 
     @action(detail=False, methods=['get'])
     def labels(self, request, project_pk):
-        """Gives the list of labels for the face recognition dataset and their usage count."""
+        """Gives the list of labels for the face recognition  model and their usage count."""
         app = request.app
-        dataset = self._get_dataset(app)
-        label_counts = app.datasets.get_label_counts(dataset)
+        model = self._get_model(app)
+        label_counts = app.models.get_label_counts(model)
         possible_labels = []
         for label in label_counts:
             possible_labels.append({'label': label,
@@ -216,29 +222,10 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         data = {'possible_labels': possible_labels}
         return Response(status=status.HTTP_200_OK, data=data)
 
-    def _get_dataset(self, app):
-        """Helper to get or create the Face Training Dataset."""
+    def _get_model(self, app):
+        """Helper to get or create the model for Face Training."""
         try:
-            dataset = app.datasets.find_one_dataset(name=self.dataset_name)
+            model = app.models.find_one_model(name=self.model_name)
         except ZmlpNotFoundException:
-            dataset = app.datasets.create_dataset(self.dataset_name, DataSetType.FACE_RECOGNITION)
-        return dataset
-
-    def _get_model(self, app, dataset):
-        """Helper to get or create the model for Face Training on the given Dataset."""
-        try:
-            model = app.models.find_one_model(dataset=dataset)
-        except ZmlpNotFoundException:
-            model = app.models.create_model(dataset, ModelType.FACE_RECOGNITION_KNN)
+            model = app.models.create_model(self.model_name, ModelType.ZVI_FACE_RECOGNITION)
         return model
-
-    def _reprocess_face_assets(self, app, model):
-        """Launch the job for reprocessing assets with the new model. Mainly a testing seam."""
-        # Apply the model - this is almost certainly not working right being run
-        # back to back with the training job
-        module = app.models.publish_model(model)
-        # only run it on assets where Facial detection already ran
-        query = {"sort": "source.filename",
-                 "query": {"exists": {"field": "analysis.zvi-face-detection.type"}}}
-        search = app.assets.search(query)
-        return app.assets.reprocess_assets(search.assets, modules=[module.name])

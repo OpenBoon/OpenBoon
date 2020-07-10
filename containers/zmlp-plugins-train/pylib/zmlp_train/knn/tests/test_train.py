@@ -10,12 +10,11 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset
 logging.basicConfig()
 
 model_id = "model-id-12345"
-ds_id = "ds-id-12345"
 
 
 class KnnLabelDetectionTrainerTests(PluginUnitTestCase):
 
-    @patch.object(ModelApp, 'publish_model')
+    @patch.object(file_storage.models, 'publish_model')
     @patch.object(ModelApp, 'get_model')
     @patch.object(AssetApp, 'scroll_search')
     @patch.object(file_storage.projects, "store_file_by_id")
@@ -28,8 +27,7 @@ class KnnLabelDetectionTrainerTests(PluginUnitTestCase):
         })
         model_patch.return_value = Model({
             'id': model_id,
-            'dataSetId': ds_id,
-            'type': "LABEL_DETECTION_KNN",
+            'type': "ZVI_KNN_CLASSIFIER",
             'fileId': 'models/{}/foo/bar'.format(model_id),
             'name': name
         })
@@ -55,7 +53,7 @@ mock_search_result = [
             "analysis": {"zvi-image-similarity": {"simhash": "AAAAAAAA"}},
             "labels": [
                 {
-                    "dataSetId": ds_id,
+                    "modelId": model_id,
                     "label": "Gandalf",
                 }
             ]
@@ -73,7 +71,7 @@ mock_search_result = [
             "analysis": {"zvi-image-similarity": {"simhash": "BBBBBBBB"}},
             "labels": [
                 {
-                    "dataSetId": ds_id,
+                    "modelId": model_id,
                     "label": "Glion",
                 }
             ]

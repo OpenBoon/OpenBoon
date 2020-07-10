@@ -14,7 +14,7 @@ from urllib.parse import urlparse
 
 import requests
 
-from zmlp import app_from_env, Asset, StoredFile, ZmlpException, to_json
+from zmlp import app_from_env, Asset, StoredFile, PipelineMod, ZmlpException, to_json, util
 from .base import ZmlpEnv
 from .cloud import get_cached_google_storage_client, get_pipeline_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
@@ -160,14 +160,14 @@ class ModelStorage:
 
         return True
 
-    def save_model(self, src_dir, model):
+    def save_model(self, src_dir, model, deploy):
         """
         Upload a directory containing model files to cloud storage.
 
         Args:
             src_dir (str): The source directory.
             model (Model): The Model instance.
-
+            deploy (bool): Launch an expand task to deploy the model using the deploy search.
         Returns:
             PipelineModule: A PipelineModule for utilizing the model.
         """
@@ -179,7 +179,24 @@ class ModelStorage:
         zip_file_path = zip_directory(src_dir, tempfile.mkstemp(prefix="model_", suffix=".zip")[1])
         self.projects.store_file_by_id(version_file, os.path.dirname(file_id) + self.model_ver_file)
         self.projects.store_file_by_id(zip_file_path, file_id, precache=False)
-        return self.app.models.publish_model(model)
+        mod = self.publish_model(model)
+        if deploy:
+            self.app.models.deploy_model(model)
+        return mod
+
+    def publish_model(self, model):
+        """
+        Publish the given model.  The model must have been trained before.  This
+        will make the model available for execution using a PipelineModel
+
+        Args:
+            model (Model): The Model instance or a unique Model id.
+
+        Returns:
+            PipelineMod: A PipelineMod which can be used to execute the model on Data.
+        """
+        mid = util.as_id(model)
+        return PipelineMod(self.app.client.post(f'/api/v3/models/{mid}/_publish'))
 
 
 class AssetStorage(object):
@@ -424,6 +441,10 @@ class ProjectStorage(object):
         cache_path = self.cache.get_path(file_id, suffix)
 
         if not os.path.exists(cache_path):
+            try:
+                os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+            except Exception as e:
+                logger.warning(f"Failed to create cache path dir: {cache_path}", e)
             logger.info("localizing file: {}".format(file_id))
             self.app.client.stream('/api/v3/files/_stream/{}'.format(file_id), cache_path)
         return cache_path
@@ -482,10 +503,19 @@ class FileCache(object):
         """
         _, suffix = os.path.splitext(sfile.name)
         cache_path = self.get_path(sfile.id, suffix)
-
         precache_path = urlparse(str(src_path)).path
-        logger.info("Pre-caching {} to {}".format(precache_path, cache_path))
-        shutil.copy(urlparse(precache_path).path, cache_path)
+
+        # If the tmp file is in the task cache, just symlink it into file storage cache.
+        if src_path.startswith(os.environ.get("TMPDIR", "/tmp")):
+            symlinked = True
+            os.symlink(src_path, cache_path)
+        else:
+            symlinked = False
+            shutil.copy(urlparse(precache_path).path, cache_path)
+
+        name = os.path.basename(src_path)
+        logger.info(f'Pre-caching {name}, linked: {symlinked}')
+
         return cache_path
 
     def localize_uri(self, uri):
@@ -521,6 +551,7 @@ class FileCache(object):
 
         # GCS buckets
         elif parsed_uri.scheme == 'gs':
+            # This client uses customer creds.
             gcs_client = get_cached_google_storage_client()
             bucket = gcs_client.get_bucket(parsed_uri.netloc)
             blob = bucket.blob(parsed_uri.path[1:])

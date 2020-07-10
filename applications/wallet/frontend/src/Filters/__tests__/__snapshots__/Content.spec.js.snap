@@ -1,5 +1,1009 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<FiltersContent /> should render the "Date Range" filter 1`] = `
+Array [
+  .emotion-12 {
+  padding: 4px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  min-width: 190px;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #73b61c;
+}
+
+.emotion-2:hover {
+  background-color: #96c955;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+.emotion-3 {
+  width: 8px;
+  min-width: 8px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  min-width: 190px;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
+  background-color: #808080;
+}
+
+.emotion-5:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-4 {
+  height: 20px;
+}
+
+.emotion-7 {
+  height: 4px;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  border: 1px solid transparent;
+  padding: 12px;
+  padding-left: 32px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  color: #e0e0e0;
+  background-color: #191919;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-8:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-8:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-8::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-8::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-8:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-8::placeholder {
+  font-style: italic;
+}
+
+.emotion-10 {
+  width: 42px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  background-color: #808080;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: not-allowed;
+}
+
+.emotion-9 {
+  color: #3b3b3b;
+}
+
+<div
+    className="emotion-12"
+  >
+    <div
+      className="emotion-6"
+    >
+      <button
+        aria-label="Add Metadata Filters"
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-1"
+        >
+          <div
+            className="emotion-0"
+          >
+            <svg
+              data-file-name="plus.svg"
+              height={20}
+            />
+          </div>
+          Add Metadata Filters
+        </div>
+      </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        aria-label="Clear All Filters"
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          Clear All Filters
+        </div>
+      </button>
+    </div>
+    <div
+      className="emotion-7"
+    />
+    <form
+      action=""
+      method="post"
+      onSubmit={[Function]}
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          onChange={[Function]}
+          placeholder="Type here to create simple text filter"
+          type="search"
+          value=""
+        />
+        <button
+          aria-disabled={true}
+          aria-label="Search"
+          className="emotion-10"
+          onClick={[Function]}
+          type="submit"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="plus.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </form>
+  </div>,
+  .emotion-28 {
+  overflow: auto;
+}
+
+.emotion-27 {
+  background-color: #252525;
+  border: 1px solid transparent;
+  border-bottom: 1px solid #3b3b3b;
+  padding-bottom: 1px;
+}
+
+.emotion-27:hover {
+  border: 1px solid #3b3b3b;
+}
+
+.emotion-27:hover svg {
+  opacity: 1;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 8px;
+  padding-left: 8px;
+}
+
+.emotion-9:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-9 h4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-weight: 400;
+  padding-left: 4px;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+.emotion-3 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  padding-right: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emotion-2 {
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  padding-left: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5:hover {
+  color: #73b61c;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
+  opacity: 1;
+  color: #ffffff;
+}
+
+.emotion-4 {
+  opacity: 0;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7:hover {
+  color: #73b61c;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
+  color: #ffffff;
+  opacity: 1;
+}
+
+.emotion-26 {
+  width: 100%;
+  background-color: #191919;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.emotion-11 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  cursor: pointer;
+}
+
+.emotion-12 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
+}
+
+.emotion-13 {
+  padding: 0;
+  margin: 0;
+  border: none;
+  left: 0%;
+  position: absolute;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.emotion-13:hover,
+.emotion-13:active {
+  background-color: #ffffff;
+}
+
+.emotion-14 {
+  padding: 0;
+  margin: 0;
+  border: none;
+  left: 100%;
+  position: absolute;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.emotion-14:hover,
+.emotion-14:active {
+  background-color: #ffffff;
+}
+
+.emotion-25 {
+  padding: 16px;
+}
+
+.emotion-25 .ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-25 .Loading {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-24 {
+  padding: 16px;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-15 {
+  padding: 4px;
+}
+
+.emotion-23 {
+  padding-top: 40px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.emotion-16 {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  pointer-events: none;
+}
+
+.emotion-17 {
+  text-align: center;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+}
+
+.emotion-17:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-17:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-17::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-17::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-17:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-17::placeholder {
+  font-style: italic;
+}
+
+.emotion-19 {
+  width: 16px;
+  border-bottom: 2px solid white;
+}
+
+<div
+    className="emotion-28"
+  >
+    <div
+      className="emotion-27"
+    >
+      <div
+        className="emotion-9"
+        onClick={[Function]}
+        style={Object {}}
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+        </button>
+        <h4
+          className="emotion-3"
+        >
+          <svg
+            color="#73b61c"
+            data-file-name="calendar.svg"
+            height={20}
+          />
+          <span
+            className="emotion-2"
+          >
+            system.timeCreated
+          </span>
+        </h4>
+        <div
+          className="emotion-8"
+        >
+          <button
+            aria-label="Disable Filter"
+            className="emotion-5"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-4"
+              color="#808080"
+              data-file-name="hidden.svg"
+              height={20}
+            />
+          </button>
+          <button
+            aria-label="Delete Filter"
+            className="emotion-7"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-4"
+              color="#808080"
+              data-file-name="cross.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
+      <div
+        className="emotion-26"
+      >
+        <div
+          className="emotion-25"
+        >
+          <FilterReset
+            assetId=""
+            filter={
+              Object {
+                "attribute": "system.timeCreated",
+                "type": "date",
+                "values": Object {},
+              }
+            }
+            filterIndex={0}
+            filters={
+              Array [
+                Object {
+                  "attribute": "system.timeCreated",
+                  "type": "date",
+                  "values": Object {},
+                },
+              ]
+            }
+            onReset={[Function]}
+            pathname="/[projectId]/visualizer"
+            projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+          />
+          <div
+            className="emotion-24"
+          >
+            <div
+              className="emotion-10"
+            >
+              <span>
+                05/04/2020
+              </span>
+              <span>
+                06/10/2020
+              </span>
+            </div>
+            <div
+              className="emotion-15"
+            >
+              <div
+                style={
+                  Object {
+                    "position": "relative",
+                    "width": "100%",
+                  }
+                }
+              >
+                <div
+                  className="emotion-11"
+                  onMouseDown={[Function]}
+                  onTouchStart={[Function]}
+                />
+                <div
+                  className="emotion-12"
+                />
+                <div>
+                  <button
+                    aria-valuenow={1588550400000}
+                    className="emotion-13"
+                    onKeyDown={[Function]}
+                    onMouseDown={[Function]}
+                    onTouchStart={[Function]}
+                    role="slider"
+                    type="button"
+                  />
+                  <button
+                    aria-valuenow={1591747200000}
+                    className="emotion-14"
+                    onKeyDown={[Function]}
+                    onMouseDown={[Function]}
+                    onTouchStart={[Function]}
+                    role="slider"
+                    type="button"
+                  />
+                </div>
+                <div>
+                  <div
+                    onMouseDown={[Function]}
+                    onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "backgroundColor": "#73b61c",
+                        "cursor": "pointer",
+                        "height": 4,
+                        "left": "0%",
+                        "position": "absolute",
+                        "transform": "translate(0%, -50%)",
+                        "width": "100%",
+                        "zIndex": 1,
+                      }
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              className="emotion-23"
+            >
+              <label
+                className="emotion-18"
+              >
+                <svg
+                  className="emotion-16"
+                  color="#808080"
+                  data-file-name="calendar.svg"
+                  height={18}
+                />
+                <input
+                  className="emotion-17"
+                  max="2020-06-10"
+                  min="2020-05-04"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  type="date"
+                  value="2020-05-04"
+                />
+              </label>
+              <div
+                className="emotion-19"
+              />
+              <label
+                className="emotion-18"
+              >
+                <svg
+                  className="emotion-16"
+                  color="#808080"
+                  data-file-name="calendar.svg"
+                  height={18}
+                />
+                <input
+                  className="emotion-17"
+                  max="2020-06-10"
+                  min="2020-05-04"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  type="date"
+                  value="2020-06-10"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
 exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
 Array [
   .emotion-12 {
@@ -193,7 +1197,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -251,7 +1255,7 @@ Array [
           >
             <svg
               data-file-name="plus.svg"
-              width={20}
+              height={20}
             />
           </div>
           Add Metadata Filters
@@ -301,7 +1305,7 @@ Array [
           <svg
             className="emotion-9"
             data-file-name="plus.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
@@ -319,7 +1323,7 @@ Array [
 }
 
 .emotion-21:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-21:hover svg {
@@ -412,10 +1416,13 @@ Array [
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
@@ -503,12 +1510,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -581,12 +1588,12 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -753,6 +1760,7 @@ Array [
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -764,7 +1772,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -773,7 +1781,7 @@ Array [
           <svg
             color="#73b61c"
             data-file-name="missing.svg"
-            width={20}
+            height={20}
           />
           <span
             className="emotion-2"
@@ -794,7 +1802,7 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="hidden.svg"
-              width={20}
+              height={20}
             />
           </button>
           <button
@@ -807,7 +1815,7 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="cross.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -856,7 +1864,7 @@ Array [
                 >
                   <svg
                     data-file-name="exists.svg"
-                    width={20}
+                    height={20}
                   />
                   <div
                     className="emotion-10"
@@ -876,7 +1884,7 @@ Array [
                 >
                   <svg
                     data-file-name="missing.svg"
-                    width={20}
+                    height={20}
                   />
                   <div
                     className="emotion-10"
@@ -1096,7 +2104,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -1154,7 +2162,7 @@ Array [
           >
             <svg
               data-file-name="plus.svg"
-              width={20}
+              height={20}
             />
           </div>
           Add Metadata Filters
@@ -1204,28 +2212,28 @@ Array [
           <svg
             className="emotion-9"
             data-file-name="plus.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
     </form>
   </div>,
-  .emotion-60 {
+  .emotion-74 {
   overflow: auto;
 }
 
-.emotion-59 {
+.emotion-73 {
   background-color: #252525;
   border: 1px solid transparent;
   border-bottom: 1px solid #3b3b3b;
   padding-bottom: 1px;
 }
 
-.emotion-59:hover {
-  border: 1px solid #808080;
+.emotion-73:hover {
+  border: 1px solid #3b3b3b;
 }
 
-.emotion-59:hover svg {
+.emotion-73:hover svg {
   opacity: 1;
 }
 
@@ -1315,10 +2323,13 @@ Array [
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
@@ -1406,12 +2417,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -1484,33 +2495,33 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
 
-.emotion-58 {
+.emotion-72 {
   width: 100%;
   background-color: #191919;
   max-height: 500px;
   overflow-y: auto;
 }
 
-.emotion-57 {
+.emotion-71 {
   padding: 16px;
 }
 
-.emotion-57 .ErrorBoundary > div {
+.emotion-71 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-57 .Loading {
+.emotion-71 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
@@ -1542,7 +2553,7 @@ Array [
 }
 
 .emotion-11:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -1579,13 +2590,13 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-56 {
+.emotion-70 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-19 {
+.emotion-21 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1623,21 +2634,21 @@ Array [
   color: #ffffff;
 }
 
-.emotion-19:hover {
+.emotion-21:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-19[aria-disabled=true] {
+.emotion-21[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-19:hover {
+.emotion-21:hover {
   background-color: #027aff38;
   color: #ffffff;
 }
 
-.emotion-18 {
+.emotion-20 {
   width: 100%;
 }
 
@@ -1659,7 +2670,7 @@ Array [
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-17 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1674,37 +2685,59 @@ Array [
   line-height: 18px;
 }
 
-.emotion-20 {
+.emotion-17 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-18 {
+  padding-left: 8px;
+}
+
+.emotion-22 {
   width: 67%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-21 {
+.emotion-23 {
   height: 4px;
   width: 33%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-26 {
+.emotion-30 {
   width: 34%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-27 {
+.emotion-31 {
   height: 4px;
   width: 66%;
   border-top: 1px solid #3b3b3b;
 }
 
+.emotion-62 {
+  width: 0%;
+  border-top: 4px solid #73b61c;
+}
+
+.emotion-63 {
+  height: 4px;
+  width: 100%;
+  border-top: 1px solid #3b3b3b;
+}
+
 <div
-    className="emotion-60"
+    className="emotion-74"
   >
     <div
-      className="emotion-59"
+      className="emotion-73"
     >
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -1716,7 +2749,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -1725,7 +2758,7 @@ Array [
           <svg
             color="#73b61c"
             data-file-name="facet.svg"
-            width={20}
+            height={20}
           />
           <span
             className="emotion-2"
@@ -1746,7 +2779,7 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="hidden.svg"
-              width={20}
+              height={20}
             />
           </button>
           <button
@@ -1759,16 +2792,16 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="cross.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
       </div>
       <div
-        className="emotion-58"
+        className="emotion-72"
       >
         <div
-          className="emotion-57"
+          className="emotion-71"
         >
           <FilterReset
             assetId=""
@@ -1818,17 +2851,17 @@ Array [
             </div>
           </div>
           <ul
-            className="emotion-56"
+            className="emotion-70"
           >
             <li>
               <button
                 aria-label="Tyngsboro"
-                className="emotion-19"
+                className="emotion-21"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-20"
                 >
                   <div
                     className="emotion-16"
@@ -1841,12 +2874,16 @@ Array [
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-19"
                   >
-                    <div>
+                    <div
+                      className="emotion-17"
+                    >
                       Tyngsboro
                     </div>
-                    <div>
+                    <div
+                      className="emotion-18"
+                    >
                       3
                     </div>
                   </div>
@@ -1856,30 +2893,34 @@ Array [
             <li>
               <button
                 aria-label="Brooklyn"
-                className="emotion-19"
+                className="emotion-21"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-20"
                 >
                   <div
                     className="emotion-16"
                   >
                     <div
-                      className="emotion-20"
+                      className="emotion-22"
                     />
                     <div
-                      className="emotion-21"
+                      className="emotion-23"
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-19"
                   >
-                    <div>
+                    <div
+                      className="emotion-17"
+                    >
                       Brooklyn
                     </div>
-                    <div>
+                    <div
+                      className="emotion-18"
+                    >
                       2
                     </div>
                   </div>
@@ -1889,30 +2930,34 @@ Array [
             <li>
               <button
                 aria-label="Cát Bà"
-                className="emotion-19"
+                className="emotion-21"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-20"
                 >
                   <div
                     className="emotion-16"
                   >
                     <div
-                      className="emotion-26"
+                      className="emotion-30"
                     />
                     <div
-                      className="emotion-27"
+                      className="emotion-31"
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-19"
                   >
-                    <div>
+                    <div
+                      className="emotion-17"
+                    >
                       Cát Bà
                     </div>
-                    <div>
+                    <div
+                      className="emotion-18"
+                    >
                       1
                     </div>
                   </div>
@@ -1922,30 +2967,34 @@ Array [
             <li>
               <button
                 aria-label="La Habana Vieja"
-                className="emotion-19"
+                className="emotion-21"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-20"
                 >
                   <div
                     className="emotion-16"
                   >
                     <div
-                      className="emotion-26"
+                      className="emotion-30"
                     />
                     <div
-                      className="emotion-27"
+                      className="emotion-31"
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-19"
                   >
-                    <div>
+                    <div
+                      className="emotion-17"
+                    >
                       La Habana Vieja
                     </div>
-                    <div>
+                    <div
+                      className="emotion-18"
+                    >
                       1
                     </div>
                   </div>
@@ -1955,30 +3004,34 @@ Array [
             <li>
               <button
                 aria-label="North Glendale"
-                className="emotion-19"
+                className="emotion-21"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-20"
                 >
                   <div
                     className="emotion-16"
                   >
                     <div
-                      className="emotion-26"
+                      className="emotion-30"
                     />
                     <div
-                      className="emotion-27"
+                      className="emotion-31"
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-19"
                   >
-                    <div>
+                    <div
+                      className="emotion-17"
+                    >
                       North Glendale
                     </div>
-                    <div>
+                    <div
+                      className="emotion-18"
+                    >
                       1
                     </div>
                   </div>
@@ -1988,30 +3041,34 @@ Array [
             <li>
               <button
                 aria-label="Saalfelden am Steinernen Meer"
-                className="emotion-19"
+                className="emotion-21"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-20"
                 >
                   <div
                     className="emotion-16"
                   >
                     <div
-                      className="emotion-26"
+                      className="emotion-30"
                     />
                     <div
-                      className="emotion-27"
+                      className="emotion-31"
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-19"
                   >
-                    <div>
+                    <div
+                      className="emotion-17"
+                    >
                       Saalfelden am Steinernen Meer
                     </div>
-                    <div>
+                    <div
+                      className="emotion-18"
+                    >
                       1
                     </div>
                   </div>
@@ -2021,31 +3078,35 @@ Array [
             <li>
               <button
                 aria-label="Zermatt"
-                className="emotion-19"
+                className="emotion-21"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-20"
                 >
                   <div
                     className="emotion-16"
                   >
                     <div
-                      className="emotion-26"
+                      className="emotion-62"
                     />
                     <div
-                      className="emotion-27"
+                      className="emotion-63"
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-19"
                   >
-                    <div>
+                    <div
+                      className="emotion-17"
+                    >
                       Zermatt
                     </div>
-                    <div>
-                      1
+                    <div
+                      className="emotion-18"
+                    >
+                      0
                     </div>
                   </div>
                 </div>
@@ -2252,7 +3313,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -2310,7 +3371,7 @@ Array [
           >
             <svg
               data-file-name="plus.svg"
-              width={20}
+              height={20}
             />
           </div>
           Add Metadata Filters
@@ -2360,28 +3421,28 @@ Array [
           <svg
             className="emotion-9"
             data-file-name="plus.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
     </form>
   </div>,
-  .emotion-660 {
+  .emotion-658 {
   overflow: auto;
 }
 
-.emotion-659 {
+.emotion-657 {
   background-color: #252525;
   border: 1px solid transparent;
   border-bottom: 1px solid #3b3b3b;
   padding-bottom: 1px;
 }
 
-.emotion-659:hover {
-  border: 1px solid #808080;
+.emotion-657:hover {
+  border: 1px solid #3b3b3b;
 }
 
-.emotion-659:hover svg {
+.emotion-657:hover svg {
   opacity: 1;
 }
 
@@ -2471,10 +3532,13 @@ Array [
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
@@ -2562,12 +3626,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -2640,28 +3704,28 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
 
-.emotion-658 {
+.emotion-656 {
   width: 100%;
   background-color: #191919;
   max-height: 500px;
   overflow-y: auto;
 }
 
-.emotion-18 {
+.emotion-16 {
   padding-bottom: 16px;
 }
 
-.emotion-17 {
+.emotion-15 {
   width: 100%;
   border: 1px solid transparent;
   padding: 12px;
@@ -2675,35 +3739,35 @@ Array [
   background-size: 20px;
 }
 
-.emotion-17:hover {
+.emotion-15:hover {
   border: 1px solid #808080;
 }
 
-.emotion-17:focus {
-  outline: thin solid transparent;
+.emotion-15:focus {
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-17::-webkit-input-placeholder {
+.emotion-15::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-17::-moz-placeholder {
+.emotion-15::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-17:-ms-input-placeholder {
+.emotion-15:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-17::placeholder {
+.emotion-15::placeholder {
   font-style: italic;
 }
 
-.emotion-25 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2741,28 +3805,18 @@ Array [
   color: #ffffff;
 }
 
-.emotion-25:hover {
+.emotion-23:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-25[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-25:hover {
+.emotion-23:hover {
   background-color: #027aff38;
   color: #ffffff;
-}
-
-.emotion-11 {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  -webkit-transform: translate(0%,-50%);
-  -ms-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  cursor: pointer;
 }
 
 .emotion-12 {
@@ -2776,65 +3830,21 @@ Array [
   background-color: #4a4a4a;
 }
 
-.emotion-13 {
-  padding: 0;
-  margin: 0;
-  border: none;
-  left: 0%;
-  position: absolute;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 2;
-  width: 8px;
-  height: 24px;
-  background-color: #808080;
-  border-radius: 1px;
-  cursor: pointer;
-}
-
-.emotion-13:hover,
-.emotion-13:active {
-  background-color: #ffffff;
-}
-
-.emotion-14 {
-  padding: 0;
-  margin: 0;
-  border: none;
-  left: 100%;
-  position: absolute;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  z-index: 2;
-  width: 8px;
-  height: 24px;
-  background-color: #808080;
-  border-radius: 1px;
-  cursor: pointer;
-}
-
-.emotion-14:hover,
-.emotion-14:active {
-  background-color: #ffffff;
-}
-
-.emotion-657 {
+.emotion-655 {
   padding: 16px;
 }
 
-.emotion-657 .ErrorBoundary > div {
+.emotion-655 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-657 .Loading {
+.emotion-655 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-16 {
+.emotion-14 {
   padding: 16px;
   padding-bottom: 32px;
 }
@@ -2852,11 +3862,21 @@ Array [
   font-family: Roboto Mono;
 }
 
-.emotion-15 {
+.emotion-13 {
   padding: 4px;
 }
 
-.emotion-19 {
+.emotion-11 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  cursor: not-allowed;
+}
+
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2870,35 +3890,35 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-656 {
+.emotion-654 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-24 {
+.emotion-22 {
   width: 100%;
 }
 
-.emotion-22 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-20 {
+.emotion-18 {
   width: 100%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-21 {
+.emotion-19 {
   height: 4px;
   width: 0%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-23 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2913,246 +3933,247 @@ Array [
   line-height: 18px;
 }
 
-.emotion-26 {
+.emotion-24 {
   width: 56%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-27 {
+.emotion-25 {
   height: 4px;
   width: 44%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-32 {
+.emotion-30 {
   width: 42%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-33 {
+.emotion-31 {
   height: 4px;
   width: 58%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-38 {
+.emotion-36 {
   width: 34%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-39 {
+.emotion-37 {
   height: 4px;
   width: 66%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-44 {
+.emotion-42 {
   width: 21%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-45 {
+.emotion-43 {
   height: 4px;
   width: 79%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-56 {
+.emotion-54 {
   width: 20%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-57 {
+.emotion-55 {
   height: 4px;
   width: 80%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-62 {
+.emotion-60 {
   width: 18%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-63 {
+.emotion-61 {
   height: 4px;
   width: 82%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-74 {
+.emotion-72 {
   width: 17%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-75 {
+.emotion-73 {
   height: 4px;
   width: 83%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-80 {
+.emotion-78 {
   width: 15%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-81 {
+.emotion-79 {
   height: 4px;
   width: 85%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-86 {
+.emotion-84 {
   width: 13%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-87 {
+.emotion-85 {
   height: 4px;
   width: 87%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-92 {
+.emotion-90 {
   width: 12%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-93 {
+.emotion-91 {
   height: 4px;
   width: 88%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-98 {
+.emotion-96 {
   width: 11%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-99 {
+.emotion-97 {
   height: 4px;
   width: 89%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-104 {
+.emotion-102 {
   width: 10%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-105 {
+.emotion-103 {
   height: 4px;
   width: 90%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-110 {
+.emotion-108 {
   width: 9%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-111 {
+.emotion-109 {
   height: 4px;
   width: 91%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-116 {
+.emotion-114 {
   width: 8%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-117 {
+.emotion-115 {
   height: 4px;
   width: 92%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-128 {
+.emotion-126 {
   width: 7%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-129 {
+.emotion-127 {
   height: 4px;
   width: 93%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-134 {
+.emotion-132 {
   width: 6%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-135 {
+.emotion-133 {
   height: 4px;
   width: 94%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-146 {
+.emotion-144 {
   width: 5%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-147 {
+.emotion-145 {
   height: 4px;
   width: 95%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-152 {
+.emotion-150 {
   width: 4%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-153 {
+.emotion-151 {
   height: 4px;
   width: 96%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-158 {
+.emotion-156 {
   width: 3%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-159 {
+.emotion-157 {
   height: 4px;
   width: 97%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-218 {
+.emotion-216 {
   width: 2%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-219 {
+.emotion-217 {
   height: 4px;
   width: 98%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-278 {
+.emotion-276 {
   width: 1%;
   border-top: 4px solid #73b61c;
 }
 
-.emotion-279 {
+.emotion-277 {
   height: 4px;
   width: 99%;
   border-top: 1px solid #3b3b3b;
 }
 
 <div
-    className="emotion-660"
+    className="emotion-658"
   >
     <div
-      className="emotion-659"
+      className="emotion-657"
     >
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -3164,7 +4185,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -3173,7 +4194,7 @@ Array [
           <svg
             color="#73b61c"
             data-file-name="facet.svg"
-            width={20}
+            height={20}
           />
           <span
             className="emotion-2"
@@ -3194,7 +4215,7 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="hidden.svg"
-              width={20}
+              height={20}
             />
           </button>
           <button
@@ -3207,16 +4228,16 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="cross.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
       </div>
       <div
-        className="emotion-658"
+        className="emotion-656"
       >
         <div
-          className="emotion-657"
+          className="emotion-655"
         >
           <FilterReset
             assetId=""
@@ -3244,10 +4265,10 @@ Array [
           <div>
             Label prediction confidence score:
              
-            All
+            N/A
           </div>
           <div
-            className="emotion-16"
+            className="emotion-14"
           >
             <div
               className="emotion-10"
@@ -3260,7 +4281,7 @@ Array [
               </span>
             </div>
             <div
-              className="emotion-15"
+              className="emotion-13"
             >
               <div
                 style={
@@ -3272,58 +4293,18 @@ Array [
               >
                 <div
                   className="emotion-11"
-                  onMouseDown={[Function]}
-                  onTouchStart={[Function]}
                 />
                 <div
                   className="emotion-12"
                 />
-                <div>
-                  <button
-                    aria-valuenow={0}
-                    className="emotion-13"
-                    onKeyDown={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}
-                    role="slider"
-                    type="button"
-                  />
-                  <button
-                    aria-valuenow={1}
-                    className="emotion-14"
-                    onKeyDown={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}
-                    role="slider"
-                    type="button"
-                  />
-                </div>
-                <div>
-                  <div
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}
-                    style={
-                      Object {
-                        "backgroundColor": "#73b61c",
-                        "cursor": "pointer",
-                        "height": 4,
-                        "left": "0%",
-                        "position": "absolute",
-                        "transform": "translate(0%, -50%)",
-                        "width": "100%",
-                        "zIndex": 1,
-                      }
-                    }
-                  />
-                </div>
               </div>
             </div>
           </div>
           <div
-            className="emotion-18"
+            className="emotion-16"
           >
             <input
-              className="emotion-17"
+              className="emotion-15"
               onChange={[Function]}
               placeholder="Search labels"
               type="search"
@@ -3331,7 +4312,7 @@ Array [
             />
           </div>
           <div
-            className="emotion-19"
+            className="emotion-17"
           >
             <div>
               LABEL
@@ -3341,30 +4322,30 @@ Array [
             </div>
           </div>
           <ul
-            className="emotion-656"
+            className="emotion-654"
           >
             <li>
               <button
                 aria-label="web_site"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-20"
+                      className="emotion-18"
                     />
                     <div
-                      className="emotion-21"
+                      className="emotion-19"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       web_site
@@ -3379,25 +4360,25 @@ Array [
             <li>
               <button
                 aria-label="alp"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-26"
+                      className="emotion-24"
                     />
                     <div
-                      className="emotion-27"
+                      className="emotion-25"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       alp
@@ -3412,25 +4393,25 @@ Array [
             <li>
               <button
                 aria-label="sports_car"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-32"
+                      className="emotion-30"
                     />
                     <div
-                      className="emotion-33"
+                      className="emotion-31"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       sports_car
@@ -3445,25 +4426,25 @@ Array [
             <li>
               <button
                 aria-label="menu"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-38"
+                      className="emotion-36"
                     />
                     <div
-                      className="emotion-39"
+                      className="emotion-37"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       menu
@@ -3478,25 +4459,25 @@ Array [
             <li>
               <button
                 aria-label="convertible"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-44"
+                      className="emotion-42"
                     />
                     <div
-                      className="emotion-45"
+                      className="emotion-43"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       convertible
@@ -3511,25 +4492,25 @@ Array [
             <li>
               <button
                 aria-label="racer"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-44"
+                      className="emotion-42"
                     />
                     <div
-                      className="emotion-45"
+                      className="emotion-43"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       racer
@@ -3544,25 +4525,25 @@ Array [
             <li>
               <button
                 aria-label="valley"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-56"
+                      className="emotion-54"
                     />
                     <div
-                      className="emotion-57"
+                      className="emotion-55"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       valley
@@ -3577,25 +4558,25 @@ Array [
             <li>
               <button
                 aria-label="cab"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-62"
+                      className="emotion-60"
                     />
                     <div
-                      className="emotion-63"
+                      className="emotion-61"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       cab
@@ -3610,25 +4591,25 @@ Array [
             <li>
               <button
                 aria-label="envelope"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-62"
+                      className="emotion-60"
                     />
                     <div
-                      className="emotion-63"
+                      className="emotion-61"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       envelope
@@ -3643,25 +4624,25 @@ Array [
             <li>
               <button
                 aria-label="tabby"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-74"
+                      className="emotion-72"
                     />
                     <div
-                      className="emotion-75"
+                      className="emotion-73"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       tabby
@@ -3676,25 +4657,25 @@ Array [
             <li>
               <button
                 aria-label="minivan"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-80"
+                      className="emotion-78"
                     />
                     <div
-                      className="emotion-81"
+                      className="emotion-79"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       minivan
@@ -3709,25 +4690,25 @@ Array [
             <li>
               <button
                 aria-label="beach_wagon"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-86"
+                      className="emotion-84"
                     />
                     <div
-                      className="emotion-87"
+                      className="emotion-85"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       beach_wagon
@@ -3742,25 +4723,25 @@ Array [
             <li>
               <button
                 aria-label="volcano"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-92"
+                      className="emotion-90"
                     />
                     <div
-                      className="emotion-93"
+                      className="emotion-91"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       volcano
@@ -3775,25 +4756,25 @@ Array [
             <li>
               <button
                 aria-label="Egyptian_cat"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-98"
+                      className="emotion-96"
                     />
                     <div
-                      className="emotion-99"
+                      className="emotion-97"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       Egyptian_cat
@@ -3808,25 +4789,25 @@ Array [
             <li>
               <button
                 aria-label="tiger_cat"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-104"
+                      className="emotion-102"
                     />
                     <div
-                      className="emotion-105"
+                      className="emotion-103"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       tiger_cat
@@ -3841,25 +4822,25 @@ Array [
             <li>
               <button
                 aria-label="grille"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-110"
+                      className="emotion-108"
                     />
                     <div
-                      className="emotion-111"
+                      className="emotion-109"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       grille
@@ -3874,25 +4855,25 @@ Array [
             <li>
               <button
                 aria-label="Model_T"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-116"
+                      className="emotion-114"
                     />
                     <div
-                      className="emotion-117"
+                      className="emotion-115"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       Model_T
@@ -3907,25 +4888,25 @@ Array [
             <li>
               <button
                 aria-label="pickup"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-116"
+                      className="emotion-114"
                     />
                     <div
-                      className="emotion-117"
+                      className="emotion-115"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       pickup
@@ -3940,25 +4921,25 @@ Array [
             <li>
               <button
                 aria-label="fire_engine"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-128"
+                      className="emotion-126"
                     />
                     <div
-                      className="emotion-129"
+                      className="emotion-127"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       fire_engine
@@ -3973,25 +4954,25 @@ Array [
             <li>
               <button
                 aria-label="car_wheel"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-134"
+                      className="emotion-132"
                     />
                     <div
-                      className="emotion-135"
+                      className="emotion-133"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       car_wheel
@@ -4006,25 +4987,25 @@ Array [
             <li>
               <button
                 aria-label="tow_truck"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-134"
+                      className="emotion-132"
                     />
                     <div
-                      className="emotion-135"
+                      className="emotion-133"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       tow_truck
@@ -4039,25 +5020,25 @@ Array [
             <li>
               <button
                 aria-label="jeep"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-146"
+                      className="emotion-144"
                     />
                     <div
-                      className="emotion-147"
+                      className="emotion-145"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       jeep
@@ -4072,25 +5053,25 @@ Array [
             <li>
               <button
                 aria-label="book_jacket"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-152"
+                      className="emotion-150"
                     />
                     <div
-                      className="emotion-153"
+                      className="emotion-151"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       book_jacket
@@ -4105,25 +5086,25 @@ Array [
             <li>
               <button
                 aria-label="Siamese_cat"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-158"
+                      className="emotion-156"
                     />
                     <div
-                      className="emotion-159"
+                      className="emotion-157"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       Siamese_cat
@@ -4138,25 +5119,25 @@ Array [
             <li>
               <button
                 aria-label="pillow"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-158"
+                      className="emotion-156"
                     />
                     <div
-                      className="emotion-159"
+                      className="emotion-157"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       pillow
@@ -4171,25 +5152,25 @@ Array [
             <li>
               <button
                 aria-label="Band_Aid"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-158"
+                      className="emotion-156"
                     />
                     <div
-                      className="emotion-159"
+                      className="emotion-157"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       Band_Aid
@@ -4204,25 +5185,25 @@ Array [
             <li>
               <button
                 aria-label="geyser"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-158"
+                      className="emotion-156"
                     />
                     <div
-                      className="emotion-159"
+                      className="emotion-157"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       geyser
@@ -4237,25 +5218,25 @@ Array [
             <li>
               <button
                 aria-label="half_track"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-158"
+                      className="emotion-156"
                     />
                     <div
-                      className="emotion-159"
+                      className="emotion-157"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       half_track
@@ -4270,25 +5251,25 @@ Array [
             <li>
               <button
                 aria-label="jigsaw_puzzle"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-158"
+                      className="emotion-156"
                     />
                     <div
-                      className="emotion-159"
+                      className="emotion-157"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       jigsaw_puzzle
@@ -4303,25 +5284,25 @@ Array [
             <li>
               <button
                 aria-label="lakeside"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-158"
+                      className="emotion-156"
                     />
                     <div
-                      className="emotion-159"
+                      className="emotion-157"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       lakeside
@@ -4336,25 +5317,25 @@ Array [
             <li>
               <button
                 aria-label="refrigerator"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-158"
+                      className="emotion-156"
                     />
                     <div
-                      className="emotion-159"
+                      className="emotion-157"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       refrigerator
@@ -4369,25 +5350,25 @@ Array [
             <li>
               <button
                 aria-label="rotisserie"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-158"
+                      className="emotion-156"
                     />
                     <div
-                      className="emotion-159"
+                      className="emotion-157"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       rotisserie
@@ -4402,25 +5383,25 @@ Array [
             <li>
               <button
                 aria-label="seashore"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-158"
+                      className="emotion-156"
                     />
                     <div
-                      className="emotion-159"
+                      className="emotion-157"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       seashore
@@ -4435,25 +5416,25 @@ Array [
             <li>
               <button
                 aria-label="amphibian"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-218"
+                      className="emotion-216"
                     />
                     <div
-                      className="emotion-219"
+                      className="emotion-217"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       amphibian
@@ -4468,25 +5449,25 @@ Array [
             <li>
               <button
                 aria-label="cowboy_boot"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-218"
+                      className="emotion-216"
                     />
                     <div
-                      className="emotion-219"
+                      className="emotion-217"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       cowboy_boot
@@ -4501,25 +5482,25 @@ Array [
             <li>
               <button
                 aria-label="crossword_puzzle"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-218"
+                      className="emotion-216"
                     />
                     <div
-                      className="emotion-219"
+                      className="emotion-217"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       crossword_puzzle
@@ -4534,25 +5515,25 @@ Array [
             <li>
               <button
                 aria-label="leopard"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-218"
+                      className="emotion-216"
                     />
                     <div
-                      className="emotion-219"
+                      className="emotion-217"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       leopard
@@ -4567,25 +5548,25 @@ Array [
             <li>
               <button
                 aria-label="plastic_bag"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-218"
+                      className="emotion-216"
                     />
                     <div
-                      className="emotion-219"
+                      className="emotion-217"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       plastic_bag
@@ -4600,25 +5581,25 @@ Array [
             <li>
               <button
                 aria-label="promontory"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-218"
+                      className="emotion-216"
                     />
                     <div
-                      className="emotion-219"
+                      className="emotion-217"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       promontory
@@ -4633,25 +5614,25 @@ Array [
             <li>
               <button
                 aria-label="scoreboard"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-218"
+                      className="emotion-216"
                     />
                     <div
-                      className="emotion-219"
+                      className="emotion-217"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       scoreboard
@@ -4666,25 +5647,25 @@ Array [
             <li>
               <button
                 aria-label="toilet_seat"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-218"
+                      className="emotion-216"
                     />
                     <div
-                      className="emotion-219"
+                      className="emotion-217"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       toilet_seat
@@ -4699,25 +5680,25 @@ Array [
             <li>
               <button
                 aria-label="totem_pole"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-218"
+                      className="emotion-216"
                     />
                     <div
-                      className="emotion-219"
+                      className="emotion-217"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       totem_pole
@@ -4732,25 +5713,25 @@ Array [
             <li>
               <button
                 aria-label="window_screen"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-218"
+                      className="emotion-216"
                     />
                     <div
-                      className="emotion-219"
+                      className="emotion-217"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       window_screen
@@ -4765,25 +5746,25 @@ Array [
             <li>
               <button
                 aria-label="American_alligator"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       American_alligator
@@ -4798,25 +5779,25 @@ Array [
             <li>
               <button
                 aria-label="Indian_elephant"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       Indian_elephant
@@ -4831,25 +5812,25 @@ Array [
             <li>
               <button
                 aria-label="Persian_cat"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       Persian_cat
@@ -4864,25 +5845,25 @@ Array [
             <li>
               <button
                 aria-label="West_Highland_white_terrier"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       West_Highland_white_terrier
@@ -4897,25 +5878,25 @@ Array [
             <li>
               <button
                 aria-label="ambulance"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       ambulance
@@ -4930,25 +5911,25 @@ Array [
             <li>
               <button
                 aria-label="balloon"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       balloon
@@ -4963,25 +5944,25 @@ Array [
             <li>
               <button
                 aria-label="ballplayer"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       ballplayer
@@ -4996,25 +5977,25 @@ Array [
             <li>
               <button
                 aria-label="barn"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       barn
@@ -5029,25 +6010,25 @@ Array [
             <li>
               <button
                 aria-label="bib"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       bib
@@ -5062,25 +6043,25 @@ Array [
             <li>
               <button
                 aria-label="bison"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       bison
@@ -5095,25 +6076,25 @@ Array [
             <li>
               <button
                 aria-label="bottlecap"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       bottlecap
@@ -5128,25 +6109,25 @@ Array [
             <li>
               <button
                 aria-label="bubble"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       bubble
@@ -5161,25 +6142,25 @@ Array [
             <li>
               <button
                 aria-label="cannon"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       cannon
@@ -5194,25 +6175,25 @@ Array [
             <li>
               <button
                 aria-label="cleaver"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       cleaver
@@ -5227,25 +6208,25 @@ Array [
             <li>
               <button
                 aria-label="cliff"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       cliff
@@ -5260,25 +6241,25 @@ Array [
             <li>
               <button
                 aria-label="corn"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       corn
@@ -5293,25 +6274,25 @@ Array [
             <li>
               <button
                 aria-label="crutch"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       crutch
@@ -5326,25 +6307,25 @@ Array [
             <li>
               <button
                 aria-label="desk"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       desk
@@ -5359,25 +6340,25 @@ Array [
             <li>
               <button
                 aria-label="digital_clock"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       digital_clock
@@ -5392,25 +6373,25 @@ Array [
             <li>
               <button
                 aria-label="dishwasher"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       dishwasher
@@ -5425,25 +6406,25 @@ Array [
             <li>
               <button
                 aria-label="file"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       file
@@ -5458,25 +6439,25 @@ Array [
             <li>
               <button
                 aria-label="flagpole"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       flagpole
@@ -5491,25 +6472,25 @@ Array [
             <li>
               <button
                 aria-label="football_helmet"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       football_helmet
@@ -5524,25 +6505,25 @@ Array [
             <li>
               <button
                 aria-label="fountain"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       fountain
@@ -5557,25 +6538,25 @@ Array [
             <li>
               <button
                 aria-label="go-kart"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       go-kart
@@ -5590,25 +6571,25 @@ Array [
             <li>
               <button
                 aria-label="great_white_shark"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       great_white_shark
@@ -5623,25 +6604,25 @@ Array [
             <li>
               <button
                 aria-label="hoopskirt"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       hoopskirt
@@ -5656,25 +6637,25 @@ Array [
             <li>
               <button
                 aria-label="horse_cart"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       horse_cart
@@ -5689,25 +6670,25 @@ Array [
             <li>
               <button
                 aria-label="killer_whale"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       killer_whale
@@ -5722,25 +6703,25 @@ Array [
             <li>
               <button
                 aria-label="lynx"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       lynx
@@ -5755,25 +6736,25 @@ Array [
             <li>
               <button
                 aria-label="macaw"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       macaw
@@ -5788,25 +6769,25 @@ Array [
             <li>
               <button
                 aria-label="meerkat"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       meerkat
@@ -5821,25 +6802,25 @@ Array [
             <li>
               <button
                 aria-label="megalith"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       megalith
@@ -5854,25 +6835,25 @@ Array [
             <li>
               <button
                 aria-label="minibus"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       minibus
@@ -5887,25 +6868,25 @@ Array [
             <li>
               <button
                 aria-label="moving_van"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       moving_van
@@ -5920,25 +6901,25 @@ Array [
             <li>
               <button
                 aria-label="notebook"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       notebook
@@ -5953,25 +6934,25 @@ Array [
             <li>
               <button
                 aria-label="ocarina"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       ocarina
@@ -5986,25 +6967,25 @@ Array [
             <li>
               <button
                 aria-label="oscilloscope"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       oscilloscope
@@ -6019,25 +7000,25 @@ Array [
             <li>
               <button
                 aria-label="otter"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       otter
@@ -6052,25 +7033,25 @@ Array [
             <li>
               <button
                 aria-label="overskirt"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       overskirt
@@ -6085,25 +7066,25 @@ Array [
             <li>
               <button
                 aria-label="oxcart"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       oxcart
@@ -6118,25 +7099,25 @@ Array [
             <li>
               <button
                 aria-label="parking_meter"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       parking_meter
@@ -6151,25 +7132,25 @@ Array [
             <li>
               <button
                 aria-label="picket_fence"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       picket_fence
@@ -6184,25 +7165,25 @@ Array [
             <li>
               <button
                 aria-label="police_van"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       police_van
@@ -6217,25 +7198,25 @@ Array [
             <li>
               <button
                 aria-label="prayer_rug"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       prayer_rug
@@ -6250,25 +7231,25 @@ Array [
             <li>
               <button
                 aria-label="quilt"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       quilt
@@ -6283,25 +7264,25 @@ Array [
             <li>
               <button
                 aria-label="rapeseed"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       rapeseed
@@ -6316,25 +7297,25 @@ Array [
             <li>
               <button
                 aria-label="sandbar"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       sandbar
@@ -6349,25 +7330,25 @@ Array [
             <li>
               <button
                 aria-label="sarong"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       sarong
@@ -6382,25 +7363,25 @@ Array [
             <li>
               <button
                 aria-label="snowmobile"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       snowmobile
@@ -6415,25 +7396,25 @@ Array [
             <li>
               <button
                 aria-label="speedboat"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       speedboat
@@ -6448,25 +7429,25 @@ Array [
             <li>
               <button
                 aria-label="stretcher"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       stretcher
@@ -6481,25 +7462,25 @@ Array [
             <li>
               <button
                 aria-label="studio_couch"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       studio_couch
@@ -6514,25 +7495,25 @@ Array [
             <li>
               <button
                 aria-label="stupa"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       stupa
@@ -6547,25 +7528,25 @@ Array [
             <li>
               <button
                 aria-label="tailed_frog"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       tailed_frog
@@ -6580,25 +7561,25 @@ Array [
             <li>
               <button
                 aria-label="toucan"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       toucan
@@ -6613,25 +7594,25 @@ Array [
             <li>
               <button
                 aria-label="trilobite"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       trilobite
@@ -6646,25 +7627,25 @@ Array [
             <li>
               <button
                 aria-label="unicycle"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       unicycle
@@ -6679,25 +7660,25 @@ Array [
             <li>
               <button
                 aria-label="vacuum"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       vacuum
@@ -6712,25 +7693,25 @@ Array [
             <li>
               <button
                 aria-label="vending_machine"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       vending_machine
@@ -6745,25 +7726,25 @@ Array [
             <li>
               <button
                 aria-label="water_buffalo"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       water_buffalo
@@ -6778,25 +7759,25 @@ Array [
             <li>
               <button
                 aria-label="window_shade"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       window_shade
@@ -6811,25 +7792,25 @@ Array [
             <li>
               <button
                 aria-label="yurt"
-                className="emotion-25"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-24"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-22"
+                    className="emotion-20"
                   >
                     <div
-                      className="emotion-278"
+                      className="emotion-276"
                     />
                     <div
-                      className="emotion-279"
+                      className="emotion-277"
                     />
                   </div>
                   <div
-                    className="emotion-23"
+                    className="emotion-21"
                   >
                     <div>
                       yurt
@@ -7042,7 +8023,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -7100,7 +8081,7 @@ Array [
           >
             <svg
               data-file-name="plus.svg"
-              width={20}
+              height={20}
             />
           </div>
           Add Metadata Filters
@@ -7150,7 +8131,7 @@ Array [
           <svg
             className="emotion-9"
             data-file-name="plus.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
@@ -7168,7 +8149,7 @@ Array [
 }
 
 .emotion-24:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-24:hover svg {
@@ -7261,10 +8242,13 @@ Array [
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
@@ -7352,12 +8336,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -7430,12 +8414,12 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -7589,7 +8573,7 @@ Array [
 }
 
 .emotion-16:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -7620,6 +8604,7 @@ Array [
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -7631,7 +8616,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -7640,7 +8625,7 @@ Array [
           <svg
             color="#73b61c"
             data-file-name="range.svg"
-            width={20}
+            height={20}
           />
           <span
             className="emotion-2"
@@ -7661,7 +8646,7 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="hidden.svg"
-              width={20}
+              height={20}
             />
           </button>
           <button
@@ -7674,7 +8659,7 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="cross.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -8013,7 +8998,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -8071,7 +9056,7 @@ Array [
           >
             <svg
               data-file-name="plus.svg"
-              width={20}
+              height={20}
             />
           </div>
           Add Metadata Filters
@@ -8121,7 +9106,7 @@ Array [
           <svg
             className="emotion-9"
             data-file-name="plus.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
@@ -8139,7 +9124,7 @@ Array [
 }
 
 .emotion-21:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-21:hover svg {
@@ -8232,10 +9217,13 @@ Array [
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
@@ -8323,12 +9311,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -8401,12 +9389,12 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -8537,6 +9525,7 @@ Array [
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -8548,7 +9537,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -8557,7 +9546,7 @@ Array [
           <svg
             color="#73b61c"
             data-file-name="similarity.svg"
-            width={20}
+            height={20}
           />
           <span
             className="emotion-2"
@@ -8578,7 +9567,7 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="hidden.svg"
-              width={20}
+              height={20}
             />
           </button>
           <button
@@ -8591,7 +9580,7 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="cross.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -8916,7 +9905,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -8974,7 +9963,7 @@ Array [
           >
             <svg
               data-file-name="plus.svg"
-              width={20}
+              height={20}
             />
           </div>
           Add Metadata Filters
@@ -9024,7 +10013,7 @@ Array [
           <svg
             className="emotion-9"
             data-file-name="plus.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>
@@ -9042,7 +10031,7 @@ Array [
 }
 
 .emotion-16:hover {
-  border: 1px solid #808080;
+  border: 1px solid #3b3b3b;
 }
 
 .emotion-16:hover svg {
@@ -9135,10 +10124,13 @@ Array [
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
+  padding-right: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emotion-2 {
@@ -9226,12 +10218,12 @@ Array [
 }
 
 .emotion-5:hover,
-.emotion-5:focus {
+.emotion-5.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-5:hover svg,
-.emotion-5:focus svg {
+.emotion-5.focus-visible:focus svg {
   opacity: 1;
   color: #ffffff;
 }
@@ -9304,12 +10296,12 @@ Array [
 }
 
 .emotion-7:hover,
-.emotion-7:focus {
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
 .emotion-7:hover svg,
-.emotion-7:focus svg {
+.emotion-7.focus-visible:focus svg {
   color: #ffffff;
   opacity: 1;
 }
@@ -9348,7 +10340,7 @@ Array [
 }
 
 .emotion-10:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -9403,6 +10395,7 @@ Array [
       <div
         className="emotion-9"
         onClick={[Function]}
+        style={Object {}}
       >
         <button
           aria-label="Collapse Section"
@@ -9414,7 +10407,7 @@ Array [
             className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
-            width={20}
+            height={20}
           />
         </button>
         <h4
@@ -9423,7 +10416,7 @@ Array [
           <svg
             color="#73b61c"
             data-file-name="text.svg"
-            width={20}
+            height={20}
           />
           <span
             className="emotion-2"
@@ -9444,7 +10437,7 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="hidden.svg"
-              width={20}
+              height={20}
             />
           </button>
           <button
@@ -9457,7 +10450,7 @@ Array [
               className="emotion-4"
               color="#808080"
               data-file-name="cross.svg"
-              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -9494,7 +10487,7 @@ Array [
                 <svg
                   className="emotion-11"
                   data-file-name="search.svg"
-                  width={20}
+                  height={20}
                 />
               </button>
             </div>
@@ -9699,7 +10692,7 @@ Array [
 }
 
 .emotion-8:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -9757,7 +10750,7 @@ Array [
           >
             <svg
               data-file-name="plus.svg"
-              width={20}
+              height={20}
             />
           </div>
           Add Metadata Filters
@@ -9807,7 +10800,7 @@ Array [
           <svg
             className="emotion-9"
             data-file-name="plus.svg"
-            width={20}
+            height={20}
           />
         </button>
       </div>

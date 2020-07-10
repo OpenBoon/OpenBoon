@@ -394,7 +394,8 @@ class ProcessorWrapper(object):
         if metric_idx == -1:
             metric = {
                 "processor": class_name,
-                "module": self.ref.get("module")
+                "module": self.ref.get("module"),
+                "executionTime": 0
             }
             metrics.append(metric)
         else:
@@ -403,7 +404,6 @@ class ProcessorWrapper(object):
         # The checksum needs to be there even if its not processed
         # or else a zero checksums would signal reprocessing.
         metric["checksum"] = self.ref.get("checksum", 0)
-        metric["executionTime"] = 0
 
         # Only processed processors get a date and a positive executionTime
         if processed:

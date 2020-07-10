@@ -7,9 +7,8 @@ import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
-import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.JobUpdateSpec
-import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.service.CredentialsService
 import com.zorroa.archivist.service.JobService
 import org.junit.Test
@@ -38,15 +37,14 @@ class JobDaoTests : AbstractTest() {
 
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
 
-        val t1 = jobDao.create(spec, JobType.Import)
+        val t1 = jobDao.create(spec)
         assertEquals(spec.name, t1.name)
         assertEquals(JobState.InProgress, t1.state) // no tasks
-        assertEquals(JobType.Import, t1.type)
     }
 
     @Test
@@ -55,11 +53,11 @@ class JobDaoTests : AbstractTest() {
 
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             paused = true,
             pauseDurationSeconds = 1L
         )
-        val job1 = jobDao.create(spec, JobType.Import)
+        val job1 = jobDao.create(spec)
         assertTrue(job1.paused)
 
         Thread.sleep(1001)
@@ -73,11 +71,11 @@ class JobDaoTests : AbstractTest() {
     fun testUpdate() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
-        val t1 = jobDao.create(spec, JobType.Import)
+        val t1 = jobDao.create(spec)
         val update = JobUpdateSpec("bilbo_baggins", 5, true, System.currentTimeMillis(), 5)
         assertTrue(jobDao.update(t1, update))
         val t2 = jobDao.get(t1.id)
@@ -92,11 +90,11 @@ class JobDaoTests : AbstractTest() {
     fun testSetTimeStarted() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
-        val t1 = jobDao.create(spec, JobType.Import)
+        val t1 = jobDao.create(spec)
         assertTrue(jobDao.setTimeStarted(t1))
         assertFalse(jobDao.setTimeStarted(t1))
         val time = jdbc.queryForObject("SELECT time_started FROM job WHERE pk_job=?", Long::class.java, t1.jobId)
@@ -107,30 +105,29 @@ class JobDaoTests : AbstractTest() {
     fun testGet() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("test_script"),
+            emptyZpsScripts("test_script"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
 
-        val t2 = jobDao.create(spec, JobType.Import)
+        val t2 = jobDao.create(spec)
         val t1 = jobDao.get(t2.id)
 
         assertEquals(t2.name, t1.name)
         assertEquals(t2.projectId, t1.projectId)
         assertEquals(t2.state, t1.state)
-        assertEquals(t2.type, t1.type)
     }
 
     @Test
     fun getTestForClient() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("test_script"),
+            emptyZpsScripts("test_script"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
 
-        val t2 = jobDao.create(spec, JobType.Import)
+        val t2 = jobDao.create(spec)
         val t1 = jobDao.get(t2.id, forClient = true)
         assertNotNull(t1.assetCounts)
         assertNotNull(t1.taskCounts)
@@ -140,12 +137,12 @@ class JobDaoTests : AbstractTest() {
     fun getTestWeHaveTimestampsForClient() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("test_script"),
+            emptyZpsScripts("test_script"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
 
-        val t2 = jobDao.create(spec, JobType.Import)
+        val t2 = jobDao.create(spec)
         val t1 = jobDao.get(t2.id, forClient = true)
         assertNotNull(t1.timeStarted)
         assertNotNull(t1.timeUpdated)
@@ -155,23 +152,19 @@ class JobDaoTests : AbstractTest() {
     fun testIncrementAssetStats() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("test_script"),
+            emptyZpsScripts("test_script"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
 
         val counters = AssetCounters(
-            total = 10,
-            replaced = 4,
-            created = 6
+            total = 10
         )
 
-        val job1 = jobDao.create(spec, JobType.Import)
+        val job1 = jobDao.create(spec)
         assertTrue(jobDao.incrementAssetCounters(job1, counters))
         val map = jdbc.queryForMap("SELECT * FROM job_stat WHERE pk_job=?", job1.id)
 
-        assertEquals(counters.created, map["int_asset_create_count"])
-        assertEquals(counters.replaced, map["int_asset_replace_count"])
         assertEquals(counters.total, map["int_asset_total_count"])
     }
 
@@ -181,9 +174,9 @@ class JobDaoTests : AbstractTest() {
         for (i in 1..10) {
             val spec = JobSpec(
                 "run_some_stuff_$i",
-                emptyZpsScript("test_script")
+                emptyZpsScripts("test_script")
             )
-            jobDao.create(spec, JobType.Import)
+            jobDao.create(spec)
         }
 
         var filter = JobFilter(names = listOf("run_some_stuff_1"))
@@ -202,14 +195,14 @@ class JobDaoTests : AbstractTest() {
             val random = Random.nextInt(1, 100000)
             val spec = JobSpec(
                 "run_some_stuff_$random",
-                emptyZpsScript("test_script")
+                emptyZpsScripts("test_script")
             )
-            jobDao.create(spec, JobType.Import)
+            jobDao.create(spec)
         }
 
         // All the columns we can sort by.
         val sortFields = listOf(
-            "id", "type", "name", "timeCreated", "state", "priority", "projectId", "dataSourceId"
+            "id", "name", "timeCreated", "state", "priority", "projectId", "dataSourceId"
         )
 
         // Just test the DB allows us to sort
@@ -226,12 +219,12 @@ class JobDaoTests : AbstractTest() {
     fun testDelete() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
 
-        val job = jobDao.create(spec, JobType.Import)
+        val job = jobDao.create(spec)
         assertTrue(jobDao.delete(job))
         assertFalse(jobDao.delete(job))
     }
@@ -242,12 +235,12 @@ class JobDaoTests : AbstractTest() {
 
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
 
-        val job = jobDao.create(spec, JobType.Import)
+        val job = jobDao.create(spec)
         assertTrue(jobDao.setState(job, JobState.Failure, null))
         Thread.sleep(100)
         assertTrue(jobDao.getExpired(99, TimeUnit.MILLISECONDS, 100).isNotEmpty())
@@ -256,8 +249,8 @@ class JobDaoTests : AbstractTest() {
 
     @Test
     fun testSetState() {
-        val spec = JobSpec("test_job", emptyZpsScript("foo"))
-        var job = jobDao.create(spec, JobType.Import)
+        val spec = JobSpec("test_job", emptyZpsScripts("foo"))
+        var job = jobDao.create(spec)
         assertFalse(jobDao.setState(job, JobState.InProgress, null))
         assertTrue(jobDao.setState(job, JobState.Cancelled, null))
         job = jobDao.get(job.id)
@@ -276,8 +269,8 @@ class JobDaoTests : AbstractTest() {
             )
         )
 
-        val spec = JobSpec("test_job", emptyZpsScript("foo"))
-        var job = jobDao.create(spec, JobType.Import)
+        val spec = JobSpec("test_job", emptyZpsScripts("foo"))
+        var job = jobDao.create(spec)
         jobDao.setCredentials(job, listOf(creds))
 
         assertEquals(
@@ -298,8 +291,8 @@ class JobDaoTests : AbstractTest() {
             )
         )
 
-        val spec = JobSpec("test_job", emptyZpsScript("foo"))
-        var job = jobDao.create(spec, JobType.Import)
+        val spec = JobSpec("test_job", emptyZpsScripts("foo"))
+        var job = jobDao.create(spec)
         jobDao.setCredentials(job, listOf(creds))
 
         assertTrue(jobDao.getCredentialsTypes(job).contains("AWS"))

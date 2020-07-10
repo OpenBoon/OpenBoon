@@ -137,6 +137,14 @@ def test_ffprobe_mov():
     assert probe["format"]["size"] == "73981"
 
 
+def test_media_info_class():
+    info = media.MediaInfo(VIDEO_MP4)
+    assert info.is_streamable()
+
+    info = media.MediaInfo(VIDEO_MOV)
+    assert not info.is_streamable()
+
+
 class ProxyFunctionTests(unittest.TestCase):
     file_list = [
         {
@@ -182,7 +190,7 @@ class ProxyFunctionTests(unittest.TestCase):
     ]
 
     @patch.object(ProjectStorage, 'store_file')
-    def test_store_asset_proxy_unique(self, store_patch):
+    def test_store_media_proxy_unique(self, store_patch):
         asset = TestAsset(IMAGE_JPG)
         store_patch.return_value = StoredFile({
             'id': 'assets/123456/proxy/image_200x200.jpg',
@@ -196,8 +204,8 @@ class ProxyFunctionTests(unittest.TestCase):
         })
 
         # Should only be added to list once.
-        media.store_asset_proxy(asset, IMAGE_JPG, (200, 200))
-        media.store_asset_proxy(asset, IMAGE_JPG, (200, 200))
+        media.store_media_proxy(asset, IMAGE_JPG, (200, 200))
+        media.store_media_proxy(asset, IMAGE_JPG, (200, 200))
 
         store_patch.return_value = StoredFile({
             'id': 'assets/123456/proxy/image_200x200.mp4',
@@ -210,18 +218,18 @@ class ProxyFunctionTests(unittest.TestCase):
             }
         })
 
-        media.store_asset_proxy(asset, VIDEO_MP4, (200, 200))
+        media.store_media_proxy(asset, VIDEO_MP4, (200, 200))
         assert 2 == len(asset.get_files())
 
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(ZmlpClient, 'upload_file')
-    def test_store_asset_proxy_with_attrs(self, upload_patch, store_file_patch):
+    def test_store_media_proxy_with_attrs(self, upload_patch, store_file_patch):
         upload_patch.return_value = {}
 
         asset = TestAsset(IMAGE_JPG)
         asset.set_attr('tmp.image_proxy_source_attrs', {'king': 'kong'})
-        media.store_asset_proxy(
-            asset, IMAGE_JPG, (200, 200), attrs={'foo': 'bar'})
+        media.store_media_proxy(
+            asset, IMAGE_JPG, 'image', size=(200, 200), attrs={'foo': 'bar'})
 
         # Merges args from both the proxy_source_attrs attr and
         # args passed into store_proxy_media

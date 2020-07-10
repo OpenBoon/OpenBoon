@@ -9,36 +9,47 @@ import PausedSvg from '../Icons/paused.svg'
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import GeneratingSvg from '../Icons/generating.svg'
 
-const WIDTH = 20
+const ICON_SIZE = 20
 
 const JobTasksStateIcon = ({ state }) => {
   switch (state) {
     case 'Waiting':
-      return <ClockSvg color={colors.structure.white} width={WIDTH} />
+    case 'Depend':
+      return <ClockSvg color={colors.structure.white} height={ICON_SIZE} />
 
     case 'Running':
-      return <GeneratingSvg color={colors.signal.canary.base} width={WIDTH} />
+      return (
+        <GeneratingSvg color={colors.signal.canary.base} height={ICON_SIZE} />
+      )
 
     case 'Success':
-      return <CheckmarkSvg color={colors.signal.grass.base} width={WIDTH} />
+      return (
+        <CheckmarkSvg color={colors.signal.grass.base} height={ICON_SIZE} />
+      )
 
     case 'Skipped':
-      return <PausedSvg color={colors.structure.steel} width={WIDTH} />
+      return <PausedSvg color={colors.structure.steel} height={ICON_SIZE} />
 
     case 'Queued':
       return (
-        <SquareSquareSquareSvg color={colors.signal.sky.base} width={WIDTH} />
+        <SquareSquareSquareSvg
+          color={colors.signal.sky.base}
+          height={ICON_SIZE}
+        />
       )
 
     case 'Failure':
     default:
-      return <CrossSmallSvg color={colors.signal.warning.base} width={WIDTH} />
+      return (
+        <CrossSmallSvg color={colors.signal.warning.base} height={ICON_SIZE} />
+      )
   }
 }
 
 JobTasksStateIcon.propTypes = {
   state: PropTypes.oneOf([
     'Waiting',
+    'Depend',
     'Running',
     'Success',
     'Failure',

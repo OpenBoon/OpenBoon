@@ -82,7 +82,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             ps.setLong(5, time)
             ps.setLong(6, time)
             ps.setLong(7, time)
-            ps.setString(8, Json.serializeToString(spec.script, "{}"))
+            ps.setString(8, Json.serializeToString(spec.script?.copyWithoutChildren(), "{}"))
             ps.setInt(9, 0)
             ps
         }
@@ -206,8 +206,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     override fun incrementAssetCounters(task: TaskId, counts: AssetCounters): Boolean {
         return jdbc.update(
             ASSET_COUNTS_INC,
-            counts.created,
-            counts.replaced,
+            counts.total,
             task.taskId
         ) == 1
     }
@@ -308,8 +307,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
 
         private inline fun buildAssetCounts(rs: ResultSet): Map<String, Int> {
             val result = mutableMapOf<String, Int>()
-            result["assetCreatedCount"] = rs.getInt("int_asset_create_count")
-            result["assetReplacedCount"] = rs.getInt("int_asset_replace_count")
+            result["assetCreatedCount"] = 0
+            result["assetReplacedCount"] = 0
             result["assetWarningCount"] = rs.getInt("int_asset_warning_count")
             result["assetErrorCount"] = rs.getInt("int_asset_error_count")
             result["assetTotalCount"] = rs.getInt("int_asset_total_count")
@@ -332,8 +331,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         private const val ASSET_COUNTS_INC = "UPDATE " +
             "task_stat " +
             "SET " +
-            "int_asset_create_count=int_asset_create_count+?," +
-            "int_asset_replace_count=int_asset_replace_count+? " +
+            "int_asset_total_count=int_asset_total_count+? " +
             "WHERE " +
             "pk_task=?"
 

@@ -22,6 +22,7 @@ const PIPELINE_COLORS = [
 const CONTAINER_HEIGHT = 9
 const HOVER_HEIGHT = 13
 const MIN_WIDTH = 8
+const ICON_SIZE = 20
 
 const MetadataPrettyMetricsBar = ({ pipeline }) => {
   const [legend, setLegend] = useState({})
@@ -68,12 +69,12 @@ const MetadataPrettyMetricsBar = ({ pipeline }) => {
                 minWidth: MIN_WIDTH,
                 backgroundColor: PIPELINE_COLORS[colorIndex],
                 border: '2px solid transparent',
-                ':hover, :focus': {
+                ':hover, &.focus-visible:focus': {
                   position: 'relative',
                   height: HOVER_HEIGHT,
                   top: -2,
-                  border: constants.borders.metrics,
-                  outline: constants.borders.outline,
+                  border: constants.borders.medium.white,
+                  outline: constants.borders.regular.transparent,
                 },
                 '&:first-of-type': {
                   borderTopLeftRadius: constants.borderRadius.small,
@@ -115,7 +116,7 @@ const MetadataPrettyMetricsBar = ({ pipeline }) => {
               }}
             >
               <div css={{ display: 'flex', alignItems: 'center' }}>
-                <ClockSvg width={20} />
+                <ClockSvg height={ICON_SIZE} />
                 <div
                   css={{
                     paddingLeft: spacing.base,

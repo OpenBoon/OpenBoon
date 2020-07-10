@@ -8,6 +8,7 @@ import User from '../../User'
 import DataVisualization from '..'
 
 jest.mock('../../Visualizer/Navigation', () => 'VisualizerNavigation')
+jest.mock('../../Charts', () => 'Charts')
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 

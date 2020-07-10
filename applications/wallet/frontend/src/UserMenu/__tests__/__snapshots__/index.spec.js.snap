@@ -71,6 +71,10 @@ exports[`<UserMenu /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-0 {
@@ -126,7 +130,7 @@ exports[`<UserMenu /> should render properly 1`] = `
           className="emotion-1"
           color="#808080"
           data-file-name="chevron.svg"
-          width={20}
+          height={20}
         />
       </div>
     </button>
@@ -148,6 +152,10 @@ exports[`<UserMenu /> should render properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-3 {
@@ -358,7 +366,7 @@ exports[`<UserMenu /> should render properly 2`] = `
           className="emotion-1"
           color="#808080"
           data-file-name="chevron.svg"
-          width={20}
+          height={20}
         />
       </div>
     </button>
@@ -492,6 +500,10 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-0 {
@@ -547,7 +559,7 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
           className="emotion-1"
           color="#808080"
           data-file-name="chevron.svg"
-          width={20}
+          height={20}
         />
       </div>
     </button>

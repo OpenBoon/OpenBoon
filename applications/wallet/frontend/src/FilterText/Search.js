@@ -12,7 +12,7 @@ import Button, { VARIANTS } from '../Button'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
-const SVG_SIZE = 20
+const ICON_SIZE = 20
 
 const FilterTextSearch = ({
   pathname,
@@ -29,10 +29,10 @@ const FilterTextSearch = ({
   return (
     <div
       css={{
-        border: constants.borders.transparent,
-        borderBottom: constants.borders.tabs,
+        border: constants.borders.regular.transparent,
+        borderBottom: constants.borders.regular.iron,
         ':hover': {
-          border: constants.borders.tableRow,
+          border: constants.borders.regular.steel,
           svg: { opacity: 1 },
         },
         padding: spacing.small,
@@ -52,7 +52,7 @@ const FilterTextSearch = ({
             paddingLeft: spacing.comfy,
           }}
         >
-          <TextSvg css={{ width: SVG_SIZE, color: colors.key.one }} />
+          <TextSvg css={{ width: ICON_SIZE, color: colors.key.one }} />
         </div>
 
         <div
@@ -87,7 +87,7 @@ const FilterTextSearch = ({
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: constants.borderRadius.small,
-            ':hover, :focus': {
+            ':hover, &.focus-visible:focus': {
               backgroundColor: colors.structure.smoke,
               svg: {
                 opacity: 1,
@@ -115,7 +115,7 @@ const FilterTextSearch = ({
           }
         >
           <HiddenSvg
-            width={SVG_SIZE}
+            height={ICON_SIZE}
             color={
               isDisabled ? colors.signal.canary.strong : colors.structure.steel
             }
@@ -131,7 +131,7 @@ const FilterTextSearch = ({
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: constants.borderRadius.small,
-            ':hover, :focus': {
+            ':hover, &.focus-visible:focus': {
               backgroundColor: colors.structure.smoke,
               svg: { opacity: 1, color: colors.structure.white },
             },
@@ -150,7 +150,7 @@ const FilterTextSearch = ({
           }
         >
           <CrossSvg
-            width={SVG_SIZE}
+            height={ICON_SIZE}
             color={colors.structure.steel}
             css={{ opacity: 0 }}
           />

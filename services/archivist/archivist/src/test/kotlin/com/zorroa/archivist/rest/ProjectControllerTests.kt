@@ -248,10 +248,10 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun updateTier() {
         val pid = getProjectId()
-        var update = ProjectTierUpdate(ProjectTier.PREMIUM)
+        var update = ProjectTierUpdate(ProjectTier.PREMIER)
 
         mvc.perform(
-            MockMvcRequestBuilders.put("/api/v1/project/$pid/_update_tier")
+            MockMvcRequestBuilders.put("/api/v1/projects/$pid/_update_tier")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(update))
@@ -293,7 +293,7 @@ class ProjectControllerTests : MockMvcTest() {
         val settings = projectService.getSettings(pid)
 
         mvc.perform(
-            MockMvcRequestBuilders.put("/api/v1/project/$pid/_enable")
+            MockMvcRequestBuilders.put("/api/v1/projects/$pid/_enable")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(settings))
@@ -308,7 +308,7 @@ class ProjectControllerTests : MockMvcTest() {
         val settings = projectService.getSettings(pid)
 
         mvc.perform(
-            MockMvcRequestBuilders.put("/api/v1/project/$pid/_disable")
+            MockMvcRequestBuilders.put("/api/v1/projects/$pid/_disable")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(settings))

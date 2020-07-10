@@ -10,7 +10,7 @@ import ChevronSvg from '../Icons/chevron.svg'
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 
-const CHEVRON_WIDTH = 20
+const ICON_SIZE = 20
 
 const ProjectSwitcher = ({ projectId }) => {
   const {
@@ -64,7 +64,7 @@ const ProjectSwitcher = ({ projectId }) => {
           >
             {selectedProject.name}
             <ChevronSvg
-              width={CHEVRON_WIDTH}
+              height={ICON_SIZE}
               css={{
                 marginLeft: spacing.base,
                 transform: `${isMenuOpen ? 'rotate(-180deg)' : ''}`,

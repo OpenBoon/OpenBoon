@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { colors, spacing } from '../Styles'
 
-import Card from '../Card'
+import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 import Button, { VARIANTS } from '../Button'
 import Bouncer, { ROLES } from '../Bouncer'
 
@@ -12,6 +12,8 @@ import KeySvg from '../Icons/key.svg'
 
 import ProjectUsagePlan from './UsagePlan'
 import ProjectGettingStarted from './GettingStarted'
+
+const ICON_SIZE = 20
 
 const ProjectCards = () => {
   const {
@@ -33,16 +35,11 @@ const ProjectCards = () => {
       }}
     >
       <Card
+        variant={CARD_VARIANTS.LIGHT}
         header=""
         content={
           <>
-            <h3
-              css={{
-                paddingBottom: spacing.base,
-              }}
-            >
-              Project: {name}
-            </h3>
+            <h3 css={{ paddingBottom: spacing.base }}>Project: {name}</h3>
             <div
               css={{
                 color: colors.structure.zinc,
@@ -76,9 +73,10 @@ const ProjectCards = () => {
 
       <Bouncer role={ROLES.API_Keys}>
         <Card
+          variant={CARD_VARIANTS.LIGHT}
           header={
             <h3>
-              <KeySvg width={20} aria-hidden color={colors.structure.zinc} />
+              <KeySvg height={ICON_SIZE} color={colors.structure.zinc} />
               Project API Keys
             </h3>
           }

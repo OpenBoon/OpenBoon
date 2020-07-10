@@ -11,6 +11,7 @@ const colors = {
     zinc: '#b3b3b3',
     pebble: '#e0e0e0',
     white: '#ffffff',
+    transparent: 'transparent',
   },
 
   signal: {
@@ -27,6 +28,7 @@ const colors = {
     },
     sky: {
       base: '#4a90e2',
+      background: '#cfe5ff',
     },
     grass: {
       base: '#4ac565',

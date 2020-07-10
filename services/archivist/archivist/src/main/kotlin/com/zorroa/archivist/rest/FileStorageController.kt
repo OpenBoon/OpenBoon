@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageRequest
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.AssetService
-import com.zorroa.archivist.service.DataSetService
+import com.zorroa.archivist.service.ModelService
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
 import io.swagger.annotations.ApiOperation
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit
 class FileStorageController(
     val projectStorageService: ProjectStorageService,
     val assetService: AssetService,
-    val dataSetService: DataSetService
+    val modelService: ModelService
 ) {
 
     @ApiOperation("Store an additional file to an asset.")
@@ -142,17 +142,13 @@ class FileStorageController(
             throw IllegalArgumentException("The category ${locator.category} must be alpha numeric")
         }
 
-        if (!REGEX_NAME.matches(locator.name)) {
-            throw IllegalArgumentException("The name ${locator.name} must be alpha numeric")
-        }
-
         try {
             when (locator.entity) {
                 ProjectStorageEntity.ASSETS -> {
                     assetService.getAsset(locator.entityId)
                 }
-                ProjectStorageEntity.DATASETS -> {
-                    dataSetService.get(UUID.fromString(locator.entityId))
+                ProjectStorageEntity.MODELS -> {
+                    modelService.getModel(UUID.fromString(locator.entityId))
                 }
             }
         } catch (e: Exception) {

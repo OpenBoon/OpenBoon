@@ -120,7 +120,7 @@ exports[`<FiltersMenuOption /> should render properly 1`] = `
           <svg
             className="emotion-1"
             data-file-name="checkmark.svg"
-            width={20}
+            height={20}
           />
         </div>
       </div>

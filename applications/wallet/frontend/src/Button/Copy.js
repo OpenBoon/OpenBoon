@@ -21,7 +21,7 @@ const ButtonCopy = ({ value }) => {
       css={{ ':focus': { svg: { opacity: 1, color: colors.structure.white } } }}
     >
       <CopySvg
-        width={COPY_SIZE}
+        height={COPY_SIZE}
         color={colors.structure.steel}
         css={{
           opacity: 0,

@@ -21,6 +21,7 @@ import com.zorroa.archivist.domain.TaskStatusUpdateEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
@@ -95,7 +96,7 @@ class DispatcherServiceTests : AbstractTest() {
     fun testHandleIndexEventInvalidData() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -130,7 +131,7 @@ class DispatcherServiceTests : AbstractTest() {
     fun testHandleIndexEvent() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -173,7 +174,7 @@ class DispatcherServiceTests : AbstractTest() {
 
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -194,7 +195,7 @@ class DispatcherServiceTests : AbstractTest() {
 
         val spec1 = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -210,7 +211,7 @@ class DispatcherServiceTests : AbstractTest() {
 
         val spec2 = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -249,7 +250,7 @@ class DispatcherServiceTests : AbstractTest() {
         val analyst = "http://127.0.0.1:5000"
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -275,7 +276,7 @@ class DispatcherServiceTests : AbstractTest() {
         val analyst = "http://127.0.0.1:5000"
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar"),
             maxRunningTasks = 0
@@ -290,7 +291,7 @@ class DispatcherServiceTests : AbstractTest() {
     fun testGetNextLockedAnalyst() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo")
+            emptyZpsScripts("foo")
         )
         jobService.create(spec)
 
@@ -316,7 +317,7 @@ class DispatcherServiceTests : AbstractTest() {
     fun testStartAndStopTask() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo")
+            emptyZpsScripts("foo")
         )
         jobService.create(spec)
 
@@ -357,11 +358,13 @@ class DispatcherServiceTests : AbstractTest() {
 
         val spec = JobSpec(
             "test_job",
-            ZpsScript(
-                "foo",
-                generate = null,
-                execute = null,
-                assets = listOf(doc1, doc2)
+            listOf(
+                ZpsScript(
+                    "foo",
+                    generate = null,
+                    execute = null,
+                    assets = listOf(doc1, doc2)
+                )
             )
         )
         jobService.create(spec)
@@ -400,11 +403,13 @@ class DispatcherServiceTests : AbstractTest() {
 
         val spec = JobSpec(
             "test_job",
-            ZpsScript(
-                "foo",
-                generate = null,
-                execute = null,
-                assets = listOf(doc1, doc2)
+            listOf(
+                ZpsScript(
+                    "foo",
+                    generate = null,
+                    execute = null,
+                    assets = listOf(doc1, doc2)
+                )
             )
         )
         jobService.create(spec)
@@ -443,11 +448,13 @@ class DispatcherServiceTests : AbstractTest() {
 
         val spec = JobSpec(
             "test_job",
-            ZpsScript(
-                "foo",
-                generate = null,
-                execute = null,
-                assets = listOf(doc1, doc2)
+            listOf(
+                ZpsScript(
+                    "foo",
+                    generate = null,
+                    execute = null,
+                    assets = listOf(doc1, doc2)
+                )
             )
         )
         jobService.create(spec)
@@ -482,7 +489,7 @@ class DispatcherServiceTests : AbstractTest() {
     fun testExpandFromParentTask() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -552,7 +559,7 @@ class DispatcherServiceTests : AbstractTest() {
     fun launchJob(priority: Int): Job {
         val spec1 = JobSpec(
             "test_job_p$priority",
-            emptyZpsScript("priority_$priority"),
+            emptyZpsScripts("priority_$priority"),
             priority = priority
         )
         return jobService.create(spec1)

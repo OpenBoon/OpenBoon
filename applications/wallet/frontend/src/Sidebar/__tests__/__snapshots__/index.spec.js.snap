@@ -130,9 +130,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="dashboard.svg"
-            width={20}
+            height={20}
           />
           Project Dashboard
         </a>
@@ -147,9 +146,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="datasources.svg"
-            width={20}
+            height={20}
           />
           Data Sources
         </a>
@@ -164,9 +162,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="jobQueue.svg"
-            width={20}
+            height={20}
           />
           Job Queue
         </a>
@@ -181,9 +178,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="visualizer.svg"
-            width={20}
+            height={20}
           />
           Visualizer
         </a>
@@ -198,9 +194,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="key.svg"
-            width={20}
+            height={20}
           />
           API Keys
         </a>
@@ -215,9 +210,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="users.svg"
-            width={20}
+            height={20}
           />
           User Admin
         </a>
@@ -236,9 +230,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="dashboard.svg"
-            width={20}
+            height={20}
           />
           Account Dashboard
         </a>
@@ -253,9 +246,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="gear.svg"
-            width={20}
+            height={20}
           />
           Account
         </a>
@@ -403,9 +395,8 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="dashboard.svg"
-            width={20}
+            height={20}
           />
           Project Dashboard
         </a>
@@ -420,9 +411,8 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="datasources.svg"
-            width={20}
+            height={20}
           />
           Data Sources
         </a>
@@ -437,9 +427,8 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="jobQueue.svg"
-            width={20}
+            height={20}
           />
           Job Queue
         </a>
@@ -454,9 +443,8 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="visualizer.svg"
-            width={20}
+            height={20}
           />
           Visualizer
         </a>
@@ -471,9 +459,8 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="key.svg"
-            width={20}
+            height={20}
           />
           API Keys
         </a>
@@ -488,9 +475,8 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="users.svg"
-            width={20}
+            height={20}
           />
           User Admin
         </a>
@@ -509,9 +495,8 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="dashboard.svg"
-            width={20}
+            height={20}
           />
           Account Dashboard
         </a>
@@ -526,9 +511,8 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            aria-hidden={true}
             data-file-name="gear.svg"
-            width={20}
+            height={20}
           />
           Account
         </a>

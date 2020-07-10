@@ -1,5 +1,5 @@
 
-from tensorflow.keras.applications.imagenet_utils import preprocess_input
+from tensorflow.keras.applications.resnet_v2 import preprocess_input
 
 from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.analysis import LabelDetectionAnalysis
@@ -43,11 +43,11 @@ class TensorflowTransferLearningClassifier(AssetProcessor):
         proxy_path = get_proxy_level_path(asset, 0)
         predictions = self.predict(proxy_path)
 
-        analysis = LabelDetectionAnalysis()
+        analysis = LabelDetectionAnalysis(min_score=0.01)
         for label in predictions:
             analysis.add_label_and_score(label[0], label[1])
 
-        asset.add_analysis(self.app_model.name, analysis)
+        asset.add_analysis(self.app_model.module_name, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path

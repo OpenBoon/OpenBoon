@@ -13,6 +13,8 @@ import Button, { VARIANTS } from '../Button'
 import { dispatch, ACTIONS } from '../Filters/helpers'
 import { formatSeconds } from './helpers'
 
+const ICON_SIZE = 20
+
 const AssetsThumbnail = ({
   asset: {
     id,
@@ -51,13 +53,13 @@ const AssetsThumbnail = ({
         position: 'relative',
         border: isSelected
           ? constants.borders.assetSelected
-          : constants.borders.assetInactive,
+          : constants.borders.large.transparent,
         width: '100%',
         height: '100%',
         ':hover': {
           border: isSelected
             ? constants.borders.assetSelected
-            : constants.borders.assetHover,
+            : constants.borders.large.white,
           'a, button': {
             display: 'flex',
           },
@@ -132,7 +134,7 @@ const AssetsThumbnail = ({
           })
         }}
       >
-        <SimilaritySvg width={20} color={colors.structure.white} />
+        <SimilaritySvg height={ICON_SIZE} color={colors.structure.white} />
       </Button>
 
       <Link
@@ -155,7 +157,7 @@ const AssetsThumbnail = ({
             },
           }}
         >
-          <ExpandSvg width={20} color={colors.structure.white} />
+          <ExpandSvg height={ICON_SIZE} color={colors.structure.white} />
         </Button>
       </Link>
 

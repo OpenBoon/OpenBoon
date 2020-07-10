@@ -1,13 +1,13 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.DataSet
-import com.zorroa.archivist.domain.DataSetSpec
-import com.zorroa.archivist.domain.DataSetType
+import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.JobState
-import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.ModOpType
 import com.zorroa.archivist.domain.Model
+import com.zorroa.archivist.domain.ModelApplyRequest
 import com.zorroa.archivist.domain.ModelFilter
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
@@ -27,19 +27,22 @@ import kotlin.test.assertTrue
 class ModelServiceTests : AbstractTest() {
 
     @Autowired
-    lateinit var dataSetService: DataSetService
-
-    @Autowired
     lateinit var modelService: ModelService
 
-    val dsSpec = DataSetSpec("dog-breeds", DataSetType.LABEL_DETECTION)
-    lateinit var dataSet: DataSet
+    @Autowired
+    lateinit var jobService: JobService
+
+    @Autowired
+    lateinit var assetSearchService: AssetSearchService
+
+    val testSearch =
+        """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
 
     fun create(): Model {
-        dataSet = dataSetService.create(dsSpec)
         val mspec = ModelSpec(
-            dataSet.id,
-            ModelType.LABEL_DETECTION_MOBILENET2
+            "test",
+            ModelType.ZVI_LABEL_DETECTION,
+            deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         return modelService.createModel(mspec)
     }
@@ -65,7 +68,6 @@ class ModelServiceTests : AbstractTest() {
         val job = modelService.trainModel(model1, ModelTrainingArgs())
 
         assertEquals(model1.trainingJobName, job.name)
-        assertEquals(JobType.Batch, job.type)
         assertEquals(JobState.InProgress, job.state)
         assertEquals(1, job.priority)
     }
@@ -80,7 +82,6 @@ class ModelServiceTests : AbstractTest() {
         val model1 = create()
         val filter = ModelFilter(
             names = listOf(model1.name),
-            dataSetIds = listOf(model1.dataSetId),
             ids = listOf(model1.id),
             types = listOf(model1.type)
         )
@@ -94,7 +95,6 @@ class ModelServiceTests : AbstractTest() {
         val model1 = create()
         val filter = ModelFilter(
             names = listOf(model1.name),
-            dataSetIds = listOf(model1.dataSetId),
             ids = listOf(model1.id),
             types = listOf(model1.type)
         )
@@ -110,10 +110,11 @@ class ModelServiceTests : AbstractTest() {
         val model1 = create()
         val mod = modelService.publishModel(model1)
         Json.prettyPrint(mod)
+        Json.prettyPrint(model1)
         assertEquals(getProjectId(), mod.projectId)
-        assertEquals(model1.name, mod.name)
-        assertEquals("Custom", mod.provider)
-        assertEquals("Custom Model", mod.category)
+        assertEquals(model1.moduleName, mod.name)
+        assertEquals("Zorroa", mod.provider)
+        assertEquals("Custom Models", mod.category)
         assertEquals("Label Detection", mod.type)
         assertEquals(ModOpType.APPEND, mod.ops[0].type)
     }
@@ -129,8 +130,7 @@ class ModelServiceTests : AbstractTest() {
 
         val op1 = Json.Mapper.convertValue(mod1.ops[0].apply, ProcessorRef.LIST_OF)
         val op2 = Json.Mapper.convertValue(mod2.ops[0].apply, ProcessorRef.LIST_OF)
-        Json.prettyPrint(op1)
-        Json.prettyPrint(op2)
+
         // make sure it versioned up.
         assertNotNull(op1[0].args?.get("version"))
         assertNotNull(op2[0].args?.get("version"))
@@ -141,10 +141,87 @@ class ModelServiceTests : AbstractTest() {
         )
     }
 
+    @Test
+    fun testDeployModelDefaults() {
+        setupTestAsset()
+
+        val model1 = create()
+        modelService.publishModel(model1)
+
+        val rsp = modelService.deployModel(model1, ModelApplyRequest())
+        val tasks = jobService.getTasks(rsp.job!!.id)
+        val script = jobService.getZpsScript(tasks.list[0].id)
+        assertEquals("Deploying model: test", script.name)
+        assertEquals(1, script.generate!!.size)
+        assertEquals("zmlp_core.core.generators.AssetSearchGenerator", script.generate!![0].className)
+    }
+
+    @Test
+    fun testDeployModelCustomSearch() {
+        setupTestAsset()
+
+        val model1 = create()
+        modelService.publishModel(model1)
+
+        val rsp = modelService.deployModel(model1, ModelApplyRequest(search = Model.matchAllSearch))
+        val tasks = jobService.getTasks(rsp.job!!.id)
+        val script = jobService.getZpsScript(tasks.list[0].id)
+
+        val scriptstr = Json.prettyString(script)
+        assertTrue("\"match_all\" : { }" in scriptstr)
+        assertTrue("modelId" in scriptstr)
+    }
+
+    @Test
+    fun excludeLabeledAssetsFromSearch() {
+        val model = create()
+
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg", label = model.getLabel("husky"))
+        val rsp = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+        val asset = assetService.getAsset(rsp.created[0])
+        assetService.index(asset.id, asset.document, true)
+        refreshIndex()
+
+        val counts = modelService.getLabelCounts(model)
+        assertEquals(1, counts["husky"])
+
+        assertEquals(1, assetSearchService.count(Model.matchAllSearch))
+        assertEquals(
+            0,
+            assetSearchService.count(
+                modelService.wrapSearchToExcludeTrainingSet(model, Model.matchAllSearch)
+            )
+        )
+    }
+
+    fun setupTestAsset(): Asset {
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.jpg",
+            mapOf("aux.pet" to "dog")
+        )
+        val req = BatchCreateAssetsRequest(assets = listOf(spec))
+        val rsp = assetService.batchCreate(req)
+        val asset = assetService.getAsset(rsp.created[0])
+        assetService.index(asset.id, asset.document, true)
+        refreshIndex()
+        return asset
+    }
+
+    @Test
+    fun getLabelCounts() {
+        val model = create()
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg", label = model.getLabel("husky"))
+        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+
+        val counts = modelService.getLabelCounts(model)
+        assertEquals(1, counts["husky"])
+    }
+
     fun assertModel(model: Model) {
-        assertEquals(ModelType.LABEL_DETECTION_MOBILENET2, model.type)
-        assertEquals("custom-dog-breeds-label-detection-mobilenet2", model.name)
-        assertTrue(model.fileId.endsWith("custom-dog-breeds-label-detection-mobilenet2.zip"))
+        assertEquals(ModelType.ZVI_LABEL_DETECTION, model.type)
+        assertEquals("test", model.name)
+        assertEquals("zvi-test-label-detection", model.moduleName)
+        assertTrue(model.fileId.endsWith("zvi-test-label-detection.zip"))
         assertFalse(model.ready)
     }
 }

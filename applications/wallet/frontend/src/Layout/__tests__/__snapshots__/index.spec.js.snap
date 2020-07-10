@@ -66,6 +66,14 @@ exports[`<Layout /> should render properly 1`] = `
 .emotion-1 {
   padding-left: 8px;
   padding-right: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-8 {
@@ -138,6 +146,10 @@ exports[`<Layout /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-3 {
@@ -199,9 +211,8 @@ exports[`<Layout /> should render properly 1`] = `
         type="button"
       >
         <svg
-          aria-hidden={true}
           data-file-name="hamburger.svg"
-          width={20}
+          height={20}
         />
       </button>
       <a
@@ -213,7 +224,7 @@ exports[`<Layout /> should render properly 1`] = `
       >
         <svg
           data-file-name="logo.svg"
-          width={110}
+          height={30}
         />
       </a>
       <ProjectSwitcher
@@ -245,7 +256,7 @@ exports[`<Layout /> should render properly 1`] = `
               className="emotion-4"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </div>
         </button>
@@ -331,6 +342,14 @@ exports[`<Layout /> should render properly 2`] = `
 .emotion-1 {
   padding-left: 8px;
   padding-right: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-8 {
@@ -403,6 +422,10 @@ exports[`<Layout /> should render properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-3 {
@@ -464,9 +487,8 @@ exports[`<Layout /> should render properly 2`] = `
         type="button"
       >
         <svg
-          aria-hidden={true}
           data-file-name="hamburger.svg"
-          width={20}
+          height={20}
         />
       </button>
       <a
@@ -478,7 +500,7 @@ exports[`<Layout /> should render properly 2`] = `
       >
         <svg
           data-file-name="logo.svg"
-          width={110}
+          height={30}
         />
       </a>
       <ProjectSwitcher
@@ -510,7 +532,7 @@ exports[`<Layout /> should render properly 2`] = `
               className="emotion-4"
               color="#808080"
               data-file-name="chevron.svg"
-              width={20}
+              height={20}
             />
           </div>
         </button>

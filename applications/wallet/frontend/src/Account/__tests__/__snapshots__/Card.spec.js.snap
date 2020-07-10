@@ -374,6 +374,7 @@ exports[`<AccountCard /> should render properly 1`] = `
             width={32}
           />
            Video Hours:
+           
           0
         </h4>
       </div>
@@ -616,6 +617,7 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
             width={32}
           />
            Video Hours:
+           
           0
         </h4>
       </div>
@@ -858,6 +860,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
             width={32}
           />
            Video Hours:
+           
           320
         </h4>
       </div>

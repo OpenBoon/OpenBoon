@@ -155,7 +155,7 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
       <svg
         className="emotion-2"
         data-file-name="cross.svg"
-        width={20}
+        height={20}
       />
     </button>
   </div>
@@ -190,7 +190,7 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
 }
 
 .emotion-0:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -269,7 +269,7 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
         <svg
           className="emotion-1"
           data-file-name="search.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>
@@ -305,7 +305,7 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
 }
 
 .emotion-0:focus {
-  outline: thin solid transparent;
+  outline: 1px solid transparent;
   border: 1px solid #73b61c;
   color: #191919;
   background-color: #ffffff;
@@ -380,7 +380,7 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
         <svg
           className="emotion-1"
           data-file-name="search.svg"
-          width={20}
+          height={20}
         />
       </button>
     </div>

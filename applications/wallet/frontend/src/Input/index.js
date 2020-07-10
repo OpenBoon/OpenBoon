@@ -13,7 +13,7 @@ const BASE = ({ isDisabled }) => ({
   width: '100%',
   cursor: isDisabled ? 'not-allowed' : '',
   '&:focus': {
-    border: constants.borders.input,
+    border: constants.borders.keyOneMedium,
     outline: colors.key.one,
   },
 })
@@ -34,7 +34,9 @@ const STYLES = {
 }
 
 const BORDER_STYLES = ({ hasError }) => ({
-  border: hasError ? constants.borders.error : constants.borders.transparent,
+  border: hasError
+    ? constants.borders.error
+    : constants.borders.regular.transparent,
   borderWidth: BORDER_WIDTH,
 })
 
@@ -133,7 +135,7 @@ Input.defaultProps = {
 Input.propTypes = {
   id: PropTypes.string.isRequired,
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
-  type: PropTypes.oneOf(['text', 'password']).isRequired,
+  type: PropTypes.oneOf(['text', 'password', 'number']).isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,

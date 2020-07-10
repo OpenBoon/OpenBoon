@@ -7,6 +7,7 @@ class ApikeySerializer(serializers.Serializer):
     projectId = serializers.UUIDField(required=False, allow_null=True)
     accessKey = serializers.CharField(required=False, allow_blank=True)
     secretKey = serializers.CharField(required=False, allow_blank=True)
+    internal = serializers.BooleanField(required=False, allow_null=True)
     permissions = serializers.ListField(child=serializers.CharField(), required=True)
     url = serializers.SerializerMethodField()
 

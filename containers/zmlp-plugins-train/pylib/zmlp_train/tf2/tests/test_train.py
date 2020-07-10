@@ -3,7 +3,7 @@ import os
 import shutil
 from unittest.mock import patch
 
-from zmlp.app import DataSetApp, ModelApp
+from zmlp.app import ModelApp
 from zmlp.entity import Model, StoredFile, PipelineMod
 from zmlp_train.tf2 import TensorflowTransferLearningTrainer
 from zmlpsdk import file_storage, Frame
@@ -28,11 +28,11 @@ assets = [
 ]
 
 
-def download_dataset(ds_id, style, dst_dir, ratio):
+def download_images(ds_id, style, dst_dir, ratio):
     os.makedirs(dst_dir + '/set_train/daisy/', exist_ok=True)
-    os.makedirs(dst_dir + '/set_test/daisy/', exist_ok=True)
+    os.makedirs(dst_dir + '/set_validate/daisy/', exist_ok=True)
     os.makedirs(dst_dir + '/set_train/roses/', exist_ok=True)
-    os.makedirs(dst_dir + '/set_test/roses/', exist_ok=True)
+    os.makedirs(dst_dir + '/set_validate/roses/', exist_ok=True)
 
     for asset in assets[0:3]:
         shutil.copy(os.path.dirname(__file__) + "/" + asset.get_attr('source.path'),
@@ -40,7 +40,7 @@ def download_dataset(ds_id, style, dst_dir, ratio):
 
     for asset in assets[4:5]:
         shutil.copy(os.path.dirname(__file__) + "/" + asset.get_attr('source.path'),
-                    dst_dir + '/set_test/daisy/')
+                    dst_dir + '/set_validate/daisy/')
 
     for asset in assets[6:9]:
         shutil.copy(os.path.dirname(__file__) + "/" + asset.get_attr('source.path'),
@@ -48,11 +48,11 @@ def download_dataset(ds_id, style, dst_dir, ratio):
 
     for asset in assets[10:11]:
         shutil.copy(os.path.dirname(__file__) + "/" + asset.get_attr('source.path'),
-                    dst_dir + '/set_test/roses/')
+                    dst_dir + '/set_validate/roses/')
 
 
 class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
-    ds_id = "ds-id-12345"
+
     model_id = "model-id-12345"
 
     def prep_assets(self):
@@ -72,30 +72,32 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
 
             asset.set_attr('labels', [
                 {
-                    'dataSetId': self.ds_id,
+                    'modelId': self.model_id,
                     'label': asset.uri.split('/')[1]
                 }
             ])
 
         return assets
 
-    @patch.object(ModelApp, 'publish_model')
+    @patch.object(file_storage.models, 'publish_model')
     @patch.object(ModelApp, 'get_model')
-    @patch.object(DataSetApp, 'get_label_counts')
-    @patch('zmlp_train.tf2.train.download_dataset', download_dataset)
+    @patch.object(ModelApp, 'get_label_counts')
+    @patch('zmlp_train.tf2.train.download_labeled_images', download_images)
     @patch.object(file_storage.models, 'save_model')
-    def test_process(self, upload_patch, labels_patch, model_patch, pub_patch):
+    @patch.object(file_storage.projects, 'store_file')
+    def test_process(self, store_plot_patch, upload_patch, labels_patch, model_patch, pub_patch):
         self.prep_assets()
-        name = 'custom-flowers-label-detection-tf2-xfer-mobilenet2'
+        name = 'zvi-flowers-label-detection'
+        store_plot_patch.side_effect = [{}, {}]
         pub_patch.return_value = PipelineMod({
             'id': "12345",
             'name': name
         })
         model_patch.return_value = Model({
             'id': self.model_id,
-            'dataSetId': self.ds_id,
-            'type': "LABEL_DETECTION_MOBILENET2",
+            'type': "ZVI_LABEL_DETECTION",
             'fileId': 'models/{}/foo/bar'.format(self.model_id),
+            'moduleName': name,
             'name': name
         })
         labels_patch.return_value = {
@@ -106,9 +108,10 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
 
         args = {
             'model_id': self.model_id,
-            'min_examples': 6,
             'epochs': 5
         }
 
-        processor = self.init_processor(TensorflowTransferLearningTrainer(), args)
+        processor = TensorflowTransferLearningTrainer()
+        processor.min_examples = 6
+        processor = self.init_processor(processor, args)
         processor.process(Frame(TestAsset()))

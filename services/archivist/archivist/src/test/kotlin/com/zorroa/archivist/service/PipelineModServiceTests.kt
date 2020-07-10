@@ -13,7 +13,7 @@ import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.Provider
-import com.zorroa.archivist.domain.SupportedMedia
+import com.zorroa.archivist.domain.FileType
 import com.zorroa.archivist.repository.PipelineModDao
 import com.zorroa.zmlp.util.Json
 import org.junit.Before
@@ -56,7 +56,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(op1, op2), true
         )
         mod = pipelineModService.create(spec)
@@ -78,7 +78,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(), false
         )
         pipelineModService.create(spec2)
@@ -91,7 +91,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(), false
         )
         val spec2 = PipelineModSpec(
@@ -99,7 +99,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(), false
         )
         pipelineModService.create(spec1)
@@ -113,7 +113,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(), true
         )
         pipelineModService.create(spec2)
@@ -127,7 +127,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.ZORROA,
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
-            listOf(SupportedMedia.Documents),
+            listOf(FileType.Documents),
             listOf(ModOp(ModOpType.PREPEND, listOf(ProcessorRef("foo", "zmlp-plugins-foo"))))
         )
 

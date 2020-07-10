@@ -15,21 +15,29 @@ class KnnLabelDetectionTrainer(AssetProcessor):
     def __init__(self):
         super(KnnLabelDetectionTrainer, self).__init__()
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
+        self.add_arg(Argument("deploy", "bool", default=False,
+                              toolTip="Automatically deploy the model onto assets."))
         self.app_model = None
 
     def init(self):
+        self.logger.info("Fetching model {}".format(self.arg_value('model_id')))
         self.app_model = self.app.models.get_model(self.arg_value('model_id'))
 
     def process(self, frame):
-        self.reactor.emit_status("Searching DataSet Labels")
+        self.reactor.emit_status("Searching Model Training Set")
         query = {
             '_source': ['labels.*', 'analysis.zvi-image-similarity.*'],
-            'size': 25,
+            'size': 50,
             'query': {
                 'nested': {
                     'path': 'labels',
                     'query': {
-                        'term': {'labels.dataSetId': self.app_model.dataset_id}
+                        'bool': {
+                            'must': [
+                                {'term': {'labels.modelId': self.app_model.id}},
+                                {'term': {'labels.scope': 'TRAIN'}},
+                            ]
+                        }
                     }
                 }
             }
@@ -38,7 +46,7 @@ class KnnLabelDetectionTrainer(AssetProcessor):
         classifier_hashes = []
         for asset in self.app.assets.scroll_search(query):
             for label in asset['labels']:
-                if label['dataSetId'] == self.app_model.dataset_id:
+                if label['modelId'] == self.app_model.id:
                     classifier_hashes.append({'simhash': asset.get_attr(
                             'analysis.zvi-image-similarity.simhash'),
                             'label': label['label']})
@@ -102,6 +110,6 @@ class KnnLabelDetectionTrainer(AssetProcessor):
         with open(os.path.join(model_dir, 'knn_classifier.pickle'), 'wb') as fp:
             pickle.dump(classifier, fp)
 
-        pmod = file_storage.models.save_model(model_dir, self.app_model)
+        pmod = file_storage.models.save_model(model_dir, self.app_model, self.arg_value('deploy'))
         self.reactor.emit_status("Published model {}".format(self.app_model.name))
         return pmod

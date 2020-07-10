@@ -1,0 +1,15 @@
+{
+  "description": "Add the modelId field to labels.",
+  "patch": {
+    "properties": {
+      "media": {
+        "dynamic": "strict",
+        "properties": {
+          "videoCodec": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}

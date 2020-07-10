@@ -7,12 +7,12 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
-import com.zorroa.archivist.domain.DataSetLabel
-import com.zorroa.archivist.domain.DataSetSpec
-import com.zorroa.archivist.domain.DataSetType
-import com.zorroa.archivist.domain.FileTypes
+import com.zorroa.archivist.domain.Label
+import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.ModelSpec
+import com.zorroa.archivist.domain.ModelType
 import com.zorroa.archivist.domain.ProcessorMetric
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectFileLocator
@@ -23,6 +23,7 @@ import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
@@ -51,10 +52,10 @@ class AssetServiceTests : AbstractTest() {
     lateinit var jobService: JobService
 
     @Autowired
-    lateinit var dispatcherService: DispatcherService
+    lateinit var modelService: ModelService
 
     @Autowired
-    lateinit var dataSetSetService: DataSetService
+    lateinit var dispatcherService: DispatcherService
 
     @Autowired
     lateinit var projectStorageService: ProjectStorageService
@@ -191,12 +192,18 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testBatchCreateAssetsWithLabel() {
-        val ds = dataSetSetService.create(DataSetSpec("hobbits", DataSetType.LABEL_DETECTION))
+        val ds = modelService.createModel(
+            ModelSpec(
+                "THB Characters",
+                ModelType.ZVI_LABEL_DETECTION,
+                moduleName = "thb-chars"
+            )
+        )
 
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
             mapOf("system.hello" to "foo"),
-            label = DataSetLabel(ds.id, "bilbo")
+            label = Label(ds.id, "bilbo")
         )
 
         val req = BatchCreateAssetsRequest(
@@ -206,10 +213,9 @@ class AssetServiceTests : AbstractTest() {
         val asset = assetService.getAll(rsp.created)[0]
 
         assertTrue(asset.attrExists("labels"))
-        val datasetLabels = asset.getAttr("labels", DataSetLabel.LIST_OF) ?: listOf<DataSetLabel>()
-        assertEquals(1, datasetLabels.size)
-        assertEquals("bilbo", datasetLabels[0].label)
-        assertEquals(ds.id, datasetLabels[0].dataSetId)
+        val labels = asset.getAttr("labels", Label.LIST_OF) ?: listOf()
+        assertEquals(1, labels.size)
+        assertEquals("bilbo", labels[0].label)
     }
 
     /**
@@ -363,7 +369,7 @@ class AssetServiceTests : AbstractTest() {
         assets.forEach {
             val ext = FileUtils.extension(it.getAttr<String>("source.path"))
             it.setAttr("aux.field", 1)
-            it.setAttr("media.type", FileTypes.getType(ext))
+            it.setAttr("media.type", FileExtResolver.getType(ext))
             it.setAttr("media.length", 10.732)
             it.setAttr("clip.timeline", "full")
             it.setAttr("clip.type", "scene")
@@ -548,7 +554,7 @@ class AssetServiceTests : AbstractTest() {
     fun testCreateAnalysisTask() {
         val spec = JobSpec(
             "test_job",
-            emptyZpsScript("foo"),
+            emptyZpsScripts("foo"),
             args = mutableMapOf("foo" to 1),
             env = mutableMapOf("foo" to "bar")
         )
@@ -572,7 +578,7 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LABEL_DETECTION))
+        val ds = modelService.createModel(ModelSpec("test", ModelType.ZVI_LABEL_DETECTION))
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
         )
@@ -583,15 +589,15 @@ class AssetServiceTests : AbstractTest() {
                 // Validate adding 2 identical labels only adds 1
                 mapOf(
                     asset.id to listOf(
-                        DataSetLabel(ds.id, "cat", simhash = "12345"),
-                        DataSetLabel(ds.id, "cat", simhash = "12345")
+                        Label(ds.id, "cat", simhash = "12345"),
+                        Label(ds.id, "cat", simhash = "12345")
                     )
                 )
             )
         )
 
         asset = assetService.getAsset(asset.id)
-        var labels = asset.getAttr("labels", DataSetLabel.LIST_OF)
+        var labels = asset.getAttr("labels", Label.LIST_OF)
         assertEquals(1, labels?.size)
         assertEquals("cat", labels?.get(0)?.label)
         assertEquals("12345", labels?.get(0)?.simhash)
@@ -600,12 +606,12 @@ class AssetServiceTests : AbstractTest() {
         assetService.updateLabels(
             UpdateAssetLabelsRequest(
                 null,
-                mapOf(asset.id to listOf(DataSetLabel(ds.id, "cat")))
+                mapOf(asset.id to listOf(Label(ds.id, "cat")))
             )
         )
 
         asset = assetService.getAsset(asset.id)
-        labels = asset.getAttr("labels", DataSetLabel.LIST_OF) ?: listOf()
+        labels = asset.getAttr("labels", Label.LIST_OF) ?: listOf()
         assert(labels.isNullOrEmpty())
     }
 }

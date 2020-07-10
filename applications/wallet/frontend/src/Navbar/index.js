@@ -9,7 +9,8 @@ import ProjectSwitcher from '../ProjectSwitcher'
 
 import HamburgerSvg from './hamburger.svg'
 
-const LOGO_WIDTH = 110
+const ICON_SIZE = 20
+const LOGO_HEIGHT = 30
 
 const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
   return (
@@ -49,16 +50,21 @@ const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
               cursor: 'pointer',
             }}
           >
-            <HamburgerSvg width={20} aria-hidden />
+            <HamburgerSvg height={ICON_SIZE} />
           </button>
         )}
 
         <Link href="/" passHref>
           <a
-            css={{ paddingLeft: spacing.base, paddingRight: spacing.base }}
+            css={{
+              paddingLeft: spacing.base,
+              paddingRight: spacing.base,
+              display: 'flex',
+              alignItems: 'center',
+            }}
             aria-label="Home"
           >
-            <LogoSvg width={LOGO_WIDTH} />
+            <LogoSvg height={LOGO_HEIGHT} />
           </a>
         </Link>
 

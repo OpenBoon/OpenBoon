@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 
 import { colors, constants, typography, spacing } from '../Styles'
 
-import LogoSvg from '../Icons/logo.svg'
+import LargeLogo from '../Icons/largeLogo.svg'
 import HiddenSvg from '../Icons/hidden.svg'
 import VisibleSvg from '../Icons/visible.svg'
 
@@ -17,7 +17,8 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import LoginWithGoogle from './WithGoogle'
 
 const WIDTH = 446
-const LOGO_WIDTH = 143
+const LOGO_WIDTH = 180
+const ICON_SIZE = 20
 
 const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
   const {
@@ -87,7 +88,7 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
           boxShadow: constants.boxShadows.default,
         }}
       >
-        <LogoSvg width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
+        <LargeLogo width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
 
         <h3
           css={{
@@ -151,9 +152,9 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
               }}
             >
               {showPassword ? (
-                <VisibleSvg width={20} />
+                <VisibleSvg height={ICON_SIZE} />
               ) : (
-                <HiddenSvg width={20} />
+                <HiddenSvg height={ICON_SIZE} />
               )}
             </Button>
           }

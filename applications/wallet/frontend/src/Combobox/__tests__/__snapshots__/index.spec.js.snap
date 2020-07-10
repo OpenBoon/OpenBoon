@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Combobox should render properly 1`] = `
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-0 {
+  padding-bottom: 8px;
+  color: #808080;
+}
+
+.emotion-1 {
+  width: 100%;
+  padding: 8px;
+  outline: 1px solid transparent;
+  background-color: #3b3b3b;
+  color: #ffffff;
+  font-weight: 500;
+  border: 2px solid transparent;
+  border-radius: 2px;
+  margin-bottom: 1px;
+}
+
+.emotion-1:hover {
+  border: 2px solid #ffffff;
+}
+
+.emotion-1:focus {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+<div
+  className="emotion-2"
+>
+  <div
+    className="emotion-0"
+  >
+    inputLabel
+  </div>
+  <div
+    data-reach-combobox=""
+  >
+    <input
+      aria-autocomplete="both"
+      aria-controls="listbox--1"
+      aria-expanded={false}
+      aria-haspopup="listbox"
+      className="emotion-1"
+      data-reach-combobox-input=""
+      id="comboboxId"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      role="combobox"
+      value="currentValue"
+    />
+    <span />
+  </div>
+</div>
+`;
+
+exports[`Combobox should render properly with error 1`] = `
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-0 {
+  padding-bottom: 8px;
+  color: #808080;
+}
+
+.emotion-1 {
+  width: 100%;
+  padding: 8px;
+  outline: 1px solid transparent;
+  background-color: #3b3b3b;
+  color: #ffffff;
+  font-weight: 500;
+  border: 2px solid #c92300;
+  border-radius: 2px;
+  margin-bottom: 1px;
+}
+
+.emotion-1:hover {
+  border: 2px solid #ffffff;
+}
+
+.emotion-1:focus {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.emotion-2 {
+  font-style: italic;
+  color: #c92300;
+  padding-top: 8px;
+}
+
+<div
+  className="emotion-3"
+>
+  <div
+    className="emotion-0"
+  >
+    inputLabel
+  </div>
+  <div
+    data-reach-combobox=""
+  >
+    <input
+      aria-autocomplete="both"
+      aria-controls="listbox--5"
+      aria-expanded={false}
+      aria-haspopup="listbox"
+      className="emotion-1"
+      data-reach-combobox-input=""
+      id="comboboxId"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      role="combobox"
+      value="currentValue"
+    />
+    <span />
+  </div>
+  <div
+    className="emotion-2"
+  >
+    error
+  </div>
+</div>
+`;

@@ -90,9 +90,8 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
       onMouseEnter={[Function]}
     >
       <svg
-        aria-hidden={true}
         data-file-name="assets.svg"
-        width={20}
+        height={20}
       />
        Assets
     </a>
@@ -106,9 +105,8 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
       onMouseEnter={[Function]}
     >
       <svg
-        aria-hidden={true}
         data-file-name="charts.svg"
-        width={20}
+        height={20}
       />
        Data Visualization
     </a>
@@ -212,9 +210,8 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
       onMouseEnter={[Function]}
     >
       <svg
-        aria-hidden={true}
         data-file-name="assets.svg"
-        width={20}
+        height={20}
       />
        Assets
     </a>
@@ -228,9 +225,8 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
       onMouseEnter={[Function]}
     >
       <svg
-        aria-hidden={true}
         data-file-name="charts.svg"
-        width={20}
+        height={20}
       />
        Data Visualization
     </a>
