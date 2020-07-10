@@ -97,7 +97,7 @@ export const getSaveButtonCopy = ({ isChanged, isLoading }) => {
 
 export const getHelpInfoCopy = ({ jobId, unappliedChanges }) => {
   if (jobId && unappliedChanges) {
-    return 'Overriding the training that is currently in progress will stop and replace it with any new changes made.'
+    return 'There are newly saved labels that have not been used for training. Stop current training and restart with the latest labels.'
   }
 
   if (jobId && !unappliedChanges) {
