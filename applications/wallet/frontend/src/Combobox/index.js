@@ -37,14 +37,18 @@ const Combobox = ({
       >
         {inputLabel}
       </div>
-      <ComboboxContainer onSelect={(value) => handleOnChange({ value })}>
+      <ComboboxContainer
+        onSelect={(value) => {
+          handleOnChange({ value })
+        }}
+      >
         <ComboboxInput
           id={id}
           value={currentValue}
           hasError={hasError}
-          onChange={(event) =>
+          onChange={(event) => {
             handleOnChange({ value: event.target.value, showAll: false })
-          }
+          }}
           onBlur={(event) => {
             if (!event.target.value) {
               handleOnChange({ value: originalValue })
