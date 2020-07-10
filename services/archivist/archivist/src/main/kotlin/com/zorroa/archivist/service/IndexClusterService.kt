@@ -164,7 +164,7 @@ class IndexClusterMonitor(
 
     val backupsEnabled = mutableSetOf<UUID>()
 
-    val syncedRoutes = mutableSetOf<UUID>()
+    val syncedClusters = mutableSetOf<UUID>()
 
     fun setupClusterPingTimer(): Timer {
         return fixedRateTimer(
@@ -192,16 +192,16 @@ class IndexClusterMonitor(
     }
 
     fun syncIndexRoutes(cluster: IndexCluster) {
-        if (cluster.id in syncedRoutes) {
+        if (cluster.id in syncedClusters) {
             return
         }
-
+        syncedClusters.add(cluster.id)
+        
         val routes = indexRouteDao.getAll(cluster)
         for (route in routes) {
             try {
                 // we'll put this here so it doesn't keep tring
                 // on a failuree.
-                syncedRoutes.add(route.id)
                 indexRoutingService.syncAllIndexRoutes(cluster)
             } catch (e: Exception) {
                 logger.warn("Unable to sync index ${route.clusterUrl}", e)
