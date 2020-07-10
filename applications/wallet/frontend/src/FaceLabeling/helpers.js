@@ -97,12 +97,12 @@ export const getSaveButtonCopy = ({ isChanged, isLoading }) => {
 
 export const getHelpInfoCopy = ({ jobId, unappliedChanges }) => {
   if (jobId && unappliedChanges) {
-    return 'There are newly saved labels that have not been used for training. Stop current training and restart with the latest labels.'
+    return 'There are new labels that have not been used for training. Stop current training and restart with the latest labels.'
   }
 
   if (jobId && !unappliedChanges) {
-    return 'Training in progress. No action can be taken.'
+    return 'There are no new labels to train.'
   }
 
-  return 'Train model with saved labels and apply new predictions.'
+  return 'There are new labels. Click to train and apply.'
 }

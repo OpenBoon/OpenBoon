@@ -204,10 +204,10 @@ describe('<FaceLabelingForm /> helpers', () => {
     it('should return correct string', () => {
       expect(
         getHelpInfoCopy({ jobId: 'someId', unappliedChanges: false }),
-      ).toBe('Training in progress. No action can be taken.')
+      ).toBe('There are no new labels to train.')
 
       expect(getHelpInfoCopy({ jobId: '', unappliedChanges: false })).toBe(
-        'Train model with saved labels and apply new predictions.',
+        'There are new labels. Click to train and apply.',
       )
     })
   })
