@@ -44,10 +44,17 @@ describe('<FaceLabelingTrainApply />', () => {
     act(() => {
       component.root
         .findByProps({ 'aria-label': 'Training Help' })
-        .props.onKeyPress()
+        .props.onFocus()
     })
 
-    // expect(mockDispatch.mock.calls[0][0]).toEqual(true)
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Training Help' })
+        .props.onBlur()
+    })
+
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {

@@ -9,6 +9,7 @@ import HelpSvg from '../Icons/help.svg'
 import { onTrain } from './helpers'
 
 const CONTAINER_HEIGHT = 43
+const ICON_SIZE = 20
 
 const FaceLabelingButton = ({
   projectId,
@@ -34,20 +35,23 @@ const FaceLabelingButton = ({
 
       {jobId && unappliedChanges && (
         <div css={{ display: 'flex' }}>
-          <HelpSvg
+          <button
             aria-label="Training Help"
-            role="button"
-            tabIndex="0"
-            onKeyPress={() => setShowHelpInfo(!showHelpInfo)}
+            type="button"
+            onFocus={() => setShowHelpInfo(true)}
+            onBlur={() => setShowHelpInfo(false)}
             onMouseEnter={() => setShowHelpInfo(true)}
             onMouseLeave={() => setShowHelpInfo(false)}
-            height={20}
             css={{
+              border: 0,
+              backgroundColor: 'inherit',
               color: colors.structure.steel,
               ':hover': { color: colors.structure.white, cursor: 'pointer' },
               marginLeft: spacing.base,
             }}
-          />
+          >
+            <HelpSvg height={ICON_SIZE} />
+          </button>
         </div>
       )}
 
