@@ -42,12 +42,13 @@ const Combobox = ({
           id={id}
           value={currentValue}
           hasError={hasError}
-          onChange={(event) => {
-            return handleOnChange({ value: event.target.value, showAll: false })
-          }}
+          onChange={(event) =>
+            handleOnChange({ value: event.target.value, showAll: false })
+          }
           onBlur={(event) => {
-            const value = event.target.value || originalValue
-            handleOnChange({ value })
+            if (!event.target.value) {
+              handleOnChange({ value: originalValue })
+            }
           }}
         />
         <ComboboxOptions options={filteredOptions} />
