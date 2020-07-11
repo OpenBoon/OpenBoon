@@ -70,6 +70,17 @@ enum class ModelType(
         ModType.FACE_RECOGNITION,
         Provider.ZORROA,
         true
+    ),
+    GCP_LABEL_DETECTION(
+        "zmlp_train.automl.AutoMLModelTrainer",
+        mapOf(),
+        "zmlp_analysis.automl.AutoMLVisionClassifier",
+        mapOf(),
+        "gcp-%s-label-detection",
+        "Utilize Google AutoML to train an image classifier.",
+        ModType.LABEL_DETECTION,
+        Provider.GOOGLE,
+        true
     );
 
     fun asMap(): Map<String, Any> {

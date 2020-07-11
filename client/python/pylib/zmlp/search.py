@@ -21,7 +21,7 @@ class AssetSearchScroller(object):
     is not enough time, consider increasing the timeout or lowering your page size.
 
     """
-    def __init__(self, app, search, timeout="1m", raw_response=False, topn=None):
+    def __init__(self, app, search, timeout="1m", raw_response=False):
         """
         Create a new AssetSearchScroller instance.
 

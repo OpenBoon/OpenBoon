@@ -221,8 +221,7 @@ class AssetStorage(object):
             str: The native uri.
 
         """
-        return self.app.client.get('/api/v3/files/_locate/{}'
-                                   .format(stored_file.id))['uri']
+        return self.proj_store.get_native_uri(stored_file)
 
     def store_file(self, src_path, asset, category, rename=None, attrs=None):
         """
@@ -448,6 +447,19 @@ class ProjectStorage(object):
             logger.info("localizing file: {}".format(file_id))
             self.app.client.stream('/api/v3/files/_stream/{}'.format(file_id), cache_path)
         return cache_path
+
+    def get_native_uri(self, stored_file):
+        """
+        Return the file's native url (like gs://).
+
+        Args:
+            stored_file (StoredFile): A filed stored in the Zorroa backend.
+        Returns:
+            str: The native uri.
+
+        """
+        return self.app.client.get('/api/v3/files/_locate/{}'
+                                   .format(stored_file.id))['uri']
 
 
 class FileCache(object):
