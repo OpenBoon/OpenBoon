@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, constants } from '../Styles'
 
-import Accordion, { VARIANTS } from '../Accordion'
+import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import CheckboxTable from '../Checkbox/Table'
 
 const IMG_HEIGHT = 32
@@ -14,7 +14,7 @@ const DataSourcesAddProvider = ({
   return (
     <div css={{ paddingTop: spacing.normal }}>
       <Accordion
-        variant={VARIANTS.PRIMARY}
+        variant={ACCORDION_VARIANTS.PRIMARY}
         title={<img src={logo} alt={name} height={IMG_HEIGHT} />}
         cacheKey={`DataSourcesAddProvider.${name}`}
         isInitiallyOpen

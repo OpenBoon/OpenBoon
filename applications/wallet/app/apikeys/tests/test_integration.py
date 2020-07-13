@@ -20,47 +20,7 @@ def detail_data():
 
 @pytest.fixture
 def list_data():
-    return {'page': {'from': 0, 'size': 50, 'totalCount': 3},
-            'list': [
-                {'id': '6fab5e59-7793-4986-9c0b-757ed0979abb',
-                 'projectId': '00000000-0000-0000-0000-000000000000',
-                 'accessKey': 'ATheC7mlXQgnxW19ql4T3R7ji9QzrFPW',
-                 'secretKey': 'ENCRYPTED',
-                 'name': 'asdfa',
-                 'permissions': ['AssetsRead', 'AssetsImport', 'AssetsDelete'],
-                 'timeCreated': 1583452687787,
-                 'timeModified': 1583452687787,
-                 'actorCreated': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key',
-                 'actorModified': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key'},
-                {'id': '091dfa7b-4e2e-468a-8065-a5c3593d646a',
-                 'projectId': '00000000-0000-0000-0000-000000000000',
-                 'accessKey': 'klai7JM3L_ZwExIagf1LWkMh8IH4ar5T',
-                 'secretKey': 'ENCRYPTED',
-                 'name': 'job-runner',
-                 'permissions': ['ProjectFilesRead',
-                                 'AssetsRead',
-                                 'SystemProjectDecrypt',
-                                 'AssetsImport',
-                                 'ProjectFilesWrite'],
-                 'timeCreated': 1583452650141,
-                 'timeModified': 1583452650141,
-                 'actorCreated': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key',
-                 'actorModified': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key'},
-                {'id': '091dfa7b-4e2e-468a-8065-a5c3593d646c',
-                 'projectId': '00000000-0000-0000-0000-000000000000',
-                 'accessKey': 'klai7JM3L_ZwExIagf1LWkMh8IH4ar5T',
-                 'secretKey': 'ENCRYPTED',
-                 'name': 'Admin Console Generated Key - Admin - Project Zero',
-                 'permissions': ['ProjectFilesRead',
-                                 'AssetsRead',
-                                 'SystemProjectDecrypt',
-                                 'AssetsImport',
-                                 'ProjectFilesWrite'],
-                 'timeCreated': 1583452650141,
-                 'timeModified': 1583452650141,
-                 'actorCreated': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key',
-                 'actorModified': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key'}
-            ]}
+    return {'page': {'from': 0, 'size': 50, 'totalCount': 2}, 'list': [{'id': 'a98360ed-3a2d-45b5-93cb-414e69cedf8d', 'projectId': '00000000-0000-0000-0000-000000000000', 'accessKey': 'JKrceu3wiSsRLSP4-F2_vg', 'secretKey': 'ENCRYPTED', 'name': 'Test', 'permissions': ['AssetsRead', 'DataSourceManage', 'AssetsDelete', 'DataQueueManage', 'AssetsImport', 'ProjectManage'], 'timeCreated': 1594157746720, 'timeModified': 1594157746720, 'actorCreated': '48a6795d-b6ee-4485-9e84-1a920c6071d5/Admin Console Generated Key - 07c31bde-7781-4223-8e4f-083c3e670ab8 - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': '48a6795d-b6ee-4485-9e84-1a920c6071d5/Admin Console Generated Key - 07c31bde-7781-4223-8e4f-083c3e670ab8 - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'enabled': True, 'systemKey': False}, {'id': '48a6795d-b6ee-4485-9e84-1a920c6071d5', 'projectId': '00000000-0000-0000-0000-000000000000', 'accessKey': 'ySJvNu3s01uveGUDxAf5ug', 'secretKey': 'ENCRYPTED', 'name': 'Admin Console Generated Key - 07c31bde-7781-4223-8e4f-083c3e670ab8 - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'permissions': ['AssetsRead', 'DataSourceManage', 'AssetsDelete', 'DataQueueManage', 'ProjectManage', 'AssetsImport'], 'timeCreated': 1594157552802, 'timeModified': 1594157552802, 'actorCreated': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key', 'actorModified': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key', 'enabled': True, 'systemKey': False}]}  # noqa
 
 
 class TestApikey:
@@ -77,9 +37,7 @@ class TestApikey:
         response = api_client.get(reverse('apikey-list', kwargs={'project_pk': project.id}))
         assert response.status_code == 200
         content = response.json()
-        assert len(content['results']) == 1
-        assert 'next' in content
-        assert 'previous' in content
+        assert len(content['results']) == 2
 
     @override_settings(PLATFORM='zmlp')
     def test_get_detail(self, zmlp_project_user, project, api_client, monkeypatch, detail_data):

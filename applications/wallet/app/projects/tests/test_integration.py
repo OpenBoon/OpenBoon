@@ -10,7 +10,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
 from zmlp import ZmlpClient
-from zmlp.client import ZmlpDuplicateException, ZmlpInvalidRequestException
+from zmlp.client import (ZmlpDuplicateException, ZmlpInvalidRequestException,
+                         ZmlpNotFoundException)
 
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
@@ -705,8 +706,12 @@ class TestProjectUserPut:
         def mock_delete_response(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
 
+        def mock_get_response(*args, **kwargs):
+            return {'permissions': ['AssetsWrite']}
+
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
         monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
@@ -794,6 +799,11 @@ class TestProjectUserPut:
     def test_inception_key(self, project, zmlp_project_user, monkeypatch, inception_key,
                            zmlp_project_membership, api_client, django_user_model):
 
+        def get_mock_response(*args, **kwargs):
+            return {}
+
+        monkeypatch.setattr(ZmlpClient, 'get', get_mock_response)
+
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com',
                                                          'letmein')  # noqa
         apikey = convert_json_to_base64(inception_key).decode('utf-8')
@@ -810,6 +820,12 @@ class TestProjectUserPut:
 
 
 class TestMembershipModel:
+
+    @pytest.fixture
+    def apikey_data(self, data):
+        data['permissions'] = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'DataSourceManage',
+                               'DataQueueManage']
+        return data
 
     @pytest.fixture
     def clean_membership(self, zmlp_project_user, project):
@@ -841,3 +857,173 @@ class TestMembershipModel:
         with pytest.raises(ValidationError) as excinfo:
             membership.full_clean()
         assert 'is not a valid choice.' in str(excinfo)
+
+    def test_sync_project_no_apikey(self, zmlp_project_user, project, data, clean_membership,
+                                    monkeypatch):
+
+        def post_mock_response(*args, **kwargs):
+            return data
+
+        def post_get_response(*args, **kwargs):
+            return data
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.full_clean()
+        membership.save()
+        assert membership.apikey == ''
+        membership.sync_with_zmlp()
+        assert membership.apikey == convert_json_to_base64(data).decode('utf-8')
+
+    def test_sync_project_apikey_all_match(self, zmlp_project_user, project, apikey_data,
+                                           clean_membership, monkeypatch):
+
+        def post_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def post_get_response(*args, **kwargs):
+            return apikey_data
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(apikey_data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp()
+        assert membership.apikey == convert_json_to_base64(apikey_data).decode('utf-8')
+
+    def test_sync_project_apikey_no_id(self, zmlp_project_user, project, apikey_data,
+                                       clean_membership, monkeypatch):
+        data = copy.deepcopy(apikey_data)
+        del(apikey_data['id'])
+
+        def post_mock_response(*args, **kwargs):
+            return data
+
+        def post_get_response(*args, **kwargs):
+            return apikey_data
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(apikey_data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp()
+        assert membership.apikey == convert_json_to_base64(data).decode('utf-8')
+
+    def test_sync_internally_inconsistent(self, zmlp_project_user, project, apikey_data,
+                                          clean_membership, monkeypatch):
+
+        data = copy.deepcopy(apikey_data)
+        data['permissions'] = ['AssetsRead']
+
+        def post_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def get_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def delete_mock_response(*args, **kwargs):
+            return Response(status=status.HTTP_200_OK)
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', get_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp()
+        assert membership.apikey == convert_json_to_base64(apikey_data).decode('utf-8')
+
+    def test_sync_externally_inconsistent(self, zmlp_project_user, project, apikey_data,
+                                          clean_membership, monkeypatch):
+
+        data = copy.deepcopy(apikey_data)
+        data['permissions'] = ['AssetsRead']
+
+        def post_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def get_mock_response(*args, **kwargs):
+            if args[-1].endswith('_download'):
+                return apikey_data
+            else:
+                return data
+
+        def delete_mock_response(*args, **kwargs):
+            return Response(status=status.HTTP_200_OK)
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', get_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(apikey_data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp()
+        assert membership.apikey == convert_json_to_base64(apikey_data).decode('utf-8')
+
+    def test_sync_consistent_with_force(self, zmlp_project_user, project, apikey_data,
+                                        clean_membership, monkeypatch):
+
+        def post_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def post_get_response(*args, **kwargs):
+            return apikey_data
+
+        def delete_mock_response(*args, **kwargs):
+            return Response(status=status.HTTP_200_OK)
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(apikey_data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp(force=True)
+        assert membership.apikey == convert_json_to_base64(apikey_data).decode('utf-8')
+
+    def test_sync_not_in_zmlp(self, zmlp_project_user, project, apikey_data, clean_membership,
+                              monkeypatch):
+
+        def post_mock_response(*args, **kwargs):
+            return apikey_data
+
+        def post_get_response(*args, **kwargs):
+            if args[-1].endswith('_download'):
+                return apikey_data
+            else:
+                raise ZmlpNotFoundException({})
+
+        def delete_mock_response(*args, **kwargs):
+            return Response(status=status.HTTP_200_OK)
+
+        monkeypatch.setattr(ZmlpClient, 'post', post_mock_response)
+        monkeypatch.setattr(ZmlpClient, 'get', post_get_response)
+        monkeypatch.setattr(ZmlpClient, 'delete', delete_mock_response)
+
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools'])
+        membership.apikey = convert_json_to_base64(apikey_data).decode('utf-8')
+        membership.full_clean()
+        membership.save()
+        membership.sync_with_zmlp(force=True)
+        assert membership.apikey == convert_json_to_base64(apikey_data).decode('utf-8')

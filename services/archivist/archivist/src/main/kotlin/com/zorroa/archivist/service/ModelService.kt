@@ -25,6 +25,9 @@ import com.zorroa.archivist.repository.ModelJdbcDao
 import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.client.RequestOptions
@@ -44,7 +47,7 @@ interface ModelService {
     fun getModel(id: UUID): Model
     fun find(filter: ModelFilter): KPagedList<Model>
     fun findOne(filter: ModelFilter): Model
-    fun publishModel(model: Model): PipelineMod
+    fun publishModel(model: Model, args: Map<String, Any>? = null): PipelineMod
     fun deployModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun getLabelCounts(model: Model): Map<String, Long>
     fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any>
@@ -92,6 +95,14 @@ class ModelServiceImpl(
             actor.toString()
         )
 
+        logger.event(
+            LogObject.MODEL, LogAction.CREATE,
+            mapOf(
+                "modelId" to id,
+                "modelType" to spec.type.name
+            )
+        )
+
         return modelDao.saveAndFlush(model)
     }
 
@@ -124,6 +135,8 @@ class ModelServiceImpl(
         val processor = ProcessorRef(
             model.type.trainProcessor, "zmlp/plugins-train", trainArgs
         )
+
+        modelJdbcDao.markAsReady(model.id, false)
         return jobLaunchService.launchTrainingJob(
             model.trainingJobName, processor, mapOf()
         )
@@ -163,7 +176,7 @@ class ModelServiceImpl(
         }
     }
 
-    override fun publishModel(model: Model): PipelineMod {
+    override fun publishModel(model: Model, args: Map<String, Any>?): PipelineMod {
         val mod = pipelineModService.findByName(model.moduleName, false)
         val ops = listOf(
             ModOp(
@@ -177,7 +190,7 @@ class ModelServiceImpl(
                                 "model_id" to model.id.toString(),
                                 "version" to System.currentTimeMillis()
                             )
-                        ),
+                        ).plus(args ?: emptyMap()),
                         module = model.name
                     )
                 )

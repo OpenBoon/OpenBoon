@@ -4,11 +4,8 @@ import useSWR from 'swr'
 
 import { constants, spacing } from '../Styles'
 
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-
 import FaceLabelingMessage from './Message'
-
-import { onTrain } from './helpers'
+import FaceLabelingButton from './Button'
 
 const FaceLabelingTrainApply = ({ projectId }) => {
   const {
@@ -25,7 +22,7 @@ const FaceLabelingTrainApply = ({ projectId }) => {
     <div
       css={{
         padding: spacing.normal,
-        borderBottom: constants.borders.divider,
+        borderBottom: constants.borders.regular.smoke,
       }}
     >
       <FaceLabelingMessage
@@ -43,17 +40,13 @@ const FaceLabelingTrainApply = ({ projectId }) => {
 
       <div css={{ height: spacing.normal }} />
 
-      <Button
-        variant={BUTTON_VARIANTS.PRIMARY}
-        onClick={() => {
-          onTrain({ projectId, setError })
-        }}
-        isDisabled={!unappliedChanges}
-      >
-        {jobId && unappliedChanges
-          ? 'Override Current Training & Re-apply'
-          : 'Train & Apply'}
-      </Button>
+      <FaceLabelingButton
+        key={jobId}
+        projectId={projectId}
+        jobId={jobId}
+        unappliedChanges={unappliedChanges}
+        setError={setError}
+      />
     </div>
   )
 }

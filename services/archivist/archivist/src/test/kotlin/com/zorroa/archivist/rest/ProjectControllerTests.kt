@@ -156,7 +156,7 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun testGetMyProject() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/projects")
+            MockMvcRequestBuilders.get("/api/v1/project")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -168,7 +168,7 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun testGetMyProjectSettings() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/projects/_settings")
+            MockMvcRequestBuilders.get("/api/v1/project/_settings")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -181,7 +181,7 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun testGetMyProjecQuotas() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/projects/_quotas")
+            MockMvcRequestBuilders.get("/api/v1/project/_quotas")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -208,7 +208,7 @@ class ProjectControllerTests : MockMvcTest() {
         projectQuotasDao.incrementTimeSeriesCounters(Date(), counters)
 
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/projects/_quotas_time_series")
+            MockMvcRequestBuilders.get("/api/v1/project/_quotas_time_series")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -226,7 +226,7 @@ class ProjectControllerTests : MockMvcTest() {
         val settings = projectService.getSettings(pid)
 
         mvc.perform(
-            MockMvcRequestBuilders.put("/api/v1/projects/_settings")
+            MockMvcRequestBuilders.put("/api/v1/project/_settings")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(settings))
@@ -276,7 +276,7 @@ class ProjectControllerTests : MockMvcTest() {
         var update = ProjectNameUpdate("new Name")
 
         mvc.perform(
-            MockMvcRequestBuilders.put("/api/v1/projects/_rename")
+            MockMvcRequestBuilders.put("/api/v1/project/_rename")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(update))

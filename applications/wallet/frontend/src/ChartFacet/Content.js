@@ -155,7 +155,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
                         css={{
                           height: BAR_HEIGHT,
                           width: `${100 - offset}%`,
-                          borderTop: constants.borders.divider,
+                          borderTop: constants.borders.regular.smoke,
                         }}
                       />
                     </div>

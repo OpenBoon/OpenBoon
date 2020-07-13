@@ -18,7 +18,7 @@ const STYLES = {
     },
     header: {
       padding: spacing.normal,
-      borderBottom: constants.borders.tabs,
+      borderBottom: constants.borders.regular.iron,
       display: 'flex',
       alignItems: 'center',
       svg: { marginRight: spacing.base },

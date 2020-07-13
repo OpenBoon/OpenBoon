@@ -74,7 +74,7 @@ const VisualizerNavigation = ({ itemCount }) => {
           css={{
             marginTop: spacing.base,
             marginBottom: spacing.base,
-            borderLeft: constants.borders.spacer,
+            borderLeft: constants.borders.regular.coal,
           }}
         />
 

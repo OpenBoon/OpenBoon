@@ -32,13 +32,14 @@ describe('Combobox', () => {
     expect(mockFn).toHaveBeenCalledTimes(1)
     expect(mockFn).toHaveBeenCalledWith({ value: 'Jane' })
 
+    // when there is a event.target.value, let onSelect (not onBlur) handle the value
     act(() => {
       component.root
         .findByProps({ 'data-reach-combobox-input': '' })
         .props.onBlur({ target: { value: 'Jane' } })
     })
 
-    expect(mockFn).toHaveBeenCalledTimes(2)
+    expect(mockFn).toHaveBeenCalledTimes(1)
 
     act(() => {
       component.root
@@ -46,14 +47,14 @@ describe('Combobox', () => {
         .props.onBlur({ target: { value: '' } })
     })
 
-    expect(mockFn).toHaveBeenCalledTimes(3)
+    expect(mockFn).toHaveBeenCalledTimes(2)
     expect(mockFn).toHaveBeenCalledWith({ value: originalValue })
 
     act(() => {
       component.root.findByType(ComboboxContainer).props.onSelect('')
     })
 
-    expect(mockFn).toHaveBeenCalledTimes(4)
+    expect(mockFn).toHaveBeenCalledTimes(3)
     expect(mockFn).toHaveBeenLastCalledWith({ value: '' })
   })
 

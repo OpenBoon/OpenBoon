@@ -64,7 +64,7 @@ exports[`<ProjectUsersMenu /> should render properly 1`] = `
   background-color: #808080;
   border-radius: 2px;
   box-shadow: 0 4px 7px 0 #000000;
-  width: 200px;
+  min-width: 200px;
 }
 
 .emotion-3 ul {

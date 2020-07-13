@@ -18,8 +18,18 @@ const AccountCard = ({ projectId, name }) => {
     <Card
       variant={CARD_VARIANTS.LIGHT}
       header={
-        <div css={{ padding: spacing.normal }}>
-          <h3 css={{ paddingBottom: spacing.base }}>Project: {name}</h3>
+        <div css={{ padding: spacing.normal, width: '100%' }}>
+          <h3
+            title={name}
+            css={{
+              paddingBottom: spacing.base,
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            Project: {name}
+          </h3>
           <div
             css={{
               color: colors.structure.zinc,

@@ -1,8 +1,6 @@
 import TestRenderer from 'react-test-renderer'
 
-import Slider from '..'
-
-const noop = () => () => {}
+import Slider, { noop } from '..'
 
 describe('<Slider />', () => {
   it('should render properly when muted', () => {
@@ -18,5 +16,9 @@ describe('<Slider />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('noop should do nothing', () => {
+    expect(noop()).toBe(undefined)
   })
 })

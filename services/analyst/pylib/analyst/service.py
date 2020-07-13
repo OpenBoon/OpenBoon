@@ -14,6 +14,7 @@ import urllib3
 
 from .executor import ZpsExecutor
 from .cache import ModelCacheManager
+from .logs import LogFileRotator
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -208,6 +209,7 @@ class Executor(object):
         self.ping_timer = None
         self.poll_timer = None
         self.version = get_sdk_version()
+        self.log_rotator = LogFileRotator()
 
         # Setup the ping timer thread.
         if self.ping_timer_seconds:
@@ -248,16 +250,16 @@ class Executor(object):
         """
         # If a previous task was from another project, remove the model cache.
         if self.previous_task:
-            print(self.previous_task['projectId'])
-            print(task['projectId'])
             if self.previous_task['projectId'] != task['projectId']:
                 ModelCacheManager.remove_model_cache(self.previous_task)
 
+        self.log_rotator.start_task_logging(task)
         self.current_task = ZpsExecutor(task, self.client)
         try:
             # blocks until completed or killed
             return self.current_task.run()
         finally:
+            self.log_rotator.stop_task_logging()
             self.current_task = None
             self.previous_task = task
 
