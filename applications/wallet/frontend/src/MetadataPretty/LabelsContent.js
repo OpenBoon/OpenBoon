@@ -149,7 +149,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
             padding: spacing.normal,
             paddingTop: 0,
             ':hover': {
-              backgroundColor: colors.signal.electricBlue.background,
+              backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
               svg: { opacity: 1 },
             },
           }}
