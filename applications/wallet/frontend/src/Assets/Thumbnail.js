@@ -61,7 +61,7 @@ const AssetsThumbnail = ({
             ? constants.borders.assetSelected
             : constants.borders.large.white,
           'a, button': {
-            display: 'flex',
+            opacity: 1,
           },
         },
       }}
@@ -73,6 +73,7 @@ const AssetsThumbnail = ({
       >
         <Button
           variant={VARIANTS.NEUTRAL}
+          style={{ opacity: 1 }}
           css={{
             width: '100%',
             height: '100%',
@@ -110,15 +111,15 @@ const AssetsThumbnail = ({
         aria-label="Find similar images"
         variant={VARIANTS.NEUTRAL}
         style={{
-          display: 'none',
+          opacity: 0,
           position: 'absolute',
           top: spacing.small,
           right: spacing.small,
           padding: spacing.small,
-          backgroundColor: colors.structure.smoke,
-          opacity: constants.opacity.half,
-          ':hover': {
-            opacity: constants.opacity.eighth,
+          backgroundColor: `${colors.structure.smoke}${constants.opacity.hexHalf}`,
+          ':hover,  &.focus-visible:focus': {
+            opacity: 1,
+            backgroundColor: colors.structure.smoke,
           },
         }}
         onClick={() => {
@@ -145,15 +146,15 @@ const AssetsThumbnail = ({
         <Button
           variant={VARIANTS.NEUTRAL}
           style={{
-            display: 'none',
+            opacity: 0,
             position: 'absolute',
             bottom: spacing.small,
             right: spacing.small,
             padding: spacing.small,
-            backgroundColor: colors.structure.smoke,
-            opacity: constants.opacity.half,
-            ':hover': {
-              opacity: constants.opacity.eighth,
+            backgroundColor: `${colors.structure.smoke}${constants.opacity.hexHalf}`,
+            ':hover,  &.focus-visible:focus': {
+              opacity: 1,
+              backgroundColor: colors.structure.smoke,
             },
           }}
         >
