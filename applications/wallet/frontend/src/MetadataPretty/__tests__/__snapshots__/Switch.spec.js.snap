@@ -1219,7 +1219,6 @@ Array [
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  opacity: 1;
   width: 100%;
   height: 100%;
   display: -webkit-box;

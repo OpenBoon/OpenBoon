@@ -73,7 +73,6 @@ const AssetsThumbnail = ({
       >
         <Button
           variant={VARIANTS.NEUTRAL}
-          style={{ opacity: 1 }}
           css={{
             width: '100%',
             height: '100%',
