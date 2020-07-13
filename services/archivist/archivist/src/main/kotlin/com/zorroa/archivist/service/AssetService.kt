@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetIdBuilder
 import com.zorroa.archivist.domain.AssetIterator
@@ -409,8 +410,13 @@ class AssetServiceImpl : AssetService {
 
     override fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse {
 
+        val maximumBatchSize = properties.getInt("archivist.assets.deletion-max-batch-size")
+        if(ids.size > maximumBatchSize){
+            throw ArchivistException("Maximum allowed size exceeded. Maximum batch size for delete: $maximumBatchSize")
+        }
+
         val rest = indexRoutingService.getProjectRestClient()
-        var deletedAssets = ids.map { getAsset(it) }
+        var deletedAssets = getAll(ids).map{ it.id to it }.toMap()
         val query = QueryBuilders.termsQuery("_id", ids)
         val rsp = rest.client.deleteByQuery(
             DeleteByQueryRequest(rest.route.indexName)
@@ -431,7 +437,7 @@ class AssetServiceImpl : AssetService {
 
         val projectQuotaCounters = ProjectQuotaCounters()
         for (removed in removed) {
-            projectQuotaCounters.countForDeletion(deletedAssets.find { it.id == removed }!!)
+            projectQuotaCounters.countForDeletion(deletedAssets.getValue(removed))
             logger.event(
                 LogObject.ASSET, LogAction.DELETE, mapOf("assetId" to removed)
             )
