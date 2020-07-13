@@ -435,7 +435,7 @@ class AssetServiceTests : AbstractTest() {
         // Max + 1
         val batchCreate = BatchCreateAssetsRequest(
             assets =
-                (0..maxBatchSize).map {AssetSpec("gs://cat/large-brown-cat-$it.jpg")}
+                (0..maxBatchSize).map { AssetSpec("gs://cat/large-brown-cat-$it.jpg") }
 
         )
         val createRsp = assetService.batchCreate(batchCreate)

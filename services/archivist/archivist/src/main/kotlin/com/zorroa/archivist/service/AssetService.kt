@@ -411,12 +411,12 @@ class AssetServiceImpl : AssetService {
     override fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse {
 
         val maximumBatchSize = properties.getInt("archivist.assets.deletion-max-batch-size")
-        if(ids.size > maximumBatchSize){
+        if (ids.size > maximumBatchSize) {
             throw ArchivistException("Maximum allowed size exceeded. Maximum batch size for delete: $maximumBatchSize")
         }
 
         val rest = indexRoutingService.getProjectRestClient()
-        var deletedAssets = getAll(ids).map{ it.id to it }.toMap()
+        var deletedAssets = getAll(ids).map { it.id to it }.toMap()
         val query = QueryBuilders.termsQuery("_id", ids)
         val rsp = rest.client.deleteByQuery(
             DeleteByQueryRequest(rest.route.indexName)
