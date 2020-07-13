@@ -97,11 +97,11 @@ const FilterFacet = ({
                   width: '100%',
                   flexDirection: 'row',
                   backgroundColor: isSelected
-                    ? colors.signal.electricBlue.background
+                    ? `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`
                     : '',
                   color: colors.structure.zinc,
                   ':hover': {
-                    backgroundColor: colors.signal.electricBlue.background,
+                    backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
                     color: colors.structure.white,
                   },
                 }}

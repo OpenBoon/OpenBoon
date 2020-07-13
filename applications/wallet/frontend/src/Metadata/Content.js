@@ -47,7 +47,7 @@ const MetadataContent = ({ projectId, assetId }) => {
           display: 'flex',
           borderBottom: constants.borders.regular.smoke,
           ':hover': {
-            backgroundColor: colors.signal.electricBlue.background,
+            backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
             div: {
               color: colors.structure.white,
               svg: { opacity: 1 },

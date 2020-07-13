@@ -14,10 +14,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
 
 .emotion-4:hover a,
 .emotion-4:hover button {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  opacity: 1;
 }
 
 .emotion-1 {
@@ -115,13 +112,12 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   top: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-2:hover {
@@ -133,8 +129,10 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-2:hover {
-  opacity: 0.8;
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 .emotion-3 {
@@ -168,13 +166,12 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   bottom: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-3:hover {
@@ -186,8 +183,10 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-3:hover {
-  opacity: 0.8;
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 <div
@@ -225,7 +224,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   >
     <svg
       color="#ffffff"
-      data-file-name="expand.svg"
+      data-file-name="search.svg"
       height={20}
     />
   </a>
@@ -328,13 +327,12 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   top: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-2:hover {
@@ -346,8 +344,10 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   color: #2e2e2e;
 }
 
-.emotion-2:hover {
-  opacity: 0.8;
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 .emotion-3 {
@@ -381,13 +381,12 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   bottom: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-3:hover {
@@ -399,8 +398,10 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   color: #2e2e2e;
 }
 
-.emotion-3:hover {
-  opacity: 0.8;
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 .emotion-4 {
@@ -416,10 +417,7 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
 
 .emotion-4:hover a,
 .emotion-4:hover button {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  opacity: 1;
 }
 
 <div
@@ -457,7 +455,7 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   >
     <svg
       color="#ffffff"
-      data-file-name="expand.svg"
+      data-file-name="search.svg"
       height={20}
     />
   </a>
@@ -478,10 +476,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
 
 .emotion-5:hover a,
 .emotion-5:hover button {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  opacity: 1;
 }
 
 .emotion-1 {
@@ -579,13 +574,12 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   top: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-2:hover {
@@ -597,8 +591,10 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-2:hover {
-  opacity: 0.8;
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 .emotion-3 {
@@ -632,13 +628,12 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   bottom: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-3:hover {
@@ -650,8 +645,10 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-3:hover {
-  opacity: 0.8;
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 .emotion-4 {
@@ -707,7 +704,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   >
     <svg
       color="#ffffff"
-      data-file-name="expand.svg"
+      data-file-name="search.svg"
       height={20}
     />
   </a>
@@ -733,10 +730,7 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
 
 .emotion-4:hover a,
 .emotion-4:hover button {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  opacity: 1;
 }
 
 .emotion-1 {
@@ -834,13 +828,12 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   top: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-2:hover {
@@ -852,8 +845,10 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   color: #2e2e2e;
 }
 
-.emotion-2:hover {
-  opacity: 0.8;
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 .emotion-3 {
@@ -887,13 +882,12 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   bottom: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-3:hover {
@@ -905,8 +899,10 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   color: #2e2e2e;
 }
 
-.emotion-3:hover {
-  opacity: 0.8;
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 <div
@@ -944,7 +940,7 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   >
     <svg
       color="#ffffff"
-      data-file-name="expand.svg"
+      data-file-name="search.svg"
       height={20}
     />
   </a>
@@ -965,10 +961,7 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
 
 .emotion-4:hover a,
 .emotion-4:hover button {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  opacity: 1;
 }
 
 .emotion-1 {
@@ -1066,13 +1059,12 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   top: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-2:hover {
@@ -1084,8 +1076,10 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-2:hover {
-  opacity: 0.8;
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 .emotion-3 {
@@ -1119,13 +1113,12 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   bottom: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-3:hover {
@@ -1137,8 +1130,10 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-3:hover {
-  opacity: 0.8;
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 <div
@@ -1175,7 +1170,7 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   >
     <svg
       color="#ffffff"
-      data-file-name="expand.svg"
+      data-file-name="search.svg"
       height={20}
     />
   </a>
