@@ -1,4 +1,14 @@
 import { mutate } from 'swr'
+import camelCase from 'camelcase'
+
+export const getQueryString = (params = {}) => {
+  const queryString = Object.keys(params)
+    .filter((p) => params[p])
+    .map((p) => `${p}=${params[p]}`)
+    .join('&')
+
+  return queryString ? `?${queryString}` : ''
+}
 
 export const getCsrfToken = () => {
   if (typeof document === 'undefined') return ''
@@ -39,4 +49,14 @@ export const fetcher = async (url, options = {}) => {
   } catch (error) {
     return response
   }
+}
+
+export const getPathname = ({ pathname }) => {
+  return pathname
+    .replace(/\?(.*)/, '')
+    .replace(/^\/[a-z0-9-]{36}/, '/<projectId>')
+    .replace(/\/([a-z-]*)\/[a-z0-9-]{36}/g, (_, category) => {
+      const item = category.replace(/s$/, '')
+      return `/${category}/<${camelCase(item)}Id>`
+    })
 }

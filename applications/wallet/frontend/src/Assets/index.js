@@ -103,6 +103,7 @@ const Assets = () => {
           const { results } = d || {}
           return results
         })
+        .filter((a) => a && a.id)
     : []
 
   const selectedRow =
@@ -126,7 +127,7 @@ const Assets = () => {
         rowIndex: selectedRow,
       })
     }
-  })
+  }, [selectedRow, columnCount, selectedId, virtualLoaderRef])
 
   return (
     <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>

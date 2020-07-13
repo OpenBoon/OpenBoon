@@ -75,6 +75,12 @@ class IndexRouteDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testGetAllByCluster() {
+        val routes = indexRouteDao.getAll(indexClusterService.getNextAutoPoolCluster())
+        assertEquals(1, routes.size)
+    }
+
+    @Test
     fun testGetAllByFilter() {
         val route = indexRouteDao.getProjectRoute()
 

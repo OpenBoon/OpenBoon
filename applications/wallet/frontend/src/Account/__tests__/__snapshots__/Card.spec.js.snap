@@ -39,10 +39,14 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
 
 .emotion-4 {
   padding: 16px;
+  width: 100%;
 }
 
 .emotion-0 {
   padding-bottom: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .emotion-1 {
@@ -127,6 +131,7 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
       >
         <h3
           className="emotion-0"
+          title="Project Zero"
         >
           Project: 
           Project Zero
@@ -194,10 +199,14 @@ exports[`<AccountCard /> should render properly 1`] = `
 
 .emotion-4 {
   padding: 16px;
+  width: 100%;
 }
 
 .emotion-0 {
   padding-bottom: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .emotion-1 {
@@ -324,6 +333,7 @@ exports[`<AccountCard /> should render properly 1`] = `
       >
         <h3
           className="emotion-0"
+          title="Project Zero"
         >
           Project: 
           Project Zero
@@ -374,6 +384,7 @@ exports[`<AccountCard /> should render properly 1`] = `
             width={32}
           />
            Video Hours:
+           
           0
         </h4>
       </div>
@@ -436,10 +447,14 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
 
 .emotion-4 {
   padding: 16px;
+  width: 100%;
 }
 
 .emotion-0 {
   padding-bottom: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .emotion-1 {
@@ -566,6 +581,7 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
       >
         <h3
           className="emotion-0"
+          title="Project Zero"
         >
           Project: 
           Project Zero
@@ -616,6 +632,7 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
             width={32}
           />
            Video Hours:
+           
           0
         </h4>
       </div>
@@ -678,10 +695,14 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
 
 .emotion-4 {
   padding: 16px;
+  width: 100%;
 }
 
 .emotion-0 {
   padding-bottom: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .emotion-1 {
@@ -808,6 +829,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
       >
         <h3
           className="emotion-0"
+          title="Project Zero"
         >
           Project: 
           Project Zero
@@ -858,6 +880,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
             width={32}
           />
            Video Hours:
+           
           320
         </h4>
       </div>

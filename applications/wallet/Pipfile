@@ -36,7 +36,7 @@ google-api-python-client = "*"
 google-cloud = "*"
 google-cloud-pubsub = "*"
 namegenerator = "*"
-zmlp = {path = "./../../client/python"}
+zvi-client = {path = "./../../client/python"}
 
 [requires]
 python_version = "3.7"

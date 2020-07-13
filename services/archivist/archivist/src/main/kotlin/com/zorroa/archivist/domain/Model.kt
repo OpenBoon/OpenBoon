@@ -38,7 +38,7 @@ enum class ModelType(
         "zmlp_analysis.custom.KnnLabelDetectionClassifier",
         mapOf(),
         "zvi-%s-cluster",
-        "Classify images or documents using a KNN classifer.  This type of model generates " +
+        "Classify images or documents using a KNN classifier.  This type of model generates " +
             "a single prediction which can be used to quickly organize assets into general groups." +
             "The KNN classifier works with just a single image and label.",
         ModType.LABEL_DETECTION,
@@ -69,6 +69,17 @@ enum class ModelType(
         "Relabel existing ZVI faces using a KNN Face Recognition model.",
         ModType.FACE_RECOGNITION,
         Provider.ZORROA,
+        true
+    ),
+    GCP_LABEL_DETECTION(
+        "zmlp_train.automl.AutoMLModelTrainer",
+        mapOf(),
+        "zmlp_analysis.automl.AutoMLVisionClassifier",
+        mapOf(),
+        "gcp-%s-label-detection",
+        "Utilize Google AutoML to train an image classifier.",
+        ModType.LABEL_DETECTION,
+        Provider.GOOGLE,
         true
     );
 

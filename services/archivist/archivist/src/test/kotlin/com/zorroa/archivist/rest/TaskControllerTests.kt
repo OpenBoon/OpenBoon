@@ -5,13 +5,13 @@ import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.TaskFilter
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.emptyZpsScript
@@ -19,6 +19,7 @@ import com.zorroa.archivist.domain.emptyZpsScripts
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.randomString
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
@@ -41,13 +42,16 @@ class TaskControllerTests : MockMvcTest() {
     @Autowired
     lateinit var taskErrorDao: TaskErrorDao
 
+    @Autowired
+    lateinit var projectStorageService: ProjectStorageService
+
     lateinit var task: Task
 
     @Before
     fun init() {
         val job = launchJob()
         // create additional task
-        task = jobService.createTask(job, TaskSpec("bar", emptyZpsScript("bar")))
+        task = jobService.createTask(job, emptyZpsScript("bar"))
     }
 
     fun launchJob(): Job {
@@ -211,14 +215,32 @@ class TaskControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testGetLogFile404() {
+    fun testGetLogFile() {
+
+        val locator = task.getLogFileLocation()
+        projectStorageService.store(ProjectStorageSpec(locator, mapOf(), "foo".toByteArray()))
+
+        val result = mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/tasks/${task.id}/_log")
+                .headers(admin())
+                .contentType(MediaType.TEXT_PLAIN)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val content = result.response.contentAsString
+        assertTrue(content.contains("foo"))
+    }
+
+    @Test
+    fun testGetLogFile204() {
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/tasks/${task.id}/_log")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
-            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            .andExpect(MockMvcResultMatchers.status().`is`(204))
             .andReturn()
     }
 
@@ -233,7 +255,7 @@ class TaskControllerTests : MockMvcTest() {
             env = mutableMapOf("foo" to "bar")
         )
         val job = jobService.create(spec)
-        val task = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
+        val task = jobService.createTask(job, emptyZpsScript("bar"))
 
         authenticateAsAnalyst()
         val error = TaskErrorEvent(

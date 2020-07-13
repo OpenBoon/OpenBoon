@@ -1,4 +1,6 @@
-export const formatRange = ({ min, max }) => {
+export const formatRange = ({ min, max, labels }) => {
+  if (labels.length === 0) return 'N/A'
+
   if (min === 0 && max === 1) return 'All'
 
   if (min === 0) return `< ${max.toFixed(2)}`

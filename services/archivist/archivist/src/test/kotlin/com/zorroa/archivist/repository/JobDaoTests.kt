@@ -158,17 +158,13 @@ class JobDaoTests : AbstractTest() {
         )
 
         val counters = AssetCounters(
-            total = 10,
-            replaced = 4,
-            created = 6
+            total = 10
         )
 
         val job1 = jobDao.create(spec)
         assertTrue(jobDao.incrementAssetCounters(job1, counters))
         val map = jdbc.queryForMap("SELECT * FROM job_stat WHERE pk_job=?", job1.id)
 
-        assertEquals(counters.created, map["int_asset_create_count"])
-        assertEquals(counters.replaced, map["int_asset_replace_count"])
         assertEquals(counters.total, map["int_asset_total_count"])
     }
 

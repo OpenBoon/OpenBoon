@@ -17,7 +17,11 @@ object FileUtils {
     private val URI_PATTERN = Pattern.compile("^\\w+://")
     private val tika = Tika()
     fun getMediaType(path: String?): String {
-        return tika.detect(path)
+        return if (extension(path) == "log") {
+            "text/plain"
+        } else {
+            tika.detect(path)
+        }
     }
 
     fun getMediaType(path: Path): String {

@@ -28,7 +28,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
           padding: spacing.normal,
           paddingBottom: spacing.comfy,
           '&:not(:first-of-type)': {
-            borderTop: constants.borders.largeDivider,
+            borderTop: constants.borders.large.smoke,
           },
         }}
       >
@@ -99,7 +99,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
                       paddingTop: spacing.base,
                       paddingBottom: spacing.base,
                       paddingRight: spacing.base,
-                      borderBottom: constants.borders.divider,
+                      borderBottom: constants.borders.regular.smoke,
                     },
                     '&:first-of-type': { td: { paddingTop: 0 } },
                   }}
@@ -162,7 +162,7 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
                 fontFamily: typography.family.condensed,
                 textTransform: 'uppercase',
                 color: colors.structure.steel,
-                borderTop: constants.borders.divider,
+                borderTop: constants.borders.regular.smoke,
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.base,
               }}
