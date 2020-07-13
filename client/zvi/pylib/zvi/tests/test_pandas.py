@@ -1,8 +1,10 @@
+import os
+import tempfile
 import unittest
 from unittest.mock import patch
 
 from zmlp import ZmlpClient, app_from_env
-from zvi.pandas import search_to_df
+from zvi.convert_search import ConvertSearchResults
 
 
 class PandasTests(unittest.TestCase):
@@ -89,6 +91,46 @@ class PandasTests(unittest.TestCase):
         }
 
     @patch.object(ZmlpClient, 'post')
+    def test_search_to_dict(self, post_patch):
+        post_patch.return_value = self.mock_search_result
+        search = {
+            'query': {'match_all': {}}
+        }
+        attrs = [
+            'source.path',
+            'analysis.zvi-image-similarity.simhash',
+            'labels'
+        ]
+        rsp = self.app.assets.search(search=search)
+        csr = ConvertSearchResults(
+            search=rsp,
+            attrs=attrs[1:],  # all but source.path
+            descriptor='source.path'
+        )
+        asset_dict = csr.to_dict()
+
+        assert list(asset_dict.keys()) == attrs
+        assert asset_dict['source.path'] == [
+            'https://i.imgur.com/SSN26nN.jpg',
+            'https://i.imgur.com/foo.jpg',
+            'https://i.imgur.com/bar.jpg'
+        ]
+        assert asset_dict['analysis.zvi-image-similarity.simhash'] == [
+            'AAAAAAAA',
+            'BBBBBBBB',
+            'CCCCCCCC'
+        ]
+
+    @patch.object(ZmlpClient, 'post')
+    def test_search_to_dict_no_search(self, post_patch):
+        post_patch.return_value = self.mock_search_result
+
+        csr = ConvertSearchResults(search=None, attrs=None, descriptor='source.path')
+        asset_dict = csr.to_dict()
+
+        assert list(asset_dict.keys()) == ['source.path', 'media.height', 'media.width']
+
+    @patch.object(ZmlpClient, 'post')
     def test_search_to_df(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {
@@ -100,11 +142,12 @@ class PandasTests(unittest.TestCase):
             'labels'
         ]
         rsp = self.app.assets.search(search=search)
-        df = search_to_df(
+        csr = ConvertSearchResults(
             search=rsp,
             attrs=attrs[1:],  # all but source.path
             descriptor='source.path'
         )
+        df = csr.to_df()
 
         assert df.shape == (3, 3)
         assert list(df.columns) == attrs
@@ -114,11 +157,43 @@ class PandasTests(unittest.TestCase):
     @patch.object(ZmlpClient, 'post')
     def test_search_to_df_no_search(self, post_patch):
         post_patch.return_value = self.mock_search_result
-        df = search_to_df(
-            search=None,
-            attrs=None,
-            descriptor='source.path'
-        )
+
+        csr = ConvertSearchResults(search=None, attrs=None, descriptor='source.path')
+        df = csr.to_df()
 
         assert df.shape == (3, 3)
         assert list(df.columns) == ['source.path', 'media.height', 'media.width']
+
+    @patch.object(ZmlpClient, 'post')
+    def test_search_to_csv(self, post_patch):
+        _, output_file = tempfile.mkstemp(".csv")
+        post_patch.return_value = self.mock_search_result
+        search = {
+            'query': {'match_all': {}}
+        }
+        attrs = [
+            'source.path',
+            'analysis.zvi-image-similarity.simhash',
+            'labels'
+        ]
+        rsp = self.app.assets.search(search=search)
+        csr = ConvertSearchResults(
+            search=rsp,
+            attrs=attrs[1:],  # all but source.path
+            descriptor='source.path'
+        )
+        out = csr.to_csv(output_file=output_file)
+
+        assert os.path.exists(output_file)
+        assert out == output_file
+
+    @patch.object(ZmlpClient, 'post')
+    def test_search_to_csv_no_search(self, post_patch):
+        _, output_file = tempfile.mkstemp(".csv")
+        post_patch.return_value = self.mock_search_result
+
+        csr = ConvertSearchResults(search=None, attrs=None, descriptor='source.path')
+        out = csr.to_csv(output_file=output_file)
+
+        assert os.path.exists(output_file)
+        assert out == output_file
