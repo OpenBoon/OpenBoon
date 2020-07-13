@@ -63,18 +63,21 @@ export const onTrain = async ({ projectId, setError }) => {
   try {
     setError('')
 
+    const { jobId } = await fetcher(
+      `/api/v1/projects/${projectId}/faces/train/`,
+      {
+        method: 'POST',
+      },
+    )
+
     mutate(
       `/api/v1/projects/${projectId}/faces/status/`,
       {
         unappliedChanges: false,
-        jobId: 'true',
+        jobId,
       },
       false,
     )
-
-    await fetcher(`/api/v1/projects/${projectId}/faces/train/`, {
-      method: 'POST',
-    })
   } catch (error) {
     setError('Something went wrong. Please try again.')
   }
