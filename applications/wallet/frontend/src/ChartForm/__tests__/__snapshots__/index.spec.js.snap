@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ChartForm /> should cancel properly when editing 1`] = `
-.emotion-17 {
+.emotion-15 {
   height: 100%;
   overflow: hidden;
 }
 
-.emotion-16 {
+.emotion-14 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -22,24 +22,24 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   padding-top: 8px;
 }
 
-.emotion-15 {
+.emotion-13 {
   overflow: hidden;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-15 .ErrorBoundary > div {
+.emotion-13 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-15 .Loading {
+.emotion-13 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-14 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -65,48 +65,25 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   height: 24px;
 }
 
-.emotion-3 {
-  color: #b3b3b3;
-}
-
 .emotion-2 {
-  margin-top: 8px;
-  width: 100%;
-  padding: 12px 8px;
-  background-color: #808080;
-  color: #ffffff;
-  border-radius: 2px;
-  border: none;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-4 {
   height: 16px;
 }
 
-.emotion-8 {
+.emotion-6 {
   padding-top: 8px;
 }
 
-.emotion-5 {
+.emotion-3 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-7 {
+.emotion-5 {
   position: relative;
 }
 
-.emotion-6 {
+.emotion-4 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -118,24 +95,24 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   border-width: 2px;
 }
 
-.emotion-6:focus {
+.emotion-4:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-6:focus {
+.emotion-4:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-13 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-10 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -170,34 +147,34 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   flex: 1;
 }
 
-.emotion-10:hover {
+.emotion-8:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
   background-color: #808080;
 }
 
-.emotion-10:hover {
+.emotion-8:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-11 {
+.emotion-9 {
   width: 8px;
 }
 
-.emotion-12 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -232,41 +209,41 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   flex: 1;
 }
 
-.emotion-12:hover {
+.emotion-10:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-12,
-.emotion-12:hover,
-.emotion-12:visited {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
   background-color: #73b61c;
 }
 
-.emotion-12:hover {
+.emotion-10:hover {
   background-color: #96c955;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-  className="emotion-17"
+  className="emotion-15"
 >
   <div
-    className="emotion-16"
+    className="emotion-14"
   >
     <div
-      className="emotion-15"
+      className="emotion-13"
     >
       <form
         action=""
-        className="emotion-14"
+        className="emotion-12"
         method="post"
         onSubmit={[Function]}
       >
@@ -279,188 +256,71 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
         <div
           className="emotion-1"
         />
-        <label
-          className="emotion-3"
-        >
-          Metadata Type
-          <select
-            className="emotion-2"
-            defaultValue=""
-            onChange={[Function]}
-          >
-            <option
-              disabled={true}
-              value=""
-            >
-              Select metadata type
-            </option>
-            <optgroup
-              label="Analysis"
-            >
-              <optgroup
-                label="Zvi"
-              >
-                <option
-                  value="analysis.zvi.tinyProxy"
-                >
-                  tinyProxy
-                </option>
-              </optgroup>
-            </optgroup>
-            <optgroup
-              label="Clip"
-            >
-              <option
-                value="clip.pile"
-              >
-                pile
-              </option>
-              <option
-                value="clip.sourceAssetId"
-              >
-                sourceAssetId
-              </option>
-              <option
-                value="clip.timeline"
-              >
-                timeline
-              </option>
-              <option
-                value="clip.type"
-              >
-                type
-              </option>
-            </optgroup>
-            <optgroup
-              label="Location"
-            >
-              <option
-                value="location.city"
-              >
-                city
-              </option>
-              <option
-                value="location.code"
-              >
-                code
-              </option>
-              <option
-                value="location.country"
-              >
-                country
-              </option>
-            </optgroup>
-            <optgroup
-              label="Media"
-            >
-              <option
-                value="media.author"
-              >
-                author
-              </option>
-              <option
-                value="media.content"
-              >
-                content
-              </option>
-              <option
-                value="media.description"
-              >
-                description
-              </option>
-              <option
-                value="media.keywords"
-              >
-                keywords
-              </option>
-              <option
-                value="media.orientation"
-              >
-                orientation
-              </option>
-              <option
-                value="media.title"
-              >
-                title
-              </option>
-              <option
-                value="media.type"
-              >
-                type
-              </option>
-            </optgroup>
-            <optgroup
-              label="Source"
-            >
-              <option
-                value="source.extension"
-              >
-                extension
-              </option>
-              <option
-                value="source.filename"
-              >
-                filename
-              </option>
-              <option
-                value="source.mimetype"
-              >
-                mimetype
-              </option>
-              <option
-                value="source.path"
-              >
-                path
-              </option>
-            </optgroup>
-            <optgroup
-              label="System"
-            >
-              <option
-                value="system.dataSourceId"
-              >
-                dataSourceId
-              </option>
-              <option
-                value="system.jobId"
-              >
-                jobId
-              </option>
-              <option
-                value="system.projectId"
-              >
-                projectId
-              </option>
-              <option
-                value="system.state"
-              >
-                state
-              </option>
-              <option
-                value="system.taskId"
-              >
-                taskId
-              </option>
-            </optgroup>
-          </select>
-        </label>
-        <div
-          className="emotion-4"
+        <Listbox
+          label="Metadata Type"
+          onChange={[Function]}
+          options={
+            Object {
+              "Analysis": Object {
+                "Zvi": Object {
+                  "tinyProxy": "analysis.zvi.tinyProxy",
+                },
+              },
+              "Clip": Object {
+                "pile": "clip.pile",
+                "sourceAssetId": "clip.sourceAssetId",
+                "timeline": "clip.timeline",
+                "type": "clip.type",
+              },
+              "Location": Object {
+                "city": "location.city",
+                "code": "location.code",
+                "country": "location.country",
+              },
+              "Media": Object {
+                "author": "media.author",
+                "content": "media.content",
+                "description": "media.description",
+                "keywords": "media.keywords",
+                "orientation": "media.orientation",
+                "title": "media.title",
+                "type": "media.type",
+              },
+              "Source": Object {
+                "extension": "source.extension",
+                "filename": "source.filename",
+                "mimetype": "source.mimetype",
+                "path": "source.path",
+              },
+              "System": Object {
+                "dataSourceId": "system.dataSourceId",
+                "jobId": "system.jobId",
+                "projectId": "system.projectId",
+                "state": "system.state",
+                "taskId": "system.taskId",
+              },
+            }
+          }
+          placeholder="Select Type"
+          value=""
         />
         <div
-          className="emotion-8"
+          className="emotion-2"
+        />
+        <div
+          className="emotion-6"
         >
           <label
-            className="emotion-5"
+            className="emotion-3"
             htmlFor="values"
           >
             Number of Values Shown
           </label>
           <div
-            className="emotion-7"
+            className="emotion-5"
           >
             <input
-              className="emotion-6"
+              className="emotion-4"
               disabled={false}
               id="values"
               name="values"
@@ -470,27 +330,27 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
             />
           </div>
           <div
-            className="emotion-8"
+            className="emotion-6"
           >
              
           </div>
         </div>
         <div
-          className="emotion-13"
+          className="emotion-11"
         >
           <button
-            className="emotion-10"
+            className="emotion-8"
             onClick={[Function]}
             type="button"
           >
             Cancel
           </button>
           <div
-            className="emotion-11"
+            className="emotion-9"
           />
           <button
             aria-disabled={true}
-            className="emotion-12"
+            className="emotion-10"
             onClick={[Function]}
             type="button"
           >
@@ -504,12 +364,12 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
 `;
 
 exports[`<ChartForm /> should render properly without attribute 1`] = `
-.emotion-17 {
+.emotion-15 {
   height: 100%;
   overflow: hidden;
 }
 
-.emotion-16 {
+.emotion-14 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -525,24 +385,24 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   padding-top: 8px;
 }
 
-.emotion-15 {
+.emotion-13 {
   overflow: hidden;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-15 .ErrorBoundary > div {
+.emotion-13 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-15 .Loading {
+.emotion-13 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-14 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -568,48 +428,25 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   height: 24px;
 }
 
-.emotion-3 {
-  color: #b3b3b3;
-}
-
 .emotion-2 {
-  margin-top: 8px;
-  width: 100%;
-  padding: 12px 8px;
-  background-color: #808080;
-  color: #ffffff;
-  border-radius: 2px;
-  border: none;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-4 {
   height: 16px;
 }
 
-.emotion-8 {
+.emotion-6 {
   padding-top: 8px;
 }
 
-.emotion-5 {
+.emotion-3 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-7 {
+.emotion-5 {
   position: relative;
 }
 
-.emotion-6 {
+.emotion-4 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -621,21 +458,446 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   border-width: 2px;
 }
 
-.emotion-6:focus {
+.emotion-4:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-6:focus {
+.emotion-4:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-13 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
+  background-color: #808080;
+}
+
+.emotion-8:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-8[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-9 {
+  width: 8px;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-10[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
+  background-color: #73b61c;
+}
+
+.emotion-10:hover {
+  background-color: #96c955;
+}
+
+.emotion-10[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+  className="emotion-15"
+>
+  <div
+    className="emotion-14"
+  >
+    <div
+      className="emotion-13"
+    >
+      <form
+        action=""
+        className="emotion-12"
+        method="post"
+        onSubmit={[Function]}
+      >
+        <h2
+          className="emotion-0"
+        >
+          Facet
+           Visualization
+        </h2>
+        <div
+          className="emotion-1"
+        />
+        <Listbox
+          label="Metadata Type"
+          onChange={[Function]}
+          options={
+            Object {
+              "Analysis": Object {
+                "Zvi": Object {
+                  "tinyProxy": "analysis.zvi.tinyProxy",
+                },
+              },
+              "Clip": Object {
+                "pile": "clip.pile",
+                "sourceAssetId": "clip.sourceAssetId",
+                "timeline": "clip.timeline",
+                "type": "clip.type",
+              },
+              "Location": Object {
+                "city": "location.city",
+                "code": "location.code",
+                "country": "location.country",
+              },
+              "Media": Object {
+                "author": "media.author",
+                "content": "media.content",
+                "description": "media.description",
+                "keywords": "media.keywords",
+                "orientation": "media.orientation",
+                "title": "media.title",
+                "type": "media.type",
+              },
+              "Source": Object {
+                "extension": "source.extension",
+                "filename": "source.filename",
+                "mimetype": "source.mimetype",
+                "path": "source.path",
+              },
+              "System": Object {
+                "dataSourceId": "system.dataSourceId",
+                "jobId": "system.jobId",
+                "projectId": "system.projectId",
+                "state": "system.state",
+                "taskId": "system.taskId",
+              },
+            }
+          }
+          placeholder="Select Type"
+          value=""
+        />
+        <div
+          className="emotion-2"
+        />
+        <div
+          className="emotion-6"
+        >
+          <label
+            className="emotion-3"
+            htmlFor="values"
+          >
+            Number of Values Shown
+          </label>
+          <div
+            className="emotion-5"
+          >
+            <input
+              className="emotion-4"
+              disabled={false}
+              id="values"
+              name="values"
+              onChange={[Function]}
+              type="number"
+              value="10"
+            />
+          </div>
+          <div
+            className="emotion-6"
+          >
+             
+          </div>
+        </div>
+        <div
+          className="emotion-11"
+        >
+          <button
+            className="emotion-8"
+            onClick={[Function]}
+            type="button"
+          >
+            Cancel
+          </button>
+          <div
+            className="emotion-9"
+          />
+          <button
+            aria-disabled={true}
+            className="emotion-10"
+            onClick={[Function]}
+            type="button"
+          >
+            Save Visualization
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChartForm /> should render properly without attribute 2`] = `
+.emotion-15 {
+  height: 100%;
+  overflow: hidden;
+}
+
+.emotion-14 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #252525;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  border-radius: 2px;
+  padding: 16px;
+  padding-top: 8px;
+}
+
+.emotion-13 {
+  overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-13 .ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-13 .Loading {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  width: auto;
+  padding: 0;
+}
+
+.emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-1 {
+  height: 24px;
+}
+
+.emotion-2 {
+  height: 16px;
+}
+
+.emotion-6 {
+  padding-top: 8px;
+}
+
+.emotion-3 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-5 {
+  position: relative;
+}
+
+.emotion-4 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-4:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
+.emotion-4:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
+  background-color: #808080;
+}
+
+.emotion-8:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-8[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-9 {
+  width: 8px;
 }
 
 .emotion-10 {
@@ -685,91 +947,29 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
 .emotion-10,
 .emotion-10:hover,
 .emotion-10:visited {
-  background-color: #808080;
+  background-color: #73b61c;
 }
 
 .emotion-10:hover {
-  background-color: #b3b3b3;
+  background-color: #96c955;
 }
 
 .emotion-10[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-11 {
-  width: 8px;
-}
-
-.emotion-12 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-12:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-12[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-12,
-.emotion-12:hover,
-.emotion-12:visited {
-  background-color: #73b61c;
-}
-
-.emotion-12:hover {
-  background-color: #96c955;
-}
-
-.emotion-12[aria-disabled=true] {
-  background-color: #808080;
-}
-
 <div
-  className="emotion-17"
+  className="emotion-15"
 >
   <div
-    className="emotion-16"
+    className="emotion-14"
   >
     <div
-      className="emotion-15"
+      className="emotion-13"
     >
       <form
         action=""
-        className="emotion-14"
+        className="emotion-12"
         method="post"
         onSubmit={[Function]}
       >
@@ -782,188 +982,71 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
         <div
           className="emotion-1"
         />
-        <label
-          className="emotion-3"
-        >
-          Metadata Type
-          <select
-            className="emotion-2"
-            defaultValue="system.type"
-            onChange={[Function]}
-          >
-            <option
-              disabled={true}
-              value=""
-            >
-              Select metadata type
-            </option>
-            <optgroup
-              label="Analysis"
-            >
-              <optgroup
-                label="Zvi"
-              >
-                <option
-                  value="analysis.zvi.tinyProxy"
-                >
-                  tinyProxy
-                </option>
-              </optgroup>
-            </optgroup>
-            <optgroup
-              label="Clip"
-            >
-              <option
-                value="clip.pile"
-              >
-                pile
-              </option>
-              <option
-                value="clip.sourceAssetId"
-              >
-                sourceAssetId
-              </option>
-              <option
-                value="clip.timeline"
-              >
-                timeline
-              </option>
-              <option
-                value="clip.type"
-              >
-                type
-              </option>
-            </optgroup>
-            <optgroup
-              label="Location"
-            >
-              <option
-                value="location.city"
-              >
-                city
-              </option>
-              <option
-                value="location.code"
-              >
-                code
-              </option>
-              <option
-                value="location.country"
-              >
-                country
-              </option>
-            </optgroup>
-            <optgroup
-              label="Media"
-            >
-              <option
-                value="media.author"
-              >
-                author
-              </option>
-              <option
-                value="media.content"
-              >
-                content
-              </option>
-              <option
-                value="media.description"
-              >
-                description
-              </option>
-              <option
-                value="media.keywords"
-              >
-                keywords
-              </option>
-              <option
-                value="media.orientation"
-              >
-                orientation
-              </option>
-              <option
-                value="media.title"
-              >
-                title
-              </option>
-              <option
-                value="media.type"
-              >
-                type
-              </option>
-            </optgroup>
-            <optgroup
-              label="Source"
-            >
-              <option
-                value="source.extension"
-              >
-                extension
-              </option>
-              <option
-                value="source.filename"
-              >
-                filename
-              </option>
-              <option
-                value="source.mimetype"
-              >
-                mimetype
-              </option>
-              <option
-                value="source.path"
-              >
-                path
-              </option>
-            </optgroup>
-            <optgroup
-              label="System"
-            >
-              <option
-                value="system.dataSourceId"
-              >
-                dataSourceId
-              </option>
-              <option
-                value="system.jobId"
-              >
-                jobId
-              </option>
-              <option
-                value="system.projectId"
-              >
-                projectId
-              </option>
-              <option
-                value="system.state"
-              >
-                state
-              </option>
-              <option
-                value="system.taskId"
-              >
-                taskId
-              </option>
-            </optgroup>
-          </select>
-        </label>
-        <div
-          className="emotion-4"
+        <Listbox
+          label="Metadata Type"
+          onChange={[Function]}
+          options={
+            Object {
+              "Analysis": Object {
+                "Zvi": Object {
+                  "tinyProxy": "analysis.zvi.tinyProxy",
+                },
+              },
+              "Clip": Object {
+                "pile": "clip.pile",
+                "sourceAssetId": "clip.sourceAssetId",
+                "timeline": "clip.timeline",
+                "type": "clip.type",
+              },
+              "Location": Object {
+                "city": "location.city",
+                "code": "location.code",
+                "country": "location.country",
+              },
+              "Media": Object {
+                "author": "media.author",
+                "content": "media.content",
+                "description": "media.description",
+                "keywords": "media.keywords",
+                "orientation": "media.orientation",
+                "title": "media.title",
+                "type": "media.type",
+              },
+              "Source": Object {
+                "extension": "source.extension",
+                "filename": "source.filename",
+                "mimetype": "source.mimetype",
+                "path": "source.path",
+              },
+              "System": Object {
+                "dataSourceId": "system.dataSourceId",
+                "jobId": "system.jobId",
+                "projectId": "system.projectId",
+                "state": "system.state",
+                "taskId": "system.taskId",
+              },
+            }
+          }
+          placeholder="type"
+          value="system.type"
         />
         <div
-          className="emotion-8"
+          className="emotion-2"
+        />
+        <div
+          className="emotion-6"
         >
           <label
-            className="emotion-5"
+            className="emotion-3"
             htmlFor="values"
           >
             Number of Values Shown
           </label>
           <div
-            className="emotion-7"
+            className="emotion-5"
           >
             <input
-              className="emotion-6"
+              className="emotion-4"
               disabled={false}
               id="values"
               name="values"
@@ -973,26 +1056,26 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
             />
           </div>
           <div
-            className="emotion-8"
+            className="emotion-6"
           >
              
           </div>
         </div>
         <div
-          className="emotion-13"
+          className="emotion-11"
         >
           <button
-            className="emotion-10"
+            className="emotion-8"
             onClick={[Function]}
             type="button"
           >
             Cancel
           </button>
           <div
-            className="emotion-11"
+            className="emotion-9"
           />
           <button
-            className="emotion-12"
+            className="emotion-10"
             onClick={[Function]}
             type="button"
           >

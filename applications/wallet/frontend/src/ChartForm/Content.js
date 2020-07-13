@@ -2,21 +2,18 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
-
 import chartShape from '../Chart/shape'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import { spacing, typography } from '../Styles'
 
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import Listbox from '../Listbox'
 import { capitalizeFirstLetter } from '../Text/helpers'
 import { ACTIONS } from '../DataVisualization/reducer'
 
-import ChartFormOptions from './Options'
 import { formatFields } from './helpers'
-
-const ICON_SIZE = 20
 
 const ChartFormContent = ({
   chart,
@@ -39,6 +36,9 @@ const ChartFormContent = ({
 
   const filteredFields = formatFields({ fields, type })
 
+  const splitAttribute = attribute.split('.')
+  const shortenedAttribute = splitAttribute[splitAttribute.length - 1]
+
   return (
     <Form
       style={{
@@ -58,38 +58,13 @@ const ChartFormContent = ({
 
       <div css={{ height: spacing.comfy }} />
 
-      <label css={{ color: colors.structure.zinc }}>
-        Metadata Type
-        <select
-          defaultValue={attribute}
-          onChange={({ target: { value } }) => {
-            setAttribute(value)
-          }}
-          css={{
-            marginTop: spacing.base,
-            width: '100%',
-            padding: `${spacing.moderate}px ${spacing.base}px`,
-            backgroundColor: colors.structure.steel,
-            color: colors.structure.white,
-            borderRadius: constants.borderRadius.small,
-            border: 'none',
-            fontSize: typography.size.regular,
-            lineHeight: typography.height.regular,
-            paddingLeft: spacing.moderate,
-            MozAppearance: 'none',
-            WebkitAppearance: 'none',
-            backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+')`,
-            backgroundRepeat: `no-repeat, repeat`,
-            backgroundPosition: `right ${spacing.base}px top 50%`,
-            backgroundSize: ICON_SIZE,
-          }}
-        >
-          <option value="" disabled>
-            Select metadata type
-          </option>
-          <ChartFormOptions fields={filteredFields} type={type} path="" />
-        </select>
-      </label>
+      <Listbox
+        label="Metadata Type"
+        value={attribute}
+        placeholder={shortenedAttribute || 'Select Type'}
+        options={filteredFields}
+        onChange={({ value }) => setAttribute(value)}
+      />
 
       {type === 'range' && <div css={{ height: spacing.spacious }} />}
 

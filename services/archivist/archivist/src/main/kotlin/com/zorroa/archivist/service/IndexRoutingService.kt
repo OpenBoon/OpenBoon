@@ -39,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional
 import java.net.URI
 import java.util.UUID
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Manages the creation and usage of ES indexes.  Currently this implementation only supports
@@ -91,6 +90,11 @@ interface IndexRoutingService {
      * Apply all outstanding mapping patches to all active IndexRoutes.
      */
     fun syncAllIndexRoutes()
+
+    /**
+     * Apply all outstanding mapping patches to all active IndexRoutes for the cluster.
+     */
+    fun syncAllIndexRoutes(cluster: IndexCluster)
 
     /**
      * Return a list of all [ElasticMapping] patches for the given mappingType and major version.
@@ -170,7 +174,6 @@ class IndexRoutingServiceImpl @Autowired
 constructor(
     val indexRouteDao: IndexRouteDao,
     val indexClusterDao: IndexClusterDao,
-    val indexClusterService: IndexClusterService,
     val properties: ApplicationProperties,
     val txEvent: TransactionEventManager
 ) : IndexRoutingService {
@@ -180,8 +183,6 @@ constructor(
 
     @Autowired
     lateinit var esClientCache: EsClientCache
-
-    val migrated = AtomicBoolean(false)
 
     @Transactional
     override fun createIndexRoute(spec: IndexRouteSpec): IndexRoute {
@@ -196,7 +197,7 @@ constructor(
         val cluster = if (spec.clusterId != null) {
             indexClusterDao.get(spec.clusterId as UUID)
         } else {
-            indexClusterService.getNextAutoPoolCluster()
+            indexClusterDao.getNextAutoPoolCluster()
         }
 
         spec.clusterId = cluster.id
@@ -250,7 +251,12 @@ constructor(
         val routes = indexRouteDao.getAll()
         logger.info("Syncing all ${routes.size} index routes.")
         routes.forEach { syncIndexRouteVersion(it) }
-        migrated.set(true)
+    }
+
+    override fun syncAllIndexRoutes(cluster: IndexCluster) {
+        val routes = indexRouteDao.getAll(cluster)
+        logger.info("Syncing ${routes.size} index routes for ${cluster.url}")
+        routes.forEach { syncIndexRouteVersion(it) }
     }
 
     override fun syncIndexRouteVersion(route: IndexRoute): ElasticMapping? {
@@ -353,11 +359,6 @@ constructor(
     }
 
     override fun performHealthCheck(): Health {
-        if (!migrated.get()) {
-            return Health.down().withDetail(
-                "ElasticSearch routes have not been migrated", migrated
-            ).build()
-        }
         for (route in indexRouteDao.getAll()) {
             val client = getClusterRestClient(route)
             if (!client.isAvailable()) {

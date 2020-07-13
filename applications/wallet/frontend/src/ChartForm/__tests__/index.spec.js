@@ -7,6 +7,8 @@ import ChartForm from '..'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const CHART_ID = '972a8ab5-cdcb-4eea-ada7-f1c88d997fed'
 
+jest.mock('../../Listbox', () => 'Listbox')
+
 const noop = () => () => {}
 
 describe('<ChartForm />', () => {
@@ -36,11 +38,13 @@ describe('<ChartForm />', () => {
       />,
     )
 
+    expect(component.toJSON()).toMatchSnapshot()
+
     // Select attribute
     act(() => {
       component.root
-        .findByType('select')
-        .props.onChange({ target: { value: 'system.type' } })
+        .findByProps({ label: 'Metadata Type' })
+        .props.onChange({ value: 'system.type' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -97,8 +101,8 @@ describe('<ChartForm />', () => {
     // Select attribute
     act(() => {
       component.root
-        .findByType('select')
-        .props.onChange({ target: { value: 'clip.pile' } })
+        .findByProps({ label: 'Metadata Type' })
+        .props.onChange({ value: 'clip.pile' })
     })
 
     // Set Values

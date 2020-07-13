@@ -16,9 +16,11 @@ const Tabs = ({ tabs }) => {
           borderBottom: constants.borders.regular.iron,
         }}
       >
-        {tabs.map(({ title, href }) => (
-          <TabsLink key={href} title={title} href={href} />
-        ))}
+        {tabs
+          .filter(({ title, href }) => title && href)
+          .map(({ title, href }) => (
+            <TabsLink key={href} title={title} href={href} />
+          ))}
       </ul>
     </nav>
   )
@@ -27,8 +29,8 @@ const Tabs = ({ tabs }) => {
 Tabs.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      href: PropTypes.string.isRequired,
+      title: PropTypes.string,
+      href: PropTypes.string,
     }).isRequired,
   ).isRequired,
 }

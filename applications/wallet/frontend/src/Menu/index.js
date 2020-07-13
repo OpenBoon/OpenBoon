@@ -28,7 +28,7 @@ const Menu = ({ button, children, open }) => {
             backgroundColor: colors.structure.steel,
             borderRadius: constants.borderRadius.small,
             boxShadow: constants.boxShadows.menu,
-            width: WIDTH,
+            minWidth: WIDTH,
             ul: {
               listStyleType: 'none',
               padding: 0,
