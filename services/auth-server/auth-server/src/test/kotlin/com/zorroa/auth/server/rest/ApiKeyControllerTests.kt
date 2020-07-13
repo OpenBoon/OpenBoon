@@ -250,6 +250,17 @@ class ApiKeyControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testDeleteProjectStandardKeys() {
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/auth/v1/apikey/_project_standard_keys/${mockKey.projectId}")
+                .headers(superAdmin(mockKey.projectId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+
+    @Test
     fun testEnableProject() {
         mvc.perform(
             MockMvcRequestBuilders.post("/auth/v1/apikey/_enable_project/${mockKey.projectId}")

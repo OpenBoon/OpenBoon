@@ -99,6 +99,12 @@ class ApiKeyController(
         apiKeyService.delete(apiKeyService.get(id))
     }
 
+    @DeleteMapping("/auth/v1/apikey/_project_standard_keys/{projectId}")
+    @ApiOperation("Delete Project Standard Keys")
+    fun deleteStandardKeys(@PathVariable projectId: UUID) {
+        apiKeyService.deleteProjectStandardKeys(projectId)
+    }
+
     @GetMapping("/auth/v1/apikey")
     @ApiOperation("Retrieve all Keys")
     fun findAll(): List<ApiKey> {

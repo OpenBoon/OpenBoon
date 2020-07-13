@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ApiKeyServiceTests : AbstractTest() {
@@ -237,6 +238,27 @@ class ApiKeyServiceTests : AbstractTest() {
         )
         val key1 = apiKeyService.create(spec)
         apiKeyService.delete(key1)
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testDeleteStandardKeys() {
+        val standardKey = ApiKeySpec(
+            "job-runner",
+            setOf(Permission.AssetsRead)
+        )
+
+        val normalKey = ApiKeySpec(
+            "normal-key",
+            setOf(Permission.AssetsRead)
+        )
+
+        val key1 = apiKeyService.create(standardKey)
+        val key2 = apiKeyService.create(normalKey)
+
+        apiKeyService.deleteProjectStandardKeys(projectId = getProjectId())
+
+        assertNotNull(apiKeyService.get(key2.id))
+        apiKeyService.get(key1.id)
     }
 
     @Test

@@ -36,6 +36,7 @@ import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
+import com.zorroa.zmlp.service.storage.SystemStorageException
 import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
@@ -181,9 +182,13 @@ class ProjectServiceImpl constructor(
             projectStatsDao.createIngestTimeSeriesEntries(project.id)
         }
 
-        txEvent.afterCommit(sync = true) {
+        createStandardApiKeys(project)
+        try {
             createCryptoKey(project)
-            createStandardApiKeys(project)
+        } catch (ex: SystemStorageException){
+            logger.error("Failure on storage service. Project ${project.name} not created")
+            authServerClient.deleteStandardKeysByProject(project.id)
+            throw ex
         }
 
         enabledCache.invalidate(project.id)

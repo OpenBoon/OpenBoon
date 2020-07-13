@@ -1,5 +1,7 @@
 package com.zorroa.archivist.service
 
+import com.nhaarman.mockito_kotlin.anyOrNull
+import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.PipelineSpec
@@ -8,8 +10,11 @@ import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.zmlp.service.storage.SystemStorageException
+import com.zorroa.zmlp.service.storage.SystemStorageService
 
 import org.junit.Test
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
 import kotlin.test.assertEquals
@@ -20,6 +25,9 @@ class ProjectServiceTests : AbstractTest() {
 
     val testSpec = ProjectSpec("project_test")
 
+    @MockBean
+    lateinit var systemStorageService: SystemStorageService
+
     override fun requiresElasticSearch(): Boolean {
         return true
     }
@@ -28,6 +36,14 @@ class ProjectServiceTests : AbstractTest() {
     fun createProject() {
         val project = projectService.create(testSpec)
         assertEquals(testSpec.name, project.name)
+    }
+
+    @Test(expected = SystemStorageException::class)
+    fun createProjectStorageFail() {
+        whenever(systemStorageService.storeObject(anyOrNull(), anyOrNull()))
+            .thenThrow(SystemStorageException("Fail"))
+
+        projectService.create(testSpec)
     }
 
     @Test
