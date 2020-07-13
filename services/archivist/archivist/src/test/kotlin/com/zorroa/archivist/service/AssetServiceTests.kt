@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetMetrics
 import com.zorroa.archivist.domain.AssetSpec
@@ -425,6 +426,20 @@ class AssetServiceTests : AbstractTest() {
         var quota = projectQuotasDao.getQuotas(getProjectId())
         assertEquals(2L, quota.deletedPageCount)
         assertEquals(BigDecimal("10.73"), quota.deletedVideoSecondsCount)
+    }
+
+    @Test(expected = ArchivistException::class)
+    fun testBatchDeleteExceedMaxSize() {
+        val maxBatchSize = properties.getInt("archivist.assets.deletion-max-batch-size")
+
+        // Max + 1
+        val batchCreate = BatchCreateAssetsRequest(
+            assets =
+                (0..maxBatchSize).map {AssetSpec("gs://cat/large-brown-cat-$it.jpg")}
+
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        assetService.batchDelete(createRsp.created.toSet())
     }
 
     @Test
