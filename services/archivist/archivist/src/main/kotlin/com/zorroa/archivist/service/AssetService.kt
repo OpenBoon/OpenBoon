@@ -378,16 +378,21 @@ class AssetServiceImpl : AssetService {
         // A set of IDs where the stat changed to Analyzed.
         val stateChangedIds = mutableSetOf<String>()
 
-        val listOfFailedAssets: ArrayList<BulkItemResponse> = arrayListOf()
+        val listOfFailedAssets = mutableListOf<BulkItemResponse>()
 
         docs.forEach { (id, doc) ->
-            var asset: Asset? = null
             try {
-                asset = prepAssetForUpdate(id, doc)
+                val asset = prepAssetForUpdate(id, doc)
                 if (setAnalyzed && !asset.isAnalyzed()) {
                     asset.setAttr("system.state", AssetState.Analyzed.name)
                     stateChangedIds.add(id)
                 }
+
+                bulk.add(
+                    rest.newIndexRequest(id)
+                        .source(doc)
+                        .opType(DocWriteRequest.OpType.INDEX)
+                )
             } catch (ex: IllegalArgumentException) {
                 listOfFailedAssets.add(
                     BulkItemResponse(
@@ -405,23 +410,10 @@ class AssetServiceImpl : AssetService {
                     )
                 )
             }
-
-            /*
-             * Index here vs update because otherwise the new doc will
-             * be merge of the old one and the new one.
-             */
-            asset?.let {
-                bulk.add(
-                    rest.newIndexRequest(id)
-                        .source(doc)
-                        .opType(DocWriteRequest.OpType.INDEX)
-                )
-            }
+            logger.event(
+                LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to bulk.numberOfActions())
+            )
         }
-
-        logger.event(
-            LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to bulk.numberOfActions())
-        )
 
         var rsp: BulkResponse? = null
 
