@@ -48,7 +48,7 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
           css={{
             display: 'flex',
             ':hover': {
-              backgroundColor: colors.signal.electricBlue.background,
+              backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
               svg: { opacity: 1 },
             },
           }}
