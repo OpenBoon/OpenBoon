@@ -10,7 +10,7 @@ import Button, { VARIANTS } from '../Button'
 import FilterReset from '../Filter/Reset'
 import FilterSearch from '../Filter/Search'
 
-import { dispatch, ACTIONS, encode } from '../Filters/helpers'
+import { getNewFacets, dispatch, ACTIONS, encode } from '../Filters/helpers'
 
 export const noop = () => {}
 
@@ -45,8 +45,6 @@ const FilterFacet = ({
   const { buckets = [] } = results || {}
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
-
-  const hasSelections = facets.length > 0
 
   return (
     <>
@@ -101,22 +99,23 @@ const FilterFacet = ({
                   backgroundColor: isSelected
                     ? colors.signal.electricBlue.background
                     : '',
-                  color: hasSelections
-                    ? colors.structure.zinc
-                    : colors.structure.white,
+                  color: colors.structure.zinc,
                   ':hover': {
                     backgroundColor: colors.signal.electricBlue.background,
                     color: colors.structure.white,
                   },
                 }}
                 variant={VARIANTS.NEUTRAL}
-                onClick={() => {
-                  const newFacets = isSelected
-                    ? [
-                        ...facets.slice(0, facetIndex),
-                        ...facets.slice(facetIndex + 1),
-                      ]
-                    : [...facets, key]
+                onClick={(event) => {
+                  const hasModifier = event.metaKey || event.ctrlKey
+
+                  const newFacets = getNewFacets({
+                    facets,
+                    isSelected,
+                    hasModifier,
+                    facetIndex,
+                    key,
+                  })
 
                   const values =
                     newFacets.length > 0 ? { facets: newFacets } : {}
@@ -144,7 +143,7 @@ const FilterFacet = ({
                       css={{
                         width: `${offset}%`,
                         borderTop:
-                          isDisabled || (!isSelected && hasSelections)
+                          isDisabled || !isSelected
                             ? constants.borders.large.steel
                             : constants.borders.keyOneLarge,
                       }}
