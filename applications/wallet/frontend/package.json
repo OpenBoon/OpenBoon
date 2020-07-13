@@ -158,7 +158,7 @@
     "eslint-plugin-react-hooks": "4.0.5",
     "esm": "3.2.25",
     "express": "4.17.1",
-    "http-proxy-middleware": "1.0.4",
+    "http-proxy-middleware": "1.0.5",
     "husky": "4.2.5",
     "import-all.macro": "3.0.0",
     "jest": "26.1.0",
