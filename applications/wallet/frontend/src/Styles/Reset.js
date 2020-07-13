@@ -49,6 +49,8 @@ const StylesReset = () => (
           padding: spacing.normal,
           fontSize: typography.size.regular,
           lineHeight: typography.height.regular,
+        },
+        'input[type="search"]': {
           WebkitAppearance: 'textfield',
         },
         'input[type="search"]::-webkit-search-cancel-button': {
