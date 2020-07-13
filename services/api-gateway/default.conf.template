@@ -1,13 +1,16 @@
 upstream archivist {
   server ${ARCHIVIST_HOST};
+  keepalive 128;
 }
 
 upstream authserver {
   server ${AUTH_SERVER_HOST};
+  keepalive 128;
 }
 
 upstream mlbbq {
   server ${MLBBQ_SERVER_HOST};
+  keepalive 128;
 }
 
 client_max_body_size 300M;
@@ -17,12 +20,21 @@ server {
 
   listen 80;
   server_name localhost;
+  proxy_connect_timeout 300s;
+  proxy_read_timeout 300s;
+  gzip on;
+  gzip_min_length 1000;
+  gzip_types font/woff2 text/css application/javascript application/json image/jpeg image/png;
+  gzip_proxied no-cache no-store private expired auth;
+  proxy_http_version 1.1;
+  proxy_set_header Connection "";
 
   location / {
     proxy_pass http://archivist;
     proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
     proxy_set_header Host ${DOLLAR}host;
     proxy_redirect off;
+    aio threads;
   }
 
   location /auth/ {
@@ -30,6 +42,7 @@ server {
     proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
     proxy_set_header Host ${DOLLAR}host;
     proxy_redirect off;
+    aio threads;
   }
 
   location /ml/ {
@@ -37,6 +50,7 @@ server {
     proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
     proxy_set_header Host ${DOLLAR}host;
     proxy_redirect off;
+    aio threads;
   }
 
 }
