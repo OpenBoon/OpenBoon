@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { constants, colors, spacing, typography, zIndex } from '../Styles'
+import { constants, colors, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 import SuspenseBoundary from '../SuspenseBoundary'
@@ -10,7 +10,7 @@ import Metadata from '../Metadata'
 import AssetDelete from '../AssetDelete'
 
 import InformationSvg from '../Icons/information.svg'
-import CrossSvg from '../Icons/cross.svg'
+import BackSvg from '../Icons/back.svg'
 import TrashSvg from '../Icons/trash.svg'
 
 import AssetAsset from './Asset'
@@ -44,50 +44,47 @@ const AssetContent = () => {
           display: 'flex',
           height: '100%',
           overflowY: 'hidden',
-          position: 'relative',
         }}
       >
-        <Link
-          href={`/[projectId]/visualizer${idString}${queryString}`}
-          as={`/${projectId}/visualizer${idString}${queryString}`}
-          passHref
-        >
-          <Button
-            variant={VARIANTS.MENU_ITEM}
+        <div css={{ flex: 1 }}>
+          <div
             css={{
-              position: 'absolute',
-              top: spacing.base,
-              left: spacing.base,
-              padding: spacing.base,
+              paddingLeft: spacing.base,
+              paddingRight: spacing.base,
+              backgroundColor: colors.structure.lead,
               color: colors.structure.steel,
-              borderRadius: constants.borderRadius.small,
-              ':hover': {
-                color: colors.structure.white,
-              },
-              zIndex: zIndex.layout.interactive,
+              boxShadow: constants.boxShadows.navBar,
+              marginBottom: spacing.hairline,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
-            <div css={{ display: 'flex' }}>
-              <CrossSvg height={ICON_SIZE} />
-
-              <span
+            <Link
+              href={`/[projectId]/visualizer${idString}${queryString}`}
+              as={`/${projectId}/visualizer${idString}${queryString}`}
+              passHref
+            >
+              <Button
+                variant={VARIANTS.NEUTRAL}
                 css={{
-                  paddingLeft: spacing.base,
-                  fontSize: typography.size.medium,
-                  lineHeight: typography.height.medium,
-                  fontWeight: typography.weight.bold,
-                  textTransform: 'uppercase',
+                  padding: spacing.base,
+                  color: colors.structure.steel,
+                  borderRadius: constants.borderRadius.small,
+                  ':hover': {
+                    color: colors.structure.white,
+                  },
                 }}
               >
-                Close View
-              </span>
-            </div>
-          </Button>
-        </Link>
+                <BackSvg height={ICON_SIZE} />
+              </Button>
+            </Link>
+          </div>
 
-        <SuspenseBoundary>
-          <AssetAsset projectId={projectId} assetId={assetId} />
-        </SuspenseBoundary>
+          <SuspenseBoundary>
+            <AssetAsset projectId={projectId} assetId={assetId} />
+          </SuspenseBoundary>
+        </div>
 
         <Panel openToThe="left">
           {{
