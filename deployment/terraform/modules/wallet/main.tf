@@ -101,8 +101,9 @@ resource "kubernetes_deployment" "wallet" {
             timeout_seconds = 5
           }
           readiness_probe {
-            initial_delay_seconds = 30
-            period_seconds        = 30
+            initial_delay_seconds = 5
+            period_seconds        = 5
+            failure_threshold = 10
             http_get {
               scheme = "HTTP"
               path   = "/api/v1/health/"
@@ -115,11 +116,11 @@ resource "kubernetes_deployment" "wallet" {
           resources {
             limits {
               memory = "2Gi"
-              cpu    = 2
+              cpu    = 3
             }
             requests {
               memory = "256Mi"
-              cpu    = 1
+              cpu    = 2
             }
           }
           env {
