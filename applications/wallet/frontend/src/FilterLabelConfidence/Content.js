@@ -8,7 +8,7 @@ import Button, { VARIANTS } from '../Button'
 
 import filterShape from '../Filter/shape'
 
-import { dispatch, ACTIONS, encode } from '../Filters/helpers'
+import { getNewFacets, dispatch, ACTIONS, encode } from '../Filters/helpers'
 import FilterSearch from '../Filter/Search'
 
 import FilterLabelConfidenceSlider from './Slider'
@@ -45,8 +45,6 @@ const FilterLabelConfidenceContent = ({
   const { buckets = [] } = results || {}
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
-
-  const hasSelections = labels.length > 0
 
   return (
     <>
@@ -98,22 +96,23 @@ const FilterLabelConfidenceContent = ({
                   backgroundColor: isSelected
                     ? colors.signal.electricBlue.background
                     : '',
-                  color: hasSelections
-                    ? colors.structure.zinc
-                    : colors.structure.white,
+                  color: colors.structure.white,
                   ':hover': {
                     backgroundColor: colors.signal.electricBlue.background,
                     color: colors.structure.white,
                   },
                 }}
                 variant={VARIANTS.NEUTRAL}
-                onClick={() => {
-                  const newLabelConfidences = isSelected
-                    ? [
-                        ...labels.slice(0, facetIndex),
-                        ...labels.slice(facetIndex + 1),
-                      ]
-                    : [...labels, key]
+                onClick={(event) => {
+                  const hasModifier = event.metaKey || event.ctrlKey
+
+                  const newLabelConfidences = getNewFacets({
+                    facets: labels,
+                    isSelected,
+                    hasModifier,
+                    facetIndex,
+                    key,
+                  })
 
                   const values =
                     newLabelConfidences.length > 0
@@ -143,7 +142,7 @@ const FilterLabelConfidenceContent = ({
                       css={{
                         width: `${offset}%`,
                         borderTop:
-                          isDisabled || (!isSelected && hasSelections)
+                          isDisabled || !isSelected
                             ? constants.borders.large.steel
                             : constants.borders.keyOneLarge,
                       }}
