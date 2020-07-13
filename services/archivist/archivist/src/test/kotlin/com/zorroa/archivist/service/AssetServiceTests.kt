@@ -428,7 +428,7 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(BigDecimal("10.73"), quota.deletedVideoSecondsCount)
     }
 
-    @Test(expected = ArchivistException::class)
+    @Test(expected = IllegalArgumentException::class)
     fun testBatchDeleteExceedMaxSize() {
         val maxBatchSize = properties.getInt("archivist.assets.deletion-max-batch-size")
 

@@ -412,7 +412,7 @@ class AssetServiceImpl : AssetService {
 
         val maximumBatchSize = properties.getInt("archivist.assets.deletion-max-batch-size")
         if (ids.size > maximumBatchSize) {
-            throw ArchivistException("Maximum allowed size exceeded. Maximum batch size for delete: $maximumBatchSize")
+            throw IllegalArgumentException("Maximum allowed size exceeded. Maximum batch size for delete: $maximumBatchSize")
         }
 
         val rest = indexRoutingService.getProjectRestClient()
