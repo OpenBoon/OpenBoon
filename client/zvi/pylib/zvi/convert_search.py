@@ -5,7 +5,7 @@ from collections import defaultdict
 from zmlp import app_from_env
 
 
-class ConvertSearchResults():
+class ConvertSearchResults:
     """Convert search results into different formats"""
 
     def __init__(self, search=None, num_assets=1000, attrs=None, descriptor='source.filename'):
