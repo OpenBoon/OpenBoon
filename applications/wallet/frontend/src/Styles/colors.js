@@ -36,7 +36,6 @@ const colors = {
     },
     electricBlue: {
       base: '#027aff',
-      background: '#027aff38',
     },
   },
 
