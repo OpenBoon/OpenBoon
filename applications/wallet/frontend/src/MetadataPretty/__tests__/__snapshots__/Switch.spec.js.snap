@@ -1448,7 +1448,7 @@ Array [
             >
               <svg
                 color="#ffffff"
-                data-file-name="expand.svg"
+                data-file-name="search.svg"
                 height={20}
               />
             </a>
@@ -1492,7 +1492,7 @@ Array [
             >
               <svg
                 color="#ffffff"
-                data-file-name="expand.svg"
+                data-file-name="search.svg"
                 height={20}
               />
             </a>
@@ -1536,7 +1536,7 @@ Array [
             >
               <svg
                 color="#ffffff"
-                data-file-name="expand.svg"
+                data-file-name="search.svg"
                 height={20}
               />
             </a>
@@ -1589,7 +1589,7 @@ Array [
             >
               <svg
                 color="#ffffff"
-                data-file-name="expand.svg"
+                data-file-name="search.svg"
                 height={20}
               />
             </a>

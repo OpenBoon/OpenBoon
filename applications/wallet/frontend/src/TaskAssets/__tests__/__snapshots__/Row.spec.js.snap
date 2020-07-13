@@ -366,7 +366,7 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
         >
           <svg
             color="#ffffff"
-            data-file-name="expand.svg"
+            data-file-name="search.svg"
             height={20}
           />
         </a>

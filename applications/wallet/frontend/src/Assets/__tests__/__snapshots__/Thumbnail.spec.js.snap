@@ -224,7 +224,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   >
     <svg
       color="#ffffff"
-      data-file-name="expand.svg"
+      data-file-name="search.svg"
       height={20}
     />
   </a>
@@ -455,7 +455,7 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   >
     <svg
       color="#ffffff"
-      data-file-name="expand.svg"
+      data-file-name="search.svg"
       height={20}
     />
   </a>
@@ -704,7 +704,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   >
     <svg
       color="#ffffff"
-      data-file-name="expand.svg"
+      data-file-name="search.svg"
       height={20}
     />
   </a>
@@ -940,7 +940,7 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   >
     <svg
       color="#ffffff"
-      data-file-name="expand.svg"
+      data-file-name="search.svg"
       height={20}
     />
   </a>
@@ -1170,7 +1170,7 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   >
     <svg
       color="#ffffff"
-      data-file-name="expand.svg"
+      data-file-name="search.svg"
       height={20}
     />
   </a>

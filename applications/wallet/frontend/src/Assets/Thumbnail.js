@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import { colors, constants, spacing } from '../Styles'
 
-import ExpandSvg from '../Icons/expand.svg'
+import SearchSvg from '../Icons/search.svg'
 import SimilaritySvg from '../Icons/similarity.svg'
 
 import Button, { VARIANTS } from '../Button'
@@ -157,7 +157,7 @@ const AssetsThumbnail = ({
             },
           }}
         >
-          <ExpandSvg height={ICON_SIZE} color={colors.structure.white} />
+          <SearchSvg height={ICON_SIZE} color={colors.structure.white} />
         </Button>
       </Link>
 
