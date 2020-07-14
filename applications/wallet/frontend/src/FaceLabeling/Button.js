@@ -61,7 +61,7 @@ const FaceLabelingButton = ({
             left: 0,
             zIndex: zIndex.reset,
             backgroundColor: colors.structure.iron,
-            border: constants.borders.regular.white,
+            border: constants.borders.regular.steel,
             borderRadius: constants.borderRadius.small,
             padding: spacing.moderate,
           }}

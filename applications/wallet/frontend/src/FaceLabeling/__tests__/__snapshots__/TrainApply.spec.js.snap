@@ -246,7 +246,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   left: 0;
   z-index: 1;
   background-color: #4a4a4a;
-  border: 1px solid #ffffff;
+  border: 1px solid #808080;
   border-radius: 2px;
   padding: 12px;
 }
@@ -550,7 +550,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   left: 0;
   z-index: 1;
   background-color: #4a4a4a;
-  border: 1px solid #ffffff;
+  border: 1px solid #808080;
   border-radius: 2px;
   padding: 12px;
 }
