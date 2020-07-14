@@ -94,3 +94,15 @@ export const getSaveButtonCopy = ({ isChanged, isLoading }) => {
 
   return 'Saved'
 }
+
+export const getHelpInfoCopy = ({ jobId, unappliedChanges }) => {
+  if (jobId && unappliedChanges) {
+    return 'There are new labels that have not been used for training. Restart training with the latest labels.'
+  }
+
+  if (jobId && !unappliedChanges) {
+    return 'There are no new labels to train.'
+  }
+
+  return 'There are new labels. Click to train and apply.'
+}

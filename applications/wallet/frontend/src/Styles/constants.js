@@ -43,8 +43,11 @@ const borders = {
 
 const opacity = {
   background: 0.15,
+  hex22Pct: '38',
   third: 0.3,
   half: 0.5,
+  // https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
+  hexHalf: '80',
   eighth: 0.8,
   full: 1,
 }

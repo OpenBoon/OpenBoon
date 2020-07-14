@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import { colors, constants, spacing } from '../Styles'
 
-import ExpandSvg from '../Icons/expand.svg'
+import SearchSvg from '../Icons/search.svg'
 import SimilaritySvg from '../Icons/similarity.svg'
 
 import Button, { VARIANTS } from '../Button'
@@ -61,7 +61,7 @@ const AssetsThumbnail = ({
             ? constants.borders.assetSelected
             : constants.borders.large.white,
           'a, button': {
-            display: 'flex',
+            opacity: 1,
           },
         },
       }}
@@ -110,15 +110,15 @@ const AssetsThumbnail = ({
         aria-label="Find similar images"
         variant={VARIANTS.NEUTRAL}
         style={{
-          display: 'none',
+          opacity: 0,
           position: 'absolute',
           top: spacing.small,
           right: spacing.small,
           padding: spacing.small,
-          backgroundColor: colors.structure.smoke,
-          opacity: constants.opacity.half,
-          ':hover': {
-            opacity: constants.opacity.eighth,
+          backgroundColor: `${colors.structure.smoke}${constants.opacity.hexHalf}`,
+          ':hover,  &.focus-visible:focus': {
+            opacity: 1,
+            backgroundColor: colors.structure.smoke,
           },
         }}
         onClick={() => {
@@ -145,19 +145,19 @@ const AssetsThumbnail = ({
         <Button
           variant={VARIANTS.NEUTRAL}
           style={{
-            display: 'none',
+            opacity: 0,
             position: 'absolute',
             bottom: spacing.small,
             right: spacing.small,
             padding: spacing.small,
-            backgroundColor: colors.structure.smoke,
-            opacity: constants.opacity.half,
-            ':hover': {
-              opacity: constants.opacity.eighth,
+            backgroundColor: `${colors.structure.smoke}${constants.opacity.hexHalf}`,
+            ':hover,  &.focus-visible:focus': {
+              opacity: 1,
+              backgroundColor: colors.structure.smoke,
             },
           }}
         >
-          <ExpandSvg height={ICON_SIZE} color={colors.structure.white} />
+          <SearchSvg height={ICON_SIZE} color={colors.structure.white} />
         </Button>
       </Link>
 

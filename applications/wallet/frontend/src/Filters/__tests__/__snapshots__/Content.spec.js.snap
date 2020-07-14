@@ -2631,7 +2631,7 @@ Array [
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  color: #ffffff;
+  color: #b3b3b3;
 }
 
 .emotion-21:hover {
@@ -2661,7 +2661,7 @@ Array [
 
 .emotion-14 {
   width: 100%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-15 {
@@ -2697,7 +2697,7 @@ Array [
 
 .emotion-22 {
   width: 67%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-23 {
@@ -2708,7 +2708,7 @@ Array [
 
 .emotion-30 {
   width: 34%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-31 {
@@ -2719,7 +2719,7 @@ Array [
 
 .emotion-62 {
   width: 0%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-63 {
@@ -3767,58 +3767,6 @@ Array [
   font-style: italic;
 }
 
-.emotion-23 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  width: 100%;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  color: #ffffff;
-}
-
-.emotion-23:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-23[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-23:hover {
-  background-color: #027aff38;
-  color: #ffffff;
-}
-
 .emotion-12 {
   position: absolute;
   width: 100%;
@@ -3896,6 +3844,58 @@ Array [
   list-style: none;
 }
 
+.emotion-23 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  color: #ffffff;
+}
+
+.emotion-23:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-23[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-23:hover {
+  background-color: #027aff38;
+  color: #ffffff;
+}
+
 .emotion-22 {
   width: 100%;
 }
@@ -3909,7 +3909,7 @@ Array [
 
 .emotion-18 {
   width: 100%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-19 {
@@ -3935,7 +3935,7 @@ Array [
 
 .emotion-24 {
   width: 56%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-25 {
@@ -3946,7 +3946,7 @@ Array [
 
 .emotion-30 {
   width: 42%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-31 {
@@ -3957,7 +3957,7 @@ Array [
 
 .emotion-36 {
   width: 34%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-37 {
@@ -3968,7 +3968,7 @@ Array [
 
 .emotion-42 {
   width: 21%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-43 {
@@ -3979,7 +3979,7 @@ Array [
 
 .emotion-54 {
   width: 20%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-55 {
@@ -3990,7 +3990,7 @@ Array [
 
 .emotion-60 {
   width: 18%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-61 {
@@ -4001,7 +4001,7 @@ Array [
 
 .emotion-72 {
   width: 17%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-73 {
@@ -4012,7 +4012,7 @@ Array [
 
 .emotion-78 {
   width: 15%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-79 {
@@ -4023,7 +4023,7 @@ Array [
 
 .emotion-84 {
   width: 13%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-85 {
@@ -4034,7 +4034,7 @@ Array [
 
 .emotion-90 {
   width: 12%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-91 {
@@ -4045,7 +4045,7 @@ Array [
 
 .emotion-96 {
   width: 11%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-97 {
@@ -4056,7 +4056,7 @@ Array [
 
 .emotion-102 {
   width: 10%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-103 {
@@ -4067,7 +4067,7 @@ Array [
 
 .emotion-108 {
   width: 9%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-109 {
@@ -4078,7 +4078,7 @@ Array [
 
 .emotion-114 {
   width: 8%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-115 {
@@ -4089,7 +4089,7 @@ Array [
 
 .emotion-126 {
   width: 7%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-127 {
@@ -4100,7 +4100,7 @@ Array [
 
 .emotion-132 {
   width: 6%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-133 {
@@ -4111,7 +4111,7 @@ Array [
 
 .emotion-144 {
   width: 5%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-145 {
@@ -4122,7 +4122,7 @@ Array [
 
 .emotion-150 {
   width: 4%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-151 {
@@ -4133,7 +4133,7 @@ Array [
 
 .emotion-156 {
   width: 3%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-157 {
@@ -4144,7 +4144,7 @@ Array [
 
 .emotion-216 {
   width: 2%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-217 {
@@ -4155,7 +4155,7 @@ Array [
 
 .emotion-276 {
   width: 1%;
-  border-top: 4px solid #73b61c;
+  border-top: 4px solid #808080;
 }
 
 .emotion-277 {

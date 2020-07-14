@@ -84,10 +84,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
 
 .emotion-7:hover a,
 .emotion-7:hover button {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  opacity: 1;
 }
 
 .emotion-4 {
@@ -185,13 +182,12 @@ exports[`<TaskAssets /> should render properly 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   top: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-5:hover {
@@ -203,8 +199,10 @@ exports[`<TaskAssets /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
-  opacity: 0.8;
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 .emotion-6 {
@@ -238,13 +236,12 @@ exports[`<TaskAssets /> should render properly 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  display: none;
+  opacity: 0;
   position: absolute;
   bottom: 4px;
   right: 4px;
   padding: 4px;
-  background-color: #3b3b3b;
-  opacity: 0.5;
+  background-color: #3b3b3b80;
 }
 
 .emotion-6:hover {
@@ -256,8 +253,10 @@ exports[`<TaskAssets /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-6:hover {
-  opacity: 0.8;
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  opacity: 1;
+  background-color: #3b3b3b;
 }
 
 .emotion-9 {
@@ -502,7 +501,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
             >
               <svg
                 color="#ffffff"
-                data-file-name="expand.svg"
+                data-file-name="search.svg"
                 height={20}
               />
             </a>
@@ -582,7 +581,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
             >
               <svg
                 color="#ffffff"
-                data-file-name="expand.svg"
+                data-file-name="search.svg"
                 height={20}
               />
             </a>
@@ -662,7 +661,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
             >
               <svg
                 color="#ffffff"
-                data-file-name="expand.svg"
+                data-file-name="search.svg"
                 height={20}
               />
             </a>
@@ -742,7 +741,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
             >
               <svg
                 color="#ffffff"
-                data-file-name="expand.svg"
+                data-file-name="search.svg"
                 height={20}
               />
             </a>
@@ -831,7 +830,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
             >
               <svg
                 color="#ffffff"
-                data-file-name="expand.svg"
+                data-file-name="search.svg"
                 height={20}
               />
             </a>
