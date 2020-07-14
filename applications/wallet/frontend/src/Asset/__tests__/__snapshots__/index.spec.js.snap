@@ -26,7 +26,6 @@ exports[`<Asset /> should handle no query 1`] = `
   display: -ms-flexbox;
   display: flex;
   height: 100%;
-  overflow-y: hidden;
 }
 
 .emotion-4 {
@@ -327,7 +326,6 @@ exports[`<Asset /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   height: 100%;
-  overflow-y: hidden;
 }
 
 .emotion-4 {
@@ -621,7 +619,6 @@ exports[`<Asset /> should render videos properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   height: 100%;
-  overflow-y: hidden;
 }
 
 .emotion-4 {

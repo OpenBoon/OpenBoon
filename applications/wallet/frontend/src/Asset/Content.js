@@ -6,12 +6,12 @@ import SuspenseBoundary from '../SuspenseBoundary'
 import Panel from '../Panel'
 import Metadata from '../Metadata'
 import AssetDelete from '../AssetDelete'
-import AssetNavigation from './Navigation'
 
 import InformationSvg from '../Icons/information.svg'
 import TrashSvg from '../Icons/trash.svg'
 
 import AssetAsset from './Asset'
+import AssetNavigation from './Navigation'
 
 const ICON_SIZE = 20
 
@@ -38,7 +38,6 @@ const AssetContent = () => {
         css={{
           display: 'flex',
           height: '100%',
-          overflowY: 'hidden',
         }}
       >
         <div
