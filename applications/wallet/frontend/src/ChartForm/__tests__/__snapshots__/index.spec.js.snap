@@ -4,6 +4,7 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
 .emotion-15 {
   height: 100%;
   overflow: hidden;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-14 {
@@ -16,7 +17,6 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #252525;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
   border-radius: 2px;
   padding: 16px;
   padding-top: 8px;
@@ -367,6 +367,7 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
 .emotion-15 {
   height: 100%;
   overflow: hidden;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-14 {
@@ -379,7 +380,6 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #252525;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
   border-radius: 2px;
   padding: 16px;
   padding-top: 8px;
@@ -730,6 +730,7 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
 .emotion-15 {
   height: 100%;
   overflow: hidden;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-14 {
@@ -742,7 +743,6 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #252525;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
   border-radius: 2px;
   padding: 16px;
   padding-top: 8px;

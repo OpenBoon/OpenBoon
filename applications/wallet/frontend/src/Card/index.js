@@ -26,13 +26,17 @@ const STYLES = {
     content: { padding: spacing.spacious },
   },
   DARK: {
-    spacer: { height: '100%', overflow: 'hidden' },
+    spacer: {
+      height: '100%',
+      overflow: 'hidden',
+      boxShadow: constants.boxShadows.tableRow,
+    },
     container: {
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
       backgroundColor: colors.structure.lead,
-      boxShadow: constants.boxShadows.tableRow,
+
       borderRadius: constants.borderRadius.small,
       padding: spacing.normal,
       paddingTop: spacing.base,
