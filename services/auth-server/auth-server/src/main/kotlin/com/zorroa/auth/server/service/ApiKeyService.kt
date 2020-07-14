@@ -45,7 +45,6 @@ interface ApiKeyService {
     fun updateEnabled(apiKey: ApiKey, enabled: Boolean)
 
     fun updateEnabledByProject(projectId: UUID, enabled: Boolean)
-
 }
 
 @Service

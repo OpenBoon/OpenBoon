@@ -185,7 +185,7 @@ class ProjectServiceImpl constructor(
         createStandardApiKeys(project)
         try {
             createCryptoKey(project)
-        } catch (ex: SystemStorageException){
+        } catch (ex: SystemStorageException) {
             logger.error("Failure on storage service. Project ${project.name} not created")
             authServerClient.deleteStandardKeysByProject(project.id)
             throw ex
