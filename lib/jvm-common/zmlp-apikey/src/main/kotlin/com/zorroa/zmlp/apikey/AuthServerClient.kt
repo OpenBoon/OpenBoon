@@ -31,7 +31,7 @@ interface AuthServerClient {
     fun getApiKey(projectId: UUID, name: String): ApiKey
     fun getSigningKey(projectId: UUID, name: String): SigningKey
     fun updateApiKeyEnabledByProject(projectId: UUID, enabled: Boolean)
-
+    fun deleteStandardKeysByProject(projectId: UUID)
     companion object {
 
         val PROJECT_ID_HEADER = "X-Zorroa-ProjectId"
@@ -133,6 +133,10 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         }
     }
 
+    override fun deleteStandardKeysByProject(projectId: UUID) {
+        return delete("auth/v1/apikey/_project_standard_keys/$projectId", emptyMap(), projectId)
+    }
+
     override fun getSigningKey(projectId: UUID, name: String): SigningKey {
         return get("auth/v1/apikey/$name/_downloadByName", projectId)
     }
@@ -141,6 +145,18 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         val rbody = RequestBody.create(MEDIA_TYPE_JSON, Mapper.writeValueAsString(body))
         val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
             .post(rbody)
+            .build()
+        val rsp = client.newCall(req).execute()
+        if (rsp.code() >= 400) {
+            throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+        }
+        val body = rsp.body() ?: throw AuthServerClientException("AuthServerClient failure, null response body")
+        return Mapper.readValue(body.byteStream())
+    }
+    private inline fun <reified T> delete(path: String, body: Map<String, Any>, projectId: UUID? = null): T {
+        val rbody = RequestBody.create(MEDIA_TYPE_JSON, Mapper.writeValueAsString(body))
+        val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
+            .delete(rbody)
             .build()
         val rsp = client.newCall(req).execute()
         if (rsp.code() >= 400) {
