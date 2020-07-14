@@ -39,7 +39,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
     } = event
 
     /* istanbul ignore next */
-    if (tagName === 'INPUT') return
+    if (['INPUT', 'TEXTAREA'].includes(tagName)) return
 
     if (!selectedId) return
 
