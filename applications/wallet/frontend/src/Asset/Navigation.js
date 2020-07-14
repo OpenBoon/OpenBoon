@@ -38,7 +38,6 @@ const AssetNavigation = ({ projectId, assetId, query }) => {
           css={{
             padding: spacing.base,
             color: colors.structure.steel,
-            borderRadius: constants.borderRadius.small,
             ':hover': {
               color: colors.structure.white,
             },

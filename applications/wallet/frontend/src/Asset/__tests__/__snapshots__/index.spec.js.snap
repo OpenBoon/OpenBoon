@@ -94,7 +94,6 @@ exports[`<Asset /> should handle no query 1`] = `
   padding: 0;
   padding: 8px;
   color: #808080;
-  border-radius: 2px;
 }
 
 .emotion-0:hover {
@@ -394,7 +393,6 @@ exports[`<Asset /> should render properly 1`] = `
   padding: 0;
   padding: 8px;
   color: #808080;
-  border-radius: 2px;
 }
 
 .emotion-0:hover {
@@ -687,7 +685,6 @@ exports[`<Asset /> should render videos properly 1`] = `
   padding: 0;
   padding: 8px;
   color: #808080;
-  border-radius: 2px;
 }
 
 .emotion-0:hover {
