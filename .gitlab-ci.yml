@@ -5,7 +5,7 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_HOST: tcp://localhost:2375
   LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
-  FF_USE_LEGACY_KUBERNETES_EXECUTION_STRATEGY: false # This feature flag fixes a bug where the job would stop and say it succeeded.
+  FF_USE_LEGACY_KUBERNETES_EXECUTION_STRATEGY: "false" # This feature flag fixes a bug where the job would stop and say it succeeded.
 
 stages:
   - build
