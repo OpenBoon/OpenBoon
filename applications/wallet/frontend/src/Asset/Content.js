@@ -46,7 +46,14 @@ const AssetContent = () => {
           overflowY: 'hidden',
         }}
       >
-        <div css={{ flex: 1 }}>
+        <div
+          css={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            overflowY: 'hidden',
+          }}
+        >
           <div
             css={{
               paddingLeft: spacing.base,
@@ -58,6 +65,7 @@ const AssetContent = () => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
+              width: '100%',
             }}
           >
             <Link
@@ -80,7 +88,6 @@ const AssetContent = () => {
               </Button>
             </Link>
           </div>
-
           <SuspenseBoundary>
             <AssetAsset projectId={projectId} assetId={assetId} />
           </SuspenseBoundary>
