@@ -123,7 +123,7 @@ class ProjectServiceTests : AbstractTest() {
     @Test
     fun testGetCryptoKey() {
         whenever(systemStorageService.fetchObject(anyOrNull(), eq(Json.LIST_OF_STRING)))
-            .then { (1..16).map { Base64.getUrlEncoder().encodeToString("ABC".repeat(8).toByteArray())} }
+            .then { (1..16).map { Base64.getUrlEncoder().encodeToString("ABC".repeat(8).toByteArray()) } }
 
         val key = projectService.getCryptoKey()
         assertEquals(99, key.length)
