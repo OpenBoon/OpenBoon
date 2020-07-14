@@ -210,11 +210,26 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun getLabelCounts() {
         val model = create()
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg", label = model.getLabel("husky"))
-        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+        val specs = listOf(
+            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("beaver")),
+            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("ant")),
+            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
+            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
+        )
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs))
 
         val counts = modelService.getLabelCounts(model)
-        assertEquals(1, counts["husky"])
+        assertEquals(1, counts["ant"])
+        assertEquals(1, counts["horse"])
+        assertEquals(1, counts["beaver"])
+        assertEquals(1, counts["zanzibar"])
+
+        val keys = counts.keys.toList()
+        assertEquals("ant", keys[0])
+        assertEquals("zanzibar", keys[3])
+
     }
 
     fun assertModel(model: Model) {
