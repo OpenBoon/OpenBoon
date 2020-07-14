@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, zIndex } from '../Styles'
@@ -17,8 +16,6 @@ const FaceLabelingButton = ({
   unappliedChanges,
   setError,
 }) => {
-  const [showHelpInfo, setShowHelpInfo] = useState(false)
-
   return (
     <div css={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
       <Button
@@ -33,14 +30,22 @@ const FaceLabelingButton = ({
           : 'Train & Apply'}
       </Button>
 
-      <div css={{ display: 'flex' }}>
+      <div
+        css={{
+          display: 'flex',
+          ':hover, :focus-within': {
+            '+ div': {
+              visibility: 'visible',
+              opacity: 1,
+              transition: '.25s all ease',
+              transitionDelay: '100ms',
+            },
+          },
+        }}
+      >
         <button
           aria-label="Training Help"
           type="button"
-          onFocus={() => setShowHelpInfo(true)}
-          onBlur={() => setShowHelpInfo(false)}
-          onMouseEnter={() => setShowHelpInfo(true)}
-          onMouseLeave={() => setShowHelpInfo(false)}
           css={{
             border: 0,
             backgroundColor: 'inherit',
@@ -53,22 +58,21 @@ const FaceLabelingButton = ({
         </button>
       </div>
 
-      {showHelpInfo && (
-        <div
-          css={{
-            position: 'absolute',
-            top: CONTAINER_HEIGHT + spacing.small,
-            left: 0,
-            zIndex: zIndex.reset,
-            backgroundColor: colors.structure.iron,
-            border: constants.borders.regular.steel,
-            borderRadius: constants.borderRadius.small,
-            padding: spacing.moderate,
-          }}
-        >
-          {getHelpInfoCopy({ jobId, unappliedChanges })}
-        </div>
-      )}
+      <div
+        css={{
+          position: 'absolute',
+          top: CONTAINER_HEIGHT + spacing.small,
+          left: 0,
+          zIndex: zIndex.reset,
+          backgroundColor: colors.structure.iron,
+          border: constants.borders.regular.white,
+          borderRadius: constants.borderRadius.small,
+          padding: spacing.moderate,
+          visibility: 'hidden',
+        }}
+      >
+        {getHelpInfoCopy({ jobId, unappliedChanges })}
+      </div>
     </div>
   )
 }
