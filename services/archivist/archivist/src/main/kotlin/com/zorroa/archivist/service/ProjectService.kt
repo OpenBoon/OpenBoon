@@ -36,7 +36,6 @@ import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
-import com.zorroa.zmlp.service.storage.SystemStorageException
 import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
@@ -324,7 +323,7 @@ class ProjectServiceImpl constructor(
         )
     }
 
-    private fun deleteCryptoKey(project: Project){
+    private fun deleteCryptoKey(project: Project) {
         systemStorageService.deleteObject("projects/${project.id}/keys.json")
     }
 

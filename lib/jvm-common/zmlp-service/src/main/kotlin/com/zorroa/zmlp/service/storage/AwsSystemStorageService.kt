@@ -71,10 +71,10 @@ class AwsSystemStorageService constructor(
         }
     }
 
-    override fun deleteObject(path: String){
+    override fun deleteObject(path: String) {
         try {
             s3Client.deleteObject(DeleteObjectRequest(properties.bucket, path.trimStart('/')))
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             throw SystemStorageException("failed to delete object $path", e)
         }
     }
