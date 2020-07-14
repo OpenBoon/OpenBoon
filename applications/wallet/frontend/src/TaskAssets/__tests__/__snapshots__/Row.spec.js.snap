@@ -96,6 +96,7 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   align-items: center;
   background: #2e2e2e;
   overflow: hidden;
+  border-radius: 0;
 }
 
 .emotion-2:hover {
