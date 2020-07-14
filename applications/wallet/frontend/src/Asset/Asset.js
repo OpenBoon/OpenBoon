@@ -48,6 +48,7 @@ const AssetAsset = ({ projectId, assetId }) => {
         alignItems: 'center',
         width: '100%',
         height: '100%',
+        overflowY: 'hidden',
       }}
     >
       {isVideo && !hasError ? (
