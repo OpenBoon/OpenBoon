@@ -302,7 +302,7 @@ class LabelConfidenceQuery(object):
         Create a new LabelConfidenceScoreQuery.
 
         Args:
-            namespace (str): The analysis namespace with predications. (zvi-label-detection)
+            namespace (str): The analysis namespace with predictions. (zvi-label-detection)
             labels (list): A list of labels to filter.
             min_score (float): The minimum label score.
             max_score (float): The maximum score, defaults to 1.0 which is highest
