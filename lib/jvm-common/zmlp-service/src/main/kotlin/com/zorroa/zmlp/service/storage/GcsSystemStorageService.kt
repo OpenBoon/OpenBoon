@@ -59,6 +59,15 @@ class GcsSystemStorageService constructor(
         }
     }
 
+    override fun deleteObject(path: String) {
+        try {
+            val blobId = BlobId.of(properties.bucket, path.trimStart('/'))
+            gcs.delete(blobId)
+        } catch (e: Exception) {
+            throw SystemStorageException("failed to delete object $path", e)
+        }
+    }
+
     companion object {
         val logger = LoggerFactory.getLogger(GcsSystemStorageService::class.java)
     }

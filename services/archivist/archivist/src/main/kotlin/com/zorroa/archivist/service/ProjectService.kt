@@ -182,11 +182,12 @@ class ProjectServiceImpl constructor(
             projectStatsDao.createIngestTimeSeriesEntries(project.id)
         }
 
-        createStandardApiKeys(project)
+        createCryptoKey(project)
         try {
-            createCryptoKey(project)
-        } catch (ex: SystemStorageException) {
-            logger.error("Failure on storage service. Project ${project.name} not created")
+            createStandardApiKeys(project)
+        } catch (ex: Exception) {
+            logger.error("Project ${project.name} not created")
+            deleteCryptoKey(project)
             authServerClient.deleteStandardKeysByProject(project.id)
             throw ex
         }
@@ -321,6 +322,10 @@ class ProjectServiceImpl constructor(
         systemStorageService.storeObject(
             "projects/${project.id}/keys.json", result.toList()
         )
+    }
+
+    private fun deleteCryptoKey(project: Project){
+        systemStorageService.deleteObject("projects/${project.id}/keys.json")
     }
 
     override fun setEnabled(id: UUID, enabled: Boolean) {

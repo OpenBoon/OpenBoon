@@ -1,5 +1,6 @@
 package com.zorroa.zmlp.service.storage
 
+import com.amazonaws.services.s3.model.DeleteObjectRequest
 import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
@@ -67,6 +68,14 @@ class AwsSystemStorageService constructor(
             return Json.Mapper.readValue(s3obj.objectContent.readAllBytes(), valueType)
         } catch (e: Exception) {
             throw SystemStorageException("failed to fetch object $path", e)
+        }
+    }
+
+    override fun deleteObject(path: String){
+        try {
+            s3Client.deleteObject(DeleteObjectRequest(properties.bucket, path.trimStart('/')))
+        } catch(e: Exception) {
+            throw SystemStorageException("failed to delete object $path", e)
         }
     }
 

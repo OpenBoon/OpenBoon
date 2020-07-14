@@ -33,4 +33,9 @@ interface SystemStorageService {
      * Fetch the given path and marshall the data into the specified type.
      */
     fun <T> fetchObject(path: String, valueType: TypeReference<T>): T
+
+    /**
+     * Delete the given path in the system bucket
+     */
+    fun deleteObject(path: String)
 }
