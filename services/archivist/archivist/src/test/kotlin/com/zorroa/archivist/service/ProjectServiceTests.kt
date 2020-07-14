@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.nhaarman.mockito_kotlin.anyOrNull
+import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.IndexRouteSpec
@@ -12,10 +13,12 @@ import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.service.storage.SystemStorageException
 import com.zorroa.zmlp.service.storage.SystemStorageService
+import com.zorroa.zmlp.util.Json
 
 import org.junit.Test
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.dao.EmptyResultDataAccessException
+import java.util.Base64
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -119,6 +122,9 @@ class ProjectServiceTests : AbstractTest() {
 
     @Test
     fun testGetCryptoKey() {
+        whenever(systemStorageService.fetchObject(anyOrNull(), eq(Json.LIST_OF_STRING)))
+            .then { (1..16).map { Base64.getUrlEncoder().encodeToString("ABC".repeat(8).toByteArray())} }
+
         val key = projectService.getCryptoKey()
         assertEquals(99, key.length)
     }
