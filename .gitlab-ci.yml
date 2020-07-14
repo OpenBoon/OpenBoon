@@ -336,16 +336,16 @@ zmlp-dockerhub-build-push-latest:
     - docker push zmlp/jvm-common:${DOCKER_TAG}
     - docker push zmlp/ml-bbq:${DOCKER_TAG}
     - docker push zmlp/plugins-train:${DOCKER_TAG}
-#  rules:
-#    # Merged to development with ZMLP changes
-#    - if: $CI_COMMIT_BRANCH == "development"
-#      changes:
-#        - "client/**/*"
-#        - "containers/**/*"
-#        - "dev/**/*"
-#        - "lib/**/*"
-#        - "sdk/**/*"
-#        - "services/**/*"
+  rules:
+    # Merged to development with ZMLP changes
+    - if: $CI_COMMIT_BRANCH == "development"
+      changes:
+        - "client/**/*"
+        - "containers/**/*"
+        - "dev/**/*"
+        - "lib/**/*"
+        - "sdk/**/*"
+        - "services/**/*"
 
 zmlp-dockerhub-build-push-qa:
   extends:
