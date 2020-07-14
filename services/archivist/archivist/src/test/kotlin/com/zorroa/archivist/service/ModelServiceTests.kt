@@ -218,7 +218,8 @@ class ModelServiceTests : AbstractTest() {
         )
 
         assetService.batchCreate(
-            BatchCreateAssetsRequest(specs))
+            BatchCreateAssetsRequest(specs)
+        )
 
         val counts = modelService.getLabelCounts(model)
         assertEquals(1, counts["ant"])
@@ -229,7 +230,6 @@ class ModelServiceTests : AbstractTest() {
         val keys = counts.keys.toList()
         assertEquals("ant", keys[0])
         assertEquals("zanzibar", keys[3])
-
     }
 
     fun assertModel(model: Model) {
