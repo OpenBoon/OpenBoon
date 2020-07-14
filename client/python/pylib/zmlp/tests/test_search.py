@@ -65,6 +65,21 @@ class AssetSearchScrollerTests(unittest.TestCase):
         results = list(scroller)
         assert results[0] == self.mock_search_result
 
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    def test_csv_search(self, post_patch, del_patch):
+        post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
+        del_patch.return_value = {}
+
+        scroller = AssetSearchScroller(self.app,
+                                       MockEsDslSearch(),
+                                       raw_response=True)
+        results = scroller.csv_search()
+        assert type(results) == str
+        split_results = results.split('\n')
+        assert len(split_results) == 4
+        assert split_results[0] == 'source,analysis'
+
 
 class AssetSearchResultTests(unittest.TestCase):
 

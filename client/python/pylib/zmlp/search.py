@@ -1,4 +1,5 @@
 import copy
+import pandas as pd
 
 from .entity import Asset, ZmlpException
 from .util import as_collection
@@ -106,6 +107,17 @@ class AssetSearchScroller(object):
             self.app.client.delete("api/v3/assets/_search/scroll", {
                 "scroll_id": scroll_id
             })
+
+    def csv_search(self):
+        """
+        Convert search to CSV formatted string
+
+        Returns:
+            (str) comma-delimited string
+        """
+        hits = [hit['_source'] for asset in self.scroll() for hit in asset['hits']['hits']]
+        df_hits = pd.DataFrame(hits)
+        return df_hits.to_csv(index=False)
 
     def __iter__(self):
         return self.scroll()
