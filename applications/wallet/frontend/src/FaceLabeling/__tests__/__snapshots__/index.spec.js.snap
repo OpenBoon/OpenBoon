@@ -108,13 +108,13 @@ Array [
   background-color: #3b3b3b;
   color: #ffffff;
   font-weight: 500;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: 2px;
   margin-bottom: 1px;
 }
 
 .emotion-2:hover {
-  border: 2px solid #ffffff;
+  border: 1px solid #808080;
 }
 
 .emotion-2:focus {
@@ -409,13 +409,13 @@ Array [
   background-color: #3b3b3b;
   color: #ffffff;
   font-weight: 500;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: 2px;
   margin-bottom: 1px;
 }
 
 .emotion-2:hover {
-  border: 2px solid #ffffff;
+  border: 1px solid #808080;
 }
 
 .emotion-2:focus {
@@ -754,13 +754,13 @@ Array [
   background-color: #3b3b3b;
   color: #ffffff;
   font-weight: 500;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: 2px;
   margin-bottom: 1px;
 }
 
 .emotion-2:hover {
-  border: 2px solid #ffffff;
+  border: 1px solid #808080;
 }
 
 .emotion-2:focus {
