@@ -31,11 +31,11 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: #252525;
@@ -53,8 +53,16 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-0:hover {
   background-color: #2e2e2e;
 }
 
@@ -147,11 +155,11 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: #252525;
@@ -169,8 +177,16 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   color: #2e2e2e;
 }
 
-.emotion-6:hover {
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-6:hover {
   background-color: #2e2e2e;
 }
 
@@ -242,8 +258,9 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
   color: #808080;
+  padding: 0;
 }
 
 .emotion-2:hover {
@@ -255,8 +272,13 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   color: #2e2e2e;
 }
 
-.emotion-2:hover {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-4 {
@@ -410,11 +432,11 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: #252525;
@@ -432,8 +454,16 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-0:hover {
   background-color: #2e2e2e;
 }
 
@@ -526,11 +556,11 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: #252525;
@@ -548,8 +578,16 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-0:hover {
   background-color: #2e2e2e;
 }
 
@@ -621,8 +659,9 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
   color: #808080;
+  padding: 0;
 }
 
 .emotion-5:hover {
@@ -634,8 +673,13 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-4 {

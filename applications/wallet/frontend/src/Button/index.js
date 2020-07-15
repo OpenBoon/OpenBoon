@@ -122,9 +122,10 @@ const STYLES = {
     },
   },
   ICON: {
-    padding: spacing.small,
-    ':hover': {
-      color: colors.key.one,
+    padding: spacing.base,
+    color: colors.structure.steel,
+    ':hover, &.focus-visible:focus': {
+      color: colors.structure.white,
     },
     '&[aria-disabled=true]': {
       color: colors.structure.steel,

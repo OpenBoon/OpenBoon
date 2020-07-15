@@ -228,7 +228,8 @@ exports[`<Button /> should render properly for ICON Button 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
 }
 
 .emotion-0:hover {
@@ -240,8 +241,9 @@ exports[`<Button /> should render properly for ICON Button 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
-  color: #73b61c;
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
+  color: #ffffff;
 }
 
 .emotion-0[aria-disabled=true] {
@@ -288,7 +290,8 @@ exports[`<Button /> should render properly for ICON Link 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
 }
 
 .emotion-0:hover {
@@ -300,8 +303,9 @@ exports[`<Button /> should render properly for ICON Link 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
-  color: #73b61c;
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
+  color: #ffffff;
 }
 
 .emotion-0[aria-disabled=true] {

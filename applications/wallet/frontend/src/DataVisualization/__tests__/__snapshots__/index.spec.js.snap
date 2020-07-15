@@ -78,11 +78,11 @@ exports[`<DataVisualization /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: #252525;
@@ -100,8 +100,16 @@ exports[`<DataVisualization /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-1:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1:hover {
   background-color: #2e2e2e;
 }
 
@@ -514,11 +522,11 @@ exports[`<DataVisualization /> should render properly 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: #252525;
@@ -536,8 +544,16 @@ exports[`<DataVisualization /> should render properly 2`] = `
   color: #2e2e2e;
 }
 
-.emotion-1:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1:hover {
   background-color: #2e2e2e;
 }
 
@@ -906,11 +922,11 @@ exports[`<DataVisualization /> should render properly 3`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: #252525;
@@ -928,8 +944,16 @@ exports[`<DataVisualization /> should render properly 3`] = `
   color: #2e2e2e;
 }
 
-.emotion-1:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1:hover {
   background-color: #2e2e2e;
 }
 
@@ -1364,11 +1388,11 @@ exports[`<DataVisualization /> should render properly 4`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: #252525;
@@ -1386,8 +1410,16 @@ exports[`<DataVisualization /> should render properly 4`] = `
   color: #2e2e2e;
 }
 
-.emotion-1:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1:hover {
   background-color: #2e2e2e;
 }
 

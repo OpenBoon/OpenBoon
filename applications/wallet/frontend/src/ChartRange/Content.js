@@ -93,7 +93,7 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
         >
           <Button
             aria-label="Add Filter"
-            variant={VARIANTS.NEUTRAL}
+            variant={VARIANTS.ICON}
             onClick={() => {
               dispatch({
                 type: ACTIONS.ADD_FILTER,
@@ -108,11 +108,7 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
             css={{
               flex: 1,
               display: 'flex',
-              color: colors.structure.steel,
               fontFamily: typography.family.condensed,
-              ':hover, &.focus-visible:focus': {
-                color: colors.structure.white,
-              },
             }}
           >
             <div css={{ display: 'flex', alignItems: 'center' }}>

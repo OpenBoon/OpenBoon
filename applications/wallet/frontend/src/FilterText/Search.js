@@ -84,6 +84,7 @@ const FilterTextSearch = ({
           variant={VARIANTS.ICON}
           css={{
             display: 'flex',
+            padding: spacing.small,
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: constants.borderRadius.small,
@@ -128,6 +129,7 @@ const FilterTextSearch = ({
           variant={VARIANTS.ICON}
           css={{
             display: 'flex',
+            padding: spacing.small,
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: constants.borderRadius.small,

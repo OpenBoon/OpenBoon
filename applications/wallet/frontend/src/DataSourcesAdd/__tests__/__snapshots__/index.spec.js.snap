@@ -428,6 +428,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -440,14 +442,19 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-54:hover,
+.emotion-54.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-54[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-53 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-53:hover {
-  color: #ffffff;
 }
 
 .emotion-55 {
@@ -1069,7 +1076,6 @@ Array [
           >
             <svg
               className="emotion-53"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -1150,7 +1156,6 @@ Array [
           >
             <svg
               className="emotion-53"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -2076,6 +2081,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -2088,14 +2095,19 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-72:hover,
+.emotion-72.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-72[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-71 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-71:hover {
-  color: #ffffff;
 }
 
 .emotion-73 {
@@ -2820,7 +2832,6 @@ Array [
           >
             <svg
               className="emotion-71"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -2901,7 +2912,6 @@ Array [
           >
             <svg
               className="emotion-71"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -3827,6 +3837,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -3839,14 +3851,19 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-66:hover,
+.emotion-66.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-66[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-65 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-65:hover {
-  color: #ffffff;
 }
 
 .emotion-67 {
@@ -4538,7 +4555,6 @@ Array [
           >
             <svg
               className="emotion-65"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -4619,7 +4635,6 @@ Array [
           >
             <svg
               className="emotion-65"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -5545,6 +5560,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -5557,14 +5574,19 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-65:hover,
+.emotion-65.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-65[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-64 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-64:hover {
-  color: #ffffff;
 }
 
 .emotion-66 {
@@ -6251,7 +6273,6 @@ Array [
           >
             <svg
               className="emotion-64"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -6332,7 +6353,6 @@ Array [
           >
             <svg
               className="emotion-64"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />

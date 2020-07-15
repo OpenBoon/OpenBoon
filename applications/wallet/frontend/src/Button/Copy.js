@@ -15,17 +15,18 @@ const ButtonCopy = ({ value }) => {
   return (
     <Button
       title="Copy to Clipboard"
-      variant={BUTTON_VARIANTS.NEUTRAL}
+      variant={BUTTON_VARIANTS.ICON}
       onClick={setCopied}
       isDisabled={isCopied}
-      css={{ ':focus': { svg: { opacity: 1, color: colors.structure.white } } }}
+      css={{
+        padding: 0,
+        ':focus': { svg: { opacity: 1, color: colors.structure.white } },
+      }}
     >
       <CopySvg
         height={COPY_SIZE}
-        color={colors.structure.steel}
         css={{
           opacity: 0,
-          ':hover': { color: colors.structure.white },
         }}
       />
     </Button>

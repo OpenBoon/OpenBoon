@@ -271,6 +271,8 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -283,14 +285,19 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-9:hover,
+.emotion-9.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-9[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-8 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-8:hover {
-  color: #ffffff;
 }
 
 .emotion-13 {
@@ -389,7 +396,6 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
       >
         <svg
           className="emotion-8"
-          color="#808080"
           data-file-name="chevron.svg"
           height={20}
         />

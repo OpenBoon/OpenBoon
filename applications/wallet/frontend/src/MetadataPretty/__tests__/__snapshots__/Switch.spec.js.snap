@@ -65,6 +65,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -77,6 +79,15 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-2:focus svg {
   opacity: 1;
   color: #ffffff;
@@ -84,10 +95,6 @@ Array [
 
 .emotion-1 {
   opacity: 0;
-}
-
-.emotion-1:hover {
-  color: #ffffff;
 }
 
 .emotion-5 {
@@ -144,7 +151,6 @@ Array [
         >
           <svg
             className="emotion-1"
-            color="#808080"
             data-file-name="copy.svg"
             height={20}
           />
@@ -571,6 +577,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -583,6 +591,15 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-2:focus svg {
   opacity: 1;
   color: #ffffff;
@@ -590,10 +607,6 @@ Array [
 
 .emotion-1 {
   opacity: 0;
-}
-
-.emotion-1:hover {
-  color: #ffffff;
 }
 
 .emotion-6 {
@@ -658,7 +671,6 @@ Array [
       >
         <svg
           className="emotion-1"
-          color="#808080"
           data-file-name="copy.svg"
           height={20}
         />
@@ -789,6 +801,8 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -801,6 +815,15 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-3:focus svg {
   opacity: 1;
   color: #ffffff;
@@ -808,10 +831,6 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 
 .emotion-2 {
   opacity: 0;
-}
-
-.emotion-2:hover {
-  color: #ffffff;
 }
 
 .emotion-1 {
@@ -855,7 +874,6 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
     >
       <svg
         className="emotion-2"
-        color="#808080"
         data-file-name="copy.svg"
         height={20}
       />
@@ -948,6 +966,8 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -960,6 +980,15 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-3:focus svg {
   opacity: 1;
   color: #ffffff;
@@ -967,10 +996,6 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
 
 .emotion-2 {
   opacity: 0;
-}
-
-.emotion-2:hover {
-  color: #ffffff;
 }
 
 <div
@@ -1002,7 +1027,6 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
     >
       <svg
         className="emotion-2"
-        color="#808080"
         data-file-name="copy.svg"
         height={20}
       />
@@ -1076,6 +1100,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -1088,6 +1114,15 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-2:focus svg {
   opacity: 1;
   color: #ffffff;
@@ -1095,10 +1130,6 @@ Array [
 
 .emotion-1 {
   opacity: 0;
-}
-
-.emotion-1:hover {
-  color: #ffffff;
 }
 
 .emotion-33 {
@@ -1393,7 +1424,6 @@ Array [
         >
           <svg
             className="emotion-1"
-            color="#808080"
             data-file-name="copy.svg"
             height={20}
           />
@@ -1672,6 +1702,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -1684,6 +1716,15 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-2:focus svg {
   opacity: 1;
   color: #ffffff;
@@ -1691,10 +1732,6 @@ Array [
 
 .emotion-1 {
   opacity: 0;
-}
-
-.emotion-1:hover {
-  color: #ffffff;
 }
 
 .emotion-5 {
@@ -1755,7 +1792,6 @@ Array [
         >
           <svg
             className="emotion-1"
-            color="#808080"
             data-file-name="copy.svg"
             height={20}
           />

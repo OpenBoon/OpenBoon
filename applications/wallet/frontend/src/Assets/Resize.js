@@ -36,8 +36,17 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
         dispatch({ type: ACTIONS.DECREMENT })
       }}
       isDisabled={isMin}
-      variant={VARIANTS.ICON}
-      css={{ opacity: constants.opacity.full, padding: spacing.base }}
+      variant={VARIANTS.NEUTRAL}
+      css={{
+        padding: spacing.moderate,
+        ':hover': {
+          color: colors.key.one,
+        },
+        '&[aria-disabled=true]': {
+          color: colors.structure.steel,
+        },
+        opacity: constants.opacity.full,
+      }}
     >
       <CircleMinusSvg height={ICON_SIZE} />
     </Button>
@@ -47,8 +56,17 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
         dispatch({ type: ACTIONS.INCREMENT })
       }}
       isDisabled={isMax}
-      variant={VARIANTS.ICON}
-      css={{ opacity: constants.opacity.full, padding: spacing.base }}
+      variant={VARIANTS.NEUTRAL}
+      css={{
+        padding: spacing.moderate,
+        ':hover': {
+          color: colors.key.one,
+        },
+        '&[aria-disabled=true]': {
+          color: colors.structure.steel,
+        },
+        opacity: constants.opacity.full,
+      }}
     >
       <CirclePlusSvg height={ICON_SIZE} />
     </Button>

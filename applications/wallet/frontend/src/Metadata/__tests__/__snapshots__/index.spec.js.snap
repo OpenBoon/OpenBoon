@@ -102,6 +102,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -114,6 +116,15 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-3:focus svg {
   opacity: 1;
   color: #ffffff;
@@ -121,10 +132,6 @@ Array [
 
 .emotion-2 {
   opacity: 0;
-}
-
-.emotion-2:hover {
-  color: #ffffff;
 }
 
 <div
@@ -152,7 +159,6 @@ Array [
       >
         <svg
           className="emotion-2"
-          color="#808080"
           data-file-name="copy.svg"
           height={20}
         />
@@ -374,6 +380,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -386,8 +394,13 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-2 {
@@ -422,7 +435,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -450,7 +462,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -478,7 +489,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -506,7 +516,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -534,7 +543,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -562,7 +570,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -590,7 +597,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -618,7 +624,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -723,6 +728,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -735,6 +742,15 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-3:focus svg {
   opacity: 1;
   color: #ffffff;
@@ -742,10 +758,6 @@ Array [
 
 .emotion-2 {
   opacity: 0;
-}
-
-.emotion-2:hover {
-  color: #ffffff;
 }
 
 <div
@@ -773,7 +785,6 @@ Array [
       >
         <svg
           className="emotion-2"
-          color="#808080"
           data-file-name="copy.svg"
           height={20}
         />

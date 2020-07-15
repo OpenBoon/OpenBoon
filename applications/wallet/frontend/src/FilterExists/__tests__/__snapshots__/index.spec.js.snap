@@ -22,7 +22,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding: 8px;
-  padding-left: 8px;
 }
 
 .emotion-9:hover {
@@ -76,6 +75,8 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -88,14 +89,19 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-0 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
 }
 
 .emotion-3 {
@@ -162,11 +168,13 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -187,8 +195,9 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
-  color: #73b61c;
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  color: #ffffff;
 }
 
 .emotion-5[aria-disabled=true] {
@@ -240,11 +249,13 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -265,8 +276,9 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
-  color: #73b61c;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  color: #ffffff;
 }
 
 .emotion-7[aria-disabled=true] {
@@ -340,7 +352,8 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -359,8 +372,13 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-11 {
@@ -408,7 +426,8 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -427,8 +446,13 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-12:hover {
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-12[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-17 {
@@ -453,7 +477,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
     >
       <svg
         className="emotion-0"
-        color="#808080"
         data-file-name="chevron.svg"
         height={20}
       />
@@ -624,7 +647,6 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding: 8px;
-  padding-left: 8px;
 }
 
 .emotion-9:hover {
@@ -678,6 +700,8 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -690,14 +714,19 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-0 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
 }
 
 .emotion-3 {
@@ -764,11 +793,13 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -789,8 +820,9 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
-  color: #73b61c;
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  color: #ffffff;
 }
 
 .emotion-5[aria-disabled=true] {
@@ -842,11 +874,13 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -867,8 +901,9 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
-  color: #73b61c;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  color: #ffffff;
 }
 
 .emotion-7[aria-disabled=true] {
@@ -942,7 +977,8 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -961,8 +997,13 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-12:hover {
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-12[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-11 {
@@ -1010,7 +1051,8 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1029,8 +1071,13 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-17 {
@@ -1055,7 +1102,6 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
     >
       <svg
         className="emotion-0"
-        color="#808080"
         data-file-name="chevron.svg"
         height={20}
       />

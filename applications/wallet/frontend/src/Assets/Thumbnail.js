@@ -117,7 +117,7 @@ const AssetsThumbnail = ({
           right: spacing.small,
           padding: spacing.small,
           backgroundColor: `${colors.structure.smoke}${constants.opacity.hexHalf}`,
-          ':hover,  &.focus-visible:focus': {
+          ':hover, &.focus-visible:focus': {
             opacity: 1,
             backgroundColor: colors.structure.smoke,
           },
@@ -152,7 +152,7 @@ const AssetsThumbnail = ({
             right: spacing.small,
             padding: spacing.small,
             backgroundColor: `${colors.structure.smoke}${constants.opacity.hexHalf}`,
-            ':hover,  &.focus-visible:focus': {
+            ':hover, &.focus-visible:focus': {
               opacity: 1,
               backgroundColor: colors.structure.smoke,
             },
