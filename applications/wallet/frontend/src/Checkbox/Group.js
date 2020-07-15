@@ -6,7 +6,14 @@ import { colors, spacing, typography } from '../Styles'
 
 import Checkbox, { VARIANTS } from '.'
 
-const CheckboxGroup = ({ legend, description, variant, options, onClick }) => {
+const CheckboxGroup = ({
+  legend,
+  subHeader,
+  description,
+  variant,
+  options,
+  onClick,
+}) => {
   return (
     <fieldset
       css={{
@@ -16,22 +23,23 @@ const CheckboxGroup = ({ legend, description, variant, options, onClick }) => {
         paddingTop: spacing.moderate,
       }}
     >
-      <legend
-        css={{
-          float: 'left',
-          padding: 0,
-          paddingBottom: spacing.moderate,
-          fontSize: typography.size.medium,
-          lineHeight: typography.height.medium,
-          fontWeight: typography.weight.medium,
-        }}
-      >
-        {legend}
-      </legend>
+      <div css={{ display: 'flex' }}>
+        <legend
+          css={{
+            padding: 0,
+            paddingBottom: spacing.moderate,
+            fontSize: typography.size.medium,
+            lineHeight: typography.height.medium,
+            fontWeight: typography.weight.medium,
+          }}
+        >
+          {legend}
+        </legend>
+        {subHeader}
+      </div>
       {description && (
         <div
           css={{
-            clear: 'both',
             paddingBottom: spacing.normal,
             color: colors.structure.zinc,
           }}
@@ -39,7 +47,7 @@ const CheckboxGroup = ({ legend, description, variant, options, onClick }) => {
           {description}
         </div>
       )}
-      <div css={{ clear: 'both' }} />
+      <div />
       {options.map((option) => (
         <Checkbox
           key={option.value}
@@ -52,8 +60,13 @@ const CheckboxGroup = ({ legend, description, variant, options, onClick }) => {
   )
 }
 
+CheckboxGroup.defaultProps = {
+  subHeader: '',
+}
+
 CheckboxGroup.propTypes = {
-  legend: PropTypes.string.isRequired,
+  legend: PropTypes.node.isRequired,
+  subHeader: PropTypes.node,
   description: PropTypes.node.isRequired,
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape(checkboxOptionShape)).isRequired,

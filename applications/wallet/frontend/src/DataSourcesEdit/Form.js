@@ -4,7 +4,9 @@ import useSWR from 'swr'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 
-import { constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
+
+import InformationSvg from '../Icons/information.svg'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
@@ -15,6 +17,7 @@ import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
+import Tooltip from '../Tooltip'
 
 import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
@@ -24,6 +27,8 @@ import DataSourcesEditProvider from './Provider'
 import DataSourcesEditCopy from './Copy'
 
 import { getInitialModules, onSubmit } from './helpers'
+
+const ICON_SIZE = 20
 
 const reducer = (state, action) => ({ ...state, ...action })
 
@@ -96,20 +101,80 @@ const DataSourcesEditForm = ({ initialState }) => {
 
         <CheckboxGroup
           legend="Add Additional File Types"
-          description={
-            <div>
-              Additional file types can be added to this data source. Previous
-              selections cannot be removed.
-            </div>
+          subHeader={
+            <Tooltip
+              content={
+                <div
+                  css={{
+                    color: colors.structure.zinc,
+                    padding: spacing.base,
+                  }}
+                >
+                  <h3
+                    css={{
+                      fontSize: typography.size.regular,
+                      lineHeight: typography.height.regular,
+                      fontWeight: typography.weight.medium,
+                      color: colors.structure.white,
+                    }}
+                  >
+                    Supported File Types
+                  </h3>
+
+                  {FILE_TYPES.map(({ value, legend }) => (
+                    <div key={value}>
+                      <h4
+                        css={{
+                          paddingTop: spacing.base,
+                          fontSize: typography.size.regular,
+                          lineHeight: typography.height.regular,
+                          fontWeight: typography.weight.bold,
+                        }}
+                      >
+                        {value}:
+                      </h4>
+                      <h5
+                        css={{
+                          margin: 0,
+                          paddingTop: spacing.mini,
+                          fontSize: typography.size.regular,
+                          lineHeight: typography.height.regular,
+                          fontWeight: typography.weight.regular,
+                        }}
+                      >
+                        {legend}
+                      </h5>
+                    </div>
+                  ))}
+                </div>
+              }
+            >
+              <div
+                css={{
+                  paddingLeft: spacing.base,
+                  color: colors.structure.steel,
+                  ':hover': {
+                    color: colors.structure.white,
+                  },
+                }}
+              >
+                <InformationSvg height={ICON_SIZE} />
+              </div>
+            </Tooltip>
           }
+          description="Additional file types can be added to this data source. Previous
+              selections cannot be removed."
           onClick={(fileType) =>
             dispatch({ fileTypes: { ...fileTypes, ...fileType } })
           }
-          options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
+          options={FILE_TYPES.map(({ value, label, icon }) => ({
             value,
             label,
+            legend:
+              value === 'Documents'
+                ? 'Pages will be processed and counted as individual assets'
+                : '',
             icon: <img src={icon} alt={label} width="40px" />,
-            legend,
             initialValue: !!fileTypes[value],
             isDisabled: !!initialState.fileTypes[value],
           }))}

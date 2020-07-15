@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Tooltip /> should render properly 1`] = `
+.emotion-1 {
+  display: relative;
+}
+
+.emotion-0 {
+  position: absolute;
+  z-index: 1;
+  background-color: #4a4a4a;
+  border: 1px solid #808080;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+<div
+  className="emotion-1"
+>
+  <div
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    Hello
+  </div>
+  <div
+    aria-hidden={false}
+    className="emotion-0"
+    role="tooltip"
+  >
+    floaty stuff
+  </div>
+</div>
+`;
+
+exports[`<Tooltip /> should render properly 2`] = `
+.emotion-0 {
+  display: relative;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    Hello
+  </div>
+</div>
+`;
+
+exports[`<Tooltip /> should render properly 3`] = `
+.emotion-1 {
+  display: relative;
+}
+
+.emotion-0 {
+  position: absolute;
+  z-index: 1;
+  background-color: #4a4a4a;
+  border: 1px solid #808080;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+<div
+  className="emotion-1"
+>
+  <div
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    Hello
+  </div>
+  <div
+    aria-hidden={false}
+    className="emotion-0"
+    role="tooltip"
+  >
+    floaty stuff
+  </div>
+</div>
+`;
+
+exports[`<Tooltip /> should render properly 4`] = `
+.emotion-0 {
+  display: relative;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    Hello
+  </div>
+</div>
+`;

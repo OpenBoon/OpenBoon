@@ -248,8 +248,14 @@ Array [
   padding-top: 12px;
 }
 
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-18 {
-  float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
@@ -258,16 +264,24 @@ Array [
 }
 
 .emotion-20 {
-  clear: both;
+  display: relative;
+}
+
+.emotion-19 {
+  padding-left: 8px;
+  color: #808080;
+}
+
+.emotion-19:hover {
+  color: #ffffff;
+}
+
+.emotion-23 {
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
-.emotion-21 {
-  clear: both;
-}
-
-.emotion-30 {
+.emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -281,7 +295,7 @@ Array [
   align-items: center;
 }
 
-.emotion-25 {
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -289,7 +303,7 @@ Array [
   position: relative;
 }
 
-.emotion-22 {
+.emotion-24 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -301,7 +315,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-24 {
+.emotion-26 {
   position: absolute;
   top: 0;
   left: 0;
@@ -322,13 +336,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-23 path {
+.emotion-25 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-26 {
+.emotion-28 {
   padding-left: 24px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -340,21 +354,21 @@ Array [
   align-items: center;
 }
 
-.emotion-29 {
+.emotion-30 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   padding-left: 16px;
 }
 
-.emotion-27 {
+.emotion-29 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-28 {
+.emotion-38 {
   padding-left: 12px;
   color: #b3b3b3;
 }
@@ -874,13 +888,36 @@ Array [
     <fieldset
       className="emotion-49"
     >
-      <legend
-        className="emotion-18"
-      >
-        Select File Types to Import
-      </legend>
       <div
-        className="emotion-20"
+        className="emotion-21"
+      >
+        <legend
+          className="emotion-18"
+        >
+          Select File Types to Import
+        </legend>
+        <div
+          className="emotion-20"
+        >
+          <div
+            onBlur={[Function]}
+            onFocus={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <div
+              className="emotion-19"
+            >
+              <svg
+                data-file-name="information.svg"
+                height={20}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-23"
       >
         <div>
           A minimum of one file type must be selected
@@ -892,34 +929,32 @@ Array [
           </span>
         </div>
       </div>
-      <div
-        className="emotion-21"
-      />
+      <div />
       <label
-        className="emotion-30"
+        className="emotion-31"
       >
         <div
-          className="emotion-25"
+          className="emotion-27"
         >
           <input
-            className="emotion-22"
+            className="emotion-24"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Images"
           />
           <div
-            className="emotion-24"
+            className="emotion-26"
           >
             <svg
-              className="emotion-23"
+              className="emotion-25"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-26"
+          className="emotion-28"
         >
           <img
             alt="Image Files"
@@ -928,45 +963,40 @@ Array [
           />
         </div>
         <div
-          className="emotion-29"
+          className="emotion-30"
         >
           <span
-            className="emotion-27"
+            className="emotion-29"
           >
             Image Files
-          </span>
-          <span
-            className="emotion-28"
-          >
-            GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
           </span>
         </div>
       </label>
       <label
-        className="emotion-30"
+        className="emotion-31"
       >
         <div
-          className="emotion-25"
+          className="emotion-27"
         >
           <input
-            className="emotion-22"
+            className="emotion-24"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Documents"
           />
           <div
-            className="emotion-24"
+            className="emotion-26"
           >
             <svg
-              className="emotion-23"
+              className="emotion-25"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-26"
+          className="emotion-28"
         >
           <img
             alt="Documents (PDF & MS Office)"
@@ -975,45 +1005,45 @@ Array [
           />
         </div>
         <div
-          className="emotion-29"
+          className="emotion-30"
         >
           <span
-            className="emotion-27"
+            className="emotion-29"
           >
             Documents (PDF & MS Office)
           </span>
           <span
-            className="emotion-28"
+            className="emotion-38"
           >
-            PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+            Pages will be processed and counted as individual assets
           </span>
         </div>
       </label>
       <label
-        className="emotion-30"
+        className="emotion-31"
       >
         <div
-          className="emotion-25"
+          className="emotion-27"
         >
           <input
-            className="emotion-22"
+            className="emotion-24"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Videos"
           />
           <div
-            className="emotion-24"
+            className="emotion-26"
           >
             <svg
-              className="emotion-23"
+              className="emotion-25"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-26"
+          className="emotion-28"
         >
           <img
             alt="Video Files"
@@ -1022,17 +1052,12 @@ Array [
           />
         </div>
         <div
-          className="emotion-29"
+          className="emotion-30"
         >
           <span
-            className="emotion-27"
+            className="emotion-29"
           >
             Video Files
-          </span>
-          <span
-            className="emotion-28"
-          >
-            MP4, M4V, MOV, MPG, MPEG, OGG
           </span>
         </div>
       </label>
@@ -1211,20 +1236,20 @@ Array [
                       className="emotion-73"
                     >
                       <div
-                        className="emotion-25"
+                        className="emotion-27"
                       >
                         <input
-                          className="emotion-22"
+                          className="emotion-24"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-24"
+                          className="emotion-26"
                         >
                           <svg
-                            className="emotion-23"
+                            className="emotion-25"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1255,20 +1280,20 @@ Array [
                       className="emotion-73"
                     >
                       <div
-                        className="emotion-25"
+                        className="emotion-27"
                       >
                         <input
-                          className="emotion-22"
+                          className="emotion-24"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-object-detection"
                         />
                         <div
-                          className="emotion-24"
+                          className="emotion-26"
                         >
                           <svg
-                            className="emotion-23"
+                            className="emotion-25"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1299,20 +1324,20 @@ Array [
                       className="emotion-73"
                     >
                       <div
-                        className="emotion-25"
+                        className="emotion-27"
                       >
                         <input
-                          className="emotion-22"
+                          className="emotion-24"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-label-detection"
                         />
                         <div
-                          className="emotion-24"
+                          className="emotion-26"
                         >
                           <svg
-                            className="emotion-23"
+                            className="emotion-25"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1343,20 +1368,20 @@ Array [
                       className="emotion-73"
                     >
                       <div
-                        className="emotion-25"
+                        className="emotion-27"
                       >
                         <input
-                          className="emotion-22"
+                          className="emotion-24"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-object-detection"
                         />
                         <div
-                          className="emotion-24"
+                          className="emotion-26"
                         >
                           <svg
-                            className="emotion-23"
+                            className="emotion-25"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1419,20 +1444,20 @@ Array [
                       className="emotion-73"
                     >
                       <div
-                        className="emotion-25"
+                        className="emotion-27"
                       >
                         <input
-                          className="emotion-22"
+                          className="emotion-24"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-document-page-clips"
                         />
                         <div
-                          className="emotion-24"
+                          className="emotion-26"
                         >
                           <svg
-                            className="emotion-23"
+                            className="emotion-25"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1463,20 +1488,20 @@ Array [
                       className="emotion-73"
                     >
                       <div
-                        className="emotion-25"
+                        className="emotion-27"
                       >
                         <input
-                          className="emotion-22"
+                          className="emotion-24"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-image-page-clips"
                         />
                         <div
-                          className="emotion-24"
+                          className="emotion-26"
                         >
                           <svg
-                            className="emotion-23"
+                            className="emotion-25"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1507,20 +1532,20 @@ Array [
                       className="emotion-73"
                     >
                       <div
-                        className="emotion-25"
+                        className="emotion-27"
                       >
                         <input
-                          className="emotion-22"
+                          className="emotion-24"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-video-shot-clips"
                         />
                         <div
-                          className="emotion-24"
+                          className="emotion-26"
                         >
                           <svg
-                            className="emotion-23"
+                            className="emotion-25"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1583,20 +1608,20 @@ Array [
                       className="emotion-73"
                     >
                       <div
-                        className="emotion-25"
+                        className="emotion-27"
                       >
                         <input
-                          className="emotion-22"
+                          className="emotion-24"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-text-detection"
                         />
                         <div
-                          className="emotion-24"
+                          className="emotion-26"
                         >
                           <svg
-                            className="emotion-23"
+                            className="emotion-25"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1896,8 +1921,14 @@ Array [
   padding-top: 12px;
 }
 
+.emotion-39 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-36 {
-  float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
@@ -1906,16 +1937,24 @@ Array [
 }
 
 .emotion-38 {
-  clear: both;
+  display: relative;
+}
+
+.emotion-37 {
+  padding-left: 8px;
+  color: #808080;
+}
+
+.emotion-37:hover {
+  color: #ffffff;
+}
+
+.emotion-41 {
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
-.emotion-39 {
-  clear: both;
-}
-
-.emotion-48 {
+.emotion-49 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1929,7 +1968,7 @@ Array [
   align-items: center;
 }
 
-.emotion-43 {
+.emotion-45 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1937,7 +1976,7 @@ Array [
   position: relative;
 }
 
-.emotion-40 {
+.emotion-42 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -1949,7 +1988,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-42 {
+.emotion-44 {
   position: absolute;
   top: 0;
   left: 0;
@@ -1970,13 +2009,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-41 path {
+.emotion-43 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-44 {
+.emotion-46 {
   padding-left: 24px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1988,21 +2027,21 @@ Array [
   align-items: center;
 }
 
-.emotion-47 {
+.emotion-48 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   padding-left: 16px;
 }
 
-.emotion-45 {
+.emotion-47 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-46 {
+.emotion-56 {
   padding-left: 12px;
   color: #b3b3b3;
 }
@@ -2625,13 +2664,36 @@ Array [
     <fieldset
       className="emotion-67"
     >
-      <legend
-        className="emotion-36"
-      >
-        Select File Types to Import
-      </legend>
       <div
-        className="emotion-38"
+        className="emotion-39"
+      >
+        <legend
+          className="emotion-36"
+        >
+          Select File Types to Import
+        </legend>
+        <div
+          className="emotion-38"
+        >
+          <div
+            onBlur={[Function]}
+            onFocus={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <div
+              className="emotion-37"
+            >
+              <svg
+                data-file-name="information.svg"
+                height={20}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-41"
       >
         <div>
           A minimum of one file type must be selected
@@ -2643,34 +2705,32 @@ Array [
           </span>
         </div>
       </div>
-      <div
-        className="emotion-39"
-      />
+      <div />
       <label
-        className="emotion-48"
+        className="emotion-49"
       >
         <div
-          className="emotion-43"
+          className="emotion-45"
         >
           <input
-            className="emotion-40"
+            className="emotion-42"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Images"
           />
           <div
-            className="emotion-42"
+            className="emotion-44"
           >
             <svg
-              className="emotion-41"
+              className="emotion-43"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-44"
+          className="emotion-46"
         >
           <img
             alt="Image Files"
@@ -2679,45 +2739,40 @@ Array [
           />
         </div>
         <div
-          className="emotion-47"
+          className="emotion-48"
         >
           <span
-            className="emotion-45"
+            className="emotion-47"
           >
             Image Files
-          </span>
-          <span
-            className="emotion-46"
-          >
-            GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
           </span>
         </div>
       </label>
       <label
-        className="emotion-48"
+        className="emotion-49"
       >
         <div
-          className="emotion-43"
+          className="emotion-45"
         >
           <input
-            className="emotion-40"
+            className="emotion-42"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Documents"
           />
           <div
-            className="emotion-42"
+            className="emotion-44"
           >
             <svg
-              className="emotion-41"
+              className="emotion-43"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-44"
+          className="emotion-46"
         >
           <img
             alt="Documents (PDF & MS Office)"
@@ -2726,45 +2781,45 @@ Array [
           />
         </div>
         <div
-          className="emotion-47"
+          className="emotion-48"
         >
           <span
-            className="emotion-45"
+            className="emotion-47"
           >
             Documents (PDF & MS Office)
           </span>
           <span
-            className="emotion-46"
+            className="emotion-56"
           >
-            PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+            Pages will be processed and counted as individual assets
           </span>
         </div>
       </label>
       <label
-        className="emotion-48"
+        className="emotion-49"
       >
         <div
-          className="emotion-43"
+          className="emotion-45"
         >
           <input
-            className="emotion-40"
+            className="emotion-42"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Videos"
           />
           <div
-            className="emotion-42"
+            className="emotion-44"
           >
             <svg
-              className="emotion-41"
+              className="emotion-43"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-44"
+          className="emotion-46"
         >
           <img
             alt="Video Files"
@@ -2773,17 +2828,12 @@ Array [
           />
         </div>
         <div
-          className="emotion-47"
+          className="emotion-48"
         >
           <span
-            className="emotion-45"
+            className="emotion-47"
           >
             Video Files
-          </span>
-          <span
-            className="emotion-46"
-          >
-            MP4, M4V, MOV, MPG, MPEG, OGG
           </span>
         </div>
       </label>
@@ -2962,20 +3012,20 @@ Array [
                       className="emotion-91"
                     >
                       <div
-                        className="emotion-43"
+                        className="emotion-45"
                       >
                         <input
-                          className="emotion-40"
+                          className="emotion-42"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-42"
+                          className="emotion-44"
                         >
                           <svg
-                            className="emotion-41"
+                            className="emotion-43"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3006,20 +3056,20 @@ Array [
                       className="emotion-91"
                     >
                       <div
-                        className="emotion-43"
+                        className="emotion-45"
                       >
                         <input
-                          className="emotion-40"
+                          className="emotion-42"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-object-detection"
                         />
                         <div
-                          className="emotion-42"
+                          className="emotion-44"
                         >
                           <svg
-                            className="emotion-41"
+                            className="emotion-43"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3050,20 +3100,20 @@ Array [
                       className="emotion-91"
                     >
                       <div
-                        className="emotion-43"
+                        className="emotion-45"
                       >
                         <input
-                          className="emotion-40"
+                          className="emotion-42"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-label-detection"
                         />
                         <div
-                          className="emotion-42"
+                          className="emotion-44"
                         >
                           <svg
-                            className="emotion-41"
+                            className="emotion-43"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3094,20 +3144,20 @@ Array [
                       className="emotion-91"
                     >
                       <div
-                        className="emotion-43"
+                        className="emotion-45"
                       >
                         <input
-                          className="emotion-40"
+                          className="emotion-42"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-object-detection"
                         />
                         <div
-                          className="emotion-42"
+                          className="emotion-44"
                         >
                           <svg
-                            className="emotion-41"
+                            className="emotion-43"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3170,20 +3220,20 @@ Array [
                       className="emotion-91"
                     >
                       <div
-                        className="emotion-43"
+                        className="emotion-45"
                       >
                         <input
-                          className="emotion-40"
+                          className="emotion-42"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-document-page-clips"
                         />
                         <div
-                          className="emotion-42"
+                          className="emotion-44"
                         >
                           <svg
-                            className="emotion-41"
+                            className="emotion-43"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3214,20 +3264,20 @@ Array [
                       className="emotion-91"
                     >
                       <div
-                        className="emotion-43"
+                        className="emotion-45"
                       >
                         <input
-                          className="emotion-40"
+                          className="emotion-42"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-image-page-clips"
                         />
                         <div
-                          className="emotion-42"
+                          className="emotion-44"
                         >
                           <svg
-                            className="emotion-41"
+                            className="emotion-43"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3258,20 +3308,20 @@ Array [
                       className="emotion-91"
                     >
                       <div
-                        className="emotion-43"
+                        className="emotion-45"
                       >
                         <input
-                          className="emotion-40"
+                          className="emotion-42"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-video-shot-clips"
                         />
                         <div
-                          className="emotion-42"
+                          className="emotion-44"
                         >
                           <svg
-                            className="emotion-41"
+                            className="emotion-43"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3334,20 +3384,20 @@ Array [
                       className="emotion-91"
                     >
                       <div
-                        className="emotion-43"
+                        className="emotion-45"
                       >
                         <input
-                          className="emotion-40"
+                          className="emotion-42"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-text-detection"
                         />
                         <div
-                          className="emotion-42"
+                          className="emotion-44"
                         >
                           <svg
-                            className="emotion-41"
+                            className="emotion-43"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3647,8 +3697,14 @@ Array [
   padding-top: 12px;
 }
 
+.emotion-33 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-30 {
-  float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
@@ -3657,16 +3713,24 @@ Array [
 }
 
 .emotion-32 {
-  clear: both;
+  display: relative;
+}
+
+.emotion-31 {
+  padding-left: 8px;
+  color: #808080;
+}
+
+.emotion-31:hover {
+  color: #ffffff;
+}
+
+.emotion-35 {
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
-.emotion-33 {
-  clear: both;
-}
-
-.emotion-42 {
+.emotion-43 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3680,7 +3744,7 @@ Array [
   align-items: center;
 }
 
-.emotion-37 {
+.emotion-39 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3688,7 +3752,7 @@ Array [
   position: relative;
 }
 
-.emotion-34 {
+.emotion-36 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -3700,7 +3764,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-36 {
+.emotion-38 {
   position: absolute;
   top: 0;
   left: 0;
@@ -3721,13 +3785,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-35 path {
+.emotion-37 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-38 {
+.emotion-40 {
   padding-left: 24px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -3739,21 +3803,21 @@ Array [
   align-items: center;
 }
 
-.emotion-41 {
+.emotion-42 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   padding-left: 16px;
 }
 
-.emotion-39 {
+.emotion-41 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-40 {
+.emotion-50 {
   padding-left: 12px;
   color: #b3b3b3;
 }
@@ -4343,13 +4407,36 @@ Array [
     <fieldset
       className="emotion-61"
     >
-      <legend
-        className="emotion-30"
-      >
-        Select File Types to Import
-      </legend>
       <div
-        className="emotion-32"
+        className="emotion-33"
+      >
+        <legend
+          className="emotion-30"
+        >
+          Select File Types to Import
+        </legend>
+        <div
+          className="emotion-32"
+        >
+          <div
+            onBlur={[Function]}
+            onFocus={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <div
+              className="emotion-31"
+            >
+              <svg
+                data-file-name="information.svg"
+                height={20}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-35"
       >
         <div>
           A minimum of one file type must be selected
@@ -4361,34 +4448,32 @@ Array [
           </span>
         </div>
       </div>
-      <div
-        className="emotion-33"
-      />
+      <div />
       <label
-        className="emotion-42"
+        className="emotion-43"
       >
         <div
-          className="emotion-37"
+          className="emotion-39"
         >
           <input
-            className="emotion-34"
+            className="emotion-36"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Images"
           />
           <div
-            className="emotion-36"
+            className="emotion-38"
           >
             <svg
-              className="emotion-35"
+              className="emotion-37"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-38"
+          className="emotion-40"
         >
           <img
             alt="Image Files"
@@ -4397,45 +4482,40 @@ Array [
           />
         </div>
         <div
-          className="emotion-41"
+          className="emotion-42"
         >
           <span
-            className="emotion-39"
+            className="emotion-41"
           >
             Image Files
-          </span>
-          <span
-            className="emotion-40"
-          >
-            GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
           </span>
         </div>
       </label>
       <label
-        className="emotion-42"
+        className="emotion-43"
       >
         <div
-          className="emotion-37"
+          className="emotion-39"
         >
           <input
-            className="emotion-34"
+            className="emotion-36"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Documents"
           />
           <div
-            className="emotion-36"
+            className="emotion-38"
           >
             <svg
-              className="emotion-35"
+              className="emotion-37"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-38"
+          className="emotion-40"
         >
           <img
             alt="Documents (PDF & MS Office)"
@@ -4444,45 +4524,45 @@ Array [
           />
         </div>
         <div
-          className="emotion-41"
+          className="emotion-42"
         >
           <span
-            className="emotion-39"
+            className="emotion-41"
           >
             Documents (PDF & MS Office)
           </span>
           <span
-            className="emotion-40"
+            className="emotion-50"
           >
-            PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+            Pages will be processed and counted as individual assets
           </span>
         </div>
       </label>
       <label
-        className="emotion-42"
+        className="emotion-43"
       >
         <div
-          className="emotion-37"
+          className="emotion-39"
         >
           <input
-            className="emotion-34"
+            className="emotion-36"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Videos"
           />
           <div
-            className="emotion-36"
+            className="emotion-38"
           >
             <svg
-              className="emotion-35"
+              className="emotion-37"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-38"
+          className="emotion-40"
         >
           <img
             alt="Video Files"
@@ -4491,17 +4571,12 @@ Array [
           />
         </div>
         <div
-          className="emotion-41"
+          className="emotion-42"
         >
           <span
-            className="emotion-39"
+            className="emotion-41"
           >
             Video Files
-          </span>
-          <span
-            className="emotion-40"
-          >
-            MP4, M4V, MOV, MPG, MPEG, OGG
           </span>
         </div>
       </label>
@@ -4680,20 +4755,20 @@ Array [
                       className="emotion-85"
                     >
                       <div
-                        className="emotion-37"
+                        className="emotion-39"
                       >
                         <input
-                          className="emotion-34"
+                          className="emotion-36"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-36"
+                          className="emotion-38"
                         >
                           <svg
-                            className="emotion-35"
+                            className="emotion-37"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -4724,20 +4799,20 @@ Array [
                       className="emotion-85"
                     >
                       <div
-                        className="emotion-37"
+                        className="emotion-39"
                       >
                         <input
-                          className="emotion-34"
+                          className="emotion-36"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-object-detection"
                         />
                         <div
-                          className="emotion-36"
+                          className="emotion-38"
                         >
                           <svg
-                            className="emotion-35"
+                            className="emotion-37"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -4768,20 +4843,20 @@ Array [
                       className="emotion-85"
                     >
                       <div
-                        className="emotion-37"
+                        className="emotion-39"
                       >
                         <input
-                          className="emotion-34"
+                          className="emotion-36"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-label-detection"
                         />
                         <div
-                          className="emotion-36"
+                          className="emotion-38"
                         >
                           <svg
-                            className="emotion-35"
+                            className="emotion-37"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -4812,20 +4887,20 @@ Array [
                       className="emotion-85"
                     >
                       <div
-                        className="emotion-37"
+                        className="emotion-39"
                       >
                         <input
-                          className="emotion-34"
+                          className="emotion-36"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-object-detection"
                         />
                         <div
-                          className="emotion-36"
+                          className="emotion-38"
                         >
                           <svg
-                            className="emotion-35"
+                            className="emotion-37"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -4888,20 +4963,20 @@ Array [
                       className="emotion-85"
                     >
                       <div
-                        className="emotion-37"
+                        className="emotion-39"
                       >
                         <input
-                          className="emotion-34"
+                          className="emotion-36"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-document-page-clips"
                         />
                         <div
-                          className="emotion-36"
+                          className="emotion-38"
                         >
                           <svg
-                            className="emotion-35"
+                            className="emotion-37"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -4932,20 +5007,20 @@ Array [
                       className="emotion-85"
                     >
                       <div
-                        className="emotion-37"
+                        className="emotion-39"
                       >
                         <input
-                          className="emotion-34"
+                          className="emotion-36"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-image-page-clips"
                         />
                         <div
-                          className="emotion-36"
+                          className="emotion-38"
                         >
                           <svg
-                            className="emotion-35"
+                            className="emotion-37"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -4976,20 +5051,20 @@ Array [
                       className="emotion-85"
                     >
                       <div
-                        className="emotion-37"
+                        className="emotion-39"
                       >
                         <input
-                          className="emotion-34"
+                          className="emotion-36"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-video-shot-clips"
                         />
                         <div
-                          className="emotion-36"
+                          className="emotion-38"
                         >
                           <svg
-                            className="emotion-35"
+                            className="emotion-37"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -5052,20 +5127,20 @@ Array [
                       className="emotion-85"
                     >
                       <div
-                        className="emotion-37"
+                        className="emotion-39"
                       >
                         <input
-                          className="emotion-34"
+                          className="emotion-36"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-text-detection"
                         />
                         <div
-                          className="emotion-36"
+                          className="emotion-38"
                         >
                           <svg
-                            className="emotion-35"
+                            className="emotion-37"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -5365,8 +5440,14 @@ Array [
   padding-top: 12px;
 }
 
+.emotion-32 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-29 {
-  float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
@@ -5375,16 +5456,24 @@ Array [
 }
 
 .emotion-31 {
-  clear: both;
+  display: relative;
+}
+
+.emotion-30 {
+  padding-left: 8px;
+  color: #808080;
+}
+
+.emotion-30:hover {
+  color: #ffffff;
+}
+
+.emotion-34 {
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
-.emotion-32 {
-  clear: both;
-}
-
-.emotion-41 {
+.emotion-42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -5398,7 +5487,7 @@ Array [
   align-items: center;
 }
 
-.emotion-36 {
+.emotion-38 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -5406,7 +5495,7 @@ Array [
   position: relative;
 }
 
-.emotion-33 {
+.emotion-35 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -5418,7 +5507,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-35 {
+.emotion-37 {
   position: absolute;
   top: 0;
   left: 0;
@@ -5439,13 +5528,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-34 path {
+.emotion-36 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-37 {
+.emotion-39 {
   padding-left: 24px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -5457,21 +5546,21 @@ Array [
   align-items: center;
 }
 
-.emotion-40 {
+.emotion-41 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   padding-left: 16px;
 }
 
-.emotion-38 {
+.emotion-40 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-39 {
+.emotion-49 {
   padding-left: 12px;
   color: #b3b3b3;
 }
@@ -6056,13 +6145,36 @@ Array [
     <fieldset
       className="emotion-60"
     >
-      <legend
-        className="emotion-29"
-      >
-        Select File Types to Import
-      </legend>
       <div
-        className="emotion-31"
+        className="emotion-32"
+      >
+        <legend
+          className="emotion-29"
+        >
+          Select File Types to Import
+        </legend>
+        <div
+          className="emotion-31"
+        >
+          <div
+            onBlur={[Function]}
+            onFocus={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <div
+              className="emotion-30"
+            >
+              <svg
+                data-file-name="information.svg"
+                height={20}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-34"
       >
         <div>
           A minimum of one file type must be selected
@@ -6074,34 +6186,32 @@ Array [
           </span>
         </div>
       </div>
-      <div
-        className="emotion-32"
-      />
+      <div />
       <label
-        className="emotion-41"
+        className="emotion-42"
       >
         <div
-          className="emotion-36"
+          className="emotion-38"
         >
           <input
-            className="emotion-33"
+            className="emotion-35"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Images"
           />
           <div
-            className="emotion-35"
+            className="emotion-37"
           >
             <svg
-              className="emotion-34"
+              className="emotion-36"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-37"
+          className="emotion-39"
         >
           <img
             alt="Image Files"
@@ -6110,45 +6220,40 @@ Array [
           />
         </div>
         <div
-          className="emotion-40"
+          className="emotion-41"
         >
           <span
-            className="emotion-38"
+            className="emotion-40"
           >
             Image Files
-          </span>
-          <span
-            className="emotion-39"
-          >
-            GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
           </span>
         </div>
       </label>
       <label
-        className="emotion-41"
+        className="emotion-42"
       >
         <div
-          className="emotion-36"
+          className="emotion-38"
         >
           <input
-            className="emotion-33"
+            className="emotion-35"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Documents"
           />
           <div
-            className="emotion-35"
+            className="emotion-37"
           >
             <svg
-              className="emotion-34"
+              className="emotion-36"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-37"
+          className="emotion-39"
         >
           <img
             alt="Documents (PDF & MS Office)"
@@ -6157,45 +6262,45 @@ Array [
           />
         </div>
         <div
-          className="emotion-40"
+          className="emotion-41"
         >
           <span
-            className="emotion-38"
+            className="emotion-40"
           >
             Documents (PDF & MS Office)
           </span>
           <span
-            className="emotion-39"
+            className="emotion-49"
           >
-            PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+            Pages will be processed and counted as individual assets
           </span>
         </div>
       </label>
       <label
-        className="emotion-41"
+        className="emotion-42"
       >
         <div
-          className="emotion-36"
+          className="emotion-38"
         >
           <input
-            className="emotion-33"
+            className="emotion-35"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Videos"
           />
           <div
-            className="emotion-35"
+            className="emotion-37"
           >
             <svg
-              className="emotion-34"
+              className="emotion-36"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-37"
+          className="emotion-39"
         >
           <img
             alt="Video Files"
@@ -6204,17 +6309,12 @@ Array [
           />
         </div>
         <div
-          className="emotion-40"
+          className="emotion-41"
         >
           <span
-            className="emotion-38"
+            className="emotion-40"
           >
             Video Files
-          </span>
-          <span
-            className="emotion-39"
-          >
-            MP4, M4V, MOV, MPG, MPEG, OGG
           </span>
         </div>
       </label>
@@ -6393,20 +6493,20 @@ Array [
                       className="emotion-84"
                     >
                       <div
-                        className="emotion-36"
+                        className="emotion-38"
                       >
                         <input
-                          className="emotion-33"
+                          className="emotion-35"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-35"
+                          className="emotion-37"
                         >
                           <svg
-                            className="emotion-34"
+                            className="emotion-36"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -6437,20 +6537,20 @@ Array [
                       className="emotion-84"
                     >
                       <div
-                        className="emotion-36"
+                        className="emotion-38"
                       >
                         <input
-                          className="emotion-33"
+                          className="emotion-35"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-object-detection"
                         />
                         <div
-                          className="emotion-35"
+                          className="emotion-37"
                         >
                           <svg
-                            className="emotion-34"
+                            className="emotion-36"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -6481,20 +6581,20 @@ Array [
                       className="emotion-84"
                     >
                       <div
-                        className="emotion-36"
+                        className="emotion-38"
                       >
                         <input
-                          className="emotion-33"
+                          className="emotion-35"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-label-detection"
                         />
                         <div
-                          className="emotion-35"
+                          className="emotion-37"
                         >
                           <svg
-                            className="emotion-34"
+                            className="emotion-36"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -6525,20 +6625,20 @@ Array [
                       className="emotion-84"
                     >
                       <div
-                        className="emotion-36"
+                        className="emotion-38"
                       >
                         <input
-                          className="emotion-33"
+                          className="emotion-35"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-object-detection"
                         />
                         <div
-                          className="emotion-35"
+                          className="emotion-37"
                         >
                           <svg
-                            className="emotion-34"
+                            className="emotion-36"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -6601,20 +6701,20 @@ Array [
                       className="emotion-84"
                     >
                       <div
-                        className="emotion-36"
+                        className="emotion-38"
                       >
                         <input
-                          className="emotion-33"
+                          className="emotion-35"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-document-page-clips"
                         />
                         <div
-                          className="emotion-35"
+                          className="emotion-37"
                         >
                           <svg
-                            className="emotion-34"
+                            className="emotion-36"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -6645,20 +6745,20 @@ Array [
                       className="emotion-84"
                     >
                       <div
-                        className="emotion-36"
+                        className="emotion-38"
                       >
                         <input
-                          className="emotion-33"
+                          className="emotion-35"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-image-page-clips"
                         />
                         <div
-                          className="emotion-35"
+                          className="emotion-37"
                         >
                           <svg
-                            className="emotion-34"
+                            className="emotion-36"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -6689,20 +6789,20 @@ Array [
                       className="emotion-84"
                     >
                       <div
-                        className="emotion-36"
+                        className="emotion-38"
                       >
                         <input
-                          className="emotion-33"
+                          className="emotion-35"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-video-shot-clips"
                         />
                         <div
-                          className="emotion-35"
+                          className="emotion-37"
                         >
                           <svg
-                            className="emotion-34"
+                            className="emotion-36"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -6765,20 +6865,20 @@ Array [
                       className="emotion-84"
                     >
                       <div
-                        className="emotion-36"
+                        className="emotion-38"
                       >
                         <input
-                          className="emotion-33"
+                          className="emotion-35"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-text-detection"
                         />
                         <div
-                          className="emotion-35"
+                          className="emotion-37"
                         >
                           <svg
-                            className="emotion-34"
+                            className="emotion-36"
                             data-file-name="checkmark.svg"
                             height={20}
                           />

@@ -3,7 +3,9 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 
-import { colors, constants, typography, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
+
+import InformationSvg from '../Icons/information.svg'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
@@ -14,6 +16,7 @@ import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
+import Tooltip from '../Tooltip'
 
 import { FILE_TYPES, onSubmit } from './helpers'
 
@@ -21,6 +24,8 @@ import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
 import DataSourcesAddProvider from './Provider'
 import DataSourcesAddCopy from './Copy'
 import DataSourcesAddSource, { SOURCES } from './Source'
+
+const ICON_SIZE = 20
 
 const INITIAL_STATE = {
   name: '',
@@ -117,6 +122,67 @@ const DataSourcesAddForm = () => {
 
         <CheckboxGroup
           legend="Select File Types to Import"
+          subHeader={
+            <Tooltip
+              content={
+                <div
+                  css={{
+                    color: colors.structure.zinc,
+                    padding: spacing.base,
+                  }}
+                >
+                  <h3
+                    css={{
+                      fontSize: typography.size.regular,
+                      lineHeight: typography.height.regular,
+                      fontWeight: typography.weight.medium,
+                      color: colors.structure.white,
+                    }}
+                  >
+                    Supported File Types
+                  </h3>
+
+                  {FILE_TYPES.map(({ value, legend }) => (
+                    <div key={value}>
+                      <h4
+                        css={{
+                          paddingTop: spacing.base,
+                          fontSize: typography.size.regular,
+                          lineHeight: typography.height.regular,
+                          fontWeight: typography.weight.bold,
+                        }}
+                      >
+                        {value}:
+                      </h4>
+                      <h5
+                        css={{
+                          margin: 0,
+                          paddingTop: spacing.mini,
+                          fontSize: typography.size.regular,
+                          lineHeight: typography.height.regular,
+                          fontWeight: typography.weight.regular,
+                        }}
+                      >
+                        {legend}
+                      </h5>
+                    </div>
+                  ))}
+                </div>
+              }
+            >
+              <div
+                css={{
+                  paddingLeft: spacing.base,
+                  color: colors.structure.steel,
+                  ':hover': {
+                    color: colors.structure.white,
+                  },
+                }}
+              >
+                <InformationSvg height={ICON_SIZE} />
+              </div>
+            </Tooltip>
+          }
           description={
             <div>
               A minimum of one file type must be selected{' '}
@@ -126,11 +192,14 @@ const DataSourcesAddForm = () => {
           onClick={(fileType) =>
             dispatch({ fileTypes: { ...fileTypes, ...fileType } })
           }
-          options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
+          options={FILE_TYPES.map(({ value, label, icon }) => ({
             value,
             label,
             icon: <img src={icon} alt={label} width="40px" />,
-            legend,
+            legend:
+              value === 'Documents'
+                ? 'Pages will be processed and counted as individual assets'
+                : '',
             initialValue: false,
             isDisabled: false,
           }))}

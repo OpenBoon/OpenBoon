@@ -8,8 +8,14 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   padding-top: 12px;
 }
 
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-0 {
-  float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
@@ -17,14 +23,9 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   font-weight: 500;
 }
 
-.emotion-1 {
-  clear: both;
+.emotion-2 {
   padding-bottom: 16px;
   color: #b3b3b3;
-}
-
-.emotion-2 {
-  clear: both;
 }
 
 .emotion-10 {
@@ -114,19 +115,22 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
 <fieldset
   className="emotion-11"
 >
-  <legend
-    className="emotion-0"
-  >
-    Permissions
-  </legend>
   <div
     className="emotion-1"
   >
-    Tele Tele Scope
+    <legend
+      className="emotion-0"
+    >
+      Permissions
+    </legend>
+    
   </div>
   <div
     className="emotion-2"
-  />
+  >
+    Tele Tele Scope
+  </div>
+  <div />
   <label
     className="emotion-10"
   >
@@ -176,8 +180,14 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   padding-top: 12px;
 }
 
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-0 {
-  float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
@@ -185,14 +195,9 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   font-weight: 500;
 }
 
-.emotion-1 {
-  clear: both;
+.emotion-2 {
   padding-bottom: 16px;
   color: #b3b3b3;
-}
-
-.emotion-2 {
-  clear: both;
 }
 
 .emotion-10 {
@@ -282,19 +287,22 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
 <fieldset
   className="emotion-11"
 >
-  <legend
-    className="emotion-0"
-  >
-    Permissions
-  </legend>
   <div
     className="emotion-1"
   >
-    Tele Tele Scope
+    <legend
+      className="emotion-0"
+    >
+      Permissions
+    </legend>
+    
   </div>
   <div
     className="emotion-2"
-  />
+  >
+    Tele Tele Scope
+  </div>
+  <div />
   <label
     className="emotion-10"
   >

@@ -200,17 +200,19 @@ Array [
   padding-top: 12px;
 }
 
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-5 {
-  float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
-}
-
-.emotion-6 {
-  clear: both;
 }
 
 .emotion-14 {
@@ -404,15 +406,18 @@ Array [
     <fieldset
       className="emotion-103"
     >
-      <legend
-        className="emotion-5"
-      >
-        Add Scope
-      </legend>
-      
       <div
         className="emotion-6"
-      />
+      >
+        <legend
+          className="emotion-5"
+        >
+          Add Scope
+        </legend>
+        
+      </div>
+      
+      <div />
       <label
         className="emotion-14"
       >
@@ -1645,17 +1650,19 @@ Array [
   padding-top: 12px;
 }
 
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-5 {
-  float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
-}
-
-.emotion-6 {
-  clear: both;
 }
 
 .emotion-14 {
@@ -1849,15 +1856,18 @@ Array [
     <fieldset
       className="emotion-103"
     >
-      <legend
-        className="emotion-5"
-      >
-        Add Scope
-      </legend>
-      
       <div
         className="emotion-6"
-      />
+      >
+        <legend
+          className="emotion-5"
+        >
+          Add Scope
+        </legend>
+        
+      </div>
+      
+      <div />
       <label
         className="emotion-14"
       >

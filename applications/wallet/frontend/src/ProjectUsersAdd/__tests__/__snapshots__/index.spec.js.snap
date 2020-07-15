@@ -289,17 +289,19 @@ Array [
   padding-top: 12px;
 }
 
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-12 {
-  float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
-}
-
-.emotion-13 {
-  clear: both;
 }
 
 .emotion-21 {
@@ -531,15 +533,18 @@ Array [
       <fieldset
         className="emotion-38"
       >
-        <legend
-          className="emotion-12"
-        >
-          Add Roles
-        </legend>
-        
         <div
           className="emotion-13"
-        />
+        >
+          <legend
+            className="emotion-12"
+          >
+            Add Roles
+          </legend>
+          
+        </div>
+        
+        <div />
         <label
           className="emotion-21"
         >
@@ -961,17 +966,19 @@ Array [
   padding-top: 12px;
 }
 
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-12 {
-  float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
-}
-
-.emotion-13 {
-  clear: both;
 }
 
 .emotion-21 {
@@ -1221,15 +1228,18 @@ Array [
       <fieldset
         className="emotion-38"
       >
-        <legend
-          className="emotion-12"
-        >
-          Add Roles
-        </legend>
-        
         <div
           className="emotion-13"
-        />
+        >
+          <legend
+            className="emotion-12"
+          >
+            Add Roles
+          </legend>
+          
+        </div>
+        
+        <div />
         <label
           className="emotion-21"
         >
@@ -2199,17 +2209,19 @@ Array [
   padding-top: 12px;
 }
 
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-12 {
-  float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
-}
-
-.emotion-13 {
-  clear: both;
 }
 
 .emotion-21 {
@@ -2441,15 +2453,18 @@ Array [
       <fieldset
         className="emotion-38"
       >
-        <legend
-          className="emotion-12"
-        >
-          Add Roles
-        </legend>
-        
         <div
           className="emotion-13"
-        />
+        >
+          <legend
+            className="emotion-12"
+          >
+            Add Roles
+          </legend>
+          
+        </div>
+        
+        <div />
         <label
           className="emotion-21"
         >
