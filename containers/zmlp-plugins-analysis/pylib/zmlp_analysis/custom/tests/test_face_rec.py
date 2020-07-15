@@ -18,7 +18,8 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
             'modelId': '12345',
             'type': "ZVI_FACE_RECOGNITION",
             'fileId': 'models/foo/bar/12345',
-            'name': "foo"
+            'name': "foo",
+            'moduleName': 'foo'
         })
 
         asset = TestAsset()
@@ -26,17 +27,19 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
             {
                 "label": "face0",
                 "score": 0.1,
-                "simhash": "AAAAAAAA"
+                "simhash": "AAAAAAAA",
+                "bbox": [0, 0, 1, 1]
             },
             {
                 "label": "face1",
                 "score": 0.1,
-                "simhash": "00000000"
+                "simhash": "00000000",
+                "bbox": [0, 0, 1, 1]
             }
         ])
         frame = Frame(asset)
         processor = self.init_processor(KnnFaceRecognitionClassifier(), {})
         processor.process(frame)
 
-        analysis = frame.asset.get_attr('analysis.zvi-face-detection')
+        analysis = frame.asset.get_attr('analysis.foo')
         assert 'Gandalf' in get_prediction_labels(analysis)
