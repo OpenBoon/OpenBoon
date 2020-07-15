@@ -64,6 +64,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   align-items: center;
   background: #2e2e2e;
   overflow: hidden;
+  border-radius: 0;
 }
 
 .emotion-1:hover {
@@ -279,6 +280,7 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   align-items: center;
   background: #2e2e2e;
   overflow: hidden;
+  border-radius: 0;
 }
 
 .emotion-1:hover {
@@ -526,6 +528,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   align-items: center;
   background: #2e2e2e;
   overflow: hidden;
+  border-radius: 0;
 }
 
 .emotion-1:hover {
@@ -780,6 +783,7 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   align-items: center;
   background: #2e2e2e;
   overflow: hidden;
+  border-radius: 0;
 }
 
 .emotion-1:hover {
@@ -1011,6 +1015,7 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   align-items: center;
   background: #2e2e2e;
   overflow: hidden;
+  border-radius: 0;
 }
 
 .emotion-1:hover {
