@@ -25,7 +25,7 @@ exports[`<Textarea /> should render properly with an error 1`] = `
   line-height: 19px;
   color: #000000;
   background-color: #ffffff;
-  border: 2px solid #c92300;
+  border: 1px solid #c92300;
   border-width: 2px;
 }
 

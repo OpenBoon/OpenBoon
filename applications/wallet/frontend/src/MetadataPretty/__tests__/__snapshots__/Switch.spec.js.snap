@@ -1235,6 +1235,7 @@ Array [
   align-items: center;
   background: #2e2e2e;
   overflow: hidden;
+  border-radius: 0;
 }
 
 .emotion-7:hover {

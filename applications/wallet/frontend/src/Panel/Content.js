@@ -39,6 +39,7 @@ const PanelContent = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: spacing.base,
+            paddingLeft: spacing.normal,
             borderBottom: constants.borders.regular.smoke,
           }}
         >

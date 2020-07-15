@@ -18,13 +18,16 @@ const FiltersIcon = () => {
   const q = cleanup({ query })
 
   const hasFilters = q && q !== 'W10='
+  const hasDisabledFilters = query && !hasFilters
 
   return (
     <div css={{ position: 'relative' }}>
-      {hasFilters && (
+      {(hasFilters || hasDisabledFilters) && (
         <div
           css={{
-            backgroundColor: colors.key.one,
+            backgroundColor: hasDisabledFilters
+              ? colors.structure.steel
+              : colors.key.one,
             width: INDICATOR_SIZE,
             height: INDICATOR_SIZE,
             borderRadius: INDICATOR_SIZE,

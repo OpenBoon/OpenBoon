@@ -35,6 +35,7 @@ exports[`<ChartRange /> should render properly 1`] = `
 .emotion-26 {
   height: 100%;
   overflow: hidden;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-25 {
@@ -47,7 +48,6 @@ exports[`<ChartRange /> should render properly 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #252525;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
   border-radius: 2px;
   padding: 16px;
   padding-top: 8px;
@@ -69,6 +69,7 @@ exports[`<ChartRange /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  margin-right: -8px;
 }
 
 .emotion-6:hover button svg {
@@ -467,6 +468,7 @@ exports[`<ChartRange /> should render properly without data 1`] = `
 .emotion-16 {
   height: 100%;
   overflow: hidden;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-15 {
@@ -479,7 +481,6 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #252525;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
   border-radius: 2px;
   padding: 16px;
   padding-top: 8px;
@@ -501,6 +502,7 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  margin-right: -8px;
 }
 
 .emotion-6:hover button svg {
