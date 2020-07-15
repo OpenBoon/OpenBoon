@@ -188,13 +188,15 @@ class ProjectControllerTests : MockMvcTest() {
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.videoSecondsMax", CoreMatchers.anything()))
             .andExpect(jsonPath("$.videoSecondsCount", CoreMatchers.anything()))
+            .andExpect(jsonPath("$.deletedVideoSecondsCount", CoreMatchers.anything()))
             .andExpect(jsonPath("$.pageMax", CoreMatchers.anything()))
             .andExpect(jsonPath("$.pageCount", CoreMatchers.anything()))
+            .andExpect(jsonPath("$.deletedPageCount", CoreMatchers.anything()))
             .andReturn()
     }
 
     @Test
-    fun testGetMyProjecQuotasTimeSeries() {
+    fun testGetMyProjectQuotasTimeSeries() {
         val counters = ProjectQuotaCounters()
         counters.videoClipCount = 1
         counters.pageCount = 1
@@ -213,6 +215,8 @@ class ProjectControllerTests : MockMvcTest() {
             .andExpect(status().isOk)
             .andExpect(jsonPath("$[0].videoSecondsCount", CoreMatchers.anything()))
             .andExpect(jsonPath("$[0].pageCount", CoreMatchers.anything()))
+            .andExpect(jsonPath("$[0].deletedVideoSecondsCount", CoreMatchers.anything()))
+            .andExpect(jsonPath("$[0].deletedPageCount", CoreMatchers.anything()))
             .andReturn()
     }
 

@@ -28,6 +28,13 @@ class ProjectQuotasDaoTests : AbstractTest() {
         counters.documentFileCount = 1
         counters.videoFileCount = 1
 
+        counters.deletedPageCount = 1
+        counters.deletedVideoClipCount = 1
+        counters.deletedImageFileCount = 1
+        counters.deletedDocumentFileCount = 1
+        counters.deletedVideoFileCount = 1
+        counters.deletedVideoLength = 10.0
+
         projectQuotasDao.incrementTimeSeriesCounters(date, counters)
 
         var row1 = jdbc.queryForMap("SELECT * FROM project_quota_time_series WHERE int_video_file_count > 0")
@@ -38,6 +45,13 @@ class ProjectQuotasDaoTests : AbstractTest() {
         assertEquals(1L, row1["int_page_count"])
         assertEquals(1L, row1["int_video_clip_count"])
 
+        assertEquals(BigDecimal("10.00"), row1["float_deleted_video_seconds"])
+        assertEquals(1L, row1["int_deleted_video_file_count"])
+        assertEquals(1L, row1["int_deleted_document_file_count"])
+        assertEquals(1L, row1["int_deleted_image_file_count"])
+        assertEquals(1L, row1["int_deleted_video_clip_count"])
+        assertEquals(1L, row1["int_deleted_page_count"])
+
         projectQuotasDao.incrementTimeSeriesCounters(date, counters)
         val row2 = jdbc.queryForMap("SELECT * FROM project_quota_time_series WHERE int_video_file_count > 0")
         assertEquals(2L, row2["int_video_file_count"])
@@ -46,6 +60,13 @@ class ProjectQuotasDaoTests : AbstractTest() {
         assertEquals(BigDecimal("20.00"), row2["float_video_seconds"])
         assertEquals(2L, row2["int_page_count"])
         assertEquals(2L, row2["int_video_clip_count"])
+
+        assertEquals(BigDecimal("20.00"), row2["float_deleted_video_seconds"])
+        assertEquals(2L, row2["int_deleted_video_file_count"])
+        assertEquals(2L, row2["int_deleted_document_file_count"])
+        assertEquals(2L, row2["int_deleted_image_file_count"])
+        assertEquals(2L, row2["int_deleted_video_clip_count"])
+        assertEquals(2L, row2["int_deleted_page_count"])
     }
 
     @Test
