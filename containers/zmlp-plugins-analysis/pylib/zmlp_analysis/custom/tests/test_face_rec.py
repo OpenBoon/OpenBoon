@@ -38,5 +38,5 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
         processor = self.init_processor(KnnFaceRecognitionClassifier(), {})
         processor.process(frame)
 
-        analysis = frame.asset.get_attr('analysis.zvi-face-detection')
+        analysis = frame.asset.get_attr('analysis.zvi-face-recognition')
         assert 'Gandalf' in get_prediction_labels(analysis)

@@ -5,6 +5,7 @@ import numpy as np
 
 from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.storage import file_storage
+from zmlpsdk.analysis import LabelDetectionAnalysis
 
 
 class KnnFaceRecognitionClassifier(AssetProcessor):
@@ -30,6 +31,8 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
         if not faces:
             return
 
+        analysis = LabelDetectionAnalysis()
+
         x = self.hashes_as_nparray(faces)
         predictions = self.face_classifier.predict(x)
         dist, ind = self.face_classifier.kneighbors(x, n_neighbors=1, return_distance=True)
@@ -37,10 +40,14 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
         min_distance = self.arg_value('sensitivity')
         for i, face in enumerate(faces):
             if dist[i][0] < min_distance:
-                faces[i]['label'] = predictions[i]
-                faces[i]['score'] = 1 - max(0, min(1, (dist[i][0] - 800) / (1100 - 800)))
+                label = predictions[i]
+                score = 1 - max(0, min(1, (dist[i][0] - 800) / (1100 - 800)))
             else:
-                faces[i]['label'] = 'Unrecognized'
+                label = 'Unrecognized'
+                score = 0.0
+
+            analysis.add_label_and_score(label, score, bbox=faces[i]["bbox"])
+        asset.add_analysis(self.app_model.module_name, analysis)
 
     def load_model(self):
         """
