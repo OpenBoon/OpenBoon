@@ -46,7 +46,9 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
                 label = 'Unrecognized'
                 score = 0.0
 
-            analysis.add_label_and_score(label, score, bbox=faces[i]["bbox"])
+            print(face)
+            analysis.add_label_and_score(label, score, bbox=face["bbox"])
+
         asset.add_analysis(self.app_model.module_name, analysis)
 
     def load_model(self):
