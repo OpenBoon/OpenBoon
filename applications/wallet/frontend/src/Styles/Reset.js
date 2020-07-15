@@ -3,6 +3,8 @@ import { Global, css } from '@emotion/core'
 
 import { colors, typography, spacing } from '.'
 
+const ICON_SIZE = 20
+
 const StylesReset = () => (
   <>
     <Global
@@ -47,6 +49,21 @@ const StylesReset = () => (
           padding: spacing.normal,
           fontSize: typography.size.regular,
           lineHeight: typography.height.regular,
+        },
+        'input[type="search"]': {
+          WebkitAppearance: 'textfield',
+        },
+        'input[type="search"]::-webkit-search-cancel-button': {
+          MozAppearance: 'none',
+          WebkitAppearance: 'none',
+          height: ICON_SIZE,
+          width: ICON_SIZE,
+          backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTMuOSA0bDEuNCAxLjQtNC4yIDQuMiA0LjIgNC4yLTEuNCAxLjRMOS43IDExbC00LjIgNC4yTDQgMTMuOWw0LjItNC4yTDQgNS40IDUuNCA0bDQuMiA0LjJMMTMuOSA0eiIgLz4KPC9zdmc+Cg==')`,
+          backgroundRepeat: `no-repeat, repeat`,
+          backgroundPosition: `right top 50%`,
+          backgroundColor: colors.structure.transparent,
+          color: colors.structure.coal,
+          cursor: 'pointer',
         },
         '.js-focus-visible :focus:not(.focus-visible)': {
           outline: 'none',

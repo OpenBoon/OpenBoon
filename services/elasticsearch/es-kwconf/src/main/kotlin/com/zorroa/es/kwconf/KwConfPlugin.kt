@@ -75,7 +75,7 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
                         for (map in labels) {
                             val keyword = map.getValue("label").toString()
                             if (keyword in keywords) {
-                                val conf = map.getValue("score") as Double
+                                val conf = (map.getValue("score") as Number).toDouble()
                                 if (isWithinRange(conf)) {
                                     score += conf
                                 }

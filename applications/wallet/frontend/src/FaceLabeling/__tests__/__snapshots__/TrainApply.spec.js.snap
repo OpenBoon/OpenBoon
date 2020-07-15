@@ -22,6 +22,25 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   position: relative;
 }
 
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  border: 0;
+  background-color: inherit;
+  color: #808080;
+  margin-left: 8px;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+  cursor: pointer;
+}
+
 .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -75,25 +94,6 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 
 .emotion-1[aria-disabled=true] {
   background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  border: 0;
-  background-color: inherit;
-  color: #808080;
-  margin-left: 8px;
-}
-
-.emotion-2:hover {
-  color: #ffffff;
-  cursor: pointer;
 }
 
 <div
@@ -166,6 +166,25 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   position: relative;
 }
 
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  border: 0;
+  background-color: inherit;
+  color: #808080;
+  margin-left: 8px;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+  cursor: pointer;
+}
+
 .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -219,25 +238,6 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 
 .emotion-1[aria-disabled=true] {
   background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  border: 0;
-  background-color: inherit;
-  color: #808080;
-  margin-left: 8px;
-}
-
-.emotion-2:hover {
-  color: #ffffff;
-  cursor: pointer;
 }
 
 .emotion-4 {
@@ -298,7 +298,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     <div
       className="emotion-4"
     >
-      Overriding the training that is currently in progress will stop and replace it with any new changes made.
+      There are new labels that have not been used for training. Restart training with the latest labels.
     </div>
   </div>
 </div>
@@ -324,6 +324,25 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   -ms-flex-align: center;
   align-items: center;
   position: relative;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  border: 0;
+  background-color: inherit;
+  color: #808080;
+  margin-left: 8px;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+  cursor: pointer;
 }
 
 .emotion-1 {
@@ -379,25 +398,6 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 
 .emotion-1[aria-disabled=true] {
   background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  border: 0;
-  background-color: inherit;
-  color: #808080;
-  margin-left: 8px;
-}
-
-.emotion-2:hover {
-  color: #ffffff;
-  cursor: pointer;
 }
 
 <div
@@ -470,6 +470,25 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   position: relative;
 }
 
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  border: 0;
+  background-color: inherit;
+  color: #808080;
+  margin-left: 8px;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+  cursor: pointer;
+}
+
 .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -523,25 +542,6 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 
 .emotion-1[aria-disabled=true] {
   background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  border: 0;
-  background-color: inherit;
-  color: #808080;
-  margin-left: 8px;
-}
-
-.emotion-2:hover {
-  color: #ffffff;
-  cursor: pointer;
 }
 
 .emotion-4 {
@@ -602,7 +602,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     <div
       className="emotion-4"
     >
-      Overriding the training that is currently in progress will stop and replace it with any new changes made.
+      There are new labels that have not been used for training. Restart training with the latest labels.
     </div>
   </div>
 </div>
@@ -628,6 +628,25 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   -ms-flex-align: center;
   align-items: center;
   position: relative;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  border: 0;
+  background-color: inherit;
+  color: #808080;
+  margin-left: 8px;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+  cursor: pointer;
 }
 
 .emotion-1 {
@@ -683,25 +702,6 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 
 .emotion-1[aria-disabled=true] {
   background-color: #808080;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  border: 0;
-  background-color: inherit;
-  color: #808080;
-  margin-left: 8px;
-}
-
-.emotion-2:hover {
-  color: #ffffff;
-  cursor: pointer;
 }
 
 <div
@@ -753,7 +753,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 `;
 
 exports[`<FaceLabelingTrainApply /> should render properly when unapplied changes is true and there is no training job 1`] = `
-.emotion-3 {
+.emotion-5 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
 }
@@ -762,7 +762,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   height: 16px;
 }
 
-.emotion-2 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -829,8 +829,27 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   background-color: #808080;
 }
 
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  border: 0;
+  background-color: inherit;
+  color: #808080;
+  margin-left: 8px;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+  cursor: pointer;
+}
+
 <div
-  className="emotion-3"
+  className="emotion-5"
 >
   <FaceLebalingMessage
     error=""
@@ -846,7 +865,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     className="emotion-0"
   />
   <div
-    className="emotion-2"
+    className="emotion-4"
   >
     <button
       aria-disabled={true}
@@ -856,14 +875,30 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     >
       Train & Apply
     </button>
-    
-    
+    <div
+      className="emotion-3"
+    >
+      <button
+        aria-label="Training Help"
+        className="emotion-2"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        type="button"
+      >
+        <svg
+          data-file-name="help.svg"
+          height={20}
+        />
+      </button>
+    </div>
   </div>
 </div>
 `;
 
 exports[`<FaceLabelingTrainApply /> should render properly when unapplied changes is true and there is no training job 2`] = `
-.emotion-3 {
+.emotion-5 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
 }
@@ -872,7 +907,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   height: 16px;
 }
 
-.emotion-2 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -939,8 +974,27 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   background-color: #808080;
 }
 
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  border: 0;
+  background-color: inherit;
+  color: #808080;
+  margin-left: 8px;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+  cursor: pointer;
+}
+
 <div
-  className="emotion-3"
+  className="emotion-5"
 >
   <FaceLebalingMessage
     error=""
@@ -956,7 +1010,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     className="emotion-0"
   />
   <div
-    className="emotion-2"
+    className="emotion-4"
   >
     <button
       aria-disabled={true}
@@ -966,8 +1020,24 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     >
       Train & Apply
     </button>
-    
-    
+    <div
+      className="emotion-3"
+    >
+      <button
+        aria-label="Training Help"
+        className="emotion-2"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        type="button"
+      >
+        <svg
+          data-file-name="help.svg"
+          height={20}
+        />
+      </button>
+    </div>
   </div>
 </div>
 `;

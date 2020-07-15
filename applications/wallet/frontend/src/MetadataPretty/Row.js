@@ -15,7 +15,7 @@ const MetadataPrettyRow = ({ name, value, path }) => {
           borderTop: constants.borders.regular.smoke,
         },
         ':hover': {
-          backgroundColor: colors.signal.electricBlue.background,
+          backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
           div: {
             color: colors.structure.white,
             svg: { opacity: 1 },

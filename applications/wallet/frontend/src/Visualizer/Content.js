@@ -62,7 +62,7 @@ const VisualizerContent = () => {
               content: <Metadata />,
             },
             faceLabeling: {
-              title: 'Add Names & Train',
+              title: 'Face Recognition Training',
               icon: <FaceDetectionSvg height={ICON_SIZE} />,
               content: <FaceLabeling />,
             },
