@@ -133,8 +133,7 @@ class AssetServiceTests : AbstractTest() {
         )
         val rsp = assetService.batchCreate(req)
         assertEquals(1, rsp.failed.size)
-        assertNotNull(rsp.failed[0]["failureMessage"])
-        assertTrue((rsp.failed[0]["failureMessage"] ?: error("")).contains("is not allowed"))
+        assertTrue(rsp.failed[0].message.contains("is not allowed"))
     }
 
     @Test
@@ -349,7 +348,7 @@ class AssetServiceTests : AbstractTest() {
 
         val batchIndex = mapOf(asset.id to asset.document)
         val indexRsp = assetService.batchIndex(batchIndex)
-        assertFalse(indexRsp.hasFailures())
+        assertTrue(indexRsp.failed.isEmpty())
     }
 
     @Test
@@ -379,7 +378,7 @@ class AssetServiceTests : AbstractTest() {
         }
 
         val indexRsp = assetService.batchIndex(map, true)
-        assertFalse(indexRsp.hasFailures())
+        assertTrue(indexRsp.failed.isEmpty())
 
         val counts = jdbc.queryForMap("SELECT * FROM project_quota")
         assertEquals(BigDecimal("10.73"), counts["float_video_seconds"])
@@ -395,6 +394,33 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testBatchIndexAssetsWithoutMediaType() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.jpg"),
+                AssetSpec("gs://cats/large-brown-cat.mov"),
+                AssetSpec("gs://cats/large-brown-cat-no-type.jpg"),
+                AssetSpec("gs://cats/large-brown-cat.pdf"),
+                AssetSpec("gs://cats/large-brown-cat-no-type-noext")
+            )
+        )
+
+        val createRsp = assetService.batchCreate(batchCreate)
+        val assets = assetService.getAll(createRsp.created)
+        val map = mutableMapOf<String, MutableMap<String, Any>>()
+
+        assets.forEach {
+            map[it.id] = it.document
+        }
+
+        val indexRsp = assetService.batchIndex(map, true)
+
+        assertFalse(indexRsp.failed.isEmpty())
+        assertEquals(4, indexRsp.indexed.size)
+        assertEquals("gs://cats/large-brown-cat-no-type-noext", indexRsp.failed[0].uri)
+    }
+
+    @Test
     fun testBatchIndexAssetsWithTempFields() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
@@ -406,7 +432,7 @@ class AssetServiceTests : AbstractTest() {
 
         val batchIndex = mapOf(asset.id to asset.document)
         val indexRsp = assetService.batchIndex(batchIndex)
-        assertFalse(indexRsp.hasFailures())
+        assertTrue(indexRsp.failed.isEmpty())
 
         asset = assetService.getAsset(createRsp.created[0])
         assertFalse(asset.attrExists("tmp.field"))
@@ -447,7 +473,7 @@ class AssetServiceTests : AbstractTest() {
     fun testBatchIndexAssets_failNotCreatedSingle() {
         val req = mapOf("foo" to mutableMapOf<String, Any>())
         val rsp = assetService.batchIndex(req)
-        assertFalse(rsp.hasFailures())
+        assertTrue(rsp.failed.isEmpty())
     }
 
     @Test
