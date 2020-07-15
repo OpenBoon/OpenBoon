@@ -1,12 +1,13 @@
 import logging
 import unittest
+import os
 from unittest.mock import patch
 
 import pytest
 
 from zmlp import ZmlpClient, app_from_env, Asset
 from zmlp.search import AssetSearchScroller, AssetSearchResult, \
-    SimilarityQuery, LabelConfidenceQuery
+    SimilarityQuery, LabelConfidenceQuery, AssetSearchCsvExporter
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -65,20 +66,37 @@ class AssetSearchScrollerTests(unittest.TestCase):
         results = list(scroller)
         assert results[0] == self.mock_search_result
 
+
+class AssetSearchCsvExporterTests(unittest.TestCase):
+
+    def setUp(self):
+        self.app = app_from_env()
+        self.mock_search_result = mock_search_result
+
     @patch.object(ZmlpClient, 'delete')
     @patch.object(ZmlpClient, 'post')
-    def test_csv_search(self, post_patch, del_patch):
+    def test_export(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
         del_patch.return_value = {}
 
-        scroller = AssetSearchScroller(self.app,
-                                       MockEsDslSearch(),
-                                       raw_response=True)
-        results = scroller.csv_search()
-        assert type(results) == str
-        split_results = results.split('\n')
-        assert len(split_results) == 4
-        assert split_results[0] == 'source,analysis'
+        path = "/tmp/exported.csv"
+        try:
+            os.unlink(path)
+        except FileNotFoundError:
+            pass
+
+        exporter = AssetSearchCsvExporter(self.app, {})
+        fields = [
+            "source.path",
+            "analysis.zmlp.similarity.vector"
+        ]
+        assert 2 == exporter.export(fields, "/tmp/exported.csv")
+
+        with open(path, "r") as fp:
+            contents = fp.read()
+
+        assert 'https://i.imgur.com/SSN26nN.jpg' in contents
+        assert 'https://i.imgur.com/foo.jpg' in contents
 
 
 class AssetSearchResultTests(unittest.TestCase):
