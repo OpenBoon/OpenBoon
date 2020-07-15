@@ -24,6 +24,7 @@ import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.domain.emptyZpsScripts
+import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
@@ -59,6 +60,9 @@ class AssetServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var projectStorageService: ProjectStorageService
+
+    @Autowired
+    lateinit var projectQuotasDao: ProjectQuotasDao
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -394,6 +398,35 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testBatchDeleteWithProjectCounters() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cat/large-brown-cat.jpg"),
+                AssetSpec("gs://cat/large-brown-cat.mov", attrs = mutableMapOf("media.length" to 10.732)),
+                AssetSpec("gs://cat/large-brown-cat.pdf")
+            )
+        )
+
+        val createRsp = assetService.batchCreate(batchCreate)
+        val assets = assetService.getAll(createRsp.created)
+        val map = mutableMapOf<String, MutableMap<String, Any>>()
+
+        assetService.batchDelete(createRsp.created.toSet())
+        var quotaTimeSeries = jdbc.queryForMap(
+            "SELECT * FROM project_quota_time_series WHERE int_deleted_image_file_count > 0 limit 1"
+        )
+        assertEquals(1L, quotaTimeSeries["int_deleted_image_file_count"])
+        assertEquals(1L, quotaTimeSeries["int_deleted_document_file_count"])
+        assertEquals(1L, quotaTimeSeries["int_deleted_video_file_count"])
+        assertEquals(BigDecimal("10.73"), quotaTimeSeries["float_deleted_video_seconds"])
+        assertEquals(1L, quotaTimeSeries["int_deleted_video_clip_count"])
+        assertEquals(2L, quotaTimeSeries["int_deleted_page_count"])
+
+        var quota = projectQuotasDao.getQuotas(getProjectId())
+        assertEquals(2L, quota.deletedPageCount)
+        assertEquals(BigDecimal("10.73"), quota.deletedVideoSecondsCount)
+    }
+
     fun testBatchIndexAssetsWithoutMediaType() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
@@ -418,6 +451,20 @@ class AssetServiceTests : AbstractTest() {
         assertFalse(indexRsp.failed.isEmpty())
         assertEquals(4, indexRsp.indexed.size)
         assertEquals("gs://cats/large-brown-cat-no-type-noext", indexRsp.failed[0].uri)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testBatchDeleteExceedMaxSize() {
+        val maxBatchSize = properties.getInt("archivist.assets.deletion-max-batch-size")
+
+        // Max + 1
+        val batchCreate = BatchCreateAssetsRequest(
+            assets =
+                (0..maxBatchSize).map { AssetSpec("gs://cat/large-brown-cat-$it.jpg") }
+
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        assetService.batchDelete(createRsp.created.toSet())
     }
 
     @Test
