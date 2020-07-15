@@ -3,6 +3,7 @@ package com.zorroa.archivist.storage
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.util.bd
+import com.zorroa.zmlp.service.storage.SystemStorageException
 import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
 import org.junit.Test
@@ -32,7 +33,7 @@ class AwsSystemStorageServiceTests : AbstractTest() {
         assertEquals(clip1.type, clip2.type)
     }
 
-    @Test(expected = ProjectStorageException::class)
+    @Test(expected = SystemStorageException::class)
     fun testDeleteObject() {
         val blob1 = listOf("spock", "bones", "kirk")
         systemStorageService.storeObject("/crew/members.json", blob1)
