@@ -12,7 +12,6 @@ import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.ModelService
 import com.zorroa.archivist.service.PipelineModService
-import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.bbox
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
@@ -27,9 +26,6 @@ import java.io.File
 import kotlin.test.assertEquals
 
 class AssetControllerTests : MockMvcTest() {
-
-    @Autowired
-    lateinit var projectStorageService: ProjectStorageService
 
     @Autowired
     lateinit var assetSearchService: AssetSearchService
@@ -147,7 +143,6 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.failed.length()", CoreMatchers.equalTo(0)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.indexed.length()", CoreMatchers.equalTo(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.indexed[0]", CoreMatchers.equalTo(asset.id)))
     }
 
     @Test
