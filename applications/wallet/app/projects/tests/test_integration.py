@@ -17,6 +17,7 @@ from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.utils import random_project_name
 from projects.views import BaseProjectViewSet
+from subscriptions.models import Tier
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
 pytestmark = pytest.mark.django_db
@@ -133,6 +134,12 @@ def test_project_serializer_list(project, project2):
 
 
 def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
+    def mock_get_project(*args, **kwargs):
+        return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
+
+    def mock_get_project_exists(*args, **kwargs):
+        raise ZmlpNotFoundException({})
+
     def mock_post_true(*args, **kwargs):
         return True
 
@@ -147,6 +154,7 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
                 'success': False}
 
     # Test a successful sync.
+    monkeypatch.setattr(ZmlpClient, 'get', mock_get_project)
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
     monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
     project = Project.objects.create(name='test', id=uuid4())
@@ -156,52 +164,38 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
     project.is_active = False
     project.save()
     monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
-
-    # Test a sync when the project already exists in zmlp.
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_duplicate)
-    project = Project.objects.create(name='test', id=uuid4())
     project.sync_with_zmlp()
 
-    # Test a failure.
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_exception)
-    project = Project.objects.create(name='test', id=uuid4())
-    with pytest.raises(KeyError):
-        project.sync_with_zmlp()
+    # Test a sync when the project already exists in zmlp.
+    monkeypatch.setattr(ZmlpClient, 'get', mock_get_project_exists)
+    monkeypatch.setattr(ZmlpClient, 'post', mock_get_project)
+    project.sync_with_zmlp()
 
     # Test failed status sync.
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
     monkeypatch.setattr(ZmlpClient, 'put', mock_put_failed_enable)
     with pytest.raises(IOError):
         project.sync_with_zmlp()
 
 
 def test_project_sync_with_zmlp_with_subscription(monkeypatch, project_zero_user,
-                                                  project_zero_subscription):
+                                                  project_zero_subscription, project_zero):
+    def mock_get_project(*args, **kwargs):
+        return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'ESSENTIALS'}  # noqa
+
     def mock_post_true(*args, **kwargs):
         return True
 
-    def mock_post_duplicate(*args, **kwargs):
-        raise ZmlpDuplicateException({})
-
-    def mock_post_exception(*args, **kwargs):
-        raise KeyError('')
+    def mock_put_tier(*args, **kwargs):
+        return {'id': '00000000-0000-0000-0000-000000000000', 'name': 'test', 'timeCreated': 1590092156428, 'timeModified': 1593626053685, 'actorCreated': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'actorModified': 'f3bd2541-428d-442b-8a17-e401e5e76d06/admin-key', 'enabled': True, 'tier': 'PREMIER'}  # noqa
 
     # Test a successful sync.
+    monkeypatch.setattr(ZmlpClient, 'get', mock_get_project)
     monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
+    monkeypatch.setattr(ZmlpClient, 'put', mock_put_tier)
+    project_zero_subscription.tier = Tier.PREMIER
+    project_zero_subscription.save()
     monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
-    project = Project.objects.create(name='test', id=uuid4())
-    project.sync_with_zmlp()
-
-    # Test a sync when the project already exists in zmlp.
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_duplicate)
-    project = Project.objects.create(name='test', id=uuid4())
-    project.sync_with_zmlp()
-
-    # Test a failure.
-    monkeypatch.setattr(ZmlpClient, 'post', mock_post_exception)
-    project = Project.objects.create(name='test', id=uuid4())
-    with pytest.raises(KeyError):
-        project.sync_with_zmlp()
+    project_zero.sync_with_zmlp()
 
 
 def test_project_managers(project):

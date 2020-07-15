@@ -1,6 +1,44 @@
-import { cleanup, dispatch } from '../helpers'
+import { getNewFacets, cleanup, dispatch } from '../helpers'
 
 describe('<Filters /> helpers', () => {
+  describe('getNewFacets()', () => {
+    it('should remove a facet', () => {
+      expect(
+        getNewFacets({
+          facets: ['cat', 'dog'],
+          isSelected: true,
+          hasModifier: true,
+          facetIndex: 1,
+          key: 'dog',
+        }),
+      ).toEqual(['cat'])
+    })
+
+    it('should add a facet', () => {
+      expect(
+        getNewFacets({
+          facets: ['cat'],
+          isSelected: false,
+          hasModifier: true,
+          facetIndex: 1,
+          key: 'dog',
+        }),
+      ).toEqual(['cat', 'dog'])
+    })
+
+    it('should select a unique facet', () => {
+      expect(
+        getNewFacets({
+          facets: ['cat', 'dog'],
+          isSelected: true,
+          hasModifier: false,
+          facetIndex: 0,
+          key: 'cat',
+        }),
+      ).toEqual(['cat'])
+    })
+  })
+
   describe('cleanup()', () => {
     it('should return an empty array when filters have no value', () => {
       expect(

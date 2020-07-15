@@ -63,18 +63,21 @@ export const onTrain = async ({ projectId, setError }) => {
   try {
     setError('')
 
+    const { jobId } = await fetcher(
+      `/api/v1/projects/${projectId}/faces/train/`,
+      {
+        method: 'POST',
+      },
+    )
+
     mutate(
       `/api/v1/projects/${projectId}/faces/status/`,
       {
         unappliedChanges: false,
-        jobId: 'true',
+        jobId,
       },
       false,
     )
-
-    await fetcher(`/api/v1/projects/${projectId}/faces/train/`, {
-      method: 'POST',
-    })
   } catch (error) {
     setError('Something went wrong. Please try again.')
   }
@@ -90,4 +93,16 @@ export const getSaveButtonCopy = ({ isChanged, isLoading }) => {
   }
 
   return 'Saved'
+}
+
+export const getHelpInfoCopy = ({ jobId, unappliedChanges }) => {
+  if (jobId && unappliedChanges) {
+    return 'There are new labels that have not been used for training. Restart training with the latest labels.'
+  }
+
+  if (jobId && !unappliedChanges) {
+    return 'There are no new labels to train.'
+  }
+
+  return 'There are new labels. Click to train and apply.'
 }

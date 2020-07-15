@@ -24,7 +24,7 @@ exports[`<Input /> should render properly with an error and disabled 1`] = `
   cursor: not-allowed;
   color: #000000;
   background-color: #ffffff;
-  border: 2px solid #c92300;
+  border: 1px solid #c92300;
   border-width: 2px;
 }
 

@@ -13,7 +13,7 @@ cd applications/wallet
 python3 ./app/manage.py migrate --no-input
 
 # Start django server.
-gunicorn -b :8080 wallet.wsgi &
+gunicorn -c python:gunicornconfig wallet.wsgi &
 
 # Start node server.
 cd frontend

@@ -19,7 +19,9 @@ const Combobox = ({
 }) => {
   const [showAllOptions, setShowAllOptions] = useState(true)
   const filteredOptions = options.filter(
-    (option) => showAllOptions || option.label.includes(currentValue),
+    (option) =>
+      showAllOptions ||
+      option.label.toLowerCase().includes(currentValue.toLowerCase()),
   )
 
   const handleOnChange = ({ value, showAll = true }) => {

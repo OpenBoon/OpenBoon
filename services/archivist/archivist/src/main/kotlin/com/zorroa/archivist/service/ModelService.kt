@@ -33,6 +33,7 @@ import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilders
+import org.elasticsearch.search.aggregations.BucketOrder
 import org.elasticsearch.search.aggregations.bucket.nested.Nested
 import org.elasticsearch.search.aggregations.bucket.terms.Terms
 import org.slf4j.LoggerFactory
@@ -261,7 +262,12 @@ class ModelServiceImpl(
             QueryBuilders.termQuery("labels.modelId", model.id.toString()), ScoreMode.None
         )
         val agg = AggregationBuilders.nested("nested_labels", "labels")
-            .subAggregation(AggregationBuilders.terms("labels").field("labels.label"))
+            .subAggregation(
+                AggregationBuilders.terms("labels")
+                    .field("labels.label")
+                    .size(1000)
+                    .order(BucketOrder.key(true))
+            )
 
         val req = rest.newSearchBuilder()
         req.source.query(query)
@@ -271,7 +277,13 @@ class ModelServiceImpl(
 
         val rsp = rest.client.search(req.request, RequestOptions.DEFAULT)
         val buckets = rsp.aggregations.get<Nested>("nested_labels").aggregations.get<Terms>("labels")
-        return buckets.buckets.map { it.keyAsString to it.docCount }.toMap()
+
+        // Use a LinkedHashMap to maintain sort on the labels.
+        val result = LinkedHashMap<String, Long>()
+        buckets.buckets.forEach {
+            result[it.keyAsString] = it.docCount
+        }
+        return result
     }
 
     companion object {

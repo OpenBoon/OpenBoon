@@ -618,7 +618,7 @@ Array [
   width: 100%;
   color: #ffffff;
   background-color: #3b3b3b;
-  border: 2px solid #c92300;
+  border: 1px solid #c92300;
   border-width: 2px;
 }
 

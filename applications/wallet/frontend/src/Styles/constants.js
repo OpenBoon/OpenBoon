@@ -36,15 +36,18 @@ const borders = {
   keyOneRegular: `1px solid ${colors.key.one}`,
   keyOneMedium: `2px solid ${colors.key.one}`,
   keyOneLarge: `4px solid ${colors.key.one}`,
-  error: `2px solid ${colors.signal.warning.base}`,
+  error: `1px solid ${colors.signal.warning.base}`,
   assetSelected: `4px solid ${colors.signal.electricBlue.base}`,
   ...newBorders,
 }
 
 const opacity = {
   background: 0.15,
+  hex22Pct: '38',
   third: 0.3,
   half: 0.5,
+  // https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
+  hexHalf: '80',
   eighth: 0.8,
   full: 1,
 }
