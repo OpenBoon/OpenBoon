@@ -118,12 +118,11 @@ class AssetControllerTests : MockMvcTest() {
                 .content(brokenPayload)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.items.length()", CoreMatchers.equalTo(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index._id", CoreMatchers.equalTo(id)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index.status", CoreMatchers.equalTo(400)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.failed.length()", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.failed[0].assetId", CoreMatchers.equalTo(id)))
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
-                    "$.items[0].index.error.reason",
+                    "$.failed[0].message",
                     CoreMatchers.containsString("strict_dynamic_mapping_exception")
                 )
             )
@@ -146,15 +145,9 @@ class AssetControllerTests : MockMvcTest() {
                 .content(Json.serializeToString(payload))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.equalTo(false)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.items.length()", CoreMatchers.equalTo(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index._id", CoreMatchers.equalTo(asset.id)))
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$.items[0].index._shards.failed",
-                    CoreMatchers.equalTo(0)
-                )
-            )
+            .andExpect(MockMvcResultMatchers.jsonPath("$.failed.length()", CoreMatchers.equalTo(0)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.indexed.length()", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.indexed[0]", CoreMatchers.equalTo(asset.id)))
     }
 
     @Test

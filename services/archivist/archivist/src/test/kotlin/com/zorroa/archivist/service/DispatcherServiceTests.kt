@@ -126,7 +126,7 @@ class DispatcherServiceTests : AbstractTest() {
                 null
             )
         )
-        assertTrue(rsp?.hasFailures() ?: false)
+        assertTrue(rsp.failed.isNotEmpty())
 
         authenticate()
         val error = taskErrorDao.getLast()
