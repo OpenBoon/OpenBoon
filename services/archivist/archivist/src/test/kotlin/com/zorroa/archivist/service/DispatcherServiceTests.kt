@@ -117,10 +117,16 @@ class DispatcherServiceTests : AbstractTest() {
         val rsp = dispatcherService.handleIndexEvent(
             task,
             BatchIndexAssetsEvent(
-                mapOf(createRsp.created[0] to mutableMapOf<String, Any>("foo" to "bar")), null
+                mapOf(
+                    createRsp.created[0] to mutableMapOf<String, Any>(
+                        "foo" to "bar",
+                        "media" to mapOf("type" to "image")
+                    )
+                ),
+                null
             )
         )
-        assertTrue(rsp?.hasFailures() ?: false)
+        assertTrue(rsp.failed.isNotEmpty())
 
         authenticate()
         val error = taskErrorDao.getLast()

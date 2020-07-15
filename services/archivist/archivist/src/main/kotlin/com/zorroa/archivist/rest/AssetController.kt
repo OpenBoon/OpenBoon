@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
+import com.zorroa.archivist.domain.BatchIndexResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
@@ -173,14 +174,10 @@ class AssetController @Autowired constructor(
             .body(InputStreamResource(bytes.inputStream()))
     }
 
-    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
     @PostMapping("/api/v3/assets/_batch_index")
-    fun batchIndex(@RequestBody req: Map<String, MutableMap<String, Any>>): ResponseEntity<Resource> {
-        val rsp = assetService.batchIndex(req)
-        val content = Strings.toString(rsp)
-        return ResponseEntity.ok()
-            .contentLength(content.length.toLong())
-            .body(InputStreamResource(content.byteInputStream()))
+    fun batchIndex(@RequestBody req: Map<String, MutableMap<String, Any>>): BatchIndexResponse {
+        return assetService.batchIndex(req)
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
