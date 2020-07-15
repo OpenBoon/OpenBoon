@@ -37,14 +37,14 @@ const FaceLabelingButton = ({
             '+ div': {
               visibility: 'visible',
               opacity: 1,
-              transition: '.25s all ease',
-              transitionDelay: '100ms',
+              transition: 'all 0.5s ease-in-out 0.25s',
             },
           },
         }}
       >
         <button
           aria-label="Training Help"
+          aria-details="trainingHelpText"
           type="button"
           css={{
             border: 0,
@@ -59,16 +59,27 @@ const FaceLabelingButton = ({
       </div>
 
       <div
+        role="tooltip"
+        id="trainingHelpText"
         css={{
           position: 'absolute',
           top: CONTAINER_HEIGHT + spacing.small,
-          left: 0,
           zIndex: zIndex.reset,
           backgroundColor: colors.structure.iron,
           border: constants.borders.regular.white,
           borderRadius: constants.borderRadius.small,
           padding: spacing.moderate,
+          color: colors.structure.white,
+          userSelect: 'text',
           visibility: 'hidden',
+          opacity: 0,
+          transition: 'all 0.5s ease 0.25s',
+          ':hover, :focus-within': {
+            visibility: 'visible',
+            opacity: 1,
+            transition: 'all 0s',
+            cursor: 'text',
+          },
         }}
       >
         {getHelpInfoCopy({ jobId, unappliedChanges })}

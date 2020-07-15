@@ -33,10 +33,8 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 .emotion-3:focus-within + div {
   visibility: visible;
   opacity: 1;
-  -webkit-transition: .25s all ease;
-  transition: .25s all ease;
-  -webkit-transition-delay: 100ms;
-  transition-delay: 100ms;
+  -webkit-transition: all 0.5s ease-in-out 0.25s;
+  transition: all 0.5s ease-in-out 0.25s;
 }
 
 .emotion-2 {
@@ -54,13 +52,29 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 .emotion-4 {
   position: absolute;
   top: 47px;
-  left: 0;
   z-index: 1;
   background-color: #4a4a4a;
   border: 1px solid #ffffff;
   border-radius: 2px;
   padding: 12px;
+  color: #ffffff;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
   visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-4:hover,
+.emotion-4:focus-within {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0s;
+  transition: all 0s;
+  cursor: text;
 }
 
 .emotion-1 {
@@ -148,6 +162,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
       className="emotion-3"
     >
       <button
+        aria-details="trainingHelpText"
         aria-label="Training Help"
         className="emotion-2"
         type="button"
@@ -160,6 +175,8 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     </div>
     <div
       className="emotion-4"
+      id="trainingHelpText"
+      role="tooltip"
     >
       There are new labels that have not been used for training. Restart training with the latest labels.
     </div>
@@ -255,10 +272,8 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 .emotion-3:focus-within + div {
   visibility: visible;
   opacity: 1;
-  -webkit-transition: .25s all ease;
-  transition: .25s all ease;
-  -webkit-transition-delay: 100ms;
-  transition-delay: 100ms;
+  -webkit-transition: all 0.5s ease-in-out 0.25s;
+  transition: all 0.5s ease-in-out 0.25s;
 }
 
 .emotion-2 {
@@ -276,13 +291,29 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 .emotion-4 {
   position: absolute;
   top: 47px;
-  left: 0;
   z-index: 1;
   background-color: #4a4a4a;
   border: 1px solid #ffffff;
   border-radius: 2px;
   padding: 12px;
+  color: #ffffff;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
   visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-4:hover,
+.emotion-4:focus-within {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0s;
+  transition: all 0s;
+  cursor: text;
 }
 
 <div
@@ -316,6 +347,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
       className="emotion-3"
     >
       <button
+        aria-details="trainingHelpText"
         aria-label="Training Help"
         className="emotion-2"
         type="button"
@@ -328,6 +360,8 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     </div>
     <div
       className="emotion-4"
+      id="trainingHelpText"
+      role="tooltip"
     >
       There are new labels. Click to train and apply.
     </div>
@@ -423,10 +457,8 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 .emotion-3:focus-within + div {
   visibility: visible;
   opacity: 1;
-  -webkit-transition: .25s all ease;
-  transition: .25s all ease;
-  -webkit-transition-delay: 100ms;
-  transition-delay: 100ms;
+  -webkit-transition: all 0.5s ease-in-out 0.25s;
+  transition: all 0.5s ease-in-out 0.25s;
 }
 
 .emotion-2 {
@@ -444,13 +476,29 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
 .emotion-4 {
   position: absolute;
   top: 47px;
-  left: 0;
   z-index: 1;
   background-color: #4a4a4a;
   border: 1px solid #ffffff;
   border-radius: 2px;
   padding: 12px;
+  color: #ffffff;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
   visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-4:hover,
+.emotion-4:focus-within {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0s;
+  transition: all 0s;
+  cursor: text;
 }
 
 <div
@@ -484,6 +532,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
       className="emotion-3"
     >
       <button
+        aria-details="trainingHelpText"
         aria-label="Training Help"
         className="emotion-2"
         type="button"
@@ -496,6 +545,8 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
     </div>
     <div
       className="emotion-4"
+      id="trainingHelpText"
+      role="tooltip"
     >
       There are new labels. Click to train and apply.
     </div>
