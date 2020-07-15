@@ -18,6 +18,7 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
       css={{
         display: 'flex',
         alignItems: 'center',
+        marginRight: -spacing.base,
         ':hover': {
           button: {
             svg: { opacity: 1 },

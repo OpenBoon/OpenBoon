@@ -109,7 +109,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
                   flexDirection: 'row',
                   color: colors.structure.white,
                   ':hover, &.focus-visible:focus': {
-                    backgroundColor: colors.signal.electricBlue.background,
+                    backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
                     color: colors.structure.white,
                     svg: {
                       color: colors.structure.white,

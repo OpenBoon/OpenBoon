@@ -457,10 +457,10 @@ exports[`<Visualizer /> should render properly 1`] = `
           />
         </button>
         <button
-          aria-label="Add Names & Train"
+          aria-label="Face Recognition Training"
           className="emotion-1"
           onClick={[Function]}
-          title="Add Names & Train"
+          title="Face Recognition Training"
           type="button"
         >
           <svg
@@ -959,10 +959,10 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           />
         </button>
         <button
-          aria-label="Add Names & Train"
+          aria-label="Face Recognition Training"
           className="emotion-1"
           onClick={[Function]}
-          title="Add Names & Train"
+          title="Face Recognition Training"
           type="button"
         >
           <svg

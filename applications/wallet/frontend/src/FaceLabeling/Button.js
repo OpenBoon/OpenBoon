@@ -6,7 +6,7 @@ import { colors, constants, spacing, zIndex } from '../Styles'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import HelpSvg from '../Icons/help.svg'
 
-import { onTrain } from './helpers'
+import { onTrain, getHelpInfoCopy } from './helpers'
 
 const CONTAINER_HEIGHT = 43
 const ICON_SIZE = 20
@@ -33,29 +33,27 @@ const FaceLabelingButton = ({
           : 'Train & Apply'}
       </Button>
 
-      {jobId && unappliedChanges && (
-        <div css={{ display: 'flex' }}>
-          <button
-            aria-label="Training Help"
-            type="button"
-            onFocus={() => setShowHelpInfo(true)}
-            onBlur={() => setShowHelpInfo(false)}
-            onMouseEnter={() => setShowHelpInfo(true)}
-            onMouseLeave={() => setShowHelpInfo(false)}
-            css={{
-              border: 0,
-              backgroundColor: 'inherit',
-              color: colors.structure.steel,
-              ':hover': { color: colors.structure.white, cursor: 'pointer' },
-              marginLeft: spacing.base,
-            }}
-          >
-            <HelpSvg height={ICON_SIZE} />
-          </button>
-        </div>
-      )}
+      <div css={{ display: 'flex' }}>
+        <button
+          aria-label="Training Help"
+          type="button"
+          onFocus={() => setShowHelpInfo(true)}
+          onBlur={() => setShowHelpInfo(false)}
+          onMouseEnter={() => setShowHelpInfo(true)}
+          onMouseLeave={() => setShowHelpInfo(false)}
+          css={{
+            border: 0,
+            backgroundColor: 'inherit',
+            color: colors.structure.steel,
+            ':hover': { color: colors.structure.white, cursor: 'pointer' },
+            marginLeft: spacing.base,
+          }}
+        >
+          <HelpSvg height={ICON_SIZE} />
+        </button>
+      </div>
 
-      {jobId && unappliedChanges && showHelpInfo && (
+      {showHelpInfo && (
         <div
           css={{
             position: 'absolute',
@@ -63,13 +61,12 @@ const FaceLabelingButton = ({
             left: 0,
             zIndex: zIndex.reset,
             backgroundColor: colors.structure.iron,
-            border: constants.borders.regular.white,
+            border: constants.borders.regular.steel,
             borderRadius: constants.borderRadius.small,
             padding: spacing.moderate,
           }}
         >
-          Overriding the training that is currently in progress will stop and
-          replace it with any new changes made.
+          {getHelpInfoCopy({ jobId, unappliedChanges })}
         </div>
       )}
     </div>

@@ -201,6 +201,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 8px;
+  padding-left: 16px;
   border-bottom: 1px solid #3b3b3b;
 }
 
@@ -579,6 +580,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 8px;
+  padding-left: 16px;
   border-bottom: 1px solid #3b3b3b;
 }
 
