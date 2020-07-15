@@ -31,7 +31,7 @@ from datasources.views import DataSourceViewSet
 from faces.views import FaceViewSet
 from gcpmarketplace.views import signup_success, SignUpView
 from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
-from models.views import ModelViewSet, LabelViewSet
+from models.views import ModelViewSet
 from modules.views import ModuleViewSet, ProviderViewSet
 from permissions.views import PermissionViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
@@ -84,9 +84,6 @@ assets_file_names_router.register('name', FileNameViewSet, basename='file_name')
 jobs_router = NestedSimpleRouter(projects_router, 'jobs', lookup='job')
 jobs_router.register('tasks', JobTaskViewSet, basename='job-detail-task')
 
-labels_router = NestedSimpleRouter(projects_router, 'models', lookup='model')
-labels_router.register('labels', LabelViewSet, basename='label')
-
 # Use this variable to add standalone views to the urlspatterns and have them accessible
 # from the root DRF browsable API. The tuples are in the form (LABEL, path()).
 BROWSABLE_API_URLS = [
@@ -117,7 +114,6 @@ urlpatterns = [
     path('api/v1/', include(assets_files_router.urls)),
     path('api/v1/', include(assets_file_names_router.urls)),
     path('api/v1/', include(jobs_router.urls)),
-    path('api/v1/', include(labels_router.urls)),
     path('api/v1/health/', include('health_check.urls')),
     path('marketplace/signup/', SignUpView.as_view(), name='gcpmarketplace-signup'),
     path('marketplace/signup_success/', signup_success, name='gcpmarketplace-signup-success'),
