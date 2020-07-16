@@ -5,7 +5,6 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_HOST: tcp://localhost:2375
   LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
-  FF_USE_LEGACY_KUBERNETES_EXECUTION_STRATEGY: "false" # This feature flag fixes a bug where the job would stop and say it succeeded.
 
 stages:
   - build
@@ -291,6 +290,7 @@ zmlp-dockerhub-build-push-latest:
   services:
     - docker:19-dind
   variables:
+    FF_USE_LEGACY_KUBERNETES_EXECUTION_STRATEGY: "false" # This feature flag fixes a bug where the job would stop and say it succeeded.
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
