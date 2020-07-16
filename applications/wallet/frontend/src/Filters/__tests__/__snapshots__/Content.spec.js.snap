@@ -531,7 +531,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -613,12 +612,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-26 {
@@ -1561,7 +1554,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -1643,12 +1635,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-20 {
@@ -2516,7 +2502,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -2598,12 +2583,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-72 {
@@ -3751,7 +3730,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -3833,12 +3811,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-656 {
@@ -8487,7 +8459,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -8569,12 +8540,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-23 {
@@ -9488,7 +9453,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -9570,12 +9534,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-20 {
@@ -10421,7 +10379,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -10503,12 +10460,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-15 {

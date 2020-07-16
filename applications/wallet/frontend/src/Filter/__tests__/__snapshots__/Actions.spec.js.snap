@@ -92,12 +92,6 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
   background-color: #3b3b3b;
 }
 
-.emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
-}
-
 .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -176,7 +170,6 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
 
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
-  opacity: 1;
   color: #d6680b;
 }
 
@@ -306,7 +299,6 @@ exports[`<FilterActions /> should render properly 1`] = `
 
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -388,12 +380,6 @@ exports[`<FilterActions /> should render properly 1`] = `
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 <div
@@ -518,7 +504,6 @@ exports[`<FilterActions /> should render properly 2`] = `
 
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -600,12 +585,6 @@ exports[`<FilterActions /> should render properly 2`] = `
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 <div
@@ -730,7 +709,6 @@ exports[`<FilterActions /> should render properly 3`] = `
 
 .emotion-1:hover svg,
 .emotion-1.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -812,12 +790,6 @@ exports[`<FilterActions /> should render properly 3`] = `
 .emotion-3:hover,
 .emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 <div

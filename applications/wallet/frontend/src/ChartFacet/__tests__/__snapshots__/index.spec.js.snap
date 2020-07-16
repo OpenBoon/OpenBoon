@@ -140,11 +140,6 @@ exports[`<ChartFacet /> should render properly 1`] = `
   background-color: #3b3b3b;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
 .emotion-2 {
   width: 2px;
 }
@@ -1056,11 +1051,6 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
 }
 
 .emotion-2 {
