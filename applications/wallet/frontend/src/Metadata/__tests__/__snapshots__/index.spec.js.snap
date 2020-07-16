@@ -31,6 +31,9 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  min-height: -webkit-fit-content;
+  min-height: -moz-fit-content;
+  min-height: fit-content;
   border-bottom: 1px solid #3b3b3b;
 }
 
@@ -661,6 +664,9 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  min-height: -webkit-fit-content;
+  min-height: -moz-fit-content;
+  min-height: fit-content;
   border-bottom: 1px solid #3b3b3b;
 }
 
