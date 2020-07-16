@@ -14,8 +14,7 @@ const ModelsEmpty = () => {
       }}
     >
       <NoJobsSvg width={200} />
-      <div>There are currently no jobs in the queue.</div>
-      <div>Any new job will appear here.</div>
+      <div>There are currently no custom models.</div>
     </div>
   )
 }
