@@ -81,6 +81,9 @@ const StylesReset = () => (
         '.react-grid-item.react-grid-placeholder': {
           backgroundColor: colors.key.one,
         },
+        '[data-reach-combobox-popover]': {
+          fontSize: '100%',
+        },
       }}
     />
     <Global

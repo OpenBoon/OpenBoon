@@ -6,6 +6,7 @@ from .util import as_collection
 __all__ = [
     'AssetSearchScroller',
     'AssetSearchResult',
+    'AssetSearchCsvExporter',
     'LabelConfidenceQuery',
     'SimilarityQuery'
 ]
@@ -111,12 +112,44 @@ class AssetSearchScroller(object):
         return self.scroll()
 
 
+class AssetSearchCsvExporter:
+    """
+    Export a search to a CVS file.
+    """
+    def __init__(self, app, search):
+        self.app = app
+        self.search = search
+
+    def export(self, fields, path):
+        """
+        Export the given fields to a csv file output path.
+
+        Args:
+            fields (list): An array of field names.
+            path (str): a file path.
+
+        Returns:
+            int: The number of assets exported.
+
+        """
+        count = 0
+        scroller = AssetSearchScroller(self.app, self.search)
+        fields = as_collection(fields)
+        with open(str(path), "w") as fp:
+            for asset in scroller:
+                count += 1
+                line = ",".join(["'{}'".format(asset.get_attr(field)) for field in fields])
+                fp.write(f'{line}\n')
+        return count
+
+
 class AssetSearchResult(object):
     """
     Stores a search result from ElasticSearch and provides some convenience methods
     for accessing the data.
 
     """
+
     def __init__(self, app, search):
         """
         Create a new AssetSearchResult.

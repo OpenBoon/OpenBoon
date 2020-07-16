@@ -81,6 +81,7 @@ const AssetsThumbnail = ({
             alignItems: 'center',
             background: colors.structure.mattGrey,
             overflow: 'hidden',
+            borderRadius: 0,
           }}
         >
           {videoSrc ? (
