@@ -181,12 +181,30 @@ resource "kubernetes_deployment" "wallet" {
   }
 }
 
+provider "kubernetes-alpha" {
+ server_side_planning = true
+}
+
+resource "kubernetes_manifest" "backend-config" {
+  apiVersion = "cloud.google.com/v1beta1"
+  kind = BackendConfig
+  metadata = {
+    name = wallet-backendconfig
+  }
+  spec {
+    timeoutSec = 300
+  }
+}
+
 resource "kubernetes_service" "wallet" {
   metadata {
     name      = "wallet-service"
     namespace = var.namespace
     labels = {
       app = "wallet"
+    }
+    annotations {
+      "cloud.google.com/backend-config": {"default": "wallet-backendconfig"}
     }
   }
   spec {
