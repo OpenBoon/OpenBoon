@@ -45,4 +45,3 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
         print(analysis)
         assert 'Gandalf' in get_prediction_labels(analysis)
         assert 'Unrecognized' in get_prediction_labels(analysis)
-
