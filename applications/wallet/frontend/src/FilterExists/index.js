@@ -72,6 +72,7 @@ const FilterExists = ({
           >
             {['Exists', 'Missing'].map((value) => (
               <Button
+                variant={VARIANTS.ICON}
                 aria-label={value}
                 key={value}
                 style={{
@@ -88,11 +89,7 @@ const FilterExists = ({
                     (value === 'Missing' && !exists)
                       ? colors.structure.white
                       : colors.structure.steel,
-                  ':hover': {
-                    color: colors.structure.white,
-                  },
                 }}
-                variant={VARIANTS.NEUTRAL}
                 onClick={() =>
                   dispatch({
                     type: ACTIONS.UPDATE_FILTER,

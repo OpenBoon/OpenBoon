@@ -46,14 +46,13 @@ const Panel = ({ openToThe, children }) => {
             key={title}
             aria-label={title}
             title={title}
-            variant={VARIANTS.NEUTRAL}
+            variant={VARIANTS.ICON}
             onClick={() =>
               setOpenPanel({ value: key === openPanel ? '' : key })
             }
             isDisabled={false}
             style={{
               flex: 'none',
-              padding: spacing.base,
               paddingTop: spacing.normal,
               paddingBottom: spacing.normal,
               backgroundColor: colors.structure.lead,
@@ -61,7 +60,6 @@ const Panel = ({ openToThe, children }) => {
               color:
                 key === openPanel ? colors.key.one : colors.structure.steel,
               ':hover': {
-                color: colors.structure.white,
                 backgroundColor: colors.structure.mattGrey,
               },
               borderRadius: constants.borderRadius.none,

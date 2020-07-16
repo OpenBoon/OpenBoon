@@ -82,7 +82,6 @@ const STYLES = {
     title: {
       display: 'flex',
       padding: spacing.base,
-      paddingLeft: spacing.base,
       ':hover': {
         cursor: 'pointer',
         backgroundColor: colors.structure.mattGrey,
@@ -134,15 +133,14 @@ const Accordion = ({
       >
         <Button
           aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
-          variant={BUTTON_VARIANTS.NEUTRAL}
+          variant={BUTTON_VARIANTS.ICON}
           onClick={toggle}
+          style={{ padding: 0 }}
         >
           <ChevronSvg
             height={ICON_SIZE}
-            color={colors.structure.steel}
             css={{
               transform: isOpen ? 'rotate(-180deg)' : '',
-              ':hover': { color: colors.structure.white },
             }}
           />
         </Button>
