@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
-import Router from 'next/router'
 import Link from 'next/link'
+
+import { onRowClickRouterPush } from '../Table/helpers'
 
 const ModelsRow = ({
   projectId,
@@ -18,14 +19,10 @@ const ModelsRow = ({
   return (
     <tr
       css={{ cursor: 'pointer' }}
-      onClick={(event) => {
-        const { target: { localName } = {} } = event || {}
-        if (['a', 'button', 'svg', 'path'].includes(localName)) return
-        Router.push(
-          '/[projectId]/models/[modelId]',
-          `/${projectId}/models/${modelId}`,
-        )
-      }}
+      onClick={onRowClickRouterPush(
+        '/[projectId]/models/[modelId]',
+        `/${projectId}/models/${modelId}`,
+      )}
     >
       <td>
         <Link

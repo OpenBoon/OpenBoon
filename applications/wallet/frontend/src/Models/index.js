@@ -27,10 +27,7 @@ const Models = () => {
       <Tabs
         tabs={[
           { title: 'View all', href: '/[projectId]/models' },
-          {
-            title: 'Create New Model',
-            href: '/[projectId]/models/add',
-          },
+          { title: 'Create New Model', href: '/[projectId]/models/add' },
         ]}
       />
 
@@ -39,6 +36,7 @@ const Models = () => {
         legend="Models"
         url={`/api/v1/projects/${projectId}/models/`}
         refreshKeys={[]}
+        refreshButton={false}
         columns={['Name', 'Count']}
         expandColumn={1}
         renderEmpty={<ModelsEmpty />}
