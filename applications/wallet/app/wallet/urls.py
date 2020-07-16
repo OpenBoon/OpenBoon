@@ -39,10 +39,10 @@ from registration.views import UserRegistrationView, UserConfirmationView, \
 from roles.views import RolesViewSet
 from searches.views import SearchViewSet, MetadataExportViewSet
 from subscriptions.views import SubscriptionViewSet
-from visualizations.views import VisualizationViewSet
 from supportadmin.admin import support_admin_site
+from visualizations.views import VisualizationViewSet
 from wallet import views as wallet_views
-from wallet.views import MeView
+from wallet.views import MeView, sleep_300_view
 from wallet.views import WalletAPIRootView, LoginView, LogoutView
 
 router = routers.DefaultRouter()
@@ -119,5 +119,7 @@ urlpatterns = [
 ]
 if settings.SUPERADMIN:
     urlpatterns.append(path('superadmin/', admin.site.urls))
+if settings.DEBUG:
+    urlpatterns.append(path('api/v1/sleep300', sleep_300_view))
 urlpatterns += [i[1] for i in BROWSABLE_API_URLS]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

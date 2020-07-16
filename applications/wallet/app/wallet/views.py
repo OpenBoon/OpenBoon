@@ -1,3 +1,5 @@
+from time import sleep
+
 from django.conf import settings
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.models import Group, User
@@ -92,3 +94,11 @@ class WalletAPIRootView(APIRootView):
         for view in BROWSABLE_API_URLS:
             self.api_root_dict[view[0]] = view[1].name
         return super(WalletAPIRootView, self).get(request, *args, **kwargs)
+
+
+def sleep_300_view(request):
+    """Debugging view that literally just sleeps for 300 seconds to simulate a long request.
+    It is only available when the server is run with DEBUG=True.
+
+    """
+    sleep(300)
