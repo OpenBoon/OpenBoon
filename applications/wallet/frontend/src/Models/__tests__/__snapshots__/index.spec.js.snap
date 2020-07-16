@@ -153,7 +153,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-11 {
+  .emotion-12 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -187,7 +187,7 @@ Array [
   font-weight: 400;
 }
 
-.emotion-10 {
+.emotion-11 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -205,7 +205,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-2:nth-of-type(1) {
+.emotion-2:nth-of-type(0) {
   width: 100%;
 }
 
@@ -213,7 +213,7 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-9 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -221,39 +221,39 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-8 tr {
+.emotion-9 tr {
   background-color: #252525;
 }
 
-.emotion-8 tr:nth-of-type(2n) {
+.emotion-9 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-8 tr:hover {
+.emotion-9 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-8 tr:hover .gear {
+.emotion-9 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-8 tr:hover td {
+.emotion-9 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-8 tr:hover td:first-of-type {
+.emotion-9 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-8 tr:hover td:last-of-type {
+.emotion-9 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-8 td {
-  max-width: calc(100vw / 1);
+.emotion-9 td {
+  max-width: calc(100vw / 3);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -264,30 +264,30 @@ Array [
   border-right: 0;
 }
 
-.emotion-8 td:first-of-type {
+.emotion-9 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-8 td:last-of-type {
+.emotion-9 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-7 {
+.emotion-8 {
   cursor: pointer;
 }
 
-.emotion-4:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5 {
+.emotion-7 {
   text-align: center;
 }
 
 <div
-    className="emotion-11"
+    className="emotion-12"
   >
     <div
       className="emotion-1"
@@ -298,17 +298,17 @@ Array [
         Number of 
         Models
         : 
-        5
+        1
       </h3>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-11"
     >
       <div
-        className="emotion-9"
+        className="emotion-10"
       >
         <table
-          className="emotion-8"
+          className="emotion-9"
         >
           <thead>
             <tr>
@@ -320,48 +320,43 @@ Array [
               <th
                 className="emotion-2"
               >
-                Count
+                Type
+              </th>
+              <th
+                className="emotion-2"
+              >
+                Module
+              </th>
+              <th
+                className="emotion-2"
+              >
+                Ready
               </th>
             </tr>
           </thead>
           <tbody>
             <tr
-              className="emotion-7"
+              className="emotion-8"
               onClick={[Function]}
             >
               <td>
                 <a
-                  className="emotion-4"
-                  href="/76917058-b147-4556-987a-0a0f11e46d9b/models/2f0de857-95fd-120e-85f3-0242ac120002"
+                  className="emotion-6"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-1244-9596-d6df43f1ede5"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
                 >
-                  Seasons
+                  console_face_recognition
                 </a>
               </td>
               <td>
-                Label Detection
+                ZVI_FACE_RECOGNITION
               </td>
               <td>
-                zvi-seasons-detection
-              </td>
-              <td>
-                42
-              </td>
-              <td>
-                1337
+                zvi-console_face_recognition-face-recognition
               </td>
               <td
-                className="emotion-5"
-              >
-                <svg
-                  color="#73b61c"
-                  data-file-name="checkmark.svg"
-                  height={20}
-                />
-              </td>
-              <td
-                className="emotion-5"
+                className="emotion-7"
               >
                 <svg
                   color="#73b61c"
@@ -537,7 +532,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-10 {
+  .emotion-12 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -571,14 +566,14 @@ Array [
   font-weight: 400;
 }
 
-.emotion-9 {
+.emotion-11 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-8 {
+.emotion-10 {
   position: absolute;
   top: 0;
   left: 0;
@@ -586,7 +581,7 @@ Array [
   bottom: 0;
 }
 
-.emotion-7 {
+.emotion-9 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -594,39 +589,39 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-7 tr {
+.emotion-9 tr {
   background-color: #252525;
 }
 
-.emotion-7 tr:nth-of-type(2n) {
+.emotion-9 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-7 tr:hover {
+.emotion-9 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-7 tr:hover .gear {
+.emotion-9 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-7 tr:hover td {
+.emotion-9 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-7 tr:hover td:first-of-type {
+.emotion-9 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-7 tr:hover td:last-of-type {
+.emotion-9 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-7 td {
-  max-width: calc(100vw / 1);
+.emotion-9 td {
+  max-width: calc(100vw / 3);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -637,11 +632,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-7 td:first-of-type {
+.emotion-9 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-7 td:last-of-type {
+.emotion-9 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -657,7 +652,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-2:nth-of-type(1) {
+.emotion-2:nth-of-type(0) {
   width: 100%;
 }
 
@@ -665,12 +660,12 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-8 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-5 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -692,7 +687,7 @@ Array [
   line-height: 19px;
 }
 
-.emotion-4 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -709,7 +704,7 @@ Array [
 }
 
 <div
-    className="emotion-10"
+    className="emotion-12"
   >
     <div
       className="emotion-1"
@@ -724,13 +719,13 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-11"
     >
       <div
-        className="emotion-8"
+        className="emotion-10"
       >
         <table
-          className="emotion-7"
+          className="emotion-9"
         >
           <thead>
             <tr>
@@ -742,22 +737,32 @@ Array [
               <th
                 className="emotion-2"
               >
-                Count
+                Type
+              </th>
+              <th
+                className="emotion-2"
+              >
+                Module
+              </th>
+              <th
+                className="emotion-2"
+              >
+                Ready
               </th>
             </tr>
           </thead>
           <tbody>
             <tr
-              className="emotion-6"
+              className="emotion-8"
             >
               <td
-                colSpan={2}
+                colSpan={4}
               >
                 <div
-                  className="emotion-5"
+                  className="emotion-7"
                 >
                   <div
-                    className="emotion-4"
+                    className="emotion-6"
                   >
                     <svg
                       data-file-name="noJobs.svg"

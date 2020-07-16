@@ -11,16 +11,7 @@ const ICON_SIZE = 20
 
 const ModelsRow = ({
   projectId,
-  model: {
-    id: modelId,
-    modelName,
-    modelType,
-    moduleName,
-    labelsCount,
-    assetsCount,
-    trained,
-    applied,
-  },
+  model: { id: modelId, name, type, moduleName, ready },
 }) => {
   return (
     <tr
@@ -36,28 +27,16 @@ const ModelsRow = ({
           as={`/${projectId}/models/${modelId}`}
           passHref
         >
-          <a css={{ ':hover': { textDecoration: 'none' } }}>{modelName}</a>
+          <a css={{ ':hover': { textDecoration: 'none' } }}>{name}</a>
         </Link>
       </td>
 
-      <td>{modelType}</td>
+      <td>{type}</td>
 
       <td>{moduleName}</td>
 
-      <td>{labelsCount}</td>
-
-      <td>{assetsCount}</td>
-
       <td css={{ textAlign: 'center' }}>
-        {!!trained && (
-          <CheckmarkSvg height={ICON_SIZE} color={colors.key.one} />
-        )}
-      </td>
-
-      <td css={{ textAlign: 'center' }}>
-        {!!applied && (
-          <CheckmarkSvg height={ICON_SIZE} color={colors.key.one} />
-        )}
+        {!!ready && <CheckmarkSvg height={ICON_SIZE} color={colors.key.one} />}
       </td>
     </tr>
   )
@@ -67,13 +46,10 @@ ModelsRow.propTypes = {
   projectId: PropTypes.string.isRequired,
   model: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    modelName: PropTypes.string.isRequired,
-    modelType: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
     moduleName: PropTypes.string.isRequired,
-    labelsCount: PropTypes.number.isRequired,
-    assetsCount: PropTypes.number.isRequired,
-    trained: PropTypes.bool.isRequired,
-    applied: PropTypes.bool.isRequired,
+    ready: PropTypes.bool.isRequired,
   }).isRequired,
 }
 

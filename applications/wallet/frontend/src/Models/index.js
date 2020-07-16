@@ -37,8 +37,8 @@ const Models = () => {
         url={`/api/v1/projects/${projectId}/models/`}
         refreshKeys={[]}
         refreshButton={false}
-        columns={['Name', 'Count']}
-        expandColumn={1}
+        columns={['Name', 'Type', 'Module', 'Ready']}
+        expandColumn={0}
         renderEmpty={<ModelsEmpty />}
         renderRow={({ result }) => (
           <ModelsRow key={result.id} projectId={projectId} model={result} />
