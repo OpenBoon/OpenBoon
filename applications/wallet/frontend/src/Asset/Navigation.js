@@ -33,16 +33,7 @@ const AssetNavigation = ({ projectId, assetId, query }) => {
         as={`/${projectId}/visualizer${idString}${queryString}`}
         passHref
       >
-        <Button
-          variant={VARIANTS.NEUTRAL}
-          css={{
-            padding: spacing.base,
-            color: colors.structure.steel,
-            ':hover': {
-              color: colors.structure.white,
-            },
-          }}
-        >
+        <Button variant={VARIANTS.ICON}>
           <BackSvg height={ICON_SIZE} />
         </Button>
       </Link>

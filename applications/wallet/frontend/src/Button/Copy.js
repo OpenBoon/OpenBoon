@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types'
 import useClipboard from 'react-use-clipboard'
 
-import { colors } from '../Styles'
-
 import CopySvg from '../Icons/copy.svg'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '.'
@@ -15,19 +13,17 @@ const ButtonCopy = ({ value }) => {
   return (
     <Button
       title="Copy to Clipboard"
-      variant={BUTTON_VARIANTS.NEUTRAL}
+      variant={BUTTON_VARIANTS.ICON}
       onClick={setCopied}
       isDisabled={isCopied}
-      css={{ ':focus': { svg: { opacity: 1, color: colors.structure.white } } }}
-    >
-      <CopySvg
-        height={COPY_SIZE}
-        color={colors.structure.steel}
-        css={{
+      css={{
+        padding: 0,
+        svg: {
           opacity: 0,
-          ':hover': { color: colors.structure.white },
-        }}
-      />
+        },
+      }}
+    >
+      <CopySvg height={COPY_SIZE} />
     </Button>
   )
 }

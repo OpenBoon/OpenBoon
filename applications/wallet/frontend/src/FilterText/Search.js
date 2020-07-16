@@ -84,13 +84,13 @@ const FilterTextSearch = ({
           variant={VARIANTS.ICON}
           css={{
             display: 'flex',
+            padding: spacing.small,
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: constants.borderRadius.small,
             ':hover, &.focus-visible:focus': {
               backgroundColor: colors.structure.smoke,
               svg: {
-                opacity: 1,
                 color: isDisabled
                   ? colors.signal.canary.strong
                   : colors.structure.white,
@@ -128,12 +128,12 @@ const FilterTextSearch = ({
           variant={VARIANTS.ICON}
           css={{
             display: 'flex',
+            padding: spacing.small,
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: constants.borderRadius.small,
             ':hover, &.focus-visible:focus': {
               backgroundColor: colors.structure.smoke,
-              svg: { opacity: 1, color: colors.structure.white },
             },
           }}
           onClick={() =>

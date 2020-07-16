@@ -291,6 +291,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -303,14 +305,24 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-45:hover,
+.emotion-45.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-45:hover svg,
+.emotion-45.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-45[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-44 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-44:hover {
-  color: #ffffff;
 }
 
 .emotion-46 {
@@ -888,7 +900,6 @@ Array [
           >
             <svg
               className="emotion-44"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -969,7 +980,6 @@ Array [
           >
             <svg
               className="emotion-44"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -1780,6 +1790,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -1792,14 +1804,24 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-44:hover,
+.emotion-44.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-44:hover svg,
+.emotion-44.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-44[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-43 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-43:hover {
-  color: #ffffff;
 }
 
 .emotion-45 {
@@ -2345,7 +2367,6 @@ Array [
           >
             <svg
               className="emotion-43"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -2426,7 +2447,6 @@ Array [
           >
             <svg
               className="emotion-43"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
