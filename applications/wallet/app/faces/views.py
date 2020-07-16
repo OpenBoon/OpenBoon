@@ -7,7 +7,7 @@ from zmlp.client import ZmlpNotFoundException
 
 from assets.utils import AssetBoxImager
 from assets.views import AssetViewSet
-from faces.serializers import UpdateLabelsSerializer, FaceAssetSerializer
+from faces.serializers import UpdateFaceLabelsSerializer, FaceAssetSerializer
 from projects.views import BaseProjectViewSet
 from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import ZMLPFromSizePagination
@@ -18,7 +18,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     zmlp_root_api_path = 'api/v3/assets/'
     analysis_attr = 'analysis.zvi-face-detection'
     model_name = 'console_face_recognition'
-    serializer_class = UpdateLabelsSerializer
+    serializer_class = UpdateFaceLabelsSerializer
     pagination_class = ZMLPFromSizePagination
 
     def list(self, request, project_pk):
@@ -142,7 +142,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         Returns:
             (Response): Returns a 201 if a label is created or a 200 if no labels are given.
         """
-        serializer = UpdateLabelsSerializer(data=request.data)
+        serializer = UpdateFaceLabelsSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         app = request.app
         data = serializer.validated_data
