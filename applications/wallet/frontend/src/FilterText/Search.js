@@ -91,7 +91,6 @@ const FilterTextSearch = ({
             ':hover, &.focus-visible:focus': {
               backgroundColor: colors.structure.smoke,
               svg: {
-                opacity: 1,
                 color: isDisabled
                   ? colors.signal.canary.strong
                   : colors.structure.white,
@@ -135,7 +134,6 @@ const FilterTextSearch = ({
             borderRadius: constants.borderRadius.small,
             ':hover, &.focus-visible:focus': {
               backgroundColor: colors.structure.smoke,
-              svg: { opacity: 1, color: colors.structure.white },
             },
           }}
           onClick={() =>

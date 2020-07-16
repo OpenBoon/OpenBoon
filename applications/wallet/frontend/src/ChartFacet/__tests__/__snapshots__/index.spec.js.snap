@@ -122,6 +122,11 @@ exports[`<ChartFacet /> should render properly 1`] = `
   color: #ffffff;
 }
 
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-1[aria-disabled=true] {
   color: #808080;
 }
@@ -460,6 +465,11 @@ exports[`<ChartFacet /> should render properly 1`] = `
 .emotion-80:hover,
 .emotion-80.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-80:hover svg,
+.emotion-80.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-80[aria-disabled=true] {
@@ -1030,6 +1040,11 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   color: #ffffff;
 }
 
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-1[aria-disabled=true] {
   color: #808080;
 }
@@ -1176,6 +1191,11 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
 .emotion-10:hover,
 .emotion-10.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-10[aria-disabled=true] {

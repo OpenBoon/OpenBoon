@@ -105,6 +105,11 @@ exports[`<DataVisualization /> should render properly 1`] = `
   color: #ffffff;
 }
 
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-1[aria-disabled=true] {
   color: #808080;
 }
@@ -549,6 +554,11 @@ exports[`<DataVisualization /> should render properly 2`] = `
   color: #ffffff;
 }
 
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-1[aria-disabled=true] {
   color: #808080;
 }
@@ -947,6 +957,11 @@ exports[`<DataVisualization /> should render properly 3`] = `
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-1[aria-disabled=true] {
@@ -1413,6 +1428,11 @@ exports[`<DataVisualization /> should render properly 4`] = `
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-1[aria-disabled=true] {

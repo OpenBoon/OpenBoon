@@ -126,6 +126,9 @@ const STYLES = {
     color: colors.structure.steel,
     ':hover, &.focus-visible:focus': {
       color: colors.structure.white,
+      svg: {
+        opacity: 1,
+      },
     },
     '&[aria-disabled=true]': {
       color: colors.structure.steel,

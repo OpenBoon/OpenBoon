@@ -137,6 +137,11 @@ exports[`<ChartRange /> should render properly 1`] = `
   color: #ffffff;
 }
 
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-1[aria-disabled=true] {
   color: #808080;
 }
@@ -297,6 +302,11 @@ exports[`<ChartRange /> should render properly 1`] = `
 .emotion-19:hover,
 .emotion-19.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-19:hover svg,
+.emotion-19.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-19[aria-disabled=true] {
@@ -577,6 +587,11 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   color: #ffffff;
 }
 
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-1[aria-disabled=true] {
   color: #808080;
 }
@@ -720,6 +735,11 @@ exports[`<ChartRange /> should render properly without data 1`] = `
 .emotion-9:hover,
 .emotion-9.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-9:hover svg,
+.emotion-9.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-9[aria-disabled=true] {

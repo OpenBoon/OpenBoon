@@ -50,6 +50,11 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
   color: #ffffff;
 }
 
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-1[aria-disabled=true] {
   color: #808080;
 }
@@ -188,6 +193,11 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-1[aria-disabled=true] {
@@ -343,6 +353,11 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-1[aria-disabled=true] {

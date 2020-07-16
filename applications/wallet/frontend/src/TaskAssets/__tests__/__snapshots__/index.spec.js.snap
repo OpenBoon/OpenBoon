@@ -328,6 +328,11 @@ exports[`<TaskAssets /> should render properly 1`] = `
   color: #ffffff;
 }
 
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-11[aria-disabled=true] {
   color: #808080;
 }

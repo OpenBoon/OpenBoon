@@ -50,7 +50,6 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
             opacity: 0,
           },
           ':hover, &.focus-visible:focus': {
-            svg: { opacity: 1 },
             backgroundColor: colors.structure.smoke,
           },
         }}
@@ -73,7 +72,6 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
             opacity: 0,
           },
           ':hover, &.focus-visible:focus': {
-            svg: { opacity: 1 },
             backgroundColor: colors.structure.smoke,
           },
         }}

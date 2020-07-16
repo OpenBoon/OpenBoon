@@ -105,6 +105,11 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #ffffff;
 }
 
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-1[aria-disabled=true] {
   color: #808080;
 }
@@ -613,6 +618,11 @@ exports[`<Visualizer /> should render selected asset 1`] = `
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-1[aria-disabled=true] {

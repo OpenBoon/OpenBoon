@@ -310,6 +310,11 @@ Array [
   color: #ffffff;
 }
 
+.emotion-45:hover svg,
+.emotion-45.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-45[aria-disabled=true] {
   color: #808080;
 }
@@ -1802,6 +1807,11 @@ Array [
 .emotion-44:hover,
 .emotion-44.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-44:hover svg,
+.emotion-44.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-44[aria-disabled=true] {

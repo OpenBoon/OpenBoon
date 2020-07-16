@@ -447,6 +447,11 @@ Array [
   color: #ffffff;
 }
 
+.emotion-54:hover svg,
+.emotion-54.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-54[aria-disabled=true] {
   color: #808080;
 }
@@ -2098,6 +2103,11 @@ Array [
 .emotion-72:hover,
 .emotion-72.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-72:hover svg,
+.emotion-72.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-72[aria-disabled=true] {
@@ -3856,6 +3866,11 @@ Array [
   color: #ffffff;
 }
 
+.emotion-66:hover svg,
+.emotion-66.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-66[aria-disabled=true] {
   color: #808080;
 }
@@ -5577,6 +5592,11 @@ Array [
 .emotion-65:hover,
 .emotion-65.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-65:hover svg,
+.emotion-65.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-65[aria-disabled=true] {

@@ -26,7 +26,7 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
-  .emotion-5 {
+  .emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -34,15 +34,15 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-5:hover {
+.emotion-4:hover {
   background-color: #027aff38;
 }
 
-.emotion-5:hover div {
+.emotion-4:hover div {
   color: #ffffff;
 }
 
-.emotion-5:hover div svg {
+.emotion-4:hover div svg {
   opacity: 1;
 }
 
@@ -66,13 +66,13 @@ Array [
   word-break: break-all;
 }
 
-.emotion-4 {
+.emotion-3 {
   width: 36px;
   padding: 16px;
   padding-left: 8px;
 }
 
-.emotion-3 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -107,35 +107,35 @@ Array [
   padding: 0;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-2:hover svg,
+.emotion-2.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-2[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-3:focus svg {
-  opacity: 1;
-  color: #ffffff;
-}
-
-.emotion-2 {
+.emotion-2 svg {
   opacity: 0;
 }
 
 <div
-    className="emotion-5"
+    className="emotion-4"
   >
     <div
       className="emotion-0"
@@ -149,16 +149,15 @@ Array [
       vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C
     </div>
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <button
-        className="emotion-3"
+        className="emotion-2"
         onClick={[Function]}
         title="Copy to Clipboard"
         type="button"
       >
         <svg
-          className="emotion-2"
           data-file-name="copy.svg"
           height={20}
         />
@@ -397,6 +396,11 @@ Array [
 .emotion-1:hover,
 .emotion-1.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-1[aria-disabled=true] {
@@ -652,7 +656,7 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
-  .emotion-5 {
+  .emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -660,15 +664,15 @@ Array [
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-5:hover {
+.emotion-4:hover {
   background-color: #027aff38;
 }
 
-.emotion-5:hover div {
+.emotion-4:hover div {
   color: #ffffff;
 }
 
-.emotion-5:hover div svg {
+.emotion-4:hover div svg {
   opacity: 1;
 }
 
@@ -692,13 +696,13 @@ Array [
   word-break: break-all;
 }
 
-.emotion-4 {
+.emotion-3 {
   width: 36px;
   padding: 16px;
   padding-left: 8px;
 }
 
-.emotion-3 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -733,35 +737,35 @@ Array [
   padding: 0;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-2:hover svg,
+.emotion-2.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-2[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-3:focus svg {
-  opacity: 1;
-  color: #ffffff;
-}
-
-.emotion-2 {
+.emotion-2 svg {
   opacity: 0;
 }
 
 <div
-    className="emotion-5"
+    className="emotion-4"
   >
     <div
       className="emotion-0"
@@ -775,16 +779,15 @@ Array [
       vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C
     </div>
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <button
-        className="emotion-3"
+        className="emotion-2"
         onClick={[Function]}
         title="Copy to Clipboard"
         type="button"
       >
         <svg
-          className="emotion-2"
           data-file-name="copy.svg"
           height={20}
         />

@@ -246,6 +246,11 @@ exports[`<Button /> should render properly for ICON Button 1`] = `
   color: #ffffff;
 }
 
+.emotion-0:hover svg,
+.emotion-0.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-0[aria-disabled=true] {
   color: #808080;
 }
@@ -306,6 +311,11 @@ exports[`<Button /> should render properly for ICON Link 1`] = `
 .emotion-0:hover,
 .emotion-0.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-0:hover svg,
+.emotion-0.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-0[aria-disabled=true] {

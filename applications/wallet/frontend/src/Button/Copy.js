@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types'
 import useClipboard from 'react-use-clipboard'
 
-import { colors } from '../Styles'
-
 import CopySvg from '../Icons/copy.svg'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '.'
@@ -20,15 +18,12 @@ const ButtonCopy = ({ value }) => {
       isDisabled={isCopied}
       css={{
         padding: 0,
-        ':focus': { svg: { opacity: 1, color: colors.structure.white } },
+        svg: {
+          opacity: 0,
+        },
       }}
     >
-      <CopySvg
-        height={COPY_SIZE}
-        css={{
-          opacity: 0,
-        }}
-      />
+      <CopySvg height={COPY_SIZE} />
     </Button>
   )
 }

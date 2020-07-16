@@ -290,6 +290,11 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   color: #ffffff;
 }
 
+.emotion-9:hover svg,
+.emotion-9.focus-visible:focus svg {
+  opacity: 1;
+}
+
 .emotion-9[aria-disabled=true] {
   color: #808080;
 }

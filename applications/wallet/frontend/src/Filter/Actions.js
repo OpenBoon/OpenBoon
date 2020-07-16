@@ -36,7 +36,6 @@ const FilterActions = ({
           ':hover, &.focus-visible:focus': {
             backgroundColor: colors.structure.smoke,
             svg: {
-              opacity: 1,
               color: isDisabled
                 ? colors.signal.canary.strong
                 : colors.structure.white,
@@ -79,7 +78,6 @@ const FilterActions = ({
           borderRadius: constants.borderRadius.small,
           ':hover, &.focus-visible:focus': {
             backgroundColor: colors.structure.smoke,
-            svg: { color: colors.structure.white, opacity: 1 },
           },
         }}
         onClick={(event) => {
