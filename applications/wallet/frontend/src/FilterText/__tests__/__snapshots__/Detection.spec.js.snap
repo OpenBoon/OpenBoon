@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FilterTextDetection /> should clear a text detection 1`] = `
-.emotion-5 {
+.emotion-4 {
   padding: 16px;
 }
 
-.emotion-4 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -78,7 +78,7 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
   padding-left: 1px;
 }
 
-.emotion-3 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -115,38 +115,34 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
   background-color: #191919;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-3:hover svg,
-.emotion-3.focus-visible:focus svg {
+.emotion-2:hover svg,
+.emotion-2.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-3[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-2 {
+.emotion-2[aria-disabled=true] {
   color: #808080;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-4"
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <button
       aria-label="Edit Text Detection"
@@ -162,13 +158,12 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
     </button>
     <button
       aria-label="Clear Text Detection"
-      className="emotion-3"
+      className="emotion-2"
       onClick={[Function]}
       title="Clear"
       type="button"
     >
       <svg
-        className="emotion-2"
         data-file-name="cross.svg"
         height={20}
       />

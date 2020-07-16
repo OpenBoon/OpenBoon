@@ -91,10 +91,7 @@ const FilterTextDetection = ({
               })
             }}
           >
-            <CrossSvg
-              height={ICON_SIZE}
-              css={{ color: colors.structure.steel }}
-            />
+            <CrossSvg height={ICON_SIZE} />
           </Button>
         </div>
       </div>
