@@ -82,6 +82,9 @@ const constants = {
   form: {
     maxWidth: 470,
   },
+  toggleTip: {
+    maxWidth: 400,
+  },
   paragraph: {
     maxWidth: 600,
   },
