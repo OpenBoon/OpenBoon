@@ -55,12 +55,11 @@ const PanelContent = ({
           </h2>
           <Button
             aria-label="Close Panel"
-            variant={VARIANTS.NEUTRAL}
+            variant={VARIANTS.ICON}
             onClick={() => setOpenPanel({ value: '' })}
             isDisabled={false}
             style={{
-              color: colors.structure.steel,
-              ':hover': { color: colors.structure.white },
+              padding: 0,
             }}
           >
             <DoubleChevronSvg
