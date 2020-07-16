@@ -153,7 +153,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-12 {
+  .emotion-15 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -187,7 +187,7 @@ Array [
   font-weight: 400;
 }
 
-.emotion-11 {
+.emotion-14 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -213,7 +213,7 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-12 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -221,38 +221,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-9 tr {
+.emotion-12 tr {
   background-color: #252525;
 }
 
-.emotion-9 tr:nth-of-type(2n) {
+.emotion-12 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-9 tr:hover {
+.emotion-12 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-9 tr:hover .gear {
+.emotion-12 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-9 tr:hover td {
+.emotion-12 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-9 tr:hover td:first-of-type {
+.emotion-12 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-9 tr:hover td:last-of-type {
+.emotion-12 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-9 td {
+.emotion-12 td {
   max-width: calc(100vw / 3);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -264,11 +264,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-9 td:first-of-type {
+.emotion-12 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-9 td:last-of-type {
+.emotion-12 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -287,7 +287,7 @@ Array [
 }
 
 <div
-    className="emotion-12"
+    className="emotion-15"
   >
     <div
       className="emotion-1"
@@ -298,17 +298,17 @@ Array [
         Number of 
         Models
         : 
-        1
+        2
       </h3>
     </div>
     <div
-      className="emotion-11"
+      className="emotion-14"
     >
       <div
-        className="emotion-10"
+        className="emotion-13"
       >
         <table
-          className="emotion-9"
+          className="emotion-12"
         >
           <thead>
             <tr>
@@ -360,6 +360,36 @@ Array [
               >
                 <svg
                   color="#73b61c"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </td>
+            </tr>
+            <tr
+              className="emotion-8"
+              onClick={[Function]}
+            >
+              <td>
+                <a
+                  className="emotion-6"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-9596-1244-d6df43f1ede5"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  console_cat_recognition
+                </a>
+              </td>
+              <td>
+                ZVI_CAT_RECOGNITION
+              </td>
+              <td>
+                zvi-console_cat_recognition-cat-recognition
+              </td>
+              <td
+                className="emotion-7"
+              >
+                <svg
+                  color="transparent"
                   data-file-name="checkmark.svg"
                   height={20}
                 />

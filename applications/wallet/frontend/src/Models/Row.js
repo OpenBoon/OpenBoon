@@ -36,7 +36,10 @@ const ModelsRow = ({
       <td>{moduleName}</td>
 
       <td css={{ textAlign: 'center' }}>
-        {!!ready && <CheckmarkSvg height={ICON_SIZE} color={colors.key.one} />}
+        <CheckmarkSvg
+          height={ICON_SIZE}
+          color={ready ? colors.key.one : colors.transparent}
+        />
       </td>
     </tr>
   )
