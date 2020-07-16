@@ -28,15 +28,11 @@ class ModelTypeSerializer(serializers.Serializer):
 
 
 class LabelSerializer(serializers.Serializer):
-    label = serializers.CharField(required=True)
-
-
-class LabelSerializer(serializers.Serializer):
     asset_id = serializers.CharField(required=True)
     label = serializers.CharField(required=True)
     bbox = serializers.ListField(default=None)
     simhash = serializers.CharField(default=None)
-    scope = serializers.CharField(default='TRAIN')
+    scope = serializers.ChoiceField(choices=['TRAIN', 'TEST'], default='TRAIN')
 
 
 class AddLabelsSerializer(serializers.Serializer):

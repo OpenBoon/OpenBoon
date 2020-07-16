@@ -109,7 +109,7 @@ class ModelViewSet(ConvertCamelToSnakeViewSetMixin,
         Expected Body:
             ```
             {
-                "labels": [
+                "add_labels": [
                     {"assetId": $assetId,
                      "label": "Label Name",
                      "bbox": [0.313, 0.439, 0.394, 0.571],  # Optional
