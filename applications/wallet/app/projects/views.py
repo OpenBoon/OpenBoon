@@ -180,9 +180,9 @@ class BaseProjectViewSet(ViewSet):
             content['list'].remove(item)
 
         if serializer_class:
-            serializer = serializer_class(data=content['list'], many=True)
+            serializer = serializer_class(data=items, many=True)
         else:
-            serializer = self.get_serializer(data=content['list'], many=True)
+            serializer = self.get_serializer(data=items, many=True)
         if not serializer.is_valid():
             return Response({'detail': serializer.errors}, status=500)
         content['list'] = serializer.validated_data
@@ -290,19 +290,29 @@ class BaseProjectViewSet(ViewSet):
 
         return items
 
-    def _zmlp_list_from_root(self, request):
+    def _zmlp_list_from_root(self, request, base_url=None, serializer_class=None):
         """The result of this method can be returned for the list method of a concrete
         viewset if it just needs to proxy the results of doing a get on the zmlp base url.
 
         Args:
             request (Request): Request the view method was given.
+            base_url (str): Overrides the url to query.
+            serializer_class (Serializer): Serializer class to use on the results.
 
         Returns:
             Response: DRF Response that can be returned directly by the viewset list method.
 
         """
-        response = request.client.get(self.zmlp_root_api_path)
-        serializer = self.get_serializer(data=response, many=True)
+        if not base_url:
+            base_url = self.zmlp_root_api_path
+        response = request.client.get(base_url)
+
+        if serializer_class:
+            serializer = serializer_class(data=response, many=True,
+                                          context=self.get_serializer_context())
+        else:
+            serializer = self.get_serializer(data=response, many=True)
+
         if not serializer.is_valid():
             return Response({'detail': serializer.errors}, status=500)
         return Response({'results': serializer.data})
