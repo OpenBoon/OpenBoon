@@ -1,0 +1,814 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Models /> should render properly with models 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Custom Models
+  </h2>,
+  .emotion-2 {
+  max-width: 600px;
+  color: #b3b3b3;
+}
+
+.emotion-0 {
+  color: #73b61c;
+}
+
+<p
+    className="emotion-2"
+  >
+    FINAL COPY NEEDED Steps in adding labels and then coming back to the model detail page to train. Once a model has been trained it will be available to add to
+     
+    <a
+      className="emotion-0"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      data sources
+    </a>
+    . Learn more about
+     
+    <a
+      className="emotion-0"
+      href="https://app.gitbook.com/@zorroa/s/zmlp/client/data-sets"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      custom models
+    </a>
+    .
+  </p>,
+  .emotion-5 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-4 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-0 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+<nav
+    className="emotion-5"
+  >
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create New Model
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-15 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+.emotion-0 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-14 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-2 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-2:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-2:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-12 {
+  width: 100%;
+  height: auto;
+  border-spacing: 0;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+.emotion-12 tr {
+  background-color: #252525;
+}
+
+.emotion-12 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-12 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-12 tr:hover .gear {
+  color: #b3b3b3;
+}
+
+.emotion-12 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-12 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-12 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-12 td {
+  max-width: calc(100vw / 3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-12 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-12 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-8 {
+  cursor: pointer;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7 {
+  text-align: center;
+}
+
+<div
+    className="emotion-15"
+  >
+    <div
+      className="emotion-1"
+    >
+      <h3
+        className="emotion-0"
+      >
+        Number of 
+        Models
+        : 
+        2
+      </h3>
+    </div>
+    <div
+      className="emotion-14"
+    >
+      <div
+        className="emotion-13"
+      >
+        <table
+          className="emotion-12"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-2"
+              >
+                Name
+              </th>
+              <th
+                className="emotion-2"
+              >
+                Type
+              </th>
+              <th
+                className="emotion-2"
+              >
+                Module
+              </th>
+              <th
+                className="emotion-2"
+              >
+                Ready
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-8"
+              onClick={[Function]}
+            >
+              <td>
+                <a
+                  className="emotion-6"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-1244-9596-d6df43f1ede5"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  console_face_recognition
+                </a>
+              </td>
+              <td>
+                ZVI_FACE_RECOGNITION
+              </td>
+              <td>
+                zvi-console_face_recognition-face-recognition
+              </td>
+              <td
+                className="emotion-7"
+              >
+                <svg
+                  color="#73b61c"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </td>
+            </tr>
+            <tr
+              className="emotion-8"
+              onClick={[Function]}
+            >
+              <td>
+                <a
+                  className="emotion-6"
+                  href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf774-89d9-9596-1244-d6df43f1ede5"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  console_cat_recognition
+                </a>
+              </td>
+              <td>
+                ZVI_CAT_RECOGNITION
+              </td>
+              <td>
+                zvi-console_cat_recognition-cat-recognition
+              </td>
+              <td
+                className="emotion-7"
+              >
+                <svg
+                  color="transparent"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+       
+    </div>
+    <div>
+       
+    </div>
+  </div>,
+]
+`;
+
+exports[`<Models /> should render properly with no models 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Custom Models
+  </h2>,
+  .emotion-2 {
+  max-width: 600px;
+  color: #b3b3b3;
+}
+
+.emotion-0 {
+  color: #73b61c;
+}
+
+<p
+    className="emotion-2"
+  >
+    FINAL COPY NEEDED Steps in adding labels and then coming back to the model detail page to train. Once a model has been trained it will be available to add to
+     
+    <a
+      className="emotion-0"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      data sources
+    </a>
+    . Learn more about
+     
+    <a
+      className="emotion-0"
+      href="https://app.gitbook.com/@zorroa/s/zmlp/client/data-sets"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      custom models
+    </a>
+    .
+  </p>,
+  .emotion-5 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-4 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-0 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+<nav
+    className="emotion-5"
+  >
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create New Model
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-12 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+.emotion-0 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-11 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-10 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.emotion-9 {
+  width: 100%;
+  height: 100%;
+  border-spacing: 0;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+.emotion-9 tr {
+  background-color: #252525;
+}
+
+.emotion-9 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-9 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-9 tr:hover .gear {
+  color: #b3b3b3;
+}
+
+.emotion-9 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-9 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-9 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-9 td {
+  max-width: calc(100vw / 3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-9 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-9 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-2 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-2:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-2:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-8 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+<div
+    className="emotion-12"
+  >
+    <div
+      className="emotion-1"
+    >
+      <h3
+        className="emotion-0"
+      >
+        Number of 
+        Models
+        : 
+        0
+      </h3>
+    </div>
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-10"
+      >
+        <table
+          className="emotion-9"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-2"
+              >
+                Name
+              </th>
+              <th
+                className="emotion-2"
+              >
+                Type
+              </th>
+              <th
+                className="emotion-2"
+              >
+                Module
+              </th>
+              <th
+                className="emotion-2"
+              >
+                Ready
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-8"
+            >
+              <td
+                colSpan={4}
+              >
+                <div
+                  className="emotion-7"
+                >
+                  <div
+                    className="emotion-6"
+                  >
+                    <svg
+                      data-file-name="noJobs.svg"
+                      width={200}
+                    />
+                    <div>
+                      There are currently no custom models.
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+]
+`;
