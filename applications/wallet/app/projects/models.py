@@ -5,7 +5,7 @@ from django.conf import settings
 from django.db import models
 from django_cryptography.fields import encrypt
 from multiselectfield import MultiSelectField
-from zmlp.client import ZmlpDuplicateException, ZmlpClient, ZmlpNotFoundException
+from zmlp.client import ZmlpClient, ZmlpNotFoundException
 
 from apikeys.utils import create_zmlp_api_key
 from projects.utils import random_project_name
@@ -53,27 +53,32 @@ class Project(models.Model):
         correctly.
 
         """
-        client = get_zmlp_superuser_client(self.id)
+        client = self.get_zmlp_super_client()
 
-        # Create the project if it doesn't already exist.
-        body = {'name': self.name, 'id': str(self.id)}
+        # Get or create the ZMLP project.
         try:
-            client.post('/api/v1/projects', body)
-        except ZmlpDuplicateException:
-            logger.info(f'Project {self.id} already exists in ZMLP')
+            project = client.get('/api/v1/project')
+        except ZmlpNotFoundException:
+            body = {'name': self.name, 'id': str(self.id)}
+            project = client.post('/api/v1/projects', body)
+
+        # Sync the project name.
+        if self.name != project['name']:
+            client.put('/api/v1/project/_rename', {'name': self.name})
 
         # Sync the project tier.
-        if hasattr(self, 'subscription'):
+        if hasattr(self, 'subscription') and self.subscription.tier.upper() != project['tier']:
             client.put(f'/api/v1/projects/{self.id}/_update_tier',
                        {'tier': self.subscription.tier.upper()})
 
         # Sync the project status.
-        if self.is_active:
-            project_status_response = client.put(f'/api/v1/projects/{self.id}/_enable', {})
-        else:
-            project_status_response = client.put(f'/api/v1/projects/{self.id}/_disable', {})
-        if not project_status_response.get('success'):
-            raise IOError(f'Unable to sync project {self.id} status.')
+        if self.is_active != project['enabled']:
+            if self.is_active:
+                project_status_response = client.put(f'/api/v1/projects/{self.id}/_enable', {})
+            else:
+                project_status_response = client.put(f'/api/v1/projects/{self.id}/_disable', {})
+            if not project_status_response.get('success'):
+                raise IOError(f'Unable to sync project {self.id} status.')
 
 
 class Membership(models.Model):

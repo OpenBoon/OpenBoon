@@ -368,7 +368,7 @@ exports[`<Login /> should render error 1`] = `
   width: 100%;
   color: #000000;
   background-color: #ffffff;
-  border: 2px solid #c92300;
+  border: 1px solid #c92300;
   border-width: 2px;
 }
 
