@@ -203,7 +203,7 @@ resource "kubernetes_service" "wallet" {
     labels = {
       app = "wallet"
     }
-    annotations {
+    annotations = {
       cloud.google.com/backend-config = "{\"default\": \"wallet-backendconfig\"}"
     }
   }
