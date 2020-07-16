@@ -362,7 +362,13 @@ Array [
               </td>
               <td
                 className="emotion-5"
-              />
+              >
+                <svg
+                  color="#73b61c"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </td>
             </tr>
           </tbody>
         </table>

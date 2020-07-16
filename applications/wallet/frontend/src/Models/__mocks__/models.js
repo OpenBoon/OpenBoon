@@ -12,7 +12,7 @@ const dataSources = {
       labelsCount: 42,
       assetsCount: 1337,
       trained: true,
-      applied: false,
+      applied: true,
     },
   ],
 }
