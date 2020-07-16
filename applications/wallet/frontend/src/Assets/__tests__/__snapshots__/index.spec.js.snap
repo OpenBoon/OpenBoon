@@ -580,7 +580,7 @@ exports[`<Assets /> should render properly 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  padding: 12px;
+  padding: 8px;
   opacity: 1;
 }
 
@@ -632,7 +632,7 @@ exports[`<Assets /> should render properly 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  padding: 12px;
+  padding: 8px;
   opacity: 1;
 }
 
@@ -775,7 +775,7 @@ exports[`<Assets /> should render properly 2`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  padding: 12px;
+  padding: 8px;
   opacity: 1;
 }
 
@@ -827,7 +827,7 @@ exports[`<Assets /> should render properly 2`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  padding: 12px;
+  padding: 8px;
   opacity: 1;
 }
 
@@ -970,7 +970,7 @@ exports[`<Assets /> should render properly 3`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  padding: 12px;
+  padding: 8px;
   opacity: 1;
 }
 
@@ -1022,7 +1022,7 @@ exports[`<Assets /> should render properly 3`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 0;
-  padding: 12px;
+  padding: 8px;
   opacity: 1;
 }
 

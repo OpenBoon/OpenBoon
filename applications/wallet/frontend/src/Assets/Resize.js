@@ -38,7 +38,7 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
       isDisabled={isMin}
       variant={VARIANTS.NEUTRAL}
       css={{
-        padding: spacing.moderate,
+        padding: spacing.base,
         ':hover': {
           color: colors.key.one,
         },
@@ -58,7 +58,7 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
       isDisabled={isMax}
       variant={VARIANTS.NEUTRAL}
       css={{
-        padding: spacing.moderate,
+        padding: spacing.base,
         ':hover': {
           color: colors.key.one,
         },
