@@ -70,7 +70,7 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
               textOverflow: 'ellipsis',
             }}
           >
-            {value.toLocaleString()}
+            {value?.toLocaleString() || '-'}
           </div>
         </div>
       ))}
