@@ -388,7 +388,7 @@ exports[`<ChartRange /> should render properly 1`] = `
           <div
             className="emotion-7"
           >
-            580
+            -
           </div>
         </div>
         <div>
