@@ -99,7 +99,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         fname = f'/tmp/{name}.png'
         plt.savefig(fname)
 
-        file_storage.projects.store_file(fname, self.app_model, self.app_model.module_name)
+        file_storage.projects.store_file(fname, self.app_model, "model")
 
     def publish_model(self, labels):
         """

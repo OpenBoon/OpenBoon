@@ -54,6 +54,29 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
+    fun createFaceModelDefaultModuleName() {
+        val mspec = ModelSpec(
+            "faces",
+            ModelType.ZVI_FACE_RECOGNITION,
+            deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
+        )
+        val model = modelService.createModel(mspec)
+        assertEquals("zvi-face-recognition", model.moduleName)
+    }
+
+    @Test
+    fun createFaceModuleCustomModel() {
+        val mspec = ModelSpec(
+            "faces",
+            ModelType.ZVI_FACE_RECOGNITION,
+            moduleName = "foo",
+            deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
+        )
+        val model = modelService.createModel(mspec)
+        assertEquals("foo", model.moduleName)
+    }
+
+    @Test
     fun testGetModel() {
         val model1 = create()
         val model2 = modelService.getModel(model1.id)
@@ -235,8 +258,8 @@ class ModelServiceTests : AbstractTest() {
     fun assertModel(model: Model) {
         assertEquals(ModelType.ZVI_LABEL_DETECTION, model.type)
         assertEquals("test", model.name)
-        assertEquals("zvi-test-label-detection", model.moduleName)
-        assertTrue(model.fileId.endsWith("zvi-test-label-detection.zip"))
+        assertEquals("test", model.moduleName)
+        assertTrue(model.fileId.endsWith("model.zip"))
         assertFalse(model.ready)
     }
 }
