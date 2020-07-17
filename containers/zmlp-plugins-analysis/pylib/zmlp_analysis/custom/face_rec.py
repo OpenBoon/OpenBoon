@@ -31,7 +31,7 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
         if not faces:
             return
 
-        analysis = LabelDetectionAnalysis()
+        analysis = LabelDetectionAnalysis(min_score=0.0)
 
         x = self.hashes_as_nparray(faces)
         predictions = self.face_classifier.predict(x)
@@ -41,15 +41,14 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
         for i, face in enumerate(faces):
             if dist[i][0] < min_distance:
                 label = predictions[i]
-                score = 1 - max(0, min(1, (dist[i][0] - 800) / (1100 - 800)))
+                score = 1.0 - max(0, min(1, (dist[i][0] - 800) / (1100 - 800)))
             else:
                 label = 'Unrecognized'
                 score = 0.0
 
-            print(face)
             analysis.add_label_and_score(label, score, bbox=face["bbox"])
 
-        asset.add_analysis(self.app_model.module_name, analysis)
+        asset.add_analysis(self.app_model.name, analysis)
 
     def load_model(self):
         """
