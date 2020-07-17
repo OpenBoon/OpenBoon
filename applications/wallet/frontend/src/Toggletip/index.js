@@ -9,7 +9,7 @@ const CARET_SIZE = 6
 const CARET_POSITION = 14
 const TEXTBOX_POSITION = 10
 
-const ToggleTip = ({ openToThe, children }) => {
+const Toggletip = ({ openToThe, children }) => {
   return (
     <div
       css={{
@@ -84,9 +84,9 @@ const ToggleTip = ({ openToThe, children }) => {
   )
 }
 
-ToggleTip.propTypes = {
+Toggletip.propTypes = {
   openToThe: PropTypes.oneOf(['left', 'right']).isRequired,
   children: PropTypes.node.isRequired,
 }
 
-export default ToggleTip
+export default Toggletip
