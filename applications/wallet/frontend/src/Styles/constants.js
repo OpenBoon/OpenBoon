@@ -73,12 +73,6 @@ const constants = {
   navbar: {
     height: 44,
   },
-  tableHeader: {
-    height: 45,
-  },
-  pageTitle: {
-    height: 61,
-  },
   form: {
     maxWidth: 470,
   },
