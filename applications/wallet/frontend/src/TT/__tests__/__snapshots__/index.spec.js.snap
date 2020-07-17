@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ToggleTip /> should open properly to the right 1`] = `
+exports[`<Toggletip /> should open properly to the right 1`] = `
 .emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import Toggletip from '../Toggletip'
+import Toggletip from '../TT'
 
 import { onTrain, getHelpInfoCopy } from './helpers'
 

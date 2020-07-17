@@ -1,11 +1,11 @@
 import TestRenderer from 'react-test-renderer'
 
-import ToggleTip from '..'
+import Toggletip from '..'
 
-describe('<ToggleTip />', () => {
+describe('<Toggletip />', () => {
   it('should open properly to the right', () => {
     const component = TestRenderer.create(
-      <ToggleTip openToThe="right">Toggle Tip</ToggleTip>,
+      <Toggletip openToThe="right">Toggle Tip</Toggletip>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
