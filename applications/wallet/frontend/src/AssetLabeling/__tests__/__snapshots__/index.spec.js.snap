@@ -3,11 +3,12 @@
 exports[`<AssetLabeling /> should render properly 1`] = `
 .emotion-0 {
   padding: 16px;
+  color: #ffffff;
 }
 
 <div
   className="emotion-0"
 >
-  Asset Labeling Under Construction
+  Select an asset to add labels.
 </div>
 `;
