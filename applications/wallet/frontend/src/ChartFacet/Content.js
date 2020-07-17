@@ -64,7 +64,6 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
       css={{
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
         height: '100%',
         flex: 1,
       }}
@@ -198,6 +197,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
           )
         })}
       </ul>
+
       <div
         css={{
           display: 'flex',

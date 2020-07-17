@@ -30,7 +30,7 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
     <label
       css={{
         '[data-reach-listbox-input][data-state="expanded"]': {
-          borderRadius: `${constants.borderRadius.small}px ${constants.borderRadius.small}px 0 0`,
+          boxShadow: constants.boxShadows.dropdown,
         },
       }}
     >
@@ -73,22 +73,31 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
         >
           {placeholder}
         </ListboxButton>
+
         <ListboxPopover
           css={{
             ':focus-within': {
               outline: 'none',
+              boxShadow: 'none',
             },
             backgroundColor: 'transparent',
             border: 'none',
             padding: 0,
-            borderBottomRightRadius: constants.borderRadius.small,
-            borderBottomLeftRadius: constants.borderRadius.small,
-            overflow: 'hidden',
           }}
         >
-          <div css={{ padding: '0 10px 10px 10px', margin: '0 -10px' }}>
+          <div
+            css={{
+              overflowY: 'hidden',
+              padding: spacing.base,
+              paddingTop: 0,
+              margin: -spacing.base,
+              marginBottom: 0,
+            }}
+          >
             <div
               css={{
+                borderBottomRightRadius: constants.borderRadius.small,
+                borderBottomLeftRadius: constants.borderRadius.small,
                 backgroundColor: colors.structure.steel,
                 boxShadow: constants.boxShadows.dropdown,
               }}
@@ -118,6 +127,8 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
               {hasResults && (
                 <ListboxList
                   css={{
+                    borderBottomRightRadius: constants.borderRadius.small,
+                    borderBottomLeftRadius: constants.borderRadius.small,
                     margin: 0,
                     overflow: 'auto',
                     maxHeight: MAX_HEIGHT,

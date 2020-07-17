@@ -2,7 +2,7 @@
 
 exports[`Listbox should render properly 1`] = `
 .emotion-9 [data-reach-listbox-input][data-state="expanded"] {
-  border-radius: 2px 2px 0 0;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-0 {
@@ -50,21 +50,24 @@ exports[`Listbox should render properly 1`] = `
   background-color: transparent;
   border: none;
   padding: 0;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  overflow: hidden;
 }
 
 .emotion-7:focus-within {
   outline: none;
+  box-shadow: none;
 }
 
 .emotion-6 {
-  padding: 0 10px 10px 10px;
-  margin: 0 -10px;
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
 }
 
 .emotion-5 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   background-color: #808080;
   box-shadow: 0 2px 6px 0 #000000;
 }
@@ -87,6 +90,8 @@ exports[`Listbox should render properly 1`] = `
 }
 
 .emotion-4 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   margin: 0;
   overflow: auto;
   max-height: 350px;
@@ -199,7 +204,7 @@ exports[`Listbox should render properly 1`] = `
 
 exports[`Listbox should render properly 2`] = `
 .emotion-9 [data-reach-listbox-input][data-state="expanded"] {
-  border-radius: 2px 2px 0 0;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-0 {
@@ -247,21 +252,24 @@ exports[`Listbox should render properly 2`] = `
   background-color: transparent;
   border: none;
   padding: 0;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  overflow: hidden;
 }
 
 .emotion-7:focus-within {
   outline: none;
+  box-shadow: none;
 }
 
 .emotion-6 {
-  padding: 0 10px 10px 10px;
-  margin: 0 -10px;
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
 }
 
 .emotion-5 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   background-color: #808080;
   box-shadow: 0 2px 6px 0 #000000;
 }
@@ -345,7 +353,7 @@ exports[`Listbox should render properly 2`] = `
 
 exports[`Listbox should render properly 3`] = `
 .emotion-9 [data-reach-listbox-input][data-state="expanded"] {
-  border-radius: 2px 2px 0 0;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-0 {
@@ -393,21 +401,24 @@ exports[`Listbox should render properly 3`] = `
   background-color: transparent;
   border: none;
   padding: 0;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  overflow: hidden;
 }
 
 .emotion-7:focus-within {
   outline: none;
+  box-shadow: none;
 }
 
 .emotion-6 {
-  padding: 0 10px 10px 10px;
-  margin: 0 -10px;
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
 }
 
 .emotion-5 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   background-color: #808080;
   box-shadow: 0 2px 6px 0 #000000;
 }
@@ -430,6 +441,8 @@ exports[`Listbox should render properly 3`] = `
 }
 
 .emotion-4 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   margin: 0;
   overflow: auto;
   max-height: 350px;
@@ -507,7 +520,7 @@ exports[`Listbox should render properly 3`] = `
 
 exports[`Listbox should render properly 4`] = `
 .emotion-9 [data-reach-listbox-input][data-state="expanded"] {
-  border-radius: 2px 2px 0 0;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-0 {
@@ -555,21 +568,24 @@ exports[`Listbox should render properly 4`] = `
   background-color: transparent;
   border: none;
   padding: 0;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  overflow: hidden;
 }
 
 .emotion-7:focus-within {
   outline: none;
+  box-shadow: none;
 }
 
 .emotion-6 {
-  padding: 0 10px 10px 10px;
-  margin: 0 -10px;
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
 }
 
 .emotion-5 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   background-color: #808080;
   box-shadow: 0 2px 6px 0 #000000;
 }
@@ -592,6 +608,8 @@ exports[`Listbox should render properly 4`] = `
 }
 
 .emotion-4 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   margin: 0;
   overflow: auto;
   max-height: 350px;
@@ -669,7 +687,7 @@ exports[`Listbox should render properly 4`] = `
 
 exports[`Listbox should render properly with existing attribute 1`] = `
 .emotion-9 [data-reach-listbox-input][data-state="expanded"] {
-  border-radius: 2px 2px 0 0;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-0 {
@@ -717,21 +735,24 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   background-color: transparent;
   border: none;
   padding: 0;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  overflow: hidden;
 }
 
 .emotion-7:focus-within {
   outline: none;
+  box-shadow: none;
 }
 
 .emotion-6 {
-  padding: 0 10px 10px 10px;
-  margin: 0 -10px;
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
 }
 
 .emotion-5 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   background-color: #808080;
   box-shadow: 0 2px 6px 0 #000000;
 }
@@ -754,6 +775,8 @@ exports[`Listbox should render properly with existing attribute 1`] = `
 }
 
 .emotion-4 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   margin: 0;
   overflow: auto;
   max-height: 350px;
