@@ -413,6 +413,7 @@ exports[`<UserMenu /> should render properly 2`] = `
           <li>
             <a
               href="https://shipright.community/zorroa"
+              rel="noreferrer"
               target="_blank"
             >
               <button
