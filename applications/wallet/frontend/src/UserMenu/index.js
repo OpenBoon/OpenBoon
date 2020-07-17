@@ -114,16 +114,16 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                 </Button>
               </li>
               <li>
-                <a rel="noreferrer" target="_blank" href="https://shipright.community/zorroa">
-                  <Button
-                    variant={VARIANTS.MENU_ITEM}
-                    onBlur={onBlur}
-                    onClick={onClick}
-                    isDisabled={false}
-                  >
-                    Submit Feedback
-                  </Button>
-                </a>
+                <Button
+                  href="https://shipright.community/zorroa"
+                  target="_blank"
+                  variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
+                  onClick={onClick}
+                  isDisabled={false}
+                >
+                  Submit Feedback
+                </Button>
               </li>
             </ul>
             <ul>
