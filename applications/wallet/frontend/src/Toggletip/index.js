@@ -54,6 +54,7 @@ const Toggletip = ({ openToThe, children }) => {
           color: colors.structure.coal,
           backgroundColor: colors.structure.white,
           borderRadius: constants.borderRadius.small,
+          boxShadow: constants.boxShadows.default,
           padding: spacing.moderate,
           width: 'max-content',
           maxWidth: MAX_WIDTH,

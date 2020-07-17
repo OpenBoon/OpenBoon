@@ -62,6 +62,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   color: #191919;
   background-color: #ffffff;
   border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   padding: 12px;
   width: -webkit-max-content;
   width: -moz-max-content;
@@ -315,6 +316,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   color: #191919;
   background-color: #ffffff;
   border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   padding: 12px;
   width: -webkit-max-content;
   width: -moz-max-content;
@@ -514,6 +516,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   color: #191919;
   background-color: #ffffff;
   border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   padding: 12px;
   width: -webkit-max-content;
   width: -moz-max-content;
