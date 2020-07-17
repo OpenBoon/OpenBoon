@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AssetLabeling /> should render properly 1`] = `
+.emotion-0 {
+  padding: 16px;
+}
+
+<div
+  className="emotion-0"
+>
+  Asset Labeling Under Construction
+</div>
+`;
