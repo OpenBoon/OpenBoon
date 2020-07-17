@@ -412,18 +412,14 @@ exports[`<UserMenu /> should render properly 2`] = `
           </li>
           <li>
             <a
+              className="emotion-6"
               href="https://shipright.community/zorroa"
-              rel="noreferrer"
+              onBlur={[Function]}
+              onClick={[Function]}
+              rel="noopener noreferrer"
               target="_blank"
             >
-              <button
-                className="emotion-6"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                Submit Feedback
-              </button>
+              Submit Feedback
             </a>
           </li>
         </ul>
