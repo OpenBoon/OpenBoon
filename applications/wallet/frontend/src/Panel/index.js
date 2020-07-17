@@ -43,12 +43,11 @@ const Panel = ({ openToThe, children }) => {
         }}
       >
         {Object.entries(children).map(
-          ([key, { title, icon, featureProps: { flag = '', envs } = {} }]) => (
-            <Feature
-              key={title}
-              flag={flag}
-              envs={envs || [...Object.values(ENVS)]}
-            >
+          ([
+            key,
+            { title, icon, flag = '', envs = [...Object.values(ENVS)] },
+          ]) => (
+            <Feature key={title} flag={flag} envs={envs}>
               <Button
                 aria-label={title}
                 title={title}

@@ -72,10 +72,8 @@ const VisualizerContent = () => {
               title: 'Add Labels To Model',
               icon: <PenSvg height={ICON_SIZE} />,
               content: <AssetLabeling />,
-              featureProps: {
-                flag: 'asset-labeling',
-                envs: [],
-              },
+              flag: 'asset-labeling',
+              envs: [],
             },
             export: {
               title: 'Export',
