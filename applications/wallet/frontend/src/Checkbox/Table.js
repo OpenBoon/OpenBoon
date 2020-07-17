@@ -68,7 +68,7 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
               },
               '+ tr': {
                 td: {
-                  borderTopColor: 'transparent',
+                  borderTopColor: colors.structure.transparent,
                 },
               },
             },

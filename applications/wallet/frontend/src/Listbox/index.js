@@ -80,7 +80,7 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
               outline: 'none',
               boxShadow: 'none',
             },
-            backgroundColor: 'transparent',
+            backgroundColor: colors.structure.transparent,
             border: 'none',
             padding: 0,
           }}

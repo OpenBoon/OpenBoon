@@ -184,7 +184,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
                     css={{
                       marginTop: BAR_HEIGHT,
                       padding: ICON_PADDING,
-                      color: colors.transparent,
+                      color: colors.structure.transparent,
                       display: 'flex',
                       justifyContent: 'center',
                     }}
