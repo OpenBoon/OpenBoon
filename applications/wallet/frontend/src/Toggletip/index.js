@@ -10,7 +10,9 @@ const CARET_POSITION = 14
 const TEXTBOX_POSITION = 10
 const MAX_WIDTH = 400
 
-const Toggletip = ({ openToThe, label, id, children }) => {
+const Toggletip = ({ openToThe, label, children }) => {
+  const id = label.split(' ').join('')
+
   return (
     <div
       css={{
@@ -46,7 +48,7 @@ const Toggletip = ({ openToThe, label, id, children }) => {
 
       <div
         role="tooltip"
-        id="trainingHelpText"
+        id={id}
         css={{
           position: 'absolute',
           [openToThe === 'left' ? 'right' : 'left']: -TEXTBOX_POSITION,
@@ -89,7 +91,6 @@ const Toggletip = ({ openToThe, label, id, children }) => {
 Toggletip.propTypes = {
   openToThe: PropTypes.oneOf(['left', 'right']).isRequired,
   label: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 }
 

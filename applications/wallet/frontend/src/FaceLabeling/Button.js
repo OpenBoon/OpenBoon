@@ -25,7 +25,7 @@ const FaceLabelingButton = ({
           : 'Train & Apply'}
       </Button>
 
-      <Toggletip openToThe="left" label="Training Help" id="trainingHelpText">
+      <Toggletip openToThe="left" label="Training Help">
         {getHelpInfoCopy({ jobId, unappliedChanges })}
       </Toggletip>
     </div>

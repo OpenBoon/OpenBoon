@@ -5,7 +5,7 @@ import Toggletip from '..'
 describe('<Toggletip />', () => {
   it('should open properly to the right', () => {
     const component = TestRenderer.create(
-      <Toggletip openToThe="right" label="Label String" id="idString">
+      <Toggletip openToThe="right" label="Label String">
         Toggle Tip
       </Toggletip>,
     )

@@ -174,7 +174,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
       className="emotion-5"
     >
       <button
-        aria-details="trainingHelpText"
+        aria-details="TrainingHelp"
         aria-label="Training Help"
         className="emotion-2"
         type="button"
@@ -186,7 +186,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
       </button>
       <div
         className="emotion-4"
-        id="trainingHelpText"
+        id="TrainingHelp"
         role="tooltip"
       >
         <div
@@ -374,7 +374,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
       className="emotion-5"
     >
       <button
-        aria-details="trainingHelpText"
+        aria-details="TrainingHelp"
         aria-label="Training Help"
         className="emotion-2"
         type="button"
@@ -386,7 +386,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
       </button>
       <div
         className="emotion-4"
-        id="trainingHelpText"
+        id="TrainingHelp"
         role="tooltip"
       >
         <div
@@ -574,7 +574,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
       className="emotion-5"
     >
       <button
-        aria-details="trainingHelpText"
+        aria-details="TrainingHelp"
         aria-label="Training Help"
         className="emotion-2"
         type="button"
@@ -586,7 +586,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
       </button>
       <div
         className="emotion-4"
-        id="trainingHelpText"
+        id="TrainingHelp"
         role="tooltip"
       >
         <div

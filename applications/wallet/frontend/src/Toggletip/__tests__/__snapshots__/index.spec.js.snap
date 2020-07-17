@@ -72,7 +72,7 @@ exports[`<Toggletip /> should open properly to the right 1`] = `
   className="emotion-3"
 >
   <button
-    aria-details="idString"
+    aria-details="LabelString"
     aria-label="Label String"
     className="emotion-0"
     type="button"
@@ -84,7 +84,7 @@ exports[`<Toggletip /> should open properly to the right 1`] = `
   </button>
   <div
     className="emotion-2"
-    id="trainingHelpText"
+    id="LabelString"
     role="tooltip"
   >
     <div
