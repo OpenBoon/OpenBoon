@@ -41,17 +41,13 @@ const FilterTextDetection = ({
         >
           <Button
             aria-label="Edit Text Detection"
-            variant={VARIANTS.NEUTRAL}
+            variant={VARIANTS.MENU}
             style={{
-              flex: 1,
+              padding: 0,
               paddingLeft: spacing.moderate,
               color: colors.structure.pebble,
               backgroundColor: colors.structure.mattGrey,
-              fontWeight: typography.weight.regular,
               alignItems: 'flex-start',
-              ':hover': {
-                backgroundColor: colors.structure.smoke,
-              },
             }}
             onClick={() => {
               setEditing(true)
@@ -74,9 +70,8 @@ const FilterTextDetection = ({
               width: BUTTON_SIZE,
               padding: spacing.moderate,
               backgroundColor: colors.structure.coal,
-              ':hover': { svg: { color: colors.structure.white } },
             }}
-            variant={VARIANTS.NEUTRAL}
+            variant={VARIANTS.ICON}
             onClick={() => {
               setSearchString('')
               dispatch({
@@ -96,10 +91,7 @@ const FilterTextDetection = ({
               })
             }}
           >
-            <CrossSvg
-              height={ICON_SIZE}
-              css={{ color: colors.structure.steel }}
-            />
+            <CrossSvg height={ICON_SIZE} />
           </Button>
         </div>
       </div>
