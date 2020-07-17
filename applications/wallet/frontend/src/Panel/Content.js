@@ -45,6 +45,7 @@ const PanelContent = ({
         >
           <h2
             css={{
+              whiteSpace: 'nowrap',
               textTransform: 'uppercase',
               fontWeight: typography.weight.medium,
               fontSize: typography.size.regular,
