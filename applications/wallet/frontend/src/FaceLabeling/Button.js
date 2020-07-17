@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import Toggletip from '../TT'
+import Toggletip from '../Toggletip'
 
 import { onTrain, getHelpInfoCopy } from './helpers'
 
@@ -25,7 +25,7 @@ const FaceLabelingButton = ({
           : 'Train & Apply'}
       </Button>
 
-      <Toggletip openToThe="left">
+      <Toggletip openToThe="left" label="Training Help" id="trainingHelpText">
         {getHelpInfoCopy({ jobId, unappliedChanges })}
       </Toggletip>
     </div>
