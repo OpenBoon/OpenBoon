@@ -114,7 +114,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                 </Button>
               </li>
               <li>
-                <a target="_blank" href="https://shipright.community/zorroa">
+                <a rel="noreferrer" target="_blank" href="https://shipright.community/zorroa">
                   <Button
                     variant={VARIANTS.MENU_ITEM}
                     onBlur={onBlur}
