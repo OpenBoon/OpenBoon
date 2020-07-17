@@ -11,7 +11,7 @@ const TEXTBOX_POSITION = 10
 const MAX_WIDTH = 400
 
 const Toggletip = ({ openToThe, label, children }) => {
-  const id = label.split(' ').join('')
+  const id = label.replace(' ', '')
 
   return (
     <div
