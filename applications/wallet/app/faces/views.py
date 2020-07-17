@@ -17,7 +17,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     zmlp_only = True
     zmlp_root_api_path = 'api/v3/assets/'
     analysis_attr = 'analysis.zvi-face-detection'
-    model_name = 'console_face_recognition'
+    model_name = 'console'
     serializer_class = UpdateFaceLabelsSerializer
     pagination_class = ZMLPFromSizePagination
 
