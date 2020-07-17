@@ -8,6 +8,7 @@ const ICON_SIZE = 20
 const CARET_SIZE = 6
 const CARET_POSITION = 14
 const TEXTBOX_POSITION = 10
+const MAX_WIDTH = 400
 
 const Toggletip = ({ openToThe, children }) => {
   return (
@@ -55,7 +56,7 @@ const Toggletip = ({ openToThe, children }) => {
           borderRadius: constants.borderRadius.small,
           padding: spacing.moderate,
           width: 'max-content',
-          maxWidth: constants.toggleTip.maxWidth,
+          maxWidth: MAX_WIDTH,
           visibility: 'hidden',
           opacity: 0,
           transition: 'all 0.5s ease 0.25s',

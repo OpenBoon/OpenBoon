@@ -79,9 +79,6 @@ const constants = {
   pageTitle: {
     height: 61,
   },
-  toggleTip: {
-    maxWidth: 400,
-  },
   form: {
     maxWidth: 470,
   },
