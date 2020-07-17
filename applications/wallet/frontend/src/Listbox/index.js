@@ -77,60 +77,66 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
           css={{
             ':focus-within': {
               outline: 'none',
-              boxShadow: 'none',
             },
-            backgroundColor: colors.structure.steel,
+            backgroundColor: 'transparent',
             border: 'none',
             padding: 0,
             borderBottomRightRadius: constants.borderRadius.small,
             borderBottomLeftRadius: constants.borderRadius.small,
             overflow: 'hidden',
-            boxShadow: constants.boxShadows.dropdown,
           }}
         >
-          <div
-            css={{
-              padding: spacing.small,
-            }}
-          >
-            <input
-              aria-label="Filter options"
-              type="search"
-              value={searchString}
-              onChange={({ target: { value: searchValue } }) =>
-                setSearchString(searchValue)
-              }
+          <div css={{ padding: '0 10px 10px 10px', margin: '0 -10px' }}>
+            <div
               css={{
-                width: '100%',
-                padding: `${spacing.moderate}px ${spacing.base}px`,
-                borderRadius: constants.borderRadius.small,
-                boxShadow: constants.boxShadows.input,
-                border: constants.borders.medium.transparent,
-                '&:focus': {
-                  border: constants.borders.keyOneMedium,
-                  outline: colors.key.one,
-                },
-              }}
-            />
-          </div>
-
-          {hasResults && (
-            <ListboxList
-              css={{
-                margin: 0,
-                overflow: 'auto',
-                maxHeight: MAX_HEIGHT,
                 backgroundColor: colors.structure.steel,
-                color: colors.structure.white,
-                fontWeight: typography.weight.medium,
-                paddingTop: spacing.base,
-                paddingBottom: spacing.base,
+                boxShadow: constants.boxShadows.dropdown,
               }}
             >
-              <ListboxOptions options={filteredOptions} nestedCount={0} />
-            </ListboxList>
-          )}
-          {!hasResults && <div css={{ padding: spacing.base }}>No Results</div>}
+              <div css={{ padding: spacing.small }}>
+                <input
+                  aria-label="Filter options"
+                  type="search"
+                  value={searchString}
+                  onChange={({ target: { value: searchValue } }) =>
+                    setSearchString(searchValue)
+                  }
+                  css={{
+                    width: '100%',
+                    padding: `${spacing.moderate}px ${spacing.base}px`,
+                    borderRadius: constants.borderRadius.small,
+                    boxShadow: constants.boxShadows.input,
+                    border: constants.borders.medium.transparent,
+                    '&:focus': {
+                      border: constants.borders.keyOneMedium,
+                      outline: colors.key.one,
+                    },
+                  }}
+                />
+              </div>
+
+              {hasResults && (
+                <ListboxList
+                  css={{
+                    margin: 0,
+                    overflow: 'auto',
+                    maxHeight: MAX_HEIGHT,
+                    backgroundColor: colors.structure.steel,
+                    color: colors.structure.white,
+                    fontWeight: typography.weight.medium,
+                    paddingTop: spacing.base,
+                    paddingBottom: spacing.base,
+                  }}
+                >
+                  <ListboxOptions options={filteredOptions} nestedCount={0} />
+                </ListboxList>
+              )}
+
+              {!hasResults && (
+                <div css={{ padding: spacing.base }}>No Results</div>
+              )}
+            </div>
+          </div>
         </ListboxPopover>
       </ListboxInput>
     </label>
