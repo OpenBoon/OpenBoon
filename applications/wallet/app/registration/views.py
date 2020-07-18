@@ -1,7 +1,9 @@
+import json
 from datetime import timedelta
 
 from django.conf import settings
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout, login, authenticate
+from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail
@@ -9,15 +11,17 @@ from django.db import transaction
 from django.http import Http404
 from django.template.loader import render_to_string
 from django.utils.timezone import now
+from google.auth.transport import requests
+from google.oauth2 import id_token
 from rest_auth.views import PasswordChangeView
-from rest_framework import status
+from rest_framework import status, viewsets, mixins
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from agreements.models import Agreement
 from agreements.views import get_ip_from_request
 from registration.models import UserRegistrationToken
-from registration.serializers import RegistrationSerializer
+from registration.serializers import RegistrationSerializer, UserSerializer, MeSerializer
 from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 
 User = get_user_model()
@@ -154,3 +158,68 @@ Response Codes:
 
 class ApiPasswordChangeView(ConvertCamelToSnakeViewSetMixin, PasswordChangeView):
     pass
+
+
+class MeView(ConvertCamelToSnakeViewSetMixin, APIView):
+    """Simple view that returns information about the current user."""
+
+    def get(self, request):
+        return Response(UserSerializer(request.user, context={'request': request}).data)
+
+    def put(self, request):
+        MeSerializer(request.user, data=request.data).save()
+        return Response(data={'detail': 'Succes. User data updated.'})
+
+
+class LogoutView(ConvertCamelToSnakeViewSetMixin, APIView):
+    """Basic logout view. Logs the user out and returns and empty json payload."""
+    def post(self, request):
+        logout(request)
+        return Response({})
+
+
+class LoginView(ConvertCamelToSnakeViewSetMixin, APIView):
+    """Login view that supports Google OAuth bearer tokens passed in the "Authorization"
+    header or a username and password sent in the JSON payload.
+
+    """
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request, *args, **kwargs):
+
+        # If the Authorization header is included attempt to authenticate using
+        # Google OAuth.
+        # The code below was taken from the Google OAuth docs -
+        # https://developers.google.com/identity/sign-in/web/backend-auth
+        if request.headers.get('Authorization'):
+            token = request.headers.get('Authorization').split()[1]
+            try:
+                # Specify the CLIENT_ID of the app that accesses the backend:
+                idinfo = id_token.verify_oauth2_token(token, requests.Request(),
+                                                      settings.GOOGLE_OAUTH_CLIENT_ID)
+                if idinfo['iss'] not in ['accounts.google.com',
+                                         'https://accounts.google.com']:
+                    raise ValueError('Wrong issuer.')
+                email = idinfo['email']
+                try:
+                    user = User.objects.get(email=email)
+                except ObjectDoesNotExist:
+                    user = User.objects.create(username=email, email=email,
+                                               first_name=idinfo.get('given_name'),
+                                               last_name=idinfo.get('family_name'))
+                login(request, user)
+            except ValueError:
+                return Response(data={'detail': 'Unauthorized: Bearer token invalid.'},
+                                status=status.HTTP_401_UNAUTHORIZED)
+
+        # Attempt to authenticate using username and password.
+        else:
+            user = authenticate(username=request.data['username'],
+                                password=request.data['password'])
+            if user:
+                login(request, user)
+            else:
+                return Response(data={'detail': 'Unauthorized: Username & password invalid.'},
+                                status=status.HTTP_401_UNAUTHORIZED)
+        return Response(UserSerializer(user, context={'request': request}).data)
