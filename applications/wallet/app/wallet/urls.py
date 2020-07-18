@@ -48,7 +48,6 @@ from wallet.views import WalletAPIRootView, LoginView, LogoutView
 router = routers.DefaultRouter()
 router.APIRootView = WalletAPIRootView
 router.register('users', wallet_views.UserViewSet, basename='user')
-router.register('groups', wallet_views.GroupViewSet, basename='group')
 router.register('projects', ProjectViewSet, basename='project')
 
 users_router = NestedSimpleRouter(router, 'users', lookup='user')

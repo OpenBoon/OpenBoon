@@ -10,19 +10,16 @@ from rest_framework.routers import APIRootView
 from rest_framework.views import APIView
 
 from wallet.mixins import ConvertCamelToSnakeViewSetMixin
-from wallet.serializers import UserSerializer, GroupSerializer
+from wallet.serializers import UserSerializer
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint that allows Users to be viewed or edited."""
     queryset = get_user_model().objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """API endpoint that allows Groups to be viewed or edited."""
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
 
 
 class LoginView(ConvertCamelToSnakeViewSetMixin, APIView):

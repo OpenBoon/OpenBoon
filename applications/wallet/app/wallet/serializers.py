@@ -34,12 +34,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return agreements[0].policies_date
 
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Group
-        fields = ['url', 'name']
-
-
 class PageSerializer(serializers.Serializer):
     """Used for serializing the pagination information for responses."""
     _from = serializers.IntegerField(required=True, label='from')
