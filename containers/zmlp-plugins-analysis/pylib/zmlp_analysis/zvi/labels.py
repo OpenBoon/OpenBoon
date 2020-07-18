@@ -9,6 +9,7 @@ from zmlpsdk.proxy import get_proxy_level_path
 
 from ..utils.keras import load_keras_image
 
+
 class ZviLabelDetectionProcessor(AssetProcessor):
     """
     Performs image classification using Resnet152 and imagenet weights.
@@ -40,4 +41,3 @@ class Resnet50ImageClassifier:
         img = load_keras_image(path)
         result = self.model.predict(resnet_v2.preprocess_input(img))
         return decode_predictions(result)[0]
-
