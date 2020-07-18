@@ -16,7 +16,7 @@ class ModelType(Enum):
     Types of models that can be Trained.
     """
 
-    ZVI_CLUSTERING = 0
+    ZVI_KNN_CLASSIFIER = 0
     """A KMeans clustering model for quickly clustering assets into general groups."""
 
     ZVI_LABEL_DETECTION = 1
