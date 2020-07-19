@@ -4,8 +4,6 @@ from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from ..utils.keras import load_keras_image
-
 
 class RekognitionLabelClassifier(AssetProcessor):
     """Get labels for an image using AWS Rekognition """
