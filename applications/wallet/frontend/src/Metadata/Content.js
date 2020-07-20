@@ -45,6 +45,8 @@ const MetadataContent = ({ projectId, assetId }) => {
       <div
         css={{
           display: 'flex',
+          // compensates for unexcepted height compression in Safari
+          minHeight: 'fit-content',
           borderBottom: constants.borders.regular.smoke,
           ':hover': {
             backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
