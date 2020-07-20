@@ -28,9 +28,11 @@ enum class ModelType(
     val classifyArgs: Map<String, Any>,
     val moduleName: String,
     val description: String,
-    val pipelineModType: String,
+    val objective: String,
     val provider: String,
-    val runOnTrainingSet: Boolean
+    val deployOnTrainingSet: Boolean,
+    val minConcepts: Int,
+    val minExamples: Int
 ) {
     ZVI_KNN_CLASSIFIER(
         "zmlp_train.knn.KnnLabelDetectionTrainer",
@@ -41,9 +43,11 @@ enum class ModelType(
         "Classify images or documents using a KNN classifier.  This type of model generates " +
             "a single prediction which can be used to quickly organize assets into general groups." +
             "The KNN classifier works with just a single image and label.",
-        ModType.LABEL_DETECTION,
+        ModelObjective.LABEL_DETECTION,
         Provider.ZORROA,
-        true
+        true,
+        1,
+        1
     ),
     ZVI_LABEL_DETECTION(
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
@@ -56,9 +60,11 @@ enum class ModelType(
         "Classify images or documents using a custom strained CNN deep learning algorithm.  This type of model" +
             "generates multiple predictions and can be trained to identify very specific features. " +
             "The label detection classifier requires at least 2 concepts with 10 labeled images each. ",
-        ModType.LABEL_DETECTION,
+        ModelObjective.LABEL_DETECTION,
         Provider.ZORROA,
-        false
+        false,
+        2,
+        10
     ),
     ZVI_FACE_RECOGNITION(
         "zmlp_train.face_rec.KnnFaceRecognitionTrainer",
@@ -67,9 +73,11 @@ enum class ModelType(
         mapOf(),
         "zvi-%s-face-recognition",
         "Relabel existing ZVI faces using a KNN Face Recognition model.",
-        ModType.FACE_RECOGNITION,
+        ModelObjective.FACE_RECOGNITION,
         Provider.ZORROA,
-        true
+        true,
+        1,
+        1
     ),
     GCP_LABEL_DETECTION(
         "zmlp_train.automl.AutoMLModelTrainer",
@@ -78,19 +86,22 @@ enum class ModelType(
         mapOf(),
         "gcp-%s-label-detection",
         "Utilize Google AutoML to train an image classifier.",
-        ModType.LABEL_DETECTION,
+        ModelObjective.LABEL_DETECTION,
         Provider.GOOGLE,
-        true
+        true,
+        2,
+        10
     );
 
     fun asMap(): Map<String, Any> {
         return mapOf(
             "name" to name,
-            "moduleName" to moduleName,
             "description" to description,
-            "mlType" to pipelineModType,
+            "objective" to objective,
             "provider" to provider,
-            "runOnTrainingSet" to runOnTrainingSet
+            "deployOnTrainingSet" to deployOnTrainingSet,
+            "minConcepts" to minConcepts,
+            "minExamples" to minExamples
         )
     }
 }

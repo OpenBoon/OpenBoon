@@ -1,7 +1,7 @@
 import os
 import logging
 
-from ..entity import Model, Job
+from ..entity import Model, Job, ModelTypeInfo
 from ..util import as_collection, as_id
 from ..training import TrainingSetDownloader
 
@@ -156,3 +156,26 @@ class ModelApp:
                 Defaults to 0.2.
         """
         return TrainingSetDownloader(self.app, model, style, dst_dir, validation_split)
+
+    def get_model_type_info(self, model_type):
+        """
+        Get additional properties concerning a specific model type.
+
+        Args:
+            model_type (ModelType): The model type Enum or name.
+
+        Returns:
+            ModelTypeInfo: Additional properties related to a model type.
+        """
+        type_name = getattr(model_type, 'name', str(model_type))
+        return ModelTypeInfo(self.app.client.get(f'/api/v3/models/_types/{type_name}'))
+
+    def get_all_model_type_info(self):
+        """
+        Get all available ModelTypeInfo options.
+
+        Returns:
+            list: A list of ModelTypeInfo
+        """
+        return [ModelTypeInfo(info) for info in self.app.client.get('/api/v3/models/_types')]
+

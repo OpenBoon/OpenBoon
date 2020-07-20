@@ -147,7 +147,7 @@ class ModelServiceImpl(
         val name = "Deploying model: ${model.name}"
         var search = req.search ?: model.deploySearch
 
-        if (!model.type.runOnTrainingSet && !req.analyzeTrainingSet) {
+        if (!model.type.deployOnTrainingSet && !req.analyzeTrainingSet) {
             search = wrapSearchToExcludeTrainingSet(model, search)
         }
 
@@ -214,7 +214,7 @@ class ModelServiceImpl(
                 "Make predictions with your custom trained '${model.name}' model.",
                 model.type.provider,
                 Category.TRAINED,
-                model.type.pipelineModType,
+                model.type.purpose,
                 listOf(FileType.Documents, FileType.Images),
                 ops
             )

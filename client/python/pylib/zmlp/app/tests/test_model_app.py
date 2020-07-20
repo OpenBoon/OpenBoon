@@ -2,7 +2,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, ModelType, Model
+from zmlp import ZmlpClient, ModelType, Model, ModelTypeInfo
 from .util import get_zmlp_app
 
 logging.basicConfig(level=logging.DEBUG)
@@ -94,3 +94,43 @@ class ModelAppTests(unittest.TestCase):
         dl = self.app.models.download_labeled_images(model, "objects_coco", "/tmp/dstest")
         assert "/tmp/dstest" == dl.dst_dir
         assert "12345" == dl.model.id
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_model_type_properties(self, get_patch):
+        raw = {
+            'name': 'ZVI_LABEL_DETECTION',
+            'description': 'a description',
+            'objective': 'label detection',
+            'provider': 'zorroa',
+            'minConcepts': 1,
+            'minExamples': 1
+        }
+        get_patch.return_value = raw
+
+        props = self.app.models.get_model_type_properties(ModelType.ZVI_LABEL_DETECTION)
+        assert props.name == "ZVI_LABEL_DETECTION"
+        assert props.description == 'a description'
+        assert props.objective == 'label detection'
+        assert props.provider == 'zorroa'
+        assert props.min_concepts == 1
+        assert props.min_examples == 1
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_model_type_properties(self, get_patch):
+        raw = {
+            'name': 'ZVI_LABEL_DETECTION',
+            'description': 'a description',
+            'objective': 'label detection',
+            'provider': 'zorroa',
+            'minConcepts': 1,
+            'minExamples': 1
+        }
+        get_patch.return_value = [raw]
+
+        props = self.app.models.get_all_model_type_info()[0]
+        assert props.name == "ZVI_LABEL_DETECTION"
+        assert props.description == 'a description'
+        assert props.objective == 'label detection'
+        assert props.provider == 'zorroa'
+        assert props.min_concepts == 1
+        assert props.min_examples == 1
