@@ -57,6 +57,11 @@ class Model(BaseEntity):
         return self._data['moduleName']
 
     @property
+    def namespace(self):
+        """The name of the Pipeline Module"""
+        return 'analysis.{}'.format(self._data['moduleName'])
+
+    @property
     def type(self):
         """The type of model"""
         return ModelType[self._data['type']]

@@ -118,32 +118,35 @@ class DocumentMixin(object):
         else:
             self.set_attr(attr, json.loads(to_json(val)))
 
-    def get_analysis(self, name):
+    def get_analysis(self, namespace):
         """
         Return the the given analysis data under the the given name.
 
         Args:
-            name (str): The pipeline module name that generated the data.
+            namespace (str): The  model namespace / pipeline module name.
 
         Returns:
             dict: An arbitrary dictionary containing predictions, content, etc.
 
         """
-        return self.get_attr("analysis.{}".format(name))
+        name = getattr(namespace, "namespace", "analysis.{}".format(namespace))
+        return self.get_attr(name)
 
-    def get_label_predictions(self, module, min_score=None):
+    def get_predicted_labels(self, namespace, min_score=None):
         """
-        Get all predictions made by the given label prediction module.
+        Get all predictions made by the given label prediction module. If no
+        label predictions are present, returns None.
 
         Args:
-            module (str):
-            min_score (float):
+            namespace (str): The analysis namespace, example 'zvi-label-detection'.
+            min_score (float): Filter results by a minimum score.
 
         Returns:
             list: A list of dictionaries containing the predictions
 
         """
-        predictions = self.get_attr(f'analysis.{module}.predictions')
+        name = getattr(namespace, "namespace", "analysis.{}".format(namespace))
+        predictions = self.get_attr(f'{name}.predictions')
         if not predictions:
             return None
         if min_score:
@@ -151,18 +154,20 @@ class DocumentMixin(object):
         else:
             return predictions
 
-    def get_label_prediction(self, module, label):
+    def get_predicted_label(self, namespace, label):
         """
-        Get a prediction made by the given label predictiom module.
+        Get a prediction made by the given label prediction module.  If no
+        label predictions are present, returns None.
 
         Args:
-            module (str): The module name that made the prediction.
+            namespace (str): The model / module name that created the prediction.
             label (mixed): A label name or integer index of a prediction.
 
         Returns:
             dict: a prediction dict with a label, score, etc.
         """
-        preds = self.get_label_predictions(module)
+
+        preds = self.get_predicted_labels(namespace)
         if not preds:
             return None
 
