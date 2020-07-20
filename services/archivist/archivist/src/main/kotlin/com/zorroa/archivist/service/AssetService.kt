@@ -53,6 +53,7 @@ import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.Response
+import org.elasticsearch.client.security.RefreshPolicy
 import org.elasticsearch.common.unit.TimeValue
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.reindex.DeleteByQueryRequest
@@ -838,6 +839,9 @@ class AssetServiceImpl : AssetService {
         // Build a bulk update.
         val rsp = rest.client.search(builder.request, RequestOptions.DEFAULT)
         val bulk = BulkRequest()
+        // Need an IMMEDIATE refresh policy or else we could end
+        // up losing labels with subsequent calls.
+        bulk.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
         for (asset in AssetIterator(rest.client, rsp, maxAssets)) {
             val removeLabels = req.remove?.get(asset.id)
