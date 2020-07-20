@@ -4,7 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Category
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
-import com.zorroa.archivist.domain.ModType
+import com.zorroa.archivist.domain.ModelObjective
 import com.zorroa.archivist.domain.OpFilter
 import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.PipelineMod
@@ -55,7 +55,7 @@ class PipelineModServiceTests : AbstractTest() {
             "test", "A test module",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(op1, op2), true
         )
@@ -77,7 +77,7 @@ class PipelineModServiceTests : AbstractTest() {
             "test", "A test module",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(), false
         )
@@ -90,7 +90,7 @@ class PipelineModServiceTests : AbstractTest() {
             "test1", "A test module",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(), false
         )
@@ -98,7 +98,7 @@ class PipelineModServiceTests : AbstractTest() {
             "test1", "A test module",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(), false
         )
@@ -112,7 +112,7 @@ class PipelineModServiceTests : AbstractTest() {
             "test", "A test module",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(), true
         )
@@ -126,7 +126,7 @@ class PipelineModServiceTests : AbstractTest() {
             "spock",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(ModOp(ModOpType.PREPEND, listOf(ProcessorRef("foo", "zmlp-plugins-foo"))))
         )

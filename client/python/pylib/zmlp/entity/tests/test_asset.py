@@ -2,7 +2,7 @@ import json
 import logging
 import unittest
 
-from zmlp import Asset, StoredFile, FileImport, FileUpload, Clip, FileTypes, Label
+from zmlp import Asset, StoredFile, FileImport, FileUpload, Clip, FileTypes, Label, Model
 from zmlp.client import to_json
 
 logging.basicConfig(level=logging.DEBUG)
@@ -184,7 +184,7 @@ class AssetTests(unittest.TestCase):
         f = asset.get_thumbnail(100)
         assert "assets/123/proxy/proxy_400x400.jpg" == f.id
 
-    def test_get_label_predictions(self):
+    def test_get_predicted_labels(self):
         asset = Asset({"id": "123"})
         asset.set_attr("analysis.zvi-label-detection.predictions", [
             {
@@ -200,10 +200,10 @@ class AssetTests(unittest.TestCase):
                 "label": "market"
             }
         ])
-        assert 3 == len(asset.get_label_predictions("zvi-label-detection"))
-        assert 1 == len(asset.get_label_predictions("zvi-label-detection", min_score=0.85))
+        assert 3 == len(asset.get_predicted_labels("zvi-label-detection"))
+        assert 1 == len(asset.get_predicted_labels("zvi-label-detection", min_score=0.85))
 
-    def test_get_label_prediction(self):
+    def test_get_predicted_label(self):
         asset = Asset({"id": "123"})
         asset.set_attr("analysis.zvi-label-detection.predictions", [
             {
@@ -216,13 +216,45 @@ class AssetTests(unittest.TestCase):
             }
         ])
         # Get by index
-        pred = asset.get_label_prediction("zvi-label-detection", 0)
+        pred = asset.get_predicted_label("zvi-label-detection", 0)
         assert "house" == pred["label"]
         assert 0.99 == pred["score"]
 
-        pred = asset.get_label_prediction("zvi-label-detection", "broom")
+        pred = asset.get_predicted_label("zvi-label-detection", "broom")
         assert "broom" == pred["label"]
         assert 0.5 == pred["score"]
+
+    def test_get_analysis(self):
+        asset = Asset({"id": "123"})
+        asset.set_attr("analysis.zvi-label-detection.predictions", [
+            {
+                "score": 0.99,
+                "label": "house"
+            },
+            {
+                "score": 0.5,
+                "label": "broom"
+            }
+        ])
+        analysis = asset.get_analysis("zvi-label-detection")
+        assert "house" == analysis['predictions'][0]['label']
+
+    def test_get_analysis_by_model(self):
+        asset = Asset({"id": "123"})
+        asset.set_attr("analysis.dogs.predictions", [
+            {
+                "score": 0.99,
+                "label": "house"
+            },
+            {
+                "score": 0.5,
+                "label": "broom"
+            }
+        ])
+
+        model = Model({"id": "123", "moduleName": "dogs"})
+        analysis = asset.get_analysis(model)
+        assert "house" == analysis['predictions'][0]['label']
 
 
 class FileImportTests(unittest.TestCase):

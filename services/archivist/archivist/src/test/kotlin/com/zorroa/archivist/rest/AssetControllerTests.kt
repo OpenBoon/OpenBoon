@@ -269,7 +269,8 @@ class AssetControllerTests : MockMvcTest() {
                 .content(Json.serialize(req))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.updated", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.equalTo(0)))
             .andReturn()
     }
 
@@ -293,7 +294,8 @@ class AssetControllerTests : MockMvcTest() {
                 .content(Json.serialize(req))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.updated", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.equalTo(0)))
             .andReturn()
 
         val req2 = UpdateAssetLabelsRequest(
@@ -310,7 +312,8 @@ class AssetControllerTests : MockMvcTest() {
                 .content(Json.serialize(req2))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.updated", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.equalTo(0)))
             .andReturn()
 
         authenticate()

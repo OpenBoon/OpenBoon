@@ -4,7 +4,7 @@ import tempfile
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow.keras.applications import resnet_v2 as resnet_v2
-from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
+from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
@@ -33,13 +33,13 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
                               toolTip="Automatically deploy the model onto assets."))
 
         # These can be set optionally.
-        self.add_arg(Argument("epochs", "int", required=True, default=12,
+        self.add_arg(Argument("epochs", "int", required=True, default=10,
                               toolTip="The number of training epochs"))
-        self.add_arg(Argument("training_set_split", "int", required=True, default=3,
+        self.add_arg(Argument("validation_split", "int", required=True, default=0.2,
                               toolTip="The number of training images vs test images"))
         self.add_arg(Argument("fine_tune_at_layer", "int", required=True, default=100,
                               toolTip="The layer to start find-tuning at."))
-        self.add_arg(Argument("fine_tune_epochs", "int", required=True, default=7,
+        self.add_arg(Argument("fine_tune_epochs", "int", required=True, default=10,
                               toolTip="The number of fine-tuning epochs."))
 
         self.app = zmlp.app_from_env()
@@ -56,9 +56,8 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
     def process(self, frame):
         download_labeled_images(self.app_model,
-                                "labels_std",
-                                self.base_dir,
-                                self.arg_value('training_set_split'))
+                                "labels-standard",
+                                self.base_dir)
 
         self.reactor.emit_status("Training model: {}".format(self.app_model.name))
         train_gen, test_gen = self.build_generators()
@@ -96,10 +95,11 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         plt.ylim([0, 1.0])
         plt.title('Training and Validation Loss')
         plt.xlabel('epoch')
-        fname = f'/tmp/{name}.png'
-        plt.savefig(fname)
 
-        file_storage.projects.store_file(fname, self.app_model, "model")
+        with tempfile.NamedTemporaryFile(suffix=".png") as fp:
+            plt.savefig(fp.name)
+            file_storage.projects.store_file(fp.name,
+                                             self.app_model, "model", rename=f'{name}.png')
 
     def publish_model(self, labels):
         """
@@ -148,9 +148,11 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         self.model = tf.keras.models.Sequential([
             base_model,
-            tf.keras.layers.Conv2D(32, 3, activation='relu'),
-            tf.keras.layers.Dropout(0.2),
-            GlobalAveragePooling2D(),
+            Conv2D(32, 3, activation='relu'),
+            MaxPooling2D(pool_size=(2, 2)),
+            Flatten(),
+            Dropout(0.5),
+            Dense(256, activation="relu"),
             Dense(len(self.labels), activation='softmax')
         ])
 
@@ -208,7 +210,11 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         Returns:
             tuple: a tuple of ImageDataGenerators, 1st one is train, other is tet.
         """
-        train_datagen = ImageDataGenerator(
+        val_split = self.arg_value('validation_split')
+        batch_size = 8
+        data_dir = '{}/train/'.format(self.base_dir)
+
+        train_gen = ImageDataGenerator(
             rescale=1. / 255,
             rotation_range=40,
             width_shift_range=0.2,
@@ -216,27 +222,32 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             shear_range=0.2,
             zoom_range=0.2,
             horizontal_flip=True,
-            fill_mode='nearest'
+            fill_mode='nearest',
+            validation_split=val_split
         )
 
-        test_datagen = ImageDataGenerator(rescale=1. / 255.)
-
-        # increasing batch size increases memory usage.
-        train_generator = train_datagen.flow_from_directory(
-            '{}/set_train/'.format(self.base_dir),
-            batch_size=8,
+        train_ds = train_gen.flow_from_directory(
+            data_dir,
+            batch_size=batch_size,
             class_mode='categorical',
-            target_size=self.img_size
+            target_size=self.img_size,
+            subset='training'
         )
 
-        test_generator = test_datagen.flow_from_directory(
-            '{}/set_validate/'.format(self.base_dir),
-            batch_size=8,
+        val_gen = ImageDataGenerator(
+            rescale=1. / 255.,
+            validation_split=val_split
+        )
+
+        val_ds = val_gen.flow_from_directory(
+            data_dir,
+            batch_size=batch_size,
             class_mode='categorical',
-            target_size=self.img_size
+            target_size=self.img_size,
+            subset='validation'
         )
 
-        return train_generator, test_generator
+        return train_ds, val_ds
 
     @staticmethod
     def get_base_model():

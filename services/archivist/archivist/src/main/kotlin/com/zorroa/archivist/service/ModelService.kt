@@ -91,7 +91,7 @@ class ModelServiceImpl(
             spec.name,
             moduleName,
             locator.getFileId(),
-            "Train ${spec.name} / $moduleName",
+            "Training model ${spec.type.name} : ${spec.name}",
             false,
             spec.deploySearch, // VALIDATE THIS PARSES.
             time,
@@ -151,7 +151,7 @@ class ModelServiceImpl(
         val name = "Deploying model: ${model.name}"
         var search = req.search ?: model.deploySearch
 
-        if (!model.type.runOnTrainingSet && !req.analyzeTrainingSet) {
+        if (!model.type.deployOnTrainingSet && !req.analyzeTrainingSet) {
             search = wrapSearchToExcludeTrainingSet(model, search)
         }
 
@@ -218,7 +218,7 @@ class ModelServiceImpl(
                 "Make predictions with your custom trained '${model.name}' model.",
                 model.type.provider,
                 Category.TRAINED,
-                model.type.pipelineModType,
+                model.type.objective,
                 listOf(FileType.Documents, FileType.Images),
                 ops
             )
