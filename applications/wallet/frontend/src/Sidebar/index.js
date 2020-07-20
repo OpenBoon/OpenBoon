@@ -4,9 +4,12 @@ import Router from 'next/router'
 
 import { colors, spacing, zIndex, constants } from '../Styles'
 
+import Feature from '../Feature'
+
 import DashboardSvg from '../Icons/dashboard.svg'
 import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'
+import HelpSvg from '../Icons/help.svg'
 import VisualizerSvg from '../Icons/visualizer.svg'
 import KeySvg from '../Icons/key.svg'
 import UsersSvg from '../Icons/users.svg'
@@ -75,6 +78,13 @@ const Sidebar = forwardRef(
               <JobQueueSvg height={ICON_SIZE} />
               Job Queue
             </SidebarLink>
+
+            <Feature flag="asset-labeling" envs={[]}>
+              <SidebarLink projectId={projectId} href="/[projectId]/models">
+                <HelpSvg height={ICON_SIZE} />
+                Custom Models
+              </SidebarLink>
+            </Feature>
 
             <SidebarLink projectId={projectId} href="/[projectId]/visualizer">
               <VisualizerSvg height={ICON_SIZE} />

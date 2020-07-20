@@ -49,7 +49,7 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.moduleName",
-                    CoreMatchers.equalTo("zvi-test-label-detection")
+                    CoreMatchers.equalTo("test")
                 )
             )
             .andReturn()
