@@ -34,7 +34,6 @@ exports[`<DataVisualization /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
 .emotion-3 {
@@ -45,7 +44,6 @@ exports[`<DataVisualization /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-right: 1px;
 }
 
 .emotion-1 {
@@ -483,7 +481,6 @@ exports[`<DataVisualization /> should render properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
 .emotion-3 {
@@ -494,7 +491,6 @@ exports[`<DataVisualization /> should render properly 2`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-right: 1px;
 }
 
 .emotion-1 {
@@ -888,7 +884,6 @@ exports[`<DataVisualization /> should render properly 3`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
 .emotion-3 {
@@ -899,7 +894,6 @@ exports[`<DataVisualization /> should render properly 3`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-right: 1px;
 }
 
 .emotion-1 {
@@ -1359,7 +1353,6 @@ exports[`<DataVisualization /> should render properly 4`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
 .emotion-3 {
@@ -1370,7 +1363,6 @@ exports[`<DataVisualization /> should render properly 4`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-right: 1px;
 }
 
 .emotion-1 {

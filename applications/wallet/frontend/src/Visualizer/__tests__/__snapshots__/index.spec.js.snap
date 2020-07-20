@@ -34,7 +34,6 @@ exports[`<Visualizer /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
 .emotion-3 {
@@ -45,7 +44,6 @@ exports[`<Visualizer /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-right: 1px;
 }
 
 .emotion-1 {
@@ -274,25 +272,6 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-18 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
-}
-
-.emotion-17 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 1px;
-}
-
 .emotion-13 {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
@@ -452,10 +431,10 @@ exports[`<Visualizer /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-18"
+      className="emotion-4"
     >
       <div
-        className="emotion-17"
+        className="emotion-3"
       >
         <button
           aria-label="Asset Metadata"
@@ -561,7 +540,6 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
 .emotion-3 {
@@ -572,7 +550,6 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-right: 1px;
 }
 
 .emotion-1 {
@@ -801,25 +778,6 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   color: #808080;
 }
 
-.emotion-18 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
-}
-
-.emotion-17 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 1px;
-}
-
 .emotion-13 {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
@@ -979,10 +937,10 @@ exports[`<Visualizer /> should render selected asset 1`] = `
       </div>
     </div>
     <div
-      className="emotion-18"
+      className="emotion-4"
     >
       <div
-        className="emotion-17"
+        className="emotion-3"
       >
         <button
           aria-label="Asset Metadata"

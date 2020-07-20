@@ -150,7 +150,6 @@ exports[`<Asset /> should handle no query 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
 .emotion-8 {
@@ -161,7 +160,6 @@ exports[`<Asset /> should handle no query 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-left: 1px;
 }
 
 .emotion-5 {
@@ -471,7 +469,6 @@ exports[`<Asset /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
 .emotion-8 {
@@ -482,7 +479,6 @@ exports[`<Asset /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-left: 1px;
 }
 
 .emotion-5 {
@@ -785,7 +781,6 @@ exports[`<Asset /> should render videos properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
 .emotion-8 {
@@ -796,7 +791,6 @@ exports[`<Asset /> should render videos properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-left: 1px;
 }
 
 .emotion-5 {
