@@ -214,7 +214,7 @@ class ModelServiceImpl(
                 "Make predictions with your custom trained '${model.name}' model.",
                 model.type.provider,
                 Category.TRAINED,
-                model.type.purpose,
+                model.type.objective,
                 listOf(FileType.Documents, FileType.Images),
                 ops
             )
