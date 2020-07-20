@@ -81,6 +81,7 @@ const AssetsThumbnail = ({
             alignItems: 'center',
             background: colors.structure.mattGrey,
             overflow: 'hidden',
+            borderRadius: 0,
           }}
         >
           {videoSrc ? (
@@ -116,7 +117,7 @@ const AssetsThumbnail = ({
           right: spacing.small,
           padding: spacing.small,
           backgroundColor: `${colors.structure.smoke}${constants.opacity.hexHalf}`,
-          ':hover,  &.focus-visible:focus': {
+          ':hover, &.focus-visible:focus': {
             opacity: 1,
             backgroundColor: colors.structure.smoke,
           },
@@ -151,7 +152,7 @@ const AssetsThumbnail = ({
             right: spacing.small,
             padding: spacing.small,
             backgroundColor: `${colors.structure.smoke}${constants.opacity.hexHalf}`,
-            ':hover,  &.focus-visible:focus': {
+            ':hover, &.focus-visible:focus': {
               opacity: 1,
               backgroundColor: colors.structure.smoke,
             },
@@ -169,8 +170,7 @@ const AssetsThumbnail = ({
             left: spacing.small,
             padding: spacing.mini,
             color: colors.structure.black,
-            // Append 80 for half opacity without affecting text
-            backgroundColor: `${colors.structure.white}80`,
+            backgroundColor: `${colors.structure.white}${constants.opacity.hexHalf}`,
           }}
         >
           {formatSeconds({ seconds: videoLength })}

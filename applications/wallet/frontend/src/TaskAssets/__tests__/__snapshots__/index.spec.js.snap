@@ -134,6 +134,7 @@ exports[`<TaskAssets /> should render properly 1`] = `
   align-items: center;
   background: #2e2e2e;
   overflow: hidden;
+  border-radius: 0;
 }
 
 .emotion-4:hover {
@@ -308,6 +309,8 @@ exports[`<TaskAssets /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -320,8 +323,18 @@ exports[`<TaskAssets /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-10:hover {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-11[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-59 {
@@ -523,7 +536,6 @@ exports[`<TaskAssets /> should render properly 1`] = `
           >
             <svg
               className="emotion-10"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -603,7 +615,6 @@ exports[`<TaskAssets /> should render properly 1`] = `
           >
             <svg
               className="emotion-10"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -683,7 +694,6 @@ exports[`<TaskAssets /> should render properly 1`] = `
           >
             <svg
               className="emotion-10"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -763,7 +773,6 @@ exports[`<TaskAssets /> should render properly 1`] = `
           >
             <svg
               className="emotion-10"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />
@@ -857,7 +866,6 @@ exports[`<TaskAssets /> should render properly 1`] = `
           >
             <svg
               className="emotion-10"
-              color="#808080"
               data-file-name="chevron.svg"
               height={20}
             />

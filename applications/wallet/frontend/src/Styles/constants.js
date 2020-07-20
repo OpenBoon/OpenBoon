@@ -36,7 +36,7 @@ const borders = {
   keyOneRegular: `1px solid ${colors.key.one}`,
   keyOneMedium: `2px solid ${colors.key.one}`,
   keyOneLarge: `4px solid ${colors.key.one}`,
-  error: `2px solid ${colors.signal.warning.base}`,
+  error: `1px solid ${colors.signal.warning.base}`,
   assetSelected: `4px solid ${colors.signal.electricBlue.base}`,
   ...newBorders,
 }

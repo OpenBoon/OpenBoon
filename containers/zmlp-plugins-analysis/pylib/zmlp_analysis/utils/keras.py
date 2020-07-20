@@ -29,7 +29,7 @@ def load_keras_image(path, size=(224, 224)):
         grayscale=False,
         color_mode="rgb",
         target_size=size,
-        interpolation="nearest",
+        interpolation="lanczos",
     )
 
     numpy_image = img_to_array(img)

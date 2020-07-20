@@ -35,7 +35,7 @@ Array [
   >
     content
   </div>,
-  .emotion-2 {
+  .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -65,47 +65,54 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
-.emotion-2:hover {
+.emotion-1:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2:focus svg {
-  opacity: 1;
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1 svg {
   opacity: 0;
 }
 
-.emotion-1:hover {
-  color: #ffffff;
-}
-
-.emotion-5 {
+.emotion-4 {
   padding-bottom: 8px;
 }
 
-.emotion-4 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-4:hover {
+.emotion-3:hover {
   background-color: #027aff38;
 }
 
-.emotion-4:hover svg {
+.emotion-3:hover svg {
   opacity: 1;
 }
 
@@ -116,17 +123,17 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-3 {
+.emotion-2 {
   min-width: 36px;
   padding-top: 12px;
   padding-right: 16px;
 }
 
 <div
-    className="emotion-5"
+    className="emotion-4"
   >
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <div
         className="emotion-0"
@@ -134,17 +141,15 @@ Array [
         some result
       </div>
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <button
-          className="emotion-2"
+          className="emotion-1"
           onClick={[Function]}
           title="Copy to Clipboard"
           type="button"
         >
           <svg
-            className="emotion-1"
-            color="#808080"
             data-file-name="copy.svg"
             height={20}
           />
@@ -541,7 +546,7 @@ Array [
       </tbody>
     </table>
   </div>,
-  .emotion-2 {
+  .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -571,45 +576,52 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
-.emotion-2:hover {
+.emotion-1:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2:focus svg {
-  opacity: 1;
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1 svg {
   opacity: 0;
 }
 
-.emotion-1:hover {
-  color: #ffffff;
-}
-
-.emotion-6 {
+.emotion-5 {
   padding: 16px;
   padding-top: 0;
 }
 
-.emotion-6:hover {
+.emotion-5:hover {
   background-color: #027aff38;
 }
 
-.emotion-6:hover svg {
+.emotion-5:hover svg {
   opacity: 1;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -627,7 +639,7 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-4 {
+.emotion-3 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -640,10 +652,10 @@ Array [
 }
 
 <div
-    className="emotion-6"
+    className="emotion-5"
   >
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <div
         className="emotion-0"
@@ -651,14 +663,12 @@ Array [
         tags
       </div>
       <button
-        className="emotion-2"
+        className="emotion-1"
         onClick={[Function]}
         title="Copy to Clipboard"
         type="button"
       >
         <svg
-          className="emotion-1"
-          color="#808080"
           data-file-name="copy.svg"
           height={20}
         />
@@ -666,12 +676,12 @@ Array [
     </div>
     <div>
       <span
-        className="emotion-4"
+        className="emotion-3"
       >
         frog
       </span>
       <span
-        className="emotion-4"
+        className="emotion-3"
       >
         banana
       </span>
@@ -718,26 +728,26 @@ Array [
 `;
 
 exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
-.emotion-5 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5:not(:first-of-type) {
+.emotion-4:not(:first-of-type) {
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-5:hover {
+.emotion-4:hover {
   background-color: #027aff38;
 }
 
-.emotion-5:hover div {
+.emotion-4:hover div {
   color: #ffffff;
 }
 
-.emotion-5:hover div svg {
+.emotion-4:hover div svg {
   opacity: 1;
 }
 
@@ -752,14 +762,14 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   flex: 1;
 }
 
-.emotion-4 {
+.emotion-3 {
   width: 36px;
   padding-top: 12px;
   padding-left: 8px;
   padding-right: 16px;
 }
 
-.emotion-3 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -789,29 +799,36 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-3:focus svg {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-2:hover svg,
+.emotion-2.focus-visible:focus svg {
   opacity: 1;
-  color: #ffffff;
 }
 
-.emotion-2 {
+.emotion-2[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-2 svg {
   opacity: 0;
-}
-
-.emotion-2:hover {
-  color: #ffffff;
 }
 
 .emotion-1 {
@@ -827,7 +844,7 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 }
 
 <div
-  className="emotion-5"
+  className="emotion-4"
 >
   <div
     className="emotion-0"
@@ -845,17 +862,15 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
     Lorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar PlumLorem Ipsum Cupcake Sugar Plum...
   </div>
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <button
-      className="emotion-3"
+      className="emotion-2"
       onClick={[Function]}
       title="Copy to Clipboard"
       type="button"
     >
       <svg
-        className="emotion-2"
-        color="#808080"
         data-file-name="copy.svg"
         height={20}
       />
@@ -865,26 +880,26 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 `;
 
 exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
-.emotion-5 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5:not(:first-of-type) {
+.emotion-4:not(:first-of-type) {
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-5:hover {
+.emotion-4:hover {
   background-color: #027aff38;
 }
 
-.emotion-5:hover div {
+.emotion-4:hover div {
   color: #ffffff;
 }
 
-.emotion-5:hover div svg {
+.emotion-4:hover div svg {
   opacity: 1;
 }
 
@@ -911,14 +926,14 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   word-break: break-all;
 }
 
-.emotion-4 {
+.emotion-3 {
   width: 36px;
   padding-top: 12px;
   padding-left: 8px;
   padding-right: 16px;
 }
 
-.emotion-3 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -948,33 +963,40 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-3:focus svg {
-  opacity: 1;
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-2 {
+.emotion-2:hover svg,
+.emotion-2.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-2 svg {
   opacity: 0;
 }
 
-.emotion-2:hover {
-  color: #ffffff;
-}
-
 <div
-  className="emotion-5"
+  className="emotion-4"
 >
   <div
     className="emotion-0"
@@ -992,17 +1014,15 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
     Lorem Ipsum Cupcake Sugar Plum
   </div>
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <button
-      className="emotion-3"
+      className="emotion-2"
       onClick={[Function]}
       title="Copy to Clipboard"
       type="button"
     >
       <svg
-        className="emotion-2"
-        color="#808080"
         data-file-name="copy.svg"
         height={20}
       />
@@ -1046,7 +1066,7 @@ Array [
   >
     simhash
   </div>,
-  .emotion-2 {
+  .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1076,47 +1096,54 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
-.emotion-2:hover {
+.emotion-1:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2:focus svg {
-  opacity: 1;
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1 svg {
   opacity: 0;
 }
 
-.emotion-1:hover {
-  color: #ffffff;
-}
-
-.emotion-33 {
+.emotion-32 {
   padding-bottom: 8px;
 }
 
-.emotion-4 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-4:hover {
+.emotion-3:hover {
   background-color: #027aff38;
 }
 
-.emotion-4:hover svg {
+.emotion-3:hover svg {
   opacity: 1;
 }
 
@@ -1130,19 +1157,19 @@ Array [
   text-overflow: ellipsis;
 }
 
-.emotion-3 {
+.emotion-2 {
   min-width: 36px;
   padding-top: 12px;
   padding-right: 16px;
 }
 
-.emotion-32 {
+.emotion-31 {
   padding: 16px;
   padding-top: 4px;
   padding-bottom: 12px;
 }
 
-.emotion-5 {
+.emotion-4 {
   border-top: 1px solid #3b3b3b;
   padding-top: 16px;
   padding-bottom: 12px;
@@ -1151,7 +1178,7 @@ Array [
   color: #808080;
 }
 
-.emotion-31 {
+.emotion-30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1162,33 +1189,33 @@ Array [
   overflow-x: scroll;
 }
 
-.emotion-31::-webkit-scrollbar {
+.emotion-30::-webkit-scrollbar {
   display: none;
 }
 
-.emotion-11 {
+.emotion-10 {
   width: 100px;
   min-width: 100px;
   height: 100px;
 }
 
-.emotion-10 {
+.emotion-9 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
 }
 
-.emotion-10:hover {
+.emotion-9:hover {
   border: 4px solid #ffffff;
 }
 
-.emotion-10:hover a,
-.emotion-10:hover button {
+.emotion-9:hover a,
+.emotion-9:hover button {
   opacity: 1;
 }
 
-.emotion-7 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1235,24 +1262,25 @@ Array [
   align-items: center;
   background: #2e2e2e;
   overflow: hidden;
+  border-radius: 0;
 }
 
-.emotion-7:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-5 {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.emotion-8 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1291,22 +1319,22 @@ Array [
   background-color: #3b3b3b80;
 }
 
-.emotion-8:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   opacity: 1;
   background-color: #3b3b3b;
 }
 
-.emotion-9 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1345,22 +1373,22 @@ Array [
   background-color: #3b3b3b80;
 }
 
-.emotion-9:hover {
+.emotion-8:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-9[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-9:hover,
-.emotion-9.focus-visible:focus {
+.emotion-8:hover,
+.emotion-8.focus-visible:focus {
   opacity: 1;
   background-color: #3b3b3b;
 }
 
-.emotion-28 {
+.emotion-27 {
   position: absolute;
   bottom: 4px;
   left: 4px;
@@ -1370,10 +1398,10 @@ Array [
 }
 
 <div
-    className="emotion-33"
+    className="emotion-32"
   >
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <div
         className="emotion-0"
@@ -1382,17 +1410,15 @@ Array [
         FBIJPPAIPBPPAPPPBDPLPICAHBDIDPPAAHPPFPBHIPBBLKBOHJJEPAPPBCABCDAPCPBHCCCCHIKEDPEFNPPPPGOPAHKBIAKPFEPFPGGJPPPCPPFPPPLFLBCAKOPNFPBFGPPFCMIBPJJMCGPDKPKDMPPOPODJDGMBDPPAFBJIPBPBCGEFHMBBBPCPIAEKMGPPPPPEBPIGEDAOHDPCPCPAMPALPJIDPGPGDPPHODHPPPPJAGPAPPPNKKPDPPDPPPJPPLPLPPFGBFPPPPMJPPGBHEPPAKPPPPPBLMMBMDPHJPDPPBCALMHOHPPPEPIIKIPMKPDJGEPHPPDPPIDBBCPPCPPIDJLPCPPDFFANJPPDCPFPMAPPPPPAPMKPPCFPABPBGBHPCFPPPAJPDBDNPPFMHMFMBLAPFHFOLJPJAPJKMDNHBPABEGIJPCPFEPJPIPPLPAPGILPEPPHFAGPPPMDFCAPPAPKNDKPPLGJEDNDHGLCPDIPJBPAKAFOPCKIIPEPFIFAPJPCLFJOPLAPPPHPIPCNCHHIPAPDNPALEPGDEGCFCEPLHPJJPENEPFDPGMAKABLOIPGMPCPJPABPPGPFDKJHAFGPPPDEAODPPPPPPJPBPBALIOCMPCLPPJFOPMCDGBCDPHFGDKPJPOAPPCPPCAMPJKOHEPGHCPOGOBHPADPKPEDPAPPAGNPNPKPAKGPCPDPPIKGPPHBKGKGOPICACPPFPPAADPEJIKBIEPPGPPJIGPHMLOGKAPPPLALJHNNPPGAPPAAOPPEBPKBAGBPEPCPEHPPPIPFPPEGJBKDPHPPIPMPBDAEBPJIGCPOOPKOLPFHDHOCAMLCNAPDNGMEHDPPPPAPPEPCCPIGBPPPAPAIPPPONPPPPPPAONICPOPMEBJPMPBEPCNAIECAEBPPPHHINPEABPPPEOEIAAEPPLPNPAPFIPBPPBGHPPCPJAPAPGAHPPLODAPPPBPCEAEPBDDGKGPDFLDPPCPHPPNDPEABPPPDEKAPPPPPPICADCPFFPPBEPDEPPNHMPOPMEGCNFBEFAIFPCFHPEFPPPNJBAEABKPCPJCPDFIPCPGCENMKJECELHPAPPJCNPAEHHBFAEPPAACIPBAPFBDNPAEEIPPAEMMBBPKBENKPFLPDBPPELJPBAICPPBEPNFDGPHDPJJPAHLDNBAPPPJPMLKBPNBPCKKJFLOMHIOJNPPPPPBBBBMPAAOOBPEOKGPCKKPAPFPDPPLPCICODPKBDGMPPPFBPKEBGIPDBACBPEPJPEDJPPEPPPDBPPIIOPFPCFKLDCPOOLLPCHPGLPHFPPKDPNPPPAJJPPPJDIPPFPBPHPKBEBIDDEFOPPPOHMFPBBPPPKPACPAOPEPPFJPNFBHPGDGADPEHBPKPHLEOADBJPPIIPPGBCABAPPGPIPDPNBPAGLKPFCEHIAIPPPPFJKBPCNIGGBPPPBBNPKDMIPLPHPIPLGCPFBPLMNLPIIPAIPELPGPHPPIPPJEPPAAMPMKPGPCBPAPPMPABAHBPFAODNOEKCOGPPGKDHBCPCJEPBIALBDJPPAEPAPGPCPPLADHBGPPLNGHAGPAEPPEHPOPDGPKAMGPPDGIBPFJBDPIBPJPPPCPDPKIFDHCDPGFPMGHPCBPIJMPFDCPLJBEPPPPDKLAJMPBAPIBPBGMICGCDGBNPOAAEJMKPPHPKPPAHMMPKKLPEHPPNKPEPDLPHBPCCPPPHPNPPJBDBCPFCPOCPPEPHNEPNEPKPAAPPPAFFPPAFBEPBHMDCDIPPPFPGEAFBPGGIKBLPFCPGHOJJPEOAMBACCCGAEEPPPPDPPBPPOICPLEEAPABPCPPKPPBPPENDPCHABIDMPPPPPPPIOOCFPPPBHCKEJNGEPEPPGODFPPDKFFNPBEPFIPPCEDOPBPDEOKDOLDDPHCAICAPLCPHPDPPIDHPPLPLJAPECPHCIPAPPHPPPBPCPDPCJIAHMPDFOJAPHPPOGABBPCNPKNPEFHCPPIPFPMPCAPPFALPBPHADPEPAKPECDCPOGPPEPGPOPKMPHPPG
       </div>
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <button
-          className="emotion-2"
+          className="emotion-1"
           onClick={[Function]}
           title="Copy to Clipboard"
           type="button"
         >
           <svg
-            className="emotion-1"
-            color="#808080"
             data-file-name="copy.svg"
             height={20}
           />
@@ -1400,37 +1426,37 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-32"
+      className="emotion-31"
     >
       <div
-        className="emotion-5"
+        className="emotion-4"
       >
         Similar Images
       </div>
       <div
-        className="emotion-31"
+        className="emotion-30"
       >
         <div
-          className="emotion-11"
+          className="emotion-10"
         >
           <div
-            className="emotion-10"
+            className="emotion-9"
           >
             <a
-              className="emotion-7"
+              className="emotion-6"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="irr.pdf"
-                className="emotion-6"
+                className="emotion-5"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-8"
+              className="emotion-7"
               onClick={[Function]}
               type="button"
             >
@@ -1441,7 +1467,7 @@ Array [
               />
             </button>
             <a
-              className="emotion-9"
+              className="emotion-8"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1455,26 +1481,26 @@ Array [
           </div>
         </div>
         <div
-          className="emotion-11"
+          className="emotion-10"
         >
           <div
-            className="emotion-10"
+            className="emotion-9"
           >
             <a
-              className="emotion-7"
+              className="emotion-6"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="irr.pdf"
-                className="emotion-6"
+                className="emotion-5"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-8"
+              className="emotion-7"
               onClick={[Function]}
               type="button"
             >
@@ -1485,7 +1511,7 @@ Array [
               />
             </button>
             <a
-              className="emotion-9"
+              className="emotion-8"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo?id=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1499,26 +1525,26 @@ Array [
           </div>
         </div>
         <div
-          className="emotion-11"
+          className="emotion-10"
         >
           <div
-            className="emotion-10"
+            className="emotion-9"
           >
             <a
-              className="emotion-7"
+              className="emotion-6"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="irr.pdf"
-                className="emotion-6"
+                className="emotion-5"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-8"
+              className="emotion-7"
               onClick={[Function]}
               type="button"
             >
@@ -1529,7 +1555,7 @@ Array [
               />
             </button>
             <a
-              className="emotion-9"
+              className="emotion-8"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r?id=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1543,19 +1569,19 @@ Array [
           </div>
         </div>
         <div
-          className="emotion-11"
+          className="emotion-10"
         >
           <div
-            className="emotion-10"
+            className="emotion-9"
           >
             <a
-              className="emotion-7"
+              className="emotion-6"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <video
-                className="emotion-6"
+                className="emotion-5"
                 controlsList="nodownload nofullscreen noremoteplayback"
                 disablePictureInPicture={true}
                 muted={true}
@@ -1571,7 +1597,7 @@ Array [
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-8"
+              className="emotion-7"
               onClick={[Function]}
               type="button"
             >
@@ -1582,7 +1608,7 @@ Array [
               />
             </button>
             <a
-              className="emotion-9"
+              className="emotion-8"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -1594,7 +1620,7 @@ Array [
               />
             </a>
             <div
-              className="emotion-28"
+              className="emotion-27"
             >
               2:24
             </div>
@@ -1641,7 +1667,7 @@ Array [
   >
     simhash
   </div>,
-  .emotion-2 {
+  .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1671,47 +1697,54 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
-.emotion-2:hover {
+.emotion-1:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2:focus svg {
-  opacity: 1;
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1 {
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1 svg {
   opacity: 0;
 }
 
-.emotion-1:hover {
-  color: #ffffff;
-}
-
-.emotion-5 {
+.emotion-4 {
   padding-bottom: 8px;
 }
 
-.emotion-4 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-4:hover {
+.emotion-3:hover {
   background-color: #027aff38;
 }
 
-.emotion-4:hover svg {
+.emotion-3:hover svg {
   opacity: 1;
 }
 
@@ -1725,17 +1758,17 @@ Array [
   text-overflow: ellipsis;
 }
 
-.emotion-3 {
+.emotion-2 {
   min-width: 36px;
   padding-top: 12px;
   padding-right: 16px;
 }
 
 <div
-    className="emotion-5"
+    className="emotion-4"
   >
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <div
         className="emotion-0"
@@ -1744,17 +1777,15 @@ Array [
         FBIJPPAIPBPPAPPPBDPLPICAHBDIDPPAAHPPFPBHIPBBLKBOHJJEPAPPBCABCDAPCPBHCCCCHIKEDPEFNPPPPGOPAHKBIAKPFEPFPGGJPPPCPPFPPPLFLBCAKOPNFPBFGPPFCMIBPJJMCGPDKPKDMPPOPODJDGMBDPPAFBJIPBPBCGEFHMBBBPCPIAEKMGPPPPPEBPIGEDAOHDPCPCPAMPALPJIDPGPGDPPHODHPPPPJAGPAPPPNKKPDPPDPPPJPPLPLPPFGBFPPPPMJPPGBHEPPAKPPPPPBLMMBMDPHJPDPPBCALMHOHPPPEPIIKIPMKPDJGEPHPPDPPIDBBCPPCPPIDJLPCPPDFFANJPPDCPFPMAPPPPPAPMKPPCFPABPBGBHPCFPPPAJPDBDNPPFMHMFMBLAPFHFOLJPJAPJKMDNHBPABEGIJPCPFEPJPIPPLPAPGILPEPPHFAGPPPMDFCAPPAPKNDKPPLGJEDNDHGLCPDIPJBPAKAFOPCKIIPEPFIFAPJPCLFJOPLAPPPHPIPCNCHHIPAPDNPALEPGDEGCFCEPLHPJJPENEPFDPGMAKABLOIPGMPCPJPABPPGPFDKJHAFGPPPDEAODPPPPPPJPBPBALIOCMPCLPPJFOPMCDGBCDPHFGDKPJPOAPPCPPCAMPJKOHEPGHCPOGOBHPADPKPEDPAPPAGNPNPKPAKGPCPDPPIKGPPHBKGKGOPICACPPFPPAADPEJIKBIEPPGPPJIGPHMLOGKAPPPLALJHNNPPGAPPAAOPPEBPKBAGBPEPCPEHPPPIPFPPEGJBKDPHPPIPMPBDAEBPJIGCPOOPKOLPFHDHOCAMLCNAPDNGMEHDPPPPAPPEPCCPIGBPPPAPAIPPPONPPPPPPAONICPOPMEBJPMPBEPCNAIECAEBPPPHHINPEABPPPEOEIAAEPPLPNPAPFIPBPPBGHPPCPJAPAPGAHPPLODAPPPBPCEAEPBDDGKGPDFLDPPCPHPPNDPEABPPPDEKAPPPPPPICADCPFFPPBEPDEPPNHMPOPMEGCNFBEFAIFPCFHPEFPPPNJBAEABKPCPJCPDFIPCPGCENMKJECELHPAPPJCNPAEHHBFAEPPAACIPBAPFBDNPAEEIPPAEMMBBPKBENKPFLPDBPPELJPBAICPPBEPNFDGPHDPJJPAHLDNBAPPPJPMLKBPNBPCKKJFLOMHIOJNPPPPPBBBBMPAAOOBPEOKGPCKKPAPFPDPPLPCICODPKBDGMPPPFBPKEBGIPDBACBPEPJPEDJPPEPPPDBPPIIOPFPCFKLDCPOOLLPCHPGLPHFPPKDPNPPPAJJPPPJDIPPFPBPHPKBEBIDDEFOPPPOHMFPBBPPPKPACPAOPEPPFJPNFBHPGDGADPEHBPKPHLEOADBJPPIIPPGBCABAPPGPIPDPNBPAGLKPFCEHIAIPPPPFJKBPCNIGGBPPPBBNPKDMIPLPHPIPLGCPFBPLMNLPIIPAIPELPGPHPPIPPJEPPAAMPMKPGPCBPAPPMPABAHBPFAODNOEKCOGPPGKDHBCPCJEPBIALBDJPPAEPAPGPCPPLADHBGPPLNGHAGPAEPPEHPOPDGPKAMGPPDGIBPFJBDPIBPJPPPCPDPKIFDHCDPGFPMGHPCBPIJMPFDCPLJBEPPPPDKLAJMPBAPIBPBGMICGCDGBNPOAAEJMKPPHPKPPAHMMPKKLPEHPPNKPEPDLPHBPCCPPPHPNPPJBDBCPFCPOCPPEPHNEPNEPKPAAPPPAFFPPAFBEPBHMDCDIPPPFPGEAFBPGGIKBLPFCPGHOJJPEOAMBACCCGAEEPPPPDPPBPPOICPLEEAPABPCPPKPPBPPENDPCHABIDMPPPPPPPIOOCFPPPBHCKEJNGEPEPPGODFPPDKFFNPBEPFIPPCEDOPBPDEOKDOLDDPHCAICAPLCPHPDPPIDHPPLPLJAPECPHCIPAPPHPPPBPCPDPCJIAHMPDFOJAPHPPOGABBPCNPKNPEFHCPPIPFPMPCAPPFALPBPHADPEPAKPECDCPOGPPEPGPOPKMPHPPG
       </div>
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <button
-          className="emotion-2"
+          className="emotion-1"
           onClick={[Function]}
           title="Copy to Clipboard"
           type="button"
         >
           <svg
-            className="emotion-1"
-            color="#808080"
             data-file-name="copy.svg"
             height={20}
           />

@@ -18,6 +18,7 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
       css={{
         display: 'flex',
         alignItems: 'center',
+        marginRight: -spacing.base,
         ':hover': {
           button: {
             svg: { opacity: 1 },
@@ -42,14 +43,13 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
       <Button
         title="Edit"
         aria-label="Edit Chart"
-        variant={VARIANTS.NEUTRAL}
+        variant={VARIANTS.ICON}
         css={{
           padding: ICON_PADDING,
           svg: {
-            color: colors.structure.steel,
+            opacity: 0,
           },
           ':hover, &.focus-visible:focus': {
-            svg: { opacity: 1, color: colors.structure.white },
             backgroundColor: colors.structure.smoke,
           },
         }}
@@ -57,7 +57,7 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
           setIsEditing(true)
         }}
       >
-        <PenSvg height={ICON_SIZE} css={{ opacity: 0 }} />
+        <PenSvg height={ICON_SIZE} />
       </Button>
 
       <div css={{ width: spacing.mini }} />
@@ -65,14 +65,13 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
       <Button
         title="Delete"
         aria-label="Delete Chart"
-        variant={VARIANTS.NEUTRAL}
+        variant={VARIANTS.ICON}
         css={{
           padding: ICON_PADDING,
           svg: {
-            color: colors.structure.steel,
+            opacity: 0,
           },
           ':hover, &.focus-visible:focus': {
-            svg: { opacity: 1, color: colors.structure.white },
             backgroundColor: colors.structure.smoke,
           },
         }}
@@ -80,7 +79,7 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
           dispatch({ type: ACTIONS.DELETE, payload: { chartIndex } })
         }
       >
-        <CrossSvg height={ICON_SIZE} css={{ opacity: 0 }} />
+        <CrossSvg height={ICON_SIZE} />
       </Button>
     </div>
   )

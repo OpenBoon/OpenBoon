@@ -9,6 +9,7 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchIndexAssetsEvent
+import com.zorroa.archivist.domain.BatchIndexResponse
 import com.zorroa.archivist.domain.DispatchPriority
 import com.zorroa.archivist.domain.DispatchTask
 import com.zorroa.archivist.domain.InternalTask
@@ -49,7 +50,6 @@ import com.zorroa.zmlp.util.Json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.elasticsearch.action.bulk.BulkResponse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
@@ -89,7 +89,7 @@ interface DispatcherService {
      * Handle [BatchIndexAssetsEvent] from Analyst.  Updates the assets
      * and adds any ES errors to the error log.
      */
-    fun handleIndexEvent(task: InternalTask, event: BatchIndexAssetsEvent): BulkResponse?
+    fun handleIndexEvent(task: InternalTask, event: BatchIndexAssetsEvent): BatchIndexResponse
 
     fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task?
     fun retryTask(task: InternalTask, reason: String): Boolean
@@ -441,9 +441,9 @@ class DispatcherServiceImpl @Autowired constructor(
             parentTask,
             result.failed.map {
                 TaskErrorEvent(
-                    it["assetId"],
-                    it["path"],
-                    "${it["failureMessage"] ?: "Unknown ES failure"}",
+                    it.assetId,
+                    it.uri ?: "unknown",
+                    it.message,
                     "unknown",
                     true,
                     "index"
@@ -470,36 +470,31 @@ class DispatcherServiceImpl @Autowired constructor(
         }
     }
 
-    override fun handleIndexEvent(task: InternalTask, event: BatchIndexAssetsEvent): BulkResponse? {
+    override fun handleIndexEvent(task: InternalTask, event: BatchIndexAssetsEvent): BatchIndexResponse {
 
         val errors = mutableListOf<TaskErrorEvent>()
-        var result: BulkResponse? = null
 
-        withAuth(
+        val result = withAuth(
             InternalThreadAuthentication(
                 task.projectId,
                 setOf(Permission.AssetsImport)
             )
         ) {
-            result = assetService.batchIndex(event.assets, true)
-            result?.items?.forEach {
-                if (it.isFailed) {
-                    val asset = Asset(it.id, event.assets[it.id] ?: mutableMapOf())
-                    val error = TaskErrorEvent(
-                        it.id,
-                        asset.getAttr("source.path"),
-                        it.failureMessage,
-                        "unknown",
-                        true,
-                        "index"
-                    )
-                    errors.add(error)
-                }
+            val result = assetService.batchIndex(event.assets, true)
+            result.failed.forEach {
+                val asset = Asset(it.assetId, event.assets[it.assetId] ?: mutableMapOf())
+                val error = TaskErrorEvent(
+                    it.assetId,
+                    asset.getAttr("source.path"),
+                    it.message,
+                    "unknown",
+                    true,
+                    "index"
+                )
+                errors.add(error)
+                taskErrorDao.batchCreate(task, errors)
             }
-        }
-
-        if (errors.isNotEmpty()) {
-            taskErrorDao.batchCreate(task, errors)
+            result
         }
 
         return result

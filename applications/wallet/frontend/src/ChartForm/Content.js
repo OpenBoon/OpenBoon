@@ -48,6 +48,7 @@ const ChartFormContent = ({
     >
       <h2
         css={{
+          paddingTop: spacing.base,
           fontSize: typography.size.medium,
           lineHeight: typography.height.medium,
           fontWeight: typography.weight.medium,
