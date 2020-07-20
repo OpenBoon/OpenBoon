@@ -59,6 +59,7 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 }
 
 .emotion-0 {
+  white-space: nowrap;
   color: #73b61c;
 }
 
@@ -69,10 +70,12 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 }
 
 .emotion-2 {
+  white-space: nowrap;
   color: #808080;
 }
 
 .emotion-4 {
+  white-space: nowrap;
   padding: 8px;
   font-family: Roboto Condensed;
 }
@@ -179,6 +182,7 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
 }
 
 .emotion-2 {
+  white-space: nowrap;
   color: #73b61c;
 }
 
@@ -189,10 +193,12 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
 }
 
 .emotion-0 {
+  white-space: nowrap;
   color: #808080;
 }
 
 .emotion-4 {
+  white-space: nowrap;
   padding: 8px;
   font-family: Roboto Condensed;
 }

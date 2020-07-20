@@ -20,7 +20,6 @@ class ModelSerializer(serializers.Serializer):
 
 class ModelTypeSerializer(serializers.Serializer):
     name = serializers.CharField()
-    moduleName = serializers.CharField()
     description = serializers.CharField()
     mlType = serializers.CharField()
     provider = serializers.CharField()

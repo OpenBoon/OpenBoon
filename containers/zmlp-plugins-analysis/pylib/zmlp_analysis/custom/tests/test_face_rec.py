@@ -38,8 +38,10 @@ class KnnFaceRecognitionClassifierTests(PluginUnitTestCase):
             }
         ])
         frame = Frame(asset)
-        processor = self.init_processor(KnnFaceRecognitionClassifier(), {})
+        processor = self.init_processor(KnnFaceRecognitionClassifier(), {"sensitivity": 100})
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.foo')
+        print(analysis)
         assert 'Gandalf' in get_prediction_labels(analysis)
+        assert 'Unrecognized' in get_prediction_labels(analysis)

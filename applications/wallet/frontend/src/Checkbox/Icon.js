@@ -31,7 +31,9 @@ const CheckboxIcon = ({ size, value, isChecked, isDisabled, onClick }) => (
         height: size,
         WebkitAppearance: 'none',
         backgroundColor:
-          isChecked && !isDisabled ? colors.key.one : colors.transparent,
+          isChecked && !isDisabled
+            ? colors.key.one
+            : colors.structure.transparent,
         border: getBorder({ isChecked, isDisabled }),
         borderRadius: constants.borderRadius.small,
         cursor: isDisabled ? 'not-allowed' : 'pointer',

@@ -184,6 +184,46 @@ class AssetTests(unittest.TestCase):
         f = asset.get_thumbnail(100)
         assert "assets/123/proxy/proxy_400x400.jpg" == f.id
 
+    def test_get_label_predictions(self):
+        asset = Asset({"id": "123"})
+        asset.set_attr("analysis.zvi-label-detection.predictions", [
+            {
+                "score": 0.99,
+                "label": "house"
+            },
+            {
+                "score": 0.5,
+                "label": "house"
+            },
+            {
+                "score": 0.1,
+                "label": "market"
+            }
+        ])
+        assert 3 == len(asset.get_label_predictions("zvi-label-detection"))
+        assert 1 == len(asset.get_label_predictions("zvi-label-detection", min_score=0.85))
+
+    def test_get_label_prediction(self):
+        asset = Asset({"id": "123"})
+        asset.set_attr("analysis.zvi-label-detection.predictions", [
+            {
+                "score": 0.99,
+                "label": "house"
+            },
+            {
+                "score": 0.5,
+                "label": "broom"
+            }
+        ])
+        # Get by index
+        pred = asset.get_label_prediction("zvi-label-detection", 0)
+        assert "house" == pred["label"]
+        assert 0.99 == pred["score"]
+
+        pred = asset.get_label_prediction("zvi-label-detection", "broom")
+        assert "broom" == pred["label"]
+        assert 0.5 == pred["score"]
+
 
 class FileImportTests(unittest.TestCase):
 

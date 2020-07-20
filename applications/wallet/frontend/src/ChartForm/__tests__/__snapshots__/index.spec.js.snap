@@ -23,7 +23,7 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
 }
 
 .emotion-13 {
-  overflow: hidden;
+  height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -387,7 +387,7 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
 }
 
 .emotion-13 {
-  overflow: hidden;
+  height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -751,7 +751,7 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
 }
 
 .emotion-13 {
-  overflow: hidden;
+  height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
