@@ -143,15 +143,16 @@ class ModelApp:
         """
         return self.app.client.get('/api/v3/models/{}/_label_counts'.format(as_id(model)))
 
-    def download_labeled_images(self, model, style, dst_dir, test_train_ratio=4):
+    def download_labeled_images(self, model, style, dst_dir, validation_split=0.2):
         """
         Get a TrainingSetDownloader instance which can be used to download all the
-        labeled images for a Model to local disi.
+        labeled images for a Model to local disk.
 
         Args:
             model (Model): The Model or its unique ID.
             style (str): The structure style to build: labels_std, objects_keras, objects_coco
             dst_dir (str): The destination dir to write the Assets into.
-            test_train_ratio (int): The number of training files for every 1 test file.
+            validation_split (float): The ratio of training images to validation images.
+                Defaults to 0.2.
         """
-        return TrainingSetDownloader(self.app, model, style, dst_dir, test_train_ratio)
+        return TrainingSetDownloader(self.app, model, style, dst_dir, validation_split)
