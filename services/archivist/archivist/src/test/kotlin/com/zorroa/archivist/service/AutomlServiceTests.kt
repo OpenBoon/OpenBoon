@@ -42,7 +42,7 @@ class AutomlServiceTests : AbstractTest() {
         val session = create()
         automlService.checkAutomlTrainingStatus()
 
-        val mod = pipelineModService.getByName("gcp-animals-label-detection")
+        val mod = pipelineModService.getByName("animals")
         assertTrue("/model/name" in Json.serializeToString(mod))
 
         val session2 = automlDao.getOne(session.id)
