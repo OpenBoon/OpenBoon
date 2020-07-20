@@ -55,8 +55,6 @@ const colors = {
     lilac: '#bb81e1',
     magenta: '#a03dc7',
   },
-
-  transparent: 'transparent',
 }
 
 export default colors
