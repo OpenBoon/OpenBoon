@@ -11,7 +11,14 @@ import java.io.InputStream
 object RestUtils {
 
     fun updated(type: LogObject, id: Any): Map<String, Any> {
-        return mapOf("type" to type.toString(), "id" to id, "op" to "update")
+        return mapOf("type" to type.toString().toLowerCase(), "id" to id, "op" to "update")
+    }
+
+    /**
+     * A standard batch update response.
+     */
+    fun batchUpdated(type: LogObject, op: String, count: Int, errors: Int): MutableMap<String, Any> {
+        return mutableMapOf("type" to type.toString().toLowerCase(), "op" to op, "count" to count, "errors" to errors)
     }
 }
 
