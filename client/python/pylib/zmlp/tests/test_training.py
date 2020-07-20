@@ -66,7 +66,7 @@ class TrainingSetDownloaderTests(unittest.TestCase):
         dl_patch.return_value = b'foo'
 
         d = tempfile.mkdtemp()
-        dsl = TrainingSetDownloader(self.app, '12345', 'labels_std', d)
+        dsl = TrainingSetDownloader(self.app, '12345', 'labels-standard', d)
         dsl.build()
 
     @patch.object(ModelApp, 'get_model')

@@ -96,7 +96,7 @@ class ModelAppTests(unittest.TestCase):
         assert "12345" == dl.model.id
 
     @patch.object(ZmlpClient, 'get')
-    def test_get_model_type_properties(self, get_patch):
+    def test_get_model_type_info(self, get_patch):
         raw = {
             'name': 'ZVI_LABEL_DETECTION',
             'description': 'a description',
@@ -107,7 +107,7 @@ class ModelAppTests(unittest.TestCase):
         }
         get_patch.return_value = raw
 
-        props = self.app.models.get_model_type_properties(ModelType.ZVI_LABEL_DETECTION)
+        props = self.app.models.get_model_type_info(ModelType.ZVI_LABEL_DETECTION)
         assert props.name == "ZVI_LABEL_DETECTION"
         assert props.description == 'a description'
         assert props.objective == 'label detection'
