@@ -17,6 +17,9 @@ class KnnLabelDetectionTrainer(AssetProcessor):
     def __init__(self):
         super(KnnLabelDetectionTrainer, self).__init__()
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
+        self.add_arg(Argument("n_clusters", "int", required=False,
+                              default=15, toolTip="Number of Clusters"))
+
         self.add_arg(Argument("deploy", "bool", default=False,
                               toolTip="Automatically deploy the model onto assets."))
         self.app_model = None
@@ -36,7 +39,7 @@ class KnnLabelDetectionTrainer(AssetProcessor):
             # This is how many points we will cluster. The search is randomized in order
             # to get a representative sampling of the assets.
             n_points = 5000
-            n_clusters = 15
+            n_clusters = self.arg_value('n_clusters')
             self.reactor.emit_status("No labeled assets - pre-clustering")
             query = {
                 'size': n_points,
