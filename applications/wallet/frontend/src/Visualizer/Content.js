@@ -10,11 +10,13 @@ import FaceLabeling from '../FaceLabeling'
 import Export from '../Export'
 import AssetDelete from '../AssetDelete'
 import FiltersIcon from '../Filters/Icon'
+import AssetLabeling from '../AssetLabeling'
 
 import InformationSvg from '../Icons/information.svg'
 import FaceDetectionSvg from '../Icons/faceDetection.svg'
 import UploadSvg from '../Icons/upload.svg'
 import TrashSvg from '../Icons/trash.svg'
+import PenSvg from '../Icons/pen.svg'
 
 const ICON_SIZE = 20
 
@@ -65,6 +67,13 @@ const VisualizerContent = () => {
               title: 'Face Recognition Training',
               icon: <FaceDetectionSvg height={ICON_SIZE} />,
               content: <FaceLabeling />,
+            },
+            assetLabeling: {
+              title: 'Add Labels To Model',
+              icon: <PenSvg height={ICON_SIZE} />,
+              content: <AssetLabeling />,
+              flag: 'asset-labeling',
+              envs: [],
             },
             export: {
               title: 'Export',
