@@ -46,6 +46,10 @@ Array [
   font-weight: 500;
 }
 
+.emotion-0 a {
+  color: #4a90e2;
+}
+
 <div
     className="emotion-2"
   >
@@ -788,6 +792,10 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #4a90e2;
 }
 
 <div

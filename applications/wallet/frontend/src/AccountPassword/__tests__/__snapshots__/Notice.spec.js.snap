@@ -294,6 +294,10 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
   font-weight: 500;
 }
 
+.emotion-19 a {
+  color: #4a90e2;
+}
+
 <div
   className="emotion-28"
 >

@@ -1685,6 +1685,10 @@ Array [
   font-weight: 500;
 }
 
+.emotion-0 a {
+  color: #4a90e2;
+}
+
 .emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;

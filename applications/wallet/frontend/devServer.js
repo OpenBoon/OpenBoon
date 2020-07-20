@@ -27,6 +27,8 @@ import subscriptions from './src/Subscriptions/__mocks__/subscriptions'
 import roles from './src/Roles/__mocks__/roles'
 import fields from './src/Filters/__mocks__/fields'
 import dateAggregate from './src/FilterDateRange/__mocks__/aggregate'
+import models from './src/Models/__mocks__/models'
+import modelTypes from './src/ModelTypes/__mocks__/modelTypes'
 
 const { STAGING, SLOW, MOCKED } = process.env
 
@@ -96,6 +98,9 @@ app.prepare().then(() => {
     server.get(`${PID_API_BASE}/roles/`, mock(roles))
     server.get(`${PID_API_BASE}/searches/fields/`, mock(fields))
     server.get(`${PID_API_BASE}/searches/aggregate/`, mock(dateAggregate))
+
+    server.get(`${PID_API_BASE}/models/`, mock(models))
+    server.get(`${PID_API_BASE}/models/model_types/`, mock(modelTypes))
   }
 
   // Proxy API calls

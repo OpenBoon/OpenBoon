@@ -105,7 +105,7 @@ const DataSourcesAddSource = ({
           }}
         >
           <option value="" disabled>
-            Select source
+            Select an option...
           </option>
           {Object.keys(SOURCES).map((option) => {
             return (

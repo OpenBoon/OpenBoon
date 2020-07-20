@@ -47,6 +47,10 @@ exports[`<Login /> should render error 1`] = `
   font-weight: 500;
 }
 
+.emotion-0 a {
+  color: #4a90e2;
+}
+
 .emotion-30 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -631,6 +635,10 @@ exports[`<Login /> should render password changed 1`] = `
   font-weight: 500;
 }
 
+.emotion-0 a {
+  color: #4a90e2;
+}
+
 .emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1161,6 +1169,10 @@ exports[`<Login /> should render properly 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #4a90e2;
 }
 
 .emotion-25 {
@@ -1695,6 +1707,10 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   font-weight: 500;
 }
 
+.emotion-0 a {
+  color: #4a90e2;
+}
+
 .emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2225,6 +2241,10 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #4a90e2;
 }
 
 .emotion-25 {

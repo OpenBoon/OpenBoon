@@ -351,6 +351,10 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
   font-weight: 500;
 }
 
+.emotion-0 a {
+  color: #4a90e2;
+}
+
 <div
   className="emotion-9"
 >
@@ -420,6 +424,10 @@ exports[`<AssetDelete /> should render properly when asset is deleted 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #4a90e2;
 }
 
 .emotion-1 {
