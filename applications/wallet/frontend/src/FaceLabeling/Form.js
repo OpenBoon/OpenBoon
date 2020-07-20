@@ -62,8 +62,6 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
         style={{
           padding: 0,
           width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
           overflow: 'hidden',
         }}
       >
