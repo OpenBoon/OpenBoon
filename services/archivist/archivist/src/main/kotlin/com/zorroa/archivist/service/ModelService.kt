@@ -91,7 +91,7 @@ class ModelServiceImpl(
             spec.name,
             moduleName,
             locator.getFileId(),
-            "Train ${spec.name} / $moduleName",
+            "Training model ${spec.type.name} : ${spec.name}",
             false,
             spec.deploySearch, // VALIDATE THIS PARSES.
             time,
