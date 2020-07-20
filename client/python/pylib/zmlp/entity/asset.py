@@ -131,6 +131,50 @@ class DocumentMixin(object):
         """
         return self.get_attr("analysis.{}".format(name))
 
+    def get_label_predictions(self, module, min_score=None):
+        """
+        Get all predictions made by the given label prediction module.
+
+        Args:
+            module (str):
+            min_score (float):
+
+        Returns:
+            list: A list of dictionaries containing the predictions
+
+        """
+        predictions = self.get_attr(f'analysis.{module}.predictions')
+        if not predictions:
+            return None
+        if min_score:
+            return [pred for pred in predictions if pred['score'] >= min_score]
+        else:
+            return predictions
+
+    def get_label_prediction(self, module, label):
+        """
+        Get a prediction made by the given label predictiom module.
+
+        Args:
+            module (str): The module name that made the prediction.
+            label (mixed): A label name or integer index of a prediction.
+
+        Returns:
+            dict: a prediction dict with a label, score, etc.
+        """
+        preds = self.get_label_predictions(module)
+        if not preds:
+            return None
+
+        if isinstance(label, str):
+            preds = [pred for pred in preds if pred['label'] == label]
+            label = 0
+
+        try:
+            return preds[label]
+        except IndexError:
+            return None
+
     def extend_list_attr(self, attr, items):
         """
         Adds the given items to the given attr. The attr must be a list or set.

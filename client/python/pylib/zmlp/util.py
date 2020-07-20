@@ -34,7 +34,7 @@ def as_collection(value):
     """
     if value is None:
         return None
-    if isinstance(value, (set, list, tuple, dict)):
+    if isinstance(value, (set, list, tuple)):
         return value
     return [value]
 

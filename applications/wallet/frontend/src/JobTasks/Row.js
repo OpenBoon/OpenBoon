@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
-import Router from 'next/router'
 import Link from 'next/link'
 
+import { onRowClickRouterPush } from '../Table/helpers'
 import { formatFullDate, getDuration, formatDuration } from '../Date/helpers'
 import { spacing, typography } from '../Styles'
 
@@ -29,14 +29,10 @@ const JobTasksRow = ({
   return (
     <tr
       css={{ cursor: 'pointer' }}
-      onClick={(event) => {
-        const { target: { localName } = {} } = event || {}
-        if (['a', 'button', 'svg', 'path'].includes(localName)) return
-        Router.push(
-          '/[projectId]/jobs/[jobId]/tasks/[taskId]/script',
-          `/${projectId}/jobs/${jobId}/tasks/${taskId}/script`,
-        )
-      }}
+      onClick={onRowClickRouterPush(
+        '/[projectId]/jobs/[jobId]/tasks/[taskId]/script',
+        `/${projectId}/jobs/${jobId}/tasks/${taskId}/script`,
+      )}
     >
       <td css={{ display: 'flex' }}>
         <JobTasksStateIcon state={state} />

@@ -5,9 +5,9 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp import ZmlpClient, app_from_env, Asset
-from zmlp.search import AssetSearchScroller, AssetSearchResult, \
-    SimilarityQuery, LabelConfidenceQuery, AssetSearchCsvExporter
+from zmlp import ZmlpClient, app_from_env, Asset, \
+    SimilarityQuery, LabelConfidenceQuery, FaceSimilarityQuery, \
+    AssetSearchCsvExporter, AssetSearchScroller, AssetSearchResult
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -246,6 +246,30 @@ class TestImageSimilarityQuery(unittest.TestCase):
         assert ['OVER9000'] == s.hashes
         assert "foo.vector" == s.field
         assert 0.50 == s.min_score
+
+
+class TestFaceSimilarityQuery(unittest.TestCase):
+
+    def test_create_with_hash(self):
+        query = FaceSimilarityQuery("abc123")
+        esq = query.for_json()
+        print(esq)
+
+        params = esq['script_score']['script']['params']
+        assert 'analysis.zvi-face-detection.predictions.simhash' == params['field']
+        assert ['abc123'] == params['hashes']
+        assert 0.90 == params['minScore']
+
+    def test_create_with_prediction(self):
+        pred = [
+            {"simhash": "QWERTY"}
+        ]
+        esq = FaceSimilarityQuery(pred, min_score=1.0).for_json()
+
+        params = esq['script_score']['script']['params']
+        assert 'analysis.zvi-face-detection.predictions.simhash' == params['field']
+        assert ['QWERTY'] == params['hashes']
+        assert 1.0 == params['minScore']
 
 
 class MockEsDslSearch:

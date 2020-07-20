@@ -91,7 +91,6 @@ exports[`<Asset /> should handle no query 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   padding: 8px;
   color: #808080;
 }
@@ -105,8 +104,18 @@ exports[`<Asset /> should handle no query 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-0:hover svg,
+.emotion-0.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-3 {
@@ -185,11 +194,11 @@ exports[`<Asset /> should handle no query 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: #252525;
@@ -207,8 +216,21 @@ exports[`<Asset /> should handle no query 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-5:hover {
   background-color: #2e2e2e;
 }
 
@@ -390,7 +412,6 @@ exports[`<Asset /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   padding: 8px;
   color: #808080;
 }
@@ -404,8 +425,18 @@ exports[`<Asset /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-0:hover svg,
+.emotion-0.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-3 {
@@ -484,11 +515,11 @@ exports[`<Asset /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: #252525;
@@ -506,8 +537,21 @@ exports[`<Asset /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-5:hover {
   background-color: #2e2e2e;
 }
 
@@ -682,7 +726,6 @@ exports[`<Asset /> should render videos properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
   padding: 8px;
   color: #808080;
 }
@@ -696,8 +739,18 @@ exports[`<Asset /> should render videos properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-0:hover svg,
+.emotion-0.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-3 {
@@ -776,11 +829,11 @@ exports[`<Asset /> should render videos properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  padding: 8px;
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: #252525;
@@ -798,8 +851,21 @@ exports[`<Asset /> should render videos properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-5:hover {
   background-color: #2e2e2e;
 }
 

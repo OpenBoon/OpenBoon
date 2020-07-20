@@ -332,7 +332,6 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding: 8px;
-  padding-left: 8px;
 }
 
 .emotion-9:hover {
@@ -386,6 +385,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -398,14 +399,24 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-0 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
 }
 
 .emotion-3 {
@@ -472,11 +483,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -497,8 +510,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
-  color: #73b61c;
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-5[aria-disabled=true] {
@@ -512,7 +531,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -550,11 +568,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -575,8 +595,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
-  color: #73b61c;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-7[aria-disabled=true] {
@@ -586,12 +612,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-26 {
@@ -800,7 +820,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -1336,7 +1355,6 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding: 8px;
-  padding-left: 8px;
 }
 
 .emotion-9:hover {
@@ -1390,6 +1408,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -1402,14 +1422,24 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-0 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
 }
 
 .emotion-3 {
@@ -1476,11 +1506,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -1501,8 +1533,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
-  color: #73b61c;
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-5[aria-disabled=true] {
@@ -1516,7 +1554,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -1554,11 +1591,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -1579,8 +1618,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
-  color: #73b61c;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-7[aria-disabled=true] {
@@ -1590,12 +1635,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-20 {
@@ -1654,7 +1693,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1673,8 +1713,18 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-12:hover {
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-12:hover svg,
+.emotion-12.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-12[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-11 {
@@ -1722,7 +1772,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
+  padding: 8px;
+  color: #808080;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1741,8 +1792,18 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-15:hover svg,
+.emotion-15.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-17 {
@@ -1770,7 +1831,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -2243,7 +2303,6 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding: 8px;
-  padding-left: 8px;
 }
 
 .emotion-9:hover {
@@ -2297,6 +2356,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -2309,14 +2370,24 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-0 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
 }
 
 .emotion-3 {
@@ -2383,11 +2454,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -2408,8 +2481,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
-  color: #73b61c;
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-5[aria-disabled=true] {
@@ -2423,7 +2502,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -2461,11 +2539,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -2486,8 +2566,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
-  color: #73b61c;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-7[aria-disabled=true] {
@@ -2497,12 +2583,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-72 {
@@ -2747,7 +2827,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -3452,7 +3531,6 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding: 8px;
-  padding-left: 8px;
 }
 
 .emotion-9:hover {
@@ -3506,6 +3584,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -3518,14 +3598,24 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-0 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
 }
 
 .emotion-3 {
@@ -3592,11 +3682,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -3617,8 +3709,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
-  color: #73b61c;
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-5[aria-disabled=true] {
@@ -3632,7 +3730,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -3670,11 +3767,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -3695,8 +3794,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
-  color: #73b61c;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-7[aria-disabled=true] {
@@ -3706,12 +3811,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-656 {
@@ -4183,7 +4282,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -8162,7 +8260,6 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding: 8px;
-  padding-left: 8px;
 }
 
 .emotion-9:hover {
@@ -8216,6 +8313,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -8228,14 +8327,24 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-0 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
 }
 
 .emotion-3 {
@@ -8302,11 +8411,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -8327,8 +8438,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
-  color: #73b61c;
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-5[aria-disabled=true] {
@@ -8342,7 +8459,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -8380,11 +8496,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -8405,8 +8523,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
-  color: #73b61c;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-7[aria-disabled=true] {
@@ -8416,12 +8540,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-23 {
@@ -8614,7 +8732,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -9137,7 +9254,6 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding: 8px;
-  padding-left: 8px;
 }
 
 .emotion-9:hover {
@@ -9191,6 +9307,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -9203,14 +9321,24 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-0 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
 }
 
 .emotion-3 {
@@ -9277,11 +9405,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -9302,8 +9432,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
-  color: #73b61c;
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-5[aria-disabled=true] {
@@ -9317,7 +9453,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -9355,11 +9490,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -9380,8 +9517,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
-  color: #73b61c;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-7[aria-disabled=true] {
@@ -9391,12 +9534,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-20 {
@@ -9535,7 +9672,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -10044,7 +10180,6 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding: 8px;
-  padding-left: 8px;
 }
 
 .emotion-9:hover {
@@ -10098,6 +10233,8 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -10110,14 +10247,24 @@ Array [
   color: #2e2e2e;
 }
 
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
 .emotion-0 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
 }
 
 .emotion-3 {
@@ -10184,11 +10331,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -10209,8 +10358,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
-  color: #73b61c;
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-5:hover svg,
+.emotion-5.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-5[aria-disabled=true] {
@@ -10224,7 +10379,6 @@ Array [
 
 .emotion-5:hover svg,
 .emotion-5.focus-visible:focus svg {
-  opacity: 1;
   color: #ffffff;
 }
 
@@ -10262,11 +10416,13 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
+  padding: 8px;
+  color: #808080;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding: 4px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -10287,8 +10443,14 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
-  color: #73b61c;
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
+  opacity: 1;
 }
 
 .emotion-7[aria-disabled=true] {
@@ -10298,12 +10460,6 @@ Array [
 .emotion-7:hover,
 .emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
-}
-
-.emotion-7:hover svg,
-.emotion-7.focus-visible:focus svg {
-  color: #ffffff;
-  opacity: 1;
 }
 
 .emotion-15 {
@@ -10405,7 +10561,6 @@ Array [
         >
           <svg
             className="emotion-0"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />

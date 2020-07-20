@@ -71,13 +71,17 @@ class ModelServiceImpl(
         val id = UUIDGen.uuid1.generate()
         val actor = getZmlpActor()
 
-        val moduleName = spec.moduleName
-            ?: String.format(
-                spec.type.moduleName,
-                spec.name.replace(" ", "-").toLowerCase()
+        val moduleName = (spec.moduleName ?: spec.type.moduleName ?: spec.name)
+
+        if (moduleName.trim().length == 0 || !moduleName.matches(modelNameRegex)) {
+            throw IllegalArgumentException(
+                "Model names must be alpha-numeric," +
+                    " dashes,underscores, and spaces are allowed."
             )
+        }
+
         val locator = ProjectFileLocator(
-            ProjectStorageEntity.MODELS, id.toString(), moduleName, "$moduleName.zip"
+            ProjectStorageEntity.MODELS, id.toString(), "model", "model.zip"
         )
 
         val model = Model(
@@ -288,5 +292,7 @@ class ModelServiceImpl(
 
     companion object {
         private val logger = LoggerFactory.getLogger(ModelServiceImpl::class.java)
+
+        private val modelNameRegex = Regex("^[a-z0-9_\\-\\s]{2,}$", RegexOption.IGNORE_CASE)
     }
 }
