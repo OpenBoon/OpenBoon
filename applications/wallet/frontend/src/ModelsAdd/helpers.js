@@ -33,8 +33,6 @@ export const onSubmit = async ({
       }, {})
 
       dispatch({ isLoading: false, errors: parsedErrors })
-
-      window.scrollTo(0, 0)
     } catch (error) {
       dispatch({
         isLoading: false,
