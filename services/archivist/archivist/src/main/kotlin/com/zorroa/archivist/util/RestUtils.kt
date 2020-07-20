@@ -17,8 +17,12 @@ object RestUtils {
     /**
      * A standard batch update response.
      */
-    fun batchUpdated(type: LogObject, op: String, count: Int, errors: Int): MutableMap<String, Any> {
-        return mutableMapOf("type" to type.toString().toLowerCase(), "op" to op, "count" to count, "errors" to errors)
+    fun batchUpdated(type: LogObject, op: String, updated: Int, errors: Int): MutableMap<String, Any> {
+        return mutableMapOf(
+            "type" to type.toString().toLowerCase(),
+            "op" to op,
+            "updated" to updated,
+            "errors" to errors)
     }
 }
 
