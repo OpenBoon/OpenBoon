@@ -3,6 +3,8 @@ import { useRef, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
+import { constants, spacing } from '../Styles'
+
 const FALLBACK_IMG = '/icons/fallback_3x.png'
 
 const AssetAsset = ({ projectId, assetId }) => {
@@ -49,26 +51,29 @@ const AssetAsset = ({ projectId, assetId }) => {
         width: '100%',
         height: '100%',
         overflowY: 'hidden',
+        boxShadow: constants.boxShadows.assets,
       }}
     >
-      {isVideo && !hasError ? (
-        <video
-          css={{ width: '100%', height: '100%', objectFit: 'contain' }}
-          autoPlay
-          controls
-          controlsList="nodownload"
-          disablePictureInPicture
-        >
-          <source ref={assetRef} src={uri} type={mediaType} />
-        </video>
-      ) : (
-        <img
-          ref={assetRef}
-          css={{ width: '100%', height: '100%', objectFit: 'contain' }}
-          src={hasError ? /* istanbul ignore next */ FALLBACK_IMG : uri}
-          alt={filename}
-        />
-      )}
+      <div css={{ width: '100%', height: '100%', marginTop: spacing.hairline }}>
+        {isVideo && !hasError ? (
+          <video
+            css={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            autoPlay
+            controls
+            controlsList="nodownload"
+            disablePictureInPicture
+          >
+            <source ref={assetRef} src={uri} type={mediaType} />
+          </video>
+        ) : (
+          <img
+            ref={assetRef}
+            css={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            src={hasError ? /* istanbul ignore next */ FALLBACK_IMG : uri}
+            alt={filename}
+          />
+        )}
+      </div>
     </div>
   )
 }

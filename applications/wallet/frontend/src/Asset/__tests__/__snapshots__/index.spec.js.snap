@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Asset /> should handle no query 1`] = `
-.emotion-11 {
+.emotion-12 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Asset /> should handle no query 1`] = `
   flex-direction: column;
 }
 
-.emotion-10 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -28,7 +28,7 @@ exports[`<Asset /> should handle no query 1`] = `
   height: 100%;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -44,8 +44,8 @@ exports[`<Asset /> should handle no query 1`] = `
   padding-right: 8px;
   background-color: #252525;
   color: #808080;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
   margin-bottom: 1px;
+  margin-right: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -58,7 +58,6 @@ exports[`<Asset /> should handle no query 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  width: 100%;
 }
 
 .emotion-0 {
@@ -118,7 +117,7 @@ exports[`<Asset /> should handle no query 1`] = `
   color: #808080;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -137,6 +136,13 @@ exports[`<Asset /> should handle no query 1`] = `
   width: 100%;
   height: 100%;
   overflow-y: hidden;
+  box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
+}
+
+.emotion-3 {
+  width: 100%;
+  height: 100%;
+  margin-top: 1px;
 }
 
 .emotion-2 {
@@ -145,14 +151,14 @@ exports[`<Asset /> should handle no query 1`] = `
   object-fit: contain;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -162,7 +168,7 @@ exports[`<Asset /> should handle no query 1`] = `
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -205,34 +211,34 @@ exports[`<Asset /> should handle no query 1`] = `
   border-radius: 0;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover,
-.emotion-5.focus-visible:focus {
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-5:hover svg,
-.emotion-5.focus-visible:focus svg {
+.emotion-6:hover svg,
+.emotion-6.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -240,13 +246,13 @@ exports[`<Asset /> should handle no query 1`] = `
 }
 
 <div
-  className="emotion-11"
+  className="emotion-12"
 >
   <div
-    className="emotion-10"
+    className="emotion-11"
   >
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <div
         className="emotion-1"
@@ -264,31 +270,35 @@ exports[`<Asset /> should handle no query 1`] = `
         </a>
       </div>
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
-        <video
-          autoPlay={true}
-          className="emotion-2"
-          controls={true}
-          controlsList="nodownload"
-          disablePictureInPicture={true}
+        <div
+          className="emotion-3"
         >
-          <source
-            src="https://storage.googleapis.com/video.mp4"
-            type="video/mp4"
-          />
-        </video>
+          <video
+            autoPlay={true}
+            className="emotion-2"
+            controls={true}
+            controlsList="nodownload"
+            disablePictureInPicture={true}
+          >
+            <source
+              src="https://storage.googleapis.com/video.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
       </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-10"
     >
       <div
-        className="emotion-8"
+        className="emotion-9"
       >
         <button
           aria-label="Asset Metadata"
-          className="emotion-5"
+          className="emotion-6"
           onClick={[Function]}
           title="Asset Metadata"
           type="button"
@@ -300,7 +310,7 @@ exports[`<Asset /> should handle no query 1`] = `
         </button>
         <button
           aria-label="Delete"
-          className="emotion-5"
+          className="emotion-6"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -311,7 +321,7 @@ exports[`<Asset /> should handle no query 1`] = `
           />
         </button>
         <div
-          className="emotion-7"
+          className="emotion-8"
         />
       </div>
     </div>
@@ -320,7 +330,7 @@ exports[`<Asset /> should handle no query 1`] = `
 `;
 
 exports[`<Asset /> should render properly 1`] = `
-.emotion-11 {
+.emotion-12 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -339,7 +349,7 @@ exports[`<Asset /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-10 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -347,7 +357,7 @@ exports[`<Asset /> should render properly 1`] = `
   height: 100%;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -363,8 +373,8 @@ exports[`<Asset /> should render properly 1`] = `
   padding-right: 8px;
   background-color: #252525;
   color: #808080;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
   margin-bottom: 1px;
+  margin-right: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -377,7 +387,6 @@ exports[`<Asset /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  width: 100%;
 }
 
 .emotion-0 {
@@ -437,7 +446,7 @@ exports[`<Asset /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -456,6 +465,13 @@ exports[`<Asset /> should render properly 1`] = `
   width: 100%;
   height: 100%;
   overflow-y: hidden;
+  box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
+}
+
+.emotion-3 {
+  width: 100%;
+  height: 100%;
+  margin-top: 1px;
 }
 
 .emotion-2 {
@@ -464,14 +480,14 @@ exports[`<Asset /> should render properly 1`] = `
   object-fit: contain;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -481,7 +497,7 @@ exports[`<Asset /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -524,34 +540,34 @@ exports[`<Asset /> should render properly 1`] = `
   border-radius: 0;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover,
-.emotion-5.focus-visible:focus {
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-5:hover svg,
-.emotion-5.focus-visible:focus svg {
+.emotion-6:hover svg,
+.emotion-6.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -559,13 +575,13 @@ exports[`<Asset /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-11"
+  className="emotion-12"
 >
   <div
-    className="emotion-10"
+    className="emotion-11"
   >
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <div
         className="emotion-1"
@@ -583,24 +599,28 @@ exports[`<Asset /> should render properly 1`] = `
         </a>
       </div>
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
-        <img
-          alt="test_document.docx"
-          className="emotion-2"
-          src="https://storage.googleapis.com/image.jpeg"
-        />
+        <div
+          className="emotion-3"
+        >
+          <img
+            alt="test_document.docx"
+            className="emotion-2"
+            src="https://storage.googleapis.com/image.jpeg"
+          />
+        </div>
       </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-10"
     >
       <div
-        className="emotion-8"
+        className="emotion-9"
       >
         <button
           aria-label="Asset Metadata"
-          className="emotion-5"
+          className="emotion-6"
           onClick={[Function]}
           title="Asset Metadata"
           type="button"
@@ -612,7 +632,7 @@ exports[`<Asset /> should render properly 1`] = `
         </button>
         <button
           aria-label="Delete"
-          className="emotion-5"
+          className="emotion-6"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -623,7 +643,7 @@ exports[`<Asset /> should render properly 1`] = `
           />
         </button>
         <div
-          className="emotion-7"
+          className="emotion-8"
         />
       </div>
     </div>
@@ -632,7 +652,7 @@ exports[`<Asset /> should render properly 1`] = `
 `;
 
 exports[`<Asset /> should render videos properly 1`] = `
-.emotion-11 {
+.emotion-12 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -651,7 +671,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-10 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -659,7 +679,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   height: 100%;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -675,8 +695,8 @@ exports[`<Asset /> should render videos properly 1`] = `
   padding-right: 8px;
   background-color: #252525;
   color: #808080;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
   margin-bottom: 1px;
+  margin-right: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -689,7 +709,6 @@ exports[`<Asset /> should render videos properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  width: 100%;
 }
 
 .emotion-0 {
@@ -749,7 +768,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   color: #808080;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -768,6 +787,13 @@ exports[`<Asset /> should render videos properly 1`] = `
   width: 100%;
   height: 100%;
   overflow-y: hidden;
+  box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
+}
+
+.emotion-3 {
+  width: 100%;
+  height: 100%;
+  margin-top: 1px;
 }
 
 .emotion-2 {
@@ -776,14 +802,14 @@ exports[`<Asset /> should render videos properly 1`] = `
   object-fit: contain;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -793,7 +819,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -836,34 +862,34 @@ exports[`<Asset /> should render videos properly 1`] = `
   border-radius: 0;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover,
-.emotion-5.focus-visible:focus {
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-5:hover svg,
-.emotion-5.focus-visible:focus svg {
+.emotion-6:hover svg,
+.emotion-6.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -871,13 +897,13 @@ exports[`<Asset /> should render videos properly 1`] = `
 }
 
 <div
-  className="emotion-11"
+  className="emotion-12"
 >
   <div
-    className="emotion-10"
+    className="emotion-11"
   >
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <div
         className="emotion-1"
@@ -895,31 +921,35 @@ exports[`<Asset /> should render videos properly 1`] = `
         </a>
       </div>
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
-        <video
-          autoPlay={true}
-          className="emotion-2"
-          controls={true}
-          controlsList="nodownload"
-          disablePictureInPicture={true}
+        <div
+          className="emotion-3"
         >
-          <source
-            src="https://storage.googleapis.com/video.mp4"
-            type="video/mp4"
-          />
-        </video>
+          <video
+            autoPlay={true}
+            className="emotion-2"
+            controls={true}
+            controlsList="nodownload"
+            disablePictureInPicture={true}
+          >
+            <source
+              src="https://storage.googleapis.com/video.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
       </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-10"
     >
       <div
-        className="emotion-8"
+        className="emotion-9"
       >
         <button
           aria-label="Asset Metadata"
-          className="emotion-5"
+          className="emotion-6"
           onClick={[Function]}
           title="Asset Metadata"
           type="button"
@@ -931,7 +961,7 @@ exports[`<Asset /> should render videos properly 1`] = `
         </button>
         <button
           aria-label="Delete"
-          className="emotion-5"
+          className="emotion-6"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -942,7 +972,7 @@ exports[`<Asset /> should render videos properly 1`] = `
           />
         </button>
         <div
-          className="emotion-7"
+          className="emotion-8"
         />
       </div>
     </div>
