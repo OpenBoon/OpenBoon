@@ -29,7 +29,6 @@ const PanelContent = ({
           display: 'flex',
           flexDirection: 'column',
           height: '100%',
-          overflow: 'hidden',
           backgroundColor: colors.structure.lead,
         }}
       >
@@ -75,8 +74,9 @@ const PanelContent = ({
           css={{
             display: 'flex',
             flexDirection: 'column',
-            overflow: 'hidden',
             flex: 1,
+            // hack to make content scroll without hiding overflow (overflow needed for Toggltip visibility)
+            height: '0%',
           }}
         >
           {content}
