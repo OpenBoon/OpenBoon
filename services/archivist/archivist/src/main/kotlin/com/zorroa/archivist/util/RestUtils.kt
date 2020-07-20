@@ -22,7 +22,8 @@ object RestUtils {
             "type" to type.toString().toLowerCase(),
             "op" to op,
             "updated" to updated,
-            "errors" to errors)
+            "errors" to errors
+        )
     }
 }
 
