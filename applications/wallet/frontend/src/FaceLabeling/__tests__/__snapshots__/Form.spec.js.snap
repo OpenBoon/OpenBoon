@@ -3,7 +3,7 @@
 exports[`<FaceLabelingForm /> should render with no data 1`] = `
 Array [
   "",
-  .emotion-9 {
+  .emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -15,11 +15,18 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
-  padding: 16px;
+  padding: 0;
   width: 100%;
-  height: 100%;
-  overflow: auto;
+  overflow: hidden;
+}
+
+.emotion-5 {
+  padding: 16px;
   background-color: #191919;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: auto;
 }
 
 .emotion-4 {
@@ -73,14 +80,15 @@ Array [
   color: #000000;
 }
 
-.emotion-8 {
+.emotion-9 {
+  padding: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -115,35 +123,35 @@ Array [
   flex: 1;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-6 {
+.emotion-7 {
   width: 8px;
   min-width: 8px;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -178,36 +186,38 @@ Array [
   flex: 1;
 }
 
-.emotion-7:hover {
+.emotion-8:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
   background-color: #73b61c;
 }
 
-.emotion-7:hover {
+.emotion-8:hover {
   background-color: #96c955;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-9"
+    className="emotion-10"
     method="post"
     onSubmit={[Function]}
   >
-    <div>
+    <div
+      className="emotion-5"
+    >
       <div
         className="emotion-4"
       >
@@ -262,22 +272,22 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <button
         aria-disabled={true}
-        className="emotion-5"
+        className="emotion-6"
         onClick={[Function]}
         type="button"
       >
         Cancel
       </button>
       <div
-        className="emotion-6"
+        className="emotion-7"
       />
       <button
         aria-disabled={true}
-        className="emotion-7"
+        className="emotion-8"
         onClick={[Function]}
         type="submit"
       >
