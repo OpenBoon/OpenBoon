@@ -98,7 +98,8 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         with tempfile.NamedTemporaryFile(suffix=".png") as fp:
             plt.savefig(fp.name)
-            file_storage.projects.store_file(fp.name, self.app_model, "model")
+            file_storage.projects.store_file(fp.name,
+                                             self.app_model, "model", rename=f'{name}.png')
 
     def publish_model(self, labels):
         """
