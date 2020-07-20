@@ -161,11 +161,11 @@ const AssetsQuickView = ({ assets, columnCount }) => {
             alignItems: 'center',
             padding: spacing.spacious,
             '.ErrorBoundary > div': {
-              backgroundColor: 'transparent',
+              backgroundColor: colors.structure.transparent,
               boxShadow: 'none',
             },
             '.Loading': {
-              backgroundColor: 'transparent',
+              backgroundColor: colors.structure.transparent,
               boxShadow: 'none',
             },
           }}

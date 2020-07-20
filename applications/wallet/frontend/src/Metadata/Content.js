@@ -119,7 +119,7 @@ const MetadataContent = ({ projectId, assetId }) => {
                 backgroundColor:
                   displayOption === value
                     ? colors.structure.steel
-                    : colors.transparent,
+                    : colors.structure.transparent,
                 color:
                   displayOption === value
                     ? colors.structure.white

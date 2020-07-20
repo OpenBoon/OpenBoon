@@ -102,11 +102,11 @@ const TaskAssetsRow = ({
             height: MAX_HEIGHT,
             overflow: 'auto',
             '.ErrorBoundary > div': {
-              backgroundColor: 'transparent',
+              backgroundColor: colors.structure.transparent,
               boxShadow: 'none',
             },
             '.Loading': {
-              backgroundColor: 'transparent',
+              backgroundColor: colors.structure.transparent,
               height: '100%',
               boxShadow: 'none',
             },

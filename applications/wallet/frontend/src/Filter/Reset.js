@@ -56,7 +56,7 @@ const FilterReset = ({
             })
           }}
           css={{
-            backgroundColor: colors.transparent,
+            backgroundColor: colors.structure.transparent,
             border: 'none',
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
