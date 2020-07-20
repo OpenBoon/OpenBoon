@@ -8,7 +8,8 @@ __all__ = [
     'AssetSearchResult',
     'AssetSearchCsvExporter',
     'LabelConfidenceQuery',
-    'SimilarityQuery'
+    'SimilarityQuery',
+    'FaceSimilarityQuery'
 ]
 
 
@@ -335,7 +336,7 @@ class LabelConfidenceQuery(object):
         Create a new LabelConfidenceScoreQuery.
 
         Args:
-            namespace (str): The analysis namespace with predications. (zvi-label-detection)
+            namespace (str): The analysis namespace with predictions. (zvi-label-detection)
             labels (list): A list of labels to filter.
             min_score (float): The minimum label score.
             max_score (float): The maximum score, defaults to 1.0 which is highest
@@ -385,11 +386,12 @@ class SimilarityQuery:
     """
     def __init__(self, hashes, min_score=0.75, boost=1.0,
                  field="analysis.zvi-image-similarity.simhash"):
+        self.field = field
         self.hashes = []
-        self.add_hash(hashes)
         self.min_score = min_score
         self.boost = boost
-        self.field = field
+
+        self.add_hash(hashes)
 
     def add_hash(self, hashes):
         """
@@ -437,3 +439,35 @@ class SimilarityQuery:
     def __add__(self, simhash):
         self.add_hash(simhash)
         return self
+
+
+class FaceSimilarityQuery:
+    """
+    Performs a face similarity search.
+    """
+    def __init__(self, faces, min_score=0.90, boost=1.0,
+                 field="analysis.zvi-face-detection.predictions.simhash"):
+        """
+        Create a new FaceSimilarityQuery.
+
+        Args:
+            faces (list): A prediction with a 'simhash' property or a simhash itself.
+            min_score (float): The minimum score.
+            boost (float): A boost value which weights this query higer than others.
+            field (str): An optional field to compare make the comparison with. Defaults to ZVI.
+        """
+        hashes = []
+        for face in as_collection(faces):
+            if isinstance(face, str):
+                hashes.append(face)
+            else:
+                hashes.append(face['simhash'])
+
+        self.simquery = SimilarityQuery(
+            hashes,
+            min_score,
+            boost,
+            field)
+
+    def for_json(self):
+        return self.simquery.for_json()

@@ -26,7 +26,7 @@ enum class ModelType(
     val trainArgs: Map<String, Any>,
     val classifyProcessor: String,
     val classifyArgs: Map<String, Any>,
-    val moduleName: String,
+    val moduleName: String?,
     val description: String,
     val objective: String,
     val provider: String,
@@ -39,7 +39,7 @@ enum class ModelType(
         mapOf(),
         "zmlp_analysis.custom.KnnLabelDetectionClassifier",
         mapOf(),
-        "zvi-%s-cluster",
+        null,
         "Classify images or documents using a KNN classifier.  This type of model generates " +
             "a single prediction which can be used to quickly organize assets into general groups." +
             "The KNN classifier works with just a single image and label.",
@@ -56,7 +56,7 @@ enum class ModelType(
         ),
         "zmlp_analysis.custom.TensorflowTransferLearningClassifier",
         mapOf(),
-        "zvi-%s-label-detection",
+        null,
         "Classify images or documents using a custom strained CNN deep learning algorithm.  This type of model" +
             "generates multiple predictions and can be trained to identify very specific features. " +
             "The label detection classifier requires at least 2 concepts with 10 labeled images each. ",
@@ -71,7 +71,7 @@ enum class ModelType(
         mapOf(),
         "zmlp_analysis.custom.KnnFaceRecognitionClassifier",
         mapOf(),
-        "zvi-%s-face-recognition",
+        "zvi-face-recognition",
         "Relabel existing ZVI faces using a KNN Face Recognition model.",
         ModelObjective.FACE_RECOGNITION,
         Provider.ZORROA,
@@ -84,7 +84,7 @@ enum class ModelType(
         mapOf(),
         "zmlp_analysis.automl.AutoMLVisionClassifier",
         mapOf(),
-        "gcp-%s-label-detection",
+        null,
         "Utilize Google AutoML to train an image classifier.",
         ModelObjective.LABEL_DETECTION,
         Provider.GOOGLE,
