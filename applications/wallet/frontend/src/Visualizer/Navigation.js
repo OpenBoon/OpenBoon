@@ -60,6 +60,7 @@ const VisualizerNavigation = ({ itemCount }) => {
         >
           <a
             css={{
+              whiteSpace: 'nowrap',
               color:
                 pathname === '/[projectId]/visualizer'
                   ? colors.key.one
@@ -90,6 +91,7 @@ const VisualizerNavigation = ({ itemCount }) => {
         >
           <a
             css={{
+              whiteSpace: 'nowrap',
               color:
                 pathname === '/[projectId]/visualizer/data-visualization'
                   ? colors.key.one
@@ -103,6 +105,7 @@ const VisualizerNavigation = ({ itemCount }) => {
 
       <div
         css={{
+          whiteSpace: 'nowrap',
           padding: spacing.base,
           fontFamily: typography.family.condensed,
         }}
