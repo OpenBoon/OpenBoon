@@ -32,18 +32,18 @@ class TrainingSetDownloaderTests(unittest.TestCase):
             'dwarfs': 9
         }
         d = tempfile.mkdtemp()
-        dsl = TrainingSetDownloader(self.app, '12345', 'objects_coco', d)
+        dsl = TrainingSetDownloader(self.app, '12345', 'objects_coco', d, validation_split=0.3)
         dsl._setup_labels_std_base_dir()
 
         dirs = os.listdir(d)
-        assert 'set_train' in dirs
-        assert 'set_validate' in dirs
+        assert 'train' in dirs
+        assert 'validate' in dirs
 
-        labels1 = os.listdir(d + '/set_train')
+        labels1 = os.listdir(d + '/train')
         assert 4 == len(labels1)
         assert ['dwarfs', 'goats', 'hobbits', 'wizards'] == sorted(labels1)
 
-        labels2 = os.listdir(d + '/set_validate')
+        labels2 = os.listdir(d + '/validate')
         assert 4 == len(labels2)
         assert ['dwarfs', 'goats', 'hobbits', 'wizards'] == sorted(labels2)
 
@@ -83,7 +83,7 @@ class TrainingSetDownloaderTests(unittest.TestCase):
         dl_patch.return_value = b'foo'
 
         d = tempfile.mkdtemp()
-        dsl = TrainingSetDownloader(self.app, '12345', 'objects_coco', d)
+        dsl = TrainingSetDownloader(self.app, '12345', 'objects_coco', d, validation_split=0.3)
         dsl.build()
         with open(os.path.join(d, dsl.SET_TRAIN, 'annotations.json')) as fp:
             train_annotations = json.load(fp)
@@ -113,7 +113,7 @@ class TrainingSetDownloaderTests(unittest.TestCase):
         dl_patch.return_value = b'foo'
 
         d = tempfile.mkdtemp()
-        dsl = TrainingSetDownloader(self.app, '12345', 'objects_keras', d)
+        dsl = TrainingSetDownloader(self.app, '12345', 'objects_keras', d, validation_split=0.3)
         dsl.build()
 
         with open(os.path.join(d, 'classes.csv')) as fp:
@@ -123,11 +123,11 @@ class TrainingSetDownloaderTests(unittest.TestCase):
 
         with open(os.path.join(d, dsl.SET_TRAIN, 'annotations.csv')) as fp:
             count = len(fp.readlines())
-        assert 6 == count
+        assert count == 6
 
         with open(os.path.join(d, dsl.SET_VALIDATION, 'annotations.csv')) as fp:
             count = len(fp.readlines())
-        assert 2 == count
+        assert count == 2
 
 
 mock_search_result_objects = {
