@@ -71,7 +71,7 @@ const DataVisualizationContent = () => {
             flexDirection: 'column',
             padding: spacing.normal,
             overflow: 'auto',
-            boxShadow: constants.boxShadows.assets,
+            boxShadow: constants.boxShadows.inset,
           }}
         >
           <DataVisualizationActions

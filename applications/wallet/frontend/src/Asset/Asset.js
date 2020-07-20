@@ -51,7 +51,7 @@ const AssetAsset = ({ projectId, assetId }) => {
         width: '100%',
         height: '100%',
         overflowY: 'hidden',
-        boxShadow: constants.boxShadows.assets,
+        boxShadow: constants.boxShadows.inset,
       }}
     >
       <div css={{ width: '100%', height: '100%', marginTop: spacing.hairline }}>

@@ -13,7 +13,7 @@ const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
         flex: 1,
         display: 'flex',
         padding: spacing.base,
-        boxShadow: constants.boxShadows.assets,
+        boxShadow: constants.boxShadows.inset,
       }}
     >
       <div
