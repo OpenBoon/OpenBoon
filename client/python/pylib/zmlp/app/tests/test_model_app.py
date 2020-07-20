@@ -2,7 +2,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, ModelType, Model, ModelTypeInfo
+from zmlp import ZmlpClient, ModelType, Model
 from .util import get_zmlp_app
 
 logging.basicConfig(level=logging.DEBUG)
@@ -116,7 +116,7 @@ class ModelAppTests(unittest.TestCase):
         assert props.min_examples == 1
 
     @patch.object(ZmlpClient, 'get')
-    def test_get_model_type_properties(self, get_patch):
+    def test_get_all_model_type_info(self, get_patch):
         raw = {
             'name': 'ZVI_LABEL_DETECTION',
             'description': 'a description',

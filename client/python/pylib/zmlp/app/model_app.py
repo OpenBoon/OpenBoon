@@ -178,4 +178,3 @@ class ModelApp:
             list: A list of ModelTypeInfo
         """
         return [ModelTypeInfo(info) for info in self.app.client.get('/api/v3/models/_types')]
-
