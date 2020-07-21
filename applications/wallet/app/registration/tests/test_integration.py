@@ -13,7 +13,6 @@ from rest_framework.reverse import reverse
 
 from agreements.models import Agreement
 from registration.models import UserRegistrationToken
-from wallet.tests.utils import check_response
 
 pytestmark = pytest.mark.django_db
 User = get_user_model()
