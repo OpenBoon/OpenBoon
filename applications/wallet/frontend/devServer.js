@@ -84,7 +84,7 @@ app.prepare().then(() => {
     server.post(`${PID_API_BASE}/api_keys/`, mock(apiKey))
 
     server.get(`${PID_API_BASE}/users/`, mock(projectUsers))
-    server.get(`${PID_API_BASE} /users/:userId/`, mock(projectUser))
+    server.get(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
     server.delete(`${PID_API_BASE}/users/:userId/`, success())
     server.patch(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
     server.post(`${PID_API_BASE}/users/`, mock(projectUsersAdd))
