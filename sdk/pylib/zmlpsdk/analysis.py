@@ -305,7 +305,7 @@ class SingleLabelAnalysis:
         base = {
             'label': self.label,
             'score': self.score,
-            'type': 'clusters'
+            'type': 'single-label'
         }
         return base
 

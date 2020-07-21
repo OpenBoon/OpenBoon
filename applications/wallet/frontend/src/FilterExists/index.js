@@ -83,7 +83,7 @@ const FilterExists = ({
                     (value === 'Exists' && exists) ||
                     (value === 'Missing' && !exists)
                       ? colors.structure.steel
-                      : colors.transparent,
+                      : colors.structure.transparent,
                   color:
                     (value === 'Exists' && exists) ||
                     (value === 'Missing' && !exists)

@@ -23,7 +23,7 @@ def main():
     parser.add_argument('dst_dir', help="The dir to download to.")
     parser.add_argument('-t', '--threads', type=int, default=8,
                         help="The number of threads to download with. Defaults to 8")
-    parser.add_argument('-r', '--training-set-split', type=int, default=4,
+    parser.add_argument('-r', '--validation-split', type=float, default=0.2,
                         help="The number of images for training set vs test set, defaults to 4")
 
     args = parser.parse_args()
@@ -31,7 +31,7 @@ def main():
 
     with Pool(processes=args.threads) as pool:
         dl = TrainingSetDownloader(app, args.model, args.style, args.dst_dir,
-                                   training_set_split=args.training_set_split)
+                                   validation_split=args.validation_split)
         dl.build(pool=pool)
         pool.close()
         pool.join()

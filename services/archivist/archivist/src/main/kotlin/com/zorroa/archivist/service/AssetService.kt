@@ -792,8 +792,8 @@ class AssetServiceImpl : AssetService {
     }
 
     override fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse {
-        val bulkSize = 50
-        val maxAssets = 1000
+        val bulkSize = 100
+        val maxAssets = 1000L
         if (req.add?.size ?: 0 > maxAssets) {
             throw IllegalArgumentException(
                 "Cannot add labels to more than $maxAssets assets at a time."
@@ -838,9 +838,11 @@ class AssetServiceImpl : AssetService {
         // Build a bulk update.
         val rsp = rest.client.search(builder.request, RequestOptions.DEFAULT)
         val bulk = BulkRequest()
+        // Need an IMMEDIATE refresh policy or else we could end
+        // up losing labels with subsequent calls.
         bulk.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
-        for (asset in AssetIterator(rest.client, rsp, 5000)) {
+        for (asset in AssetIterator(rest.client, rsp, maxAssets)) {
             val removeLabels = req.remove?.get(asset.id)
             removeLabels?.let {
                 asset.removeLabels(it)
