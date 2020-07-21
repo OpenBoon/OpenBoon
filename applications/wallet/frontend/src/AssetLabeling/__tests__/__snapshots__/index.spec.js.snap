@@ -152,11 +152,11 @@ Array [
 }
 
 .emotion-4 {
-  padding-bottom: 8px;
   color: #b3b3b3;
 }
 
 .emotion-6 {
+  padding-top: 8px;
   padding-bottom: 8px;
 }
 
@@ -772,11 +772,11 @@ Array [
 }
 
 .emotion-4 {
-  padding-bottom: 8px;
   color: #b3b3b3;
 }
 
 .emotion-6 {
+  padding-top: 8px;
   padding-bottom: 8px;
 }
 
@@ -1392,11 +1392,11 @@ Array [
 }
 
 .emotion-4 {
-  padding-bottom: 8px;
   color: #b3b3b3;
 }
 
 .emotion-6 {
+  padding-top: 8px;
   padding-bottom: 8px;
 }
 

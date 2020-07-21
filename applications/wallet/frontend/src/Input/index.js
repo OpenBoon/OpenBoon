@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import styleShape from '../Style/shape'
+
 import { constants, spacing, colors, typography } from '../Styles'
 
 const PADDING = spacing.base
@@ -144,7 +146,7 @@ Input.propTypes = {
   after: PropTypes.node,
   isRequired: PropTypes.bool,
   isDisabled: PropTypes.bool,
-  style: PropTypes.shape({ name: PropTypes.string, styles: PropTypes.string }),
+  style: styleShape,
 }
 
 export default Input

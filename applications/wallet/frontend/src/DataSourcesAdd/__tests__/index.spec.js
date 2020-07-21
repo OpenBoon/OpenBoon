@@ -51,7 +51,7 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
+        .findByProps({ htmlFor: 'source-selection' })
         .props.onChange({ target: { value: 'AWS' } })
     })
 
@@ -60,7 +60,7 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
+        .findByProps({ htmlFor: 'source-selection' })
         .props.onChange({ target: { value: 'AZURE' } })
     })
 
@@ -69,7 +69,7 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
+        .findByProps({ htmlFor: 'source-selection' })
         .props.onChange({ target: { value: 'GCP' } })
     })
 

@@ -2,13 +2,12 @@ import { useReducer } from 'react'
 import useSWR from 'swr'
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import { spacing } from '../Styles'
 
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-
-const HEIGHT = 40
+import Select from '../Select'
 
 const noop = () => {}
 
@@ -31,50 +30,23 @@ const AssetLabelingAdd = ({ projectId }) => {
   return (
     <div css={{ padding: spacing.normal }}>
       <Form style={{ width: '100%', padding: 0 }}>
-        <label
+        <Select
           htmlFor="models-list"
-          css={{ paddingBottom: spacing.base, color: colors.structure.zinc }}
+          label="Model:"
+          placeholder="Select a model..."
+          onChange={({ target: { value } }) => {
+            dispatch({ model: value })
+          }}
+          style={{ width: '100%' }}
         >
-          Model:
-        </label>
-        <div css={{ paddingBottom: spacing.base }}>
-          <select
-            name="models-list"
-            id="models-list"
-            defaultValue=""
-            onChange={({ target: { value } }) => {
-              dispatch({ model: value })
-            }}
-            css={{
-              backgroundColor: colors.structure.steel,
-              borderRadius: constants.borderRadius.small,
-              border: 'none',
-              width: '100%',
-              height: HEIGHT,
-              color: colors.structure.white,
-              fontSize: typography.size.regular,
-              lineHeight: typography.height.regular,
-              paddingLeft: spacing.moderate,
-              MozAppearance: 'none',
-              WebkitAppearance: 'none',
-              backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+')`,
-              backgroundRepeat: `no-repeat, repeat`,
-              backgroundPosition: `right ${spacing.base}px top 50%`,
-              backgroundSize: constants.icons.regular,
-            }}
-          >
-            <option value="" disabled>
-              Select a model...
-            </option>
-            {models.map((option) => {
-              return (
-                <option key={option.name} value={option.id}>
-                  {option.name}
-                </option>
-              )
-            })}
-          </select>
-        </div>
+          {models.map((option) => {
+            return (
+              <option key={option.name} value={option.id}>
+                {option.name}
+              </option>
+            )
+          })}
+        </Select>
 
         <Input
           id="asset-label"

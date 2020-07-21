@@ -210,7 +210,6 @@ Array [
 }
 
 .emotion-13 {
-  padding-bottom: 8px;
   color: #b3b3b3;
 }
 
@@ -929,11 +928,14 @@ Array [
           className="emotion-13"
           htmlFor="source-selection"
         >
-          Source type 
-          <span
-            className="emotion-12"
-          >
-            *
+          <span>
+            Source type
+             
+            <span
+              className="emotion-12"
+            >
+              *
+            </span>
           </span>
         </label>
         <div
@@ -943,7 +945,7 @@ Array [
             className="emotion-14"
             defaultValue=""
             id="source-selection"
-            name="sources"
+            name="source-selection"
             onChange={[Function]}
           >
             <option
@@ -2008,7 +2010,6 @@ Array [
 }
 
 .emotion-13 {
-  padding-bottom: 8px;
   color: #b3b3b3;
 }
 
@@ -2732,11 +2733,14 @@ Array [
           className="emotion-13"
           htmlFor="source-selection"
         >
-          Source type 
-          <span
-            className="emotion-12"
-          >
-            *
+          <span>
+            Source type
+             
+            <span
+              className="emotion-12"
+            >
+              *
+            </span>
           </span>
         </label>
         <div
@@ -2746,7 +2750,7 @@ Array [
             className="emotion-14"
             defaultValue=""
             id="source-selection"
-            name="sources"
+            name="source-selection"
             onChange={[Function]}
           >
             <option
@@ -3909,7 +3913,6 @@ Array [
 }
 
 .emotion-13 {
-  padding-bottom: 8px;
   color: #b3b3b3;
 }
 
@@ -4633,11 +4636,14 @@ Array [
           className="emotion-13"
           htmlFor="source-selection"
         >
-          Source type 
-          <span
-            className="emotion-12"
-          >
-            *
+          <span>
+            Source type
+             
+            <span
+              className="emotion-12"
+            >
+              *
+            </span>
           </span>
         </label>
         <div
@@ -4647,7 +4653,7 @@ Array [
             className="emotion-14"
             defaultValue=""
             id="source-selection"
-            name="sources"
+            name="source-selection"
             onChange={[Function]}
           >
             <option
@@ -5777,7 +5783,6 @@ Array [
 }
 
 .emotion-13 {
-  padding-bottom: 8px;
   color: #b3b3b3;
 }
 
@@ -6501,11 +6506,14 @@ Array [
           className="emotion-13"
           htmlFor="source-selection"
         >
-          Source type 
-          <span
-            className="emotion-12"
-          >
-            *
+          <span>
+            Source type
+             
+            <span
+              className="emotion-12"
+            >
+              *
+            </span>
           </span>
         </label>
         <div
@@ -6515,7 +6523,7 @@ Array [
             className="emotion-14"
             defaultValue=""
             id="source-selection"
-            name="sources"
+            name="source-selection"
             onChange={[Function]}
           >
             <option
