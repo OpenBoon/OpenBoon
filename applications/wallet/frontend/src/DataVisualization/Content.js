@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import { cleanup } from '../Filters/helpers'
 import {
@@ -48,7 +48,13 @@ const DataVisualizationContent = () => {
   const [isCreating, setIsCreating] = useState(charts.length === 0)
 
   return (
-    <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+    <div
+      css={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       {!!itemCount && <VisualizerNavigation itemCount={itemCount} />}
 
       {isCreating ? (
@@ -65,6 +71,7 @@ const DataVisualizationContent = () => {
             flexDirection: 'column',
             padding: spacing.normal,
             overflow: 'auto',
+            boxShadow: constants.boxShadows.inset,
           }}
         >
           <DataVisualizationActions
