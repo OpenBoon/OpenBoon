@@ -6,6 +6,8 @@ from google.cloud import automl_v1beta1 as automl
 
 from zmlpsdk import Argument, AssetProcessor
 from zmlpsdk.proxy import get_proxy_level_path
+from zmlpsdk.analysis import LabelDetectionAnalysis
+from zmlpsdk.cloud import get_gcp_project_id
 
 
 class AutoMLModelProcessor(AssetProcessor):
@@ -226,3 +228,70 @@ class AutoMLVisionModelProcessor(AutoMLModelProcessor):
                 "image_bytes": content
             }
         }
+
+
+class AutoMLModelClassifier(AssetProcessor):
+    """Classifier for trained AutoML model """
+
+    def __init__(self):
+        super(AutoMLModelClassifier, self).__init__()
+        self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
+        self.add_arg(Argument("score_threshold", "str", default="0.5", toolTip="Score threshold"))
+
+        self.app_model = None
+        self.threshold = None
+        self.project_location = None
+        self.predictions = None
+        self.prediction_client = automl.PredictionServiceClient()
+
+    def init(self):
+        """Init constructor """
+        self.app_model = self.app.models.get_model(self.arg_value("model_id"))
+        self.threshold = self.arg_value("score_threshold")
+
+    def process(self, frame):
+        """Process the given frame for predicting and adding labels to an asset
+
+        Args:
+            frame (Frame): Frame to be processed
+
+        Returns:
+            None
+        """
+        asset = frame.asset
+        proxy_path = get_proxy_level_path(asset, 0)
+        self.predict(proxy_path)
+
+        analysis = LabelDetectionAnalysis(min_score=0.01)
+        for result in self.predictions.payload:
+            analysis.add_label_and_score(result.display_name, result.classification.score)
+
+        asset.add_analysis(self.app_model.module_name, analysis)
+
+    def predict(self, path):
+        """ Make a prediction for an image path
+
+        Args:
+            path (str): image path
+
+        Returns:
+            None
+        """
+        # Get the full path of the model.
+        model_full_id = self.prediction_client.model_path(
+            get_gcp_project_id(), "us-central1", self.app_model.id
+        )
+
+        # Read the file.
+        with open(path, "rb") as content_file:
+            content = content_file.read()
+
+        image = automl.types.Image(image_bytes=content)
+        payload = automl.types.ExamplePayload(image=image)
+
+        # params is additional domain-specific parameters.
+        # score_threshold is used to filter the result
+        # https://cloud.google.com/automl/docs/reference/rpc/google.cloud.automl.v1#predictrequest
+        params = {"score_threshold": self.threshold}
+
+        self.predictions = self.prediction_client.predict(model_full_id, payload, params)
