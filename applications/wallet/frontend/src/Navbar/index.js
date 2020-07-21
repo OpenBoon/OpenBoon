@@ -9,7 +9,6 @@ import ProjectSwitcher from '../ProjectSwitcher'
 
 import HamburgerSvg from './hamburger.svg'
 
-const ICON_SIZE = 20
 const LOGO_HEIGHT = 30
 
 const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
@@ -50,7 +49,7 @@ const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
               cursor: 'pointer',
             }}
           >
-            <HamburgerSvg height={ICON_SIZE} />
+            <HamburgerSvg height={constants.icons.regular} />
           </button>
         )}
 

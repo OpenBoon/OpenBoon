@@ -9,8 +9,6 @@ import { getQueryString } from '../Fetch/helpers'
 import AssetsSvg from '../Icons/assets.svg'
 import ChartsSvg from '../Icons/charts.svg'
 
-const ICON_SIZE = 20
-
 const VisualizerNavigation = ({ itemCount }) => {
   const {
     pathname,
@@ -67,7 +65,7 @@ const VisualizerNavigation = ({ itemCount }) => {
                   : colors.structure.steel,
             }}
           >
-            <AssetsSvg height={ICON_SIZE} /> Assets
+            <AssetsSvg height={constants.icons.regular} /> Assets
           </a>
         </Link>
 
@@ -98,7 +96,7 @@ const VisualizerNavigation = ({ itemCount }) => {
                   : colors.structure.steel,
             }}
           >
-            <ChartsSvg height={ICON_SIZE} /> Data Visualization
+            <ChartsSvg height={constants.icons.regular} /> Data Visualization
           </a>
         </Link>
       </div>

@@ -8,8 +8,6 @@ import { colors, spacing, constants } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
-const ICON_SIZE = 20
-
 const TableRefresh = ({ onClick, legend, refreshKeys }) => {
   const [clicked, setClicked] = useState(false)
 
@@ -32,7 +30,7 @@ const TableRefresh = ({ onClick, legend, refreshKeys }) => {
         }}
       >
         <RefreshSvg
-          height={ICON_SIZE}
+          height={constants.icons.regular}
           color={colors.structure.white}
           css={{ animation: clicked ? constants.animations.dualRotation : '' }}
         />
