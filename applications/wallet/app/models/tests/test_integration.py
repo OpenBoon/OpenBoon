@@ -150,7 +150,8 @@ class TestModelViewSetActions:
         monkeypatch.setattr(ZmlpClient, 'get', mock_response)
         response = api_client.get(path)
         content = check_response(response)
-        assert content == {'labels': [{'label': 'Mountains', 'count': 8}]}
+        assert content == {'count': 1,
+                           'results': [{'label': 'Mountains', 'count': 8}]}
 
 
 class TestLabelingEndpoints:
