@@ -7,10 +7,10 @@ from zmlp.app import ModelApp
 from zmlp.entity import Model
 from zmlp_analysis.google import AutoMLModelClassifier
 from zmlpsdk.base import Frame
-from zmlpsdk.storage import file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
 
 logging.basicConfig()
+
 
 class AutoMLModelClassifierTests(PluginUnitTestCase):
     def setUp(self):
