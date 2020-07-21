@@ -180,7 +180,7 @@ class ApiKeyServiceImpl constructor(
         apiKeyRepository.deleteByProjectIdAndSystemKey(projectId, true)
 
         logger.event(
-            LogObject.API_SYSTEM_KEY, LogAction.DELETE,
+            LogObject.API_KEY, LogAction.DELETE,
             mapOf(
                 "projectId" to projectId
             )

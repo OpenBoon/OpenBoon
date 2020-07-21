@@ -62,7 +62,6 @@ enum class LogObject {
     PIPELINE_STORAGE,
     PIPELINE_MODULE,
     API_KEY,
-    API_SYSTEM_KEY,
     CREDENTIALS,
     DATASET,
     CLUSTER_SNAPSHOT,
