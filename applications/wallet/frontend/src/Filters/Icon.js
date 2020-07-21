@@ -1,12 +1,11 @@
 import { useRouter } from 'next/router'
 
-import { colors } from '../Styles'
+import { colors, constants } from '../Styles'
 
 import FilterSvg from '../Icons/filter.svg'
 
 import { cleanup } from './helpers'
 
-const ICON_SIZE = 20
 const INDICATOR_SIZE = 10
 const BORDER = `2px solid ${colors.structure.lead}`
 
@@ -38,7 +37,7 @@ const FiltersIcon = () => {
           }}
         />
       )}
-      <FilterSvg height={ICON_SIZE} />
+      <FilterSvg height={constants.iconSize} />
     </div>
   )
 }

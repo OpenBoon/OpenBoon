@@ -19,7 +19,6 @@ import SidebarLink from './Link'
 import SidebarOverlay from './Overlay'
 
 const WIDTH = 240
-const ICON_SIZE = 20
 
 const Sidebar = forwardRef(
   ({ projectId, isSidebarOpen, setSidebarOpen }, ref) => {
@@ -65,39 +64,39 @@ const Sidebar = forwardRef(
             }}
           >
             <SidebarLink projectId={projectId} href="/[projectId]">
-              <DashboardSvg height={ICON_SIZE} />
+              <DashboardSvg height={constants.iconSize} />
               Project Dashboard
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/data-sources">
-              <DataSourcesSvg height={ICON_SIZE} />
+              <DataSourcesSvg height={constants.iconSize} />
               Data Sources
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/jobs">
-              <JobQueueSvg height={ICON_SIZE} />
+              <JobQueueSvg height={constants.iconSize} />
               Job Queue
             </SidebarLink>
 
             <Feature flag="asset-labeling" envs={[]}>
               <SidebarLink projectId={projectId} href="/[projectId]/models">
-                <ModelsSvg height={ICON_SIZE} />
+                <ModelsSvg height={constants.iconSize} />
                 Custom Models
               </SidebarLink>
             </Feature>
 
             <SidebarLink projectId={projectId} href="/[projectId]/visualizer">
-              <VisualizerSvg height={ICON_SIZE} />
+              <VisualizerSvg height={constants.iconSize} />
               Visualizer
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/api-keys">
-              <KeySvg height={ICON_SIZE} />
+              <KeySvg height={constants.iconSize} />
               API Keys
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/users">
-              <UsersSvg height={ICON_SIZE} />
+              <UsersSvg height={constants.iconSize} />
               User Admin
             </SidebarLink>
           </ul>
@@ -112,12 +111,12 @@ const Sidebar = forwardRef(
             }}
           >
             <SidebarLink projectId={projectId} href="/">
-              <DashboardSvg height={ICON_SIZE} />
+              <DashboardSvg height={constants.iconSize} />
               Account Dashboard
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/account">
-              <GearSvg height={ICON_SIZE} />
+              <GearSvg height={constants.iconSize} />
               Account
             </SidebarLink>
           </ul>

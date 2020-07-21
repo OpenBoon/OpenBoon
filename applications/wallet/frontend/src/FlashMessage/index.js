@@ -7,24 +7,33 @@ import WarningSvg from '../Icons/warning.svg'
 import GeneratingSvg from '../Icons/generating.svg'
 
 const PADDING = spacing.moderate
-const ICON_SIZE = 20
 
 const STYLES = {
   SUCCESS: {
     backgroundColor: colors.signal.grass.background,
-    icon: <CheckmarkSvg height={ICON_SIZE} color={colors.signal.grass.base} />,
+    icon: (
+      <CheckmarkSvg
+        height={constants.iconSize}
+        color={colors.signal.grass.base}
+      />
+    ),
     linkColor: colors.signal.grass.base,
   },
   ERROR: {
     backgroundColor: colors.signal.warning.background,
-    icon: <WarningSvg height={ICON_SIZE} color={colors.signal.warning.base} />,
+    icon: (
+      <WarningSvg
+        height={constants.iconSize}
+        color={colors.signal.warning.base}
+      />
+    ),
     linkColor: colors.signal.warning.base,
   },
   PROCESSING: {
     backgroundColor: colors.signal.sky.background,
     icon: (
       <GeneratingSvg
-        height={ICON_SIZE}
+        height={constants.iconSize}
         color={colors.signal.sky.base}
         css={{ animation: constants.animations.infiniteRotation }}
       />

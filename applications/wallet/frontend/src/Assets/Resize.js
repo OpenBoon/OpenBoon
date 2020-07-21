@@ -9,8 +9,6 @@ import CircleMinusSvg from './circleMinus.svg'
 
 import { ACTIONS } from './reducer'
 
-const ICON_SIZE = 20
-
 const AssetsResize = ({ dispatch, isMin, isMax }) => (
   <div
     css={{
@@ -48,7 +46,7 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
         opacity: constants.opacity.full,
       }}
     >
-      <CircleMinusSvg height={ICON_SIZE} />
+      <CircleMinusSvg height={constants.iconSize} />
     </Button>
     <Button
       aria-label="Zoom In"
@@ -68,7 +66,7 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
         opacity: constants.opacity.full,
       }}
     >
-      <CirclePlusSvg height={ICON_SIZE} />
+      <CirclePlusSvg height={constants.iconSize} />
     </Button>
   </div>
 )

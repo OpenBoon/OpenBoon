@@ -3,13 +3,12 @@ import PropTypes from 'prop-types'
 import PenSvg from '../Icons/pen.svg'
 import CrossSvg from '../Icons/cross.svg'
 
-import { colors, spacing, typography } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import { ACTIONS } from '../DataVisualization/reducer'
 
 import Button, { VARIANTS } from '../Button'
 
-const ICON_SIZE = 20
 const ICON_PADDING = 6
 
 const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
@@ -57,7 +56,7 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
           setIsEditing(true)
         }}
       >
-        <PenSvg height={ICON_SIZE} />
+        <PenSvg height={constants.iconSize} />
       </Button>
 
       <div css={{ width: spacing.mini }} />
@@ -79,7 +78,7 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
           dispatch({ type: ACTIONS.DELETE, payload: { chartIndex } })
         }
       >
-        <CrossSvg height={ICON_SIZE} />
+        <CrossSvg height={constants.iconSize} />
       </Button>
     </div>
   )

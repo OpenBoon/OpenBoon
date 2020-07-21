@@ -12,8 +12,6 @@ import Button, { VARIANTS } from '../Button'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
-const ICON_SIZE = 20
-
 const FilterTextSearch = ({
   pathname,
   projectId,
@@ -52,7 +50,7 @@ const FilterTextSearch = ({
             paddingLeft: spacing.comfy,
           }}
         >
-          <TextSvg css={{ width: ICON_SIZE, color: colors.key.one }} />
+          <TextSvg css={{ width: constants.iconSize, color: colors.key.one }} />
         </div>
 
         <div
@@ -115,7 +113,7 @@ const FilterTextSearch = ({
           }
         >
           <HiddenSvg
-            height={ICON_SIZE}
+            height={constants.iconSize}
             color={
               isDisabled ? colors.signal.canary.strong : colors.structure.steel
             }
@@ -150,7 +148,7 @@ const FilterTextSearch = ({
           }
         >
           <CrossSvg
-            height={ICON_SIZE}
+            height={constants.iconSize}
             color={colors.structure.steel}
             css={{ opacity: 0 }}
           />

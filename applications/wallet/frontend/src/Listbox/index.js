@@ -16,7 +16,6 @@ import { constants, spacing, colors, typography } from '../Styles'
 import ListboxOptions from './Options'
 import { getFilteredOptions } from './helpers'
 
-const ICON_SIZE = 20
 const MAX_HEIGHT = 350
 
 const Listbox = ({ label, options, onChange, value, placeholder }) => {
@@ -68,7 +67,10 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
             padding: spacing.base,
           }}
           arrow={
-            <ChevronSvg height={ICON_SIZE} color={colors.structure.white} />
+            <ChevronSvg
+              height={constants.iconSize}
+              color={colors.structure.white}
+            />
           }
         >
           {placeholder}

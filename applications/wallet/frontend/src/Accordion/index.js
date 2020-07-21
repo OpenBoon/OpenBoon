@@ -10,8 +10,6 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
-const ICON_SIZE = 20
-
 const STYLES = {
   PRIMARY: {
     container: {
@@ -138,7 +136,7 @@ const Accordion = ({
           style={{ padding: 0 }}
         >
           <ChevronSvg
-            height={ICON_SIZE}
+            height={constants.iconSize}
             css={{
               transform: isOpen ? 'rotate(-180deg)' : '',
             }}

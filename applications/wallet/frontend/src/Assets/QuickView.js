@@ -11,8 +11,6 @@ import SuspenseBoundary from '../SuspenseBoundary'
 import AssetAsset from '../Asset/Asset'
 import { getQueryString } from '../Fetch/helpers'
 
-const ICON_SIZE = 20
-
 const AssetsQuickView = ({ assets, columnCount }) => {
   const {
     query: { projectId, id: selectedId, query },
@@ -149,7 +147,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
             },
           }}
         >
-          <CrossSvg height={ICON_SIZE} />
+          <CrossSvg height={constants.iconSize} />
         </Button>
 
         <div

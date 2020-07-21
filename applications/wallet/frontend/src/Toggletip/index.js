@@ -4,7 +4,6 @@ import { colors, constants, spacing } from '../Styles'
 
 import HelpSvg from '../Icons/help.svg'
 
-const ICON_SIZE = 20
 const CARET_SIZE = 6
 const CARET_POSITION = 14
 const TEXTBOX_POSITION = 10
@@ -43,7 +42,7 @@ const Toggletip = ({ openToThe, label, children }) => {
           color: colors.structure.steel,
         }}
       >
-        <HelpSvg height={ICON_SIZE} />
+        <HelpSvg height={constants.iconSize} />
       </button>
 
       <div
@@ -52,7 +51,7 @@ const Toggletip = ({ openToThe, label, children }) => {
         css={{
           position: 'absolute',
           [openToThe === 'left' ? 'right' : 'left']: -TEXTBOX_POSITION,
-          top: ICON_SIZE + spacing.base,
+          top: constants.iconSize + spacing.base,
           color: colors.structure.coal,
           backgroundColor: colors.structure.white,
           borderRadius: constants.borderRadius.small,

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-import { colors, spacing } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 import Panel from '../Panel'
@@ -12,8 +12,6 @@ import TrashSvg from '../Icons/trash.svg'
 
 import AssetAsset from './Asset'
 import AssetNavigation from './Navigation'
-
-const ICON_SIZE = 20
 
 const AssetContent = () => {
   const {
@@ -62,12 +60,12 @@ const AssetContent = () => {
           {{
             metadata: {
               title: 'Asset Metadata',
-              icon: <InformationSvg height={ICON_SIZE} />,
+              icon: <InformationSvg height={constants.iconSize} />,
               content: <Metadata />,
             },
             delete: {
               title: 'Delete',
-              icon: <TrashSvg height={ICON_SIZE} />,
+              icon: <TrashSvg height={constants.iconSize} />,
               content: <AssetDelete />,
             },
           }}

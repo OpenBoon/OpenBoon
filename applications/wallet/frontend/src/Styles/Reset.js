@@ -1,9 +1,7 @@
 import React from 'react'
 import { Global, css } from '@emotion/core'
 
-import { colors, typography, spacing } from '.'
-
-const ICON_SIZE = 20
+import { colors, constants, typography, spacing } from '.'
 
 const StylesReset = () => (
   <>
@@ -56,8 +54,8 @@ const StylesReset = () => (
         'input[type="search"]::-webkit-search-cancel-button': {
           MozAppearance: 'none',
           WebkitAppearance: 'none',
-          height: ICON_SIZE,
-          width: ICON_SIZE,
+          height: constants.iconSize,
+          width: constants.iconSize,
           backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTMuOSA0bDEuNCAxLjQtNC4yIDQuMiA0LjIgNC4yLTEuNCAxLjRMOS43IDExbC00LjIgNC4yTDQgMTMuOWw0LjItNC4yTDQgNS40IDUuNCA0bDQuMiA0LjJMMTMuOSA0eiIgLz4KPC9zdmc+Cg==')`,
           backgroundRepeat: `no-repeat, repeat`,
           backgroundPosition: `right top 50%`,

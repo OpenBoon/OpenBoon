@@ -13,7 +13,6 @@ import Button, { VARIANTS } from '../Button'
 import FilterSvg from '../Icons/filter.svg'
 
 const BAR_HEIGHT = 4
-const ICON_SIZE = 20
 const ICON_PADDING = spacing.small
 
 const COLORS = [
@@ -73,7 +72,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
           display: 'flex',
           justifyContent: 'space-between',
           paddingBottom: spacing.base,
-          paddingRight: ICON_SIZE + ICON_PADDING * 2,
+          paddingRight: constants.iconSize + ICON_PADDING * 2,
           fontFamily: typography.family.condensed,
           color: colors.structure.zinc,
         }}
@@ -189,7 +188,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
                       justifyContent: 'center',
                     }}
                   >
-                    <FilterSvg height={ICON_SIZE} />
+                    <FilterSvg height={constants.iconSize} />
                   </div>
                 </div>
               </Button>
@@ -227,7 +226,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
         >
           <div css={{ display: 'flex', alignItems: 'center' }}>
             <div css={{ display: 'flex', paddingRight: spacing.small }}>
-              <FilterSvg height={ICON_SIZE} />
+              <FilterSvg height={constants.iconSize} />
             </div>
             Add Field Filter
           </div>
