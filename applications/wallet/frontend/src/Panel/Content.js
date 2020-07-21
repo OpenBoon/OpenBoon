@@ -30,6 +30,9 @@ const PanelContent = ({
           flexDirection: 'column',
           height: '100%',
           backgroundColor: colors.structure.lead,
+          [openToThe === 'left'
+            ? 'marginRight'
+            : 'marginLeft']: spacing.hairline,
         }}
       >
         <div

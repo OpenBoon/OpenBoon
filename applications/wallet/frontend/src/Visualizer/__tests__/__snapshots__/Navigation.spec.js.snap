@@ -6,8 +6,8 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
   padding-right: 8px;
   background-color: #252525;
   color: #808080;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  margin-bottom: 1px;
+  margin: 1px;
+  margin-top: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -129,8 +129,8 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
   padding-right: 8px;
   background-color: #252525;
   color: #808080;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  margin-bottom: 1px;
+  margin: 1px;
+  margin-top: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

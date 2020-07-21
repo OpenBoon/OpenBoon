@@ -18,14 +18,7 @@ const Panel = ({ openToThe, children }) => {
   const panel = children[openPanel] || {}
 
   return (
-    <div
-      css={{
-        display: 'flex',
-        boxShadow: `${openToThe === 'left' ? '-' : ''}${
-          constants.boxShadows.panel
-        }`,
-      }}
-    >
+    <div css={{ display: 'flex' }}>
       {!!panel.title && openToThe === 'left' && (
         <PanelContent
           openToThe={openToThe}
@@ -37,9 +30,6 @@ const Panel = ({ openToThe, children }) => {
         css={{
           display: 'flex',
           flexDirection: 'column',
-          [openToThe === 'left'
-            ? 'paddingLeft'
-            : 'paddingRight']: spacing.hairline,
         }}
       >
         {Object.entries(children).map(

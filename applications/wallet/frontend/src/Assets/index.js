@@ -138,7 +138,7 @@ const Assets = () => {
           flex: 1,
           position: 'relative',
           marginBottom: -spacing.mini,
-          boxShadow: constants.boxShadows.assets,
+          boxShadow: constants.boxShadows.inset,
         }}
       >
         {pages}
