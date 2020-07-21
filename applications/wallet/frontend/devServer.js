@@ -51,8 +51,12 @@ app.prepare().then(() => {
   // Mock API calls
   if (MOCKED) {
     server.post('/api/v1/login/', mock(user))
+
     server.get('/api/v1/me/', mock(user))
     server.post(`/api/v1/me/agreements/`, success())
+    const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
+    server.patch(`/api/v1/me/`, mock(userpatch))
+
     server.get('/api/v1/projects/', mock(projects))
     server.post('/api/v1/password/reset/', success())
     server.get('/api/v1/projects/:projectId', mock(project))
@@ -80,7 +84,7 @@ app.prepare().then(() => {
     server.post(`${PID_API_BASE}/api_keys/`, mock(apiKey))
 
     server.get(`${PID_API_BASE}/users/`, mock(projectUsers))
-    server.get(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
+    server.get(`${PID_API_BASE} /users/:userId/`, mock(projectUser))
     server.delete(`${PID_API_BASE}/users/:userId/`, success())
     server.patch(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
     server.post(`${PID_API_BASE}/users/`, mock(projectUsersAdd))

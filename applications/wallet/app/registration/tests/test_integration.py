@@ -13,6 +13,7 @@ from rest_framework.reverse import reverse
 
 from agreements.models import Agreement
 from registration.models import UserRegistrationToken
+from wallet.tests.utils import check_response
 
 pytestmark = pytest.mark.django_db
 User = get_user_model()
@@ -349,6 +350,15 @@ def test_get_me(login, api_client):
     assert response_data['username'] == 'user'
     assert response_data['firstName'] == ''
     assert response_data['lastName'] == ''
+
+
+def test_patch_me(login, api_client):
+    response = check_response(api_client.patch(reverse('me'),
+                                               {'first_name': 'some', 'last_name': 'body'}))
+    assert response['email'] == 'user@fake.com'
+    assert response['username'] == 'user'
+    assert response['firstName'] == 'some'
+    assert response['lastName'] == 'body'
 
 
 def test_api_logout(api_client, user):

@@ -165,6 +165,12 @@ class MeView(ConvertCamelToSnakeViewSetMixin, APIView):
     def get(self, request):
         return Response(UserSerializer(request.user, context={'request': request}).data)
 
+    def patch(self, request):
+        serializer = UserSerializer(request.user, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
 
 class LogoutView(ConvertCamelToSnakeViewSetMixin, APIView):
     """Basic logout view. Logs the user out and returns and empty json payload."""

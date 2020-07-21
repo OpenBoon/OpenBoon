@@ -38,9 +38,10 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         depth = 1
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'groups',
-                  'is_active', 'is_staff', 'is_superuser', 'last_login',
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'last_login',
                   'date_joined', 'roles', 'agreed_to_policies_date']
+        read_only_fields = ['id', 'username', 'email', 'last_login', 'date_joined',
+                            'roles', 'agreed_to_policies_date']
 
     def get_roles(self, obj):
         memberships = Membership.objects.filter(user=obj)
