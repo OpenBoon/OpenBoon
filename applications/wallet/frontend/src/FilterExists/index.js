@@ -15,8 +15,6 @@ import FilterReset from '../Filter/Reset'
 import FilterTitle from '../Filter/Title'
 import FilterActions from '../Filter/Actions'
 
-const ICON_SIZE = 20
-
 export const noop = () => {}
 
 const FilterExists = ({
@@ -109,9 +107,9 @@ const FilterExists = ({
               >
                 <div css={{ display: 'flex', alignItems: 'center' }}>
                   {value === 'Exists' ? (
-                    <ExistsSvg height={ICON_SIZE} />
+                    <ExistsSvg height={constants.icons.regular} />
                   ) : (
-                    <MissingSvg height={ICON_SIZE} />
+                    <MissingSvg height={constants.icons.regular} />
                   )}
                   <div css={{ paddingLeft: spacing.small }}>{value}</div>
                 </div>

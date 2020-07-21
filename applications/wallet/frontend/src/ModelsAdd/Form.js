@@ -13,7 +13,6 @@ import { onSubmit } from './helpers'
 
 const WIDTH = 300
 const HEIGHT = 40
-const ICON_SIZE = 20
 
 const INITIAL_STATE = {
   type: '',
@@ -66,7 +65,7 @@ const ModelsAddForm = () => {
             backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+')`,
             backgroundRepeat: `no-repeat, repeat`,
             backgroundPosition: `right ${spacing.base}px top 50%`,
-            backgroundSize: ICON_SIZE,
+            backgroundSize: constants.icons.regular,
           }}
         >
           <option value="" disabled>
