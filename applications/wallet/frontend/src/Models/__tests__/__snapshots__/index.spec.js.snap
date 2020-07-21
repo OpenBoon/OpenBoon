@@ -16,6 +16,68 @@ Array [
     Custom Models
   </h2>,
   .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-0"
+        role="alert"
+      >
+        Model created.
+         
+        <a
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Start Labeling
+        </a>
+      </div>
+    </div>
+  </div>,
+  .emotion-2 {
   max-width: 600px;
   color: #b3b3b3;
 }
