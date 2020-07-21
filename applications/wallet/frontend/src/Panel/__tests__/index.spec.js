@@ -2,9 +2,8 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import Panel from '..'
 
+import { constants } from '../../Styles'
 import DashboardSvg from '../../Icons/dashboard.svg'
-
-const ICON_SIZE = 20
 
 jest.mock('../../Resizeable', () => 'Resizeable')
 
@@ -15,7 +14,7 @@ describe('<Panel />', () => {
         {{
           filters: {
             title: 'Filters',
-            icon: <DashboardSvg height={ICON_SIZE} />,
+            icon: <DashboardSvg height={constants.icons.regular} />,
             content: '',
           },
         }}
@@ -70,7 +69,7 @@ describe('<Panel />', () => {
         {{
           metadata: {
             title: 'Metadata',
-            icon: <DashboardSvg height={ICON_SIZE} />,
+            icon: <DashboardSvg height={constants.icons.regular} />,
             content: '',
           },
         }}

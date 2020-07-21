@@ -3,10 +3,9 @@ import PropTypes from 'prop-types'
 import ChevronSvg from '../Icons/chevron.svg'
 
 import Button, { VARIANTS } from '../Button'
-import { spacing, colors } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 const WIDTH = 200
-const ICON_SIZE = 20
 
 const MenuButton = ({ onBlur, onClick, legend }) => (
   <Button
@@ -37,7 +36,7 @@ const MenuButton = ({ onBlur, onClick, legend }) => (
     isDisabled={false}
   >
     {legend}
-    <ChevronSvg height={ICON_SIZE} />
+    <ChevronSvg height={constants.icons.regular} />
   </Button>
 )
 

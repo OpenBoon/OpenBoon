@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import { colors, spacing } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
 import BackSvg from '../Icons/back.svg'
-
-const ICON_SIZE = 20
 
 const AssetNavigation = ({ projectId, assetId, query }) => {
   const idString = `?id=${assetId}`
@@ -33,7 +31,7 @@ const AssetNavigation = ({ projectId, assetId, query }) => {
         passHref
       >
         <Button variant={VARIANTS.ICON}>
-          <BackSvg height={ICON_SIZE} />
+          <BackSvg height={constants.icons.regular} />
         </Button>
       </Link>
     </div>
