@@ -9,7 +9,7 @@ import Feature from '../Feature'
 import DashboardSvg from '../Icons/dashboard.svg'
 import DataSourcesSvg from '../Icons/datasources.svg'
 import JobQueueSvg from '../Icons/jobQueue.svg'
-import HelpSvg from '../Icons/help.svg'
+import ModelsSvg from '../Icons/models.svg'
 import VisualizerSvg from '../Icons/visualizer.svg'
 import KeySvg from '../Icons/key.svg'
 import UsersSvg from '../Icons/users.svg'
@@ -81,7 +81,7 @@ const Sidebar = forwardRef(
 
             <Feature flag="asset-labeling" envs={[]}>
               <SidebarLink projectId={projectId} href="/[projectId]/models">
-                <HelpSvg height={ICON_SIZE} />
+                <ModelsSvg height={ICON_SIZE} />
                 Custom Models
               </SidebarLink>
             </Feature>

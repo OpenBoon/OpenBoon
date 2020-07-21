@@ -43,7 +43,7 @@ Array [
   />,
   .emotion-0 {
   padding: 16px;
-  color: #4a90e2;
+  color: #0273f5;
 }
 
 <div
@@ -354,7 +354,7 @@ Array [
   />,
   .emotion-0 {
   padding: 16px;
-  color: #4a90e2;
+  color: #0273f5;
 }
 
 <div
@@ -663,7 +663,7 @@ Array [
   />,
   .emotion-0 {
   padding: 16px;
-  color: #4a90e2;
+  color: #0273f5;
 }
 
 <div
@@ -697,6 +697,10 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #c92300;
 }
 
 <div

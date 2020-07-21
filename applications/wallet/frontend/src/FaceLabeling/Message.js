@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Link from 'next/link'
 import { cache } from 'swr'
 
-import { colors, spacing } from '../Styles'
+import { spacing } from '../Styles'
 
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 
@@ -51,7 +51,7 @@ const FaceLabelingMessage = ({
             as={`/${projectId}/jobs/${jobId}`}
             passHref
           >
-            <a css={{ color: colors.signal.sky.base }}>Check Status</a>
+            <a>Check Status</a>
           </Link>
         </FlashMessage>
       </div>

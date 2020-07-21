@@ -202,7 +202,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
 .emotion-10 {
   width: 2px;
   height: 100%;
-  background-color: #4ac565;
+  background-color: #009f22;
 }
 
 .emotion-14 {
@@ -214,7 +214,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
 .emotion-18 {
   width: 2px;
   height: 100%;
-  background-color: #4a90e2;
+  background-color: #0273f5;
 }
 
 <div
@@ -541,7 +541,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
 .emotion-10 {
   width: 2px;
   height: 100%;
-  background-color: #4ac565;
+  background-color: #009f22;
 }
 
 .emotion-14 {
@@ -553,7 +553,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
 .emotion-18 {
   width: 2px;
   height: 100%;
-  background-color: #4a90e2;
+  background-color: #0273f5;
 }
 
 <div
