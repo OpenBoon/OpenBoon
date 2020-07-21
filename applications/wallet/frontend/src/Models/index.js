@@ -33,7 +33,7 @@ const Models = () => {
             <Link
               href="/[projectId]/visualizer"
               // TODO: link to the Asset Labeling tab open
-              // with the  correct model selected
+              // with the correct model selected
               as={`/${projectId}/visualizer`}
               passHref
             >
