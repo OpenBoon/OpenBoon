@@ -13,10 +13,21 @@ from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import ZMLPFromSizePagination
 
 
+def predictions_match(left, right):
+    """Helper to compare two prediction blobs and tell if their bbox and simhash are equal."""
+    try:
+        if (left['bbox'] == right['bbox'] and left['simhash'] == right['simhash']):
+            return True
+    except KeyError:
+        pass
+    return False
+
+
 class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     zmlp_only = True
     zmlp_root_api_path = 'api/v3/assets/'
-    analysis_attr = 'analysis.zvi-face-detection'
+    detection_attr = 'analysis.zvi-face-detection'
+    recognition_attr = 'analysis.zvi-face-recognition'
     model_name = 'console'
     serializer_class = UpdateFaceLabelsSerializer
     pagination_class = ZMLPFromSizePagination
@@ -88,15 +99,18 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         data = {'filename': asset.get_attr('source.filename'),
                 'predictions': ''}
 
-        if not asset.get_attr(self.analysis_attr):
+        if not asset.get_attr(self.detection_attr):
             return Response(status=status.HTTP_200_OK, data=data)
         model = self._get_model(app)
 
         # Get the bboxes for each prediction
         imager = AssetBoxImager(asset, client)
         width = int(request.query_params.get('width', 255))
-        predictions = imager.get_attr_with_box_images(self.analysis_attr,
-                                                      width=width)['predictions']
+        detection_predictions = imager.get_attr_with_box_images(self.detection_attr,
+                                                                width=width)['predictions']
+
+        # Get existing predictions from face-recognition
+        recognition_predictions = asset.get_attr(self.recognition_attr, {}).get('predictions', [])
 
         # Filter existing labels to only those for this model
         labels = asset.document.get('labels', [])
@@ -106,15 +120,22 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
                 filtered_labels.append(label)
 
         # Match existing filtered labels with the bbox predictions, and mark them as modified
-        for prediction in predictions:
-            prediction['modified'] = False
-            for label in filtered_labels:
-                if (prediction['bbox'] == label['bbox']
-                        and prediction['simhash'] == label['simhash']):
-                    prediction['label'] = label['label']
-                    prediction['modified'] = True
+        for detected_prediction in detection_predictions:
+            detected_prediction['modified'] = False
 
-        data['predictions'] = predictions
+            # Look for face-recognition predictions that match first
+            for recognition_prediction in recognition_predictions:
+                if predictions_match(detected_prediction, recognition_prediction):
+                    detected_prediction['label'] = recognition_prediction['label']
+                    detected_prediction['modified'] = True
+
+            # Override with labels if they exist
+            for label in filtered_labels:
+                if predictions_match(detected_prediction, label):
+                    detected_prediction['label'] = label['label']
+                    detected_prediction['modified'] = True
+
+        data['predictions'] = detection_predictions
         return Response(status=status.HTTP_200_OK, data=data)
 
     @action(detail=True, methods=['post'])
