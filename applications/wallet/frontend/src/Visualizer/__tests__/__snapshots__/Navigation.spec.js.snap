@@ -2,8 +2,6 @@
 
 exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 .emotion-5 {
-  padding-left: 8px;
-  padding-right: 8px;
   background-color: #252525;
   color: #808080;
   margin: 1px;
@@ -33,6 +31,8 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
   text-transform: uppercase;
   font-weight: 500;
   padding: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -66,7 +66,7 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 .emotion-1 {
   margin-top: 8px;
   margin-bottom: 8px;
-  border-left: 1px solid #191919;
+  border-left: 2px solid #191919;
 }
 
 .emotion-2 {
@@ -77,6 +77,8 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 .emotion-4 {
   white-space: nowrap;
   padding: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
   font-family: Roboto Condensed;
 }
 
@@ -125,8 +127,6 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 
 exports[`<VisualizerNavigation /> should render properly for the Data Visualization 1`] = `
 .emotion-5 {
-  padding-left: 8px;
-  padding-right: 8px;
   background-color: #252525;
   color: #808080;
   margin: 1px;
@@ -156,6 +156,8 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
   text-transform: uppercase;
   font-weight: 500;
   padding: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -189,7 +191,7 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
 .emotion-1 {
   margin-top: 8px;
   margin-bottom: 8px;
-  border-left: 1px solid #191919;
+  border-left: 2px solid #191919;
 }
 
 .emotion-0 {
@@ -200,6 +202,8 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
 .emotion-4 {
   white-space: nowrap;
   padding: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
   font-family: Roboto Condensed;
 }
 
