@@ -40,9 +40,8 @@ from registration.views import UserRegistrationView, UserConfirmationView, \
 from roles.views import RolesViewSet
 from searches.views import SearchViewSet, MetadataExportViewSet
 from subscriptions.views import SubscriptionViewSet
-from visualizations.views import VisualizationViewSet
 from supportadmin.admin import support_admin_site
-from wallet import views as wallet_views
+from visualizations.views import VisualizationViewSet
 from wallet.views import WalletAPIRootView
 
 router = routers.DefaultRouter()

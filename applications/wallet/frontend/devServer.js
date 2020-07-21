@@ -52,6 +52,7 @@ app.prepare().then(() => {
   if (MOCKED) {
     server.post('/api/v1/login/', mock(user))
     server.get('/api/v1/me/', mock(user))
+    server.post(`/api/v1/me/agreements/`, success())
     server.get('/api/v1/projects/', mock(projects))
     server.post('/api/v1/password/reset/', success())
     server.get('/api/v1/projects/:projectId', mock(project))
@@ -59,10 +60,6 @@ app.prepare().then(() => {
       '/api/v1/projects/:projectId/task_errors/:errorId/',
       mock(taskError),
     )
-
-    const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
-    server.patch(`/api/v1/users/:userId/`, mock(userpatch))
-    server.post(`/api/v1/users/:userId/agreements/`, success())
 
     const PID_API_BASE = '/api/v1/projects/:projectId'
 

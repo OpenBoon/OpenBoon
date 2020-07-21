@@ -5,17 +5,18 @@ from datetime import timedelta
 
 import pytest
 import pytz
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.timezone import now
 from google.oauth2 import id_token
 from rest_framework.reverse import reverse
 
 from agreements.models import Agreement
-from registration.models import UserRegistrationToken, WalletUser
+from registration.models import UserRegistrationToken
 from wallet.tests.utils import check_response
 
 pytestmark = pytest.mark.django_db
+User = get_user_model()
 
 
 def test_register_user_invalid_password(api_client):
@@ -349,13 +350,6 @@ def test_get_me(login, api_client):
     assert response_data['username'] == 'user'
     assert response_data['firstName'] == ''
     assert response_data['lastName'] == ''
-
-
-def test_put_me(login, api_client, zmlp_project_user):
-    response = check_response(api_client.put(reverse('me'), data={'awesome': True}))
-    assert response.json() == {'detail': 'Succes. User data updated.'}
-    user = WalletUser.objects.get(id=zmlp_project_user.id)
-    assert user.data == {'awesome': True}
 
 
 def test_api_logout(api_client, user):

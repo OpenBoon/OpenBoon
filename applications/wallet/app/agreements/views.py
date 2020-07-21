@@ -26,11 +26,8 @@ class AgreementViewSet(ConvertCamelToSnakeViewSetMixin, ListModelMixin, GenericV
     def get_queryset(self):
         return Agreement.objects.filter(user=self.request.user)
 
-    def create(self, request, user_pk):
-        # Ensure the user can only create their own agreement
-        if int(user_pk) != request.user.id:
-            return Response(data={'detail': 'Request user and context user do not match.'},
-                            status=status.HTTP_403_FORBIDDEN)
+    def create(self, request):
+        user_pk = request.user.id
 
         # Check that we got a good policies date
         policies_date = request.data.get('policies_date')

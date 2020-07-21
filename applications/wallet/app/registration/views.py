@@ -1,4 +1,3 @@
-import json
 from datetime import timedelta
 
 from django.conf import settings
@@ -14,14 +13,14 @@ from django.utils.timezone import now
 from google.auth.transport import requests
 from google.oauth2 import id_token
 from rest_auth.views import PasswordChangeView
-from rest_framework import status, viewsets, mixins
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from agreements.models import Agreement
 from agreements.views import get_ip_from_request
 from registration.models import UserRegistrationToken
-from registration.serializers import RegistrationSerializer, UserSerializer, MeSerializer
+from registration.serializers import RegistrationSerializer, UserSerializer
 from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 
 User = get_user_model()
@@ -167,8 +166,12 @@ class MeView(ConvertCamelToSnakeViewSetMixin, APIView):
         return Response(UserSerializer(request.user, context={'request': request}).data)
 
     def put(self, request):
-        MeSerializer(request.user, data=request.data).save()
-        return Response(data={'detail': 'Succes. User data updated.'})
+        user_data = UserData.objects.get_or_create(user=request.user)[0]
+        serializer = UserDataSerializer(user_data, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        user = User.objects.get(id=request.user.id)
+        return Response(UserSerializer(user).data)
 
 
 class LogoutView(ConvertCamelToSnakeViewSetMixin, APIView):

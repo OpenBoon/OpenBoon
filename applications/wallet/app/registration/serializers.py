@@ -2,7 +2,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from rest_auth.serializers import PasswordResetSerializer
 from rest_framework import serializers
-from rest_framework.relations import HyperlinkedIdentityField
 
 from projects.models import Membership
 
@@ -32,20 +31,16 @@ class RegistrationSerializer(serializers.Serializer):
     policies_date = serializers.CharField(required=False)
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     roles = serializers.SerializerMethodField()
     agreed_to_policies_date = serializers.SerializerMethodField()
 
-    agreements = HyperlinkedIdentityField(
-        view_name='agreement-list',
-        lookup_url_kwarg='user_pk'
-    )
-
     class Meta:
         model = User
-        fields = ['id', 'url', 'username', 'first_name', 'last_name', 'email', 'groups',
-                  'is_active', 'is_staff', 'is_superuser', 'last_login', 'data',
-                  'date_joined', 'roles', 'agreed_to_policies_date', 'agreements']
+        depth = 1
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'groups',
+                  'is_active', 'is_staff', 'is_superuser', 'last_login',
+                  'date_joined', 'roles', 'agreed_to_policies_date']
 
     def get_roles(self, obj):
         memberships = Membership.objects.filter(user=obj)
@@ -59,8 +54,3 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         if len(agreements) == 0:
             return '00000000'
         return agreements[0].policies_date
-
-
-class MeSerializer(serializers.Serializer):
-    """Simple serializer used for updating the data field on the current user."""
-    data = serializers.JSONField(required=True)

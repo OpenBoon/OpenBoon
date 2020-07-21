@@ -13,4 +13,3 @@ class PageSerializer(serializers.Serializer):
     _from = serializers.IntegerField(required=True, label='from')
     size = serializers.IntegerField(required=True)
     totalCount = serializers.IntegerField(required=True)
-
