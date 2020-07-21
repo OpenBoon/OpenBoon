@@ -7,7 +7,8 @@ __all__ = [
     'Model',
     'ModelType',
     'Label',
-    'LabelScope'
+    'LabelScope',
+    'ModelTypeInfo'
 ]
 
 
@@ -54,6 +55,11 @@ class Model(BaseEntity):
     def module_name(self):
         """The name of the Pipeline Module"""
         return self._data['moduleName']
+
+    @property
+    def namespace(self):
+        """The name of the Pipeline Module"""
+        return 'analysis.{}'.format(self._data['moduleName'])
 
     @property
     def type(self):
@@ -142,6 +148,47 @@ class Model(BaseEntity):
             must.append({'term': {'labels.scope': scope.name}})
 
         return search
+
+
+class ModelTypeInfo:
+    """
+    Additional properties related to each ModelType.
+    """
+    def __init__(self, data):
+        self._data = data
+
+    @property
+    def name(self):
+        """The name of the model type."""
+        return self._data['name']
+
+    @property
+    def description(self):
+        """The description of the model type."""
+        return self._data['description']
+
+    @property
+    def objective(self):
+        """The objective of the model, LABEL_DETECTION, FACE_RECOGNITION, etc"""
+        return self._data['objective']
+
+    @property
+    def provider(self):
+        """The company that maintains the structure and algorithm for the model."""
+        return self._data['provider']
+
+    @property
+    def min_concepts(self):
+        """The minimum number of unique concepts a model must have before it can be trained."""
+        return self._data['minConcepts']
+
+    @property
+    def min_examples(self):
+        """
+        The minimum number of examples per concept a
+        model must have before it can be trained.
+        """
+        return self._data['minExamples']
 
 
 class Label:
