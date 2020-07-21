@@ -109,7 +109,7 @@ Array [
 }
 
 .emotion-3:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
 }
 
 .emotion-3:hover svg {
@@ -614,7 +614,7 @@ Array [
 }
 
 .emotion-5:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
 }
 
 .emotion-5:hover svg {
@@ -740,7 +740,7 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
 }
 
 .emotion-4:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
 }
 
 .emotion-4:hover div {
@@ -892,7 +892,7 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
 }
 
 .emotion-4:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
 }
 
 .emotion-4:hover div {
@@ -1140,7 +1140,7 @@ Array [
 }
 
 .emotion-3:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
 }
 
 .emotion-3:hover svg {
@@ -1741,7 +1741,7 @@ Array [
 }
 
 .emotion-3:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
 }
 
 .emotion-3:hover svg {

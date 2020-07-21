@@ -45,11 +45,15 @@ describe('<Fetch /> helpers', () => {
 
       fetch.mockResponseOnce(null, { status: 401 })
 
-      const data = await fetcher('/url')
+      try {
+        await fetcher('/url')
+      } catch (response) {
+        expect(response.status).toBe(401)
 
-      expect(data).toEqual({})
+        expect(response.statusText).toBe('Unauthorized')
 
-      expect(mockMutate).toHaveBeenCalledWith({})
+        expect(mockMutate).toHaveBeenCalledWith({})
+      }
     })
   })
 

@@ -33,7 +33,7 @@ exports[`<Login /> should render error 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
 }
@@ -45,6 +45,10 @@ exports[`<Login /> should render error 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
 }
 
 .emotion-30 {
@@ -360,6 +364,19 @@ exports[`<Login /> should render error 1`] = `
   padding: 12px;
 }
 
+.emotion-10 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-10 a {
+  color: #c92300;
+}
+
 .emotion-14 {
   outline-offset: 0;
   padding: 10px 12px;
@@ -392,7 +409,7 @@ exports[`<Login /> should render error 1`] = `
       className="emotion-1"
     >
       <svg
-        color="#4ac565"
+        color="#009f22"
         data-file-name="checkmark.svg"
         height={20}
       />
@@ -459,7 +476,7 @@ exports[`<Login /> should render error 1`] = `
           height={20}
         />
         <div
-          className="emotion-0"
+          className="emotion-10"
           role="alert"
         >
           Something went wrong
@@ -617,7 +634,7 @@ exports[`<Login /> should render password changed 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
 }
@@ -629,6 +646,10 @@ exports[`<Login /> should render password changed 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
 }
 
 .emotion-25 {
@@ -953,7 +974,7 @@ exports[`<Login /> should render password changed 1`] = `
       className="emotion-1"
     >
       <svg
-        color="#4ac565"
+        color="#009f22"
         data-file-name="checkmark.svg"
         height={20}
       />
@@ -1149,7 +1170,7 @@ exports[`<Login /> should render properly 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
 }
@@ -1161,6 +1182,10 @@ exports[`<Login /> should render properly 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
 }
 
 .emotion-25 {
@@ -1485,7 +1510,7 @@ exports[`<Login /> should render properly 1`] = `
       className="emotion-1"
     >
       <svg
-        color="#4ac565"
+        color="#009f22"
         data-file-name="checkmark.svg"
         height={20}
       />
@@ -1681,7 +1706,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
 }
@@ -1693,6 +1718,10 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
 }
 
 .emotion-25 {
@@ -2017,7 +2046,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
       className="emotion-1"
     >
       <svg
-        color="#4ac565"
+        color="#009f22"
         data-file-name="checkmark.svg"
         height={20}
       />
@@ -2213,7 +2242,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
 }
@@ -2225,6 +2254,10 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
 }
 
 .emotion-25 {
@@ -2549,7 +2582,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
       className="emotion-1"
     >
       <svg
-        color="#4ac565"
+        color="#009f22"
         data-file-name="checkmark.svg"
         height={20}
       />

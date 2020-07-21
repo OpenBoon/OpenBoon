@@ -27,15 +27,15 @@ const colors = {
       strong: '#d6680b',
     },
     sky: {
-      base: '#4a90e2',
-      background: '#cfe5ff',
+      base: '#0273f5',
+      background: '#dbecff',
     },
     grass: {
-      base: '#4ac565',
-      background: '#d7f2de',
+      base: '#009f22',
+      background: '#e3f7e8',
     },
     electricBlue: {
-      base: '#027aff',
+      base: '#0074f5',
     },
   },
 
