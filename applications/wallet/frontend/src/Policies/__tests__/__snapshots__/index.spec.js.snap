@@ -251,7 +251,7 @@ exports[`<Policies /> should render properly 1`] = `
 }
 
 .emotion-2 a {
-  color: #4a90e2;
+  color: #c92300;
 }
 
 <div

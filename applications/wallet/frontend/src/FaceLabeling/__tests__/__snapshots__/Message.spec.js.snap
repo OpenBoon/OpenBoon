@@ -5,6 +5,20 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   padding-bottom: 16px;
 }
 
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+}
+
 .emotion-0 {
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -15,21 +29,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
 }
 
 .emotion-0 a {
-  color: #4a90e2;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #d7f2de;
-  border-radius: 2px;
-  padding: 12px;
+  color: #009f22;
 }
 
 <div
@@ -39,7 +39,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
     className="emotion-1"
   >
     <svg
-      color="#4ac565"
+      color="#009f22"
       data-file-name="checkmark.svg"
       height={20}
     />
@@ -81,7 +81,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #cfe5ff;
+  background-color: #dbecff;
   border-radius: 2px;
   padding: 12px;
 }
@@ -101,7 +101,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
 }
 
 .emotion-1 a {
-  color: #4a90e2;
+  color: #0273f5;
 }
 
 <div
@@ -112,7 +112,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   >
     <svg
       className="emotion-0"
-      color="#4a90e2"
+      color="#0273f5"
       data-file-name="generating.svg"
       height={20}
     />
@@ -139,19 +139,6 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
   padding-bottom: 16px;
 }
 
-.emotion-0 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-}
-
-.emotion-0 a {
-  color: #4a90e2;
-}
-
 .emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -164,6 +151,19 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
   background-color: #ffb6b2;
   border-radius: 2px;
   padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #c92300;
 }
 
 <div

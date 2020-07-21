@@ -13,12 +13,12 @@ const STYLES = {
   SUCCESS: {
     backgroundColor: colors.signal.grass.background,
     icon: <CheckmarkSvg height={ICON_SIZE} color={colors.signal.grass.base} />,
-    linkColor: colors.signal.sky.base,
+    linkColor: colors.signal.grass.base,
   },
   ERROR: {
     backgroundColor: colors.signal.warning.background,
     icon: <WarningSvg height={ICON_SIZE} color={colors.signal.warning.base} />,
-    linkColor: colors.signal.sky.base,
+    linkColor: colors.signal.warning.base,
   },
   PROCESSING: {
     backgroundColor: colors.signal.sky.background,

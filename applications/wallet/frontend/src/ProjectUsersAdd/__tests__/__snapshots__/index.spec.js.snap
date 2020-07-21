@@ -1686,7 +1686,7 @@ Array [
 }
 
 .emotion-0 a {
-  color: #4a90e2;
+  color: #c92300;
 }
 
 .emotion-2 {
@@ -1713,9 +1713,22 @@ Array [
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
+}
+
+.emotion-11 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-11 a {
+  color: #009f22;
 }
 
 .emotion-15 {
@@ -1855,12 +1868,12 @@ Array [
         className="emotion-12"
       >
         <svg
-          color="#4ac565"
+          color="#009f22"
           data-file-name="checkmark.svg"
           height={20}
         />
         <div
-          className="emotion-0"
+          className="emotion-11"
           role="alert"
         >
           Users added.

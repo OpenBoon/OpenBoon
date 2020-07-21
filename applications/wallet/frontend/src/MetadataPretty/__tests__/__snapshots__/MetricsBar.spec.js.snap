@@ -24,7 +24,7 @@ exports[`<MetadataPrettyMetricsBar /> should render properly 1`] = `
   -ms-flex: 0.11 0 auto;
   flex: 0.11 0 auto;
   min-width: 8px;
-  background-color: #4a90e2;
+  background-color: #0273f5;
   border: 2px solid transparent;
 }
 

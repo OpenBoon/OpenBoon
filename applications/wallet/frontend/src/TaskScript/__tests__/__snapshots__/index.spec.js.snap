@@ -23,113 +23,113 @@ exports[`<TaskScript /> should render properly 1`] = `
       dangerouslySetInnerHTML={
         Object {
           "__html": "<pre class=\\"__json-pretty__\\" style=\\"margin:0;line-height:1.3;overflow:auto;\\">{
-  \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/flowers'\\"</span>,
+  \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/flowers'\\"</span>,
   \\"<span class=\\"__json-key__\\">generate</span>\\": [
     {
-      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.core.generators.GcsBucketGenerator\\"</span>,
-      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp/plugins-core\\"</span>,
+      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.core.generators.GcsBucketGenerator\\"</span>,
+      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-core\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {
-        \\"<span class=\\"__json-key__\\">uri</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/flowers\\"</span>
+        \\"<span class=\\"__json-key__\\">uri</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/flowers\\"</span>
       },
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">2873964787</span>
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
+      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">2873964787</span>
     }
   ],
   \\"<span class=\\"__json-key__\\">execute</span>\\": [
     {
-      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.core.PreCacheSourceFileProcessor\\"</span>,
-      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp/plugins-core\\"</span>,
+      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.core.PreCacheSourceFileProcessor\\"</span>,
+      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-core\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {},
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">2178814325</span>
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
+      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">2178814325</span>
     },
     {
-      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.core.FileImportProcessor\\"</span>,
-      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp/plugins-core\\"</span>,
+      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.core.FileImportProcessor\\"</span>,
+      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-core\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {},
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">117837444</span>
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
+      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">117837444</span>
     },
     {
-      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.proxy.ImageProxyProcessor\\"</span>,
-      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp/plugins-core\\"</span>,
+      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.proxy.ImageProxyProcessor\\"</span>,
+      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-core\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {},
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">457707303</span>
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
+      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">457707303</span>
     },
     {
-      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.proxy.VideoProxyProcessor\\"</span>,
-      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp/plugins-core\\"</span>,
+      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.proxy.VideoProxyProcessor\\"</span>,
+      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-core\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {},
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">482873147</span>
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
+      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">482873147</span>
     },
     {
-      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_analysis.zvi.ZviSimilarityProcessor\\"</span>,
-      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp/plugins-analysis\\"</span>,
+      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_analysis.zvi.ZviSimilarityProcessor\\"</span>,
+      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-analysis\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {},
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1879445844</span>
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
+      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">1879445844</span>
     },
     {
-      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_analysis.zvi.ZviObjectDetectionProcessor\\"</span>,
-      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp/plugins-analysis\\"</span>,
+      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_analysis.zvi.ZviObjectDetectionProcessor\\"</span>,
+      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-analysis\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {},
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zvi-object-detection\\"</span>,
-      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">3329037091</span>
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zvi-object-detection\\"</span>,
+      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">3329037091</span>
     },
     {
-      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_analysis.zvi.ZviLabelDetectionProcessor\\"</span>,
-      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp/plugins-analysis\\"</span>,
+      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_analysis.zvi.ZviLabelDetectionProcessor\\"</span>,
+      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-analysis\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {},
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zvi-label-detection\\"</span>,
-      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">2989691564</span>
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zvi-label-detection\\"</span>,
+      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">2989691564</span>
     },
     {
-      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_analysis.zvi.ZviOcrProcessor\\"</span>,
-      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp/plugins-analysis\\"</span>,
+      \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_analysis.zvi.ZviOcrProcessor\\"</span>,
+      \\"<span class=\\"__json-key__\\">image</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp/plugins-analysis\\"</span>,
       \\"<span class=\\"__json-key__\\">args</span>\\": {},
-      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zvi-text-detection\\"</span>,
-      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">4290842193</span>
+      \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zvi-text-detection\\"</span>,
+      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">4290842193</span>
     }
   ],
   \\"<span class=\\"__json-key__\\">globalArgs</span>\\": {},
   \\"<span class=\\"__json-key__\\">settings</span>\\": {
     \\"<span class=\\"__json-key__\\">fileTypes</span>\\": [
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"bmp\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"cin\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"dpx\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"gif\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"jpg\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"jpeg\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"exr\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"png\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"psd\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"rla\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"tif\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"tiff\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"pdf\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"doc\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"docx\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"ppt\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"pptx\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"xls\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"xlsx\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"vdw\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"vsd\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"vss\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"vst\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"mov\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"mp4\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"mpg\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"mpeg\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"m4v\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"webm\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"ogv\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"ogg\\"</span>,
-      <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"mxf\\"</span>
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"bmp\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"cin\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"dpx\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"gif\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"jpg\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"jpeg\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"exr\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"png\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"psd\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"rla\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"tif\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"tiff\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"pdf\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"doc\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"docx\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"ppt\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"pptx\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"xls\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"xlsx\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"vdw\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"vsd\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"vss\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"vst\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"mov\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"mp4\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"mpg\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"mpeg\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"m4v\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"webm\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"ogv\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"ogg\\"</span>,
+      <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"mxf\\"</span>
     ],
-    \\"<span class=\\"__json-key__\\">batchSize</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">20</span>,
+    \\"<span class=\\"__json-key__\\">batchSize</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">20</span>,
     \\"<span class=\\"__json-key__\\">index</span>\\": <span class=\\"__json-boolean__\\" style=\\"color:#ebb52e;\\">true</span>
   }
 }</pre>",

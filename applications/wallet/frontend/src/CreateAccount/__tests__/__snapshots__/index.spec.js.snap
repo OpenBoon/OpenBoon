@@ -123,7 +123,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-4 a {
-  color: #4a90e2;
+  color: #c92300;
 }
 
 .emotion-7 {

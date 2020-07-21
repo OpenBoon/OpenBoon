@@ -502,7 +502,7 @@ Array [
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
 }
@@ -517,7 +517,7 @@ Array [
 }
 
 .emotion-0 a {
-  color: #4a90e2;
+  color: #009f22;
 }
 
 <div
@@ -527,7 +527,7 @@ Array [
       className="emotion-1"
     >
       <svg
-        color="#4ac565"
+        color="#009f22"
         data-file-name="checkmark.svg"
         height={20}
       />
