@@ -102,6 +102,68 @@ class TestRetrieve:
         assert predictions[0]['label'] == 'face0'
         assert predictions[0]['modified'] is False
 
+    def test_get_face_recognition_analysis(self, login, api_client, project, asset_data,
+                                           imager_return):
+        asset_id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
+        path = reverse('face-detail', kwargs={'project_pk': project.id, 'pk': asset_id})
+        # Add the face-recognition data
+        asset_data['document']['analysis']['zvi-face-recognition'] = {
+            'count': 1,
+            'type': 'labels',
+            'predictions': [
+                {'score': 1,
+                 'bbox': [0.313, 0.439, 0.394, 0.571],
+                 'simhash': 'OMNKMMKPPJNMQNNOLJMLMMLOMMLLG',
+                 'label': 'John'}
+            ]
+        }
+
+        asset = Asset(asset_data)
+        model = Mock()
+        with patch.object(AssetApp, 'get_asset', return_value=asset):
+            with patch.object(FaceViewSet, '_get_model', return_value=model):
+                with patch.object(AssetBoxImager, 'get_attr_with_box_images',
+                                  return_value=imager_return):
+                    response = api_client.get(path)
+
+        content = check_response(response, status.HTTP_200_OK)
+        predictions = content['predictions']
+        assert content['filename'] == 'P4131158.jpg'
+        assert predictions[0]['label'] == 'John'
+
+    def test_get_face_recognition_analysis_and_labels(self, login, api_client, project, asset_data,
+                                                      imager_return):
+        asset_id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
+        path = reverse('face-detail', kwargs={'project_pk': project.id, 'pk': asset_id})
+        # Add the face-recognition data
+        asset_data['document']['analysis']['zvi-face-recognition'] = {
+            'count': 1,
+            'type': 'labels',
+            'predictions': [
+                {'score': 1,
+                 'bbox': [0.313, 0.439, 0.394, 0.571],
+                 'simhash': 'OMNKMMKPPJNMQNNOLJMLMMLOMMLLG',
+                 'label': 'John'}
+            ]
+        }
+        # Add the label
+        asset_data['document']['labels'] = [{'modelId': '8016939e-4372-1e4b-a5f9-0242ac13000a',
+                                             'bbox': [0.313, 0.439, 0.394, 0.571], 'label': 'Danny',
+                                             'simhash': 'OMNKMMKPPJNMQNNOLJMLMMLOMMLLG'}]
+
+        asset = Asset(asset_data)
+        model = Mock(id='8016939e-4372-1e4b-a5f9-0242ac13000a')
+        with patch.object(AssetApp, 'get_asset', return_value=asset):
+            with patch.object(FaceViewSet, '_get_model', return_value=model):
+                with patch.object(AssetBoxImager, 'get_attr_with_box_images',
+                                  return_value=imager_return):
+                    response = api_client.get(path)
+
+        content = check_response(response, status.HTTP_200_OK)
+        predictions = content['predictions']
+        assert content['filename'] == 'P4131158.jpg'
+        assert predictions[0]['label'] == 'Danny'
+
 
 class TestSave:
 
