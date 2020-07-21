@@ -65,7 +65,7 @@ const PanelContent = ({
             }}
           >
             <DoubleChevronSvg
-              height={constants.iconSize}
+              height={constants.icons.regular}
               css={{
                 transform: `rotate(${openToThe === 'left' ? -90 : 90}deg)`,
               }}

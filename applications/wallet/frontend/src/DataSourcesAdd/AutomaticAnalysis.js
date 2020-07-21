@@ -42,8 +42,8 @@ const DataSourcesAddAutomaticAnalysis = () => {
               svg: {
                 color: colors.key.one,
                 marginRight: spacing.normal,
-                minWidth: constants.iconSize,
-                maxWidth: constants.iconSize,
+                minWidth: constants.icons.regular,
+                maxWidth: constants.icons.regular,
               },
               span: {
                 fontWeight: typography.weight.bold,

@@ -21,7 +21,7 @@ const DataVisualizationActions = ({ dispatch, setIsCreating, setLayouts }) => {
       >
         <div css={{ display: 'flex', alignItems: 'center' }}>
           <div css={{ display: 'flex', paddingRight: spacing.small }}>
-            <PlusSvg height={constants.iconSize} />
+            <PlusSvg height={constants.icons.regular} />
           </div>
           Add Chart
         </div>

@@ -64,39 +64,39 @@ const Sidebar = forwardRef(
             }}
           >
             <SidebarLink projectId={projectId} href="/[projectId]">
-              <DashboardSvg height={constants.iconSize} />
+              <DashboardSvg height={constants.icons.regular} />
               Project Dashboard
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/data-sources">
-              <DataSourcesSvg height={constants.iconSize} />
+              <DataSourcesSvg height={constants.icons.regular} />
               Data Sources
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/jobs">
-              <JobQueueSvg height={constants.iconSize} />
+              <JobQueueSvg height={constants.icons.regular} />
               Job Queue
             </SidebarLink>
 
             <Feature flag="asset-labeling" envs={[]}>
               <SidebarLink projectId={projectId} href="/[projectId]/models">
-                <ModelsSvg height={constants.iconSize} />
+                <ModelsSvg height={constants.icons.regular} />
                 Custom Models
               </SidebarLink>
             </Feature>
 
             <SidebarLink projectId={projectId} href="/[projectId]/visualizer">
-              <VisualizerSvg height={constants.iconSize} />
+              <VisualizerSvg height={constants.icons.regular} />
               Visualizer
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/api-keys">
-              <KeySvg height={constants.iconSize} />
+              <KeySvg height={constants.icons.regular} />
               API Keys
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/users">
-              <UsersSvg height={constants.iconSize} />
+              <UsersSvg height={constants.icons.regular} />
               User Admin
             </SidebarLink>
           </ul>
@@ -111,12 +111,12 @@ const Sidebar = forwardRef(
             }}
           >
             <SidebarLink projectId={projectId} href="/">
-              <DashboardSvg height={constants.iconSize} />
+              <DashboardSvg height={constants.icons.regular} />
               Account Dashboard
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/account">
-              <GearSvg height={constants.iconSize} />
+              <GearSvg height={constants.icons.regular} />
               Account
             </SidebarLink>
           </ul>

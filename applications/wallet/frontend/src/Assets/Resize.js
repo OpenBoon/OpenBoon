@@ -46,7 +46,7 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
         opacity: constants.opacity.full,
       }}
     >
-      <CircleMinusSvg height={constants.iconSize} />
+      <CircleMinusSvg height={constants.icons.regular} />
     </Button>
     <Button
       aria-label="Zoom In"
@@ -66,7 +66,7 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
         opacity: constants.opacity.full,
       }}
     >
-      <CirclePlusSvg height={constants.iconSize} />
+      <CirclePlusSvg height={constants.icons.regular} />
     </Button>
   </div>
 )

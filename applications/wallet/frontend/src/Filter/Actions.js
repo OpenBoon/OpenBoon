@@ -57,7 +57,7 @@ const FilterActions = ({
         }}
       >
         <HiddenSvg
-          height={constants.iconSize}
+          height={constants.icons.regular}
           color={
             isDisabled ? colors.signal.canary.strong : colors.structure.steel
           }
@@ -94,7 +94,7 @@ const FilterActions = ({
         }}
       >
         <CrossSvg
-          height={constants.iconSize}
+          height={constants.icons.regular}
           color={colors.structure.steel}
           css={{ opacity: 0 }}
         />

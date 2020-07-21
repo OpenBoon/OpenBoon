@@ -49,7 +49,7 @@ const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
               cursor: 'pointer',
             }}
           >
-            <HamburgerSvg height={constants.iconSize} />
+            <HamburgerSvg height={constants.icons.regular} />
           </button>
         )}
 

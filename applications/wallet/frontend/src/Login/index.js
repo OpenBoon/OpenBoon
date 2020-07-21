@@ -151,9 +151,9 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
               }}
             >
               {showPassword ? (
-                <VisibleSvg height={constants.iconSize} />
+                <VisibleSvg height={constants.icons.regular} />
               ) : (
-                <HiddenSvg height={constants.iconSize} />
+                <HiddenSvg height={constants.icons.regular} />
               )}
             </Button>
           }

@@ -145,7 +145,7 @@ const TableContent = ({
                   >
                     {column === '#Actions#' ? (
                       <div css={{ display: 'flex' }}>
-                        <GearSvg height={constants.iconSize} />
+                        <GearSvg height={constants.icons.regular} />
                       </div>
                     ) : (
                       column

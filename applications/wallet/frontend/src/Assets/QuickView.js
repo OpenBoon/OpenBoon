@@ -147,7 +147,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
             },
           }}
         >
-          <CrossSvg height={constants.iconSize} />
+          <CrossSvg height={constants.icons.regular} />
         </Button>
 
         <div

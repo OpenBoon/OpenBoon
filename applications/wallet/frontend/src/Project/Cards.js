@@ -75,7 +75,7 @@ const ProjectCards = () => {
           header={
             <h3>
               <KeySvg
-                height={constants.iconSize}
+                height={constants.icons.regular}
                 color={colors.structure.zinc}
               />
               Project API Keys

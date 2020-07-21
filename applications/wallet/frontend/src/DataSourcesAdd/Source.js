@@ -100,7 +100,7 @@ const DataSourcesAddSource = ({
             backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+')`,
             backgroundRepeat: `no-repeat, repeat`,
             backgroundPosition: `right ${spacing.base}px top 50%`,
-            backgroundSize: constants.iconSize,
+            backgroundSize: constants.icons.regular,
           }}
         >
           <option value="" disabled>

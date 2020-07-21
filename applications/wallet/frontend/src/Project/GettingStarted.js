@@ -16,7 +16,7 @@ const STEPS = [
     title: 'Create a Data Source',
     module: (
       <>
-        <DataSourcesSvg height={constants.iconSize} />
+        <DataSourcesSvg height={constants.icons.regular} />
         Data Sources
       </>
     ),
@@ -32,7 +32,7 @@ const STEPS = [
     title: 'Review Job Progress',
     module: (
       <>
-        <JobQueueSvg height={constants.iconSize} />
+        <JobQueueSvg height={constants.icons.regular} />
         Job Queue
       </>
     ),
@@ -48,7 +48,7 @@ const STEPS = [
     title: 'Inspect Your Dataset',
     module: (
       <>
-        <VisualizerSvg height={constants.iconSize} />
+        <VisualizerSvg height={constants.icons.regular} />
         Visualizer
       </>
     ),

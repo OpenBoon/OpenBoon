@@ -58,17 +58,17 @@ const VisualizerContent = () => {
           {{
             metadata: {
               title: 'Asset Metadata',
-              icon: <InformationSvg height={constants.iconSize} />,
+              icon: <InformationSvg height={constants.icons.regular} />,
               content: <Metadata />,
             },
             faceLabeling: {
               title: 'Face Recognition Training',
-              icon: <FaceDetectionSvg height={constants.iconSize} />,
+              icon: <FaceDetectionSvg height={constants.icons.regular} />,
               content: <FaceLabeling />,
             },
             assetLabeling: {
               title: 'Add Labels To Model',
-              icon: <PenSvg height={constants.iconSize} />,
+              icon: <PenSvg height={constants.icons.regular} />,
               content: <AssetLabeling />,
               flag: 'asset-labeling',
               envs: [],
@@ -77,7 +77,7 @@ const VisualizerContent = () => {
               title: 'Export',
               icon: (
                 <UploadSvg
-                  height={constants.iconSize}
+                  height={constants.icons.regular}
                   css={{ transform: `rotate(180deg)` }}
                 />
               ),
@@ -85,7 +85,7 @@ const VisualizerContent = () => {
             },
             delete: {
               title: 'Delete',
-              icon: <TrashSvg height={constants.iconSize} />,
+              icon: <TrashSvg height={constants.icons.regular} />,
               content: <AssetDelete key={assetId} />,
             },
           }}

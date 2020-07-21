@@ -51,7 +51,7 @@ const CheckboxIcon = ({ size, value, isChecked, isDisabled, onClick }) => (
       }}
     >
       <CheckmarkSvg
-        height={constants.iconSize}
+        height={constants.icons.regular}
         css={{
           path: {
             transition: 'all .3s ease',

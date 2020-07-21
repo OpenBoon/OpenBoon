@@ -72,7 +72,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
           display: 'flex',
           justifyContent: 'space-between',
           paddingBottom: spacing.base,
-          paddingRight: constants.iconSize + ICON_PADDING * 2,
+          paddingRight: constants.icons.regular + ICON_PADDING * 2,
           fontFamily: typography.family.condensed,
           color: colors.structure.zinc,
         }}
@@ -188,7 +188,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
                       justifyContent: 'center',
                     }}
                   >
-                    <FilterSvg height={constants.iconSize} />
+                    <FilterSvg height={constants.icons.regular} />
                   </div>
                 </div>
               </Button>
@@ -226,7 +226,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
         >
           <div css={{ display: 'flex', alignItems: 'center' }}>
             <div css={{ display: 'flex', paddingRight: spacing.small }}>
-              <FilterSvg height={constants.iconSize} />
+              <FilterSvg height={constants.icons.regular} />
             </div>
             Add Field Filter
           </div>

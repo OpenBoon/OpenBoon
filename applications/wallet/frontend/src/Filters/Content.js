@@ -50,7 +50,7 @@ const FiltersContent = ({
           >
             <div css={{ display: 'flex', alignItems: 'center' }}>
               <div css={{ display: 'flex', paddingRight: spacing.small }}>
-                <PlusSvg height={constants.iconSize} />
+                <PlusSvg height={constants.icons.regular} />
               </div>
               Add Metadata Filters
             </div>
@@ -71,7 +71,9 @@ const FiltersContent = ({
                 })
               }}
             >
-              <div css={{ height: constants.iconSize }}>Clear All Filters</div>
+              <div css={{ height: constants.icons.regular }}>
+                Clear All Filters
+              </div>
             </Button>
           )}
         </div>

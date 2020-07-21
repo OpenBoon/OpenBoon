@@ -68,7 +68,7 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
           }}
           arrow={
             <ChevronSvg
-              height={constants.iconSize}
+              height={constants.icons.regular}
               color={colors.structure.white}
             />
           }

@@ -136,7 +136,7 @@ const Accordion = ({
           style={{ padding: 0 }}
         >
           <ChevronSvg
-            height={constants.iconSize}
+            height={constants.icons.regular}
             css={{
               transform: isOpen ? 'rotate(-180deg)' : '',
             }}

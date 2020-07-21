@@ -46,7 +46,7 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
             backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==')`,
             backgroundRepeat: `no-repeat, repeat`,
             backgroundPosition: `left ${spacing.base}px top 50%`,
-            backgroundSize: constants.iconSize,
+            backgroundSize: constants.icons.regular,
           }}
         />
         <button
@@ -89,7 +89,7 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
           }}
         >
           <PlusSvg
-            height={constants.iconSize}
+            height={constants.icons.regular}
             css={{
               color: hasSearch
                 ? colors.structure.white

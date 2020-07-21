@@ -25,7 +25,7 @@ const ButtonGear = ({ onBlur, onClick }) => (
     onClick={onClick}
     isDisabled={false}
   >
-    <GearSvg height={constants.iconSize} />
+    <GearSvg height={constants.icons.regular} />
   </Button>
 )
 

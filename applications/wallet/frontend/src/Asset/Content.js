@@ -60,12 +60,12 @@ const AssetContent = () => {
           {{
             metadata: {
               title: 'Asset Metadata',
-              icon: <InformationSvg height={constants.iconSize} />,
+              icon: <InformationSvg height={constants.icons.regular} />,
               content: <Metadata />,
             },
             delete: {
               title: 'Delete',
-              icon: <TrashSvg height={constants.iconSize} />,
+              icon: <TrashSvg height={constants.icons.regular} />,
               content: <AssetDelete />,
             },
           }}

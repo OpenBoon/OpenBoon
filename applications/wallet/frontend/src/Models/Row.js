@@ -35,7 +35,7 @@ const ModelsRow = ({
 
       <td css={{ textAlign: 'center' }}>
         <CheckmarkSvg
-          height={constants.iconSize}
+          height={constants.icons.regular}
           color={ready ? colors.key.one : colors.structure.transparent}
         />
       </td>

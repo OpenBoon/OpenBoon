@@ -111,7 +111,7 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
           >
             <div css={{ display: 'flex', alignItems: 'center' }}>
               <div css={{ display: 'flex', paddingRight: spacing.small }}>
-                <FilterSvg height={constants.iconSize} />
+                <FilterSvg height={constants.icons.regular} />
               </div>
               Add Filter
             </div>

@@ -115,7 +115,7 @@ const MetadataPrettyMetricsBar = ({ pipeline }) => {
               }}
             >
               <div css={{ display: 'flex', alignItems: 'center' }}>
-                <ClockSvg height={constants.iconSize} />
+                <ClockSvg height={constants.icons.regular} />
                 <div
                   css={{
                     paddingLeft: spacing.base,

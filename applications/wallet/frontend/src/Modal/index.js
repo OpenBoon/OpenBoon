@@ -47,7 +47,7 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
             onKeyDown={onCancel}
           >
             <CrossSvg
-              height={constants.iconSize}
+              height={constants.icons.regular}
               color={colors.structure.white}
             />
           </div>

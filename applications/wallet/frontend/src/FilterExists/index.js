@@ -107,9 +107,9 @@ const FilterExists = ({
               >
                 <div css={{ display: 'flex', alignItems: 'center' }}>
                   {value === 'Exists' ? (
-                    <ExistsSvg height={constants.iconSize} />
+                    <ExistsSvg height={constants.icons.regular} />
                   ) : (
-                    <MissingSvg height={constants.iconSize} />
+                    <MissingSvg height={constants.icons.regular} />
                   )}
                   <div css={{ paddingLeft: spacing.small }}>{value}</div>
                 </div>

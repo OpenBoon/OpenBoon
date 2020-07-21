@@ -13,7 +13,7 @@ const STYLES = {
     backgroundColor: colors.signal.grass.background,
     icon: (
       <CheckmarkSvg
-        height={constants.iconSize}
+        height={constants.icons.regular}
         color={colors.signal.grass.base}
       />
     ),
@@ -23,7 +23,7 @@ const STYLES = {
     backgroundColor: colors.signal.warning.background,
     icon: (
       <WarningSvg
-        height={constants.iconSize}
+        height={constants.icons.regular}
         color={colors.signal.warning.base}
       />
     ),
@@ -33,7 +33,7 @@ const STYLES = {
     backgroundColor: colors.signal.sky.background,
     icon: (
       <GeneratingSvg
-        height={constants.iconSize}
+        height={constants.icons.regular}
         color={colors.signal.sky.base}
         css={{ animation: constants.animations.infiniteRotation }}
       />

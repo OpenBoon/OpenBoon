@@ -42,7 +42,7 @@ const Toggletip = ({ openToThe, label, children }) => {
           color: colors.structure.steel,
         }}
       >
-        <HelpSvg height={constants.iconSize} />
+        <HelpSvg height={constants.icons.regular} />
       </button>
 
       <div
@@ -51,7 +51,7 @@ const Toggletip = ({ openToThe, label, children }) => {
         css={{
           position: 'absolute',
           [openToThe === 'left' ? 'right' : 'left']: -TEXTBOX_POSITION,
-          top: constants.iconSize + spacing.base,
+          top: constants.icons.regular + spacing.base,
           color: colors.structure.coal,
           backgroundColor: colors.structure.white,
           borderRadius: constants.borderRadius.small,

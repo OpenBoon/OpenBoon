@@ -14,14 +14,17 @@ const JobTasksStateIcon = ({ state }) => {
     case 'Waiting':
     case 'Depend':
       return (
-        <ClockSvg color={colors.structure.white} height={constants.iconSize} />
+        <ClockSvg
+          color={colors.structure.white}
+          height={constants.icons.regular}
+        />
       )
 
     case 'Running':
       return (
         <GeneratingSvg
           color={colors.signal.canary.base}
-          height={constants.iconSize}
+          height={constants.icons.regular}
         />
       )
 
@@ -29,20 +32,23 @@ const JobTasksStateIcon = ({ state }) => {
       return (
         <CheckmarkSvg
           color={colors.signal.grass.base}
-          height={constants.iconSize}
+          height={constants.icons.regular}
         />
       )
 
     case 'Skipped':
       return (
-        <PausedSvg color={colors.structure.steel} height={constants.iconSize} />
+        <PausedSvg
+          color={colors.structure.steel}
+          height={constants.icons.regular}
+        />
       )
 
     case 'Queued':
       return (
         <SquareSquareSquareSvg
           color={colors.signal.sky.base}
-          height={constants.iconSize}
+          height={constants.icons.regular}
         />
       )
 
@@ -51,7 +57,7 @@ const JobTasksStateIcon = ({ state }) => {
       return (
         <CrossSmallSvg
           color={colors.signal.warning.base}
-          height={constants.iconSize}
+          height={constants.icons.regular}
         />
       )
   }

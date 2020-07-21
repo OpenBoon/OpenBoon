@@ -37,7 +37,7 @@ const FiltersIcon = () => {
           }}
         />
       )}
-      <FilterSvg height={constants.iconSize} />
+      <FilterSvg height={constants.icons.regular} />
     </div>
   )
 }

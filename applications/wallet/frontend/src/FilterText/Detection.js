@@ -90,7 +90,7 @@ const FilterTextDetection = ({
               })
             }}
           >
-            <CrossSvg height={constants.iconSize} />
+            <CrossSvg height={constants.icons.regular} />
           </Button>
         </div>
       </div>
@@ -180,7 +180,7 @@ const FilterTextDetection = ({
             }}
           >
             <SearchSvg
-              height={constants.iconSize}
+              height={constants.icons.regular}
               css={{ color: colors.structure.white }}
             />
           </button>

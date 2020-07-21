@@ -50,7 +50,9 @@ const FilterTextSearch = ({
             paddingLeft: spacing.comfy,
           }}
         >
-          <TextSvg css={{ width: constants.iconSize, color: colors.key.one }} />
+          <TextSvg
+            css={{ width: constants.icons.regular, color: colors.key.one }}
+          />
         </div>
 
         <div
@@ -113,7 +115,7 @@ const FilterTextSearch = ({
           }
         >
           <HiddenSvg
-            height={constants.iconSize}
+            height={constants.icons.regular}
             color={
               isDisabled ? colors.signal.canary.strong : colors.structure.steel
             }
@@ -148,7 +150,7 @@ const FilterTextSearch = ({
           }
         >
           <CrossSvg
-            height={constants.iconSize}
+            height={constants.icons.regular}
             color={colors.structure.steel}
             css={{ opacity: 0 }}
           />

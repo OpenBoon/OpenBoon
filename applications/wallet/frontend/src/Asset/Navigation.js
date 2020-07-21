@@ -31,7 +31,7 @@ const AssetNavigation = ({ projectId, assetId, query }) => {
         passHref
       >
         <Button variant={VARIANTS.ICON}>
-          <BackSvg height={constants.iconSize} />
+          <BackSvg height={constants.icons.regular} />
         </Button>
       </Link>
     </div>

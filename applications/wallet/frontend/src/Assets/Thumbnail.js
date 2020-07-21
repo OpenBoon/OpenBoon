@@ -134,7 +134,7 @@ const AssetsThumbnail = ({
         }}
       >
         <SimilaritySvg
-          height={constants.iconSize}
+          height={constants.icons.regular}
           color={colors.structure.white}
         />
       </Button>
@@ -160,7 +160,7 @@ const AssetsThumbnail = ({
           }}
         >
           <SearchSvg
-            height={constants.iconSize}
+            height={constants.icons.regular}
             color={colors.structure.white}
           />
         </Button>

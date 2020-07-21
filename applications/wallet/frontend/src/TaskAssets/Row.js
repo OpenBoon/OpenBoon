@@ -53,7 +53,7 @@ const TaskAssetsRow = ({
         }}
         onClick={toggle}
       >
-        <div css={{ width: constants.iconSize * 3, textAlign: 'center' }}>
+        <div css={{ width: constants.icons.regular * 3, textAlign: 'center' }}>
           {index}
         </div>
 
@@ -80,7 +80,7 @@ const TaskAssetsRow = ({
           {filename}
         </h4>
 
-        <div css={{ width: constants.iconSize * 2, textAlign: 'center' }}>
+        <div css={{ width: constants.icons.regular * 2, textAlign: 'center' }}>
           <Button
             aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
             variant={BUTTON_VARIANTS.ICON}
@@ -88,7 +88,7 @@ const TaskAssetsRow = ({
             css={{ padding: 0 }}
           >
             <ChevronSvg
-              height={constants.iconSize}
+              height={constants.icons.regular}
               css={{
                 transform: isOpen ? 'rotate(-180deg)' : '',
               }}

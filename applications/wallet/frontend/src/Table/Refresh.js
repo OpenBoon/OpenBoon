@@ -30,7 +30,7 @@ const TableRefresh = ({ onClick, legend, refreshKeys }) => {
         }}
       >
         <RefreshSvg
-          height={constants.iconSize}
+          height={constants.icons.regular}
           color={colors.structure.white}
           css={{ animation: clicked ? constants.animations.dualRotation : '' }}
         />

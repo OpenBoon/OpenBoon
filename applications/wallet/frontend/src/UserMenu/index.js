@@ -61,7 +61,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                 }`}
               </div>
               <ChevronSvg
-                height={constants.iconSize}
+                height={constants.icons.regular}
                 color={colors.structure.steel}
                 css={{
                   marginLeft: spacing.base,

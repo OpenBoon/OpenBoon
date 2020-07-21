@@ -62,7 +62,7 @@ const ProjectSwitcher = ({ projectId }) => {
           >
             {selectedProject.name}
             <ChevronSvg
-              height={constants.iconSize}
+              height={constants.icons.regular}
               css={{
                 marginLeft: spacing.base,
                 transform: `${isMenuOpen ? 'rotate(-180deg)' : ''}`,
