@@ -113,6 +113,18 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                   Contact Support
                 </Button>
               </li>
+              <li>
+                <Button
+                  href="https://shipright.community/zorroa"
+                  target="_blank"
+                  variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
+                  onClick={onClick}
+                  isDisabled={false}
+                >
+                  Submit Feedback
+                </Button>
+              </li>
             </ul>
             <ul>
               <li>

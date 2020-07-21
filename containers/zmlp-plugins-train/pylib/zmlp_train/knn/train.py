@@ -6,6 +6,8 @@ from zmlpsdk import AssetProcessor, Argument, file_storage
 
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.cluster import KMeans
+from sklearn.metrics import pairwise_distances_argmin_min
 
 
 class KnnLabelDetectionTrainer(AssetProcessor):
@@ -15,6 +17,9 @@ class KnnLabelDetectionTrainer(AssetProcessor):
     def __init__(self):
         super(KnnLabelDetectionTrainer, self).__init__()
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
+        self.add_arg(Argument("n_clusters", "int", required=False,
+                              default=15, toolTip="Number of Clusters"))
+
         self.add_arg(Argument("deploy", "bool", default=False,
                               toolTip="Automatically deploy the model onto assets."))
         self.app_model = None
@@ -25,35 +30,55 @@ class KnnLabelDetectionTrainer(AssetProcessor):
 
     def process(self, frame):
         self.reactor.emit_status("Searching Model Training Set")
-        query = {
-            '_source': ['labels.*', 'analysis.zvi-image-similarity.*'],
-            'size': 50,
-            'query': {
-                'nested': {
-                    'path': 'labels',
-                    'query': {
-                        'bool': {
-                            'must': [
-                                {'term': {'labels.modelId': self.app_model.id}},
-                                {'term': {'labels.scope': 'TRAIN'}},
-                            ]
-                        }
+
+        classifier_hashes = self.classifier_hashes()
+
+        # If there's no labels for this model, we cluster, find centroids, and make labels
+        if not classifier_hashes:
+
+            # This is how many points we will cluster. The search is randomized in order
+            # to get a representative sampling of the assets.
+            n_points = 5000
+            n_clusters = self.arg_value('n_clusters')
+            self.reactor.emit_status("No labeled assets - pre-clustering")
+            query = {
+                'size': n_points,
+                '_source': ['analysis.zvi-image-similarity.*'],
+                'query': {
+                    'function_score': {
+                        'query': {'match_all': {}},
+                        'random_score': {}
                     }
                 }
             }
-        }
 
-        classifier_hashes = []
-        for asset in self.app.assets.scroll_search(query):
-            for label in asset['labels']:
-                if label['modelId'] == self.app_model.id:
-                    classifier_hashes.append({'simhash': asset.get_attr(
-                            'analysis.zvi-image-similarity.simhash'),
-                            'label': label['label']})
+            assets = []
+            hashes = []
+            for asset in self.app.assets.scroll_search(query):
+                num_hash = []
+                shash = asset['analysis']['zvi-image-similarity']['simhash']
+                if shash is not None:
+                    for char in shash:
+                        num_hash.append(ord(char))
+                    hashes.append(num_hash)
+                    assets.append(asset)
 
-        if not classifier_hashes:
-            self.logger.warning("No labeled assets")
-            return
+            x = np.asarray(hashes, dtype=np.float64)
+
+            if not hashes:
+                self.logger.warning("No similarity hashes found. Can't pre-cluster.")
+                return
+
+            status = "Clustering {} points".format(n_points)
+            self.reactor.emit_status(status)
+            kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(x)
+            closest, _ = pairwise_distances_argmin_min(kmeans.cluster_centers_, x)
+
+            for n, i in enumerate(closest):
+                self.app.assets.update_labels(assets[i].id,
+                                              self.app_model.make_label(str(n)))
+
+            classifier_hashes = self.classifier_hashes()
 
         status = "Training knn classifier {} with {} points".format(
             self.app_model.name, len(classifier_hashes))
@@ -92,6 +117,35 @@ class KnnLabelDetectionTrainer(AssetProcessor):
         y = np.asarray(labels)
 
         return x, y
+
+    def classifier_hashes(self):
+        query = {
+            '_source': ['labels.*', 'analysis.zvi-image-similarity.*'],
+            'size': 50,
+            'query': {
+                'nested': {
+                    'path': 'labels',
+                    'query': {
+                        'bool': {
+                            'must': [
+                                {'term': {'labels.modelId': self.app_model.id}},
+                                {'term': {'labels.scope': 'TRAIN'}},
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+
+        classifier_hashes = []
+        for asset in self.app.assets.scroll_search(query):
+            for label in asset['labels']:
+                if label['modelId'] == self.app_model.id:
+                    classifier_hashes.append({'simhash': asset.get_attr(
+                            'analysis.zvi-image-similarity.simhash'),
+                            'label': label['label']})
+
+        return classifier_hashes
 
     def publish_model(self, classifier):
         """

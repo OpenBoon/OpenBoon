@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import filterShape from '../Filter/shape'
 
-import { spacing } from '../Styles'
+import { spacing, colors } from '../Styles'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import FilterTitle from '../Filter/Title'
@@ -41,11 +41,11 @@ const FilterSimilarity = ({
         css={{
           padding: spacing.normal,
           '.ErrorBoundary > div': {
-            backgroundColor: 'transparent',
+            backgroundColor: colors.structure.transparent,
             boxShadow: 'none',
           },
           '.Loading': {
-            backgroundColor: 'transparent',
+            backgroundColor: colors.structure.transparent,
             boxShadow: 'none',
           },
         }}

@@ -8,7 +8,6 @@ import filterShape from '../Filter/shape'
 import { spacing, constants, colors, typography } from '../Styles'
 
 import PlusSvg from '../Icons/plus.svg'
-import CrossSvg from '../Icons/crossSmall.svg'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import Button, { VARIANTS } from '../Button'
@@ -76,7 +75,6 @@ const FiltersMenu = ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        flex: 1,
       }}
     >
       <div
@@ -177,7 +175,6 @@ const FiltersMenu = ({
             svg: { marginRight: spacing.base },
           }}
         >
-          <CrossSvg height={18} />
           Cancel
         </Button>
 
