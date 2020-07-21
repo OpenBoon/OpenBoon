@@ -123,17 +123,21 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         for detected_prediction in detection_predictions:
             detected_prediction['modified'] = False
 
-            # Look for face-recognition predictions that match first
-            for recognition_prediction in recognition_predictions:
-                if predictions_match(detected_prediction, recognition_prediction):
-                    detected_prediction['label'] = recognition_prediction['label']
-                    detected_prediction['modified'] = True
-
-            # Override with labels if they exist
+            # Prefer labels if they exist
             for label in filtered_labels:
                 if predictions_match(detected_prediction, label):
                     detected_prediction['label'] = label['label']
                     detected_prediction['modified'] = True
+                    break
+            if detected_prediction['modified'] is True:
+                continue
+
+            # Look for face-recognition predictions if there were no matching labels
+            for recognition_prediction in recognition_predictions:
+                if predictions_match(detected_prediction, recognition_prediction):
+                    detected_prediction['label'] = recognition_prediction['label']
+                    detected_prediction['modified'] = True
+                    break
 
         data['predictions'] = detection_predictions
         return Response(status=status.HTTP_200_OK, data=data)
