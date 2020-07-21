@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
+import com.zorroa.archivist.domain.BatchIndexResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
@@ -16,6 +17,8 @@ import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.JobLaunchService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.RawByteArrayOutputStream
+import com.zorroa.archivist.util.RestUtils
+import com.zorroa.zmlp.service.logging.LogObject
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -94,7 +97,7 @@ class AssetController @Autowired constructor(
 
     @PreAuthorize("hasAuthority('AssetsRead')")
     @DeleteMapping("/api/v3/assets/_search/scroll")
-    fun clear_scroll(@RequestBody(required = false) scroll: Map<String, String>, output: ServletOutputStream):
+    fun clearScroll(@RequestBody(required = false) scroll: Map<String, String>, output: ServletOutputStream):
         ResponseEntity<Resource> {
             val rsp = assetSearchService.clearScroll(scroll)
             val output = RawByteArrayOutputStream(1024 * 1)
@@ -173,14 +176,10 @@ class AssetController @Autowired constructor(
             .body(InputStreamResource(bytes.inputStream()))
     }
 
-    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
     @PostMapping("/api/v3/assets/_batch_index")
-    fun batchIndex(@RequestBody req: Map<String, MutableMap<String, Any>>): ResponseEntity<Resource> {
-        val rsp = assetService.batchIndex(req)
-        val content = Strings.toString(rsp)
-        return ResponseEntity.ok()
-            .contentLength(content.length.toLong())
-            .body(InputStreamResource(content.byteInputStream()))
+    fun batchIndex(@RequestBody req: Map<String, MutableMap<String, Any>>): BatchIndexResponse {
+        return assetService.batchIndex(req)
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
@@ -220,7 +219,10 @@ class AssetController @Autowired constructor(
     @ResponseBody
     fun updateLabels(@RequestBody req: UpdateAssetLabelsRequest): Any {
         val rsp = assetService.updateLabels(req)
-        return HttpUtils.status("asset", "_batch_update_labels", !rsp.hasFailures())
+        return RestUtils.batchUpdated(
+            LogObject.ASSET,
+            "_batch_update_labels", rsp.items.count { !it.isFailed }, rsp.items.count { it.isFailed }
+        )
     }
 
     companion object {

@@ -24,6 +24,7 @@ import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.domain.emptyZpsScripts
+import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
@@ -59,6 +60,9 @@ class AssetServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var projectStorageService: ProjectStorageService
+
+    @Autowired
+    lateinit var projectQuotasDao: ProjectQuotasDao
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -133,8 +137,7 @@ class AssetServiceTests : AbstractTest() {
         )
         val rsp = assetService.batchCreate(req)
         assertEquals(1, rsp.failed.size)
-        assertNotNull(rsp.failed[0]["failureMessage"])
-        assertTrue((rsp.failed[0]["failureMessage"] ?: error("")).contains("is not allowed"))
+        assertTrue(rsp.failed[0].message.contains("is not allowed"))
     }
 
     @Test
@@ -349,7 +352,7 @@ class AssetServiceTests : AbstractTest() {
 
         val batchIndex = mapOf(asset.id to asset.document)
         val indexRsp = assetService.batchIndex(batchIndex)
-        assertFalse(indexRsp.hasFailures())
+        assertTrue(indexRsp.failed.isEmpty())
     }
 
     @Test
@@ -379,7 +382,7 @@ class AssetServiceTests : AbstractTest() {
         }
 
         val indexRsp = assetService.batchIndex(map, true)
-        assertFalse(indexRsp.hasFailures())
+        assertTrue(indexRsp.failed.isEmpty())
 
         val counts = jdbc.queryForMap("SELECT * FROM project_quota")
         assertEquals(BigDecimal("10.73"), counts["float_video_seconds"])
@@ -395,6 +398,76 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testBatchDeleteWithProjectCounters() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cat/large-brown-cat.jpg"),
+                AssetSpec("gs://cat/large-brown-cat.mov", attrs = mutableMapOf("media.length" to 10.732)),
+                AssetSpec("gs://cat/large-brown-cat.pdf")
+            )
+        )
+
+        val createRsp = assetService.batchCreate(batchCreate)
+        val assets = assetService.getAll(createRsp.created)
+        val map = mutableMapOf<String, MutableMap<String, Any>>()
+
+        assetService.batchDelete(createRsp.created.toSet())
+        var quotaTimeSeries = jdbc.queryForMap(
+            "SELECT * FROM project_quota_time_series WHERE int_deleted_image_file_count > 0 limit 1"
+        )
+        assertEquals(1L, quotaTimeSeries["int_deleted_image_file_count"])
+        assertEquals(1L, quotaTimeSeries["int_deleted_document_file_count"])
+        assertEquals(1L, quotaTimeSeries["int_deleted_video_file_count"])
+        assertEquals(BigDecimal("10.73"), quotaTimeSeries["float_deleted_video_seconds"])
+        assertEquals(1L, quotaTimeSeries["int_deleted_video_clip_count"])
+        assertEquals(2L, quotaTimeSeries["int_deleted_page_count"])
+
+        var quota = projectQuotasDao.getQuotas(getProjectId())
+        assertEquals(2L, quota.deletedPageCount)
+        assertEquals(BigDecimal("10.73"), quota.deletedVideoSecondsCount)
+    }
+
+    fun testBatchIndexAssetsWithoutMediaType() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.jpg"),
+                AssetSpec("gs://cats/large-brown-cat.mov"),
+                AssetSpec("gs://cats/large-brown-cat-no-type.jpg"),
+                AssetSpec("gs://cats/large-brown-cat.pdf"),
+                AssetSpec("gs://cats/large-brown-cat-no-type-noext")
+            )
+        )
+
+        val createRsp = assetService.batchCreate(batchCreate)
+        val assets = assetService.getAll(createRsp.created)
+        val map = mutableMapOf<String, MutableMap<String, Any>>()
+
+        assets.forEach {
+            map[it.id] = it.document
+        }
+
+        val indexRsp = assetService.batchIndex(map, true)
+
+        assertFalse(indexRsp.failed.isEmpty())
+        assertEquals(4, indexRsp.indexed.size)
+        assertEquals("gs://cats/large-brown-cat-no-type-noext", indexRsp.failed[0].uri)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testBatchDeleteExceedMaxSize() {
+        val maxBatchSize = properties.getInt("archivist.assets.deletion-max-batch-size")
+
+        // Max + 1
+        val batchCreate = BatchCreateAssetsRequest(
+            assets =
+                (0..maxBatchSize).map { AssetSpec("gs://cat/large-brown-cat-$it.jpg") }
+
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        assetService.batchDelete(createRsp.created.toSet())
+    }
+
+    @Test
     fun testBatchIndexAssetsWithTempFields() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
@@ -406,7 +479,7 @@ class AssetServiceTests : AbstractTest() {
 
         val batchIndex = mapOf(asset.id to asset.document)
         val indexRsp = assetService.batchIndex(batchIndex)
-        assertFalse(indexRsp.hasFailures())
+        assertTrue(indexRsp.failed.isEmpty())
 
         asset = assetService.getAsset(createRsp.created[0])
         assertFalse(asset.attrExists("tmp.field"))
@@ -447,7 +520,7 @@ class AssetServiceTests : AbstractTest() {
     fun testBatchIndexAssets_failNotCreatedSingle() {
         val req = mapOf("foo" to mutableMapOf<String, Any>())
         val rsp = assetService.batchIndex(req)
-        assertFalse(rsp.hasFailures())
+        assertTrue(rsp.failed.isEmpty())
     }
 
     @Test

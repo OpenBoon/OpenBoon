@@ -33,13 +33,13 @@ class TrainingSetDownloader:
         base_dir/set_test/annotations.json
     """
 
-    SET_TRAIN = "set_train"
+    SET_TRAIN = "train"
     """Directory name for training images"""
 
-    SET_VALIDATION = "set_validate"
+    SET_VALIDATION = "validate"
     """Directory name for test images"""
 
-    def __init__(self, app,  model, style, dst_dir, training_set_split=4):
+    def __init__(self, app,  model, style, dst_dir, validation_split=0.2):
         """
         Create a new TrainingImageDownloader.
 
@@ -48,14 +48,14 @@ class TrainingSetDownloader:
             model: (Model): A Model or unique Model ID.
             style: (str): The output style: labels_std, objects_keras, objects_coco
             dst_dir (str): A destination directory to write the files into.
-            training_set_split (int): The number of images in the training
-                set for every image in the test set.
+            validation_split (float): The number of images in the training
+                set for every image in the validation set.
         """
         self.app = app
         self.model = app.models.get_model(model)
         self.style = style
         self.dst_dir = dst_dir
-        self.training_set_split = training_set_split
+        self.validation_split = validation_split
 
         self.labels = {}
         self.label_distrib = {}
@@ -90,14 +90,14 @@ class TrainingSetDownloader:
                 to download files in parallel.
 
         """
-        if self.style == "labels_std":
+        if self.style == 'labels-standard':
             self._build_labels_std_format(pool)
-        elif self.style == "objects_coco":
+        elif self.style == 'objects_coco':
             self._build_objects_coco_format(pool)
-        elif self.style == "objects_keras":
+        elif self.style == 'objects_keras':
             self._build_objects_keras_format(pool)
         else:
-            raise ValueError("{} not supported by the TrainingSetDownloader".format(format))
+            raise ValueError('{} not supported by the TrainingSetDownloader'.format(format))
 
     def _build_labels_std_format(self, pool):
 
@@ -285,8 +285,8 @@ class TrainingSetDownloader:
         Sets up a directory structure for storing files used to train a model..
 
         The structure is basically:
-            set_train/<label>/<img file>
-            set_test/<label>/<img file>
+            train/<label>/<img file>
+            validate/<label>/<img file>
         """
         self.labels = self.app.models.get_label_counts(self.model)
 
@@ -311,19 +311,25 @@ class TrainingSetDownloader:
 
     def _get_image_set_type(self, label):
         """
-        Using the train_ratio property, determine if the current label
-        would be in the training set or test set.
+        Using the validation_split property, determine if the current label
+        would be in the training set or validation set.
 
         Args:
             label (str): The label name.
 
         Returns:
-            str: Either set_validation or set_test, depending on the training_set_split property.
+            str: Either 'validate' or 'train', depending on the validation_split property.
 
         """
-        value = self.label_distrib.get(label, -1) + 1
+        # Everything is in the training set.
+        if self.validation_split <= 0.0:
+            return self.SET_TRAIN
+
+        ratio = int(1.0 / self.validation_split)
+        value = self.label_distrib.get(label, 0) + 1
         self.label_distrib[label] = value
-        if value % self.training_set_split == 0:
+
+        if value % ratio == 0:
             return self.SET_VALIDATION
         else:
             return self.SET_TRAIN
@@ -384,7 +390,7 @@ class CocoAnnotationFileBuilder:
 
         Args:
             img (dict): A COCO image dict.
-            cat (dict): A COCO categor dict.
+            cat (dict): A COCO category dict.
             annotation: (dict): A COCO annotation dict.
         """
         self._add_to_set(self.train_set, img, cat, annotation)
@@ -395,7 +401,7 @@ class CocoAnnotationFileBuilder:
 
         Args:
             img (dict): A COCO image dict.
-            cat (dict): A COCO categor dict.
+            cat (dict): A COCO category dict.
             annotation: (dict): A COCO annotation dict.
 
         """
@@ -408,7 +414,7 @@ class CocoAnnotationFileBuilder:
         Args:
             dataset (dict): The set we're building.
             img (dict): A COCO image dict.
-            cat (dict): A COCO categor dict.
+            cat (dict): A COCO category dict.
             annotation: (dict): A COCO annotation dict.
         """
         img_idmap = dataset['img_set']

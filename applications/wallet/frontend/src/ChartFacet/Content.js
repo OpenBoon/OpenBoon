@@ -64,7 +64,6 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
       css={{
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
         height: '100%',
         flex: 1,
       }}
@@ -185,7 +184,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
                     css={{
                       marginTop: BAR_HEIGHT,
                       padding: ICON_PADDING,
-                      color: colors.transparent,
+                      color: colors.structure.transparent,
                       display: 'flex',
                       justifyContent: 'center',
                     }}
@@ -198,6 +197,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
           )
         })}
       </ul>
+
       <div
         css={{
           display: 'flex',
@@ -207,7 +207,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
       >
         <Button
           aria-label="Add Field Filter"
-          variant={VARIANTS.NEUTRAL}
+          variant={VARIANTS.ICON}
           onClick={() => {
             dispatch({
               type: ACTIONS.ADD_FILTER,
@@ -222,11 +222,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
           css={{
             padding: spacing.normal,
             display: 'flex',
-            color: colors.structure.steel,
             fontFamily: typography.family.condensed,
-            ':hover, &.focus-visible:focus': {
-              color: colors.structure.white,
-            },
           }}
         >
           <div css={{ display: 'flex', alignItems: 'center' }}>

@@ -82,15 +82,14 @@ const TaskAssetsRow = ({
         <div css={{ width: ICON_SIZE * 2, textAlign: 'center' }}>
           <Button
             aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
-            variant={BUTTON_VARIANTS.NEUTRAL}
+            variant={BUTTON_VARIANTS.ICON}
             onClick={toggle}
+            css={{ padding: 0 }}
           >
             <ChevronSvg
               height={ICON_SIZE}
-              color={colors.structure.steel}
               css={{
                 transform: isOpen ? 'rotate(-180deg)' : '',
-                ':hover': { color: colors.structure.white },
               }}
             />
           </Button>
@@ -103,11 +102,11 @@ const TaskAssetsRow = ({
             height: MAX_HEIGHT,
             overflow: 'auto',
             '.ErrorBoundary > div': {
-              backgroundColor: 'transparent',
+              backgroundColor: colors.structure.transparent,
               boxShadow: 'none',
             },
             '.Loading': {
-              backgroundColor: 'transparent',
+              backgroundColor: colors.structure.transparent,
               height: '100%',
               boxShadow: 'none',
             },

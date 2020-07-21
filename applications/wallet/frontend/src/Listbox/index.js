@@ -30,7 +30,7 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
     <label
       css={{
         '[data-reach-listbox-input][data-state="expanded"]': {
-          borderRadius: `${constants.borderRadius.small}px ${constants.borderRadius.small}px 0 0`,
+          boxShadow: constants.boxShadows.dropdown,
         },
       }}
     >
@@ -73,64 +73,81 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
         >
           {placeholder}
         </ListboxButton>
+
         <ListboxPopover
           css={{
             ':focus-within': {
               outline: 'none',
               boxShadow: 'none',
             },
-            backgroundColor: colors.structure.steel,
+            backgroundColor: colors.structure.transparent,
             border: 'none',
             padding: 0,
-            borderBottomRightRadius: constants.borderRadius.small,
-            borderBottomLeftRadius: constants.borderRadius.small,
-            overflow: 'hidden',
-            boxShadow: constants.boxShadows.dropdown,
           }}
         >
           <div
             css={{
-              padding: spacing.small,
+              overflowY: 'hidden',
+              padding: spacing.base,
+              paddingTop: 0,
+              margin: -spacing.base,
+              marginBottom: 0,
             }}
           >
-            <input
-              aria-label="Filter options"
-              type="search"
-              value={searchString}
-              onChange={({ target: { value: searchValue } }) =>
-                setSearchString(searchValue)
-              }
+            <div
               css={{
-                width: '100%',
-                padding: `${spacing.moderate}px ${spacing.base}px`,
-                borderRadius: constants.borderRadius.small,
-                boxShadow: constants.boxShadows.input,
-                border: constants.borders.medium.transparent,
-                '&:focus': {
-                  border: constants.borders.keyOneMedium,
-                  outline: colors.key.one,
-                },
-              }}
-            />
-          </div>
-
-          {hasResults && (
-            <ListboxList
-              css={{
-                margin: 0,
-                overflow: 'auto',
-                maxHeight: MAX_HEIGHT,
+                borderBottomRightRadius: constants.borderRadius.small,
+                borderBottomLeftRadius: constants.borderRadius.small,
                 backgroundColor: colors.structure.steel,
-                color: colors.structure.white,
-                fontWeight: typography.weight.medium,
-                paddingTop: spacing.base,
-                paddingBottom: spacing.base,
+                boxShadow: constants.boxShadows.dropdown,
               }}
             >
-              <ListboxOptions options={filteredOptions} nestedCount={0} />
-            </ListboxList>
-          )}
-          {!hasResults && <div css={{ padding: spacing.base }}>No Results</div>}
+              <div css={{ padding: spacing.small }}>
+                <input
+                  aria-label="Filter options"
+                  type="search"
+                  value={searchString}
+                  onChange={({ target: { value: searchValue } }) =>
+                    setSearchString(searchValue)
+                  }
+                  css={{
+                    width: '100%',
+                    padding: `${spacing.moderate}px ${spacing.base}px`,
+                    borderRadius: constants.borderRadius.small,
+                    boxShadow: constants.boxShadows.input,
+                    border: constants.borders.medium.transparent,
+                    '&:focus': {
+                      border: constants.borders.keyOneMedium,
+                      outline: colors.key.one,
+                    },
+                  }}
+                />
+              </div>
+
+              {hasResults && (
+                <ListboxList
+                  css={{
+                    borderBottomRightRadius: constants.borderRadius.small,
+                    borderBottomLeftRadius: constants.borderRadius.small,
+                    margin: 0,
+                    overflow: 'auto',
+                    maxHeight: MAX_HEIGHT,
+                    backgroundColor: colors.structure.steel,
+                    color: colors.structure.white,
+                    fontWeight: typography.weight.medium,
+                    paddingTop: spacing.base,
+                    paddingBottom: spacing.base,
+                  }}
+                >
+                  <ListboxOptions options={filteredOptions} nestedCount={0} />
+                </ListboxList>
+              )}
+
+              {!hasResults && (
+                <div css={{ padding: spacing.base }}>No Results</div>
+              )}
+            </div>
+          </div>
         </ListboxPopover>
       </ListboxInput>
     </label>

@@ -4,7 +4,7 @@ import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Category
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
-import com.zorroa.archivist.domain.ModType
+import com.zorroa.archivist.domain.ModelObjective
 import com.zorroa.archivist.domain.OpFilter
 import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.Pipeline
@@ -48,7 +48,7 @@ class PipelineControllerTests : MockMvcTest() {
             "test", "A test module",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(
                 ModOp(

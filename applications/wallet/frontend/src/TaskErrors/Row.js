@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
-import Router from 'next/router'
 import Link from 'next/link'
 
+import { onRowClickRouterPush } from '../Table/helpers'
 import { formatFullDate } from '../Date/helpers'
 
 import ErrorFatalSvg from '../Icons/errorFatal.svg'
@@ -30,14 +30,10 @@ const TaskErrorsRow = ({
   return (
     <tr
       css={{ cursor: 'pointer' }}
-      onClick={(event) => {
-        const { target: { localName } = {} } = event || {}
-        if (['a', 'button', 'svg', 'path'].includes(localName)) return
-        Router.push(
-          '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]',
-          `/${projectId}/jobs/${jobId}/tasks/${taskId}/errors/${errorId}`,
-        )
-      }}
+      onClick={onRowClickRouterPush(
+        '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]',
+        `/${projectId}/jobs/${jobId}/tasks/${taskId}/errors/${errorId}`,
+      )}
     >
       <td>
         <div

@@ -90,7 +90,7 @@ class BatchCreateAssetsRequest(
 class BatchCreateAssetsResponse(
 
     @ApiModelProperty("A map of failed asset ids to error message")
-    val failed: List<Map<String, String?>>,
+    val failed: List<BatchIndexFailure>,
 
     @ApiModelProperty("A list of asset Ids created.")
     val created: List<String>,
@@ -181,4 +181,31 @@ class BatchDeleteAssetResponse(
 
     @ApiModelProperty("The assets that failed to be removed.")
     val failed: List<String>
+)
+
+@ApiModel(
+    "Batch Index Failure",
+    description = "Describes a failure to add or update an asset to the ES index."
+)
+class BatchIndexFailure(
+
+    @ApiModelProperty("The asset Id that failed.")
+    val assetId: String,
+    @ApiModelProperty("The URI of the asset.")
+    val uri: String?,
+    @ApiModelProperty("The error message")
+    val message: String
+)
+
+@ApiModel(
+    "Batch Index Response",
+    description = "The response for indexing a batch of assets."
+)
+class BatchIndexResponse(
+
+    @ApiModelProperty("The IDs that succeeded.")
+    val indexed: List<String>,
+
+    @ApiModelProperty("A list of failures")
+    val failed: List<BatchIndexFailure>
 )
