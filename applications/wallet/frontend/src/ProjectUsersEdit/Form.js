@@ -62,7 +62,7 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
             initialValue: !!user.roles.includes(name),
             isDisabled: false,
           }))}
-          variant={CHECKBOX_VARIANTS.MULTILINE}
+          variant={CHECKBOX_VARIANTS.PRIMARY}
         />
 
         <ButtonGroup>

@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Model /> should render properly 1`] = `
+Array [
+  <Breadcrumbs
+    crumbs={
+      Array [
+        Object {
+          "href": "/[projectId]/models",
+          "title": "Custom Models",
+        },
+        Object {
+          "href": false,
+          "title": "Model Details",
+        },
+      ]
+    }
+  />,
+  .emotion-0 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 17px;
+  line-height: 23px;
+}
+
+<div>
+    <ul
+      className="emotion-0"
+    >
+      <li>
+        <strong>
+          Model Name:
+        </strong>
+         
+        console_face_recognition
+      </li>
+      <li>
+        <strong>
+          Model Type:
+        </strong>
+         
+        ZVI_FACE_RECOGNITION
+      </li>
+      <li>
+        <strong>
+          Module Name:
+        </strong>
+         
+        zvi-console_face_recognition-face-recognition
+      </li>
+    </ul>
+  </div>,
+  .emotion-3 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-2 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-0 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-3"
+  >
+    <ul
+      className="emotion-2"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View Labels
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  <ModelLabels />,
+]
+`;

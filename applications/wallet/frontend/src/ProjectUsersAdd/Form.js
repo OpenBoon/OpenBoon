@@ -96,7 +96,7 @@ const ProjectUsersAddForm = () => {
             initialValue: false,
             isDisabled: false,
           }))}
-          variant={CHECKBOX_VARIANTS.MULTILINE}
+          variant={CHECKBOX_VARIANTS.PRIMARY}
         />
 
         <ButtonGroup>
