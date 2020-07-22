@@ -22,8 +22,6 @@ import {
 
 const DAY_MS_VALUE = 24 * 60 * 60 * 1000
 
-const ICON_SIZE = 18
-
 const FilterDateRangeContent = ({
   pathname,
   projectId,
@@ -239,7 +237,7 @@ const FilterDateRangeContent = ({
                 pointerEvents: 'none',
               }}
               color={colors.structure.steel}
-              height={ICON_SIZE}
+              height={constants.icons.small}
             />
             <input
               type="date"
@@ -298,7 +296,7 @@ const FilterDateRangeContent = ({
                 pointerEvents: 'none',
               }}
               color={colors.structure.steel}
-              height={ICON_SIZE}
+              height={constants.icons.small}
             />
             <input
               type="date"

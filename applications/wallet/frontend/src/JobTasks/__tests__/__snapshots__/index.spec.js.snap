@@ -401,7 +401,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
               className="emotion-13"
             >
               <svg
-                color="#4ac565"
+                color="#009f22"
                 data-file-name="checkmark.svg"
                 height={20}
               />
@@ -533,7 +533,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
               className="emotion-13"
             >
               <svg
-                color="#4a90e2"
+                color="#0273f5"
                 data-file-name="squareSquareSquare.svg"
                 height={20}
               />

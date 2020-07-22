@@ -37,8 +37,6 @@ export const fetcher = async (url, options = {}) => {
 
   if ([401, 403].includes(response.status)) {
     mutate('/api/v1/me/', {}, false)
-
-    return {}
   }
 
   if (response.status >= 400) throw response

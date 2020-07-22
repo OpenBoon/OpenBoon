@@ -20,8 +20,6 @@ import FilterDateRange from '../FilterDateRange'
 import { dispatch, ACTIONS } from './helpers'
 
 const BUTTON_SIZE = 190
-const ICON_SIZE = 20
-
 const FiltersContent = ({
   pathname,
   projectId,
@@ -52,7 +50,7 @@ const FiltersContent = ({
           >
             <div css={{ display: 'flex', alignItems: 'center' }}>
               <div css={{ display: 'flex', paddingRight: spacing.small }}>
-                <PlusSvg height={ICON_SIZE} />
+                <PlusSvg height={constants.icons.regular} />
               </div>
               Add Metadata Filters
             </div>
@@ -73,7 +71,9 @@ const FiltersContent = ({
                 })
               }}
             >
-              <div css={{ height: ICON_SIZE }}>Clear All Filters</div>
+              <div css={{ height: constants.icons.regular }}>
+                Clear All Filters
+              </div>
             </Button>
           )}
         </div>

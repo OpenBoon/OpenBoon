@@ -96,7 +96,8 @@ class ModelViewSet(ConvertCamelToSnakeViewSetMixin,
         labels = []
         for label in response:
             labels.append({'label': label, 'count': response[label]})
-        data = {'labels': labels}
+        data = {'count': len(labels),
+                'results': labels}
         return Response(status=status.HTTP_200_OK, data=data)
 
     @action(methods=['post'], detail=True)
