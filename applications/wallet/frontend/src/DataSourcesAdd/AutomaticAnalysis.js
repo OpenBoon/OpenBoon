@@ -1,10 +1,8 @@
-import { typography, colors, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
-
-const ICON_SIZE = 20
 
 const DataSourcesAddAutomaticAnalysis = () => {
   return (
@@ -44,8 +42,8 @@ const DataSourcesAddAutomaticAnalysis = () => {
               svg: {
                 color: colors.key.one,
                 marginRight: spacing.normal,
-                minWidth: ICON_SIZE,
-                maxWidth: ICON_SIZE,
+                minWidth: constants.icons.regular,
+                maxWidth: constants.icons.regular,
               },
               span: {
                 fontWeight: typography.weight.bold,

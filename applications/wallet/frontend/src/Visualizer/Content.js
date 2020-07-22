@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-import { colors, spacing } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import Panel from '../Panel'
 import Assets from '../Assets'
@@ -10,13 +10,13 @@ import FaceLabeling from '../FaceLabeling'
 import Export from '../Export'
 import AssetDelete from '../AssetDelete'
 import FiltersIcon from '../Filters/Icon'
+import AssetLabeling from '../AssetLabeling'
 
 import InformationSvg from '../Icons/information.svg'
 import FaceDetectionSvg from '../Icons/faceDetection.svg'
 import UploadSvg from '../Icons/upload.svg'
 import TrashSvg from '../Icons/trash.svg'
-
-const ICON_SIZE = 20
+import PenSvg from '../Icons/pen.svg'
 
 let reloadKey = 0
 
@@ -58,19 +58,26 @@ const VisualizerContent = () => {
           {{
             metadata: {
               title: 'Asset Metadata',
-              icon: <InformationSvg height={ICON_SIZE} />,
+              icon: <InformationSvg height={constants.icons.regular} />,
               content: <Metadata />,
             },
             faceLabeling: {
-              title: 'Add Names & Train',
-              icon: <FaceDetectionSvg height={ICON_SIZE} />,
+              title: 'Face Recognition Training',
+              icon: <FaceDetectionSvg height={constants.icons.regular} />,
               content: <FaceLabeling />,
+            },
+            assetLabeling: {
+              title: 'Add Labels To Model',
+              icon: <PenSvg height={constants.icons.regular} />,
+              content: <AssetLabeling />,
+              flag: 'asset-labeling',
+              envs: [],
             },
             export: {
               title: 'Export',
               icon: (
                 <UploadSvg
-                  height={ICON_SIZE}
+                  height={constants.icons.regular}
                   css={{ transform: `rotate(180deg)` }}
                 />
               ),
@@ -78,7 +85,7 @@ const VisualizerContent = () => {
             },
             delete: {
               title: 'Delete',
-              icon: <TrashSvg height={ICON_SIZE} />,
+              icon: <TrashSvg height={constants.icons.regular} />,
               content: <AssetDelete key={assetId} />,
             },
           }}

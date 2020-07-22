@@ -1,12 +1,11 @@
 import { useRouter } from 'next/router'
 
-import { colors } from '../Styles'
+import { colors, constants } from '../Styles'
 
 import FilterSvg from '../Icons/filter.svg'
 
 import { cleanup } from './helpers'
 
-const ICON_SIZE = 20
 const INDICATOR_SIZE = 10
 const BORDER = `2px solid ${colors.structure.lead}`
 
@@ -18,13 +17,16 @@ const FiltersIcon = () => {
   const q = cleanup({ query })
 
   const hasFilters = q && q !== 'W10='
+  const hasDisabledFilters = query && !hasFilters
 
   return (
     <div css={{ position: 'relative' }}>
-      {hasFilters && (
+      {(hasFilters || hasDisabledFilters) && (
         <div
           css={{
-            backgroundColor: colors.key.one,
+            backgroundColor: hasDisabledFilters
+              ? colors.structure.steel
+              : colors.key.one,
             width: INDICATOR_SIZE,
             height: INDICATOR_SIZE,
             borderRadius: INDICATOR_SIZE,
@@ -35,7 +37,7 @@ const FiltersIcon = () => {
           }}
         />
       )}
-      <FilterSvg height={ICON_SIZE} />
+      <FilterSvg height={constants.icons.regular} />
     </div>
   )
 }

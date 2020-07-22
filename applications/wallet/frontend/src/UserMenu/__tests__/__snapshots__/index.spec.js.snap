@@ -139,11 +139,11 @@ exports[`<UserMenu /> should render properly 1`] = `
 `;
 
 exports[`<UserMenu /> should render properly 2`] = `
-.emotion-12 {
+.emotion-13 {
   margin-right: -12px;
 }
 
-.emotion-11 {
+.emotion-12 {
   position: relative;
 }
 
@@ -247,7 +247,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   transform: rotate(-180deg);
 }
 
-.emotion-10 {
+.emotion-11 {
   position: absolute;
   z-index: 1;
   top: 100%;
@@ -255,10 +255,10 @@ exports[`<UserMenu /> should render properly 2`] = `
   background-color: #808080;
   border-radius: 2px;
   box-shadow: 0 4px 7px 0 #000000;
-  width: 200px;
+  min-width: 200px;
 }
 
-.emotion-10 ul {
+.emotion-11 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -266,7 +266,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   margin: 0;
 }
 
-.emotion-10 li {
+.emotion-11 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -282,7 +282,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   font-weight: 700;
 }
 
-.emotion-8 {
+.emotion-9 {
   border-bottom: 1px solid #b3b3b3;
 }
 
@@ -342,10 +342,10 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 <div
-  className="emotion-12"
+  className="emotion-13"
 >
   <div
-    className="emotion-11"
+    className="emotion-12"
   >
     <button
       aria-label="Open user menu"
@@ -371,7 +371,7 @@ exports[`<UserMenu /> should render properly 2`] = `
       </div>
     </button>
     <div
-      className="emotion-10"
+      className="emotion-11"
     >
       <div>
         <div
@@ -387,7 +387,7 @@ exports[`<UserMenu /> should render properly 2`] = `
           </div>
         </div>
         <ul
-          className="emotion-8"
+          className="emotion-9"
         >
           <li>
             <a
@@ -409,6 +409,18 @@ exports[`<UserMenu /> should render properly 2`] = `
             >
               Contact Support
             </button>
+          </li>
+          <li>
+            <a
+              className="emotion-6"
+              href="https://shipright.community/zorroa"
+              onBlur={[Function]}
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Submit Feedback
+            </a>
           </li>
         </ul>
         <ul>

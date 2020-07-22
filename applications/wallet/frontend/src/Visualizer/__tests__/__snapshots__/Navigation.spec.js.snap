@@ -2,12 +2,10 @@
 
 exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 .emotion-5 {
-  padding-left: 8px;
-  padding-right: 8px;
   background-color: #252525;
   color: #808080;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  margin-bottom: 1px;
+  margin: 1px;
+  margin-top: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -33,6 +31,8 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
   text-transform: uppercase;
   font-weight: 500;
   padding: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -59,21 +59,26 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 }
 
 .emotion-0 {
+  white-space: nowrap;
   color: #73b61c;
 }
 
 .emotion-1 {
   margin-top: 8px;
   margin-bottom: 8px;
-  border-left: 1px solid #191919;
+  border-left: 2px solid #191919;
 }
 
 .emotion-2 {
+  white-space: nowrap;
   color: #808080;
 }
 
 .emotion-4 {
+  white-space: nowrap;
   padding: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
   font-family: Roboto Condensed;
 }
 
@@ -122,12 +127,10 @@ exports[`<VisualizerNavigation /> should render properly for the Assets 1`] = `
 
 exports[`<VisualizerNavigation /> should render properly for the Data Visualization 1`] = `
 .emotion-5 {
-  padding-left: 8px;
-  padding-right: 8px;
   background-color: #252525;
   color: #808080;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  margin-bottom: 1px;
+  margin: 1px;
+  margin-top: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -153,6 +156,8 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
   text-transform: uppercase;
   font-weight: 500;
   padding: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -179,21 +184,26 @@ exports[`<VisualizerNavigation /> should render properly for the Data Visualizat
 }
 
 .emotion-2 {
+  white-space: nowrap;
   color: #73b61c;
 }
 
 .emotion-1 {
   margin-top: 8px;
   margin-bottom: 8px;
-  border-left: 1px solid #191919;
+  border-left: 2px solid #191919;
 }
 
 .emotion-0 {
+  white-space: nowrap;
   color: #808080;
 }
 
 .emotion-4 {
+  white-space: nowrap;
   padding: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
   font-family: Roboto Condensed;
 }
 

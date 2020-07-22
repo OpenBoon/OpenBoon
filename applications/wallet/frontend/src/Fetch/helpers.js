@@ -1,4 +1,5 @@
 import { mutate } from 'swr'
+import camelCase from 'camelcase'
 
 export const getQueryString = (params = {}) => {
   const queryString = Object.keys(params)
@@ -36,8 +37,6 @@ export const fetcher = async (url, options = {}) => {
 
   if ([401, 403].includes(response.status)) {
     mutate('/api/v1/me/', {}, false)
-
-    return {}
   }
 
   if (response.status >= 400) throw response
@@ -48,4 +47,14 @@ export const fetcher = async (url, options = {}) => {
   } catch (error) {
     return response
   }
+}
+
+export const getPathname = ({ pathname }) => {
+  return pathname
+    .replace(/\?(.*)/, '')
+    .replace(/^\/[a-z0-9-]{36}/, '/<projectId>')
+    .replace(/\/([a-z-]*)\/[a-z0-9-]{36}/g, (_, category) => {
+      const item = category.replace(/s$/, '')
+      return `/${category}/<${camelCase(item)}Id>`
+    })
 }

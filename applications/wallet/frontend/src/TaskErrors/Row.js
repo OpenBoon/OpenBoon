@@ -1,16 +1,14 @@
 import PropTypes from 'prop-types'
-import Router from 'next/router'
 import Link from 'next/link'
 
+import { onRowClickRouterPush } from '../Table/helpers'
 import { formatFullDate } from '../Date/helpers'
 
 import ErrorFatalSvg from '../Icons/errorFatal.svg'
 import ErrorWarningSvg from '../Icons/errorWarning.svg'
 
 import TaskErrorsMenu from './Menu'
-import { colors, spacing, typography } from '../Styles'
-
-const ICON_SIZE = 18
+import { colors, constants, spacing, typography } from '../Styles'
 
 const TaskErrorsRow = ({
   projectId,
@@ -30,14 +28,10 @@ const TaskErrorsRow = ({
   return (
     <tr
       css={{ cursor: 'pointer' }}
-      onClick={(event) => {
-        const { target: { localName } = {} } = event || {}
-        if (['a', 'button', 'svg', 'path'].includes(localName)) return
-        Router.push(
-          '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]',
-          `/${projectId}/jobs/${jobId}/tasks/${taskId}/errors/${errorId}`,
-        )
-      }}
+      onClick={onRowClickRouterPush(
+        '/[projectId]/jobs/[jobId]/tasks/[taskId]/errors/[errorId]',
+        `/${projectId}/jobs/${jobId}/tasks/${taskId}/errors/${errorId}`,
+      )}
     >
       <td>
         <div
@@ -57,7 +51,7 @@ const TaskErrorsRow = ({
           {fatal ? (
             <>
               <ErrorFatalSvg
-                height={ICON_SIZE}
+                height={constants.icons.small}
                 color={colors.signal.warning.base}
               />
               <span>Fatal</span>
@@ -65,7 +59,7 @@ const TaskErrorsRow = ({
           ) : (
             <>
               <ErrorWarningSvg
-                height={ICON_SIZE}
+                height={constants.icons.small}
                 color={colors.signal.canary.strong}
               />
               <span>Warning</span>

@@ -18,7 +18,6 @@ import LoginWithGoogle from './WithGoogle'
 
 const WIDTH = 446
 const LOGO_WIDTH = 180
-const ICON_SIZE = 20
 
 const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
   const {
@@ -152,9 +151,9 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
               }}
             >
               {showPassword ? (
-                <VisibleSvg height={ICON_SIZE} />
+                <VisibleSvg height={constants.icons.regular} />
               ) : (
-                <HiddenSvg height={ICON_SIZE} />
+                <HiddenSvg height={constants.icons.regular} />
               )}
             </Button>
           }

@@ -25,11 +25,15 @@ import com.zorroa.archivist.repository.ModelJdbcDao
 import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.aggregations.AggregationBuilders
+import org.elasticsearch.search.aggregations.BucketOrder
 import org.elasticsearch.search.aggregations.bucket.nested.Nested
 import org.elasticsearch.search.aggregations.bucket.terms.Terms
 import org.slf4j.LoggerFactory
@@ -44,7 +48,7 @@ interface ModelService {
     fun getModel(id: UUID): Model
     fun find(filter: ModelFilter): KPagedList<Model>
     fun findOne(filter: ModelFilter): Model
-    fun publishModel(model: Model): PipelineMod
+    fun publishModel(model: Model, args: Map<String, Any>? = null): PipelineMod
     fun deployModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun getLabelCounts(model: Model): Map<String, Long>
     fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any>
@@ -67,13 +71,17 @@ class ModelServiceImpl(
         val id = UUIDGen.uuid1.generate()
         val actor = getZmlpActor()
 
-        val moduleName = spec.moduleName
-            ?: String.format(
-                spec.type.moduleName,
-                spec.name.replace(" ", "-").toLowerCase()
+        val moduleName = (spec.moduleName ?: spec.type.moduleName ?: spec.name)
+
+        if (moduleName.trim().length == 0 || !moduleName.matches(modelNameRegex)) {
+            throw IllegalArgumentException(
+                "Model names must be alpha-numeric," +
+                    " dashes,underscores, and spaces are allowed."
             )
+        }
+
         val locator = ProjectFileLocator(
-            ProjectStorageEntity.MODELS, id.toString(), moduleName, "$moduleName.zip"
+            ProjectStorageEntity.MODELS, id.toString(), "model", "model.zip"
         )
 
         val model = Model(
@@ -83,13 +91,21 @@ class ModelServiceImpl(
             spec.name,
             moduleName,
             locator.getFileId(),
-            "Train ${spec.name} / $moduleName",
+            "Training model ${spec.type.name} : ${spec.name}",
             false,
             spec.deploySearch, // VALIDATE THIS PARSES.
             time,
             time,
             actor.toString(),
             actor.toString()
+        )
+
+        logger.event(
+            LogObject.MODEL, LogAction.CREATE,
+            mapOf(
+                "modelId" to id,
+                "modelType" to spec.type.name
+            )
         )
 
         return modelDao.saveAndFlush(model)
@@ -124,6 +140,8 @@ class ModelServiceImpl(
         val processor = ProcessorRef(
             model.type.trainProcessor, "zmlp/plugins-train", trainArgs
         )
+
+        modelJdbcDao.markAsReady(model.id, false)
         return jobLaunchService.launchTrainingJob(
             model.trainingJobName, processor, mapOf()
         )
@@ -133,7 +151,7 @@ class ModelServiceImpl(
         val name = "Deploying model: ${model.name}"
         var search = req.search ?: model.deploySearch
 
-        if (!model.type.runOnTrainingSet && !req.analyzeTrainingSet) {
+        if (!model.type.deployOnTrainingSet && !req.analyzeTrainingSet) {
             search = wrapSearchToExcludeTrainingSet(model, search)
         }
 
@@ -163,7 +181,7 @@ class ModelServiceImpl(
         }
     }
 
-    override fun publishModel(model: Model): PipelineMod {
+    override fun publishModel(model: Model, args: Map<String, Any>?): PipelineMod {
         val mod = pipelineModService.findByName(model.moduleName, false)
         val ops = listOf(
             ModOp(
@@ -177,7 +195,7 @@ class ModelServiceImpl(
                                 "model_id" to model.id.toString(),
                                 "version" to System.currentTimeMillis()
                             )
-                        ),
+                        ).plus(args ?: emptyMap()),
                         module = model.name
                     )
                 )
@@ -200,7 +218,7 @@ class ModelServiceImpl(
                 "Make predictions with your custom trained '${model.name}' model.",
                 model.type.provider,
                 Category.TRAINED,
-                model.type.pipelineModType,
+                model.type.objective,
                 listOf(FileType.Documents, FileType.Images),
                 ops
             )
@@ -248,7 +266,12 @@ class ModelServiceImpl(
             QueryBuilders.termQuery("labels.modelId", model.id.toString()), ScoreMode.None
         )
         val agg = AggregationBuilders.nested("nested_labels", "labels")
-            .subAggregation(AggregationBuilders.terms("labels").field("labels.label"))
+            .subAggregation(
+                AggregationBuilders.terms("labels")
+                    .field("labels.label")
+                    .size(1000)
+                    .order(BucketOrder.key(true))
+            )
 
         val req = rest.newSearchBuilder()
         req.source.query(query)
@@ -258,10 +281,18 @@ class ModelServiceImpl(
 
         val rsp = rest.client.search(req.request, RequestOptions.DEFAULT)
         val buckets = rsp.aggregations.get<Nested>("nested_labels").aggregations.get<Terms>("labels")
-        return buckets.buckets.map { it.keyAsString to it.docCount }.toMap()
+
+        // Use a LinkedHashMap to maintain sort on the labels.
+        val result = LinkedHashMap<String, Long>()
+        buckets.buckets.forEach {
+            result[it.keyAsString] = it.docCount
+        }
+        return result
     }
 
     companion object {
         private val logger = LoggerFactory.getLogger(ModelServiceImpl::class.java)
+
+        private val modelNameRegex = Regex("^[a-z0-9_\\-\\s]{2,}$", RegexOption.IGNORE_CASE)
     }
 }

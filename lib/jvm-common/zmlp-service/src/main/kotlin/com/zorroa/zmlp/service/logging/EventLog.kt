@@ -67,7 +67,9 @@ enum class LogObject {
     CLUSTER_SNAPSHOT,
     CLUSTER_SNAPSHOT_POLICY,
     CLUSTER_REPOSITORY,
-    DEPEND
+    DEPEND,
+    MODEL,
+    AUTOML
 }
 
 /**

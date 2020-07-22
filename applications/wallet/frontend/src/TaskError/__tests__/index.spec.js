@@ -28,7 +28,7 @@ describe('<TaskError />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: taskError,
+      data: { ...taskError, assetId: '' },
     })
 
     const component = TestRenderer.create(

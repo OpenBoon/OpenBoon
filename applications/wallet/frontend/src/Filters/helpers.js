@@ -13,6 +13,32 @@ export const ACTIONS = {
   CLEAR_FILTERS: 'CLEAR_FILTERS',
 }
 
+export const getNewFacets = ({
+  facets,
+  isSelected,
+  hasModifier,
+  facetIndex,
+  key,
+}) => {
+  if (hasModifier && isSelected) {
+    return [...facets.slice(0, facetIndex), ...facets.slice(facetIndex + 1)]
+  }
+
+  if (hasModifier && !isSelected) {
+    return [...facets, key]
+  }
+
+  if (isSelected && facets.length === 1) {
+    return []
+  }
+
+  if (isSelected && facets.length > 1) {
+    return [key]
+  }
+
+  return [key]
+}
+
 export const encode = ({ filters }) => {
   return btoa(utf8.encode(JSON.stringify(filters)))
 }

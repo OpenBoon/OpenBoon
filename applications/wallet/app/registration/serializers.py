@@ -1,6 +1,9 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from rest_auth.serializers import PasswordResetSerializer
 from rest_framework import serializers
+
+from projects.models import Membership
 
 
 class PasswordResetSerializer(PasswordResetSerializer):
@@ -26,3 +29,29 @@ class RegistrationSerializer(serializers.Serializer):
     last_name = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
     policies_date = serializers.CharField(required=False)
+
+
+class UserSerializer(serializers.ModelSerializer):
+    roles = serializers.SerializerMethodField()
+    agreed_to_policies_date = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        depth = 1
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'last_login',
+                  'date_joined', 'roles', 'agreed_to_policies_date']
+        read_only_fields = ['id', 'username', 'email', 'last_login', 'date_joined',
+                            'roles', 'agreed_to_policies_date']
+
+    def get_roles(self, obj):
+        memberships = Membership.objects.filter(user=obj)
+        roles = {}
+        for membership in memberships:
+            roles[str(membership.project.id)] = membership.roles
+        return roles
+
+    def get_agreed_to_policies_date(self, obj):
+        agreements = obj.agreements.order_by('-created_date')
+        if len(agreements) == 0:
+            return '00000000'
+        return agreements[0].policies_date

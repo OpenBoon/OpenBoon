@@ -1,13 +1,13 @@
-import numpy as np
 import tensorflow
 import tensorflow.keras.applications.resnet_v2 as resnet_v2
 from tensorflow.keras.applications.imagenet_utils import decode_predictions
 from tensorflow.keras.layers import Input
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 from zmlpsdk import AssetProcessor
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
+
+from ..utils.keras import load_keras_image
 
 
 class ZviLabelDetectionProcessor(AssetProcessor):
@@ -38,29 +38,6 @@ class Resnet50ImageClassifier:
         self.model.compile(loss='mse', optimizer='rmsprop')
 
     def predict(self, path):
-        img = load_image(path)
+        img = load_keras_image(path)
         result = self.model.predict(resnet_v2.preprocess_input(img))
         return decode_predictions(result)[0]
-
-
-def load_image(path, size=(224, 224)):
-    """
-    Load the given image and prepare it for use by Tensorflow.
-
-    Args:
-        path (str): The path to the file to load.
-        size (tuple): A tuple of width, height
-
-    Returns:
-        numpy array: an array of bytes for Tensorflow use.
-    """
-    img = load_img(
-        path,
-        grayscale=False,
-        color_mode='rgb',
-        target_size=size,
-        interpolation='nearest'
-    )
-
-    numpy_image = img_to_array(img)
-    return np.expand_dims(numpy_image, axis=0)

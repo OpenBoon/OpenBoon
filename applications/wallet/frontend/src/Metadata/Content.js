@@ -45,9 +45,11 @@ const MetadataContent = ({ projectId, assetId }) => {
       <div
         css={{
           display: 'flex',
+          // compensates for unexcepted height compression in Safari
+          minHeight: 'fit-content',
           borderBottom: constants.borders.regular.smoke,
           ':hover': {
-            backgroundColor: colors.signal.electricBlue.background,
+            backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
             div: {
               color: colors.structure.white,
               svg: { opacity: 1 },
@@ -119,7 +121,7 @@ const MetadataContent = ({ projectId, assetId }) => {
                 backgroundColor:
                   displayOption === value
                     ? colors.structure.steel
-                    : colors.transparent,
+                    : colors.structure.transparent,
                 color:
                   displayOption === value
                     ? colors.structure.white

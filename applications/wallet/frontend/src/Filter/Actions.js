@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import filterShape from './shape'
 
-import { colors, constants } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
@@ -10,8 +10,6 @@ import HiddenSvg from '../Icons/hidden.svg'
 import CrossSvg from '../Icons/cross.svg'
 
 import Button, { VARIANTS } from '../Button'
-
-const ICON_SIZE = 20
 
 const FilterActions = ({
   pathname,
@@ -29,13 +27,13 @@ const FilterActions = ({
         variant={VARIANTS.ICON}
         css={{
           display: 'flex',
+          padding: spacing.small,
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: constants.borderRadius.small,
           ':hover, &.focus-visible:focus': {
             backgroundColor: colors.structure.smoke,
             svg: {
-              opacity: 1,
               color: isDisabled
                 ? colors.signal.canary.strong
                 : colors.structure.white,
@@ -59,7 +57,7 @@ const FilterActions = ({
         }}
       >
         <HiddenSvg
-          height={ICON_SIZE}
+          height={constants.icons.regular}
           color={
             isDisabled ? colors.signal.canary.strong : colors.structure.steel
           }
@@ -72,12 +70,12 @@ const FilterActions = ({
         variant={VARIANTS.ICON}
         css={{
           display: 'flex',
+          padding: spacing.small,
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: constants.borderRadius.small,
           ':hover, &.focus-visible:focus': {
             backgroundColor: colors.structure.smoke,
-            svg: { color: colors.structure.white, opacity: 1 },
           },
         }}
         onClick={(event) => {
@@ -96,7 +94,7 @@ const FilterActions = ({
         }}
       >
         <CrossSvg
-          height={ICON_SIZE}
+          height={constants.icons.regular}
           color={colors.structure.steel}
           css={{ opacity: 0 }}
         />

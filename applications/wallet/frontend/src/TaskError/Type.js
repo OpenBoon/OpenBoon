@@ -3,9 +3,7 @@ import PropTypes from 'prop-types'
 import ErrorFatalSvg from '../Icons/errorFatal.svg'
 import ErrorWarningSvg from '../Icons/errorWarning.svg'
 
-import { colors, spacing, typography } from '../Styles'
-
-const ICON_SIZE = 18
+import { colors, constants, spacing, typography } from '../Styles'
 
 const TaskErrorType = ({ fatal }) => {
   return (
@@ -18,12 +16,12 @@ const TaskErrorType = ({ fatal }) => {
       <div css={{ paddingRight: spacing.base }}>
         {fatal ? (
           <ErrorFatalSvg
-            height={ICON_SIZE}
+            height={constants.icons.small}
             color={colors.signal.warning.base}
           />
         ) : (
           <ErrorWarningSvg
-            height={ICON_SIZE}
+            height={constants.icons.small}
             color={colors.signal.canary.strong}
           />
         )}

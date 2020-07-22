@@ -11,8 +11,6 @@ import SuspenseBoundary from '../SuspenseBoundary'
 import AssetAsset from '../Asset/Asset'
 import { getQueryString } from '../Fetch/helpers'
 
-const ICON_SIZE = 20
-
 const AssetsQuickView = ({ assets, columnCount }) => {
   const {
     query: { projectId, id: selectedId, query },
@@ -39,7 +37,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
     } = event
 
     /* istanbul ignore next */
-    if (tagName === 'INPUT') return
+    if (['INPUT', 'TEXTAREA'].includes(tagName)) return
 
     if (!selectedId) return
 
@@ -149,7 +147,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
             },
           }}
         >
-          <CrossSvg height={ICON_SIZE} />
+          <CrossSvg height={constants.icons.regular} />
         </Button>
 
         <div
@@ -161,11 +159,11 @@ const AssetsQuickView = ({ assets, columnCount }) => {
             alignItems: 'center',
             padding: spacing.spacious,
             '.ErrorBoundary > div': {
-              backgroundColor: 'transparent',
+              backgroundColor: colors.structure.transparent,
               boxShadow: 'none',
             },
             '.Loading': {
-              backgroundColor: 'transparent',
+              backgroundColor: colors.structure.transparent,
               boxShadow: 'none',
             },
           }}

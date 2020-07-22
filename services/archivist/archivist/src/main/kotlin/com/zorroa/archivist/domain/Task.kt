@@ -213,11 +213,18 @@ class TaskFilter(
             "timeStarted" to "task.time_started"
         )
 
+    private val defaultSort = "case " +
+        "when task.int_state = 1 then (1, task.time_created) " +
+        "when task.int_state = 3 then (2, task.time_created) " +
+        "when task.int_state = 0 then (3, task.time_created) " +
+        "else (4, task.time_created) " +
+        "end "
+
     @JsonIgnore
     override fun build() {
 
         if (sort == null) {
-            sort = listOf("timeCreated:a")
+            sortRaw = listOf(defaultSort)
         }
 
         addToWhere("job.pk_project=?")

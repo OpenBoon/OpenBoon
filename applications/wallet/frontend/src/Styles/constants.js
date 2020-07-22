@@ -36,15 +36,18 @@ const borders = {
   keyOneRegular: `1px solid ${colors.key.one}`,
   keyOneMedium: `2px solid ${colors.key.one}`,
   keyOneLarge: `4px solid ${colors.key.one}`,
-  error: `2px solid ${colors.signal.warning.base}`,
+  error: `1px solid ${colors.signal.warning.base}`,
   assetSelected: `4px solid ${colors.signal.electricBlue.base}`,
   ...newBorders,
 }
 
 const opacity = {
   background: 0.15,
+  hex22Pct: '38',
   third: 0.3,
   half: 0.5,
+  // https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
+  hexHalf: '80',
   eighth: 0.8,
   full: 1,
 }
@@ -58,7 +61,7 @@ const boxShadows = {
   tableRow: `0 0 5px 0 rgba(0, 0, 0, ${opacity.half})`,
   panel: `3px 0 3px 0px rgba(0, 0, 0, ${opacity.third})`,
   infoBar: `0px 3px 3px 0 rgba(0, 0, 0, ${opacity.third})`,
-  assets: `inset 0 0 4px 0 rgba(0, 0, 0, 0.6)`,
+  inset: `inset 0 0 4px 0 rgba(0, 0, 0, 0.6)`,
 }
 
 const constants = {
@@ -66,15 +69,15 @@ const constants = {
   borders,
   opacity,
   boxShadows,
+  icons: {
+    mini: 16,
+    small: 18,
+    regular: 20,
+    moderate: 22,
+  },
   overlay: `${colors.structure.black}e6`,
   navbar: {
     height: 44,
-  },
-  pageTitle: {
-    height: 61,
-  },
-  tableHeader: {
-    height: 45,
   },
   form: {
     maxWidth: 470,

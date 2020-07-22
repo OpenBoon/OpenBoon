@@ -69,7 +69,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
           css={{
             display: 'flex',
             ':hover': {
-              backgroundColor: colors.signal.electricBlue.background,
+              backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
               svg: { opacity: 1 },
             },
           }}

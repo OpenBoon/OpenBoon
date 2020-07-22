@@ -5,15 +5,13 @@ import Link from 'next/link'
 
 import { colors, constants, spacing } from '../Styles'
 
-import ExpandSvg from '../Icons/expand.svg'
+import SearchSvg from '../Icons/search.svg'
 import SimilaritySvg from '../Icons/similarity.svg'
 
 import Button, { VARIANTS } from '../Button'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 import { formatSeconds } from './helpers'
-
-const ICON_SIZE = 20
 
 const AssetsThumbnail = ({
   asset: {
@@ -61,7 +59,7 @@ const AssetsThumbnail = ({
             ? constants.borders.assetSelected
             : constants.borders.large.white,
           'a, button': {
-            display: 'flex',
+            opacity: 1,
           },
         },
       }}
@@ -81,6 +79,7 @@ const AssetsThumbnail = ({
             alignItems: 'center',
             background: colors.structure.mattGrey,
             overflow: 'hidden',
+            borderRadius: 0,
           }}
         >
           {videoSrc ? (
@@ -110,15 +109,15 @@ const AssetsThumbnail = ({
         aria-label="Find similar images"
         variant={VARIANTS.NEUTRAL}
         style={{
-          display: 'none',
+          opacity: 0,
           position: 'absolute',
           top: spacing.small,
           right: spacing.small,
           padding: spacing.small,
-          backgroundColor: colors.structure.smoke,
-          opacity: constants.opacity.half,
-          ':hover': {
-            opacity: constants.opacity.eighth,
+          backgroundColor: `${colors.structure.smoke}${constants.opacity.hexHalf}`,
+          ':hover, &.focus-visible:focus': {
+            opacity: 1,
+            backgroundColor: colors.structure.smoke,
           },
         }}
         onClick={() => {
@@ -134,7 +133,10 @@ const AssetsThumbnail = ({
           })
         }}
       >
-        <SimilaritySvg height={ICON_SIZE} color={colors.structure.white} />
+        <SimilaritySvg
+          height={constants.icons.regular}
+          color={colors.structure.white}
+        />
       </Button>
 
       <Link
@@ -145,19 +147,22 @@ const AssetsThumbnail = ({
         <Button
           variant={VARIANTS.NEUTRAL}
           style={{
-            display: 'none',
+            opacity: 0,
             position: 'absolute',
             bottom: spacing.small,
             right: spacing.small,
             padding: spacing.small,
-            backgroundColor: colors.structure.smoke,
-            opacity: constants.opacity.half,
-            ':hover': {
-              opacity: constants.opacity.eighth,
+            backgroundColor: `${colors.structure.smoke}${constants.opacity.hexHalf}`,
+            ':hover, &.focus-visible:focus': {
+              opacity: 1,
+              backgroundColor: colors.structure.smoke,
             },
           }}
         >
-          <ExpandSvg height={ICON_SIZE} color={colors.structure.white} />
+          <SearchSvg
+            height={constants.icons.regular}
+            color={colors.structure.white}
+          />
         </Button>
       </Link>
 
@@ -169,8 +174,7 @@ const AssetsThumbnail = ({
             left: spacing.small,
             padding: spacing.mini,
             color: colors.structure.black,
-            // Append 80 for half opacity without affecting text
-            backgroundColor: `${colors.structure.white}80`,
+            backgroundColor: `${colors.structure.white}${constants.opacity.hexHalf}`,
           }}
         >
           {formatSeconds({ seconds: videoLength })}

@@ -8,7 +8,6 @@ import Button, { VARIANTS } from '../Button'
 import Resizeable from '../Resizeable'
 
 const MIN_WIDTH = 400
-const ICON_SIZE = 20
 
 const PanelContent = ({
   openToThe,
@@ -29,8 +28,10 @@ const PanelContent = ({
           display: 'flex',
           flexDirection: 'column',
           height: '100%',
-          overflow: 'hidden',
           backgroundColor: colors.structure.lead,
+          [openToThe === 'left'
+            ? 'marginRight'
+            : 'marginLeft']: spacing.hairline,
         }}
       >
         <div
@@ -39,11 +40,13 @@ const PanelContent = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: spacing.base,
+            paddingLeft: spacing.normal,
             borderBottom: constants.borders.regular.smoke,
           }}
         >
           <h2
             css={{
+              whiteSpace: 'nowrap',
               textTransform: 'uppercase',
               fontWeight: typography.weight.medium,
               fontSize: typography.size.regular,
@@ -54,16 +57,15 @@ const PanelContent = ({
           </h2>
           <Button
             aria-label="Close Panel"
-            variant={VARIANTS.NEUTRAL}
+            variant={VARIANTS.ICON}
             onClick={() => setOpenPanel({ value: '' })}
             isDisabled={false}
             style={{
-              color: colors.structure.steel,
-              ':hover': { color: colors.structure.white },
+              padding: 0,
             }}
           >
             <DoubleChevronSvg
-              height={ICON_SIZE}
+              height={constants.icons.regular}
               css={{
                 transform: `rotate(${openToThe === 'left' ? -90 : 90}deg)`,
               }}
@@ -74,8 +76,9 @@ const PanelContent = ({
           css={{
             display: 'flex',
             flexDirection: 'column',
-            overflow: 'hidden',
             flex: 1,
+            // hack to make content scroll without hiding overflow (overflow needed for Toggltip visibility)
+            height: '0%',
           }}
         >
           {content}

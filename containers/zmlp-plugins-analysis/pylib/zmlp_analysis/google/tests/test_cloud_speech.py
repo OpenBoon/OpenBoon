@@ -23,6 +23,9 @@ class MockSpeechToTextResult(object):
 
 class MockSpeechToTextClient(object):
 
+    def __init__(self, *args, **kwargs):
+        pass
+
     def long_running_recognize(self, **kwargs):
         return self
 
@@ -42,10 +45,11 @@ class MockSpeechToTextClient(object):
 
 class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
 
-    def setUp(self):
+    @patch('zmlp_analysis.google.cloud_speech.initialize_gcp_client',
+           side_effect=MockSpeechToTextClient)
+    def setUp(self, client_patch):
         self.processor = self.init_processor(
             AsyncSpeechToTextProcessor(), {'language': 'en-US'})
-        self.processor.speech_client = MockSpeechToTextClient()
 
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')

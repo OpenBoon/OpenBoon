@@ -34,10 +34,12 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
                     action="Delete Permanently"
                     onCancel={() => {
                       setDeleteModalOpen(false)
+
                       onClick()
                     }}
                     onConfirm={async () => {
                       setDeleteModalOpen(false)
+
                       onClick()
 
                       await fetcher(

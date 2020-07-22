@@ -335,6 +335,18 @@ class TestProjectStorage(TestCase):
         self.fs.projects.localize_file('asset/foo/fake/fake_model.dat')
         assert 'asset/foo/fake/fake_model.dat' in post_patch.call_args_list[0][0][0]
 
+    @patch.object(ZmlpClient, 'get')
+    def test_get_native_uri(self, get_patch):
+        get_patch.return_value = {'uri': 'gs://hulk-hogan'}
+        pfile = StoredFile({
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
+        })
+        uri = self.fs.projects.get_native_uri(pfile)
+        assert 'gs://hulk-hogan' == uri
+
 
 class ModelStorageTests(TestCase):
 

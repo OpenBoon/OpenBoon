@@ -31,28 +31,23 @@ from datasources.views import DataSourceViewSet
 from faces.views import FaceViewSet
 from gcpmarketplace.views import signup_success, SignUpView
 from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
+from models.views import ModelViewSet
 from modules.views import ModuleViewSet, ProviderViewSet
 from permissions.views import PermissionViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
 from registration.views import UserRegistrationView, UserConfirmationView, \
-    ApiPasswordChangeView
+    ApiPasswordChangeView, LogoutView, MeView, LoginView
 from roles.views import RolesViewSet
 from searches.views import SearchViewSet, MetadataExportViewSet
 from subscriptions.views import SubscriptionViewSet
-from visualizations.views import VisualizationViewSet
 from supportadmin.admin import support_admin_site
-from wallet import views as wallet_views
-from wallet.views import MeView
-from wallet.views import WalletAPIRootView, LoginView, LogoutView
+from visualizations.views import VisualizationViewSet
+from wallet.views import WalletAPIRootView
 
 router = routers.DefaultRouter()
 router.APIRootView = WalletAPIRootView
-router.register('users', wallet_views.UserViewSet, basename='user')
-router.register('groups', wallet_views.GroupViewSet, basename='group')
 router.register('projects', ProjectViewSet, basename='project')
-
-users_router = NestedSimpleRouter(router, 'users', lookup='user')
-users_router.register('agreements', AgreementViewSet, basename='agreement')
+router.register('me/agreements', AgreementViewSet, basename='agreement')
 
 projects_router = NestedSimpleRouter(router, 'projects', lookup='project')
 projects_router.register('jobs', JobViewSet, basename='job')
@@ -71,6 +66,7 @@ projects_router.register('searches/export', MetadataExportViewSet, basename='exp
 projects_router.register('searches', SearchViewSet, basename='search')
 projects_router.register('faces', FaceViewSet, basename='face')
 projects_router.register('visualizations', VisualizationViewSet, basename='visualization')
+projects_router.register('models', ModelViewSet, basename='model')
 
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')
@@ -81,7 +77,6 @@ assets_file_names_router.register('name', FileNameViewSet, basename='file_name')
 
 jobs_router = NestedSimpleRouter(projects_router, 'jobs', lookup='job')
 jobs_router.register('tasks', JobTaskViewSet, basename='job-detail-task')
-
 
 # Use this variable to add standalone views to the urlspatterns and have them accessible
 # from the root DRF browsable API. The tuples are in the form (LABEL, path()).
@@ -108,7 +103,6 @@ urlpatterns = [
     path('admin/', support_admin_site.urls),
     path('api/v1/login/', LoginView.as_view(), name='api-login'),
     path('api/v1/', include(router.urls)),
-    path('api/v1/', include(users_router.urls)),
     path('api/v1/', include(projects_router.urls)),
     path('api/v1/', include(assets_files_router.urls)),
     path('api/v1/', include(assets_file_names_router.urls)),

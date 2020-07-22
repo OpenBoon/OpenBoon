@@ -9,8 +9,6 @@ import CircleMinusSvg from './circleMinus.svg'
 
 import { ACTIONS } from './reducer'
 
-const ICON_SIZE = 20
-
 const AssetsResize = ({ dispatch, isMin, isMax }) => (
   <div
     css={{
@@ -36,10 +34,19 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
         dispatch({ type: ACTIONS.DECREMENT })
       }}
       isDisabled={isMin}
-      variant={VARIANTS.ICON}
-      css={{ opacity: constants.opacity.full, padding: spacing.base }}
+      variant={VARIANTS.NEUTRAL}
+      css={{
+        padding: spacing.base,
+        ':hover': {
+          color: colors.key.one,
+        },
+        '&[aria-disabled=true]': {
+          color: colors.structure.steel,
+        },
+        opacity: constants.opacity.full,
+      }}
     >
-      <CircleMinusSvg height={ICON_SIZE} />
+      <CircleMinusSvg height={constants.icons.regular} />
     </Button>
     <Button
       aria-label="Zoom In"
@@ -47,10 +54,19 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
         dispatch({ type: ACTIONS.INCREMENT })
       }}
       isDisabled={isMax}
-      variant={VARIANTS.ICON}
-      css={{ opacity: constants.opacity.full, padding: spacing.base }}
+      variant={VARIANTS.NEUTRAL}
+      css={{
+        padding: spacing.base,
+        ':hover': {
+          color: colors.key.one,
+        },
+        '&[aria-disabled=true]': {
+          color: colors.structure.steel,
+        },
+        opacity: constants.opacity.full,
+      }}
     >
-      <CirclePlusSvg height={ICON_SIZE} />
+      <CirclePlusSvg height={constants.icons.regular} />
     </Button>
   </div>
 )

@@ -14,9 +14,6 @@ exports[`<Filters /> should open the menu 1`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
 }
 
 .emotion-1 {
@@ -145,6 +142,8 @@ exports[`<Filters /> should open the menu 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 8px;
+  color: #808080;
   padding: 0;
 }
 
@@ -157,8 +156,18 @@ exports[`<Filters /> should open the menu 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-33:hover {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   color: #ffffff;
+}
+
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
 }
 
 .emotion-4 {
@@ -339,10 +348,6 @@ exports[`<Filters /> should open the menu 1`] = `
   transform: rotate(-180deg);
 }
 
-.emotion-2:hover {
-  color: #ffffff;
-}
-
 .emotion-31 {
   width: 100%;
   background-color: #191919;
@@ -392,7 +397,7 @@ exports[`<Filters /> should open the menu 1`] = `
 }
 
 .emotion-14:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
 }
 
 .emotion-13 {
@@ -506,7 +511,6 @@ exports[`<Filters /> should open the menu 1`] = `
         >
           <svg
             className="emotion-2"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -651,7 +655,6 @@ exports[`<Filters /> should open the menu 1`] = `
         >
           <svg
             className="emotion-33"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -679,7 +682,6 @@ exports[`<Filters /> should open the menu 1`] = `
         >
           <svg
             className="emotion-33"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -707,7 +709,6 @@ exports[`<Filters /> should open the menu 1`] = `
         >
           <svg
             className="emotion-33"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -735,7 +736,6 @@ exports[`<Filters /> should open the menu 1`] = `
         >
           <svg
             className="emotion-33"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -763,7 +763,6 @@ exports[`<Filters /> should open the menu 1`] = `
         >
           <svg
             className="emotion-33"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -791,7 +790,6 @@ exports[`<Filters /> should open the menu 1`] = `
         >
           <svg
             className="emotion-33"
-            color="#808080"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -813,10 +811,6 @@ exports[`<Filters /> should open the menu 1`] = `
       onClick={[Function]}
       type="button"
     >
-      <svg
-        data-file-name="crossSmall.svg"
-        height={18}
-      />
       Cancel
     </button>
     <div

@@ -127,7 +127,7 @@ const Assets = () => {
         rowIndex: selectedRow,
       })
     }
-  })
+  }, [selectedRow, columnCount, selectedId, virtualLoaderRef])
 
   return (
     <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -138,7 +138,7 @@ const Assets = () => {
           flex: 1,
           position: 'relative',
           marginBottom: -spacing.mini,
-          boxShadow: constants.boxShadows.assets,
+          boxShadow: constants.boxShadows.inset,
         }}
       >
         {pages}

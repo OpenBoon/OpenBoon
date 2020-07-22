@@ -1,5 +1,7 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.AutomlSession
+import com.zorroa.archivist.domain.AutomlSessionSpec
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelApplyRequest
@@ -10,6 +12,7 @@ import com.zorroa.archivist.domain.ModelTrainingArgs
 import com.zorroa.archivist.domain.ModelType
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.service.AutomlService
 import com.zorroa.archivist.service.ModelService
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
@@ -23,7 +26,8 @@ import java.util.UUID
 
 @RestController
 class ModelController(
-    val modelService: ModelService
+    val modelService: ModelService,
+    val automlService: AutomlService
 ) {
 
     @PreAuthorize("hasAuthority('AssetsImport')")
@@ -90,5 +94,16 @@ class ModelController(
     @GetMapping("/api/v3/models/{id}/_label_counts")
     fun getLabelCounts(@ApiParam("ModelId") @PathVariable id: UUID): Map<String, Long> {
         return modelService.getLabelCounts(modelService.getModel(id))
+    }
+
+    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
+    @ApiOperation("Create an autoML session.")
+    @PostMapping("/api/v3/models/{id}/_automl")
+    fun createAutomlSession(
+        @ApiParam("ModelId") @PathVariable id: UUID,
+        @RequestBody spec: AutomlSessionSpec
+    ): AutomlSession {
+        val model = modelService.getModel(id)
+        return automlService.createSession(model, spec)
     }
 }
