@@ -151,16 +151,6 @@ exports[`<ChartFacet /> should render properly 1`] = `
   flex: 1;
 }
 
-.emotion-83 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-83 .Loading {
-  background-color: transparent;
-  box-shadow: none;
-}
-
 .emotion-82 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1061,16 +1051,6 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-}
-
-.emotion-13 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-13 .Loading {
-  background-color: transparent;
-  box-shadow: none;
 }
 
 .emotion-12 {
