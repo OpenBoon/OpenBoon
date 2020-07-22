@@ -4,34 +4,32 @@ import { colors, spacing, constants } from '../Styles'
 
 import Button, { VARIANTS } from '.'
 
-import GearSvg from '../Icons/gear.svg'
+import KebabSvg from '../Icons/kebab.svg'
 
-const ButtonGear = ({ onBlur, onClick }) => (
+const ButtonActions = ({ onBlur, onClick }) => (
   <Button
     aria-label="Toggle Actions Menu"
-    className="gear"
+    className="actions"
     variant={VARIANTS.NEUTRAL}
     style={{
       color: colors.structure.coal,
       padding: spacing.moderate / 2,
       margin: -spacing.moderate / 2,
-      borderRadius: constants.borderRadius.round,
-      ':hover': {
+      ':hover, &.focus-visible:focus': {
         color: `${colors.structure.white} !important`,
-        backgroundColor: colors.structure.steel,
       },
     }}
     onBlur={onBlur}
     onClick={onClick}
     isDisabled={false}
   >
-    <GearSvg height={constants.icons.regular} />
+    <KebabSvg height={constants.icons.regular} />
   </Button>
 )
 
-ButtonGear.propTypes = {
+ButtonActions.propTypes = {
   onBlur: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
 }
 
-export default ButtonGear
+export default ButtonActions
