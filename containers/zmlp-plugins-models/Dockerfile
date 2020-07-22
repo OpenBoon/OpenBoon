@@ -22,4 +22,5 @@ RUN rm models.tar.gz
 USER root
 RUN mkdir /models
 COPY resnet-152 /models/resnet-152
-
+COPY resnet-101 /models/resnet-101
+COPY resnet-50 /models/resnet-50
