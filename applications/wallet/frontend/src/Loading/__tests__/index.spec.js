@@ -8,4 +8,10 @@ describe('<Loading />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render properly when transparent', () => {
+    const component = TestRenderer.create(<Loading transparent />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

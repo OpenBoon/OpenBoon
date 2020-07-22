@@ -40,7 +40,7 @@ const ChartRange = ({ chart, chartIndex, dispatch }) => {
         />
       }
       content={
-        <SuspenseBoundary>
+        <SuspenseBoundary transparent>
           <ChartRangeContent chart={chart} />
         </SuspenseBoundary>
       }

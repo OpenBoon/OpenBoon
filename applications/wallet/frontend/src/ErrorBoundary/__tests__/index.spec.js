@@ -31,4 +31,23 @@ describe('<ErrorBoundary />', () => {
 
     spy.mockRestore()
   })
+
+  it('should render properly when transparent', () => {
+    const spy = jest.spyOn(console, 'error')
+    spy.mockImplementation(() => {})
+
+    const Throw = () => {
+      throw new Error('Error')
+    }
+
+    const component = TestRenderer.create(
+      <ErrorBoundary variant={VARIANTS.LOCAL} transparent>
+        <Throw />
+      </ErrorBoundary>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    spy.mockRestore()
+  })
 })

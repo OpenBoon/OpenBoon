@@ -102,19 +102,10 @@ const TaskAssetsRow = ({
           css={{
             height: MAX_HEIGHT,
             overflow: 'auto',
-            '.ErrorBoundary > div': {
-              backgroundColor: colors.structure.transparent,
-              boxShadow: 'none',
-            },
-            '.Loading': {
-              backgroundColor: colors.structure.transparent,
-              height: '100%',
-              boxShadow: 'none',
-            },
           }}
         >
           <SuspenseBoundary>
-            <TaskAssetsMetadata projectId={projectId} assetId={asset.id} />
+            <TaskAssetsMetadata projectId={projectId} assetId="asset.id" />
           </SuspenseBoundary>
         </div>
       )}

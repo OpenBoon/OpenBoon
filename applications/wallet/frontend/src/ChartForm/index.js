@@ -19,7 +19,7 @@ const ChartForm = ({
       variant={CARD_VARIANTS.DARK}
       header=""
       content={
-        <SuspenseBoundary>
+        <SuspenseBoundary transparent>
           <ChartFormContent
             chart={chart}
             chartIndex={chartIndex}

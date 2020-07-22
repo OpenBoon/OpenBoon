@@ -29,7 +29,7 @@ const FilterRangeContent = ({
   const encodedFilter = encode({ filters: { type, attribute } })
 
   const { data } = useSWR(
-    `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
+    `/api/v1/projects/${projectId}/searches/aggregate/??filter=${encodedFilter}`,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
