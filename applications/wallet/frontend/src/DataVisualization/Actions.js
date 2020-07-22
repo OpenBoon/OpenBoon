@@ -1,14 +1,12 @@
 import PropTypes from 'prop-types'
 
-import { spacing } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
 import PlusSvg from '../Icons/plus.svg'
 
 import { ACTIONS } from './reducer'
-
-const ICON_SIZE = 20
 
 const DataVisualizationActions = ({ dispatch, setIsCreating, setLayouts }) => {
   return (
@@ -23,7 +21,7 @@ const DataVisualizationActions = ({ dispatch, setIsCreating, setLayouts }) => {
       >
         <div css={{ display: 'flex', alignItems: 'center' }}>
           <div css={{ display: 'flex', paddingRight: spacing.small }}>
-            <PlusSvg height={ICON_SIZE} />
+            <PlusSvg height={constants.icons.regular} />
           </div>
           Add Chart
         </div>

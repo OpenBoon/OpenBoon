@@ -3,14 +3,12 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 
-import { spacing, colors } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
-
-const ICON_SIZE = 20
 
 const ProjectSwitcher = ({ projectId }) => {
   const {
@@ -64,7 +62,7 @@ const ProjectSwitcher = ({ projectId }) => {
           >
             {selectedProject.name}
             <ChevronSvg
-              height={ICON_SIZE}
+              height={constants.icons.regular}
               css={{
                 marginLeft: spacing.base,
                 transform: `${isMenuOpen ? 'rotate(-180deg)' : ''}`,

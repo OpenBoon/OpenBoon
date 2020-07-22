@@ -296,7 +296,7 @@ Array [
 }
 
 .emotion-7:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
   color: #ffffff;
 }
 
@@ -636,7 +636,7 @@ Array [
 }
 
 .emotion-7:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
   color: #ffffff;
 }
 
@@ -906,7 +906,7 @@ Array [
 }
 
 .emotion-15:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
   color: #ffffff;
 }
 
@@ -992,7 +992,7 @@ Array [
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  background-color: #027aff38;
+  background-color: #0074f538;
   color: #b3b3b3;
 }
 
@@ -1006,7 +1006,7 @@ Array [
 }
 
 .emotion-7:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
   color: #ffffff;
 }
 

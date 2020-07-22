@@ -13,8 +13,6 @@ import Button, { VARIANTS } from '../Button'
 import { dispatch, ACTIONS } from '../Filters/helpers'
 import { formatSeconds } from './helpers'
 
-const ICON_SIZE = 20
-
 const AssetsThumbnail = ({
   asset: {
     id,
@@ -135,7 +133,10 @@ const AssetsThumbnail = ({
           })
         }}
       >
-        <SimilaritySvg height={ICON_SIZE} color={colors.structure.white} />
+        <SimilaritySvg
+          height={constants.icons.regular}
+          color={colors.structure.white}
+        />
       </Button>
 
       <Link
@@ -158,7 +159,10 @@ const AssetsThumbnail = ({
             },
           }}
         >
-          <SearchSvg height={ICON_SIZE} color={colors.structure.white} />
+          <SearchSvg
+            height={constants.icons.regular}
+            color={colors.structure.white}
+          />
         </Button>
       </Link>
 

@@ -8,7 +8,14 @@ import { TYPES, ACTIONS } from './reducer'
 
 const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
   return (
-    <div css={{ flex: 1, display: 'flex', padding: spacing.base }}>
+    <div
+      css={{
+        flex: 1,
+        display: 'flex',
+        padding: spacing.base,
+        boxShadow: constants.boxShadows.inset,
+      }}
+    >
       <div
         css={{
           flex: 1,

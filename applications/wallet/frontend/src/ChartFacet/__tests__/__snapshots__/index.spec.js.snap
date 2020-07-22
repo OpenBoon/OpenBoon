@@ -253,7 +253,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
 
 .emotion-16:hover,
 .emotion-16.focus-visible:focus {
-  background-color: #027aff38;
+  background-color: #0074f538;
   color: #ffffff;
 }
 
@@ -296,7 +296,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
 
 .emotion-7 {
   width: 100%;
-  background-color: #4a90e2;
+  background-color: #0273f5;
 }
 
 .emotion-8 {

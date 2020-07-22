@@ -12,8 +12,6 @@ import Button, { VARIANTS } from '../Button'
 
 import FilterSvg from '../Icons/filter.svg'
 
-const ICON_SIZE = 20
-
 const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
   const {
     pathname,
@@ -113,7 +111,7 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
           >
             <div css={{ display: 'flex', alignItems: 'center' }}>
               <div css={{ display: 'flex', paddingRight: spacing.small }}>
-                <FilterSvg height={ICON_SIZE} />
+                <FilterSvg height={constants.icons.regular} />
               </div>
               Add Filter
             </div>
