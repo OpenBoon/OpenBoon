@@ -104,7 +104,7 @@ const TaskAssetsRow = ({
             overflow: 'auto',
           }}
         >
-          <SuspenseBoundary>
+          <SuspenseBoundary transparent>
             <TaskAssetsMetadata projectId={projectId} assetId={asset.id} />
           </SuspenseBoundary>
         </div>
