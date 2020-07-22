@@ -43,7 +43,7 @@ const ModelLabelsMenu = ({ projectId, modelId, label, revalidate }) => {
                       onClick()
 
                       await fetcher(
-                        `/api/v1/projects/${projectId}/models/${modelId}/delete_label/`,
+                        `/api/v1/projects/${projectId}/models/${modelId}/delete_labels/`,
                         { method: 'DELETE', body: JSON.stringify({ label }) },
                       )
 
