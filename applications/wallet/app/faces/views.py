@@ -16,7 +16,7 @@ from wallet.paginators import ZMLPFromSizePagination
 def predictions_match(left, right):
     """Helper to compare two prediction blobs and tell if their bbox and simhash are equal."""
     try:
-        if (left['bbox'] == right['bbox'] and left['simhash'] == right['simhash']):
+        if (left['bbox'] == right['bbox']):
             return True
     except KeyError:
         pass
