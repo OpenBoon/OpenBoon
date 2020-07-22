@@ -28,7 +28,7 @@ class TestAgreementModel:
 class TestAgreementList:
 
     def test_get_list_no_agreements(self, zmlp_project_user, api_client, login):
-        response = api_client.get(reverse('agreement-list', kwargs={'user_pk': str(zmlp_project_user.id)}))  # noqa
+        response = api_client.get(reverse('agreement-list'))
         assert response.status_code == status.HTTP_200_OK
         assert response.json()['results'] == []
 
@@ -36,44 +36,29 @@ class TestAgreementList:
         agreement = Agreement(user=zmlp_project_user, policies_date='20200311',
                               ip_address='127.0.0.1')
         agreement.save()
-        response = api_client.get(reverse('agreement-list', kwargs={'user_pk': str(zmlp_project_user.id)}))  # noqa
+        response = api_client.get(reverse('agreement-list'))
         assert response.status_code == status.HTTP_200_OK
         content = response.json()
         assert content['count'] == 1
         result = content['results'][0]
         assert result['id']
-        assert result['user'].endswith(f'api/v1/users/{zmlp_project_user.id}/')
+        assert result['user'] == zmlp_project_user.id
         assert result['policiesDate'] == '20200311'
         assert result['ipAddress'] == '127.0.0.1'
         assert result['createdDate']
         assert result['modifiedDate']
-
-    def test_get_list_for_other_user(self, zmlp_project_user, api_client,
-                                     login, django_user_model):
-        Agreement.objects.create(user=zmlp_project_user, policies_date='20200511',
-                                 ip_address='127.0.0.1')
-        user2 = django_user_model.objects.create_user('user2', 'user2@fake.com', 'letmein')
-        agreement2 = Agreement.objects.create(user=user2, policies_date='20200311',
-                                              ip_address='127.0.0.1')
-        response = api_client.get(reverse('agreement-list', kwargs={'user_pk': str(user2.id)}))  # noqa
-        assert response.status_code == status.HTTP_200_OK
-        content = response.json()
-        result = content['results']
-        # Should be the agreement for the User in the URI, not the request user
-        assert result[0]['id'] == str(agreement2.id)
-        assert result[0]['policiesDate'] == '20200311'
 
 
 class TestAgreementCreate:
 
     def test_create_forwarded_for(self, zmlp_project_user, api_client, login):
         body = {'policies_date': '20200311'}
-        response = api_client.post(reverse('agreement-list', kwargs={'user_pk': str(zmlp_project_user.id)}),  # noqa
+        response = api_client.post(reverse('agreement-list'),
                                    body, **{'HTTP_X_FORWARDED_FOR': '127.0.0.1,proxy1,proxy2'})
         assert response.status_code == status.HTTP_201_CREATED
         result = response.json()
         assert result['id']
-        assert result['user'].endswith(f'api/v1/users/{zmlp_project_user.id}/')
+        assert result['user'] == zmlp_project_user.id
         assert result['policiesDate'] == '20200311'
         assert result['ipAddress'] == '127.0.0.1'
         assert result['createdDate']
@@ -81,34 +66,28 @@ class TestAgreementCreate:
 
     def test_create_remote_addr(self, zmlp_project_user, api_client, login):
         body = {'policies_date': '20200311'}
-        response = api_client.post(reverse('agreement-list', kwargs={'user_pk': str(zmlp_project_user.id)}), body)  # noqa
+        response = api_client.post(reverse('agreement-list'), body)
         assert response.status_code == status.HTTP_201_CREATED
         result = response.json()
         assert result['ipAddress'] == '127.0.0.1'
 
-    def test_create_for_different_user(self, zmlp_project_user, project_zero_user, api_client, login):  # noqa
-        # Logged in as zmlp_project_user, post to project_zero_user
-        response = api_client.post(reverse('agreement-list', kwargs={'user_pk': str(project_zero_user.id)}), {})  # noqa
-        assert response.status_code == status.HTTP_403_FORBIDDEN
-        assert response.json()['detail'] == 'Request user and context user do not match.'
-
     def test_create_no_policies_date(self, zmlp_project_user, api_client, login):
         body = {}
-        response = api_client.post(reverse('agreement-list', kwargs={'user_pk': str(zmlp_project_user.id)}), body)  # noqa
+        response = api_client.post(reverse('agreement-list', ), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         result = response.json()
         assert result['detail'] == 'Missing `policies_date` in the request.'
 
     def test_create_short_policies_date(self, zmlp_project_user, api_client, login):
         body = {'policies_date': '2020311'}
-        response = api_client.post(reverse('agreement-list', kwargs={'user_pk': str(zmlp_project_user.id)}), body)  # noqa
+        response = api_client.post(reverse('agreement-list'), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         result = response.json()
         assert result['detail'] == 'Value for `policies_date` must be an 8 character date string in the YYYYMMDD format.'  # noqa
 
     def test_create_bad_format_policies_date(self, zmlp_project_user, api_client, login):
         body = {'policies_date': '2020311d'}
-        response = api_client.post(reverse('agreement-list', kwargs={'user_pk': str(zmlp_project_user.id)}), body)  # noqa
+        response = api_client.post(reverse('agreement-list'), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         result = response.json()
         assert result['detail'] == 'Value for `policies_date` must be an 8 character date string in the YYYYMMDD format.'  # noqa
