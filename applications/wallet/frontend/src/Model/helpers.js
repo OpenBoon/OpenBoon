@@ -1,5 +1,5 @@
 import { mutate } from 'swr'
-import { Router } from 'next/router'
+import Router from 'next/router'
 
 import { fetcher } from '../Fetch/helpers'
 
@@ -18,7 +18,7 @@ export const onTrain = async ({ apply, projectId, setError }) => {
     mutate(
       `/api/v1/projects/${projectId}/faces/status/`,
       {
-        unappliedChanges: false,
+        ready: false,
         jobId,
       },
       false,

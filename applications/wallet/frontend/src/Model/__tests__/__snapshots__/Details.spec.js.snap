@@ -1,0 +1,247 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModelDetails /> should handle train errors properly 1`] = `
+.emotion-3 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 17px;
+  line-height: 23px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-7 button,
+.emotion-7 a {
+  margin-right: 16px;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #808080;
+}
+
+.emotion-4:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited {
+  background-color: #808080;
+}
+
+.emotion-6:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #c92300;
+}
+
+<div>
+  
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#c92300"
+        data-file-name="warning.svg"
+        height={20}
+      />
+      <div
+        className="emotion-0"
+        role="alert"
+      >
+        Something went wrong. Please try again.
+      </div>
+    </div>
+  </div>
+  <ul
+    className="emotion-3"
+  >
+    <li>
+      <strong>
+        Model Name:
+      </strong>
+       
+      console_face_recognition
+    </li>
+    <li>
+      <strong>
+        Model Type:
+      </strong>
+       
+      ZVI_FACE_RECOGNITION
+    </li>
+    <li>
+      <strong>
+        Module Name:
+      </strong>
+       
+      zvi-console_face_recognition-face-recognition
+    </li>
+  </ul>
+  <div>
+    <div
+      className="emotion-7"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-4"
+        onClick={[Function]}
+        type="button"
+      >
+        Train
+      </button>
+      <button
+        aria-disabled={true}
+        className="emotion-4"
+        onClick={[Function]}
+        type="submit"
+      >
+        Train & Apply
+      </button>
+      <button
+        className="emotion-6"
+        onClick={[Function]}
+        type="submit"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
+`;

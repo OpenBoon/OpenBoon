@@ -43,6 +43,12 @@ const Models = () => {
         </div>
       )}
 
+      {action === 'delete-model-success' && (
+        <div css={{ display: 'flex', paddingTop: spacing.base }}>
+          <FlashMessage variant={VARIANTS.SUCCESS}>Model deleted.</FlashMessage>
+        </div>
+      )}
+
       <ModelsCopy projectId={projectId} />
 
       <Tabs

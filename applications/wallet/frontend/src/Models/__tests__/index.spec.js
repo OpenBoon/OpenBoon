@@ -13,7 +13,7 @@ describe('<Models />', () => {
   it('should render properly with no models', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models',
-      query: { projectId: PROJECT_ID },
+      query: { projectId: PROJECT_ID, action: 'delete-model-success' },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -37,10 +37,7 @@ describe('<Models />', () => {
   it('should render properly with models', () => {
     require('next/router').__setUseRouter({
       pathname: `/[projectId]/models`,
-      query: {
-        projectId: PROJECT_ID,
-        action: 'add-model-success',
-      },
+      query: { projectId: PROJECT_ID, action: 'add-model-success' },
     })
 
     require('swr').__setMockUseSWRResponse({
