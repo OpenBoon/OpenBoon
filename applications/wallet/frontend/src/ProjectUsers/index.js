@@ -1,11 +1,12 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
+import { spacing } from '../Styles'
+
 import PageTitle from '../PageTitle'
 import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
-import { spacing } from '../Styles'
 
 import ProjectUsersRow from './Row'
 

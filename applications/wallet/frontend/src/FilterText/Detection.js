@@ -11,7 +11,6 @@ import { dispatch, ACTIONS } from '../Filters/helpers'
 import Button, { VARIANTS } from '../Button'
 
 const BUTTON_SIZE = 42
-const ICON_SIZE = 20
 
 const FilterTextDetection = ({
   pathname,
@@ -91,7 +90,7 @@ const FilterTextDetection = ({
               })
             }}
           >
-            <CrossSvg height={ICON_SIZE} />
+            <CrossSvg height={constants.icons.regular} />
           </Button>
         </div>
       </div>
@@ -181,7 +180,7 @@ const FilterTextDetection = ({
             }}
           >
             <SearchSvg
-              height={ICON_SIZE}
+              height={constants.icons.regular}
               css={{ color: colors.structure.white }}
             />
           </button>

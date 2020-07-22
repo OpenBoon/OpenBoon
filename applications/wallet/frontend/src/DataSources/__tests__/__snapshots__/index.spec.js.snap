@@ -15,7 +15,7 @@ Array [
   >
     Data Sources
   </h2>,
-  .emotion-3 {
+  .emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -23,7 +23,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -32,12 +32,12 @@ Array [
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
 }
 
-.emotion-1 {
+.emotion-0 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -46,23 +46,23 @@ Array [
   font-weight: 500;
 }
 
-.emotion-0 {
-  color: #4a90e2;
+.emotion-0 a {
+  color: #009f22;
 }
 
 <div
-    className="emotion-3"
+    className="emotion-2"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <svg
-        color="#4ac565"
+        color="#009f22"
         data-file-name="checkmark.svg"
         height={20}
       />
       <div
-        className="emotion-1"
+        className="emotion-0"
         role="alert"
       >
         Data source
@@ -70,7 +70,6 @@ Array [
         .
          
         <a
-          className="emotion-0"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/1a1d45af-7477-1396-ae57-a618e8efb91f"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -693,7 +692,7 @@ Array [
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
 }
@@ -707,6 +706,10 @@ Array [
   font-weight: 500;
 }
 
+.emotion-0 a {
+  color: #009f22;
+}
+
 <div
     className="emotion-2"
   >
@@ -714,7 +717,7 @@ Array [
       className="emotion-1"
     >
       <svg
-        color="#4ac565"
+        color="#009f22"
         data-file-name="checkmark.svg"
         height={20}
       />
