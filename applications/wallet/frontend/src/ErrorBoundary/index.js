@@ -37,7 +37,7 @@ class ErrorBoundary extends Component {
 
   render() {
     const { hasError } = this.state
-    const { variant, children } = this.props
+    const { variant, isTransparent, children } = this.props
 
     if (hasError) {
       return (
@@ -51,10 +51,12 @@ class ErrorBoundary extends Component {
               justifyContent: 'center',
               textAlign: 'center',
               color: colors.structure.steel,
-              backgroundColor: colors.structure.lead,
+              backgroundColor: isTransparent
+                ? colors.structure.transparent
+                : colors.structure.lead,
               fontSize: typography.size.regular,
               lineHeight: typography.height.regular,
-              boxShadow: constants.boxShadows.default,
+              boxShadow: isTransparent ? 'none' : constants.boxShadows.default,
             }}
           >
             <ErrorSvg width={604} css={{ maxWidth: '80%' }} />
@@ -69,8 +71,13 @@ class ErrorBoundary extends Component {
   }
 }
 
+ErrorBoundary.defaultProps = {
+  isTransparent: false,
+}
+
 ErrorBoundary.propTypes = {
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
+  isTransparent: PropTypes.bool,
   children: PropTypes.node.isRequired,
 }
 

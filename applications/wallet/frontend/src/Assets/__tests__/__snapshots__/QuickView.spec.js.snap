@@ -95,16 +95,6 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
   padding: 32px;
 }
 
-.emotion-1 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-1 .Loading {
-  background-color: transparent;
-  box-shadow: none;
-}
-
 <div
   className="emotion-2"
 >
