@@ -50,7 +50,7 @@ describe('<ModelsAdd />', () => {
     act(() => {
       component.root
         .findByProps({ name: 'model-types' })
-        .props.onChange({ target: { value: 'GCP_LABEL_DETECTION' } })
+        .props.onChange({ value: 'GCP_LABEL_DETECTION' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()

@@ -66,7 +66,7 @@ const DataSourcesAddSource = ({
           </span>
         }
         options={options}
-        onChange={({ target: { value } }) => {
+        onChange={({ value }) => {
           const requiredCredentials = SOURCES[value].credentials.reduce(
             (acc, cred) => {
               const { key, isRequired } = cred

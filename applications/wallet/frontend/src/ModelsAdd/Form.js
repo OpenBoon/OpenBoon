@@ -38,7 +38,7 @@ const ModelsAddForm = () => {
         name="model-types"
         label="Model Type"
         options={options}
-        onChange={({ target: { value } }) => {
+        onChange={({ value }) => {
           dispatch({ type: value })
         }}
       />
