@@ -28,7 +28,7 @@ describe('<AssetLabeling />', () => {
 
     act(() => {
       component.root
-        .findByProps({ label: 'Model:' })
+        .findByProps({ label: 'Model' })
         .props.onChange({ target: { value: models.results[0].id } })
     })
 

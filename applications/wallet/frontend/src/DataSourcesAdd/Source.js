@@ -58,7 +58,7 @@ const DataSourcesAddSource = ({
   return (
     <div css={{ paddingTop: spacing.base }}>
       <Select
-        label="Source type"
+        label="Source Type"
         options={options}
         onChange={({ value }) => {
           const requiredCredentials = SOURCES[value].credentials.reduce(

@@ -33,7 +33,7 @@ const AssetLabelingAdd = ({ projectId }) => {
     <div css={{ padding: spacing.normal }}>
       <Form style={{ width: '100%', padding: 0 }}>
         <Select
-          label="Model:"
+          label="Model"
           options={options}
           onChange={({ value }) => {
             dispatch({ model: value })
@@ -45,7 +45,7 @@ const AssetLabelingAdd = ({ projectId }) => {
         <Input
           id="asset-label"
           variant={INPUT_VARIANTS.SECONDARY}
-          label="Label:"
+          label="Label"
           type="text"
           value={state.label}
           onChange={({ target: { value } }) => dispatch({ label: value })}

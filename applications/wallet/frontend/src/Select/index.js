@@ -13,10 +13,7 @@ const Select = ({ label, options, onChange, isRequired, style }) => {
       <label css={{ color: colors.structure.zinc }}>
         {label}
         {isRequired && (
-          <>
-            {' '}
-            <span css={{ color: colors.signal.warning.base }}>*</span>
-          </>
+          <span css={{ color: colors.signal.warning.base }}> *</span>
         )}
         <div css={{ paddingTop: spacing.base, paddingBottom: spacing.base }}>
           <select

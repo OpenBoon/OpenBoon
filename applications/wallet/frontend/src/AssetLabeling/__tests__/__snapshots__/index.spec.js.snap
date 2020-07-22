@@ -389,7 +389,7 @@ Array [
           <label
             className="emotion-6"
           >
-            Model:
+            Model
             <div
               className="emotion-5"
             >
@@ -424,7 +424,7 @@ Array [
               className="emotion-7"
               htmlFor="asset-label"
             >
-              Label:
+              Label
             </label>
             <div
               className="emotion-9"
@@ -1006,7 +1006,7 @@ Array [
           <label
             className="emotion-6"
           >
-            Model:
+            Model
             <div
               className="emotion-5"
             >
@@ -1041,7 +1041,7 @@ Array [
               className="emotion-7"
               htmlFor="asset-label"
             >
-              Label:
+              Label
             </label>
             <div
               className="emotion-9"
@@ -1623,7 +1623,7 @@ Array [
           <label
             className="emotion-6"
           >
-            Model:
+            Model
             <div
               className="emotion-5"
             >
@@ -1658,7 +1658,7 @@ Array [
               className="emotion-7"
               htmlFor="asset-label"
             >
-              Label:
+              Label
             </label>
             <div
               className="emotion-9"
