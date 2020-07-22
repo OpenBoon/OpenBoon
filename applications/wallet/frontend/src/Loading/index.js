@@ -1,10 +1,12 @@
+import PropTypes from 'prop-types'
+
 import { colors, typography, spacing, constants } from '../Styles'
 
 import GeneratingSvg from '../Icons/generating.svg'
 
 const MIN_HEIGHT = 300
 
-const Loading = () => {
+const Loading = ({ isTransparent }) => {
   return (
     <div
       className="Loading"
@@ -16,10 +18,13 @@ const Loading = () => {
         justifyContent: 'center',
         textAlign: 'center',
         color: colors.structure.steel,
-        backgroundColor: colors.structure.lead,
+        backgroundColor: isTransparent
+          ? colors.structure.transparent
+          : colors.structure.lead,
         fontSize: typography.size.regular,
         lineHeight: typography.height.regular,
-        boxShadow: constants.boxShadows.default,
+        boxShadow: isTransparent ? 'none' : constants.boxShadows.default,
+        height: '100%',
       }}
     >
       <GeneratingSvg
@@ -32,6 +37,14 @@ const Loading = () => {
       Loading...
     </div>
   )
+}
+
+Loading.defaultProps = {
+  isTransparent: false,
+}
+
+Loading.propTypes = {
+  isTransparent: PropTypes.bool,
 }
 
 export default Loading
