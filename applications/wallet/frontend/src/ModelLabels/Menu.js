@@ -8,7 +8,7 @@ import Button, { VARIANTS } from '../Button'
 import ButtonGear from '../Button/Gear'
 import Modal from '../Modal'
 
-const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
+const ModelLabelsMenu = ({ projectId, modelId, label, revalidate }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
 
   return (
@@ -29,8 +29,8 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
                 </Button>
                 {isDeleteModalOpen && (
                   <Modal
-                    title="Delete API Key"
-                    message="Deleting this key cannot be undone."
+                    title="Delete Label"
+                    message="Deleting this label cannot be undone."
                     action="Delete Permanently"
                     onCancel={() => {
                       setDeleteModalOpen(false)
@@ -43,8 +43,8 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
                       onClick()
 
                       await fetcher(
-                        `/api/v1/projects/${projectId}/api_keys/${apiKeyId}/`,
-                        { method: 'DELETE' },
+                        `/api/v1/projects/${projectId}/models/${modelId}/delete_label/`,
+                        { method: 'DELETE', body: JSON.stringify({ label }) },
                       )
 
                       revalidate()
@@ -60,10 +60,11 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
   )
 }
 
-ApiKeysMenu.propTypes = {
+ModelLabelsMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
-  apiKeyId: PropTypes.string.isRequired,
+  modelId: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 
-export default ApiKeysMenu
+export default ModelLabelsMenu
