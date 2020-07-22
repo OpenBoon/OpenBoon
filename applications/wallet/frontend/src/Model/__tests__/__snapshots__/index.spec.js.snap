@@ -259,34 +259,32 @@ Array [
         zvi-console_face_recognition-face-recognition
       </li>
     </ul>
-    <div>
-      <div
-        className="emotion-8"
+    <div
+      className="emotion-8"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
       >
-        <button
-          aria-disabled={true}
-          className="emotion-5"
-          onClick={[Function]}
-          type="button"
-        >
-          Train
-        </button>
-        <button
-          aria-disabled={true}
-          className="emotion-5"
-          onClick={[Function]}
-          type="button"
-        >
-          Train & Apply
-        </button>
-        <button
-          className="emotion-7"
-          onClick={[Function]}
-          type="button"
-        >
-          Delete
-        </button>
-      </div>
+        Train
+      </button>
+      <button
+        aria-disabled={true}
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        Train & Apply
+      </button>
+      <button
+        className="emotion-7"
+        onClick={[Function]}
+        type="button"
+      >
+        Delete
+      </button>
     </div>
   </div>,
   .emotion-3 {

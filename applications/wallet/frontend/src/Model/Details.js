@@ -75,47 +75,45 @@ const ModelDetails = () => {
         </li>
       </ul>
 
-      <div>
-        <ButtonGroup>
-          <Button
-            variant={BUTTON_VARIANTS.SECONDARY}
-            onClick={() => onTrain({ apply: false, projectId, setError })}
-            isDisabled={ready}
-          >
-            Train
-          </Button>
+      <ButtonGroup>
+        <Button
+          variant={BUTTON_VARIANTS.SECONDARY}
+          onClick={() => onTrain({ apply: false, projectId, setError })}
+          isDisabled={ready}
+        >
+          Train
+        </Button>
 
-          <Button
-            variant={BUTTON_VARIANTS.SECONDARY}
-            onClick={() => onTrain({ apply: true, projectId, setError })}
-            isDisabled={ready}
-          >
-            Train &amp; Apply
-          </Button>
+        <Button
+          variant={BUTTON_VARIANTS.SECONDARY}
+          onClick={() => onTrain({ apply: true, projectId, setError })}
+          isDisabled={ready}
+        >
+          Train &amp; Apply
+        </Button>
 
-          <Button
-            variant={BUTTON_VARIANTS.SECONDARY}
-            onClick={() => {
-              setDeleteModalOpen(true)
+        <Button
+          variant={BUTTON_VARIANTS.SECONDARY}
+          onClick={() => {
+            setDeleteModalOpen(true)
+          }}
+          isDisabled={false}
+        >
+          Delete
+        </Button>
+
+        {isDeleteModalOpen && (
+          <Modal
+            title="Delete Model"
+            message="Deleting this model cannot be undone."
+            action="Delete Permanently"
+            onCancel={() => {
+              setDeleteModalOpen(false)
             }}
-            isDisabled={false}
-          >
-            Delete
-          </Button>
-
-          {isDeleteModalOpen && (
-            <Modal
-              title="Delete Model"
-              message="Deleting this model cannot be undone."
-              action="Delete Permanently"
-              onCancel={() => {
-                setDeleteModalOpen(false)
-              }}
-              onConfirm={onDelete({ setDeleteModalOpen, projectId, modelId })}
-            />
-          )}
-        </ButtonGroup>
-      </div>
+            onConfirm={onDelete({ setDeleteModalOpen, projectId, modelId })}
+          />
+        )}
+      </ButtonGroup>
     </div>
   )
 }

@@ -214,34 +214,32 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
       zvi-console_face_recognition-face-recognition
     </li>
   </ul>
-  <div>
-    <div
-      className="emotion-7"
+  <div
+    className="emotion-7"
+  >
+    <button
+      aria-disabled={true}
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
     >
-      <button
-        aria-disabled={true}
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
-      >
-        Train
-      </button>
-      <button
-        aria-disabled={true}
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
-      >
-        Train & Apply
-      </button>
-      <button
-        className="emotion-6"
-        onClick={[Function]}
-        type="button"
-      >
-        Delete
-      </button>
-    </div>
+      Train
+    </button>
+    <button
+      aria-disabled={true}
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
+    >
+      Train & Apply
+    </button>
+    <button
+      className="emotion-6"
+      onClick={[Function]}
+      type="button"
+    >
+      Delete
+    </button>
   </div>
 </div>
 `;
