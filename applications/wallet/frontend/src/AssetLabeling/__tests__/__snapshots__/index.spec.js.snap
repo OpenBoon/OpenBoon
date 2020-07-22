@@ -396,7 +396,6 @@ Array [
               <select
                 className="emotion-4"
                 defaultValue=""
-                name="models"
                 onChange={[Function]}
               >
                 <option
@@ -1014,7 +1013,6 @@ Array [
               <select
                 className="emotion-4"
                 defaultValue=""
-                name="models"
                 onChange={[Function]}
               >
                 <option
@@ -1632,7 +1630,6 @@ Array [
               <select
                 className="emotion-4"
                 defaultValue=""
-                name="models"
                 onChange={[Function]}
               >
                 <option

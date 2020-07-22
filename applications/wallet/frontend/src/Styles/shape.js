@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 
-const styleShape = PropTypes.shape({
+const stylesShape = PropTypes.shape({
   name: PropTypes.string,
   styles: PropTypes.string,
 })
 
-export default styleShape
+export default stylesShape

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import styleShape from '../Style/shape'
+import stylesShape from '../Styles/shape'
 
 import { spacing, constants } from '../Styles'
 
@@ -33,7 +33,7 @@ Form.defaultProps = {
 
 Form.propTypes = {
   children: PropTypes.node.isRequired,
-  style: styleShape,
+  style: stylesShape,
 }
 
 export default Form

@@ -927,14 +927,12 @@ Array [
         <label
           className="emotion-15"
         >
-          <span>
-            Source type
-             
-            <span
-              className="emotion-12"
-            >
-              *
-            </span>
+          Source type
+           
+          <span
+            className="emotion-12"
+          >
+            *
           </span>
           <div
             className="emotion-14"
@@ -942,7 +940,6 @@ Array [
             <select
               className="emotion-13"
               defaultValue=""
-              name="source"
               onChange={[Function]}
             >
               <option
@@ -2730,14 +2727,12 @@ Array [
         <label
           className="emotion-15"
         >
-          <span>
-            Source type
-             
-            <span
-              className="emotion-12"
-            >
-              *
-            </span>
+          Source type
+           
+          <span
+            className="emotion-12"
+          >
+            *
           </span>
           <div
             className="emotion-14"
@@ -2745,7 +2740,6 @@ Array [
             <select
               className="emotion-13"
               defaultValue=""
-              name="source"
               onChange={[Function]}
             >
               <option
@@ -4631,14 +4625,12 @@ Array [
         <label
           className="emotion-15"
         >
-          <span>
-            Source type
-             
-            <span
-              className="emotion-12"
-            >
-              *
-            </span>
+          Source type
+           
+          <span
+            className="emotion-12"
+          >
+            *
           </span>
           <div
             className="emotion-14"
@@ -4646,7 +4638,6 @@ Array [
             <select
               className="emotion-13"
               defaultValue=""
-              name="source"
               onChange={[Function]}
             >
               <option
@@ -6499,14 +6490,12 @@ Array [
         <label
           className="emotion-15"
         >
-          <span>
-            Source type
-             
-            <span
-              className="emotion-12"
-            >
-              *
-            </span>
+          Source type
+           
+          <span
+            className="emotion-12"
+          >
+            *
           </span>
           <div
             className="emotion-14"
@@ -6514,7 +6503,6 @@ Array [
             <select
               className="emotion-13"
               defaultValue=""
-              name="source"
               onChange={[Function]}
             >
               <option

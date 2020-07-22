@@ -49,7 +49,7 @@ describe('<ModelsAdd />', () => {
     // Select valid type
     act(() => {
       component.root
-        .findByProps({ name: 'model-types' })
+        .findByProps({ label: 'Model Type' })
         .props.onChange({ value: 'GCP_LABEL_DETECTION' })
     })
 

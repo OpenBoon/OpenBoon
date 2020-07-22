@@ -1,20 +1,25 @@
 import PropTypes from 'prop-types'
 
-import styleShape from '../Style/shape'
+import stylesShape from '../Styles/shape'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
 const WIDTH = 300
 const HEIGHT = 40
 
-const Select = ({ name, label, options, onChange, style }) => {
+const Select = ({ label, options, onChange, isRequired, style }) => {
   return (
     <>
       <label css={{ color: colors.structure.zinc }}>
         {label}
+        {isRequired && (
+          <>
+            {' '}
+            <span css={{ color: colors.signal.warning.base }}>*</span>
+          </>
+        )}
         <div css={{ paddingTop: spacing.base, paddingBottom: spacing.base }}>
           <select
-            name={name}
             defaultValue=""
             onChange={({ target: { value } }) => onChange({ value })}
             css={{
@@ -56,7 +61,6 @@ Select.defaultProps = {
 }
 
 Select.propTypes = {
-  name: PropTypes.string.isRequired,
   label: PropTypes.node.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
@@ -65,7 +69,8 @@ Select.propTypes = {
     }),
   ).isRequired,
   onChange: PropTypes.func.isRequired,
-  style: styleShape,
+  isRequired: PropTypes.bool.isRequired,
+  style: stylesShape,
 }
 
 export default Select

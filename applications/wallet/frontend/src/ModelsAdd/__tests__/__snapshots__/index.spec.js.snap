@@ -315,7 +315,6 @@ Array [
         <select
           className="emotion-0"
           defaultValue=""
-          name="model-types"
           onChange={[Function]}
         >
           <option
@@ -707,7 +706,6 @@ Array [
         <select
           className="emotion-0"
           defaultValue=""
-          name="model-types"
           onChange={[Function]}
         >
           <option

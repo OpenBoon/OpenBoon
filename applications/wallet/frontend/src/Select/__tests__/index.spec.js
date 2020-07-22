@@ -19,10 +19,10 @@ describe('<Select />', () => {
 
     const component = TestRenderer.create(
       <Select
-        name="Test"
         label="Test:"
         options={options}
         onChange={mockOnChange}
+        isRequired
       />,
     )
 

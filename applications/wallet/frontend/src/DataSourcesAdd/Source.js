@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing } from '../Styles'
+import { spacing } from '../Styles'
 
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Select from '../Select'
@@ -58,13 +58,7 @@ const DataSourcesAddSource = ({
   return (
     <div css={{ paddingTop: spacing.base }}>
       <Select
-        name="source"
-        label={
-          <span>
-            Source type{' '}
-            <span css={{ color: colors.signal.warning.base }}>*</span>
-          </span>
-        }
+        label="Source type"
         options={options}
         onChange={({ value }) => {
           const requiredCredentials = SOURCES[value].credentials.reduce(
@@ -86,6 +80,7 @@ const DataSourcesAddSource = ({
             errors: { ...stateErrors, uri: '' },
           })
         }}
+        isRequired
       />
       &nbsp;
       {source && (

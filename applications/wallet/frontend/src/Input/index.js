@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import styleShape from '../Style/shape'
+import stylesShape from '../Styles/shape'
 
 import { constants, spacing, colors, typography } from '../Styles'
 
@@ -146,7 +146,7 @@ Input.propTypes = {
   after: PropTypes.node,
   isRequired: PropTypes.bool,
   isDisabled: PropTypes.bool,
-  style: styleShape,
+  style: stylesShape,
 }
 
 export default Input

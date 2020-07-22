@@ -35,12 +35,12 @@ const ModelsAddForm = () => {
   return (
     <Form>
       <Select
-        name="model-types"
         label="Model Type"
         options={options}
         onChange={({ value }) => {
           dispatch({ type: value })
         }}
+        isRequired={false}
       />
 
       <Input

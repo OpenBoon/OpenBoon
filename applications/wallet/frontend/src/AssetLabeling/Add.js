@@ -33,12 +33,12 @@ const AssetLabelingAdd = ({ projectId }) => {
     <div css={{ padding: spacing.normal }}>
       <Form style={{ width: '100%', padding: 0 }}>
         <Select
-          name="models"
           label="Model:"
           options={options}
           onChange={({ value }) => {
             dispatch({ model: value })
           }}
+          isRequired={false}
           style={{ width: '100%' }}
         />
 
