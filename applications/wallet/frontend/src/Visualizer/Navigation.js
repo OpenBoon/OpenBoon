@@ -18,8 +18,6 @@ const VisualizerNavigation = ({ itemCount }) => {
   return (
     <div
       css={{
-        paddingLeft: spacing.base,
-        paddingRight: spacing.base,
         backgroundColor: colors.structure.lead,
         color: colors.structure.steel,
         margin: spacing.hairline,
@@ -36,6 +34,8 @@ const VisualizerNavigation = ({ itemCount }) => {
             textTransform: 'uppercase',
             fontWeight: typography.weight.medium,
             padding: spacing.base,
+            paddingLeft: spacing.moderate,
+            paddingRight: spacing.moderate,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -73,7 +73,7 @@ const VisualizerNavigation = ({ itemCount }) => {
           css={{
             marginTop: spacing.base,
             marginBottom: spacing.base,
-            borderLeft: constants.borders.regular.coal,
+            borderLeft: constants.borders.medium.coal,
           }}
         />
 
@@ -105,6 +105,8 @@ const VisualizerNavigation = ({ itemCount }) => {
         css={{
           whiteSpace: 'nowrap',
           padding: spacing.base,
+          paddingLeft: spacing.moderate,
+          paddingRight: spacing.moderate,
           fontFamily: typography.family.condensed,
         }}
       >
