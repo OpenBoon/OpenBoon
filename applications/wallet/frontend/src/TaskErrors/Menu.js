@@ -4,7 +4,7 @@ import { fetcher } from '../Fetch/helpers'
 
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
-import ButtonGear from '../Button/Gear'
+import ButtonActions from '../Button/Actions'
 
 const ACTIONS = [
   {
@@ -15,7 +15,7 @@ const ACTIONS = [
 
 const TaskErrorsMenu = ({ projectId, taskId, revalidate }) => {
   return (
-    <Menu open="left" button={ButtonGear}>
+    <Menu open="left" button={ButtonActions}>
       {({ onBlur, onClick }) => (
         <div>
           <ul>

@@ -296,7 +296,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-12 tr:hover .gear {
+.emotion-12 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -694,7 +694,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-9 tr:hover .gear {
+.emotion-9 tr:hover .actions {
   color: #b3b3b3;
 }
 
