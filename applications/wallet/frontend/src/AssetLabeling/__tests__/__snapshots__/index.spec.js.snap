@@ -151,16 +151,16 @@ Array [
   padding: 0;
 }
 
-.emotion-4 {
+.emotion-6 {
   color: #b3b3b3;
 }
 
-.emotion-6 {
+.emotion-5 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-5 {
+.emotion-4 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
@@ -387,39 +387,37 @@ Array [
           onSubmit={[Function]}
         >
           <label
-            className="emotion-4"
-            htmlFor="models-list"
-          >
-            Model:
-          </label>
-          <div
             className="emotion-6"
           >
-            <select
+            Model:
+            <div
               className="emotion-5"
-              defaultValue=""
-              id="models-list"
-              name="models-list"
-              onChange={[Function]}
             >
-              <option
-                disabled={true}
-                value=""
+              <select
+                className="emotion-4"
+                defaultValue=""
+                name="models"
+                onChange={[Function]}
               >
-                Select a model...
-              </option>
-              <option
-                value="621bf774-89d9-1244-9596-d6df43f1ede5"
-              >
-                console_face_recognition
-              </option>
-              <option
-                value="621bf774-89d9-9596-1244-d6df43f1ede5"
-              >
-                console_cat_recognition
-              </option>
-            </select>
-          </div>
+                <option
+                  disabled={true}
+                  value=""
+                >
+                  Select an option...
+                </option>
+                <option
+                  value="621bf774-89d9-1244-9596-d6df43f1ede5"
+                >
+                  console_face_recognition
+                </option>
+                <option
+                  value="621bf774-89d9-9596-1244-d6df43f1ede5"
+                >
+                  console_cat_recognition
+                </option>
+              </select>
+            </div>
+          </label>
           <div
             className="emotion-11"
           >
@@ -771,16 +769,16 @@ Array [
   padding: 0;
 }
 
-.emotion-4 {
+.emotion-6 {
   color: #b3b3b3;
 }
 
-.emotion-6 {
+.emotion-5 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-5 {
+.emotion-4 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
@@ -1007,39 +1005,37 @@ Array [
           onSubmit={[Function]}
         >
           <label
-            className="emotion-4"
-            htmlFor="models-list"
-          >
-            Model:
-          </label>
-          <div
             className="emotion-6"
           >
-            <select
+            Model:
+            <div
               className="emotion-5"
-              defaultValue=""
-              id="models-list"
-              name="models-list"
-              onChange={[Function]}
             >
-              <option
-                disabled={true}
-                value=""
+              <select
+                className="emotion-4"
+                defaultValue=""
+                name="models"
+                onChange={[Function]}
               >
-                Select a model...
-              </option>
-              <option
-                value="621bf774-89d9-1244-9596-d6df43f1ede5"
-              >
-                console_face_recognition
-              </option>
-              <option
-                value="621bf774-89d9-9596-1244-d6df43f1ede5"
-              >
-                console_cat_recognition
-              </option>
-            </select>
-          </div>
+                <option
+                  disabled={true}
+                  value=""
+                >
+                  Select an option...
+                </option>
+                <option
+                  value="621bf774-89d9-1244-9596-d6df43f1ede5"
+                >
+                  console_face_recognition
+                </option>
+                <option
+                  value="621bf774-89d9-9596-1244-d6df43f1ede5"
+                >
+                  console_cat_recognition
+                </option>
+              </select>
+            </div>
+          </label>
           <div
             className="emotion-11"
           >
@@ -1391,16 +1387,16 @@ Array [
   padding: 0;
 }
 
-.emotion-4 {
+.emotion-6 {
   color: #b3b3b3;
 }
 
-.emotion-6 {
+.emotion-5 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-5 {
+.emotion-4 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
@@ -1627,39 +1623,37 @@ Array [
           onSubmit={[Function]}
         >
           <label
-            className="emotion-4"
-            htmlFor="models-list"
-          >
-            Model:
-          </label>
-          <div
             className="emotion-6"
           >
-            <select
+            Model:
+            <div
               className="emotion-5"
-              defaultValue=""
-              id="models-list"
-              name="models-list"
-              onChange={[Function]}
             >
-              <option
-                disabled={true}
-                value=""
+              <select
+                className="emotion-4"
+                defaultValue=""
+                name="models"
+                onChange={[Function]}
               >
-                Select a model...
-              </option>
-              <option
-                value="621bf774-89d9-1244-9596-d6df43f1ede5"
-              >
-                console_face_recognition
-              </option>
-              <option
-                value="621bf774-89d9-9596-1244-d6df43f1ede5"
-              >
-                console_cat_recognition
-              </option>
-            </select>
-          </div>
+                <option
+                  disabled={true}
+                  value=""
+                >
+                  Select an option...
+                </option>
+                <option
+                  value="621bf774-89d9-1244-9596-d6df43f1ede5"
+                >
+                  console_face_recognition
+                </option>
+                <option
+                  value="621bf774-89d9-9596-1244-d6df43f1ede5"
+                >
+                  console_cat_recognition
+                </option>
+              </select>
+            </div>
+          </label>
           <div
             className="emotion-11"
           >

@@ -27,26 +27,20 @@ const AssetLabelingAdd = ({ projectId }) => {
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
+  const options = models.map(({ name, id }) => ({ key: id, value: name }))
+
   return (
     <div css={{ padding: spacing.normal }}>
       <Form style={{ width: '100%', padding: 0 }}>
         <Select
-          htmlFor="models-list"
+          name="models"
           label="Model:"
-          placeholder="Select a model..."
-          onChange={({ target: { value } }) => {
+          options={options}
+          onChange={({ value }) => {
             dispatch({ model: value })
           }}
           style={{ width: '100%' }}
-        >
-          {models.map((option) => {
-            return (
-              <option key={option.name} value={option.id}>
-                {option.name}
-              </option>
-            )
-          })}
-        </Select>
+        />
 
         <Input
           id="asset-label"

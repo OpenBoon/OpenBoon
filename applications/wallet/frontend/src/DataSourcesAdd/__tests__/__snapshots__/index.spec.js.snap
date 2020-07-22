@@ -209,7 +209,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #b3b3b3;
 }
 
@@ -217,12 +217,12 @@ Array [
   color: #c92300;
 }
 
-.emotion-15 {
+.emotion-14 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-14 {
+.emotion-13 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
@@ -925,8 +925,7 @@ Array [
         className="emotion-16"
       >
         <label
-          className="emotion-13"
-          htmlFor="source-selection"
+          className="emotion-15"
         >
           <span>
             Source type
@@ -937,40 +936,39 @@ Array [
               *
             </span>
           </span>
-        </label>
-        <div
-          className="emotion-15"
-        >
-          <select
+          <div
             className="emotion-14"
-            defaultValue=""
-            id="source-selection"
-            name="source-selection"
-            onChange={[Function]}
           >
-            <option
-              disabled={true}
-              value=""
+            <select
+              className="emotion-13"
+              defaultValue=""
+              name="source"
+              onChange={[Function]}
             >
-              Select an option...
-            </option>
-            <option
-              value="AWS"
-            >
-              Amazon Web Service (AWS)
-            </option>
-            <option
-              value="AZURE"
-            >
-              Azure
-            </option>
-            <option
-              value="GCP"
-            >
-              Google Cloud Platform (GCP)
-            </option>
-          </select>
-        </div>
+              <option
+                disabled={true}
+                value=""
+              >
+                Select an option...
+              </option>
+              <option
+                value="AWS"
+              >
+                Amazon Web Service (AWS)
+              </option>
+              <option
+                value="AZURE"
+              >
+                Azure
+              </option>
+              <option
+                value="GCP"
+              >
+                Google Cloud Platform (GCP)
+              </option>
+            </select>
+          </div>
+        </label>
          
         
       </div>
@@ -2009,7 +2007,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #b3b3b3;
 }
 
@@ -2017,12 +2015,12 @@ Array [
   color: #c92300;
 }
 
-.emotion-15 {
+.emotion-14 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-14 {
+.emotion-13 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
@@ -2730,8 +2728,7 @@ Array [
         className="emotion-34"
       >
         <label
-          className="emotion-13"
-          htmlFor="source-selection"
+          className="emotion-15"
         >
           <span>
             Source type
@@ -2742,40 +2739,39 @@ Array [
               *
             </span>
           </span>
-        </label>
-        <div
-          className="emotion-15"
-        >
-          <select
+          <div
             className="emotion-14"
-            defaultValue=""
-            id="source-selection"
-            name="source-selection"
-            onChange={[Function]}
           >
-            <option
-              disabled={true}
-              value=""
+            <select
+              className="emotion-13"
+              defaultValue=""
+              name="source"
+              onChange={[Function]}
             >
-              Select an option...
-            </option>
-            <option
-              value="AWS"
-            >
-              Amazon Web Service (AWS)
-            </option>
-            <option
-              value="AZURE"
-            >
-              Azure
-            </option>
-            <option
-              value="GCP"
-            >
-              Google Cloud Platform (GCP)
-            </option>
-          </select>
-        </div>
+              <option
+                disabled={true}
+                value=""
+              >
+                Select an option...
+              </option>
+              <option
+                value="AWS"
+              >
+                Amazon Web Service (AWS)
+              </option>
+              <option
+                value="AZURE"
+              >
+                Azure
+              </option>
+              <option
+                value="GCP"
+              >
+                Google Cloud Platform (GCP)
+              </option>
+            </select>
+          </div>
+        </label>
          
         <div
           className="emotion-9"
@@ -3912,7 +3908,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #b3b3b3;
 }
 
@@ -3920,12 +3916,12 @@ Array [
   color: #c92300;
 }
 
-.emotion-15 {
+.emotion-14 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-14 {
+.emotion-13 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
@@ -4633,8 +4629,7 @@ Array [
         className="emotion-28"
       >
         <label
-          className="emotion-13"
-          htmlFor="source-selection"
+          className="emotion-15"
         >
           <span>
             Source type
@@ -4645,40 +4640,39 @@ Array [
               *
             </span>
           </span>
-        </label>
-        <div
-          className="emotion-15"
-        >
-          <select
+          <div
             className="emotion-14"
-            defaultValue=""
-            id="source-selection"
-            name="source-selection"
-            onChange={[Function]}
           >
-            <option
-              disabled={true}
-              value=""
+            <select
+              className="emotion-13"
+              defaultValue=""
+              name="source"
+              onChange={[Function]}
             >
-              Select an option...
-            </option>
-            <option
-              value="AWS"
-            >
-              Amazon Web Service (AWS)
-            </option>
-            <option
-              value="AZURE"
-            >
-              Azure
-            </option>
-            <option
-              value="GCP"
-            >
-              Google Cloud Platform (GCP)
-            </option>
-          </select>
-        </div>
+              <option
+                disabled={true}
+                value=""
+              >
+                Select an option...
+              </option>
+              <option
+                value="AWS"
+              >
+                Amazon Web Service (AWS)
+              </option>
+              <option
+                value="AZURE"
+              >
+                Azure
+              </option>
+              <option
+                value="GCP"
+              >
+                Google Cloud Platform (GCP)
+              </option>
+            </select>
+          </div>
+        </label>
          
         <div
           className="emotion-9"
@@ -5782,7 +5776,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #b3b3b3;
 }
 
@@ -5790,12 +5784,12 @@ Array [
   color: #c92300;
 }
 
-.emotion-15 {
+.emotion-14 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-14 {
+.emotion-13 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
@@ -6503,8 +6497,7 @@ Array [
         className="emotion-27"
       >
         <label
-          className="emotion-13"
-          htmlFor="source-selection"
+          className="emotion-15"
         >
           <span>
             Source type
@@ -6515,40 +6508,39 @@ Array [
               *
             </span>
           </span>
-        </label>
-        <div
-          className="emotion-15"
-        >
-          <select
+          <div
             className="emotion-14"
-            defaultValue=""
-            id="source-selection"
-            name="source-selection"
-            onChange={[Function]}
           >
-            <option
-              disabled={true}
-              value=""
+            <select
+              className="emotion-13"
+              defaultValue=""
+              name="source"
+              onChange={[Function]}
             >
-              Select an option...
-            </option>
-            <option
-              value="AWS"
-            >
-              Amazon Web Service (AWS)
-            </option>
-            <option
-              value="AZURE"
-            >
-              Azure
-            </option>
-            <option
-              value="GCP"
-            >
-              Google Cloud Platform (GCP)
-            </option>
-          </select>
-        </div>
+              <option
+                disabled={true}
+                value=""
+              >
+                Select an option...
+              </option>
+              <option
+                value="AWS"
+              >
+                Amazon Web Service (AWS)
+              </option>
+              <option
+                value="AZURE"
+              >
+                Azure
+              </option>
+              <option
+                value="GCP"
+              >
+                Google Cloud Platform (GCP)
+              </option>
+            </select>
+          </div>
+        </label>
          
         <div
           className="emotion-9"

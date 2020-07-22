@@ -30,24 +30,18 @@ const ModelsAddForm = () => {
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
+  const options = modelTypes.map(({ name }) => ({ key: name, value: name }))
+
   return (
     <Form>
       <Select
-        htmlFor="model-types"
+        name="model-types"
         label="Model Type"
-        placeholder="Select an option..."
+        options={options}
         onChange={({ target: { value } }) => {
           dispatch({ type: value })
         }}
-      >
-        {modelTypes.map((option) => {
-          return (
-            <option key={option.name} value={option.name}>
-              {option.name}
-            </option>
-          )
-        })}
-      </Select>
+      />
 
       <Input
         autoFocus

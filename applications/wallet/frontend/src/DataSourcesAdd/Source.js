@@ -50,17 +50,22 @@ const DataSourcesAddSource = ({
   dispatch,
   state: { credentials, errors: stateErrors, source, uri },
 }) => {
+  const options = Object.keys(SOURCES).map((option) => ({
+    key: option,
+    value: SOURCES[option].label,
+  }))
+
   return (
     <div css={{ paddingTop: spacing.base }}>
       <Select
-        htmlFor="source-selection"
+        name="source"
         label={
           <span>
             Source type{' '}
             <span css={{ color: colors.signal.warning.base }}>*</span>
           </span>
         }
-        placeholder="Select an option..."
+        options={options}
         onChange={({ target: { value } }) => {
           const requiredCredentials = SOURCES[value].credentials.reduce(
             (acc, cred) => {
@@ -81,15 +86,7 @@ const DataSourcesAddSource = ({
             errors: { ...stateErrors, uri: '' },
           })
         }}
-      >
-        {Object.keys(SOURCES).map((option) => {
-          return (
-            <option key={option} value={option}>
-              {SOURCES[option].label}
-            </option>
-          )
-        })}
-      </Select>
+      />
       &nbsp;
       {source && (
         <>
