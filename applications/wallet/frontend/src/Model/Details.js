@@ -86,7 +86,6 @@ const ModelDetails = () => {
           </Button>
 
           <Button
-            type="submit"
             variant={BUTTON_VARIANTS.SECONDARY}
             onClick={() => onTrain({ apply: true, projectId, setError })}
             isDisabled={ready}
@@ -95,7 +94,6 @@ const ModelDetails = () => {
           </Button>
 
           <Button
-            type="submit"
             variant={BUTTON_VARIANTS.SECONDARY}
             onClick={() => {
               setDeleteModalOpen(true)

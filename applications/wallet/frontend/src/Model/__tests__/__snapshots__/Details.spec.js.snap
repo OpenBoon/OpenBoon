@@ -230,14 +230,14 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
         aria-disabled={true}
         className="emotion-4"
         onClick={[Function]}
-        type="submit"
+        type="button"
       >
         Train & Apply
       </button>
       <button
         className="emotion-6"
         onClick={[Function]}
-        type="submit"
+        type="button"
       >
         Delete
       </button>

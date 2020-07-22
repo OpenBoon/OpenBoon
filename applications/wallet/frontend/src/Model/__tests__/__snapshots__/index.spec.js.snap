@@ -275,14 +275,14 @@ Array [
           aria-disabled={true}
           className="emotion-5"
           onClick={[Function]}
-          type="submit"
+          type="button"
         >
           Train & Apply
         </button>
         <button
           className="emotion-7"
           onClick={[Function]}
-          type="submit"
+          type="button"
         >
           Delete
         </button>
