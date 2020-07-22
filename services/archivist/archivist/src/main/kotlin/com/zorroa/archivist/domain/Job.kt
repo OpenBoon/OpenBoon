@@ -11,16 +11,6 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
-/**
- * Backwards compatible 0.40 job type enum.
- */
-enum class JobType {
-    Import,
-    Export,
-    Batch,
-    Generate
-}
-
 enum class JobState {
     /**
      * The job has [TaskState.Running] or [TaskState.Queued] tasks.
@@ -231,14 +221,16 @@ class JobFilter(
             "state" to "job.int_state",
             "priority" to "job.int_priority",
             "projectId" to "job.pk_project",
-            "dataSourceId" to "job.pk_datasource"
+            "dataSourceId" to "job.pk_datasource",
+            "runningTasks" to "job_count.int_task_state_1",
+            "waitingTasks" to "job_count.int_task_state_0"
         )
 
     @JsonIgnore
     override fun build() {
 
         if (sort.isNullOrEmpty()) {
-            sort = listOf("timeCreated:desc")
+            sort = listOf("runningTasks:desc", "waitingTasks:desc", "priority:asc", "timeCreated:asc")
         }
 
         addToWhere("job.pk_project=?")
