@@ -16,7 +16,61 @@ Array [
       ]
     }
   />,
-  .emotion-0 {
+  @keyframes animation-0 {
+  from {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-animation: animation-0 2s linear infinite;
+  animation: animation-0 2s linear infinite;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-1 a {
+  color: #0273f5;
+}
+
+.emotion-4 {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -24,7 +78,7 @@ Array [
   line-height: 23px;
 }
 
-.emotion-4 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -33,12 +87,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-4 button,
-.emotion-4 a {
+.emotion-8 button,
+.emotion-8 a {
   margin-right: 16px;
 }
 
-.emotion-1 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -70,30 +124,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-1:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-1,
-.emotion-1:hover,
-.emotion-1:visited {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
   background-color: #808080;
 }
 
-.emotion-1:hover {
+.emotion-5:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-3 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -125,34 +179,63 @@ Array [
   background-color: transparent;
 }
 
-.emotion-3:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-3,
-.emotion-3:hover,
-.emotion-3:visited {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
   background-color: #808080;
 }
 
-.emotion-3:hover {
+.emotion-7:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div>
-    
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-2"
+      >
+        <svg
+          className="emotion-0"
+          color="#0273f5"
+          data-file-name="generating.svg"
+          height={20}
+        />
+        <div
+          className="emotion-1"
+          role="alert"
+        >
+          "
+          console_face_recognition
+          " training in progress.
+           
+          <a
+            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+          >
+            Check Status
+          </a>
+        </div>
+      </div>
+    </div>
     
     <ul
-      className="emotion-0"
+      className="emotion-4"
     >
       <li>
         <strong>
@@ -178,11 +261,11 @@ Array [
     </ul>
     <div>
       <div
-        className="emotion-4"
+        className="emotion-8"
       >
         <button
           aria-disabled={true}
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           type="button"
         >
@@ -190,14 +273,14 @@ Array [
         </button>
         <button
           aria-disabled={true}
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           type="submit"
         >
           Train & Apply
         </button>
         <button
-          className="emotion-3"
+          className="emotion-7"
           onClick={[Function]}
           type="submit"
         >
