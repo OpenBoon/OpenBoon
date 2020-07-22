@@ -18,8 +18,8 @@ export const onTrain = async ({ apply, projectId, setError }) => {
     mutate(
       `/api/v1/projects/${projectId}/faces/status/`,
       {
-        ready: false,
-        jobId,
+        ready: true,
+        runningJobId: jobId,
       },
       false,
     )

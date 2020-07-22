@@ -65,8 +65,8 @@ describe('<ModelDetails />', () => {
     })
 
     expect(mockMutate).toHaveBeenCalledWith({
-      jobId: JOB_ID,
-      ready: false,
+      runningJobId: JOB_ID,
+      ready: true,
     })
   })
 
