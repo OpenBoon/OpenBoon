@@ -8,7 +8,6 @@ from google.cloud import automl_v1beta1 as automl
 from zmlp.app import ModelApp
 from zmlp.entity import Model
 from zmlp_analysis.google import AutoMLModelClassifier
-from zmlpsdk import file_storage
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
 
@@ -28,8 +27,7 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
     @patch.object(ModelApp, "get_model")
     @patch.object(automl.PredictionServiceClient, "predict")
     @patch("zmlp_analysis.google.automl.get_proxy_level_path")
-    @patch.object(file_storage.assets, 'get_native_uri')
-    def test_predict(self, proxy_patch, native_uri_patch, predict_patch, model_patch):
+    def test_predict(self, proxy_patch, predict_patch, model_patch):
         name = "flowers"
         model_patch.return_value = Model(
             {
@@ -40,24 +38,13 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
                 "moduleName": name
             }
         )
-        native_uri_patch.return_value = "gs://foo/bar"
-        test_asset = TestAsset(self.test_img)
-        test_asset.set_attr('files', [
-            {
-                "attrs": {
-                    "width": 10,
-                    "height": 10
-                },
-                "mimetype": "image/jpeg",
-                "category": "proxy"
-            }
-        ])
+
         predict_patch.return_value = MockPrediction()
 
         args = {"model_id": self.model, "automl_model_id": MockAutoMLClient()}
 
         proxy_patch.return_value = self.test_img
-        frame = Frame(test_asset)
+        frame = Frame(TestAsset(self.test_img))
 
         processor = self.init_processor(AutoMLModelClassifier(), args)
         processor.process(frame)
