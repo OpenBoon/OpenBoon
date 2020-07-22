@@ -17,11 +17,11 @@ import { fetcher } from '../Fetch/helpers'
 
 export const CURRENT_POLICIES_DATE = '20200414'
 
-export const onSubmit = async ({ dispatch, userId }) => {
+export const onSubmit = async ({ dispatch }) => {
   dispatch({ isLoading: true })
 
   try {
-    await fetcher(`/api/v1/users/${userId}/agreements/`, {
+    await fetcher(`/api/v1/me/agreements/`, {
       method: 'POST',
       body: JSON.stringify({ policiesDate: CURRENT_POLICIES_DATE }),
     })
