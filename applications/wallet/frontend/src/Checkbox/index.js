@@ -9,7 +9,7 @@ import { colors, spacing, typography } from '../Styles'
 import CheckboxIcon from './Icon'
 
 const STYLES = {
-  MULTILINE: {
+  PRIMARY: {
     label: {
       alignItems: 'flex-start',
       paddingLeft: 0,
@@ -32,7 +32,7 @@ const STYLES = {
       color: colors.structure.zinc,
     },
   },
-  INLINE: {
+  SECONDARY: {
     label: {
       alignItems: 'center',
       paddingLeft: spacing.normal,
@@ -40,8 +40,9 @@ const STYLES = {
     },
     icon: { size: 20 },
     main: {
-      width: 'max-content',
-      paddingLeft: spacing.normal,
+      display: 'flex',
+      flexDirection: 'column',
+      paddingLeft: spacing.comfy,
     },
     value: {
       color: colors.structure.white,
@@ -50,7 +51,7 @@ const STYLES = {
       fontWeight: typography.weight.bold,
     },
     legend: {
-      paddingLeft: spacing.moderate,
+      paddingLeft: 0,
       color: colors.structure.zinc,
     },
   },
