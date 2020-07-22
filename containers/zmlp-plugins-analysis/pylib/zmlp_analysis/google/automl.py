@@ -4,10 +4,9 @@ import backoff
 from google.api_core.exceptions import ResourceExhausted
 from google.cloud import automl_v1beta1 as automl
 
-from zmlpsdk import Argument, AssetProcessor
+from zmlpsdk import Argument, AssetProcessor, file_storage
 from zmlpsdk.proxy import get_proxy_level_path
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlpsdk.cloud import get_gcp_project_id
 
 
 class AutoMLModelProcessor(AssetProcessor):
@@ -236,18 +235,17 @@ class AutoMLModelClassifier(AssetProcessor):
     def __init__(self):
         super(AutoMLModelClassifier, self).__init__()
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
-        self.add_arg(Argument("score_threshold", "str", default="0.5", toolTip="Score threshold"))
 
         self.app_model = None
-        self.threshold = None
-        self.project_location = None
+        self.automl_model_id = None
         self.predictions = None
-        self.prediction_client = automl.PredictionServiceClient()
+        self.prediction_client = None
 
     def init(self):
         """Init constructor """
         self.app_model = self.app.models.get_model(self.arg_value("model_id"))
-        self.threshold = self.arg_value("score_threshold")
+        self.automl_model_id = self.arg_value("automl_model_id")
+        self.prediction_client = automl.PredictionServiceClient()
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -259,14 +257,35 @@ class AutoMLModelClassifier(AssetProcessor):
             None
         """
         asset = frame.asset
-        proxy_path = get_proxy_level_path(asset, 0)
-        self.predict(proxy_path)
+        proxy_uri = self._get_img_proxy_uri(asset)
+        self.predict(proxy_uri)
 
         analysis = LabelDetectionAnalysis(min_score=0.01)
         for result in self.predictions.payload:
             analysis.add_label_and_score(result.display_name, result.classification.score)
 
         asset.add_analysis(self.app_model.module_name, analysis)
+
+    def _get_img_proxy_uri(self, asset):
+        """
+        Get a URI to the img proxy
+
+        Args:
+            asset: (Asset): The asset to find an audio proxy for.
+
+        Returns:
+            str: A URI to the smallest image proxy if not empty else empty string
+        """
+        img_proxies = asset.get_files(
+            mimetype="image/",
+            category='proxy',
+            sort_func=lambda f: f.attrs.get('width', 0)
+        )
+
+        if img_proxies:
+            img_proxy = img_proxies[0]  # get the smallest proxy
+            return file_storage.assets.get_native_uri(img_proxy)
+        return None
 
     def predict(self, path):
         """ Make a prediction for an image path
@@ -277,12 +296,7 @@ class AutoMLModelClassifier(AssetProcessor):
         Returns:
             None
         """
-        # Get the full path of the model.
-        model_full_id = self.prediction_client.model_path(
-            get_gcp_project_id(), "us-central1", self.app_model.id
-        )
-
-        # Read the file.
+        # Read the native uri in bytes
         with open(path, "rb") as content_file:
             content = content_file.read()
 
@@ -292,6 +306,5 @@ class AutoMLModelClassifier(AssetProcessor):
         # params is additional domain-specific parameters.
         # score_threshold is used to filter the result
         # https://cloud.google.com/automl/docs/reference/rpc/google.cloud.automl.v1#predictrequest
-        params = {"score_threshold": self.threshold}
-
-        self.predictions = self.prediction_client.predict(model_full_id, payload, params)
+        params = {"score_threshold": "0.5"}
+        self.predictions = self.prediction_client.predict(self.automl_model_id, payload, params)
