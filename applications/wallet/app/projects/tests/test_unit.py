@@ -1,9 +1,11 @@
 from uuid import uuid4
 
 import pytest
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from projects.models import Project, Membership
+
+User = get_user_model()
 
 
 @pytest.fixture
