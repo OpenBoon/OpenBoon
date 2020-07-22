@@ -38,7 +38,7 @@ const FilterFacet = ({
       isResizeable
     >
       <div css={{ padding: spacing.normal }}>
-        <SuspenseBoundary transparent>
+        <SuspenseBoundary isTransparent>
           <FilterFacetContent
             pathname={pathname}
             projectId={projectId}

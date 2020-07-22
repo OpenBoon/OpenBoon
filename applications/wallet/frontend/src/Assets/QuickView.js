@@ -160,7 +160,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
             padding: spacing.spacious,
           }}
         >
-          <SuspenseBoundary transparent>
+          <SuspenseBoundary isTransparent>
             <AssetAsset
               key={selectedId}
               projectId={projectId}

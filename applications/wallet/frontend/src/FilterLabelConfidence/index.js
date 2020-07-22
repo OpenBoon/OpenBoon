@@ -38,7 +38,7 @@ const FilterLabelConfidence = ({
       isResizeable
     >
       <div css={{ padding: spacing.normal }}>
-        <SuspenseBoundary transparent>
+        <SuspenseBoundary isTransparent>
           <FilterLabelConfidenceContent
             pathname={pathname}
             projectId={projectId}

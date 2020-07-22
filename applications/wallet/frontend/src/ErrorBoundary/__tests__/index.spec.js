@@ -38,7 +38,7 @@ describe('<ErrorBoundary />', () => {
     }
 
     const component = TestRenderer.create(
-      <ErrorBoundary variant={VARIANTS.LOCAL} transparent>
+      <ErrorBoundary variant={VARIANTS.LOCAL} isTransparent>
         <Throw />
       </ErrorBoundary>,
     )

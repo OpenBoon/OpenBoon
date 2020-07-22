@@ -38,7 +38,7 @@ const FilterRange = ({
       isResizeable
     >
       <div css={{ padding: spacing.normal }}>
-        <SuspenseBoundary transparent>
+        <SuspenseBoundary isTransparent>
           <FilterRangeContent
             pathname={pathname}
             projectId={projectId}

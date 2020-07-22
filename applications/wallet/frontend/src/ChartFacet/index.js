@@ -40,7 +40,7 @@ const ChartFacet = ({ chart, chartIndex, dispatch }) => {
         />
       }
       content={
-        <SuspenseBoundary transparent>
+        <SuspenseBoundary isTransparent>
           <ChartFacetContent chart={chart} />
         </SuspenseBoundary>
       }

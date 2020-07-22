@@ -10,7 +10,7 @@ describe('<Loading />', () => {
   })
 
   it('should render properly when transparent', () => {
-    const component = TestRenderer.create(<Loading transparent />)
+    const component = TestRenderer.create(<Loading isTransparent />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })

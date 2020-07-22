@@ -38,7 +38,7 @@ const FilterSimilarity = ({
       isResizeable
     >
       <div css={{ padding: spacing.normal }}>
-        <SuspenseBoundary transparent>
+        <SuspenseBoundary isTransparent>
           <FilterSimilarityContent
             pathname={pathname}
             projectId={projectId}

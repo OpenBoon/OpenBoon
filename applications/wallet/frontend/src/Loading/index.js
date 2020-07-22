@@ -6,7 +6,7 @@ import GeneratingSvg from '../Icons/generating.svg'
 
 const MIN_HEIGHT = 300
 
-const Loading = ({ transparent }) => {
+const Loading = ({ isTransparent }) => {
   return (
     <div
       className="Loading"
@@ -18,12 +18,12 @@ const Loading = ({ transparent }) => {
         justifyContent: 'center',
         textAlign: 'center',
         color: colors.structure.steel,
-        backgroundColor: transparent
+        backgroundColor: isTransparent
           ? colors.structure.transparent
           : colors.structure.lead,
         fontSize: typography.size.regular,
         lineHeight: typography.height.regular,
-        boxShadow: transparent ? 'none' : constants.boxShadows.default,
+        boxShadow: isTransparent ? 'none' : constants.boxShadows.default,
         height: '100%',
       }}
     >
@@ -40,11 +40,11 @@ const Loading = ({ transparent }) => {
 }
 
 Loading.defaultProps = {
-  transparent: false,
+  isTransparent: false,
 }
 
 Loading.propTypes = {
-  transparent: PropTypes.bool,
+  isTransparent: PropTypes.bool,
 }
 
 export default Loading

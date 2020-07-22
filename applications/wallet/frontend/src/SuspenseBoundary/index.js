@@ -9,7 +9,7 @@ import RoleBoundary from '../RoleBoundary'
 import ErrorBoundary, { VARIANTS } from '../ErrorBoundary'
 import Loading from '../Loading'
 
-const SuspenseBoundary = ({ role, transparent, children }) => {
+const SuspenseBoundary = ({ role, isTransparent, children }) => {
   const {
     query: { projectId },
   } = useRouter()
@@ -26,9 +26,9 @@ const SuspenseBoundary = ({ role, transparent, children }) => {
     <ErrorBoundary
       key={projectId}
       variant={VARIANTS.LOCAL}
-      transparent={transparent}
+      isTransparent={isTransparent}
     >
-      <Suspense fallback={<Loading transparent={transparent} />}>
+      <Suspense fallback={<Loading isTransparent={isTransparent} />}>
         {children}
       </Suspense>
     </ErrorBoundary>
@@ -37,12 +37,12 @@ const SuspenseBoundary = ({ role, transparent, children }) => {
 
 SuspenseBoundary.defaultProps = {
   role: null,
-  transparent: false,
+  isTransparent: false,
 }
 
 SuspenseBoundary.propTypes = {
   role: PropTypes.oneOf(Object.keys(ROLES)),
-  transparent: PropTypes.bool,
+  isTransparent: PropTypes.bool,
   children: PropTypes.node.isRequired,
 }
 
