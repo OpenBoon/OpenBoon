@@ -15,7 +15,6 @@ import ChevronSvg from '../Icons/chevron.svg'
 import TaskAssetsMetadata from './Metadata'
 
 const THUMBNAIL_SIZE = 100
-const ICON_SIZE = 20
 const MAX_HEIGHT = 600
 
 const TaskAssetsRow = ({
@@ -54,7 +53,9 @@ const TaskAssetsRow = ({
         }}
         onClick={toggle}
       >
-        <div css={{ width: ICON_SIZE * 3, textAlign: 'center' }}>{index}</div>
+        <div css={{ width: constants.icons.regular * 3, textAlign: 'center' }}>
+          {index}
+        </div>
 
         <div
           css={{
@@ -79,18 +80,17 @@ const TaskAssetsRow = ({
           {filename}
         </h4>
 
-        <div css={{ width: ICON_SIZE * 2, textAlign: 'center' }}>
+        <div css={{ width: constants.icons.regular * 2, textAlign: 'center' }}>
           <Button
             aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
-            variant={BUTTON_VARIANTS.NEUTRAL}
+            variant={BUTTON_VARIANTS.ICON}
             onClick={toggle}
+            css={{ padding: 0 }}
           >
             <ChevronSvg
-              height={ICON_SIZE}
-              color={colors.structure.steel}
+              height={constants.icons.regular}
               css={{
                 transform: isOpen ? 'rotate(-180deg)' : '',
-                ':hover': { color: colors.structure.white },
               }}
             />
           </Button>
@@ -103,11 +103,11 @@ const TaskAssetsRow = ({
             height: MAX_HEIGHT,
             overflow: 'auto',
             '.ErrorBoundary > div': {
-              backgroundColor: 'transparent',
+              backgroundColor: colors.structure.transparent,
               boxShadow: 'none',
             },
             '.Loading': {
-              backgroundColor: 'transparent',
+              backgroundColor: colors.structure.transparent,
               height: '100%',
               boxShadow: 'none',
             },

@@ -444,13 +444,13 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-5 {
+  .emotion-3 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
 }
 
-.emotion-4 {
+.emotion-2 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -490,37 +490,11 @@ Array [
   text-decoration: none;
 }
 
-.emotion-2 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #73b61c;
-}
-
 <nav
-    className="emotion-5"
+    className="emotion-3"
   >
     <ul
-      className="emotion-4"
+      className="emotion-2"
     >
       <li
         className="emotion-1"
@@ -532,18 +506,6 @@ Array [
           onMouseEnter={[Function]}
         >
           Stack Trace
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/tasks/d2bb6ad3-54d0-11ea-9250-32240f207bfa/errors/85f0d09b-0631-104b-a57e-ce490d54f27a/asset"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Asset
         </a>
       </li>
     </ul>
@@ -1500,7 +1462,7 @@ Array [
   background-color: #808080;
   border-radius: 2px;
   box-shadow: 0 4px 7px 0 #000000;
-  width: 200px;
+  min-width: 200px;
 }
 
 .emotion-2 ul {

@@ -6,8 +6,10 @@ from .util import as_collection
 __all__ = [
     'AssetSearchScroller',
     'AssetSearchResult',
+    'AssetSearchCsvExporter',
     'LabelConfidenceQuery',
-    'SimilarityQuery'
+    'SimilarityQuery',
+    'FaceSimilarityQuery'
 ]
 
 
@@ -21,7 +23,7 @@ class AssetSearchScroller(object):
     is not enough time, consider increasing the timeout or lowering your page size.
 
     """
-    def __init__(self, app, search, timeout="1m", raw_response=False, topn=None):
+    def __init__(self, app, search, timeout="1m", raw_response=False):
         """
         Create a new AssetSearchScroller instance.
 
@@ -111,12 +113,44 @@ class AssetSearchScroller(object):
         return self.scroll()
 
 
+class AssetSearchCsvExporter:
+    """
+    Export a search to a CVS file.
+    """
+    def __init__(self, app, search):
+        self.app = app
+        self.search = search
+
+    def export(self, fields, path):
+        """
+        Export the given fields to a csv file output path.
+
+        Args:
+            fields (list): An array of field names.
+            path (str): a file path.
+
+        Returns:
+            int: The number of assets exported.
+
+        """
+        count = 0
+        scroller = AssetSearchScroller(self.app, self.search)
+        fields = as_collection(fields)
+        with open(str(path), "w") as fp:
+            for asset in scroller:
+                count += 1
+                line = ",".join(["'{}'".format(asset.get_attr(field)) for field in fields])
+                fp.write(f'{line}\n')
+        return count
+
+
 class AssetSearchResult(object):
     """
     Stores a search result from ElasticSearch and provides some convenience methods
     for accessing the data.
 
     """
+
     def __init__(self, app, search):
         """
         Create a new AssetSearchResult.
@@ -302,7 +336,7 @@ class LabelConfidenceQuery(object):
         Create a new LabelConfidenceScoreQuery.
 
         Args:
-            namespace (str): The analysis namespace with predications. (zvi-label-detection)
+            namespace (str): The analysis namespace with predictions. (zvi-label-detection)
             labels (list): A list of labels to filter.
             min_score (float): The minimum label score.
             max_score (float): The maximum score, defaults to 1.0 which is highest
@@ -352,11 +386,12 @@ class SimilarityQuery:
     """
     def __init__(self, hashes, min_score=0.75, boost=1.0,
                  field="analysis.zvi-image-similarity.simhash"):
+        self.field = field
         self.hashes = []
-        self.add_hash(hashes)
         self.min_score = min_score
         self.boost = boost
-        self.field = field
+
+        self.add_hash(hashes)
 
     def add_hash(self, hashes):
         """
@@ -404,3 +439,35 @@ class SimilarityQuery:
     def __add__(self, simhash):
         self.add_hash(simhash)
         return self
+
+
+class FaceSimilarityQuery:
+    """
+    Performs a face similarity search.
+    """
+    def __init__(self, faces, min_score=0.90, boost=1.0,
+                 field="analysis.zvi-face-detection.predictions.simhash"):
+        """
+        Create a new FaceSimilarityQuery.
+
+        Args:
+            faces (list): A prediction with a 'simhash' property or a simhash itself.
+            min_score (float): The minimum score.
+            boost (float): A boost value which weights this query higer than others.
+            field (str): An optional field to compare make the comparison with. Defaults to ZVI.
+        """
+        hashes = []
+        for face in as_collection(faces):
+            if isinstance(face, str):
+                hashes.append(face)
+            else:
+                hashes.append(face['simhash'])
+
+        self.simquery = SimilarityQuery(
+            hashes,
+            min_score,
+            boost,
+            field)
+
+    def for_json(self):
+        return self.simquery.for_json()

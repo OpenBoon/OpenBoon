@@ -54,6 +54,29 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
+    fun createFaceModelDefaultModuleName() {
+        val mspec = ModelSpec(
+            "faces",
+            ModelType.ZVI_FACE_RECOGNITION,
+            deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
+        )
+        val model = modelService.createModel(mspec)
+        assertEquals("zvi-face-recognition", model.moduleName)
+    }
+
+    @Test
+    fun createFaceModuleCustomModel() {
+        val mspec = ModelSpec(
+            "faces",
+            ModelType.ZVI_FACE_RECOGNITION,
+            moduleName = "foo",
+            deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
+        )
+        val model = modelService.createModel(mspec)
+        assertEquals("foo", model.moduleName)
+    }
+
+    @Test
     fun testGetModel() {
         val model1 = create()
         val model2 = modelService.getModel(model1.id)
@@ -210,18 +233,33 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun getLabelCounts() {
         val model = create()
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg", label = model.getLabel("husky"))
-        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+        val specs = listOf(
+            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("beaver")),
+            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("ant")),
+            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
+            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
+        )
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs)
+        )
 
         val counts = modelService.getLabelCounts(model)
-        assertEquals(1, counts["husky"])
+        assertEquals(1, counts["ant"])
+        assertEquals(1, counts["horse"])
+        assertEquals(1, counts["beaver"])
+        assertEquals(1, counts["zanzibar"])
+
+        val keys = counts.keys.toList()
+        assertEquals("ant", keys[0])
+        assertEquals("zanzibar", keys[3])
     }
 
     fun assertModel(model: Model) {
         assertEquals(ModelType.ZVI_LABEL_DETECTION, model.type)
         assertEquals("test", model.name)
-        assertEquals("zvi-test-label-detection", model.moduleName)
-        assertTrue(model.fileId.endsWith("zvi-test-label-detection.zip"))
+        assertEquals("test", model.moduleName)
+        assertTrue(model.fileId.endsWith("model.zip"))
         assertFalse(model.ready)
     }
 }

@@ -15,8 +15,6 @@ import FilterReset from '../Filter/Reset'
 import FilterTitle from '../Filter/Title'
 import FilterActions from '../Filter/Actions'
 
-const ICON_SIZE = 20
-
 export const noop = () => {}
 
 const FilterExists = ({
@@ -72,6 +70,7 @@ const FilterExists = ({
           >
             {['Exists', 'Missing'].map((value) => (
               <Button
+                variant={VARIANTS.ICON}
                 aria-label={value}
                 key={value}
                 style={{
@@ -82,17 +81,13 @@ const FilterExists = ({
                     (value === 'Exists' && exists) ||
                     (value === 'Missing' && !exists)
                       ? colors.structure.steel
-                      : colors.transparent,
+                      : colors.structure.transparent,
                   color:
                     (value === 'Exists' && exists) ||
                     (value === 'Missing' && !exists)
                       ? colors.structure.white
                       : colors.structure.steel,
-                  ':hover': {
-                    color: colors.structure.white,
-                  },
                 }}
-                variant={VARIANTS.NEUTRAL}
                 onClick={() =>
                   dispatch({
                     type: ACTIONS.UPDATE_FILTER,
@@ -112,9 +107,9 @@ const FilterExists = ({
               >
                 <div css={{ display: 'flex', alignItems: 'center' }}>
                   {value === 'Exists' ? (
-                    <ExistsSvg height={ICON_SIZE} />
+                    <ExistsSvg height={constants.icons.regular} />
                   ) : (
-                    <MissingSvg height={ICON_SIZE} />
+                    <MissingSvg height={constants.icons.regular} />
                   )}
                   <div css={{ paddingLeft: spacing.small }}>{value}</div>
                 </div>

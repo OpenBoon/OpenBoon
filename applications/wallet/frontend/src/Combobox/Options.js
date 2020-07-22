@@ -8,8 +8,11 @@ import {
 
 import { constants, spacing, colors, typography } from '../Styles'
 
+const MAX_HEIGHT = 350
+
 const ComboboxOptions = ({ options }) => {
   if (options.length === 0) return null
+
   return (
     <ReachComboboxPopover
       css={{
@@ -21,7 +24,8 @@ const ComboboxOptions = ({ options }) => {
       <ReachComboboxList
         css={{
           width: '100%',
-          position: 'absolute',
+          maxHeight: MAX_HEIGHT,
+          overflowY: 'scroll',
           backgroundColor: colors.structure.white,
           borderRadius: constants.borderRadius.small,
           color: colors.structure.black,

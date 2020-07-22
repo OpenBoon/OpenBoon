@@ -11,7 +11,6 @@ import TableException from './Exception'
 import TableRefresh from './Refresh'
 
 const SIZE = 20
-const ICON_SIZE = 20
 
 const TableContent = ({
   url,
@@ -146,7 +145,7 @@ const TableContent = ({
                   >
                     {column === '#Actions#' ? (
                       <div css={{ display: 'flex' }}>
-                        <GearSvg height={ICON_SIZE} />
+                        <GearSvg height={constants.icons.regular} />
                       </div>
                     ) : (
                       column

@@ -37,12 +37,13 @@ class SubscriptionInline(admin.StackedInline):
 class SupportUserAdmin(NoDeleteMixin, ModelAdmin):
     fieldsets = [
         (None, {'fields': ('email', 'first_name', 'last_name',
-                           'is_active', 'is_staff')})
+                           'is_active', 'is_staff', 'is_superuser')})
     ]
-    list_display = ('email', 'first_name', 'last_name', 'is_active', 'last_login', 'date_joined')
+    list_display = ('email', 'first_name', 'last_name', 'is_active', 'last_login', 'date_joined',
+                    'is_superuser', 'is_staff')
     search_fields = ('email', 'first_name', 'last_name')
     readonly_fields = ['email', 'username']
-    list_filter = ('is_active',)
+    list_filter = ('is_active', 'is_superuser', 'is_staff')
     exclude = ('permissions',)
     inlines = [MembershipInline]
 

@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 
 import boto3
 import minio
+import google.auth
 from google.auth.exceptions import DefaultCredentialsError
 from google.cloud import storage as gcs
 from google.oauth2 import service_account
@@ -155,3 +156,16 @@ def get_pipeline_storage_client():
 @memoize
 def get_cached_storage_client():
     return get_pipeline_storage_client()
+
+
+def get_gcp_project_id():
+    """
+    Return the current authenticated GCP project Id.
+
+    Returns:
+        str: The project Id.
+    """
+    _, pid = google.auth.default()
+    if not pid:
+        raise RuntimeError("No google project is configured")
+    return pid

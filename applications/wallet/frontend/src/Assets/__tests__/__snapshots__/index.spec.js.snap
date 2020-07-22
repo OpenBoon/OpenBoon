@@ -579,9 +579,9 @@ exports[`<Assets /> should render properly 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  opacity: 1;
+  padding: 0;
   padding: 8px;
+  opacity: 1;
 }
 
 .emotion-0:hover {
@@ -631,9 +631,9 @@ exports[`<Assets /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  opacity: 1;
+  padding: 0;
   padding: 8px;
+  opacity: 1;
 }
 
 .emotion-1:hover {
@@ -774,9 +774,9 @@ exports[`<Assets /> should render properly 2`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  opacity: 1;
+  padding: 0;
   padding: 8px;
+  opacity: 1;
 }
 
 .emotion-1:hover {
@@ -826,9 +826,9 @@ exports[`<Assets /> should render properly 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  opacity: 1;
+  padding: 0;
   padding: 8px;
+  opacity: 1;
 }
 
 .emotion-0:hover {
@@ -969,9 +969,9 @@ exports[`<Assets /> should render properly 3`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  opacity: 1;
+  padding: 0;
   padding: 8px;
+  opacity: 1;
 }
 
 .emotion-0:hover {
@@ -1021,9 +1021,9 @@ exports[`<Assets /> should render properly 3`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 4px;
-  opacity: 1;
+  padding: 0;
   padding: 8px;
+  opacity: 1;
 }
 
 .emotion-1:hover {

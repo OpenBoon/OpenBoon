@@ -10,13 +10,14 @@ import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchDeleteAssetResponse
+import com.zorroa.archivist.domain.BatchIndexFailure
+import com.zorroa.archivist.domain.BatchIndexResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
-import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileExtResolver
+import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectFileLocator
@@ -25,6 +26,7 @@ import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.Task
+import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.domain.ZpsScript
@@ -122,7 +124,7 @@ interface AssetService {
      * @return An ES [BulkResponse] which contains the result of the operation.
      *
      */
-    fun batchIndex(docs: Map<String, MutableMap<String, Any>>, setAnalyzed: Boolean = false): BulkResponse
+    fun batchIndex(docs: Map<String, MutableMap<String, Any>>, setAnalyzed: Boolean = false): BatchIndexResponse
 
     /**
      * Reindex a single asset.  The fully composed asset metadata must be provided,
@@ -358,7 +360,7 @@ class AssetServiceImpl : AssetService {
         return rest.client.lowLevelClient.performRequest(request)
     }
 
-    override fun batchIndex(docs: Map<String, MutableMap<String, Any>>, setAnalyzed: Boolean): BulkResponse {
+    override fun batchIndex(docs: Map<String, MutableMap<String, Any>>, setAnalyzed: Boolean): BatchIndexResponse {
         if (docs.isEmpty()) {
             throw IllegalArgumentException("Nothing to batch index.")
         }
@@ -374,42 +376,79 @@ class AssetServiceImpl : AssetService {
 
         // A set of IDs where the stat changed to Analyzed.
         val stateChangedIds = mutableSetOf<String>()
+        val failedAssets = mutableListOf<BatchIndexFailure>()
 
         docs.forEach { (id, doc) ->
+            val asset = Asset(id, doc)
+            try {
+                prepAssetForUpdate(asset)
+                if (setAnalyzed && !asset.isAnalyzed()) {
+                    asset.setAttr("system.state", AssetState.Analyzed.name)
+                    stateChangedIds.add(id)
+                }
 
-            val asset = prepAssetForUpdate(id, doc)
-            if (setAnalyzed && !asset.isAnalyzed()) {
-                asset.setAttr("system.state", AssetState.Analyzed.name)
-                stateChangedIds.add(id)
+                bulk.add(
+                    rest.newIndexRequest(id)
+                        .source(doc)
+                        .opType(DocWriteRequest.OpType.INDEX)
+                )
+            } catch (ex: Exception) {
+                failedAssets.add(
+                    BatchIndexFailure(id, asset.getAttr("source.path"), ex.message ?: "Unknown error")
+                )
+                logger.event(
+                    LogObject.ASSET,
+                    LogAction.ERROR,
+                    mapOf(
+                        "assetId" to id,
+                        "cause" to ex.message
+                    )
+                )
             }
-
-            /*
-             * Index here vs update because otherwise the new doc will
-             * be merge of the old one and the new one.
-             */
-            bulk.add(
-                rest.newIndexRequest(id)
-                    .source(doc)
-                    .opType(DocWriteRequest.OpType.INDEX)
+            logger.event(
+                LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to bulk.numberOfActions())
             )
         }
 
-        logger.event(
-            LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to docs.size)
-        )
+        return if (bulk.numberOfActions() > 0) {
+            val rsp = rest.client.bulk(bulk, RequestOptions.DEFAULT)
+            val indexedIds = mutableListOf<String>()
 
-        val rsp = rest.client.bulk(bulk, RequestOptions.DEFAULT)
-        if (stateChangedIds.isNotEmpty()) {
-            val successIds = rsp.filter { !it.isFailed }.map { it.id }
-            incrementProjectIngestCounters(stateChangedIds.intersect(successIds), docs)
+            rsp.forEach {
+                if (it.isFailed) {
+                    logger.event(
+                        LogObject.ASSET,
+                        LogAction.ERROR,
+                        mapOf(
+                            "assetId" to it.id,
+                            "cause" to it.failureMessage
+                        )
+                    )
+                    failedAssets.add(BatchIndexFailure(it.id, null, it.failureMessage))
+                } else {
+                    indexedIds.add(it.id)
+                }
+            }
+
+            // To increment ingest counters we need to know if the state changed.
+            if (stateChangedIds.isNotEmpty()) {
+                incrementProjectIngestCounters(stateChangedIds.intersect(indexedIds), docs)
+            }
+            BatchIndexResponse(indexedIds, failedAssets)
+        } else {
+            BatchIndexResponse(emptyList(), failedAssets)
         }
-
-        return rsp
     }
 
     override fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse {
 
+        val maximumBatchSize = properties.getInt("archivist.assets.deletion-max-batch-size")
+        if (ids.size > maximumBatchSize) {
+            throw IllegalArgumentException("Maximum allowed size exceeded. Maximum batch size for delete: $maximumBatchSize")
+        }
+
         val rest = indexRoutingService.getProjectRestClient()
+        var deletedAssets = getAll(ids).map { it.id to it }.toMap()
         val query = QueryBuilders.termsQuery("_id", ids)
         val rsp = rest.client.deleteByQuery(
             DeleteByQueryRequest(rest.route.indexName)
@@ -428,11 +467,14 @@ class AssetServiceImpl : AssetService {
             )
         }
 
+        val projectQuotaCounters = ProjectQuotaCounters()
         for (removed in removed) {
+            projectQuotaCounters.countForDeletion(deletedAssets.getValue(removed))
             logger.event(
                 LogObject.ASSET, LogAction.DELETE, mapOf("assetId" to removed)
             )
         }
+        projectService.incrementQuotaCounters(projectQuotaCounters)
 
         // Background removal of files into a co-routine.
         GlobalScope.launch(Dispatchers.IO + CoroutineAuthentication(SecurityContextHolder.getContext())) {
@@ -586,7 +628,7 @@ class AssetServiceImpl : AssetService {
         }
 
         val created = mutableListOf<String>()
-        val failures = mutableListOf<Map<String, String?>>()
+        val failures = mutableListOf<BatchIndexFailure>()
 
         // If there is a valid bulk request, commit assets to ES.
         if (validBulkRequest) {
@@ -599,13 +641,7 @@ class AssetServiceImpl : AssetService {
                     logger.warnEvent(
                         LogObject.ASSET, LogAction.CREATE, "failed to create asset $path, $msg"
                     )
-                    failures.add(
-                        mapOf(
-                            "assetId" to it.id,
-                            "path" to path,
-                            "failureMessage" to msg
-                        )
-                    )
+                    failures.add(BatchIndexFailure(it.id, path, msg))
                 } else {
                     created.add(it.id)
                     logger.event(
@@ -682,11 +718,6 @@ class AssetServiceImpl : AssetService {
         return asset
     }
 
-    fun prepAssetForUpdate(id: String, map: MutableMap<String, Any>): Asset {
-        val asset = Asset(id, map)
-        return prepAssetForUpdate(asset)
-    }
-
     fun prepAssetForUpdate(asset: Asset): Asset {
 
         val time = java.time.Clock.systemUTC().instant().toString()
@@ -694,6 +725,14 @@ class AssetServiceImpl : AssetService {
         // Remove these which are used for temp attrs
         removeFieldsOnUpdate.forEach {
             asset.removeAttr(it)
+        }
+
+        // Assets must have media type in order to Increment Project Ingest Counters
+        if (!asset.attrExists("media.type")) {
+            val ext = FileUtils.extension(
+                (asset.getAttr<String>("source.path"))
+            )
+            asset.setAttr("media.type", FileExtResolver.getType(ext))
         }
 
         // Got back a clip but it has no pile which means it's in its own pile.
@@ -753,8 +792,8 @@ class AssetServiceImpl : AssetService {
     }
 
     override fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse {
-        val bulkSize = 50
-        val maxAssets = 1000
+        val bulkSize = 100
+        val maxAssets = 1000L
         if (req.add?.size ?: 0 > maxAssets) {
             throw IllegalArgumentException(
                 "Cannot add labels to more than $maxAssets assets at a time."
@@ -799,9 +838,11 @@ class AssetServiceImpl : AssetService {
         // Build a bulk update.
         val rsp = rest.client.search(builder.request, RequestOptions.DEFAULT)
         val bulk = BulkRequest()
+        // Need an IMMEDIATE refresh policy or else we could end
+        // up losing labels with subsequent calls.
         bulk.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
-        for (asset in AssetIterator(rest.client, rsp, 5000)) {
+        for (asset in AssetIterator(rest.client, rsp, maxAssets)) {
             val removeLabels = req.remove?.get(asset.id)
             removeLabels?.let {
                 asset.removeLabels(it)

@@ -38,7 +38,7 @@ describe('<Policies />', () => {
 
     expect(fetch.mock.calls.length).toEqual(2)
 
-    expect(fetch.mock.calls[0][0]).toEqual(`/api/v1/users/42/agreements/`)
+    expect(fetch.mock.calls[0][0]).toEqual(`/api/v1/me/agreements/`)
 
     expect(fetch.mock.calls[0][1]).toEqual({
       headers: {

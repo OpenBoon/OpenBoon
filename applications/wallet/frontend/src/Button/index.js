@@ -20,7 +20,7 @@ const BASE = ({ isDisabled }) => ({
   border: 'none',
   cursor: isDisabled ? 'not-allowed' : 'pointer',
   color: colors.structure.white,
-  backgroundColor: colors.transparent,
+  backgroundColor: colors.structure.transparent,
   ':hover': {
     textDecoration: 'none',
   },
@@ -122,9 +122,13 @@ const STYLES = {
     },
   },
   ICON: {
-    padding: spacing.small,
-    ':hover': {
-      color: colors.key.one,
+    padding: spacing.base,
+    color: colors.structure.steel,
+    ':hover, &.focus-visible:focus': {
+      color: colors.structure.white,
+      svg: {
+        opacity: 1,
+      },
     },
     '&[aria-disabled=true]': {
       color: colors.structure.steel,

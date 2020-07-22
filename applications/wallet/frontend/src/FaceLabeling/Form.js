@@ -60,14 +60,19 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
       )}
       <Form
         style={{
-          padding: spacing.normal,
+          padding: 0,
           width: '100%',
-          height: '100%',
-          overflow: 'auto',
-          backgroundColor: colors.structure.coal,
+          overflow: 'hidden',
         }}
       >
-        <div>
+        <div
+          css={{
+            padding: spacing.normal,
+            backgroundColor: colors.structure.coal,
+            flex: 1,
+            overflow: 'auto',
+          }}
+        >
           {predictions.map(({ simhash, bbox, b64Image }) => {
             const originalValue = predictions.find((p) => p.simhash === simhash)
               .label
@@ -114,7 +119,8 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
             )
           })}
         </div>
-        <div css={{ display: 'flex' }}>
+
+        <div css={{ padding: spacing.base, display: 'flex' }}>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
             onClick={() => {

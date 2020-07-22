@@ -133,7 +133,8 @@ class AssetSearchServiceImpl : AssetSearchService {
             "query", "from", "size", "timeout",
             "post_filter", "minscore", "suggest",
             "highlight", "collapse", "_source",
-            "slice", "aggs", "aggregations", "sort"
+            "slice", "aggs", "aggregations", "sort",
+            "search_after"
         )
     }
 }

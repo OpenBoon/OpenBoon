@@ -74,7 +74,7 @@ const LoginWithGoogle = ({ googleAuth, hasGoogleLoaded, onSubmit }) => {
               justifyContent: 'center',
               padding: spacing.moderate,
               backgroundColor: isLoading
-                ? colors.transparent
+                ? colors.structure.transparent
                 : colors.structure.white,
               borderRadius: constants.borderRadius.small,
             }}

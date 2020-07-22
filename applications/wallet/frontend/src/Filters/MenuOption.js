@@ -27,7 +27,7 @@ const FiltersMenuOption = ({ option, label, filters, onClick }) => {
           padding: spacing.base,
           marginLeft: -OFFSET,
           ':hover': {
-            backgroundColor: colors.signal.electricBlue.background,
+            backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
           },
         }}
       >

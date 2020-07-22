@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository
 
+import com.zorroa.archivist.domain.IndexCluster
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
@@ -35,6 +36,11 @@ interface IndexRouteDao {
      * Return a list of all [IndexRoute]s, including closed.
      */
     fun getAll(): List<IndexRoute>
+
+    /**
+     * Return a list of all [IndexRoute]s by cluster.
+     */
+    fun getAll(cluster: IndexCluster): List<IndexRoute>
 
     /**
      * Return an [IndexRoute] by its unique Id.
@@ -106,6 +112,10 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
 
     override fun getAll(): List<IndexRoute> {
         return jdbc.query(GET, MAPPER)
+    }
+
+    override fun getAll(cluster: IndexCluster): List<IndexRoute> {
+        return jdbc.query("$GET WHERE index_cluster.pk_index_cluster=?", MAPPER, cluster.id)
     }
 
     override fun getProjectRoute(): IndexRoute {

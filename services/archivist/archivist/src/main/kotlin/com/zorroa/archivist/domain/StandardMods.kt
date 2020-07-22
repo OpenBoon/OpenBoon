@@ -28,7 +28,7 @@ object Provider {
     const val CUSTOM = "Custom"
 }
 
-object ModType {
+object ModelObjective {
     const val LABEL_DETECTION = "Label Detection"
     const val OBJECT_DETECTION = "Object Detection"
     const val LANDMARK_DETECTION = "Landmark Detection"
@@ -51,7 +51,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Extract all pages in MS Office/PDF documents into separate assets.",
             Provider.ZORROA,
             Category.ZORROA_TL,
-            ModType.CLIPIFIER,
+            ModelObjective.CLIPIFIER,
             listOf(FileType.Documents),
             listOf(
                 ModOp(
@@ -68,7 +68,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 "separate assets",
             Provider.ZORROA,
             Category.ZORROA_TL,
-            ModType.CLIPIFIER,
+            ModelObjective.CLIPIFIER,
             listOf(FileType.Images),
             listOf(
                 ModOp(
@@ -84,7 +84,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Detect everyday objects in images and documents.",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.OBJECT_DETECTION,
+            ModelObjective.OBJECT_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -104,7 +104,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Detect faces in images and documents.",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.FACE_RECOGNITION,
+            ModelObjective.FACE_RECOGNITION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -124,7 +124,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Generate keyword labels for images and documents.",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -144,7 +144,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Utilize OCR technology to detect text in documents.",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.TEXT_DETECTION,
+            ModelObjective.TEXT_DETECTION,
             listOf(FileType.Images),
             listOf(
                 ModOp(
@@ -164,7 +164,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Clarifai prediction API with the general model.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -185,7 +185,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Clarifai prediction API with the food model.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -206,7 +206,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Clarifai prediction API with the apparel model.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -228,7 +228,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 "an image, across a broad group of categories.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -248,7 +248,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Detect and extract multiple objects in an image.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
-            ModType.OBJECT_DETECTION,
+            ModelObjective.OBJECT_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -268,7 +268,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Detect popular product logos within an image.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
-            ModType.LOGO_DETECTION,
+            ModelObjective.LOGO_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -288,7 +288,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Detect text within an image, including photographic ones.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
-            ModType.TEXT_DETECTION,
+            ModelObjective.TEXT_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -308,7 +308,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Utilize OCR technology to detect text in documents.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
-            ModType.TEXT_DETECTION,
+            ModelObjective.TEXT_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -328,7 +328,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Detect popular natural and man-made structures within an image.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
-            ModType.LANDMARK_DETECTION,
+            ModelObjective.LANDMARK_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -348,7 +348,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Detect labels within a video.",
             Provider.GOOGLE,
             Category.GOOGLE_VIDEO,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Videos),
             listOf(
                 ModOp(
@@ -373,7 +373,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Detect logos within a video.",
             Provider.GOOGLE,
             Category.GOOGLE_VIDEO,
-            ModType.LOGO_DETECTION,
+            ModelObjective.LOGO_DETECTION,
             listOf(FileType.Videos),
             listOf(
                 ModOp(
@@ -394,7 +394,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Detect objects within a video.",
             Provider.GOOGLE,
             Category.GOOGLE_VIDEO,
-            ModType.OBJECT_DETECTION,
+            ModelObjective.OBJECT_DETECTION,
             listOf(FileType.Videos),
             listOf(
                 ModOp(
@@ -415,7 +415,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Detect explicit content in videos.",
             Provider.GOOGLE,
             Category.GOOGLE_VIDEO,
-            ModType.EXPLICIT_DETECTION,
+            ModelObjective.EXPLICIT_DETECTION,
             listOf(FileType.Videos),
             listOf(
                 ModOp(
@@ -436,7 +436,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Detect and extract text from video using OCR",
             Provider.GOOGLE,
             Category.GOOGLE_VIDEO,
-            ModType.TEXT_DETECTION,
+            ModelObjective.TEXT_DETECTION,
             listOf(FileType.Videos),
             listOf(
                 ModOp(
@@ -457,7 +457,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Convert audio to text by applying powerful neural network models. Support. for 120 languages.",
             Provider.GOOGLE,
             Category.GOOGLE_S2TEXT,
-            ModType.SPEECH_RECOGNITION,
+            ModelObjective.SPEECH_RECOGNITION,
             listOf(FileType.Videos),
             listOf(
                 ModOp(

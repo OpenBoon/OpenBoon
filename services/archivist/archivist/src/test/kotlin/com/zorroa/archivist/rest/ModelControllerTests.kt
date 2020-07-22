@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.AutomlSessionSpec
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelType
@@ -48,7 +49,7 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.moduleName",
-                    CoreMatchers.equalTo("zvi-test-label-detection")
+                    CoreMatchers.equalTo("test")
                 )
             )
             .andReturn()
@@ -167,6 +168,39 @@ class ModelControllerTests : MockMvcTest() {
                 MockMvcResultMatchers.jsonPath(
                     "$[0].name",
                     CoreMatchers.equalTo("ZVI_KNN_CLASSIFIER")
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testCreateAutomlSession() {
+
+        val modelSpec = ModelSpec("Dog Breeds", ModelType.GCP_LABEL_DETECTION)
+        val model = modelService.createModel(modelSpec)
+
+        val automlSpec = AutomlSessionSpec(
+            "project/foo/region/us-central/datasets/foo",
+            "a_training_job"
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_automl")
+                .headers(admin())
+                .content(Json.serialize(automlSpec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.automlDataSet",
+                    CoreMatchers.equalTo(automlSpec.automlDataSet)
+                )
+            )
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.automlTrainingJob",
+                    CoreMatchers.equalTo(automlSpec.automlTrainingJob)
                 )
             )
             .andReturn()

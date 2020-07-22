@@ -27,6 +27,8 @@ import subscriptions from './src/Subscriptions/__mocks__/subscriptions'
 import roles from './src/Roles/__mocks__/roles'
 import fields from './src/Filters/__mocks__/fields'
 import dateAggregate from './src/FilterDateRange/__mocks__/aggregate'
+import models from './src/Models/__mocks__/models'
+import modelTypes from './src/ModelTypes/__mocks__/modelTypes'
 
 const { STAGING, SLOW, MOCKED } = process.env
 
@@ -51,7 +53,12 @@ app.prepare().then(() => {
   // Mock API calls
   if (MOCKED) {
     server.post('/api/v1/login/', mock(user))
+
     server.get('/api/v1/me/', mock(user))
+    server.post(`/api/v1/me/agreements/`, success())
+    const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
+    server.patch(`/api/v1/me/`, mock(userpatch))
+
     server.get('/api/v1/projects/', mock(projects))
     server.post('/api/v1/password/reset/', success())
     server.get('/api/v1/projects/:projectId', mock(project))
@@ -59,10 +66,6 @@ app.prepare().then(() => {
       '/api/v1/projects/:projectId/task_errors/:errorId/',
       mock(taskError),
     )
-
-    const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
-    server.patch(`/api/v1/users/:userId/`, mock(userpatch))
-    server.post(`/api/v1/users/:userId/agreements/`, success())
 
     const PID_API_BASE = '/api/v1/projects/:projectId'
 
@@ -96,6 +99,9 @@ app.prepare().then(() => {
     server.get(`${PID_API_BASE}/roles/`, mock(roles))
     server.get(`${PID_API_BASE}/searches/fields/`, mock(fields))
     server.get(`${PID_API_BASE}/searches/aggregate/`, mock(dateAggregate))
+
+    server.get(`${PID_API_BASE}/models/`, mock(models))
+    server.get(`${PID_API_BASE}/models/model_types/`, mock(modelTypes))
   }
 
   // Proxy API calls

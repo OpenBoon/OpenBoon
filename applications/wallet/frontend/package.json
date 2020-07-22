@@ -79,17 +79,17 @@
     {
       "//": "dependencies",
       "path": ".next/static/chunks/commons**.js",
-      "maxSize": "11 kB"
+      "maxSize": "8 kB"
     },
     {
       "//": "app.js",
       "path": ".next/static/**/pages/_app.js",
-      "maxSize": "30 kB"
+      "maxSize": "35 kB"
     },
     {
       "//": "main runtime",
       "path": ".next/static/runtime/main**.js",
-      "maxSize": "7 kB"
+      "maxSize": "6 kB"
     },
     {
       "//": "error page",
@@ -104,7 +104,7 @@
     {
       "//": "all pages and chunks",
       "path": ".next/static/**/!(framework|commons|_app|_error|main|polyfill|webpack)*.js",
-      "maxSize": "33 kB"
+      "maxSize": "37 kB"
     }
   ],
   "dependencies": {
@@ -112,11 +112,14 @@
     "@emotion/cache": "10.0.29",
     "@emotion/core": "10.0.28",
     "@reach/combobox": "0.10.5",
-    "@sentry/apm": "5.19.0",
-    "@sentry/browser": "5.19.0",
+    "@reach/listbox": "0.10.5",
+    "@sentry/apm": "5.19.2",
+    "@sentry/browser": "5.19.2",
+    "@sentry/utils": "5.19.2",
     "@svgr/webpack": "5.4.0",
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "body-scroll-lock": "3.0.3",
+    "camelcase": "6.0.0",
     "deep-filter": "1.0.2",
     "dotenv": "8.2.0",
     "focus-visible": "5.1.0",
@@ -145,17 +148,17 @@
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-macros": "2.8.0",
     "bundlesize": "0.18.0",
-    "eslint": "7.4.0",
+    "eslint": "7.5.0",
     "eslint-config-airbnb": "18.2.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-emotion": "10.0.27",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-jsx-a11y": "6.3.1",
     "eslint-plugin-react": "7.20.3",
-    "eslint-plugin-react-hooks": "4.0.5",
+    "eslint-plugin-react-hooks": "4.0.8",
     "esm": "3.2.25",
     "express": "4.17.1",
-    "http-proxy-middleware": "1.0.4",
+    "http-proxy-middleware": "1.0.5",
     "husky": "4.2.5",
     "import-all.macro": "3.0.0",
     "jest": "26.1.0",

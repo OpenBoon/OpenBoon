@@ -3,13 +3,12 @@ import PropTypes from 'prop-types'
 import PenSvg from '../Icons/pen.svg'
 import CrossSvg from '../Icons/cross.svg'
 
-import { colors, spacing, typography } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import { ACTIONS } from '../DataVisualization/reducer'
 
 import Button, { VARIANTS } from '../Button'
 
-const ICON_SIZE = 20
 const ICON_PADDING = 6
 
 const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
@@ -18,6 +17,7 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
       css={{
         display: 'flex',
         alignItems: 'center',
+        marginRight: -spacing.base,
         ':hover': {
           button: {
             svg: { opacity: 1 },
@@ -42,14 +42,13 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
       <Button
         title="Edit"
         aria-label="Edit Chart"
-        variant={VARIANTS.NEUTRAL}
+        variant={VARIANTS.ICON}
         css={{
           padding: ICON_PADDING,
           svg: {
-            color: colors.structure.steel,
+            opacity: 0,
           },
           ':hover, &.focus-visible:focus': {
-            svg: { opacity: 1, color: colors.structure.white },
             backgroundColor: colors.structure.smoke,
           },
         }}
@@ -57,7 +56,7 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
           setIsEditing(true)
         }}
       >
-        <PenSvg height={ICON_SIZE} css={{ opacity: 0 }} />
+        <PenSvg height={constants.icons.regular} />
       </Button>
 
       <div css={{ width: spacing.mini }} />
@@ -65,14 +64,13 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
       <Button
         title="Delete"
         aria-label="Delete Chart"
-        variant={VARIANTS.NEUTRAL}
+        variant={VARIANTS.ICON}
         css={{
           padding: ICON_PADDING,
           svg: {
-            color: colors.structure.steel,
+            opacity: 0,
           },
           ':hover, &.focus-visible:focus': {
-            svg: { opacity: 1, color: colors.structure.white },
             backgroundColor: colors.structure.smoke,
           },
         }}
@@ -80,7 +78,7 @@ const ChartHeader = ({ attribute, chartIndex, dispatch, setIsEditing }) => {
           dispatch({ type: ACTIONS.DELETE, payload: { chartIndex } })
         }
       >
-        <CrossSvg height={ICON_SIZE} css={{ opacity: 0 }} />
+        <CrossSvg height={constants.icons.regular} />
       </Button>
     </div>
   )

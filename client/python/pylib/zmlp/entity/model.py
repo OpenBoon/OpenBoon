@@ -3,12 +3,12 @@ from enum import Enum
 from .base import BaseEntity
 from ..util import as_id
 
-
 __all__ = [
     'Model',
     'ModelType',
     'Label',
-    'LabelScope'
+    'LabelScope',
+    'ModelTypeInfo'
 ]
 
 
@@ -17,7 +17,7 @@ class ModelType(Enum):
     Types of models that can be Trained.
     """
 
-    ZVI_CLUSTERING = 0
+    ZVI_KNN_CLASSIFIER = 0
     """A KMeans clustering model for quickly clustering assets into general groups."""
 
     ZVI_LABEL_DETECTION = 1
@@ -25,6 +25,9 @@ class ModelType(Enum):
 
     ZVI_FACE_RECOGNITION = 2
     """Face Recognition model using a KNN classifier."""
+
+    GCP_LABEL_DETECTION = 4
+    """Train a Google AutoML vision model."""
 
 
 class LabelScope(Enum):
@@ -52,6 +55,11 @@ class Model(BaseEntity):
     def module_name(self):
         """The name of the Pipeline Module"""
         return self._data['moduleName']
+
+    @property
+    def namespace(self):
+        """The name of the Pipeline Module"""
+        return 'analysis.{}'.format(self._data['moduleName'])
 
     @property
     def type(self):
@@ -103,6 +111,84 @@ class Model(BaseEntity):
                      bbox=prediction.get('bbox'),
                      simhash=prediction.get('simhash'),
                      scope=scope)
+
+    def get_label_search(self, scope=None):
+        """
+        Return a search that can be used to query all assets
+        with labels.
+
+        Args:
+            scope (LabelScope): An optional label scope to filter by.
+
+        Returns:
+            dict: A search to pass to an asset search.
+        """
+        search = {
+            'size': 64,
+            'sort': [
+                '_doc'
+            ],
+            '_source': ['labels', 'files'],
+            'query': {
+                'nested': {
+                    'path': 'labels',
+                    'query': {
+                        'bool': {
+                            'must': [
+                                {'term': {'labels.modelId': self.id}}
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+
+        if scope:
+            must = search['query']['nested']['query']['bool']['must']
+            must.append({'term': {'labels.scope': scope.name}})
+
+        return search
+
+
+class ModelTypeInfo:
+    """
+    Additional properties related to each ModelType.
+    """
+    def __init__(self, data):
+        self._data = data
+
+    @property
+    def name(self):
+        """The name of the model type."""
+        return self._data['name']
+
+    @property
+    def description(self):
+        """The description of the model type."""
+        return self._data['description']
+
+    @property
+    def objective(self):
+        """The objective of the model, LABEL_DETECTION, FACE_RECOGNITION, etc"""
+        return self._data['objective']
+
+    @property
+    def provider(self):
+        """The company that maintains the structure and algorithm for the model."""
+        return self._data['provider']
+
+    @property
+    def min_concepts(self):
+        """The minimum number of unique concepts a model must have before it can be trained."""
+        return self._data['minConcepts']
+
+    @property
+    def min_examples(self):
+        """
+        The minimum number of examples per concept a
+        model must have before it can be trained.
+        """
+        return self._data['minExamples']
 
 
 class Label:

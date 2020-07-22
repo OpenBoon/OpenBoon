@@ -1,7 +1,7 @@
 import React from 'react'
 import { Global, css } from '@emotion/core'
 
-import { colors, typography, spacing } from '.'
+import { colors, constants, typography, spacing } from '.'
 
 const StylesReset = () => (
   <>
@@ -48,6 +48,21 @@ const StylesReset = () => (
           fontSize: typography.size.regular,
           lineHeight: typography.height.regular,
         },
+        'input[type="search"]': {
+          WebkitAppearance: 'textfield',
+        },
+        'input[type="search"]::-webkit-search-cancel-button': {
+          MozAppearance: 'none',
+          WebkitAppearance: 'none',
+          height: constants.icons.regular,
+          width: constants.icons.regular,
+          backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTMuOSA0bDEuNCAxLjQtNC4yIDQuMiA0LjIgNC4yLTEuNCAxLjRMOS43IDExbC00LjIgNC4yTDQgMTMuOWw0LjItNC4yTDQgNS40IDUuNCA0bDQuMiA0LjJMMTMuOSA0eiIgLz4KPC9zdmc+Cg==')`,
+          backgroundRepeat: `no-repeat, repeat`,
+          backgroundPosition: `right top 50%`,
+          backgroundColor: colors.structure.transparent,
+          color: colors.structure.coal,
+          cursor: 'pointer',
+        },
         '.js-focus-visible :focus:not(.focus-visible)': {
           outline: 'none',
         },
@@ -63,6 +78,9 @@ const StylesReset = () => (
         },
         '.react-grid-item.react-grid-placeholder': {
           backgroundColor: colors.key.one,
+        },
+        '[data-reach-combobox-popover]': {
+          fontSize: '100%',
         },
       }}
     />
