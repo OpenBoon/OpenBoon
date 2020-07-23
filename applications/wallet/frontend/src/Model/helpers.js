@@ -35,6 +35,7 @@ export const onDelete = ({
 }) => async () => {
   setDeleteModalOpen(false)
 
+  // TODO: update endpoint
   await fetcher(`/api/v1/projects/${projectId}/models/${modelId}/`, {
     method: 'DELETE',
   })
