@@ -57,8 +57,7 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
         init {
             range = if (params["range"] == null) {
                 listOf(.75, 1.0)
-            }
-            else {
+            } else {
                 (params["range"] as List<Number>).map { it.toDouble() }
             }
         }
