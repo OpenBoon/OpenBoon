@@ -1,5 +1,4 @@
 import logging
-import os
 from pytest import approx
 from unittest.mock import patch
 
@@ -18,7 +17,6 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
     def setUp(self):
         self.model = "ICN94225947477147648"
         self.test_img = zorroa_test_path("training/test_dsy.jpg")
-
 
     @patch.object(ModelApp, "get_model")
     @patch.object(automl.PredictionServiceClient, "predict")
