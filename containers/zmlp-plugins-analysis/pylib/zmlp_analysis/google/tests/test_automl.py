@@ -16,13 +16,9 @@ logging.basicConfig()
 
 class AutoMLModelClassifierTests(PluginUnitTestCase):
     def setUp(self):
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = zorroa_test_path(
-            'creds/zorroa-poc-dev-access.json')
         self.model = "ICN94225947477147648"
         self.test_img = zorroa_test_path("training/test_dsy.jpg")
 
-    def tearDown(self):
-        del os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
     @patch.object(ModelApp, "get_model")
     @patch.object(automl.PredictionServiceClient, "predict")
