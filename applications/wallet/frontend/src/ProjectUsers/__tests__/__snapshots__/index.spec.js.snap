@@ -261,7 +261,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-8 tr:hover .gear {
+.emotion-8 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -355,7 +355,7 @@ Array [
                   className="emotion-4"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </div>
@@ -584,7 +584,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-8 tr:hover .gear {
+.emotion-8 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -719,7 +719,7 @@ Array [
                   className="emotion-4"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </div>
@@ -1009,7 +1009,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-10 tr:hover .gear {
+.emotion-10 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -1098,7 +1098,6 @@ Array [
   color: #191919;
   padding: 6px;
   margin: -6px;
-  border-radius: 32px;
 }
 
 .emotion-8:hover {
@@ -1110,9 +1109,9 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-8:hover {
+.emotion-8:hover,
+.emotion-8.focus-visible:focus {
   color: #ffffff !important;
-  background-color: #808080;
 }
 
 <div
@@ -1158,7 +1157,7 @@ Array [
                   className="emotion-4"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </div>
@@ -1188,13 +1187,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-8"
+                    className="actions emotion-8"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>

@@ -49,14 +49,6 @@ const STYLES = {
     content: {
       height: '0%',
       flex: 1,
-      '.ErrorBoundary > div': {
-        backgroundColor: colors.structure.transparent,
-        boxShadow: 'none',
-      },
-      '.Loading': {
-        backgroundColor: colors.structure.transparent,
-        boxShadow: 'none',
-      },
     },
   },
 }

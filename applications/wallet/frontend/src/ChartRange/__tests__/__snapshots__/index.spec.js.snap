@@ -166,16 +166,6 @@ exports[`<ChartRange /> should render properly 1`] = `
   flex: 1;
 }
 
-.emotion-22 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-22 .Loading {
-  background-color: transparent;
-  box-shadow: none;
-}
-
 .emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -609,16 +599,6 @@ exports[`<ChartRange /> should render properly without data 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-}
-
-.emotion-12 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-12 .Loading {
-  background-color: transparent;
-  box-shadow: none;
 }
 
 .emotion-11 {

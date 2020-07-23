@@ -8,7 +8,7 @@ describe('<Checkbox />', () => {
 
     const component = TestRenderer.create(
       <Checkbox
-        variant={CHECKBOX_VARIANTS.MULTILINE}
+        variant={CHECKBOX_VARIANTS.PRIMARY}
         option={{
           value: 'checkbox',
           label: 'Checkbox',
@@ -37,7 +37,7 @@ describe('<Checkbox />', () => {
 
     const component = TestRenderer.create(
       <Checkbox
-        variant={CHECKBOX_VARIANTS.MULTILINE}
+        variant={CHECKBOX_VARIANTS.PRIMARY}
         option={{
           value: 'checkbox',
           label: 'Checkbox',
@@ -64,7 +64,7 @@ describe('<Checkbox />', () => {
 
     const component = TestRenderer.create(
       <Checkbox
-        variant={CHECKBOX_VARIANTS.MULTILINE}
+        variant={CHECKBOX_VARIANTS.PRIMARY}
         option={{
           value: 'checkbox',
           label: 'Checkbox',
