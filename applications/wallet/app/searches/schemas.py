@@ -1,6 +1,6 @@
 from searches.filters import (RangeFilter, ExistsFilter, FacetFilter,
                               LabelConfidenceFilter, TextContentFilter,
-                              SimilarityFilter)
+                              SimilarityFilter, DateFilter)
 
 # Applicable filter sets for an ES Field type
 NUMBER_FILTERS = [RangeFilter.type, ExistsFilter.type]
@@ -11,6 +11,7 @@ DEFAULT_FILTERS = [ExistsFilter.type]
 TEXT_FILTERS = [ExistsFilter.type]
 PREDICTION_FILTERS = [LabelConfidenceFilter.type]
 TEXT_CONTENT_FILTERS = [TextContentFilter.type]
+DATE_FILTERS = [ExistsFilter.type, DateFilter.type]
 
 
 TYPE_FIELD_MAPPING = {
@@ -21,7 +22,7 @@ TYPE_FIELD_MAPPING = {
     'double': NUMBER_FILTERS,
     'geo_point': DEFAULT_FILTERS,
     'float': NUMBER_FILTERS,
-    'date': DEFAULT_FILTERS,
+    'date': DATE_FILTERS,
     'nested': DEFAULT_FILTERS,
     'long': NUMBER_FILTERS,
 }

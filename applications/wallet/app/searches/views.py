@@ -184,6 +184,17 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             *Note:* The scope value can be set to 'all', 'train', or 'test'.
 
+        Date:
+
+            {
+                "type": "date",
+                "attribute": "system.timeCreated",
+                "values": {
+                    "min": 1595443286655.0,
+                    "max": 1595443287212.0
+                }
+            }
+
         """
         path = 'api/v3/assets'
         fields = ['id',
@@ -249,7 +260,14 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             {
                 "type": "labelConfidence",
-                "attribute": "analysis.zvi-label-detection",
+                "attribute": "analysis.zvi-label-detection"
+            }
+
+        Date:
+
+            {
+                "type": "date",
+                "attribute": "system.timeCreated"
             }
 
         Labels:

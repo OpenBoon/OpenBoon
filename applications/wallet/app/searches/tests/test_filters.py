@@ -6,7 +6,7 @@ from zmlp import ZmlpApp, ZmlpClient
 
 from searches.filters import (BaseFilter, RangeFilter, ExistsFilter, FacetFilter,
                               LabelConfidenceFilter, TextContentFilter,
-                              SimilarityFilter, LabelFilter)
+                              SimilarityFilter, LabelFilter, DateFilter)
 
 
 class MockFilter(BaseFilter):
@@ -750,3 +750,39 @@ class TestLabelsFilter(FilterBaseTestCase):
                                     ]}}}}}
             }
         }
+
+
+class TestDateFilter(FilterBaseTestCase):
+
+    Filter = DateFilter
+
+    @pytest.fixture
+    def mock_data(self):
+        return {
+            'type': 'date',
+            'attribute': 'system.timeCreated'
+        }
+
+    @pytest.fixture
+    def mock_query(self, mock_data):
+        mock_data['values'] = {'min': 123, 'max': 234}
+        return mock_data
+
+    def test_is_valid(self, mock_query):
+        _filter = self.Filter(mock_query)
+        assert _filter.is_valid()
+        assert _filter.is_valid(query=True)
+
+    def test_get_agg(self, mock_data):
+        _filter = self.Filter(mock_data)
+        agg = _filter.get_es_agg()
+        assert agg['aggs'][_filter.name] == {
+            'stats': {
+                'field': 'system.timeCreated'
+            }
+        }
+
+    def test_get_es_query(self, mock_query):
+        _filter = self.Filter(mock_query)
+        query = _filter.get_es_query()
+        assert query == {}
