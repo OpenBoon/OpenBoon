@@ -21,9 +21,11 @@ class ModelSerializer(serializers.Serializer):
 class ModelTypeSerializer(serializers.Serializer):
     name = serializers.CharField()
     description = serializers.CharField()
-    mlType = serializers.CharField()
+    objective = serializers.CharField()
     provider = serializers.CharField()
-    runOnTrainingSet = serializers.BooleanField()
+    deployOnTrainingSet = serializers.BooleanField()
+    minConcepts = serializers.IntegerField()
+    minExamples = serializers.IntegerField()
 
 
 class LabelSerializer(serializers.Serializer):
