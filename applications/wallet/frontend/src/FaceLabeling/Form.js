@@ -100,7 +100,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
                 <Combobox
                   key={reloadKey}
                   id={simhash}
-                  inputLabel="Name:"
+                  inputLabel="Name"
                   options={possibleLabels}
                   originalValue={originalValue}
                   currentValue={state.labels[simhash]}

@@ -49,8 +49,8 @@ describe('<ModelsAdd />', () => {
     // Select valid type
     act(() => {
       component.root
-        .findByProps({ id: 'model-types' })
-        .props.onChange({ target: { value: 'GCP_LABEL_DETECTION' } })
+        .findByProps({ label: 'Model Type' })
+        .props.onChange({ value: 'GCP_LABEL_DETECTION' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
