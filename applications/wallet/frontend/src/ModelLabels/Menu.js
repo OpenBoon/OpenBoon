@@ -5,14 +5,14 @@ import { fetcher } from '../Fetch/helpers'
 
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
-import ButtonGear from '../Button/Gear'
+import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
 
 const ModelLabelsMenu = ({ projectId, modelId, label, revalidate }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
 
   return (
-    <Menu open="left" button={ButtonGear}>
+    <Menu open="left" button={ButtonActions}>
       {({ onClick }) => (
         <div>
           <ul>
@@ -43,7 +43,7 @@ const ModelLabelsMenu = ({ projectId, modelId, label, revalidate }) => {
                       onClick()
 
                       await fetcher(
-                        `/api/v1/projects/${projectId}/models/${modelId}/delete_label/`,
+                        `/api/v1/projects/${projectId}/models/${modelId}/delete_labels/`,
                         { method: 'DELETE', body: JSON.stringify({ label }) },
                       )
 
