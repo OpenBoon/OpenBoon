@@ -25,6 +25,7 @@ const JobTasksStateIcon = ({ state }) => {
         <GeneratingSvg
           color={colors.signal.canary.base}
           height={constants.icons.regular}
+          css={{ animation: constants.animations.infiniteRotation }}
         />
       )
 
