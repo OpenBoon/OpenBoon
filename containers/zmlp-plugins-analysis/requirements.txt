@@ -2,13 +2,11 @@ scikit-learn
 scipy
 mxnet==1.5.1
 protobuf
-tensorflow==2.2.0
 opencv-python-headless
 opencv-contrib-python-headless
 google-api-core
 google-api-python-client
 google-auth
-google-cloud-automl
 google-cloud-speech
 google-cloud-videointelligence
 google-cloud-vision
