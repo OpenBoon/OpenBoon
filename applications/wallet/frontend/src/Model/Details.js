@@ -5,10 +5,13 @@ import Link from 'next/link'
 
 import { typography, spacing } from '../Styles'
 
+import { encode } from '../Filters/helpers'
+
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import Modal from '../Modal'
+import Tabs from '../Tabs'
 
 import { onTrain, onDelete } from './helpers'
 
@@ -31,6 +34,16 @@ const ModelDetails = () => {
   )
 
   const { name, type, moduleName, ready, runningJobId } = model
+
+  const encodedFilter = encode({
+    filters: [
+      {
+        type: 'labelConfidence',
+        attribute: `analysis.${moduleName}`,
+        values: {},
+      },
+    ],
+  })
 
   return (
     <div>
@@ -114,6 +127,33 @@ const ModelDetails = () => {
           />
         )}
       </ButtonGroup>
+
+      <Tabs
+        tabs={[{ title: 'View Labels', href: '/[projectId]/models/[modelId]' }]}
+      />
+
+      <div
+        css={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginBottom: -spacing.normal,
+        }}
+      >
+        <Link
+          href={`/[projectId]/visualizer?query=${encodedFilter}`}
+          as={`/${projectId}/visualizer?query=${encodedFilter}`}
+          passHref
+        >
+          <Button
+            variant={BUTTON_VARIANTS.SECONDARY}
+            onClick={() => {
+              localStorage.setItem('rightOpeningPanel', '"filters"')
+            }}
+          >
+            Add Label Filter &amp; View in Visualizer
+          </Button>
+        </Link>
+      </div>
     </div>
   )
 }

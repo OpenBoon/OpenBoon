@@ -133,6 +133,64 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
   background-color: #808080;
 }
 
+.emotion-11 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-10 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-9 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-8 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-bottom: -16px;
+}
+
 .emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -240,6 +298,38 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
     >
       Delete
     </button>
+  </div>
+  <nav
+    className="emotion-11"
+  >
+    <ul
+      className="emotion-10"
+    >
+      <li
+        className="emotion-9"
+      >
+        <a
+          className="emotion-8"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View Labels
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <div
+    className="emotion-13"
+  >
+    <a
+      className="emotion-6"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsInZhbHVlcyI6e319XQ=="
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      Add Label Filter & View in Visualizer
+    </a>
   </div>
 </div>
 `;
