@@ -12,7 +12,8 @@ def main():
     # Override everything with ENV var.
     java_opts = os.environ.get("JAVA_OPTS")
     if java_opts:
-        return java_opts
+        print(java_opts)
+        return
 
     options = [
         "-Xms{}".format(os.environ.get("JVM_MIN_HEAP", "512m")),
