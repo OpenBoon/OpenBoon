@@ -30,7 +30,7 @@ const ModelsAddForm = () => {
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
-  const options = modelTypes.map(({ name }) => ({ key: name, value: name }))
+  const options = modelTypes.map(({ name }) => ({ value: name, label: name }))
 
   return (
     <Form>

@@ -4,12 +4,12 @@ import Select from '..'
 
 const options = [
   {
-    key: '1',
-    value: 'a',
+    value: '1',
+    label: 'a',
   },
   {
-    key: '2',
-    value: 'b',
+    value: '2',
+    label: 'b',
   },
 ]
 
@@ -19,7 +19,7 @@ describe('<Select />', () => {
 
     const component = TestRenderer.create(
       <Select
-        label="Test:"
+        label="Test"
         options={options}
         onChange={mockOnChange}
         isRequired

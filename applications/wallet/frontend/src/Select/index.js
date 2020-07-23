@@ -41,9 +41,9 @@ const Select = ({ label, options, onChange, isRequired, style }) => {
             <option value="" disabled>
               Select an option...
             </option>
-            {options.map(({ key, value }) => (
-              <option key={key} value={key}>
-                {value}
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
               </option>
             ))}
           </select>
@@ -61,8 +61,8 @@ Select.propTypes = {
   label: PropTypes.node.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      key: PropTypes.string,
       value: PropTypes.string,
+      label: PropTypes.string,
     }),
   ).isRequired,
   onChange: PropTypes.func.isRequired,

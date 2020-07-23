@@ -51,8 +51,8 @@ const DataSourcesAddSource = ({
   state: { credentials, errors: stateErrors, source, uri },
 }) => {
   const options = Object.keys(SOURCES).map((option) => ({
-    key: option,
-    value: SOURCES[option].label,
+    value: option,
+    label: SOURCES[option].label,
   }))
 
   return (

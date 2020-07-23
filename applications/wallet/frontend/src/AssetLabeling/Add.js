@@ -27,7 +27,7 @@ const AssetLabelingAdd = ({ projectId }) => {
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
-  const options = models.map(({ name, id }) => ({ key: id, value: name }))
+  const options = models.map(({ name, id }) => ({ value: id, label: name }))
 
   return (
     <div css={{ padding: spacing.normal }}>
