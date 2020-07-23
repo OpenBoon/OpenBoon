@@ -351,6 +351,10 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
   font-weight: 500;
 }
 
+.emotion-0 a {
+  color: #c92300;
+}
+
 <div
   className="emotion-9"
 >
@@ -413,15 +417,6 @@ exports[`<AssetDelete /> should render properly when asset is deleted 1`] = `
   padding: 16px;
 }
 
-.emotion-0 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-}
-
 .emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -431,9 +426,22 @@ exports[`<AssetDelete /> should render properly when asset is deleted 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
 }
 
 <div
@@ -443,7 +451,7 @@ exports[`<AssetDelete /> should render properly when asset is deleted 1`] = `
     className="emotion-1"
   >
     <svg
-      color="#4ac565"
+      color="#009f22"
       data-file-name="checkmark.svg"
       height={20}
     />

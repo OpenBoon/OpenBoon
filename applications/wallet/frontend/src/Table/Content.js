@@ -6,12 +6,11 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import Pagination from '../Pagination'
 
-import GearSvg from '../Icons/gear.svg'
+import KebabSvg from '../Icons/kebab.svg'
 import TableException from './Exception'
 import TableRefresh from './Refresh'
 
 const SIZE = 20
-const ICON_SIZE = 20
 
 const TableContent = ({
   url,
@@ -87,7 +86,7 @@ const TableContent = ({
                 ':hover': {
                   backgroundColor: colors.structure.iron,
                   boxShadow: constants.boxShadows.tableRow,
-                  '.gear': {
+                  '.actions': {
                     color: colors.structure.zinc,
                   },
                   td: {
@@ -146,7 +145,7 @@ const TableContent = ({
                   >
                     {column === '#Actions#' ? (
                       <div css={{ display: 'flex' }}>
-                        <GearSvg height={ICON_SIZE} />
+                        <KebabSvg height={constants.icons.regular} />
                       </div>
                     ) : (
                       column

@@ -397,7 +397,7 @@ exports[`<Filters /> should open the menu 1`] = `
 }
 
 .emotion-14:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
 }
 
 .emotion-13 {

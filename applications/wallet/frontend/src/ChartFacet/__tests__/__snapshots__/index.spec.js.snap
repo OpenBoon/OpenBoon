@@ -151,16 +151,6 @@ exports[`<ChartFacet /> should render properly 1`] = `
   flex: 1;
 }
 
-.emotion-83 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-83 .Loading {
-  background-color: transparent;
-  box-shadow: none;
-}
-
 .emotion-82 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -253,7 +243,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
 
 .emotion-16:hover,
 .emotion-16.focus-visible:focus {
-  background-color: #027aff38;
+  background-color: #0074f538;
   color: #ffffff;
 }
 
@@ -296,7 +286,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
 
 .emotion-7 {
   width: 100%;
-  background-color: #4a90e2;
+  background-color: #0273f5;
 }
 
 .emotion-8 {
@@ -1061,16 +1051,6 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-}
-
-.emotion-13 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-13 .Loading {
-  background-color: transparent;
-  box-shadow: none;
 }
 
 .emotion-12 {

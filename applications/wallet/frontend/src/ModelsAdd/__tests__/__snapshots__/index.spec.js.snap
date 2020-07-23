@@ -1,0 +1,790 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModelsAdd /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Create New Model
+  </h2>,
+  .emotion-2 {
+  max-width: 600px;
+  color: #b3b3b3;
+}
+
+.emotion-0 {
+  color: #73b61c;
+}
+
+<p
+    className="emotion-2"
+  >
+    FINAL COPY NEEDED Steps in adding labels and then coming back to the model detail page to train. Once a model has been trained it will be available to add to
+     
+    <a
+      className="emotion-0"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      data sources
+    </a>
+    . Learn more about
+     
+    <a
+      className="emotion-0"
+      href="https://app.gitbook.com/@zorroa/s/zmlp/client/data-sets"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      custom models
+    </a>
+    .
+  </p>,
+  .emotion-5 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-4 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-0 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+.emotion-2 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-5"
+  >
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create New Model
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-0 {
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 300px;
+  height: 40px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  padding-left: 12px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  background-position: right 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-6 {
+  padding-top: 8px;
+}
+
+.emotion-3 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-5 {
+  position: relative;
+}
+
+.emotion-4 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-4:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
+.emotion-4:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-9 button,
+.emotion-9 a {
+  margin-right: 16px;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
+  background-color: #73b61c;
+}
+
+.emotion-8:hover {
+  background-color: #96c955;
+}
+
+.emotion-8[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-10"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <label
+      className="emotion-0"
+      htmlFor="model-types"
+    >
+      Model Type
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <select
+        className="emotion-1"
+        defaultValue=""
+        id="model-types"
+        name="model-types"
+        onChange={[Function]}
+      >
+        <option
+          disabled={true}
+          value=""
+        >
+          Select an option...
+        </option>
+        <option
+          value="ZVI_KNN_CLASSIFIER"
+        >
+          ZVI_KNN_CLASSIFIER
+        </option>
+        <option
+          value="ZVI_LABEL_DETECTION"
+        >
+          ZVI_LABEL_DETECTION
+        </option>
+        <option
+          value="ZVI_FACE_RECOGNITION"
+        >
+          ZVI_FACE_RECOGNITION
+        </option>
+        <option
+          value="GCP_LABEL_DETECTION"
+        >
+          GCP_LABEL_DETECTION
+        </option>
+      </select>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <label
+        className="emotion-3"
+        htmlFor="name"
+      >
+        Name
+      </label>
+      <div
+        className="emotion-5"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-4"
+          disabled={false}
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-6"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-8"
+        onClick={[Function]}
+        type="submit"
+      >
+        Create New Model
+      </button>
+    </div>
+  </form>,
+]
+`;
+
+exports[`<ModelsAdd /> should render properly 2`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Create New Model
+  </h2>,
+  .emotion-2 {
+  max-width: 600px;
+  color: #b3b3b3;
+}
+
+.emotion-0 {
+  color: #73b61c;
+}
+
+<p
+    className="emotion-2"
+  >
+    FINAL COPY NEEDED Steps in adding labels and then coming back to the model detail page to train. Once a model has been trained it will be available to add to
+     
+    <a
+      className="emotion-0"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      data sources
+    </a>
+    . Learn more about
+     
+    <a
+      className="emotion-0"
+      href="https://app.gitbook.com/@zorroa/s/zmlp/client/data-sets"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      custom models
+    </a>
+    .
+  </p>,
+  .emotion-5 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-4 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-0 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+.emotion-2 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-5"
+  >
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create New Model
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-0 {
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 300px;
+  height: 40px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  padding-left: 12px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  background-position: right 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-6 {
+  padding-top: 8px;
+}
+
+.emotion-3 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-5 {
+  position: relative;
+}
+
+.emotion-4 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-4:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
+.emotion-4:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-9 button,
+.emotion-9 a {
+  margin-right: 16px;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
+  background-color: #73b61c;
+}
+
+.emotion-8:hover {
+  background-color: #96c955;
+}
+
+.emotion-8[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-10"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <label
+      className="emotion-0"
+      htmlFor="model-types"
+    >
+      Model Type
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <select
+        className="emotion-1"
+        defaultValue=""
+        id="model-types"
+        name="model-types"
+        onChange={[Function]}
+      >
+        <option
+          disabled={true}
+          value=""
+        >
+          Select an option...
+        </option>
+        <option
+          value="ZVI_KNN_CLASSIFIER"
+        >
+          ZVI_KNN_CLASSIFIER
+        </option>
+        <option
+          value="ZVI_LABEL_DETECTION"
+        >
+          ZVI_LABEL_DETECTION
+        </option>
+        <option
+          value="ZVI_FACE_RECOGNITION"
+        >
+          ZVI_FACE_RECOGNITION
+        </option>
+        <option
+          value="GCP_LABEL_DETECTION"
+        >
+          GCP_LABEL_DETECTION
+        </option>
+      </select>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <label
+        className="emotion-3"
+        htmlFor="name"
+      >
+        Name
+      </label>
+      <div
+        className="emotion-5"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-4"
+          disabled={false}
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value="My New Model"
+        />
+      </div>
+      <div
+        className="emotion-6"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <button
+        className="emotion-8"
+        onClick={[Function]}
+        type="submit"
+      >
+        Create New Model
+      </button>
+    </div>
+  </form>,
+]
+`;

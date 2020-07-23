@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import { spacing, colors } from '../Styles'
+import { spacing } from '../Styles'
 
 import PageTitle from '../PageTitle'
 import FlashMessage, { VARIANTS } from '../FlashMessage'
@@ -36,7 +36,7 @@ const DataSources = () => {
                 as={`/${projectId}/jobs/${jobId}`}
                 passHref
               >
-                <a css={{ color: colors.signal.sky.base }}>Check Job Status</a>
+                <a>Check Job Status</a>
               </Link>
             )}
           </FlashMessage>

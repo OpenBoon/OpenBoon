@@ -28,7 +28,7 @@ describe('<AccountProfile /> helpers', () => {
 
       expect(fetch.mock.calls.length).toEqual(1)
 
-      expect(fetch.mock.calls[0][0]).toEqual(`/api/v1/users/${USER_ID}/`)
+      expect(fetch.mock.calls[0][0]).toEqual(`/api/v1/me/`)
 
       expect(fetch.mock.calls[0][1]).toEqual({
         method: 'PATCH',
@@ -69,7 +69,7 @@ describe('<AccountProfile /> helpers', () => {
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
-      expect(fetch.mock.calls[0][0]).toEqual(`/api/v1/users/${USER_ID}/`)
+      expect(fetch.mock.calls[0][0]).toEqual(`/api/v1/me/`)
       expect(fetch.mock.calls[0][1]).toEqual({
         method: 'PATCH',
         headers: {

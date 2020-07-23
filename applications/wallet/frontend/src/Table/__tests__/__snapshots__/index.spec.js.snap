@@ -71,7 +71,7 @@ exports[`<Table /> should render properly without data 1`] = `
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-5 tr:hover .gear {
+.emotion-5 tr:hover .actions {
   color: #b3b3b3;
 }
 

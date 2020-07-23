@@ -10,7 +10,6 @@ import CrossSvg from '../Icons/cross.svg'
 const BUTTON_HEIGHT = 40
 const MODAL_HEIGHT = 200
 const MODAL_WIDTH = 480
-const ICON_SIZE = 20
 
 const Modal = ({ title, message, action, onCancel, onConfirm }) => {
   return (
@@ -47,7 +46,10 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
             onClick={onCancel}
             onKeyDown={onCancel}
           >
-            <CrossSvg height={ICON_SIZE} color={colors.structure.white} />
+            <CrossSvg
+              height={constants.icons.regular}
+              color={colors.structure.white}
+            />
           </div>
         </header>
 

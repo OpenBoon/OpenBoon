@@ -2,7 +2,7 @@ import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import { colors, spacing } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import Card, { VARIANTS as CARD_VARIANTS } from '../Card'
 import Button, { VARIANTS } from '../Button'
@@ -12,8 +12,6 @@ import KeySvg from '../Icons/key.svg'
 
 import ProjectUsagePlan from './UsagePlan'
 import ProjectGettingStarted from './GettingStarted'
-
-const ICON_SIZE = 20
 
 const ProjectCards = () => {
   const {
@@ -76,7 +74,10 @@ const ProjectCards = () => {
           variant={CARD_VARIANTS.LIGHT}
           header={
             <h3>
-              <KeySvg height={ICON_SIZE} color={colors.structure.zinc} />
+              <KeySvg
+                height={constants.icons.regular}
+                color={colors.structure.zinc}
+              />
               Project API Keys
             </h3>
           }

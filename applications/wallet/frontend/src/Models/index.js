@@ -1,7 +1,13 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+
+import { spacing } from '../Styles'
 
 import PageTitle from '../PageTitle'
+import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
 
@@ -11,7 +17,7 @@ import ModelsRow from './Row'
 
 const Models = () => {
   const {
-    query: { projectId },
+    query: { projectId, action },
   } = useRouter()
 
   return (
@@ -21,6 +27,35 @@ const Models = () => {
       </Head>
 
       <PageTitle>Custom Models</PageTitle>
+
+      {action === 'add-model-success' && (
+        <div css={{ display: 'flex', paddingTop: spacing.base }}>
+          <FlashMessage variant={VARIANTS.SUCCESS}>
+            Model created.{' '}
+            <Link
+              href="/[projectId]/visualizer"
+              // TODO: link to the Asset Labeling tab open
+              // with the correct model selected
+              as={`/${projectId}/visualizer`}
+              passHref
+            >
+              <a
+                onClick={() => {
+                  localStorage.setItem('leftOpeningPanel', '"assetLabeling"')
+                }}
+              >
+                Start Labeling
+              </a>
+            </Link>
+          </FlashMessage>
+        </div>
+      )}
+
+      {action === 'delete-model-success' && (
+        <div css={{ display: 'flex', paddingTop: spacing.base }}>
+          <FlashMessage variant={VARIANTS.SUCCESS}>Model deleted.</FlashMessage>
+        </div>
+      )}
 
       <ModelsCopy projectId={projectId} />
 

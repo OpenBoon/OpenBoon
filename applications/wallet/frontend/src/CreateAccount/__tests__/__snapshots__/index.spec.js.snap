@@ -122,6 +122,10 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   font-weight: 500;
 }
 
+.emotion-4 a {
+  color: #c92300;
+}
+
 .emotion-7 {
   font-size: 17px;
   line-height: 20px;

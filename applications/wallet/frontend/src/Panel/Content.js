@@ -8,7 +8,6 @@ import Button, { VARIANTS } from '../Button'
 import Resizeable from '../Resizeable'
 
 const MIN_WIDTH = 400
-const ICON_SIZE = 20
 
 const PanelContent = ({
   openToThe,
@@ -30,6 +29,9 @@ const PanelContent = ({
           flexDirection: 'column',
           height: '100%',
           backgroundColor: colors.structure.lead,
+          [openToThe === 'left'
+            ? 'marginRight'
+            : 'marginLeft']: spacing.hairline,
         }}
       >
         <div
@@ -63,7 +65,7 @@ const PanelContent = ({
             }}
           >
             <DoubleChevronSvg
-              height={ICON_SIZE}
+              height={constants.icons.regular}
               css={{
                 transform: `rotate(${openToThe === 'left' ? -90 : 90}deg)`,
               }}

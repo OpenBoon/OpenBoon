@@ -207,6 +207,10 @@ Array [
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-6 {
@@ -1116,7 +1120,7 @@ Array [
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
 }
@@ -1128,6 +1132,10 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
 }
 
 .emotion-3 {
@@ -1361,7 +1369,7 @@ Array [
         className="emotion-1"
       >
         <svg
-          color="#4ac565"
+          color="#009f22"
           data-file-name="checkmark.svg"
           height={20}
         />
@@ -1652,6 +1660,10 @@ Array [
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-6 {

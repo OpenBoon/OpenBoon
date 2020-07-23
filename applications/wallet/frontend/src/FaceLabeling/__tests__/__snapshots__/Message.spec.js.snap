@@ -5,15 +5,6 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   padding-bottom: 16px;
 }
 
-.emotion-0 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-}
-
 .emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -23,9 +14,22 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #d7f2de;
+  background-color: #e3f7e8;
   border-radius: 2px;
   padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
 }
 
 <div
@@ -35,7 +39,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
     className="emotion-1"
   >
     <svg
-      color="#4ac565"
+      color="#009f22"
       data-file-name="checkmark.svg"
       height={20}
     />
@@ -64,11 +68,11 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   }
 }
 
-.emotion-4 {
+.emotion-3 {
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -77,7 +81,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  background-color: #cfe5ff;
+  background-color: #dbecff;
   border-radius: 2px;
   padding: 12px;
 }
@@ -87,7 +91,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   animation: animation-0 2s linear infinite;
 }
 
-.emotion-2 {
+.emotion-1 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -96,30 +100,29 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   font-weight: 500;
 }
 
-.emotion-1 {
-  color: #4a90e2;
+.emotion-1 a {
+  color: #0273f5;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-3"
 >
   <div
-    className="emotion-3"
+    className="emotion-2"
   >
     <svg
       className="emotion-0"
-      color="#4a90e2"
+      color="#0273f5"
       data-file-name="generating.svg"
       height={20}
     />
     <div
-      className="emotion-2"
+      className="emotion-1"
       role="alert"
     >
       Face training in progress.
        
       <a
-        className="emotion-1"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/1a1d45af-7477-1396-ae57-a618e8efb91f"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -136,15 +139,6 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
   padding-bottom: 16px;
 }
 
-.emotion-0 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-}
-
 .emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -157,6 +151,19 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
   background-color: #ffb6b2;
   border-radius: 2px;
   padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #c92300;
 }
 
 <div

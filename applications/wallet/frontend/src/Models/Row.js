@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import { colors } from '../Styles'
+import { colors, constants } from '../Styles'
 
 import { onRowClickRouterPush } from '../Table/helpers'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
-
-const ICON_SIZE = 20
 
 const ModelsRow = ({
   projectId,
@@ -37,7 +35,7 @@ const ModelsRow = ({
 
       <td css={{ textAlign: 'center' }}>
         <CheckmarkSvg
-          height={ICON_SIZE}
+          height={constants.icons.regular}
           color={ready ? colors.key.one : colors.structure.transparent}
         />
       </td>

@@ -61,7 +61,7 @@ const boxShadows = {
   tableRow: `0 0 5px 0 rgba(0, 0, 0, ${opacity.half})`,
   panel: `3px 0 3px 0px rgba(0, 0, 0, ${opacity.third})`,
   infoBar: `0px 3px 3px 0 rgba(0, 0, 0, ${opacity.third})`,
-  assets: `inset 0 0 4px 0 rgba(0, 0, 0, 0.6)`,
+  inset: `inset 0 0 4px 0 rgba(0, 0, 0, 0.6)`,
 }
 
 const constants = {
@@ -69,6 +69,12 @@ const constants = {
   borders,
   opacity,
   boxShadows,
+  icons: {
+    mini: 16,
+    small: 18,
+    regular: 20,
+    moderate: 22,
+  },
   overlay: `${colors.structure.black}e6`,
   navbar: {
     height: 44,

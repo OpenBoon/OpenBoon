@@ -54,3 +54,56 @@ exports[`<ErrorBoundary /> should render generic when caught 1`] = `
   </div>
 </div>
 `;
+
+exports[`<ErrorBoundary /> should render properly when transparent 1`] = `
+.emotion-2 {
+  height: 100%;
+}
+
+.emotion-0 {
+  max-width: 80%;
+}
+
+.emotion-1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  background-color: transparent;
+  font-size: 15px;
+  line-height: 19px;
+  box-shadow: none;
+}
+
+<div
+  className="ErrorBoundary emotion-2"
+>
+  <div
+    className="emotion-1"
+  >
+    <svg
+      className="emotion-0"
+      data-file-name="error.svg"
+      width={604}
+    />
+    <br />
+     Hmmm, something went wrong.
+    <br />
+     Please try refreshing.
+  </div>
+</div>
+`;

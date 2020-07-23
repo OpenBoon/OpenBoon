@@ -2,7 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Category
-import com.zorroa.archivist.domain.ModType
+import com.zorroa.archivist.domain.ModelObjective
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineMode
@@ -112,7 +112,7 @@ class PipelineServiceTests : AbstractTest() {
             name, "test",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.LABEL_DETECTION,
+            ModelObjective.LABEL_DETECTION,
             listOf(FileType.Documents),
             listOf(),
             true

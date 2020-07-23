@@ -1,6 +1,8 @@
 # syntax = docker/dockerfile:experimental
 FROM zmlp/py3-base:latest
 
+RUN apt-get update && apt-get -y upgrade
+
 RUN mkdir /build
 COPY ./ /build
 WORKDIR /build

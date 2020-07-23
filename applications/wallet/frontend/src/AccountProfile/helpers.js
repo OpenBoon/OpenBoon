@@ -4,12 +4,12 @@ import { fetcher } from '../Fetch/helpers'
 
 export const onSubmit = async ({
   dispatch,
-  state: { id, firstName, lastName },
+  state: { firstName, lastName },
 }) => {
   dispatch({ isLoading: true })
 
   try {
-    await fetcher(`/api/v1/users/${id}/`, {
+    await fetcher(`/api/v1/me/`, {
       method: 'PATCH',
       body: JSON.stringify({ firstName, lastName }),
     })
