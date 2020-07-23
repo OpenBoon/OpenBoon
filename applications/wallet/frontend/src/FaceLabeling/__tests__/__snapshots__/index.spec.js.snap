@@ -295,7 +295,7 @@ Array [
           <div
             className="emotion-1"
           >
-            Name:
+            Name
           </div>
           <div
             data-reach-combobox=""
@@ -606,7 +606,7 @@ Array [
           <div
             className="emotion-1"
           >
-            Name:
+            Name
           </div>
           <div
             data-reach-combobox=""
@@ -965,7 +965,7 @@ Array [
           <div
             className="emotion-1"
           >
-            Name:
+            Name
           </div>
           <div
             data-reach-combobox=""

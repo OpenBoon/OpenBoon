@@ -167,17 +167,16 @@ Array [
   padding-right: 0;
 }
 
-.emotion-0 {
-  padding-bottom: 8px;
+.emotion-2 {
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-1 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-1 {
+.emotion-0 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
@@ -307,49 +306,46 @@ Array [
     onSubmit={[Function]}
   >
     <label
-      className="emotion-0"
-      htmlFor="model-types"
-    >
-      Model Type
-    </label>
-    <div
       className="emotion-2"
     >
-      <select
+      Model Type
+      <div
         className="emotion-1"
-        defaultValue=""
-        id="model-types"
-        name="model-types"
-        onChange={[Function]}
       >
-        <option
-          disabled={true}
-          value=""
+        <select
+          className="emotion-0"
+          defaultValue=""
+          onChange={[Function]}
         >
-          Select an option...
-        </option>
-        <option
-          value="ZVI_KNN_CLASSIFIER"
-        >
-          ZVI_KNN_CLASSIFIER
-        </option>
-        <option
-          value="ZVI_LABEL_DETECTION"
-        >
-          ZVI_LABEL_DETECTION
-        </option>
-        <option
-          value="ZVI_FACE_RECOGNITION"
-        >
-          ZVI_FACE_RECOGNITION
-        </option>
-        <option
-          value="GCP_LABEL_DETECTION"
-        >
-          GCP_LABEL_DETECTION
-        </option>
-      </select>
-    </div>
+          <option
+            disabled={true}
+            value=""
+          >
+            Select an option...
+          </option>
+          <option
+            value="ZVI_KNN_CLASSIFIER"
+          >
+            ZVI_KNN_CLASSIFIER
+          </option>
+          <option
+            value="ZVI_LABEL_DETECTION"
+          >
+            ZVI_LABEL_DETECTION
+          </option>
+          <option
+            value="ZVI_FACE_RECOGNITION"
+          >
+            ZVI_FACE_RECOGNITION
+          </option>
+          <option
+            value="GCP_LABEL_DETECTION"
+          >
+            GCP_LABEL_DETECTION
+          </option>
+        </select>
+      </div>
+    </label>
     <div
       className="emotion-6"
     >
@@ -562,17 +558,16 @@ Array [
   padding-right: 0;
 }
 
-.emotion-0 {
-  padding-bottom: 8px;
+.emotion-2 {
   color: #b3b3b3;
 }
 
-.emotion-2 {
+.emotion-1 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-1 {
+.emotion-0 {
   background-color: #808080;
   border-radius: 2px;
   border: none;
@@ -702,49 +697,46 @@ Array [
     onSubmit={[Function]}
   >
     <label
-      className="emotion-0"
-      htmlFor="model-types"
-    >
-      Model Type
-    </label>
-    <div
       className="emotion-2"
     >
-      <select
+      Model Type
+      <div
         className="emotion-1"
-        defaultValue=""
-        id="model-types"
-        name="model-types"
-        onChange={[Function]}
       >
-        <option
-          disabled={true}
-          value=""
+        <select
+          className="emotion-0"
+          defaultValue=""
+          onChange={[Function]}
         >
-          Select an option...
-        </option>
-        <option
-          value="ZVI_KNN_CLASSIFIER"
-        >
-          ZVI_KNN_CLASSIFIER
-        </option>
-        <option
-          value="ZVI_LABEL_DETECTION"
-        >
-          ZVI_LABEL_DETECTION
-        </option>
-        <option
-          value="ZVI_FACE_RECOGNITION"
-        >
-          ZVI_FACE_RECOGNITION
-        </option>
-        <option
-          value="GCP_LABEL_DETECTION"
-        >
-          GCP_LABEL_DETECTION
-        </option>
-      </select>
-    </div>
+          <option
+            disabled={true}
+            value=""
+          >
+            Select an option...
+          </option>
+          <option
+            value="ZVI_KNN_CLASSIFIER"
+          >
+            ZVI_KNN_CLASSIFIER
+          </option>
+          <option
+            value="ZVI_LABEL_DETECTION"
+          >
+            ZVI_LABEL_DETECTION
+          </option>
+          <option
+            value="ZVI_FACE_RECOGNITION"
+          >
+            ZVI_FACE_RECOGNITION
+          </option>
+          <option
+            value="GCP_LABEL_DETECTION"
+          >
+            GCP_LABEL_DETECTION
+          </option>
+        </select>
+      </div>
+    </label>
     <div
       className="emotion-6"
     >
