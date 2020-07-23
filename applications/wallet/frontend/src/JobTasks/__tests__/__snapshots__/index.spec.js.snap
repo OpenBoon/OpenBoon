@@ -1,7 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobTasks /> should render properly with job tasks 1`] = `
-.emotion-41 {
+@keyframes animation-0 {
+  from {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.emotion-42 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -106,14 +120,14 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   padding-left: 4px;
 }
 
-.emotion-40 {
+.emotion-41 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-38 {
+.emotion-39 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -121,38 +135,38 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   white-space: nowrap;
 }
 
-.emotion-38 tr {
+.emotion-39 tr {
   background-color: #252525;
 }
 
-.emotion-38 tr:nth-of-type(2n) {
+.emotion-39 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-38 tr:hover {
+.emotion-39 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-38 tr:hover .actions {
+.emotion-39 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-38 tr:hover td {
+.emotion-39 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-38 tr:hover td:first-of-type {
+.emotion-39 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-38 tr:hover td:last-of-type {
+.emotion-39 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-38 td {
+.emotion-39 td {
   max-width: calc(100vw / 5);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -164,11 +178,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-38 td:first-of-type {
+.emotion-39 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-38 td:last-of-type {
+.emotion-39 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -216,8 +230,13 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   font-style: italic;
 }
 
+.emotion-18 {
+  -webkit-animation: animation-0 2s linear infinite;
+  animation: animation-0 2s linear infinite;
+}
+
 <div
-  className="emotion-41"
+  className="emotion-42"
 >
   <div
     className="emotion-5"
@@ -254,13 +273,13 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
     </button>
   </div>
   <div
-    className="emotion-40"
+    className="emotion-41"
   >
     <div
-      className="emotion-39"
+      className="emotion-40"
     >
       <table
-        className="emotion-38"
+        className="emotion-39"
       >
         <thead>
           <tr>
@@ -357,6 +376,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
               className="emotion-13"
             >
               <svg
+                className="emotion-18"
                 color="#ebb52e"
                 data-file-name="generating.svg"
                 height={20}
