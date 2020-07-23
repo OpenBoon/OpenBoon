@@ -42,6 +42,7 @@ const ModelLabelsMenu = ({ projectId, modelId, label, revalidate }) => {
 
                       onClick()
 
+                      // TODO: update endpoint
                       await fetcher(
                         `/api/v1/projects/${projectId}/models/${modelId}/delete_labels/`,
                         { method: 'DELETE', body: JSON.stringify({ label }) },
