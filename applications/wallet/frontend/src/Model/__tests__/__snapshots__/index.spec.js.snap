@@ -202,6 +202,64 @@ Array [
   background-color: #808080;
 }
 
+.emotion-12 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-11 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-10 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-9 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-9:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-14 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-bottom: -16px;
+}
+
 <div>
     <div
       className="emotion-3"
@@ -286,73 +344,39 @@ Array [
         Delete
       </button>
     </div>
-  </div>,
-  .emotion-3 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.emotion-2 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-1 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-0 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-<nav
-    className="emotion-3"
-  >
-    <ul
-      className="emotion-2"
+    <nav
+      className="emotion-12"
     >
-      <li
-        className="emotion-1"
+      <ul
+        className="emotion-11"
       >
-        <a
-          className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
+        <li
+          className="emotion-10"
         >
-          View Labels
-        </a>
-      </li>
-    </ul>
-  </nav>,
+          <a
+            className="emotion-9"
+            href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+          >
+            View Labels
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div
+      className="emotion-14"
+    >
+      <a
+        className="emotion-7"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsInZhbHVlcyI6e319XQ=="
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Add Label Filter & View in Visualizer
+      </a>
+    </div>
+  </div>,
   <ModelLabels />,
 ]
 `;
