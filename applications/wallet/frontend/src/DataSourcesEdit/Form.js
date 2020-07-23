@@ -4,7 +4,7 @@ import useSWR from 'swr'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 
-import { constants, spacing } from '../Styles'
+import { constants, spacing, typography } from '../Styles'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
@@ -15,6 +15,7 @@ import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
+import Toggletip from '../Toggletip'
 
 import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
@@ -95,7 +96,35 @@ const DataSourcesEditForm = ({ initialState }) => {
         </div>
 
         <CheckboxGroup
-          legend="Add Additional File Types"
+          legend={
+            <>
+              Add Additional File Types
+              <Toggletip openToThe="right" label="Supported File Types">
+                <div
+                  css={{
+                    fontSize: typography.size.regular,
+                    lineHeight: typography.height.regular,
+                  }}
+                >
+                  <h3
+                    css={{
+                      fontSize: typography.size.regular,
+                      lineHeight: typography.height.regular,
+                      paddingBottom: spacing.base,
+                    }}
+                  >
+                    Supported File Types
+                  </h3>
+                  {FILE_TYPES.map(({ value, extensions }) => (
+                    <div key={value} css={{ paddingBottom: spacing.base }}>
+                      <h4>{value}:</h4>
+                      {extensions}
+                    </div>
+                  ))}
+                </div>
+              </Toggletip>
+            </>
+          }
           description={
             <div>
               Additional file types can be added to this data source. Previous
@@ -113,7 +142,7 @@ const DataSourcesEditForm = ({ initialState }) => {
             initialValue: !!fileTypes[value],
             isDisabled: !!initialState.fileTypes[value],
           }))}
-          variant={CHECKBOX_VARIANTS.INLINE}
+          variant={CHECKBOX_VARIANTS.SECONDARY}
         />
 
         <div css={{ height: spacing.base }} />

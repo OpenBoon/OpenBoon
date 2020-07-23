@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import filterShape from '../Filter/shape'
 
-import { spacing, colors } from '../Styles'
+import { spacing } from '../Styles'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import FilterTitle from '../Filter/Title'
@@ -37,20 +37,8 @@ const FilterLabelConfidence = ({
       isInitiallyOpen
       isResizeable
     >
-      <div
-        css={{
-          padding: spacing.normal,
-          '.ErrorBoundary > div': {
-            backgroundColor: colors.structure.transparent,
-            boxShadow: 'none',
-          },
-          '.Loading': {
-            backgroundColor: colors.structure.transparent,
-            boxShadow: 'none',
-          },
-        }}
-      >
-        <SuspenseBoundary>
+      <div css={{ padding: spacing.normal }}>
+        <SuspenseBoundary isTransparent>
           <FilterLabelConfidenceContent
             pathname={pathname}
             projectId={projectId}

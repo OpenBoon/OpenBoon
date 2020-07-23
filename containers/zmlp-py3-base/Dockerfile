@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM ubuntu:eoan
+FROM ubuntu:focal
 RUN groupadd -r zorroa && useradd --no-log-init -r -m -g zorroa zorroa
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \

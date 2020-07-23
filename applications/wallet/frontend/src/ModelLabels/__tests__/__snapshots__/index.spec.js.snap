@@ -89,7 +89,7 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-10 tr:hover .gear {
+.emotion-10 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -166,7 +166,6 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
   color: #191919;
   padding: 6px;
   margin: -6px;
-  border-radius: 32px;
 }
 
 .emotion-6:hover {
@@ -178,9 +177,9 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-6:hover {
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
   color: #ffffff !important;
-  background-color: #808080;
 }
 
 <div
@@ -226,7 +225,7 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
                 className="emotion-4"
               >
                 <svg
-                  data-file-name="gear.svg"
+                  data-file-name="kebab.svg"
                   height={20}
                 />
               </div>
@@ -247,13 +246,13 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="gear emotion-6"
+                  className="actions emotion-6"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </button>
@@ -273,13 +272,13 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="gear emotion-6"
+                  className="actions emotion-6"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </button>
@@ -370,7 +369,7 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-9 tr:hover .gear {
+.emotion-9 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -521,7 +520,7 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
                 className="emotion-4"
               >
                 <svg
-                  data-file-name="gear.svg"
+                  data-file-name="kebab.svg"
                   height={20}
                 />
               </div>

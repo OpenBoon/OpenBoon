@@ -247,7 +247,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-25 tr:hover .gear {
+.emotion-25 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -336,7 +336,6 @@ Array [
   color: #191919;
   padding: 6px;
   margin: -6px;
-  border-radius: 32px;
 }
 
 .emotion-11:hover {
@@ -348,9 +347,9 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-11:hover {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   color: #ffffff !important;
-  background-color: #808080;
 }
 
 .emotion-22 {
@@ -428,7 +427,7 @@ Array [
                   className="emotion-8"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </div>
@@ -465,13 +464,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -507,13 +506,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -549,13 +548,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -591,13 +590,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -633,13 +632,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -924,7 +923,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-25 tr:hover .gear {
+.emotion-25 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -1013,7 +1012,6 @@ Array [
   color: #191919;
   padding: 6px;
   margin: -6px;
-  border-radius: 32px;
 }
 
 .emotion-11:hover {
@@ -1025,9 +1023,9 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-11:hover {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   color: #ffffff !important;
-  background-color: #808080;
 }
 
 .emotion-22 {
@@ -1105,7 +1103,7 @@ Array [
                   className="emotion-8"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </div>
@@ -1142,13 +1140,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1184,13 +1182,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1226,13 +1224,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1268,13 +1266,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1310,13 +1308,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1526,7 +1524,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-12 tr:hover .gear {
+.emotion-12 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -1681,7 +1679,7 @@ Array [
                   className="emotion-8"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </div>

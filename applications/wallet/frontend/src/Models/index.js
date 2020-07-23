@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -37,9 +39,21 @@ const Models = () => {
               as={`/${projectId}/visualizer`}
               passHref
             >
-              <a>Start Labeling</a>
+              <a
+                onClick={() => {
+                  localStorage.setItem('leftOpeningPanel', '"assetLabeling"')
+                }}
+              >
+                Start Labeling
+              </a>
             </Link>
           </FlashMessage>
+        </div>
+      )}
+
+      {action === 'delete-model-success' && (
+        <div css={{ display: 'flex', paddingTop: spacing.base }}>
+          <FlashMessage variant={VARIANTS.SUCCESS}>Model deleted.</FlashMessage>
         </div>
       )}
 

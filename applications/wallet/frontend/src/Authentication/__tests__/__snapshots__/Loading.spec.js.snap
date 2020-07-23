@@ -47,6 +47,7 @@ exports[`<AuthenticationLoading /> should render properly 1`] = `
   font-size: 15px;
   line-height: 19px;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  height: 100%;
 }
 
 .emotion-0 {

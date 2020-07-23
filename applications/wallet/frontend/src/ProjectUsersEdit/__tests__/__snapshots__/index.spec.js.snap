@@ -166,6 +166,10 @@ Array [
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-2 {
