@@ -5,14 +5,14 @@ import { fetcher } from '../Fetch/helpers'
 
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
-import ButtonGear from '../Button/Gear'
+import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
 
 const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
 
   return (
-    <Menu open="left" button={ButtonGear}>
+    <Menu open="left" button={ButtonActions}>
       {({ onClick }) => (
         <div>
           <ul>

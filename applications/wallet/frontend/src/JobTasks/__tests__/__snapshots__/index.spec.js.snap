@@ -134,7 +134,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-38 tr:hover .gear {
+.emotion-38 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -743,7 +743,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-15 tr:hover .gear {
+.emotion-15 tr:hover .actions {
   color: #b3b3b3;
 }
 

@@ -63,7 +63,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-40 tr:hover .gear {
+.emotion-40 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -195,7 +195,6 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   color: #191919;
   padding: 6px;
   margin: -6px;
-  border-radius: 32px;
 }
 
 .emotion-12:hover {
@@ -207,9 +206,9 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-12:hover {
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
   color: #ffffff !important;
-  background-color: #808080;
 }
 
 <div
@@ -275,7 +274,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
                 className="emotion-8"
               >
                 <svg
-                  data-file-name="gear.svg"
+                  data-file-name="kebab.svg"
                   height={20}
                 />
               </div>
@@ -345,13 +344,13 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="gear emotion-12"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </button>
@@ -420,13 +419,13 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="gear emotion-12"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </button>
@@ -495,13 +494,13 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="gear emotion-12"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </button>
@@ -570,13 +569,13 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="gear emotion-12"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </button>
@@ -645,13 +644,13 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="gear emotion-12"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </button>
@@ -720,13 +719,13 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="gear emotion-12"
+                  className="actions emotion-12"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </button>
@@ -843,7 +842,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-13 tr:hover .gear {
+.emotion-13 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -988,7 +987,7 @@ exports[`<TaskErrors /> should render properly without job errors 1`] = `
                 className="emotion-8"
               >
                 <svg
-                  data-file-name="gear.svg"
+                  data-file-name="kebab.svg"
                   height={20}
                 />
               </div>
