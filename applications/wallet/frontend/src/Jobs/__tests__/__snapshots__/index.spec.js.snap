@@ -136,6 +136,7 @@ Array [
   background-color: #4a4a4a;
   padding: 12px 16px;
   border-bottom: 1px solid #2e2e2e;
+  width: auto;
 }
 
 .emotion-6:nth-of-type(2) {
@@ -143,6 +144,26 @@ Array [
 }
 
 .emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-14 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-14:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-14:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
@@ -664,7 +685,7 @@ Array [
                 Task Progress
               </th>
               <th
-                className="emotion-6"
+                className="emotion-14"
               >
                 <div
                   className="emotion-13"
@@ -1807,6 +1828,7 @@ Array [
   background-color: #4a4a4a;
   padding: 12px 16px;
   border-bottom: 1px solid #2e2e2e;
+  width: auto;
 }
 
 .emotion-6:nth-of-type(2) {
@@ -1814,6 +1836,26 @@ Array [
 }
 
 .emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-14 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-14:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-14:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
@@ -1951,7 +1993,7 @@ Array [
                 Task Progress
               </th>
               <th
-                className="emotion-6"
+                className="emotion-14"
               >
                 <div
                   className="emotion-13"

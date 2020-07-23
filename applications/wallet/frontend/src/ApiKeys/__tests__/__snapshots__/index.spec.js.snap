@@ -193,6 +193,7 @@ Array [
   background-color: #4a4a4a;
   padding: 12px 16px;
   border-bottom: 1px solid #2e2e2e;
+  width: auto;
 }
 
 .emotion-2:nth-of-type(2) {
@@ -200,6 +201,26 @@ Array [
 }
 
 .emotion-2:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-5 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-5:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-5:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
@@ -373,7 +394,7 @@ Array [
                 Permissions
               </th>
               <th
-                className="emotion-2"
+                className="emotion-5"
               >
                 <div
                   className="emotion-4"
@@ -747,6 +768,7 @@ Array [
   background-color: #4a4a4a;
   padding: 12px 16px;
   border-bottom: 1px solid #2e2e2e;
+  width: auto;
 }
 
 .emotion-2:nth-of-type(2) {
@@ -754,6 +776,26 @@ Array [
 }
 
 .emotion-2:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-5 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-5:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-5:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
@@ -828,7 +870,7 @@ Array [
                 Permissions
               </th>
               <th
-                className="emotion-2"
+                className="emotion-5"
               >
                 <div
                   className="emotion-4"
