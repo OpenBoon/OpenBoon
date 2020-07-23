@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.OpFilter
 import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
-import com.zorroa.archivist.domain.ModType
+import com.zorroa.archivist.domain.ModelObjective
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.ProcessorRef
@@ -34,7 +34,7 @@ class PipelineModControllerTests : MockMvcTest() {
         "test", "A test module",
         Provider.ZORROA,
         Category.ZORROA_STD,
-        ModType.LABEL_DETECTION,
+        ModelObjective.LABEL_DETECTION,
         listOf(),
         listOf(
             ModOp(
@@ -73,7 +73,7 @@ class PipelineModControllerTests : MockMvcTest() {
             name = "cats", description = "dogs",
             provider = Provider.ZORROA,
             category = Category.ZORROA_STD,
-            type = ModType.CLIPIFIER,
+            type = ModelObjective.CLIPIFIER,
             supportedMedia = listOf(), ops = listOf(op)
         )
 

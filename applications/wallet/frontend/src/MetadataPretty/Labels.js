@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { constants, spacing } from '../Styles'
+import { constants, spacing, colors } from '../Styles'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 
@@ -23,12 +23,12 @@ const MetadataPrettyLabels = ({ name, value: { predictions } }) => {
           '> div.ErrorBoundary': {
             padding: `${spacing.normal}px ${spacing.moderate}px`,
             div: {
-              backgroundColor: 'transparent',
+              backgroundColor: colors.structure.transparent,
               boxShadow: 'none',
             },
           },
           '.Loading': {
-            backgroundColor: 'transparent',
+            backgroundColor: colors.structure.transparent,
             boxShadow: 'none',
           },
         }}

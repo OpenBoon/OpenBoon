@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Listbox should render properly 1`] = `
-.emotion-7 [data-reach-listbox-input][data-state="expanded"] {
-  border-radius: 2px 2px 0 0;
+.emotion-9 [data-reach-listbox-input][data-state="expanded"] {
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-0 {
@@ -13,7 +13,7 @@ exports[`Listbox should render properly 1`] = `
   font-weight: 500;
 }
 
-.emotion-6 {
+.emotion-8 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -46,19 +46,30 @@ exports[`Listbox should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-5 {
-  background-color: #808080;
+.emotion-7 {
+  background-color: transparent;
   border: none;
   padding: 0;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-5:focus-within {
+.emotion-7:focus-within {
   outline: none;
   box-shadow: none;
+}
+
+.emotion-6 {
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
+}
+
+.emotion-5 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background-color: #808080;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-3 {
@@ -79,6 +90,8 @@ exports[`Listbox should render properly 1`] = `
 }
 
 .emotion-4 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   margin: 0;
   overflow: auto;
   max-height: 350px;
@@ -90,7 +103,7 @@ exports[`Listbox should render properly 1`] = `
 }
 
 <label
-  className="emotion-7"
+  className="emotion-9"
 >
   <div
     className="emotion-0"
@@ -98,7 +111,7 @@ exports[`Listbox should render properly 1`] = `
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-6"
+    className="emotion-8"
     defaultValue=""
     onChange={[Function]}
   >
@@ -114,76 +127,84 @@ exports[`Listbox should render properly 1`] = `
       Select Type
     </ListboxButton>
     <ListboxPopover
-      className="emotion-5"
+      className="emotion-7"
     >
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
-        <input
-          aria-label="Filter options"
-          className="emotion-2"
-          onChange={[Function]}
-          type="search"
-          value=""
-        />
+        <div
+          className="emotion-5"
+        >
+          <div
+            className="emotion-3"
+          >
+            <input
+              aria-label="Filter options"
+              className="emotion-2"
+              onChange={[Function]}
+              type="search"
+              value=""
+            />
+          </div>
+          <ListboxList
+            className="emotion-4"
+          >
+            <ListboxOptions
+              nestedCount={0}
+              options={
+                Object {
+                  "analysis": Object {
+                    "zvi": Object {
+                      "tinyProxy": "analysis.zvi.tinyProxy",
+                    },
+                  },
+                  "clip": Object {
+                    "pile": "clip.pile",
+                    "sourceAssetId": "clip.sourceAssetId",
+                    "timeline": "clip.timeline",
+                    "type": "clip.type",
+                  },
+                  "location": Object {
+                    "city": "location.city",
+                    "code": "location.code",
+                    "country": "location.country",
+                  },
+                  "media": Object {
+                    "author": "media.author",
+                    "content": "media.content",
+                    "description": "media.description",
+                    "keywords": "media.keywords",
+                    "orientation": "media.orientation",
+                    "title": "media.title",
+                    "type": "media.type",
+                  },
+                  "source": Object {
+                    "extension": "source.extension",
+                    "filename": "source.filename",
+                    "mimetype": "source.mimetype",
+                    "path": "source.path",
+                  },
+                  "system": Object {
+                    "dataSourceId": "system.dataSourceId",
+                    "jobId": "system.jobId",
+                    "projectId": "system.projectId",
+                    "state": "system.state",
+                    "taskId": "system.taskId",
+                  },
+                }
+              }
+            />
+          </ListboxList>
+        </div>
       </div>
-      <ListboxList
-        className="emotion-4"
-      >
-        <ListboxOptions
-          nestedCount={0}
-          options={
-            Object {
-              "analysis": Object {
-                "zvi": Object {
-                  "tinyProxy": "analysis.zvi.tinyProxy",
-                },
-              },
-              "clip": Object {
-                "pile": "clip.pile",
-                "sourceAssetId": "clip.sourceAssetId",
-                "timeline": "clip.timeline",
-                "type": "clip.type",
-              },
-              "location": Object {
-                "city": "location.city",
-                "code": "location.code",
-                "country": "location.country",
-              },
-              "media": Object {
-                "author": "media.author",
-                "content": "media.content",
-                "description": "media.description",
-                "keywords": "media.keywords",
-                "orientation": "media.orientation",
-                "title": "media.title",
-                "type": "media.type",
-              },
-              "source": Object {
-                "extension": "source.extension",
-                "filename": "source.filename",
-                "mimetype": "source.mimetype",
-                "path": "source.path",
-              },
-              "system": Object {
-                "dataSourceId": "system.dataSourceId",
-                "jobId": "system.jobId",
-                "projectId": "system.projectId",
-                "state": "system.state",
-                "taskId": "system.taskId",
-              },
-            }
-          }
-        />
-      </ListboxList>
     </ListboxPopover>
   </ListboxInput>
 </label>
 `;
 
 exports[`Listbox should render properly 2`] = `
-.emotion-7 [data-reach-listbox-input][data-state="expanded"] {
-  border-radius: 2px 2px 0 0;
+.emotion-9 [data-reach-listbox-input][data-state="expanded"] {
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-0 {
@@ -194,7 +215,7 @@ exports[`Listbox should render properly 2`] = `
   font-weight: 500;
 }
 
-.emotion-6 {
+.emotion-8 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -227,19 +248,30 @@ exports[`Listbox should render properly 2`] = `
   padding: 8px;
 }
 
-.emotion-5 {
-  background-color: #808080;
+.emotion-7 {
+  background-color: transparent;
   border: none;
   padding: 0;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-5:focus-within {
+.emotion-7:focus-within {
   outline: none;
   box-shadow: none;
+}
+
+.emotion-6 {
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
+}
+
+.emotion-5 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background-color: #808080;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-3 {
@@ -264,7 +296,7 @@ exports[`Listbox should render properly 2`] = `
 }
 
 <label
-  className="emotion-7"
+  className="emotion-9"
 >
   <div
     className="emotion-0"
@@ -272,7 +304,7 @@ exports[`Listbox should render properly 2`] = `
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-6"
+    className="emotion-8"
     defaultValue=""
     onChange={[Function]}
   >
@@ -288,23 +320,31 @@ exports[`Listbox should render properly 2`] = `
       Select Type
     </ListboxButton>
     <ListboxPopover
-      className="emotion-5"
+      className="emotion-7"
     >
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
-        <input
-          aria-label="Filter options"
-          className="emotion-2"
-          onChange={[Function]}
-          type="search"
-          value="qwerty"
-        />
-      </div>
-      <div
-        className="emotion-4"
-      >
-        No Results
+        <div
+          className="emotion-5"
+        >
+          <div
+            className="emotion-3"
+          >
+            <input
+              aria-label="Filter options"
+              className="emotion-2"
+              onChange={[Function]}
+              type="search"
+              value="qwerty"
+            />
+          </div>
+          <div
+            className="emotion-4"
+          >
+            No Results
+          </div>
+        </div>
       </div>
     </ListboxPopover>
   </ListboxInput>
@@ -312,8 +352,8 @@ exports[`Listbox should render properly 2`] = `
 `;
 
 exports[`Listbox should render properly 3`] = `
-.emotion-7 [data-reach-listbox-input][data-state="expanded"] {
-  border-radius: 2px 2px 0 0;
+.emotion-9 [data-reach-listbox-input][data-state="expanded"] {
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-0 {
@@ -324,7 +364,7 @@ exports[`Listbox should render properly 3`] = `
   font-weight: 500;
 }
 
-.emotion-6 {
+.emotion-8 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -357,19 +397,30 @@ exports[`Listbox should render properly 3`] = `
   padding: 8px;
 }
 
-.emotion-5 {
-  background-color: #808080;
+.emotion-7 {
+  background-color: transparent;
   border: none;
   padding: 0;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-5:focus-within {
+.emotion-7:focus-within {
   outline: none;
   box-shadow: none;
+}
+
+.emotion-6 {
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
+}
+
+.emotion-5 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background-color: #808080;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-3 {
@@ -390,6 +441,8 @@ exports[`Listbox should render properly 3`] = `
 }
 
 .emotion-4 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   margin: 0;
   overflow: auto;
   max-height: 350px;
@@ -401,7 +454,7 @@ exports[`Listbox should render properly 3`] = `
 }
 
 <label
-  className="emotion-7"
+  className="emotion-9"
 >
   <div
     className="emotion-0"
@@ -409,7 +462,7 @@ exports[`Listbox should render properly 3`] = `
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-6"
+    className="emotion-8"
     defaultValue=""
     onChange={[Function]}
   >
@@ -425,41 +478,49 @@ exports[`Listbox should render properly 3`] = `
       Select Type
     </ListboxButton>
     <ListboxPopover
-      className="emotion-5"
+      className="emotion-7"
     >
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
-        <input
-          aria-label="Filter options"
-          className="emotion-2"
-          onChange={[Function]}
-          type="search"
-          value="time"
-        />
+        <div
+          className="emotion-5"
+        >
+          <div
+            className="emotion-3"
+          >
+            <input
+              aria-label="Filter options"
+              className="emotion-2"
+              onChange={[Function]}
+              type="search"
+              value="time"
+            />
+          </div>
+          <ListboxList
+            className="emotion-4"
+          >
+            <ListboxOptions
+              nestedCount={0}
+              options={
+                Object {
+                  "clip": Object {
+                    "timeline": "clip.timeline",
+                  },
+                }
+              }
+            />
+          </ListboxList>
+        </div>
       </div>
-      <ListboxList
-        className="emotion-4"
-      >
-        <ListboxOptions
-          nestedCount={0}
-          options={
-            Object {
-              "clip": Object {
-                "timeline": "clip.timeline",
-              },
-            }
-          }
-        />
-      </ListboxList>
     </ListboxPopover>
   </ListboxInput>
 </label>
 `;
 
 exports[`Listbox should render properly 4`] = `
-.emotion-7 [data-reach-listbox-input][data-state="expanded"] {
-  border-radius: 2px 2px 0 0;
+.emotion-9 [data-reach-listbox-input][data-state="expanded"] {
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-0 {
@@ -470,7 +531,7 @@ exports[`Listbox should render properly 4`] = `
   font-weight: 500;
 }
 
-.emotion-6 {
+.emotion-8 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -503,19 +564,30 @@ exports[`Listbox should render properly 4`] = `
   padding: 8px;
 }
 
-.emotion-5 {
-  background-color: #808080;
+.emotion-7 {
+  background-color: transparent;
   border: none;
   padding: 0;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-5:focus-within {
+.emotion-7:focus-within {
   outline: none;
   box-shadow: none;
+}
+
+.emotion-6 {
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
+}
+
+.emotion-5 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background-color: #808080;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-3 {
@@ -536,6 +608,8 @@ exports[`Listbox should render properly 4`] = `
 }
 
 .emotion-4 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   margin: 0;
   overflow: auto;
   max-height: 350px;
@@ -547,7 +621,7 @@ exports[`Listbox should render properly 4`] = `
 }
 
 <label
-  className="emotion-7"
+  className="emotion-9"
 >
   <div
     className="emotion-0"
@@ -555,7 +629,7 @@ exports[`Listbox should render properly 4`] = `
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-6"
+    className="emotion-8"
     defaultValue=""
     onChange={[Function]}
   >
@@ -571,41 +645,49 @@ exports[`Listbox should render properly 4`] = `
       Select Type
     </ListboxButton>
     <ListboxPopover
-      className="emotion-5"
+      className="emotion-7"
     >
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
-        <input
-          aria-label="Filter options"
-          className="emotion-2"
-          onChange={[Function]}
-          type="search"
-          value="time"
-        />
+        <div
+          className="emotion-5"
+        >
+          <div
+            className="emotion-3"
+          >
+            <input
+              aria-label="Filter options"
+              className="emotion-2"
+              onChange={[Function]}
+              type="search"
+              value="time"
+            />
+          </div>
+          <ListboxList
+            className="emotion-4"
+          >
+            <ListboxOptions
+              nestedCount={0}
+              options={
+                Object {
+                  "clip": Object {
+                    "timeline": "clip.timeline",
+                  },
+                }
+              }
+            />
+          </ListboxList>
+        </div>
       </div>
-      <ListboxList
-        className="emotion-4"
-      >
-        <ListboxOptions
-          nestedCount={0}
-          options={
-            Object {
-              "clip": Object {
-                "timeline": "clip.timeline",
-              },
-            }
-          }
-        />
-      </ListboxList>
     </ListboxPopover>
   </ListboxInput>
 </label>
 `;
 
 exports[`Listbox should render properly with existing attribute 1`] = `
-.emotion-7 [data-reach-listbox-input][data-state="expanded"] {
-  border-radius: 2px 2px 0 0;
+.emotion-9 [data-reach-listbox-input][data-state="expanded"] {
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-0 {
@@ -616,7 +698,7 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   font-weight: 500;
 }
 
-.emotion-6 {
+.emotion-8 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -649,19 +731,30 @@ exports[`Listbox should render properly with existing attribute 1`] = `
   padding: 8px;
 }
 
-.emotion-5 {
-  background-color: #808080;
+.emotion-7 {
+  background-color: transparent;
   border: none;
   padding: 0;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px 0 #000000;
 }
 
-.emotion-5:focus-within {
+.emotion-7:focus-within {
   outline: none;
   box-shadow: none;
+}
+
+.emotion-6 {
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
+}
+
+.emotion-5 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background-color: #808080;
+  box-shadow: 0 2px 6px 0 #000000;
 }
 
 .emotion-3 {
@@ -682,6 +775,8 @@ exports[`Listbox should render properly with existing attribute 1`] = `
 }
 
 .emotion-4 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
   margin: 0;
   overflow: auto;
   max-height: 350px;
@@ -693,7 +788,7 @@ exports[`Listbox should render properly with existing attribute 1`] = `
 }
 
 <label
-  className="emotion-7"
+  className="emotion-9"
 >
   <div
     className="emotion-0"
@@ -701,7 +796,7 @@ exports[`Listbox should render properly with existing attribute 1`] = `
     Metadata Type
   </div>
   <ListboxInput
-    className="emotion-6"
+    className="emotion-8"
     defaultValue="clip.timeline"
     onChange={[Function]}
   >
@@ -717,68 +812,76 @@ exports[`Listbox should render properly with existing attribute 1`] = `
       timeline
     </ListboxButton>
     <ListboxPopover
-      className="emotion-5"
+      className="emotion-7"
     >
       <div
-        className="emotion-3"
+        className="emotion-6"
       >
-        <input
-          aria-label="Filter options"
-          className="emotion-2"
-          onChange={[Function]}
-          type="search"
-          value=""
-        />
+        <div
+          className="emotion-5"
+        >
+          <div
+            className="emotion-3"
+          >
+            <input
+              aria-label="Filter options"
+              className="emotion-2"
+              onChange={[Function]}
+              type="search"
+              value=""
+            />
+          </div>
+          <ListboxList
+            className="emotion-4"
+          >
+            <ListboxOptions
+              nestedCount={0}
+              options={
+                Object {
+                  "analysis": Object {
+                    "zvi": Object {
+                      "tinyProxy": "analysis.zvi.tinyProxy",
+                    },
+                  },
+                  "clip": Object {
+                    "pile": "clip.pile",
+                    "sourceAssetId": "clip.sourceAssetId",
+                    "timeline": "clip.timeline",
+                    "type": "clip.type",
+                  },
+                  "location": Object {
+                    "city": "location.city",
+                    "code": "location.code",
+                    "country": "location.country",
+                  },
+                  "media": Object {
+                    "author": "media.author",
+                    "content": "media.content",
+                    "description": "media.description",
+                    "keywords": "media.keywords",
+                    "orientation": "media.orientation",
+                    "title": "media.title",
+                    "type": "media.type",
+                  },
+                  "source": Object {
+                    "extension": "source.extension",
+                    "filename": "source.filename",
+                    "mimetype": "source.mimetype",
+                    "path": "source.path",
+                  },
+                  "system": Object {
+                    "dataSourceId": "system.dataSourceId",
+                    "jobId": "system.jobId",
+                    "projectId": "system.projectId",
+                    "state": "system.state",
+                    "taskId": "system.taskId",
+                  },
+                }
+              }
+            />
+          </ListboxList>
+        </div>
       </div>
-      <ListboxList
-        className="emotion-4"
-      >
-        <ListboxOptions
-          nestedCount={0}
-          options={
-            Object {
-              "analysis": Object {
-                "zvi": Object {
-                  "tinyProxy": "analysis.zvi.tinyProxy",
-                },
-              },
-              "clip": Object {
-                "pile": "clip.pile",
-                "sourceAssetId": "clip.sourceAssetId",
-                "timeline": "clip.timeline",
-                "type": "clip.type",
-              },
-              "location": Object {
-                "city": "location.city",
-                "code": "location.code",
-                "country": "location.country",
-              },
-              "media": Object {
-                "author": "media.author",
-                "content": "media.content",
-                "description": "media.description",
-                "keywords": "media.keywords",
-                "orientation": "media.orientation",
-                "title": "media.title",
-                "type": "media.type",
-              },
-              "source": Object {
-                "extension": "source.extension",
-                "filename": "source.filename",
-                "mimetype": "source.mimetype",
-                "path": "source.path",
-              },
-              "system": Object {
-                "dataSourceId": "system.dataSourceId",
-                "jobId": "system.jobId",
-                "projectId": "system.projectId",
-                "state": "system.state",
-                "taskId": "system.taskId",
-              },
-            }
-          }
-        />
-      </ListboxList>
     </ListboxPopover>
   </ListboxInput>
 </label>

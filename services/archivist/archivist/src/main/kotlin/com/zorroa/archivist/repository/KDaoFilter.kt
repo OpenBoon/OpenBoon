@@ -22,6 +22,8 @@ abstract class KDaoFilter {
 
     var sort: List<String>? = null
 
+    var sortRaw: List<String>? = null
+
     constructor()
 
     constructor(page: KPage) {
@@ -60,8 +62,14 @@ abstract class KDaoFilter {
             sb.append(whereClause)
         }
 
-        if (!forCount && sort != null) {
-            val order = StringBuilder(64)
+        if (!forCount && (sort != null || sortRaw != null)) {
+            val order = StringBuilder(128)
+
+            sortRaw?.forEach {
+                order.append(it)
+                order.append(",")
+                println(order)
+            }
 
             sort?.forEach { e ->
                 val (key, dir) = e.split(":", limit = 2)

@@ -9,16 +9,23 @@ from zmlp_train.tf2 import TensorflowTransferLearningTrainer
 from zmlpsdk import file_storage, Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset
 
+import tensorflow
+tensorflow.config.set_visible_devices([], 'GPU')
+
+print("Num GPUs Available: ", len(tensorflow.config.experimental.list_physical_devices('GPU')))
+
 logging.basicConfig()
 
-assets = [
+daisy = [
     TestAsset('flowers/daisy/5547758_eea9edfd54_n.jpg', id='5547758_eea9edfd54_n'),
     TestAsset('flowers/daisy/5673551_01d1ea993e_n.jpg', id='5673551_01d1ea993e_n'),
     TestAsset('flowers/daisy/5673551_01d1ea993e_n.jpg', id='5673551_01d1ea993e_n'),
     TestAsset('flowers/daisy/5794835_d15905c7c8_n.jpg', id='5794835_d15905c7c8_n'),
     TestAsset('flowers/daisy/5794839_200acd910c_n.jpg', id='5794839_200acd910c_n'),
     TestAsset('flowers/daisy/11642632_1e7627a2cc.jpg', id='11642632_1e7627a2cc'),
+]
 
+rose = [
     TestAsset('flowers/roses/102501987_3cdb8e5394_n.jpg', id='102501987_3cdb8e5394_n'),
     TestAsset('flowers/roses/110472418_87b6a3aa98_m.jpg', id='110472418_87b6a3aa98_m'),
     TestAsset('flowers/roses/12240303_80d87f77a3_n.jpg', id='12240303_80d87f77a3_n'),
@@ -27,28 +34,22 @@ assets = [
     TestAsset('flowers/roses/99383371_37a5ac12a3_n.jpg', id='99383371_37a5ac12a3_n')
 ]
 
+assets = daisy + rose
 
-def download_images(ds_id, style, dst_dir, ratio):
-    os.makedirs(dst_dir + '/set_train/daisy/', exist_ok=True)
-    os.makedirs(dst_dir + '/set_validate/daisy/', exist_ok=True)
-    os.makedirs(dst_dir + '/set_train/roses/', exist_ok=True)
-    os.makedirs(dst_dir + '/set_validate/roses/', exist_ok=True)
 
-    for asset in assets[0:3]:
+def download_images(ds_id, style, dst_dir):
+    os.makedirs(dst_dir + '/train/daisy/', exist_ok=True)
+    os.makedirs(dst_dir + '/train/roses/', exist_ok=True)
+
+    for asset in daisy:
+        print(asset.get_attr('source.path'))
         shutil.copy(os.path.dirname(__file__) + "/" + asset.get_attr('source.path'),
-                    dst_dir + '/set_train/daisy/')
+                    dst_dir + '/train/daisy/')
 
-    for asset in assets[4:5]:
+    for asset in rose:
+        print(asset.get_attr('source.path'))
         shutil.copy(os.path.dirname(__file__) + "/" + asset.get_attr('source.path'),
-                    dst_dir + '/set_validate/daisy/')
-
-    for asset in assets[6:9]:
-        shutil.copy(os.path.dirname(__file__) + "/" + asset.get_attr('source.path'),
-                    dst_dir + '/set_train/roses/')
-
-    for asset in assets[10:11]:
-        shutil.copy(os.path.dirname(__file__) + "/" + asset.get_attr('source.path'),
-                    dst_dir + '/set_validate/roses/')
+                    dst_dir + '/train/roses/')
 
 
 class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
@@ -108,7 +109,8 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
 
         args = {
             'model_id': self.model_id,
-            'epochs': 5
+            'epochs': 5,
+            'validation_split': 0.3
         }
 
         processor = TensorflowTransferLearningTrainer()

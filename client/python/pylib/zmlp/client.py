@@ -18,6 +18,8 @@ from .entity.exception import ZmlpException
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_SERVER = 'https://api.zvi.zorroa.com'
+
 
 class ZmlpClient(object):
     """
@@ -39,6 +41,7 @@ class ZmlpClient(object):
         self.server = server
         self.project_id = kwargs.get('project_id')
         self.max_retries = kwargs.get('max_retries', 3)
+        self.verify = True
 
     def stream(self, url, dst):
         """
@@ -50,7 +53,7 @@ class ZmlpClient(object):
         """
         try:
             with open(dst, 'wb') as handle:
-                response = requests.get(self.get_url(url), verify=False,
+                response = requests.get(self.get_url(url), verify=self.verify,
                                         headers=self.headers(), stream=True)
 
                 if not response.ok:
@@ -75,7 +78,7 @@ class ZmlpClient(object):
                 URL.
         """
         try:
-            response = requests.get(self.get_url(url), verify=False,
+            response = requests.get(self.get_url(url), verify=self.verify,
                                     headers=self.headers(), stream=True)
             if not response.ok:
                 raise ZmlpClientException(
@@ -143,7 +146,7 @@ class ZmlpClient(object):
 
             return self.__handle_rsp(requests.post(
                 self.get_url(path), headers=self.headers(content_type=""),
-                files=post_files), json_rsp)
+                verify=self.verify, files=post_files), json_rsp)
 
         except requests.exceptions.ConnectionError as e:
             raise ZmlpConnectionException(e)
@@ -275,7 +278,7 @@ class ZmlpClient(object):
         while True:
             try:
                 rsp = request_function(url, data=data, headers=self.headers(),
-                                       verify=False)
+                                       verify=self.verify)
                 break
             except Exception as e:
                 # Some form of connection error, wait until archivist comes

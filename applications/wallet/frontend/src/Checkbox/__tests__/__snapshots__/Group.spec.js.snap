@@ -15,6 +15,10 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-1 {
@@ -183,6 +187,10 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-1 {

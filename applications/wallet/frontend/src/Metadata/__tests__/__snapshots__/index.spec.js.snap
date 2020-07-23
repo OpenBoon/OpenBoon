@@ -18,7 +18,7 @@ Array [
   .emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
-  color: #4a90e2;
+  color: #0273f5;
 }
 
 <div
@@ -31,11 +31,14 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  min-height: -webkit-fit-content;
+  min-height: -moz-fit-content;
+  min-height: fit-content;
   border-bottom: 1px solid #3b3b3b;
 }
 
 .emotion-4:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
 }
 
 .emotion-4:hover div {
@@ -648,7 +651,7 @@ Array [
   .emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
-  color: #4a90e2;
+  color: #0273f5;
 }
 
 <div
@@ -661,11 +664,14 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  min-height: -webkit-fit-content;
+  min-height: -moz-fit-content;
+  min-height: fit-content;
   border-bottom: 1px solid #3b3b3b;
 }
 
 .emotion-4:hover {
-  background-color: #027aff38;
+  background-color: #0074f538;
 }
 
 .emotion-4:hover div {

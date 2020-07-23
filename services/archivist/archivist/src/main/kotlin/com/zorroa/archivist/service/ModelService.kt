@@ -71,13 +71,17 @@ class ModelServiceImpl(
         val id = UUIDGen.uuid1.generate()
         val actor = getZmlpActor()
 
-        val moduleName = spec.moduleName
-            ?: String.format(
-                spec.type.moduleName,
-                spec.name.replace(" ", "-").toLowerCase()
+        val moduleName = (spec.moduleName ?: spec.type.moduleName ?: spec.name)
+
+        if (moduleName.trim().length == 0 || !moduleName.matches(modelNameRegex)) {
+            throw IllegalArgumentException(
+                "Model names must be alpha-numeric," +
+                    " dashes,underscores, and spaces are allowed."
             )
+        }
+
         val locator = ProjectFileLocator(
-            ProjectStorageEntity.MODELS, id.toString(), moduleName, "$moduleName.zip"
+            ProjectStorageEntity.MODELS, id.toString(), "model", "model.zip"
         )
 
         val model = Model(
@@ -87,7 +91,7 @@ class ModelServiceImpl(
             spec.name,
             moduleName,
             locator.getFileId(),
-            "Train ${spec.name} / $moduleName",
+            "Training model ${spec.type.name} : ${spec.name}",
             false,
             spec.deploySearch, // VALIDATE THIS PARSES.
             time,
@@ -147,7 +151,7 @@ class ModelServiceImpl(
         val name = "Deploying model: ${model.name}"
         var search = req.search ?: model.deploySearch
 
-        if (!model.type.runOnTrainingSet && !req.analyzeTrainingSet) {
+        if (!model.type.deployOnTrainingSet && !req.analyzeTrainingSet) {
             search = wrapSearchToExcludeTrainingSet(model, search)
         }
 
@@ -214,7 +218,7 @@ class ModelServiceImpl(
                 "Make predictions with your custom trained '${model.name}' model.",
                 model.type.provider,
                 Category.TRAINED,
-                model.type.pipelineModType,
+                model.type.objective,
                 listOf(FileType.Documents, FileType.Images),
                 ops
             )
@@ -288,5 +292,7 @@ class ModelServiceImpl(
 
     companion object {
         private val logger = LoggerFactory.getLogger(ModelServiceImpl::class.java)
+
+        private val modelNameRegex = Regex("^[a-z0-9_\\-\\s]{2,}$", RegexOption.IGNORE_CASE)
     }
 }

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Visualizer /> should render properly 1`] = `
-.emotion-19 {
+.emotion-20 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-18 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -34,7 +34,6 @@ exports[`<Visualizer /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
 .emotion-3 {
@@ -45,7 +44,6 @@ exports[`<Visualizer /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-right: 1px;
 }
 
 .emotion-1 {
@@ -274,36 +272,17 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-17 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
-}
-
-.emotion-16 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 1px;
-}
-
-.emotion-12 {
+.emotion-13 {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
 <div
-  className="emotion-19"
+  className="emotion-20"
 >
   <div
-    className="emotion-18"
+    className="emotion-19"
   >
     <div
       className="emotion-4"
@@ -452,10 +431,10 @@ exports[`<Visualizer /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-17"
+      className="emotion-4"
     >
       <div
-        className="emotion-16"
+        className="emotion-3"
       >
         <button
           aria-label="Asset Metadata"
@@ -482,6 +461,18 @@ exports[`<Visualizer /> should render properly 1`] = `
           />
         </button>
         <button
+          aria-label="Add Labels To Model"
+          className="emotion-1"
+          onClick={[Function]}
+          title="Add Labels To Model"
+          type="button"
+        >
+          <svg
+            data-file-name="pen.svg"
+            height={20}
+          />
+        </button>
+        <button
           aria-label="Export"
           className="emotion-1"
           onClick={[Function]}
@@ -489,7 +480,7 @@ exports[`<Visualizer /> should render properly 1`] = `
           type="button"
         >
           <svg
-            className="emotion-12"
+            className="emotion-13"
             data-file-name="upload.svg"
             height={20}
           />
@@ -516,7 +507,7 @@ exports[`<Visualizer /> should render properly 1`] = `
 `;
 
 exports[`<Visualizer /> should render selected asset 1`] = `
-.emotion-19 {
+.emotion-20 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -535,7 +526,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   flex-direction: column;
 }
 
-.emotion-18 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -549,7 +540,6 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
 .emotion-3 {
@@ -560,7 +550,6 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-right: 1px;
 }
 
 .emotion-1 {
@@ -789,36 +778,17 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   color: #808080;
 }
 
-.emotion-17 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
-}
-
-.emotion-16 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 1px;
-}
-
-.emotion-12 {
+.emotion-13 {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
 <div
-  className="emotion-19"
+  className="emotion-20"
 >
   <div
-    className="emotion-18"
+    className="emotion-19"
   >
     <div
       className="emotion-4"
@@ -967,10 +937,10 @@ exports[`<Visualizer /> should render selected asset 1`] = `
       </div>
     </div>
     <div
-      className="emotion-17"
+      className="emotion-4"
     >
       <div
-        className="emotion-16"
+        className="emotion-3"
       >
         <button
           aria-label="Asset Metadata"
@@ -997,6 +967,18 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           />
         </button>
         <button
+          aria-label="Add Labels To Model"
+          className="emotion-1"
+          onClick={[Function]}
+          title="Add Labels To Model"
+          type="button"
+        >
+          <svg
+            data-file-name="pen.svg"
+            height={20}
+          />
+        </button>
+        <button
           aria-label="Export"
           className="emotion-1"
           onClick={[Function]}
@@ -1004,7 +986,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           type="button"
         >
           <svg
-            className="emotion-12"
+            className="emotion-13"
             data-file-name="upload.svg"
             height={20}
           />

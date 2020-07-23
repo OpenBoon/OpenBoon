@@ -196,7 +196,6 @@ open class Asset(
         allLabels.removeAll(labels)
         allLabels.addAll(labels)
         setAttr("labels", allLabels)
-        Json.prettyPrint(allLabels)
     }
 
     /**

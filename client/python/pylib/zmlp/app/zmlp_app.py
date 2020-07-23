@@ -3,11 +3,9 @@ import logging
 import os
 
 from . import AssetApp, DataSourceApp, ProjectApp, JobApp, ModelApp, PipelineModApp
-from ..client import ZmlpClient
+from ..client import ZmlpClient, DEFAULT_SERVER
 
 logger = logging.getLogger(__name__)
-
-DEFAULT_SERVER = 'https://api.zmlp.zorroa.com'
 
 
 class ZmlpApp(object):

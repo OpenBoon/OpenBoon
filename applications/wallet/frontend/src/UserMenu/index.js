@@ -13,7 +13,6 @@ import Button, { VARIANTS } from '../Button'
 import { openContactForm } from '../Zendesk/helpers'
 
 const SIZE = 28
-const ICON_SIZE = 20
 
 const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
   return (
@@ -62,7 +61,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                 }`}
               </div>
               <ChevronSvg
-                height={ICON_SIZE}
+                height={constants.icons.regular}
                 color={colors.structure.steel}
                 css={{
                   marginLeft: spacing.base,
@@ -111,6 +110,18 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                   isDisabled={false}
                 >
                   Contact Support
+                </Button>
+              </li>
+              <li>
+                <Button
+                  href="https://shipright.community/zorroa"
+                  target="_blank"
+                  variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
+                  onClick={onClick}
+                  isDisabled={false}
+                >
+                  Submit Feedback
                 </Button>
               </li>
             </ul>

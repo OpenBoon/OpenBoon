@@ -178,7 +178,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            data-file-name="help.svg"
+            data-file-name="models.svg"
             height={20}
           />
           Custom Models
@@ -459,7 +459,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           onMouseEnter={[Function]}
         >
           <svg
-            data-file-name="help.svg"
+            data-file-name="models.svg"
             height={20}
           />
           Custom Models

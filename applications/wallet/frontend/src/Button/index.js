@@ -20,7 +20,7 @@ const BASE = ({ isDisabled }) => ({
   border: 'none',
   cursor: isDisabled ? 'not-allowed' : 'pointer',
   color: colors.structure.white,
-  backgroundColor: colors.transparent,
+  backgroundColor: colors.structure.transparent,
   ':hover': {
     textDecoration: 'none',
   },

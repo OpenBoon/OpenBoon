@@ -250,6 +250,10 @@ exports[`<Policies /> should render properly 1`] = `
   font-weight: 500;
 }
 
+.emotion-2 a {
+  color: #c92300;
+}
+
 <div
   className="emotion-18"
 >

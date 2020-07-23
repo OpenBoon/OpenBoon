@@ -9,8 +9,6 @@ import { getQueryString } from '../Fetch/helpers'
 import AssetsSvg from '../Icons/assets.svg'
 import ChartsSvg from '../Icons/charts.svg'
 
-const ICON_SIZE = 20
-
 const VisualizerNavigation = ({ itemCount }) => {
   const {
     pathname,
@@ -20,12 +18,10 @@ const VisualizerNavigation = ({ itemCount }) => {
   return (
     <div
       css={{
-        paddingLeft: spacing.base,
-        paddingRight: spacing.base,
         backgroundColor: colors.structure.lead,
         color: colors.structure.steel,
-        boxShadow: constants.boxShadows.navBar,
-        marginBottom: spacing.hairline,
+        margin: spacing.hairline,
+        marginTop: 0,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -38,6 +34,8 @@ const VisualizerNavigation = ({ itemCount }) => {
             textTransform: 'uppercase',
             fontWeight: typography.weight.medium,
             padding: spacing.base,
+            paddingLeft: spacing.moderate,
+            paddingRight: spacing.moderate,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -60,13 +58,14 @@ const VisualizerNavigation = ({ itemCount }) => {
         >
           <a
             css={{
+              whiteSpace: 'nowrap',
               color:
                 pathname === '/[projectId]/visualizer'
                   ? colors.key.one
                   : colors.structure.steel,
             }}
           >
-            <AssetsSvg height={ICON_SIZE} /> Assets
+            <AssetsSvg height={constants.icons.regular} /> Assets
           </a>
         </Link>
 
@@ -74,7 +73,7 @@ const VisualizerNavigation = ({ itemCount }) => {
           css={{
             marginTop: spacing.base,
             marginBottom: spacing.base,
-            borderLeft: constants.borders.regular.coal,
+            borderLeft: constants.borders.medium.coal,
           }}
         />
 
@@ -90,20 +89,24 @@ const VisualizerNavigation = ({ itemCount }) => {
         >
           <a
             css={{
+              whiteSpace: 'nowrap',
               color:
                 pathname === '/[projectId]/visualizer/data-visualization'
                   ? colors.key.one
                   : colors.structure.steel,
             }}
           >
-            <ChartsSvg height={ICON_SIZE} /> Data Visualization
+            <ChartsSvg height={constants.icons.regular} /> Data Visualization
           </a>
         </Link>
       </div>
 
       <div
         css={{
+          whiteSpace: 'nowrap',
           padding: spacing.base,
+          paddingLeft: spacing.moderate,
+          paddingRight: spacing.moderate,
           fontFamily: typography.family.condensed,
         }}
       >
