@@ -4,14 +4,14 @@ import { fetcher } from '../Fetch/helpers'
 
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
-import ButtonGear from '../Button/Gear'
+import ButtonActions from '../Button/Actions'
 import { ACTIONS } from '../Job/helpers'
 
 const JobsMenu = ({ projectId, jobId, status, revalidate }) => {
   if (!ACTIONS[status].length) return null
 
   return (
-    <Menu open="left" button={ButtonGear}>
+    <Menu open="left" button={ButtonActions}>
       {({ onBlur, onClick }) => (
         <div>
           <ul>

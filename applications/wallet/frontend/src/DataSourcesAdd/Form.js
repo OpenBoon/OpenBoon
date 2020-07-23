@@ -14,6 +14,7 @@ import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
+import Toggletip from '../Toggletip'
 
 import { FILE_TYPES, onSubmit } from './helpers'
 
@@ -116,7 +117,35 @@ const DataSourcesAddForm = () => {
         </div>
 
         <CheckboxGroup
-          legend="Select File Types to Import"
+          legend={
+            <>
+              Select File Types to Import
+              <Toggletip openToThe="right" label="Supported File Types">
+                <div
+                  css={{
+                    fontSize: typography.size.regular,
+                    lineHeight: typography.height.regular,
+                  }}
+                >
+                  <h3
+                    css={{
+                      fontSize: typography.size.regular,
+                      lineHeight: typography.height.regular,
+                      paddingBottom: spacing.base,
+                    }}
+                  >
+                    Supported File Types
+                  </h3>
+                  {FILE_TYPES.map(({ value, extensions }) => (
+                    <div key={value} css={{ paddingBottom: spacing.base }}>
+                      <h4>{value}:</h4>
+                      {extensions}
+                    </div>
+                  ))}
+                </div>
+              </Toggletip>
+            </>
+          }
           description={
             <div>
               A minimum of one file type must be selected{' '}
@@ -134,7 +163,7 @@ const DataSourcesAddForm = () => {
             initialValue: false,
             isDisabled: false,
           }))}
-          variant={CHECKBOX_VARIANTS.INLINE}
+          variant={CHECKBOX_VARIANTS.SECONDARY}
         />
 
         <div css={{ height: spacing.base }} />

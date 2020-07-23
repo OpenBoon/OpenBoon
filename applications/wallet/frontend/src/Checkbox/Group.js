@@ -24,6 +24,7 @@ const CheckboxGroup = ({ legend, description, variant, options, onClick }) => {
           fontSize: typography.size.medium,
           lineHeight: typography.height.medium,
           fontWeight: typography.weight.medium,
+          display: 'flex',
         }}
       >
         {legend}
@@ -53,7 +54,7 @@ const CheckboxGroup = ({ legend, description, variant, options, onClick }) => {
 }
 
 CheckboxGroup.propTypes = {
-  legend: PropTypes.string.isRequired,
+  legend: PropTypes.node.isRequired,
   description: PropTypes.node.isRequired,
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape(checkboxOptionShape)).isRequired,
