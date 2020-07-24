@@ -23,6 +23,12 @@ export const authenticateUser = ({ setErrorMessage }) => async ({
     return setErrorMessage('Invalid email or password.')
   }
 
+  if (response.status === 423) {
+    return setErrorMessage(
+      'Your account has been locked due to too many failed login attempts.',
+    )
+  }
+
   if (response.status !== 200) {
     return setErrorMessage('Network error.')
   }
