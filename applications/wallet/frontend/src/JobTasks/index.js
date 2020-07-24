@@ -17,15 +17,8 @@ const JobTasks = () => {
       url={`/api/v1/projects/${projectId}/jobs/${jobId}/tasks/`}
       refreshKeys={[`/api/v1/projects/${projectId}/jobs/${jobId}/`]}
       refreshButton
-      columns={[
-        'Task State',
-        'Task ID',
-        'Description',
-        'Started',
-        'Duration',
-        'Errors',
-      ]}
-      expandColumn={3}
+      columns={['State', 'Description', 'Started', 'Duration', 'Errors']}
+      expandColumn={2}
       renderEmpty={<JobTasksEmpty />}
       renderRow={({ result }) => (
         <JobTasksRow

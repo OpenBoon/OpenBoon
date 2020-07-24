@@ -45,13 +45,11 @@ const JobTasksRow = ({
           as={`/${projectId}/jobs/${jobId}/tasks/${taskId}/script`}
           passHref
         >
-          <a css={{ ':hover': { textDecoration: 'none' } }} title={taskId}>
-            {taskId}
+          <a css={{ ':hover': { textDecoration: 'none' } }} title={name}>
+            {name}
           </a>
         </Link>
       </td>
-
-      <td title={name}>{name}</td>
 
       <td>
         {isStarted ? (

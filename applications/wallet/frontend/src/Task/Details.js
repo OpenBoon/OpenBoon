@@ -49,7 +49,7 @@ const TaskDetails = () => {
           {taskId}
         </Value>
 
-        <Value legend="Status" variant={VARIANTS.PRIMARY}>
+        <Value legend="State" variant={VARIANTS.PRIMARY}>
           {state}
         </Value>
 
