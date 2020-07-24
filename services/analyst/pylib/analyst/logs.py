@@ -12,6 +12,7 @@ class LogFileRotator:
     """
     Handles swapping out different log file handlers for each task.
     """
+    task_log_format = logging.Formatter("%(asctime)s:%(levelname)s:%(name)s:%(message)s")
 
     def __init__(self):
         """
@@ -35,6 +36,7 @@ class LogFileRotator:
         # software, versions, and internal communications protocol
         # which is a security risk.
         self.handler.setLevel(logging.INFO)
+        self.handler.setFormatter(self.task_log_format)
         task_logger.addHandler(self.handler)
 
         logger.info(f'Set up task log for {self.task_id}')

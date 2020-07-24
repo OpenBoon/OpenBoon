@@ -24,4 +24,4 @@ class StopWatch:
 
     def __exit__(self, type, value, traceback):
         t = round(time.time() - self.start, 3)
-        logger.info(f'Timed op: [{self.name}] took: [{t}s]')
+        logger.info(f'(Timed op:"{self.name}" took:"{t}s")')
