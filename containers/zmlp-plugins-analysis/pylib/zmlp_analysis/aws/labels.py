@@ -1,4 +1,4 @@
-from zmlpsdk import AssetProcessor, Argument, FileTypes
+from zmlpsdk import AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
@@ -14,10 +14,6 @@ class RekognitionLabelDetection(AssetProcessor):
 
     def __init__(self):
         super(RekognitionLabelDetection, self).__init__()
-
-        self.add_arg(
-            Argument("model_id", "str", required=True, toolTip="The model Id")
-        )
         self.client = None
 
     def init(self):
