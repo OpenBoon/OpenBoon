@@ -10,6 +10,8 @@ const JOB_ID = '223fd17d-7028-1519-94a8-d2f0132bc0c8'
 
 const noop = () => () => {}
 
+jest.mock('next/link', () => 'Link')
+
 describe('<ModelDetails />', () => {
   it('should handle train errors properly', async () => {
     const mockMutate = jest.fn()
@@ -68,6 +70,30 @@ describe('<ModelDetails />', () => {
       runningJobId: JOB_ID,
       ready: true,
     })
+  })
+
+  it('should handle filter properly', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: { ...model, runningJobId: '' },
+    })
+
+    const component = TestRenderer.create(<ModelDetails />)
+
+    // eslint-disable-next-line no-proto
+    const spy = jest.spyOn(localStorage.__proto__, 'setItem')
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Add Label Filter & View in Visualizer' })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    expect(spy).toHaveBeenCalledWith('rightOpeningPanel', '"filters"')
   })
 
   it('should handle delete properly', async () => {
