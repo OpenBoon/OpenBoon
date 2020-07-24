@@ -137,6 +137,8 @@ const TableContent = ({
                       backgroundColor: colors.structure.iron,
                       padding: `${spacing.moderate}px ${spacing.normal}px`,
                       borderBottom: constants.borders.regular.mattGrey,
+                      // hack to resize the Actions column to its smallest possible width
+                      width: column === '#Actions#' ? 1 : 'auto',
                       [`:nth-of-type(${expandColumn})`]: { width: '100%' },
                       '&:not(:last-child)': {
                         borderRight: constants.borders.regular.mattGrey,

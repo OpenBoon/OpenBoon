@@ -15,6 +15,7 @@ describe('<ErrorBoundary />', () => {
 
   it('should render generic when caught', () => {
     const spy = jest.spyOn(console, 'error')
+
     spy.mockImplementation(() => {})
 
     const Throw = () => {
@@ -33,6 +34,10 @@ describe('<ErrorBoundary />', () => {
   })
 
   it('should render properly when transparent', () => {
+    const spy = jest.spyOn(console, 'error')
+
+    spy.mockImplementation(() => {})
+
     const Throw = () => {
       throw new Error('Error')
     }
@@ -44,5 +49,7 @@ describe('<ErrorBoundary />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    spy.mockRestore()
   })
 })
