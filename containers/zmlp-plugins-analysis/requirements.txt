@@ -21,4 +21,4 @@ matplotlib
 clarifai
 pytesseract
 facenet-pytorch
-
+boto3
