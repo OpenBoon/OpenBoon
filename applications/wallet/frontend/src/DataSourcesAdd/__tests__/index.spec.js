@@ -51,8 +51,8 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
-        .props.onChange({ target: { value: 'AWS' } })
+        .findByProps({ label: 'Source Type' })
+        .props.onChange({ value: 'AWS' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -60,8 +60,8 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
-        .props.onChange({ target: { value: 'AZURE' } })
+        .findByProps({ label: 'Source Type' })
+        .props.onChange({ value: 'AZURE' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -69,8 +69,8 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
-        .props.onChange({ target: { value: 'GCP' } })
+        .findByProps({ label: 'Source Type' })
+        .props.onChange({ value: 'GCP' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -203,8 +203,8 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
-        .props.onChange({ target: { value: 'GCP' } })
+        .findByProps({ label: 'Source Type' })
+        .props.onChange({ value: 'GCP' })
     })
 
     // Input valid uri
@@ -290,8 +290,8 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
-        .props.onChange({ target: { value: 'AWS' } })
+        .findByProps({ label: 'Source Type' })
+        .props.onChange({ value: 'AWS' })
     })
 
     // Input uri

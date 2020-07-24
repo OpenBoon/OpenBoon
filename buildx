@@ -34,7 +34,8 @@ def main():
         containers = set()
 
     if args.plugins:
-        containers.update(['zmlp-py3-client',
+        containers.update(['zmlp-py3-base',
+                           'zmlp-py3-client',
                            'zmlp-py3-zvi',
                            'zmlp-py3-sdk',
                            'zmlp-plugins-base',
@@ -73,7 +74,7 @@ def pull_base_images():
     because using --no-cache also disabled the buildx cache.
     """
     images = [
-        'ubuntu:eoan',
+        'ubuntu:focal',
         'maven:3.6-jdk-11-slim',
         'openjdk:11-jdk-slim',
         'nginx:mainline'

@@ -32,8 +32,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
-            <!-- Have to keep in sync with spring :( -->
-            <version>2.10.1</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

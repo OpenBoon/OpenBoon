@@ -158,17 +158,9 @@ const AssetsQuickView = ({ assets, columnCount }) => {
             justifyContent: 'center',
             alignItems: 'center',
             padding: spacing.spacious,
-            '.ErrorBoundary > div': {
-              backgroundColor: colors.structure.transparent,
-              boxShadow: 'none',
-            },
-            '.Loading': {
-              backgroundColor: colors.structure.transparent,
-              boxShadow: 'none',
-            },
           }}
         >
-          <SuspenseBoundary>
+          <SuspenseBoundary isTransparent>
             <AssetAsset
               key={selectedId}
               projectId={projectId}

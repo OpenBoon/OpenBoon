@@ -73,7 +73,7 @@ class ModelServiceImpl(
 
         val moduleName = (spec.moduleName ?: spec.type.moduleName ?: spec.name)
 
-        if (moduleName.trim().length == 0 || !moduleName.matches(modelNameRegex)) {
+        if (moduleName.trim().isEmpty() || !moduleName.matches(modelNameRegex)) {
             throw IllegalArgumentException(
                 "Model names must be alpha-numeric," +
                     " dashes,underscores, and spaces are allowed."
@@ -91,7 +91,7 @@ class ModelServiceImpl(
             spec.name,
             moduleName,
             locator.getFileId(),
-            "Training model ${spec.type.name} : ${spec.name}",
+            "Training model: ${spec.name} - [${spec.type.objective}]",
             false,
             spec.deploySearch, // VALIDATE THIS PARSES.
             time,

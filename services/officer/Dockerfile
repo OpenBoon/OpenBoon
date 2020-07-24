@@ -10,8 +10,14 @@ RUN --mount=type=cache,target=/root/.m2 mvn clean package -Dmaven.test.skip=true
 FROM openjdk:11-jdk-slim
 
 RUN sed -e 's/$/ contrib non-free/' -i /etc/apt/sources.list
-RUN apt-get update; apt-get install -y --no-install-recommends python3 libfontconfig libfreetype6 ttf-mscorefonts-installer libexpat1 fonts-dejavu-core fontconfig-config libpng16-16 curl
+RUN apt-get update; apt-get install -y --no-install-recommends python3 libfontconfig \
+    libfreetype6 xfonts-utils libexpat1 fonts-dejavu-core fontconfig-config libpng16-16 curl \
+    cabextract wget
 RUN groupadd -r analyst && useradd --no-log-init -r -g analyst analyst
+
+RUN wget http://ftp.us.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb
+RUN dpkg -i ttf-mscorefonts-installer_3.8_all.deb
+RUN rm ttf-mscorefonts-installer_3.8_all.deb
 
 COPY ./docker /service
 

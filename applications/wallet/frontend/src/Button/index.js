@@ -2,6 +2,8 @@
 import { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 
+import stylesShape from '../Styles/shape'
+
 import { typography, spacing, colors, constants } from '../Styles'
 
 const BASE = ({ isDisabled }) => ({
@@ -192,7 +194,7 @@ Button.propTypes = {
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   children: PropTypes.node.isRequired,
   href: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  style: PropTypes.shape({ name: PropTypes.string, styles: PropTypes.string }),
+  style: stylesShape,
   isDisabled: PropTypes.bool,
   onClick: PropTypes.func,
   target: PropTypes.string,

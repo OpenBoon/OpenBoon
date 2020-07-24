@@ -136,6 +136,7 @@ Array [
   background-color: #4a4a4a;
   padding: 12px 16px;
   border-bottom: 1px solid #2e2e2e;
+  width: auto;
 }
 
 .emotion-6:nth-of-type(2) {
@@ -143,6 +144,26 @@ Array [
 }
 
 .emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-14 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-14:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-14:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
@@ -174,7 +195,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-134 tr:hover .gear {
+.emotion-134 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -412,7 +433,6 @@ Array [
   color: #191919;
   padding: 6px;
   margin: -6px;
-  border-radius: 32px;
 }
 
 .emotion-27:hover {
@@ -424,9 +444,9 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-27:hover {
+.emotion-27:hover,
+.emotion-27.focus-visible:focus {
   color: #ffffff !important;
-  background-color: #808080;
 }
 
 .emotion-30 {
@@ -665,13 +685,13 @@ Array [
                 Task Progress
               </th>
               <th
-                className="emotion-6"
+                className="emotion-14"
               >
                 <div
                   className="emotion-13"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </div>
@@ -772,13 +792,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-27"
+                    className="actions emotion-27"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -878,13 +898,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-27"
+                    className="actions emotion-27"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1141,13 +1161,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-27"
+                    className="actions emotion-27"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1238,13 +1258,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-27"
+                    className="actions emotion-27"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1760,7 +1780,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-18 tr:hover .gear {
+.emotion-18 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -1808,6 +1828,7 @@ Array [
   background-color: #4a4a4a;
   padding: 12px 16px;
   border-bottom: 1px solid #2e2e2e;
+  width: auto;
 }
 
 .emotion-6:nth-of-type(2) {
@@ -1815,6 +1836,26 @@ Array [
 }
 
 .emotion-6:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-14 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-14:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-14:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
@@ -1952,13 +1993,13 @@ Array [
                 Task Progress
               </th>
               <th
-                className="emotion-6"
+                className="emotion-14"
               >
                 <div
                   className="emotion-13"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </div>
