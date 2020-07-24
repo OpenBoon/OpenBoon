@@ -13,7 +13,7 @@ const AssetLabeling = () => {
 
   return assetId ? (
     <SuspenseBoundary key={assetId}>
-      <AssetLabelingContent projectId={projectId} />
+      <AssetLabelingContent projectId={projectId} assetId={assetId} />
     </SuspenseBoundary>
   ) : (
     <div css={{ padding: spacing.normal, color: colors.structure.white }}>

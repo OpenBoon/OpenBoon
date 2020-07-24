@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AssetLabelingHeader /> should render properly 1`] = `
+.emotion-0 {
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+  color: #0273f5;
+}
+
+<div
+  className="emotion-0"
+>
+  TIFF_1MB.tiff
+</div>
+`;
