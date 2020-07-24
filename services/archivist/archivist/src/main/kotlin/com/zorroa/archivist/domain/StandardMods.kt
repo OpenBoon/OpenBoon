@@ -491,7 +491,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            false
+            true
         )
     )
 }
