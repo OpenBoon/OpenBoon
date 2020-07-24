@@ -1,40 +1,28 @@
-import os
-import boto3
-
-from zmlpsdk import AssetProcessor, Argument
+from zmlpsdk import AssetProcessor, Argument, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
+from .util import get_zvi_rekognition_client
 
-class RekognitionLabelClassifier(AssetProcessor):
+
+class RekognitionLabelDetection(AssetProcessor):
     """Get labels for an image using AWS Rekognition """
 
+    namespace = 'aws-label-detection'
+
+    file_types = FileTypes.documents | FileTypes.images
+
     def __init__(self):
-        super(RekognitionLabelClassifier, self).__init__()
+        super(RekognitionLabelDetection, self).__init__()
 
         self.add_arg(
             Argument("model_id", "str", required=True, toolTip="The model Id")
         )
-
-        self.app_model = None
-        self.analysis = None
         self.client = None
-        self.label_and_score = None
-        self.max_labels = None
 
     def init(self):
-        """Init constructor """
-        # get model by model id
-        self.app_model = self.app.models.get_model(self.arg_value("model_id"))
-
         # AWS client
-        self.client = boto3.client(
-            'rekognition',
-            aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
-            aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
-        )
-
-        self.max_labels = self.arg_value("max_labels")
+        self.client = get_zvi_rekognition_client()
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -42,29 +30,27 @@ class RekognitionLabelClassifier(AssetProcessor):
         Args:
             frame (Frame): Frame to be processed
 
-        Returns:
-            None
         """
         asset = frame.asset
         proxy_path = get_proxy_level_path(asset, 0)
-        self.analysis = LabelDetectionAnalysis(min_score=0.01)
-        self.predict(proxy_path)
+        analysis = LabelDetectionAnalysis()
 
-        for ls in self.label_and_score:
-            self.analysis.add_label_and_score(ls[0], ls[1])
+        for ls in self.predict(proxy_path, analysis.max_predictions):
+            analysis.add_label_and_score(ls[0], ls[1])
 
-        asset.add_analysis(self.app_model.module_name, self.analysis)
+        asset.add_analysis(self.namespace, analysis)
 
-    def predict(self, path):
+    def predict(self, path, max_predictions):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
             (label, score)]
 
         Args:
             path (str): image path
+            max_predictions (int): max number of predictions save.
 
         Returns:
-            None
+            list: a list of predictions
         """
         with open(path, 'rb') as f:
             source_bytes = f.read()
@@ -73,8 +59,8 @@ class RekognitionLabelClassifier(AssetProcessor):
         img_json = {'Bytes': source_bytes}
         response = self.client.detect_labels(
             Image=img_json,
-            MaxLabels=self.analysis.max_predictions
+            MaxLabels=max_predictions
         )
 
         # get list of labels
-        self.label_and_score = [(r['Name'], r['Confidence']) for r in response['Labels']]
+        return [(r['Name'], r['Confidence']) for r in response['Labels']]

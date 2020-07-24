@@ -472,6 +472,26 @@ fun getStandardModules(): List<PipelineModSpec> {
                 )
             ),
             true
+        ),
+        PipelineModSpec(
+            "aws-label-detection",
+            "Generate keyword labels for images and documents.",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.RekognitionLabelDetectionProcessor",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            false
         )
     )
 }

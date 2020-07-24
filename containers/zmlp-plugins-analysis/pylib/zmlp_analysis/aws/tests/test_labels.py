@@ -1,60 +1,34 @@
-import os
-import csv
-import boto3
-
 from unittest.mock import patch
+
 from pytest import approx
 
-from zmlp.app import ModelApp
-from zmlp.entity import Model
-from zmlp_analysis.aws import RekognitionLabelClassifier
+from zmlp_analysis.aws import RekognitionLabelDetection
 from zmlpsdk.base import Frame
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, \
+    zorroa_test_path, get_prediction_labels
 
 
-class RekognitionLabelClassifierTests(PluginUnitTestCase):
+class RekognitionLabelDetectionProcessorTests(PluginUnitTestCase):
     model_id = "model-id-12345"
 
-    def setUp(self):
-        aws_creds = zorroa_test_path('creds/zorroa_aws_credentials.csv')
-        with open(aws_creds, 'r') as f:
-            next(f)
-            reader = csv.reader(f)
-            for line in reader:
-                os.environ['AWS_ACCESS_KEY_ID'] = line[2]
-                os.environ['AWS_SECRET_ACCESS_KEY'] = line[3]
-
-    def tearDown(self):
-        del os.environ['AWS_ACCESS_KEY_ID']
-        del os.environ['AWS_SECRET_ACCESS_KEY']
-
-    @patch.object(ModelApp, "get_model")
     @patch("zmlp_analysis.aws.labels.get_proxy_level_path")
-    @patch.object(boto3, "client")
-    def test_predict(self, detect_patch, proxy_patch, model_patch):
-        name = "flowers"
-        model_patch.return_value = Model(
-            {
-                "id": self.model_id,
-                "type": "AWS_LABEL_DETECTION",
-                "fileId": "models/{}/foo/bar".format(self.model_id),
-                "name": name,
-                "moduleName": name
-            }
-        )
-        detect_patch.return_value = MockAWSClient()
+    @patch('zmlp_analysis.aws.labels.get_zvi_rekognition_client')
+    def test_predict(self, client_patch, proxy_patch):
+        client_patch.return_value = MockAWSClient()
 
         flower_paths = zorroa_test_path("training/test_dsy.jpg")
         proxy_patch.return_value = flower_paths
         frame = Frame(TestAsset(flower_paths))
 
         args = expected_results[0][0]
-        expected = expected_results[0][1]
 
-        processor = self.init_processor(RekognitionLabelClassifier(), args)
+        processor = self.init_processor(RekognitionLabelDetection(), args)
         processor.process(frame)
 
-        assert processor.label_and_score == expected
+        analysis = frame.asset.get_analysis('aws-label-detection')
+        assert 'Plant' in get_prediction_labels(analysis)
+        assert 'Daisy' in get_prediction_labels(analysis)
+        assert analysis['count'] == 2
 
 
 expected_results = [
