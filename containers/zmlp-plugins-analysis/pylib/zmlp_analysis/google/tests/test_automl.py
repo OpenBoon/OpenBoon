@@ -14,9 +14,8 @@ logging.basicConfig()
 
 
 class AutoMLModelClassifierTests(PluginUnitTestCase):
-    def setUp(self):
-        self.model = "ICN94225947477147648"
-        self.test_img = zorroa_test_path("training/test_dsy.jpg")
+    model = "ICN94225947477147648"
+    test_img = zorroa_test_path("training/test_dsy.jpg")
 
     @patch.object(ModelApp, "get_model")
     @patch.object(automl.PredictionServiceClient, "predict")
