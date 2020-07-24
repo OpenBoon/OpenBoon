@@ -37,6 +37,7 @@ google-cloud = "*"
 google-cloud-pubsub = "*"
 namegenerator = "*"
 zvi-client = {path = "./../../client/python"}
+django-axes = "*"
 
 [requires]
 python_version = "3.7"
