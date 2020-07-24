@@ -1,3 +1,4 @@
+import os
 import boto3
 
 from zmlpsdk import AssetProcessor, Argument
@@ -14,11 +15,9 @@ class RekognitionLabelClassifier(AssetProcessor):
         self.add_arg(
             Argument("model_id", "str", required=True, toolTip="The model Id")
         )
-        self.add_arg(
-            Argument("max_labels", "int", default=3, toolTip="Total number of labels")
-        )
 
         self.app_model = None
+        self.analysis = None
         self.client = None
         self.label_and_score = None
         self.max_labels = None
@@ -29,7 +28,11 @@ class RekognitionLabelClassifier(AssetProcessor):
         self.app_model = self.app.models.get_model(self.arg_value("model_id"))
 
         # AWS client
-        self.client = boto3.client('rekognition')
+        self.client = boto3.client(
+            'rekognition',
+            aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+            aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
+        )
 
         self.max_labels = self.arg_value("max_labels")
 
@@ -44,13 +47,13 @@ class RekognitionLabelClassifier(AssetProcessor):
         """
         asset = frame.asset
         proxy_path = get_proxy_level_path(asset, 0)
+        self.analysis = LabelDetectionAnalysis(min_score=0.01)
         self.predict(proxy_path)
 
-        analysis = LabelDetectionAnalysis(min_score=0.01)
         for ls in self.label_and_score:
-            analysis.add_label_and_score(ls[0], ls[1])
+            self.analysis.add_label_and_score(ls[0], ls[1])
 
-        asset.add_analysis(self.app_model.module_name, analysis)
+        asset.add_analysis(self.app_model.module_name, self.analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -68,7 +71,10 @@ class RekognitionLabelClassifier(AssetProcessor):
 
         # get predictions
         img_json = {'Bytes': source_bytes}
-        response = self.client.detect_labels(Image=img_json, MaxLabels=self.max_labels)
+        response = self.client.detect_labels(
+            Image=img_json,
+            MaxLabels=self.analysis.max_predictions
+        )
 
         # get list of labels
         self.label_and_score = [(r['Name'], r['Confidence']) for r in response['Labels']]
