@@ -485,7 +485,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef(
-                            "zmlp_analysis.aws.RekognitionLabelDetectionProcessor",
+                            "zmlp_analysis.aws.RekognitionLabelDetection",
                             StandardContainers.ANALYSIS
                         )
                     )

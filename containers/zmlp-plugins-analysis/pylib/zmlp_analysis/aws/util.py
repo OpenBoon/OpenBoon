@@ -11,6 +11,7 @@ def get_zvi_rekognition_client():
     """
     return boto3.client(
         'rekognition',
-        aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
-        aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
+        region_name='us-east-2',
+        aws_access_key_id=os.environ['ZORROA_AWS_KEY'],
+        aws_secret_access_key=os.environ['ZORROA_AWS_SECRET']
     )
