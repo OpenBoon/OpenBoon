@@ -95,5 +95,14 @@ describe('<Fetch /> helpers', () => {
         }),
       ).toEqual('/<projectId>/jobs/<jobId>/tasks/<taskId>/errors/<errorId>')
     })
+
+    it('should strip the assetId', () => {
+      expect(
+        getPathname({
+          pathname:
+            '/a0952c03-cc04-461c-a367-9ffae8c4199a/visualizer/2SdbPKHfNc0CPKBRAyA_V3oM5Oenpt3B',
+        }),
+      ).toEqual('/<projectId>/visualizer/<assetId>')
+    })
   })
 })

@@ -15,7 +15,7 @@ import AssetNavigation from './Navigation'
 
 const AssetContent = () => {
   const {
-    query: { projectId, id: assetId, query },
+    query: { projectId, id: assetId, query = '' },
   } = useRouter()
 
   return (
