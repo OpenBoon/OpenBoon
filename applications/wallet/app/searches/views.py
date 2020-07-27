@@ -83,7 +83,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
         index = indexes[0]
         mappings = content[index]['mappings']
-        fields = self.field_utility.get_fields_from_mappings(mappings)
+        fields = self.field_utility.get_fields_from_mappings(mappings, request.client)
 
         return Response(status=status.HTTP_200_OK, data=fields)
 
