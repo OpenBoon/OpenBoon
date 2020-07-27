@@ -102,7 +102,7 @@ class PdfDocument(options: RenderRequest, inputStream: InputStream) : com.zorroa
     fun getCreationDate(documentInfo: DocumentInfo): String? {
         return try {
             convertDate(documentInfo.creationDate)
-        } catch (e: EmptyValueException) {
+        } catch (e: Exception) {
             null
         }
     }
