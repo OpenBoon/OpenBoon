@@ -4,7 +4,6 @@ import com.aspose.pdf.Document
 import com.aspose.pdf.DocumentInfo
 import com.aspose.pdf.devices.JpegDevice
 import com.aspose.pdf.devices.Resolution
-import com.aspose.pdf.exceptions.EmptyValueException
 import com.aspose.pdf.facades.PdfExtractor
 import com.aspose.pdf.facades.PdfFileInfo
 import java.io.ByteArrayInputStream
