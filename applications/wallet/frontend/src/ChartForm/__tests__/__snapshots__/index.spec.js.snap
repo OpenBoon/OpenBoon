@@ -343,7 +343,7 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
             aria-disabled={true}
             className="emotion-10"
             onClick={[Function]}
-            type="button"
+            type="submit"
           >
             Save Visualization
           </button>
@@ -697,7 +697,7 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
             aria-disabled={true}
             className="emotion-10"
             onClick={[Function]}
-            type="button"
+            type="submit"
           >
             Save Visualization
           </button>
@@ -1050,7 +1050,7 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
           <button
             className="emotion-10"
             onClick={[Function]}
-            type="button"
+            type="submit"
           >
             Save Visualization
           </button>
