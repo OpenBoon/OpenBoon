@@ -22,8 +22,7 @@ resource "kubernetes_deployment" "elasticsearch-hq" {
       }
       spec {
         node_selector = {
-          type      = "default"
-          namespace = var.namespace
+          type = "default"
         }
         container {
           name              = "elasticsearch-hq"
@@ -46,5 +45,27 @@ resource "kubernetes_deployment" "elasticsearch-hq" {
         }
       }
     }
+  }
+}
+
+resource "kubernetes_service" "elasticsearch-hq" {
+  metadata {
+    name      = "elasticsearch-hq"
+    namespace = var.namespace
+    labels = {
+      app = "elasticsearch-hq"
+    }
+  }
+  spec {
+    cluster_ip = "None"
+    port {
+      name     = "5000-to-500-tcp"
+      protocol = "TCP"
+      port     = 5000
+    }
+    selector = {
+      app = "elasticsearch-hq"
+    }
+    type = "ClusterIP"
   }
 }
