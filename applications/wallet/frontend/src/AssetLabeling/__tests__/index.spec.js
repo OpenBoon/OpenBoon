@@ -13,17 +13,16 @@ const ALT_MODEL_ID = models.results[1].id
 
 const noop = () => () => {}
 
-jest.mock('../Header', () => 'AssetLabelingHeader')
-
 describe('<AssetLabeling />', () => {
-  it('should render properly', () => {
+  it('should render properly with no selected asset', () => {
     const component = TestRenderer.create(<AssetLabeling />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should render with a selected asset', async () => {
-    require('swr').__setMockUseSWRResponse({ data: models })
+    require('swr').__setMockUseSWRResponse({ data: { ...models, ...asset } })
+
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID, id: ASSET_ID },
     })
@@ -126,6 +125,34 @@ describe('<AssetLabeling />', () => {
 
     act(() => {
       component.root.findByProps({ children: 'Cancel' }).props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Expand Section' })
+        .props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with no labels', () => {
+    require('swr').__setMockUseSWRResponse({
+      data: { ...models, metadata: { source: asset.metadata.source } },
+    })
+
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, id: ASSET_ID },
+    })
+
+    const component = TestRenderer.create(<AssetLabeling />)
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Expand Section' })
+        .props.onClick()
     })
 
     expect(component.toJSON()).toMatchSnapshot()

@@ -1,6 +1,7 @@
 import { useReducer } from 'react'
-import useSWR from 'swr'
 import PropTypes from 'prop-types'
+
+import modelShape from '../Model/shape'
 
 import { spacing } from '../Styles'
 
@@ -16,15 +17,12 @@ const INITIAL_STATE = {
   success: false,
   isLoading: false,
   errors: {},
+  reloadKey: 0,
 }
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const AssetLabelingAdd = ({ projectId, assetId }) => {
-  const {
-    data: { results: models },
-  } = useSWR(`/api/v1/projects/${projectId}/models/`)
-
+const AssetLabelingAdd = ({ projectId, assetId, models }) => {
   const [localModel, setLocalModel] = useLocalStorageState({
     key: 'AssetLabeling.Add.Model',
     initialValue: '',
@@ -34,10 +32,16 @@ const AssetLabelingAdd = ({ projectId, assetId }) => {
     initialValue: '',
   })
 
+  // Prevents user from saving non-existent moel where model/label
+  // are added to local storage and user switches projects
+  const modelExists = localModel
+    ? models.find(({ id }) => id === localModel)
+    : false
+
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL_STATE,
-    model: localModel || '',
-    label: localLabel || '',
+    model: modelExists ? localModel : '',
+    label: modelExists ? localLabel : '',
   })
 
   const options = models.map(({ name, id }) => ({ value: id, label: name }))
@@ -46,9 +50,10 @@ const AssetLabelingAdd = ({ projectId, assetId }) => {
     <div css={{ padding: spacing.normal }}>
       <Form style={{ width: '100%', padding: 0 }}>
         <Select
+          key={state.reloadKey}
           label="Model"
           options={options}
-          defaultValue={localModel}
+          defaultValue={state.model}
           onChange={({ value }) => {
             dispatch({ model: value })
           }}
@@ -61,7 +66,7 @@ const AssetLabelingAdd = ({ projectId, assetId }) => {
           variant={INPUT_VARIANTS.SECONDARY}
           label="Label"
           type="text"
-          value={state.label || localLabel}
+          value={state.label}
           onChange={({ target: { value } }) => dispatch({ label: value })}
           hasError={state.errors.label !== undefined}
           errorMessage={state.errors.label}
@@ -71,12 +76,21 @@ const AssetLabelingAdd = ({ projectId, assetId }) => {
         <div css={{ display: 'flex' }}>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
-            onClick={() => dispatch({ model: localModel, label: localLabel })}
+            onClick={() =>
+              dispatch({
+                model: localModel,
+                label: localLabel,
+                reloadKey: state.reloadKey + 1,
+              })
+            }
             style={{ flex: 1, margin: 0 }}
             isDisabled={
               !localModel ||
               !localLabel ||
-              (localLabel && localLabel === state.label)
+              (localModel &&
+                localLabel &&
+                localModel === state.model &&
+                localLabel === state.label)
             }
           >
             Cancel
@@ -113,6 +127,7 @@ const AssetLabelingAdd = ({ projectId, assetId }) => {
 AssetLabelingAdd.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
+  models: PropTypes.arrayOf(modelShape).isRequired,
 }
 
 export default AssetLabelingAdd

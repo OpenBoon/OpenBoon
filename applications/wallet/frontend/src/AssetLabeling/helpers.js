@@ -1,3 +1,5 @@
+import { mutate } from 'swr'
+
 import { fetcher } from '../Fetch/helpers'
 
 export const getSubmitText = ({ state }) => {
@@ -37,11 +39,14 @@ export const onSubmit = async ({
       }),
     })
 
+    mutate(`/api/v1/projects/${projectId}/assets/${assetId}/`)
+
     dispatch({
       success: true,
       isLoading: false,
       errors: {},
     })
+
     setLocalModel({ value: model })
     setLocalLabel({ value: label })
   } catch (response) {
