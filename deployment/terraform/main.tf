@@ -1,8 +1,8 @@
 ## Store state in GCS. ###################################################################
 terraform {
   backend "remote" {
-    hostname      = "app.terraform.io"
-    organization  = "zorroa"
+    hostname     = "app.terraform.io"
+    organization = "zorroa"
 
     workspaces {
       name = "zvi-prod"
@@ -114,8 +114,8 @@ resource "kubernetes_secret" "dockerhub" {
 }
 
 resource "google_storage_bucket_object" "task_env" {
-  bucket = google_storage_bucket.system.name
-  name = "environment/task_env.json"
+  bucket  = google_storage_bucket.system.name
+  name    = "environment/task_env.json"
   content = <<EOF
 {
   "CLARIFAI_KEY":  "${var.clarifai-key}"
@@ -189,14 +189,14 @@ module "archivist" {
 }
 
 module "auth-server" {
-  source                  = "./modules/auth-server"
-  sql-instance-name       = module.postgres.instance-name
-  sql-connection-name     = module.postgres.connection-name
-  image-pull-secret       = kubernetes_secret.dockerhub.metadata[0].name
-  inception-key-b64       = local.inception-key-b64
-  system-bucket           = google_storage_bucket.system.name
-  container-cluster-name  = module.gke-cluster.name
-  container-tag           = var.container-tag
+  source                 = "./modules/auth-server"
+  sql-instance-name      = module.postgres.instance-name
+  sql-connection-name    = module.postgres.connection-name
+  image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
+  inception-key-b64      = local.inception-key-b64
+  system-bucket          = google_storage_bucket.system.name
+  container-cluster-name = module.gke-cluster.name
+  container-tag          = var.container-tag
 }
 
 module "api-gateway" {
@@ -206,7 +206,7 @@ module "api-gateway" {
   auth_server_host       = module.auth-server.ip-address
   ml_bbq_host            = module.ml-bbq.ip-address
   domain                 = var.zmlp-domain
-  container-cluster-name =  module.gke-cluster.name
+  container-cluster-name = module.gke-cluster.name
   container-tag          = var.container-tag
 }
 
@@ -284,4 +284,8 @@ module "gcp-marketplace-integration" {
   pg_password              = module.wallet.pg_password
   enabled                  = var.deploy-marketplace-integration
   container-tag            = var.container-tag
+}
+
+module "elasticsearch-hq" {
+  source = "./modules/elasticsearch-hq"
 }
