@@ -2,7 +2,7 @@
 Classes and functions for building timelines.
 """
 import decimal
-
+import time
 
 class Clip:
     """
@@ -102,6 +102,25 @@ class Track:
             'clips': self.clips
         }
 
+    def for_webvtt(self):
+        count = 0
+
+        webvtt = "WEBVTT - {}\n\n".format(self.name)
+        for clip in self.clips:
+            start = clip["start"]
+            stop = clip["stop"]
+            content = clip['metadata']
+
+            if content:
+                start = time.strftime("%H:%M:%S.000", time.gmtime(float(start)))
+                stop = time.strftime("%H:%M:%S.000", time.gmtime(float(stop)))
+                
+                line = "{}\n{} --> {}\n{}\n\n".format(count, start, stop, content)
+                webvtt += line
+                count += 1
+
+        return webvtt
+
 
 class Timeline:
     """
@@ -172,7 +191,6 @@ class Timeline:
             'metadata': self.metadata,
             'tracks': [track for track in self.tracks if len(track.clips) > 0]
         }
-
 
 def truncate(number, places):
     """

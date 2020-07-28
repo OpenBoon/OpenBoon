@@ -69,3 +69,21 @@ class TimelineTests(unittest.TestCase):
         assert not clip1.intersects(1.0)
         assert clip1.intersects(5.54)
         assert not clip1.intersects(5.545)
+
+    def test_for_webvtt(self):
+        tl = Timeline('foo')
+        track = tl.add_track('foo1')
+        track.add_clip(1.0, 5.0, {'bing': 'bong'})
+        track.add_clip(0, 1.0, {'flim': 'flam'})
+        track.add_clip(5.0, 9.0, {'scooby': 'doo'})
+
+        webvtt = track.for_webvtt()
+        assert 'WEBVTT - foo1' in webvtt
+        assert '1' in webvtt
+        assert '2' in webvtt
+        assert '00:00:05.000 --> 00:00:09.000' in webvtt
+        assert '00:00:00.000 --> 00:00:01.000' in webvtt
+        assert '00:00:01.000 --> 00:00:05.000' in webvtt
+        assert "{'flim': 'flam'}" in webvtt
+        assert "{'bing': 'bong'}" in webvtt
+        assert "{'scooby': 'doo'}" in webvtt
