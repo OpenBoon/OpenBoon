@@ -42,7 +42,9 @@ export const onSubmit = async ({
       isLoading: false,
       errors: {},
     })
+
     setLocalModel({ value: model })
+
     setLocalLabel({ value: label })
   } catch (response) {
     try {

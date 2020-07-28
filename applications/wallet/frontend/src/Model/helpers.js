@@ -1,7 +1,7 @@
 import { mutate } from 'swr'
 import Router from 'next/router'
 
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, revalidate } from '../Fetch/helpers'
 
 export const onTrain = async ({ apply, projectId, modelId, setError }) => {
   try {
@@ -40,7 +40,10 @@ export const onDelete = ({
     method: 'DELETE',
   })
 
-  await mutate(`/api/v1/projects/${projectId}/models/`)
+  await revalidate({
+    key: `/api/v1/projects/${projectId}/models/`,
+    paginated: true,
+  })
 
   Router.push(
     '/[projectId]/models?action=delete-model-success',

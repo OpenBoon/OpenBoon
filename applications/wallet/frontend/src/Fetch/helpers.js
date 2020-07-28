@@ -59,3 +59,9 @@ export const getPathname = ({ pathname }) => {
       return `/${category}/<${camelCase(item)}Id>`
     })
 }
+
+export const revalidate = async ({ key, paginated, from = 0, size = 20 }) => {
+  const url = paginated ? `${key}?from=${from}&size=${size}` : key
+
+  return mutate(url, async () => fetcher(url))
+}
