@@ -12,10 +12,11 @@ RUN --mount=type=cache,target=/root/.cache/pip pip3 install -r requirements.txt
 RUN rm requirements.txt
 
 COPY pylib /zvi/pylib
+WORKDIR /models
 
-COPY resnet-152 /models/resnet-152
-COPY resnet-101 /models/resnet-101
+RUN curl https://storage.googleapis.com/zorroa-public/models/resnet.tar.gz | tar -xz
 
+WORKDIR /zvi
 USER zorroa
 
 

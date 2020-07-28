@@ -1,10 +1,13 @@
-FROM zmlp/plugins-models
+FROM zmlp/py3-base
 USER root
 
 RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
     libglib2.0-dev \
     libgomp1 \
      --no-install-recommends
+
+WORKDIR /models
+RUN curl https://storage.googleapis.com/zorroa-public/models/resnet.tar.gz | tar -xz
 
 RUN mkdir /service
 COPY . /service

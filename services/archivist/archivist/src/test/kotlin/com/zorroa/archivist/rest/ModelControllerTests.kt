@@ -176,7 +176,7 @@ class ModelControllerTests : MockMvcTest() {
     @Test
     fun testCreateAutomlSession() {
 
-        val modelSpec = ModelSpec("Dog Breeds", ModelType.GCP_LABEL_DETECTION)
+        val modelSpec = ModelSpec("Dog Breeds 2", ModelType.GCP_LABEL_DETECTION)
         val model = modelService.createModel(modelSpec)
 
         val automlSpec = AutomlSessionSpec(
