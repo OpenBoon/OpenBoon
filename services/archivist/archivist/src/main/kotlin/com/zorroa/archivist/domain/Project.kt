@@ -6,7 +6,6 @@ import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.JdbcUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
-import java.lang.IllegalArgumentException
 import java.math.BigDecimal
 import java.util.UUID
 import javax.persistence.Column
@@ -35,6 +34,7 @@ class ProjectSpec(
 enum class ProjectTier {
     @ApiModelProperty("Allows the use of Essentials Modules")
     ESSENTIALS,
+
     @ApiModelProperty("Allows the use of Premier Modules")
     PREMIER
 }
@@ -89,7 +89,11 @@ class Project(
 
     @Column(name = "int_tier")
     @ApiModelProperty("Project Tier")
-    val tier: ProjectTier
+    val tier: ProjectTier,
+
+    @Column(name = "pk_pipeline_default", nullable = true)
+    @ApiModelProperty("The default Pipeline for this project")
+    val defaultPipelineId: UUID? = null
 
 ) {
     override fun equals(other: Any?): Boolean {
@@ -107,16 +111,6 @@ class Project(
         return id.hashCode()
     }
 }
-
-@ApiModel("Project Settings", description = "The Project default settings.")
-class ProjectSettings(
-
-    @ApiModelProperty("The default Pipeline to use if no Pipeline is specified.")
-    var defaultPipelineId: UUID,
-
-    @ApiModelProperty("The default Index to use if no index is specified.")
-    var defaultIndexRouteId: UUID
-)
 
 @ApiModel("Project Filter", description = "Search filter for finding Projects")
 class ProjectFilter(

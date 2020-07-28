@@ -16,7 +16,6 @@ import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
-import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.repository.KPagedList
@@ -24,12 +23,10 @@ import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.archivist.repository.ProjectDao
 import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.repository.UUIDGen
-import com.zorroa.archivist.repository.throwWhenNotFound
 import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
-import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
@@ -40,7 +37,6 @@ import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
@@ -82,21 +78,6 @@ interface ProjectService {
      * old key.
      */
     fun getCryptoKey(): String
-
-    /**
-     * Get the project settings
-     */
-    fun getSettings(projectId: UUID): ProjectSettings
-
-    /**
-     * Get the current key's project settings
-     */
-    fun getSettings(): ProjectSettings
-
-    /**
-     * Get the project settings blob.
-     */
-    fun updateSettings(projectId: UUID, settings: ProjectSettings): Boolean
 
     /**
      * Get the the given projects quotas.
@@ -169,14 +150,11 @@ class ProjectServiceImpl constructor(
         )
         withAuth(InternalThreadAuthentication(project.id, setOf())) {
             val route = createIndexRoute(project)
+            projectCustomDao.updateIndexRoute(project.id, route)
+
             val pipeline = createDefaultPipeline(project)
-            projectCustomDao.createSettings(
-                project.id,
-                ProjectSettings(
-                    pipeline.id,
-                    route.id
-                )
-            )
+            projectCustomDao.updateDefaultPipeline(project.id, pipeline)
+
             projectStatsDao.createQuotasEntry(project.id)
             projectStatsDao.createIngestTimeSeriesEntries(project.id)
         }
@@ -235,45 +213,11 @@ class ProjectServiceImpl constructor(
     override fun findOne(filter: ProjectFilter): Project = projectCustomDao.findOne(filter)
 
     @Transactional(readOnly = true)
-    override fun getSettings(): ProjectSettings = projectCustomDao.getSettings(getProjectId())
-
-    @Transactional(readOnly = true)
-    override fun getSettings(projectId: UUID): ProjectSettings = projectCustomDao.getSettings(get(projectId).id)
-
-    @Transactional(readOnly = true)
     override fun getQuotas(projectId: UUID): ProjectQuotas = projectStatsDao.getQuotas(get(projectId).id)
 
     @Transactional(readOnly = true)
     override fun getQuotasTimeSeries(projectId: UUID, start: Date, end: Date): List<ProjectQuotasTimeSeriesEntry> =
         projectStatsDao.getTimeSeriesCounters(projectId, start, end)
-
-    override fun updateSettings(projectId: UUID, settings: ProjectSettings): Boolean {
-        val project = get(projectId)
-
-        if (!hasPermission(listOf(Permission.ProjectManage))) {
-            throw DataRetrievalFailureException("Unable to find project: $projectId")
-        }
-
-        /**
-         * Validate these IDs exist and are within the same project.
-         */
-        throwWhenNotFound("Unable to find Pipeline ID ${settings.defaultPipelineId}") {
-            pipelineService.get(settings.defaultPipelineId)
-        }
-        throwWhenNotFound("Unable to find Index ID ${settings.defaultIndexRouteId}") {
-            indexRoutingService.getIndexRoute(settings.defaultIndexRouteId)
-        }
-
-        logger.event(
-            LogObject.PROJECT, LogAction.UPDATE,
-            mapOf(
-                "projectId" to project.id,
-                "projectName" to project.name
-            )
-        )
-
-        return projectCustomDao.updateSettings(project.id, settings)
-    }
 
     override fun incrementQuotaCounters(counters: ProjectQuotaCounters) {
         projectStatsDao.incrementQuotas(counters)
