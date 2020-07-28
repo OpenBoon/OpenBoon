@@ -690,16 +690,6 @@ Array [
   padding: 16px;
 }
 
-.emotion-25 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-25 .Loading {
-  background-color: transparent;
-  box-shadow: none;
-}
-
 .emotion-24 {
   padding: 16px;
 }
@@ -2596,16 +2586,6 @@ Array [
   padding: 16px;
 }
 
-.emotion-71 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-71 .Loading {
-  background-color: transparent;
-  box-shadow: none;
-}
-
 .emotion-10 {
   height: 12px;
 }
@@ -3879,16 +3859,6 @@ Array [
 
 .emotion-655 {
   padding: 16px;
-}
-
-.emotion-655 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-655 .Loading {
-  background-color: transparent;
-  box-shadow: none;
 }
 
 .emotion-14 {
@@ -8553,16 +8523,6 @@ Array [
   padding: 16px;
 }
 
-.emotion-22 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-22 .Loading {
-  background-color: transparent;
-  box-shadow: none;
-}
-
 .emotion-21 {
   padding: 16px;
 }
@@ -9566,16 +9526,6 @@ Array [
 
 .emotion-19 {
   padding: 16px;
-}
-
-.emotion-19 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-19 .Loading {
-  background-color: transparent;
-  box-shadow: none;
 }
 
 .emotion-18 {

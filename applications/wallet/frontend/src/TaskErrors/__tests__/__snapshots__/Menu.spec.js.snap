@@ -39,7 +39,6 @@ exports[`<TaskErrorsMenu /> should render properly 1`] = `
   color: #191919;
   padding: 6px;
   margin: -6px;
-  border-radius: 32px;
 }
 
 .emotion-0:hover {
@@ -51,9 +50,9 @@ exports[`<TaskErrorsMenu /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   color: #ffffff !important;
-  background-color: #808080;
 }
 
 .emotion-2 {
@@ -142,13 +141,13 @@ exports[`<TaskErrorsMenu /> should render properly 1`] = `
 >
   <button
     aria-label="Toggle Actions Menu"
-    className="gear emotion-0"
+    className="actions emotion-0"
     onBlur={[Function]}
     onClick={[Function]}
     type="button"
   >
     <svg
-      data-file-name="gear.svg"
+      data-file-name="kebab.svg"
       height={20}
     />
   </button>

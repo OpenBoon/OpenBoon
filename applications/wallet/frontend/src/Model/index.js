@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 
 import Breadcrumbs from '../Breadcrumbs'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
-import Tabs from '../Tabs'
 import ModelLabels from '../ModelLabels'
 
 import ModelDetails from './Details'
@@ -26,12 +25,6 @@ const Model = () => {
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
         <ModelDetails key={pathname} />
-
-        <Tabs
-          tabs={[
-            { title: 'View Labels', href: '/[projectId]/models/[modelId]' },
-          ]}
-        />
 
         <ModelLabels />
       </SuspenseBoundary>

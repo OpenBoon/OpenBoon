@@ -6,7 +6,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import Pagination from '../Pagination'
 
-import GearSvg from '../Icons/gear.svg'
+import KebabSvg from '../Icons/kebab.svg'
 import TableException from './Exception'
 import TableRefresh from './Refresh'
 
@@ -86,7 +86,7 @@ const TableContent = ({
                 ':hover': {
                   backgroundColor: colors.structure.iron,
                   boxShadow: constants.boxShadows.tableRow,
-                  '.gear': {
+                  '.actions': {
                     color: colors.structure.zinc,
                   },
                   td: {
@@ -137,6 +137,8 @@ const TableContent = ({
                       backgroundColor: colors.structure.iron,
                       padding: `${spacing.moderate}px ${spacing.normal}px`,
                       borderBottom: constants.borders.regular.mattGrey,
+                      // hack to resize the Actions column to its smallest possible width
+                      width: column === '#Actions#' ? 1 : 'auto',
                       [`:nth-of-type(${expandColumn})`]: { width: '100%' },
                       '&:not(:last-child)': {
                         borderRight: constants.borders.regular.mattGrey,
@@ -145,7 +147,7 @@ const TableContent = ({
                   >
                     {column === '#Actions#' ? (
                       <div css={{ display: 'flex' }}>
-                        <GearSvg height={constants.icons.regular} />
+                        <KebabSvg height={constants.icons.regular} />
                       </div>
                     ) : (
                       column

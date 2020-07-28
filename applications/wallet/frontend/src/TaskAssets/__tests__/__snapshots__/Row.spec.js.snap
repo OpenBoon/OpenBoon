@@ -310,17 +310,6 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   overflow: auto;
 }
 
-.emotion-13 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-13 .Loading {
-  background-color: transparent;
-  height: 100%;
-  box-shadow: none;
-}
-
 .emotion-12 {
   background-color: #191919;
 }

@@ -209,6 +209,7 @@ Array [
   background-color: #4a4a4a;
   padding: 12px 16px;
   border-bottom: 1px solid #2e2e2e;
+  width: auto;
 }
 
 .emotion-2:nth-of-type(0) {
@@ -216,6 +217,26 @@ Array [
 }
 
 .emotion-2:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-9 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-9:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-9:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
@@ -247,7 +268,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-25 tr:hover .gear {
+.emotion-25 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -336,7 +357,6 @@ Array [
   color: #191919;
   padding: 6px;
   margin: -6px;
-  border-radius: 32px;
 }
 
 .emotion-11:hover {
@@ -348,9 +368,9 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-11:hover {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   color: #ffffff !important;
-  background-color: #808080;
 }
 
 .emotion-22 {
@@ -422,13 +442,13 @@ Array [
                 File Types
               </th>
               <th
-                className="emotion-2"
+                className="emotion-9"
               >
                 <div
                   className="emotion-8"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </div>
@@ -465,13 +485,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -507,13 +527,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -549,13 +569,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -591,13 +611,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -633,13 +653,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -886,6 +906,7 @@ Array [
   background-color: #4a4a4a;
   padding: 12px 16px;
   border-bottom: 1px solid #2e2e2e;
+  width: auto;
 }
 
 .emotion-2:nth-of-type(0) {
@@ -893,6 +914,26 @@ Array [
 }
 
 .emotion-2:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-9 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-9:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-9:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
@@ -924,7 +965,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-25 tr:hover .gear {
+.emotion-25 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -1013,7 +1054,6 @@ Array [
   color: #191919;
   padding: 6px;
   margin: -6px;
-  border-radius: 32px;
 }
 
 .emotion-11:hover {
@@ -1025,9 +1065,9 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-11:hover {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   color: #ffffff !important;
-  background-color: #808080;
 }
 
 .emotion-22 {
@@ -1099,13 +1139,13 @@ Array [
                 File Types
               </th>
               <th
-                className="emotion-2"
+                className="emotion-9"
               >
                 <div
                   className="emotion-8"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </div>
@@ -1142,13 +1182,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1184,13 +1224,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1226,13 +1266,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1268,13 +1308,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1310,13 +1350,13 @@ Array [
                 >
                   <button
                     aria-label="Toggle Actions Menu"
-                    className="gear emotion-11"
+                    className="actions emotion-11"
                     onBlur={[Function]}
                     onClick={[Function]}
                     type="button"
                   >
                     <svg
-                      data-file-name="gear.svg"
+                      data-file-name="kebab.svg"
                       height={20}
                     />
                   </button>
@@ -1526,7 +1566,7 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-12 tr:hover .gear {
+.emotion-12 tr:hover .actions {
   color: #b3b3b3;
 }
 
@@ -1574,6 +1614,7 @@ Array [
   background-color: #4a4a4a;
   padding: 12px 16px;
   border-bottom: 1px solid #2e2e2e;
+  width: auto;
 }
 
 .emotion-2:nth-of-type(0) {
@@ -1581,6 +1622,26 @@ Array [
 }
 
 .emotion-2:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-9 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-9:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-9:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
@@ -1675,13 +1736,13 @@ Array [
                 File Types
               </th>
               <th
-                className="emotion-2"
+                className="emotion-9"
               >
                 <div
                   className="emotion-8"
                 >
                   <svg
-                    data-file-name="gear.svg"
+                    data-file-name="kebab.svg"
                     height={20}
                   />
                 </div>
