@@ -5,9 +5,11 @@ import com.zorroa.auth.server.MockMvcTest
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
 import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -131,11 +133,13 @@ class ApiKeyControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(jsonPath("$.name", CoreMatchers.equalTo("standard-key")))
+            .andExpect(jsonPath("$.secretKey").doesNotExist())
             .andExpect(
                 jsonPath(
                     "$.permissions[0]",
                     CoreMatchers.containsString("AssetsRead")
                 )
+
             )
             .andReturn()
     }

@@ -3,6 +3,7 @@ package com.zorroa.auth.server.domain
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.zorroa.auth.server.repository.AbstractJpaFilter
 import com.zorroa.auth.server.repository.EncryptedConverter
 import com.zorroa.auth.server.security.getProjectId
@@ -65,6 +66,7 @@ class ApiKey(
     @Column(name = "secret_key", nullable = false)
     @ApiModelProperty("A secret key used to sign API requests.")
     @Convert(converter = EncryptedConverter::class)
+    @JsonIgnore
     val secretKey: String,
 
     @Column(name = "name", nullable = false)
