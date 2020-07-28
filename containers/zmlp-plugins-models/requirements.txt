@@ -1,5 +1,5 @@
 opencv-python-headless
 opencv-contrib-python-headless
 cvlib
-tensorflow==2.2.0
+tensorflow==2.3.0
 google-cloud-automl
