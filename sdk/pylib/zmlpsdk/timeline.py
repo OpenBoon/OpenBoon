@@ -192,6 +192,7 @@ class Timeline:
             'tracks': [track for track in self.tracks if len(track.clips) > 0]
         }
 
+
 def truncate(number, places):
     """
     Truncate a float to the given number of places.
