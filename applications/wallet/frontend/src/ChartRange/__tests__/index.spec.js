@@ -140,6 +140,8 @@ describe('<ChartRange />', () => {
   })
 
   it('should edit', () => {
+    require('swr').__setMockUseSWRResponse({ data: aggregate })
+
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer/data-visualization',
       query: { projectId: PROJECT_ID },
