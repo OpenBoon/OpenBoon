@@ -331,14 +331,15 @@ class LabelConfidenceQuery(object):
         ]
     """
 
-    def __init__(self, namespace, labels, min_score, max_score=1.0):
+    def __init__(self, namespace, labels, min_score=0.1, max_score=1.0):
         """
         Create a new LabelConfidenceScoreQuery.
 
         Args:
             namespace (str): The analysis namespace with predictions. (zvi-label-detection)
             labels (list): A list of labels to filter.
-            min_score (float): The minimum label score.
+            min_score (float): The minimum label score, default to 0.1.
+            Note that 0.0 allows everything.
             max_score (float): The maximum score, defaults to 1.0 which is highest
         """
         self.namespace = namespace

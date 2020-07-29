@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
-import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTierUpdate
 import com.zorroa.archivist.repository.KPagedList
@@ -71,21 +70,6 @@ class ProjectController constructor(
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
-    @GetMapping(value = ["/api/v1/projects/{id}/_settings"])
-    @ApiOperation("Get the project Settings")
-    fun getSettings(@PathVariable id: UUID): ProjectSettings {
-        return projectService.getSettings(id)
-    }
-
-    @PreAuthorize("hasAuthority('SystemManage')")
-    @PutMapping(value = ["/api/v1/projects/{id}/_settings"])
-    @ApiOperation("Get the project Settings")
-    fun putSettings(@PathVariable id: UUID, @RequestBody(required = true) settings: ProjectSettings): ProjectSettings {
-        projectService.updateSettings(id, settings)
-        return projectService.getSettings(id)
-    }
-
-    @PreAuthorize("hasAuthority('SystemManage')")
     @PutMapping(value = ["/api/v1/projects/{id}/_enable"])
     @ApiOperation("Set an disabled project to enabled.")
     fun putEnabled(@PathVariable id: UUID): Any {
@@ -141,23 +125,6 @@ class ProjectController constructor(
             Date(stop ?: System.currentTimeMillis())
         )
     }
-
-    @PreAuthorize("hasAuthority('ProjectManage')")
-    @GetMapping(value = ["/api/v1/project/_settings"])
-    @ApiOperation("Retrieve my current project.")
-    fun getMyProjectSettings(): ProjectSettings {
-        return projectService.getSettings(getProjectId())
-    }
-
-    @PreAuthorize("hasAuthority('ProjectManage')")
-    @PutMapping(value = ["/api/v1/project/_settings"])
-    @ApiOperation("Get the project Settings")
-    fun putMyProjectSettings(@RequestBody(required = true) settings: ProjectSettings):
-        ProjectSettings {
-            val id = getProjectId()
-            projectService.updateSettings(id, settings)
-            return projectService.getSettings(id)
-        }
 
     @PreAuthorize("hasAuthority('ProjectManage')")
     @PutMapping(value = ["/api/v1/project/_rename"])

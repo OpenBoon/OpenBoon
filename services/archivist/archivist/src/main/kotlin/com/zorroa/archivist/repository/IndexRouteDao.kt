@@ -215,9 +215,9 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             "JOIN " +
             "index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster) " +
             "JOIN " +
-            "project_settings ON (index_route.pk_index_route = project_settings.pk_index_route_default) " +
+            "project ON (index_route.pk_index_route = project.pk_index_route) " +
             "AND " +
-            "project_settings.pk_project=?"
+            "project.pk_project=?"
 
         const val COUNT = "SELECT COUNT(1) " +
             "FROM " +

@@ -86,10 +86,13 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
                 override fun execute(explanationHolder: ExplanationHolder?): Double {
 
                     val strings: ScriptDocValues.Strings
-
-                    if (doc[field]?.size ?: 0 > 0) {
-                        strings = doc[field] as ScriptDocValues.Strings
-                    } else {
+                    try {
+                        if (doc[field]?.size ?: 0 > 0) {
+                            strings = doc[field] as ScriptDocValues.Strings
+                        } else {
+                            return noScore
+                        }
+                    } catch (e: Exception) {
                         return noScore
                     }
 
