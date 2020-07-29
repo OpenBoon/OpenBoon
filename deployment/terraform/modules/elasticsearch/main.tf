@@ -3,7 +3,7 @@ resource "google_storage_bucket" "elasticsearch" {
   lifecycle {
     prevent_destroy = true
   }
-  name = "${var.project}-es-backups"
+  name          = "${var.project}-es-backups"
   storage_class = "MULTI_REGIONAL"
   location      = var.country
   retention_policy {
@@ -12,8 +12,8 @@ resource "google_storage_bucket" "elasticsearch" {
 }
 
 resource "google_service_account" "elasticsearch" {
-  project = var.project
-  account_id = "elasticsearch"
+  project      = var.project
+  account_id   = "elasticsearch"
   display_name = "Elasticsearch"
 }
 
@@ -50,7 +50,7 @@ resource "google_container_node_pool" "elasticsearch" {
     auto_upgrade = true
   }
   node_config {
-    machine_type = "custom-2-8192"
+    machine_type = "custom-4-8192"
     oauth_scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -93,7 +93,7 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
   provider = kubernetes
   lifecycle {
     prevent_destroy = true
-    ignore_changes = [spec[0].replicas]
+    ignore_changes  = [spec[0].replicas]
   }
   metadata {
     name      = "elasticsearch-master"
@@ -253,7 +253,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
   provider = kubernetes
   lifecycle {
     prevent_destroy = true
-    ignore_changes = [spec[0].replicas]
+    ignore_changes  = [spec[0].replicas]
   }
   metadata {
     name      = "elasticsearch-data"
@@ -383,6 +383,10 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
             name  = "cluster.remote.connect"
             value = "true"
           }
+          env {
+            name  = "ES_JAVA_OPTS"
+            value = "-Xms3500m -Xmx3500m t"
+          }
           volume_mount {
             name       = "elasticsearch-data"
             mount_path = "/usr/share/elasticsearch/data"
@@ -395,9 +399,11 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
           resources {
             requests {
               memory = "4Gi"
+              cpu    = 2
             }
             limits {
               memory = "7Gi"
+              cpu    = 3.5
             }
           }
         }
