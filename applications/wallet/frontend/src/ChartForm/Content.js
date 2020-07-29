@@ -104,6 +104,7 @@ const ChartFormContent = ({
         <div css={{ width: spacing.base }} />
 
         <Button
+          type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
           isDisabled={!attribute}
           onClick={() => {

@@ -7,7 +7,14 @@ import { colors, constants, spacing, typography } from '../Styles'
 const WIDTH = 300
 const HEIGHT = 40
 
-const Select = ({ label, options, onChange, isRequired, style }) => {
+const Select = ({
+  label,
+  options,
+  defaultValue,
+  onChange,
+  isRequired,
+  style,
+}) => {
   return (
     <>
       <label css={{ color: colors.structure.zinc }}>
@@ -17,7 +24,7 @@ const Select = ({ label, options, onChange, isRequired, style }) => {
         )}
         <div css={{ paddingTop: spacing.base, paddingBottom: spacing.base }}>
           <select
-            defaultValue=""
+            defaultValue={defaultValue}
             onChange={({ target: { value } }) => onChange({ value })}
             css={{
               backgroundColor: colors.structure.steel,
@@ -54,6 +61,7 @@ const Select = ({ label, options, onChange, isRequired, style }) => {
 }
 
 Select.defaultProps = {
+  defaultValue: '',
   style: {},
 }
 
@@ -65,6 +73,7 @@ Select.propTypes = {
       label: PropTypes.string,
     }),
   ).isRequired,
+  defaultValue: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   isRequired: PropTypes.bool.isRequired,
   style: stylesShape,

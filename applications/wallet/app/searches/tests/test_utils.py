@@ -1,6 +1,6 @@
 import pytest
 
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from rest_framework.exceptions import ParseError
 
 from wallet.exceptions import InvalidRequestError
@@ -52,73 +52,104 @@ class TestFieldUtility:
         return {
             'mappings': {
                 'properties': {
-                    'analysis': {'dynamic': 'true',
-                                 'properties': {
-                                     'zvi-image-similarity': {
-                                         'properties': {
-                                             'simhash': {
-                                                 'type': 'keyword',
-                                                 'index': False},
-                                             'type': {
-                                                 'type': 'text',
-                                                 'fields': {
-                                                     'keyword': {
-                                                         'type': 'keyword',
-                                                         'ignore_above': 256}}}}},
-                                     'zvi-label-detection': {
-                                         'properties': {
-                                             'count': {
-                                                 'type': 'long'},
-                                             'predictions': {
-                                                 'properties': {
-                                                     'label': {
-                                                         'type': 'keyword',
-                                                         'fields': {
-                                                             'fulltext': {
-                                                                 'type': 'text'}}},
-                                                     'score': {
-                                                         'type': 'float',
-                                                         'coerce': True}}},
-                                             'type': {
-                                                 'type': 'text',
-                                                 'fields': {
-                                                     'keyword': {
-                                                         'type': 'keyword',
-                                                         'ignore_above': 256}}}}},
-                                     'zvi-object-detection': {
-                                         'properties': {
-                                             'count': {
-                                                 'type': 'long'},
-                                             'predictions': {
-                                                 'properties': {
-                                                     'bbox': {
-                                                         'type': 'float'},
-                                                     'label': {
-                                                         'type': 'keyword',
-                                                         'fields': {
-                                                             'fulltext': {
-                                                                 'type': 'text'}}},
-                                                     'score': {
-                                                         'type': 'float',
-                                                         'coerce': True}}},
-                                             'type': {
-                                                 'type': 'text',
-                                                 'fields': {
-                                                     'keyword': {
-                                                         'type': 'keyword',
-                                                         'ignore_above': 256}}}}},
-                                     'zvi-text-detection': {
-                                         'properties': {
-                                             'content': {
-                                                 'type': 'text'},
-                                             'type': {
-                                                 'type': 'text',
-                                                 'fields': {
-                                                     'keyword': {
-                                                         'type': 'keyword',
-                                                         'ignore_above': 256}}},
-                                             'words': {
-                                                 'type': 'long'}}}}},
+                    'analysis': {
+                        'dynamic': 'true',
+                        'properties': {
+                            'zvi-image-similarity': {
+                                'properties': {
+                                    'simhash': {
+                                        'type': 'keyword',
+                                        'index': False},
+                                    'type': {
+                                        'type': 'text',
+                                        'fields': {
+                                            'keyword': {
+                                                'type': 'keyword',
+                                                'ignore_above': 256}}}}},
+                            'zvi-label-detection': {
+                                'properties': {
+                                    'count': {
+                                        'type': 'long'},
+                                    'predictions': {
+                                        'properties': {
+                                            'label': {
+                                                'type': 'keyword',
+                                                'fields': {
+                                                    'fulltext': {
+                                                        'type': 'text'}}},
+                                            'score': {
+                                                'type': 'float',
+                                                'coerce': True}}},
+                                    'type': {
+                                        'type': 'text',
+                                        'fields': {
+                                            'keyword': {
+                                                'type': 'keyword',
+                                                'ignore_above': 256}}}}},
+                            'zvi-object-detection': {
+                                'properties': {
+                                    'count': {
+                                        'type': 'long'},
+                                    'predictions': {
+                                        'properties': {
+                                            'bbox': {
+                                                'type': 'float'},
+                                            'label': {
+                                                'type': 'keyword',
+                                                'fields': {
+                                                    'fulltext': {
+                                                        'type': 'text'}}},
+                                            'score': {
+                                                'type': 'float',
+                                                'coerce': True}}},
+                                    'type': {
+                                        'type': 'text',
+                                        'fields': {
+                                            'keyword': {
+                                                'type': 'keyword',
+                                                'ignore_above': 256}}}}},
+                            'zvi-text-detection': {
+                                'properties': {
+                                    'content': {
+                                        'type': 'text'},
+                                    'type': {
+                                        'type': 'text',
+                                        'fields': {
+                                            'keyword': {
+                                                'type': 'keyword',
+                                                'ignore_above': 256}}},
+                                    'words': {
+                                        'type': 'long'}}}}},
+                    "labels": {
+                        "type": "nested",
+                        "dynamic": "strict",
+                        "properties": {
+                            "bbox": {
+                                "type": "float"
+                            },
+                            "dataSetId": {
+                                "type": "keyword"
+                            },
+                            "label": {
+                                "type": "keyword",
+                                "fields": {
+                                    "fulltext": {
+                                        "type": "text"
+                                    }
+                                }
+                            },
+                            "modelId": {
+                                "type": "keyword"
+                            },
+                            "scope": {
+                                "type": "keyword"
+                            },
+                            "simhash": {
+                                "type": "keyword",
+                                "index": False
+                            }
+                        }
+                    },
                 }},
         }
 
@@ -126,6 +157,22 @@ class TestFieldUtility:
         properties = analysis_mappings['mappings']['properties']
         result = self.field_service.get_fields_from_mappings(properties['analysis'])
         assert result['zvi-label-detection'] == ['labelConfidence']
+
+    @patch.object(FieldUtility, '_get_all_model_names', return_value=['console', 'testing'])
+    def test_labels(self, model_mock, analysis_mappings):
+        client = Mock()
+        result = self.field_service.get_fields_from_mappings(analysis_mappings['mappings'], client)
+        assert result['labels'] == {'console': ['label'], 'testing': ['label']}
+
+    @patch.object(FieldUtility, '_get_all_model_names', return_value=['console', 'testing'])
+    def test_labels_no_client(self, model_mock, analysis_mappings):
+        result = self.field_service.get_fields_from_mappings(analysis_mappings['mappings'])
+        assert result['labels'] == {}
+
+    def test_get_all_moddel_names_no_models(self):
+        client = Mock(post=Mock(return_value={'list': []}))
+        result = self.field_service._get_all_model_names(client)
+        assert result == []
 
 
 class TestFilterBoy:

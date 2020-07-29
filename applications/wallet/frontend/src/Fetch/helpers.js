@@ -53,6 +53,7 @@ export const getPathname = ({ pathname }) => {
   return pathname
     .replace(/\?(.*)/, '')
     .replace(/^\/[a-z0-9-]{36}/, '/<projectId>')
+    .replace(/\/[a-zA-Z0-9-_]{32}$/, '/<assetId>')
     .replace(/\/([a-z-]*)\/[a-z0-9-]{36}/g, (_, category) => {
       const item = category.replace(/s$/, '')
       return `/${category}/<${camelCase(item)}Id>`

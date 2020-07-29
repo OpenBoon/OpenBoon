@@ -480,6 +480,14 @@ exports[`<Login /> should render error 1`] = `
           role="alert"
         >
           Something went wrong
+          <br />
+          <a
+            href="mailto:support@zorroa.com?subject=ZVI Console Login Trouble"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Contact Support
+          </a>
         </div>
       </div>
     </div>
