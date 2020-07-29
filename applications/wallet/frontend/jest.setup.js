@@ -5,6 +5,7 @@ require('jest-fetch-mock').enableMocks()
 
 beforeEach(() => {
   fetch.resetMocks()
+  require('swr').__setMockUseSWRResponse({ data: {} })
 })
 
 /**

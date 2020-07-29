@@ -54,7 +54,9 @@ const LoginWithGoogle = ({ googleAuth, hasGoogleLoaded, onSubmit }) => {
 
             const { id_token: idToken } = googleUser.getAuthResponse()
 
-            onSubmit({ idToken })
+            await onSubmit({ idToken })
+
+            setIsLoading(false)
           } catch (error) {
             setIsLoading(false)
           }
