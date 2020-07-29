@@ -270,7 +270,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
       type = "RollingUpdate"
     }
     service_name = "elasticsearch"
-    replicas     = 2
+    replicas     = 3
     selector {
       match_labels = {
         app = "elasticsearch"
@@ -382,7 +382,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
           }
           env {
             name  = "ES_JAVA_OPTS"
-            value = "-Xms3500m -Xmx3500m"
+            value = "-Xms8g -Xmx8g"
           }
           volume_mount {
             name       = "elasticsearch-data"
@@ -395,11 +395,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
           }
           resources {
             requests {
-              memory = "4Gi"
-              cpu    = 2
-            }
-            limits {
-              memory = "7Gi"
+              memory = "15Gi"
               cpu    = 3.7
             }
           }
