@@ -76,12 +76,11 @@ class DataSourceDaoTests : AbstractTest() {
         dataSourceService.create(spec2)
         dataSourceService.create(spec3)
 
-        val filter = DataSourceFilter(names = listOf("test1","test2","test3"))
+        val filter = DataSourceFilter(names = listOf("test1", "test2", "test3"))
         val all = dataSourceJdbcDao.find(filter)
         assertEquals(3, all.size())
         assertEquals(spec3.name, all[0].name)
         assertEquals(spec2.name, all[1].name)
         assertEquals(spec1.name, all[2].name)
-
     }
 }

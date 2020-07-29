@@ -35,9 +35,8 @@ class ModelDaoTests : AbstractTest() {
         assertFalse(trained)
     }
 
-
     @Test
-    fun testFindOrderDesc(){
+    fun testFindOrderDesc() {
         val model1 = modelService.createModel(ModelSpec("test1", ModelType.ZVI_LABEL_DETECTION))
         Thread.sleep(100)
         val model2 = modelService.createModel(ModelSpec("test2", ModelType.ZVI_LABEL_DETECTION))
