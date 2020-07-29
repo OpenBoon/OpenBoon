@@ -83,7 +83,6 @@ class DataSourceJdbcDaoImpl : AbstractDao(), DataSourceJdbcDao {
     }
 
     override fun find(filter: DataSourceFilter): KPagedList<DataSource> {
-        filter.sort = filter.sort ?: listOf("timeCreated:desc")
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))

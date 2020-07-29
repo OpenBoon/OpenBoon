@@ -66,7 +66,6 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
     }
 
     override fun find(filter: ModelFilter): KPagedList<Model> {
-        filter.sort = filter.sort ?: listOf("timeCreated:desc")
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
