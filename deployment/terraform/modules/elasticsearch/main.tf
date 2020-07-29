@@ -50,7 +50,7 @@ resource "google_container_node_pool" "elasticsearch" {
     auto_upgrade = true
   }
   node_config {
-    machine_type = "custom-4-8192"
+    machine_type = "custom-4-16384"
     oauth_scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -66,6 +66,7 @@ resource "google_container_node_pool" "elasticsearch" {
       type      = "elasticsearch"
       namespace = var.namespace
     }
+    disk_type = "pd-ssd"
   }
   lifecycle {
     ignore_changes = [
@@ -348,10 +349,6 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
           image             = "zmlp/elasticsearch:${var.container-tag}"
           image_pull_policy = "Always"
           env {
-            name  = "ES_JAVA_OPTS"
-            value = "-Xms5g -Xmx5g"
-          }
-          env {
             name  = "cluster.name"
             value = "elasticsearch-cluster"
           }
@@ -385,7 +382,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
           }
           env {
             name  = "ES_JAVA_OPTS"
-            value = "-Xms3500m -Xmx3500m t"
+            value = "-Xms3500m -Xmx3500m"
           }
           volume_mount {
             name       = "elasticsearch-data"
@@ -403,7 +400,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
             }
             limits {
               memory = "7Gi"
-              cpu    = 3.5
+              cpu    = 3.7
             }
           }
         }
