@@ -102,24 +102,24 @@ class Track:
             'clips': self.clips
         }
 
-    def for_webvtt(self):
+    def for_webvtt(self, src_path=None):
         count = 0
-
-        webvtt = "WEBVTT - {}\n\n".format(self.name)
+        
+        webvtt = ["WEBVTT - {}\n\n".format(self.name)]
         for clip in self.clips:
-            start = clip["start"]
-            stop = clip["stop"]
-            content = clip['metadata']
+            start = clip.start
+            stop = clip.stop
+            content = clip.metadata
 
             if content:
                 start = time.strftime("%H:%M:%S.000", time.gmtime(float(start)))
                 stop = time.strftime("%H:%M:%S.000", time.gmtime(float(stop)))
                 
-                line = "{}\n{} --> {}\n{}\n\n".format(count, start, stop, content)
-                webvtt += line
+                webvtt.append("{}\n{} --> {}\n{}\n\n".format(count, start, stop, content))
+
                 count += 1
 
-        return webvtt
+        return "".join(webvtt)
 
 
 class Timeline:
