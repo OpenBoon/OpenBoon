@@ -22,9 +22,11 @@ class ProjectSpec(
     @ApiModelProperty("A unique name of the project.")
     val name: String,
 
+    @ApiModelProperty("The project tier unlocks extra capabilities.")
+    val tier: ProjectTier = ProjectTier.ESSENTIALS,
+
     @ApiModelProperty("The projected size of a project.")
     val size: ProjectSize = ProjectSize.SMALL,
-
     /**
      * Allow unittests to specify a project Id. Not allowed
      * for REST clients.
@@ -39,7 +41,7 @@ enum class ProjectSize(val shards: Int, val replicas: Int) {
     SMALL(2, 1),
     MEDIUM(3, 1),
     LARGE(5, 1),
-    XLARGE(7, 1)
+    XLARGE(7, 2)
 }
 
 @ApiModel("Project Tier", description = "Specifies in which tier is the Project in.")

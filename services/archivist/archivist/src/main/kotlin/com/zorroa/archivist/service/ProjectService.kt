@@ -146,7 +146,7 @@ class ProjectServiceImpl constructor(
                 actor.toString(),
                 actor.toString(),
                 true,
-                ProjectTier.ESSENTIALS
+                spec.tier
             )
         )
         withAuth(InternalThreadAuthentication(project.id, setOf())) {
@@ -266,16 +266,16 @@ class ProjectServiceImpl constructor(
         )
     }
 
-    override fun setEnabled(id: UUID, enabled: Boolean) {
-        val project = projectDao.findById(id).orElseThrow {
+    override fun setEnabled(projectId: UUID, value: Boolean) {
+        val project = projectDao.findById(projectId).orElseThrow {
             EmptyResultDataAccessException("Project not found", 1)
         }
 
-        projectCustomDao.setEnabled(project.id, enabled)
-        authServerClient.updateApiKeyEnabledByProject(project.id, enabled)
+        projectCustomDao.setEnabled(project.id, value)
+        authServerClient.updateApiKeyEnabledByProject(project.id, value)
         enabledCache.invalidate(project.id)
         logger.event(
-            LogObject.PROJECT, if (enabled) LogAction.ENABLE else LogAction.DISABLE,
+            LogObject.PROJECT, if (value) LogAction.ENABLE else LogAction.DISABLE,
             mapOf(
                 "projectId" to project.id,
                 "projectName" to project.name
@@ -314,7 +314,7 @@ class ProjectServiceImpl constructor(
     }
 
     override fun rename(projectId: UUID, newName: ProjectNameUpdate) {
-        var project = projectDao.findById(projectId).orElseThrow {
+        val project = projectDao.findById(projectId).orElseThrow {
             EmptyResultDataAccessException("Project not found", 1)
         }
 
