@@ -93,11 +93,7 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
                         logger.warning("Error processing zorroa kw-conf search ${e.message}")
                     }
 
-                    return if (score == 0.0) {
-                        -1.0
-                    } else {
-                        score
-                    }
+                    return score
                 }
 
                 private fun isWithinRange(conf: Double): Boolean {

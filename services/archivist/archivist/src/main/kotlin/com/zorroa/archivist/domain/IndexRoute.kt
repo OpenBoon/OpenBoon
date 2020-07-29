@@ -95,6 +95,10 @@ class IndexRoute(
     fun esClientCacheKey(): EsClientCacheKey {
         return EsClientCacheKey(clusterUrl, indexName)
     }
+
+    override fun toString(): String {
+        return "IndexRoute(id=$id, indexUrl='$indexUrl')"
+    }
 }
 
 /**
@@ -116,9 +120,9 @@ class IndexRouteSpec(
     var majorVer: Int,
     @ApiModelProperty("The state of the index.")
     var state: IndexRouteState = IndexRouteState.BUILDING,
-    @ApiModelProperty("The number of replicas there should be for each shard. Defaults to 0.")
+    @ApiModelProperty("The number of replicas there should be for each shard. Defaults to 1.")
     var replicas: Int = 0,
-    @ApiModelProperty(" The number of shards in the index. Defaults to 2.")
+    @ApiModelProperty(" The number of shards in the index. Defaults to 5.")
     var shards: Int = 2,
     @ApiModelProperty("The cluster ID to use for the index.")
     var clusterId: UUID? = null,

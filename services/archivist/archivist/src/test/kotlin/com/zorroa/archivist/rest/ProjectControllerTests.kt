@@ -110,19 +110,6 @@ class ProjectControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testGetMyProjectSettings() {
-        mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/project/_settings")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(status().isOk)
-            .andExpect(jsonPath("$.defaultPipelineId", CoreMatchers.anything()))
-            .andExpect(jsonPath("$.defaultIndexRouteId", CoreMatchers.anything()))
-            .andReturn()
-    }
-
-    @Test
     fun testGetMyProjecQuotas() {
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/project/_quotas")

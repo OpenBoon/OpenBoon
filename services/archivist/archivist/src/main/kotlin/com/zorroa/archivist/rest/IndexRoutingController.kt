@@ -1,9 +1,12 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.IndexMigrationSpec
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
+import com.zorroa.archivist.domain.IndexTask
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.service.IndexMigrationService
 import com.zorroa.archivist.service.IndexRoutingService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
@@ -17,11 +20,12 @@ import org.springframework.web.bind.annotation.RestController
 import springfox.documentation.annotations.ApiIgnore
 import java.util.UUID
 
-@PreAuthorize("hasAuthority('ProjectManage')")
+@PreAuthorize("hasAuthority('SystemManage')")
 @RestController
 @ApiIgnore
 class IndexRoutingController @Autowired constructor(
-    val indexRoutingService: IndexRoutingService
+    val indexRoutingService: IndexRoutingService,
+    val indexMigrationService: IndexMigrationService
 ) {
 
     @PostMapping(value = ["/api/v1/index-routes"])
@@ -48,5 +52,10 @@ class IndexRoutingController @Autowired constructor(
     fun getState(@PathVariable id: UUID): Map<String, Any> {
         val route = indexRoutingService.getIndexRoute(id)
         return indexRoutingService.getEsIndexState(route)
+    }
+
+    @PostMapping(value = ["/api/v1/index-routes/_migrate"])
+    fun migrate(@RequestBody spec: IndexMigrationSpec): IndexTask {
+        return indexMigrationService.createIndexMigrationTask(spec)
     }
 }

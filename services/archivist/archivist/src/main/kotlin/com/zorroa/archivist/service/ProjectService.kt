@@ -16,6 +16,7 @@ import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
+import com.zorroa.archivist.domain.ProjectSize
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.repository.KPagedList
@@ -149,7 +150,7 @@ class ProjectServiceImpl constructor(
             )
         )
         withAuth(InternalThreadAuthentication(project.id, setOf())) {
-            val route = createIndexRoute(project)
+            val route = createIndexRoute(project, spec.size)
             projectCustomDao.updateIndexRoute(project.id, route)
 
             val pipeline = createDefaultPipeline(project)
@@ -176,12 +177,15 @@ class ProjectServiceImpl constructor(
         return project
     }
 
-    private fun createIndexRoute(project: Project): IndexRoute {
+    private fun createIndexRoute(project: Project, size: ProjectSize): IndexRoute {
         val mapping = properties.getString("archivist.es.default-mapping-type")
         val ver = properties.getInt("archivist.es.default-mapping-version")
         return indexRoutingService.createIndexRoute(
             IndexRouteSpec(
-                mapping, ver, projectId = project.id,
+                mapping, ver,
+                shards = size.shards,
+                replicas = size.replicas,
+                projectId = project.id,
                 state = IndexRouteState.READY
             )
         )
