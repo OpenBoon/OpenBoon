@@ -23,7 +23,7 @@ class IndexRoutingServiceTests : AbstractTest() {
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
 
-    val testSpec = IndexRouteSpec("test", 1)
+    val testSpec = IndexRouteSpec("test", 1, shards = 1, replicas = 0)
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -205,7 +205,7 @@ class IndexRoutingServiceTests : AbstractTest() {
         val result = indexRoutingService.getEsIndexState(route)
         assertEquals("green", result["health"])
         assertEquals("open", result["status"])
-        assertEquals("2", result["pri"])
+        assertEquals("1", result["pri"])
         assertEquals("0", result["rep"])
     }
 

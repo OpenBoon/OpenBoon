@@ -1,13 +1,10 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTier
-import com.zorroa.archivist.security.getProjectId
 
 import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
@@ -65,40 +62,6 @@ class ProjectServiceTests : AbstractTest() {
 
     fun testGetSettings() {
         projectService.findOne(ProjectFilter(ids = listOf(UUID.randomUUID())))
-    }
-
-    fun testUpdateSettings() {
-        val settings = projectService.getSettings(getProjectId())
-        val pipeline = pipelineService.create(PipelineSpec("dogs"))
-
-        val mapping = properties.getString("archivist.es.default-mapping-type")
-        val ver = properties.getInt("archivist.es.default-mapping-version")
-
-        val index = indexRoutingService.createIndexRoute(
-            IndexRouteSpec(
-                mapping, ver, projectId = project.id
-            )
-        )
-        settings.defaultPipelineId = pipeline.id
-        settings.defaultIndexRouteId = index.id
-
-        assertTrue(projectService.updateSettings(getProjectId(), settings))
-        val updated = projectService.getSettings(getProjectId())
-
-        assertEquals(index.id, updated.defaultIndexRouteId)
-        assertEquals(pipeline.id, updated.defaultPipelineId)
-    }
-
-    fun testUpdateSettingsInvalidIndexRoute() {
-        val settings = projectService.getSettings(getProjectId())
-        settings.defaultIndexRouteId = UUID.randomUUID()
-        projectService.updateSettings(getProjectId(), settings)
-    }
-
-    fun testUpdateSettingsInvalidPipeline() {
-        val settings = projectService.getSettings(getProjectId())
-        settings.defaultPipelineId = UUID.randomUUID()
-        projectService.updateSettings(getProjectId(), settings)
     }
 
     @Test

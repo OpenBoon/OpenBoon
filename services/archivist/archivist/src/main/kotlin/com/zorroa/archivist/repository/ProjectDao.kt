@@ -1,8 +1,9 @@
 package com.zorroa.archivist.repository
 
+import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFilter
-import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.util.JdbcUtils
@@ -24,44 +25,14 @@ interface ProjectCustomDao {
     fun isEnabled(projectId: UUID): Boolean
     fun setEnabled(projectId: UUID, value: Boolean): Boolean
 
-    fun getSettings(projectId: UUID): ProjectSettings
-    fun updateSettings(projectId: UUID, settings: ProjectSettings): Boolean
-    fun createSettings(projectId: UUID, settings: ProjectSettings)
-
     fun updateTier(projectId: UUID, value: ProjectTier): Boolean
     fun updateName(projectId: UUID, value: String): Boolean
+    fun updateDefaultPipeline(projectId: UUID, pipeline: Pipeline): Boolean
+    fun updateIndexRoute(projectId: UUID, indexRoute: IndexRoute): Boolean
 }
 
 @Repository
 class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
-
-    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-    override fun getSettings(projectId: UUID): ProjectSettings {
-        return jdbc.queryForObject(
-            "SELECT * FROM project_settings WHERE pk_project=?",
-            RowMapper { rs, _ ->
-                ProjectSettings(
-                    rs.getObject("pk_pipeline_default") as UUID,
-                    rs.getObject("pk_index_route_default") as UUID
-                )
-            },
-            projectId
-        )
-    }
-
-    override fun updateSettings(projectId: UUID, settings: ProjectSettings): Boolean {
-        return jdbc.update(
-            UPDATE_SETTINGS,
-            settings.defaultPipelineId, settings.defaultIndexRouteId, projectId
-        ) == 1
-    }
-
-    override fun createSettings(projectId: UUID, settings: ProjectSettings) {
-        jdbc.update(
-            INSERT_SETTINGS, UUID.randomUUID(),
-            projectId, settings.defaultPipelineId, settings.defaultIndexRouteId
-        )
-    }
 
     override fun count(filter: ProjectFilter): Long {
         return jdbc.queryForObject(
@@ -113,6 +84,19 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
         ) == 1
     }
 
+    override fun updateDefaultPipeline(projectId: UUID, pipeline: Pipeline): Boolean {
+        return jdbc.update(
+            SET_PIPELINE, pipeline.id,
+            System.currentTimeMillis(), getZmlpActor().toString(), projectId
+        ) == 1
+    }
+
+    override fun updateIndexRoute(projectId: UUID, indexRoute: IndexRoute): Boolean {
+        return jdbc.update(
+            SET_INDEX, indexRoute.id, System.currentTimeMillis(), getZmlpActor().toString(), projectId
+        ) == 1
+    }
+
     companion object {
         const val GET = "SELECT * FROM project"
         const val COUNT = "SELECT COUNT(1) FROM project"
@@ -124,6 +108,10 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
             "SET int_tier=?, time_modified=?, actor_modified=? WHERE pk_project=?"
         const val SET_NAME = "UPDATE project " +
             "SET str_name=?, time_modified=?, actor_modified=? WHERE pk_project=?"
+        const val SET_PIPELINE = "UPDATE project " +
+            "SET pk_pipeline_default=?, time_modified=?, actor_modified=? WHERE pk_project=?"
+        const val SET_INDEX = "UPDATE project " +
+            "SET pk_index_route=?, time_modified=?, actor_modified=? WHERE pk_project=?"
 
         val INSERT_SETTINGS = JdbcUtils.insert(
             "project_settings",

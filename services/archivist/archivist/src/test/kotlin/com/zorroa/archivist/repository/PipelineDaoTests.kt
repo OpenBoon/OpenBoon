@@ -8,9 +8,11 @@ import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.Provider
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.PipelineModService
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.UUID
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
@@ -42,6 +44,15 @@ class PipelineDaoTests : AbstractTest() {
         val pl2 = pipelineDao.create(pl1)
         val pl3 = pipelineDao.get(pl2.id)
         assertEquals(pl2.id, pl3.id)
+    }
+
+    @Test
+    fun testGetDefault() {
+        val pipeline = pipelineDao.getDefault()
+        val defaultId = jdbc.queryForObject(
+            "SELECT pk_pipeline_default FROM project WHERE pk_project=?", UUID::class.java, getProjectId()
+        )
+        assertEquals(pipeline.id, defaultId)
     }
 
     @Test

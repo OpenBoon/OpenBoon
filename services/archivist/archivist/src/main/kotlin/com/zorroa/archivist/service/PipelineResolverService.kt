@@ -4,11 +4,12 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
 import com.zorroa.archivist.domain.OpFilterType
+import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.repository.PipelineDao
 import com.zorroa.archivist.repository.ProjectCustomDao
-import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,6 +44,11 @@ interface PipelineResolverService {
     fun resolve(id: UUID): List<ProcessorRef>
 
     /**
+     * Resolve a Pipeline object.
+     */
+    fun resolve(pipeline: Pipeline): List<ProcessorRef>
+
+    /**
      * Resolve a list of Pipeline Mods into a list of [ProcessorRef]
      */
     fun resolveModular(mods: List<PipelineMod>): List<ProcessorRef>
@@ -61,7 +67,8 @@ interface PipelineResolverService {
 @Service
 @Transactional
 class PipelineResolverServiceImpl(
-    val projectCustomDao: ProjectCustomDao
+    val projectCustomDao: ProjectCustomDao,
+    val pipelineDao: PipelineDao
 ) : PipelineResolverService {
 
     @Autowired
@@ -76,8 +83,7 @@ class PipelineResolverServiceImpl(
         val pipe = if (pipeline != null) {
             pipelineService.get(pipeline)
         } else {
-            val settings = projectCustomDao.getSettings(getProjectId())
-            pipelineService.get(settings.defaultPipelineId)
+            pipelineDao.getDefault()
         }
 
         if (pipe.mode == PipelineMode.MODULAR) {
@@ -108,19 +114,23 @@ class PipelineResolverServiceImpl(
 
     @Transactional(readOnly = true)
     override fun resolve(): List<ProcessorRef> {
-        val settings = projectCustomDao.getSettings(getProjectId())
-        return resolve(settings.defaultPipelineId)
+        val pipeline = pipelineDao.getDefault()
+        return resolve(pipeline)
     }
 
     @Transactional(readOnly = true)
-    override fun resolve(id: UUID): List<ProcessorRef> {
-        val pipeline = pipelineService.get(id)
+    override fun resolve(pipeline: Pipeline): List<ProcessorRef> {
         return if (pipeline.mode == PipelineMode.MODULAR) {
             val modules = pipelineModService.getByIds(pipeline.modules)
             resolveModular(modules)
         } else {
             resolveCustom(pipeline.processors)
         }
+    }
+
+    @Transactional(readOnly = true)
+    override fun resolve(id: UUID): List<ProcessorRef> {
+        return resolve(pipelineService.get(id))
     }
 
     @Transactional(readOnly = true)

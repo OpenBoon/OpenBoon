@@ -51,7 +51,6 @@ enum class IndexRouteState {
  * mapping file name, not the ES type.
  * @property majorVer The major version of the mapping file.
  * @property minorVer The minor version of the mapping file in a date format.
- * @property closed "True if the index is closed and not in use."
  * @property replicas Number of index replicas.
  * @property shards Number of shards.
  * @property indexUrl The ES index URL, or the cluster URL and index name combined.
@@ -95,6 +94,10 @@ class IndexRoute(
     fun esClientCacheKey(): EsClientCacheKey {
         return EsClientCacheKey(clusterUrl, indexName)
     }
+
+    override fun toString(): String {
+        return "IndexRoute(id=$id, indexUrl='$indexUrl')"
+    }
 }
 
 /**
@@ -116,13 +119,13 @@ class IndexRouteSpec(
     var majorVer: Int,
     @ApiModelProperty("The state of the index.")
     var state: IndexRouteState = IndexRouteState.BUILDING,
-    @ApiModelProperty("The number of replicas there should be for each shard. Defaults to 0.")
+    @ApiModelProperty("The number of replicas there should be for each shard. Defaults to 1.")
     var replicas: Int = 0,
-    @ApiModelProperty(" The number of shards in the index. Defaults to 2.")
+    @ApiModelProperty(" The number of shards in the index. Defaults to 5.")
     var shards: Int = 2,
     @ApiModelProperty("The cluster ID to use for the index.")
     var clusterId: UUID? = null,
-    @JsonIgnore
+    @ApiModelProperty("The Project Id to create the route spec under.")
     var projectId: UUID? = null
 )
 
