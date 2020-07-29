@@ -102,7 +102,7 @@ class Track:
             'clips': self.clips
         }
 
-    def for_webvtt(self, src_path=None):
+    def webvtt(self):
         count = 0
         
         webvtt = ["WEBVTT - {}\n\n".format(self.name)]

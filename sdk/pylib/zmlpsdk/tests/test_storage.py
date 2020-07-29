@@ -168,9 +168,12 @@ class TestAssetStorage(TestCase):
         asset = TestAsset(id='123456')
         tl = timeline.Timeline('cats')
         tl.add_track('tabby').add_clip(0, 1)
-        result = self.fs.assets.store_timeline(asset, tl)
+        result, tracks = self.fs.assets.store_timeline(asset, tl)
         assert 'foo-timeline.json.gz' == result.name
         assert 'timeline' == result.category
+        assert 1 == len(tracks)
+        assert 'tabby.webvtt' == tracks[0].name
+        assert 'webvtt' == tracks[0].category
 
     @patch.object(ZmlpClient, 'put')
     @patch('requests.put')

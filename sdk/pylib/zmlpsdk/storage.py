@@ -279,7 +279,7 @@ class AssetStorage(object):
             timeline (Timeline): The timeline.
 
         Returns:
-            StoredFile: The stored file record.
+            StoredFile, [StoredFile]: The stored file record and stored track file records
         """
         if not isinstance(timeline, Timeline):
             raise ValueError("The timeline argument must be an instance of a Timeline")
@@ -290,7 +290,18 @@ class AssetStorage(object):
         with gzip.GzipFile(filename=jpath, mode='wb') as zfp:
             zfp.write(jbytes)
 
-        return self.store_file(jpath, asset, "timeline", rename=name)
+        tracks = []
+        for track in timeline.tracks:
+            contents = track.webvtt()
+            vname = track.name + ".webvtt"
+            vfp, vpath = tempfile.mkstemp(suffix=".webvtt")
+
+            with open(vpath, "w") as vttfile:
+                vttfile.write(contents)
+
+            tracks.append(self.store_file(jpath, asset, "webvtt", rename=vname))
+
+        return self.store_file(jpath, asset, "timeline", rename=name), tracks
 
 
 class ProjectStorage(object):
