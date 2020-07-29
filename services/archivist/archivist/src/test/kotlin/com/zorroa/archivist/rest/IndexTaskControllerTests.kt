@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexTaskState
 import com.zorroa.archivist.domain.IndexTaskType
 import com.zorroa.archivist.repository.IndexRouteDao
-import com.zorroa.archivist.service.IndexMigrationService
+import com.zorroa.archivist.service.IndexTaskService
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,10 +24,57 @@ class IndexTaskControllerTests : MockMvcTest() {
     lateinit var indexRouteDao: IndexRouteDao
 
     @Autowired
-    lateinit var indexMigrationService: IndexMigrationService
+    lateinit var indexTaskService: IndexTaskService
 
     override fun requiresElasticSearch(): Boolean {
         return true
+    }
+
+    @Test
+    fun getEsTaskInfo() {
+        val testSpec = IndexRouteSpec("test", 1)
+
+        val srcRoute = indexRouteDao.getProjectRoute()
+        val route = indexRoutingService.createIndexRoute(testSpec)
+        val spec = IndexMigrationSpec(srcRoute.id, route.id)
+        val task = indexTaskService.createIndexMigrationTask(spec)
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/index-tasks/${task.id}/_es_task_info")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.action",
+                    CoreMatchers.equalTo("indices:data/write/reindex")
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testGetAllRunning() {
+        val testSpec = IndexRouteSpec("test", 1)
+        val srcRoute = indexRouteDao.getProjectRoute()
+        val route = indexRoutingService.createIndexRoute(testSpec)
+        val spec = IndexMigrationSpec(srcRoute.id, route.id)
+        indexTaskService.createIndexMigrationTask(spec)
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/index-tasks")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.length()",
+                    CoreMatchers.equalTo(1)
+                )
+            )
+            .andReturn()
     }
 
     @Test
@@ -37,7 +84,7 @@ class IndexTaskControllerTests : MockMvcTest() {
         val srcRoute = indexRouteDao.getProjectRoute()
         val route = indexRoutingService.createIndexRoute(testSpec)
         val spec = IndexMigrationSpec(srcRoute.id, route.id)
-        val task = indexMigrationService.createIndexMigrationTask(spec)
+        val task = indexTaskService.createIndexMigrationTask(spec)
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/index-tasks/${task.id}")

@@ -16,7 +16,7 @@ import kotlin.test.assertTrue
 class IndexTaskMonitorTests : AbstractTest() {
 
     @Autowired
-    lateinit var indexMigrationService: IndexMigrationService
+    lateinit var indexTaskService: IndexTaskService
 
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
@@ -34,7 +34,7 @@ class IndexTaskMonitorTests : AbstractTest() {
         val srcRoute = indexRouteDao.getProjectRoute()
 
         val spec = IndexMigrationSpec(srcRoute.id, dstRoute.id)
-        indexMigrationService.createIndexMigrationTask(spec)
+        indexTaskService.createIndexMigrationTask(spec)
 
         var completed = false
         for (i in 1..10) {
@@ -51,7 +51,7 @@ class IndexTaskMonitorTests : AbstractTest() {
         val rest = indexRoutingService.getProjectRestClient()
         val search = rest.newSearchRequest()
         search.source(SearchSourceBuilder().query(QueryBuilders.matchAllQuery()))
-        val hits = rest.client.search(search, RequestOptions.DEFAULT).hits.totalHits.value
+        val hits = rest.client.search(search, RequestOptions.DEFAULT).hits.totalHits?.value ?: 0
         assertEquals(20, hits)
     }
 }

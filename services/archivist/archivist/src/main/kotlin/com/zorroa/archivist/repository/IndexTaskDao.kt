@@ -9,10 +9,7 @@ import java.util.UUID
 @Repository
 interface IndexTaskDao : JpaRepository<IndexTask, UUID> {
 
-    /**
-     * Return all [IndexTask] by particular state.
-     */
-    fun getAllByState(state: IndexTaskState): List<IndexTask>
+    fun getAllByStateOrderByTimeCreatedDesc(state: IndexTaskState): List<IndexTask>
 }
 
 interface IndexTaskJdbcDao {

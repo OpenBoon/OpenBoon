@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexTask
 import com.zorroa.archivist.repository.KPagedList
-import com.zorroa.archivist.service.IndexMigrationService
+import com.zorroa.archivist.service.IndexTaskService
 import com.zorroa.archivist.service.IndexRoutingService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
@@ -25,7 +25,7 @@ import java.util.UUID
 @ApiIgnore
 class IndexRoutingController @Autowired constructor(
     val indexRoutingService: IndexRoutingService,
-    val indexMigrationService: IndexMigrationService
+    val indexTaskService: IndexTaskService
 ) {
 
     @PostMapping(value = ["/api/v1/index-routes"])
@@ -56,6 +56,6 @@ class IndexRoutingController @Autowired constructor(
 
     @PostMapping(value = ["/api/v1/index-routes/_migrate"])
     fun migrate(@RequestBody spec: IndexMigrationSpec): IndexTask {
-        return indexMigrationService.createIndexMigrationTask(spec)
+        return indexTaskService.createIndexMigrationTask(spec)
     }
 }

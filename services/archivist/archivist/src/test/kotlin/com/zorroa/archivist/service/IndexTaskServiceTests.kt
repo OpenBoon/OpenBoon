@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 class IndexTaskServiceTests : AbstractTest() {
 
     @Autowired
-    lateinit var indexMigrationService: IndexMigrationService
+    lateinit var indexTaskService: IndexTaskService
 
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
@@ -26,7 +26,7 @@ class IndexTaskServiceTests : AbstractTest() {
         val srcRoute = indexRouteDao.getProjectRoute()
 
         val spec = IndexMigrationSpec(srcRoute.id, dstRoute.id)
-        val indexTask = indexMigrationService.createIndexMigrationTask(spec)
+        val indexTask = indexTaskService.createIndexMigrationTask(spec)
 
         assertEquals(dstRoute.id, indexTask.dstIndexRouteId)
         assertEquals(srcRoute.id, indexTask.srcIndexRouteId)

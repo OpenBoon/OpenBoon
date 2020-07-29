@@ -19,6 +19,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.reindex.ReindexRequest
 import org.elasticsearch.index.reindex.RemoteInfo
+import org.elasticsearch.tasks.TaskInfo
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
@@ -28,25 +29,30 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.fixedRateTimer
 
-interface IndexMigrationService {
+interface IndexTaskService {
 
     /**
      * Create a ES task that moves data from one index to another.
      */
     fun createIndexMigrationTask(spec: IndexMigrationSpec): IndexTask
+
+    /**
+     * Get an intenral task info.
+     */
+    fun getEsTaskInfo(task: IndexTask): TaskInfo
 }
 
 @Service
-class IndexMigrationServiceImpl(
+class IndexTaskServiceImpl(
     val indexRouteDao: IndexRouteDao,
     val indexRoutingService: IndexRoutingService,
     val indexTaskDao: IndexTaskDao
-) : IndexMigrationService {
+) : IndexTaskService {
 
     override fun createIndexMigrationTask(spec: IndexMigrationSpec): IndexTask {
         val srcRoute = indexRouteDao.get(spec.srcIndexRouteId)
         val dstRoute = indexRouteDao.get(spec.dstIndexRouteId)
-        var dstRouteClient = indexRoutingService.getClusterRestClient(dstRoute)
+        val dstRouteClient = indexRoutingService.getClusterRestClient(dstRoute)
         indexRoutingService.setIndexRefreshInterval(dstRoute, "-1")
 
         val req = ReindexRequest()
@@ -97,6 +103,11 @@ class IndexMigrationServiceImpl(
 
         return indexTaskDao.saveAndFlush(indexTask)
     }
+
+    override fun getEsTaskInfo(task: IndexTask): TaskInfo {
+        val rest = indexRoutingService.getClusterRestClient(task.dstIndexRouteId ?: task.srcIndexRouteId)
+        return rest.client.tasks().get(task.buildGetTaskRequest(), RequestOptions.DEFAULT).get().taskInfo
+    }
 }
 
 @Component
@@ -110,7 +121,7 @@ class IndexTaskMonitor(
 
     var pingTimer: Timer = setupTimer()
 
-    fun setupTimer(): Timer {
+    private final fun setupTimer(): Timer {
         logger.info("Staring index task monitor")
         return fixedRateTimer(
             name = "index-ping-timer",
@@ -134,7 +145,7 @@ class IndexTaskMonitor(
 
     fun handleCompletedTasks(): Int {
         var handled = 0
-        for (task in indexTaskDao.getAllByState(IndexTaskState.RUNNING)) {
+        for (task in indexTaskDao.getAllByStateOrderByTimeCreatedDesc(IndexTaskState.RUNNING)) {
             try {
                 if (task.type == IndexTaskType.REINDEX) {
                     if (handleReindexTask(task)) {

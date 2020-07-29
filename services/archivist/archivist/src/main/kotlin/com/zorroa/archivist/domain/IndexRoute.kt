@@ -51,7 +51,6 @@ enum class IndexRouteState {
  * mapping file name, not the ES type.
  * @property majorVer The major version of the mapping file.
  * @property minorVer The minor version of the mapping file in a date format.
- * @property closed "True if the index is closed and not in use."
  * @property replicas Number of index replicas.
  * @property shards Number of shards.
  * @property indexUrl The ES index URL, or the cluster URL and index name combined.
@@ -126,7 +125,7 @@ class IndexRouteSpec(
     var shards: Int = 2,
     @ApiModelProperty("The cluster ID to use for the index.")
     var clusterId: UUID? = null,
-    @JsonIgnore
+    @ApiModelProperty("The Project Id to create the route spec under.")
     var projectId: UUID? = null
 )
 

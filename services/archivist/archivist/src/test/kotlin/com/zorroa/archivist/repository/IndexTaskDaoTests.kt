@@ -48,8 +48,8 @@ class IndexTaskDaoTests : AbstractTest() {
 
     @Test
     fun testGetAllByState() {
-        assertEquals(0, indexTaskDao.getAllByState(IndexTaskState.RUNNING).size)
-        assertEquals(0, indexTaskDao.getAllByState(IndexTaskState.FINISHED).size)
+        assertEquals(0, indexTaskDao.getAllByStateOrderByTimeCreatedDesc(IndexTaskState.RUNNING).size)
+        assertEquals(0, indexTaskDao.getAllByStateOrderByTimeCreatedDesc(IndexTaskState.FINISHED).size)
     }
 
     @Test
