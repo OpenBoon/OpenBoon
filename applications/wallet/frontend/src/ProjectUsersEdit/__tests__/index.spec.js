@@ -84,7 +84,7 @@ describe('<ProjectUsersEdit />', () => {
 
     expect(mockFn).toHaveBeenCalledWith(
       '/[projectId]/users?action=edit-user-success',
-      `/${PROJECT_ID}/users?action=edit-user-success`,
+      `/${PROJECT_ID}/users`,
     )
   })
 })

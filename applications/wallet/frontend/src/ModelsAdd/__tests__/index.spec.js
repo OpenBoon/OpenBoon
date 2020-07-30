@@ -78,7 +78,9 @@ describe('<ModelsAdd />', () => {
     })
 
     // Mock Success
-    fetch.mockResponseOnce(JSON.stringify({ detail: 'New Model Created' }))
+    fetch.mockResponseOnce(
+      JSON.stringify({ results: { name: 'My New Model' } }),
+    )
 
     // Click Submit
     await act(async () => {
@@ -106,8 +108,8 @@ describe('<ModelsAdd />', () => {
     })
 
     expect(mockFn).toHaveBeenCalledWith(
-      '/[projectId]/models?action=add-model-success',
-      `/${PROJECT_ID}/models?action=add-model-success`,
+      '/[projectId]/models?action=add-model-success&modelName=My New Model',
+      `/${PROJECT_ID}/models`,
     )
   })
 })
