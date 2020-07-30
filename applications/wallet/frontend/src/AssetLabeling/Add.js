@@ -24,15 +24,15 @@ const reducer = (state, action) => ({ ...state, ...action })
 
 const AssetLabelingAdd = ({ projectId, assetId, models }) => {
   const [localModel, setLocalModel] = useLocalStorageState({
-    key: 'AssetLabeling.Add.Model',
+    key: 'AssetLabelingAdd.Model',
     initialValue: '',
   })
   const [localLabel, setLocalLabel] = useLocalStorageState({
-    key: 'AssetLabeling.Add.Label',
+    key: 'AssetLabelingAdd.Label',
     initialValue: '',
   })
 
-  // Prevents user from saving non-existent moel where model/label
+  // Prevents user from saving non-existent model where model/label
   // are added to local storage and user switches projects
   const modelExists = localModel
     ? models.find(({ id }) => id === localModel)
@@ -55,7 +55,7 @@ const AssetLabelingAdd = ({ projectId, assetId, models }) => {
           options={options}
           defaultValue={state.model}
           onChange={({ value }) => {
-            dispatch({ model: value })
+            dispatch({ model: value, success: false })
           }}
           isRequired={false}
           style={{ width: '100%' }}
@@ -67,7 +67,9 @@ const AssetLabelingAdd = ({ projectId, assetId, models }) => {
           label="Label"
           type="text"
           value={state.label}
-          onChange={({ target: { value } }) => dispatch({ label: value })}
+          onChange={({ target: { value } }) =>
+            dispatch({ label: value, success: false })
+          }
           hasError={state.errors.label !== undefined}
           errorMessage={state.errors.label}
           style={{ width: '100%' }}
@@ -112,7 +114,8 @@ const AssetLabelingAdd = ({ projectId, assetId, models }) => {
             isDisabled={
               (!state.model && !localModel) ||
               (!state.label && !localLabel) ||
-              state.isLoading
+              state.isLoading ||
+              (state.success && !state.isLoading)
             }
             style={{ flex: 1, margin: 0 }}
           >

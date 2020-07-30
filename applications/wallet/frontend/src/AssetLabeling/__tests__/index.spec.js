@@ -31,12 +31,14 @@ describe('<AssetLabeling />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Click Accordion header link
     act(() => {
       component.root
         .findByProps({ children: 'Create New Model' })
         .props.onClick({ stopPropagation: noop })
     })
 
+    // Select Model
     act(() => {
       component.root
         .findByProps({ label: 'Model' })
@@ -45,6 +47,7 @@ describe('<AssetLabeling />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Input Label
     act(() => {
       component.root
         .findByProps({ id: 'asset-label' })
@@ -112,6 +115,7 @@ describe('<AssetLabeling />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Edit Model/Label fields
     act(() => {
       component.root
         .findByProps({ label: 'Model' })
@@ -123,16 +127,32 @@ describe('<AssetLabeling />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Clear Model/Label fields
     act(() => {
       component.root.findByProps({ children: 'Cancel' }).props.onClick()
     })
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Open Asset Label list Accordion
     act(() => {
       component.root
         .findByProps({ 'aria-label': 'Expand Section' })
         .props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Open first label's kebab menu
+    act(() => {
+      component.root
+        .findAllByProps({ 'aria-label': 'Toggle Actions Menu' })[0]
+        .props.onClick()
+    })
+
+    // Click Edit Label
+    act(() => {
+      component.root.findByProps({ children: 'Edit Label' }).props.onClick()
     })
 
     expect(component.toJSON()).toMatchSnapshot()

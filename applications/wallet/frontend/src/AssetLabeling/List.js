@@ -4,7 +4,19 @@ import modelShape from '../Model/shape'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-const AssetLabelingList = ({ models, labels }) => {
+import { decode, encode } from '../Filters/helpers'
+import { getQueryString } from '../Fetch/helpers'
+
+import AssetLabelingMenu from './Menu'
+
+const AssetLabelingList = ({
+  models,
+  labels,
+  projectId,
+  assetId,
+  query,
+  triggerReload,
+}) => {
   if (!labels.length)
     return (
       <div css={{ padding: spacing.normal, color: colors.structure.white }}>
@@ -42,6 +54,24 @@ const AssetLabelingList = ({ models, labels }) => {
         {labels.map(({ modelId, label }) => {
           const { name } = models.find(({ id }) => id === modelId)
 
+          const filters = decode({ query })
+
+          const encodedQuery = encode({
+            filters: [
+              {
+                attribute: `labels.${name}`,
+                type: 'label',
+                value: { labels: [label] },
+              },
+              ...filters,
+            ],
+          })
+
+          const queryString = getQueryString({
+            id: assetId,
+            query: encodedQuery,
+          })
+
           return (
             <tr
               key={modelId}
@@ -69,6 +99,15 @@ const AssetLabelingList = ({ models, labels }) => {
               >
                 {label}
               </td>
+              <td>
+                <AssetLabelingMenu
+                  projectId={projectId}
+                  queryString={queryString}
+                  modelId={modelId}
+                  label={label}
+                  triggerReload={triggerReload}
+                />
+              </td>
             </tr>
           )
         })}
@@ -85,6 +124,10 @@ AssetLabelingList.propTypes = {
       modelId: PropTypes.string,
     }),
   ).isRequired,
+  projectId: PropTypes.string.isRequired,
+  assetId: PropTypes.string.isRequired,
+  query: PropTypes.string.isRequired,
+  triggerReload: PropTypes.func.isRequired,
 }
 
 export default AssetLabelingList
