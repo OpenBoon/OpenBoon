@@ -329,6 +329,7 @@
           "match_mapping_type": "object",
           "mapping": {
             "type": "nested",
+            "include_in_root": true,
             "dynamic": "strict",
             "properties": {
               "label": {
