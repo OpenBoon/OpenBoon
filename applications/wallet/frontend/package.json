@@ -65,7 +65,6 @@
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "git add",
       "eslint",
       "npm run test:hook"
     ]
