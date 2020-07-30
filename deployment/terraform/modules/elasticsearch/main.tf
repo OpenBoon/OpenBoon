@@ -50,7 +50,7 @@ resource "google_container_node_pool" "elasticsearch" {
     auto_upgrade = true
   }
   node_config {
-    machine_type = "custom-6-16384"
+    machine_type = "custom-6-20480"
     oauth_scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/devstorage.read_only",
