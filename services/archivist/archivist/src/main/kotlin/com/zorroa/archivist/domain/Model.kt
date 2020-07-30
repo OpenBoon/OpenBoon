@@ -255,7 +255,7 @@ class ModelFilter(
     override fun build() {
 
         if (sort.isNullOrEmpty()) {
-            sort = listOf("name:asc")
+            sort = listOf("timeCreated:desc")
         }
 
         addToWhere("model.pk_project=?")

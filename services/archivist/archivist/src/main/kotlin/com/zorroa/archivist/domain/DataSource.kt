@@ -173,7 +173,7 @@ class DataSourceFilter(
     override fun build() {
 
         if (sort.isNullOrEmpty()) {
-            sort = listOf("name:asc")
+            sort = listOf("timeCreated:desc")
         }
 
         addToWhere("datasource.pk_project=?")
