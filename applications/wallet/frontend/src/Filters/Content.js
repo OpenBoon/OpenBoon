@@ -105,6 +105,7 @@ const FiltersContent = ({
               )
 
             case 'facet':
+            case 'label':
               return (
                 <FilterFacet
                   key={`${filter.type}-${index}`}

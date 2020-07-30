@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
@@ -9,7 +10,13 @@ import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import AssetLabelingAdd from './Add'
 import AssetLabelingList from './List'
 
-const AssetLabelingContent = ({ projectId, assetId }) => {
+const AssetLabelingContent = ({ projectId, assetId, query }) => {
+  const [reloadKey, setReloadKey] = useState(0)
+
+  const triggerReload = () => {
+    setReloadKey(reloadKey + 1)
+  }
+
   const {
     data: { results: models },
   } = useSWR(`/api/v1/projects/${projectId}/models/`)
@@ -58,6 +65,7 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
         isResizeable={false}
       >
         <AssetLabelingAdd
+          key={reloadKey}
           projectId={projectId}
           assetId={assetId}
           models={models}
@@ -71,7 +79,14 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
         isInitiallyOpen={false}
         isResizeable={false}
       >
-        <AssetLabelingList models={models} labels={labels} />
+        <AssetLabelingList
+          models={models}
+          labels={labels}
+          projectId={projectId}
+          assetId={assetId}
+          triggerReload={triggerReload}
+          query={query}
+        />
       </Accordion>
     </>
   )
@@ -80,6 +95,7 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
 AssetLabelingContent.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
+  query: PropTypes.string.isRequired,
 }
 
 export default AssetLabelingContent

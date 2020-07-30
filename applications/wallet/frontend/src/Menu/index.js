@@ -1,13 +1,15 @@
 import { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
+import stylesShape from '../Styles/shape'
+
 import { colors, constants, zIndex, spacing } from '../Styles'
 
 import { onBlur as onBlurHelper } from './helpers'
 
 export const WIDTH = 200
 
-const Menu = ({ button, children, open }) => {
+const Menu = ({ button, children, open, style }) => {
   const container = useRef(null)
 
   const [isMenuOpen, setMenuOpen] = useState(false)
@@ -17,7 +19,7 @@ const Menu = ({ button, children, open }) => {
 
   return (
     <div ref={container} css={{ position: 'relative' }}>
-      {button({ onBlur, onClick, isMenuOpen })}
+      {button({ onBlur, onClick, isMenuOpen, style })}
       {isMenuOpen && (
         <div
           css={{
@@ -46,9 +48,14 @@ const Menu = ({ button, children, open }) => {
   )
 }
 
+Menu.defaultProps = {
+  style: {},
+}
+
 Menu.propTypes = {
   open: PropTypes.oneOf(['left', 'right']).isRequired,
   button: PropTypes.func.isRequired,
+  style: stylesShape,
   children: PropTypes.func.isRequired,
 }
 
