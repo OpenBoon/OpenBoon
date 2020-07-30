@@ -12,44 +12,39 @@ class IndexApp:
     def __init__(self, app):
         self.app = app
 
-    def create_index(self, shards, replicas, project=None, mapping='english_strict', version=1):
+    def create_index(self, size):
         """
-        Create a new IndexRoute, which routes asset metadata to an ES index.  Creating a new route
-        doesn't affect the project in any way.
-
-        For test projects with low numbers of assets, 1 shard, 0 replicas is fine.  For xlarge
-        projects (1 million+), 5-7 shards and 1-2 replicas.
+        Create a new IndexRoute of the specified size.  The index mapping version and
+        cluster are chosen automatically.  The index will be created under
+        the currently authed project.
 
         Args:
-            shards (int): The number of shards.
-            replicas (int): The number of replicas.
-            project (Project): The project or unique project id, defaults to authed project.
-            mapping (str): The name of the mapping.
-            version (int): The version of the mapping to create.
+            size (ProjectSize): controls the number of shards and replicas.
 
         Returns:
             IndexRoute: The new route.
         """
         body = {
-            'mapping': mapping,
-            'majorVer': int(version),
-            'shards': shards,
-            'replicas': replicas,
-            'projectId': as_id(project)
+            'size': size.name
         }
-        return Index(self.app.client.post('/api/v1/index-routes', body))
+        return Index(self.app.client.post('/api/v2/index-routes', body))
 
-    def migrate_index(self, src_index, dst_index):
+    def migrate_index(self, dst_index, src_index=None):
         """
-        Migrate the data in the src_index to the dst_index.
+        Migrate all data for the currently authed project into the dst_index.
+        The project is swapped to the index on completion. The old index is
+        closed but not deleted right away.
+
+        If a src_index is provided, then the data is migrated from that index instead
+        of the currently authed index.
 
         Args:
-            src_index (IndexRoute): The src index route or its unique Id.
-            dst_index (IndexRoute); The dst index route or its unique Id.
+            dst_index (IndexRoute): The dst route or its unique Id.
+            src_index (IndexRoute): The src route. Defaults to none which uses the
+                current project's active index.
 
         Returns:
             IndexTask: A async task which describes the operation.
-
         """
         body = {
             'srcIndexRouteId': as_id(src_index),

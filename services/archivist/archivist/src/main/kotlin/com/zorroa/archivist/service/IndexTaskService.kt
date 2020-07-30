@@ -59,7 +59,6 @@ class IndexTaskServiceImpl(
         val dstRouteClient = indexRoutingService.getClusterRestClient(dstRoute)
         indexRoutingService.setIndexRefreshInterval(dstRoute, "-1")
 
-
         val req = ReindexRequest()
             .setSourceIndices(srcRoute.indexName)
             .setSourceQuery(QueryBuilders.matchAllQuery())

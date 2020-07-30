@@ -90,4 +90,3 @@ class IndexMigrationSpec(
     @ApiModelProperty("The src index route, defaults to the project's current route.")
     val srcIndexRouteId: UUID? = null
 )
-
