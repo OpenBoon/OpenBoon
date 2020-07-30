@@ -41,7 +41,7 @@ enum class ProjectSize(val shards: Int, val replicas: Int) {
     SMALL(2, 1),
     MEDIUM(3, 1),
     LARGE(5, 1),
-    XLARGE(7, 2)
+    XLARGE(7, 1)
 }
 
 @ApiModel("Project Tier", description = "Specifies in which tier is the Project in.")
@@ -107,7 +107,11 @@ class Project(
 
     @Column(name = "pk_pipeline_default", nullable = true)
     @ApiModelProperty("The default Pipeline for this project")
-    val defaultPipelineId: UUID? = null
+    val defaultPipelineId: UUID? = null,
+
+    @Column(name = "pk_index_route", nullable = true)
+    @ApiModelProperty("The default Index for this project")
+    val indexRouteId: UUID? = null
 
 ) {
     override fun equals(other: Any?): Boolean {
