@@ -159,20 +159,24 @@ class TestAssetStorage(TestCase):
             'mediaType': "image/jpeg"
         }
         req_put_patch.return_value = MockResponse()
-        put_patch.return_value = {
+        put_patch.side_effect = [{
             'id': '12345',
             'name': 'foo-timeline.json.gz',
             'category': 'timeline'
-        }
+        }, { 'id': '1234544',
+            'name': 'foo-timeline.webvtt',
+            'category': 'webvtt'
+        }]
 
         asset = TestAsset(id='123456')
         tl = timeline.Timeline('cats')
         tl.add_track('tabby').add_clip(0, 1)
+
         result, tracks = self.fs.assets.store_timeline(asset, tl)
         assert 'foo-timeline.json.gz' == result.name
         assert 'timeline' == result.category
         assert 1 == len(tracks)
-        assert 'tabby.webvtt' == tracks[0].name
+        assert 'foo-timeline.webvtt' == tracks[0].name
         assert 'webvtt' == tracks[0].category
 
     @patch.object(ZmlpClient, 'put')

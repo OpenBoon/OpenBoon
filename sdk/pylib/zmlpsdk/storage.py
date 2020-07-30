@@ -290,6 +290,7 @@ class AssetStorage(object):
         with gzip.GzipFile(filename=jpath, mode='wb') as zfp:
             zfp.write(jbytes)
 
+        jfile = self.store_file(jpath, asset, "timeline", rename=name)
         tracks = []
         for track in timeline.tracks:
             contents = track.webvtt()
@@ -299,9 +300,9 @@ class AssetStorage(object):
             with open(vpath, "w") as vttfile:
                 vttfile.write(contents)
 
-            tracks.append(self.store_file(jpath, asset, "webvtt", rename=vname))
+            tracks.append(self.store_file(vpath, asset, "webvtt", rename=vname))
 
-        return self.store_file(jpath, asset, "timeline", rename=name), tracks
+        return jfile, tracks
 
 
 class ProjectStorage(object):
@@ -524,6 +525,7 @@ class FileCache(object):
             str: The precache location.
 
         """
+
         _, suffix = os.path.splitext(sfile.name)
         cache_path = self.get_path(sfile.id, suffix)
         precache_path = urlparse(str(src_path)).path

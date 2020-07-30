@@ -77,7 +77,7 @@ class TimelineTests(unittest.TestCase):
         track.add_clip(0, 1.0, {'flim': 'flam'})
         track.add_clip(5.0, 9.0, {'scooby': 'doo'})
 
-        webvtt = track.for_webvtt()
+        webvtt = track.webvtt()
         assert 'WEBVTT - foo1' in webvtt
         assert '1' in webvtt
         assert '2' in webvtt
