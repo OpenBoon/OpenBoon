@@ -32,7 +32,7 @@ class IndexApp:
         """
         body = {
             'mapping': mapping,
-            'version': int(version),
+            'majorVer': int(version),
             'shards': shards,
             'replicas': replicas,
             'projectId': as_id(project)
