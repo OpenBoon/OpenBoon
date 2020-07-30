@@ -10,6 +10,8 @@ import SimilaritySvg from '../Icons/similarity.svg'
 import Button, { VARIANTS } from '../Button'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
+import { getQueryString } from '../Fetch/helpers'
+
 import { formatSeconds } from './helpers'
 
 const AssetsThumbnail = ({
@@ -30,14 +32,10 @@ const AssetsThumbnail = ({
 
   const isSelected = id === selectedId
 
-  const queryParams = Object.entries({
+  const queryString = getQueryString({
     ...(isSelected ? {} : { id }),
     ...(query ? { query } : {}),
   })
-    .map(([key, value]) => `${key}=${value}`)
-    .join('&')
-
-  const queryString = queryParams ? `?${queryParams}` : ''
 
   const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
 
@@ -134,8 +132,8 @@ const AssetsThumbnail = ({
 
       {isActive && (
         <Link
-          href={`/[projectId]/visualizer/[id]${queryString}`}
-          as={`/${projectId}/visualizer/${id}${queryString}`}
+          href={`/[projectId]/visualizer/[id]${getQueryString({ query })}`}
+          as={`/${projectId}/visualizer/${id}${getQueryString({ query })}`}
           passHref
         >
           <Button
