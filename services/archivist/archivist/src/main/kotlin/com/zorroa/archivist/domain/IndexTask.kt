@@ -84,9 +84,10 @@ class IndexTask(
 @ApiModel("IndexMigrationSpec", description = "Create a new index migration.")
 class IndexMigrationSpec(
 
-    @ApiModelProperty("The src index route")
-    val srcIndexRouteId: UUID,
-
     @ApiModelProperty("The dst index route")
-    val dstIndexRouteId: UUID
+    val dstIndexRouteId: UUID,
+
+    @ApiModelProperty("The src index route, defaults to the project's current route.")
+    val srcIndexRouteId: UUID? = null
 )
+

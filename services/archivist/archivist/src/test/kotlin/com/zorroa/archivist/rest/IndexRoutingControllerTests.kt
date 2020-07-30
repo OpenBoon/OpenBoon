@@ -96,7 +96,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
     fun testMigrate() {
         val srcRoute = indexRouteDao.getProjectRoute()
         val route = indexRoutingService.createIndexRoute(testSpec)
-        val spec = IndexMigrationSpec(srcRoute.id, route.id)
+        val spec = IndexMigrationSpec(route.id)
         val pid = getProjectId()
 
         mvc.perform(
