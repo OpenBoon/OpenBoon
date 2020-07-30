@@ -100,6 +100,17 @@ class IndexRoute(
     }
 }
 
+@ApiModel("IndexRouteSimpleSpec", description = "Create a new index of a given size.")
+class IndexRouteSimpleSpec(
+
+    @ApiModelProperty("The new project size.")
+    val size: ProjectSize,
+
+    @JsonIgnore
+    @ApiModelProperty("The Project Id to create the route spec under.")
+    var projectId: UUID? = null
+)
+
 /**
  * The IndexRouteSpec defines all the values needed to create an index route.
  *
@@ -125,6 +136,8 @@ class IndexRouteSpec(
     var shards: Int = 2,
     @ApiModelProperty("The cluster ID to use for the index.")
     var clusterId: UUID? = null,
+
+    @JsonIgnore
     @ApiModelProperty("The Project Id to create the route spec under.")
     var projectId: UUID? = null
 )

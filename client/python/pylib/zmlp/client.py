@@ -39,7 +39,7 @@ class ZmlpClient(object):
         """
         self.apikey = self.__load_apikey(apikey)
         self.server = server
-        self.project_id = kwargs.get('project_id')
+        self.project_id = kwargs.get('project_id', os.environ.get("ZMLP_PROJECT"))
         self.max_retries = kwargs.get('max_retries', 3)
         self.verify = True
 

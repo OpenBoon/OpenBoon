@@ -11,7 +11,9 @@ import com.zorroa.archivist.domain.IndexCluster
 import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
+import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
+import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.repository.IndexClusterDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
@@ -63,6 +65,11 @@ interface IndexRoutingService {
      * Create a new [IndexRoute] and return it.
      */
     fun createIndexRoute(spec: IndexRouteSpec): IndexRoute
+
+    /**
+     * A simple form of index route creation.
+     */
+    fun createIndexRoute(spec: IndexRouteSimpleSpec): IndexRoute
 
     /**
      * Get an [EsRestClient] for the current users project.
@@ -196,6 +203,19 @@ constructor(
 
     @Autowired
     lateinit var esClientCache: EsClientCache
+
+    @Transactional
+    override fun createIndexRoute(spec: IndexRouteSimpleSpec): IndexRoute {
+        val irspec = IndexRouteSpec(
+            properties.getString("archivist.es.default-mapping-type"),
+            properties.getInt("archivist.es.default-mapping-version"),
+            shards = spec.size.shards,
+            replicas = spec.size.replicas,
+            projectId = spec.projectId,
+            state = IndexRouteState.READY
+        )
+        return createIndexRoute(irspec)
+    }
 
     @Transactional
     override fun createIndexRoute(spec: IndexRouteSpec): IndexRoute {

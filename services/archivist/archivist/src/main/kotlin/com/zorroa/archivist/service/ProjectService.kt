@@ -5,8 +5,7 @@ import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.IndexRoute
-import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.IndexRouteState
+import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
@@ -149,6 +148,10 @@ class ProjectServiceImpl constructor(
                 spec.tier
             )
         )
+
+        createCryptoKey(project)
+        createStandardApiKeys(project)
+
         withAuth(InternalThreadAuthentication(project.id, setOf())) {
             val route = createIndexRoute(project, spec.size)
             projectCustomDao.updateIndexRoute(project.id, route)
@@ -158,11 +161,6 @@ class ProjectServiceImpl constructor(
 
             projectStatsDao.createQuotasEntry(project.id)
             projectStatsDao.createIngestTimeSeriesEntries(project.id)
-        }
-
-        txEvent.afterCommit(sync = true) {
-            createCryptoKey(project)
-            createStandardApiKeys(project)
         }
 
         enabledCache.invalidate(project.id)
@@ -178,15 +176,10 @@ class ProjectServiceImpl constructor(
     }
 
     private fun createIndexRoute(project: Project, size: ProjectSize): IndexRoute {
-        val mapping = properties.getString("archivist.es.default-mapping-type")
-        val ver = properties.getInt("archivist.es.default-mapping-version")
         return indexRoutingService.createIndexRoute(
-            IndexRouteSpec(
-                mapping, ver,
-                shards = size.shards,
-                replicas = size.replicas,
-                projectId = project.id,
-                state = IndexRouteState.READY
+            IndexRouteSimpleSpec(
+                size,
+                project.id
             )
         )
     }

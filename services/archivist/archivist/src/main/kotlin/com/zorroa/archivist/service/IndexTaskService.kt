@@ -9,6 +9,8 @@ import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.IndexTaskDao
 import com.zorroa.archivist.repository.IndexTaskJdbcDao
 import com.zorroa.archivist.repository.ProjectCustomDao
+import com.zorroa.archivist.security.InternalThreadAuthentication
+import com.zorroa.archivist.security.withAuth
 import com.zorroa.zmlp.service.security.getProjectId
 import com.zorroa.zmlp.service.security.getZmlpActor
 import org.elasticsearch.client.RequestOptions
@@ -50,7 +52,9 @@ class IndexTaskServiceImpl(
 ) : IndexTaskService {
 
     override fun createIndexMigrationTask(spec: IndexMigrationSpec): IndexTask {
-        val srcRoute = indexRouteDao.get(spec.srcIndexRouteId)
+        // If the source route is null then just use the project default
+        val srcRouteId = spec.srcIndexRouteId ?: indexRouteDao.getProjectRoute().id
+        val srcRoute = indexRouteDao.get(srcRouteId)
         val dstRoute = indexRouteDao.get(spec.dstIndexRouteId)
         val dstRouteClient = indexRoutingService.getClusterRestClient(dstRoute)
         indexRoutingService.setIndexRefreshInterval(dstRoute, "-1")
@@ -89,7 +93,7 @@ class IndexTaskServiceImpl(
         val indexTask = IndexTask(
             UUID.randomUUID(),
             getProjectId(),
-            spec.srcIndexRouteId,
+            srcRouteId,
             spec.dstIndexRouteId,
             "Reindex ${srcRoute.id} to ${dstRoute.id}",
             IndexTaskType.REINDEX,
@@ -180,34 +184,37 @@ class IndexTaskMonitor(
         val rest = indexRoutingService.getClusterRestClient(indexRoute)
         val esTask = rest.client.tasks().get(task.buildGetTaskRequest(), RequestOptions.DEFAULT).get()
 
-        // Flip the project into the new index.
-        if (esTask.isCompleted) {
-            // If this instance actually changes the state of the task, then the route is swapped.
-            if (indexTaskJdbcDao.updateState(task, IndexTaskState.FINISHED)) {
-                // Set the project's new index route.
-                if (projectCustomDao.updateIndexRoute(task.projectId, indexRoute)) {
+        return withAuth(InternalThreadAuthentication(indexRoute.projectId, setOf())) {
 
-                    // Close down the src index.
-                    val srcRoute = indexRoutingService.getIndexRoute(task.srcIndexRouteId)
-                    indexRoutingService.closeIndex(srcRoute)
-
-                    // reset the refresh
-                    indexRoutingService.setIndexRefreshInterval(indexRoute, "5s")
-
-                    logger.info(
-                        "Index route for project ${task.projectId} " +
-                            "swapped to ${indexRoute.id} / ${indexRoute.indexUrl}"
-                    )
-                    return true
-                } else {
-                    logger.warn("Unable to set new index route for project ${task.projectId}")
-                }
+            // Flip the project into the new index.
+            if (!esTask.isCompleted) {
+                logger.info("Still waiting on index task ${task.name} to complete.")
+                false
             }
-        } else {
-            logger.info("Still waiting on index task ${task.name} to complete.")
-        }
 
-        return false
+            // If this instance actually changes the state of the task, then the route gets swapped.
+            if (!indexTaskJdbcDao.updateState(task, IndexTaskState.FINISHED)) {
+                false
+            }
+
+            if (!projectCustomDao.updateIndexRoute(task.projectId, indexRoute)) {
+                logger.warn("Unable to set new index route for project ${task.projectId}")
+                false
+            }
+
+            // Close down the src index.
+            val srcRoute = indexRoutingService.getIndexRoute(task.srcIndexRouteId)
+            indexRoutingService.closeIndex(srcRoute)
+
+            // reset the refresh
+            indexRoutingService.setIndexRefreshInterval(indexRoute, "5s")
+
+            logger.info(
+                "Index route for project ${task.projectId} " +
+                    "swapped to ${indexRoute.id} / ${indexRoute.indexUrl}"
+            )
+            true
+        }
     }
 
     companion object {

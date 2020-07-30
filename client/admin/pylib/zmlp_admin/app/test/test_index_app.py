@@ -20,7 +20,7 @@ class IndexAppTests(unittest.TestCase):
     @patch.object(ZmlpClient, 'post')
     def test_create_index(self, post_patch):
         post_patch.return_value = mock_index_data
-        index = self.index_app.create_index(2, 1)
+        index = self.index_app.create_index(zmlp_admin.ProjectSize.LARGE)
         assert_mock_index(index)
 
     @patch.object(ZmlpClient, 'post')

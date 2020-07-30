@@ -33,10 +33,8 @@ class IndexTaskControllerTests : MockMvcTest() {
     @Test
     fun getEsTaskInfo() {
         val testSpec = IndexRouteSpec("test", 1)
-
-        val srcRoute = indexRouteDao.getProjectRoute()
         val route = indexRoutingService.createIndexRoute(testSpec)
-        val spec = IndexMigrationSpec(srcRoute.id, route.id)
+        val spec = IndexMigrationSpec(route.id)
         val task = indexTaskService.createIndexMigrationTask(spec)
 
         mvc.perform(
@@ -57,9 +55,8 @@ class IndexTaskControllerTests : MockMvcTest() {
     @Test
     fun testGetAllRunning() {
         val testSpec = IndexRouteSpec("test", 1)
-        val srcRoute = indexRouteDao.getProjectRoute()
         val route = indexRoutingService.createIndexRoute(testSpec)
-        val spec = IndexMigrationSpec(srcRoute.id, route.id)
+        val spec = IndexMigrationSpec(route.id)
         indexTaskService.createIndexMigrationTask(spec)
 
         mvc.perform(
@@ -80,10 +77,9 @@ class IndexTaskControllerTests : MockMvcTest() {
     @Test
     fun testGet() {
         val testSpec = IndexRouteSpec("test", 1)
-
         val srcRoute = indexRouteDao.getProjectRoute()
         val route = indexRoutingService.createIndexRoute(testSpec)
-        val spec = IndexMigrationSpec(srcRoute.id, route.id)
+        val spec = IndexMigrationSpec(route.id)
         val task = indexTaskService.createIndexMigrationTask(spec)
 
         mvc.perform(

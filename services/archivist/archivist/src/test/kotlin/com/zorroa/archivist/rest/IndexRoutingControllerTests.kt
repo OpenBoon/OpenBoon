@@ -4,10 +4,12 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.IndexMigrationSpec
 import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.IndexTaskState
 import com.zorroa.archivist.domain.IndexTaskType
+import com.zorroa.archivist.domain.ProjectSize
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.util.Json
@@ -59,6 +61,22 @@ class IndexRoutingControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testCreateV2() {
+        val spec = IndexRouteSimpleSpec(ProjectSize.LARGE)
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v2/index-routes")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(spec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.replicas", CoreMatchers.equalTo(1)))
+            .andExpect(jsonPath("$.shards", CoreMatchers.equalTo(5)))
+            .andReturn()
+    }
+
+    @Test
     fun testGet() {
         val route = indexRoutingService.createIndexRoute(testSpec)
         val rsp = mvc.perform(
@@ -96,7 +114,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
     fun testMigrate() {
         val srcRoute = indexRouteDao.getProjectRoute()
         val route = indexRoutingService.createIndexRoute(testSpec)
-        val spec = IndexMigrationSpec(srcRoute.id, route.id)
+        val spec = IndexMigrationSpec(route.id)
         val pid = getProjectId()
 
         mvc.perform(

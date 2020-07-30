@@ -25,7 +25,7 @@ class IndexTaskServiceTests : AbstractTest() {
         val dstRoute = indexRoutingService.createIndexRoute(testSpec)
         val srcRoute = indexRouteDao.getProjectRoute()
 
-        val spec = IndexMigrationSpec(srcRoute.id, dstRoute.id)
+        val spec = IndexMigrationSpec(dstRoute.id, srcRoute.id)
         val indexTask = indexTaskService.createIndexMigrationTask(spec)
 
         assertEquals(dstRoute.id, indexTask.dstIndexRouteId)
