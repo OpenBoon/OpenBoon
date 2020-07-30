@@ -50,7 +50,7 @@ resource "google_container_node_pool" "elasticsearch" {
     auto_upgrade = true
   }
   node_config {
-    machine_type = "custom-5-16384"
+    machine_type = "custom-6-16384"
     oauth_scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -239,9 +239,11 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
           resources {
             requests {
               memory = "512Mi"
+              cpu    = 1
             }
             limits {
               memory = "1Gi"
+              cpu    = 1.5
             }
           }
         }
