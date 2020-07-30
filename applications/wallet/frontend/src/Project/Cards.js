@@ -73,7 +73,7 @@ const ProjectCards = () => {
         <Card
           variant={CARD_VARIANTS.LIGHT}
           header={
-            <h3>
+            <h3 css={{ display: 'flex' }}>
               <KeySvg
                 height={constants.icons.regular}
                 color={colors.structure.zinc}

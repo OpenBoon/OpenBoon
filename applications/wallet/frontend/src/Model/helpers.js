@@ -47,6 +47,6 @@ export const onDelete = ({
 
   Router.push(
     '/[projectId]/models?action=delete-model-success',
-    `/${projectId}/models?action=delete-model-success`,
+    `/${projectId}/models`,
   )
 }

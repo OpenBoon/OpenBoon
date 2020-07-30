@@ -118,7 +118,7 @@ describe('<DataSourcesEditForm />', () => {
 
     expect(mockFn).toHaveBeenCalledWith(
       '/[projectId]/data-sources?action=edit-datasource-success',
-      `/${PROJECT_ID}/data-sources?action=edit-datasource-success`,
+      `/${PROJECT_ID}/data-sources`,
     )
   })
 

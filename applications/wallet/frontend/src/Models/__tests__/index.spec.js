@@ -15,7 +15,10 @@ describe('<Models />', () => {
   it('should render properly with no models', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models',
-      query: { projectId: PROJECT_ID, action: 'delete-model-success' },
+      query: {
+        projectId: PROJECT_ID,
+        action: 'delete-model-success',
+      },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -39,7 +42,11 @@ describe('<Models />', () => {
   it('should render properly with models', async () => {
     require('next/router').__setUseRouter({
       pathname: `/[projectId]/models`,
-      query: { projectId: PROJECT_ID, action: 'add-model-success' },
+      query: {
+        projectId: PROJECT_ID,
+        action: 'add-model-success',
+        modelName: 'My New Model',
+      },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -62,5 +69,45 @@ describe('<Models />', () => {
     })
 
     expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
+
+    expect(spy).toHaveBeenCalledWith('AssetLabelingAdd.Model', '"My New Model"')
+
+    spy.mockClear()
+  })
+
+  it('should render properly with models', async () => {
+    require('next/router').__setUseRouter({
+      pathname: `/[projectId]/models`,
+      query: {
+        projectId: PROJECT_ID,
+        action: 'add-model-success',
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: models,
+    })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Models />
+      </User>,
+    )
+
+    // eslint-disable-next-line no-proto
+    const spy = jest.spyOn(localStorage.__proto__, 'setItem')
+
+    await act(async () => {
+      component.root.findByProps({ children: 'Start Labeling' }).props.onClick()
+    })
+
+    expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
+
+    expect(spy).not.toHaveBeenCalledWith(
+      'AssetLabelingAdd.Model',
+      '"My New Model"',
+    )
+
+    spy.mockClear()
   })
 })

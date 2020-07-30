@@ -20,7 +20,7 @@ export const onSubmit = async ({
 
     Router.push(
       '/[projectId]/users?action=edit-user-success',
-      `/${projectId}/users?action=edit-user-success`,
+      `/${projectId}/users`,
     )
   } catch (response) {
     dispatch({
