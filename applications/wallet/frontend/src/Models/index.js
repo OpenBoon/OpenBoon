@@ -19,15 +19,19 @@ import ModelsRow from './Row'
 
 const Models = () => {
   const {
-    query: { projectId, action, modelName },
+    query: { projectId, action, modelId },
   } = useRouter()
 
   const [, setPanel] = useLocalStorageState({
     key: 'leftOpeningPanel',
   })
 
-  const [, setModel] = useLocalStorageState({
-    key: 'AssetLabelingAdd.Model',
+  const [, setModelId] = useLocalStorageState({
+    key: 'AssetLabelingAdd.modelId',
+  })
+
+  const [, setLabel] = useLocalStorageState({
+    key: 'AssetLabelingAdd.label',
   })
 
   return (
@@ -50,8 +54,9 @@ const Models = () => {
               <a
                 onClick={() => {
                   setPanel({ value: 'assetLabeling' })
-                  if (modelName) {
-                    setModel({ value: modelName })
+                  if (modelId) {
+                    setModelId({ value: modelId })
+                    setLabel({ value: '' })
                   }
                 }}
               >

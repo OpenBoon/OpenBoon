@@ -11,7 +11,7 @@ export const onSubmit = async ({
 
   try {
     const {
-      results: { name: modelName },
+      results: { id: modelId },
     } = await fetcher(`/api/v1/projects/${projectId}/models/`, {
       method: 'POST',
       body: JSON.stringify({ name, type }),
@@ -24,7 +24,7 @@ export const onSubmit = async ({
 
     const queryString = getQueryString({
       action: 'add-model-success',
-      modelName,
+      modelId,
     })
 
     Router.push(`/[projectId]/models${queryString}`, `/${projectId}/models`)

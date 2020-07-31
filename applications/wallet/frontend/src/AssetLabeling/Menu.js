@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
@@ -7,19 +8,26 @@ import { useLocalStorageState } from '../LocalStorage/helpers'
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
+import Modal from '../Modal'
+
+import { onDelete } from './helpers'
 
 const AssetLabelingMenu = ({
   projectId,
+  assetId,
   queryString,
   modelId,
   label,
   triggerReload,
+  setError,
 }) => {
-  const [, setLocalModel] = useLocalStorageState({
-    key: 'AssetLabelingAdd.Model',
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+
+  const [, setLocalModelId] = useLocalStorageState({
+    key: 'AssetLabelingAdd.modelId',
   })
   const [, setLocalLabel] = useLocalStorageState({
-    key: 'AssetLabelingAdd.Label',
+    key: 'AssetLabelingAdd.label',
   })
 
   return (
@@ -54,15 +62,58 @@ const AssetLabelingMenu = ({
             <Button
               variant={VARIANTS.MENU_ITEM}
               onClick={() => {
-                setLocalModel({ value: modelId })
+                setLocalModelId({ value: modelId })
                 setLocalLabel({ value: label })
+
                 triggerReload()
+
                 onClick()
               }}
               isDisabled={false}
             >
               Edit Label
             </Button>
+          </li>
+          <li>
+            <Button
+              variant={VARIANTS.MENU_ITEM}
+              onClick={() => {
+                setDeleteModalOpen(true)
+              }}
+              isDisabled={false}
+            >
+              Delete Label
+            </Button>
+            {isDeleteModalOpen && (
+              <Modal
+                title="Delete Label"
+                message="Deleting this label cannot be undone."
+                action="Delete Permanently"
+                onCancel={() => {
+                  setDeleteModalOpen(false)
+
+                  onClick()
+                }}
+                onConfirm={() => {
+                  setDeleteModalOpen(false)
+
+                  onDelete({
+                    modelId,
+                    label,
+                    projectId,
+                    assetId,
+                    setError,
+                  })
+
+                  // In the case where a user is deleting a Model/Label that matches
+                  // the current Model/Label value in the `AssetLabelingAdd` form,
+                  // this re-enables the submit button
+                  triggerReload()
+
+                  onClick()
+                }}
+              />
+            )}
           </li>
         </ul>
       )}
@@ -72,10 +123,12 @@ const AssetLabelingMenu = ({
 
 AssetLabelingMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
+  assetId: PropTypes.string.isRequired,
   queryString: PropTypes.string.isRequired,
   modelId: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   triggerReload: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
 }
 
 export default AssetLabelingMenu

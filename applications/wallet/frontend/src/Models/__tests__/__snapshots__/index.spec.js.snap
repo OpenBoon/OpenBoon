@@ -228,7 +228,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-15 {
+  .emotion-21 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -262,7 +262,7 @@ Array [
   font-weight: 400;
 }
 
-.emotion-14 {
+.emotion-20 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -289,7 +289,7 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-18 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -297,38 +297,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-12 tr {
+.emotion-18 tr {
   background-color: #252525;
 }
 
-.emotion-12 tr:nth-of-type(2n) {
+.emotion-18 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-12 tr:hover {
+.emotion-18 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-12 tr:hover .actions {
+.emotion-18 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-12 tr:hover td {
+.emotion-18 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-12 tr:hover td:first-of-type {
+.emotion-18 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-12 tr:hover td:last-of-type {
+.emotion-18 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-12 td {
+.emotion-18 td {
   max-width: calc(100vw / 3);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -340,11 +340,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-12 td:first-of-type {
+.emotion-18 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-12 td:last-of-type {
+.emotion-18 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -363,7 +363,7 @@ Array [
 }
 
 <div
-    className="emotion-15"
+    className="emotion-21"
   >
     <div
       className="emotion-1"
@@ -378,13 +378,13 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-20"
     >
       <div
-        className="emotion-13"
+        className="emotion-19"
       >
         <table
-          className="emotion-12"
+          className="emotion-18"
         >
           <thead>
             <tr>
@@ -466,6 +466,72 @@ Array [
               </td>
               <td>
                 zvi-console_cat_recognition-cat-recognition
+              </td>
+              <td
+                className="emotion-7"
+              >
+                <svg
+                  color="transparent"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </td>
+            </tr>
+            <tr
+              className="emotion-8"
+              onClick={[Function]}
+            >
+              <td>
+                <Link
+                  as="/76917058-b147-4556-987a-0a0f11e46d9b/models/c0e83460-6a25-1238-86fa-0242ac150002"
+                  href="/[projectId]/models/[modelId]"
+                  passHref={true}
+                >
+                  <a
+                    className="emotion-6"
+                  >
+                    Gundam
+                  </a>
+                </Link>
+              </td>
+              <td>
+                ZVI_LABEL_DETECTION
+              </td>
+              <td>
+                Gundam
+              </td>
+              <td
+                className="emotion-7"
+              >
+                <svg
+                  color="transparent"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </td>
+            </tr>
+            <tr
+              className="emotion-8"
+              onClick={[Function]}
+            >
+              <td>
+                <Link
+                  as="/76917058-b147-4556-987a-0a0f11e46d9b/models/c0e83462-6a25-1238-86fa-0242ac150002"
+                  href="/[projectId]/models/[modelId]"
+                  passHref={true}
+                >
+                  <a
+                    className="emotion-6"
+                  >
+                    Location
+                  </a>
+                </Link>
+              </td>
+              <td>
+                ZVI_LABEL_DETECTION
+              </td>
+              <td>
+                Location
               </td>
               <td
                 className="emotion-7"
