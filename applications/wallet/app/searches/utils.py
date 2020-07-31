@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from rest_framework.exceptions import ParseError
 
 from wallet.exceptions import InvalidRequestError
@@ -7,7 +8,7 @@ from wallet.utils import convert_base64_to_json
 from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
                               LabelsAnalysisSchema, TYPE_FIELD_MAPPING)
 from searches.filters import (ExistsFilter, FacetFilter, RangeFilter, LabelConfidenceFilter,
-                              TextContentFilter, SimilarityFilter)
+                              TextContentFilter, SimilarityFilter, LabelFilter)
 
 ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema]
 logger = logging.getLogger(__name__)
@@ -79,12 +80,16 @@ class FieldUtility(object):
             (dict): Returns the set of models/filters for the "labels" section of fields.
         """
         if not client:
-            logger.warn('No Client provided. Unable to retrieve models.')
+            logger.warning('No Client provided. Unable to retrieve models.')
             return {'labels': {}}
-        # query for all the model names, return with available filters
-        models = self._get_all_model_names(client)
+        # query for all the model names/ids, return with available filters
+        if settings.FEATURE_FLAGS['USE_MODEL_IDS_FOR_LABEL_FILTERS']:
+            # TODO: Remove flag once frontend is updated, this should be new default
+            model_key_names = self._get_all_model_ids(client)
+        else:
+            model_key_names = self._get_all_model_names(client)
         model_filters = {}
-        for model in models:
+        for model in model_key_names:
             model_filters[model] = ['label']
 
         return {'labels': model_filters}
@@ -97,6 +102,14 @@ class FieldUtility(object):
             names.append(model['name'])
         return names
 
+    def _get_all_model_ids(self, client):
+        path = '/api/v3/models/_search'
+        response = client.post(path, {})
+        names = []
+        for model in response.get('list', []):
+            names.append(model['id'])
+        return names
+
 
 class FilterBuddy(object):
 
@@ -105,7 +118,8 @@ class FilterBuddy(object):
                RangeFilter,
                LabelConfidenceFilter,
                TextContentFilter,
-               SimilarityFilter]
+               SimilarityFilter,
+               LabelFilter]
 
     def get_filter_from_request(self, request):
         """Gets Filter object from a requests querystring.

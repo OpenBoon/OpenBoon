@@ -1,5 +1,6 @@
 import pytest
 
+from django.test import override_settings
 from unittest.mock import Mock, patch
 from rest_framework.exceptions import ParseError
 
@@ -158,18 +159,36 @@ class TestFieldUtility:
         result = self.field_service.get_fields_from_mappings(properties['analysis'])
         assert result['zvi-label-detection'] == ['labelConfidence']
 
+    @patch.object(FieldUtility, '_get_all_model_ids', return_value=['A1', 'B1'])
     @patch.object(FieldUtility, '_get_all_model_names', return_value=['console', 'testing'])
-    def test_labels(self, model_mock, analysis_mappings):
+    def test_labels(self, model_mock, ids_mock, analysis_mappings):
         client = Mock()
         result = self.field_service.get_fields_from_mappings(analysis_mappings['mappings'], client)
         assert result['labels'] == {'console': ['label'], 'testing': ['label']}
+
+    @override_settings(FEATURE_FLAGS={'USE_MODEL_IDS_FOR_LABEL_FILTERS': True})
+    @patch.object(FieldUtility, '_get_all_model_ids', return_value=['A1', 'B1'])
+    @patch.object(FieldUtility, '_get_all_model_names', return_value=['console', 'testing'])
+    def test_labels_with_feature_flag(self, model_mock, ids_mock, analysis_mappings):
+        client = Mock()
+        result = self.field_service.get_fields_from_mappings(analysis_mappings['mappings'], client)
+        assert result['labels'] == {'A1': ['label'], 'B1': ['label']}
+
+    @override_settings(FEATURE_FLAGS={'USE_MODEL_IDS_FOR_LABEL_FILTERS': 'anything'})
+    @patch.object(FieldUtility, '_get_all_model_ids', return_value=['A1', 'B1'])
+    @patch.object(FieldUtility, '_get_all_model_names', return_value=['console', 'testing'])
+    def test_labels_with_feature_flag_string(self, model_mock, ids_mock, analysis_mappings):
+        client = Mock()
+        result = self.field_service.get_fields_from_mappings(analysis_mappings['mappings'],
+                                                             client)
+        assert result['labels'] == {'A1': ['label'], 'B1': ['label']}
 
     @patch.object(FieldUtility, '_get_all_model_names', return_value=['console', 'testing'])
     def test_labels_no_client(self, model_mock, analysis_mappings):
         result = self.field_service.get_fields_from_mappings(analysis_mappings['mappings'])
         assert result['labels'] == {}
 
-    def test_get_all_moddel_names_no_models(self):
+    def test_get_all_model_names_no_models(self):
         client = Mock(post=Mock(return_value={'list': []}))
         result = self.field_service._get_all_model_names(client)
         assert result == []

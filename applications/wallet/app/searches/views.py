@@ -171,6 +171,19 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                 }
             }
 
+        Labels:
+
+            {
+                'type': 'label',
+                'model_id': '$model_id_UUID',
+                'values': {
+                    'labels': ['Celeste', 'David'],
+                    'scope': 'all'
+                }
+            }
+
+            *Note:* The scope value can be set to 'all', 'train', or 'test'.
+
         """
         path = 'api/v3/assets'
         fields = ['id',
@@ -238,6 +251,20 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                 "type": "labelConfidence",
                 "attribute": "analysis.zvi-label-detection",
             }
+
+        Labels:
+
+            {
+                "type": "labels",
+                "model_id": "$model_id_UUID"
+            }
+
+        Similar to Facet aggregations, Label aggs can also be sorted and filtered with
+        the additional key/values:
+
+            "order": "asc" OR "desc"
+
+            "minimum_count": $integer
 
         """
         path = 'api/v3/assets/_search'
