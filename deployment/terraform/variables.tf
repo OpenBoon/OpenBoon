@@ -93,6 +93,11 @@ variable "wallet-superadmin" {
   default = "false"
 }
 
+variable "wallet-use-model-ids-for-label-filters" {
+  description = "Feature flag for label filters return in the Console"
+  default = "false"
+}
+
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"
