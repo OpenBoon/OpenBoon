@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
+import com.zorroa.archivist.security.getProjectId
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -26,7 +27,6 @@ class IndexRouteDaoTests : AbstractTest() {
     fun getTestSpec(): IndexRouteSpec {
         return IndexRouteSpec(
             "testing123", 1,
-            IndexRouteState.BUILDING,
             clusterId = indexClusterService.getNextAutoPoolCluster().id
         )
     }
@@ -69,6 +69,17 @@ class IndexRouteDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testGetProjectRouteById() {
+        val spec = getTestSpec()
+        indexRouteDao.create(spec)
+        val route = indexRouteDao.getProjectRoute(getProjectId())
+        assertEquals(esUrl, route.clusterUrl)
+        assertEquals("english_strict", route.mapping)
+        assertEquals(0, route.replicas)
+        assertEquals(1, route.shards)
+    }
+
+    @Test
     fun testGetAll() {
         val routes = indexRouteDao.getAll()
         assertEquals(1, routes.size)
@@ -87,7 +98,8 @@ class IndexRouteDaoTests : AbstractTest() {
         val filter = IndexRouteFilter(
             ids = listOf(route.id),
             mappings = listOf(route.mapping),
-            clusterIds = listOf(route.clusterId)
+            clusterIds = listOf(route.clusterId),
+            projectIds = listOf(getProjectId())
         )
 
         assertEquals(1, indexRouteDao.getAll(filter).size())
@@ -132,5 +144,16 @@ class IndexRouteDaoTests : AbstractTest() {
         val route = indexRouteDao.create(spec)
         assertTrue(indexRouteDao.delete(route))
         assertFalse(indexRouteDao.delete(route))
+    }
+
+    @Test
+    fun testSetState() {
+        val spec = getTestSpec()
+        val route = indexRouteDao.create(spec)
+        indexRouteDao.setState(route, IndexRouteState.CLOSED)
+        assertEquals(
+            IndexRouteState.CLOSED.ordinal,
+            jdbc.queryForObject("SELECT int_state FROM index_route WHERE pk_index_route=?", Int::class.java, route.id)
+        )
     }
 }
