@@ -20,7 +20,7 @@ class ProjectAppTests(unittest.TestCase):
     @patch.object(ZmlpClient, 'post')
     def test_create_project(self, post_patch):
         post_patch.return_value = mock_project
-        project = self.project_app.create_project('cats', size=zmlp_admin.ProjectSize.LARGE,
+        project = self.project_app.create_project('cats', size=zmlp_admin.IndexSize.LARGE,
                                                   tier=zmlp.ProjectTier.ESSENTIALS, pid="1234")
         assert_project(project)
 
@@ -41,4 +41,8 @@ mock_project = {
     'id': '12345',
     'name': 'mario',
     'tier': 'ESSENTIALS'
+}
+
+mock_index = {
+
 }
