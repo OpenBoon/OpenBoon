@@ -15,7 +15,7 @@ describe('<ProjectSwitcher />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: {} })
+    require('swr').__setMockUseSWRResponse({})
 
     const component = TestRenderer.create(<ProjectSwitcher projectId="" />)
 

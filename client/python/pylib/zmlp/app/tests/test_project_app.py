@@ -38,25 +38,3 @@ class ZmlpProjectAppTests(unittest.TestCase):
         assert isinstance(proj.time_modified, datetime.datetime)
         assert value['actorCreated'] == '123'
         assert value['actorModified'] == '456'
-
-    @patch.object(ZmlpClient, 'get')
-    def test_get_project_settings(self, get_patch):
-        value = {
-            'defaultPipelineId': 'abc',
-            'defaultIndexRouteId': '123'
-        }
-        get_patch.return_value = value
-        settings = self.app.projects.get_project_settings()
-        assert value['defaultPipelineId'] == settings['defaultPipelineId']
-        assert value['defaultIndexRouteId'] == settings['defaultIndexRouteId']
-
-    @patch.object(ZmlpClient, 'put')
-    def test_set_project_settings(self, put_patch):
-        updated = {
-            'defaultPipelineId': 'abc',
-            'defaultIndexRouteId': '123'
-        }
-        put_patch.return_value = updated
-        settings = self.app.projects.update_project_settings(updated)
-        assert updated['defaultPipelineId'] == settings['defaultPipelineId']
-        assert updated['defaultIndexRouteId'] == settings['defaultIndexRouteId']

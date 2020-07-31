@@ -13,16 +13,6 @@ jest.mock('../../Projects', () => 'Projects')
 jest.mock('../../Layout', () => 'Layout')
 
 describe('<Authentication />', () => {
-  Object.defineProperty(window, 'gapi', {
-    writable: true,
-    value: {
-      load: (_, cb) => cb(),
-      auth2: {
-        init: () => ({ signIn: noop, signOut: noop }),
-      },
-    },
-  })
-
   it('should render properly when user is logged out', async () => {
     const mockFn = jest.fn()
 
@@ -53,6 +43,8 @@ describe('<Authentication />', () => {
   })
 
   it('should render properly if user is logged out on AUTHENTICATION_LESS_ROUTES', async () => {
+    require('swr').__setMockUseSWRResponse({ data: {} })
+
     const component = TestRenderer.create(
       <User initialUser={{}}>
         <Authentication route="/create-account">Hello World!</Authentication>
@@ -67,6 +59,22 @@ describe('<Authentication />', () => {
   })
 
   it('should load the Google SDK', async () => {
+    Object.defineProperty(window, 'gapi', {
+      writable: true,
+      value: {
+        load: (_, cb) => cb(),
+        auth2: {
+          init: () =>
+            new Promise((resolve, reject) => {
+              resolve({ signIn: noop, signOut: noop })
+              reject()
+            }),
+        },
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: {} })
+
     const component = TestRenderer.create(
       <User initialUser={{}}>
         <Authentication route="/">Hello World!</Authentication>
@@ -77,6 +85,8 @@ describe('<Authentication />', () => {
     await act(async () => {})
 
     expect(component.root.findByType('Login').props.hasGoogleLoaded).toBe(true)
+
+    window.gapi = undefined
   })
 
   it('should render properly when user needs to approve new policies', async () => {
@@ -112,11 +122,14 @@ describe('<Authentication />', () => {
     )
 
     expect(mockRouterPush).toHaveBeenCalledWith('/')
+
     expect(component.toJSON()).toEqual(null)
   })
 
   it('should render properly when the Google SDK is blocked', async () => {
     window.gapi = undefined
+
+    require('swr').__setMockUseSWRResponse({ data: {} })
 
     const component = TestRenderer.create(
       <User initialUser={{}}>

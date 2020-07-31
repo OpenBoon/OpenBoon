@@ -142,7 +142,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
                       height: THUMBNAIL_SIZE,
                     }}
                   >
-                    <AssetsThumbnail asset={asset} />
+                    <AssetsThumbnail asset={asset} isActive />
                   </div>
                 ))}
             </div>

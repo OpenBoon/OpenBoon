@@ -1,4 +1,4 @@
-import { fetcher, getQueryString, getPathname } from '../helpers'
+import { fetcher, revalidate, getQueryString, getPathname } from '../helpers'
 
 describe('<Fetch /> helpers', () => {
   describe('fetcher()', () => {
@@ -54,6 +54,14 @@ describe('<Fetch /> helpers', () => {
 
         expect(mockMutate).toHaveBeenCalledWith({})
       }
+    })
+  })
+
+  describe('revalidate()', () => {
+    it('should fetch data', async () => {
+      await revalidate({ key: '/url' })
+
+      expect(fetch.mock.calls[0][0]).toEqual('/url')
     })
   })
 

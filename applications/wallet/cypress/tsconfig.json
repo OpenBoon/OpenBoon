@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "allowJs": true,
+    "baseUrl": "./node_modules",
+    "types": ["cypress"]
+  },
+  "include": ["**/*.*"]
+}

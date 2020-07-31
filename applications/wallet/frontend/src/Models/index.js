@@ -6,6 +6,8 @@ import Link from 'next/link'
 
 import { spacing } from '../Styles'
 
+import { useLocalStorageState } from '../LocalStorage/helpers'
+
 import PageTitle from '../PageTitle'
 import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
@@ -17,8 +19,20 @@ import ModelsRow from './Row'
 
 const Models = () => {
   const {
-    query: { projectId, action },
+    query: { projectId, action, modelId },
   } = useRouter()
+
+  const [, setPanel] = useLocalStorageState({
+    key: 'leftOpeningPanel',
+  })
+
+  const [, setModelId] = useLocalStorageState({
+    key: 'AssetLabelingAdd.modelId',
+  })
+
+  const [, setLabel] = useLocalStorageState({
+    key: 'AssetLabelingAdd.label',
+  })
 
   return (
     <>
@@ -34,14 +48,16 @@ const Models = () => {
             Model created.{' '}
             <Link
               href="/[projectId]/visualizer"
-              // TODO: link to the Asset Labeling tab open
-              // with the correct model selected
               as={`/${projectId}/visualizer`}
               passHref
             >
               <a
                 onClick={() => {
-                  localStorage.setItem('leftOpeningPanel', '"assetLabeling"')
+                  setPanel({ value: 'assetLabeling' })
+                  if (modelId) {
+                    setModelId({ value: modelId })
+                    setLabel({ value: '' })
+                  }
                 }}
               >
                 Start Labeling

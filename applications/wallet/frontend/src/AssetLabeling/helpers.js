@@ -1,9 +1,11 @@
+import { mutate } from 'swr'
+
 import { fetcher } from '../Fetch/helpers'
 
-export const getSubmitText = ({ state }) => {
+export const getSubmitText = ({ state, existingLabel }) => {
   const { success, isLoading } = state
 
-  if (success && !isLoading) {
+  if ((success && !isLoading) || existingLabel) {
     return 'Label Saved'
   }
 
@@ -14,35 +16,64 @@ export const getSubmitText = ({ state }) => {
   return 'Save Label'
 }
 
+const getLabelAction = ({ body }) => {
+  if (body.add_labels && body.remove_labels) {
+    return 'update'
+  }
+
+  if (body.remove_labels) {
+    return 'delete'
+  }
+
+  return 'add'
+}
+
 export const onSubmit = async ({
   dispatch,
-  state: { model, label },
+  state: { modelId, label },
+  labels,
   projectId,
   assetId,
-  setLocalModel,
+  setLocalModelId,
   setLocalLabel,
 }) => {
   dispatch({ isLoading: true })
 
+  const existingModel = labels.find(
+    ({ modelId: labelModel }) => labelModel === modelId,
+  )
+
+  const body = {}
+
+  if (existingModel) {
+    body.remove_labels = [{ assetId, label: existingModel.label }]
+  }
+
+  if (label !== '') {
+    body.add_labels = [{ assetId, label }]
+  }
+
+  const labelAction = getLabelAction({ body })
+
   try {
-    await fetcher(`/api/v1/projects/${projectId}/models/${model}/add_labels/`, {
-      method: 'POST',
-      body: JSON.stringify({
-        add_labels: [
-          {
-            assetId,
-            label,
-          },
-        ],
-      }),
-    })
+    await fetcher(
+      `/api/v1/projects/${projectId}/models/${modelId}/${labelAction}_labels/`,
+      {
+        method: labelAction === 'delete' ? 'DELETE' : 'POST',
+        body: JSON.stringify(body),
+      },
+    )
+
+    mutate(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
     dispatch({
       success: true,
       isLoading: false,
       errors: {},
     })
-    setLocalModel({ value: model })
+
+    setLocalModelId({ value: modelId })
+
     setLocalLabel({ value: label })
   } catch (response) {
     try {
@@ -61,5 +92,36 @@ export const onSubmit = async ({
         errors: { global: 'Something went wrong. Please try again.' },
       })
     }
+  }
+}
+
+export const onDelete = async ({
+  modelId,
+  label,
+  setError,
+  projectId,
+  assetId,
+}) => {
+  try {
+    await fetcher(
+      `/api/v1/projects/${projectId}/models/${modelId}/delete_labels/`,
+      {
+        method: 'DELETE',
+        body: JSON.stringify({
+          remove_labels: [
+            {
+              assetId,
+              label,
+            },
+          ],
+        }),
+      },
+    )
+
+    mutate(`/api/v1/projects/${projectId}/assets/${assetId}/`)
+
+    setError('')
+  } catch (response) {
+    setError('Something went wrong. Please try again.')
   }
 }

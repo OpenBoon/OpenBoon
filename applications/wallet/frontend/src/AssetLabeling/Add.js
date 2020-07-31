@@ -1,6 +1,7 @@
 import { useReducer } from 'react'
-import useSWR from 'swr'
 import PropTypes from 'prop-types'
+
+import modelShape from '../Model/shape'
 
 import { spacing } from '../Styles'
 
@@ -8,6 +9,7 @@ import { useLocalStorageState } from '../LocalStorage/helpers'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Select from '../Select'
 
 import { onSubmit, getSubmitText } from './helpers'
@@ -16,41 +18,56 @@ const INITIAL_STATE = {
   success: false,
   isLoading: false,
   errors: {},
+  reloadKey: 0,
 }
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const AssetLabelingAdd = ({ projectId, assetId }) => {
-  const {
-    data: { results: models },
-  } = useSWR(`/api/v1/projects/${projectId}/models/`)
-
-  const [localModel, setLocalModel] = useLocalStorageState({
-    key: 'AssetLabeling.Add.Model',
+const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
+  const [localModelId, setLocalModelId] = useLocalStorageState({
+    key: 'AssetLabelingAdd.modelId',
     initialValue: '',
   })
   const [localLabel, setLocalLabel] = useLocalStorageState({
-    key: 'AssetLabeling.Add.Label',
+    key: 'AssetLabelingAdd.label',
     initialValue: '',
   })
 
+  // Prevents user from saving non-existent model where model/label
+  // are added to local storage and user switches projects
+  const modelExists = localModelId
+    ? models.find(({ id }) => id === localModelId)
+    : false
+
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL_STATE,
-    model: localModel || '',
-    label: localLabel || '',
+    modelId: modelExists ? localModelId : '',
+    label: modelExists ? localLabel : '',
   })
 
   const options = models.map(({ name, id }) => ({ value: id, label: name }))
 
+  const existingLabel = labels.find(
+    ({ modelId, label }) => modelId === state.modelId && label === state.label,
+  )
+
   return (
     <div css={{ padding: spacing.normal }}>
+      {state.errors.global && (
+        <div css={{ paddingBottom: spacing.normal }}>
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            {state.errors.global}
+          </FlashMessage>
+        </div>
+      )}
       <Form style={{ width: '100%', padding: 0 }}>
         <Select
+          key={state.reloadKey}
           label="Model"
           options={options}
-          defaultValue={localModel}
+          defaultValue={state.modelId}
           onChange={({ value }) => {
-            dispatch({ model: value })
+            dispatch({ modelId: value, success: false })
           }}
           isRequired={false}
           style={{ width: '100%' }}
@@ -61,8 +78,10 @@ const AssetLabelingAdd = ({ projectId, assetId }) => {
           variant={INPUT_VARIANTS.SECONDARY}
           label="Label"
           type="text"
-          value={state.label || localLabel}
-          onChange={({ target: { value } }) => dispatch({ label: value })}
+          value={state.label}
+          onChange={({ target: { value } }) =>
+            dispatch({ label: value, success: false })
+          }
           hasError={state.errors.label !== undefined}
           errorMessage={state.errors.label}
           style={{ width: '100%' }}
@@ -71,12 +90,21 @@ const AssetLabelingAdd = ({ projectId, assetId }) => {
         <div css={{ display: 'flex' }}>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
-            onClick={() => dispatch({ model: localModel, label: localLabel })}
+            onClick={() =>
+              dispatch({
+                modelId: localModelId,
+                label: localLabel,
+                reloadKey: state.reloadKey + 1,
+              })
+            }
             style={{ flex: 1, margin: 0 }}
             isDisabled={
-              !localModel ||
+              !localModelId ||
               !localLabel ||
-              (localLabel && localLabel === state.label)
+              (localModelId &&
+                localLabel &&
+                localModelId === state.modelId &&
+                localLabel === state.label)
             }
           >
             Cancel
@@ -89,20 +117,23 @@ const AssetLabelingAdd = ({ projectId, assetId }) => {
               onSubmit({
                 dispatch,
                 state,
+                labels,
                 projectId,
                 assetId,
-                setLocalModel,
+                setLocalModelId,
                 setLocalLabel,
               })
             }
             isDisabled={
-              (!state.model && !localModel) ||
+              (!state.modelId && !localModelId) ||
               (!state.label && !localLabel) ||
-              state.isLoading
+              state.isLoading ||
+              (state.success && !state.isLoading) ||
+              !!existingLabel
             }
             style={{ flex: 1, margin: 0 }}
           >
-            {getSubmitText({ state })}
+            {getSubmitText({ state, existingLabel })}
           </Button>
         </div>
       </Form>
@@ -113,6 +144,13 @@ const AssetLabelingAdd = ({ projectId, assetId }) => {
 AssetLabelingAdd.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
+  models: PropTypes.arrayOf(modelShape).isRequired,
+  labels: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      modelId: PropTypes.string,
+    }),
+  ).isRequired,
 }
 
 export default AssetLabelingAdd

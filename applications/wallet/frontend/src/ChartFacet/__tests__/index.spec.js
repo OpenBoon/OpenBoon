@@ -250,6 +250,8 @@ describe('<ChartFacet />', () => {
       query: { projectId: PROJECT_ID },
     })
 
+    require('swr').__setMockUseSWRResponse({ data: aggregate })
+
     const chart = {
       id: CHART_ID,
       type: 'facet',
@@ -279,6 +281,8 @@ describe('<ChartFacet />', () => {
       pathname: '/[projectId]/visualizer/data-visualization',
       query: { projectId: PROJECT_ID },
     })
+
+    require('swr').__setMockUseSWRResponse({ data: aggregate })
 
     const chart = {
       id: CHART_ID,

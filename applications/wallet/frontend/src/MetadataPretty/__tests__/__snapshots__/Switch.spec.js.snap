@@ -1580,20 +1580,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              <video
+              <img
+                alt="FatManOnABike1914.mp4"
                 className="emotion-5"
-                controlsList="nodownload nofullscreen noremoteplayback"
-                disablePictureInPicture={true}
-                muted={true}
-                playsInline={true}
-                poster="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
-                preload="none"
-              >
-                <source
-                  src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
-                  type="video/mp4"
-                />
-              </video>
+                src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
+              />
             </a>
             <button
               aria-label="Find similar images"

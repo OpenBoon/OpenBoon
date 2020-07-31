@@ -113,7 +113,7 @@ describe('<Authentication /> helpers', () => {
       })
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith(
-        'Your account has been locked due to too many failed login attempts.'
+        'Your account has been locked due to too many failed login attempts.',
       )
     })
 
@@ -144,7 +144,7 @@ describe('<Authentication /> helpers', () => {
 
       await logout({
         googleAuth: { signOut: mockSignOut },
-      })({ redirectUrl: '/' })
+      })({ redirectUrl: '/', redirectAs: '/' })
 
       expect(mockSignOut).toHaveBeenCalled()
 
@@ -160,7 +160,7 @@ describe('<Authentication /> helpers', () => {
         method: 'POST',
       })
 
-      expect(mockRouterPush).toHaveBeenCalledWith('/')
+      expect(mockRouterPush).toHaveBeenCalledWith('/', '/')
     })
   })
 })

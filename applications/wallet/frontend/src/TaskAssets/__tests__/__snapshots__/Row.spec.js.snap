@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TaskAssetsRow /> should render properly 1`] = `
-.emotion-14 {
+.emotion-11 {
   background-color: #2e2e2e;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-11 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,7 +17,7 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-11:hover {
+.emotion-8:hover {
   cursor: pointer;
   background-color: #4a4a4a;
 }
@@ -27,85 +27,17 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   text-align: center;
 }
 
-.emotion-6 {
+.emotion-3 {
   width: 100px;
   min-width: 100px;
   height: 100px;
 }
 
-.emotion-5 {
+.emotion-2 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
-}
-
-.emotion-5:hover {
-  border: 4px solid #ffffff;
-}
-
-.emotion-5:hover a,
-.emotion-5:hover button {
-  opacity: 1;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background: #2e2e2e;
-  overflow: hidden;
-  border-radius: 0;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
 }
 
 .emotion-1 {
@@ -114,115 +46,7 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   object-fit: contain;
 }
 
-.emotion-3 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  opacity: 0;
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-3:hover,
-.emotion-3.focus-visible:focus {
-  opacity: 1;
-  background-color: #3b3b3b;
-}
-
 .emotion-4 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  opacity: 0;
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  padding: 4px;
-  background-color: #3b3b3b80;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4:hover,
-.emotion-4.focus-visible:focus {
-  opacity: 1;
-  background-color: #3b3b3b;
-}
-
-.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -236,12 +60,12 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   padding-left: 12px;
 }
 
-.emotion-10 {
+.emotion-7 {
   width: 40px;
   text-align: center;
 }
 
-.emotion-9 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -276,53 +100,53 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   padding: 0;
 }
 
-.emotion-9:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-9[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-9:hover,
-.emotion-9.focus-visible:focus {
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-9:hover svg,
-.emotion-9.focus-visible:focus svg {
+.emotion-6:hover svg,
+.emotion-6.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-9[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-8 {
+.emotion-5 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-13 {
+.emotion-10 {
   height: 600px;
   overflow: auto;
 }
 
-.emotion-12 {
+.emotion-9 {
   background-color: #191919;
 }
 
-.emotion-12 pre {
+.emotion-9 pre {
   padding: 16px;
 }
 
 <div
-  className="emotion-14"
+  className="emotion-11"
 >
   <div
-    className="emotion-11"
+    className="emotion-8"
     onClick={[Function]}
   >
     <div
@@ -331,65 +155,34 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
       42
     </div>
     <div
-      className="emotion-6"
+      className="emotion-3"
     >
       <div
-        className="emotion-5"
+        className="emotion-2"
       >
-        <a
-          className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          <img
-            alt="test_document.docx"
-            className="emotion-1"
-            src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
-          />
-        </a>
-        <button
-          aria-label="Find similar images"
-          className="emotion-3"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            color="#ffffff"
-            data-file-name="similarity.svg"
-            height={20}
-          />
-        </button>
-        <a
-          className="emotion-4"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          <svg
-            color="#ffffff"
-            data-file-name="search.svg"
-            height={20}
-          />
-        </a>
+        <img
+          alt="test_document.docx"
+          className="emotion-1"
+          src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL/files/category/web-proxy/name/web-proxy.jpg/"
+        />
       </div>
     </div>
     <h4
-      className="emotion-7"
+      className="emotion-4"
     >
       test_document.docx
     </h4>
     <div
-      className="emotion-10"
+      className="emotion-7"
     >
       <button
         aria-label="Collapse Section"
-        className="emotion-9"
+        className="emotion-6"
         onClick={[Function]}
         type="button"
       >
         <svg
-          className="emotion-8"
+          className="emotion-5"
           data-file-name="chevron.svg"
           height={20}
         />
@@ -397,10 +190,10 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-13"
+    className="emotion-10"
   >
     <div
-      className="emotion-12"
+      className="emotion-9"
     >
       <div
         dangerouslySetInnerHTML={
@@ -529,7 +322,19 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
   },
   \\"<span class=\\"__json-key__\\">similarity</span>\\": {
     \\"<span class=\\"__json-key__\\">simhash</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP\\"</span>
-  }
+  },
+  \\"<span class=\\"__json-key__\\">labels</span>\\": [
+    {
+      \\"<span class=\\"__json-key__\\">label</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"Space\\"</span>,
+      \\"<span class=\\"__json-key__\\">modelId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"621bf774-89d9-1244-9596-d6df43f1ede5\\"</span>,
+      \\"<span class=\\"__json-key__\\">scope</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"TRAIN\\"</span>
+    },
+    {
+      \\"<span class=\\"__json-key__\\">label</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"Outside\\"</span>,
+      \\"<span class=\\"__json-key__\\">modelId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"621bf774-89d9-9596-1244-d6df43f1ede5\\"</span>,
+      \\"<span class=\\"__json-key__\\">scope</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"TRAIN\\"</span>
+    }
+  ]
 }</pre>",
           }
         }

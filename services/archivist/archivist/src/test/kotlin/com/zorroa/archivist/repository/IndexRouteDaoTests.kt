@@ -65,7 +65,7 @@ class IndexRouteDaoTests : AbstractTest() {
         assertEquals(esUrl, route.clusterUrl)
         assertEquals("english_strict", route.mapping)
         assertEquals(0, route.replicas)
-        assertEquals(2, route.shards)
+        assertEquals(1, route.shards)
     }
 
     @Test

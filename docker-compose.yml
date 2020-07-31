@@ -48,6 +48,13 @@ services:
       MINIO_URL: http://minio:9000
       MINIO_DEFAULT_PROTOCOL: http
 
+  eshq:
+    image: elastichq/elasticsearch-hq
+    ports:
+      - "5001:5000"
+    depends_on:
+      - es1
+
   # API Gateway
   api-gateway:
     image: zmlp/apigateway:latest
