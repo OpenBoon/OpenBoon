@@ -77,8 +77,6 @@ class ApiKey(
     val projectId: UUID,
     @ApiModelProperty("The key's username")
     val accessKey: String,
-    @ApiModelProperty("The key's password, this field is not populated, you must request a signing key.")
-    val secretKey: String,
     @ApiModelProperty("The name of the key.")
     val name: String,
     @ApiModelProperty("The key's permissions.")

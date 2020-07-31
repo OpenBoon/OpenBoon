@@ -131,11 +131,13 @@ class ApiKeyControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(jsonPath("$.name", CoreMatchers.equalTo("standard-key")))
+            .andExpect(jsonPath("$.secretKey").doesNotExist())
             .andExpect(
                 jsonPath(
                     "$.permissions[0]",
                     CoreMatchers.containsString("AssetsRead")
                 )
+
             )
             .andReturn()
     }
