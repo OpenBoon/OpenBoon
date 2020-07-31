@@ -175,6 +175,10 @@ resource "kubernetes_deployment" "wallet" {
             name = "SUPERADMIN"
             value = var.superadmin
           }
+          env {
+            name = "USE_MODEL_IDS_FOR_LABEL_FILTERS"
+            value = var.use-model-ids-for-label-filters
+          }
         }
       }
     }

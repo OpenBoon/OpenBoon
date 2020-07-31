@@ -254,25 +254,26 @@ module "analyst" {
 }
 
 module "wallet" {
-  source                  = "./modules/wallet"
-  project                 = var.project
-  container-cluster-name  = module.gke-cluster.name
-  image-pull-secret       = kubernetes_secret.dockerhub.metadata[0].name
-  pg_host                 = module.postgres.ip-address
-  sql-instance-name       = module.postgres.instance-name
-  sql-service-account-key = module.postgres.sql-service-account-key
-  sql-connection-name     = module.postgres.connection-name
-  zmlp-api-url            = "http://${module.api-gateway.ip-address}"
-  smtp-password           = var.smtp-password
-  google-oauth-client-id  = var.google-oauth-client-id
-  environment             = var.environment
-  inception-key-b64       = local.inception-key-b64
-  domain                  = var.wallet-domain
-  container-tag           = var.container-tag
-  browsable               = var.wallet-browsable-api
-  marketplace-project     = "zorroa-public"
-  marketplace-credentials = var.marketplace-credentials
-  superadmin              = var.wallet-superadmin
+  source                          = "./modules/wallet"
+  project                         = var.project
+  container-cluster-name          = module.gke-cluster.name
+  image-pull-secret               = kubernetes_secret.dockerhub.metadata[0].name
+  pg_host                         = module.postgres.ip-address
+  sql-instance-name               = module.postgres.instance-name
+  sql-service-account-key         = module.postgres.sql-service-account-key
+  sql-connection-name             = module.postgres.connection-name
+  zmlp-api-url                    = "http://${module.api-gateway.ip-address}"
+  smtp-password                   = var.smtp-password
+  google-oauth-client-id          = var.google-oauth-client-id
+  environment                     = var.environment
+  inception-key-b64               = local.inception-key-b64
+  domain                          = var.wallet-domain
+  container-tag                   = var.container-tag
+  browsable                       = var.wallet-browsable-api
+  marketplace-project             = "zorroa-public"
+  marketplace-credentials         = var.marketplace-credentials
+  superadmin                      = var.wallet-superadmin
+  use-model-ids-for-label-filters = var.wallet-use-model-ids-for-label-filters
 }
 
 module "ml-bbq" {
