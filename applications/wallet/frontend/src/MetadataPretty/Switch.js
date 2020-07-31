@@ -34,7 +34,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
   if (typeof value === 'object') {
     switch (value.type) {
       case 'labels':
-        return <MetadataPrettyLabels name={name} value={value} />
+        return <MetadataPrettyLabels name={name} value={value} path={path} />
 
       case 'content':
         return <MetadataPrettyContent name={name} value={value} />
@@ -42,7 +42,7 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
       case 'similarity':
         return (
           <SuspenseBoundary>
-            <MetadataPrettySimilarity name={name} value={value} />
+            <MetadataPrettySimilarity name={name} value={value} path={path} />
           </SuspenseBoundary>
         )
 

@@ -8,7 +8,7 @@ import MetadataPrettyNoResults from './NoResults'
 import MetadataPrettyLabelsQuery from './LabelsQuery'
 import MetadataPrettyLabelsContent from './LabelsContent'
 
-const MetadataPrettyLabels = ({ name, value: { predictions } }) => {
+const MetadataPrettyLabels = ({ name, value: { predictions }, path }) => {
   if (predictions.length === 0) {
     return <MetadataPrettyNoResults name={name} />
   }
@@ -34,7 +34,7 @@ const MetadataPrettyLabels = ({ name, value: { predictions } }) => {
         }}
       >
         <SuspenseBoundary>
-          <MetadataPrettyLabelsQuery name={name} />
+          <MetadataPrettyLabelsQuery name={name} path={path} />
         </SuspenseBoundary>
       </div>
     )
@@ -48,6 +48,7 @@ MetadataPrettyLabels.propTypes = {
   value: PropTypes.shape({
     predictions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   }).isRequired,
+  path: PropTypes.string.isRequired,
 }
 
 export default MetadataPrettyLabels

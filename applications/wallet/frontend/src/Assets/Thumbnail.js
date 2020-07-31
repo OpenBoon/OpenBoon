@@ -22,6 +22,7 @@ const AssetsThumbnail = ({
     videoLength,
   },
   isActive,
+  attribute,
 }) => {
   const { filename } = source || {}
 
@@ -119,6 +120,7 @@ const AssetsThumbnail = ({
                 assetId: id,
                 selectedId,
                 query,
+                attribute,
               },
             })
           }}
@@ -177,6 +179,10 @@ const AssetsThumbnail = ({
   )
 }
 
+AssetsThumbnail.defaultProps = {
+  attribute: 'analysis.zvi-image-similarity',
+}
+
 AssetsThumbnail.propTypes = {
   asset: PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -194,6 +200,7 @@ AssetsThumbnail.propTypes = {
     videoProxyUrl: PropTypes.string,
   }).isRequired,
   isActive: PropTypes.bool.isRequired,
+  attribute: PropTypes.string,
 }
 
 export default AssetsThumbnail
