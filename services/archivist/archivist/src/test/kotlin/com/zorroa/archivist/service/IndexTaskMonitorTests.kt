@@ -33,7 +33,7 @@ class IndexTaskMonitorTests : AbstractTest() {
         val dstRoute = indexRoutingService.createIndexRoute(testSpec)
         val srcRoute = indexRouteDao.getProjectRoute()
 
-        val spec = IndexToIndexMigrationSpec(dstRoute.id)
+        val spec = IndexToIndexMigrationSpec(srcRoute.id, dstRoute.id)
         indexTaskService.createIndexMigrationTask(spec)
 
         var completed = false

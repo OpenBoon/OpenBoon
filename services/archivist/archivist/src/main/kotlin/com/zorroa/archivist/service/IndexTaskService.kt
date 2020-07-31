@@ -89,9 +89,7 @@ class IndexTaskServiceImpl(
     }
 
     override fun createIndexMigrationTask(spec: IndexToIndexMigrationSpec): IndexTask {
-        // If the source route is null then just use the project default
-        val srcRouteId = spec.srcIndexRouteId ?: indexRouteDao.getProjectRoute().id
-        val srcRoute = indexRouteDao.get(srcRouteId)
+        val srcRoute = indexRouteDao.get(spec.srcIndexRouteId)
         val dstRoute = indexRouteDao.get(spec.dstIndexRouteId)
         val dstRouteClient = indexRoutingService.getClusterRestClient(dstRoute)
         indexRoutingService.setIndexRefreshInterval(dstRoute, "-1")
@@ -130,8 +128,8 @@ class IndexTaskServiceImpl(
         val indexTask = IndexTask(
             UUID.randomUUID(),
             dstRoute.projectId,
-            srcRouteId,
-            spec.dstIndexRouteId,
+            srcRoute.id,
+            dstRoute.id,
             "Reindex ${srcRoute.id} to ${dstRoute.id}",
             IndexTaskType.REINDEX,
             IndexTaskState.RUNNING,
