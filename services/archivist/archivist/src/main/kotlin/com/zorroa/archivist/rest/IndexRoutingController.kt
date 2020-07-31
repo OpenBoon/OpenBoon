@@ -1,6 +1,6 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.domain.IndexMigrationSpec
+import com.zorroa.archivist.domain.IndexToIndexMigrationSpec
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSimpleSpec
@@ -61,7 +61,7 @@ class IndexRoutingController @Autowired constructor(
     }
 
     @PostMapping(value = ["/api/v1/index-routes/_migrate"])
-    fun migrate(@RequestBody spec: IndexMigrationSpec): IndexTask {
+    fun migrate(@RequestBody spec: IndexToIndexMigrationSpec): IndexTask {
         return indexTaskService.createIndexMigrationTask(spec)
     }
 }

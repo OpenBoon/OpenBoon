@@ -2,11 +2,10 @@ package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.MockMvcTest
-import com.zorroa.archivist.domain.IndexMigrationSpec
+import com.zorroa.archivist.domain.IndexToIndexMigrationSpec
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.IndexTaskState
 import com.zorroa.archivist.domain.IndexTaskType
 import com.zorroa.archivist.domain.ProjectSize
@@ -36,8 +35,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
     }
 
     val testSpec = IndexRouteSpec(
-        "test", 1,
-        shards = 1, replicas = 0, state = IndexRouteState.BUILDING
+        "test", 1, shards = 1, replicas = 0
     )
 
     @Test
@@ -114,7 +112,7 @@ class IndexRoutingControllerTests : MockMvcTest() {
     fun testMigrate() {
         val srcRoute = indexRouteDao.getProjectRoute()
         val route = indexRoutingService.createIndexRoute(testSpec)
-        val spec = IndexMigrationSpec(route.id)
+        val spec = IndexToIndexMigrationSpec(route.id)
         val pid = getProjectId()
 
         mvc.perform(
