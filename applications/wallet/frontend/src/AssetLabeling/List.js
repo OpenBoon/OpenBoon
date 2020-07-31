@@ -82,7 +82,7 @@ const AssetLabelingList = ({
                 fontWeight: typography.weight.medium,
                 '&:nth-last-of-type(2)': { width: '100%' },
                 ':hover': {
-                  backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
+                  backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
                 },
                 td: {
                   borderTop: constants.borders.regular.smoke,

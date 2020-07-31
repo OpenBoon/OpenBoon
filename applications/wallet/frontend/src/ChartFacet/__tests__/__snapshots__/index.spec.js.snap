@@ -286,7 +286,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
 
 .emotion-7 {
   width: 100%;
-  background-color: #0273f5;
+  background-color: #0074f5;
 }
 
 .emotion-8 {

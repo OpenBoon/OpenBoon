@@ -58,7 +58,7 @@ exports[`<ProgressBarLegend /> should render properly 1`] = `
 .emotion-16 {
   width: 2px;
   height: 100%;
-  background-color: #0273f5;
+  background-color: #0074f5;
 }
 
 <div

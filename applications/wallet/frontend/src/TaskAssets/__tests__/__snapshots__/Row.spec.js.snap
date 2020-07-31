@@ -213,8 +213,8 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
     \\"<span class=\\"__json-key__\\">extension</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"tiff\\"</span>,
     \\"<span class=\\"__json-key__\\">filename</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"TIFF_1MB.tiff\\"</span>,
     \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"image/tiff\\"</span>,
-    \\"<span class=\\"__json-key__\\">filesize</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">1131930</span>,
-    \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">1867533868</span>,
+    \\"<span class=\\"__json-key__\\">filesize</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1131930</span>,
+    \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1867533868</span>,
     \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff\\"</span>
   },
   \\"<span class=\\"__json-key__\\">metrics</span>\\": {
@@ -222,51 +222,51 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
       {
         \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.core.processors.PreCacheSourceFileProcessor\\"</span>,
         \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
-        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">1621235190</span>,
-        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">0.11</span>,
+        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1621235190</span>,
+        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0.11</span>,
         \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"2020-03-03T21:22:27.694149\\"</span>
       },
       {
         \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.image.importers.ImageImporter\\"</span>,
         \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
-        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">1426657387</span>,
-        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">0.26</span>,
+        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1426657387</span>,
+        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0.26</span>,
         \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"2020-03-03T21:22:28.215069\\"</span>
       },
       {
         \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.office.importers.OfficeImporter\\"</span>,
         \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
-        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">2001473853</span>,
-        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">0</span>
+        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">2001473853</span>,
+        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0</span>
       },
       {
         \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.video.VideoImporter\\"</span>,
         \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
-        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">3310423168</span>,
-        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">0</span>
+        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">3310423168</span>,
+        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0</span>
       },
       {
         \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"zmlp_core.core.processors.AssertAttributesProcessor\\"</span>,
         \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"standard\\"</span>,
-        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">1841569083</span>,
-        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">0</span>,
+        \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1841569083</span>,
+        \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">0</span>,
         \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"2020-03-03T21:22:29.654215\\"</span>
       }
     ]
   },
   \\"<span class=\\"__json-key__\\">media</span>\\": {
-    \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">650</span>,
-    \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">434</span>,
-    \\"<span class=\\"__json-key__\\">aspect</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">1.5</span>,
+    \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">650</span>,
+    \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">434</span>,
+    \\"<span class=\\"__json-key__\\">aspect</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1.5</span>,
     \\"<span class=\\"__json-key__\\">orientation</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"landscape\\"</span>,
     \\"<span class=\\"__json-key__\\">type</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"image\\"</span>,
-    \\"<span class=\\"__json-key__\\">length</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">1</span>
+    \\"<span class=\\"__json-key__\\">length</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1</span>
   },
   \\"<span class=\\"__json-key__\\">clip</span>\\": {
     \\"<span class=\\"__json-key__\\">type</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"page\\"</span>,
-    \\"<span class=\\"__json-key__\\">start</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">1</span>,
-    \\"<span class=\\"__json-key__\\">stop</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">1</span>,
-    \\"<span class=\\"__json-key__\\">length</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">1</span>,
+    \\"<span class=\\"__json-key__\\">start</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1</span>,
+    \\"<span class=\\"__json-key__\\">stop</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1</span>,
+    \\"<span class=\\"__json-key__\\">length</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">1</span>,
     \\"<span class=\\"__json-key__\\">pile</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"pUn6wBxUN7x9JxOxLkvruOyNdYA\\"</span>,
     \\"<span class=\\"__json-key__\\">sourceAssetId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C\\"</span>
   },
@@ -275,10 +275,10 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
       \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"image_650x434.jpg\\"</span>,
       \\"<span class=\\"__json-key__\\">category</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"proxy\\"</span>,
       \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"image/jpeg\\"</span>,
-      \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">89643</span>,
+      \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">89643</span>,
       \\"<span class=\\"__json-key__\\">attrs</span>\\": {
-        \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">650</span>,
-        \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">434</span>
+        \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">650</span>,
+        \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">434</span>
       },
       \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg\\"</span>
     },
@@ -286,10 +286,10 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
       \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"image_512x341.jpg\\"</span>,
       \\"<span class=\\"__json-key__\\">category</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"proxy\\"</span>,
       \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"image/jpeg\\"</span>,
-      \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">60713</span>,
+      \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">60713</span>,
       \\"<span class=\\"__json-key__\\">attrs</span>\\": {
-        \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">512</span>,
-        \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">341</span>
+        \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">512</span>,
+        \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">341</span>
       },
       \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg\\"</span>
     },
@@ -297,10 +297,10 @@ exports[`<TaskAssetsRow /> should render properly 1`] = `
       \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"image_320x213.jpg\\"</span>,
       \\"<span class=\\"__json-key__\\">category</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"proxy\\"</span>,
       \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"image/jpeg\\"</span>,
-      \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">30882</span>,
+      \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">30882</span>,
       \\"<span class=\\"__json-key__\\">attrs</span>\\": {
-        \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">320</span>,
-        \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0273f5;\\">213</span>
+        \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">320</span>,
+        \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#0074f5;\\">213</span>
       },
       \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#009f22;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg\\"</span>
     }
