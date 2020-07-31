@@ -9,6 +9,12 @@ resource "google_storage_bucket" "elasticsearch" {
   retention_policy {
     retention_period = 86400 * 29
   }
+  versioning {
+    enabled = true
+  }
+  logging {
+    log_bucket = var.log-bucket-name
+  }
 }
 
 resource "google_service_account" "elasticsearch" {

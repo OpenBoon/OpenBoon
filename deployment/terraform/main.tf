@@ -45,9 +45,10 @@ module "gke-cluster" {
 }
 
 module "postgres" {
-  source  = "./modules/postgres"
-  project = var.project
-  region  = local.region
+  source   = "./modules/postgres"
+  project  = var.project
+  region   = local.region
+  sql-tier = var.sql-tier
 }
 
 module "redis" {
@@ -58,12 +59,29 @@ module "minio" {
   source = "./modules/minio"
 }
 
+resource "google_storage_bucket" "access-logs" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  name = "${var.project}-zmlp-bucket-access-logs"
+  versioning {
+    enabled = true
+  }
+}
+
 resource "google_storage_bucket" "system" {
   lifecycle {
     prevent_destroy = true
   }
   name = "${var.project}-zmlp-system-bucket"
+  versioning {
+    enabled = true
+  }
+  logging {
+    log_bucket = google_storage_bucket.access-logs.name
+  }
 }
+
 
 ## Secrets ###############################################################################
 resource "random_string" "access-key" {
@@ -168,6 +186,7 @@ module "elasticsearch" {
   container-cluster-name = module.gke-cluster.name
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   container-tag          = var.container-tag
+  log-bucket-name        = google_storage_bucket.access-logs.name
 }
 
 module "archivist" {
@@ -186,6 +205,7 @@ module "archivist" {
   analyst-shared-key      = module.analyst.shared-key
   container-tag           = var.container-tag
   es-backup-bucket-name   = module.elasticsearch.backup-bucket-name
+  log-bucket-name         = google_storage_bucket.access-logs.name
 }
 
 module "auth-server" {

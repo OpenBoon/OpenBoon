@@ -37,6 +37,8 @@ variable "analyst-shared-key" {
 variable "es-backup-bucket-name" {
 }
 
+variable "log-bucket-name" {}
+
 variable "data-bucket-name" {
   default = "archivist-data"
 }
