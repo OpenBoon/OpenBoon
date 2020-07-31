@@ -9,7 +9,8 @@ import AssetLabeling from '..'
 const PROJECT_ID = project.id
 const ASSET_ID = asset.id
 const MODEL_ID = models.results[0].id
-const ALT_MODEL_ID = models.results[1].id
+const ALT_MODEL_ID = models.results[2].id
+const EXISTING_ASSET_LABEL = asset.metadata.labels[0].label
 
 const noop = () => () => {}
 
@@ -84,36 +85,60 @@ describe('<AssetLabeling />', () => {
     // Mock Success
     fetch.mockResponseOnce(JSON.stringify({ detail: 'Label Saved' }))
 
-    // Click Submit
+    // Click Submit (updating existing model/label)
     await act(async () => {
       component.root
         .findByProps({ type: 'submit' })
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(3)
-
-    expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/add_labels/`,
-    )
-
-    expect(fetch.mock.calls[0][1]).toEqual({
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        'X-CSRFToken': 'CSRF_TOKEN',
-      },
-      body: JSON.stringify({
-        add_labels: [
-          {
-            assetId: ASSET_ID,
-            label: 'Flimflarm',
-          },
-        ],
-      }),
+    // Select Model
+    act(() => {
+      component.root
+        .findByProps({ label: 'Model' })
+        .props.onChange({ value: ALT_MODEL_ID })
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
+    // Input Label
+    act(() => {
+      component.root
+        .findByProps({ id: 'asset-label' })
+        .props.onChange({ target: { value: 'Other Flimflarm' } })
+    })
+
+    // Mock Success
+    fetch.mockResponseOnce(JSON.stringify({ detail: 'Label Saved' }))
+
+    // Click Submit (adding to new model)
+    await act(async () => {
+      component.root
+        .findByProps({ type: 'submit' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // Select Model
+    act(() => {
+      component.root
+        .findByProps({ label: 'Model' })
+        .props.onChange({ value: MODEL_ID })
+    })
+
+    // Input Label
+    act(() => {
+      component.root
+        .findByProps({ id: 'asset-label' })
+        .props.onChange({ target: { value: '' } })
+    })
+
+    // Mock Success
+    fetch.mockResponseOnce(JSON.stringify({ detail: 'Label Deleted' }))
+
+    // Click Submit (with empty label value to delete label)
+    await act(async () => {
+      component.root
+        .findByProps({ type: 'submit' })
+        .props.onClick({ preventDefault: noop })
+    })
 
     // Edit Model/Label fields
     act(() => {
@@ -155,7 +180,156 @@ describe('<AssetLabeling />', () => {
       component.root.findByProps({ children: 'Edit Label' }).props.onClick()
     })
 
+    // Re-open first label's kebab menu
+    act(() => {
+      component.root
+        .findAllByProps({ 'aria-label': 'Toggle Actions Menu' })[0]
+        .props.onClick()
+    })
+
+    // Click Delete Label
+    act(() => {
+      component.root.findByProps({ children: 'Delete Label' }).props.onClick()
+    })
+
+    // Click Cancel button in modal
+    act(() => {
+      component.root.findByProps({ title: 'Delete Label' }).props.onCancel()
+    })
+
+    // Re-open first label's kebab menu
+    act(() => {
+      component.root
+        .findAllByProps({ 'aria-label': 'Toggle Actions Menu' })[0]
+        .props.onClick()
+    })
+
+    // Click Delete Label
+    act(() => {
+      component.root.findByProps({ children: 'Delete Label' }).props.onClick()
+    })
+
+    // Mock Unknown Failure
+    fetch.mockRejectOnce(null, { status: 500 })
+
+    // Click Delete button in modal
+    await act(async () => {
+      component.root.findByProps({ title: 'Delete Label' }).props.onConfirm()
+    })
+
+    // Re-open first label's kebab menu
+    act(() => {
+      component.root
+        .findAllByProps({ 'aria-label': 'Toggle Actions Menu' })[0]
+        .props.onClick()
+    })
+
+    // Click Delete Label
+    act(() => {
+      component.root.findByProps({ children: 'Delete Label' }).props.onClick()
+    })
+
+    // Mock Success
+    fetch.mockResponseOnce(JSON.stringify({ detail: 'Label Deleted' }))
+
+    // Click Delete button in modal
+    await act(async () => {
+      component.root.findByProps({ title: 'Delete Label' }).props.onConfirm()
+    })
+
     expect(component.toJSON()).toMatchSnapshot()
+
+    expect(fetch.mock.calls.length).toEqual(7)
+
+    // Call from submitting label for used model
+    expect(fetch.mock.calls[0][0]).toEqual(
+      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/update_labels/`,
+    )
+
+    expect(fetch.mock.calls[0][1]).toEqual({
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'X-CSRFToken': 'CSRF_TOKEN',
+      },
+      body: JSON.stringify({
+        remove_labels: [
+          {
+            assetId: ASSET_ID,
+            label: EXISTING_ASSET_LABEL,
+          },
+        ],
+        add_labels: [
+          {
+            assetId: ASSET_ID,
+            label: 'Flimflarm',
+          },
+        ],
+      }),
+    })
+
+    // Call from submitting label for un-used model
+    expect(fetch.mock.calls[3][0]).toEqual(
+      `/api/v1/projects/${PROJECT_ID}/models/${ALT_MODEL_ID}/add_labels/`,
+    )
+
+    expect(fetch.mock.calls[3][1]).toEqual({
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'X-CSRFToken': 'CSRF_TOKEN',
+      },
+      body: JSON.stringify({
+        add_labels: [
+          {
+            assetId: ASSET_ID,
+            label: 'Other Flimflarm',
+          },
+        ],
+      }),
+    })
+
+    // Call from submitting empty label value
+    expect(fetch.mock.calls[5][0]).toEqual(
+      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/delete_labels/`,
+    )
+
+    expect(fetch.mock.calls[5][1]).toEqual({
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'X-CSRFToken': 'CSRF_TOKEN',
+      },
+      body: JSON.stringify({
+        remove_labels: [
+          {
+            assetId: ASSET_ID,
+            label: 'Space',
+          },
+        ],
+      }),
+    })
+
+    // Call from Delete Modal
+    expect(fetch.mock.calls[5][0]).toEqual(
+      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/delete_labels/`,
+    )
+
+    expect(fetch.mock.calls[5][1]).toEqual({
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'X-CSRFToken': 'CSRF_TOKEN',
+      },
+      body: JSON.stringify({
+        remove_labels: [
+          {
+            assetId: ASSET_ID,
+            label: 'Space',
+          },
+        ],
+      }),
+    })
   })
 
   it('should render properly with no labels', () => {

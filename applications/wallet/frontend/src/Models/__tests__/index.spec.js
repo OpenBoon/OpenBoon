@@ -8,6 +8,7 @@ import User from '../../User'
 import Models from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+const MODEL_ID = models.results[0].id
 
 jest.mock('next/link', () => 'Link')
 
@@ -45,7 +46,7 @@ describe('<Models />', () => {
       query: {
         projectId: PROJECT_ID,
         action: 'add-model-success',
-        modelName: 'My New Model',
+        modelId: MODEL_ID,
       },
     })
 
@@ -70,7 +71,12 @@ describe('<Models />', () => {
 
     expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
 
-    expect(spy).toHaveBeenCalledWith('AssetLabelingAdd.Model', '"My New Model"')
+    expect(spy).toHaveBeenCalledWith(
+      'AssetLabelingAdd.modelId',
+      `"${MODEL_ID}"`,
+    )
+
+    expect(spy).toHaveBeenCalledWith('AssetLabelingAdd.label', `""`)
 
     spy.mockClear()
   })
@@ -104,9 +110,11 @@ describe('<Models />', () => {
     expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
 
     expect(spy).not.toHaveBeenCalledWith(
-      'AssetLabelingAdd.Model',
-      '"My New Model"',
+      'AssetLabelingAdd.modelId',
+      `"${MODEL_ID}"`,
     )
+
+    expect(spy).not.toHaveBeenCalledWith('AssetLabelingAdd.label', `""`)
 
     spy.mockClear()
   })

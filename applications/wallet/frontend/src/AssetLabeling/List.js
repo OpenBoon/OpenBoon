@@ -16,6 +16,7 @@ const AssetLabelingList = ({
   assetId,
   query,
   triggerReload,
+  setError,
 }) => {
   if (!labels.length)
     return (
@@ -102,10 +103,12 @@ const AssetLabelingList = ({
               <td>
                 <AssetLabelingMenu
                   projectId={projectId}
+                  assetId={assetId}
                   queryString={queryString}
                   modelId={modelId}
                   label={label}
                   triggerReload={triggerReload}
+                  setError={setError}
                 />
               </td>
             </tr>
@@ -128,6 +131,7 @@ AssetLabelingList.propTypes = {
   assetId: PropTypes.string.isRequired,
   query: PropTypes.string.isRequired,
   triggerReload: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
 }
 
 export default AssetLabelingList
