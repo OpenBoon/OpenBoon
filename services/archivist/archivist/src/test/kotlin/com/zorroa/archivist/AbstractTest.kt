@@ -182,7 +182,6 @@ abstract class AbstractTest {
                 UUID.randomUUID(),
                 proj.value,
                 randomString(24),
-                randomString(64),
                 "key-name",
                 permissions.value,
                 false

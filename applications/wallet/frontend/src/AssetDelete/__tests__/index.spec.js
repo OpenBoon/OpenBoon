@@ -75,11 +75,8 @@ describe('<AssetDelete />', () => {
     await act(async () => {})
 
     expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: { id: '', action: 'delete-asset-success' },
-      },
-      `/${PROJECT_ID}/visualizer?action=delete-asset-success`,
+      '/[projectId]/visualizer?action=delete-asset-success',
+      `/${PROJECT_ID}/visualizer`,
     )
   })
 

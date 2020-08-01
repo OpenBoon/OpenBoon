@@ -219,7 +219,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   </button>
   <a
     className="emotion-3"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL?query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -672,20 +672,11 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
-    <video
+    <img
+      alt="FatManOnABike1914.mp4"
       className="emotion-0"
-      controlsList="nodownload nofullscreen noremoteplayback"
-      disablePictureInPicture={true}
-      muted={true}
-      playsInline={true}
-      poster="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
-      preload="none"
-    >
-      <source
-        src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
-        type="video/mp4"
-      />
-    </video>
+      src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
+    />
   </a>
   <button
     aria-label="Find similar images"
@@ -701,7 +692,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   </button>
   <a
     className="emotion-3"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -938,7 +929,7 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   </button>
   <a
     className="emotion-3"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -1169,7 +1160,7 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   </button>
   <a
     className="emotion-3"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/zs5GXqqMapHkZpKYewLVNPppddQfaCK-?id=zs5GXqqMapHkZpKYewLVNPppddQfaCK-"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/zs5GXqqMapHkZpKYewLVNPppddQfaCK-"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >

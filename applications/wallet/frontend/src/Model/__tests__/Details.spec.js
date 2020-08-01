@@ -158,7 +158,7 @@ describe('<ModelDetails />', () => {
 
     expect(mockRouterPush).toHaveBeenCalledWith(
       '/[projectId]/models?action=delete-model-success',
-      `/${PROJECT_ID}/models?action=delete-model-success`,
+      `/${PROJECT_ID}/models`,
     )
   })
 })

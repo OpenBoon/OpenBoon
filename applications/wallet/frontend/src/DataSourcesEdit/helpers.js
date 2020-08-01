@@ -56,7 +56,7 @@ export const onSubmit = async ({
 
     Router.push(
       `/[projectId]/data-sources${queryString}`,
-      `/${projectId}/data-sources${queryString}`,
+      `/${projectId}/data-sources`,
     )
   } catch (response) {
     try {

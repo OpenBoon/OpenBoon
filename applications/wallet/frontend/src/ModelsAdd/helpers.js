@@ -10,7 +10,9 @@ export const onSubmit = async ({
   dispatch({ isLoading: true })
 
   try {
-    await fetcher(`/api/v1/projects/${projectId}/models/`, {
+    const {
+      results: { id: modelId },
+    } = await fetcher(`/api/v1/projects/${projectId}/models/`, {
       method: 'POST',
       body: JSON.stringify({ name, type }),
     })
@@ -22,12 +24,10 @@ export const onSubmit = async ({
 
     const queryString = getQueryString({
       action: 'add-model-success',
+      modelId,
     })
 
-    Router.push(
-      `/[projectId]/models${queryString}`,
-      `/${projectId}/models${queryString}`,
-    )
+    Router.push(`/[projectId]/models${queryString}`, `/${projectId}/models`)
   } catch (response) {
     try {
       const errors = await response.json()

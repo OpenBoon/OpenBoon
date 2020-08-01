@@ -64,7 +64,7 @@ const TaskAssetsRow = ({
             height: THUMBNAIL_SIZE,
           }}
         >
-          <AssetsThumbnail asset={asset} />
+          <AssetsThumbnail asset={asset} isActive={false} />
         </div>
 
         <h4

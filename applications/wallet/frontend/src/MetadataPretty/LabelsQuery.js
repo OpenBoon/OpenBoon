@@ -4,8 +4,8 @@ import useSWR from 'swr'
 
 import MetadataPrettyLabelsContent, { BBOX_SIZE } from './LabelsContent'
 
-const MetadataPrettyLabelsQuery = ({ name }) => {
-  const attr = `analysis.${name}&width=${BBOX_SIZE}`
+const MetadataPrettyLabelsQuery = ({ name, path }) => {
+  const attr = `${path}${name}&width=${BBOX_SIZE}`
 
   const {
     query: { projectId, id: assetId },
@@ -20,6 +20,7 @@ const MetadataPrettyLabelsQuery = ({ name }) => {
 
 MetadataPrettyLabelsQuery.propTypes = {
   name: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
 }
 
 export default MetadataPrettyLabelsQuery

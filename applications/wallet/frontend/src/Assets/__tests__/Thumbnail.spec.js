@@ -18,7 +18,7 @@ describe('<AssetsThumbnail />', () => {
     })
 
     const component = TestRenderer.create(
-      <AssetsThumbnail asset={assets.results[0]} />,
+      <AssetsThumbnail asset={assets.results[0]} isActive />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -40,6 +40,7 @@ describe('<AssetsThumbnail />', () => {
           videoLength: null,
           videoProxyUrl: null,
         }}
+        isActive
       />,
     )
 
@@ -53,7 +54,7 @@ describe('<AssetsThumbnail />', () => {
     })
 
     const component = TestRenderer.create(
-      <AssetsThumbnail asset={assets.results[4]} />,
+      <AssetsThumbnail asset={assets.results[4]} isActive />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -66,7 +67,7 @@ describe('<AssetsThumbnail />', () => {
     })
 
     const component = TestRenderer.create(
-      <AssetsThumbnail asset={assets.results[0]} />,
+      <AssetsThumbnail asset={assets.results[0]} isActive />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -79,7 +80,7 @@ describe('<AssetsThumbnail />', () => {
     })
 
     const component = TestRenderer.create(
-      <AssetsThumbnail asset={assets.results[1]} />,
+      <AssetsThumbnail asset={assets.results[1]} isActive />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -96,7 +97,7 @@ describe('<AssetsThumbnail />', () => {
     })
 
     const component = TestRenderer.create(
-      <AssetsThumbnail asset={assets.results[0]} />,
+      <AssetsThumbnail asset={assets.results[0]} isActive />,
     )
 
     act(() => {
@@ -145,7 +146,7 @@ describe('<AssetsThumbnail />', () => {
     })
 
     const component = TestRenderer.create(
-      <AssetsThumbnail asset={assets.results[1]} />,
+      <AssetsThumbnail asset={assets.results[1]} isActive />,
     )
 
     act(() => {

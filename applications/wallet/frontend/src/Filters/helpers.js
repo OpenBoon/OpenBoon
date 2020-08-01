@@ -201,7 +201,14 @@ export const dispatch = ({ type, payload }) => {
     }
 
     case ACTIONS.APPLY_SIMILARITY: {
-      const { pathname, projectId, assetId, selectedId, query: q } = payload
+      const {
+        pathname,
+        projectId,
+        assetId,
+        selectedId,
+        query: q,
+        attribute,
+      } = payload
 
       const filters = decode({ query: q })
 
@@ -216,7 +223,7 @@ export const dispatch = ({ type, payload }) => {
 
       const similarityFilter = {
         type: 'similarity',
-        attribute: 'analysis.zvi-image-similarity',
+        attribute,
         values: { ids: [assetId], minScore },
       }
 

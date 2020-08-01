@@ -15,6 +15,30 @@ stages:
 
 ########  Wallet  ########
 
+## Wallet Integration CI Tests
+wallet-integration-test-suite:
+  stage: test
+  image: cypress/base
+  before_script:
+    - cd applications/wallet/cypress
+    - npm ci
+  script:
+    - npm run cli
+  artifacts:
+    when: always
+    paths:
+      - applications/wallet/cypress/videos/**/*.mp4
+      - applications/wallet/cypress/screenshots/**/*.png
+    expire_in: 1 day
+  rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    # MR to Development with Cypress changes
+    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development"
+      changes:
+        - "applications/wallet/cypress/**/*"
+
 ## Wallet Frontend CI Tests
 wallet-frontend-test-suite:
   stage: test
@@ -27,6 +51,9 @@ wallet-frontend-test-suite:
     - npm run test:cover
     - npm run size
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # MR to any branch that is not master with Frontend changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
@@ -63,6 +90,9 @@ wallet-backend-test-suite:
     - pipenv run flake8
     - pipenv run pytest --cov=.
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # MR to any branch that is not master with Backend changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
@@ -100,6 +130,9 @@ wallet-dockerhub-build-push-latest:
     - docker tag zmlp/wallet:latest zmlp/wallet:${DOCKER_TAG}
     - docker push zmlp/wallet:${DOCKER_TAG}
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # Merged to Development with Wallet changes
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
@@ -134,6 +167,9 @@ wallet-deploy-development:
   script:
     - kubectl --namespace default rollout restart deployment wallet
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # Merged to development with Wallet changes
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
@@ -170,6 +206,9 @@ backend-py-lint:
     - python -m pip install flake8
     - flake8 --config .flake8.cfg sdk client/python client/zvi containers/zmlp-py3-base services/analyst containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis containers/zmlp-plugins-train
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # MR to any branch that is not master with ZMLP Python changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
@@ -190,6 +229,9 @@ backend-kotlin-lint:
   script:
     - ktlint services/**/*.kt lib/**/*.kt
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # MR to any branch that is not master with ZMLP Kotlin changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
@@ -225,6 +267,9 @@ sdk-unit-tests:
     - pip install -r requirements.txt
     - pytest
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
@@ -256,6 +301,9 @@ plugin-container-tests:
     - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-analysis:latest pytest -s /zvi/pylib
     - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-train:latest pytest -s /zvi/pylib
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
@@ -274,6 +322,9 @@ sdk-java-unit-tests:
   script:
     - mvn test verify -f client/java -q
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
@@ -337,6 +388,9 @@ zmlp-dockerhub-build-push-latest:
     - docker push zmlp/ml-bbq:${DOCKER_TAG}
     - docker push zmlp/plugins-train:${DOCKER_TAG}
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # Merged to development with ZMLP changes
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
@@ -375,6 +429,9 @@ zmlp-deploy-development:
     - kubectl --namespace default rollout restart deployment analyst api-gateway archivist auth-server officer ml-bbq
     - kubectl --namespace default rollout restart statefulset elasticsearch-master elasticsearch-data
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # Merged to development with ZMLP changes
     - if: $CI_COMMIT_BRANCH == "development"
       changes:
@@ -509,6 +566,9 @@ zmlp-services-build-artifacts:
     paths:
       - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
@@ -532,6 +592,9 @@ elasticsearch-push-to-local-registry:
     - docker build -t $LOCAL_ES_NAME .
     - docker push $LOCAL_ES_NAME
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
@@ -599,6 +662,9 @@ zmlp-services-unit-tests:
     - mvn test verify -f services/auth-server -q
     - mvn test verify -f services/officer -q
   rules:
+    # Scheduled Pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     # MR to any branch that is not master with ZMLP changes
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:

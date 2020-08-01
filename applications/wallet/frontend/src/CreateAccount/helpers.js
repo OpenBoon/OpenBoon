@@ -31,7 +31,7 @@ export const onRegister = async ({
 
     if (response.status >= 400) throw response
 
-    Router.push('/?action=create-account-success')
+    Router.push('/?action=create-account-success', '/')
   } catch (response) {
     dispatch({
       isLoading: false,
@@ -52,8 +52,11 @@ export const onConfirm = async ({ uid, token }) => {
 
     if (response.status >= 400) throw response
 
-    Router.push('/?action=account-activation-success')
+    Router.push('/?action=account-activation-success', '/')
   } catch (response) {
-    Router.push('/create-account?action=account-activation-expired')
+    Router.push(
+      '/create-account?action=account-activation-expired',
+      '/create-account',
+    )
   }
 }

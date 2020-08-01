@@ -25,15 +25,11 @@ export const onDelete = async ({
     await new Promise((resolve) => setTimeout(resolve, 500))
 
     return Router.push(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: { query, id: '', action: 'delete-asset-success' },
-      },
-      `/${projectId}/visualizer${getQueryString({
-        id: '',
+      `/[projectId]/visualizer${getQueryString({
         query,
         action: 'delete-asset-success',
       })}`,
+      `/${projectId}/visualizer${getQueryString({ query })}`,
     )
   } catch (error) {
     setIsLoading(false)

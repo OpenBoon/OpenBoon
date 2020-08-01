@@ -8,6 +8,7 @@ import User from '../../User'
 import Models from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+const MODEL_ID = models.results[0].id
 
 jest.mock('next/link', () => 'Link')
 
@@ -15,7 +16,10 @@ describe('<Models />', () => {
   it('should render properly with no models', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models',
-      query: { projectId: PROJECT_ID, action: 'delete-model-success' },
+      query: {
+        projectId: PROJECT_ID,
+        action: 'delete-model-success',
+      },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -39,7 +43,11 @@ describe('<Models />', () => {
   it('should render properly with models', async () => {
     require('next/router').__setUseRouter({
       pathname: `/[projectId]/models`,
-      query: { projectId: PROJECT_ID, action: 'add-model-success' },
+      query: {
+        projectId: PROJECT_ID,
+        action: 'add-model-success',
+        modelId: MODEL_ID,
+      },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -62,5 +70,52 @@ describe('<Models />', () => {
     })
 
     expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
+
+    expect(spy).toHaveBeenCalledWith(
+      'AssetLabelingAdd.modelId',
+      `"${MODEL_ID}"`,
+    )
+
+    expect(spy).toHaveBeenCalledWith('AssetLabelingAdd.label', `""`)
+
+    spy.mockClear()
+  })
+
+  it('should render properly with models', async () => {
+    require('next/router').__setUseRouter({
+      pathname: `/[projectId]/models`,
+      query: {
+        projectId: PROJECT_ID,
+        action: 'add-model-success',
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: models,
+    })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Models />
+      </User>,
+    )
+
+    // eslint-disable-next-line no-proto
+    const spy = jest.spyOn(localStorage.__proto__, 'setItem')
+
+    await act(async () => {
+      component.root.findByProps({ children: 'Start Labeling' }).props.onClick()
+    })
+
+    expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
+
+    expect(spy).not.toHaveBeenCalledWith(
+      'AssetLabelingAdd.modelId',
+      `"${MODEL_ID}"`,
+    )
+
+    expect(spy).not.toHaveBeenCalledWith('AssetLabelingAdd.label', `""`)
+
+    spy.mockClear()
   })
 })
