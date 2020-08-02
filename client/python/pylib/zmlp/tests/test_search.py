@@ -203,10 +203,9 @@ class TestLabelConfidenceQuery(unittest.TestCase):
         s = LabelConfidenceQuery("foo", "dog", 0.5)
         qjson = s.for_json()
 
-        params = qjson["script_score"]["script"]["params"]
-        assert "analysis.foo.predictions" == params["field"]
-        assert ["dog"] == params["labels"]
-        assert [0.5, 1.0] == params["range"]
+        assert qjson['bool']['filter'][0]['terms']['analysis.foo.predictions.label'] == ['dog']
+        nested = qjson['bool']['must'][0]['nested']
+        assert nested['path'] == 'analysis.foo.predictions'
 
 
 class TestImageSimilarityQuery(unittest.TestCase):
