@@ -101,7 +101,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
 }
 
 .emotion-1 a {
-  color: #0273f5;
+  color: #0074f5;
 }
 
 <div
@@ -112,7 +112,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   >
     <svg
       className="emotion-0"
-      color="#0273f5"
+      color="#0074f5"
       data-file-name="generating.svg"
       height={20}
     />
