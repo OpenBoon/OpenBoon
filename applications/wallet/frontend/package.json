@@ -139,7 +139,7 @@
     "swr": "0.2.3",
     "use-resize-observer": "6.1.0",
     "utf8": "3.0.0",
-    "uuid": "8.2.0"
+    "uuid": "8.3.0"
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
