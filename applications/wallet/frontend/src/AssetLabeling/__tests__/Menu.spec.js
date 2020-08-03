@@ -45,7 +45,9 @@ describe('<AssetLabelingMenu />', () => {
 
     // Click Delete button in modal
     await act(async () => {
-      component.root.findByProps({ title: 'Delete Label' }).props.onConfirm()
+      component.root
+        .findByProps({ children: 'Delete Permanently' })
+        .props.onClick()
     })
 
     expect(mockFn).toHaveBeenCalled()

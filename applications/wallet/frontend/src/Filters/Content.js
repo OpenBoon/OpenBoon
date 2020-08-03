@@ -12,6 +12,7 @@ import Button, { VARIANTS } from '../Button'
 import FilterText from '../FilterText'
 import FilterExists from '../FilterExists'
 import FilterFacet from '../FilterFacet'
+import FilterLabel from '../FilterLabel'
 import FilterRange from '../FilterRange'
 import FilterLabelConfidence from '../FilterLabelConfidence'
 import FilterSimilarity from '../FilterSimilarity'
@@ -105,9 +106,21 @@ const FiltersContent = ({
               )
 
             case 'facet':
-            case 'label':
               return (
                 <FilterFacet
+                  key={`${filter.type}-${index}`}
+                  pathname={pathname}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
+            case 'label':
+              return (
+                <FilterLabel
                   key={`${filter.type}-${index}`}
                   pathname={pathname}
                   projectId={projectId}

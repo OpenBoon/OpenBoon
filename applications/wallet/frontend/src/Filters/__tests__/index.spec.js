@@ -10,6 +10,8 @@ const noop = () => () => {}
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 
+jest.mock('../MenuSection', () => 'FiltersMenuSection')
+
 describe('<Filters />', () => {
   it('should render properly', () => {
     const mockRouterPush = jest.fn()
@@ -352,7 +354,7 @@ describe('<Filters />', () => {
     )
   })
 
-  it('should open the menu', () => {
+  it('should open and close the menu', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
       query: {
@@ -371,19 +373,10 @@ describe('<Filters />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    // Expand Analysis Section
-    act(() => {
-      component.root
-        .findAllByProps({ 'aria-label': 'Expand Section' })[0]
-        .props.onClick({ preventDefault: noop })
-    })
-
-    expect(component.toJSON()).toMatchSnapshot()
-
     // close the menu
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Cancel' })
+        .findByProps({ children: 'Cancel' })
         .props.onClick({ preventDefault: noop })
     })
   })
@@ -418,7 +411,7 @@ describe('<Filters />', () => {
         .props.onChange({ target: { value: 'e' } })
     })
 
-    // Expand Clip Section
+    // Expand Section
     act(() => {
       component.root
         .findAllByProps({ 'aria-label': 'Expand Section' })[3]
@@ -428,27 +421,27 @@ describe('<Filters />', () => {
     // enable first checkbox
     act(() => {
       component.root
-        .findByProps({ value: 'clip.length' })
-        .props.onClick({ preventDefault: noop })
+        .findAllByType('FiltersMenuSection')[0]
+        .props.onClick({ type: 'range', attribute: 'clip.length' })(true)
     })
 
     // enable then disable second checkbox
     act(() => {
       component.root
-        .findByProps({ value: 'clip.pile' })
-        .props.onClick({ preventDefault: noop })
+        .findAllByType('FiltersMenuSection')[0]
+        .props.onClick({ type: 'facet', attribute: 'clip.pile' })(true)
     })
 
     act(() => {
       component.root
-        .findByProps({ value: 'clip.pile' })
-        .props.onClick({ preventDefault: noop })
+        .findAllByType('FiltersMenuSection')[0]
+        .props.onClick({ type: 'facet', attribute: 'clip.pile' })(false)
     })
 
     // submit
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Add Field Filters' })
+        .findByProps({ 'aria-label': 'Add Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -506,14 +499,14 @@ describe('<Filters />', () => {
     // enable last checkbox
     act(() => {
       component.root
-        .findByProps({ value: 'location.point' })
-        .props.onClick({ preventDefault: noop })
+        .findAllByType('FiltersMenuSection')[0]
+        .props.onClick({ type: 'exists', attribute: 'location.point' })(true)
     })
 
     // submit
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Add Field Filters' })
+        .findByProps({ 'aria-label': 'Add Filters' })
         .props.onClick({ preventDefault: noop })
     })
 

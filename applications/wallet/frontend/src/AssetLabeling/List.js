@@ -53,16 +53,17 @@ const AssetLabelingList = ({
       </thead>
       <tbody>
         {labels.map(({ modelId, label }) => {
-          const { name } = models.find(({ id }) => id === modelId)
+          const { name, moduleName } = models.find(({ id }) => id === modelId)
 
           const filters = decode({ query })
 
           const encodedQuery = encode({
             filters: [
               {
-                attribute: `labels.${name}`,
                 type: 'label',
-                value: { labels: [label] },
+                attribute: `labels.${moduleName}`,
+                modelId,
+                values: { labels: [label] },
               },
               ...filters,
             ],

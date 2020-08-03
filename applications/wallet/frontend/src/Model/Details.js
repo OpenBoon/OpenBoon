@@ -38,8 +38,9 @@ const ModelDetails = () => {
   const encodedFilter = encode({
     filters: [
       {
-        type: 'labelConfidence',
-        attribute: `analysis.${moduleName}`,
+        type: 'label',
+        attribute: `labels.${moduleName}`,
+        modelId,
         values: {},
       },
     ],
