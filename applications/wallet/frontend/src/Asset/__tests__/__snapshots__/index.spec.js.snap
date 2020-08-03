@@ -37,6 +37,7 @@ exports[`<Asset /> should handle no query 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   width: 100%;
+  margin-right: 1px;
 }
 
 .emotion-1 {
@@ -45,7 +46,6 @@ exports[`<Asset /> should handle no query 1`] = `
   background-color: #252525;
   color: #808080;
   margin-bottom: 1px;
-  margin-right: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -366,6 +366,7 @@ exports[`<Asset /> should render properly 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   width: 100%;
+  margin-right: 1px;
 }
 
 .emotion-1 {
@@ -374,7 +375,6 @@ exports[`<Asset /> should render properly 1`] = `
   background-color: #252525;
   color: #808080;
   margin-bottom: 1px;
-  margin-right: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -688,6 +688,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   width: 100%;
+  margin-right: 1px;
 }
 
 .emotion-1 {
@@ -696,7 +697,6 @@ exports[`<Asset /> should render videos properly 1`] = `
   background-color: #252525;
   color: #808080;
   margin-bottom: 1px;
-  margin-right: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
