@@ -31,93 +31,95 @@ const AssetLabelingMenu = ({
   })
 
   return (
-    <Menu
-      open="left"
-      button={ButtonActions}
-      style={{ color: colors.structure.steel }}
-    >
-      {({ onClick }) => (
-        <ul>
-          <li>
-            <Link
-              href="/[projectId]/models/[modelId]"
-              as={`/${projectId}/models/${modelId}`}
-              passHref
-            >
-              <Button variant={VARIANTS.MENU_ITEM}>
-                View Model/Train & Apply
-              </Button>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href={`/[projectId]/visualizer${queryString}`}
-              as={`/${projectId}/visualizer/${queryString}`}
-              passHref
-            >
-              <Button variant={VARIANTS.MENU_ITEM}>Add Label Filter</Button>
-            </Link>
-          </li>
-          <li>
-            <Button
-              variant={VARIANTS.MENU_ITEM}
-              onClick={() => {
-                setLocalModelId({ value: modelId })
-                setLocalLabel({ value: label })
+    <>
+      <Menu
+        open="left"
+        button={ButtonActions}
+        style={{ color: colors.structure.steel }}
+      >
+        {({ onClick }) => (
+          <ul>
+            <li>
+              <Link
+                href="/[projectId]/models/[modelId]"
+                as={`/${projectId}/models/${modelId}`}
+                passHref
+              >
+                <Button variant={VARIANTS.MENU_ITEM}>
+                  View Model/Train & Apply
+                </Button>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={`/[projectId]/visualizer${queryString}`}
+                as={`/${projectId}/visualizer/${queryString}`}
+                passHref
+              >
+                <Button variant={VARIANTS.MENU_ITEM} onClick={onClick}>
+                  Add Label Filter
+                </Button>
+              </Link>
+            </li>
+            <li>
+              <Button
+                variant={VARIANTS.MENU_ITEM}
+                onClick={() => {
+                  setLocalModelId({ value: modelId })
+                  setLocalLabel({ value: label })
 
-                triggerReload()
-
-                onClick()
-              }}
-              isDisabled={false}
-            >
-              Edit Label
-            </Button>
-          </li>
-          <li>
-            <Button
-              variant={VARIANTS.MENU_ITEM}
-              onClick={() => {
-                setDeleteModalOpen(true)
-              }}
-              isDisabled={false}
-            >
-              Delete Label
-            </Button>
-            {isDeleteModalOpen && (
-              <Modal
-                title="Delete Label"
-                message="Deleting this label cannot be undone."
-                action="Delete Permanently"
-                onCancel={() => {
-                  setDeleteModalOpen(false)
-
-                  onClick()
-                }}
-                onConfirm={() => {
-                  setDeleteModalOpen(false)
-
-                  onDelete({
-                    modelId,
-                    label,
-                    projectId,
-                    assetId,
-                    setError,
-                  })
-
-                  // In the case where a user is deleting a Model/Label that matches
-                  // the current Model/Label value in the `AssetLabelingAdd` form,
-                  // this re-enables the submit button
                   triggerReload()
 
                   onClick()
                 }}
-              />
-            )}
-          </li>
-        </ul>
+                isDisabled={false}
+              >
+                Edit Label
+              </Button>
+            </li>
+            <li>
+              <Button
+                variant={VARIANTS.MENU_ITEM}
+                onClick={() => {
+                  setDeleteModalOpen(true)
+
+                  onClick()
+                }}
+                isDisabled={false}
+              >
+                Delete Label
+              </Button>
+            </li>
+          </ul>
+        )}
+      </Menu>
+      {isDeleteModalOpen && (
+        <Modal
+          title="Delete Label"
+          message="Deleting this label cannot be undone."
+          action="Delete Permanently"
+          onCancel={() => {
+            setDeleteModalOpen(false)
+          }}
+          onConfirm={() => {
+            setDeleteModalOpen(false)
+
+            onDelete({
+              modelId,
+              label,
+              projectId,
+              assetId,
+              setError,
+            })
+
+            // In the case where a user is deleting a Model/Label that matches
+            // the current Model/Label value in the `AssetLabelingAdd` form,
+            // this re-enables the submit button
+            triggerReload()
+          }}
+        />
       )}
-    </Menu>
+    </>
   )
 }
 

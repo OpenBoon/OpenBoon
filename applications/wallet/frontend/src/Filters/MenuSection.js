@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
@@ -6,8 +7,24 @@ import { spacing, typography, constants } from '../Styles'
 
 import FiltersMenuOption from './MenuOption'
 
-const FiltersMenuSection = ({ path, attribute, value, filters, onClick }) => {
-  const fullPath = `${path}.${attribute}`
+const FiltersMenuSection = ({
+  projectId,
+  path,
+  attribute,
+  value,
+  filters,
+  onClick,
+}) => {
+  const {
+    data: { results: models },
+  } = useSWR(`/api/v1/projects/${projectId}/models/`)
+
+  const { moduleName: label } =
+    path === 'labels'
+      ? models.find(({ id }) => id === attribute)
+      : { moduleName: attribute }
+
+  const fullPath = `${path}.${label}`
 
   if (Array.isArray(value) && value.length === 0) return null
 
@@ -16,11 +33,12 @@ const FiltersMenuSection = ({ path, attribute, value, filters, onClick }) => {
       <FiltersMenuOption
         key={fullPath}
         option={fullPath}
-        label={attribute}
+        label={label}
         filters={filters}
         onClick={onClick({
           type: value[0],
           attribute: fullPath,
+          ...(path === 'labels' ? { modelId: attribute } : {}),
         })}
       />
     )
@@ -57,6 +75,7 @@ const FiltersMenuSection = ({ path, attribute, value, filters, onClick }) => {
       {Object.entries(value).map(([subKey, subValue]) => (
         <FiltersMenuSection
           key={subKey}
+          projectId={projectId}
           path={fullPath}
           attribute={subKey}
           value={subValue}
@@ -69,6 +88,7 @@ const FiltersMenuSection = ({ path, attribute, value, filters, onClick }) => {
 }
 
 FiltersMenuSection.propTypes = {
+  projectId: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
   attribute: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
