@@ -10,12 +10,26 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 enum class IndexTaskType {
+    /**
+     * A reindex tasks moves data from 1 index to the other.
+     */
     REINDEX,
+
+    /**
+     * The update task does mass async asset updates.
+     */
     UPDATE
 }
 
 enum class IndexTaskState {
+    /**
+     * The task is executing.
+     */
     RUNNING,
+
+    /**
+     * The task is finished.
+     */
     FINISHED
 }
 
@@ -81,12 +95,31 @@ class IndexTask(
     }
 }
 
-@ApiModel("IndexMigrationSpec", description = "Create a new index migration.")
-class IndexMigrationSpec(
+@ApiModel("IndexToIndexMigrationSpec", description = "Create a new index migration.")
+class IndexToIndexMigrationSpec(
+
+    @ApiModelProperty("The src index route.")
+    val srcIndexRouteId: UUID,
 
     @ApiModelProperty("The dst index route")
-    val dstIndexRouteId: UUID,
+    val dstIndexRouteId: UUID
+)
 
-    @ApiModelProperty("The src index route, defaults to the project's current route.")
-    val srcIndexRouteId: UUID? = null
+@ApiModel(
+    "ProjectIndexMigrationSpec",
+    description = "Migrate a project to new major version of it's index mapping."
+)
+class ProjectIndexMigrationSpec(
+
+    @ApiModelProperty("The index mapping name, usually english_strict")
+    val mapping: String,
+
+    @ApiModelProperty("The index mapping major version.")
+    val majorVer: Int,
+
+    @ApiModelProperty("The size of the project, default to current size.")
+    val size: ProjectSize? = null,
+
+    @ApiModelProperty("The cluster for the project, defaults to same cluster.")
+    val clusterId: UUID? = null
 )

@@ -3,7 +3,6 @@ from unittest.mock import patch
 
 import zmlp
 import zmlp_admin
-
 from zmlp.client import ZmlpClient
 
 
@@ -20,7 +19,7 @@ class IndexAppTests(unittest.TestCase):
     @patch.object(ZmlpClient, 'post')
     def test_create_index(self, post_patch):
         post_patch.return_value = mock_index_data
-        index = self.index_app.create_index(zmlp_admin.ProjectSize.LARGE)
+        index = self.index_app.create_index(zmlp_admin.IndexSize.LARGE)
         assert_mock_index(index)
 
     @patch.object(ZmlpClient, 'post')
@@ -46,6 +45,30 @@ class IndexAppTests(unittest.TestCase):
         get_patch.return_value = mock_es_task_info
         info = self.index_app.get_es_task_info('abc123')
         assert info['action'] == 'indices:data/write/reindex'
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_project_index(self, get_patch):
+        get_patch.return_value = mock_index_data
+        project = self.index_app.get_project_index('1234')
+        assert_mock_index(project)
+
+    @patch.object(ZmlpClient, 'post')
+    def test_migrate_project_index(self, post_patch):
+        post_patch.return_value = mock_index_task_data
+        task = self.index_app.migrate_project_index('1234', 'english_strict', 2)
+        assert_mock_task(task)
+
+    @patch.object(ZmlpClient, 'post')
+    def test_get_indexes(self, post_patch):
+        post_patch.return_value = {'list': [mock_index_data]}
+        for index in self.index_app.find_indexes(limit=1):
+            assert_mock_index(index)
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_index_attrs(self, get_patch):
+        get_patch.return_value = {'name': 'foo'}
+        index = self.index_app.get_index_attrs('foo')
+        assert 'foo' == index['name']
 
 
 def assert_mock_index(index):

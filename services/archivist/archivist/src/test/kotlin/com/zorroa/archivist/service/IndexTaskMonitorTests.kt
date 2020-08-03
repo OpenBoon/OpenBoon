@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.IndexMigrationSpec
+import com.zorroa.archivist.domain.IndexToIndexMigrationSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
 
 import com.zorroa.archivist.repository.IndexRouteDao
@@ -33,7 +33,7 @@ class IndexTaskMonitorTests : AbstractTest() {
         val dstRoute = indexRoutingService.createIndexRoute(testSpec)
         val srcRoute = indexRouteDao.getProjectRoute()
 
-        val spec = IndexMigrationSpec(dstRoute.id)
+        val spec = IndexToIndexMigrationSpec(srcRoute.id, dstRoute.id)
         indexTaskService.createIndexMigrationTask(spec)
 
         var completed = false

@@ -183,24 +183,7 @@ class ModelServiceImpl(
 
     override fun publishModel(model: Model, args: Map<String, Any>?): PipelineMod {
         val mod = pipelineModService.findByName(model.moduleName, false)
-        val ops = listOf(
-            ModOp(
-                ModOpType.APPEND,
-                listOf(
-                    ProcessorRef(
-                        model.type.classifyProcessor,
-                        StandardContainers.ANALYSIS,
-                        model.type.classifyArgs.plus(
-                            mapOf(
-                                "model_id" to model.id.toString(),
-                                "version" to System.currentTimeMillis()
-                            )
-                        ).plus(args ?: emptyMap()),
-                        module = model.name
-                    )
-                )
-            )
-        )
+        val ops = buildModuleOps(model, args)
 
         if (mod != null) {
             // Set version number to change checksum
@@ -226,6 +209,35 @@ class ModelServiceImpl(
             modelJdbcDao.markAsReady(model.id, true)
             return pipelineModService.create(modspec)
         }
+    }
+
+    fun buildModuleOps(model: Model, args: Map<String, Any>?): List<ModOp> {
+        val ops = mutableListOf<ModOp>()
+
+        for (depend in model.type.dependencies) {
+            val mod = pipelineModService.findByName(depend, true)
+            ops.addAll(mod?.ops ?: emptyList())
+        }
+
+        ops.add(
+            ModOp(
+                ModOpType.APPEND,
+                listOf(
+                    ProcessorRef(
+                        model.type.classifyProcessor,
+                        StandardContainers.ANALYSIS,
+                        model.type.classifyArgs.plus(
+                            mapOf(
+                                "model_id" to model.id.toString(),
+                                "version" to System.currentTimeMillis()
+                            )
+                        ).plus(args ?: emptyMap()),
+                        module = model.name
+                    )
+                )
+            )
+        )
+        return ops
     }
 
     override fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any> {

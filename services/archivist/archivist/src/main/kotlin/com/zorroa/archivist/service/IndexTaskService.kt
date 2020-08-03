@@ -1,17 +1,19 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.IndexMigrationSpec
+import com.zorroa.archivist.domain.IndexRouteSpec
+import com.zorroa.archivist.domain.IndexToIndexMigrationSpec
 import com.zorroa.archivist.domain.IndexTask
 import com.zorroa.archivist.domain.IndexTaskState
 import com.zorroa.archivist.domain.IndexTaskType
+import com.zorroa.archivist.domain.Project
+import com.zorroa.archivist.domain.ProjectIndexMigrationSpec
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.IndexTaskDao
 import com.zorroa.archivist.repository.IndexTaskJdbcDao
 import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.withAuth
-import com.zorroa.zmlp.service.security.getProjectId
 import com.zorroa.zmlp.service.security.getZmlpActor
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.bytes.BytesReference
@@ -36,12 +38,17 @@ interface IndexTaskService {
     /**
      * Create a ES task that moves data from one index to another.
      */
-    fun createIndexMigrationTask(spec: IndexMigrationSpec): IndexTask
+    fun createIndexMigrationTask(spec: IndexToIndexMigrationSpec): IndexTask
 
     /**
      * Get an intenral task info.
      */
     fun getEsTaskInfo(task: IndexTask): TaskInfo
+
+    /**
+     * Migrate the specific project to a new index.
+     */
+    fun migrateProject(project: Project, spec: ProjectIndexMigrationSpec): IndexTask
 }
 
 @Service
@@ -51,10 +58,38 @@ class IndexTaskServiceImpl(
     val indexTaskDao: IndexTaskDao
 ) : IndexTaskService {
 
-    override fun createIndexMigrationTask(spec: IndexMigrationSpec): IndexTask {
-        // If the source route is null then just use the project default
-        val srcRouteId = spec.srcIndexRouteId ?: indexRouteDao.getProjectRoute().id
-        val srcRoute = indexRouteDao.get(srcRouteId)
+    override fun migrateProject(project: Project, spec: ProjectIndexMigrationSpec): IndexTask {
+        val projectRoute = indexRouteDao.getProjectRoute(project.id)
+        val replicas = spec.size?.replicas ?: projectRoute.replicas
+        val shards = spec.size?.shards ?: projectRoute.shards
+        var clusterId = spec.clusterId ?: projectRoute.clusterId
+
+        /**
+         * Create the new index.
+         */
+        val idxSpec = IndexRouteSpec(
+            spec.mapping,
+            spec.majorVer,
+            replicas = replicas,
+            shards = shards,
+            clusterId = clusterId,
+            projectId = project.id
+        )
+
+        /**
+         * Launch a new index to index migration.
+         */
+        val newIndex = indexRoutingService.createIndexRoute(idxSpec)
+        return createIndexMigrationTask(
+            IndexToIndexMigrationSpec(
+                srcIndexRouteId = projectRoute.id,
+                dstIndexRouteId = newIndex.id
+            )
+        )
+    }
+
+    override fun createIndexMigrationTask(spec: IndexToIndexMigrationSpec): IndexTask {
+        val srcRoute = indexRouteDao.get(spec.srcIndexRouteId)
         val dstRoute = indexRouteDao.get(spec.dstIndexRouteId)
         val dstRouteClient = indexRoutingService.getClusterRestClient(dstRoute)
         indexRoutingService.setIndexRefreshInterval(dstRoute, "-1")
@@ -92,9 +127,9 @@ class IndexTaskServiceImpl(
 
         val indexTask = IndexTask(
             UUID.randomUUID(),
-            getProjectId(),
-            srcRouteId,
-            spec.dstIndexRouteId,
+            dstRoute.projectId,
+            srcRoute.id,
+            dstRoute.id,
             "Reindex ${srcRoute.id} to ${dstRoute.id}",
             IndexTaskType.REINDEX,
             IndexTaskState.RUNNING,
@@ -197,6 +232,7 @@ class IndexTaskMonitor(
                 false
             }
 
+            // This puts the project on the new index.
             if (!projectCustomDao.updateIndexRoute(task.projectId, indexRoute)) {
                 logger.warn("Unable to set new index route for project ${task.projectId}")
                 false

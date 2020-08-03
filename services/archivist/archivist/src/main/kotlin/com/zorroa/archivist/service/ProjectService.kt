@@ -149,9 +149,6 @@ class ProjectServiceImpl constructor(
             )
         )
 
-        createCryptoKey(project)
-        createStandardApiKeys(project)
-
         withAuth(InternalThreadAuthentication(project.id, setOf())) {
             val route = createIndexRoute(project, spec.size)
             projectCustomDao.updateIndexRoute(project.id, route)
@@ -162,6 +159,9 @@ class ProjectServiceImpl constructor(
             projectStatsDao.createQuotasEntry(project.id)
             projectStatsDao.createIngestTimeSeriesEntries(project.id)
         }
+
+        createCryptoKey(project)
+        createStandardApiKeys(project)
 
         enabledCache.invalidate(project.id)
 

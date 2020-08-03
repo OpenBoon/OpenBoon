@@ -100,7 +100,7 @@ interface IndexRoutingService {
      * Apply any outstanding mapping patches to the given [IndexRoute]
      *
      * @param route The IndexRoute to version up.
-     * @return the [ElasticMapping] the route was updat to.
+     * @return the [ElasticMapping] the route was update to.
      */
     fun syncIndexRouteVersion(route: IndexRoute): ElasticMapping?
 
@@ -176,6 +176,10 @@ interface IndexRoutingService {
      */
     fun closeAndDeleteIndex(route: IndexRoute): Boolean
 
+    /**
+     * Sets the index refresh interval. Setting to -1 disables refreshing, this is used
+     * to speed up reindexing.
+     */
     fun setIndexRefreshInterval(route: IndexRoute, interval: String): Boolean
 }
 
@@ -206,15 +210,14 @@ constructor(
 
     @Transactional
     override fun createIndexRoute(spec: IndexRouteSimpleSpec): IndexRoute {
-        val irspec = IndexRouteSpec(
+        val newSpec = IndexRouteSpec(
             properties.getString("archivist.es.default-mapping-type"),
             properties.getInt("archivist.es.default-mapping-version"),
             shards = spec.size.shards,
             replicas = spec.size.replicas,
-            projectId = spec.projectId,
-            state = IndexRouteState.READY
+            projectId = spec.projectId
         )
-        return createIndexRoute(irspec)
+        return createIndexRoute(newSpec)
     }
 
     @Transactional
@@ -463,16 +466,18 @@ constructor(
     override fun closeIndex(route: IndexRoute): Boolean {
         val rsp = getClusterRestClient(route).client.indices()
             .close(CloseIndexRequest(route.indexName), RequestOptions.DEFAULT)
-        val result = rsp.isAcknowledged
-        logger.event(
-            LogObject.INDEX_ROUTE, LogAction.DISABLE,
-            mapOf(
-                "indexRouteId" to route.id,
-                "indexRouteName" to route.indexName,
-                "acknowledged" to result
+        if (rsp.isAcknowledged) {
+            indexRouteDao.setState(route, IndexRouteState.CLOSED)
+            logger.event(
+                LogObject.INDEX_ROUTE, LogAction.STATE_CHANGE,
+                mapOf(
+                    "indexRouteId" to route.id,
+                    "indexRouteName" to route.indexName,
+                    "indexRouteState" to IndexRouteState.CLOSED.name
+                )
             )
-        )
-        return result
+        }
+        return rsp.isAcknowledged
     }
 
     override fun setIndexRefreshInterval(route: IndexRoute, interval: String): Boolean {

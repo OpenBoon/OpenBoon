@@ -27,15 +27,9 @@ enum class IndexRouteState {
     READY,
 
     /**
-     * A building [IndexRoute] is a new index we're re-indexing data into but
-     * isn't yet ready to be the current.
-     */
-    BUILDING,
-
-    /**
      * The index is queued to be deleted.
      */
-    PENDING_DELETE
+    CLOSED
 }
 
 /**
@@ -106,7 +100,6 @@ class IndexRouteSimpleSpec(
     @ApiModelProperty("The new project size.")
     val size: ProjectSize,
 
-    @JsonIgnore
     @ApiModelProperty("The Project Id to create the route spec under.")
     var projectId: UUID? = null
 )
@@ -128,8 +121,6 @@ class IndexRouteSpec(
     var mapping: String,
     @ApiModelProperty("The major version to use. It will be patched up to highest level.")
     var majorVer: Int,
-    @ApiModelProperty("The state of the index.")
-    var state: IndexRouteState = IndexRouteState.BUILDING,
     @ApiModelProperty("The number of replicas there should be for each shard. Defaults to 1.")
     var replicas: Int = 0,
     @ApiModelProperty(" The number of shards in the index. Defaults to 5.")
@@ -188,13 +179,15 @@ class EsClientCacheKey(
 class IndexRouteFilter(
     val ids: List<UUID>? = null,
     val clusterIds: List<UUID>? = null,
-    val mappings: List<String>? = null
+    val mappings: List<String>? = null,
+    val projectIds: List<UUID>? = null
 ) : KDaoFilter() {
 
     @JsonIgnore
     override val sortMap: Map<String, String> =
         mapOf(
             "id" to "index_route.pk_index_route",
+            "projectId" to "index_route.pk_project",
             "clusterUrl" to "index_cluster.str_url",
             "mapping" to "index_route.str_mapping_type",
             "timeCreated" to "index_route.time_created"
@@ -214,6 +207,11 @@ class IndexRouteFilter(
 
         clusterIds?.let {
             addToWhere(JdbcUtils.inClause("index_route.pk_index_cluster", it.size))
+            addToValues(it)
+        }
+
+        projectIds?.let {
+            addToWhere(JdbcUtils.inClause("index_route.pk_project", it.size))
             addToValues(it)
         }
 
