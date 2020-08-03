@@ -190,10 +190,13 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                 "type": "date",
                 "attribute": "system.timeCreated",
                 "values": {
-                    "min": 1595443286655.0,
-                    "max": 1595443287212.0
+                    "min": "2020-05-30T00:00:00Z",
+                    "max": "2020-07-31T00:00:00Z"
                 }
             }
+
+            *Note:* The `min` and `max` values need to be in "yyyy-mm-ddTHH:MM:SSZ"
+            format (ISO 8601).
 
         """
         path = 'api/v3/assets'

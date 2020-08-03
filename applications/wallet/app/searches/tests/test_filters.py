@@ -764,14 +764,9 @@ class TestDateFilter(FilterBaseTestCase):
         }
 
     @pytest.fixture
-    def mock_query(self, mock_data):
+    def mock_query_data(self, mock_data):
         mock_data['values'] = {'min': 123, 'max': 234}
         return mock_data
-
-    def test_is_valid(self, mock_query):
-        _filter = self.Filter(mock_query)
-        assert _filter.is_valid()
-        assert _filter.is_valid(query=True)
 
     def test_get_agg(self, mock_data):
         _filter = self.Filter(mock_data)
@@ -782,7 +777,13 @@ class TestDateFilter(FilterBaseTestCase):
             }
         }
 
-    def test_get_es_query(self, mock_query):
-        _filter = self.Filter(mock_query)
+    def test_get_es_query(self, mock_query_data):
+        _filter = self.Filter(mock_query_data)
         query = _filter.get_es_query()
-        assert query == {}
+        assert query == {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'range': {'system.timeCreated': {'gte': 123, 'lte': 234}}}
+                    ]
+                }}}
