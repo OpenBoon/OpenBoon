@@ -71,39 +71,49 @@
   },
   "bundlesize": [
     {
-      "//": "framework",
-      "path": ".next/static/chunks/framework**.js",
-      "maxSize": "40 kB"
-    },
-    {
       "//": "dependencies",
       "path": ".next/static/chunks/commons**.js",
       "maxSize": "8 kB"
     },
     {
-      "//": "app.js",
-      "path": ".next/static/**/pages/_app.js",
-      "maxSize": "35 kB"
+      "//": "framework",
+      "path": ".next/static/chunks/framework**.js",
+      "maxSize": "40 kB"
     },
     {
       "//": "main runtime",
-      "path": ".next/static/runtime/main**.js",
+      "path": ".next/static/chunks/main**.js",
       "maxSize": "6 kB"
     },
     {
+      "//": "polyfill",
+      "path": ".next/static/chunks/polyfill**.js",
+      "maxSize": "32 kB"
+    },
+    {
+      "//": "webpack runtime",
+      "path": ".next/static/chunks/webpack**.js",
+      "maxSize": "1 kB"
+    },
+    {
+      "//": "chunks",
+      "path": ".next/static/chunks/!(commons|framework|main|polyfill|webpack)*.js",
+      "maxSize": "22 kB"
+    },
+    {
+      "//": "app.js",
+      "path": ".next/static/chunks/pages/_app**.js",
+      "maxSize": "32 kB"
+    },
+    {
       "//": "error page",
-      "path": ".next/static/**/pages/_error.js",
+      "path": ".next/static/chunks/pages/_error**.js",
       "maxSize": "2 kB"
     },
     {
-      "//": "polyfill & webpack runtime",
-      "path": ".next/static/runtime/[polyfill|webpack]**.js",
-      "maxSize": "26 kB"
-    },
-    {
-      "//": "all pages and chunks",
-      "path": ".next/static/**/!(framework|commons|_app|_error|main|polyfill|webpack)*.js",
-      "maxSize": "37 kB"
+      "//": "all pages",
+      "path": ".next/static/chunks/pages/**/!(_app|_error)*.js",
+      "maxSize": "38 kB"
     }
   ],
   "dependencies": {
