@@ -123,7 +123,7 @@
     "dotenv": "8.2.0",
     "focus-visible": "5.1.0",
     "jwt-decode": "2.2.0",
-    "next": "9.4.4",
+    "next": "9.5.1",
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-aria-modal": "4.0.0",
