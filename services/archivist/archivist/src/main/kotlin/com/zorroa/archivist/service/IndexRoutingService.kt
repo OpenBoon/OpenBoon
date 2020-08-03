@@ -11,7 +11,9 @@ import com.zorroa.archivist.domain.IndexCluster
 import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
+import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
+import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.repository.IndexClusterDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
@@ -65,6 +67,11 @@ interface IndexRoutingService {
     fun createIndexRoute(spec: IndexRouteSpec): IndexRoute
 
     /**
+     * A simple form of index route creation.
+     */
+    fun createIndexRoute(spec: IndexRouteSimpleSpec): IndexRoute
+
+    /**
      * Get an [EsRestClient] for the current users project.
      *
      * @return: EsRestClient
@@ -93,7 +100,7 @@ interface IndexRoutingService {
      * Apply any outstanding mapping patches to the given [IndexRoute]
      *
      * @param route The IndexRoute to version up.
-     * @return the [ElasticMapping] the route was updat to.
+     * @return the [ElasticMapping] the route was update to.
      */
     fun syncIndexRouteVersion(route: IndexRoute): ElasticMapping?
 
@@ -169,6 +176,10 @@ interface IndexRoutingService {
      */
     fun closeAndDeleteIndex(route: IndexRoute): Boolean
 
+    /**
+     * Sets the index refresh interval. Setting to -1 disables refreshing, this is used
+     * to speed up reindexing.
+     */
     fun setIndexRefreshInterval(route: IndexRoute, interval: String): Boolean
 }
 
@@ -196,6 +207,18 @@ constructor(
 
     @Autowired
     lateinit var esClientCache: EsClientCache
+
+    @Transactional
+    override fun createIndexRoute(spec: IndexRouteSimpleSpec): IndexRoute {
+        val newSpec = IndexRouteSpec(
+            properties.getString("archivist.es.default-mapping-type"),
+            properties.getInt("archivist.es.default-mapping-version"),
+            shards = spec.size.shards,
+            replicas = spec.size.replicas,
+            projectId = spec.projectId
+        )
+        return createIndexRoute(newSpec)
+    }
 
     @Transactional
     override fun createIndexRoute(spec: IndexRouteSpec): IndexRoute {
@@ -443,16 +466,18 @@ constructor(
     override fun closeIndex(route: IndexRoute): Boolean {
         val rsp = getClusterRestClient(route).client.indices()
             .close(CloseIndexRequest(route.indexName), RequestOptions.DEFAULT)
-        val result = rsp.isAcknowledged
-        logger.event(
-            LogObject.INDEX_ROUTE, LogAction.DISABLE,
-            mapOf(
-                "indexRouteId" to route.id,
-                "indexRouteName" to route.indexName,
-                "acknowledged" to result
+        if (rsp.isAcknowledged) {
+            indexRouteDao.setState(route, IndexRouteState.CLOSED)
+            logger.event(
+                LogObject.INDEX_ROUTE, LogAction.STATE_CHANGE,
+                mapOf(
+                    "indexRouteId" to route.id,
+                    "indexRouteName" to route.indexName,
+                    "indexRouteState" to IndexRouteState.CLOSED.name
+                )
             )
-        )
-        return result
+        }
+        return rsp.isAcknowledged
     }
 
     override fun setIndexRefreshInterval(route: IndexRoute, interval: String): Boolean {

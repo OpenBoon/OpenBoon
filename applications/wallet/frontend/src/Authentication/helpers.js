@@ -39,7 +39,10 @@ export const authenticateUser = ({ setErrorMessage }) => async ({
   return mutate('/api/v1/me/', { ...user, projectId }, false)
 }
 
-export const logout = ({ googleAuth }) => async ({ redirectUrl }) => {
+export const logout = ({ googleAuth }) => async ({
+  redirectUrl,
+  redirectAs,
+}) => {
   googleAuth.signOut()
 
   const { csrftoken } = Object.fromEntries(
@@ -63,5 +66,5 @@ export const logout = ({ googleAuth }) => async ({ redirectUrl }) => {
 
   localStorage.clear()
 
-  Router.push(redirectUrl)
+  Router.push(redirectUrl, redirectAs)
 }

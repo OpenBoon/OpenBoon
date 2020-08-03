@@ -1,7 +1,7 @@
 import logging
 import os
-import zipfile
 import tempfile
+import zipfile
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -41,10 +41,12 @@ class FileCacheTests(TestCase):
         assert os.path.exists(path)
         assert os.path.getsize(path) == 267493
 
-    def test_localize_uri_gs(self):
+    @patch('zmlpsdk.storage.get_cached_google_storage_client')
+    def test_localize_uri_gs(self, client_patch):
+        client_patch.return_value = MockGcsClient()
         path = self.lfc.localize_uri('gs://zorroa-dev-data/image/pluto_2.1.jpg')
         assert os.path.exists(path)
-        assert os.path.getsize(path) == 65649
+        assert os.path.getsize(path) == 5
 
     def test_localize_uri_local_path(self):
         local_file = zorroa_test_data('images/set01/toucan.jpg', uri=False)
@@ -419,5 +421,21 @@ class MockResponse:
     """
     A mock requests response.
     """
+
     def raise_for_status(self):
         pass
+
+
+class MockGcsClient:
+    """
+    A Mock GCS Storage client
+    """
+    def get_bucket(self, *args, **kwars):
+        return self
+
+    def blob(self, *args, **kwargs):
+        return self
+
+    def download_to_filename(self, filename):
+        with open(filename, 'w') as fp:
+            fp.write("hello")

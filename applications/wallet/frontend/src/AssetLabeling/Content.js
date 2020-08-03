@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
@@ -5,11 +6,19 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 
 import AssetLabelingAdd from './Add'
 import AssetLabelingList from './List'
 
-const AssetLabelingContent = ({ projectId, assetId }) => {
+const AssetLabelingContent = ({ projectId, assetId, query }) => {
+  const [reloadKey, setReloadKey] = useState(0)
+  const [error, setError] = useState('')
+
+  const triggerReload = () => {
+    setReloadKey(reloadKey + 1)
+  }
+
   const {
     data: { results: models },
   } = useSWR(`/api/v1/projects/${projectId}/models/`)
@@ -58,9 +67,11 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
         isResizeable={false}
       >
         <AssetLabelingAdd
+          key={reloadKey}
           projectId={projectId}
           assetId={assetId}
           models={models}
+          labels={labels}
         />
       </Accordion>
 
@@ -71,7 +82,24 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
         isInitiallyOpen={false}
         isResizeable={false}
       >
-        <AssetLabelingList models={models} labels={labels} />
+        <>
+          {error && (
+            <div css={{ padding: spacing.normal }}>
+              <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+                {error}
+              </FlashMessage>
+            </div>
+          )}
+          <AssetLabelingList
+            models={models}
+            labels={labels}
+            projectId={projectId}
+            assetId={assetId}
+            triggerReload={triggerReload}
+            query={query}
+            setError={setError}
+          />
+        </>
       </Accordion>
     </>
   )
@@ -80,6 +108,7 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
 AssetLabelingContent.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
+  query: PropTypes.string.isRequired,
 }
 
 export default AssetLabelingContent

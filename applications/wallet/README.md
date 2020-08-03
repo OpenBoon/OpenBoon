@@ -212,3 +212,10 @@ wallet container.
 | PG_PASSWORD | Password to be used by the wallet Postgres user. |
 | SMTP_PASSWORD | Password for the MailGun SMTP server used for sending emails. |
 | GOOGLE_OAUTH_CLIENT_ID | Client ID for Google OAuth used for Google sign in. |
+
+There are also specific Feature Flags that can be set be either directly overriding their
+value in the Django settings file, or by setting an environment variable (with any value).  
+
+| Backend Feature Flags | Effect |
+| --------------------- | ------ |
+| USE_MODEL_IDS_FOR_LABEL_FILTERS | Returns a Models ID instead of a name in the field endpoints return for Labels. | 

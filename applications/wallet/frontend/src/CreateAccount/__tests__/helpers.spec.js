@@ -27,6 +27,7 @@ describe('<CreateAccount /> helpers', () => {
 
       expect(mockFn).toHaveBeenCalledWith(
         '/create-account?action=account-activation-expired',
+        '/create-account',
       )
     })
   })

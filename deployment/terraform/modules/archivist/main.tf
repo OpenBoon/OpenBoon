@@ -10,6 +10,12 @@ resource "google_storage_bucket" "data" {
     origin = ["*"]
     method = ["GET"]
   }
+  versioning {
+    enabled = true
+  }
+  logging {
+    log_bucket = var.log-bucket-name
+  }
 }
 
 ## SQL Instance
@@ -40,7 +46,7 @@ resource "google_service_account" "archivist" {
 }
 
 resource "google_project_iam_custom_role" "archivist" {
-  project = var.project
+  project     = var.project
   role_id     = "archivist"
   title       = "ZMLP Archivist Role"
   description = "Role assigned to the service account used by the Archivist."
@@ -57,15 +63,15 @@ resource "google_project_iam_custom_role" "archivist" {
 }
 
 resource "google_project_iam_member" "archivist" {
-  project = var.project
-  role    = google_project_iam_custom_role.archivist.id
-  member  = "serviceAccount:${google_service_account.archivist.email}"
+  project    = var.project
+  role       = google_project_iam_custom_role.archivist.id
+  member     = "serviceAccount:${google_service_account.archivist.email}"
   depends_on = [google_project_iam_custom_role.archivist, google_service_account.archivist]
 }
 
 resource "google_service_account_key" "archivist" {
   service_account_id = google_service_account.archivist.name
-  depends_on = [google_service_account.archivist]
+  depends_on         = [google_service_account.archivist]
 }
 
 resource "kubernetes_secret" "archivist-sa-key" {
@@ -173,7 +179,7 @@ resource "kubernetes_deployment" "archivist" {
           liveness_probe {
             initial_delay_seconds = 120
             period_seconds        = 30
-            timeout_seconds = 5
+            timeout_seconds       = 5
             http_get {
               scheme = "HTTP"
               path   = "/monitor/health"
@@ -235,7 +241,7 @@ resource "kubernetes_deployment" "archivist" {
             value = var.system-bucket
           }
           env {
-            name = "ARCHIVIST_ES_BACKUP_BUCKET_NAME"
+            name  = "ARCHIVIST_ES_BACKUP_BUCKET_NAME"
             value = var.es-backup-bucket-name
           }
         }

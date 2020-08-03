@@ -4,7 +4,8 @@ from .index_app import IndexApp
 from .project_app import ProjectApp
 
 __all__ = [
-    'ZmlpAdminApp'
+    'ZmlpAdminApp',
+    'from_app'
 ]
 
 
@@ -26,3 +27,16 @@ class ZmlpAdminApp(object):
 
         """
         self.client.project_id = as_id(project)
+
+
+def from_app(app):
+    """
+    Create and return an ZmlpAdminApp instance.
+
+    Args:
+        app (ZmlpApp): A ZmlpApp instance.
+
+    Returns:
+        ZmlpAdminApp: A  ZmlpAdminApp instance.
+    """
+    return ZmlpAdminApp(app)

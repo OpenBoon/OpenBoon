@@ -33,6 +33,11 @@ interface IndexRouteDao {
     fun getProjectRoute(): IndexRoute
 
     /**
+     * Get the project route by project Id.
+     */
+    fun getProjectRoute(projectId: UUID): IndexRoute
+
+    /**
      * Return a list of all [IndexRoute]s, including closed.
      */
     fun getAll(): List<IndexRoute>
@@ -71,6 +76,11 @@ interface IndexRouteDao {
      * Delete an IndexRoute.
      */
     fun delete(route: IndexRoute): Boolean
+
+    /**
+     * Set the state of the [IndexRoute].
+     */
+    fun setState(route: IndexRoute, state: IndexRouteState): Boolean
 }
 
 @Repository
@@ -87,7 +97,7 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             ps.setObject(1, id)
             ps.setObject(2, spec.clusterId)
             ps.setObject(3, projectId)
-            ps.setInt(4, spec.state.ordinal)
+            ps.setInt(4, IndexRouteState.READY.ordinal)
             ps.setString(5, randomString(16).toLowerCase())
             ps.setString(6, spec.mapping)
             ps.setInt(7, spec.majorVer)
@@ -118,6 +128,15 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
         return jdbc.query("$GET WHERE index_cluster.pk_index_cluster=?", MAPPER, cluster.id)
     }
 
+    override fun getProjectRoute(projectId: UUID): IndexRoute {
+        return throwWhenNotFound("Project has no index") {
+            return jdbc.queryForObject(
+                GET_PROJECT_DEFAULT,
+                MAPPER, projectId
+            )
+        }
+    }
+
     override fun getProjectRoute(): IndexRoute {
         return throwWhenNotFound("Project has no index") {
             return jdbc.queryForObject(
@@ -137,6 +156,10 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
 
     override fun setErrorVersion(route: IndexRoute, version: Int): Boolean {
         return jdbc.update(UPDATE_ERROR_VER, version, System.currentTimeMillis(), route.id) == 1
+    }
+
+    override fun setState(route: IndexRoute, state: IndexRouteState): Boolean {
+        return jdbc.update(UPDATE_STATE, state.ordinal, System.currentTimeMillis(), route.id) == 1
     }
 
     override fun count(filter: IndexRouteFilter): Long {
@@ -240,6 +263,15 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
                 "index_route " +
                 "SET " +
                 "int_mapping_error_ver=?, " +
+                "time_modified=? " +
+                "WHERE " +
+                "pk_index_route=?"
+
+        const val UPDATE_STATE =
+            "UPDATE " +
+                "index_route " +
+                "SET " +
+                "int_state=?, " +
                 "time_modified=? " +
                 "WHERE " +
                 "pk_index_route=?"

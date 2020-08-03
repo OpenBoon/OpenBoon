@@ -1,4 +1,4 @@
-from zmlp.util import as_id
+from zmlp.util import as_id, as_id_collection, as_collection
 
 from ..entity import Index, IndexTask
 
@@ -8,44 +8,39 @@ __all__ = [
 
 
 class IndexApp:
+    """
+    The IndexApp handles managing per-project ES indexes.
 
+    """
     def __init__(self, app):
         self.app = app
 
-    def create_index(self, shards, replicas, project=None, mapping='english_strict', version=1):
+    def create_index(self, size, project=None):
         """
-        Create a new IndexRoute, which routes asset metadata to an ES index.  Creating a new route
-        doesn't affect the project in any way.
-
-        For test projects with low numbers of assets, 1 shard, 0 replicas is fine.  For xlarge
-        projects (1 million+), 5-7 shards and 1-2 replicas.
+        Create a new IndexRoute of the specified size.  The index mapping version and
+        cluster are chosen automatically.  The operations happen under whatever the
+        currently authed project is unless a project ID is supplied.
 
         Args:
-            shards (int): The number of shards.
-            replicas (int): The number of replicas.
-            project (Project): The project or unique project id, defaults to authed project.
-            mapping (str): The name of the mapping.
-            version (int): The version of the mapping to create.
-
+            size (IndexSize): controls the number of shards and replicas.
+            project (Project): An optional Project or project unique Id.
         Returns:
             IndexRoute: The new route.
         """
         body = {
-            'mapping': mapping,
-            'version': int(version),
-            'shards': shards,
-            'replicas': replicas,
+            'size': size.name,
             'projectId': as_id(project)
         }
-        return Index(self.app.client.post('/api/v1/index-routes', body))
+        return Index(self.app.client.post('/api/v2/index-routes', body))
 
     def migrate_index(self, src_index, dst_index):
         """
-        Migrate the data in the src_index to the dst_index.
+        Migrate all data from the src_index to the dst_index. The project is swapped to
+        the index on completion. The old index is closed but not deleted right away.
 
         Args:
-            src_index (IndexRoute): The src index route or its unique Id.
-            dst_index (IndexRoute); The dst index route or its unique Id.
+            src_index (IndexRoute): The src index or its unique Id.
+            dst_index (IndexRoute): The dst index or its unique Id.
 
         Returns:
             IndexTask: A async task which describes the operation.
@@ -56,6 +51,78 @@ class IndexApp:
             'dstIndexRouteId': as_id(dst_index)
         }
         return IndexTask(self.app.client.post('/api/v1/index-routes/_migrate', body))
+
+    def find_indexes(self, index=None, project=None, cluster=None,
+                     mappings=None, limit=None, sort=None):
+        """
+        Search for Indexes based on filter args.  All args can be a collection or
+        a scalar value.
+
+        Returns:
+            Generator: A generator which produces Index objects
+        """
+        body = {
+            'indexId': as_id_collection(index),
+            'projectIds': as_id_collection(project),
+            'clusterIds': as_id_collection(cluster),
+            'mappings': as_collection(mappings),
+            'sort': sort
+        }
+        return self.app.client.iter_paged_results('/api/v1/index-routes/_search',
+                                                  body, limit, Index)
+
+    def get_project_index(self, project_id):
+        """
+        Get a project index by it's unique Id.
+
+        Args:
+            project_id (Project): The Project or its unique Id.
+
+        Returns:
+            Index
+        """
+        project_id = as_id(project_id)
+        return Index(self.app.client.get(f'/api/v1/projects/{project_id}/_index'))
+
+    def migrate_project_index(self, project, mapping, version, size=None, cluster=None):
+        """
+        Migrate the project's index to a new index with the given mapping and version.
+
+        Args:
+            project: (Project): The Project or unique project id.
+            mapping (str): The name of the mapping.
+            version (int): The mapping version name.
+            size: (ProjectSize): Optional predicted size of the project.
+                None for use existing size.
+            cluster (Cluster): Optional cluster or unique cluster ID,
+                defaults to projects current cluster.
+
+        Returns:
+            IndexTask: An async index task which executes the migration.
+        """
+        pid = as_id(project)
+        if size:
+            size = size.name
+        body = {
+            'mapping': mapping,
+            'majorVer': version,
+            'size': size,
+            'clusterId': as_id(cluster)
+        }
+        return IndexTask(self.app.client.post(f'/api/v1/projects/{pid}/_migrate', body))
+
+    def get_index_attrs(self, index):
+        """
+        Get the full state of the ES index.
+
+        Args:
+            index (Index): The index or the index unique Id.
+
+        Returns:
+            dict: The index state
+        """
+        index = as_id(index)
+        return self.app.client.get(f'/api/v1/index-routes/{index}/_attrs')
 
     def get_index_task(self, tid):
         """

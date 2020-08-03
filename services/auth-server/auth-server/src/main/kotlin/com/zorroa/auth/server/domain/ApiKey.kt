@@ -65,6 +65,7 @@ class ApiKey(
     @Column(name = "secret_key", nullable = false)
     @ApiModelProperty("A secret key used to sign API requests.")
     @Convert(converter = EncryptedConverter::class)
+    @JsonIgnore
     val secretKey: String,
 
     @Column(name = "name", nullable = false)

@@ -7,7 +7,8 @@ __all__ = [
     'IndexTask',
     'IndexState',
     'IndexTaskState',
-    'IndexTaskType'
+    'IndexTaskType',
+    'IndexSize'
 ]
 
 
@@ -44,6 +45,23 @@ class IndexTaskState(Enum):
     """The IndexTask is running."""
     FINISHED = 1
     """The IndexTask is finished."""
+
+
+class IndexSize(Enum):
+    """
+    Used to determine the shard and replica values for a new index.
+    """
+
+    XSMALL = 0
+    """This is for very small test projects, 1 shard, 0 replicas"""
+    SMALL = 1
+    """This is the default for new projects, 2 shards, 1 replica"""
+    MEDIUM = 2
+    """Projects with 100,000 to 200,000 assets, 3 shards, 1 replica"""
+    LARGE = 3
+    """Projects with 200,000 to 2M assets, 5 shards, 1 replica"""
+    XLARGE = 4
+    """Projects with 2M+ assets, 7 shards, 1 replicas"""
 
 
 class Index(BaseEntity):
@@ -91,6 +109,13 @@ class Index(BaseEntity):
     @property
     def index_url(self):
         return self._data['indexUrl']
+
+    def __str__(self):
+        return "<Index id={} url={} mapping={}>".format(
+            self.id, self.index_url, self.mapping_version)
+
+    def __repr__(self):
+        return str(self)
 
 
 class IndexTask(BaseEntity):

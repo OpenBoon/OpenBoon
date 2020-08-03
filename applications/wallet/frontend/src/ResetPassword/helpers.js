@@ -21,7 +21,7 @@ export const onRequest = async ({ dispatch, state: { email } }) => {
 
     if (response.status >= 400) throw response
 
-    Router.push('/?action=password-reset-request-success')
+    Router.push('/?action=password-reset-request-success', '/')
   } catch (response) {
     dispatch({ isLoading: false, error: 'Error. Please try again.' })
   }
@@ -54,7 +54,7 @@ export const onConfirm = async ({
 
     if (response.status >= 400) throw response
 
-    Router.push('/?action=password-reset-update-success')
+    Router.push('/?action=password-reset-update-success', '/')
   } catch (response) {
     const errors = await response.json()
 

@@ -25,6 +25,7 @@ resource "google_sql_database_instance" "zmlp" {
     tier = var.sql-tier
     ip_configuration {
       ipv4_enabled = true
+      require_ssl = true
     }
     backup_configuration {
       enabled = true

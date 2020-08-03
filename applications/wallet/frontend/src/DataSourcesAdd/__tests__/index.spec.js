@@ -169,7 +169,7 @@ describe('<DataSourcesAdd />', () => {
 
     expect(mockFn).toHaveBeenCalledWith(
       '/[projectId]/data-sources?action=add-datasource-success',
-      `/${PROJECT_ID}/data-sources?action=add-datasource-success`,
+      `/${PROJECT_ID}/data-sources`,
     )
   })
 

@@ -1,8 +1,9 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.domain.IndexMigrationSpec
+import com.zorroa.archivist.domain.IndexToIndexMigrationSpec
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
+import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexTask
 import com.zorroa.archivist.repository.KPagedList
@@ -33,6 +34,11 @@ class IndexRoutingController @Autowired constructor(
         return indexRoutingService.createIndexRoute(spec)
     }
 
+    @PostMapping(value = ["/api/v2/index-routes"])
+    fun createV2(@RequestBody spec: IndexRouteSimpleSpec): IndexRoute {
+        return indexRoutingService.createIndexRoute(spec)
+    }
+
     @GetMapping(value = ["/api/v1/index-routes/{id}"])
     fun get(@PathVariable id: UUID): IndexRoute {
         return indexRoutingService.getIndexRoute(id)
@@ -55,7 +61,7 @@ class IndexRoutingController @Autowired constructor(
     }
 
     @PostMapping(value = ["/api/v1/index-routes/_migrate"])
-    fun migrate(@RequestBody spec: IndexMigrationSpec): IndexTask {
+    fun migrate(@RequestBody spec: IndexToIndexMigrationSpec): IndexTask {
         return indexTaskService.createIndexMigrationTask(spec)
     }
 }

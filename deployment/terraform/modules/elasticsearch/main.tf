@@ -9,6 +9,9 @@ resource "google_storage_bucket" "elasticsearch" {
   retention_policy {
     retention_period = 86400 * 29
   }
+  logging {
+    log_bucket = var.log-bucket-name
+  }
 }
 
 resource "google_service_account" "elasticsearch" {
@@ -50,7 +53,7 @@ resource "google_container_node_pool" "elasticsearch" {
     auto_upgrade = true
   }
   node_config {
-    machine_type = "custom-4-16384"
+    machine_type = "custom-6-20480"
     oauth_scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -239,9 +242,11 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
           resources {
             requests {
               memory = "512Mi"
+              cpu    = 1
             }
             limits {
               memory = "1Gi"
+              cpu    = 1.5
             }
           }
         }
@@ -270,7 +275,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
       type = "RollingUpdate"
     }
     service_name = "elasticsearch"
-    replicas     = 2
+    replicas     = 3
     selector {
       match_labels = {
         app = "elasticsearch"
@@ -382,7 +387,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
           }
           env {
             name  = "ES_JAVA_OPTS"
-            value = "-Xms3500m -Xmx3500m"
+            value = "-Xms8g -Xmx8g"
           }
           volume_mount {
             name       = "elasticsearch-data"
@@ -395,12 +400,12 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
           }
           resources {
             requests {
-              memory = "4Gi"
-              cpu    = 2
+              memory = "15Gi"
+              cpu    = 4
             }
             limits {
-              memory = "7Gi"
-              cpu    = 3.7
+              memory = "16Gi"
+              cpu    = 4.1
             }
           }
         }

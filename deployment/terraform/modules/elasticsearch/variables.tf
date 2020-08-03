@@ -10,6 +10,8 @@ variable "project" {
 variable "country" {
 }
 
+variable "log-bucket-name" {}
+
 variable "container-tag" {
   default = "latest"
 }

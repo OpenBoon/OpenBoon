@@ -75,10 +75,10 @@ sense of a unit of domain context. For a lengthy explanation of how to structure
 and name files and components, please consult
 [this article](https://link.medium.com/fmSm5hOEsS).
 
-The gist is that it is better to group related things together, close to
-the root folder, than to have a deeply nested file structure where we
-prematurely try to organize things. Better discoverability and lower mental
-overhead are key.
+The gist is that it is better to group related things together, close to the
+root folder, than to have a deeply nested file structure where we prematurely
+try to organize things. Better discoverability and lower mental overhead are
+key.
 
 ## Getting Started
 
@@ -87,7 +87,7 @@ overhead are key.
 Clone the project:
 `git clone git@gitlab.com:zorroa-zvi/zmlp.git && cd zmlp/applications/wallet/frontend`
 
-Install dependencies: `npm install` (or `npm i`)
+Install dependencies: `npm install` (or `npm ci`)
 
 ### Environment Variables
 
@@ -103,8 +103,8 @@ Request any empty environment variable you might need.
 Run `npm run dev:mocked` to start a local development node server on
 http://localhost:3000, where every API call will be mocked instead of going to
 the network. This is very convenient when you are working on some UI code for
-instance, and don't want to have to log in and authenticate every time
-your session ends. It should also allow you to work offline.
+instance, and don't want to have to log in and authenticate every time your
+session ends. It should also allow you to work offline.
 
 #### Local Mode
 

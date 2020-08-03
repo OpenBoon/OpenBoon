@@ -250,7 +250,7 @@ const Assets = () => {
                                 }px`,
                               }}
                             >
-                              <AssetsThumbnail asset={assets[index]} />
+                              <AssetsThumbnail asset={assets[index]} isActive />
                             </div>
                           )
                         }}

@@ -1,7 +1,10 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.IndexTask
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFilter
+import com.zorroa.archivist.domain.ProjectIndexMigrationSpec
 import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
@@ -9,6 +12,8 @@ import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTierUpdate
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.service.IndexRoutingService
+import com.zorroa.archivist.service.IndexTaskService
 import com.zorroa.archivist.service.ProjectService
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.HttpUtils
@@ -38,7 +43,9 @@ import java.util.UUID
 @Api(tags = ["Project"], description = "Operations for managing Projects.")
 class ProjectController constructor(
     val projectService: ProjectService,
-    val projectStorageService: ProjectStorageService
+    val projectStorageService: ProjectStorageService,
+    val indexRoutingService: IndexRoutingService,
+    val indexTaskService: IndexTaskService
 ) {
 
     @PreAuthorize("hasAuthority('SystemManage')")
@@ -53,6 +60,21 @@ class ProjectController constructor(
     @ApiOperation("Retrieve Project by Id.")
     fun get(@PathVariable id: UUID): Project {
         return projectService.get(id)
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @PostMapping(value = ["/api/v1/projects/{id}/_migrate"])
+    @ApiOperation("Migrate a project to a new index.")
+    fun migrate(@PathVariable id: UUID, @RequestBody spec: ProjectIndexMigrationSpec): IndexTask {
+        return indexTaskService.migrateProject(projectService.get(id), spec)
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @GetMapping(value = ["/api/v1/projects/{id}/_index"])
+    @ApiOperation("Migrate a project to a new index.")
+    fun getIndex(@PathVariable id: UUID): IndexRoute {
+        val project = projectService.get(id)
+        return indexRoutingService.getIndexRoute(project.indexRouteId as UUID)
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")

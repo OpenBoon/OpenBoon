@@ -9,6 +9,7 @@ const filterShape = {
     'textContent',
     'similarity',
     'date',
+    'label',
   ]),
   attribute: PropTypes.string.isRequired,
   values: PropTypes.shape({}),
