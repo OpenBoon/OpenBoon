@@ -175,7 +175,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             {
                 'type': 'label',
-                'model_id': '$model_id_UUID',
+                'modelId': '$model_id_UUID',
                 'values': {
                     'labels': ['Celeste', 'David'],
                     'scope': 'all'
@@ -243,7 +243,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             "order": "asc" OR "desc"
 
-            "minimum_count": $integer
+            "minimumCount": $integer
 
         LabelConfidence:
 
@@ -256,7 +256,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             {
                 "type": "labels",
-                "model_id": "$model_id_UUID"
+                "modelId": "$model_id_UUID"
             }
 
         Similar to Facet aggregations, Label aggs can also be sorted and filtered with
@@ -264,7 +264,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             "order": "asc" OR "desc"
 
-            "minimum_count": $integer
+            "minimumCount": $integer
 
         """
         path = 'api/v3/assets/_search'

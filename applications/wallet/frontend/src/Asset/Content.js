@@ -43,6 +43,7 @@ const AssetContent = () => {
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
+            marginRight: spacing.hairline,
           }}
         >
           <AssetNavigation

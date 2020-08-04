@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, createElement } from 'react'
 
 import user from './user'

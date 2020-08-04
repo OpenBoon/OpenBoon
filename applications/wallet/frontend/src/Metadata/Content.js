@@ -49,7 +49,7 @@ const MetadataContent = ({ projectId, assetId }) => {
           minHeight: 'fit-content',
           borderBottom: constants.borders.regular.smoke,
           ':hover': {
-            backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
+            backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
             div: {
               color: colors.structure.white,
               svg: { opacity: 1 },

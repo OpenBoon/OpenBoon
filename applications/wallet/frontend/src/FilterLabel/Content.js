@@ -1,19 +1,18 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
+
+import filterShape from '../Filter/shape'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
-
-import filterShape from '../Filter/shape'
+import FilterReset from '../Filter/Reset'
 
 import { getNewFacets, dispatch, ACTIONS, encode } from '../Filters/helpers'
-import FilterSearch from '../Filter/Search'
 
-import FilterLabelConfidenceSlider from './Slider'
+export const noop = () => {}
 
-const FilterLabelConfidenceContent = ({
+const FilterLabel = ({
   pathname,
   projectId,
   assetId,
@@ -22,14 +21,13 @@ const FilterLabelConfidenceContent = ({
   filter: {
     type,
     attribute,
-    values: { labels = [], min = 0.0, max = 1.0 },
+    modelId,
+    values: { labels = [] },
     isDisabled,
   },
   filterIndex,
 }) => {
-  const [searchString, setSearchString] = useState('')
-
-  const encodedFilter = encode({ filters: { type, attribute } })
+  const encodedFilter = encode({ filters: { type, modelId } })
 
   const { data } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
@@ -39,7 +37,6 @@ const FilterLabelConfidenceContent = ({
       shouldRetryOnError: false,
     },
   )
-
   const { results } = data || {}
 
   const { buckets = [] } = results || {}
@@ -48,22 +45,19 @@ const FilterLabelConfidenceContent = ({
 
   return (
     <>
-      <FilterLabelConfidenceSlider
+      <FilterReset
         pathname={pathname}
         projectId={projectId}
         assetId={assetId}
         filters={filters}
         filter={filter}
         filterIndex={filterIndex}
+        onReset={noop}
       />
 
-      <FilterSearch
-        placeholder="Search labels"
-        searchString={searchString}
-        onChange={({ value }) => {
-          setSearchString(value)
-        }}
-      />
+      <div css={{ height: spacing.moderate }} />
+
+      {/* // TODO: add Test/Train/All scope select */}
 
       <div
         css={{
@@ -80,8 +74,6 @@ const FilterLabelConfidenceContent = ({
 
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
         {buckets.map(({ key, docCount = 0 }) => {
-          if (!key.toLowerCase().includes(searchString)) return null
-
           const offset = Math.ceil((docCount * 100) / largestCount)
           const facetIndex = labels.findIndex((f) => f === key)
           const isSelected = !!(facetIndex + 1)
@@ -96,7 +88,7 @@ const FilterLabelConfidenceContent = ({
                   backgroundColor: isSelected
                     ? `${colors.signal.sky.base}${constants.opacity.hex22Pct}`
                     : '',
-                  color: colors.structure.white,
+                  color: colors.structure.zinc,
                   ':hover': {
                     backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
                     color: colors.structure.white,
@@ -106,7 +98,7 @@ const FilterLabelConfidenceContent = ({
                 onClick={(event) => {
                   const hasModifier = event.metaKey || event.ctrlKey
 
-                  const newLabelConfidences = getNewFacets({
+                  const newLabels = getNewFacets({
                     facets: labels,
                     isSelected,
                     hasModifier,
@@ -115,9 +107,7 @@ const FilterLabelConfidenceContent = ({
                   })
 
                   const values =
-                    newLabelConfidences.length > 0
-                      ? { labels: newLabelConfidences, min, max }
-                      : {}
+                    newLabels.length > 0 ? { labels: newLabels } : {}
 
                   dispatch({
                     type: ACTIONS.UPDATE_FILTER,
@@ -129,6 +119,7 @@ const FilterLabelConfidenceContent = ({
                       updatedFilter: {
                         type,
                         attribute,
+                        modelId,
                         values,
                       },
                       filterIndex,
@@ -165,8 +156,16 @@ const FilterLabelConfidenceContent = ({
                       lineHeight: typography.height.small,
                     }}
                   >
-                    <div>{key}</div>
-                    <div>{docCount}</div>
+                    <div
+                      css={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {key}
+                    </div>
+                    <div css={{ paddingLeft: spacing.base }}>{docCount}</div>
                   </div>
                 </div>
               </Button>
@@ -178,7 +177,7 @@ const FilterLabelConfidenceContent = ({
   )
 }
 
-FilterLabelConfidenceContent.propTypes = {
+FilterLabel.propTypes = {
   pathname: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
@@ -187,4 +186,4 @@ FilterLabelConfidenceContent.propTypes = {
   filterIndex: PropTypes.number.isRequired,
 }
 
-export default FilterLabelConfidenceContent
+export default FilterLabel

@@ -192,13 +192,13 @@ class FacetFilter(BaseFilter):
     type = 'facet'
     required_agg_keys = ['attribute']
     required_query_keys = ['facets']
-    optional_keys = ['order', 'minimum_count']
+    optional_keys = ['order', 'minimumCount']
     agg_prefix = 'sterms'
 
     def get_es_agg(self):
         attribute = self.data['attribute']
         order = self.data.get('order')
-        minimum_count = self.data.get('minimum_count')
+        minimumCount = self.data.get('minimumCount')
         agg = {
             'size': 0,
             'aggs': {
@@ -211,8 +211,8 @@ class FacetFilter(BaseFilter):
             }}
         if order:
             agg['aggs'][self.name]['terms']['order'] = {'_count': order}
-        if minimum_count:
-            agg['aggs'][self.name]['terms']['min_doc_count'] = minimum_count
+        if minimumCount:
+            agg['aggs'][self.name]['terms']['min_doc_count'] = minimumCount
         return agg
 
     def get_es_query(self):
@@ -370,15 +370,15 @@ class SimilarityFilter(BaseFilter):
 class LabelFilter(BaseFilter):
 
     type = 'label'
-    required_agg_keys = ['model_id']
+    required_agg_keys = ['modelId']
     required_query_keys = ['labels']
-    optional_keys = ['order', 'minimum_count']
+    optional_keys = ['order', 'minimumCount']
     agg_prefix = ''
 
     def get_es_agg(self):
-        model_id = self.data['model_id']
+        modelId = self.data['modelId']
         order = self.data.get('order')
-        minimum_count = self.data.get('minimum_count')
+        minimumCount = self.data.get('minimumCount')
         agg = {
             "size": 0,
             "query": {
@@ -387,7 +387,7 @@ class LabelFilter(BaseFilter):
                     "query": {
                         "bool": {
                             "filter": [
-                                {"term": {"labels.modelId": model_id}}]
+                                {"term": {"labels.modelId": modelId}}]
                         }
                     }
                 }
@@ -409,12 +409,12 @@ class LabelFilter(BaseFilter):
             }}
         if order:
             agg['aggs'][self.name]['aggs'][f'nested_{self.name}']['terms']['order'] = {'_count': order}  # noqa
-        if minimum_count:
-            agg['aggs'][self.name]['aggs'][f'nested_{self.name}']['terms']['min_doc_count'] = minimum_count  # noqa
+        if minimumCount:
+            agg['aggs'][self.name]['aggs'][f'nested_{self.name}']['terms']['min_doc_count'] = minimumCount  # noqa
         return agg
 
     def get_es_query(self):
-        model_id = self.data['model_id']
+        modelId = self.data['modelId']
         labels = self.data['values']['labels']
         # Cheat, in case they forget the scope look for all of them
         scope = self.data['values'].get('scope', 'all')
@@ -432,7 +432,7 @@ class LabelFilter(BaseFilter):
                             "query": {
                                 "bool": {
                                     "filter": [
-                                        {"terms": {"labels.modelId": [model_id]}},
+                                        {"terms": {"labels.modelId": [modelId]}},
                                         {"terms": {'labels.label': labels}},
                                         {"terms": {'labels.scope': scope}}
                                     ]

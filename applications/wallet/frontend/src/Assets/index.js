@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useRef, forwardRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR, { useSWRPages } from 'swr'

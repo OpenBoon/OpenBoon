@@ -382,7 +382,7 @@ Array [
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #0273f5;
+  background-color: #0074f5;
 }
 
 .emotion-24:first-of-type {
@@ -470,7 +470,7 @@ Array [
   -webkit-flex: 14 0 auto;
   -ms-flex: 14 0 auto;
   flex: 14 0 auto;
-  background-color: #0273f5;
+  background-color: #0074f5;
 }
 
 .emotion-39:first-of-type {
@@ -522,7 +522,7 @@ Array [
   -webkit-flex: 4 0 auto;
   -ms-flex: 4 0 auto;
   flex: 4 0 auto;
-  background-color: #0273f5;
+  background-color: #0074f5;
 }
 
 .emotion-53:first-of-type {

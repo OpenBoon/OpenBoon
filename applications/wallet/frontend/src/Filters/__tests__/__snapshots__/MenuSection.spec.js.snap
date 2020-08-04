@@ -1,0 +1,446 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] = `
+.emotion-8 {
+  margin-left: 32px;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-8:first-of-type {
+  border-top: none;
+}
+
+.emotion-7 {
+  padding: 8px;
+  margin-left: -32px;
+}
+
+.emotion-7:hover {
+  background-color: #0074f538;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  padding-bottom: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-0 {
+  margin: 0;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 16px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-1 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-5 {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding-left: 8px;
+}
+
+.emotion-4 {
+  color: #b3b3b3;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+<div
+  className="emotion-8"
+>
+  <div
+    className="emotion-7"
+  >
+    <label
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        <input
+          className="emotion-0"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="labels.zvi-console_face_recognition-face-recognition"
+        />
+        <div
+          className="emotion-2"
+        >
+          <svg
+            className="emotion-1"
+            data-file-name="checkmark.svg"
+            height={20}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <span
+          className="emotion-4"
+        >
+          zvi-console_face_recognition-face-recognition
+        </span>
+      </div>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
+.emotion-9 {
+  margin-left: 32px;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-9:first-of-type {
+  border-top: none;
+}
+
+.emotion-8 {
+  padding: 8px;
+  margin-left: -32px;
+}
+
+.emotion-8:hover {
+  background-color: #0074f538;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  padding-bottom: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-1 {
+  margin: 0;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 16px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-2 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-6 {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding-left: 8px;
+}
+
+.emotion-5 {
+  color: #b3b3b3;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.emotion-10 {
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-top: 4px solid #3b3b3b;
+}
+
+.emotion-10:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+
+.emotion-10:last-of-type {
+  padding-bottom: 0;
+}
+
+.emotion-0 {
+  font-family: Roboto Mono;
+  font-weight: 400;
+}
+
+<div
+  className="emotion-10"
+>
+  <h4
+    className="emotion-0"
+  >
+    zvi
+  </h4>
+  <div
+    className="emotion-9"
+  >
+    <div
+      className="emotion-8"
+    >
+      <label
+        className="emotion-7"
+      >
+        <div
+          className="emotion-4"
+        >
+          <input
+            className="emotion-1"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="analysis.zvi.tinyProxy"
+          />
+          <div
+            className="emotion-3"
+          >
+            <svg
+              className="emotion-2"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-6"
+        >
+          <span
+            className="emotion-5"
+          >
+            tinyProxy
+          </span>
+        </div>
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FiltersMenuSection /> should render properly for an "exists" filter 1`] = `
+.emotion-8 {
+  margin-left: 32px;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-8:first-of-type {
+  border-top: none;
+}
+
+.emotion-7 {
+  padding: 8px;
+  margin-left: -32px;
+}
+
+.emotion-7:hover {
+  background-color: #0074f538;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  padding-bottom: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-0 {
+  margin: 0;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 16px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-1 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-5 {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding-left: 8px;
+}
+
+.emotion-4 {
+  color: #b3b3b3;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+<div
+  className="emotion-8"
+>
+  <div
+    className="emotion-7"
+  >
+    <label
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        <input
+          className="emotion-0"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="location.point"
+        />
+        <div
+          className="emotion-2"
+        >
+          <svg
+            className="emotion-1"
+            data-file-name="checkmark.svg"
+            height={20}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <span
+          className="emotion-4"
+        >
+          point
+        </span>
+      </div>
+    </label>
+  </div>
+</div>
+`;
+
+exports[`<FiltersMenuSection /> should render properly if a field has no possible filter 1`] = `null`;

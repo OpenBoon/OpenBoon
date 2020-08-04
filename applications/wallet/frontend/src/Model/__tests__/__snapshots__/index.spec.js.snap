@@ -67,7 +67,7 @@ Array [
 }
 
 .emotion-1 a {
-  color: #0273f5;
+  color: #0074f5;
 }
 
 .emotion-4 {
@@ -269,7 +269,7 @@ Array [
       >
         <svg
           className="emotion-0"
-          color="#0273f5"
+          color="#0074f5"
           data-file-name="generating.svg"
           height={20}
         />
@@ -369,7 +369,7 @@ Array [
     >
       <a
         className="emotion-7"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsInZhbHVlcyI6e319XQ=="
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
         onClick={[Function]}
         onMouseEnter={[Function]}
       >

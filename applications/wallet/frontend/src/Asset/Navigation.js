@@ -19,7 +19,6 @@ const AssetNavigation = ({ projectId, assetId, query }) => {
         backgroundColor: colors.structure.lead,
         color: colors.structure.steel,
         marginBottom: spacing.hairline,
-        marginRight: spacing.hairline,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
