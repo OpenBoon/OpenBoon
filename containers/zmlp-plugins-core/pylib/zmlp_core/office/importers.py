@@ -8,6 +8,8 @@ from zmlpsdk import AssetProcessor, Argument, ExpandFrame, ZmlpFatalProcessorExc
 from zmlpsdk.storage import file_storage, ZmlpStorageException
 from .oclient import OfficerClient
 
+from ..util.media import media_size
+
 __all__ = ['OfficeImporter', '_content_sanitizer']
 
 
@@ -17,16 +19,23 @@ class OfficeImporter(AssetProcessor):
     # The tmp_loc_attribute store the document
     tmp_loc_attr = OfficerClient.tmp_loc_attr
 
+    default_dpi = 150
+    """The default DPI for PDF rendering"""
+
     def __init__(self):
         super(OfficeImporter, self).__init__()
-        self.add_arg(Argument('extract_pages', 'bool', default=False,
+        self.add_arg(Argument('extract_doc_pages', 'bool', default=False,
                               toolTip='Extract all pages from document as separate assets'))
-        self.add_arg(Argument('dpi', int, default=150,
-                              toolTip='DPI setting for PDF renders'))
-
+        self.add_arg(Argument('ocr', 'bool', default=False,
+                              toolTip='Outputs will be for OCR purposes.'))
+        self.add_arg(Argument('dpi', 'int', default=150,
+                              toolTip='The default image render DPI, where applicable.'))
         self.oclient = None
 
     def init(self):
+        # Reset the value of DPI to 300 if OCR is enabled.
+        if self.arg_value('ocr'):
+            self.arg('dpi').value = 300
         self.oclient = OfficerClient(dpi=self.arg_value('dpi'))
 
     def get_metadata(self, uri, page):
@@ -84,7 +93,7 @@ class OfficeImporter(AssetProcessor):
             # Since there is no clip, then set a clip
             asset.set_attr('clip', Clip.page(1))
 
-            if self.arg_value('extract_pages'):
+            if self.arg_value('extract_doc_pages'):
                 # Iterate the pages and expand
                 num_pages = int(asset.get_attr('media.length') or 1)
                 if num_pages > 1:
@@ -100,14 +109,14 @@ class OfficeImporter(AssetProcessor):
         """
         Render the specific page image and metadata if it is not already cached.
         Also applies the 'tmp.proxy_source_image' attribute to the rendered page.
-        If the asset containers no clip the extract_pages is enabled, then all
+        If the asset containers no clip the extract_doc_pages is enabled, then all
         pages will be rendered.
 
         Args:
             asset (Asset): The Asset
             page (int): The page number to render
             all_pages (bool): Set to true if the request should render all pages.
-                This assumes extract_pages is enabled.
+                This assumes extract_doc_pages is enabled.
 
         Returns:
             str: The base output URI.
@@ -124,7 +133,7 @@ class OfficeImporter(AssetProcessor):
             if cache_loc:
                 self.logger.info('CACHED proxy and metadata outputs: {}'.format(cache_loc))
             else:
-                if all_pages and self.arg_value('extract_pages'):
+                if all_pages and self.arg_value('extract_doc_pages'):
                     cache_loc = self.oclient.render(asset, -1, disable_image_render)
                     self.logger.info(
                         'ALL render of proxy and metadata outputs to: {}'.format(cache_loc))
@@ -135,7 +144,10 @@ class OfficeImporter(AssetProcessor):
 
             # Officer only renders metadata for PDFs, the image is rendered here.
             if disable_image_render:
-                asset.set_attr('tmp.proxy_source_image', self.render_pdf_page(asset, page))
+                full_size_render = self.render_pdf_page(asset, page)
+                asset.set_attr('tmp.proxy_source_image', full_size_render)
+                if self.arg_value('ocr'):
+                    self.store_ocr_proxy(asset, full_size_render)
             else:
                 asset.set_attr('tmp.proxy_source_image', self.get_image_uri(cache_loc, page))
 
@@ -151,7 +163,7 @@ class OfficeImporter(AssetProcessor):
 
         Args:
             asset (Asset): The asset.
-            page (int): The page numnber.
+            page (int): The page number.
 
         Returns:
             str: The path to the rendered image.
@@ -169,9 +181,32 @@ class OfficeImporter(AssetProcessor):
                '-hide-annotations',
                '-png',
                input_path, dst_path]
+        self.logger.debug(cmd)
 
         subprocess.check_call(cmd, shell=False)
         return f"{dst_path}.png"
+
+    def store_ocr_proxy(self, asset, src_path):
+        """
+        Store a full size render for OCR purposes.
+
+        Args:
+            asset (Asset): The asset.
+            src_path (str): The path to the source image.
+
+        Returns:
+            StoredFile: The full size PDF proxy, PNG format.
+        """
+
+        if not src_path:
+            self.logger.warning("There was no proxy_source_image to store as an OCR proxy.")
+            return
+
+        # Note the OCR image for PDF is a ping
+        size = media_size(src_path)
+        attrs = {"width": size[0], "height": size[1]}
+        prx = file_storage.assets.store_file(src_path, asset, "ocr-proxy", "ocr-proxy.png", attrs)
+        return prx
 
 
 def _content_sanitizer(metadata):
