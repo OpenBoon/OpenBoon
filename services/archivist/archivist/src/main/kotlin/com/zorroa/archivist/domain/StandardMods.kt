@@ -158,8 +158,8 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ),
                 ModOp(
                     ModOpType.SET_ARGS,
-                    mapOf("store_ocr_proxy" to true),
-                    OpFilter(OpFilterType.REGEX, ".*ImageProxyProcessor")
+                    mapOf("ocr" to true),
+                    OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
             true
@@ -307,8 +307,8 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ),
                 ModOp(
                     ModOpType.SET_ARGS,
-                    mapOf("store_ocr_proxy" to true),
-                    OpFilter(OpFilterType.REGEX, ".*ImageProxyProcessor")
+                    mapOf("ocr" to true),
+                    OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
             true
@@ -332,8 +332,8 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ),
                 ModOp(
                     ModOpType.SET_ARGS,
-                    mapOf("store_ocr_proxy" to true),
-                    OpFilter(OpFilterType.REGEX, ".*ImageProxyProcessor")
+                    mapOf("ocr" to true),
+                    OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
             true
