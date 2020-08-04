@@ -8,7 +8,7 @@ const aggregate = {
       { key: 'Chevrolet', docCount: 4 },
       { key: 'Peugeot', docCount: 3 },
       { key: 'Audi', docCount: 2 },
-      { key: 'Toyota', docCount: 1 },
+      { key: 'Toyota' },
     ],
   },
 }

@@ -5,6 +5,7 @@ import filterShape from '../Filter/shape'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import Select from '../Select'
 import Button, { VARIANTS } from '../Button'
 import FilterReset from '../Filter/Reset'
 
@@ -22,7 +23,7 @@ const FilterLabel = ({
     type,
     attribute,
     modelId,
-    values: { labels = [] },
+    values: { labels = [], scope = 'all' },
     isDisabled,
   },
   filterIndex,
@@ -57,7 +58,41 @@ const FilterLabel = ({
 
       <div css={{ height: spacing.moderate }} />
 
-      {/* // TODO: add Test/Train/All scope select */}
+      <Select
+        label="Scope"
+        options={[
+          { value: 'all', label: 'All' },
+          { value: 'test', label: 'Test' },
+          { value: 'train', label: 'Train' },
+        ]}
+        defaultValue={scope}
+        onChange={({ value }) => {
+          dispatch({
+            type: ACTIONS.UPDATE_FILTER,
+            payload: {
+              pathname,
+              projectId,
+              assetId,
+              filters,
+              updatedFilter: {
+                ...filter,
+                values: { ...filter.values, scope: value },
+              },
+              filterIndex,
+            },
+          })
+        }}
+        isRequired={false}
+        style={{
+          width: '100%',
+          height: 'auto',
+          paddingTop: spacing.base,
+          paddingBottom: spacing.base,
+          backgroundColor: colors.structure.smoke,
+        }}
+      />
+
+      <div css={{ height: spacing.moderate }} />
 
       <div
         css={{
