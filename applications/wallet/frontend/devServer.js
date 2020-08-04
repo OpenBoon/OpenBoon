@@ -40,6 +40,11 @@ const success = () => (_, res) => res.send('{"detail":"Success"}')
 const proxy = createProxyMiddleware({
   target: STAGING ? 'https://dev.console.zvi.zorroa.com' : 'http://localhost',
   changeOrigin: true,
+  headers: {
+    Referer: STAGING
+      ? 'https://dev.console.zvi.zorroa.com'
+      : 'http://localhost',
+  },
 })
 
 app.prepare().then(() => {

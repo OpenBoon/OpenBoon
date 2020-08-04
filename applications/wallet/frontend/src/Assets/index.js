@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useRef, forwardRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import useSWR, { useSWRPages } from 'swr'
+import { useSWRInfinite } from 'swr'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeGrid } from 'react-window'
@@ -42,66 +42,31 @@ const Assets = () => {
 
   const { columnCount, isMin, isMax } = state
 
-  const { pages, loadMore, pageSWRs } = useSWRPages(
-    // page key
-    'visualizer',
+  const q = cleanup({ query })
 
-    // page component
-    ({ offset, withSWR }) => {
-      const from = offset * SIZE
+  const { data, size, setSize } = useSWRInfinite(
+    (pageIndex, previousPageData) => {
+      if (previousPageData && !previousPageData.next) return null
 
-      const q = cleanup({ query })
+      const from = pageIndex * SIZE
 
-      const { data } = withSWR(
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        useSWR(
-          `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${from}&size=${SIZE}`,
-          {
-            suspense: false,
-            revalidateOnFocus: false,
-            revalidateOnReconnect: false,
-            shouldRetryOnError: false,
-          },
-        ),
-      )
-
-      const { results } = data || {}
-
-      if (!results) {
-        if (offset > 0) return null
-
-        return (
-          <div css={{ flex: 1, display: 'flex', height: '100%' }}>
-            <Loading />
-          </div>
-        )
-      }
-
-      return null
+      return `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${from}&size=${SIZE}`
     },
-
-    // offset of next page
-    ({ data }, index) => {
-      const { count } = data || {}
-      const offset = (index + 1) * SIZE
-      return offset < count ? index + 1 : null
+    undefined,
+    {
+      suspense: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      shouldRetryOnError: false,
     },
-
-    // deps of the page component
-    [query],
   )
 
-  const { data } = pageSWRs[0] || {}
+  const { count: itemCount } = (data && data[0]) || {}
 
-  const { count: itemCount } = data || {}
-
-  const assets = Array.isArray(pageSWRs)
-    ? pageSWRs
-        // hack while https://github.com/zeit/swr/issues/189 gets fixed
-        .slice(0, Math.ceil(itemCount / SIZE))
-        .flatMap((pageSWR) => {
-          const { data: d } = pageSWR || {}
-          const { results } = d || {}
+  const assets = Array.isArray(data)
+    ? data
+        .flatMap((page) => {
+          const { results } = page || {}
           return results
         })
         .filter((a) => a && a.id)
@@ -130,6 +95,14 @@ const Assets = () => {
     }
   }, [selectedRow, columnCount, selectedId, virtualLoaderRef])
 
+  if (!data) {
+    return (
+      <div css={{ flex: 1, margin: spacing.hairline, marginTop: 0 }}>
+        <Loading />
+      </div>
+    )
+  }
+
   return (
     <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       {!!itemCount && <VisualizerNavigation itemCount={itemCount} />}
@@ -142,8 +115,6 @@ const Assets = () => {
           boxShadow: constants.boxShadows.inset,
         }}
       >
-        {pages}
-
         <AssetsQuickView assets={assets} columnCount={columnCount} />
 
         {itemCount === 0 && (
@@ -163,7 +134,7 @@ const Assets = () => {
                   ref={(ref) => setVirtualLoaderRef(ref)}
                   isItemLoaded={(index) => !!assets[index]}
                   itemCount={itemCount}
-                  loadMoreItems={loadMore}
+                  loadMoreItems={() => setSize(size + 1)}
                 >
                   {({ onItemsRendered, ref }) => {
                     const { parentElement } =

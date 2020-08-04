@@ -19,7 +19,7 @@ describe('<Assets />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: undefined })
+    require('swr').__setMockUseSWRInfiniteResponse()
 
     const component = TestRenderer.create(<Assets />)
 
@@ -32,8 +32,7 @@ describe('<Assets />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: assets })
-    require('swr').__setPageSWRs([{ data: assets }])
+    require('swr').__setMockUseSWRInfiniteResponse([assets])
 
     const component = TestRenderer.create(<Assets />)
 
@@ -86,8 +85,7 @@ describe('<Assets />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
-    require('swr').__setPageSWRs([{ data: { count: 0, results: [] } }])
+    require('swr').__setMockUseSWRInfiniteResponse([{ count: 0, results: [] }])
 
     const component = TestRenderer.create(<Assets />)
 
@@ -115,8 +113,7 @@ describe('<Assets />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
-    require('swr').__setPageSWRs([{ data: { count: 0, results: [] } }])
+    require('swr').__setMockUseSWRInfiniteResponse([{ count: 0, results: [] }])
 
     const component = TestRenderer.create(<Assets />)
 
@@ -146,8 +143,7 @@ describe('<Assets />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
-    require('swr').__setPageSWRs([{ data: { count: 0, results: [] } }])
+    require('swr').__setMockUseSWRInfiniteResponse([{ count: 0, results: [] }])
 
     const component = TestRenderer.create(<Assets />)
 
