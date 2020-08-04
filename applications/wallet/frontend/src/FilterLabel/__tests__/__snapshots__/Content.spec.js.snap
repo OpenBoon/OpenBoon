@@ -34,6 +34,78 @@ Array [
 <div
     className="emotion-0"
   />,
+  .emotion-2 {
+  color: #b3b3b3;
+}
+
+.emotion-1 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
+  background-color: #3b3b3b;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  height: auto;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  padding-left: 12px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  background-position: right 8px top 50%;
+  background-size: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+<label
+    className="emotion-2"
+  >
+    Scope
+    <div
+      className="emotion-1"
+    >
+      <select
+        className="emotion-0"
+        defaultValue="all"
+        onChange={[Function]}
+      >
+        <option
+          disabled={true}
+          value=""
+        >
+          Select an option...
+        </option>
+        <option
+          value="all"
+        >
+          All
+        </option>
+        <option
+          value="test"
+        >
+          Test
+        </option>
+        <option
+          value="train"
+        >
+          Train
+        </option>
+      </select>
+    </div>
+  </label>,
+  .emotion-0 {
+  height: 12px;
+}
+
+<div
+    className="emotion-0"
+  />,
   .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -108,6 +180,78 @@ Array [
 <div
     className="emotion-0"
   />,
+  .emotion-2 {
+  color: #b3b3b3;
+}
+
+.emotion-1 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
+  background-color: #3b3b3b;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  height: auto;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  padding-left: 12px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  background-position: right 8px top 50%;
+  background-size: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+<label
+    className="emotion-2"
+  >
+    Scope
+    <div
+      className="emotion-1"
+    >
+      <select
+        className="emotion-0"
+        defaultValue="all"
+        onChange={[Function]}
+      >
+        <option
+          disabled={true}
+          value=""
+        >
+          Select an option...
+        </option>
+        <option
+          value="all"
+        >
+          All
+        </option>
+        <option
+          value="test"
+        >
+          Test
+        </option>
+        <option
+          value="train"
+        >
+          Train
+        </option>
+      </select>
+    </div>
+  </label>,
+  .emotion-0 {
+  height: 12px;
+}
+
+<div
+    className="emotion-0"
+  />,
   .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -132,10 +276,52 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-24 {
+  .emotion-40 {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.emotion-6 {
+  width: 100%;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  height: 4px;
+  width: 0%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.emotion-3 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-4 {
+  padding-left: 8px;
 }
 
 .emotion-7 {
@@ -190,59 +376,61 @@ Array [
   color: #ffffff;
 }
 
-.emotion-6 {
-  width: 100%;
+.emotion-8 {
+  width: 80%;
+  border-top: 4px solid #808080;
 }
 
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+.emotion-9 {
+  height: 4px;
+  width: 20%;
+  border-top: 1px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-16 {
+  width: 60%;
+  border-top: 4px solid #808080;
+}
+
+.emotion-17 {
+  height: 4px;
+  width: 40%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-24 {
+  width: 40%;
+  border-top: 4px solid #808080;
+}
+
+.emotion-25 {
+  height: 4px;
+  width: 60%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-32 {
   width: 0%;
   border-top: 4px solid #808080;
 }
 
-.emotion-1 {
+.emotion-33 {
   height: 4px;
   width: 100%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-}
-
-.emotion-3 {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.emotion-4 {
-  padding-left: 8px;
+.emotion-0 {
+  width: 100%;
+  border-top: 4px solid #808080;
 }
 
 <ul
-    className="emotion-24"
+    className="emotion-40"
   >
     <li>
       <button
-        aria-label="Tyngsboro"
+        aria-label="Ford"
         className="emotion-7"
         onClick={[Function]}
         type="button"
@@ -266,12 +454,12 @@ Array [
             <div
               className="emotion-3"
             >
-              Tyngsboro
+              Ford
             </div>
             <div
               className="emotion-4"
             >
-              0
+              5
             </div>
           </div>
         </div>
@@ -279,7 +467,7 @@ Array [
     </li>
     <li>
       <button
-        aria-label="Brooklyn"
+        aria-label="Chevrolet"
         className="emotion-7"
         onClick={[Function]}
         type="button"
@@ -291,10 +479,10 @@ Array [
             className="emotion-2"
           >
             <div
-              className="emotion-0"
+              className="emotion-8"
             />
             <div
-              className="emotion-1"
+              className="emotion-9"
             />
           </div>
           <div
@@ -303,12 +491,12 @@ Array [
             <div
               className="emotion-3"
             >
-              Brooklyn
+              Chevrolet
             </div>
             <div
               className="emotion-4"
             >
-              0
+              4
             </div>
           </div>
         </div>
@@ -316,7 +504,7 @@ Array [
     </li>
     <li>
       <button
-        aria-label="Cát Bà"
+        aria-label="Peugeot"
         className="emotion-7"
         onClick={[Function]}
         type="button"
@@ -328,10 +516,10 @@ Array [
             className="emotion-2"
           >
             <div
-              className="emotion-0"
+              className="emotion-16"
             />
             <div
-              className="emotion-1"
+              className="emotion-17"
             />
           </div>
           <div
@@ -340,7 +528,81 @@ Array [
             <div
               className="emotion-3"
             >
-              Cát Bà
+              Peugeot
+            </div>
+            <div
+              className="emotion-4"
+            >
+              3
+            </div>
+          </div>
+        </div>
+      </button>
+    </li>
+    <li>
+      <button
+        aria-label="Audi"
+        className="emotion-7"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-6"
+        >
+          <div
+            className="emotion-2"
+          >
+            <div
+              className="emotion-24"
+            />
+            <div
+              className="emotion-25"
+            />
+          </div>
+          <div
+            className="emotion-5"
+          >
+            <div
+              className="emotion-3"
+            >
+              Audi
+            </div>
+            <div
+              className="emotion-4"
+            >
+              2
+            </div>
+          </div>
+        </div>
+      </button>
+    </li>
+    <li>
+      <button
+        aria-label="Toyota"
+        className="emotion-7"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-6"
+        >
+          <div
+            className="emotion-2"
+          >
+            <div
+              className="emotion-32"
+            />
+            <div
+              className="emotion-33"
+            />
+          </div>
+          <div
+            className="emotion-5"
+          >
+            <div
+              className="emotion-3"
+            >
+              Toyota
             </div>
             <div
               className="emotion-4"
@@ -366,7 +628,7 @@ Array [
         "type": "label",
         "values": Object {
           "labels": Array [
-            "Tyngsboro",
+            "Ford",
           ],
         },
       }
@@ -380,7 +642,7 @@ Array [
           "type": "label",
           "values": Object {
             "labels": Array [
-              "Tyngsboro",
+              "Ford",
             ],
           },
         },
@@ -390,6 +652,78 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
+  .emotion-0 {
+  height: 12px;
+}
+
+<div
+    className="emotion-0"
+  />,
+  .emotion-2 {
+  color: #b3b3b3;
+}
+
+.emotion-1 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
+  background-color: #3b3b3b;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  height: auto;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  padding-left: 12px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  background-position: right 8px top 50%;
+  background-size: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+<label
+    className="emotion-2"
+  >
+    Scope
+    <div
+      className="emotion-1"
+    >
+      <select
+        className="emotion-0"
+        defaultValue="all"
+        onChange={[Function]}
+      >
+        <option
+          disabled={true}
+          value=""
+        >
+          Select an option...
+        </option>
+        <option
+          value="all"
+        >
+          All
+        </option>
+        <option
+          value="test"
+        >
+          Test
+        </option>
+        <option
+          value="train"
+        >
+          Train
+        </option>
+      </select>
+    </div>
+  </label>,
   .emotion-0 {
   height: 12px;
 }
@@ -421,10 +755,110 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-24 {
+  .emotion-40 {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background-color: #0074f538;
+  color: #b3b3b3;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7:hover {
+  background-color: #0074f538;
+  color: #ffffff;
+}
+
+.emotion-6 {
+  width: 100%;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  width: 100%;
+  border-top: 4px solid #73b61c;
+}
+
+.emotion-1 {
+  height: 4px;
+  width: 0%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.emotion-3 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-4 {
+  padding-left: 8px;
 }
 
 .emotion-15 {
@@ -479,117 +913,56 @@ Array [
   color: #ffffff;
 }
 
-.emotion-6 {
-  width: 100%;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
 .emotion-8 {
+  width: 80%;
+  border-top: 4px solid #808080;
+}
+
+.emotion-9 {
+  height: 4px;
+  width: 20%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-16 {
+  width: 60%;
+  border-top: 4px solid #808080;
+}
+
+.emotion-17 {
+  height: 4px;
+  width: 40%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-24 {
+  width: 40%;
+  border-top: 4px solid #808080;
+}
+
+.emotion-25 {
+  height: 4px;
+  width: 60%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-32 {
   width: 0%;
   border-top: 4px solid #808080;
 }
 
-.emotion-1 {
+.emotion-33 {
   height: 4px;
   width: 100%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-}
-
-.emotion-3 {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.emotion-4 {
-  padding-left: 8px;
-}
-
-.emotion-7 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  width: 100%;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  background-color: #0074f538;
-  color: #b3b3b3;
-}
-
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-7:hover {
-  background-color: #0074f538;
-  color: #ffffff;
-}
-
-.emotion-0 {
-  width: 0%;
-  border-top: 4px solid #73b61c;
-}
-
 <ul
-    className="emotion-24"
+    className="emotion-40"
   >
     <li>
       <button
-        aria-label="Tyngsboro"
+        aria-label="Ford"
         className="emotion-7"
         onClick={[Function]}
         type="button"
@@ -613,12 +986,12 @@ Array [
             <div
               className="emotion-3"
             >
-              Tyngsboro
+              Ford
             </div>
             <div
               className="emotion-4"
             >
-              0
+              5
             </div>
           </div>
         </div>
@@ -626,7 +999,7 @@ Array [
     </li>
     <li>
       <button
-        aria-label="Brooklyn"
+        aria-label="Chevrolet"
         className="emotion-15"
         onClick={[Function]}
         type="button"
@@ -641,7 +1014,7 @@ Array [
               className="emotion-8"
             />
             <div
-              className="emotion-1"
+              className="emotion-9"
             />
           </div>
           <div
@@ -650,12 +1023,12 @@ Array [
             <div
               className="emotion-3"
             >
-              Brooklyn
+              Chevrolet
             </div>
             <div
               className="emotion-4"
             >
-              0
+              4
             </div>
           </div>
         </div>
@@ -663,7 +1036,7 @@ Array [
     </li>
     <li>
       <button
-        aria-label="Cát Bà"
+        aria-label="Peugeot"
         className="emotion-15"
         onClick={[Function]}
         type="button"
@@ -675,10 +1048,10 @@ Array [
             className="emotion-2"
           >
             <div
-              className="emotion-8"
+              className="emotion-16"
             />
             <div
-              className="emotion-1"
+              className="emotion-17"
             />
           </div>
           <div
@@ -687,7 +1060,81 @@ Array [
             <div
               className="emotion-3"
             >
-              Cát Bà
+              Peugeot
+            </div>
+            <div
+              className="emotion-4"
+            >
+              3
+            </div>
+          </div>
+        </div>
+      </button>
+    </li>
+    <li>
+      <button
+        aria-label="Audi"
+        className="emotion-15"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-6"
+        >
+          <div
+            className="emotion-2"
+          >
+            <div
+              className="emotion-24"
+            />
+            <div
+              className="emotion-25"
+            />
+          </div>
+          <div
+            className="emotion-5"
+          >
+            <div
+              className="emotion-3"
+            >
+              Audi
+            </div>
+            <div
+              className="emotion-4"
+            >
+              2
+            </div>
+          </div>
+        </div>
+      </button>
+    </li>
+    <li>
+      <button
+        aria-label="Toyota"
+        className="emotion-15"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-6"
+        >
+          <div
+            className="emotion-2"
+          >
+            <div
+              className="emotion-32"
+            />
+            <div
+              className="emotion-33"
+            />
+          </div>
+          <div
+            className="emotion-5"
+          >
+            <div
+              className="emotion-3"
+            >
+              Toyota
             </div>
             <div
               className="emotion-4"

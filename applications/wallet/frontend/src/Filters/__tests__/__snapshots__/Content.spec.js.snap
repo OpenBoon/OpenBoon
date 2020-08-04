@@ -8205,22 +8205,22 @@ Array [
       </div>
     </form>
   </div>,
-  .emotion-56 {
+  .emotion-60 {
   overflow: auto;
 }
 
-.emotion-55 {
+.emotion-59 {
   background-color: #252525;
   border: 1px solid transparent;
   border-bottom: 1px solid #3b3b3b;
   padding-bottom: 1px;
 }
 
-.emotion-55:hover {
+.emotion-59:hover {
   border: 1px solid #3b3b3b;
 }
 
-.emotion-55:hover svg {
+.emotion-59:hover svg {
   opacity: 1;
 }
 
@@ -8512,14 +8512,14 @@ Array [
   background-color: #3b3b3b;
 }
 
-.emotion-54 {
+.emotion-58 {
   width: 100%;
   background-color: #191919;
   max-height: 500px;
   overflow-y: auto;
 }
 
-.emotion-19 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -8557,21 +8557,21 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-19:hover {
+.emotion-23:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-19[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-19:hover {
+.emotion-23:hover {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-53 {
+.emotion-57 {
   padding: 16px;
 }
 
@@ -8579,7 +8579,36 @@ Array [
   height: 12px;
 }
 
+.emotion-13 {
+  color: #b3b3b3;
+}
+
+.emotion-12 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
 .emotion-11 {
+  background-color: #3b3b3b;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  height: auto;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  padding-left: 12px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  background-position: right 8px top 50%;
+  background-size: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -8593,35 +8622,35 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-52 {
+.emotion-56 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-18 {
+.emotion-22 {
   width: 100%;
 }
 
-.emotion-14 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-12 {
+.emotion-16 {
   width: 100%;
   border-top: 4px solid #808080;
 }
 
-.emotion-13 {
+.emotion-17 {
   height: 4px;
   width: 0%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-17 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -8636,65 +8665,65 @@ Array [
   line-height: 18px;
 }
 
-.emotion-15 {
+.emotion-19 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.emotion-16 {
+.emotion-20 {
   padding-left: 8px;
 }
 
-.emotion-20 {
+.emotion-24 {
   width: 80%;
   border-top: 4px solid #808080;
 }
 
-.emotion-21 {
+.emotion-25 {
   height: 4px;
   width: 20%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-28 {
+.emotion-32 {
   width: 60%;
   border-top: 4px solid #808080;
 }
 
-.emotion-29 {
+.emotion-33 {
   height: 4px;
   width: 40%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-36 {
+.emotion-40 {
   width: 40%;
   border-top: 4px solid #808080;
 }
 
-.emotion-37 {
+.emotion-41 {
   height: 4px;
   width: 60%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-44 {
-  width: 20%;
+.emotion-48 {
+  width: 0%;
   border-top: 4px solid #808080;
 }
 
-.emotion-45 {
+.emotion-49 {
   height: 4px;
-  width: 80%;
+  width: 100%;
   border-top: 1px solid #3b3b3b;
 }
 
 <div
-    className="emotion-56"
+    className="emotion-60"
   >
     <div
-      className="emotion-55"
+      className="emotion-59"
     >
       <div
         className="emotion-9"
@@ -8754,10 +8783,10 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-54"
+        className="emotion-58"
       >
         <div
-          className="emotion-53"
+          className="emotion-57"
         >
           <FilterReset
             assetId=""
@@ -8787,8 +8816,47 @@ Array [
           <div
             className="emotion-10"
           />
+          <label
+            className="emotion-13"
+          >
+            Scope
+            <div
+              className="emotion-12"
+            >
+              <select
+                className="emotion-11"
+                defaultValue="all"
+                onChange={[Function]}
+              >
+                <option
+                  disabled={true}
+                  value=""
+                >
+                  Select an option...
+                </option>
+                <option
+                  value="all"
+                >
+                  All
+                </option>
+                <option
+                  value="test"
+                >
+                  Test
+                </option>
+                <option
+                  value="train"
+                >
+                  Train
+                </option>
+              </select>
+            </div>
+          </label>
           <div
-            className="emotion-11"
+            className="emotion-10"
+          />
+          <div
+            className="emotion-15"
           >
             <div>
               LABEL
@@ -8798,38 +8866,38 @@ Array [
             </div>
           </div>
           <ul
-            className="emotion-52"
+            className="emotion-56"
           >
             <li>
               <button
                 aria-label="Ford"
-                className="emotion-19"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-18"
                   >
                     <div
-                      className="emotion-12"
+                      className="emotion-16"
                     />
                     <div
-                      className="emotion-13"
+                      className="emotion-17"
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-21"
                   >
                     <div
-                      className="emotion-15"
+                      className="emotion-19"
                     >
                       Ford
                     </div>
                     <div
-                      className="emotion-16"
+                      className="emotion-20"
                     >
                       5
                     </div>
@@ -8840,33 +8908,33 @@ Array [
             <li>
               <button
                 aria-label="Chevrolet"
-                className="emotion-19"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-18"
                   >
                     <div
-                      className="emotion-20"
+                      className="emotion-24"
                     />
                     <div
-                      className="emotion-21"
+                      className="emotion-25"
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-21"
                   >
                     <div
-                      className="emotion-15"
+                      className="emotion-19"
                     >
                       Chevrolet
                     </div>
                     <div
-                      className="emotion-16"
+                      className="emotion-20"
                     >
                       4
                     </div>
@@ -8877,33 +8945,33 @@ Array [
             <li>
               <button
                 aria-label="Peugeot"
-                className="emotion-19"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-18"
                   >
                     <div
-                      className="emotion-28"
+                      className="emotion-32"
                     />
                     <div
-                      className="emotion-29"
+                      className="emotion-33"
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-21"
                   >
                     <div
-                      className="emotion-15"
+                      className="emotion-19"
                     >
                       Peugeot
                     </div>
                     <div
-                      className="emotion-16"
+                      className="emotion-20"
                     >
                       3
                     </div>
@@ -8914,33 +8982,33 @@ Array [
             <li>
               <button
                 aria-label="Audi"
-                className="emotion-19"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-18"
                   >
                     <div
-                      className="emotion-36"
+                      className="emotion-40"
                     />
                     <div
-                      className="emotion-37"
+                      className="emotion-41"
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-21"
                   >
                     <div
-                      className="emotion-15"
+                      className="emotion-19"
                     >
                       Audi
                     </div>
                     <div
-                      className="emotion-16"
+                      className="emotion-20"
                     >
                       2
                     </div>
@@ -8951,35 +9019,35 @@ Array [
             <li>
               <button
                 aria-label="Toyota"
-                className="emotion-19"
+                className="emotion-23"
                 onClick={[Function]}
                 type="button"
               >
                 <div
-                  className="emotion-18"
+                  className="emotion-22"
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-18"
                   >
                     <div
-                      className="emotion-44"
+                      className="emotion-48"
                     />
                     <div
-                      className="emotion-45"
+                      className="emotion-49"
                     />
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-21"
                   >
                     <div
-                      className="emotion-15"
+                      className="emotion-19"
                     >
                       Toyota
                     </div>
                     <div
-                      className="emotion-16"
+                      className="emotion-20"
                     >
-                      1
+                      0
                     </div>
                   </div>
                 </div>
