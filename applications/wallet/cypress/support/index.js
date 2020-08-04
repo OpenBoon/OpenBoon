@@ -14,22 +14,7 @@ Cypress.Commands.add('login', () => {
 })
 
 Cypress.Commands.add('logout', () => {
-  const { csrftoken } = Object.fromEntries(
-    document.cookie.split(/; */).map((c) => {
-      const [key, ...v] = c.split('=')
-      return [key, decodeURIComponent(v.join('='))]
-    }),
-  )
-
-  cy.request({
-    method: 'POST',
-    url: '/api/v1/logout/',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      'X-CSRFToken': csrftoken,
-      Referer: Cypress.config('baseUrl'),
-    },
-  })
+  cy.apiRequest({ method: 'POST', url: '/api/v1/logout/', body: {} })
 })
 
 before(() => {
@@ -47,3 +32,34 @@ before(() => {
 
   cy.logout()
 })
+
+function getCookies() {
+  return Object.fromEntries(
+    document.cookie.split(/; */).map((c) => {
+      const [key, ...v] = c.split('=')
+      return [key, decodeURIComponent(v.join('='))]
+    }),
+  )
+}
+
+/** Extends the cy.request function to have the headers needed to use the Wallet REST api.
+ * For convenience it allows you to set an array of acceptable status codes for the
+ * response as well. */
+Cypress.Commands.add(
+  'apiRequest',
+  ({ method, url, body, okStatusCodes = [200, 201] }) => {
+    cy.request({
+      method,
+      url,
+      body,
+      failOnStatusCode: false,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'X-CSRFToken': getCookies().csrftoken,
+        Referer: Cypress.config('baseUrl'),
+      },
+    }).then((response) => {
+      expect(response.status).to.be.oneOf(okStatusCodes)
+    })
+  },
+)
