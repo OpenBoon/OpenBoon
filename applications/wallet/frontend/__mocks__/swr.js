@@ -10,28 +10,6 @@ export const SWRConfig = ({ children, ...rest }) =>
   createElement('SWRConfig', rest, children)
 
 /**
- * pagesSWRs
- */
-
-const { useSWRPages: actualUseSWRPages } = jest.requireActual('swr')
-
-let mockPageSWRs = []
-
-export const __setPageSWRs = (data) => {
-  mockPageSWRs = data
-}
-
-export const useSWRPages = (key, component, offset, deps) => {
-  const { pages, loadMore } = actualUseSWRPages(key, component, offset, deps)
-
-  return {
-    pages,
-    pageSWRs: mockPageSWRs,
-    loadMore,
-  }
-}
-
-/**
  * cache
  */
 
@@ -86,3 +64,30 @@ const useSWR = () => {
 }
 
 export default useSWR
+
+/**
+ * useSWRInfinite
+ */
+
+const { useSWRInfinite: actualUseSWRInfinite } = jest.requireActual('swr')
+
+let mockData = []
+
+export const __setMockUseSWRInfiniteResponse = (data) => {
+  mockData = data
+}
+
+export const useSWRInfinite = (getKey, fetcher, options) => {
+  const { mutate: m, size, setSize } = actualUseSWRInfinite(
+    getKey,
+    fetcher,
+    options,
+  )
+
+  return {
+    data: mockData,
+    mutate: m,
+    size,
+    setSize,
+  }
+}

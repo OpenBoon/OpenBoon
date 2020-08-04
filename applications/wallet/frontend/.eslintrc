@@ -39,6 +39,7 @@
         "global-require": "off",
         "no-underscore-dangle": "off",
         "no-console": "off",
+        "react/prop-types": "off",
         "import/no-extraneous-dependencies": "off",
         "import/prefer-default-export": "off"
       }
