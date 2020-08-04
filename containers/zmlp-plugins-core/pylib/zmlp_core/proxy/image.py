@@ -16,19 +16,29 @@ logger = logging.getLogger(__file__)
 class ImageProxyProcessor(AssetProcessor):
     toolTips = {
         'sizes': 'Sizes of the proxies to create.',
-        'web_proxy_size': 'Size of web proxy'
+        'web_proxy_size': 'Size of web proxy',
+        'store_ocr_proxy': 'Store a full size proxy for OCR'
     }
 
     ml_quality = "95"
     web_quality = "85"
 
+    ocr_formats = ['pdf']
+    """If 'store_ocr_proxy' is true and the source image format """
+
+    multipage_formats = ['tiff', 'tif']
+    """Multipage image formats that have to be handled specifically for web proxies."""
+
     def __init__(self):
         super(ImageProxyProcessor, self).__init__()
         self.created_proxy_count = 0
+        # Make sure largest proxy comes first.
         self.add_arg(Argument('sizes', 'list[int]', default=[1280, 512],
                               toolTip=self.toolTips['sizes']))
         self.add_arg(Argument('web_proxy_size', 'int', default=1024,
                               toolTip=self.toolTips['web_proxy_size']))
+        self.add_arg(Argument('store_ocr_proxy', 'bool', default=False,
+                              toolTip=self.toolTips['store_ocr_proxy']))
 
     def process(self, frame):
         # Inherits parent docstring.
@@ -47,11 +57,15 @@ class ImageProxyProcessor(AssetProcessor):
 
         proxy_paths = self._create_proxy_images(asset)
         for width, height, path in proxy_paths:
-            store_media_proxy(asset, path,  'image', (width, height))
+            store_media_proxy(asset, path, 'image', (width, height))
 
         # Make web optimized
-        width, height, path = proxy_paths[0]
-        self.make_web_optimized_proxy(asset, path, (width, height))
+        width, height, _ = proxy_paths[0]
+        self.make_web_optimized_proxy(asset, source_path, (width, height))
+
+        # Store OCR proxy, if enabled.
+        if self.arg_value('store_ocr_proxy') and asset.extension in self.ocr_formats:
+            self.store_ocr_proxy(asset)
 
     def _create_proxy_images(self, asset):
         """
@@ -216,6 +230,9 @@ class ImageProxyProcessor(AssetProcessor):
 
         Args:
             asset (Asset): The asset to use
+
+        Returns:
+            StoredFile: The proxy stored file.
         """
         tmp_dir = tempfile.mkdtemp()
         output_path = os.path.join(tmp_dir, "web-optimized-proxy.jpg")
@@ -225,9 +242,16 @@ class ImageProxyProcessor(AssetProcessor):
         width, height = get_output_dimension(valid_size,
                                              src_size[0], src_size[1])
 
+        # If the source file is a multi-page image then
+        # we have to care about the page number here.
+        if asset.extension in self.multipage_formats:
+            page = int(asset.get_attr('clip.start') or 1) - 1
+        else:
+            page = 0
+
         cmd = [
             "convert",
-            str(src_path),
+            f"{src_path}[{page}]",
             "-resize",
             "%dx%d" % (width, height),
             "-sampling-factor",
@@ -251,6 +275,27 @@ class ImageProxyProcessor(AssetProcessor):
         attrs = {"width": width, "height": height}
         prx = file_storage.assets.store_file(output_path, asset, "web-proxy",
                                              "web-proxy.jpg", attrs)
+        return prx
+
+    def store_ocr_proxy(self, asset):
+        """
+        Store a full size render for OCR purposes.
+
+        Args:
+            asset (Asset): The asset.
+
+        Returns:
+            StoredFile: The full size PDF proxy, PNG format.
+        """
+        src_path = self._get_source_path(asset)
+        if not src_path:
+            logger.warning("There was no proxy_source_image to store as an OCR proxy.")
+            return
+
+        # Note the OCR image for PDF is a ping
+        size = media_size(src_path)
+        attrs = {"width": size[0], "height": size[1]}
+        prx = file_storage.assets.store_file(src_path, asset, "ocr-proxy", "ocr-proxy.png", attrs)
         return prx
 
 

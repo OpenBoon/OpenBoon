@@ -1,4 +1,7 @@
 import json
+import os
+import subprocess
+import tempfile
 
 from zmlp import FileImport, Clip
 from zmlpsdk import AssetProcessor, Argument, ExpandFrame, ZmlpFatalProcessorException, FileTypes
@@ -18,7 +21,13 @@ class OfficeImporter(AssetProcessor):
         super(OfficeImporter, self).__init__()
         self.add_arg(Argument('extract_pages', 'bool', default=False,
                               toolTip='Extract all pages from document as separate assets'))
-        self.oclient = OfficerClient()
+        self.add_arg(Argument('dpi', int, default=150,
+                              toolTip='DPI setting for PDF renders'))
+
+        self.oclient = None
+
+    def init(self):
+        self.oclient = OfficerClient(dpi=self.arg_value('dpi'))
 
     def get_metadata(self, uri, page):
         """
@@ -108,23 +117,61 @@ class OfficeImporter(AssetProcessor):
 
         """
         try:
+            # Don't render images for PDF
+            disable_image_render = asset.extension == 'pdf'
             cache_loc = self.oclient.get_cache_location(asset, page)
+
             if cache_loc:
                 self.logger.info('CACHED proxy and metadata outputs: {}'.format(cache_loc))
             else:
                 if all_pages and self.arg_value('extract_pages'):
-                    cache_loc = self.oclient.render(asset, -1)
+                    cache_loc = self.oclient.render(asset, -1, disable_image_render)
                     self.logger.info(
                         'ALL render of proxy and metadata outputs to: {}'.format(cache_loc))
                 else:
-                    cache_loc = self.oclient.render(asset, page)
+                    cache_loc = self.oclient.render(asset, page, disable_image_render)
                     self.logger.info(
                         'SINGLE render of proxy and metadata outputs to: {}'.format(cache_loc))
-            asset.set_attr('tmp.proxy_source_image', self.get_image_uri(cache_loc, page))
+
+            # Officer only renders metadata for PDFs, the image is rendered here.
+            if disable_image_render:
+                asset.set_attr('tmp.proxy_source_image', self.render_pdf_page(asset, page))
+            else:
+                asset.set_attr('tmp.proxy_source_image', self.get_image_uri(cache_loc, page))
+
             return cache_loc
+
         except Exception as e:
             raise ZmlpFatalProcessorException(
-                'Unable to determine page cache location {}'.format(asset.id), e)
+                'Unable to determine page cache location {}, {}'.format(asset.id, e), e)
+
+    def render_pdf_page(self, asset, page):
+        """
+        Render a single PDF page image.
+
+        Args:
+            asset (Asset): The asset.
+            page (int): The page numnber.
+
+        Returns:
+            str: The path to the rendered image.
+        """
+        input_path = file_storage.localize_file(asset)
+        dst_path = os.path.join(tempfile.gettempdir(), asset.id + "_pdf_proxy")
+
+        # Overall the png results in a smaller size for most PDF files.
+        # Because the compression works better on documents with just
+        # black and white.
+        cmd = ['pdftoppm',
+               '-singlefile',
+               '-f', str(page),
+               '-r', str(self.arg_value('dpi')),
+               '-hide-annotations',
+               '-png',
+               input_path, dst_path]
+
+        subprocess.check_call(cmd, shell=False)
+        return f"{dst_path}.png"
 
 
 def _content_sanitizer(metadata):
