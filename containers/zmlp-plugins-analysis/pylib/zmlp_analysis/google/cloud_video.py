@@ -26,7 +26,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         'detect_text': "Set to true to enable text detection.",
         'detect_objects': tip,
         'detect_logos': tip,
-        'detect_explicit': 'An integer level of confidence to tag as explicit. 0=disabled, max=5'
+        'detect_explicit': 'An integer level of confidence to tag as explicit. 0=disabled, max=5',
+        'detect_speech': 'Set to true to recongize speech in video.'
     }
 
     max_length_sec = 30 * 60
@@ -53,6 +54,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                               toolTip=self.tool_tips['detect_objects']))
         self.add_arg(Argument('detect_logos', 'float', default=-1,
                               toolTip=self.tool_tips['detect_logos']))
+        self.add_arg(Argument('detect_speech', 'bool', default=False,
+                              toolTip=self.tool_tips['detect_speech']))
         self.video_intel_client = None
 
     def init(self):
@@ -96,6 +99,9 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         if self.arg_value('detect_text'):
             self.handle_detect_text(asset, annotation_result)
+
+        if self.arg_value('detect_speech'):
+            self.handle_detect_speech(asset, annotation_result)
 
         if self.arg_value('detect_explicit') != -1:
             self.handle_detect_explicit(asset, annotation_result)
@@ -173,6 +179,20 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             timeline = cloud_timeline.build_text_detection_timeline(annotation_result)
             file_storage.assets.store_timeline(asset, timeline)
 
+    def handle_detect_speech(self, asset, annotation_result):
+        analysis = ContentDetectionAnalysis()
+
+        for speech in annotation_result.speech_transcriptions:
+            for alternative in speech.alternatives:
+                if alternative.words:
+                    analysis.add_content(alternative.transcript)
+
+        if analysis.content:
+            asset.add_analysis('gcp-video-speech-transcription', analysis)
+            timeline = cloud_timeline.build_speech_transcription_timeline(annotation_result)
+            file_storage.assets.store_timeline(asset, timeline)
+
+
     def handle_detect_explicit(self, asset, annotation_result):
         analysis = LabelDetectionAnalysis(collapse_labels=True)
         analysis.set_attr('explicit', False)
@@ -203,18 +223,26 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         """
         features = []
+        video_context = {}
         if self.arg_value('detect_explicit') > -1:
             features.append(videointelligence.enums.Feature.EXPLICIT_CONTENT_DETECTION)
         if self.arg_value('detect_labels') > -1:
             features.append(videointelligence.enums.Feature.LABEL_DETECTION)
         if self.arg_value('detect_text'):
             features.append(videointelligence.enums.Feature.TEXT_DETECTION)
+        if self.arg_value('detect_speech'):
+            features.append(videointelligence.enums.Feature.SPEECH_TRANSCRIPTION)
+            config = videointelligence.types.SpeechTranscriptionConfig(
+                    language_code="en-US", enable_automatic_punctuation=True)
+            video_context = videointelligence.types.VideoContext(
+                    speech_transcription_config=config)
         if self.arg_value('detect_objects') > -1:
             features.append(videointelligence.enums.Feature.OBJECT_TRACKING)
         if self.arg_value('detect_logos') > -1:
             features.append(videointelligence.enums.Feature.LOGO_RECOGNITION)
 
-        operation = self.video_intel_client.annotate_video(input_uri=uri, features=features)
+        operation = self.video_intel_client.annotate_video(input_uri=uri, features=features, 
+                                                           video_context=video_context)
 
         while not operation.done():
             logger.info("Waiting on Google Visual Intelligence {}".format(uri))

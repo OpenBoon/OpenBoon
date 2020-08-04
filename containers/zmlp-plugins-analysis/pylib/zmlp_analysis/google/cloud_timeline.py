@@ -23,6 +23,33 @@ def build_text_detection_timeline(annotations):
 
     return timeline
 
+def build_speech_transcription_timeline(annotations):
+    """
+    Build a timeline for video text detection.
+
+    Args:
+        annotations (AnnotateVideoResponse):
+
+    Returns:
+        Timeline: The populated Timeline.
+
+    """
+    timeline = ztl.Timeline("gcp-video-speech-transcription")
+    track = timeline.add_track("Speech Transcription")
+
+    for transcription in annotations.speech_transcriptions:
+        for alternative in transcription.alternatives:
+            if alternative.words:
+                # get first and last word
+                start_word = alternative.words[0]
+                end_word = alternative.words[-1]
+
+                start_time = convert_offset(start_word.start_time)
+                end_time = convert_offset(end_word.end_time)
+
+                track.add_clip(start_time, end_time, {"content": alternative.transcript})
+
+    return timeline
 
 def build_content_moderation_timeline(annotations):
     """
