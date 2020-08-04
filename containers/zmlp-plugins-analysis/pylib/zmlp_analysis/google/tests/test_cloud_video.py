@@ -26,7 +26,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')
     def test_detect_logos(self, store_tl_patch,
-                           store_blob_patch, proxy_patch, annot_patch, client_patch):
+                          store_blob_patch, proxy_patch, annot_patch, client_patch):
         uri = 'gs://zorroa-dev-data/video/mustang.mp4'
         store_tl_patch.return_value = None
         store_blob_patch.return_value = None

@@ -44,7 +44,7 @@ def build_logo_detection_timeline(annotations):
             # logos can show in multiple places in the timeline
             start_time = convert_offset(t.segment.start_time_offset)
             end_time = convert_offset(t.segment.end_time_offset)
-            content = {"content": {"description": entity.description, "confidence":t.confidence}}
+            content = {"content": {"description": entity.description, "confidence": t.confidence}}
             track.add_clip(start_time, end_time, content)
 
     return timeline
