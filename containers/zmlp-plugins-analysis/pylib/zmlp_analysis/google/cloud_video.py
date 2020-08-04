@@ -192,7 +192,6 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             timeline = cloud_timeline.build_speech_transcription_timeline(annotation_result)
             file_storage.assets.store_timeline(asset, timeline)
 
-
     def handle_detect_explicit(self, asset, annotation_result):
         analysis = LabelDetectionAnalysis(collapse_labels=True)
         analysis.set_attr('explicit', False)
@@ -241,7 +240,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         if self.arg_value('detect_logos') > -1:
             features.append(videointelligence.enums.Feature.LOGO_RECOGNITION)
 
-        operation = self.video_intel_client.annotate_video(input_uri=uri, features=features, 
+        operation = self.video_intel_client.annotate_video(input_uri=uri, features=features,
                                                            video_context=video_context)
 
         while not operation.done():

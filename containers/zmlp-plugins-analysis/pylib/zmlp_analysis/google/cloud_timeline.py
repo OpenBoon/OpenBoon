@@ -23,6 +23,7 @@ def build_text_detection_timeline(annotations):
 
     return timeline
 
+
 def build_speech_transcription_timeline(annotations):
     """
     Build a timeline for video text detection.
@@ -50,6 +51,7 @@ def build_speech_transcription_timeline(annotations):
                 track.add_clip(start_time, end_time, {"content": alternative.transcript})
 
     return timeline
+
 
 def build_content_moderation_timeline(annotations):
     """

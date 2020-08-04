@@ -117,8 +117,8 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')
-    def test_speech_transcription(self, store_tl_patch,
-                         store_blob_patch, proxy_patch, annot_patch, client_patch):
+    def test_speech_transcription(self, store_tl_patch, store_blob_patch,
+                                  proxy_patch, annot_patch, client_patch):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         store_tl_patch.return_value = None
         store_blob_patch.return_value = None
@@ -210,4 +210,3 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         with open(os.path.dirname(__file__) + "/mock-data/{}".format(name), 'rb') as fp:
             rsp.ParseFromString(fp.read())
         return rsp.annotation_results[0]
-
