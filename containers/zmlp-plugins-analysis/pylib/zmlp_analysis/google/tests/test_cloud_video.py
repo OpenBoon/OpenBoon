@@ -119,7 +119,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_timeline')
     def test_detect_objects(self, store_tl_patch,
-                             blob_patch, proxy_patch, annot_patch, client_patch):
+                            blob_patch, proxy_patch, annot_patch, client_patch):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         store_tl_patch.return_value = None
         blob_patch.return_value = None
