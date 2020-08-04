@@ -24,6 +24,28 @@ def build_text_detection_timeline(annotations):
     return timeline
 
 
+def build_object_detection_timeline(annotations):
+    """
+    Build a timeline for video object detection.
+
+    Args:
+        annotations (AnnotateVideoResponse):
+
+    Returns:
+        Timeline: The populated Timeline.
+
+    """
+    timeline = ztl.Timeline("gcp-video-object-detection")
+    track = timeline.add_track("Detected Object")
+
+    for annotation in annotations.object_annotations:
+        start_time = convert_offset(annotation.segment.start_time_offset)
+        end_time = convert_offset(annotation.segment.end_time_offset)
+        track.add_clip(start_time, end_time, {"content": annotation.entity.description})
+
+    return timeline
+
+
 def build_content_moderation_timeline(annotations):
     """
     Use the explicit annotation to build a timeline.
