@@ -147,7 +147,6 @@ class KnnLabelDetectionTrainer(AssetProcessor):
 
         classifier_hashes = []
         for asset in self.app.assets.scroll_search(query):
-            print(asset)
             for label in asset['labels']:
                 if label['modelId'] == self.app_model.id:
                     simhash = asset.get_attr('analysis.zvi-image-similarity.simhash')
