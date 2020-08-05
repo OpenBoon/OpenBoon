@@ -10,7 +10,6 @@ import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ResolvedPipeline
 import com.zorroa.archivist.repository.PipelineDao
-import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -64,13 +63,15 @@ interface PipelineResolverService {
      */
     fun resolveModular(mods: Collection<String>?): ResolvedPipeline
 
+    /**
+     * Resolve a list of processors into a new list of processors.
+     */
     fun resolveProcessors(refs: List<ProcessorRef>?): MutableList<ProcessorRef>
 }
 
 @Service
 @Transactional
 class PipelineResolverServiceImpl(
-    val projectCustomDao: ProjectCustomDao,
     val pipelineDao: PipelineDao
 ) : PipelineResolverService {
 
@@ -98,7 +99,7 @@ class PipelineResolverServiceImpl(
             modules?.let {
                 // If the mod starts with -, we remove it from the pipeline
                 // otherwise it's plussed on.
-                val addOrRemoves = it?.map { mod -> !mod.startsWith("-") }
+                val addOrRemoves = it.map { mod -> !mod.startsWith("-") }
                 val modMods = pipelineModService.getByNames(it)
 
                 for ((addOrRemove, modMod) in addOrRemoves.zip(modMods)) {
@@ -148,6 +149,11 @@ class PipelineResolverServiceImpl(
         val globalArgs = mutableMapOf<String, Any>("pipeline.objectives" to objectives)
 
         /**
+         * An array of modules already applied.
+         */
+        val appliedModules = mutableSetOf<String>()
+
+        /**
          * The current pipeline.  This is re-resolved after every pipeline module, which
          * means that ModOps in the same module cannot see modifications made by
          * previous ModOps.
@@ -161,124 +167,8 @@ class PipelineResolverServiceImpl(
              */
             objectives.add(module.type)
 
-            /**
-             * Builds a parallel array of opts for each ProcessorRef in the pipeline.
-             */
-            val matchingOps: List<List<ModOp>> = currentPipeline.map { ref ->
-                getMatchingOps(ref, module)
-            }
-
-            /**
-             * The newPipeline becomes the currentPipeline after each mod iteration.
-             */
-            val newPipeline = mutableListOf<ProcessorRef>()
-
-            /**
-             * The append list contains newly appended processors.
-             */
-            val append = mutableListOf<ProcessorRef>()
-
-            /**
-             * The prepend list contains newly prepended processors which get put at
-             * the prepend marker.
-             */
-            val prepend = mutableListOf<ProcessorRef>()
-
-            /**
-             * The last list contains newly appended  processors that must be
-             * last or close to last. Usually these don't modify assets, but
-             * emit them somewhere.
-             */
-            val last = mutableListOf<ProcessorRef>()
-
-            currentPipeline.zip(matchingOps).forEach { (ref, ops) ->
-                //  If no ops matched, the processor just passes through to this
-                // new pipeline.
-                if (ops.isNullOrEmpty()) {
-                    newPipeline.add(ref)
-                } else {
-                    // If some ops matched, they get applied top the pipeline.
-                    for (op in ops) {
-                        when (op.type) {
-                            ModOpType.ADD_AFTER -> {
-                                newPipeline.add(ref)
-                                op.apply?.let {
-                                    newPipeline.addAll(parsePipelineFragment(module.name, it))
-                                }
-                            }
-                            ModOpType.ADD_BEFORE -> {
-                                op.apply?.let {
-                                    newPipeline.addAll(parsePipelineFragment(module.name, it))
-                                }
-                                newPipeline.add(ref)
-                            }
-                            ModOpType.LAST -> {
-                                newPipeline.add(ref)
-                                op.apply?.let {
-                                    last.addAll(parsePipelineFragment(module.name, it))
-                                }
-                            }
-                            ModOpType.APPEND -> {
-                                newPipeline.add(ref)
-                                op.apply?.let {
-                                    append.addAll(parsePipelineFragment(module.name, it))
-                                }
-                            }
-                            ModOpType.APPEND_MERGE -> {
-                                newPipeline.add(ref)
-                                val names = (
-                                    currentPipeline.map { it.className } +
-                                        newPipeline.map { it.className } +
-                                        append.map { it.className }
-                                    )
-                                // Iterate procs in the fragment and add ones that don't exist,
-                                // and merge args for the ones that do.
-                                val frag = parsePipelineFragment(module.name, op.apply)
-                                for (proc in frag) {
-                                    if (proc.className !in names) {
-                                        append.add(proc)
-                                    } else {
-                                        val existing = currentPipeline.find { it == proc }
-                                            ?: newPipeline.find { it == proc }
-                                            ?: append.find { it == proc }
-                                        existing?.let { p ->
-                                            p.args = (p.args ?: mapOf()) + (proc.args ?: mapOf())
-                                        }
-                                    }
-                                }
-                            }
-                            ModOpType.PREPEND -> {
-                                newPipeline.add(ref)
-                                op.apply?.let {
-                                    prepend.addAll(parsePipelineFragment(module.name, it))
-                                }
-                            }
-                            ModOpType.REMOVE -> {
-                                // just don't do anything.
-                            }
-                            ModOpType.REPLACE -> {
-                                op.apply?.let {
-                                    newPipeline.addAll(parsePipelineFragment(module.name, it))
-                                }
-                            }
-                            ModOpType.SET_ARGS -> {
-                                op.apply?.let {
-                                    val args = (ref.args?.toMutableMap()) ?: mutableMapOf()
-                                    args.putAll(Json.Mapper.convertValue<Map<String, Any>>(op.apply))
-                                    ref.args = args
-                                }
-                                newPipeline.add(ref)
-                            }
-                        }
-                    }
-                }
-            }
-
-            val prependMarker = newPipeline.indexOfFirst { it.className == "PrependMarker" }
-            newPipeline.addAll(prependMarker, prepend)
-            newPipeline.addAll(append)
-            newPipeline.addAll(last)
-            currentPipeline = newPipeline
+            val builder = RecursivePipelineBuilder(currentPipeline, appliedModules, pipelineModService)
+            currentPipeline = builder.applyOps(module)
         }
 
         val execute = currentPipeline.filterNot { it.className == "PrependMarker" }
@@ -315,8 +205,58 @@ class PipelineResolverServiceImpl(
     }
 
     /**
-     * Return a list of all matching [ModOp]s from the given [PipelineMod]
+     * TODO: allow replacement with bucket configuration file.
      */
+    override fun getStandardPipeline(trimPrependMarker: Boolean): List<ProcessorRef> {
+        return listOf(
+            ProcessorRef("zmlp_core.core.PreCacheSourceFileProcessor", "zmlp/plugins-core"),
+            ProcessorRef("zmlp_core.core.FileImportProcessor", "zmlp/plugins-core"),
+            ProcessorRef("zmlp_core.proxy.ImageProxyProcessor", "zmlp/plugins-core"),
+            ProcessorRef("zmlp_core.proxy.VideoProxyProcessor", "zmlp/plugins-core"),
+            ProcessorRef("zmlp_analysis.zvi.ZviSimilarityProcessor", "zmlp/plugins-analysis"),
+            ProcessorRef("PrependMarker", "none")
+        ).dropLastWhile { trimPrependMarker }
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(PipelineResolverServiceImpl::class.java)
+    }
+}
+
+/**
+ * The RecursivePipelineBuilder class handles applying a single module to a Pipeline.
+ * All dependencies in the given module are resolved and applied as well.
+ */
+class RecursivePipelineBuilder(
+
+    val currentPipeline: List<ProcessorRef>,
+    val appliedModules: MutableSet<String>,
+    val pipelineModService: PipelineModService
+) {
+
+    /**
+     * The newPipeline becomes the currentPipeline after each mod iteration.
+     */
+    val newPipeline = mutableListOf<ProcessorRef>()
+
+    /**
+     * The append list contains newly appended processors.
+     */
+    val append = mutableListOf<ProcessorRef>()
+
+    /**
+     * The prepend list contains newly prepended processors which get put at
+     * the prepend marker.
+     */
+    val prepend = mutableListOf<ProcessorRef>()
+
+    /**
+     * The last list contains newly appended  processors that must be
+     * last or close to last. Usually these don't modify assets, but
+     * emit them somewhere.
+     */
+    val last = mutableListOf<ProcessorRef>()
+
     fun getMatchingOps(ref: ProcessorRef, mod: PipelineMod): List<ModOp> {
         val result = mutableListOf<ModOp>()
         for (op in mod.ops) {
@@ -344,21 +284,133 @@ class PipelineResolverServiceImpl(
         return result
     }
 
-    /**
-     * TODO: allow replacement with bucket configuration file.
-     */
-    override fun getStandardPipeline(trimPrependMarker: Boolean): List<ProcessorRef> {
-        return listOf(
-            ProcessorRef("zmlp_core.core.PreCacheSourceFileProcessor", "zmlp/plugins-core"),
-            ProcessorRef("zmlp_core.core.FileImportProcessor", "zmlp/plugins-core"),
-            ProcessorRef("zmlp_core.proxy.ImageProxyProcessor", "zmlp/plugins-core"),
-            ProcessorRef("zmlp_core.proxy.VideoProxyProcessor", "zmlp/plugins-core"),
-            ProcessorRef("zmlp_analysis.zvi.ZviSimilarityProcessor", "zmlp/plugins-analysis"),
-            ProcessorRef("PrependMarker", "none")
-        ).dropLastWhile { trimPrependMarker }
+    fun parsePipelineFragment(module: String, frag: Any?): List<ProcessorRef> {
+        if (frag == null) {
+            return emptyList()
+        }
+        val result = Json.Mapper.convertValue<List<ProcessorRef>>(frag)
+        // Sets the module name
+        result.forEach { it.module = module }
+        return result
     }
 
-    companion object {
-        private val logger = LoggerFactory.getLogger(PipelineResolverServiceImpl::class.java)
+    fun applyOps(module: PipelineMod): List<ProcessorRef> {
+
+        if (module.name in appliedModules) {
+            return currentPipeline
+        }
+
+        /**
+         * Builds a parallel array of opts for each ProcessorRef in the pipeline.
+         */
+        val matchingOps: List<List<ModOp>> = currentPipeline.map { ref ->
+            getMatchingOps(ref, module)
+        }
+
+        currentPipeline.zip(matchingOps).forEach { (ref, ops) ->
+            //  If no ops matched, the processor just passes through to this
+            // new pipeline.
+            if (ops.isNullOrEmpty()) {
+                newPipeline.add(ref)
+            } else {
+                // If some ops matched, they get applied top the pipeline.
+                for (op in ops) {
+                    when (op.type) {
+                        ModOpType.ADD_AFTER -> {
+                            newPipeline.add(ref)
+                            op.apply?.let {
+                                newPipeline.addAll(parsePipelineFragment(module.name, it))
+                            }
+                        }
+                        ModOpType.ADD_BEFORE -> {
+                            op.apply?.let {
+                                newPipeline.addAll(parsePipelineFragment(module.name, it))
+                            }
+                            newPipeline.add(ref)
+                        }
+                        ModOpType.LAST -> {
+                            newPipeline.add(ref)
+                            op.apply?.let {
+                                last.addAll(parsePipelineFragment(module.name, it))
+                            }
+                        }
+                        ModOpType.APPEND -> {
+                            newPipeline.add(ref)
+                            op.apply?.let {
+                                append.addAll(parsePipelineFragment(module.name, it))
+                            }
+                        }
+                        ModOpType.APPEND_MERGE -> {
+                            newPipeline.add(ref)
+                            val names = (
+                                currentPipeline.map { it.className } +
+                                    newPipeline.map { it.className } +
+                                    append.map { it.className }
+                                )
+                            // Iterate procs in the fragment and add ones that don't exist,
+                            // and merge args for the ones that do.
+                            val frag = parsePipelineFragment(module.name, op.apply)
+                            for (proc in frag) {
+                                if (proc.className !in names) {
+                                    append.add(proc)
+                                } else {
+                                    val existing = currentPipeline.find { it == proc }
+                                        ?: newPipeline.find { it == proc }
+                                        ?: append.find { it == proc }
+                                    existing?.let { p ->
+                                        p.args = (p.args ?: mapOf()) + (proc.args ?: mapOf())
+                                    }
+                                }
+                            }
+                        }
+                        ModOpType.PREPEND -> {
+                            newPipeline.add(ref)
+                            op.apply?.let {
+                                prepend.addAll(parsePipelineFragment(module.name, it))
+                            }
+                        }
+                        ModOpType.REMOVE -> {
+                            // just don't do anything.
+                        }
+                        ModOpType.REPLACE -> {
+                            op.apply?.let {
+                                newPipeline.addAll(parsePipelineFragment(module.name, it))
+                            }
+                        }
+                        ModOpType.SET_ARGS -> {
+                            op.apply?.let {
+                                val args = (ref.args?.toMutableMap()) ?: mutableMapOf()
+                                args.putAll(Json.Mapper.convertValue<Map<String, Any>>(op.apply))
+                                ref.args = args
+                            }
+                            newPipeline.add(ref)
+                        }
+                        ModOpType.DEPEND -> {
+                            op.apply?.let {
+                                val modNames = Json.Mapper.convertValue<List<String>>(op.apply)
+                                val mods = pipelineModService.getByNames(modNames)
+                                for (dependMod in mods) {
+                                    val builder = RecursivePipelineBuilder(
+                                        currentPipeline, appliedModules, pipelineModService
+                                    )
+                                    builder.applyOps(dependMod)
+                                    prepend.addAll(builder.prepend)
+                                    append.addAll(builder.append)
+                                    last.addAll(builder.last)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        appliedModules.add(module.name)
+
+        val prependMarker = newPipeline.indexOfFirst { it.className == "PrependMarker" }
+        newPipeline.addAll(prependMarker, prepend)
+        newPipeline.addAll(append)
+        newPipeline.addAll(last)
+        return newPipeline
     }
 }

@@ -154,6 +154,51 @@ class PipelineResolverServiceTests : AbstractTest() {
     }
 
     @Test
+    fun resolveDependAddBefore() {
+        val spec1 = PipelineModSpec(
+            "append", "A append module",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Documents),
+            listOf(
+                ModOp(ModOpType.DEPEND, listOf("depend-module")),
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(ProcessorRef("append_processor", "zmlp-plugins-foo"))
+                )
+            )
+        )
+        val spec2 = PipelineModSpec(
+            "depend-module", "Added before",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(ProcessorRef("depend_processor", "zmlp-plugins-foo"))
+                )
+            )
+        )
+        val mod1 = pipelineModService.create(spec1)
+        pipelineModService.create(spec2)
+
+        val pipeline = pipelineService.create(
+            PipelineSpec(
+                "test",
+                modules = listOf(mod1.name)
+            )
+        )
+        val rpipe = pipelineResolverService.resolve(pipeline.id)
+        val resolved = rpipe.execute
+
+        assertEquals("append_processor", resolved.last().className)
+        assertEquals("depend_processor", resolved[resolved.size - 2].className)
+    }
+
+    @Test
     fun resolveAppendOp() {
         val spec = PipelineModSpec(
             "test", "A test module",

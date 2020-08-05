@@ -38,10 +38,10 @@ class ModelServiceTests : AbstractTest() {
     val testSearch =
         """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
 
-    fun create(): Model {
+    fun create(type: ModelType = ModelType.ZVI_LABEL_DETECTION): Model {
         val mspec = ModelSpec(
             "test",
-            ModelType.ZVI_LABEL_DETECTION,
+            type,
             deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         return modelService.createModel(mspec)
@@ -140,6 +140,16 @@ class ModelServiceTests : AbstractTest() {
         assertEquals("Custom Models", mod.category)
         assertEquals("Label Detection", mod.type)
         assertEquals(ModOpType.APPEND, mod.ops[0].type)
+    }
+
+    @Test
+    fun testPublishModelWithDepend() {
+        val model1 = create(ModelType.ZVI_FACE_RECOGNITION)
+        val mod = modelService.publishModel(model1)
+        Json.prettyPrint(mod)
+        assertEquals(ModOpType.DEPEND, mod.ops[0].type)
+        assertEquals(ModOpType.APPEND, mod.ops[1].type)
+        assertEquals(ModelType.ZVI_FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
     }
 
     @Test
