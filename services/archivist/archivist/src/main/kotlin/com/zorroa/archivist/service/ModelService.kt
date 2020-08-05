@@ -219,6 +219,16 @@ class ModelServiceImpl(
             ops.addAll(mod?.ops ?: emptyList())
         }
 
+        // Add the dependency before.
+        if (model.type.dependencies.isNotEmpty()) {
+            ops.add(
+                ModOp(
+                    ModOpType.DEPEND,
+                    model.type.dependencies
+                )
+            )
+        }
+
         ops.add(
             ModOp(
                 ModOpType.APPEND,
@@ -237,6 +247,7 @@ class ModelServiceImpl(
                 )
             )
         )
+
         return ops
     }
 
