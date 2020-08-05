@@ -22,4 +22,27 @@ describe('Api Keys', function () {
 
     cy.contains('Assets Read')
   })
+  it('can be deleted', function () {
+    const now = Date.now()
+
+    cy.login()
+
+    cy.fetch({
+      method: 'POST',
+      url: `/api/v1/projects/${this.PROJECT_ID}/api_keys/`,
+      body: {
+        name: now,
+        permissions: ['AssetsRead', 'AssetsDelete'],
+      },
+    })
+    cy.visit(`/${this.PROJECT_ID}/api-keys`)
+
+    cy.contains(now).siblings().last().click()
+
+    cy.get('button').contains('Delete').click()
+
+    cy.contains('Delete Permanently').click()
+
+    cy.contains(now).should('not.exist')
+  })
 })
