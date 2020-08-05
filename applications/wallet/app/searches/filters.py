@@ -452,3 +452,39 @@ class LabelFilter(BaseFilter):
         terms_agg_name = f'sterms#nested_{self.name}'
         data = response['aggregations'][nested_agg_name][terms_agg_name]
         return {'count': count, 'results': data}
+
+
+class DateFilter(BaseFilter):
+
+    type = 'date'
+    required_agg_keys = ['attribute']
+    required_query_keys = ['min', 'max']
+    optional_keys = []
+    agg_prefix = 'stats'
+
+    def get_es_agg(self):
+        attribute = self.data['attribute']
+        return {
+            'size': 0,
+            'aggs': {
+                self.name: {
+                    'stats': {
+                        'field': attribute
+                    }
+                }
+            }
+        }
+
+    def get_es_query(self):
+        attribute = self.data['attribute']
+        min = self.data['values']['min']
+        max = self.data['values']['max']
+        return {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'range': {attribute: {'gte': min, 'lte': max}}}
+                    ]
+                }
+            }
+        }

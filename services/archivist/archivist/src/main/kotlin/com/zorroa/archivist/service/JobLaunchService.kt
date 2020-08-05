@@ -10,6 +10,7 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchResponse
+import com.zorroa.archivist.domain.ResolvedPipeline
 import com.zorroa.archivist.domain.StandardContainers
 import com.zorroa.archivist.domain.ZpsScript
 import org.springframework.dao.DataRetrievalFailureException
@@ -39,7 +40,7 @@ interface JobLaunchService {
     fun launchJob(
         name: String,
         gen: ProcessorRef,
-        pipeline: List<ProcessorRef>,
+        pipeline: ResolvedPipeline,
         settings: Map<String, Any>? = null,
         creds: Set<String>? = null,
         dependOnJobIds: List<UUID>? = null
@@ -51,7 +52,7 @@ interface JobLaunchService {
     fun launchJob(
         name: String,
         assets: List<String>,
-        pipeline: List<ProcessorRef>,
+        pipeline: ResolvedPipeline,
         settings: Map<String, Any>? = null,
         creds: Set<String>? = null
     ): Job
@@ -81,9 +82,11 @@ class JobLaunchServiceImpl(
         val modNames = mods.map { it.name }
         val name = "Applying modules: ${modNames.joinToString(",")} to ${dataSource.uri}"
 
+        val pipeline = pipelineResolverService.resolveModular(mods)
+
         val script = ZpsScript(
             "Crawling files in '${dataSource.uri}'", listOf(gen), null,
-            pipelineResolverService.resolveModular(mods)
+            execute = pipeline.execute, globalArgs = pipeline.globalArgs
         )
 
         script.setSettting("index", true)
@@ -119,7 +122,7 @@ class JobLaunchServiceImpl(
     override fun launchJob(
         name: String,
         gen: ProcessorRef,
-        pipeline: List<ProcessorRef>,
+        pipeline: ResolvedPipeline,
         settings: Map<String, Any>?,
         creds: Set<String>?,
         dependOnJobIds: List<UUID>?
@@ -128,7 +131,10 @@ class JobLaunchServiceImpl(
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
 
-        val script = ZpsScript(name, listOf(gen), null, pipeline, settings = mergedSettings)
+        val script = ZpsScript(
+            name, listOf(gen), null, pipeline.execute,
+            settings = mergedSettings, globalArgs = pipeline.globalArgs
+        )
         val spec = JobSpec(
             name,
             listOf(script),
@@ -141,7 +147,7 @@ class JobLaunchServiceImpl(
     override fun launchJob(
         name: String,
         assets: List<String>,
-        pipeline: List<ProcessorRef>,
+        pipeline: ResolvedPipeline,
         settings: Map<String, Any>?,
         creds: Set<String>?
     ): Job {
@@ -149,7 +155,11 @@ class JobLaunchServiceImpl(
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
 
-        val script = ZpsScript(name, null, null, pipeline, settings = mergedSettings, assetIds = assets)
+        val script = ZpsScript(
+            name, null, null,
+            pipeline.execute, settings = mergedSettings, assetIds = assets,
+            globalArgs = pipeline.globalArgs
+        )
         val spec = JobSpec(name, listOf(script), credentials = creds)
         return launchJob(spec)
     }
@@ -193,7 +203,10 @@ class JobLaunchServiceImpl(
         val mergedSettings = getDefaultJobSettings()
         settings?.let { mergedSettings.putAll(it) }
 
-        return ZpsScript(name, listOf(gen), null, pipeline, settings = mergedSettings)
+        return ZpsScript(
+            name, listOf(gen), null, pipeline.execute,
+            settings = mergedSettings, globalArgs = pipeline.globalArgs
+        )
     }
 
     /**

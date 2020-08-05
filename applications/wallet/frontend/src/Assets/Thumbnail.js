@@ -27,7 +27,6 @@ const AssetsThumbnail = ({
   const { filename } = source || {}
 
   const {
-    pathname,
     query: { projectId, id: selectedId, query },
   } = useRouter()
 
@@ -115,7 +114,6 @@ const AssetsThumbnail = ({
             dispatch({
               type: ACTIONS.APPLY_SIMILARITY,
               payload: {
-                pathname,
                 projectId,
                 assetId: id,
                 selectedId,

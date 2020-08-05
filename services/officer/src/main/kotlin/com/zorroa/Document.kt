@@ -29,11 +29,15 @@ abstract class Document(val options: RenderRequest) : Closeable {
 
     fun render() {
         if (isRenderAll()) {
-            logger.info("Rendering all images and metadata to {}", options.outputDir)
-            renderAllImages()
+            logger.info("Rendering to {}", options.outputDir)
+            if (!options.disableImageRender) {
+                renderAllImages()
+            }
             renderAllMetadata()
         } else {
-            renderImage()
+            if (!options.disableImageRender) {
+                renderImage()
+            }
             renderMetadata()
         }
     }

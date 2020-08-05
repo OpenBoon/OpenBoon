@@ -19,6 +19,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
     imagemagick \
     exiftool \
     mediainfo \
+    poppler-utils \
      --no-install-recommends
 
 RUN mkdir /build
