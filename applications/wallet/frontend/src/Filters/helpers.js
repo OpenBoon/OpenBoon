@@ -201,14 +201,7 @@ export const dispatch = ({ type, payload }) => {
     }
 
     case ACTIONS.APPLY_SIMILARITY: {
-      const {
-        pathname,
-        projectId,
-        assetId,
-        selectedId,
-        query: q,
-        attribute,
-      } = payload
+      const { projectId, assetId, selectedId, query: q, attribute } = payload
 
       const filters = decode({ query: q })
 
@@ -240,10 +233,14 @@ export const dispatch = ({ type, payload }) => {
 
       Router.push(
         {
-          pathname,
-          query: { projectId, id: selectedId, query },
+          pathname: '/[projectId]/visualizer',
+          query: {
+            projectId,
+            id: selectedId,
+            query,
+          },
         },
-        `${pathname.replace('[projectId]', projectId)}${getQueryString({
+        `/${projectId}/visualizer${getQueryString({
           id: selectedId,
           query,
         })}`,

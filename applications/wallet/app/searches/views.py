@@ -175,7 +175,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             {
                 'type': 'label',
-                'model_id': '$model_id_UUID',
+                'modelId': '$model_id_UUID',
                 'values': {
                     'labels': ['Celeste', 'David'],
                     'scope': 'all'
@@ -183,6 +183,20 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
             }
 
             *Note:* The scope value can be set to 'all', 'train', or 'test'.
+
+        Date:
+
+            {
+                "type": "date",
+                "attribute": "system.timeCreated",
+                "values": {
+                    "min": "2020-05-30T00:00:00Z",
+                    "max": "2020-07-31T00:00:00Z"
+                }
+            }
+
+            *Note:* The `min` and `max` values need to be in "yyyy-mm-ddTHH:MM:SSZ"
+            format (ISO 8601).
 
         """
         path = 'api/v3/assets'
@@ -243,20 +257,27 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             "order": "asc" OR "desc"
 
-            "minimum_count": $integer
+            "minimumCount": $integer
 
         LabelConfidence:
 
             {
                 "type": "labelConfidence",
-                "attribute": "analysis.zvi-label-detection",
+                "attribute": "analysis.zvi-label-detection"
+            }
+
+        Date:
+
+            {
+                "type": "date",
+                "attribute": "system.timeCreated"
             }
 
         Labels:
 
             {
                 "type": "labels",
-                "model_id": "$model_id_UUID"
+                "modelId": "$model_id_UUID"
             }
 
         Similar to Facet aggregations, Label aggs can also be sorted and filtered with
@@ -264,7 +285,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             "order": "asc" OR "desc"
 
-            "minimum_count": $integer
+            "minimumCount": $integer
 
         """
         path = 'api/v3/assets/_search'

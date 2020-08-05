@@ -53,16 +53,17 @@ const AssetLabelingList = ({
       </thead>
       <tbody>
         {labels.map(({ modelId, label }) => {
-          const { name } = models.find(({ id }) => id === modelId)
+          const { name, moduleName } = models.find(({ id }) => id === modelId)
 
           const filters = decode({ query })
 
           const encodedQuery = encode({
             filters: [
               {
-                attribute: `labels.${name}`,
                 type: 'label',
-                value: { labels: [label] },
+                attribute: `labels.${moduleName}`,
+                modelId,
+                values: { labels: [label] },
               },
               ...filters,
             ],
@@ -82,7 +83,7 @@ const AssetLabelingList = ({
                 fontWeight: typography.weight.medium,
                 '&:nth-last-of-type(2)': { width: '100%' },
                 ':hover': {
-                  backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
+                  backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
                 },
                 td: {
                   borderTop: constants.borders.regular.smoke,

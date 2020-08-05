@@ -29,7 +29,7 @@ class OfficerPythonClientTests(unittest.TestCase):
             {"location": "zmlp://ml-storage/foo/bar"}, 200)
         file_cache_patch.return_value = zorroa_test_data('office/pdfTest.pdf', False)
         client = OfficerClient()
-        result = client.render(self.asset, 1)
+        result = client.render(self.asset, 1, False)
         assert result == "zmlp://ml-storage/foo/bar"
 
     @patch('requests.post')
@@ -39,7 +39,7 @@ class OfficerPythonClientTests(unittest.TestCase):
             {"output": "zmlp://ml-storage/foo/bar"}, 200)
         file_cache_patch.return_value = zorroa_test_data('office/pdfTest.pdf', False)
         client = OfficerClient()
-        body = client._get_render_request_body(self.asset, None)
+        body = client._get_render_request_body(self.asset, None, True)
 
         assert body[0][0] == 'file'
         assert body[0][1][0] == '/tmp/path/file.pdf'
@@ -49,6 +49,7 @@ class OfficerPythonClientTests(unittest.TestCase):
         assert '"fileName": "/tmp/path/file.pdf"' in body[1][1][1]
         assert '"outputDir": "abcdefg1234"' in body[1][1][1]
         assert '"page": -1' in body[1][1][1]
+        assert '"disableImageRender": true' in body[1][1][1]
 
     @patch('requests.post')
     @patch.object(file_storage, 'localize_file')
@@ -57,7 +58,7 @@ class OfficerPythonClientTests(unittest.TestCase):
             {"location": "zmlp://ml-storage/foo/bar"}, 200)
         file_cache_patch.return_value = zorroa_test_data('office/pdfTest.pdf', False)
         client = OfficerClient()
-        body = client._get_render_request_body(self.asset, 5)
+        body = client._get_render_request_body(self.asset, 5, False)
 
         assert body[0][0] == 'file'
         assert body[0][1][0] == '/tmp/path/file.pdf'
@@ -67,6 +68,7 @@ class OfficerPythonClientTests(unittest.TestCase):
         assert '"fileName": "/tmp/path/file.pdf"' in body[1][1][1]
         assert '"outputDir": "abcdefg1234"' in body[1][1][1]
         assert '"page": 5' in body[1][1][1]
+        assert '"disableImageRender": false' in body[1][1][1]
 
     @patch('requests.post')
     def test_get_cache_location_true(self, post_patch):

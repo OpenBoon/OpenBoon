@@ -3,7 +3,7 @@ import reverse_geocode
 from zmlp_core.image.importers import ImageImporter
 from zmlp_core.office.importers import OfficeImporter
 from zmlp_core.video.importers import VideoImporter
-from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException
+from zmlpsdk import AssetProcessor, ZmlpFatalProcessorException
 
 
 class FileImportProcessor(AssetProcessor):
@@ -22,10 +22,6 @@ class FileImportProcessor(AssetProcessor):
 
     def __init__(self):
         super(FileImportProcessor, self).__init__()
-        self.add_arg(Argument('extract_doc_pages',
-                              'bool', default=False, toolTip="True to enable doc page extraction"))
-        self.add_arg(Argument('extract_image_pages',
-                              'bool', default=False, toolTip="True to image page extraction"))
 
         self.image_proc = ImageImporter()
         self.doc_proc = OfficeImporter()
@@ -37,8 +33,6 @@ class FileImportProcessor(AssetProcessor):
         for proc in self.procs:
             proc.set_context(context)
             proc.init()
-        self.image_proc.arg("extract_pages").value = self.arg_value("extract_image_pages")
-        self.doc_proc.arg("extract_pages").value = self.arg_value("extract_doc_pages")
 
     def process(self, frame):
         asset = frame.asset
