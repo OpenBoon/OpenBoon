@@ -5,8 +5,10 @@ import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTier
+import com.zorroa.archivist.repository.IndexRouteDao
 
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
 import kotlin.test.assertEquals
@@ -16,6 +18,9 @@ import kotlin.test.assertTrue
 class ProjectServiceTests : AbstractTest() {
 
     val testSpec = ProjectSpec("project_test")
+
+    @Autowired
+    lateinit var indexRouteDao: IndexRouteDao
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -71,21 +76,34 @@ class ProjectServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testSetEnable() {
-        val testSpec = ProjectSpec("project_test")
+    fun testEnableProject() {
         val project1 = projectService.create(testSpec)
-        projectService.setEnabled(project1.id, false)
+
+        val status = jdbc.queryForObject(
+            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project.id
+        )
+        assertTrue(status)
+
+        // Check Project Routes
+        projectService.setEnabled(project.id, false)
+        projectService.setEnabled(project.id, true)
+
+        var route = indexRouteDao.getProjectRoute()
+        val esIndexState = indexRoutingService.getEsIndexState(route)
+        assertEquals("open", esIndexState["state"])
+    }
+
+    @Test
+    fun testDisableProject() {
+        projectService.setEnabled(project.id, false)
 
         var status = jdbc.queryForObject(
-            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project1.id
+            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project.id
         )
         assertFalse(status)
 
-        projectService.setEnabled(project1.id, true)
-        status = jdbc.queryForObject(
-            "SELECT enabled FROM project WHERE pk_project=?", Boolean::class.java, project1.id
-        )
-        assertTrue(status)
+        val state = indexRoutingService.getEsIndexState(indexRouteDao.getProjectRoute())
+        assertEquals("close", state["status"])
     }
 
     @Test
