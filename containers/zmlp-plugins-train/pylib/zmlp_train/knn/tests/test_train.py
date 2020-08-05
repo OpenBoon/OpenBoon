@@ -76,5 +76,22 @@ mock_search_result = [
                 }
             ]
         }
+    }),
+    Asset.from_hit({
+        '_index': 'litvqrkus86sna2w',
+        '_type': 'asset',
+        '_id': 'aabbccddec48n1q1fgenVMV5yllhRRGx2WKyKLjDphg',
+        '_score': 0.2876821,
+        '_source': {
+            'source': {
+                'path': 'https://i.imgur.com/foo.jpg'
+            },
+            "labels": [
+                {
+                    "modelId": model_id,
+                    "label": "Glion",
+                }
+            ]
+        }
     })
 ]

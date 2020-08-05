@@ -106,8 +106,8 @@ class KnnLabelDetectionTrainer(AssetProcessor):
         i = 0
         for f in hashes:
             num_hash = []
-            simhah = f['simhash']
-            for char in simhah:
+            simhash = f['simhash']
+            for char in simhash:
                 num_hash.append(ord(char))
             data.append(num_hash)
             labels.append(f['label'])
@@ -123,27 +123,37 @@ class KnnLabelDetectionTrainer(AssetProcessor):
             '_source': ['labels.*', 'analysis.zvi-image-similarity.*'],
             'size': 50,
             'query': {
-                'nested': {
-                    'path': 'labels',
-                    'query': {
-                        'bool': {
-                            'must': [
-                                {'term': {'labels.modelId': self.app_model.id}},
-                                {'term': {'labels.scope': 'TRAIN'}},
-                            ]
+                'bool': {
+                    'must': [
+                        {'exists': {'field': 'analysis.zvi-image-similarity.simhash'}}
+                    ],
+                    'filter': [{
+                        'nested': {
+                            'path': 'labels',
+                            'query': {
+                                'bool': {
+                                    'must': [
+                                        {'term': {'labels.modelId': self.app_model.id}},
+                                        {'term': {'labels.scope': 'TRAIN'}},
+                                    ]
+                                }
+                            }
                         }
-                    }
+                    }]
                 }
+
             }
         }
 
         classifier_hashes = []
         for asset in self.app.assets.scroll_search(query):
+            print(asset)
             for label in asset['labels']:
                 if label['modelId'] == self.app_model.id:
-                    classifier_hashes.append({'simhash': asset.get_attr(
-                            'analysis.zvi-image-similarity.simhash'),
-                            'label': label['label']})
+                    simhash = asset.get_attr('analysis.zvi-image-similarity.simhash')
+                    if simhash is None:
+                        continue
+                    classifier_hashes.append({'simhash': simhash, 'label': label['label']})
 
         return classifier_hashes
 
