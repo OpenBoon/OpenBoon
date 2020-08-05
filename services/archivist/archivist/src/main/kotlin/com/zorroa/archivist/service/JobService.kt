@@ -143,7 +143,7 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun createTask(job: JobId, script: ZpsScript): Task {
-        script.execute = pipelineResolverService.resolveCustom(script.execute)
+        script.execute = pipelineResolverService.resolveCustom(script.execute).execute
         val task = taskDao.create(job, TaskSpec(zpsTaskName(script), script))
 
         incrementAssetCounters(

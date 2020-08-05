@@ -256,6 +256,10 @@ class AssetTests(unittest.TestCase):
         analysis = asset.get_analysis(model)
         assert "house" == analysis['predictions'][0]['label']
 
+    def test_extension(self):
+        asset = Asset({"id": "123", "document": {"source": {"extension": "JPG"}}})
+        assert asset.extension == "jpg"
+
 
 class FileImportTests(unittest.TestCase):
 

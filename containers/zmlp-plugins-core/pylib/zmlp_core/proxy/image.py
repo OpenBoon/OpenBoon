@@ -22,9 +22,13 @@ class ImageProxyProcessor(AssetProcessor):
     ml_quality = "95"
     web_quality = "85"
 
+    multipage_formats = ['tiff', 'tif']
+    """Multipage image formats that have to be handled specifically for web proxies."""
+
     def __init__(self):
         super(ImageProxyProcessor, self).__init__()
         self.created_proxy_count = 0
+        # Make sure largest proxy comes first.
         self.add_arg(Argument('sizes', 'list[int]', default=[1280, 512],
                               toolTip=self.toolTips['sizes']))
         self.add_arg(Argument('web_proxy_size', 'int', default=1024,
@@ -47,11 +51,11 @@ class ImageProxyProcessor(AssetProcessor):
 
         proxy_paths = self._create_proxy_images(asset)
         for width, height, path in proxy_paths:
-            store_media_proxy(asset, path,  'image', (width, height))
+            store_media_proxy(asset, path, 'image', (width, height))
 
         # Make web optimized
-        width, height, path = proxy_paths[0]
-        self.make_web_optimized_proxy(asset, path, (width, height))
+        width, height, _ = proxy_paths[0]
+        self.make_web_optimized_proxy(asset, source_path, (width, height))
 
     def _create_proxy_images(self, asset):
         """
@@ -216,6 +220,9 @@ class ImageProxyProcessor(AssetProcessor):
 
         Args:
             asset (Asset): The asset to use
+
+        Returns:
+            StoredFile: The proxy stored file.
         """
         tmp_dir = tempfile.mkdtemp()
         output_path = os.path.join(tmp_dir, "web-optimized-proxy.jpg")
@@ -225,9 +232,16 @@ class ImageProxyProcessor(AssetProcessor):
         width, height = get_output_dimension(valid_size,
                                              src_size[0], src_size[1])
 
+        # If the source file is a multi-page image then
+        # we have to care about the page number here.
+        if asset.extension in self.multipage_formats:
+            page = int(asset.get_attr('clip.start') or 1) - 1
+        else:
+            page = 0
+
         cmd = [
             "convert",
-            str(src_path),
+            f"{src_path}[{page}]",
             "-resize",
             "%dx%d" % (width, height),
             "-sampling-factor",

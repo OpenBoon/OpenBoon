@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ResolvedPipeline
 import com.zorroa.archivist.repository.PipelineDao
 import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.zmlp.util.Json
@@ -26,7 +27,7 @@ import java.util.UUID
  */
 interface PipelineResolverService {
 
-    fun resolve(pipeline: String?, modules: List<String>?): List<ProcessorRef>
+    fun resolve(pipeline: String?, modules: List<String>?): ResolvedPipeline
 
     /**
      * Return a copy of the standard pipeline.
@@ -36,32 +37,34 @@ interface PipelineResolverService {
     /**
      * Resolve the projects default pipeline.
      */
-    fun resolve(): List<ProcessorRef>
+    fun resolve(): ResolvedPipeline
 
     /**
      * Resolve the given Pipeline Mods ID into a list of [ProcessorRef]
      */
-    fun resolve(id: UUID): List<ProcessorRef>
+    fun resolve(id: UUID): ResolvedPipeline
 
     /**
      * Resolve a Pipeline object.
      */
-    fun resolve(pipeline: Pipeline): List<ProcessorRef>
+    fun resolve(pipeline: Pipeline): ResolvedPipeline
 
     /**
      * Resolve a list of Pipeline Mods into a list of [ProcessorRef]
      */
-    fun resolveModular(mods: List<PipelineMod>): List<ProcessorRef>
+    fun resolveModular(mods: List<PipelineMod>): ResolvedPipeline
 
     /**
      * Resolve a list of [ProcessorRef] into a new list of [ProcessorRef]
      */
-    fun resolveCustom(refs: List<ProcessorRef>?): MutableList<ProcessorRef>
+    fun resolveCustom(refs: List<ProcessorRef>?): ResolvedPipeline
 
     /**
      * Resolve a list of module names or ids into a new list of [ProcessorRef]
      */
-    fun resolveModular(mods: Collection<String>?): List<ProcessorRef>
+    fun resolveModular(mods: Collection<String>?): ResolvedPipeline
+
+    fun resolveProcessors(refs: List<ProcessorRef>?): MutableList<ProcessorRef>
 }
 
 @Service
@@ -78,7 +81,7 @@ class PipelineResolverServiceImpl(
     lateinit var pipelineService: PipelineService
 
     @Transactional(readOnly = true)
-    override fun resolve(pipeline: String?, modules: List<String>?): List<ProcessorRef> {
+    override fun resolve(pipeline: String?, modules: List<String>?): ResolvedPipeline {
         // Fetch the specified pipeline or default
         val pipe = if (pipeline != null) {
             pipelineService.get(pipeline)
@@ -113,13 +116,13 @@ class PipelineResolverServiceImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun resolve(): List<ProcessorRef> {
+    override fun resolve(): ResolvedPipeline {
         val pipeline = pipelineDao.getDefault()
         return resolve(pipeline)
     }
 
     @Transactional(readOnly = true)
-    override fun resolve(pipeline: Pipeline): List<ProcessorRef> {
+    override fun resolve(pipeline: Pipeline): ResolvedPipeline {
         return if (pipeline.mode == PipelineMode.MODULAR) {
             val modules = pipelineModService.getByIds(pipeline.modules)
             resolveModular(modules)
@@ -129,17 +132,20 @@ class PipelineResolverServiceImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun resolve(id: UUID): List<ProcessorRef> {
+    override fun resolve(id: UUID): ResolvedPipeline {
         return resolve(pipelineService.get(id))
     }
 
     @Transactional(readOnly = true)
-    override fun resolveModular(mods: Collection<String>?): List<ProcessorRef> {
+    override fun resolveModular(mods: Collection<String>?): ResolvedPipeline {
         return resolveModular(pipelineModService.getByNames(mods ?: listOf()))
     }
 
     @Transactional(readOnly = true)
-    override fun resolveModular(mods: List<PipelineMod>): List<ProcessorRef> {
+    override fun resolveModular(mods: List<PipelineMod>): ResolvedPipeline {
+
+        val objectives = mutableSetOf<String>()
+        val globalArgs = mutableMapOf<String, Any>("pipeline.objectives" to objectives)
 
         /**
          * The current pipeline.  This is re-resolved after every pipeline module, which
@@ -149,6 +155,11 @@ class PipelineResolverServiceImpl(
         var currentPipeline = getStandardPipeline()
 
         for (module in mods) {
+
+            /**
+             * Append the module objective.
+             */
+            objectives.add(module.type)
 
             /**
              * Builds a parallel array of opts for each ProcessorRef in the pipeline.
@@ -270,7 +281,8 @@ class PipelineResolverServiceImpl(
             currentPipeline = newPipeline
         }
 
-        return currentPipeline.filterNot { it.className == "PrependMarker" }
+        val execute = currentPipeline.filterNot { it.className == "PrependMarker" }
+        return ResolvedPipeline(execute, globalArgs)
     }
 
     fun parsePipelineFragment(module: String, frag: Any?): List<ProcessorRef> {
@@ -284,16 +296,22 @@ class PipelineResolverServiceImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun resolveCustom(refs: List<ProcessorRef>?): MutableList<ProcessorRef> {
+    override fun resolveProcessors(refs: List<ProcessorRef>?): MutableList<ProcessorRef> {
         val result = mutableListOf<ProcessorRef>()
 
         refs?.forEach { ref ->
             result.add(ref)
             ref.execute?.let {
-                ref.execute = resolveCustom(it)
+                ref.execute = resolveProcessors(it)
             }
         }
         return result
+    }
+
+    @Transactional(readOnly = true)
+    override fun resolveCustom(refs: List<ProcessorRef>?): ResolvedPipeline {
+        val procs = resolveProcessors(refs)
+        return ResolvedPipeline(procs)
     }
 
     /**

@@ -21,7 +21,7 @@ class ImageImporter(AssetProcessor):
 
     def __init__(self):
         super(ImageImporter, self).__init__()
-        self.add_arg(Argument('extract_pages', 'bool', default=False))
+        self.add_arg(Argument('extract_image_pages', 'bool', default=False))
 
     def process(self, frame):
         asset = frame.asset
@@ -43,7 +43,7 @@ class ImageImporter(AssetProcessor):
             # need to have a clip.
             asset.set_attr('clip', Clip.page(1))
 
-            if self.arg_value('extract_pages') and metadata.get('subimages'):
+            if self.arg_value('extract_image_pages') and metadata.get('subimages'):
                 self.extract_pages(frame, metadata)
 
     def set_date(self, document, metadata):

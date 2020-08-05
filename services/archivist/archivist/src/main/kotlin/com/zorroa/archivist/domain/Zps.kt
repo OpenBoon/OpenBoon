@@ -44,6 +44,16 @@ fun emptyZpsScripts(name: String): List<ZpsScript> {
     )
 }
 
+@ApiModel("Resolved Pipeline", description = "The result of resolving a Pipeline")
+class ResolvedPipeline(
+
+    @ApiModelProperty("The execute portion of the pipeline.")
+    val execute: List<ProcessorRef>,
+
+    @ApiModelProperty("Any global args set by pipeline resolution.")
+    val globalArgs: MutableMap<String, Any> = mutableMapOf()
+)
+
 @ApiModel("ZPS Script", description = "Describes a ZPS script that can be run by the Analysts.")
 class ZpsScript(
     @ApiModelProperty("Name of the ZPS Script.")

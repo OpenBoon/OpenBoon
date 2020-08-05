@@ -240,13 +240,13 @@ class PipelineControllerTests : MockMvcTest() {
             .andExpect(status().isOk)
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
-                    "$[0].className",
+                    "$.execute[0].className",
                     CoreMatchers.equalTo("zmlp_core.core.PreCacheSourceFileProcessor")
                 )
             )
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
-                    "$[1].args.extract_doc_pages",
+                    "$.execute[1].args.extract_doc_pages",
                     CoreMatchers.equalTo(true)
                 )
             )

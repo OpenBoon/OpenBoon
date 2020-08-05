@@ -7,7 +7,7 @@ from pathlib import Path
 
 from zmlpsdk import Frame, ZmlpFatalProcessorException
 from zmlpsdk.storage import file_storage
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
 from zmlp_core.office.importers import OfficeImporter, _content_sanitizer
 from zmlp_core.office.oclient import OfficerClient
 
@@ -15,7 +15,7 @@ from zmlp_core.office.oclient import OfficerClient
 class OfficeImporterUnitTestCase(PluginUnitTestCase):
 
     def setUp(self):
-        self.path = Path('/tmp/path/file.pdf')
+        self.path = Path(zorroa_test_path('office/test_document.docx'))
         self.asset = TestAsset(str(self.path))
 
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
@@ -86,7 +86,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch.object(OfficeImporter, 'get_metadata', return_value={'length': 3})
     @patch.object(OfficerClient, 'render', return_value='/fake')
     def test_process_expands_children(self, _, __, expand_patch, ___):
-        processor = self.init_processor(OfficeImporter(), {"extract_pages": True})
+        processor = self.init_processor(OfficeImporter(), {"extract_doc_pages": True})
         processor.process(Frame(self.asset))
         assert expand_patch.call_count == 2
 
@@ -122,3 +122,14 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         output_uri = processor.render_pages(self.asset, 1, True)
         assert 'zmlp://foo/bar' == output_uri
         assert self.asset["tmp.proxy_source_image"] == 'zmlp://foo/bar/proxy.1.jpg'
+
+    @patch.object(OfficerClient, 'get_cache_location', return_value=None)
+    @patch.object(OfficeImporter, 'expand')
+    @patch.object(OfficeImporter, 'get_metadata', return_value={'length': 3})
+    @patch.object(OfficerClient, 'render', return_value='/fake')
+    def test_render_pdf(self, _, __, ___, ____):
+        path = Path(zorroa_test_path('office/simple.pdf'))
+        asset = TestAsset(str(path), id="12345")
+        processor = self.init_processor(OfficeImporter(), {})
+        processor.process(Frame(asset))
+        assert asset["tmp.proxy_source_image"] == '/tmp/12345_pdf_proxy.png'
