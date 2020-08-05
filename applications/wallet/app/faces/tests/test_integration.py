@@ -119,7 +119,7 @@ class TestRetrieve:
         }
 
         asset = Asset(asset_data)
-        model = Mock()
+        model = Mock(module_name='zvi-face-recognition')
         with patch.object(AssetApp, 'get_asset', return_value=asset):
             with patch.object(FaceViewSet, '_get_model', return_value=model):
                 with patch.object(AssetBoxImager, 'get_attr_with_box_images',
