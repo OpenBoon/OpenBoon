@@ -46,7 +46,7 @@ class TestFieldUtility:
     def test_converts_similarity_blob(self, similarity_mapping):
         properties = similarity_mapping['mappings']['properties']
         result = self.field_service.get_fields_from_mappings(properties['analysis'])
-        assert result['zvi-image-similarity'] == ['similarity']
+        assert result['zvi-image-similarity'] == ['exists', 'similarity']
 
     @pytest.fixture
     def analysis_mappings(self):
@@ -157,7 +157,7 @@ class TestFieldUtility:
     def test_zvi_label_detection(self, analysis_mappings):
         properties = analysis_mappings['mappings']['properties']
         result = self.field_service.get_fields_from_mappings(properties['analysis'])
-        assert result['zvi-label-detection'] == ['labelConfidence']
+        assert result['zvi-label-detection'] == ['labelConfidence', 'exists']
 
     @patch.object(FieldUtility, '_get_all_model_ids', return_value=['A1', 'B1'])
     @patch.object(FieldUtility, '_get_all_model_names', return_value=['console', 'testing'])

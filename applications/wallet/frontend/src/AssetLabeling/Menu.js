@@ -24,10 +24,10 @@ const AssetLabelingMenu = ({
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
 
   const [, setLocalModelId] = useLocalStorageState({
-    key: 'AssetLabelingAdd.modelId',
+    key: `AssetLabelingAdd.${projectId}.modelId`,
   })
   const [, setLocalLabel] = useLocalStorageState({
-    key: 'AssetLabelingAdd.label',
+    key: `AssetLabelingAdd.${projectId}.label`,
   })
 
   return (

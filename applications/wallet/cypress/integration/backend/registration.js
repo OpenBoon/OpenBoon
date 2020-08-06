@@ -1,10 +1,12 @@
 describe('Authentication', function () {
-  it('can log in and log out.', function () {
+  it('can log in and log out', function () {
     cy.login()
-    cy.request('GET', '/api/v1/me/')
-    cy.apiRequest({ method: 'POST', url: '/api/v1/logout/', body: {} })
-    cy.apiRequest({
-      method: 'GET',
+
+    cy.fetch({ url: '/api/v1/me/' })
+
+    cy.fetch({ url: '/api/v1/logout/', method: 'POST' })
+
+    cy.fetch({
       url: '/api/v1/me/',
       okStatusCodes: [403],
     })

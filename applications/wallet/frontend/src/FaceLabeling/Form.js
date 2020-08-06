@@ -74,9 +74,6 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
           }}
         >
           {predictions.map(({ simhash, bbox, b64Image }) => {
-            const originalValue = predictions.find((p) => p.simhash === simhash)
-              .label
-
             return (
               <div
                 key={simhash}
@@ -99,11 +96,9 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
                 />
                 <Combobox
                   key={reloadKey}
-                  id={simhash}
-                  inputLabel="Name"
+                  label="Name"
                   options={possibleLabels}
-                  originalValue={originalValue}
-                  currentValue={state.labels[simhash]}
+                  value={state.labels[simhash]}
                   onChange={({ value }) => {
                     return dispatch({
                       labels: {

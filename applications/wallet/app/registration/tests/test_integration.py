@@ -67,7 +67,7 @@ def test_register_and_confirm(api_client, mailoutbox):
     api_client.logout()
 
     # Register a user
-    password = uuid.uuid4()
+    password = str(uuid.uuid4())
     response = api_client.post(reverse('api-user-register'), {'email': 'fake@fakerson.com',
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
@@ -97,7 +97,7 @@ def test_register_confirm_with_policies_date(api_client, mailoutbox):
     api_client.logout()
 
     # Register a user
-    password = uuid.uuid4()
+    password = str(uuid.uuid4())
     headers = {'HTTP_X_FORWARDED_FOR': '172.19.0.1',
                'REMOTE_ADDR': '127.0.0.1'}
     body = {'email': 'fake@fakerson.com',

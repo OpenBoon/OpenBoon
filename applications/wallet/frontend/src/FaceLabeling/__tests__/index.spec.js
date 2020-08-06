@@ -10,6 +10,7 @@ const ASSET_ID = asset.id
 const noop = () => () => {}
 
 jest.mock('../TrainApply', () => 'FaceLabelingTrainApply')
+jest.mock('../../Combobox', () => 'Combobox')
 
 describe('<FaceLabeling />', () => {
   it('should render properly', () => {
@@ -59,9 +60,7 @@ describe('<FaceLabeling />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
-      component.root
-        .findByProps({ id: 'MNONPMMKPLRLONLJMRLNM' })
-        .props.onChange({ value: 'Jane' })
+      component.root.findByType('Combobox').props.onChange({ value: 'Jane' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -73,9 +72,7 @@ describe('<FaceLabeling />', () => {
     })
 
     act(() => {
-      component.root
-        .findByProps({ id: 'MNONPMMKPLRLONLJMRLNM' })
-        .props.onChange({ value: 'Jane' })
+      component.root.findByType('Combobox').props.onChange({ value: 'Jane' })
     })
 
     fetch.mockRejectOnce(

@@ -27,11 +27,11 @@ const Models = () => {
   })
 
   const [, setModelId] = useLocalStorageState({
-    key: 'AssetLabelingAdd.modelId',
+    key: `AssetLabelingAdd.${projectId}.modelId`,
   })
 
   const [, setLabel] = useLocalStorageState({
-    key: 'AssetLabelingAdd.label',
+    key: `AssetLabelingAdd.${projectId}.label`,
   })
 
   return (

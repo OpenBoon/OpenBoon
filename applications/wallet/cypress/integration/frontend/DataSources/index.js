@@ -22,4 +22,33 @@ describe('DataSources', function () {
 
     cy.contains(now)
   })
+
+  it('can be deleted', function () {
+    const now = Date.now()
+
+    cy.login()
+
+    cy.fetch({
+      method: 'POST',
+      url: `/api/v1/projects/${this.PROJECT_ID}/data_sources/`,
+      body: {
+        credentials: {},
+        fileTypes: ['Images'],
+        modules: [],
+        name: now,
+        uri: 'gs://zorroa-dev-data',
+      },
+      log: false,
+    })
+
+    cy.visit(`/${this.PROJECT_ID}/data-sources/`)
+
+    cy.contains(now).siblings().last().click()
+
+    cy.contains('Delete').click()
+
+    cy.contains('Delete Permanently').click()
+
+    cy.contains(now).should('not.exist')
+  })
 })

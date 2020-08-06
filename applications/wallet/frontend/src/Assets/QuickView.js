@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Router, { useRouter } from 'next/router'
 
-import { spacing, colors, constants } from '../Styles'
+import { spacing, colors, constants, zIndex } from '../Styles'
 
 import CrossSvg from '../Icons/cross.svg'
 
@@ -126,7 +126,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           bottom: 0,
           left: 0,
           right: 0,
-          zIndex: 999,
+          zIndex: zIndex.layout.modal,
           backgroundColor: constants.overlay,
         }}
       >

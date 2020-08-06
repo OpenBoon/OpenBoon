@@ -25,7 +25,10 @@ const Projects = ({ projectId, children }) => {
   }, [projectId, routerProjectId])
 
   // Reset user projectId if not part of current projects
-  if (projectId && !projects.find(({ id }) => projectId === id)) {
+  if (
+    !projects ||
+    (projectId && !projects.find(({ id }) => projectId === id))
+  ) {
     mutate('/api/v1/me/', (user) => ({ ...user, projectId: '' }), false)
     return null
   }
