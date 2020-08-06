@@ -6,3 +6,5 @@ lib
 sdk
 services
 test-data
+.*
+node_modules
