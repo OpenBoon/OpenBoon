@@ -9,7 +9,7 @@ export const BBOX_SIZE = 56
 
 const COLUMNS = ['bbox', 'label', 'score']
 
-const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
+const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
   const predictionColumns = Object.keys(predictions[0])
 
   // filter from COLUMNS which holds the module column names in the correct order
@@ -182,11 +182,9 @@ const MetadataPrettyLabelsContent = ({ name, value: { predictions } }) => {
   )
 }
 
-MetadataPrettyLabelsContent.propTypes = {
+MetadataPrettyPredictionsContent.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.shape({
-    predictions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  }).isRequired,
+  predictions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 }
 
-export default MetadataPrettyLabelsContent
+export default MetadataPrettyPredictionsContent

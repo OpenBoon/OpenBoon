@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MetadataPrettyLabelsRow /> should render properly with bbox 1`] = `
+.emotion-3 {
+  vertical-align: bottom;
+}
+
+.emotion-3 td {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-0 {
+  max-height: 56px;
+  width: 56px;
+  object-fit: contain;
+}
+
+.emotion-1 {
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  color: #808080;
+}
+
+.emotion-2 {
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  color: #808080;
+  text-align: right;
+  padding-right: 0;
+}
+
+<tr
+  className="emotion-3"
+>
+  <td>
+    <img
+      alt={
+        Array [
+          0.226,
+          0.327,
+          0.697,
+          0.813,
+        ]
+      }
+      className="emotion-0"
+      src="data:image/png;base64, iVBORw0KGgoAA..."
+      title={
+        Array [
+          0.226,
+          0.327,
+          0.697,
+          0.813,
+        ]
+      }
+    />
+  </td>
+  <td
+    title="Model ID: b030033c-c904-11ea-8966-d27a587a06a5"
+  >
+    <span
+      className="emotion-1"
+    >
+      console
+    </span>
+    <br />
+    Mark Ruffalo
+  </td>
+  <td
+    className="emotion-2"
+  >
+    Train
+  </td>
+</tr>
+`;
+
+exports[`<MetadataPrettyLabelsRow /> should render properly without bbox 1`] = `
+.emotion-3 {
+  vertical-align: bottom;
+}
+
+.emotion-3 td {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  color: #808080;
+}
+
+.emotion-2 {
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  color: #808080;
+  text-align: right;
+  padding-right: 0;
+}
+
+.emotion-0 {
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  color: #808080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  min-width: 56px;
+  min-height: 56px;
+}
+
+<tr
+  className="emotion-3"
+>
+  <td>
+    <div
+      className="emotion-0"
+    >
+      N/A
+    </div>
+  </td>
+  <td
+    title="Model ID: b030033c-c904-11ea-8966-d27a587a06a5"
+  >
+    <span
+      className="emotion-1"
+    >
+      console
+    </span>
+    <br />
+    Mark Ruffalo
+  </td>
+  <td
+    className="emotion-2"
+  >
+    Train
+  </td>
+</tr>
+`;

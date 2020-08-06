@@ -2,9 +2,11 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import MetadataPrettyLabelsContent, { BBOX_SIZE } from './LabelsContent'
+import MetadataPrettyPredictionsContent, {
+  BBOX_SIZE,
+} from './PredictionsContent'
 
-const MetadataPrettyLabelsQuery = ({ name, path }) => {
+const MetadataPrettyPredictionsQuery = ({ name, path }) => {
   const attr = `${path}${name}&width=${BBOX_SIZE}`
 
   const {
@@ -15,12 +17,16 @@ const MetadataPrettyLabelsQuery = ({ name, path }) => {
     `/api/v1/projects/${projectId}/assets/${assetId}/box_images/?attr=${attr}`,
   )
 
-  return <MetadataPrettyLabelsContent name={name} value={data[name]} />
+  const { predictions } = data[name]
+
+  return (
+    <MetadataPrettyPredictionsContent name={name} predictions={predictions} />
+  )
 }
 
-MetadataPrettyLabelsQuery.propTypes = {
+MetadataPrettyPredictionsQuery.propTypes = {
   name: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
 }
 
-export default MetadataPrettyLabelsQuery
+export default MetadataPrettyPredictionsQuery

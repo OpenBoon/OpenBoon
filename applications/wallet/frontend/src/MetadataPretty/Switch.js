@@ -6,7 +6,7 @@ import { formatDisplayName } from '../Metadata/helpers'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 
-import MetadataPrettyLabels from './Labels'
+import MetadataPrettyPredictions from './Predictions'
 import MetadataPrettyContent from './Content'
 import MetadataPrettySimilarity from './Similarity'
 import MetadataPrettyRow from './Row'
@@ -34,7 +34,9 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
   if (typeof value === 'object') {
     switch (value.type) {
       case 'labels':
-        return <MetadataPrettyLabels name={name} value={value} path={path} />
+        return (
+          <MetadataPrettyPredictions name={name} value={value} path={path} />
+        )
 
       case 'content':
         return <MetadataPrettyContent name={name} value={value} />
