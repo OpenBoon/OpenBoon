@@ -171,7 +171,7 @@ resource "kubernetes_deployment" "analyst" {
 resource "google_monitoring_metric_descriptor" "jobs" {
   description  = "Current number of jobs waiting in the queue."
   display_name = "queued-jobs"
-  type         = "external.googleapis.com/queued-jobs"
+  type         = "custom.googleapis.com/queued-jobs"
   metric_kind  = "GAUGE"
   value_type   = "INT64"
   launch_stage = "GA"
@@ -189,18 +189,6 @@ resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
   spec {
     max_replicas = 2
     min_replicas = 1
-    metric {
-      type = "External"
-      external {
-        metric {
-          name = google_monitoring_metric_descriptor.jobs.type
-        }
-        target {
-          type  = "Value"
-          value = 0
-        }
-      }
-    }
     scale_target_ref {
       api_version = "apps/v1"
       kind        = "Deployment"
