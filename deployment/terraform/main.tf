@@ -5,7 +5,7 @@ terraform {
     organization = "zorroa"
 
     workspaces {
-      name = "zvi-prod"
+      name = "zvi-dev"
     }
   }
 }
@@ -42,6 +42,10 @@ provider "kubernetes" {
 module "gke-cluster" {
   source = "./modules/gke-cluster"
   zone   = local.zone
+}
+
+module "stackdriver-adapter" {
+  source = "./modules/stackdriver-adapter"
 }
 
 module "postgres" {
