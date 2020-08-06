@@ -25,7 +25,7 @@ function getCookies() {
  */
 Cypress.Commands.add(
   'fetch',
-  ({ url, method = 'GET', body, okStatusCodes = [200, 201], ...rest }) => {
+  ({ url, method = 'GET', body, okStatusCodes = [200, 201, 207], ...rest }) => {
     cy.request({
       url,
       method,
