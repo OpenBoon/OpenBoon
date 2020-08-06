@@ -13,8 +13,8 @@ const MetadataPretty = ({ metadata, section }) => {
 
   if (section === 'labels') {
     return (
-      <SuspenseBoundary>
-        <MetadataPrettyLabels labels={metadata[section]} />
+      <SuspenseBoundary isTransparent>
+        <MetadataPrettyLabels />
       </SuspenseBoundary>
     )
   }

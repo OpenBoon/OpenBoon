@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { constants, spacing, colors } from '../Styles'
+import { constants } from '../Styles'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 
@@ -20,20 +20,9 @@ const MetadataPrettyPredictions = ({ name, value: { predictions }, path }) => {
           '&:not(:first-of-type)': {
             borderTop: constants.borders.large.smoke,
           },
-          '> div.ErrorBoundary': {
-            padding: `${spacing.normal}px ${spacing.moderate}px`,
-            div: {
-              backgroundColor: colors.structure.transparent,
-              boxShadow: 'none',
-            },
-          },
-          '.Loading': {
-            backgroundColor: colors.structure.transparent,
-            boxShadow: 'none',
-          },
         }}
       >
-        <SuspenseBoundary>
+        <SuspenseBoundary isTransparent>
           <MetadataPrettyPredictionsQuery name={name} path={path} />
         </SuspenseBoundary>
       </div>

@@ -43,9 +43,17 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
 
       case 'similarity':
         return (
-          <SuspenseBoundary>
-            <MetadataPrettySimilarity name={name} value={value} path={path} />
-          </SuspenseBoundary>
+          <div
+            css={{
+              '&:not(:first-of-type)': {
+                borderTop: constants.borders.large.smoke,
+              },
+            }}
+          >
+            <SuspenseBoundary isTransparent>
+              <MetadataPrettySimilarity name={name} value={value} path={path} />
+            </SuspenseBoundary>
+          </div>
         )
 
       default:

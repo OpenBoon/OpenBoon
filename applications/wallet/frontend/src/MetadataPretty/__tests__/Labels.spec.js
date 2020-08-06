@@ -8,7 +8,7 @@ import MetadataPrettyLabels from '../Labels'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = asset.id
 
-jest.mock('../LabelsRow', () => 'MetadataPrettyLabelsRow')
+jest.mock('../LabelsContent', () => 'MetadataPrettyLabelsContent')
 
 describe('<MetadataPrettyLabels />', () => {
   it('should render properly on the grid', () => {
