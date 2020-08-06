@@ -12,6 +12,8 @@ const MODEL_ID = models.results[0].id
 const ALT_MODEL_ID = models.results[2].id
 const EXISTING_ASSET_LABEL = asset.metadata.labels[0].label
 
+jest.mock('../../Combobox', () => 'Combobox')
+
 const noop = () => () => {}
 
 describe('<AssetLabeling />', () => {
@@ -32,6 +34,10 @@ describe('<AssetLabeling />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    act(() => {
+      component.root.findByType('Combobox').props.options()
+    })
+
     // Click Accordion header link
     act(() => {
       component.root
@@ -51,8 +57,8 @@ describe('<AssetLabeling />', () => {
     // Input Label
     act(() => {
       component.root
-        .findByProps({ id: 'asset-label' })
-        .props.onChange({ target: { value: 'Flimflarm' } })
+        .findByType('Combobox')
+        .props.onChange({ value: 'Flimflarm' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -102,8 +108,8 @@ describe('<AssetLabeling />', () => {
     // Input Label
     act(() => {
       component.root
-        .findByProps({ id: 'asset-label' })
-        .props.onChange({ target: { value: 'Other Flimflarm' } })
+        .findByType('Combobox')
+        .props.onChange({ value: 'Other Flimflarm' })
     })
 
     // Mock Success
@@ -125,9 +131,7 @@ describe('<AssetLabeling />', () => {
 
     // Input Label
     act(() => {
-      component.root
-        .findByProps({ id: 'asset-label' })
-        .props.onChange({ target: { value: '' } })
+      component.root.findByType('Combobox').props.onChange({ value: '' })
     })
 
     // Mock Success
@@ -146,8 +150,8 @@ describe('<AssetLabeling />', () => {
         .findByProps({ label: 'Model' })
         .props.onChange({ value: ALT_MODEL_ID })
       component.root
-        .findByProps({ id: 'asset-label' })
-        .props.onChange({ target: { value: 'FlamFlirm' } })
+        .findByType('Combobox')
+        .props.onChange({ value: 'FlamFlirm' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -311,11 +315,11 @@ describe('<AssetLabeling />', () => {
     })
 
     // Call from Delete Modal
-    expect(fetch.mock.calls[5][0]).toEqual(
+    expect(fetch.mock.calls[6][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/delete_labels/`,
     )
 
-    expect(fetch.mock.calls[5][1]).toEqual({
+    expect(fetch.mock.calls[6][1]).toEqual({
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',

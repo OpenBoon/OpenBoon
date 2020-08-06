@@ -1,6 +1,17 @@
 import { mutate } from 'swr'
 
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, revalidate } from '../Fetch/helpers'
+
+export const getOptions = async ({ modelId, projectId }) => {
+  if (!modelId) {
+    return []
+  }
+  const { results } = await revalidate({
+    key: `/api/v1/projects/${projectId}/models/${modelId}/get_labels`,
+  })
+
+  return results
+}
 
 export const getSubmitText = ({ state, existingLabel }) => {
   const { success, isLoading } = state

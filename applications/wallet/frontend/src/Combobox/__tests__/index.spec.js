@@ -4,18 +4,16 @@ import Combobox from '..'
 import ComboboxContainer from '../Container'
 
 describe('Combobox', () => {
-  it('should render properly', () => {
+  it('should render properly with a options function', async () => {
     const mockFn = jest.fn()
     const options = [{ label: 'label0', count: 1 }]
-    const originalValue = options[0].label
+    const value = options[0].label
 
     const component = TestRenderer.create(
       <Combobox
-        id="comboboxId"
-        inputLabel="inputLabel"
-        options={options}
-        originalValue={originalValue}
-        currentValue="currentValue"
+        label="inputLabel"
+        options={async () => Promise.resolve(options)}
+        value={value}
         onChange={mockFn}
         hasError={false}
       />,
@@ -23,23 +21,21 @@ describe('Combobox', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    act(() => {
+    // First action needs to be async to catch the changes made by useEffect
+    await act(async () => {
       component.root
         .findByProps({ 'data-reach-combobox-input': '' })
         .props.onChange({ target: { value: 'Jane' } })
     })
 
-    expect(mockFn).toHaveBeenCalledTimes(1)
-    expect(mockFn).toHaveBeenCalledWith({ value: 'Jane' })
+    expect(component.toJSON()).toMatchSnapshot()
 
-    // when there is a event.target.value, let onSelect (not onBlur) handle the value
+    // when there is an event.target.value, let onSelect (not onBlur) handle the value
     act(() => {
       component.root
         .findByProps({ 'data-reach-combobox-input': '' })
         .props.onBlur({ target: { value: 'Jane' } })
     })
-
-    expect(mockFn).toHaveBeenCalledTimes(1)
 
     act(() => {
       component.root
@@ -47,29 +43,48 @@ describe('Combobox', () => {
         .props.onBlur({ target: { value: '' } })
     })
 
-    expect(mockFn).toHaveBeenCalledTimes(2)
-    expect(mockFn).toHaveBeenCalledWith({ value: originalValue })
+    expect(
+      component.root.findByProps({ 'data-reach-combobox-input': '' }).props
+        .value,
+    ).toEqual(value)
 
     act(() => {
-      component.root.findByType(ComboboxContainer).props.onSelect('')
+      component.root.findByType(ComboboxContainer).props.onSelect('Jane')
     })
 
-    expect(mockFn).toHaveBeenCalledTimes(3)
-    expect(mockFn).toHaveBeenLastCalledWith({ value: '' })
+    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenLastCalledWith({ value: 'Jane' })
+  })
+
+  it('should render properly with an options array', () => {
+    const mockFn = jest.fn()
+    const options = [{ label: 'label0', count: 1 }]
+    const value = options[0].label
+
+    const component = TestRenderer.create(
+      <Combobox
+        label="inputLabel"
+        options={options}
+        value={value}
+        onChange={mockFn}
+        hasError={false}
+        errorMessage=""
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should render properly with error', () => {
     const mockFn = jest.fn()
     const options = [{ label: 'label0', count: 1 }]
-    const originalValue = options[0].label
+    const value = options[0].label
 
     const component = TestRenderer.create(
       <Combobox
-        id="comboboxId"
-        inputLabel="inputLabel"
+        label="inputLabel"
         options={options}
-        originalValue={originalValue}
-        currentValue="currentValue"
+        value={value}
         onChange={mockFn}
         hasError
         errorMessage="error"

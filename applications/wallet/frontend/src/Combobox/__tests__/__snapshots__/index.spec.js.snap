@@ -1,7 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Combobox should render properly 1`] = `
-.emotion-2 {
+exports[`Combobox should render properly with a options function 1`] = `
+@keyframes animation-0 {
+  from {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.emotion-6 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -10,6 +24,244 @@ exports[`Combobox should render properly 1`] = `
 .emotion-0 {
   padding-bottom: 8px;
   color: #808080;
+}
+
+.emotion-5 {
+  position: relative;
+}
+
+.emotion-1 {
+  width: 100%;
+  padding: 8px;
+  outline: 1px solid transparent;
+  background-color: #3b3b3b;
+  color: #ffffff;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  margin-bottom: 1px;
+}
+
+.emotion-1:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-1:focus {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.emotion-4 {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  border: none;
+  background: none;
+  margin-top: 1px;
+}
+
+.emotion-3 {
+  min-height: 300px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  background-color: #252525;
+  font-size: 15px;
+  line-height: 19px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  height: 100%;
+}
+
+.emotion-2 {
+  -webkit-animation: animation-0 2s linear infinite;
+  animation: animation-0 2s linear infinite;
+  margin-right: 16px;
+}
+
+<div
+  className="emotion-6"
+>
+  <div
+    className="emotion-0"
+  >
+    inputLabel
+  </div>
+  <div
+    className="emotion-5"
+    data-reach-combobox=""
+  >
+    <input
+      aria-autocomplete="both"
+      aria-controls="listbox--1"
+      aria-expanded={false}
+      aria-haspopup="listbox"
+      autoComplete="off"
+      className="emotion-1"
+      data-reach-combobox-input=""
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      role="combobox"
+      value="label0"
+    />
+    <div
+      className="emotion-4"
+      data-reach-combobox-popover=""
+      hidden={true}
+      onBlur={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <div
+        className="Loading emotion-3"
+      >
+        <svg
+          className="emotion-2"
+          data-file-name="generating.svg"
+          height={20}
+        />
+        Loading...
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Combobox should render properly with a options function 2`] = `
+.emotion-5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-0 {
+  padding-bottom: 8px;
+  color: #808080;
+}
+
+.emotion-4 {
+  position: relative;
+}
+
+.emotion-1 {
+  width: 100%;
+  padding: 8px;
+  outline: 1px solid transparent;
+  background-color: #3b3b3b;
+  color: #ffffff;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  margin-bottom: 1px;
+}
+
+.emotion-1:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-1:focus {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.emotion-3 {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  border: none;
+  background: none;
+  margin-top: 1px;
+}
+
+.emotion-2 {
+  width: 100%;
+  max-height: 350px;
+  overflow-y: scroll;
+  background-color: #ffffff;
+  border-radius: 2px;
+  color: #000000;
+  font-weight: 500;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+<div
+  className="emotion-5"
+>
+  <div
+    className="emotion-0"
+  >
+    inputLabel
+  </div>
+  <div
+    className="emotion-4"
+    data-reach-combobox=""
+  >
+    <input
+      aria-autocomplete="both"
+      aria-controls="listbox--1"
+      aria-expanded={true}
+      aria-haspopup="listbox"
+      autoComplete="off"
+      className="emotion-1"
+      data-reach-combobox-input=""
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      role="combobox"
+      value="Jane"
+    />
+    <div
+      className="emotion-3"
+      data-reach-combobox-popover=""
+      hidden={false}
+      onBlur={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <ul
+        className="emotion-2"
+        data-reach-combobox-list=""
+        id="listbox--1"
+        role="listbox"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Combobox should render properly with an options array 1`] = `
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-0 {
+  padding-bottom: 8px;
+  color: #808080;
+}
+
+.emotion-2 {
+  position: relative;
 }
 
 .emotion-1 {
@@ -34,7 +286,7 @@ exports[`Combobox should render properly 1`] = `
 }
 
 <div
-  className="emotion-2"
+  className="emotion-3"
 >
   <div
     className="emotion-0"
@@ -42,31 +294,31 @@ exports[`Combobox should render properly 1`] = `
     inputLabel
   </div>
   <div
+    className="emotion-2"
     data-reach-combobox=""
   >
     <input
       aria-autocomplete="both"
-      aria-controls="listbox--1"
+      aria-controls="listbox--11"
       aria-expanded={false}
       aria-haspopup="listbox"
+      autoComplete="off"
       className="emotion-1"
       data-reach-combobox-input=""
-      id="comboboxId"
       onBlur={[Function]}
       onChange={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
       role="combobox"
-      value="currentValue"
+      value="label0"
     />
-    <span />
   </div>
 </div>
 `;
 
 exports[`Combobox should render properly with error 1`] = `
-.emotion-3 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -74,6 +326,43 @@ exports[`Combobox should render properly with error 1`] = `
 
 .emotion-0 {
   padding-bottom: 8px;
+  color: #808080;
+}
+
+.emotion-6 {
+  position: relative;
+}
+
+.emotion-5 {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  border: none;
+  background: none;
+  margin-top: 1px;
+}
+
+.emotion-4 {
+  width: 100%;
+  max-height: 350px;
+  overflow-y: scroll;
+  background-color: #ffffff;
+  border-radius: 2px;
+  color: #000000;
+  font-weight: 500;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-3 {
+  padding: 8px 12px;
+}
+
+.emotion-3 [data-highlighted] {
+  background-color: #e0e0e0;
+}
+
+.emotion-2 {
   color: #808080;
 }
 
@@ -98,14 +387,14 @@ exports[`Combobox should render properly with error 1`] = `
   color: #000000;
 }
 
-.emotion-2 {
+.emotion-7 {
   font-style: italic;
   color: #c92300;
   padding-top: 8px;
 }
 
 <div
-  className="emotion-3"
+  className="emotion-8"
 >
   <div
     className="emotion-0"
@@ -113,28 +402,64 @@ exports[`Combobox should render properly with error 1`] = `
     inputLabel
   </div>
   <div
+    className="emotion-6"
     data-reach-combobox=""
   >
     <input
       aria-autocomplete="both"
-      aria-controls="listbox--5"
+      aria-controls="listbox--12"
       aria-expanded={false}
       aria-haspopup="listbox"
+      autoComplete="off"
       className="emotion-1"
       data-reach-combobox-input=""
-      id="comboboxId"
       onBlur={[Function]}
       onChange={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
       role="combobox"
-      value="currentValue"
+      value="label0"
     />
-    <span />
+    <div
+      className="emotion-5"
+      data-reach-combobox-popover=""
+      hidden={true}
+      onBlur={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <ul
+        className="emotion-4"
+        data-reach-combobox-list=""
+        id="listbox--12"
+        role="listbox"
+      >
+        <li
+          aria-selected={false}
+          className="emotion-3"
+          data-reach-combobox-option=""
+          id="-1110417476"
+          onClick={[Function]}
+          role="option"
+          tabIndex={-1}
+        >
+          <span
+            data-user-value={true}
+          >
+            label0
+          </span>
+          <span
+            className="emotion-2"
+          >
+             (1)
+          </span>
+        </li>
+      </ul>
+    </div>
   </div>
   <div
-    className="emotion-2"
+    className="emotion-7"
   >
     error
   </div>

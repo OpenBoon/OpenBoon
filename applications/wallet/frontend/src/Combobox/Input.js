@@ -3,11 +3,11 @@ import { ComboboxInput as ReachComboboxInput } from '@reach/combobox'
 
 import { constants, spacing, colors, typography } from '../Styles'
 
-const ComboboxInput = ({ id, value, hasError, onChange, onBlur }) => {
+const ComboboxInput = ({ value, hasError, onChange, onBlur }) => {
   return (
     <ReachComboboxInput
-      id={id}
       selectOnClick
+      autoComplete="off"
       css={{
         width: '100%',
         padding: spacing.base,
@@ -36,7 +36,6 @@ const ComboboxInput = ({ id, value, hasError, onChange, onBlur }) => {
 }
 
 ComboboxInput.propTypes = {
-  id: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   hasError: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
