@@ -92,7 +92,7 @@ const AssetLabelingList = ({
                 },
               }}
             >
-              <td>{name}</td>
+              <td css={{ whiteSpace: 'nowrap' }}>{name}</td>
               <td
                 css={{
                   width: '100%',

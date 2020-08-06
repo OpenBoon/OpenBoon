@@ -5,6 +5,8 @@ import FaceLabelingForm from '../Form'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 
+jest.mock('../../Combobox', () => 'Combobox')
+
 describe('<FaceLabelingForm />', () => {
   it('should render with no data', () => {
     require('swr').__setMockUseSWRResponse({})
