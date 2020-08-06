@@ -106,7 +106,7 @@ def build_label_detection_timeline(annotations):
         annotations (AnnotateVideoResponse):
 
     Returns:
-        Timeline: The Label Detection timeline. 
+        Timeline: The Label Detection timeline.
     """
     timeline = ztl.Timeline("gcp-video-label-detection")
 
