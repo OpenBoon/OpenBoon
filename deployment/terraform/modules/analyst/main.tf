@@ -12,7 +12,7 @@ resource "google_container_node_pool" "analyst" {
   }
 
   node_config {
-    preemptible = true
+    preemptible  = true
     machine_type = var.machine-type
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
@@ -40,7 +40,7 @@ resource "google_container_node_pool" "analyst" {
 }
 
 resource "random_string" "analyst-shared-key" {
-  length = 50
+  length  = 50
   special = false
 }
 
@@ -110,11 +110,11 @@ resource "kubernetes_deployment" "analyst" {
           image_pull_policy = "Always"
           volume_mount {
             mount_path = "/tmp"
-            name = "tmp"
+            name       = "tmp"
           }
           volume_mount {
             mount_path = "/var/run/docker.sock"
-            name = "dockersock"
+            name       = "dockersock"
           }
           volume_mount {
             name       = "dockerhubcreds"
@@ -130,7 +130,7 @@ resource "kubernetes_deployment" "analyst" {
             value = random_string.analyst-shared-key.result
           }
           env {
-            name = "OFFICER_URL"
+            name  = "OFFICER_URL"
             value = var.officer-url
           }
           liveness_probe {
@@ -168,6 +168,15 @@ resource "kubernetes_deployment" "analyst" {
   }
 }
 
+resource "google_monitoring_metric_descriptor" "jobs" {
+  description  = "Current number of jobs waiting in the queue."
+  display_name = "queued-jobs"
+  type         = "custom.googleapis.com/queued-jobs"
+  metric_kind  = "GAUGE"
+  value_type   = "INT64"
+  launch_stage = "GA"
+}
+
 resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
   provider = kubernetes
   metadata {
@@ -180,6 +189,18 @@ resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
   spec {
     max_replicas = 2
     min_replicas = 1
+    metric {
+      type = "External"
+      external {
+        metric {
+          name = google_monitoring_metric_descriptor.jobs.type
+        }
+        target {
+          type  = "Value"
+          value = 0
+        }
+      }
+    }
     scale_target_ref {
       api_version = "apps/v1"
       kind        = "Deployment"

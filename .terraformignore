@@ -6,3 +6,4 @@ lib
 sdk
 services
 test-data
+.*
