@@ -90,7 +90,7 @@ class ProjectServiceTests : AbstractTest() {
 
         var route = indexRouteDao.getProjectRoute()
         val esIndexState = indexRoutingService.getEsIndexState(route)
-        assertEquals("open", esIndexState["state"])
+        assertEquals("open", esIndexState["status"])
     }
 
     @Test
