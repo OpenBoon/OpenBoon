@@ -37,15 +37,20 @@ def build_logo_detection_timeline(annotations):
     """
     timeline = ztl.Timeline("gcp-video-logo-detection")
     track = timeline.add_track("Detected Logo")
-
     for annotation in annotations.logo_recognition_annotations:
-        entity = annotation.entity
-        for t in annotation.tracks:
-            # logos can show in multiple places in the timeline
-            start_time = convert_offset(t.segment.start_time_offset)
-            end_time = convert_offset(t.segment.end_time_offset)
-            content = {"content": {"description": entity.description, "confidence": t.confidence}}
-            track.add_clip(start_time, end_time, content)
+        labels = set([annotation.entity.description])
+
+        for segment in annotation.segments:
+            if not segment.start_time_offset:
+                clip_start = 0
+            else:
+                clip_start = convert_offset(segment.start_time_offset)
+
+            clip_stop = convert_offset(segment.end_time_offset)
+
+        for label in labels:
+            track = timeline.add_track(label)
+            track.add_clip(clip_start, clip_stop)
 
     return timeline
 
@@ -101,7 +106,7 @@ def build_label_detection_timeline(annotations):
         annotations (AnnotateVideoResponse):
 
     Returns:
-        Timeline: The Label Detection timeline.
+        Timeline: The Label Detection timeline. 
     """
     timeline = ztl.Timeline("gcp-video-label-detection")
 
