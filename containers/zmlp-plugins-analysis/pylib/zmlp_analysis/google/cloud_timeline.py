@@ -39,9 +39,19 @@ def build_object_detection_timeline(annotations):
     track = timeline.add_track("Detected Object")
 
     for annotation in annotations.object_annotations:
-        start_time = convert_offset(annotation.segment.start_time_offset)
-        end_time = convert_offset(annotation.segment.end_time_offset)
-        track.add_clip(start_time, end_time, {"content": annotation.entity.description})
+        label = annotation.entity.description
+
+        if not annotation.segment.start_time_offset:
+            clip_start = 0
+        else:
+            clip_start = convert_offset(annotation.segment.start_time_offset)
+
+        clip_stop = convert_offset(annotation.segment.end_time_offset)
+
+        track = timeline.add_track(label)
+        track.add_clip(clip_start, clip_stop, 
+                       {"content": annotation.entity.description,
+                        "confidence": annotation.confidence})
 
     return timeline
 
