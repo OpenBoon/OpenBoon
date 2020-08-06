@@ -49,7 +49,7 @@ def build_object_detection_timeline(annotations):
         clip_stop = convert_offset(annotation.segment.end_time_offset)
 
         track = timeline.add_track(label)
-        track.add_clip(clip_start, clip_stop, 
+        track.add_clip(clip_start, clip_stop,
                        {"content": annotation.entity.description,
                         "confidence": annotation.confidence})
 
