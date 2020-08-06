@@ -160,7 +160,7 @@ resource "kubernetes_service" "custom_metrics_stackdriver_adapter" {
   }
 }
 
-resource "kubernetes_api_service" "v_1_beta_1" {
+resource "kubernetes_api_service" "v_1_beta_1_custom" {
   metadata {
     name = "v1beta1.custom.metrics.k8s.io"
   }
@@ -179,7 +179,7 @@ resource "kubernetes_api_service" "v_1_beta_1" {
   }
 }
 
-resource "kubernetes_api_service" "v_1_beta_2" {
+resource "kubernetes_api_service" "v_1_beta_2_custom" {
   metadata {
     name = "v1beta2.custom.metrics.k8s.io"
   }
@@ -198,7 +198,7 @@ resource "kubernetes_api_service" "v_1_beta_2" {
   }
 }
 
-resource "kubernetes_api_service" "v_1_beta_1" {
+resource "kubernetes_api_service" "v_1_beta_1_external" {
   metadata {
     name = "v1beta1.external.metrics.k8s.io"
   }

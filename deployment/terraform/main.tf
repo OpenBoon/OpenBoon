@@ -5,7 +5,7 @@ terraform {
     organization = "zorroa"
 
     workspaces {
-      name = "zvi-prod"
+      name = "zvi-dev"
     }
   }
 }
