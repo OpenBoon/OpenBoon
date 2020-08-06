@@ -22,6 +22,7 @@ describe('Api Keys', function () {
 
     cy.contains('Assets Read')
   })
+
   it('can be deleted', function () {
     const now = Date.now()
 
@@ -34,7 +35,9 @@ describe('Api Keys', function () {
         name: now,
         permissions: ['AssetsRead', 'AssetsDelete'],
       },
+      log: false,
     })
+
     cy.visit(`/${this.PROJECT_ID}/api-keys`)
 
     cy.contains(now).siblings().last().click()
