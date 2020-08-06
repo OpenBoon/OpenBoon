@@ -7,7 +7,7 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 20;
   background-color: #000000e6;
 }
 
