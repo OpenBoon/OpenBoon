@@ -171,7 +171,7 @@ resource "kubernetes_deployment" "analyst" {
 resource "google_monitoring_metric_descriptor" "jobs" {
   description  = "Current number of jobs waiting in the queue."
   display_name = "queued-jobs"
-  type         = "custom.googleapis.com/queued-jobs"
+  type         = "external.googleapis.com/queued-jobs"
   metric_kind  = "GAUGE"
   value_type   = "INT64"
   launch_stage = "GA"
