@@ -25,24 +25,18 @@ const reducer = (state, action) => ({ ...state, ...action })
 
 const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
   const [localModelId, setLocalModelId] = useLocalStorageState({
-    key: 'AssetLabelingAdd.modelId',
+    key: `AssetLabelingAdd.${projectId}.modelId`,
     initialValue: '',
   })
   const [localLabel, setLocalLabel] = useLocalStorageState({
-    key: 'AssetLabelingAdd.label',
+    key: `AssetLabelingAdd.${projectId}.label`,
     initialValue: '',
   })
 
-  // Prevents user from saving non-existent model where model/label
-  // are added to local storage and user switches projects
-  const modelExists = localModelId
-    ? models.find(({ id }) => id === localModelId)
-    : false
-
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL_STATE,
-    modelId: modelExists ? localModelId : '',
-    label: modelExists ? localLabel : '',
+    modelId: localModelId || '',
+    label: localLabel || '',
   })
 
   const options = models.map(({ name, id }) => ({ value: id, label: name }))
