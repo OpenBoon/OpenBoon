@@ -44,9 +44,9 @@ module "gke-cluster" {
   zone   = local.zone
 }
 
-module "stackdriver-adapter" {
-  source = "./modules/stackdriver-adapter"
-}
+//module "stackdriver-adapter" {
+//  source = "./modules/stackdriver-adapter"
+//}
 
 module "postgres" {
   source   = "./modules/postgres"
