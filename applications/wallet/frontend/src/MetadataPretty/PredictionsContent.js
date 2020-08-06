@@ -69,8 +69,9 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
                       fontWeight: typography.weight.regular,
                       textTransform: 'uppercase',
                       color: colors.structure.steel,
-                      paddingBottom: spacing.normal,
+                      paddingBottom: spacing.base,
                       paddingLeft: 0,
+                      borderBottom: constants.borders.regular.smoke,
                       textAlign: 'left',
                       '&:last-of-type': {
                         textAlign: 'right',
@@ -96,12 +97,10 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
                   css={{
                     verticalAlign: 'bottom',
                     td: {
-                      paddingTop: spacing.base,
-                      paddingBottom: spacing.base,
-                      paddingRight: spacing.base,
+                      padding: spacing.base,
+                      paddingLeft: 0,
                       borderBottom: constants.borders.regular.smoke,
                     },
-                    '&:first-of-type': { td: { paddingTop: 0 } },
                   }}
                 >
                   {columns.map((column) => {

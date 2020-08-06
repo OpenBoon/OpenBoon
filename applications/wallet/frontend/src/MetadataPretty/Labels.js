@@ -1,14 +1,13 @@
-import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 import { constants, spacing, colors, typography } from '../Styles'
 
-import MetadataPrettyLabelsRow from './LabelsRow'
+import MetadataPrettyLabelsContent from './LabelsContent'
 
 const COLUMNS = ['bbox', 'model name/label', 'scope']
 
-const MetadataPrettyLabels = ({ labels }) => {
+const MetadataPrettyLabels = () => {
   const {
     query: { projectId, assetId, id },
   } = useRouter()
@@ -62,33 +61,15 @@ const MetadataPrettyLabels = ({ labels }) => {
         </thead>
 
         <tbody>
-          {labels.map((label, index) => {
-            return (
-              <MetadataPrettyLabelsRow
-                // eslint-disable-next-line react/no-array-index-key
-                key={`${label.label}-${index}`}
-                projectId={projectId}
-                assetId={id || assetId}
-                models={models}
-                label={label}
-              />
-            )
-          })}
+          <MetadataPrettyLabelsContent
+            projectId={projectId}
+            assetId={id || assetId}
+            models={models}
+          />
         </tbody>
       </table>
     </div>
   )
-}
-
-MetadataPrettyLabels.propTypes = {
-  labels: PropTypes.arrayOf(
-    PropTypes.shape({
-      bbox: PropTypes.arrayOf(PropTypes.number),
-      modelId: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-      scope: PropTypes.oneOf(['TEST', 'TRAIN']).isRequired,
-    }).isRequired,
-  ).isRequired,
 }
 
 export default MetadataPrettyLabels
