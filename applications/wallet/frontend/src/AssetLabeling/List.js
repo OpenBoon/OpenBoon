@@ -4,20 +4,9 @@ import modelShape from '../Model/shape'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { decode, encode } from '../Filters/helpers'
-import { getQueryString } from '../Fetch/helpers'
-
 import AssetLabelingMenu from './Menu'
 
-const AssetLabelingList = ({
-  models,
-  labels,
-  projectId,
-  assetId,
-  query,
-  triggerReload,
-  setError,
-}) => {
+const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
   if (!labels.length)
     return (
       <div css={{ padding: spacing.normal, color: colors.structure.white }}>
@@ -55,25 +44,6 @@ const AssetLabelingList = ({
         {labels.map(({ modelId, label }) => {
           const { name, moduleName } = models.find(({ id }) => id === modelId)
 
-          const filters = decode({ query })
-
-          const encodedQuery = encode({
-            filters: [
-              {
-                type: 'label',
-                attribute: `labels.${moduleName}`,
-                modelId,
-                values: { labels: [label] },
-              },
-              ...filters,
-            ],
-          })
-
-          const queryString = getQueryString({
-            id: assetId,
-            query: encodedQuery,
-          })
-
           return (
             <tr
               key={modelId}
@@ -103,11 +73,9 @@ const AssetLabelingList = ({
               </td>
               <td>
                 <AssetLabelingMenu
-                  projectId={projectId}
-                  assetId={assetId}
-                  queryString={queryString}
-                  modelId={modelId}
                   label={label}
+                  modelId={modelId}
+                  moduleName={moduleName}
                   triggerReload={triggerReload}
                   setError={setError}
                 />
@@ -128,9 +96,6 @@ AssetLabelingList.propTypes = {
       modelId: PropTypes.string,
     }),
   ).isRequired,
-  projectId: PropTypes.string.isRequired,
-  assetId: PropTypes.string.isRequired,
-  query: PropTypes.string.isRequired,
   triggerReload: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
 }

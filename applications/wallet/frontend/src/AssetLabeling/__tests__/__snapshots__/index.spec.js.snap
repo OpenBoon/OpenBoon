@@ -437,6 +437,7 @@ Array [
               <select
                 className="emotion-6"
                 defaultValue=""
+                disabled={false}
                 onChange={[Function]}
               >
                 <option
@@ -1120,6 +1121,7 @@ Array [
               <select
                 className="emotion-6"
                 defaultValue=""
+                disabled={false}
                 onChange={[Function]}
               >
                 <option
@@ -1764,6 +1766,7 @@ Array [
               <select
                 className="emotion-6"
                 defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
+                disabled={false}
                 onChange={[Function]}
               >
                 <option
@@ -2408,6 +2411,7 @@ Array [
               <select
                 className="emotion-6"
                 defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
+                disabled={false}
                 onChange={[Function]}
               >
                 <option
@@ -3051,6 +3055,7 @@ Array [
               <select
                 className="emotion-6"
                 defaultValue="c0e83460-6a25-1238-86fa-0242ac150002"
+                disabled={false}
                 onChange={[Function]}
               >
                 <option
@@ -3694,6 +3699,7 @@ Array [
               <select
                 className="emotion-6"
                 defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
+                disabled={false}
                 onChange={[Function]}
               >
                 <option
@@ -4338,6 +4344,7 @@ Array [
               <select
                 className="emotion-6"
                 defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
+                disabled={false}
                 onChange={[Function]}
               >
                 <option
@@ -5182,6 +5189,7 @@ Array [
               <select
                 className="emotion-6"
                 defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
+                disabled={false}
                 onChange={[Function]}
               >
                 <option

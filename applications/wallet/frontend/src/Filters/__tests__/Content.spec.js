@@ -11,7 +11,7 @@ import FiltersContent from '../Content'
 const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const MODEL_ID = 'e004af1b-d6d6-1341-9e6a-a6d1aa55c7d8'
+const MODEL_ID = '621bf774-89d9-1244-9596-d6df43f1ede5'
 const ASSET_ID = asset.id
 
 jest.mock('../../Filter/Reset', () => 'FilterReset')

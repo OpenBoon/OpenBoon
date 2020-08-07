@@ -173,7 +173,7 @@ const FilterDateRangeContent = ({
             display: 'flex',
             justifyContent: 'space-between',
             paddingBottom: spacing.normal,
-            fontFamily: 'Roboto Mono',
+            fontFamily: typography.family.mono,
           }}
         >
           <span>{formatLocaleDate({ date: domainMin })}</span>

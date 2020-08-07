@@ -13,6 +13,7 @@ const Select = ({
   defaultValue,
   onChange,
   isRequired,
+  isDisabled,
   style,
 }) => {
   return (
@@ -24,6 +25,7 @@ const Select = ({
         )}
         <div css={{ paddingTop: spacing.base, paddingBottom: spacing.base }}>
           <select
+            disabled={isDisabled}
             defaultValue={defaultValue}
             onChange={({ target: { value } }) => onChange({ value })}
             css={{
@@ -62,6 +64,7 @@ const Select = ({
 
 Select.defaultProps = {
   defaultValue: '',
+  isDisabled: false,
   style: {},
 }
 
@@ -76,6 +79,7 @@ Select.propTypes = {
   defaultValue: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   isRequired: PropTypes.bool.isRequired,
+  isDisabled: PropTypes.bool,
   style: stylesShape,
 }
 

@@ -2,14 +2,14 @@ import PropTypes from 'prop-types'
 
 import JsonDisplay from '../JsonDisplay'
 
-import { colors, spacing } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 const TaskErrorStackTrace = ({ taskError: { message, stackTrace } }) => {
   return (
     <div css={{ paddingBottom: spacing.spacious }}>
       <div
         css={{
-          fontFamily: 'Roboto Mono',
+          fontFamily: typography.family.mono,
           padding: spacing.normal,
           backgroundColor: colors.structure.coal,
           wordBreak: 'break-all',

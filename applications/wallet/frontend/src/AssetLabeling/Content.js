@@ -11,7 +11,7 @@ import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import AssetLabelingAdd from './Add'
 import AssetLabelingList from './List'
 
-const AssetLabelingContent = ({ projectId, assetId, query }) => {
+const AssetLabelingContent = ({ projectId, assetId }) => {
   const [reloadKey, setReloadKey] = useState(0)
   const [error, setError] = useState('')
 
@@ -93,10 +93,7 @@ const AssetLabelingContent = ({ projectId, assetId, query }) => {
           <AssetLabelingList
             models={models}
             labels={labels}
-            projectId={projectId}
-            assetId={assetId}
             triggerReload={triggerReload}
-            query={query}
             setError={setError}
           />
         </>
@@ -108,7 +105,6 @@ const AssetLabelingContent = ({ projectId, assetId, query }) => {
 AssetLabelingContent.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  query: PropTypes.string.isRequired,
 }
 
 export default AssetLabelingContent
