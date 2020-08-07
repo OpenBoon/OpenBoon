@@ -32,6 +32,7 @@ resource "google_project_service" "service-usage" {
 }
 
 resource "google_container_cluster" "primary" {
+  provider = "google-beta"
   lifecycle {
     prevent_destroy = true
   }
@@ -42,6 +43,9 @@ resource "google_container_cluster" "primary" {
   initial_node_count = var.initial-node-count
   monitoring_service = "monitoring.googleapis.com/kubernetes"
   logging_service    = "logging.googleapis.com/kubernetes"
+  release_channel {
+    channel = "STABLE"
+  }
 
   master_auth {
     username = "zorroa"

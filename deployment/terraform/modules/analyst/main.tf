@@ -168,15 +168,6 @@ resource "kubernetes_deployment" "analyst" {
   }
 }
 
-resource "google_monitoring_metric_descriptor" "jobs" {
-  description  = "Current number of jobs waiting in the queue."
-  display_name = "queued-jobs"
-  type         = "custom.googleapis.com/queued-jobs"
-  metric_kind  = "GAUGE"
-  value_type   = "INT64"
-  launch_stage = "GA"
-}
-
 resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
   provider = kubernetes
   metadata {
@@ -194,7 +185,18 @@ resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
       kind        = "Deployment"
       name        = "analyst"
     }
-    target_cpu_utilization_percentage = 75
+    metric {
+      type = "External"
+      external {
+        metric {
+          name = "custom.googleapis.com/zmlp/total-waiting-jobs"
+        }
+        target {
+          type  = "value"
+          value = 0
+        }
+      }
+    }
   }
   lifecycle {
     ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]
