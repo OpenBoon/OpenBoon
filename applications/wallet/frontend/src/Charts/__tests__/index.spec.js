@@ -38,6 +38,20 @@ describe('<Charts />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render properly for "Histogram"', () => {
+    const component = TestRenderer.create(
+      <Charts
+        charts={[{ id: CHART_ID, type: 'histogram' }]}
+        layouts={{}}
+        chartIndex={0}
+        dispatch={noop}
+        setLayouts={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly for "Unknown"', () => {
     const component = TestRenderer.create(
       <Charts

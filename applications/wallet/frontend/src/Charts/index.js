@@ -54,6 +54,10 @@ const Charts = ({ charts, layouts, dispatch, setLayouts }) => {
                 )
               }
 
+              case 'histogram': {
+                return <div key={chart.id}>Histogram</div>
+              }
+
               default:
                 return null
             }
