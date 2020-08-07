@@ -239,8 +239,21 @@ class TestStatus:
         with patch.object(FaceViewSet, '_get_model') as get_model_mock:
             get_model_mock.return_value = Mock(ready=False)
             with patch.object(JobApp, 'find_jobs') as find_mock:
-                find_mock.return_value = [Mock(id='test',
-                                               name='Applying modules: custom-console_face_recognition-face-recognition-knn')]  # noqa
+                job = Mock(id='test')
+                job.name = 'Train console /'
+                find_mock.return_value = [job]  # noqa
+                response = api_client.get(path)
+        content = check_response(response)
+        assert content == {'unappliedChanges': True, 'jobId': 'test'}
+
+    def test_get_other_job_name_pattern(self, login, api_client, project):
+        path = reverse('face-status', kwargs={'project_pk': project.id})
+        with patch.object(FaceViewSet, '_get_model') as get_model_mock:
+            get_model_mock.return_value = Mock(ready=False)
+            with patch.object(JobApp, 'find_jobs') as find_mock:
+                job = Mock(id='test')
+                job.name = 'Training model: console -'
+                find_mock.return_value = [job]  # noqa
                 response = api_client.get(path)
         content = check_response(response)
         assert content == {'unappliedChanges': True, 'jobId': 'test'}
