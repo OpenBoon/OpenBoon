@@ -14,6 +14,7 @@ describe('Combobox', () => {
         label="inputLabel"
         options={async () => Promise.resolve(options)}
         value={value}
+        defaultValue="default"
         onChange={mockFn}
         hasError={false}
       />,
@@ -52,7 +53,7 @@ describe('Combobox', () => {
       component.root.findByType(ComboboxContainer).props.onSelect('Jane')
     })
 
-    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledTimes(3)
     expect(mockFn).toHaveBeenLastCalledWith({ value: 'Jane' })
   })
 
@@ -66,6 +67,7 @@ describe('Combobox', () => {
         label="inputLabel"
         options={options}
         value={value}
+        defaultValue="default"
         onChange={mockFn}
         hasError={false}
         errorMessage=""
@@ -85,6 +87,7 @@ describe('Combobox', () => {
         label="inputLabel"
         options={options}
         value={value}
+        defaultValue="default"
         onChange={mockFn}
         hasError
         errorMessage="error"
