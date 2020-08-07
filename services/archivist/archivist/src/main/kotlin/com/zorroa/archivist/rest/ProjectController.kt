@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.IndexTask
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectIndexMigrationSpec
+import com.zorroa.archivist.domain.ProjectIndexRouteUpdate
 import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
@@ -115,6 +116,17 @@ class ProjectController constructor(
         @RequestBody(required = true) projectTierUpdate: ProjectTierUpdate
     ): Project {
         projectService.setTier(id, projectTierUpdate.tier)
+        return projectService.get(id)
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @PutMapping(value = ["/api/v1/projects/{id}/_update_index_route"])
+    @ApiOperation("Update Index Route")
+    fun updateIndexRoute(
+        @PathVariable id: UUID,
+        @RequestBody(required = true) projectIndexRouteUpdate: ProjectIndexRouteUpdate
+    ): Project {
+        projectService.setIndexRoute(id, projectIndexRouteUpdate.indexRouteId)
         return projectService.get(id)
     }
 

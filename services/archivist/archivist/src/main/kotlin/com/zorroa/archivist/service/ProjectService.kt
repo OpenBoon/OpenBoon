@@ -113,6 +113,11 @@ interface ProjectService {
      * Rename Project
      */
     fun rename(projectId: UUID, newName: ProjectNameUpdate)
+
+    /**
+     * Set a new Default Index Route to a Project
+     */
+    fun setIndexRoute(projectId: UUID, indexRouteId: UUID)
 }
 
 @Service
@@ -302,6 +307,32 @@ class ProjectServiceImpl constructor(
                 "projectId" to project.id,
                 "projectName" to project.name,
                 "projectTier" to value
+            )
+        )
+    }
+
+    override fun setIndexRoute(projectId: UUID, indexRouteId: UUID) {
+        val project = projectDao.findById(projectId).orElseThrow {
+            EmptyResultDataAccessException("Project not found", 1)
+        }
+
+        val newIndexRoute = indexRoutingService.getIndexRoute(indexRouteId)
+        indexRoutingService.openIndex(newIndexRoute)
+
+        project.indexRouteId?.let {
+            val indexRoute = indexRoutingService.getIndexRoute(it)
+            indexRoutingService.closeIndex(indexRoute)
+        }
+
+        projectCustomDao.updateIndexRoute(projectId, newIndexRoute)
+        enabledCache.invalidate(project.id)
+
+        logger.event(
+            LogObject.INDEX_ROUTE, LogAction.UPDATE,
+            mapOf(
+                "projectId" to project.id,
+                "projectRouteIndex" to project.indexRouteId,
+                "projectNewRouteIndex" to newIndexRoute.id
             )
         )
     }

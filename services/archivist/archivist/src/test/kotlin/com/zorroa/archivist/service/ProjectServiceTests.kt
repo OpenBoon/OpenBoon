@@ -1,8 +1,10 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectNameUpdate
+import com.zorroa.archivist.domain.ProjectSize
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTier
 
@@ -114,5 +116,24 @@ class ProjectServiceTests : AbstractTest() {
         )
 
         assertEquals("project_test_renamed", newName)
+    }
+
+    @Test
+    fun testSetIndexRoute() {
+
+        val project = projectService.create(testSpec)
+
+        val indexRoute = indexRoutingService.createIndexRoute(
+            IndexRouteSimpleSpec(
+                ProjectSize.SMALL
+            )
+        )
+
+        projectService.setIndexRoute(project.id, indexRoute.id)
+        val pkIndexRoute = jdbc.queryForObject(
+            "SELECT pk_index_route FROM project WHERE pk_project=?", String::class.java, project.id
+        )
+
+        assertEquals(indexRoute.id, UUID.fromString(pkIndexRoute))
     }
 }

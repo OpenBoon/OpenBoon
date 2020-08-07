@@ -59,6 +59,12 @@ class ProjectTierUpdate(
     val tier: ProjectTier
 )
 
+@ApiModel("Project Index Route Update", description = "Set new Index Route to a Project")
+class ProjectIndexRouteUpdate(
+    @ApiModelProperty("New Index Route")
+    val indexRouteId: UUID
+)
+
 @ApiModel("Project Rename", description = "Update Project Name")
 class ProjectNameUpdate(
     @ApiModelProperty("New Project Name")

@@ -1,9 +1,12 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.Project
+import com.zorroa.archivist.domain.ProjectIndexRouteUpdate
 import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectQuotaCounters
+import com.zorroa.archivist.domain.ProjectSize
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.domain.ProjectTierUpdate
@@ -190,6 +193,29 @@ class ProjectControllerTests : MockMvcTest() {
                     CoreMatchers.anything()
                 )
             )
+            .andReturn()
+    }
+
+    @Test
+    fun updateIndexRoute() {
+        val pid = testProject.id
+
+        val indexRoute = indexRoutingService.createIndexRoute(
+            IndexRouteSimpleSpec(
+                ProjectSize.SMALL,
+                pid
+            )
+        )
+
+        var update = ProjectIndexRouteUpdate(indexRoute.id)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/projects/$pid/_update_index_route")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(update))
+        )
+            .andExpect(status().isOk)
             .andReturn()
     }
 }
