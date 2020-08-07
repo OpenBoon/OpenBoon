@@ -47,6 +47,7 @@ exports[`<FilterReset /> should render properly with no fields 1`] = `
   background-color: transparent;
   padding: 0;
   padding: 4px;
+  padding-left: 6px;
   padding-right: 6px;
   border-radius: 2px;
   background-color: #3b3b3b;
@@ -98,6 +99,7 @@ exports[`<FilterReset /> should reset properly 1`] = `
 
 .emotion-0 {
   padding: 4px;
+  padding-left: 6px;
   padding-right: 26px;
   border-radius: 2px;
   background-color: #3b3b3b;
@@ -159,6 +161,7 @@ exports[`<FilterReset /> should reset properly 1`] = `
   background-color: transparent;
   padding: 0;
   padding: 4px;
+  padding-left: 6px;
   padding-right: 6px;
   border-radius: 2px;
   background-color: #3b3b3b;
@@ -226,6 +229,7 @@ exports[`<FilterReset /> should switch properly 1`] = `
 
 .emotion-0 {
   padding: 4px;
+  padding-left: 6px;
   padding-right: 26px;
   border-radius: 2px;
   background-color: #3b3b3b;
@@ -287,6 +291,7 @@ exports[`<FilterReset /> should switch properly 1`] = `
   background-color: transparent;
   padding: 0;
   padding: 4px;
+  padding-left: 6px;
   padding-right: 6px;
   border-radius: 2px;
   background-color: #3b3b3b;
@@ -354,6 +359,7 @@ exports[`<FilterReset /> should switch properly 2`] = `
 
 .emotion-0 {
   padding: 4px;
+  padding-left: 6px;
   padding-right: 26px;
   border-radius: 2px;
   background-color: #3b3b3b;

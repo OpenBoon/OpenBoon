@@ -3,7 +3,7 @@ import useSWR from 'swr'
 
 import filterShape from './shape'
 
-import { colors, spacing, typography } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
@@ -11,11 +11,9 @@ import { dispatch, ACTIONS } from '../Filters/helpers'
 
 import { formatOptions } from './helpers'
 
-const ICON_PADDING = 26
-
 const BUTTON_STYLE = {
   padding: spacing.small,
-  paddingLeft: spacing.medium,
+  paddingLeft: spacing.moderate / 2,
   paddingRight: spacing.moderate / 2,
   borderRadius: spacing.mini,
   backgroundColor: colors.structure.smoke,
@@ -76,7 +74,7 @@ const FilterReset = ({
           css={{
             ...BUTTON_STYLE,
             border: 'none',
-            paddingRight: ICON_PADDING,
+            paddingRight: constants.icons.regular + spacing.moderate / 2,
             MozAppearance: 'none',
             WebkitAppearance: 'none',
             backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2IzYjNiMyIgLz4KPC9zdmc+')`,
