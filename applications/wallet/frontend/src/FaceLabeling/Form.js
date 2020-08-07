@@ -89,7 +89,6 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
                   label="Name"
                   options={possibleLabels}
                   value={state.labels[simhash]}
-                  defaultValue={label}
                   onChange={({ value }) => {
                     return dispatch({
                       isChanged: value !== label,

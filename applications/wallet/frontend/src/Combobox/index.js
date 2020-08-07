@@ -9,12 +9,10 @@ import { spacing, colors, typography } from '../Styles'
 
 // A key={reloadKey} must be used to prevent dropdown staying open on save
 // Submit/Cancel buttons should increment the reloadKey
-
 const Combobox = ({
   label,
   options,
   value,
-  defaultValue,
   onChange,
   hasError,
   errorMessage,
@@ -65,13 +63,6 @@ const Combobox = ({
 
             onChange({ value: target.value })
           }}
-          onBlur={({ target }) => {
-            if (!target.value) {
-              setShowAllOptions(true)
-
-              onChange({ value: defaultValue })
-            }
-          }}
         />
         <ComboboxOptions
           options={fetchedOptions}
@@ -112,7 +103,6 @@ Combobox.propTypes = {
     ),
   ]).isRequired,
   value: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   hasError: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string,
