@@ -315,6 +315,7 @@ Array [
         <select
           className="emotion-0"
           defaultValue=""
+          disabled={false}
           onChange={[Function]}
         >
           <option
@@ -706,6 +707,7 @@ Array [
         <select
           className="emotion-0"
           defaultValue=""
+          disabled={false}
           onChange={[Function]}
         >
           <option

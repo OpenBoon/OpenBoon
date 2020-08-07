@@ -7,6 +7,8 @@ import modelShape from '../Model/shape'
 
 import { capitalizeFirstLetter } from '../Text/helpers'
 
+import MetadataPrettyLabelsMenu from './LabelsMenu'
+
 const BBOX_SIZE = 56
 
 const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
@@ -19,22 +21,32 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
   )
 
   return labels.map((label) => {
-    const { name } = models.find(({ id }) => id === label.modelId)
+    const { name, moduleName } = models.find(({ id }) => id === label.modelId)
 
     return (
       <tr
         key={`${label.modelId}${label.label}`}
         css={{
           verticalAlign: 'bottom',
-          td: {
-            paddingTop: spacing.base,
-            paddingBottom: spacing.base,
-            paddingRight: spacing.base,
-            borderBottom: constants.borders.regular.smoke,
+          ':hover': {
+            backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
+            button: {
+              svg: { color: colors.structure.steel },
+              ':hover, &.focus-visible:focus': {
+                svg: { color: `${colors.structure.white} !important` },
+              },
+            },
           },
         }}
       >
-        <td>
+        <td />
+        <td
+          css={{
+            padding: spacing.base,
+            paddingLeft: 0,
+            borderBottom: constants.borders.regular.smoke,
+          }}
+        >
           {label.b64_image ? (
             <img
               css={{
@@ -64,7 +76,14 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
           )}
         </td>
 
-        <td title={`Model ID: ${label.modelId}`}>
+        <td
+          title={`Model ID: ${label.modelId}`}
+          css={{
+            padding: spacing.base,
+            paddingLeft: 0,
+            borderBottom: constants.borders.regular.smoke,
+          }}
+        >
           <span
             css={{
               fontFamily: typography.family.condensed,
@@ -84,11 +103,23 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
             fontWeight: typography.weight.regular,
             color: colors.structure.steel,
             textAlign: 'right',
+            padding: spacing.base,
+            paddingLeft: 0,
             paddingRight: 0,
+            borderBottom: constants.borders.regular.smoke,
           }}
         >
           {capitalizeFirstLetter({ word: label.scope })}
         </td>
+        <td
+          css={{
+            paddingTop: spacing.base,
+            verticalAlign: 'top',
+          }}
+        >
+          <MetadataPrettyLabelsMenu label={label} moduleName={moduleName} />
+        </td>
+        <td css={{ borderBottom: 'none !important' }} />
       </tr>
     )
   })

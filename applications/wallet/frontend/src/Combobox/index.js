@@ -7,16 +7,19 @@ import ComboboxOptions from './Options'
 
 import { spacing, colors, typography } from '../Styles'
 
+// A key={reloadKey} must be used to prevent dropdown staying open on save
+// Submit/Cancel buttons should increment the reloadKey
+
 const Combobox = ({
   label,
   options,
   value,
+  defaultValue,
   onChange,
   hasError,
   errorMessage,
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [currentValue, setCurrentValue] = useState(value)
   const [showAllOptions, setShowAllOptions] = useState(true)
   const [fetchedOptions, setFetchedOptions] = useState([])
 
@@ -51,24 +54,22 @@ const Combobox = ({
         onSelect={(newValue) => {
           setShowAllOptions(true)
 
-          setCurrentValue(newValue)
-
           onChange({ value: newValue })
         }}
       >
         <ComboboxInput
-          value={currentValue}
+          value={value}
           hasError={hasError}
           onChange={({ target }) => {
             setShowAllOptions(false)
 
-            setCurrentValue(target.value)
+            onChange({ value: target.value })
           }}
-          onBlur={(event) => {
-            if (!event.target.value) {
+          onBlur={({ target }) => {
+            if (!target.value) {
               setShowAllOptions(true)
 
-              setCurrentValue(value)
+              onChange({ value: defaultValue })
             }
           }}
         />
@@ -76,7 +77,7 @@ const Combobox = ({
           options={fetchedOptions}
           isLoading={isLoading}
           showAllOptions={showAllOptions}
-          currentValue={currentValue}
+          value={value}
         />
       </ComboboxContainer>
 
@@ -111,6 +112,7 @@ Combobox.propTypes = {
     ),
   ]).isRequired,
   value: PropTypes.string.isRequired,
+  defaultValue: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   hasError: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string,

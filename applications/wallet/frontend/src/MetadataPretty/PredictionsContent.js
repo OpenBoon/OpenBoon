@@ -69,14 +69,13 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
                       fontWeight: typography.weight.regular,
                       textTransform: 'uppercase',
                       color: colors.structure.steel,
+                      padding: 0,
                       paddingBottom: spacing.base,
-                      paddingLeft: 0,
                       borderBottom: constants.borders.regular.smoke,
                       textAlign: 'left',
                       '&:last-of-type': {
                         textAlign: 'right',
                         whiteSpace: 'nowrap',
-                        paddingRight: 0,
                       },
                       '&:nth-last-of-type(2)': { width: '100%' },
                     }}

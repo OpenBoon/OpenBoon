@@ -11,6 +11,24 @@ import { dispatch, ACTIONS } from '../Filters/helpers'
 
 import { formatOptions } from './helpers'
 
+const ICON_PADDING = 26
+
+const BUTTON_STYLE = {
+  padding: spacing.small,
+  paddingLeft: spacing.medium,
+  paddingRight: spacing.moderate / 2,
+  borderRadius: spacing.mini,
+  backgroundColor: colors.structure.smoke,
+  color: colors.structure.zinc,
+  lineHeight: typography.height.regular,
+  fontSize: typography.size.regular,
+  fontFamily: typography.family.condensed,
+  textTransform: 'uppercase',
+  ':hover, :focus': {
+    color: colors.structure.white,
+  },
+}
+
 const FilterReset = ({
   pathname,
   projectId,
@@ -56,21 +74,16 @@ const FilterReset = ({
             })
           }}
           css={{
-            backgroundColor: colors.structure.transparent,
+            ...BUTTON_STYLE,
             border: 'none',
-            fontSize: typography.size.regular,
-            lineHeight: typography.height.regular,
+            paddingRight: ICON_PADDING,
             MozAppearance: 'none',
             WebkitAppearance: 'none',
             backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2IzYjNiMyIgLz4KPC9zdmc+')`,
             backgroundRepeat: `no-repeat, repeat`,
-            backgroundPosition: `right top 50%`,
-            paddingRight: spacing.comfy,
-            color: colors.structure.zinc,
-            fontFamily: typography.family.condensed,
-            textTransform: 'uppercase',
+            backgroundPosition: `right top -2px`,
             cursor: 'pointer',
-            ':hover': {
+            ':hover, :focus': {
               color: colors.structure.white,
               backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+')`,
             },
@@ -90,15 +103,7 @@ const FilterReset = ({
 
       {filter.type !== 'exists' && (
         <Button
-          style={{
-            width: '100%',
-            color: colors.structure.zinc,
-            fontFamily: typography.family.condensed,
-            textTransform: 'uppercase',
-            ':hover': {
-              color: colors.structure.white,
-            },
-          }}
+          style={BUTTON_STYLE}
           variant={VARIANTS.NEUTRAL}
           onClick={() => {
             const { type, values: { ids } = {} } = filter

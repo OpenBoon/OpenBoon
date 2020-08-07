@@ -5,7 +5,7 @@ import aggregate from '../__mocks__/aggregate'
 import FilterLabelContent, { noop } from '../Content'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const MODEL_ID = 'e004af1b-d6d6-1341-9e6a-a6d1aa55c7d8'
+const MODEL_ID = '621bf774-89d9-1244-9596-d6df43f1ede5'
 
 jest.mock('../../Filter/Reset', () => 'FilterReset')
 
@@ -60,7 +60,7 @@ describe('<FilterLabelContent />', () => {
           ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNvbnNvbGUiLCJtb2RlbElkIjoiZTAwNGFmMWItZDZkNi0xMzQxLTllNmEtYTZkMWFhNTVjN2Q4IiwidmFsdWVzIjp7ImxhYmVscyI6WyJGb3JkIl0sInNjb3BlIjoidHJhaW4ifX1d',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNvbnNvbGUiLCJtb2RlbElkIjoiNjIxYmY3NzQtODlkOS0xMjQ0LTk1OTYtZDZkZjQzZjFlZGU1IiwidmFsdWVzIjp7ImxhYmVscyI6WyJGb3JkIl0sInNjb3BlIjoidHJhaW4ifX1d',
     )
   })
 
@@ -110,13 +110,13 @@ describe('<FilterLabelContent />', () => {
                 type: 'label',
                 attribute: 'labels.console',
                 modelId: MODEL_ID,
-                values: { labels: ['Ford'] },
+                values: { scope: 'all', labels: ['Ford'] },
               },
             ]),
           ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNvbnNvbGUiLCJtb2RlbElkIjoiZTAwNGFmMWItZDZkNi0xMzQxLTllNmEtYTZkMWFhNTVjN2Q4IiwidmFsdWVzIjp7ImxhYmVscyI6WyJGb3JkIl19fV0=',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNvbnNvbGUiLCJtb2RlbElkIjoiNjIxYmY3NzQtODlkOS0xMjQ0LTk1OTYtZDZkZjQzZjFlZGU1IiwidmFsdWVzIjp7InNjb3BlIjoiYWxsIiwibGFiZWxzIjpbIkZvcmQiXX19XQ==',
     )
   })
 
@@ -165,13 +165,13 @@ describe('<FilterLabelContent />', () => {
                 type: 'label',
                 attribute: 'labels.console',
                 modelId: MODEL_ID,
-                values: {},
+                values: { scope: 'all', labels: [] },
               },
             ]),
           ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNvbnNvbGUiLCJtb2RlbElkIjoiZTAwNGFmMWItZDZkNi0xMzQxLTllNmEtYTZkMWFhNTVjN2Q4IiwidmFsdWVzIjp7fX1d',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNvbnNvbGUiLCJtb2RlbElkIjoiNjIxYmY3NzQtODlkOS0xMjQ0LTk1OTYtZDZkZjQzZjFlZGU1IiwidmFsdWVzIjp7InNjb3BlIjoiYWxsIiwibGFiZWxzIjpbXX19XQ==',
     )
   })
 

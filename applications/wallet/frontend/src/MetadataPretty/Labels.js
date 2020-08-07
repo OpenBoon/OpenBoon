@@ -9,7 +9,7 @@ const COLUMNS = ['bbox', 'model name/label', 'scope']
 
 const MetadataPrettyLabels = () => {
   const {
-    query: { projectId, assetId, id },
+    query: { projectId, id, assetId },
   } = useRouter()
 
   const {
@@ -17,7 +17,7 @@ const MetadataPrettyLabels = () => {
   } = useSWR(`/api/v1/projects/${projectId}/models/`)
 
   return (
-    <div css={{ padding: spacing.normal, paddingBottom: spacing.comfy }}>
+    <div css={{ paddingTop: spacing.normal, paddingBottom: spacing.comfy }}>
       <table
         css={{
           fontFamily: typography.family.mono,
@@ -30,6 +30,7 @@ const MetadataPrettyLabels = () => {
       >
         <thead>
           <tr>
+            <td css={{ minWidth: spacing.normal }} />
             {COLUMNS.map((column) => {
               return (
                 <th
@@ -39,17 +40,16 @@ const MetadataPrettyLabels = () => {
                     fontWeight: typography.weight.regular,
                     textTransform: 'uppercase',
                     color: colors.structure.steel,
+                    padding: 0,
                     paddingBottom: spacing.base,
-                    paddingLeft: 0,
                     borderBottom: constants.borders.regular.smoke,
                     textAlign: 'left',
+                    whiteSpace: 'nowrap',
                     '&:nth-of-type(2)': {
                       width: '100%',
                     },
-                    '&:last-of-type': {
+                    '&:nth-of-type(3)': {
                       textAlign: 'right',
-                      whiteSpace: 'nowrap',
-                      paddingRight: 0,
                     },
                   }}
                 >
@@ -57,6 +57,8 @@ const MetadataPrettyLabels = () => {
                 </th>
               )
             })}
+            <td />
+            <td css={{ minWidth: spacing.base }} />
           </tr>
         </thead>
 

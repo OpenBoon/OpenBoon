@@ -8,16 +8,12 @@ import AssetLabelingContent from './Content'
 
 const AssetLabeling = () => {
   const {
-    query: { projectId, id: assetId, query = '' },
+    query: { projectId, id: assetId },
   } = useRouter()
 
   return assetId ? (
     <SuspenseBoundary key={assetId}>
-      <AssetLabelingContent
-        projectId={projectId}
-        assetId={assetId}
-        query={query}
-      />
+      <AssetLabelingContent projectId={projectId} assetId={assetId} />
     </SuspenseBoundary>
   ) : (
     <div css={{ padding: spacing.normal, color: colors.structure.white }}>
