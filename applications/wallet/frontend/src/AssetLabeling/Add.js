@@ -74,7 +74,6 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
           label="Label"
           options={() => getOptions({ modelId: state.modelId, projectId })}
           value={state.label}
-          defaultValue={localLabel}
           onChange={({ value }) => {
             dispatch({ label: value, success: false })
           }}
