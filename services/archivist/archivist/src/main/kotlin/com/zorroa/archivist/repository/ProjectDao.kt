@@ -130,7 +130,9 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
                 rs.getString("actor_created"),
                 rs.getString("actor_modified"),
                 rs.getBoolean("enabled"),
-                ProjectTier.values()[(rs.getInt("int_tier"))]
+                ProjectTier.values()[(rs.getInt("int_tier"))],
+                rs.getObject("pk_pipeline_default") as UUID,
+                rs.getObject("pk_index_route") as UUID
             )
         }
     }
