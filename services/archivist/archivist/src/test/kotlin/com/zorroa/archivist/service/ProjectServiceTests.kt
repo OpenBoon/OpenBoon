@@ -2,20 +2,25 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.IndexRouteSimpleSpec
+import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectSize
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTier
-
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
+import javax.persistence.EntityManager
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ProjectServiceTests : AbstractTest() {
+
+    @Autowired
+    lateinit var entityManager: EntityManager
 
     val testSpec = ProjectSpec("project_test")
 
@@ -120,8 +125,9 @@ class ProjectServiceTests : AbstractTest() {
 
     @Test
     fun testSetIndexRoute() {
-
-        val project = projectService.create(testSpec)
+        var project = projectService.create(testSpec)
+        entityManager.clear()
+        project = projectService.get(project.id)
 
         val indexRoute = indexRoutingService.createIndexRoute(
             IndexRouteSimpleSpec(
@@ -134,6 +140,9 @@ class ProjectServiceTests : AbstractTest() {
             "SELECT pk_index_route FROM project WHERE pk_project=?", String::class.java, project.id
         )
 
+        val oldIndexRoute = indexRoutingService.getIndexRoute(project.indexRouteId!!)
+
         assertEquals(indexRoute.id, UUID.fromString(pkIndexRoute))
+        assertEquals(IndexRouteState.CLOSED, oldIndexRoute.state)
     }
 }
