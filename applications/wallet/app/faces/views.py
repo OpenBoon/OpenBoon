@@ -218,11 +218,12 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         app = request.app
 
         # Check for jobs
-        name_prefix = f'Train {self.model_name}'
-        running_jobs = app.jobs.find_jobs(state='InProgress')
+        patterns = [f'Train {self.model_name} ',
+                    f'Training model: {self.model_name} -']
+        running_jobs = app.jobs.find_jobs(state='InProgress', sort=['timeCreated:d'])
         job_id = ''
         for job in running_jobs:
-            if job.name.startswith(name_prefix):
+            if any([job.name.startswith(pattern) for pattern in patterns]):
                 job_id = job.id
 
         # Check for unapplied changes - always True until we can use real logic
