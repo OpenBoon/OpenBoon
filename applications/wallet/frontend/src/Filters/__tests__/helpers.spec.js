@@ -50,12 +50,34 @@ describe('<Filters /> helpers', () => {
       ).toEqual('W10=')
     })
 
+    it('should return an empty array when a label filter has no labels', () => {
+      expect(
+        cleanup({
+          query: btoa(
+            JSON.stringify([{ type: 'label', values: { labels: [] } }]),
+          ),
+        }),
+      ).toEqual('W10=')
+    })
+
     it('should return an empty array when filters are disabled', () => {
       expect(
         cleanup({
           query: btoa(
             JSON.stringify([
               { type: 'range', attribute: 'clip.length', isDisabled: true },
+            ]),
+          ),
+        }),
+      ).toEqual('W10=')
+    })
+
+    it('should return an empty array when a label filter is disabled', () => {
+      expect(
+        cleanup({
+          query: btoa(
+            JSON.stringify([
+              { type: 'label', values: { labels: ['foo'] }, isDisabled: true },
             ]),
           ),
         }),

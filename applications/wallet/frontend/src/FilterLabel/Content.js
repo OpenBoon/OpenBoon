@@ -59,6 +59,7 @@ const FilterLabel = ({
       <div css={{ height: spacing.moderate }} />
 
       <Select
+        key={scope}
         label="Scope"
         options={[
           { value: 'all', label: 'All' },
@@ -76,13 +77,14 @@ const FilterLabel = ({
               filters,
               updatedFilter: {
                 ...filter,
-                values: { ...filter.values, scope: value },
+                values: { labels, scope: value },
               },
               filterIndex,
             },
           })
         }}
         isRequired={false}
+        isDisabled={labels.length === 0}
         style={{
           width: '100%',
           height: 'auto',
@@ -142,7 +144,9 @@ const FilterLabel = ({
                   })
 
                   const values =
-                    newLabels.length > 0 ? { labels: newLabels } : {}
+                    newLabels.length > 0
+                      ? { scope, labels: newLabels }
+                      : { scope, labels: [] }
 
                   dispatch({
                     type: ACTIONS.UPDATE_FILTER,

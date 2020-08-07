@@ -1,14 +1,12 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import AssetLabelingMenu from '../Menu'
+import MetadataPrettyLabelsMenu from '../LabelsMenu'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 const MODEL_ID = '621bf774-89d9-1244-9596-d6df43f1ede5'
 
-const noop = () => () => {}
-
-describe('<AssetLabelingMenu />', () => {
+describe('<MetadataPrettyLabelsMenu />', () => {
   it('should add a model/label filter in the grid', () => {
     const mockRouterPush = jest.fn()
 
@@ -20,12 +18,16 @@ describe('<AssetLabelingMenu />', () => {
     })
 
     const component = TestRenderer.create(
-      <AssetLabelingMenu
-        label="Mark Ruffalo"
-        modelId={MODEL_ID}
+      <MetadataPrettyLabelsMenu
+        label={{
+          modelId: MODEL_ID,
+          scope: 'TRAIN',
+          bbox: [0.226, 0.327, 0.697, 0.813],
+          label: 'Mark Ruffalo',
+          simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
+          b64_image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
+        }}
         moduleName="zvi-face-recognition"
-        triggerReload={noop}
-        setError={noop}
       />,
     )
 
@@ -78,12 +80,16 @@ describe('<AssetLabelingMenu />', () => {
     })
 
     const component = TestRenderer.create(
-      <AssetLabelingMenu
-        label="Mark Ruffalo"
-        modelId={MODEL_ID}
+      <MetadataPrettyLabelsMenu
+        label={{
+          modelId: MODEL_ID,
+          scope: 'TRAIN',
+          bbox: [0.226, 0.327, 0.697, 0.813],
+          label: 'Mark Ruffalo',
+          simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
+          b64_image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
+        }}
         moduleName="zvi-face-recognition"
-        triggerReload={noop}
-        setError={noop}
       />,
     )
 
@@ -125,87 +131,81 @@ describe('<AssetLabelingMenu />', () => {
     )
   })
 
-  it('should triggerReload on delete confirmation in the grid', async () => {
+  it('should copy modelId', () => {
+    const mockCopyFn = jest.fn()
+
+    require('react-use-clipboard').__setMockCopyFn(mockCopyFn)
+
     require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID, id: ASSET_ID },
     })
 
-    const mockFn = jest.fn()
-
     const component = TestRenderer.create(
-      <AssetLabelingMenu
-        label="Mark Ruffalo"
-        modelId={MODEL_ID}
+      <MetadataPrettyLabelsMenu
+        label={{
+          modelId: MODEL_ID,
+          scope: 'TRAIN',
+          bbox: [0.226, 0.327, 0.697, 0.813],
+          label: 'Mark Ruffalo',
+          simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
+          b64_image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
+        }}
         moduleName="zvi-face-recognition"
-        triggerReload={mockFn}
-        setError={noop}
       />,
     )
 
-    // Open menu
+    // Open Menu
     act(() => {
       component.root
-        .findAllByProps({ 'aria-label': 'Toggle Actions Menu' })[0]
+        .findByProps({ 'aria-label': 'Toggle Actions Menu' })
         .props.onClick()
     })
 
-    // Click Delete Label
+    // Select Copy Model ID
     act(() => {
-      component.root.findByProps({ children: 'Delete Label' }).props.onClick()
+      component.root.findByProps({ children: 'Copy Model ID' }).props.onClick()
     })
 
-    // Mock Success
-    fetch.mockResponseOnce(JSON.stringify({ detail: 'Label Deleted' }))
-
-    // Click Delete button in modal
-    await act(async () => {
-      component.root
-        .findByProps({ children: 'Delete Permanently' })
-        .props.onClick()
-    })
-
-    expect(mockFn).toHaveBeenCalled()
+    expect(mockCopyFn).toHaveBeenCalledWith(MODEL_ID)
   })
 
-  it('should triggerReload on delete confirmation in the asset view', async () => {
+  it('should copy simhash', () => {
+    const mockCopyFn = jest.fn()
+
+    require('react-use-clipboard').__setMockCopyFn(mockCopyFn)
+
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+      pathname: '/[projectId]/visualizer',
+      query: { projectId: PROJECT_ID, id: ASSET_ID },
     })
 
-    const mockFn = jest.fn()
-
     const component = TestRenderer.create(
-      <AssetLabelingMenu
-        label="Mark Ruffalo"
-        modelId={MODEL_ID}
+      <MetadataPrettyLabelsMenu
+        label={{
+          modelId: MODEL_ID,
+          scope: 'TRAIN',
+          bbox: [0.226, 0.327, 0.697, 0.813],
+          label: 'Mark Ruffalo',
+          simhash: 'NNLHLINNMQPONMLMJFLMQMKKKM...',
+          b64_image: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEU...',
+        }}
         moduleName="zvi-face-recognition"
-        triggerReload={mockFn}
-        setError={noop}
       />,
     )
 
-    // Open menu
+    // Open Menu
     act(() => {
       component.root
-        .findAllByProps({ 'aria-label': 'Toggle Actions Menu' })[0]
+        .findByProps({ 'aria-label': 'Toggle Actions Menu' })
         .props.onClick()
     })
 
-    // Click Delete Label
+    // Select Copy Simhash
     act(() => {
-      component.root.findByProps({ children: 'Delete Label' }).props.onClick()
+      component.root.findByProps({ children: 'Copy Simhash' }).props.onClick()
     })
 
-    // Mock Success
-    fetch.mockResponseOnce(JSON.stringify({ detail: 'Label Deleted' }))
-
-    // Click Delete button in modal
-    await act(async () => {
-      component.root
-        .findByProps({ children: 'Delete Permanently' })
-        .props.onClick()
-    })
-
-    expect(mockFn).toHaveBeenCalled()
+    expect(mockCopyFn).toHaveBeenCalledWith('NNLHLINNMQPONMLMJFLMQMKKKM...')
   })
 })

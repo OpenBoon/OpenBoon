@@ -234,8 +234,8 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   font-weight: 400;
   text-transform: uppercase;
   color: #808080;
+  padding: 0;
   padding-bottom: 8px;
-  padding-left: 0;
   border-bottom: 1px solid #3b3b3b;
   text-align: left;
 }
@@ -243,7 +243,6 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
 .emotion-1:last-of-type {
   text-align: right;
   white-space: nowrap;
-  padding-right: 0;
 }
 
 .emotion-1:nth-last-of-type(2) {
@@ -436,8 +435,8 @@ Array [
   font-weight: 400;
   text-transform: uppercase;
   color: #808080;
+  padding: 0;
   padding-bottom: 8px;
-  padding-left: 0;
   border-bottom: 1px solid #3b3b3b;
   text-align: left;
 }
@@ -445,7 +444,6 @@ Array [
 .emotion-1:last-of-type {
   text-align: right;
   white-space: nowrap;
-  padding-right: 0;
 }
 
 .emotion-1:nth-last-of-type(2) {

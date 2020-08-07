@@ -22,6 +22,7 @@ const typography = {
     italic: 'italic',
   },
   family: {
+    regular: 'Roboto, Avenir, "sans-serif"',
     mono: 'Roboto Mono',
     condensed: 'Roboto Condensed',
   },

@@ -113,7 +113,7 @@
     {
       "//": "all pages",
       "path": ".next/static/chunks/pages/**/!(_app|_error)*.js",
-      "maxSize": "38 kB"
+      "maxSize": "40 kB"
     }
   ],
   "dependencies": {

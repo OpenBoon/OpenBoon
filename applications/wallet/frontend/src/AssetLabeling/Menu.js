@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import { colors } from '../Styles'
 
 import { useLocalStorageState } from '../LocalStorage/helpers'
+import { ACTIONS, dispatch } from '../Filters/helpers'
+
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
@@ -13,14 +16,17 @@ import Modal from '../Modal'
 import { onDelete } from './helpers'
 
 const AssetLabelingMenu = ({
-  projectId,
-  assetId,
-  queryString,
-  modelId,
   label,
+  modelId,
+  moduleName,
   triggerReload,
   setError,
 }) => {
+  const {
+    pathname,
+    query: { projectId, id, assetId, query },
+  } = useRouter()
+
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
 
   const [, setLocalModelId] = useLocalStorageState({
@@ -51,15 +57,30 @@ const AssetLabelingMenu = ({
               </Link>
             </li>
             <li>
-              <Link
-                href={`/[projectId]/visualizer${queryString}`}
-                as={`/${projectId}/visualizer/${queryString}`}
-                passHref
+              <Button
+                variant={VARIANTS.MENU_ITEM}
+                onClick={() => {
+                  onClick()
+
+                  dispatch({
+                    type: ACTIONS.ADD_VALUE,
+                    payload: {
+                      pathname,
+                      projectId,
+                      assetId: id || assetId,
+                      filter: {
+                        type: 'label',
+                        attribute: `labels.${moduleName}`,
+                        modelId,
+                        values: { labels: [label] },
+                      },
+                      query,
+                    },
+                  })
+                }}
               >
-                <Button variant={VARIANTS.MENU_ITEM} onClick={onClick}>
-                  Add Label Filter
-                </Button>
-              </Link>
+                Add Model/Label Filter
+              </Button>
             </li>
             <li>
               <Button
@@ -108,7 +129,7 @@ const AssetLabelingMenu = ({
               modelId,
               label,
               projectId,
-              assetId,
+              assetId: id || assetId,
               setError,
             })
 
@@ -124,11 +145,9 @@ const AssetLabelingMenu = ({
 }
 
 AssetLabelingMenu.propTypes = {
-  projectId: PropTypes.string.isRequired,
-  assetId: PropTypes.string.isRequired,
-  queryString: PropTypes.string.isRequired,
-  modelId: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  modelId: PropTypes.string.isRequired,
+  moduleName: PropTypes.string.isRequired,
   triggerReload: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
 }

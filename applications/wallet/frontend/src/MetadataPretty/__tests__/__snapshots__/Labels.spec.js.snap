@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] = `
-.emotion-4 {
-  padding: 16px;
+.emotion-6 {
+  padding-top: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-3 {
+.emotion-5 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -16,49 +16,63 @@ exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] 
 }
 
 .emotion-0 {
+  min-width: 16px;
+}
+
+.emotion-1 {
   font-family: Roboto Condensed;
   font-weight: 400;
   text-transform: uppercase;
   color: #808080;
+  padding: 0;
   padding-bottom: 8px;
-  padding-left: 0;
   border-bottom: 1px solid #3b3b3b;
   text-align: left;
+  white-space: nowrap;
 }
 
-.emotion-0:nth-of-type(2) {
+.emotion-1:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-0:last-of-type {
+.emotion-1:nth-of-type(3) {
   text-align: right;
-  white-space: nowrap;
-  padding-right: 0;
+}
+
+.emotion-4 {
+  min-width: 8px;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-6"
 >
   <table
-    className="emotion-3"
+    className="emotion-5"
   >
     <thead>
       <tr>
-        <th
+        <td
           className="emotion-0"
+        />
+        <th
+          className="emotion-1"
         >
           bbox
         </th>
         <th
-          className="emotion-0"
+          className="emotion-1"
         >
           model name/label
         </th>
         <th
-          className="emotion-0"
+          className="emotion-1"
         >
           scope
         </th>
+        <td />
+        <td
+          className="emotion-4"
+        />
       </tr>
     </thead>
     <tbody>
@@ -156,12 +170,12 @@ exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] 
 `;
 
 exports[`<MetadataPrettyLabels /> should render properly on the grid 1`] = `
-.emotion-4 {
-  padding: 16px;
+.emotion-6 {
+  padding-top: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-3 {
+.emotion-5 {
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -171,49 +185,63 @@ exports[`<MetadataPrettyLabels /> should render properly on the grid 1`] = `
 }
 
 .emotion-0 {
+  min-width: 16px;
+}
+
+.emotion-1 {
   font-family: Roboto Condensed;
   font-weight: 400;
   text-transform: uppercase;
   color: #808080;
+  padding: 0;
   padding-bottom: 8px;
-  padding-left: 0;
   border-bottom: 1px solid #3b3b3b;
   text-align: left;
+  white-space: nowrap;
 }
 
-.emotion-0:nth-of-type(2) {
+.emotion-1:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-0:last-of-type {
+.emotion-1:nth-of-type(3) {
   text-align: right;
-  white-space: nowrap;
-  padding-right: 0;
+}
+
+.emotion-4 {
+  min-width: 8px;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-6"
 >
   <table
-    className="emotion-3"
+    className="emotion-5"
   >
     <thead>
       <tr>
-        <th
+        <td
           className="emotion-0"
+        />
+        <th
+          className="emotion-1"
         >
           bbox
         </th>
         <th
-          className="emotion-0"
+          className="emotion-1"
         >
           model name/label
         </th>
         <th
-          className="emotion-0"
+          className="emotion-1"
         >
           scope
         </th>
+        <td />
+        <td
+          className="emotion-4"
+        />
       </tr>
     </thead>
     <tbody>
