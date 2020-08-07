@@ -32,7 +32,7 @@ resource "google_project_service" "service-usage" {
 }
 
 resource "google_container_cluster" "primary" {
-  provider = "google-beta"
+  provider = google-beta
   lifecycle {
     prevent_destroy = true
   }
