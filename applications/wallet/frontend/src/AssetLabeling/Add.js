@@ -56,7 +56,7 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
       )}
       <Form style={{ width: '100%', padding: 0 }}>
         <Select
-          key={state.reloadKey}
+          key={`model${state.reloadKey}`}
           label="Model"
           options={options}
           defaultValue={state.modelId}
@@ -70,11 +70,14 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
         <div css={{ height: spacing.base }} />
 
         <Combobox
-          key={state.modelId}
+          key={`label${state.reloadKey}${state.modelId}`}
           label="Label"
           options={() => getOptions({ modelId: state.modelId, projectId })}
           value={state.label}
-          onChange={({ value }) => dispatch({ label: value, success: false })}
+          defaultValue={localLabel}
+          onChange={({ value }) => {
+            dispatch({ label: value, success: false })
+          }}
           hasError={state.errors.label !== undefined}
           errorMessage={state.errors.label}
         />

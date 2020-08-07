@@ -41,7 +41,7 @@ const getLabelAction = ({ body }) => {
 
 export const onSubmit = async ({
   dispatch,
-  state: { modelId, label },
+  state: { modelId, label, reloadKey },
   labels,
   projectId,
   assetId,
@@ -78,6 +78,7 @@ export const onSubmit = async ({
     mutate(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
     dispatch({
+      reloadKey: reloadKey + 1,
       success: true,
       isLoading: false,
       errors: {},

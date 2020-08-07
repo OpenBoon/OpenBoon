@@ -12,26 +12,19 @@ import { colors, constants, spacing, typography, zIndex } from '../Styles'
 
 const MAX_HEIGHT = 350
 
-const ComboboxOptions = ({
-  options,
-  isLoading,
-  showAllOptions,
-  currentValue,
-}) => {
-  if (!isLoading && options.length === 0) return null
-
+const ComboboxOptions = ({ options, isLoading, showAllOptions, value }) => {
   const filteredOptions = options.filter(
     (option) =>
       showAllOptions ||
-      option.label.toLowerCase().includes(currentValue.toLowerCase()),
+      option.label.toLowerCase().includes(value.toLowerCase()),
   )
+
+  if (!isLoading && filteredOptions.length === 0) return null
 
   return (
     <ReachComboboxPopover
-      portal={false}
       css={{
         position: 'absolute',
-        width: '100%',
         zIndex: zIndex.layout.interactive,
         border: 'none',
         background: 'none',
@@ -99,7 +92,7 @@ ComboboxOptions.propTypes = {
   ).isRequired,
   isLoading: PropTypes.bool.isRequired,
   showAllOptions: PropTypes.bool.isRequired,
-  currentValue: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 }
 
 export default ComboboxOptions
