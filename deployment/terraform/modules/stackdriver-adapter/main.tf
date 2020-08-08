@@ -9,6 +9,7 @@ resource "kubernetes_service_account" "custom_metrics_stackdriver_adapter" {
     name      = "custom-metrics-stackdriver-adapter"
     namespace = "custom-metrics"
   }
+  automount_service_account_token = true
 }
 
 resource "kubernetes_cluster_role_binding" "custom_metrics_system_auth_delegator" {
@@ -101,6 +102,7 @@ resource "kubernetes_deployment" "custom_metrics_stackdriver_adapter" {
       }
 
       spec {
+        automount_service_account_token = true
         container {
           name    = "pod-custom-metrics-stackdriver-adapter"
           image   = "gcr.io/google-containers/custom-metrics-stackdriver-adapter:v0.10.2"
