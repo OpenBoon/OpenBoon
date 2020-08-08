@@ -193,7 +193,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
         }
         target {
           type  = "Value"
-          value = 0
+          value = 1
         }
       }
     }
