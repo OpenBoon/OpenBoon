@@ -258,7 +258,6 @@ Array [
           }
         />
         <Combobox
-          defaultValue="face1"
           hasError={false}
           label="Name"
           onChange={[Function]}
@@ -516,7 +515,6 @@ Array [
           }
         />
         <Combobox
-          defaultValue="face1"
           hasError={false}
           label="Name"
           onChange={[Function]}
@@ -822,7 +820,6 @@ Array [
           }
         />
         <Combobox
-          defaultValue="face1"
           hasError={false}
           label="Name"
           onChange={[Function]}

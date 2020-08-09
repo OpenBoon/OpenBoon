@@ -14,7 +14,6 @@ describe('Combobox', () => {
         label="inputLabel"
         options={async () => Promise.resolve(options)}
         value={value}
-        defaultValue="default"
         onChange={mockFn}
         hasError={false}
       />,
@@ -29,21 +28,6 @@ describe('Combobox', () => {
         .props.onChange({ target: { value: 'Jane' } })
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
-
-    // when there is an event.target.value, let onSelect (not onBlur) handle the value
-    act(() => {
-      component.root
-        .findByProps({ 'data-reach-combobox-input': '' })
-        .props.onBlur({ target: { value: 'Jane' } })
-    })
-
-    act(() => {
-      component.root
-        .findByProps({ 'data-reach-combobox-input': '' })
-        .props.onBlur({ target: { value: '' } })
-    })
-
     expect(
       component.root.findByProps({ 'data-reach-combobox-input': '' }).props
         .value,
@@ -53,7 +37,7 @@ describe('Combobox', () => {
       component.root.findByType(ComboboxContainer).props.onSelect('Jane')
     })
 
-    expect(mockFn).toHaveBeenCalledTimes(3)
+    expect(mockFn).toHaveBeenCalledTimes(2)
     expect(mockFn).toHaveBeenLastCalledWith({ value: 'Jane' })
   })
 
@@ -67,7 +51,6 @@ describe('Combobox', () => {
         label="inputLabel"
         options={options}
         value={value}
-        defaultValue="default"
         onChange={mockFn}
         hasError={false}
         errorMessage=""
@@ -87,7 +70,6 @@ describe('Combobox', () => {
         label="inputLabel"
         options={options}
         value={value}
-        defaultValue="default"
         onChange={mockFn}
         hasError
         errorMessage="error"

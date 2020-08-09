@@ -16,7 +16,7 @@ provider "google" {
   project     = var.project
   region      = "${var.country}-${var.region}"
   zone        = "${var.country}-${var.region}-${var.zone}"
-  version     = ">= 3.8.0"
+  version     = ">= 3.33.0"
 }
 
 provider "google-beta" {
@@ -24,7 +24,7 @@ provider "google-beta" {
   project     = var.project
   region      = "${var.country}-${var.region}"
   zone        = "${var.country}-${var.region}-${var.zone}"
-  version     = ">= 3.8.0"
+  version     = ">= 3.33.0"
 }
 
 provider "kubernetes" {
@@ -35,7 +35,7 @@ provider "kubernetes" {
   client_certificate     = module.gke-cluster.client_certificate
   client_key             = module.gke-cluster.client_key
   cluster_ca_certificate = module.gke-cluster.cluster_ca_certificate
-  version                = ">= 1.11.2"
+  version                = ">= 1.12.0"
 }
 
 ## GCP Infrastructure ###################################################################
@@ -44,9 +44,9 @@ module "gke-cluster" {
   zone   = local.zone
 }
 
-//module "stackdriver-adapter" {
-//  source = "./modules/stackdriver-adapter"
-//}
+module "stackdriver-adapter" {
+  source = "./modules/stackdriver-adapter"
+}
 
 module "postgres" {
   source   = "./modules/postgres"

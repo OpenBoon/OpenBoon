@@ -473,7 +473,6 @@ Array [
             className="emotion-9"
           />
           <Combobox
-            defaultValue=""
             hasError={false}
             label="Label"
             onChange={[Function]}
@@ -1157,7 +1156,6 @@ Array [
             className="emotion-9"
           />
           <Combobox
-            defaultValue=""
             hasError={false}
             label="Label"
             onChange={[Function]}
@@ -1802,7 +1800,6 @@ Array [
             className="emotion-9"
           />
           <Combobox
-            defaultValue=""
             hasError={false}
             label="Label"
             onChange={[Function]}
@@ -2447,7 +2444,6 @@ Array [
             className="emotion-9"
           />
           <Combobox
-            defaultValue=""
             hasError={false}
             label="Label"
             onChange={[Function]}
@@ -3091,7 +3087,6 @@ Array [
             className="emotion-9"
           />
           <Combobox
-            defaultValue=""
             hasError={false}
             label="Label"
             onChange={[Function]}
@@ -3735,7 +3730,6 @@ Array [
             className="emotion-9"
           />
           <Combobox
-            defaultValue=""
             hasError={false}
             label="Label"
             onChange={[Function]}
@@ -4380,7 +4374,6 @@ Array [
             className="emotion-9"
           />
           <Combobox
-            defaultValue=""
             hasError={false}
             label="Label"
             onChange={[Function]}
@@ -5225,7 +5218,6 @@ Array [
             className="emotion-9"
           />
           <Combobox
-            defaultValue="Space"
             hasError={false}
             label="Label"
             onChange={[Function]}
