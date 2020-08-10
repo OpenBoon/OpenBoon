@@ -9,65 +9,7 @@ const MODEL_ID = '621bf774-89d9-1244-9596-d6df43f1ede5'
 const noop = () => () => {}
 
 describe('<AssetLabelingMenu />', () => {
-  it('should add a model/label filter in the grid', () => {
-    const mockRouterPush = jest.fn()
-
-    require('next/router').__setMockPushFunction(mockRouterPush)
-
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
-    })
-
-    const component = TestRenderer.create(
-      <AssetLabelingMenu
-        label="Mark Ruffalo"
-        modelId={MODEL_ID}
-        moduleName="zvi-face-recognition"
-        triggerReload={noop}
-        setError={noop}
-      />,
-    )
-
-    // Open Menu
-    act(() => {
-      component.root
-        .findByProps({ 'aria-label': 'Toggle Actions Menu' })
-        .props.onClick()
-    })
-
-    expect(component.toJSON()).toMatchSnapshot()
-
-    // Select Add Filter
-    act(() => {
-      component.root
-        .findByProps({ children: 'Add Model/Label Filter' })
-        .props.onClick()
-    })
-
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: PROJECT_ID,
-          id: ASSET_ID,
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'label',
-                attribute: 'labels.zvi-face-recognition',
-                modelId: MODEL_ID,
-                values: { labels: ['Mark Ruffalo'] },
-              },
-            ]),
-          ),
-        },
-      },
-      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}&query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1mYWNlLXJlY29nbml0aW9uIiwibW9kZWxJZCI6IjYyMWJmNzc0LTg5ZDktMTI0NC05NTk2LWQ2ZGY0M2YxZWRlNSIsInZhbHVlcyI6eyJsYWJlbHMiOlsiTWFyayBSdWZmYWxvIl19fV0=`,
-    )
-  })
-
-  it('should add a model/label filter in the asset view', () => {
+  it('should add a model/label filter', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)

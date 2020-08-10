@@ -27,7 +27,7 @@ describe('<FaceLabeling />', () => {
     require('swr').__setMockUseSWRResponse({})
 
     require('next/router').__setUseRouter({
-      query: { id: ASSET_ID, projectId: PROJECT_ID },
+      query: { assetId: ASSET_ID, projectId: PROJECT_ID },
     })
 
     const component = TestRenderer.create(<FaceLabeling />)
@@ -52,7 +52,7 @@ describe('<FaceLabeling />', () => {
     })
 
     require('next/router').__setUseRouter({
-      query: { id: ASSET_ID, projectId: PROJECT_ID },
+      query: { assetId: ASSET_ID, projectId: PROJECT_ID },
     })
 
     const component = TestRenderer.create(<FaceLabeling />)

@@ -8,7 +8,7 @@ import MetadataContent from './Content'
 
 const Metadata = () => {
   const {
-    query: { projectId, id: assetId },
+    query: { projectId, assetId },
   } = useRouter()
 
   return assetId ? (

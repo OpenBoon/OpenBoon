@@ -50,7 +50,7 @@ describe('<AssetsThumbnail />', () => {
   it('should render properly a video asset', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     const component = TestRenderer.create(
@@ -63,7 +63,7 @@ describe('<AssetsThumbnail />', () => {
   it('should render properly a valid selected asset', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     const component = TestRenderer.create(
@@ -137,7 +137,7 @@ describe('<AssetsThumbnail />', () => {
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer/[id]',
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     const component = TestRenderer.create(
@@ -166,10 +166,10 @@ describe('<AssetsThumbnail />', () => {
             ]),
           ),
           projectId: PROJECT_ID,
-          id: ASSET_ID,
+          assetId: ASSET_ID,
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXSwibWluU2NvcmUiOjAuNzV9fV0=',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXSwibWluU2NvcmUiOjAuNzV9fV0=',
     )
   })
 
@@ -189,7 +189,7 @@ describe('<AssetsThumbnail />', () => {
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, id: ASSET_ID, query: oldQuery },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID, query: oldQuery },
     })
 
     const component = TestRenderer.create(
@@ -217,11 +217,11 @@ describe('<AssetsThumbnail />', () => {
               },
             ]),
           ),
-          id: ASSET_ID,
+          assetId: ASSET_ID,
           projectId: PROJECT_ID,
         },
       },
-      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXSwibWluU2NvcmUiOjAuNzV9fV0=`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXSwibWluU2NvcmUiOjAuNzV9fV0=`,
     )
   })
 })

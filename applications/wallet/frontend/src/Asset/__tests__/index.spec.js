@@ -13,7 +13,7 @@ jest.mock('../../Metadata', () => 'Metadata')
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'srL8ob5cTpCJjYoKkqqfa2ciyG425dGi'
 const QUERY_STRING =
-  '?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=='
+  '?assetId=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=='
 
 describe('<Asset />', () => {
   it('should render properly', () => {
@@ -26,7 +26,7 @@ describe('<Asset />', () => {
     })
 
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, id: ASSET_ID, query: QUERY_STRING },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID, query: QUERY_STRING },
     })
 
     const component = TestRenderer.create(
@@ -48,7 +48,7 @@ describe('<Asset />', () => {
     })
 
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, id: ASSET_ID, query: QUERY_STRING },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID, query: QUERY_STRING },
     })
 
     const component = TestRenderer.create(
@@ -70,7 +70,7 @@ describe('<Asset />', () => {
     })
 
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     const component = TestRenderer.create(

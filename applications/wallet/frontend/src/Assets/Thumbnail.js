@@ -16,7 +16,7 @@ import { formatSeconds } from './helpers'
 
 const AssetsThumbnail = ({
   asset: {
-    id,
+    id: thumbnailId,
     metadata: { source },
     thumbnailUrl,
     videoLength,
@@ -27,13 +27,13 @@ const AssetsThumbnail = ({
   const { filename } = source || {}
 
   const {
-    query: { projectId, id: selectedId, query },
+    query: { projectId, assetId, query },
   } = useRouter()
 
-  const isSelected = id === selectedId
+  const isSelected = thumbnailId === assetId
 
   const queryString = getQueryString({
-    ...(isSelected ? {} : { id }),
+    ...(isSelected ? {} : { assetId: thumbnailId }),
     ...(query ? { query } : {}),
   })
 
@@ -118,8 +118,8 @@ const AssetsThumbnail = ({
               type: ACTIONS.APPLY_SIMILARITY,
               payload: {
                 projectId,
-                assetId: id,
-                selectedId,
+                thumbnailId,
+                assetId,
                 query,
                 attribute,
               },
@@ -135,8 +135,10 @@ const AssetsThumbnail = ({
 
       {isActive && (
         <Link
-          href={`/[projectId]/visualizer/[id]${getQueryString({ query })}`}
-          as={`/${projectId}/visualizer/${id}${getQueryString({ query })}`}
+          href={`/[projectId]/visualizer/[assetId]${getQueryString({ query })}`}
+          as={`/${projectId}/visualizer/${thumbnailId}${getQueryString({
+            query,
+          })}`}
           passHref
         >
           <Button
