@@ -1,17 +1,15 @@
 from django.http import Http404
-
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from zmlp.client import ZmlpNotFoundException
 from zmlp.entity.model import LabelScope
 
-from projects.views import BaseProjectViewSet
-from wallet.mixins import ConvertCamelToSnakeViewSetMixin
-from wallet.paginators import ZMLPFromSizePagination
 from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 AddLabelsSerializer, UpdateLabelsSerializer,
                                 RemoveLabelsSerializer)
+from projects.views import BaseProjectViewSet
+from wallet.paginators import ZMLPFromSizePagination
 
 
 def item_modifier(request, item):
@@ -22,11 +20,10 @@ def item_modifier(request, item):
     for job in running_jobs:
         if job.name.startswith(name_prefix):
             running_job_id = job.id
-    item['running_job_id'] = running_job_id
+    item['runningJobId'] = running_job_id
 
 
-class ModelViewSet(ConvertCamelToSnakeViewSetMixin,
-                   BaseProjectViewSet):
+class ModelViewSet(BaseProjectViewSet):
     serializer_class = ModelSerializer
     pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/api/v3/models'
@@ -125,7 +122,7 @@ class ModelViewSet(ConvertCamelToSnakeViewSetMixin,
         serializer.is_valid(raise_exception=True)
         app = request.app
         data = serializer.validated_data
-        labels = data['add_labels']
+        labels = data['addLabels']
         model = self._get_model(app, pk)
 
         label_updates = self._get_assets_and_labels(app, model, labels)
@@ -145,8 +142,8 @@ class ModelViewSet(ConvertCamelToSnakeViewSetMixin,
         serializer.is_valid(raise_exception=True)
         app = request.app
         data = serializer.validated_data
-        add_labels_raw = data['add_labels']
-        remove_labels_raw = data['remove_labels']
+        add_labels_raw = data['addLabels']
+        remove_labels_raw = data['removeLabels']
         model = self._get_model(app, pk)
 
         add_labels = self._get_assets_and_labels(app, model, add_labels_raw)
@@ -174,7 +171,7 @@ class ModelViewSet(ConvertCamelToSnakeViewSetMixin,
         serializer.is_valid(raise_exception=True)
         app = request.app
         data = serializer.validated_data
-        labels = data['remove_labels']
+        labels = data['removeLabels']
         model = self._get_model(app, pk)
 
         label_updates = self._get_assets_and_labels(app, model, labels)
@@ -192,7 +189,7 @@ class ModelViewSet(ConvertCamelToSnakeViewSetMixin,
         """Get a list of Label objects from request data."""
         labels = []
         for raw in data:
-            asset = app.assets.get_asset(raw['asset_id'])
+            asset = app.assets.get_asset(raw['assetId'])
             if raw['scope'] == 'TRAIN':
                 scope = LabelScope.TRAIN
             elif raw['scope'] == 'TEST':

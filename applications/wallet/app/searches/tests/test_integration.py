@@ -31,7 +31,7 @@ def query():
 @pytest.fixture()
 def search(project, user, query):
     return Search.objects.create(project=project, name='Test Search', search=query,
-                                 created_by=user)
+                                 createdBy=user)
 
 
 class TestSearchViewSetList:
@@ -53,7 +53,7 @@ class TestSearchViewSetList:
     def test_list_filters_by_project(self, zmlp_project_membership, login, api_client, project,
                                      project2, search, query):
         Search.objects.create(project=project2, name='Other Project Search', search=query,
-                              created_by=zmlp_project_membership.user)
+                              createdBy=zmlp_project_membership.user)
         response = api_client.get(reverse('search-list', kwargs={'project_pk': str(project.id)}))
         results = check_response(response)['results']
         assert len(results) == 1
@@ -89,7 +89,7 @@ class TestSearchViewSetCreate:
             "project": str(project.id),
             "name": "Tester",
             "search": query,
-            "created_by": str(user.id)
+            "createdBy": str(user.id)
         }
         response = api_client.post(reverse('search-list', kwargs={'project_pk': str(project.id)}), body)  # noqa
         content = check_response(response, status.HTTP_201_CREATED)
@@ -99,7 +99,7 @@ class TestSearchViewSetCreate:
         body = {
             "name": "Tester",
             "search": query,
-            "created_by": str(user.id)
+            "createdBy": str(user.id)
         }
         response = api_client.post(reverse('search-list', kwargs={'project_pk': str(project.id)}),
                                    body)  # noqa
@@ -110,10 +110,10 @@ class TestSearchViewSetCreate:
         body = {
             "project": str(project.id),
             "search": query,
-            "created_by": str(user.id)
+            "createdBy": str(user.id)
         }
         response = api_client.post(reverse('search-list', kwargs={'project_pk': str(project.id)}),
-                                   body)  # noqa
+                                   body)
         content = check_response(response, status.HTTP_400_BAD_REQUEST)
         assert content['name'] == ['This field is required.']
 
@@ -121,7 +121,7 @@ class TestSearchViewSetCreate:
         body = {
             "project": str(project.id),
             "name": "Tester",
-            "created_by": str(user.id)
+            "createdBy": str(user.id)
         }
         response = api_client.post(reverse('search-list', kwargs={'project_pk': str(project.id)}),
                                    body)  # noqa
@@ -144,7 +144,7 @@ class TestSearchViewSetUpdate:
 
     def test_update(self, zmlp_project_membership, login, api_client, query, project, user):
         search = Search.objects.create(project=project, name='My Old Search',
-                                       search=query, created_by=user)
+                                       search=query, createdBy=user)
         response = api_client.get(reverse('search-list', kwargs={'project_pk': str(project.id)}))
         results = check_response(response)['results']
         assert len(results) == 1
@@ -155,7 +155,7 @@ class TestSearchViewSetUpdate:
             "project": str(project.id),
             "name": "Tester",
             "search": new_query,
-            "created_by": str(user.id)
+            "createdBy": str(user.id)
         }
         response = api_client.put(reverse('search-detail', kwargs={'project_pk': str(project.id),
                                                                    'pk': str(search.id)}), body)
@@ -167,7 +167,7 @@ class TestSearchViewSetUpdate:
     def test_partial_with_bad_method(self, zmlp_project_membership, login, api_client, query,
                                      project, user):
         search = Search.objects.create(project=project, name='My Old Search',
-                                       search=query, created_by=user)
+                                       search=query, createdBy=user)
 
         new_query = {"hey": "you guys"}
         body = {
@@ -181,7 +181,7 @@ class TestSearchViewSetUpdate:
 
     def test_partial_update(self, zmlp_project_membership, login, api_client, query, project, user):
         search = Search.objects.create(project=project, name='My Old Search',
-                                       search=query, created_by=user)
+                                       search=query, createdBy=user)
         response = api_client.get(reverse('search-list', kwargs={'project_pk': str(project.id)}))
         results = check_response(response)['results']
         assert len(results) == 1
@@ -208,7 +208,7 @@ class TestSearchDestroy:
 
     def test_destroy_non_member(self, zmlp_project_membership, login, api_client, project2, query):
         search2 = Search.objects.create(project=project2, name='Other Project Search', search=query,
-                                        created_by=zmlp_project_membership.user)
+                                        createdBy=zmlp_project_membership.user)
         response = api_client.delete(reverse('search-detail', kwargs={'project_pk': str(project2.id),  # noqa
                                                                       'pk': str(search2.id)}))
         assert response.status_code == status.HTTP_403_FORBIDDEN
@@ -299,36 +299,36 @@ class TestSearchAssetModifier:
 
     def test_add_asset_style_image(self, mock_request, image_item):
         search_asset_modifier(mock_request, image_item)
-        assert image_item['asset_style'] == 'image'
+        assert image_item['assetStyle'] == 'image'
 
     def test_add_asset_style_document(self, mock_request, document_item):
         search_asset_modifier(mock_request, document_item)
         # Documents should have the image style
-        assert document_item['asset_style'] == 'image'
+        assert document_item['assetStyle'] == 'image'
 
     def test_add_asset_style_video(self, mock_request, video_item):
         search_asset_modifier(mock_request, video_item)
-        assert video_item['asset_style'] == 'video'
+        assert video_item['assetStyle'] == 'video'
 
     def test_add_video_length_for_image(self, mock_request, image_item):
         search_asset_modifier(mock_request, image_item)
-        assert image_item['video_length'] is None
+        assert image_item['videoLength'] is None
 
     def test_add_video_length_for_video(self, mock_request, video_item):
         search_asset_modifier(mock_request, video_item)
-        assert video_item['video_length'] == 15.048367
+        assert video_item['videoLength'] == 15.048367
 
     def test_videoUrl_for_image(self, mock_request, image_item):
         search_asset_modifier(mock_request, image_item)
-        assert image_item['video_proxy_url'] is None
+        assert image_item['videoProxyUrl'] is None
 
     def test_videoUrl_for_video(self, mock_request, video_item):
         search_asset_modifier(mock_request, video_item)
-        assert video_item['video_proxy_url'] == 'http://testserver/api/v1/projects/asdf/assets/mUqByg6ARFdORH1UaO2NH4JvxfN2Wk7W/files/category/proxy/name/video_640x360.mp4/'  # noqa
+        assert video_item['videoProxyUrl'] == 'http://testserver/api/v1/projects/asdf/assets/mUqByg6ARFdORH1UaO2NH4JvxfN2Wk7W/files/category/proxy/name/video_640x360.mp4/'  # noqa
 
     def test_fullscreen_url_not_included(self, mock_request, video_item):
         search_asset_modifier(mock_request, video_item)
-        assert 'fullscreen_url' not in video_item
+        assert 'fullscreenUrl' not in video_item
 
 
 class TestQuery(BaseFiltersTestCase):

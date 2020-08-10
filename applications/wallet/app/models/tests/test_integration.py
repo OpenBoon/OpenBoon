@@ -38,6 +38,7 @@ class TestModelViewSetList:
         assert len(results) == 2
         assert results[0]['name'] == 'Labeller'
         assert results[0]['type'] == 'ZVI_LABEL_DETECTION'
+        assert results[0]['runningJobId'] == ''
         assert set(model_fields) == set(results[0].keys())
 
 
@@ -159,7 +160,7 @@ class TestLabelingEndpoints:
     @pytest.fixture
     def add_body(self):
         return {
-            "add_labels": [
+            "addLabels": [
                 {"assetId": "eicS1V9d1hBpOGFC0Zo1TB1OSt0Yrrtl",
                  "label": "Mountains",
                  "scope": "TRAIN"},
@@ -172,7 +173,7 @@ class TestLabelingEndpoints:
     @pytest.fixture
     def remove_body(self):
         return {
-            "remove_labels": [
+            "removeLabels": [
                 {"assetId": "eicS1V9d1hBpOGFC0Zo1TB1OSt0Yrrtl",
                  "label": "Mountains",
                  "scope": "TRAIN"

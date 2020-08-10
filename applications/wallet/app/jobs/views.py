@@ -10,7 +10,7 @@ from jobs.serializers import JobSerializer, TaskErrorSerializer, TaskSerializer
 from projects.views import BaseProjectViewSet
 from searches.serializers import SearchAssetSerializer
 from searches.views import search_asset_modifier
-from wallet.mixins import ConvertCamelToSnakeViewSetMixin
+from wallet.mixins import CamelCaseRendererMixin
 from wallet.paginators import ZMLPFromSizePagination
 
 
@@ -281,7 +281,7 @@ class TaskErrorViewSet(BaseProjectViewSet):
         return Response(serializer.validated_data)
 
 
-class TaskViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
+class TaskViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
     pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/api/v1/tasks/'
     serializer_class = TaskSerializer

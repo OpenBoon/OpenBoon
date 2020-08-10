@@ -19,7 +19,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from rest_framework import routers
 from rest_framework_nested.routers import NestedSimpleRouter
 
@@ -36,7 +35,8 @@ from modules.views import ModuleViewSet, ProviderViewSet
 from permissions.views import PermissionViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
 from registration.views import UserRegistrationView, UserConfirmationView, \
-    ApiPasswordChangeView, LogoutView, MeView, LoginView
+    ApiPasswordChangeView, LogoutView, MeView, LoginView, ApiPasswordResetView, \
+    ApiPasswordResetConfirmView
 from roles.views import RolesViewSet
 from searches.views import SearchViewSet, MetadataExportViewSet
 from subscriptions.views import SubscriptionViewSet
@@ -83,10 +83,10 @@ jobs_router.register('tasks', JobTaskViewSet, basename='job-detail-task')
 BROWSABLE_API_URLS = [
     ('password-change', path('api/v1/password/change/', ApiPasswordChangeView.as_view(),
                              name='api-password-change')),
-    ('password-reset', path('api/v1/password/reset/', PasswordResetView.as_view(),
+    ('password-reset', path('api/v1/password/reset/', ApiPasswordResetView.as_view(),
                             name='api-password-reset')),
     ('password-reset-confirmation', path('api/v1/password/reset/confirm/',
-                                         PasswordResetConfirmView.as_view(),
+                                         ApiPasswordResetConfirmView.as_view(),
                                          name='api-password-reset-confirm')),
     ('logout', path('api/v1/logout/', LogoutView.as_view(), name='api-logout')),
     ('me', path('api/v1/me/', MeView.as_view(), name='me')),

@@ -6,7 +6,6 @@ from rest_framework.viewsets import GenericViewSet
 
 from agreements.models import Agreement
 from agreements.serializers import AgreementSerializer
-from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 
 
 def get_ip_from_request(request):
@@ -19,7 +18,7 @@ def get_ip_from_request(request):
     return ip_address
 
 
-class AgreementViewSet(ConvertCamelToSnakeViewSetMixin, ListModelMixin, GenericViewSet):
+class AgreementViewSet(ListModelMixin, GenericViewSet):
     """Viewset for working with Privacy & Terms Agreements"""
     serializer_class = AgreementSerializer
 
@@ -30,16 +29,16 @@ class AgreementViewSet(ConvertCamelToSnakeViewSetMixin, ListModelMixin, GenericV
         user_pk = request.user.id
 
         # Check that we got a good policies date
-        policies_date = request.data.get('policies_date')
+        policies_date = request.data.get('policiesDate')
         if not policies_date:
-            return Response(data={'detail': 'Missing `policies_date` in the request.'},
+            return Response(data={'detail': 'Missing `policiesDate` in the request.'},
                             status=status.HTTP_400_BAD_REQUEST)
         try:
             int(policies_date)
             if len(policies_date) != 8:
                 raise ValueError
         except ValueError:
-            return Response(data={'detail': 'Value for `policies_date` must be an 8 character date '
+            return Response(data={'detail': 'Value for `policiesDate` must be an 8 character date '
                                   'string in the YYYYMMDD format.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
@@ -48,7 +47,7 @@ class AgreementViewSet(ConvertCamelToSnakeViewSetMixin, ListModelMixin, GenericV
 
         # Update request data with calculated values
         request.data['user'] = user_pk
-        request.data['ip_address'] = ip_address
+        request.data['ipAddress'] = ip_address
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
