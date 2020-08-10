@@ -1422,7 +1422,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
           >
             <a
               className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
@@ -1466,7 +1466,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
           >
             <a
               className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
@@ -1510,7 +1510,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
           >
             <a
               className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
@@ -1554,7 +1554,7 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
           >
             <a
               className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >

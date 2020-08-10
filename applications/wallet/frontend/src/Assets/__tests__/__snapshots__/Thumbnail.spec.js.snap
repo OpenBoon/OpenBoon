@@ -195,7 +195,7 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
 >
   <a
     className="emotion-1"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -668,7 +668,7 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
 >
   <a
     className="emotion-1"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -905,7 +905,7 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
 >
   <a
     className="emotion-1"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -1137,7 +1137,7 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
 >
   <a
     className="emotion-1"
-    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=zs5GXqqMapHkZpKYewLVNPppddQfaCK-"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=zs5GXqqMapHkZpKYewLVNPppddQfaCK-"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >

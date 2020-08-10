@@ -27,7 +27,7 @@ describe('<AssetLabeling />', () => {
     require('swr').__setMockUseSWRResponse({ data: { ...models, ...asset } })
 
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     const component = TestRenderer.create(<AssetLabeling />)
@@ -342,7 +342,7 @@ describe('<AssetLabeling />', () => {
     })
 
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     const component = TestRenderer.create(<AssetLabeling />)

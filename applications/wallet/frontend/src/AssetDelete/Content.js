@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 import { spacing } from '../Styles'
@@ -10,12 +9,12 @@ import Radio from '../Radio'
 
 import AssetDeleteConfirm from './Confirm'
 
-const AssetDeleteContent = ({ showDialogue, setShowDialogue }) => {
-  const {
-    query,
-    query: { projectId, id: assetId },
-  } = useRouter()
-
+const AssetDeleteContent = ({
+  projectId,
+  assetId,
+  showDialogue,
+  setShowDialogue,
+}) => {
   const {
     data: {
       metadata: {
@@ -27,7 +26,6 @@ const AssetDeleteContent = ({ showDialogue, setShowDialogue }) => {
   if (showDialogue) {
     return (
       <AssetDeleteConfirm
-        query={query}
         filename={filename}
         showDialogue={showDialogue}
         setShowDialogue={setShowDialogue}
@@ -62,6 +60,8 @@ const AssetDeleteContent = ({ showDialogue, setShowDialogue }) => {
 }
 
 AssetDeleteContent.propTypes = {
+  projectId: PropTypes.string.isRequired,
+  assetId: PropTypes.string.isRequired,
   showDialogue: PropTypes.bool.isRequired,
   setShowDialogue: PropTypes.func.isRequired,
 }

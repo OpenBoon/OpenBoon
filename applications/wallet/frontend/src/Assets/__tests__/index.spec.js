@@ -100,7 +100,7 @@ describe('<Assets />', () => {
       pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
-        id: ASSET_ID,
+        assetId: ASSET_ID,
         query: encode({
           filters: [
             {
@@ -128,9 +128,9 @@ describe('<Assets />', () => {
     expect(mockPush).toHaveBeenCalledWith(
       {
         pathname: '/[projectId]/visualizer',
-        query: { id: ASSET_ID, projectId: PROJECT_ID },
+        query: { assetId: ASSET_ID, projectId: PROJECT_ID },
       },
-      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}`,
     )
   })
 
@@ -139,7 +139,7 @@ describe('<Assets />', () => {
       pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
-        id: ASSET_ID,
+        assetId: ASSET_ID,
       },
     })
 
