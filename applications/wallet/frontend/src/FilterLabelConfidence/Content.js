@@ -74,7 +74,7 @@ const FilterLabelConfidenceContent = ({
           color: colors.structure.zinc,
         }}
       >
-        <div>LABEL</div>
+        <div>PREDICTION</div>
         <div>COUNT</div>
       </div>
 
