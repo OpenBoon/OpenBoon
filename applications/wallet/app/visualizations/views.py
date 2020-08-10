@@ -5,10 +5,10 @@ from rest_framework.response import Response
 from projects.views import BaseProjectViewSet
 from searches.utils import FieldUtility, FilterBuddy
 from .utils import VizBuddy
-from wallet.mixins import ConvertCamelToSnakeViewSetMixin
+from wallet.mixins import CamelCaseRendererMixin
 
 
-class VisualizationViewSet(ConvertCamelToSnakeViewSetMixin,
+class VisualizationViewSet(CamelCaseRendererMixin,
                            BaseProjectViewSet):
 
     zmlp_only = True

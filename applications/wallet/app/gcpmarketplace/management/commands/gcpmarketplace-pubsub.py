@@ -205,7 +205,7 @@ class MessageHandler(object):
         except MarketplaceEntitlement.DoesNotExist:
             print(f'No record of entitlement {entitlement_name} existed. Cancellation complete.')
             return
-        project.is_active = False
+        project.isActive = False
         project.save()
         print(f'Deactivated project {project.id} for entitlement {entitlement_name}.')
 

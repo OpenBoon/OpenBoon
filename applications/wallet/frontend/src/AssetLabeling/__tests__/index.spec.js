@@ -257,13 +257,13 @@ describe('<AssetLabeling />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
       },
       body: JSON.stringify({
-        remove_labels: [
+        removeLabels: [
           {
             assetId: ASSET_ID,
             label: EXISTING_ASSET_LABEL,
           },
         ],
-        add_labels: [
+        addLabels: [
           {
             assetId: ASSET_ID,
             label: 'Flimflarm',
@@ -284,7 +284,7 @@ describe('<AssetLabeling />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
       },
       body: JSON.stringify({
-        add_labels: [
+        addLabels: [
           {
             assetId: ASSET_ID,
             label: 'Other Flimflarm',
@@ -305,7 +305,7 @@ describe('<AssetLabeling />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
       },
       body: JSON.stringify({
-        remove_labels: [
+        removeLabels: [
           {
             assetId: ASSET_ID,
             label: 'Space',
@@ -326,7 +326,7 @@ describe('<AssetLabeling />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
       },
       body: JSON.stringify({
-        remove_labels: [
+        removeLabels: [
           {
             assetId: ASSET_ID,
             label: 'Space',

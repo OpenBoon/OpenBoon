@@ -15,6 +15,6 @@ class Command(BaseCommand):
         except Project.DoesNotExist:
             print('Project does not exist.')
             return
-        project.is_active = False
+        project.isActive = False
         project.save()
         # TODO: Disable the project on the zmlp side as well.

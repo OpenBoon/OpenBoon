@@ -28,11 +28,11 @@ export const getSubmitText = ({ state, existingLabel }) => {
 }
 
 const getLabelAction = ({ body }) => {
-  if (body.add_labels && body.remove_labels) {
+  if (body.addLabels && body.removeLabels) {
     return 'update'
   }
 
-  if (body.remove_labels) {
+  if (body.removeLabels) {
     return 'delete'
   }
 
@@ -57,11 +57,11 @@ export const onSubmit = async ({
   const body = {}
 
   if (existingModel) {
-    body.remove_labels = [{ assetId, label: existingModel.label }]
+    body.removeLabels = [{ assetId, label: existingModel.label }]
   }
 
   if (label !== '') {
-    body.add_labels = [{ assetId, label }]
+    body.addLabels = [{ assetId, label }]
   }
 
   const labelAction = getLabelAction({ body })
@@ -120,7 +120,7 @@ export const onDelete = async ({
       {
         method: 'DELETE',
         body: JSON.stringify({
-          remove_labels: [
+          removeLabels: [
             {
               assetId,
               label,

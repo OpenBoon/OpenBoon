@@ -25,10 +25,10 @@ class PasswordResetSerializer(PasswordResetSerializer):
 
 class RegistrationSerializer(serializers.Serializer):
     email = serializers.CharField(required=True)
-    first_name = serializers.CharField(required=True)
-    last_name = serializers.CharField(required=True)
+    firstName = serializers.CharField(required=True)
+    lastName = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
-    policies_date = serializers.CharField(required=False)
+    policiesDate = serializers.CharField(required=False)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -51,7 +51,7 @@ class UserSerializer(serializers.ModelSerializer):
         return roles
 
     def get_agreed_to_policies_date(self, obj):
-        agreements = obj.agreements.order_by('-created_date')
+        agreements = obj.agreements.order_by('-createdDate')
         if len(agreements) == 0:
             return '00000000'
-        return agreements[0].policies_date
+        return agreements[0].policiesDate

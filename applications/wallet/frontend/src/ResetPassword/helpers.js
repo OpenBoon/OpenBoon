@@ -28,7 +28,7 @@ export const onRequest = async ({ dispatch, state: { email } }) => {
 }
 
 export const onConfirm = async ({
-  state: { newPassword, newPassword2 },
+  state: { newPassword1, newPassword2 },
   dispatch,
   uid,
   token,
@@ -45,8 +45,8 @@ export const onConfirm = async ({
         'X-CSRFToken': csrftoken,
       },
       body: JSON.stringify({
-        new_password1: newPassword,
-        new_password2: newPassword2,
+        newPassword1,
+        newPassword2,
         uid,
         token,
       }),
