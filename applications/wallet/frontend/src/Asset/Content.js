@@ -15,7 +15,7 @@ import AssetNavigation from './Navigation'
 
 const AssetContent = () => {
   const {
-    query: { projectId, id: assetId, query },
+    query: { projectId, id: assetId, query = '' },
   } = useRouter()
 
   return (
@@ -43,6 +43,7 @@ const AssetContent = () => {
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
+            marginRight: spacing.hairline,
           }}
         >
           <AssetNavigation

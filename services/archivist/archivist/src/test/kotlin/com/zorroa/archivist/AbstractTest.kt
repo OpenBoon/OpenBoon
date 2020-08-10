@@ -10,6 +10,7 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.Project
+import com.zorroa.archivist.domain.ProjectSize
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.getAuthentication
@@ -134,6 +135,7 @@ abstract class AbstractTest {
         project = projectService.create(
             ProjectSpec(
                 "unittest",
+                size = ProjectSize.XSMALL,
                 id = UUID.fromString("00000000-0000-0000-0000-000000000000")
             )
         )
@@ -180,7 +182,6 @@ abstract class AbstractTest {
                 UUID.randomUUID(),
                 proj.value,
                 randomString(24),
-                randomString(64),
                 "key-name",
                 permissions.value,
                 false

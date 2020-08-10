@@ -23,6 +23,7 @@ import java.util.UUID
 interface PipelineDao {
     fun create(spec: PipelineSpec): Pipeline
     fun get(name: String): Pipeline
+    fun getDefault(): Pipeline
     fun get(id: UUID): Pipeline
     fun update(id: UUID, update: PipelineUpdate): Boolean
     fun refresh(obj: Pipeline): Pipeline
@@ -71,6 +72,17 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
                 "INSERT INTO x_module_pipeline (pk_module, pk_pipeline) VALUES (?, ?)",
                 it.id, id
             )
+        }
+    }
+
+    override fun getDefault(): Pipeline {
+        try {
+            return jdbc.queryForObject<Pipeline>(
+                GET_DEF,
+                MAPPER, getProjectId()
+            )
+        } catch (e: EmptyResultDataAccessException) {
+            throw EmptyResultDataAccessException("Failed to get default pipeline", 1)
         }
     }
 
@@ -169,6 +181,9 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
     companion object {
 
         private const val GET = "SELECT * FROM pipeline"
+        private const val GET_DEF = "SELECT pipeline.* FROM pipeline " +
+            "INNER JOIN project ON project.pk_pipeline_default = pipeline.pk_pipeline " +
+            "WHERE project.pk_project=?"
         private const val COUNT = "SELECT COUNT(1) FROM pipeline"
         private const val UPDATE = "UPDATE " +
             "pipeline " +

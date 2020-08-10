@@ -101,7 +101,7 @@ class BaseFilter(object):
         of existing `bool` clauses if they exist, in an additive manner.
         """
         this_query = self.get_es_query()
-        bool_clauses = this_query['query']['bool']
+        bool_clauses = this_query['query'].get('bool', {})
 
         if 'query' not in query:
             # If the query key doesn't exist at all, add this filters whole query to it
@@ -192,13 +192,13 @@ class FacetFilter(BaseFilter):
     type = 'facet'
     required_agg_keys = ['attribute']
     required_query_keys = ['facets']
-    optional_keys = ['order', 'minimum_count']
+    optional_keys = ['order', 'minimumCount']
     agg_prefix = 'sterms'
 
     def get_es_agg(self):
         attribute = self.data['attribute']
         order = self.data.get('order')
-        minimum_count = self.data.get('minimum_count')
+        minimumCount = self.data.get('minimumCount')
         agg = {
             'size': 0,
             'aggs': {
@@ -211,8 +211,8 @@ class FacetFilter(BaseFilter):
             }}
         if order:
             agg['aggs'][self.name]['terms']['order'] = {'_count': order}
-        if minimum_count:
-            agg['aggs'][self.name]['terms']['min_doc_count'] = minimum_count
+        if minimumCount:
+            agg['aggs'][self.name]['terms']['min_doc_count'] = minimumCount
         return agg
 
     def get_es_query(self):
@@ -365,3 +365,126 @@ class SimilarityFilter(BaseFilter):
             if simhash:
                 hashes.append(simhash)
         return hashes
+
+
+class LabelFilter(BaseFilter):
+
+    type = 'label'
+    required_agg_keys = ['modelId']
+    required_query_keys = ['labels']
+    optional_keys = ['order', 'minimumCount']
+    agg_prefix = ''
+
+    def get_es_agg(self):
+        modelId = self.data['modelId']
+        order = self.data.get('order')
+        minimumCount = self.data.get('minimumCount')
+        agg = {
+            "size": 0,
+            "query": {
+                "nested": {
+                    "path": "labels",
+                    "query": {
+                        "bool": {
+                            "filter": [
+                                {"term": {"labels.modelId": modelId}}]
+                        }
+                    }
+                }
+            },
+            "aggs": {
+                self.name: {
+                    "nested": {
+                        "path": "labels"
+                    },
+                    "aggs": {
+                        f'nested_{self.name}': {
+                            "terms": {
+                                "field": "labels.label",
+                                "size": 1000
+                            }
+                        }
+                    }
+                }
+            }}
+        if order:
+            agg['aggs'][self.name]['aggs'][f'nested_{self.name}']['terms']['order'] = {'_count': order}  # noqa
+        if minimumCount:
+            agg['aggs'][self.name]['aggs'][f'nested_{self.name}']['terms']['min_doc_count'] = minimumCount  # noqa
+        return agg
+
+    def get_es_query(self):
+        modelId = self.data['modelId']
+        labels = self.data['values']['labels']
+        # Cheat, in case they forget the scope look for all of them
+        scope = self.data['values'].get('scope', 'all')
+        if scope.lower() == 'all':
+            scope = ['TRAIN', 'TEST']
+        else:
+            # Assume they get it right
+            scope = [scope.upper()]
+        query = {
+            'query': {
+                "bool": {
+                    "must": {
+                        "nested": {
+                            "path": "labels",
+                            "query": {
+                                "bool": {
+                                    "filter": [
+                                        {"terms": {"labels.modelId": [modelId]}},
+                                        {"terms": {'labels.label': labels}},
+                                        {"terms": {'labels.scope': scope}}
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return query
+
+    def serialize_agg_response(self, response):
+        """Serializes an aggregation query's response from ZMLP."""
+        count = response['hits']['total']['value']
+        nested_agg_name = f'nested#{self.name}'
+        terms_agg_name = f'sterms#nested_{self.name}'
+        data = response['aggregations'][nested_agg_name][terms_agg_name]
+        return {'count': count, 'results': data}
+
+
+class DateFilter(BaseFilter):
+
+    type = 'date'
+    required_agg_keys = ['attribute']
+    required_query_keys = ['min', 'max']
+    optional_keys = []
+    agg_prefix = 'stats'
+
+    def get_es_agg(self):
+        attribute = self.data['attribute']
+        return {
+            'size': 0,
+            'aggs': {
+                self.name: {
+                    'stats': {
+                        'field': attribute
+                    }
+                }
+            }
+        }
+
+    def get_es_query(self):
+        attribute = self.data['attribute']
+        min = self.data['values']['min']
+        max = self.data['values']['max']
+        return {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'range': {attribute: {'gte': min, 'lte': max}}}
+                    ]
+                }
+            }
+        }

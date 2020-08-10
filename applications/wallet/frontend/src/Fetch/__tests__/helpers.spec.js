@@ -1,4 +1,4 @@
-import { fetcher, getQueryString, getPathname } from '../helpers'
+import { fetcher, revalidate, getQueryString, getPathname } from '../helpers'
 
 describe('<Fetch /> helpers', () => {
   describe('fetcher()', () => {
@@ -57,6 +57,14 @@ describe('<Fetch /> helpers', () => {
     })
   })
 
+  describe('revalidate()', () => {
+    it('should fetch data', async () => {
+      await revalidate({ key: '/url' })
+
+      expect(fetch.mock.calls[0][0]).toEqual('/url')
+    })
+  })
+
   describe('getQueryString()', () => {
     it('should return an empty string with no query params', () => {
       expect(getQueryString()).toEqual('')
@@ -94,6 +102,15 @@ describe('<Fetch /> helpers', () => {
             '/a0952c03-cc04-461c-a367-9ffae8c4199a/jobs/bc8e8b24-7aa2-1f49-a1c6-420403fdacd8/tasks/bc8e92b5-7aa2-1f49-a1c6-420403fdacd8/errors/91325a65-cf73-17a9-bd8f-76ee1900ec47',
         }),
       ).toEqual('/<projectId>/jobs/<jobId>/tasks/<taskId>/errors/<errorId>')
+    })
+
+    it('should strip the assetId', () => {
+      expect(
+        getPathname({
+          pathname:
+            '/a0952c03-cc04-461c-a367-9ffae8c4199a/visualizer/2SdbPKHfNc0CPKBRAyA_V3oM5Oenpt3B',
+        }),
+      ).toEqual('/<projectId>/visualizer/<assetId>')
     })
   })
 })

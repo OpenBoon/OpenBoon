@@ -36,12 +36,14 @@ const Authentication = ({ route, children }) => {
     if (typeof window.gapi === 'undefined') return
 
     window.gapi.load('auth2', async () => {
-      setGoogleAuth(
-        window.gapi.auth2.init({
+      window.gapi.auth2
+        .init({
           client_id: `${GOOGLE_OAUTH_CLIENT_ID}`,
-        }),
-      )
-      setHasGoogleLoaded(true)
+        })
+        .then((gA) => {
+          setGoogleAuth(gA)
+          setHasGoogleLoaded(true)
+        }, noop)
     })
   }, [setGoogleAuth])
 

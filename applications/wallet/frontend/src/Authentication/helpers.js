@@ -23,6 +23,12 @@ export const authenticateUser = ({ setErrorMessage }) => async ({
     return setErrorMessage('Invalid email or password.')
   }
 
+  if (response.status === 423) {
+    return setErrorMessage(
+      'Your account has been locked due to too many failed login attempts.',
+    )
+  }
+
   if (response.status !== 200) {
     return setErrorMessage('Network error.')
   }
@@ -33,7 +39,10 @@ export const authenticateUser = ({ setErrorMessage }) => async ({
   return mutate('/api/v1/me/', { ...user, projectId }, false)
 }
 
-export const logout = ({ googleAuth }) => async ({ redirectUrl }) => {
+export const logout = ({ googleAuth }) => async ({
+  redirectUrl,
+  redirectAs,
+}) => {
   googleAuth.signOut()
 
   const { csrftoken } = Object.fromEntries(
@@ -57,5 +66,5 @@ export const logout = ({ googleAuth }) => async ({ redirectUrl }) => {
 
   localStorage.clear()
 
-  Router.push(redirectUrl)
+  Router.push(redirectUrl, redirectAs)
 }

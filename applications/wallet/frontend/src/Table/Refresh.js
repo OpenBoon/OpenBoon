@@ -18,8 +18,11 @@ const TableRefresh = ({ onClick, legend, refreshKeys }) => {
         if (clicked) return
 
         setClicked(true)
+
         onClick()
+
         refreshKeys.forEach((key) => mutate(key))
+
         setTimeout(() => setClicked(false), 2000)
       }}
     >

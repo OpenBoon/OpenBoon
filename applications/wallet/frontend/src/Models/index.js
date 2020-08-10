@@ -1,8 +1,12 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import { spacing } from '../Styles'
+
+import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import PageTitle from '../PageTitle'
 import FlashMessage, { VARIANTS } from '../FlashMessage'
@@ -15,8 +19,20 @@ import ModelsRow from './Row'
 
 const Models = () => {
   const {
-    query: { projectId, action },
+    query: { projectId, action, modelId },
   } = useRouter()
+
+  const [, setPanel] = useLocalStorageState({
+    key: 'leftOpeningPanel',
+  })
+
+  const [, setModelId] = useLocalStorageState({
+    key: `AssetLabelingAdd.${projectId}.modelId`,
+  })
+
+  const [, setLabel] = useLocalStorageState({
+    key: `AssetLabelingAdd.${projectId}.label`,
+  })
 
   return (
     <>
@@ -32,14 +48,28 @@ const Models = () => {
             Model created.{' '}
             <Link
               href="/[projectId]/visualizer"
-              // TODO: link to the Asset Labeling tab open
-              // with the correct model selected
               as={`/${projectId}/visualizer`}
               passHref
             >
-              <a>Start Labeling</a>
+              <a
+                onClick={() => {
+                  setPanel({ value: 'assetLabeling' })
+                  if (modelId) {
+                    setModelId({ value: modelId })
+                    setLabel({ value: '' })
+                  }
+                }}
+              >
+                Start Labeling
+              </a>
             </Link>
           </FlashMessage>
+        </div>
+      )}
+
+      {action === 'delete-model-success' && (
+        <div css={{ display: 'flex', paddingTop: spacing.base }}>
+          <FlashMessage variant={VARIANTS.SUCCESS}>Model deleted.</FlashMessage>
         </div>
       )}
 

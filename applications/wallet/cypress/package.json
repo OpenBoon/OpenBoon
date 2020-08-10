@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "scripts": {
+    "gui": "cypress open",
+    "cli": "cypress run"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "always",
+    "proseWrap": "always"
+  },
+  "dependencies": {
+    "cypress": "4.11.0"
+  },
+  "devDependencies": {
+    "eslint": "7.6.0",
+    "eslint-plugin-cypress": "2.11.1",
+    "prettier": "2.0.5"
+  }
+}

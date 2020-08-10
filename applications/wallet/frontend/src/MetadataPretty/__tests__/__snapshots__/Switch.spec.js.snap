@@ -234,15 +234,15 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   font-weight: 400;
   text-transform: uppercase;
   color: #808080;
-  padding-bottom: 16px;
-  padding-left: 0;
+  padding: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #3b3b3b;
   text-align: left;
 }
 
 .emotion-1:last-of-type {
   text-align: right;
   white-space: nowrap;
-  padding-right: 0;
 }
 
 .emotion-1:nth-last-of-type(2) {
@@ -254,14 +254,9 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
 }
 
 .emotion-8 td {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-right: 8px;
+  padding: 8px;
+  padding-left: 0;
   border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-8:first-of-type td {
-  padding-top: 0;
 }
 
 .emotion-6:last-of-type {
@@ -278,20 +273,6 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
 
 .emotion-16:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
-}
-
-.emotion-16 > div.ErrorBoundary {
-  padding: 16px 12px;
-}
-
-.emotion-16 > div.ErrorBoundary div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-16 .Loading {
-  background-color: transparent;
-  box-shadow: none;
 }
 
 .emotion-4 {
@@ -454,15 +435,15 @@ Array [
   font-weight: 400;
   text-transform: uppercase;
   color: #808080;
-  padding-bottom: 16px;
-  padding-left: 0;
+  padding: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #3b3b3b;
   text-align: left;
 }
 
 .emotion-1:last-of-type {
   text-align: right;
   white-space: nowrap;
-  padding-right: 0;
 }
 
 .emotion-1:nth-last-of-type(2) {
@@ -474,14 +455,9 @@ Array [
 }
 
 .emotion-5 td {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-right: 8px;
+  padding: 8px;
+  padding-left: 0;
   border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-5:first-of-type td {
-  padding-top: 0;
 }
 
 .emotion-3:last-of-type {
@@ -1032,41 +1008,7 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
 `;
 
 exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`] = `
-Array [
-  .emotion-0 {
-  padding: 16px;
-  padding-bottom: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
-}
-
-.emotion-0:not(:first-of-type) {
-  border-top: 4px solid #3b3b3b;
-}
-
-<div
-    className="emotion-0"
-  >
-    zvi-image-similarity
-  </div>,
-  .emotion-0 {
-  padding: 8px 16px;
-  padding-bottom: 0;
-  min-height: 20px;
-  width: 100%;
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
-  color: #808080;
-}
-
-<div
-    className="emotion-0"
-  >
-    simhash
-  </div>,
-  .emotion-1 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1101,53 +1043,76 @@ Array [
   padding: 0;
 }
 
-.emotion-1:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-1 svg {
+.emotion-3 svg {
   opacity: 0;
 }
 
-.emotion-32 {
+.emotion-35:not(:first-of-type) {
+  border-top: 4px solid #3b3b3b;
+}
+
+.emotion-0 {
+  padding: 16px;
+  padding-bottom: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+}
+
+.emotion-1 {
+  padding: 8px 16px;
+  padding-bottom: 0;
+  min-height: 20px;
+  width: 100%;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  color: #808080;
+}
+
+.emotion-34 {
   padding-bottom: 8px;
 }
 
-.emotion-3 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-3:hover {
+.emotion-5:hover {
   background-color: #0074f538;
 }
 
-.emotion-3:hover svg {
+.emotion-5:hover svg {
   opacity: 1;
 }
 
-.emotion-0 {
+.emotion-2 {
   padding: 12px 16px;
   font-family: Roboto Mono;
   font-size: 14px;
@@ -1157,19 +1122,19 @@ Array [
   text-overflow: ellipsis;
 }
 
-.emotion-2 {
+.emotion-4 {
   min-width: 36px;
   padding-top: 12px;
   padding-right: 16px;
 }
 
-.emotion-31 {
+.emotion-33 {
   padding: 16px;
   padding-top: 4px;
   padding-bottom: 12px;
 }
 
-.emotion-4 {
+.emotion-6 {
   border-top: 1px solid #3b3b3b;
   padding-top: 16px;
   padding-bottom: 12px;
@@ -1178,7 +1143,7 @@ Array [
   color: #808080;
 }
 
-.emotion-30 {
+.emotion-32 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1189,33 +1154,33 @@ Array [
   overflow-x: scroll;
 }
 
-.emotion-30::-webkit-scrollbar {
+.emotion-32::-webkit-scrollbar {
   display: none;
 }
 
-.emotion-10 {
+.emotion-12 {
   width: 100px;
   min-width: 100px;
   height: 100px;
 }
 
-.emotion-9 {
+.emotion-11 {
   position: relative;
   border: 4px solid transparent;
   width: 100%;
   height: 100%;
 }
 
-.emotion-9:hover {
+.emotion-11:hover {
   border: 4px solid #ffffff;
 }
 
-.emotion-9:hover a,
-.emotion-9:hover button {
+.emotion-11:hover a,
+.emotion-11:hover button {
   opacity: 1;
 }
 
-.emotion-6 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1265,22 +1230,22 @@ Array [
   border-radius: 0;
 }
 
-.emotion-6:hover {
+.emotion-8:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5 {
+.emotion-7 {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.emotion-7 {
+.emotion-9 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1319,22 +1284,22 @@ Array [
   background-color: #3b3b3b80;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-9[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7:hover,
-.emotion-7.focus-visible:focus {
+.emotion-9:hover,
+.emotion-9.focus-visible:focus {
   opacity: 1;
   background-color: #3b3b3b;
 }
 
-.emotion-8 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1373,22 +1338,22 @@ Array [
   background-color: #3b3b3b80;
 }
 
-.emotion-8:hover {
+.emotion-10:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
+.emotion-10:hover,
+.emotion-10.focus-visible:focus {
   opacity: 1;
   background-color: #3b3b3b;
 }
 
-.emotion-27 {
+.emotion-29 {
   position: absolute;
   bottom: 4px;
   left: 4px;
@@ -1398,22 +1363,35 @@ Array [
 }
 
 <div
-    className="emotion-32"
+  className="emotion-35"
+>
+  <div
+    className="emotion-0"
+  >
+    zvi-image-similarity
+  </div>
+  <div
+    className="emotion-1"
+  >
+    simhash
+  </div>
+  <div
+    className="emotion-34"
   >
     <div
-      className="emotion-3"
+      className="emotion-5"
     >
       <div
-        className="emotion-0"
+        className="emotion-2"
         title="FBIJPPAIPBPPAPPPBDPLPICAHBDIDPPAAHPPFPBHIPBBLKBOHJJEPAPPBCABCDAPCPBHCCCCHIKEDPEFNPPPPGOPAHKBIAKPFEPFPGGJPPPCPPFPPPLFLBCAKOPNFPBFGPPFCMIBPJJMCGPDKPKDMPPOPODJDGMBDPPAFBJIPBPBCGEFHMBBBPCPIAEKMGPPPPPEBPIGEDAOHDPCPCPAMPALPJIDPGPGDPPHODHPPPPJAGPAPPPNKKPDPPDPPPJPPLPLPPFGBFPPPPMJPPGBHEPPAKPPPPPBLMMBMDPHJPDPPBCALMHOHPPPEPIIKIPMKPDJGEPHPPDPPIDBBCPPCPPIDJLPCPPDFFANJPPDCPFPMAPPPPPAPMKPPCFPABPBGBHPCFPPPAJPDBDNPPFMHMFMBLAPFHFOLJPJAPJKMDNHBPABEGIJPCPFEPJPIPPLPAPGILPEPPHFAGPPPMDFCAPPAPKNDKPPLGJEDNDHGLCPDIPJBPAKAFOPCKIIPEPFIFAPJPCLFJOPLAPPPHPIPCNCHHIPAPDNPALEPGDEGCFCEPLHPJJPENEPFDPGMAKABLOIPGMPCPJPABPPGPFDKJHAFGPPPDEAODPPPPPPJPBPBALIOCMPCLPPJFOPMCDGBCDPHFGDKPJPOAPPCPPCAMPJKOHEPGHCPOGOBHPADPKPEDPAPPAGNPNPKPAKGPCPDPPIKGPPHBKGKGOPICACPPFPPAADPEJIKBIEPPGPPJIGPHMLOGKAPPPLALJHNNPPGAPPAAOPPEBPKBAGBPEPCPEHPPPIPFPPEGJBKDPHPPIPMPBDAEBPJIGCPOOPKOLPFHDHOCAMLCNAPDNGMEHDPPPPAPPEPCCPIGBPPPAPAIPPPONPPPPPPAONICPOPMEBJPMPBEPCNAIECAEBPPPHHINPEABPPPEOEIAAEPPLPNPAPFIPBPPBGHPPCPJAPAPGAHPPLODAPPPBPCEAEPBDDGKGPDFLDPPCPHPPNDPEABPPPDEKAPPPPPPICADCPFFPPBEPDEPPNHMPOPMEGCNFBEFAIFPCFHPEFPPPNJBAEABKPCPJCPDFIPCPGCENMKJECELHPAPPJCNPAEHHBFAEPPAACIPBAPFBDNPAEEIPPAEMMBBPKBENKPFLPDBPPELJPBAICPPBEPNFDGPHDPJJPAHLDNBAPPPJPMLKBPNBPCKKJFLOMHIOJNPPPPPBBBBMPAAOOBPEOKGPCKKPAPFPDPPLPCICODPKBDGMPPPFBPKEBGIPDBACBPEPJPEDJPPEPPPDBPPIIOPFPCFKLDCPOOLLPCHPGLPHFPPKDPNPPPAJJPPPJDIPPFPBPHPKBEBIDDEFOPPPOHMFPBBPPPKPACPAOPEPPFJPNFBHPGDGADPEHBPKPHLEOADBJPPIIPPGBCABAPPGPIPDPNBPAGLKPFCEHIAIPPPPFJKBPCNIGGBPPPBBNPKDMIPLPHPIPLGCPFBPLMNLPIIPAIPELPGPHPPIPPJEPPAAMPMKPGPCBPAPPMPABAHBPFAODNOEKCOGPPGKDHBCPCJEPBIALBDJPPAEPAPGPCPPLADHBGPPLNGHAGPAEPPEHPOPDGPKAMGPPDGIBPFJBDPIBPJPPPCPDPKIFDHCDPGFPMGHPCBPIJMPFDCPLJBEPPPPDKLAJMPBAPIBPBGMICGCDGBNPOAAEJMKPPHPKPPAHMMPKKLPEHPPNKPEPDLPHBPCCPPPHPNPPJBDBCPFCPOCPPEPHNEPNEPKPAAPPPAFFPPAFBEPBHMDCDIPPPFPGEAFBPGGIKBLPFCPGHOJJPEOAMBACCCGAEEPPPPDPPBPPOICPLEEAPABPCPPKPPBPPENDPCHABIDMPPPPPPPIOOCFPPPBHCKEJNGEPEPPGODFPPDKFFNPBEPFIPPCEDOPBPDEOKDOLDDPHCAICAPLCPHPDPPIDHPPLPLJAPECPHCIPAPPHPPPBPCPDPCJIAHMPDFOJAPHPPOGABBPCNPKNPEFHCPPIPFPMPCAPPFALPBPHADPEPAKPECDCPOGPPEPGPOPKMPHPPG"
       >
         FBIJPPAIPBPPAPPPBDPLPICAHBDIDPPAAHPPFPBHIPBBLKBOHJJEPAPPBCABCDAPCPBHCCCCHIKEDPEFNPPPPGOPAHKBIAKPFEPFPGGJPPPCPPFPPPLFLBCAKOPNFPBFGPPFCMIBPJJMCGPDKPKDMPPOPODJDGMBDPPAFBJIPBPBCGEFHMBBBPCPIAEKMGPPPPPEBPIGEDAOHDPCPCPAMPALPJIDPGPGDPPHODHPPPPJAGPAPPPNKKPDPPDPPPJPPLPLPPFGBFPPPPMJPPGBHEPPAKPPPPPBLMMBMDPHJPDPPBCALMHOHPPPEPIIKIPMKPDJGEPHPPDPPIDBBCPPCPPIDJLPCPPDFFANJPPDCPFPMAPPPPPAPMKPPCFPABPBGBHPCFPPPAJPDBDNPPFMHMFMBLAPFHFOLJPJAPJKMDNHBPABEGIJPCPFEPJPIPPLPAPGILPEPPHFAGPPPMDFCAPPAPKNDKPPLGJEDNDHGLCPDIPJBPAKAFOPCKIIPEPFIFAPJPCLFJOPLAPPPHPIPCNCHHIPAPDNPALEPGDEGCFCEPLHPJJPENEPFDPGMAKABLOIPGMPCPJPABPPGPFDKJHAFGPPPDEAODPPPPPPJPBPBALIOCMPCLPPJFOPMCDGBCDPHFGDKPJPOAPPCPPCAMPJKOHEPGHCPOGOBHPADPKPEDPAPPAGNPNPKPAKGPCPDPPIKGPPHBKGKGOPICACPPFPPAADPEJIKBIEPPGPPJIGPHMLOGKAPPPLALJHNNPPGAPPAAOPPEBPKBAGBPEPCPEHPPPIPFPPEGJBKDPHPPIPMPBDAEBPJIGCPOOPKOLPFHDHOCAMLCNAPDNGMEHDPPPPAPPEPCCPIGBPPPAPAIPPPONPPPPPPAONICPOPMEBJPMPBEPCNAIECAEBPPPHHINPEABPPPEOEIAAEPPLPNPAPFIPBPPBGHPPCPJAPAPGAHPPLODAPPPBPCEAEPBDDGKGPDFLDPPCPHPPNDPEABPPPDEKAPPPPPPICADCPFFPPBEPDEPPNHMPOPMEGCNFBEFAIFPCFHPEFPPPNJBAEABKPCPJCPDFIPCPGCENMKJECELHPAPPJCNPAEHHBFAEPPAACIPBAPFBDNPAEEIPPAEMMBBPKBENKPFLPDBPPELJPBAICPPBEPNFDGPHDPJJPAHLDNBAPPPJPMLKBPNBPCKKJFLOMHIOJNPPPPPBBBBMPAAOOBPEOKGPCKKPAPFPDPPLPCICODPKBDGMPPPFBPKEBGIPDBACBPEPJPEDJPPEPPPDBPPIIOPFPCFKLDCPOOLLPCHPGLPHFPPKDPNPPPAJJPPPJDIPPFPBPHPKBEBIDDEFOPPPOHMFPBBPPPKPACPAOPEPPFJPNFBHPGDGADPEHBPKPHLEOADBJPPIIPPGBCABAPPGPIPDPNBPAGLKPFCEHIAIPPPPFJKBPCNIGGBPPPBBNPKDMIPLPHPIPLGCPFBPLMNLPIIPAIPELPGPHPPIPPJEPPAAMPMKPGPCBPAPPMPABAHBPFAODNOEKCOGPPGKDHBCPCJEPBIALBDJPPAEPAPGPCPPLADHBGPPLNGHAGPAEPPEHPOPDGPKAMGPPDGIBPFJBDPIBPJPPPCPDPKIFDHCDPGFPMGHPCBPIJMPFDCPLJBEPPPPDKLAJMPBAPIBPBGMICGCDGBNPOAAEJMKPPHPKPPAHMMPKKLPEHPPNKPEPDLPHBPCCPPPHPNPPJBDBCPFCPOCPPEPHNEPNEPKPAAPPPAFFPPAFBEPBHMDCDIPPPFPGEAFBPGGIKBLPFCPGHOJJPEOAMBACCCGAEEPPPPDPPBPPOICPLEEAPABPCPPKPPBPPENDPCHABIDMPPPPPPPIOOCFPPPBHCKEJNGEPEPPGODFPPDKFFNPBEPFIPPCEDOPBPDEOKDOLDDPHCAICAPLCPHPDPPIDHPPLPLJAPECPHCIPAPPHPPPBPCPDPCJIAHMPDFOJAPHPPOGABBPCNPKNPEFHCPPIPFPMPCAPPFALPBPHADPEPAKPECDCPOGPPEPGPOPKMPHPPG
       </div>
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         <button
-          className="emotion-1"
+          className="emotion-3"
           onClick={[Function]}
           title="Copy to Clipboard"
           type="button"
@@ -1426,37 +1404,37 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-31"
+      className="emotion-33"
     >
       <div
-        className="emotion-4"
+        className="emotion-6"
       >
         Similar Images
       </div>
       <div
-        className="emotion-30"
+        className="emotion-32"
       >
         <div
-          className="emotion-10"
+          className="emotion-12"
         >
           <div
-            className="emotion-9"
+            className="emotion-11"
           >
             <a
-              className="emotion-6"
+              className="emotion-8"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="irr.pdf"
-                className="emotion-5"
+                className="emotion-7"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-7"
+              className="emotion-9"
               onClick={[Function]}
               type="button"
             >
@@ -1467,8 +1445,8 @@ Array [
               />
             </button>
             <a
-              className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
+              className="emotion-10"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
@@ -1481,26 +1459,26 @@ Array [
           </div>
         </div>
         <div
-          className="emotion-10"
+          className="emotion-12"
         >
           <div
-            className="emotion-9"
+            className="emotion-11"
           >
             <a
-              className="emotion-6"
+              className="emotion-8"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="irr.pdf"
-                className="emotion-5"
+                className="emotion-7"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-7"
+              className="emotion-9"
               onClick={[Function]}
               type="button"
             >
@@ -1511,8 +1489,8 @@ Array [
               />
             </button>
             <a
-              className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo?id=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
+              className="emotion-10"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
@@ -1525,26 +1503,26 @@ Array [
           </div>
         </div>
         <div
-          className="emotion-10"
+          className="emotion-12"
         >
           <div
-            className="emotion-9"
+            className="emotion-11"
           >
             <a
-              className="emotion-6"
+              className="emotion-8"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="irr.pdf"
-                className="emotion-5"
+                className="emotion-7"
                 src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r/files/category/web-proxy/name/web-proxy.jpg/"
               />
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-7"
+              className="emotion-9"
               onClick={[Function]}
               type="button"
             >
@@ -1555,8 +1533,8 @@ Array [
               />
             </button>
             <a
-              className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r?id=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
+              className="emotion-10"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
@@ -1569,35 +1547,26 @@ Array [
           </div>
         </div>
         <div
-          className="emotion-10"
+          className="emotion-12"
         >
           <div
-            className="emotion-9"
+            className="emotion-11"
           >
             <a
-              className="emotion-6"
+              className="emotion-8"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              <video
-                className="emotion-5"
-                controlsList="nodownload nofullscreen noremoteplayback"
-                disablePictureInPicture={true}
-                muted={true}
-                playsInline={true}
-                poster="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
-                preload="none"
-              >
-                <source
-                  src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/proxy/name/video_450x360.mp4/"
-                  type="video/mp4"
-                />
-              </video>
+              <img
+                alt="FatManOnABike1914.mp4"
+                className="emotion-7"
+                src="/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/assets/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi/files/category/web-proxy/name/web-proxy.jpg/"
+              />
             </a>
             <button
               aria-label="Find similar images"
-              className="emotion-7"
+              className="emotion-9"
               onClick={[Function]}
               type="button"
             >
@@ -1608,8 +1577,8 @@ Array [
               />
             </button>
             <a
-              className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
+              className="emotion-10"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
@@ -1620,7 +1589,7 @@ Array [
               />
             </a>
             <div
-              className="emotion-27"
+              className="emotion-29"
             >
               2:24
             </div>
@@ -1628,46 +1597,12 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
 
 exports[`<MetadataPrettySwitch /> should render similarity detection with no data properly 1`] = `
-Array [
-  .emotion-0 {
-  padding: 16px;
-  padding-bottom: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
-}
-
-.emotion-0:not(:first-of-type) {
-  border-top: 4px solid #3b3b3b;
-}
-
-<div
-    className="emotion-0"
-  >
-    zvi-image-similarity
-  </div>,
-  .emotion-0 {
-  padding: 8px 16px;
-  padding-bottom: 0;
-  min-height: 20px;
-  width: 100%;
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
-  color: #808080;
-}
-
-<div
-    className="emotion-0"
-  >
-    simhash
-  </div>,
-  .emotion-1 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1702,53 +1637,76 @@ Array [
   padding: 0;
 }
 
-.emotion-1:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-1 svg {
+.emotion-3 svg {
   opacity: 0;
 }
 
-.emotion-4 {
+.emotion-7:not(:first-of-type) {
+  border-top: 4px solid #3b3b3b;
+}
+
+.emotion-0 {
+  padding: 16px;
+  padding-bottom: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+}
+
+.emotion-1 {
+  padding: 8px 16px;
+  padding-bottom: 0;
+  min-height: 20px;
+  width: 100%;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  color: #808080;
+}
+
+.emotion-6 {
   padding-bottom: 8px;
 }
 
-.emotion-3 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-3:hover {
+.emotion-5:hover {
   background-color: #0074f538;
 }
 
-.emotion-3:hover svg {
+.emotion-5:hover svg {
   opacity: 1;
 }
 
-.emotion-0 {
+.emotion-2 {
   padding: 12px 16px;
   font-family: Roboto Mono;
   font-size: 14px;
@@ -1758,29 +1716,42 @@ Array [
   text-overflow: ellipsis;
 }
 
-.emotion-2 {
+.emotion-4 {
   min-width: 36px;
   padding-top: 12px;
   padding-right: 16px;
 }
 
 <div
-    className="emotion-4"
+  className="emotion-7"
+>
+  <div
+    className="emotion-0"
+  >
+    zvi-image-similarity
+  </div>
+  <div
+    className="emotion-1"
+  >
+    simhash
+  </div>
+  <div
+    className="emotion-6"
   >
     <div
-      className="emotion-3"
+      className="emotion-5"
     >
       <div
-        className="emotion-0"
+        className="emotion-2"
         title="FBIJPPAIPBPPAPPPBDPLPICAHBDIDPPAAHPPFPBHIPBBLKBOHJJEPAPPBCABCDAPCPBHCCCCHIKEDPEFNPPPPGOPAHKBIAKPFEPFPGGJPPPCPPFPPPLFLBCAKOPNFPBFGPPFCMIBPJJMCGPDKPKDMPPOPODJDGMBDPPAFBJIPBPBCGEFHMBBBPCPIAEKMGPPPPPEBPIGEDAOHDPCPCPAMPALPJIDPGPGDPPHODHPPPPJAGPAPPPNKKPDPPDPPPJPPLPLPPFGBFPPPPMJPPGBHEPPAKPPPPPBLMMBMDPHJPDPPBCALMHOHPPPEPIIKIPMKPDJGEPHPPDPPIDBBCPPCPPIDJLPCPPDFFANJPPDCPFPMAPPPPPAPMKPPCFPABPBGBHPCFPPPAJPDBDNPPFMHMFMBLAPFHFOLJPJAPJKMDNHBPABEGIJPCPFEPJPIPPLPAPGILPEPPHFAGPPPMDFCAPPAPKNDKPPLGJEDNDHGLCPDIPJBPAKAFOPCKIIPEPFIFAPJPCLFJOPLAPPPHPIPCNCHHIPAPDNPALEPGDEGCFCEPLHPJJPENEPFDPGMAKABLOIPGMPCPJPABPPGPFDKJHAFGPPPDEAODPPPPPPJPBPBALIOCMPCLPPJFOPMCDGBCDPHFGDKPJPOAPPCPPCAMPJKOHEPGHCPOGOBHPADPKPEDPAPPAGNPNPKPAKGPCPDPPIKGPPHBKGKGOPICACPPFPPAADPEJIKBIEPPGPPJIGPHMLOGKAPPPLALJHNNPPGAPPAAOPPEBPKBAGBPEPCPEHPPPIPFPPEGJBKDPHPPIPMPBDAEBPJIGCPOOPKOLPFHDHOCAMLCNAPDNGMEHDPPPPAPPEPCCPIGBPPPAPAIPPPONPPPPPPAONICPOPMEBJPMPBEPCNAIECAEBPPPHHINPEABPPPEOEIAAEPPLPNPAPFIPBPPBGHPPCPJAPAPGAHPPLODAPPPBPCEAEPBDDGKGPDFLDPPCPHPPNDPEABPPPDEKAPPPPPPICADCPFFPPBEPDEPPNHMPOPMEGCNFBEFAIFPCFHPEFPPPNJBAEABKPCPJCPDFIPCPGCENMKJECELHPAPPJCNPAEHHBFAEPPAACIPBAPFBDNPAEEIPPAEMMBBPKBENKPFLPDBPPELJPBAICPPBEPNFDGPHDPJJPAHLDNBAPPPJPMLKBPNBPCKKJFLOMHIOJNPPPPPBBBBMPAAOOBPEOKGPCKKPAPFPDPPLPCICODPKBDGMPPPFBPKEBGIPDBACBPEPJPEDJPPEPPPDBPPIIOPFPCFKLDCPOOLLPCHPGLPHFPPKDPNPPPAJJPPPJDIPPFPBPHPKBEBIDDEFOPPPOHMFPBBPPPKPACPAOPEPPFJPNFBHPGDGADPEHBPKPHLEOADBJPPIIPPGBCABAPPGPIPDPNBPAGLKPFCEHIAIPPPPFJKBPCNIGGBPPPBBNPKDMIPLPHPIPLGCPFBPLMNLPIIPAIPELPGPHPPIPPJEPPAAMPMKPGPCBPAPPMPABAHBPFAODNOEKCOGPPGKDHBCPCJEPBIALBDJPPAEPAPGPCPPLADHBGPPLNGHAGPAEPPEHPOPDGPKAMGPPDGIBPFJBDPIBPJPPPCPDPKIFDHCDPGFPMGHPCBPIJMPFDCPLJBEPPPPDKLAJMPBAPIBPBGMICGCDGBNPOAAEJMKPPHPKPPAHMMPKKLPEHPPNKPEPDLPHBPCCPPPHPNPPJBDBCPFCPOCPPEPHNEPNEPKPAAPPPAFFPPAFBEPBHMDCDIPPPFPGEAFBPGGIKBLPFCPGHOJJPEOAMBACCCGAEEPPPPDPPBPPOICPLEEAPABPCPPKPPBPPENDPCHABIDMPPPPPPPIOOCFPPPBHCKEJNGEPEPPGODFPPDKFFNPBEPFIPPCEDOPBPDEOKDOLDDPHCAICAPLCPHPDPPIDHPPLPLJAPECPHCIPAPPHPPPBPCPDPCJIAHMPDFOJAPHPPOGABBPCNPKNPEFHCPPIPFPMPCAPPFALPBPHADPEPAKPECDCPOGPPEPGPOPKMPHPPG"
       >
         FBIJPPAIPBPPAPPPBDPLPICAHBDIDPPAAHPPFPBHIPBBLKBOHJJEPAPPBCABCDAPCPBHCCCCHIKEDPEFNPPPPGOPAHKBIAKPFEPFPGGJPPPCPPFPPPLFLBCAKOPNFPBFGPPFCMIBPJJMCGPDKPKDMPPOPODJDGMBDPPAFBJIPBPBCGEFHMBBBPCPIAEKMGPPPPPEBPIGEDAOHDPCPCPAMPALPJIDPGPGDPPHODHPPPPJAGPAPPPNKKPDPPDPPPJPPLPLPPFGBFPPPPMJPPGBHEPPAKPPPPPBLMMBMDPHJPDPPBCALMHOHPPPEPIIKIPMKPDJGEPHPPDPPIDBBCPPCPPIDJLPCPPDFFANJPPDCPFPMAPPPPPAPMKPPCFPABPBGBHPCFPPPAJPDBDNPPFMHMFMBLAPFHFOLJPJAPJKMDNHBPABEGIJPCPFEPJPIPPLPAPGILPEPPHFAGPPPMDFCAPPAPKNDKPPLGJEDNDHGLCPDIPJBPAKAFOPCKIIPEPFIFAPJPCLFJOPLAPPPHPIPCNCHHIPAPDNPALEPGDEGCFCEPLHPJJPENEPFDPGMAKABLOIPGMPCPJPABPPGPFDKJHAFGPPPDEAODPPPPPPJPBPBALIOCMPCLPPJFOPMCDGBCDPHFGDKPJPOAPPCPPCAMPJKOHEPGHCPOGOBHPADPKPEDPAPPAGNPNPKPAKGPCPDPPIKGPPHBKGKGOPICACPPFPPAADPEJIKBIEPPGPPJIGPHMLOGKAPPPLALJHNNPPGAPPAAOPPEBPKBAGBPEPCPEHPPPIPFPPEGJBKDPHPPIPMPBDAEBPJIGCPOOPKOLPFHDHOCAMLCNAPDNGMEHDPPPPAPPEPCCPIGBPPPAPAIPPPONPPPPPPAONICPOPMEBJPMPBEPCNAIECAEBPPPHHINPEABPPPEOEIAAEPPLPNPAPFIPBPPBGHPPCPJAPAPGAHPPLODAPPPBPCEAEPBDDGKGPDFLDPPCPHPPNDPEABPPPDEKAPPPPPPICADCPFFPPBEPDEPPNHMPOPMEGCNFBEFAIFPCFHPEFPPPNJBAEABKPCPJCPDFIPCPGCENMKJECELHPAPPJCNPAEHHBFAEPPAACIPBAPFBDNPAEEIPPAEMMBBPKBENKPFLPDBPPELJPBAICPPBEPNFDGPHDPJJPAHLDNBAPPPJPMLKBPNBPCKKJFLOMHIOJNPPPPPBBBBMPAAOOBPEOKGPCKKPAPFPDPPLPCICODPKBDGMPPPFBPKEBGIPDBACBPEPJPEDJPPEPPPDBPPIIOPFPCFKLDCPOOLLPCHPGLPHFPPKDPNPPPAJJPPPJDIPPFPBPHPKBEBIDDEFOPPPOHMFPBBPPPKPACPAOPEPPFJPNFBHPGDGADPEHBPKPHLEOADBJPPIIPPGBCABAPPGPIPDPNBPAGLKPFCEHIAIPPPPFJKBPCNIGGBPPPBBNPKDMIPLPHPIPLGCPFBPLMNLPIIPAIPELPGPHPPIPPJEPPAAMPMKPGPCBPAPPMPABAHBPFAODNOEKCOGPPGKDHBCPCJEPBIALBDJPPAEPAPGPCPPLADHBGPPLNGHAGPAEPPEHPOPDGPKAMGPPDGIBPFJBDPIBPJPPPCPDPKIFDHCDPGFPMGHPCBPIJMPFDCPLJBEPPPPDKLAJMPBAPIBPBGMICGCDGBNPOAAEJMKPPHPKPPAHMMPKKLPEHPPNKPEPDLPHBPCCPPPHPNPPJBDBCPFCPOCPPEPHNEPNEPKPAAPPPAFFPPAFBEPBHMDCDIPPPFPGEAFBPGGIKBLPFCPGHOJJPEOAMBACCCGAEEPPPPDPPBPPOICPLEEAPABPCPPKPPBPPENDPCHABIDMPPPPPPPIOOCFPPPBHCKEJNGEPEPPGODFPPDKFFNPBEPFIPPCEDOPBPDEOKDOLDDPHCAICAPLCPHPDPPIDHPPLPLJAPECPHCIPAPPHPPPBPCPDPCJIAHMPDFOJAPHPPOGABBPCNPKNPEFHCPPIPFPMPCAPPFALPBPHADPEPAKPECDCPOGPPEPGPOPKMPHPPG
       </div>
       <div
-        className="emotion-2"
+        className="emotion-4"
       >
         <button
-          className="emotion-1"
+          className="emotion-3"
           onClick={[Function]}
           title="Copy to Clipboard"
           type="button"
@@ -1792,6 +1763,6 @@ Array [
         </button>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;

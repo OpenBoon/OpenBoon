@@ -1,3 +1,6 @@
+import logging
+
+from django.conf import settings
 from rest_framework.exceptions import ParseError
 
 from wallet.exceptions import InvalidRequestError
@@ -5,26 +8,36 @@ from wallet.utils import convert_base64_to_json
 from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
                               LabelsAnalysisSchema, TYPE_FIELD_MAPPING)
 from searches.filters import (ExistsFilter, FacetFilter, RangeFilter, LabelConfidenceFilter,
-                              TextContentFilter, SimilarityFilter)
+                              TextContentFilter, SimilarityFilter, LabelFilter, DateFilter)
+
 
 ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema]
+logger = logging.getLogger(__name__)
 
 
 class FieldUtility(object):
 
-    def get_fields_from_mappings(self, mappings):
+    def get_fields_from_mappings(self, mappings, client=None):
         """Converts an ES Indexes mappings response into a field:filter map."""
         fields = {}
         properties = mappings['properties']
         for property in properties:
-            fields.update(self.get_filters_for_child_fields(property, properties[property]))
+            # Labels is a top level property
+            if property == 'labels':
+                # If we end up with more special cases in the future, let's create a
+                # map of properties to helper functions for this conditional.
+                fields.update(self.get_labels_field_mapping(property, properties[property],
+                                                            client=client))
+            else:
+                fields.update(self.get_filters_for_child_fields(property, properties[property],
+                                                                client=client))
         return fields
 
-    def get_filters_for_child_fields(self, property_name, values):
+    def get_filters_for_child_fields(self, property_name, values, client=None):
         """Recursively build the dict structure for an attribute and retrieve it's filters.
 
         Returns:
-            <dict>: A dict of dicts where each key is part of the attriburte dot path,
+            <dict>: A dict of dicts where each key is part of the attribute dot path,
             and the final value is the list of allowed filters.
         """
         fields = {property_name: {}}
@@ -56,6 +69,48 @@ class FieldUtility(object):
 
         return None
 
+    def get_labels_field_mapping(self, property_name, child_properties, client=None):
+        """Gets the available filters for all labels/models.
+
+        Args:
+            property_name (str): Name of the current field property being examined.
+            child_properties (dict): Subset of children properties for property_name.
+            client (ZMLPClient): Client that will be used to retrieve the model names.
+
+        Returns:
+            (dict): Returns the set of models/filters for the "labels" section of fields.
+        """
+        if not client:
+            logger.warning('No Client provided. Unable to retrieve models.')
+            return {'labels': {}}
+        # query for all the model names/ids, return with available filters
+        if settings.FEATURE_FLAGS['USE_MODEL_IDS_FOR_LABEL_FILTERS']:
+            # TODO: Remove flag once frontend is updated, this should be new default
+            model_key_names = self._get_all_model_ids(client)
+        else:
+            model_key_names = self._get_all_model_names(client)
+        model_filters = {}
+        for model in model_key_names:
+            model_filters[model] = ['label']
+
+        return {'labels': model_filters}
+
+    def _get_all_model_names(self, client):
+        path = '/api/v3/models/_search'
+        response = client.post(path, {})
+        names = []
+        for model in response.get('list', []):
+            names.append(model['name'])
+        return names
+
+    def _get_all_model_ids(self, client):
+        path = '/api/v3/models/_search'
+        response = client.post(path, {})
+        names = []
+        for model in response.get('list', []):
+            names.append(model['id'])
+        return names
+
 
 class FilterBuddy(object):
 
@@ -64,7 +119,9 @@ class FilterBuddy(object):
                RangeFilter,
                LabelConfidenceFilter,
                TextContentFilter,
-               SimilarityFilter]
+               SimilarityFilter,
+               LabelFilter,
+               DateFilter]
 
     def get_filter_from_request(self, request):
         """Gets Filter object from a requests querystring.

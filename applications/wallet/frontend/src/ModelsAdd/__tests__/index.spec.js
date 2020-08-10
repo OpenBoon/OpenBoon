@@ -1,5 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import models from '../../Models/__mocks__/models'
 import modelTypes from '../../ModelTypes/__mocks__/modelTypes'
 import mockUser from '../../User/__mocks__/user'
 
@@ -10,6 +11,7 @@ import ModelsAdd from '..'
 const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+const MODEL_ID = models.results[0].id
 
 describe('<ModelsAdd />', () => {
   it('should render properly', async () => {
@@ -49,8 +51,8 @@ describe('<ModelsAdd />', () => {
     // Select valid type
     act(() => {
       component.root
-        .findByProps({ id: 'model-types' })
-        .props.onChange({ target: { value: 'GCP_LABEL_DETECTION' } })
+        .findByProps({ label: 'Model Type' })
+        .props.onChange({ value: 'GCP_LABEL_DETECTION' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -78,7 +80,7 @@ describe('<ModelsAdd />', () => {
     })
 
     // Mock Success
-    fetch.mockResponseOnce(JSON.stringify({ detail: 'New Model Created' }))
+    fetch.mockResponseOnce(JSON.stringify({ results: { id: MODEL_ID } }))
 
     // Click Submit
     await act(async () => {
@@ -87,7 +89,7 @@ describe('<ModelsAdd />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(3)
+    expect(fetch.mock.calls.length).toEqual(4)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/models/`,
@@ -106,8 +108,8 @@ describe('<ModelsAdd />', () => {
     })
 
     expect(mockFn).toHaveBeenCalledWith(
-      '/[projectId]/models?action=add-model-success',
-      `/${PROJECT_ID}/models?action=add-model-success`,
+      `/[projectId]/models?action=add-model-success&modelId=${MODEL_ID}`,
+      `/${PROJECT_ID}/models`,
     )
   })
 })

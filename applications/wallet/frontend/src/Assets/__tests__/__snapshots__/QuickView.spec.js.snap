@@ -7,7 +7,7 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 20;
   background-color: #000000e6;
 }
 
@@ -93,16 +93,6 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 32px;
-}
-
-.emotion-1 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-1 .Loading {
-  background-color: transparent;
-  box-shadow: none;
 }
 
 <div

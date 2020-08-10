@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-import { fetcher, getQueryString } from '../Fetch/helpers'
+import { fetcher, revalidate, getQueryString } from '../Fetch/helpers'
 
 export const onSubmit = async ({
   dispatch,
@@ -10,19 +10,24 @@ export const onSubmit = async ({
   dispatch({ isLoading: true })
 
   try {
-    await fetcher(`/api/v1/projects/${projectId}/models/`, {
+    const {
+      results: { id: modelId },
+    } = await fetcher(`/api/v1/projects/${projectId}/models/`, {
       method: 'POST',
       body: JSON.stringify({ name, type }),
     })
 
-    const queryString = getQueryString({
-      action: 'add-model-success',
+    await revalidate({
+      key: `/api/v1/projects/${projectId}/models/`,
+      paginated: true,
     })
 
-    Router.push(
-      `/[projectId]/models${queryString}`,
-      `/${projectId}/models${queryString}`,
-    )
+    const queryString = getQueryString({
+      action: 'add-model-success',
+      modelId,
+    })
+
+    Router.push(`/[projectId]/models${queryString}`, `/${projectId}/models`)
   } catch (response) {
     try {
       const errors = await response.json()

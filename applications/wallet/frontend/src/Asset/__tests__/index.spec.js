@@ -70,7 +70,7 @@ describe('<Asset />', () => {
     })
 
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, id: ASSET_ID, query: '' },
+      query: { projectId: PROJECT_ID, id: ASSET_ID },
     })
 
     const component = TestRenderer.create(

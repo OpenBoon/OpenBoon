@@ -27,7 +27,6 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     zmlp_only = True
     zmlp_root_api_path = 'api/v3/assets/'
     detection_attr = 'analysis.zvi-face-detection'
-    recognition_attr = 'analysis.zvi-face-recognition'
     model_name = 'console'
     serializer_class = UpdateFaceLabelsSerializer
     pagination_class = ZMLPFromSizePagination
@@ -102,6 +101,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         if not asset.get_attr(self.detection_attr):
             return Response(status=status.HTTP_200_OK, data=data)
         model = self._get_model(app)
+        recognition_attr = f'analysis.{model.module_name}'
 
         # Get the bboxes for each prediction
         imager = AssetBoxImager(asset, client)
@@ -110,7 +110,7 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
                                                                 width=width)['predictions']
 
         # Get existing predictions from face-recognition
-        recognition_predictions = asset.get_attr(self.recognition_attr, {}).get('predictions', [])
+        recognition_predictions = asset.get_attr(recognition_attr, {}).get('predictions', [])
 
         # Filter existing labels to only those for this model
         labels = asset.document.get('labels', [])
@@ -218,11 +218,12 @@ class FaceViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         app = request.app
 
         # Check for jobs
-        name_prefix = f'Train {self.model_name}'
-        running_jobs = app.jobs.find_jobs(state='InProgress')
+        patterns = [f'Train {self.model_name} ',
+                    f'Training model: {self.model_name} -']
+        running_jobs = app.jobs.find_jobs(state='InProgress', sort=['timeCreated:d'])
         job_id = ''
         for job in running_jobs:
-            if job.name.startswith(name_prefix):
+            if any([job.name.startswith(pattern) for pattern in patterns]):
                 job_id = job.id
 
         # Check for unapplied changes - always True until we can use real logic

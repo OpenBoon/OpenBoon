@@ -9,7 +9,9 @@ __all__ = [
     'AssetSearchCsvExporter',
     'LabelConfidenceQuery',
     'SimilarityQuery',
-    'FaceSimilarityQuery'
+    'FaceSimilarityQuery',
+    'LabelConfidenceTermsAggregation',
+    'LabelConfidenceMetricsAggregation'
 ]
 
 
@@ -319,6 +321,68 @@ class AssetSearchResult(object):
         return self.assets[item]
 
 
+class LabelConfidenceTermsAggregation(object):
+    """
+    Convenience class for making a simple terms aggregation on an array of predictions
+    """
+    def __init__(self, namespace):
+        self.field = "analysis.{}.predictions".format(namespace)
+
+    def for_json(self):
+        return {
+            "nested": {
+                "path": self.field
+            },
+            "aggs": {
+                "names": {
+                    "terms": {
+                        "field": self.field + ".label",
+                        "size": 1000,
+                        "order": {"_count": "desc"}
+                    }
+                }
+            }
+        }
+
+
+class LabelConfidenceMetricsAggregation(object):
+
+    def __init__(self, namespace, agg_type="stats"):
+        """
+        Create a new LabelConfidenceMetricsAggregation
+
+        Args:
+            namespace (str): The analysis namespace. (ex: zvi-label-detection)
+            agg_type (str): A type of metrics agg to perform.
+                stats, extended_stats,
+        """
+        self.field = "analysis.{}.predictions".format(namespace)
+        self.agg_type = agg_type
+
+    def for_json(self):
+        return {
+            "nested": {
+                "path": self.field
+            },
+            "aggs": {
+                "labels": {
+                    "terms": {
+                        "field": self.field + ".label",
+                        "size": 1000,
+                        "order": {"_count": "desc"}
+                    },
+                    "aggs": {
+                        "stats": {
+                            self.agg_type: {
+                                "field": self.field + ".score"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
 class LabelConfidenceQuery(object):
     """
     A helper class for building a label confidence score query.  This query must point
@@ -331,14 +395,15 @@ class LabelConfidenceQuery(object):
         ]
     """
 
-    def __init__(self, namespace, labels, min_score, max_score=1.0):
+    def __init__(self, namespace, labels, min_score=0.1, max_score=1.0):
         """
         Create a new LabelConfidenceScoreQuery.
 
         Args:
-            namespace (str): The analysis namespace with predictions. (zvi-label-detection)
+            namespace (str): The analysis namespace with predictions. (ex: zvi-label-detection)
             labels (list): A list of labels to filter.
-            min_score (float): The minimum label score.
+            min_score (float): The minimum label score, default to 0.1.
+            Note that 0.0 allows everything.
             max_score (float): The maximum score, defaults to 1.0 which is highest
         """
         self.namespace = namespace
@@ -348,22 +413,49 @@ class LabelConfidenceQuery(object):
 
     def for_json(self):
         return {
-            "script_score": {
-                "query": {
-                    "terms": {
-                        self.field + ".label": self.labels
+            "bool": {
+                "filter": [
+                    {
+                        "terms": {
+                            self.field + ".label": self.labels
+                        }
                     }
-                },
-                "script": {
-                    "source": "kwconf",
-                    "lang": "zorroa-kwconf",
-                    "params": {
-                        "field": self.field,
-                        "labels": self.labels,
-                        "range": self.score
+                ],
+                "must": [
+                    {
+                        "nested": {
+                            "path": self.field,
+                            "query": {
+                                "function_score": {
+                                    "boost_mode": "sum",
+                                    "field_value_factor": {
+                                        "field": self.field + ".score",
+                                        "missing": 0
+                                    },
+                                    "query": {
+                                        "bool": {
+                                            "filter": [
+                                                {
+                                                    "terms": {
+                                                        self.field + ".label": self.labels
+                                                    }
+                                                },
+                                                {
+                                                    "range": {
+                                                        self.field + ".score": {
+                                                            "gte": self.score[0],
+                                                            "lte": self.score[1]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                },
-                "min_score": self.score[0]
+                ]
             }
         }
 

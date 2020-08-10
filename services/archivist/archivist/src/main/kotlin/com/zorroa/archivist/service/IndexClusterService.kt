@@ -169,7 +169,7 @@ class IndexClusterMonitor(
     fun setupClusterPingTimer(): Timer {
         return fixedRateTimer(
             name = "index-ping-timer",
-            initialDelay = 3000, period = 10000
+            initialDelay = 500, period = 5000
         ) {
             // Don't ping clusters during unittest.
             if (!ArchivistConfiguration.unittest) {

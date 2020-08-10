@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-import { fetcher, getQueryString } from '../Fetch/helpers'
+import { fetcher, revalidate, getQueryString } from '../Fetch/helpers'
 
 export const getInitialModules = ({
   initialState: { modules: existingModules },
@@ -44,6 +44,11 @@ export const onSubmit = async ({
       },
     )
 
+    await revalidate({
+      key: `/api/v1/projects/${projectId}/data_sources/`,
+      paginated: true,
+    })
+
     const queryString = getQueryString({
       action: 'edit-datasource-success',
       jobId,
@@ -51,7 +56,7 @@ export const onSubmit = async ({
 
     Router.push(
       `/[projectId]/data-sources${queryString}`,
-      `/${projectId}/data-sources${queryString}`,
+      `/${projectId}/data-sources`,
     )
   } catch (response) {
     try {

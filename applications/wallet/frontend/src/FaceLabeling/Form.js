@@ -15,6 +15,7 @@ const BBOX_SIZE = 64
 
 const INITIAL_STATE = ({ labels }) => ({
   labels,
+  isChanged: false,
   isLoading: false,
   errors: { labels: {}, global: '' },
 })
@@ -36,18 +37,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
 
   const { possibleLabels = [] } = data || {}
 
-  const changedLabelsCount = Object.entries(state.labels).reduce(
-    (acc, [key, value]) => {
-      if (value === predictions.find((p) => p.simhash === key).label) {
-        return acc
-      }
-      return acc + 1
-    },
-    0,
-  )
-
-  const isChanged = changedLabelsCount > 0
-  const { isLoading } = state
+  const { isChanged, isLoading } = state
 
   return (
     <>
@@ -73,10 +63,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
             overflow: 'auto',
           }}
         >
-          {predictions.map(({ simhash, bbox, b64Image }) => {
-            const originalValue = predictions.find((p) => p.simhash === simhash)
-              .label
-
+          {predictions.map(({ simhash, bbox, b64Image, label }) => {
             return (
               <div
                 key={simhash}
@@ -99,13 +86,12 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
                 />
                 <Combobox
                   key={reloadKey}
-                  id={simhash}
-                  inputLabel="Name:"
+                  label="Name"
                   options={possibleLabels}
-                  originalValue={originalValue}
-                  currentValue={state.labels[simhash]}
+                  value={state.labels[simhash]}
                   onChange={({ value }) => {
                     return dispatch({
+                      isChanged: value !== label,
                       labels: {
                         ...state.labels,
                         [simhash]: value,

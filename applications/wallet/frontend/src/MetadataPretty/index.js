@@ -1,12 +1,22 @@
 import PropTypes from 'prop-types'
 
-import MetadataPrettySwitch from './Switch'
+import SuspenseBoundary from '../SuspenseBoundary'
 
 import MetadataPrettyMetrics from './Metrics'
+import MetadataPrettyLabels from './Labels'
+import MetadataPrettySwitch from './Switch'
 
 const MetadataPretty = ({ metadata, section }) => {
   if (section === 'metrics') {
     return <MetadataPrettyMetrics pipeline={metadata.metrics.pipeline} />
+  }
+
+  if (section === 'labels') {
+    return (
+      <SuspenseBoundary isTransparent>
+        <MetadataPrettyLabels />
+      </SuspenseBoundary>
+    )
   }
 
   return (

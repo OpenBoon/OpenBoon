@@ -2,27 +2,28 @@ import Router from 'next/router'
 
 import { colors } from '../Styles'
 
-import { fetcher, getQueryString } from '../Fetch/helpers'
+import { fetcher, revalidate, getQueryString } from '../Fetch/helpers'
 
 export const FILE_TYPES = [
   {
     value: 'Images',
     label: 'Image Files',
-    legend: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
+    extensions: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
     icon: '/icons/images.png',
     color: colors.signal.canary.base,
   },
   {
     value: 'Documents',
     label: 'Documents (PDF & MS Office)',
-    legend: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
+    legend: 'Pages will be processed and counted as individual assets',
+    extensions: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
     icon: '/icons/documents.png',
     color: colors.graph.seafoam,
   },
   {
     value: 'Videos',
     label: 'Video Files',
-    legend: 'MP4, M4V, MOV, MPG, MPEG, OGG',
+    extensions: 'MP4, M4V, MOV, MPG, MPEG, OGG',
     icon: '/icons/videos.png',
     color: colors.graph.lilac,
   },
@@ -63,6 +64,11 @@ export const onSubmit = async ({
       },
     )
 
+    await revalidate({
+      key: `/api/v1/projects/${projectId}/data_sources/`,
+      paginated: true,
+    })
+
     const queryString = getQueryString({
       action: 'add-datasource-success',
       jobId,
@@ -70,7 +76,7 @@ export const onSubmit = async ({
 
     Router.push(
       `/[projectId]/data-sources${queryString}`,
-      `/${projectId}/data-sources${queryString}`,
+      `/${projectId}/data-sources`,
     )
   } catch (response) {
     try {

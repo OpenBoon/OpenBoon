@@ -32,12 +32,14 @@
         "**/*.spec.js",
         "**/__mocks__/**/*.js",
         "next.config.js",
+        "jest.setup.js",
         "devServer.js"
       ],
       "rules": {
         "global-require": "off",
         "no-underscore-dangle": "off",
         "no-console": "off",
+        "react/prop-types": "off",
         "import/no-extraneous-dependencies": "off",
         "import/prefer-default-export": "off"
       }

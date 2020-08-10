@@ -73,7 +73,7 @@ class ModelServiceImpl(
 
         val moduleName = (spec.moduleName ?: spec.type.moduleName ?: spec.name)
 
-        if (moduleName.trim().length == 0 || !moduleName.matches(modelNameRegex)) {
+        if (moduleName.trim().isEmpty() || !moduleName.matches(modelNameRegex)) {
             throw IllegalArgumentException(
                 "Model names must be alpha-numeric," +
                     " dashes,underscores, and spaces are allowed."
@@ -91,7 +91,7 @@ class ModelServiceImpl(
             spec.name,
             moduleName,
             locator.getFileId(),
-            "Training model ${spec.type.name} : ${spec.name}",
+            "Training model: ${spec.name} - [${spec.type.objective}]",
             false,
             spec.deploySearch, // VALIDATE THIS PARSES.
             time,
@@ -183,24 +183,7 @@ class ModelServiceImpl(
 
     override fun publishModel(model: Model, args: Map<String, Any>?): PipelineMod {
         val mod = pipelineModService.findByName(model.moduleName, false)
-        val ops = listOf(
-            ModOp(
-                ModOpType.APPEND,
-                listOf(
-                    ProcessorRef(
-                        model.type.classifyProcessor,
-                        StandardContainers.ANALYSIS,
-                        model.type.classifyArgs.plus(
-                            mapOf(
-                                "model_id" to model.id.toString(),
-                                "version" to System.currentTimeMillis()
-                            )
-                        ).plus(args ?: emptyMap()),
-                        module = model.name
-                    )
-                )
-            )
-        )
+        val ops = buildModuleOps(model, args)
 
         if (mod != null) {
             // Set version number to change checksum
@@ -226,6 +209,46 @@ class ModelServiceImpl(
             modelJdbcDao.markAsReady(model.id, true)
             return pipelineModService.create(modspec)
         }
+    }
+
+    fun buildModuleOps(model: Model, args: Map<String, Any>?): List<ModOp> {
+        val ops = mutableListOf<ModOp>()
+
+        for (depend in model.type.dependencies) {
+            val mod = pipelineModService.findByName(depend, true)
+            ops.addAll(mod?.ops ?: emptyList())
+        }
+
+        // Add the dependency before.
+        if (model.type.dependencies.isNotEmpty()) {
+            ops.add(
+                ModOp(
+                    ModOpType.DEPEND,
+                    model.type.dependencies
+                )
+            )
+        }
+
+        ops.add(
+            ModOp(
+                ModOpType.APPEND,
+                listOf(
+                    ProcessorRef(
+                        model.type.classifyProcessor,
+                        StandardContainers.ANALYSIS,
+                        model.type.classifyArgs.plus(
+                            mapOf(
+                                "model_id" to model.id.toString(),
+                                "version" to System.currentTimeMillis()
+                            )
+                        ).plus(args ?: emptyMap()),
+                        module = model.name
+                    )
+                )
+            )
+        )
+
+        return ops
     }
 
     override fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any> {

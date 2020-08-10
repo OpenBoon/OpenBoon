@@ -11,7 +11,9 @@ import com.zorroa.archivist.domain.IndexCluster
 import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
+import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
+import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.repository.IndexClusterDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
@@ -21,6 +23,7 @@ import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
+import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestClient
@@ -28,6 +31,7 @@ import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.client.indices.CloseIndexRequest
 import org.elasticsearch.client.indices.CreateIndexRequest
 import org.elasticsearch.client.indices.PutMappingRequest
+import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -63,6 +67,11 @@ interface IndexRoutingService {
     fun createIndexRoute(spec: IndexRouteSpec): IndexRoute
 
     /**
+     * A simple form of index route creation.
+     */
+    fun createIndexRoute(spec: IndexRouteSimpleSpec): IndexRoute
+
+    /**
      * Get an [EsRestClient] for the current users project.
      *
      * @return: EsRestClient
@@ -79,10 +88,19 @@ interface IndexRoutingService {
     fun getClusterRestClient(route: IndexRoute): EsRestClient
 
     /**
+     * Get an non-routed [EsRestClient] for cluster wide operations.
+     *
+     * @param routeId: The [UUID] to get a client for.
+     *
+     * @return: EsRestClient
+     */
+    fun getClusterRestClient(routeId: UUID): EsRestClient
+
+    /**
      * Apply any outstanding mapping patches to the given [IndexRoute]
      *
      * @param route The IndexRoute to version up.
-     * @return the [ElasticMapping] the route was updat to.
+     * @return the [ElasticMapping] the route was update to.
      */
     fun syncIndexRouteVersion(route: IndexRoute): ElasticMapping?
 
@@ -157,6 +175,12 @@ interface IndexRoutingService {
      * Close and delete the given index.
      */
     fun closeAndDeleteIndex(route: IndexRoute): Boolean
+
+    /**
+     * Sets the index refresh interval. Setting to -1 disables refreshing, this is used
+     * to speed up reindexing.
+     */
+    fun setIndexRefreshInterval(route: IndexRoute, interval: String): Boolean
 }
 
 /**
@@ -183,6 +207,18 @@ constructor(
 
     @Autowired
     lateinit var esClientCache: EsClientCache
+
+    @Transactional
+    override fun createIndexRoute(spec: IndexRouteSimpleSpec): IndexRoute {
+        val newSpec = IndexRouteSpec(
+            properties.getString("archivist.es.default-mapping-type"),
+            properties.getInt("archivist.es.default-mapping-version"),
+            shards = spec.size.shards,
+            replicas = spec.size.replicas,
+            projectId = spec.projectId
+        )
+        return createIndexRoute(newSpec)
+    }
 
     @Transactional
     override fun createIndexRoute(spec: IndexRouteSpec): IndexRoute {
@@ -351,6 +387,10 @@ constructor(
         return esClientCache.get(route.esClientCacheKey())
     }
 
+    override fun getClusterRestClient(routeId: UUID): EsRestClient {
+        return getClusterRestClient(indexRouteDao.get(routeId))
+    }
+
     fun waitForElasticSearch(client: EsRestClient) {
         while (!client.isAvailable()) {
             logger.info("Waiting for ES to be available.....{}", client.route.clusterUrl)
@@ -426,7 +466,29 @@ constructor(
     override fun closeIndex(route: IndexRoute): Boolean {
         val rsp = getClusterRestClient(route).client.indices()
             .close(CloseIndexRequest(route.indexName), RequestOptions.DEFAULT)
+        if (rsp.isAcknowledged) {
+            indexRouteDao.setState(route, IndexRouteState.CLOSED)
+            logger.event(
+                LogObject.INDEX_ROUTE, LogAction.STATE_CHANGE,
+                mapOf(
+                    "indexRouteId" to route.id,
+                    "indexRouteName" to route.indexName,
+                    "indexRouteState" to IndexRouteState.CLOSED.name
+                )
+            )
+        }
         return rsp.isAcknowledged
+    }
+
+    override fun setIndexRefreshInterval(route: IndexRoute, interval: String): Boolean {
+        val request = UpdateSettingsRequest(route.indexName)
+        val settings: Settings = Settings.builder()
+            .put("index.refresh_interval", interval)
+            .build()
+        request.settings(settings)
+        val rest = getClusterRestClient(route)
+        logger.info("Set index $route refresh to $interval")
+        return rest.client.indices().putSettings(request, RequestOptions.DEFAULT).isAcknowledged
     }
 
     override fun deleteIndex(route: IndexRoute, force: Boolean): Boolean {

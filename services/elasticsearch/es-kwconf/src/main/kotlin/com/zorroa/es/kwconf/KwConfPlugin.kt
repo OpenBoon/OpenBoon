@@ -52,7 +52,15 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
 
         private val field: String = params["field"] as String
         private val keywords: Set<String> = (params["labels"] as List<String>?).orEmpty().toSet()
-        private val range: List<Double> = (params["range"] as List<Double>?) ?: listOf(.75, 1.0)
+        private val range: List<Double>
+
+        init {
+            range = if (params["range"] == null) {
+                listOf(.75, 1.0)
+            } else {
+                (params["range"] as List<Number>).map { it.toDouble() }
+            }
+        }
 
         override fun newInstance(ctx: LeafReaderContext?): ScoreScript {
 

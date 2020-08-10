@@ -83,7 +83,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
         index = indexes[0]
         mappings = content[index]['mappings']
-        fields = self.field_utility.get_fields_from_mappings(mappings)
+        fields = self.field_utility.get_fields_from_mappings(mappings, request.client)
 
         return Response(status=status.HTTP_200_OK, data=fields)
 
@@ -171,6 +171,33 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                 }
             }
 
+        Labels:
+
+            {
+                'type': 'label',
+                'modelId': '$model_id_UUID',
+                'values': {
+                    'labels': ['Celeste', 'David'],
+                    'scope': 'all'
+                }
+            }
+
+            *Note:* The scope value can be set to 'all', 'train', or 'test'.
+
+        Date:
+
+            {
+                "type": "date",
+                "attribute": "system.timeCreated",
+                "values": {
+                    "min": "2020-05-30T00:00:00Z",
+                    "max": "2020-07-31T00:00:00Z"
+                }
+            }
+
+            *Note:* The `min` and `max` values need to be in "yyyy-mm-ddTHH:MM:SSZ"
+            format (ISO 8601).
+
         """
         path = 'api/v3/assets'
         fields = ['id',
@@ -230,14 +257,35 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             "order": "asc" OR "desc"
 
-            "minimum_count": $integer
+            "minimumCount": $integer
 
         LabelConfidence:
 
             {
                 "type": "labelConfidence",
-                "attribute": "analysis.zvi-label-detection",
+                "attribute": "analysis.zvi-label-detection"
             }
+
+        Date:
+
+            {
+                "type": "date",
+                "attribute": "system.timeCreated"
+            }
+
+        Labels:
+
+            {
+                "type": "labels",
+                "modelId": "$model_id_UUID"
+            }
+
+        Similar to Facet aggregations, Label aggs can also be sorted and filtered with
+        the additional key/values:
+
+            "order": "asc" OR "desc"
+
+            "minimumCount": $integer
 
         """
         path = 'api/v3/assets/_search'

@@ -25,6 +25,7 @@ import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.domain.ResolvedPipeline
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.UpdateAssetRequest
@@ -500,13 +501,13 @@ class AssetServiceImpl : AssetService {
     private fun createAnalysisJob(
         createdAssetIds: Collection<String>,
         existingAssetIds: Collection<String>,
-        processors: List<ProcessorRef>,
+        pipeline: ResolvedPipeline,
         creds: Set<String>?
     ): Job? {
 
         // Validate the assets need reprocessing
         val assetIds = getAll(existingAssetIds).filter {
-            assetNeedsReprocessing(it, processors)
+            assetNeedsReprocessing(it, pipeline.execute)
         }.map { it.id }
 
         val reprocessAssetCount = assetIds.size
@@ -517,7 +518,7 @@ class AssetServiceImpl : AssetService {
         } else {
             val name = "Analyze ${createdAssetIds.size} created assets, $reprocessAssetCount existing files."
             jobLaunchService.launchJob(
-                name, finalAssetList, processors, creds = creds, settings = mapOf("index" to true)
+                name, finalAssetList, pipeline, creds = creds, settings = mapOf("index" to true)
             )
         }
     }
@@ -607,7 +608,7 @@ class AssetServiceImpl : AssetService {
     private fun bulkIndexAndAnalyzePendingAssets(
         newAssets: List<Asset>,
         existingAssetIds: Collection<String>,
-        pipeline: List<ProcessorRef>?,
+        pipeline: ResolvedPipeline?,
         creds: Set<String>?
     ): BatchCreateAssetsResponse {
 

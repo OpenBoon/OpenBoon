@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import FacetSvg from '../Icons/facet.svg'
 import RangeSvg from '../Icons/range.svg'
+import HistogramSvg from '../Icons/histogram.svg'
 
 import { constants } from '../Styles'
 
@@ -19,6 +20,14 @@ export const TYPES = [
     name: 'Range',
     legend:
       'Shows the min, max, mean, median, and mode for the numerical values of a selected field.',
+  },
+  {
+    type: 'histogram',
+    icon: <HistogramSvg height={constants.icons.moderate} />,
+    name: 'Histogram',
+    legend: 'Shows the distribution of assets within value groups.',
+    flag: 'histogram',
+    envs: [],
   },
 ]
 

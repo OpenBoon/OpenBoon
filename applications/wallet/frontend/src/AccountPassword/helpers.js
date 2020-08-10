@@ -57,6 +57,7 @@ export const onReset = async ({ setError, email, googleAuth }) => {
 
     logout({ googleAuth })({
       redirectUrl: '/?action=password-reset-request-success',
+      redirectAs: '/',
     })
   } catch (response) {
     setError('Error. Please try again.')

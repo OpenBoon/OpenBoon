@@ -18,7 +18,7 @@ Array [
   .emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
-  color: #0273f5;
+  color: #0074f5;
 }
 
 <div
@@ -314,7 +314,7 @@ Array [
       </button>
     </div>
   </div>,
-  .emotion-40 {
+  .emotion-45 {
   overflow: auto;
 }
 
@@ -424,7 +424,7 @@ Array [
 }
 
 <div
-    className="emotion-40"
+    className="emotion-45"
   >
     <div
       className="emotion-4"
@@ -504,6 +504,33 @@ Array [
           className="emotion-2"
         >
           Files
+        </h4>
+      </div>
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <div
+        className="emotion-3"
+        onClick={[Function]}
+        style={Object {}}
+      >
+        <button
+          aria-label="Expand Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Labels
         </h4>
       </div>
     </div>
@@ -651,7 +678,7 @@ Array [
   .emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
-  color: #0273f5;
+  color: #0074f5;
 }
 
 <div
@@ -1014,6 +1041,18 @@ Array [
               "name": "image_320x213.jpg",
               "size": 30882,
               "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
+            },
+          ],
+          "labels": Array [
+            Object {
+              "label": "Space",
+              "modelId": "621bf774-89d9-1244-9596-d6df43f1ede5",
+              "scope": "TRAIN",
+            },
+            Object {
+              "label": "Outside",
+              "modelId": "621bf774-89d9-9596-1244-d6df43f1ede5",
+              "scope": "TRAIN",
             },
           ],
           "media": Object {

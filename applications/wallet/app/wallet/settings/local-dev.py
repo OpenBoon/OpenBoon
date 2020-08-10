@@ -24,3 +24,8 @@ DATABASES = {
 
 ZMLP_API_URL = 'http://localhost:8080'
 FQDN = os.environ.get('FQDN', 'http://127.0.0.1:8000')
+
+# Unsafe password hasher used here to drastically speed up tests.
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+]

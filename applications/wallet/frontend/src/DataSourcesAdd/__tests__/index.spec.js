@@ -51,8 +51,8 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
-        .props.onChange({ target: { value: 'AWS' } })
+        .findByProps({ label: 'Source Type' })
+        .props.onChange({ value: 'AWS' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -60,8 +60,8 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
-        .props.onChange({ target: { value: 'AZURE' } })
+        .findByProps({ label: 'Source Type' })
+        .props.onChange({ value: 'AZURE' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -69,8 +69,8 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
-        .props.onChange({ target: { value: 'GCP' } })
+        .findByProps({ label: 'Source Type' })
+        .props.onChange({ value: 'GCP' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -146,7 +146,7 @@ describe('<DataSourcesAdd />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(3)
+    expect(fetch.mock.calls.length).toEqual(4)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/data_sources/`,
@@ -169,7 +169,7 @@ describe('<DataSourcesAdd />', () => {
 
     expect(mockFn).toHaveBeenCalledWith(
       '/[projectId]/data-sources?action=add-datasource-success',
-      `/${PROJECT_ID}/data-sources?action=add-datasource-success`,
+      `/${PROJECT_ID}/data-sources`,
     )
   })
 
@@ -203,8 +203,8 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
-        .props.onChange({ target: { value: 'GCP' } })
+        .findByProps({ label: 'Source Type' })
+        .props.onChange({ value: 'GCP' })
     })
 
     // Input valid uri
@@ -235,7 +235,7 @@ describe('<DataSourcesAdd />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(1)
+    expect(fetch.mock.calls.length).toEqual(2)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/data_sources/`,
@@ -290,8 +290,8 @@ describe('<DataSourcesAdd />', () => {
     // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'source-selection' })
-        .props.onChange({ target: { value: 'AWS' } })
+        .findByProps({ label: 'Source Type' })
+        .props.onChange({ value: 'AWS' })
     })
 
     // Input uri
@@ -335,7 +335,7 @@ describe('<DataSourcesAdd />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(1)
+    expect(fetch.mock.calls.length).toEqual(2)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/data_sources/`,

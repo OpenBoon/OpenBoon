@@ -20,7 +20,7 @@ const StylesReset = () => (
           MozOsxFontSmoothing: 'grayscale',
         },
         body: {
-          fontFamily: `Roboto, Avenir, "sans-serif"`,
+          fontFamily: typography.family.regular,
           fontSize: typography.size.regular,
           lineHeight: typography.height.regular,
           fontWeight: typography.weight.regular,

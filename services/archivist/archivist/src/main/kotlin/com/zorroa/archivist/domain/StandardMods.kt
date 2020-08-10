@@ -155,6 +155,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                             StandardContainers.ANALYSIS
                         )
                     )
+                ),
+                ModOp(
+                    ModOpType.SET_ARGS,
+                    mapOf("ocr" to true),
+                    OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
             true
@@ -299,6 +304,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                             StandardContainers.ANALYSIS
                         )
                     )
+                ),
+                ModOp(
+                    ModOpType.SET_ARGS,
+                    mapOf("ocr" to true),
+                    OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
             true
@@ -319,6 +329,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                             StandardContainers.ANALYSIS
                         )
                     )
+                ),
+                ModOp(
+                    ModOpType.SET_ARGS,
+                    mapOf("ocr" to true),
+                    OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
             true
@@ -467,6 +482,26 @@ fun getStandardModules(): List<PipelineModSpec> {
                             "zmlp_analysis.google.AsyncSpeechToTextProcessor",
                             StandardContainers.ANALYSIS,
                             mutableMapOf()
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-label-detection",
+            "Generate keyword labels for images and documents.",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.RekognitionLabelDetection",
+                            StandardContainers.ANALYSIS
                         )
                     )
                 )

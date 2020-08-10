@@ -63,6 +63,11 @@ variable "zone" {
   default     = "a"
 }
 
+variable "sql-tier" {
+  description = "Machine tier to use for the Postgres server."
+  default     = "db-custom-1-4096"
+}
+
 variable "deploy-marketplace-integration" {
   description = "If this variable exists the GCP Marketplace integration will be deployed."
   default = ""
@@ -85,6 +90,11 @@ variable "wallet-browsable-api" {
 
 variable "wallet-superadmin" {
   description = "Turns on a more advanced Django Admin view at /superadmin."
+  default = "false"
+}
+
+variable "wallet-use-model-ids-for-label-filters" {
+  description = "Feature flag for label filters return in the Console"
   default = "false"
 }
 

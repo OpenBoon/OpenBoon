@@ -6,5 +6,3 @@ pycocotools
 tqdm
 pillow
 pandas
-tensorflow==2.2.0
-google-cloud-automl

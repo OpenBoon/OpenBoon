@@ -64,7 +64,7 @@ const TaskAssetsRow = ({
             height: THUMBNAIL_SIZE,
           }}
         >
-          <AssetsThumbnail asset={asset} />
+          <AssetsThumbnail asset={asset} isActive={false} />
         </div>
 
         <h4
@@ -102,18 +102,9 @@ const TaskAssetsRow = ({
           css={{
             height: MAX_HEIGHT,
             overflow: 'auto',
-            '.ErrorBoundary > div': {
-              backgroundColor: colors.structure.transparent,
-              boxShadow: 'none',
-            },
-            '.Loading': {
-              backgroundColor: colors.structure.transparent,
-              height: '100%',
-              boxShadow: 'none',
-            },
           }}
         >
-          <SuspenseBoundary>
+          <SuspenseBoundary isTransparent>
             <TaskAssetsMetadata projectId={projectId} assetId={asset.id} />
           </SuspenseBoundary>
         </div>

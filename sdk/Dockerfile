@@ -1,5 +1,6 @@
 # syntax = docker/dockerfile:experimental
 FROM zmlp/py3-client:latest
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
     libjpeg-turbo8-dev \
@@ -18,6 +19,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
     imagemagick \
     exiftool \
     mediainfo \
+    poppler-utils \
      --no-install-recommends
 
 RUN mkdir /build

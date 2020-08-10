@@ -29,16 +29,6 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   flex: 1;
 }
 
-.emotion-13 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-13 .Loading {
-  background-color: transparent;
-  box-shadow: none;
-}
-
 .emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -353,7 +343,7 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
             aria-disabled={true}
             className="emotion-10"
             onClick={[Function]}
-            type="button"
+            type="submit"
           >
             Save Visualization
           </button>
@@ -393,16 +383,6 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   flex: 1;
 }
 
-.emotion-13 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-13 .Loading {
-  background-color: transparent;
-  box-shadow: none;
-}
-
 .emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -717,7 +697,7 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
             aria-disabled={true}
             className="emotion-10"
             onClick={[Function]}
-            type="button"
+            type="submit"
           >
             Save Visualization
           </button>
@@ -755,16 +735,6 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-}
-
-.emotion-13 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-13 .Loading {
-  background-color: transparent;
-  box-shadow: none;
 }
 
 .emotion-12 {
@@ -1080,7 +1050,7 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
           <button
             className="emotion-10"
             onClick={[Function]}
-            type="button"
+            type="submit"
           >
             Save Visualization
           </button>

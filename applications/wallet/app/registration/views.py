@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from axes.handlers.proxy import AxesProxyHandler
 from django.conf import settings
 from django.contrib.auth import get_user_model, logout, login, authenticate
 from django.contrib.auth.models import User
@@ -209,18 +210,25 @@ class LoginView(ConvertCamelToSnakeViewSetMixin, APIView):
                     user = User.objects.create(username=email, email=email,
                                                first_name=idinfo.get('given_name'),
                                                last_name=idinfo.get('family_name'))
-                login(request, user)
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             except ValueError:
                 return Response(data={'detail': 'Unauthorized: Bearer token invalid.'},
                                 status=status.HTTP_401_UNAUTHORIZED)
 
         # Attempt to authenticate using username and password.
         else:
-            user = authenticate(username=request.data['username'],
-                                password=request.data['password'])
+            username = request.data['username']
+            password = request.data['password']
+            user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
             else:
-                return Response(data={'detail': 'Unauthorized: Username & password invalid.'},
-                                status=status.HTTP_401_UNAUTHORIZED)
+                credentials = {'username': username}
+                if not AxesProxyHandler().is_allowed(request, credentials=credentials):
+                    message = ('This account has been locked due to too many failed login '
+                               'attempts. Please contact support to unlock your account.')
+                    return Response(data={'detail': message}, status=status.HTTP_423_LOCKED)
+                else:
+                    message = 'Invalid email and password combination.'
+                    return Response(data={'detail': message}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(UserSerializer(user, context={'request': request}).data)

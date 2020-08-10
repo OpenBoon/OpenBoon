@@ -120,6 +120,7 @@ describe('<AccountPassword /> helpers', () => {
       expect(mockSignOut).toHaveBeenCalled()
       expect(mockRouterPush).toHaveBeenCalledWith(
         '/?action=password-reset-request-success',
+        '/',
       )
     })
 

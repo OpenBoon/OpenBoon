@@ -53,6 +53,7 @@ describe('<ResetPassword />', () => {
 
     expect(mockFn).toHaveBeenCalledWith(
       '/?action=password-reset-request-success',
+      '/',
     )
   })
 

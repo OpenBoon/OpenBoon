@@ -83,7 +83,6 @@ class AutomlServiceImpl(
                 logger.info("Found training session: ${session.id}")
                 try {
                     val op = client.getOperationsClient().getOperation(session.automlTrainingJob)
-                    println(op)
                     if (op.hasError()) {
                         val msg = "[${op.error.code}] ${op.error.message}"
                         logger.warn("Auto ML job failed, $msg")

@@ -3,8 +3,10 @@ import re
 import uuid
 from datetime import timedelta
 
+import axes.utils
 import pytest
 import pytz
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.timezone import now
@@ -65,7 +67,7 @@ def test_register_and_confirm(api_client, mailoutbox):
     api_client.logout()
 
     # Register a user
-    password = uuid.uuid4()
+    password = str(uuid.uuid4())
     response = api_client.post(reverse('api-user-register'), {'email': 'fake@fakerson.com',
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
@@ -95,7 +97,7 @@ def test_register_confirm_with_policies_date(api_client, mailoutbox):
     api_client.logout()
 
     # Register a user
-    password = uuid.uuid4()
+    password = str(uuid.uuid4())
     headers = {'HTTP_X_FORWARDED_FOR': '172.19.0.1',
                'REMOTE_ADDR': '127.0.0.1'}
     body = {'email': 'fake@fakerson.com',
@@ -368,3 +370,19 @@ def test_api_logout(api_client, user):
     response = api_client.post(reverse('api-logout'), {})
     assert response.status_code == 200
     assert api_client.get(reverse('project-list')).status_code == 403
+
+
+def test_api_login_lockout(api_client, user):
+    api_client.logout()
+    axes.utils.reset()
+    credentials = {'username': user.username, 'password': 'nope'}
+
+    for i in range(settings.AXES_FAILURE_LIMIT - 1):
+        response = api_client.post(reverse('api-login'), credentials)
+        assert response.json()['detail'] == 'Invalid email and password combination.'
+
+    # Third failed attempt.
+    response = api_client.post(reverse('api-login'), credentials)
+    assert response.json()['detail'] == ('This account has been locked due to too many '
+                                         'failed login attempts. Please contact support to '
+                                         'unlock your account.')

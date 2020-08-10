@@ -54,6 +54,10 @@ describe('<ProjectUsers />', () => {
   })
 
   it('should hide the menu gear for the active user', () => {
+    require('swr').__setMockUseSWRResponse({
+      data: projectUsers,
+    })
+
     const component = TestRenderer.create(
       <User initialUser={{ ...mockUser, email: 'jane@zorroa.com' }}>
         <ProjectUsers />

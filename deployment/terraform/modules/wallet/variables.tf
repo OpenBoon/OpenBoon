@@ -71,3 +71,7 @@ variable "superadmin" {
   default = "false"
 }
 
+variable "use-model-ids-for-label-filters" {
+  default = "false"
+}
+

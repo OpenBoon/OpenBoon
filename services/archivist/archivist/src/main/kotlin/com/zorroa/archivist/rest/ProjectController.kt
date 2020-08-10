@@ -1,15 +1,19 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.IndexTask
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFilter
+import com.zorroa.archivist.domain.ProjectIndexMigrationSpec
 import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
-import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTierUpdate
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.service.IndexRoutingService
+import com.zorroa.archivist.service.IndexTaskService
 import com.zorroa.archivist.service.ProjectService
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.HttpUtils
@@ -39,7 +43,9 @@ import java.util.UUID
 @Api(tags = ["Project"], description = "Operations for managing Projects.")
 class ProjectController constructor(
     val projectService: ProjectService,
-    val projectStorageService: ProjectStorageService
+    val projectStorageService: ProjectStorageService,
+    val indexRoutingService: IndexRoutingService,
+    val indexTaskService: IndexTaskService
 ) {
 
     @PreAuthorize("hasAuthority('SystemManage')")
@@ -57,6 +63,21 @@ class ProjectController constructor(
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
+    @PostMapping(value = ["/api/v1/projects/{id}/_migrate"])
+    @ApiOperation("Migrate a project to a new index.")
+    fun migrate(@PathVariable id: UUID, @RequestBody spec: ProjectIndexMigrationSpec): IndexTask {
+        return indexTaskService.migrateProject(projectService.get(id), spec)
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
+    @GetMapping(value = ["/api/v1/projects/{id}/_index"])
+    @ApiOperation("Migrate a project to a new index.")
+    fun getIndex(@PathVariable id: UUID): IndexRoute {
+        val project = projectService.get(id)
+        return indexRoutingService.getIndexRoute(project.indexRouteId as UUID)
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
     @RequestMapping(value = ["/api/v1/projects/_search"], method = [RequestMethod.POST, RequestMethod.GET])
     @ApiOperation("Get all Projects")
     fun getAll(@RequestBody(required = false) filter: ProjectFilter?): KPagedList<Project> {
@@ -68,21 +89,6 @@ class ProjectController constructor(
     @ApiOperation("Search for a single project")
     fun findOne(@RequestBody(required = false) filter: ProjectFilter?): Project {
         return projectService.findOne(filter ?: ProjectFilter())
-    }
-
-    @PreAuthorize("hasAuthority('SystemManage')")
-    @GetMapping(value = ["/api/v1/projects/{id}/_settings"])
-    @ApiOperation("Get the project Settings")
-    fun getSettings(@PathVariable id: UUID): ProjectSettings {
-        return projectService.getSettings(id)
-    }
-
-    @PreAuthorize("hasAuthority('SystemManage')")
-    @PutMapping(value = ["/api/v1/projects/{id}/_settings"])
-    @ApiOperation("Get the project Settings")
-    fun putSettings(@PathVariable id: UUID, @RequestBody(required = true) settings: ProjectSettings): ProjectSettings {
-        projectService.updateSettings(id, settings)
-        return projectService.getSettings(id)
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
@@ -141,23 +147,6 @@ class ProjectController constructor(
             Date(stop ?: System.currentTimeMillis())
         )
     }
-
-    @PreAuthorize("hasAuthority('ProjectManage')")
-    @GetMapping(value = ["/api/v1/project/_settings"])
-    @ApiOperation("Retrieve my current project.")
-    fun getMyProjectSettings(): ProjectSettings {
-        return projectService.getSettings(getProjectId())
-    }
-
-    @PreAuthorize("hasAuthority('ProjectManage')")
-    @PutMapping(value = ["/api/v1/project/_settings"])
-    @ApiOperation("Get the project Settings")
-    fun putMyProjectSettings(@RequestBody(required = true) settings: ProjectSettings):
-        ProjectSettings {
-            val id = getProjectId()
-            projectService.updateSettings(id, settings)
-            return projectService.getSettings(id)
-        }
 
     @PreAuthorize("hasAuthority('ProjectManage')")
     @PutMapping(value = ["/api/v1/project/_rename"])

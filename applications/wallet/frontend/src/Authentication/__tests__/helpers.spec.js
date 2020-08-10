@@ -100,6 +100,23 @@ describe('<Authentication /> helpers', () => {
       )
     })
 
+    it('should display an alert for locked out user', async () => {
+      const mockSetErrorMessage = jest.fn()
+
+      fetch.mockResponseOnce('Locked Out', { status: 423 })
+
+      await authenticateUser({
+        setErrorMessage: mockSetErrorMessage,
+      })({
+        username: 'username',
+        password: 'password',
+      })
+
+      expect(mockSetErrorMessage).toHaveBeenCalledWith(
+        'Your account has been locked due to too many failed login attempts.',
+      )
+    })
+
     it('should display an alert for any other error', async () => {
       const mockSetErrorMessage = jest.fn()
 
@@ -127,7 +144,7 @@ describe('<Authentication /> helpers', () => {
 
       await logout({
         googleAuth: { signOut: mockSignOut },
-      })({ redirectUrl: '/' })
+      })({ redirectUrl: '/', redirectAs: '/' })
 
       expect(mockSignOut).toHaveBeenCalled()
 
@@ -143,7 +160,7 @@ describe('<Authentication /> helpers', () => {
         method: 'POST',
       })
 
-      expect(mockRouterPush).toHaveBeenCalledWith('/')
+      expect(mockRouterPush).toHaveBeenCalledWith('/', '/')
     })
   })
 })

@@ -60,7 +60,10 @@ describe('<UserMenu />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockLogout).toHaveBeenCalledWith({ redirectUrl: '/' })
+    expect(mockLogout).toHaveBeenCalledWith({
+      redirectUrl: '/',
+      redirectAs: '/',
+    })
   })
 
   it('should render properly without firstName/lastName', () => {

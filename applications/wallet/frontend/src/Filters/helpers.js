@@ -53,8 +53,13 @@ export const decode = ({ query }) => {
 
 export const cleanup = ({ query }) => {
   const filters = decode({ query }).filter(
-    ({ values = {}, isDisabled = false }) =>
-      Object.keys(values).length > 0 && !isDisabled,
+    ({ type, values = {}, isDisabled = false }) => {
+      if (type === 'label' && values.labels) {
+        return values.labels.length > 0 && !isDisabled
+      }
+
+      return Object.keys(values).length > 0 && !isDisabled
+    },
   )
 
   return encode({ filters })
@@ -62,8 +67,14 @@ export const cleanup = ({ query }) => {
 
 export const dispatch = ({ type, payload }) => {
   switch (type) {
+    /**
+     * Checks if a filter is already present or not first, and then
+     * adds a single filter with a single value if the filter is **not** already present
+     * or updates a single filter with a single value if the filter **is** already present
+     * => idempotent
+     */
     case ACTIONS.ADD_VALUE: {
-      const { pathname, projectId, filter, query: q } = payload
+      const { pathname, projectId, assetId, filter, query: q } = payload
 
       const filters = decode({ query: q })
 
@@ -77,6 +88,7 @@ export const dispatch = ({ type, payload }) => {
           payload: {
             pathname,
             projectId,
+            assetId,
             filter,
             query: q,
           },
@@ -90,6 +102,7 @@ export const dispatch = ({ type, payload }) => {
         payload: {
           pathname,
           projectId,
+          assetId,
           filters,
           updatedFilter: filter,
           filterIndex,
@@ -99,8 +112,14 @@ export const dispatch = ({ type, payload }) => {
       break
     }
 
+    /**
+     * Checks if a filter is already present or not first, and then
+     * adds a single filter to the query, only if that filter is not already present
+     * or does nothing otherwise
+     * => idempotent
+     */
     case ACTIONS.ADD_FILTER: {
-      const { pathname, projectId, filter, query: q } = payload
+      const { pathname, projectId, assetId, filter, query: q } = payload
 
       const filters = decode({ query: q })
 
@@ -115,9 +134,10 @@ export const dispatch = ({ type, payload }) => {
       Router.push(
         {
           pathname,
-          query: { projectId, query },
+          query: { projectId, id: assetId, query },
         },
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
+          id: assetId,
           query,
         })}`,
       )
@@ -125,6 +145,11 @@ export const dispatch = ({ type, payload }) => {
       break
     }
 
+    /**
+     * Adds one or multiple filters to the query without ensuring whether those
+     * filters are already present or not
+     * => NOT idempotent
+     */
     case ACTIONS.ADD_FILTERS: {
       const { pathname, projectId, assetId, filters, newFilters } = payload
 
@@ -201,7 +226,7 @@ export const dispatch = ({ type, payload }) => {
     }
 
     case ACTIONS.APPLY_SIMILARITY: {
-      const { pathname, projectId, assetId, selectedId, query: q } = payload
+      const { projectId, assetId, selectedId, query: q, attribute } = payload
 
       const filters = decode({ query: q })
 
@@ -216,7 +241,7 @@ export const dispatch = ({ type, payload }) => {
 
       const similarityFilter = {
         type: 'similarity',
-        attribute: 'analysis.zvi-image-similarity',
+        attribute,
         values: { ids: [assetId], minScore },
       }
 
@@ -233,10 +258,14 @@ export const dispatch = ({ type, payload }) => {
 
       Router.push(
         {
-          pathname,
-          query: { projectId, id: selectedId, query },
+          pathname: '/[projectId]/visualizer',
+          query: {
+            projectId,
+            id: selectedId,
+            query,
+          },
         },
-        `${pathname.replace('[projectId]', projectId)}${getQueryString({
+        `/${projectId}/visualizer${getQueryString({
           id: selectedId,
           query,
         })}`,

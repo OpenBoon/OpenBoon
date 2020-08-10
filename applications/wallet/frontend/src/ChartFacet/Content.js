@@ -29,14 +29,14 @@ const COLORS = [
   colors.signal.grass.base,
 ]
 
-const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
+const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
   const {
     pathname,
     query: { projectId, query },
   } = useRouter()
 
   const visuals = encode({
-    filters: [{ type, id, attribute, options: { size: 20 } }],
+    filters: [{ type, id, attribute, options: { size: values } }],
   })
 
   const q = cleanup({ query })
@@ -107,7 +107,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute } }) => {
                   flexDirection: 'row',
                   color: colors.structure.white,
                   ':hover, &.focus-visible:focus': {
-                    backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
+                    backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
                     color: colors.structure.white,
                     svg: {
                       color: colors.structure.white,

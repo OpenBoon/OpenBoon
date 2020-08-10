@@ -3,7 +3,6 @@ from unittest.mock import patch
 
 from google.cloud.vision import types
 
-from zmlp import ZmlpClient
 from zmlp_analysis.google.cloud_vision import *
 from zmlp_analysis.google.cloud_vision import file_storage
 from zmlpsdk import Frame, ZmlpProcessorException
@@ -355,7 +354,7 @@ class CloudVisionDetectLabelsTests(PluginUnitTestCase):
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_labels(self, mock_image_annotator, native_patch, localize_patch, proxy_patch):
+    def test_detect_labels(self, _, native_patch, localize_patch, proxy_patch):
         native_patch.return_value = TOUCAN
         localize_patch.return_value = TOUCAN
         proxy_patch.return_value = get_mock_stored_file()
@@ -379,7 +378,7 @@ class CloudVisionDetectLandmarkTests(PluginUnitTestCase):
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_landmark(self, mock_image_annotator, native_patch, localize_patch, proxy_patch):
+    def test_detect_landmark(self, _, native_patch, localize_patch, proxy_patch):
         native_patch.return_value = EIFFEL
         localize_patch.return_value = EIFFEL
         proxy_patch.return_value = get_mock_stored_file()
@@ -402,7 +401,7 @@ class CloudVisionDetectExplicitTests(PluginUnitTestCase):
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_explicit(self, mock_image_annotator, native_patch, localize_patch, proxy_patch):
+    def test_detect_explicit(self, _, native_patch, localize_patch, proxy_patch):
         native_patch.return_value = PUNCH
         localize_patch.return_value = PUNCH
         proxy_patch.return_value = get_mock_stored_file()
@@ -426,7 +425,7 @@ class CloudVisionDetectFacesTests(PluginUnitTestCase):
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_faces(self, mock_image_annotator, native_patch, localize_patch, proxy_patch):
+    def test_detect_faces(self, _, native_patch, localize_patch, proxy_patch):
         native_patch.return_value = FACES
         localize_patch.return_value = FACES
         proxy_patch.return_value = get_mock_stored_file()
@@ -447,7 +446,7 @@ class CloudVisionDetectImageTextTests(PluginUnitTestCase):
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_image_text(self, mock_image_annotator, native_patch, localize_patch, proxy_patch):
+    def test_detect_image_text(self, _, native_patch, localize_patch, proxy_patch):
         native_patch.return_value = STREETSIGN
         localize_patch.return_value = STREETSIGN
         proxy_patch.return_value = get_mock_stored_file()
@@ -463,13 +462,44 @@ class CloudVisionDetectImageTextTests(PluginUnitTestCase):
         assert 8 == analysis['words']
 
 
+    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch.object(file_storage, 'localize_file')
+    @patch.object(file_storage.assets, 'get_native_uri')
+    @patch(patch_path, side_effect=MockImageAnnotatorClient)
+    def test_detect_image_text_ocr_proxy(self, _, native_patch, localize_patch, proxy_patch):
+        native_patch.return_value = 'gs://foo/bar/proxy.png'
+        localize_patch.return_value = STREETSIGN
+        proxy_patch.return_value = get_mock_stored_file()
+
+        asset = TestAsset(STREETSIGN)
+        asset.set_attr('files', [
+            {
+                'category': 'ocr-proxy',
+                'name': 'ocr-proxy.png',
+                'mimetype': 'image/png'
+            }
+        ])
+
+        frame = Frame(asset)
+        processor = self.init_processor(CloudVisionDetectImageText())
+        processor.process(frame)
+
+        image = processor.get_ocr_image(asset, None)
+        assert image.source.image_uri == native_patch.return_value
+
+        analysis = frame.asset.get_attr('analysis.gcp-vision-image-text-detection')
+        assert 'content' == analysis['type']
+        assert 'PASEO TAMAYO' in analysis['content']
+        assert 8 == analysis['words']
+
+
 class TestCloudVisionDetectObjects(PluginUnitTestCase):
 
     @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_objects(self, mock_image_annotator, native_patch, localize_patch, proxy_patch):
+    def test_detect_objects(self, _, native_patch, localize_patch, proxy_patch):
         native_patch.return_value = TOUCAN
         localize_patch.return_value = TOUCAN
         proxy_patch.return_value = get_mock_stored_file()
@@ -491,7 +521,7 @@ class CloudVisionDetectDocumentTextTests(PluginUnitTestCase):
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_document_text(self, mock_image_annotator,
+    def test_detect_document_text(self, _,
                                   native_patch, localize_patch, proxy_patch):
         native_patch.return_value = MANUAL
         localize_patch.return_value = MANUAL
@@ -501,6 +531,35 @@ class CloudVisionDetectDocumentTextTests(PluginUnitTestCase):
         frame = Frame(asset)
         processor = self.init_processor(CloudVisionDetectDocumentText())
         processor.process(frame)
+
+        analysis = frame.asset.get_attr('analysis.gcp-vision-doc-text-detection')
+        assert 'Notice The information' in analysis['content']
+        assert 'content' in analysis['type']
+        assert 764 == analysis['words']
+
+    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch.object(file_storage, 'localize_file')
+    @patch.object(file_storage.assets, 'get_native_uri')
+    @patch(patch_path, side_effect=MockImageAnnotatorClient)
+    def test_detect_document_text_with_ocr_proxy(self, _,
+                                  native_patch, localize_patch, proxy_patch):
+        native_patch.return_value = 'gs://foo/bar/ocr-proxy.png'
+        localize_patch.return_value = MANUAL
+        proxy_patch.return_value = get_mock_stored_file()
+
+        asset = TestAsset(MANUAL)
+        frame = Frame(asset)
+        asset.set_attr('files', [
+            {
+                'category': 'ocr-proxy',
+                'name': 'ocr-proxy.png',
+                'mimetype': 'image/png'
+            }
+        ])
+        processor = self.init_processor(CloudVisionDetectDocumentText())
+        processor.process(frame)
+        image = processor.get_ocr_image(asset, None)
+        assert image.source.image_uri == native_patch.return_value
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-doc-text-detection')
         assert 'Notice The information' in analysis['content']

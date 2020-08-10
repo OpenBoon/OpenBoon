@@ -3,17 +3,20 @@ resource "google_storage_bucket" "elasticsearch" {
   lifecycle {
     prevent_destroy = true
   }
-  name = "${var.project}-es-backups"
+  name          = "${var.project}-es-backups"
   storage_class = "MULTI_REGIONAL"
   location      = var.country
   retention_policy {
     retention_period = 86400 * 29
   }
+  logging {
+    log_bucket = var.log-bucket-name
+  }
 }
 
 resource "google_service_account" "elasticsearch" {
-  project = var.project
-  account_id = "elasticsearch"
+  project      = var.project
+  account_id   = "elasticsearch"
   display_name = "Elasticsearch"
 }
 
@@ -50,7 +53,7 @@ resource "google_container_node_pool" "elasticsearch" {
     auto_upgrade = true
   }
   node_config {
-    machine_type = "custom-2-8192"
+    machine_type = "custom-6-20480"
     oauth_scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -66,6 +69,7 @@ resource "google_container_node_pool" "elasticsearch" {
       type      = "elasticsearch"
       namespace = var.namespace
     }
+    disk_type = "pd-ssd"
   }
   lifecycle {
     ignore_changes = [
@@ -93,7 +97,7 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
   provider = kubernetes
   lifecycle {
     prevent_destroy = true
-    ignore_changes = [spec[0].replicas]
+    ignore_changes  = [spec[0].replicas]
   }
   metadata {
     name      = "elasticsearch-master"
@@ -238,9 +242,11 @@ resource "kubernetes_stateful_set" "elasticsearch-master" {
           resources {
             requests {
               memory = "512Mi"
+              cpu    = 1
             }
             limits {
               memory = "1Gi"
+              cpu    = 1.5
             }
           }
         }
@@ -253,7 +259,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
   provider = kubernetes
   lifecycle {
     prevent_destroy = true
-    ignore_changes = [spec[0].replicas]
+    ignore_changes  = [spec[0].replicas]
   }
   metadata {
     name      = "elasticsearch-data"
@@ -269,7 +275,7 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
       type = "RollingUpdate"
     }
     service_name = "elasticsearch"
-    replicas     = 2
+    replicas     = 3
     selector {
       match_labels = {
         app = "elasticsearch"
@@ -348,10 +354,6 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
           image             = "zmlp/elasticsearch:${var.container-tag}"
           image_pull_policy = "Always"
           env {
-            name  = "ES_JAVA_OPTS"
-            value = "-Xms5g -Xmx5g"
-          }
-          env {
             name  = "cluster.name"
             value = "elasticsearch-cluster"
           }
@@ -383,6 +385,10 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
             name  = "cluster.remote.connect"
             value = "true"
           }
+          env {
+            name  = "ES_JAVA_OPTS"
+            value = "-Xms8g -Xmx8g"
+          }
           volume_mount {
             name       = "elasticsearch-data"
             mount_path = "/usr/share/elasticsearch/data"
@@ -394,10 +400,12 @@ resource "kubernetes_stateful_set" "elasticsearch-data" {
           }
           resources {
             requests {
-              memory = "4Gi"
+              memory = "15Gi"
+              cpu    = 4
             }
             limits {
-              memory = "7Gi"
+              memory = "16Gi"
+              cpu    = 4.1
             }
           }
         }

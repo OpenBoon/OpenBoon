@@ -40,7 +40,7 @@ class ImageImporterUnitTestCase(PluginUnitTestCase):
     def test_process_multipage_tiff(self):
         frame = Frame(TestAsset(OFFICE))
         processor = self.init_processor(ImageImporter(),
-                                        {'extract_pages': True})
+                                        {'extract_image_pages': True})
         processor.process(frame)
         document = frame.asset
         assert document.get_attr('media.length') == 10

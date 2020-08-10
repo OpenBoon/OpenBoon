@@ -65,46 +65,55 @@
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "git add",
       "eslint",
       "npm run test:hook"
     ]
   },
   "bundlesize": [
     {
-      "//": "framework",
-      "path": ".next/static/chunks/framework**.js",
-      "maxSize": "40 kB"
-    },
-    {
       "//": "dependencies",
       "path": ".next/static/chunks/commons**.js",
       "maxSize": "8 kB"
     },
     {
-      "//": "app.js",
-      "path": ".next/static/**/pages/_app.js",
-      "maxSize": "35 kB"
+      "//": "framework",
+      "path": ".next/static/chunks/framework**.js",
+      "maxSize": "40 kB"
     },
     {
       "//": "main runtime",
-      "path": ".next/static/runtime/main**.js",
+      "path": ".next/static/chunks/main**.js",
       "maxSize": "6 kB"
     },
     {
+      "//": "polyfill",
+      "path": ".next/static/chunks/polyfill**.js",
+      "maxSize": "32 kB"
+    },
+    {
+      "//": "webpack runtime",
+      "path": ".next/static/chunks/webpack**.js",
+      "maxSize": "1 kB"
+    },
+    {
+      "//": "chunks",
+      "path": ".next/static/chunks/!(commons|framework|main|polyfill|webpack)*.js",
+      "maxSize": "22 kB"
+    },
+    {
+      "//": "app.js",
+      "path": ".next/static/chunks/pages/_app**.js",
+      "maxSize": "32 kB"
+    },
+    {
       "//": "error page",
-      "path": ".next/static/**/pages/_error.js",
+      "path": ".next/static/chunks/pages/_error**.js",
       "maxSize": "2 kB"
     },
     {
-      "//": "polyfill & webpack runtime",
-      "path": ".next/static/runtime/[polyfill|webpack]**.js",
-      "maxSize": "26 kB"
-    },
-    {
-      "//": "all pages and chunks",
-      "path": ".next/static/**/!(framework|commons|_app|_error|main|polyfill|webpack)*.js",
-      "maxSize": "37 kB"
+      "//": "all pages",
+      "path": ".next/static/chunks/pages/**/!(_app|_error)*.js",
+      "maxSize": "40 kB"
     }
   ],
   "dependencies": {
@@ -113,9 +122,9 @@
     "@emotion/core": "10.0.28",
     "@reach/combobox": "0.10.5",
     "@reach/listbox": "0.10.5",
-    "@sentry/apm": "5.19.2",
-    "@sentry/browser": "5.19.2",
-    "@sentry/utils": "5.19.2",
+    "@sentry/apm": "5.20.1",
+    "@sentry/browser": "5.20.1",
+    "@sentry/utils": "5.20.1",
     "@svgr/webpack": "5.4.0",
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "body-scroll-lock": "3.0.3",
@@ -124,44 +133,44 @@
     "dotenv": "8.2.0",
     "focus-visible": "5.1.0",
     "jwt-decode": "2.2.0",
-    "next": "9.4.4",
+    "next": "9.5.1",
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-aria-modal": "4.0.0",
     "react-compound-slider": "2.5.0",
     "react-dom": "16.13.1",
-    "react-grid-layout": "0.18.3",
+    "react-grid-layout": "1.0.0",
     "react-json-pretty": "2.2.0",
     "react-resizable": "1.10.1",
     "react-use-clipboard": "1.0.0",
     "react-virtualized-auto-sizer": "1.0.2",
     "react-window": "1.8.5",
     "react-window-infinite-loader": "1.0.5",
-    "swr": "0.2.3",
+    "swr": "0.3.0",
     "use-resize-observer": "6.1.0",
     "utf8": "3.0.0",
-    "uuid": "8.2.0"
+    "uuid": "8.3.0"
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
-    "babel-jest": "26.1.0",
+    "babel-jest": "26.2.2",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-macros": "2.8.0",
     "bundlesize": "0.18.0",
-    "eslint": "7.5.0",
+    "eslint": "7.6.0",
     "eslint-config-airbnb": "18.2.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-emotion": "10.0.27",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-jsx-a11y": "6.3.1",
-    "eslint-plugin-react": "7.20.3",
+    "eslint-plugin-react": "7.20.5",
     "eslint-plugin-react-hooks": "4.0.8",
     "esm": "3.2.25",
     "express": "4.17.1",
     "http-proxy-middleware": "1.0.5",
     "husky": "4.2.5",
     "import-all.macro": "3.0.0",
-    "jest": "26.1.0",
+    "jest": "26.2.2",
     "jest-emotion": "10.0.32",
     "jest-fetch-mock": "3.0.3",
     "lint-staged": "10.2.11",
