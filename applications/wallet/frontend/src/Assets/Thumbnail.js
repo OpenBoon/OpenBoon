@@ -67,6 +67,8 @@ const AssetsThumbnail = ({
           passHref
         >
           <Button
+            title={filename}
+            aria-label={`Select asset ${filename}`}
             variant={VARIANTS.NEUTRAL}
             css={{
               width: '100%',
@@ -96,7 +98,8 @@ const AssetsThumbnail = ({
 
       {isActive && (
         <Button
-          aria-label="Find similar images"
+          title="Find similar images"
+          aria-label={`Find similar images to ${filename}`}
           variant={VARIANTS.NEUTRAL}
           style={{
             opacity: 0,
@@ -137,6 +140,8 @@ const AssetsThumbnail = ({
           passHref
         >
           <Button
+            title="Asset details"
+            aria-label={`Asset details ${filename}`}
             variant={VARIANTS.NEUTRAL}
             style={{
               opacity: 0,

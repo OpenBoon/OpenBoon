@@ -102,7 +102,9 @@ describe('<AssetsThumbnail />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Find similar images' })
+        .findByProps({
+          'aria-label': `Find similar images to ${assets.results[0].metadata.source.filename}`,
+        })
         .props.onClick()
     })
 
@@ -144,7 +146,9 @@ describe('<AssetsThumbnail />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Find similar images' })
+        .findByProps({
+          'aria-label': `Find similar images to ${assets.results[1].metadata.source.filename}`,
+        })
         .props.onClick()
     })
 
@@ -194,7 +198,9 @@ describe('<AssetsThumbnail />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Find similar images' })
+        .findByProps({
+          'aria-label': `Find similar images to ${assets.results[1].metadata.source.filename}`,
+        })
         .props.onClick()
     })
 
