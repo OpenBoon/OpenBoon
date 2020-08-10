@@ -194,10 +194,12 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   className="emotion-4"
 >
   <a
+    aria-label="Select asset test_document.docx"
     className="emotion-1"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d"
     onClick={[Function]}
     onMouseEnter={[Function]}
+    title="test_document.docx"
   >
     <img
       alt="test_document.docx"
@@ -206,9 +208,10 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
     />
   </a>
   <button
-    aria-label="Find similar images"
+    aria-label="Find similar images to test_document.docx"
     className="emotion-2"
     onClick={[Function]}
+    title="Find similar images"
     type="button"
   >
     <svg
@@ -218,10 +221,12 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
     />
   </button>
   <a
+    aria-label="Asset details test_document.docx"
     className="emotion-3"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL?query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d"
     onClick={[Function]}
     onMouseEnter={[Function]}
+    title="Asset details"
   >
     <svg
       color="#ffffff"
@@ -426,10 +431,12 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   className="emotion-4"
 >
   <a
+    aria-label="Select asset test_document.docx"
     className="emotion-1"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
     onClick={[Function]}
     onMouseEnter={[Function]}
+    title="test_document.docx"
   >
     <img
       alt="test_document.docx"
@@ -438,9 +445,10 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
     />
   </a>
   <button
-    aria-label="Find similar images"
+    aria-label="Find similar images to test_document.docx"
     className="emotion-2"
     onClick={[Function]}
+    title="Find similar images"
     type="button"
   >
     <svg
@@ -450,10 +458,12 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
     />
   </button>
   <a
+    aria-label="Asset details test_document.docx"
     className="emotion-3"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL"
     onClick={[Function]}
     onMouseEnter={[Function]}
+    title="Asset details"
   >
     <svg
       color="#ffffff"
@@ -667,10 +677,12 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   className="emotion-5"
 >
   <a
+    aria-label="Select asset FatManOnABike1914.mp4"
     className="emotion-1"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
     onClick={[Function]}
     onMouseEnter={[Function]}
+    title="FatManOnABike1914.mp4"
   >
     <img
       alt="FatManOnABike1914.mp4"
@@ -679,9 +691,10 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
     />
   </a>
   <button
-    aria-label="Find similar images"
+    aria-label="Find similar images to FatManOnABike1914.mp4"
     className="emotion-2"
     onClick={[Function]}
+    title="Find similar images"
     type="button"
   >
     <svg
@@ -691,10 +704,12 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
     />
   </button>
   <a
+    aria-label="Asset details FatManOnABike1914.mp4"
     className="emotion-3"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
     onClick={[Function]}
     onMouseEnter={[Function]}
+    title="Asset details"
   >
     <svg
       color="#ffffff"
@@ -904,10 +919,12 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   className="emotion-4"
 >
   <a
+    aria-label="Select asset irr.pdf"
     className="emotion-1"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
     onClick={[Function]}
     onMouseEnter={[Function]}
+    title="irr.pdf"
   >
     <img
       alt="irr.pdf"
@@ -916,9 +933,10 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
     />
   </a>
   <button
-    aria-label="Find similar images"
+    aria-label="Find similar images to irr.pdf"
     className="emotion-2"
     onClick={[Function]}
+    title="Find similar images"
     type="button"
   >
     <svg
@@ -928,10 +946,12 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
     />
   </button>
   <a
+    aria-label="Asset details irr.pdf"
     className="emotion-3"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
     onClick={[Function]}
     onMouseEnter={[Function]}
+    title="Asset details"
   >
     <svg
       color="#ffffff"
@@ -1136,6 +1156,7 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   className="emotion-4"
 >
   <a
+    aria-label="Select asset undefined"
     className="emotion-1"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=zs5GXqqMapHkZpKYewLVNPppddQfaCK-"
     onClick={[Function]}
@@ -1147,9 +1168,10 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
     />
   </a>
   <button
-    aria-label="Find similar images"
+    aria-label="Find similar images to undefined"
     className="emotion-2"
     onClick={[Function]}
+    title="Find similar images"
     type="button"
   >
     <svg
@@ -1159,10 +1181,12 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
     />
   </button>
   <a
+    aria-label="Asset details undefined"
     className="emotion-3"
     href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/zs5GXqqMapHkZpKYewLVNPppddQfaCK-"
     onClick={[Function]}
     onMouseEnter={[Function]}
+    title="Asset details"
   >
     <svg
       color="#ffffff"
