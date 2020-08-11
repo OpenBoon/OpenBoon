@@ -32,10 +32,6 @@ describe('<AssetLabelingAdd />', () => {
       component.root.findByType('Combobox').props.options()
     })
 
-    /**
-     * Add label
-     */
-
     // Select Model
     act(() => {
       component.root
