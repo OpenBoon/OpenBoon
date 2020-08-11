@@ -265,6 +265,28 @@ class ModelServiceTests : AbstractTest() {
         assertEquals("zanzibar", keys[3])
     }
 
+    @Test
+    fun testRenameLabel() {
+        val model = create()
+        val specs = listOf(
+            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("beaver")),
+            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("ant")),
+            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
+            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
+        )
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs)
+        )
+        modelService.renameLabel(model, "beaver", "horse")
+        refreshElastic()
+        val counts = modelService.getLabelCounts(model)
+        assertEquals(1, counts["ant"])
+        assertEquals(2, counts["horse"])
+        assertEquals(null, counts["beaver"])
+        assertEquals(1, counts["zanzibar"])
+    }
+
     fun assertModel(model: Model) {
         assertEquals(ModelType.ZVI_LABEL_DETECTION, model.type)
         assertEquals("test", model.name)

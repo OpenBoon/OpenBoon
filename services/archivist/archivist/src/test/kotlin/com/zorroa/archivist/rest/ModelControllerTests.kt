@@ -1,10 +1,13 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AutomlSessionSpec
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelType
+import com.zorroa.archivist.domain.RenameLabelRequest
 import com.zorroa.archivist.service.ModelService
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
@@ -168,6 +171,37 @@ class ModelControllerTests : MockMvcTest() {
                 MockMvcResultMatchers.jsonPath(
                     "$[0].name",
                     CoreMatchers.equalTo("ZVI_KNN_CLASSIFIER")
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testRenameLabel() {
+        val specs = listOf(
+            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("beaver")),
+            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("ant")),
+            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
+            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
+        )
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs)
+        )
+
+        val body = RenameLabelRequest("ant", "horse")
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/models/${model.id}/_rename_label")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(body))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.updated",
+                    CoreMatchers.equalTo(1)
                 )
             )
             .andReturn()

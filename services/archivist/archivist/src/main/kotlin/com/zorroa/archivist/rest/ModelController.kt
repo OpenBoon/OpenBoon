@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.AutomlSession
 import com.zorroa.archivist.domain.AutomlSessionSpec
+import com.zorroa.archivist.domain.GenericBatchUpdateResponse
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelApplyRequest
@@ -11,6 +12,7 @@ import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
 import com.zorroa.archivist.domain.ModelType
 import com.zorroa.archivist.domain.PipelineMod
+import com.zorroa.archivist.domain.RenameLabelRequest
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.AutomlService
 import com.zorroa.archivist.service.ModelService
@@ -20,6 +22,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -94,6 +97,16 @@ class ModelController(
     @GetMapping("/api/v3/models/{id}/_label_counts")
     fun getLabelCounts(@ApiParam("ModelId") @PathVariable id: UUID): Map<String, Long> {
         return modelService.getLabelCounts(modelService.getModel(id))
+    }
+
+    @ApiOperation("Rename label")
+    @PutMapping("/api/v3/models/{id}/_rename_label")
+    fun renameLabel(
+        @ApiParam("ModelId") @PathVariable id: UUID,
+        @RequestBody req: RenameLabelRequest
+    ): GenericBatchUpdateResponse {
+        val model = modelService.getModel(id)
+        return modelService.renameLabel(model, req.oldLabel, req.newLabel)
     }
 
     @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")

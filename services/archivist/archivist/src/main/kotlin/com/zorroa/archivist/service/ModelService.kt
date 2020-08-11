@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.Category
 import com.zorroa.archivist.domain.FileType
+import com.zorroa.archivist.domain.GenericBatchUpdateResponse
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
@@ -32,6 +33,9 @@ import com.zorroa.zmlp.util.Json
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.index.reindex.BulkByScrollResponse
+import org.elasticsearch.script.Script
+import org.elasticsearch.script.ScriptType
 import org.elasticsearch.search.aggregations.AggregationBuilders
 import org.elasticsearch.search.aggregations.BucketOrder
 import org.elasticsearch.search.aggregations.bucket.nested.Nested
@@ -52,6 +56,7 @@ interface ModelService {
     fun deployModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun getLabelCounts(model: Model): Map<String, Long>
     fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any>
+    fun renameLabel(model: Model, oldLabel: String, newLabel: String): GenericBatchUpdateResponse
 }
 
 @Service
@@ -313,9 +318,52 @@ class ModelServiceImpl(
         return result
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    override fun renameLabel(model: Model, oldLabel: String, newLabel: String): GenericBatchUpdateResponse {
+        val rest = indexRoutingService.getProjectRestClient()
+
+        val innerQuery = QueryBuilders.boolQuery()
+        innerQuery.filter().add(QueryBuilders.termQuery("labels.modelId", model.id.toString()))
+        innerQuery.filter().add(QueryBuilders.termQuery("labels.label", oldLabel))
+
+        val query = QueryBuilders.nestedQuery(
+            "labels", innerQuery, ScoreMode.None
+        )
+
+        val req = rest.newUpdateByQueryRequest()
+        req.setQuery(query)
+        req.isRefresh = true
+        req.batchSize = 500
+        req.isAbortOnVersionConflict = false
+        req.script = Script(
+            ScriptType.INLINE,
+            "painless",
+            RENAME_LABEL_SCRIPT,
+            mapOf("oldLabel" to oldLabel, "newLabel" to newLabel)
+        )
+
+        val response: BulkByScrollResponse = rest.client.updateByQuery(req, RequestOptions.DEFAULT)
+        return GenericBatchUpdateResponse(response.updated)
+    }
+
     companion object {
         private val logger = LoggerFactory.getLogger(ModelServiceImpl::class.java)
 
         private val modelNameRegex = Regex("^[a-z0-9_\\-\\s]{2,}$", RegexOption.IGNORE_CASE)
+
+        /**
+         * A painless script which renames a label.
+         */
+        private val RENAME_LABEL_SCRIPT =
+            """
+             boolean changed = false;
+             for (int i = 0; i < ctx._source['labels'].length; ++i) {
+                if (ctx._source['labels'][i]['label'] == params.oldLabel) {
+                    ctx._source['labels'][i]['label'] = params.newLabel;
+                    changed = true;
+                    break;
+                }
+             }
+            """.trimIndent()
     }
 }

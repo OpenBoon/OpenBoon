@@ -358,7 +358,7 @@ class Label(
     }
 }
 
-@ApiModel("ModelApplyResponse", description = "The reponse to applying a model, either for testing or productions")
+@ApiModel("ModelApplyResponse", description = "The response to applying a model, either for testing or productions")
 class ModelApplyResponse(
 
     @ApiModelProperty("Tbe number of Assets that will be processed.")
@@ -366,4 +366,13 @@ class ModelApplyResponse(
 
     @ApiModelProperty("The ID of the job that is processing Assets.")
     val job: Job? = null
+)
+
+@ApiModel("RenameLabelRequest", description = "Rename the old label name to the new label name.")
+class RenameLabelRequest(
+    @ApiModelProperty("Tbe number of Assets that will be processed.")
+    val oldLabel: String,
+
+    @ApiModelProperty("Tbe number of Assets that will be processed.")
+    val newLabel: String
 )
