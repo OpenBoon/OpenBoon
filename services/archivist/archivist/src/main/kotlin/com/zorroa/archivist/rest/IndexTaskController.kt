@@ -1,14 +1,13 @@
 package com.zorroa.archivist.rest
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.IndexTask
 import com.zorroa.archivist.domain.IndexTaskState
 import com.zorroa.archivist.repository.IndexTaskDao
 import com.zorroa.archivist.service.IndexTaskService
+import com.zorroa.zmlp.util.Json
 import org.elasticsearch.common.Strings
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.InputStreamResource
-import org.springframework.core.io.Resource
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -30,12 +29,13 @@ class IndexTaskController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/index-tasks/{id}/_es_task_info"])
-    fun getEsStatus(@PathVariable id: UUID): ResponseEntity<Resource> {
+    fun getEsStatus(@PathVariable id: UUID): Map<String, Any> {
         val task = indexTaskDao.getOne(id)
-        val content = Strings.toString(indexTaskService.getEsTaskInfo(task))
-        return ResponseEntity.ok()
-            .contentLength(content.length.toLong())
-            .body(InputStreamResource(content.byteInputStream()))
+        val taskinfo = indexTaskService.getEsTaskInfo(task)
+
+        val rsp = Json.Mapper.readValue<MutableMap<String, Any>>(Strings.toString(taskinfo.taskInfo))
+        rsp["isCompleted"] = taskinfo.isCompleted
+        return rsp
     }
 
     @GetMapping(value = ["/api/v1/index-tasks"])

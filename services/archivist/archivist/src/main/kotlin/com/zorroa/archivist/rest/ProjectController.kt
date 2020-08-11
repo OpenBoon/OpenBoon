@@ -78,6 +78,18 @@ class ProjectController constructor(
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
+    @PutMapping(value = ["/api/v1/projects/{id}/_index/{index}"])
+    @ApiOperation("Set the project's new index.")
+    fun setIndex(@PathVariable id: UUID, @PathVariable index: UUID): Any {
+        val project = projectService.get(id)
+        val index = indexRoutingService.getIndexRoute(index)
+        return HttpUtils.status(
+            "project", id.toString(),
+            "set-index", projectService.setIndexRoute(project, index)
+        )
+    }
+
+    @PreAuthorize("hasAuthority('SystemManage')")
     @RequestMapping(value = ["/api/v1/projects/_search"], method = [RequestMethod.POST, RequestMethod.GET])
     @ApiOperation("Get all Projects")
     fun getAll(@RequestBody(required = false) filter: ProjectFilter?): KPagedList<Project> {
