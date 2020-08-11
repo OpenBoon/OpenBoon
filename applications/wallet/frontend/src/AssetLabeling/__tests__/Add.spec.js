@@ -2,13 +2,12 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import asset from '../../Asset/__mocks__/asset'
 import models from '../../Models/__mocks__/models'
-import project from '../../Project/__mocks__/project'
 import assetLabels from '../__mocks__/assetLabels'
 
 import AssetLabelingAdd from '../Add'
 
 const MODELS = models.results
-const PROJECT_ID = project.id
+const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = asset.id
 const MODEL_ID = models.results[0].id
 const ASSET_LABELS = asset.metadata.labels
