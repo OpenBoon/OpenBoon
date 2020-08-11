@@ -29,6 +29,10 @@ describe('<AssetLabelingAdd />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    act(() => {
+      component.root.findByType('Combobox').props.options()
+    })
+
     /**
      * Add label
      */
@@ -118,6 +122,15 @@ describe('<AssetLabelingAdd />', () => {
   })
 
   it('should render properly with localStorage', async () => {
+    localStorage.setItem(
+      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
+      `"${MODEL_ID}"`,
+    )
+    localStorage.setItem(
+      `AssetLabelingAdd.${PROJECT_ID}.label`,
+      `"Existing localStorage"`,
+    )
+
     require('swr').__setMockUseSWRResponse({ data: assetLabels })
 
     const component = TestRenderer.create(
@@ -135,10 +148,6 @@ describe('<AssetLabelingAdd />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
-
-    act(() => {
-      component.root.findByType('Combobox').props.options()
-    })
 
     /**
      * Update label
