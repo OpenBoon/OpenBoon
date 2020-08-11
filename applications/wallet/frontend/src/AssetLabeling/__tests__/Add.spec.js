@@ -2,7 +2,6 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import asset from '../../Asset/__mocks__/asset'
 import models from '../../Models/__mocks__/models'
-import assetLabels from '../__mocks__/assetLabels'
 
 import AssetLabelingAdd from '../Add'
 
@@ -17,7 +16,7 @@ jest.mock('../../Combobox', () => 'Combobox')
 const noop = () => () => {}
 
 describe('<AssetLabelingAdd />', () => {
-  it('should render properly', async () => {
+  it('should add a label', async () => {
     const component = TestRenderer.create(
       <AssetLabelingAdd
         projectId={PROJECT_ID}
@@ -44,16 +43,12 @@ describe('<AssetLabelingAdd />', () => {
         .props.onChange({ value: MODEL_ID })
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
-
     // Input Label
     act(() => {
       component.root
         .findByType('Combobox')
         .props.onChange({ value: 'Flimflarm' })
     })
-
-    expect(component.toJSON()).toMatchSnapshot()
 
     // Mock Failure
     fetch.mockResponseOnce(
@@ -95,8 +90,6 @@ describe('<AssetLabelingAdd />', () => {
       component.root.findByProps({ children: 'Cancel' }).props.onClick()
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
-
     expect(fetch.mock.calls.length).toEqual(3)
 
     // Call from submitting label for un-used model
@@ -121,7 +114,7 @@ describe('<AssetLabelingAdd />', () => {
     })
   })
 
-  it('should render properly with localStorage', async () => {
+  it('should render with localStorage and update a label', async () => {
     localStorage.setItem(
       `AssetLabelingAdd.${PROJECT_ID}.modelId`,
       `"${MODEL_ID}"`,
@@ -130,8 +123,6 @@ describe('<AssetLabelingAdd />', () => {
       `AssetLabelingAdd.${PROJECT_ID}.label`,
       `"Existing localStorage"`,
     )
-
-    require('swr').__setMockUseSWRResponse({ data: assetLabels })
 
     const component = TestRenderer.create(
       <AssetLabelingAdd
@@ -148,10 +139,6 @@ describe('<AssetLabelingAdd />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
-
-    /**
-     * Update label
-     */
 
     // Select Model
     act(() => {
