@@ -184,6 +184,7 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
     aria-label="Enable Filter"
     className="emotion-1"
     onClick={[Function]}
+    title="Enable Filter"
     type="button"
   >
     <svg
@@ -197,6 +198,7 @@ exports[`<FilterActions /> should render disabled properly 1`] = `
     aria-label="Delete Filter"
     className="emotion-3"
     onClick={[Function]}
+    title="Delete Filter"
     type="button"
   >
     <svg
@@ -389,6 +391,7 @@ exports[`<FilterActions /> should render properly 1`] = `
     aria-label="Disable Filter"
     className="emotion-1"
     onClick={[Function]}
+    title="Disable Filter"
     type="button"
   >
     <svg
@@ -402,6 +405,7 @@ exports[`<FilterActions /> should render properly 1`] = `
     aria-label="Delete Filter"
     className="emotion-3"
     onClick={[Function]}
+    title="Delete Filter"
     type="button"
   >
     <svg
@@ -594,6 +598,7 @@ exports[`<FilterActions /> should render properly 2`] = `
     aria-label="Disable Filter"
     className="emotion-1"
     onClick={[Function]}
+    title="Disable Filter"
     type="button"
   >
     <svg
@@ -607,6 +612,7 @@ exports[`<FilterActions /> should render properly 2`] = `
     aria-label="Delete Filter"
     className="emotion-3"
     onClick={[Function]}
+    title="Delete Filter"
     type="button"
   >
     <svg
@@ -799,6 +805,7 @@ exports[`<FilterActions /> should render properly 3`] = `
     aria-label="Disable Filter"
     className="emotion-1"
     onClick={[Function]}
+    title="Disable Filter"
     type="button"
   >
     <svg
@@ -812,6 +819,7 @@ exports[`<FilterActions /> should render properly 3`] = `
     aria-label="Delete Filter"
     className="emotion-3"
     onClick={[Function]}
+    title="Delete Filter"
     type="button"
   >
     <svg
