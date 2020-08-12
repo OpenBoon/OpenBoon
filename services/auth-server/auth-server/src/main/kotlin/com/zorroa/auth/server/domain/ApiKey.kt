@@ -272,5 +272,5 @@ class ApiKeyFilter(
     }
 
     override val sortFields: Set<String>
-        get() = setOf("id", "name")
+        get() = setOf("id", "name", "timeCreated")
 }

@@ -1,10 +1,13 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AutomlSessionSpec
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelType
+import com.zorroa.archivist.domain.UpdateLabelRequest
 import com.zorroa.archivist.service.ModelService
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import kotlin.test.assertEquals
 
 class ModelControllerTests : MockMvcTest() {
 
@@ -174,6 +178,61 @@ class ModelControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testRenameLabel() {
+        val specs = dataSet(model)
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs)
+        )
+
+        val body = UpdateLabelRequest("ant", "horse")
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/models/${model.id}/labels")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(body))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.updated",
+                    CoreMatchers.equalTo(1)
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testDeleteLabel() {
+        val specs = dataSet(model)
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs)
+        )
+
+        val body = UpdateLabelRequest("ant", "")
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/models/${model.id}/labels")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(body))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.updated",
+                    CoreMatchers.equalTo(1)
+                )
+            )
+            .andReturn()
+
+        authenticate()
+        val labels = modelService.getLabelCounts(model)
+        assertEquals(null, labels["ant"])
+        assertEquals(3, labels.size)
+    }
+
+    @Test
     fun testCreateAutomlSession() {
 
         val modelSpec = ModelSpec("Dog Breeds 2", ModelType.GCP_LABEL_DETECTION)
@@ -204,5 +263,14 @@ class ModelControllerTests : MockMvcTest() {
                 )
             )
             .andReturn()
+    }
+
+    fun dataSet(model: Model): List<AssetSpec> {
+        return listOf(
+            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("beaver")),
+            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("ant")),
+            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
+            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("dog"))
+        )
     }
 }

@@ -1,21 +1,20 @@
 from django.http import Http404
 from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer
 from flatten_dict import flatten
-from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
-                                   CreateModelMixin, UpdateModelMixin, DestroyModelMixin)
-from rest_framework.viewsets import GenericViewSet
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
+                                   CreateModelMixin, UpdateModelMixin, DestroyModelMixin)
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 from rest_framework_csv.renderers import CSVRenderer
 from zmlp.search import AssetSearchScroller
 
-from assets.views import asset_modifier
 from assets.utils import get_asset_style, get_video_length, get_thumbnail_and_video_urls
+from assets.views import asset_modifier
 from projects.views import BaseProjectViewSet
 from searches.models import Search
 from searches.serializers import SearchSerializer, SearchAssetSerializer
-from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import FromSizePagination, ZMLPFromSizePagination
 from .utils import FieldUtility, FilterBuddy
 
@@ -24,15 +23,15 @@ def search_asset_modifier(request, item):
     asset_modifier(request, item)
 
     # Set the AssetStyle for the frontend.
-    item['asset_style'] = get_asset_style(item)
+    item['assetStyle'] = get_asset_style(item)
 
     # Set the videoLength
-    item['video_length'] = get_video_length(item)
+    item['videoLength'] = get_video_length(item)
 
     # Set thumbnail and video urls
     thumbnail_url, video_proxy_url = get_thumbnail_and_video_urls(request, item)
-    item['thumbnail_url'] = thumbnail_url
-    item['video_proxy_url'] = video_proxy_url
+    item['thumbnailUrl'] = thumbnail_url
+    item['videoProxyUrl'] = video_proxy_url
 
     # Cleanup
     if 'files' in item['metadata']:
@@ -41,8 +40,7 @@ def search_asset_modifier(request, item):
         del(item['metadata']['media'])
 
 
-class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
-                    CreateModelMixin,
+class SearchViewSet(CreateModelMixin,
                     UpdateModelMixin,
                     ListModelMixin,
                     RetrieveModelMixin,
@@ -68,7 +66,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
         if 'project' not in request.data:
             request.data['project'] = kwargs['project_pk']
         # Always correct the created_by value
-        request.data['created_by'] = str(request.user.id)
+        request.data['createdBy'] = str(request.user.id)
         return super(SearchViewSet, self).create(request, *args, **kwargs)
 
     @action(detail=False, methods=['get'])

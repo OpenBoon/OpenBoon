@@ -9,7 +9,7 @@ import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import { onConfirm } from './helpers'
 
 const INITIAL_STATE = {
-  newPassword: '',
+  newPassword1: '',
   newPassword2: '',
   isLoading: false,
   errors: {},
@@ -37,14 +37,14 @@ const ResetPasswordConfirm = ({ uid, token }) => {
 
       <Input
         autoFocus
-        id="newPassword"
+        id="newPassword1"
         variant={INPUT_VARIANTS.PRIMARY}
         label="Password"
         type="password"
-        value={state.newPassword}
-        onChange={({ target: { value } }) => dispatch({ newPassword: value })}
-        hasError={state.errors.newPassword !== undefined}
-        errorMessage={state.errors.newPassword}
+        value={state.newPassword1}
+        onChange={({ target: { value } }) => dispatch({ newPassword1: value })}
+        hasError={state.errors.newPassword1 !== undefined}
+        errorMessage={state.errors.newPassword1}
       />
       <Input
         id="newPassword2"
@@ -76,7 +76,7 @@ const ResetPasswordConfirm = ({ uid, token }) => {
             })
           }
           isDisabled={
-            !state.newPassword || !state.newPassword2 || state.isLoading
+            !state.newPassword1 || !state.newPassword2 || state.isLoading
           }
         >
           {state.isLoading ? 'Saving...' : 'Save'}

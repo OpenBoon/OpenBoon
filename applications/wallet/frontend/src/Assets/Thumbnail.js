@@ -16,7 +16,7 @@ import { formatSeconds } from './helpers'
 
 const AssetsThumbnail = ({
   asset: {
-    id,
+    id: thumbnailId,
     metadata: { source },
     thumbnailUrl,
     videoLength,
@@ -27,13 +27,13 @@ const AssetsThumbnail = ({
   const { filename } = source || {}
 
   const {
-    query: { projectId, id: selectedId, query },
+    query: { projectId, assetId, query },
   } = useRouter()
 
-  const isSelected = id === selectedId
+  const isSelected = thumbnailId === assetId
 
   const queryString = getQueryString({
-    ...(isSelected ? {} : { id }),
+    ...(isSelected ? {} : { assetId: thumbnailId }),
     ...(query ? { query } : {}),
   })
 
@@ -67,6 +67,8 @@ const AssetsThumbnail = ({
           passHref
         >
           <Button
+            title={filename}
+            aria-label={`Select asset ${filename}`}
             variant={VARIANTS.NEUTRAL}
             css={{
               width: '100%',
@@ -96,7 +98,8 @@ const AssetsThumbnail = ({
 
       {isActive && (
         <Button
-          aria-label="Find similar images"
+          title="Find similar images"
+          aria-label={`Find similar images to ${filename}`}
           variant={VARIANTS.NEUTRAL}
           style={{
             opacity: 0,
@@ -115,8 +118,8 @@ const AssetsThumbnail = ({
               type: ACTIONS.APPLY_SIMILARITY,
               payload: {
                 projectId,
-                assetId: id,
-                selectedId,
+                thumbnailId,
+                assetId,
                 query,
                 attribute,
               },
@@ -132,11 +135,15 @@ const AssetsThumbnail = ({
 
       {isActive && (
         <Link
-          href={`/[projectId]/visualizer/[id]${getQueryString({ query })}`}
-          as={`/${projectId}/visualizer/${id}${getQueryString({ query })}`}
+          href={`/[projectId]/visualizer/[assetId]${getQueryString({ query })}`}
+          as={`/${projectId}/visualizer/${thumbnailId}${getQueryString({
+            query,
+          })}`}
           passHref
         >
           <Button
+            title="Asset details"
+            aria-label={`Asset details ${filename}`}
             variant={VARIANTS.NEUTRAL}
             style={{
               opacity: 0,

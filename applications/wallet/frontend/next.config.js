@@ -1,5 +1,3 @@
-const withSourceMaps = require('@zeit/next-source-maps')()
-
 require('dotenv').config()
 
 const {
@@ -10,7 +8,10 @@ const {
   ENABLE_SENTRY,
 } = process.env
 
-module.exports = withSourceMaps({
+module.exports = {
+  experimental: {
+    productionBrowserSourceMaps: true,
+  },
   reactStrictMode: true,
   env: {
     CI_COMMIT_SHA,
@@ -41,4 +42,4 @@ module.exports = withSourceMaps({
 
     return config
   },
-})
+}

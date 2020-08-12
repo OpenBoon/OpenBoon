@@ -63,7 +63,7 @@ describe('<Filters />', () => {
               { type: 'textContent', attribute: '', values: { query: 'Cat' } },
             ]),
           ),
-          id: '',
+          assetId: '',
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
         },
       },
@@ -80,7 +80,7 @@ describe('<Filters />', () => {
       pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
-        id: ASSET_ID,
+        assetId: ASSET_ID,
       },
     })
 
@@ -113,11 +113,11 @@ describe('<Filters />', () => {
               { type: 'textContent', attribute: '', values: { query: 'Cat' } },
             ]),
           ),
-          id: 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C',
+          assetId: 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C',
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C&query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C&query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
     )
   })
 
@@ -164,7 +164,7 @@ describe('<Filters />', () => {
             ]),
           ),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
         },
       },
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In0sImlzRGlzYWJsZWQiOnRydWV9XQ==',
@@ -219,7 +219,7 @@ describe('<Filters />', () => {
             ]),
           ),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
         },
       },
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In0sImlzRGlzYWJsZWQiOmZhbHNlfV0=',
@@ -266,7 +266,7 @@ describe('<Filters />', () => {
             ]),
           ),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
         },
       },
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
@@ -306,7 +306,7 @@ describe('<Filters />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
           query: '',
         },
       },
@@ -347,7 +347,7 @@ describe('<Filters />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
         },
       },
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer',
@@ -450,7 +450,7 @@ describe('<Filters />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
           query: btoa(
             JSON.stringify([
               {
@@ -515,7 +515,7 @@ describe('<Filters />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
           query: btoa(
             JSON.stringify([
               {

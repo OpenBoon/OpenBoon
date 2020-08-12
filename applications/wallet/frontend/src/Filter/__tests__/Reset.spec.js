@@ -52,7 +52,7 @@ describe('<FilterReset />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
           query: btoa(
             JSON.stringify([
               {
@@ -106,7 +106,7 @@ describe('<FilterReset />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
           query: btoa(
             JSON.stringify([
               {
@@ -160,7 +160,7 @@ describe('<FilterReset />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
           query: btoa(
             JSON.stringify([
               {
@@ -234,9 +234,12 @@ describe('<FilterReset />', () => {
     expect(mockPush).toHaveBeenCalledWith(
       {
         pathname: '/[projectId]/visualizer',
-        query: { projectId: PROJECT_ID, id: asset.id, query },
+        query: { projectId: PROJECT_ID, assetId: asset.id, query },
       },
-      `/${PROJECT_ID}/visualizer${getQueryString({ id: asset.id, query })}`,
+      `/${PROJECT_ID}/visualizer${getQueryString({
+        assetId: asset.id,
+        query,
+      })}`,
     )
   })
 })

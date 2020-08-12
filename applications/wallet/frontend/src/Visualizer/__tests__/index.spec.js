@@ -36,7 +36,7 @@ describe('<Visualizer />', () => {
     require('swr').__setMockUseSWRInfiniteResponse([assets])
 
     require('next/router').__setUseRouter({
-      query: { id: ASSET_ID, projectId: PROJECT_ID },
+      query: { assetId: ASSET_ID, projectId: PROJECT_ID },
     })
 
     const component = TestRenderer.create(

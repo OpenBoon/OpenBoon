@@ -11,9 +11,11 @@ from django.db import transaction
 from django.http import Http404
 from django.template.loader import render_to_string
 from django.utils.timezone import now
+from djangorestframework_camel_case.parser import CamelCaseJSONParser
 from google.auth.transport import requests
 from google.oauth2 import id_token
-from rest_auth.views import PasswordChangeView
+from rest_auth.views import PasswordChangeView, PasswordResetView, \
+    PasswordResetConfirmView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -22,12 +24,12 @@ from agreements.models import Agreement
 from agreements.views import get_ip_from_request
 from registration.models import UserRegistrationToken
 from registration.serializers import RegistrationSerializer, UserSerializer
-from wallet.mixins import ConvertCamelToSnakeViewSetMixin
+from wallet.mixins import CamelCaseRendererMixin
 
 User = get_user_model()
 
 
-class UserRegistrationView(ConvertCamelToSnakeViewSetMixin, APIView):
+class UserRegistrationView(APIView):
     """Allows anyone to sign up for a new account. The user is created and email
 is sent with a link that will activate the account.
 
@@ -58,8 +60,8 @@ Response Codes:
         validated_data = serializer.validated_data
         password = validated_data['password']
         email = validated_data['email']
-        first = validated_data['first_name']
-        last = validated_data['last_name']
+        first = validated_data['firstName']
+        last = validated_data['lastName']
 
         try:
             validate_password(password)
@@ -94,9 +96,9 @@ Response Codes:
             token = UserRegistrationToken.objects.create(user=user)
 
             # Create an agreement.
-            if validated_data.get('policies_date'):
-                Agreement.objects.create(user=user, policies_date=validated_data['policies_date'],
-                                         ip_address=get_ip_from_request(request))
+            if validated_data.get('policiesDate'):
+                Agreement.objects.create(user=user, policiesDate=validated_data['policiesDate'],
+                                         ipAddress=get_ip_from_request(request))
 
         # Email the user a link to activate their account.
         subject = 'Welcome To ZVI - Please Activate Your Account.'
@@ -113,7 +115,7 @@ Response Codes:
         return Response(data={'detail': 'Success, confirmation email has been sent.'})
 
 
-class UserConfirmationView(ConvertCamelToSnakeViewSetMixin, APIView):
+class UserConfirmationView(APIView):
     """Activates a newly created account. Requires a user id and registration token that
 are sent in an email to the user on registration.
 
@@ -137,7 +139,7 @@ Response Codes:
     def post(self, request, *args, **kwargs):
         try:
             token = request.data['token']
-            user_id = request.data['user_id']
+            user_id = request.data['userId']
         except KeyError:
             msg = 'Confirming an email address requires sending the "token" and "userId" params.'
             return Response(data={'detail': msg}, status=status.HTTP_400_BAD_REQUEST)
@@ -145,7 +147,7 @@ Response Codes:
             token = UserRegistrationToken.objects.get(token=token, user=user_id)
         except ObjectDoesNotExist:
             raise Http404('User ID and/or token does not exist.')
-        if now() - token.created_at > timedelta(days=settings.REGISTRATION_TIMEOUT_DAYS):
+        if now() - token.createdAt > timedelta(days=settings.REGISTRATION_TIMEOUT_DAYS):
             msg = 'The activation link has expired. Please sign up again.'
             return Response(data={'detail': msg}, status=status.HTTP_403_FORBIDDEN)
         user = token.user
@@ -156,12 +158,21 @@ Response Codes:
         return Response(data={'detail': 'Success. User has been activated.'})
 
 
-class ApiPasswordChangeView(ConvertCamelToSnakeViewSetMixin, PasswordChangeView):
-    pass
+class ApiPasswordChangeView(PasswordChangeView):
+    parser_classes = [CamelCaseJSONParser]
 
 
-class MeView(ConvertCamelToSnakeViewSetMixin, APIView):
+class ApiPasswordResetView(PasswordResetView):
+    parser_classes = [CamelCaseJSONParser]
+
+
+class ApiPasswordResetConfirmView(PasswordResetConfirmView):
+    parser_classes = [CamelCaseJSONParser]
+
+
+class MeView(CamelCaseRendererMixin, APIView):
     """Simple view that returns information about the current user."""
+    parser_classes = [CamelCaseJSONParser]
 
     def get(self, request):
         return Response(UserSerializer(request.user, context={'request': request}).data)
@@ -173,14 +184,14 @@ class MeView(ConvertCamelToSnakeViewSetMixin, APIView):
         return Response(serializer.data)
 
 
-class LogoutView(ConvertCamelToSnakeViewSetMixin, APIView):
+class LogoutView(APIView):
     """Basic logout view. Logs the user out and returns and empty json payload."""
     def post(self, request):
         logout(request)
         return Response({})
 
 
-class LoginView(ConvertCamelToSnakeViewSetMixin, APIView):
+class LoginView(CamelCaseRendererMixin, APIView):
     """Login view that supports Google OAuth bearer tokens passed in the "Authorization"
     header or a username and password sent in the JSON payload.
 

@@ -10,7 +10,7 @@ import AssetDeleteContent from './Content'
 
 const AssetDelete = () => {
   const {
-    query: { id: assetId, action },
+    query: { projectId, assetId, action },
   } = useRouter()
 
   const [showDialogue, setShowDialogue] = useState(false)
@@ -34,6 +34,8 @@ const AssetDelete = () => {
   return (
     <SuspenseBoundary>
       <AssetDeleteContent
+        projectId={projectId}
+        assetId={assetId}
         showDialogue={showDialogue}
         setShowDialogue={setShowDialogue}
       />

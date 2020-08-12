@@ -22,7 +22,7 @@ let reloadKey = 0
 
 const VisualizerContent = () => {
   const {
-    query: { id: assetId, action },
+    query: { assetId, action },
   } = useRouter()
 
   if (action === 'delete-asset-success') {

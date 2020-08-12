@@ -109,7 +109,7 @@ describe('<MetadataPrettySwitch />', () => {
     require('swr').__setMockUseSWRResponse({ data: assets })
 
     require('next/router').__setUseRouter({
-      query: { id: ASSET_ID, projectId: PROJECT_ID },
+      query: { assetId: ASSET_ID, projectId: PROJECT_ID },
     })
 
     const value = bboxAsset.metadata.analysis['zvi-image-similarity']
@@ -129,7 +129,7 @@ describe('<MetadataPrettySwitch />', () => {
     require('swr').__setMockUseSWRResponse({ data: null })
 
     require('next/router').__setUseRouter({
-      query: { id: ASSET_ID, projectId: PROJECT_ID },
+      query: { assetId: ASSET_ID, projectId: PROJECT_ID },
     })
 
     const value = bboxAsset.metadata.analysis['zvi-image-similarity']
