@@ -251,6 +251,7 @@ sdk-unit-tests:
   allow_failure: true
   script:
     - python -m pip install pipenv pytest
+    - pip install --upgrade pip
     - cd client/python
     - pip install .
     - pytest
