@@ -39,11 +39,6 @@ describe('<AssetLabeling />', () => {
     })
 
     // Open Asset Label list Accordion
-    act(() => {
-      component.root
-        .findAllByType('details')[0]
-        .props.onToggle({ target: { open: true } })
-    })
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -59,12 +54,6 @@ describe('<AssetLabeling />', () => {
 
     const component = TestRenderer.create(<AssetLabeling />)
 
-    act(() => {
-      component.root
-        .findAllByType('details')[0]
-        .props.onToggle({ target: { open: true } })
-    })
-
     expect(component.toJSON()).toMatchSnapshot()
   })
 
@@ -77,12 +66,6 @@ describe('<AssetLabeling />', () => {
     require('swr').__setMockUseSWRResponse({ data: { ...models, ...asset } })
 
     const component = TestRenderer.create(<AssetLabeling />)
-
-    act(() => {
-      component.root
-        .findAllByType('details')[0]
-        .props.onToggle({ target: { open: true } })
-    })
 
     // eslint-disable-next-line no-proto
     const spy = jest.spyOn(localStorage.__proto__, 'setItem')
