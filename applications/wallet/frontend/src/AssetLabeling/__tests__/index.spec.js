@@ -41,7 +41,7 @@ describe('<AssetLabeling />', () => {
     // Open Asset Label list Accordion
     act(() => {
       component.root
-        .findByType('details')
+        .findAllByType('details')[0]
         .props.onToggle({ target: { open: true } })
     })
 
@@ -61,8 +61,8 @@ describe('<AssetLabeling />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Expand Section' })
-        .props.onClick()
+        .findAllByType('details')[0]
+        .props.onToggle({ target: { open: true } })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -80,8 +80,8 @@ describe('<AssetLabeling />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Expand Section' })
-        .props.onClick()
+        .findAllByType('details')[0]
+        .props.onToggle({ target: { open: true } })
     })
 
     // eslint-disable-next-line no-proto
