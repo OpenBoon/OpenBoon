@@ -179,6 +179,7 @@ const FiltersMenu = ({
         <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
         <Button
+          type="submit"
           aria-label="Add Filters"
           variant={VARIANTS.PRIMARY}
           onClick={() => {

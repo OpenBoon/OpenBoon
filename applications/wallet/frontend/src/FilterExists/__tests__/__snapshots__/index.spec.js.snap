@@ -441,6 +441,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
         aria-label="Disable Filter"
         className="emotion-4"
         onClick={[Function]}
+        title="Disable Filter"
         type="button"
       >
         <svg
@@ -454,6 +455,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
         aria-label="Delete Filter"
         className="emotion-6"
         onClick={[Function]}
+        title="Delete Filter"
         type="button"
       >
         <svg
@@ -1005,6 +1007,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
         aria-label="Disable Filter"
         className="emotion-4"
         onClick={[Function]}
+        title="Disable Filter"
         type="button"
       >
         <svg
@@ -1018,6 +1021,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
         aria-label="Delete Filter"
         className="emotion-6"
         onClick={[Function]}
+        title="Delete Filter"
         type="button"
       >
         <svg
