@@ -95,6 +95,15 @@ class ModelAppTests(unittest.TestCase):
         rsp = self.app.models.rename_label(Model({'id': 'foo'}), 'dog', 'cat')
         assert value == rsp
 
+    @patch.object(ZmlpClient, 'delete')
+    def test_delete_label(self, put_patch):
+        value = {
+            'updated': 1
+        }
+        put_patch.return_value = value
+        rsp = self.app.models.delete_label(Model({'id': 'foo'}), 'dog')
+        assert value == rsp
+
     @patch.object(ZmlpClient, 'get')
     def test_download_labeled_images(self, get_patch):
         raw = {'id': '12345', 'type': 'ZVI_LABEL_DETECTION'}

@@ -56,7 +56,12 @@ interface ModelService {
     fun deployModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun getLabelCounts(model: Model): Map<String, Long>
     fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any>
-    fun renameLabel(model: Model, oldLabel: String, newLabel: String): GenericBatchUpdateResponse
+
+    /**
+     * Update a give label to a new label name.  If the new label name is null or
+     * empty then remove the label.
+     */
+    fun updateLabel(model: Model, label: String, newLabel: String?): GenericBatchUpdateResponse
 }
 
 @Service
@@ -319,12 +324,12 @@ class ModelServiceImpl(
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun renameLabel(model: Model, oldLabel: String, newLabel: String): GenericBatchUpdateResponse {
+    override fun updateLabel(model: Model, label: String, newLabel: String?): GenericBatchUpdateResponse {
         val rest = indexRoutingService.getProjectRestClient()
 
         val innerQuery = QueryBuilders.boolQuery()
         innerQuery.filter().add(QueryBuilders.termQuery("labels.modelId", model.id.toString()))
-        innerQuery.filter().add(QueryBuilders.termQuery("labels.label", oldLabel))
+        innerQuery.filter().add(QueryBuilders.termQuery("labels.label", label))
 
         val query = QueryBuilders.nestedQuery(
             "labels", innerQuery, ScoreMode.None
@@ -334,13 +339,30 @@ class ModelServiceImpl(
         req.setQuery(query)
         req.isRefresh = true
         req.batchSize = 500
-        req.isAbortOnVersionConflict = false
-        req.script = Script(
-            ScriptType.INLINE,
-            "painless",
-            RENAME_LABEL_SCRIPT,
-            mapOf("oldLabel" to oldLabel, "newLabel" to newLabel)
-        )
+        req.isAbortOnVersionConflict = true
+
+        req.script = if (newLabel.isNullOrEmpty()) {
+            Script(
+                ScriptType.INLINE,
+                "painless",
+                DELETE_LABEL_SCRIPT,
+                mapOf(
+                    "label" to label,
+                    "modelId" to model.id.toString()
+                )
+            )
+        } else {
+            Script(
+                ScriptType.INLINE,
+                "painless",
+                RENAME_LABEL_SCRIPT,
+                mapOf(
+                    "oldLabel" to label,
+                    "newLabel" to newLabel,
+                    "modelId" to model.id.toString()
+                )
+            )
+        }
 
         val response: BulkByScrollResponse = rest.client.updateByQuery(req, RequestOptions.DEFAULT)
         return GenericBatchUpdateResponse(response.updated)
@@ -356,13 +378,30 @@ class ModelServiceImpl(
          */
         private val RENAME_LABEL_SCRIPT =
             """
-             boolean changed = false;
              for (int i = 0; i < ctx._source['labels'].length; ++i) {
-                if (ctx._source['labels'][i]['label'] == params.oldLabel) {
-                    ctx._source['labels'][i]['label'] = params.newLabel;
-                    changed = true;
+                if (ctx._source['labels'][i]['label'] == params.oldLabel && 
+                    ctx._source['labels'][i]['modelId'] == params.modelId) {
+                        ctx._source['labels'][i]['label'] = params.newLabel;
+                        break;
+                }
+             }
+            """.trimIndent()
+
+        /**
+         * A painless script which renames a label.
+         */
+        private val DELETE_LABEL_SCRIPT =
+            """
+             int index = -1;
+             for (int i = 0; i < ctx._source['labels'].length; ++i) {
+                if (ctx._source['labels'][i]['label'] == params.label && 
+                    ctx._source['labels'][i]['modelId'] == params.modelId) {
+                    index = i;
                     break;
                 }
+             }
+             if (index > -1) {
+                ctx._source['labels'].remove(index)
              }
             """.trimIndent()
     }

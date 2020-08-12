@@ -157,10 +157,27 @@ class ModelApp:
 
         """
         body = {
-            "oldLabel": old_label,
+            "label": old_label,
             "newLabel": new_label
         }
-        return self.app.client.put('/api/v3/models/{}/_rename_label'.format(as_id(model)), body)
+        return self.app.client.put('/api/v3/models/{}/labels'.format(as_id(model)), body)
+
+    def delete_label(self, model, label):
+        """
+        Removes the label from all Assets.
+
+        Args:
+            model (Model): The Model or its unique Id.
+            label (str): The label name to remove.
+
+        Returns:
+            dict: a dictionary containing the number of assets updated.
+
+        """
+        body = {
+            "label": label
+        }
+        return self.app.client.delete('/api/v3/models/{}/labels'.format(as_id(model)), body)
 
     def download_labeled_images(self, model, style, dst_dir, validation_split=0.2):
         """

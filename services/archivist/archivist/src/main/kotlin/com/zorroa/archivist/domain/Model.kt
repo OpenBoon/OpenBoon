@@ -368,11 +368,12 @@ class ModelApplyResponse(
     val job: Job? = null
 )
 
-@ApiModel("RenameLabelRequest", description = "Rename the old label name to the new label name.")
-class RenameLabelRequest(
-    @ApiModelProperty("Tbe number of Assets that will be processed.")
-    val oldLabel: String,
+@ApiModel("Update Label Request", description = "Update or remove a given label.")
+class UpdateLabelRequest(
 
-    @ApiModelProperty("Tbe number of Assets that will be processed.")
-    val newLabel: String
+    @ApiModelProperty("The name of the old label")
+    val label: String,
+
+    @ApiModelProperty("The name of the new label or null/empty string if the label should be removed.")
+    val newLabel: String? = null
 )
