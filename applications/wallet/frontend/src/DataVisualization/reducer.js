@@ -10,21 +10,18 @@ export const TYPES = [
   {
     type: 'facet',
     icon: <FacetSvg height={constants.icons.moderate} />,
-    name: 'Facet',
     legend:
       'Shows the range of values and the number of each for one for a selected field.',
   },
   {
     type: 'range',
     icon: <RangeSvg height={constants.icons.moderate} />,
-    name: 'Range',
     legend:
       'Shows the min, max, mean, median, and mode for the numerical values of a selected field.',
   },
   {
     type: 'histogram',
     icon: <HistogramSvg height={constants.icons.moderate} />,
-    name: 'Histogram',
     legend: 'Shows the distribution of assets within value groups.',
     flag: 'histogram',
     envs: [],

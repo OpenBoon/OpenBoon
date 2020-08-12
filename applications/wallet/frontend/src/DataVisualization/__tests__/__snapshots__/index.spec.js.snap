@@ -363,7 +363,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
               <p
                 className="emotion-6"
               >
-                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the affect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
+                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the effect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
               </p>
             </div>
           </div>
@@ -1263,7 +1263,7 @@ exports[`<DataVisualization /> should render properly 3`] = `
               <p
                 className="emotion-6"
               >
-                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the affect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
+                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the effect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
               </p>
             </div>
             <div
@@ -1759,7 +1759,7 @@ exports[`<DataVisualization /> should render properly 4`] = `
               <p
                 className="emotion-6"
               >
-                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the affect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
+                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the effect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
               </p>
             </div>
           </div>

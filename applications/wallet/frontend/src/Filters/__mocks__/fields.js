@@ -3,6 +3,7 @@ const fields = {
     zvi: { tinyProxy: ['facet', 'text', 'exists'] },
     'zvi-image-similarity': { simhash: ['similarity', 'exists'] },
     'zvi-object-detection': { predictions: [], count: ['range', 'exists'] },
+    'zvi-face-detection': ['labelConfidence', 'exists'],
   },
   aux: ['exists'],
   clip: {
