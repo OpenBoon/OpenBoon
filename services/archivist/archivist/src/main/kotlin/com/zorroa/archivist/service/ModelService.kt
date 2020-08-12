@@ -16,6 +16,7 @@ import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
@@ -26,11 +27,13 @@ import com.zorroa.archivist.repository.ModelJdbcDao
 import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
 import org.apache.lucene.search.join.ScoreMode
+import org.elasticsearch.action.ActionListener
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.reindex.BulkByScrollResponse
@@ -41,6 +44,7 @@ import org.elasticsearch.search.aggregations.BucketOrder
 import org.elasticsearch.search.aggregations.bucket.nested.Nested
 import org.elasticsearch.search.aggregations.bucket.terms.Terms
 import org.slf4j.LoggerFactory
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -54,6 +58,7 @@ interface ModelService {
     fun findOne(filter: ModelFilter): Model
     fun publishModel(model: Model, args: Map<String, Any>? = null): PipelineMod
     fun deployModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
+    fun deleteModel(model: Model)
     fun getLabelCounts(model: Model): Map<String, Long>
     fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any>
 
@@ -73,7 +78,8 @@ class ModelServiceImpl(
     val jobService: JobService,
     val pipelineModService: PipelineModService,
     val indexRoutingService: IndexRoutingService,
-    val assetSearchService: AssetSearchService
+    val assetSearchService: AssetSearchService,
+    val fileStorageService: ProjectStorageService
 ) : ModelService {
 
     override fun createModel(spec: ModelSpec): Model {
@@ -124,6 +130,7 @@ class ModelServiceImpl(
     @Transactional(readOnly = true)
     override fun getModel(id: UUID): Model {
         return modelDao.getOneByProjectIdAndId(getProjectId(), id)
+            ?: throw EmptyResultDataAccessException("The model $id does not exist", 1)
     }
 
     @Transactional(readOnly = true)
@@ -219,6 +226,55 @@ class ModelServiceImpl(
             modelJdbcDao.markAsReady(model.id, true)
             return pipelineModService.create(modspec)
         }
+    }
+
+    override fun deleteModel(model: Model) {
+        modelDao.delete(model)
+
+        pipelineModService.findByName(model.moduleName, false)?.let {
+            pipelineModService.delete(it.id)
+        }
+
+        try {
+            fileStorageService.recursiveDelete(
+                ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString())
+            )
+        } catch (e: Exception) {
+            logger.error("Failed to delete files associated with model: ${model.id}")
+        }
+
+        val rest = indexRoutingService.getProjectRestClient()
+        val innerQuery = QueryBuilders.boolQuery()
+        innerQuery.filter().add(QueryBuilders.termQuery("labels.modelId", model.id.toString()))
+
+        val query = QueryBuilders.nestedQuery("labels", innerQuery, ScoreMode.None)
+        val req = rest.newUpdateByQueryRequest()
+        req.setQuery(query)
+        req.isRefresh = false
+        req.batchSize = 400
+        req.isAbortOnVersionConflict = false
+        req.script = Script(
+            ScriptType.INLINE,
+            "painless",
+            DELETE_MODEL_SCRIPT,
+            mapOf(
+                "modelId" to model.id.toString()
+            )
+        )
+
+        rest.client.updateByQueryAsync(
+            req, RequestOptions.DEFAULT,
+            object : ActionListener<BulkByScrollResponse> {
+
+                override fun onFailure(e: java.lang.Exception?) {
+                    logger.error("Failed to remove labels for model: ${model.id}", e)
+                }
+
+                override fun onResponse(response: BulkByScrollResponse?) {
+                    logger.info("Removed ${response?.updated} labels from model: ${model.id}")
+                }
+            }
+        )
     }
 
     fun buildModuleOps(model: Model, args: Map<String, Any>?): List<ModOp> {
@@ -338,7 +394,7 @@ class ModelServiceImpl(
         val req = rest.newUpdateByQueryRequest()
         req.setQuery(query)
         req.isRefresh = true
-        req.batchSize = 500
+        req.batchSize = 400
         req.isAbortOnVersionConflict = true
 
         req.script = if (newLabel.isNullOrEmpty()) {
@@ -396,6 +452,23 @@ class ModelServiceImpl(
              for (int i = 0; i < ctx._source['labels'].length; ++i) {
                 if (ctx._source['labels'][i]['label'] == params.label && 
                     ctx._source['labels'][i]['modelId'] == params.modelId) {
+                    index = i;
+                    break;
+                }
+             }
+             if (index > -1) {
+                ctx._source['labels'].remove(index)
+             }
+            """.trimIndent()
+
+        /**
+         * A painless script which renames a label.
+         */
+        private val DELETE_MODEL_SCRIPT =
+            """
+             int index = -1;
+             for (int i = 0; i < ctx._source['labels'].length; ++i) {
+                if (ctx._source['labels'][i]['modelId'] == params.modelId) {
                     index = i;
                     break;
                 }

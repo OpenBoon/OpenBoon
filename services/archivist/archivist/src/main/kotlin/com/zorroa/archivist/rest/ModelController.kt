@@ -16,6 +16,7 @@ import com.zorroa.archivist.domain.UpdateLabelRequest
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.AutomlService
 import com.zorroa.archivist.service.ModelService
+import com.zorroa.archivist.util.HttpUtils
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.security.access.prepost.PreAuthorize
@@ -85,6 +86,14 @@ class ModelController(
     fun publish(@PathVariable id: UUID): PipelineMod {
         val model = modelService.getModel(id)
         return modelService.publishModel(model)
+    }
+
+    @ApiOperation("Delete a model")
+    @DeleteMapping("/api/v3/models/{id}")
+    fun delete(@PathVariable id: UUID): Any {
+        val model = modelService.getModel(id)
+        modelService.deleteModel(model)
+        return HttpUtils.deleted("model", model.id.toString(), true)
     }
 
     @ApiOperation("Deploy the model and apply to given search.")
