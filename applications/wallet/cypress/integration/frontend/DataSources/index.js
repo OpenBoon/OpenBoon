@@ -1,12 +1,12 @@
 describe('DataSources', function () {
   it('can be created', function () {
-    const now = Date.now()
+    const dataSourceName = `cypress-frontend-${Date.now()}`
 
     cy.login()
 
     cy.visit(`/${this.PROJECT_ID}/data-sources/add`)
 
-    cy.get('input[name=name]').type(now)
+    cy.get('input[name=name]').type(dataSourceName)
 
     cy.contains('Source Type')
       .get('select')
@@ -20,11 +20,11 @@ describe('DataSources', function () {
 
     cy.contains('Data source created.')
 
-    cy.contains(now)
+    cy.contains(dataSourceName)
   })
 
   it('can be deleted', function () {
-    const now = Date.now()
+    const dataSourceName = `cypress-frontend-${Date.now()}`
 
     cy.login()
 
@@ -35,7 +35,7 @@ describe('DataSources', function () {
         credentials: {},
         fileTypes: ['Images'],
         modules: [],
-        name: now,
+        name: dataSourceName,
         uri: 'gs://zorroa-dev-data',
       },
       log: false,
@@ -43,12 +43,12 @@ describe('DataSources', function () {
 
     cy.visit(`/${this.PROJECT_ID}/data-sources/`)
 
-    cy.contains(now).siblings().last().click()
+    cy.contains(dataSourceName).siblings().last().click()
 
     cy.contains('Delete').click()
 
     cy.contains('Delete Permanently').click()
 
-    cy.contains(now).should('not.exist')
+    cy.contains(dataSourceName).should('not.exist')
   })
 })

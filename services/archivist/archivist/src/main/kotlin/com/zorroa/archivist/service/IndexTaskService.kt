@@ -2,10 +2,10 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.IndexToIndexMigrationSpec
 import com.zorroa.archivist.domain.IndexTask
 import com.zorroa.archivist.domain.IndexTaskState
 import com.zorroa.archivist.domain.IndexTaskType
+import com.zorroa.archivist.domain.IndexToIndexMigrationSpec
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectIndexMigrationSpec
 import com.zorroa.archivist.repository.IndexRouteDao
@@ -16,6 +16,7 @@ import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.zmlp.service.security.getZmlpActor
 import org.elasticsearch.client.RequestOptions
+import org.elasticsearch.client.tasks.GetTaskResponse
 import org.elasticsearch.common.bytes.BytesReference
 import org.elasticsearch.common.unit.TimeValue
 import org.elasticsearch.common.xcontent.ToXContent
@@ -23,7 +24,6 @@ import org.elasticsearch.common.xcontent.XContentBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.reindex.ReindexRequest
 import org.elasticsearch.index.reindex.RemoteInfo
-import org.elasticsearch.tasks.TaskInfo
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
@@ -41,9 +41,9 @@ interface IndexTaskService {
     fun createIndexMigrationTask(spec: IndexToIndexMigrationSpec): IndexTask
 
     /**
-     * Get an intenral task info.
+     * Get an internal task info.
      */
-    fun getEsTaskInfo(task: IndexTask): TaskInfo
+    fun getEsTaskInfo(task: IndexTask): GetTaskResponse
 
     /**
      * Migrate the specific project to a new index.
@@ -143,9 +143,9 @@ class IndexTaskServiceImpl(
         return indexTaskDao.saveAndFlush(indexTask)
     }
 
-    override fun getEsTaskInfo(task: IndexTask): TaskInfo {
+    override fun getEsTaskInfo(task: IndexTask): GetTaskResponse {
         val rest = indexRoutingService.getClusterRestClient(task.dstIndexRouteId ?: task.srcIndexRouteId)
-        return rest.client.tasks().get(task.buildGetTaskRequest(), RequestOptions.DEFAULT).get().taskInfo
+        return rest.client.tasks().get(task.buildGetTaskRequest(), RequestOptions.DEFAULT).get()
     }
 }
 
@@ -219,13 +219,14 @@ class IndexTaskMonitor(
         val rest = indexRoutingService.getClusterRestClient(indexRoute)
         val esTask = rest.client.tasks().get(task.buildGetTaskRequest(), RequestOptions.DEFAULT).get()
 
-        return withAuth(InternalThreadAuthentication(indexRoute.projectId, setOf())) {
+        if (!esTask.isCompleted) {
+            logger.info("Still waiting on ${task.id} / ${task.esTaskId} to complete.")
+            return false
+        }
 
-            // Flip the project into the new index.
-            if (!esTask.isCompleted) {
-                logger.info("Still waiting on index task ${task.name} to complete.")
-                false
-            }
+        logger.info("ES reindex task completed: ${task.esTaskId} : ${esTask.isCompleted}")
+
+        return withAuth(InternalThreadAuthentication(indexRoute.projectId, setOf())) {
 
             // If this instance actually changes the state of the task, then the route gets swapped.
             if (!indexTaskJdbcDao.updateState(task, IndexTaskState.FINISHED)) {

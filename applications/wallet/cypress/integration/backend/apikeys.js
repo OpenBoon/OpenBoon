@@ -1,7 +1,7 @@
 describe('Api Keys', function () {
-  const apiKeyName = `cypress-test-${Date.now()}`
-
   it('can create, read and delete an API key', function () {
+    const apiKeyName = `cypress-backend-${Date.now()}`
+
     cy.login()
 
     cy.fetch({
