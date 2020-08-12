@@ -1,6 +1,8 @@
 import { capitalizeFirstLetter } from '../Text/helpers'
 
-export const formatFields = ({ fields, type, path = '' }) => {
+export const formatFields = ({ fields, type: t, path = '' }) => {
+  const type = t === 'histogram' ? 'labelConfidence' : t
+
   if (Array.isArray(fields)) {
     if (fields.includes(type)) {
       return path

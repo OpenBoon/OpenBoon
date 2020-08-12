@@ -63,6 +63,7 @@ describe('<ChartForm />', () => {
         updatedChart: {
           id: CHART_ID,
           type: 'facet',
+          scale: 'absolute',
           attribute: 'system.type',
           values: '10',
         },
@@ -126,6 +127,7 @@ describe('<ChartForm />', () => {
         updatedChart: {
           id: CHART_ID,
           type: 'facet',
+          scale: 'absolute',
           attribute: 'clip.pile',
           values: '5',
         },

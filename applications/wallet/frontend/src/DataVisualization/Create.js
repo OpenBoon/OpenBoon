@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, typography, constants } from '../Styles'
 
+import { capitalizeFirstLetter } from '../Text/helpers'
+
 import Button, { VARIANTS } from '../Button'
 
 import { TYPES, ACTIONS } from './reducer'
@@ -46,7 +48,7 @@ const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
             >
               Data visualizations are representations of specific information
               from dataset. Adjusting the filters will allow you to dynamically
-              view the affect they have on the search results. Data
+              view the effect they have on the search results. Data
               visualization can be shared with other users in the projects by
               exporting and then uploading.
             </p>
@@ -70,12 +72,11 @@ const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
           ({
             type,
             icon,
-            name,
             legend,
             flag = '',
             envs = [...Object.values(ENVS)],
           }) => (
-            <Feature key={name} flag={flag} envs={envs}>
+            <Feature key={type} flag={flag} envs={envs}>
               <div
                 css={{
                   display: 'flex',
@@ -111,7 +112,7 @@ const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
                       fontWeight: typography.weight.medium,
                     }}
                   >
-                    {name}
+                    {capitalizeFirstLetter({ word: type })}
                   </div>
                   <div
                     css={{
@@ -133,7 +134,10 @@ const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
                   <Button
                     variant={VARIANTS.SECONDARY_SMALL}
                     onClick={() => {
-                      dispatch({ type: ACTIONS.CREATE, payload: { type } })
+                      dispatch({
+                        type: ACTIONS.CREATE,
+                        payload: { type },
+                      })
                       setIsCreating(false)
                     }}
                   >
