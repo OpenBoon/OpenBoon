@@ -248,13 +248,11 @@ backend-kotlin-lint:
 sdk-unit-tests:
   image: python:3.7.5
   stage: test
-  allow_failure: true
+  allow_failure: false
   script:
-    - python -m pip install pipenv pytest
+    - python -m pip install pipenv pytest cmake
+    - pip install --upgrade pip
     - cd client/python
-    - pip install .
-    - pytest
-    - cd ../zvi
     - pip install .
     - pytest
     - cd ../../sdk

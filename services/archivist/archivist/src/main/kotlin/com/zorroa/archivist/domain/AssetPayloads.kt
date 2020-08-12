@@ -209,3 +209,19 @@ class BatchIndexResponse(
     @ApiModelProperty("A list of failures")
     val failed: List<BatchIndexFailure>
 )
+
+@ApiModel(
+    "Generic Batch Update Response",
+    description = "A generic response for various batch asset update operations."
+)
+class GenericBatchUpdateResponse(
+
+    @ApiModelProperty("The number of assets updated")
+    val updated: Long? = null,
+
+    @ApiModelProperty("The number of assets created.")
+    val created: Long? = null,
+
+    @ApiModelProperty("The number of assets deleted.")
+    val deleted: Long? = null
+)

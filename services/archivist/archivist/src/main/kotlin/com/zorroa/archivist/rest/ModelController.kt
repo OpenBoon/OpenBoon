@@ -2,6 +2,7 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.AutomlSession
 import com.zorroa.archivist.domain.AutomlSessionSpec
+import com.zorroa.archivist.domain.GenericBatchUpdateResponse
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelApplyRequest
@@ -11,15 +12,18 @@ import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
 import com.zorroa.archivist.domain.ModelType
 import com.zorroa.archivist.domain.PipelineMod
+import com.zorroa.archivist.domain.UpdateLabelRequest
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.AutomlService
 import com.zorroa.archivist.service.ModelService
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -90,10 +94,30 @@ class ModelController(
         return modelService.deployModel(modelService.getModel(id), req)
     }
 
-    @ApiOperation("Get the label counts for the model.")
-    @GetMapping("/api/v3/models/{id}/_label_counts")
-    fun getLabelCounts(@ApiParam("ModelId") @PathVariable id: UUID): Map<String, Long> {
+    @ApiOperation("Get the labels for the model")
+    @GetMapping(value = ["/api/v3/models/{id}/_label_counts"])
+    fun getLabels(@ApiParam("ModelId") @PathVariable id: UUID): Map<String, Long> {
         return modelService.getLabelCounts(modelService.getModel(id))
+    }
+
+    @ApiOperation("Rename label")
+    @PutMapping("/api/v3/models/{id}/labels")
+    fun renameLabels(
+        @ApiParam("ModelId") @PathVariable id: UUID,
+        @RequestBody req: UpdateLabelRequest
+    ): GenericBatchUpdateResponse {
+        val model = modelService.getModel(id)
+        return modelService.updateLabel(model, req.label, req.newLabel)
+    }
+
+    @ApiOperation("Deletel label")
+    @DeleteMapping("/api/v3/models/{id}/labels")
+    fun deleteLabels(
+        @ApiParam("ModelId") @PathVariable id: UUID,
+        @RequestBody req: UpdateLabelRequest
+    ): GenericBatchUpdateResponse {
+        val model = modelService.getModel(id)
+        return modelService.updateLabel(model, req.label, null)
     }
 
     @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
