@@ -1,15 +1,15 @@
 import TestRenderer from 'react-test-renderer'
 
-import FilterTitle from '../Title'
+import FilterIcon from '../Icon'
 
-describe('<FilterTitle />', () => {
+describe('<FilterIcon />', () => {
   it('should render properly', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
 
     const component = TestRenderer.create(
-      <FilterTitle filter={{ attribute: 'clip.length', type: 'range' }} />,
+      <FilterIcon filter={{ attribute: 'clip.length', type: 'range' }} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

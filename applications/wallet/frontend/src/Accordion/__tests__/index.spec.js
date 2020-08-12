@@ -2,8 +2,6 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import Accordion, { VARIANTS } from '..'
 
-const noop = () => () => {}
-
 describe('<Accordion />', () => {
   Object.keys(VARIANTS).forEach((variant) => {
     it(`should render properly for ${variant}`, () => {
@@ -19,17 +17,15 @@ describe('<Accordion />', () => {
         </Accordion>,
       )
 
-      expect(component.toJSON()).toMatchSnapshot()
+      expect(component.root.findByType('details').props.open).toBeFalsy()
 
       act(() => {
         component.root
-          .findByProps({ 'aria-label': 'Expand Section' })
-          .props.onClick({ preventDefault: noop })
+          .findByType('details')
+          .props.onToggle({ target: { open: true } })
       })
 
-      expect(
-        component.root.findByProps({ 'aria-label': 'Collapse Section' }),
-      ).toBeTruthy()
+      expect(component.root.findByType('details').props.open).toBeTruthy()
     })
   })
 })
