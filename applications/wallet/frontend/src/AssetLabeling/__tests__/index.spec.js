@@ -163,15 +163,6 @@ describe('<AssetLabeling />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Open Asset Label list Accordion
-    act(() => {
-      component.root
-        .findByProps({ 'aria-label': 'Expand Section' })
-        .props.onClick()
-    })
-
-    expect(component.toJSON()).toMatchSnapshot()
-
     // Open first label's kebab menu
     act(() => {
       component.root
@@ -346,12 +337,6 @@ describe('<AssetLabeling />', () => {
     })
 
     const component = TestRenderer.create(<AssetLabeling />)
-
-    act(() => {
-      component.root
-        .findByProps({ 'aria-label': 'Expand Section' })
-        .props.onClick()
-    })
 
     expect(component.toJSON()).toMatchSnapshot()
   })

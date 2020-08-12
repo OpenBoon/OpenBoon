@@ -411,13 +411,6 @@ describe('<Filters />', () => {
         .props.onChange({ target: { value: 'e' } })
     })
 
-    // Expand Section
-    act(() => {
-      component.root
-        .findAllByProps({ 'aria-label': 'Expand Section' })[3]
-        .props.onClick({ preventDefault: noop })
-    })
-
     // enable first checkbox
     act(() => {
       component.root
@@ -486,13 +479,6 @@ describe('<Filters />', () => {
     act(() => {
       component.root
         .findByProps({ 'aria-label': 'Add Metadata Filters' })
-        .props.onClick({ preventDefault: noop })
-    })
-
-    // Expand Location Section
-    act(() => {
-      component.root
-        .findAllByProps({ 'aria-label': 'Expand Section' })[6]
         .props.onClick({ preventDefault: noop })
     })
 

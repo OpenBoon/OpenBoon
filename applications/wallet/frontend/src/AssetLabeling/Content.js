@@ -45,22 +45,21 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
       </div>
       <Accordion
         variant={ACCORDION_VARIANTS.PANEL}
-        title={
-          <span css={{ display: 'flex' }}>
-            Select a model and add a label.{' '}
-            <Button
-              variant={BUTTON_VARIANTS.LINK}
-              href={`/${projectId}/models/add`}
-              onClick={(event) => event.stopPropagation()}
-              css={{
-                paddingTop: 0,
-                paddingBottom: 0,
-                fontWeight: typography.weight.medium,
-              }}
-            >
-              Create New Model
-            </Button>
-          </span>
+        title="Select a model and add a label"
+        actions={
+          <Button
+            variant={BUTTON_VARIANTS.LINK}
+            href={`/${projectId}/models/add`}
+            onClick={(event) => event.stopPropagation()}
+            css={{
+              paddingTop: 0,
+              paddingBottom: 0,
+              marginTop: -spacing.mini,
+              fontWeight: typography.weight.medium,
+            }}
+          >
+            Create New Model
+          </Button>
         }
         cacheKey="AssetLabeling.Add"
         isInitiallyOpen
