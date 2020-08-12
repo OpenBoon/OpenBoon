@@ -38,8 +38,6 @@ describe('<AssetLabeling />', () => {
         .props.onClick({ stopPropagation: noop })
     })
 
-    // Open Asset Label list Accordion
-
     expect(component.toJSON()).toMatchSnapshot()
   })
 
