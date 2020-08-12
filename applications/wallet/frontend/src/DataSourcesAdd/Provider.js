@@ -15,7 +15,9 @@ const DataSourcesAddProvider = ({
     <div css={{ paddingTop: spacing.normal }}>
       <Accordion
         variant={ACCORDION_VARIANTS.PRIMARY}
-        title={<img src={logo} alt={name} height={IMG_HEIGHT} />}
+        icon={<img src={logo} alt={name} height={IMG_HEIGHT} />}
+        title={name}
+        hideTitle
         cacheKey={`DataSourcesAddProvider.${name}`}
         isInitiallyOpen
         isResizeable={false}

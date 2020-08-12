@@ -6,96 +6,48 @@ import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import { typography, colors, spacing, constants } from '../Styles'
 
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-
 import ChevronSvg from '../Icons/chevron.svg'
 
 const STYLES = {
   PRIMARY: {
-    container: {
-      backgroundColor: colors.structure.smoke,
-      borderRadius: constants.borderRadius.small,
-    },
+    PADDING: spacing.normal,
+    BACKGROUND_COLOR: colors.structure.smoke,
+    SUMMARY_BACKGROUND_COLOR: colors.structure.smoke,
+    details: {},
     title: {
-      display: 'flex',
-      borderBottom: constants.borders.regular.iron,
-      paddingTop: spacing.normal,
-      paddingBottom: spacing.normal,
-      paddingLeft: spacing.moderate,
-      ':hover': {
-        cursor: 'pointer',
-        backgroundColor: colors.structure.mattGrey,
-      },
-      h4: {
-        fontWeight: typography.weight.bold,
-      },
+      fontSize: typography.size.medium,
+      lineHeight: typography.height.medium,
+      fontWeight: typography.weight.bold,
     },
     content: {
+      borderTop: constants.borders.regular.iron,
       padding: spacing.spacious,
       paddingTop: spacing.normal,
     },
   },
   PANEL: {
-    container: {
-      backgroundColor: colors.structure.lead,
-      borderRadius: constants.borderRadius.small,
-      ':last-of-type > div:last-of-type': {
-        borderBottom: constants.borders.regular.smoke,
-      },
-      ':first-of-type > div': {
-        borderTop: 'none',
-      },
+    PADDING: spacing.moderate,
+    BACKGROUND_COLOR: colors.structure.coal,
+    SUMMARY_BACKGROUND_COLOR: colors.structure.lead,
+    details: {
+      borderBottom: constants.borders.regular.smoke,
     },
-    title: {
-      display: 'flex',
-      borderTop: constants.borders.regular.smoke,
-      paddingTop: spacing.moderate,
-      paddingBottom: spacing.moderate,
-      paddingLeft: spacing.moderate,
-      ':hover': {
-        cursor: 'pointer',
-        backgroundColor: colors.structure.mattGrey,
-      },
-      h4: {
-        fontSize: typography.size.regular,
-        fontWeight: typography.weight.regular,
-      },
-    },
-    content: {
-      width: '100%',
-      backgroundColor: colors.structure.coal,
-    },
+    title: {},
+    content: {},
   },
   FILTER: {
-    container: {
-      backgroundColor: colors.structure.lead,
-      border: constants.borders.regular.transparent,
+    PADDING: spacing.base,
+    BACKGROUND_COLOR: colors.structure.coal,
+    SUMMARY_BACKGROUND_COLOR: colors.structure.lead,
+    details: {
       borderBottom: constants.borders.regular.smoke,
-      paddingBottom: spacing.hairline,
-      ':hover': {
-        border: constants.borders.regular.smoke,
-        svg: { opacity: 1 },
-      },
     },
     title: {
-      display: 'flex',
-      padding: spacing.base,
-      ':hover': {
-        cursor: 'pointer',
-        backgroundColor: colors.structure.mattGrey,
-      },
-      h4: {
-        flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        fontWeight: typography.weight.regular,
-        paddingLeft: spacing.small,
-      },
+      fontFamily: typography.family.mono,
+      fontSize: typography.size.small,
+      lineHeight: typography.height.small,
     },
-    content: {
-      width: '100%',
-      backgroundColor: colors.structure.coal,
-    },
+    content: {},
   },
 }
 
@@ -106,7 +58,9 @@ export const VARIANTS = Object.keys(STYLES).reduce(
 
 const Accordion = ({
   variant,
+  icon,
   title,
+  hideTitle,
   actions,
   cacheKey,
   children,
@@ -118,70 +72,91 @@ const Accordion = ({
     initialValue: isInitiallyOpen,
   })
 
-  const toggle = () => setOpen({ value: !isOpen })
-
   return (
-    <div css={STYLES[variant].container}>
-      <div
-        css={STYLES[variant].title}
-        style={
-          !isOpen && variant === VARIANTS.PRIMARY ? { border: 'none' } : {}
-        }
-        onClick={toggle}
+    <details
+      css={{
+        ':hover': { svg: { opacity: 1 } },
+        borderRadius: constants.borderRadius.small,
+        backgroundColor: STYLES[variant].BACKGROUND_COLOR,
+        ...STYLES[variant].details,
+      }}
+      open={isOpen}
+      onToggle={({ target: { open } }) => setOpen({ value: open })}
+    >
+      <summary
+        aria-label={title}
+        css={{
+          display: 'flex',
+          alignItems: 'center',
+          '::-webkit-details-marker': { display: 'none' },
+          ':hover': {
+            cursor: 'pointer',
+            backgroundColor: colors.structure.mattGrey,
+          },
+          padding: STYLES[variant].PADDING,
+          backgroundColor: STYLES[variant].SUMMARY_BACKGROUND_COLOR,
+        }}
       >
-        <Button
-          aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
-          variant={BUTTON_VARIANTS.ICON}
-          onClick={toggle}
-          style={{ padding: 0 }}
-        >
-          <ChevronSvg
-            height={constants.icons.regular}
-            css={{
-              transform: isOpen ? 'rotate(-180deg)' : '',
-            }}
-          />
-        </Button>
-
-        <h4
+        <ChevronSvg
+          height={constants.icons.regular}
           css={{
-            fontSize: typography.size.medium,
-            lineHeight: typography.height.medium,
-            paddingLeft: spacing.moderate,
-            paddingRight: spacing.base,
-            display: 'flex',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
+            color: colors.structure.steel,
+            transform: isOpen ? 'rotate(-180deg)' : '',
           }}
-        >
-          {title}
-        </h4>
+        />
+
+        {!!icon && (
+          <span
+            css={{
+              display: 'flex',
+              paddingLeft: STYLES[variant].PADDING,
+            }}
+          >
+            {icon}
+          </span>
+        )}
+
+        {!hideTitle && (
+          <span
+            css={{
+              flex: 1,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              marginTop: -spacing.mini,
+              paddingLeft: STYLES[variant].PADDING,
+              ...STYLES[variant].title,
+            }}
+          >
+            {title}
+          </span>
+        )}
 
         {actions}
+      </summary>
+
+      <div
+        css={{
+          ...STYLES[variant].content,
+          ...(isResizeable ? { maxHeight: 500, overflowY: 'auto' } : {}),
+        }}
+      >
+        {children}
       </div>
-
-      {isOpen && !isResizeable && (
-        <div css={STYLES[variant].content}>{children}</div>
-      )}
-
-      {isOpen && isResizeable && (
-        <div
-          css={[STYLES[variant].content, { maxHeight: 500, overflowY: 'auto' }]}
-        >
-          {children}
-        </div>
-      )}
-    </div>
+    </details>
   )
 }
 
 Accordion.defaultProps = {
+  icon: false,
+  hideTitle: false,
   actions: false,
 }
 
 Accordion.propTypes = {
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
-  title: PropTypes.node.isRequired,
+  icon: PropTypes.node,
+  title: PropTypes.string.isRequired,
+  hideTitle: PropTypes.bool,
   actions: PropTypes.node,
   cacheKey: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,

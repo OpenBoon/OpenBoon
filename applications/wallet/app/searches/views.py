@@ -15,6 +15,7 @@ from assets.views import asset_modifier
 from projects.views import BaseProjectViewSet
 from searches.models import Search
 from searches.serializers import SearchSerializer, SearchAssetSerializer
+from wallet.mixins import CamelCaseRendererMixin
 from wallet.paginators import FromSizePagination, ZMLPFromSizePagination
 from .utils import FieldUtility, FilterBuddy
 
@@ -40,7 +41,8 @@ def search_asset_modifier(request, item):
         del(item['metadata']['media'])
 
 
-class SearchViewSet(CreateModelMixin,
+class SearchViewSet(CamelCaseRendererMixin,
+                    CreateModelMixin,
                     UpdateModelMixin,
                     ListModelMixin,
                     RetrieveModelMixin,

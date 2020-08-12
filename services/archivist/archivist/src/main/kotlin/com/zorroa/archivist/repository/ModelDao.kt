@@ -12,7 +12,7 @@ import java.util.UUID
 @Repository
 interface ModelDao : JpaRepository<Model, UUID> {
 
-    fun getOneByProjectIdAndId(projectId: UUID, id: UUID): Model
+    fun getOneByProjectIdAndId(projectId: UUID, id: UUID): Model?
     fun existsByProjectIdAndId(projectId: UUID, id: UUID): Boolean
 }
 

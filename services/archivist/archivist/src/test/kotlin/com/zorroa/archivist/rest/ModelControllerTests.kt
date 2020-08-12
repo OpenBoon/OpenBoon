@@ -233,6 +233,28 @@ class ModelControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testDeleteModel() {
+        val specs = dataSet(model)
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs)
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/v3/models/${model.id}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.success",
+                    CoreMatchers.equalTo(true)
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
     fun testCreateAutomlSession() {
 
         val modelSpec = ModelSpec("Dog Breeds 2", ModelType.GCP_LABEL_DETECTION)

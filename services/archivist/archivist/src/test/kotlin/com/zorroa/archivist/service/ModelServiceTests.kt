@@ -22,6 +22,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class ModelServiceTests : AbstractTest() {
@@ -34,6 +35,9 @@ class ModelServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var assetSearchService: AssetSearchService
+
+    @Autowired
+    lateinit var pipelineModService: PipelineModService
 
     val testSearch =
         """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
@@ -293,6 +297,24 @@ class ModelServiceTests : AbstractTest() {
         assertEquals(null, counts["horse"])
         assertEquals(1, counts["beaver"])
         assertEquals(1, counts["zanzibar"])
+    }
+
+    @Test
+    fun testDeleteModel() {
+        val model = create()
+        val specs = dataSet(model)
+
+        assetService.batchCreate(BatchCreateAssetsRequest(specs))
+        modelService.publishModel(model)
+
+        assertNotNull(pipelineModService.findByName(model.moduleName, false))
+
+        modelService.deleteModel(model)
+        Thread.sleep(2000)
+
+        val counts = modelService.getLabelCounts(model)
+        assertTrue(counts.isEmpty())
+        assertNull(pipelineModService.findByName(model.moduleName, false))
     }
 
     fun assertModel(model: Model) {

@@ -418,7 +418,8 @@ class TestAggregate(BaseFiltersTestCase):
                             'min': 7555.0,
                             'max': 64657027.0,
                             'avg': 5725264.875,
-                            'sum': 137406357.0}}}
+                            'sum': 137406357.0,
+                            'doc_count': 24}}}
 
         def mock_init(*args, **kwargs):
             # Need to override the internally created name so we can parse our fake response
@@ -435,6 +436,7 @@ class TestAggregate(BaseFiltersTestCase):
         assert content['count'] == 24
         assert content['results']['min'] == 7555.0
         assert content['results']['max'] == 64657027.0
+        assert content['results']['docCount'] == 24
 
     def test_get_missing_querystring(self, login, api_client, project, range_agg_qs):
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}))

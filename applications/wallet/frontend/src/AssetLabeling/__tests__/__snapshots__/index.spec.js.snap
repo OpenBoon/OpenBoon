@@ -13,115 +13,14 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
-  .emotion-18 {
-  background-color: #252525;
+  .emotion-5 {
   border-radius: 2px;
-}
-
-.emotion-18:last-of-type > div:last-of-type {
+  background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-18:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-5:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-5 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-5:hover svg {
   opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-4 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .emotion-3 {
@@ -129,6 +28,38 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  background-color: #252525;
+}
+
+.emotion-3::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-3:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-0 {
+  color: #808080;
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -2px;
+  padding-left: 12px;
 }
 
 .emotion-2 {
@@ -165,6 +96,7 @@ Array [
   font-weight: 400;
   padding-top: 0;
   padding-bottom: 0;
+  margin-top: -2px;
   font-weight: 500;
 }
 
@@ -188,485 +120,209 @@ Array [
   text-decoration: underline;
 }
 
-.emotion-17 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-16 {
-  padding: 16px;
-}
-
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  width: 100%;
-  padding: 0;
-}
-
-.emotion-8 {
-  color: #b3b3b3;
-}
-
-.emotion-7 {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-6 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 100%;
-  height: 40px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-9 {
-  height: 8px;
-}
-
-.emotion-10 {
-  height: 24px;
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-11 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
-  background-color: #808080;
-}
-
-.emotion-11:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-12 {
-  padding: 8px;
-}
-
-.emotion-13 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-13,
-.emotion-13:hover,
-.emotion-13:visited {
-  background-color: #73b61c;
-}
-
-.emotion-13:hover {
-  background-color: #96c955;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
-<div
-    className="emotion-18"
+<details
+    className="emotion-5"
+    onToggle={[Function]}
+    open={true}
   >
-    <div
-      className="emotion-5"
-      onClick={[Function]}
-      style={Object {}}
+    <summary
+      aria-label="Select a model and add a label"
+      className="emotion-3"
     >
-      <button
-        aria-label="Collapse Section"
+      <svg
+        className="emotion-0"
+        data-file-name="chevron.svg"
+        height={20}
+      />
+      <span
         className="emotion-1"
+      >
+        Select a model and add a label
+      </span>
+      <a
+        className="emotion-2"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
         onClick={[Function]}
-        type="button"
       >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-4"
-      >
-        <span
-          className="emotion-3"
-        >
-          Select a model and add a label.
-           
-          <a
-            className="emotion-2"
-            href="/00000000-0000-0000-0000-000000000000/models/add"
-            onClick={[Function]}
-          >
-            Create New Model
-          </a>
-        </span>
-      </h4>
-    </div>
+        Create New Model
+      </a>
+    </summary>
     <div
-      className="emotion-17"
+      className="emotion-4"
     >
-      <div
-        className="emotion-16"
-      >
-        <form
-          action=""
-          className="emotion-15"
-          method="post"
-          onSubmit={[Function]}
-        >
-          <label
-            className="emotion-8"
-          >
-            Model
-            <div
-              className="emotion-7"
-            >
-              <select
-                className="emotion-6"
-                defaultValue=""
-                disabled={false}
-                onChange={[Function]}
-              >
-                <option
-                  disabled={true}
-                  value=""
-                >
-                  Select an option...
-                </option>
-                <option
-                  value="621bf774-89d9-1244-9596-d6df43f1ede5"
-                >
-                  console_face_recognition
-                </option>
-                <option
-                  value="621bf774-89d9-9596-1244-d6df43f1ede5"
-                >
-                  console_cat_recognition
-                </option>
-                <option
-                  value="c0e83460-6a25-1238-86fa-0242ac150002"
-                >
-                  Gundam
-                </option>
-                <option
-                  value="c0e83462-6a25-1238-86fa-0242ac150002"
-                >
-                  Location
-                </option>
-              </select>
-            </div>
-          </label>
-          <div
-            className="emotion-9"
-          />
-          <Combobox
-            hasError={false}
-            label="Label"
-            onChange={[Function]}
-            options={[Function]}
-            value=""
-          />
-          <div
-            className="emotion-10"
-          />
-          <div
-            className="emotion-14"
-          >
-            <button
-              aria-disabled={true}
-              className="emotion-11"
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-            <div
-              className="emotion-12"
-            />
-            <button
-              aria-disabled={true}
-              className="emotion-13"
-              onClick={[Function]}
-              type="submit"
-            >
-              Save Label
-            </button>
-          </div>
-        </form>
-      </div>
+      <AssetLabelingAdd
+        assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+        labels={Array []}
+        models={
+          Array [
+            Object {
+              "actorCreated": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - danny@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "actorModified": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - danny@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/621bf774-89d9-1244-9596-d6df43f1ede5/zvi-console_face_recognition-face-recognition/zvi-console_face_recognition-face-recognition.zip",
+              "id": "621bf774-89d9-1244-9596-d6df43f1ede5",
+              "moduleName": "zvi-console_face_recognition-face-recognition",
+              "name": "console_face_recognition",
+              "ready": true,
+              "runningJobId": "",
+              "timeCreated": 1594243378141,
+              "timeModified": 1594243378141,
+              "trainingJobName": "Train console_face_recognition / zvi-console_face_recognition-face-recognition",
+              "type": "ZVI_FACE_RECOGNITION",
+              "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-1244-9596-d6df43f1ede5/",
+            },
+            Object {
+              "actorCreated": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - zach@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "actorModified": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - zach@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/621bf774-89d9-9596-1244-d6df43f1ede5/zvi-console_cat_recognition-cat-recognition/zvi-console_cat_recognition-cat-recognition.zip",
+              "id": "621bf774-89d9-9596-1244-d6df43f1ede5",
+              "moduleName": "zvi-console_cat_recognition-cat-recognition",
+              "name": "console_cat_recognition",
+              "ready": false,
+              "runningJobId": "",
+              "timeCreated": 1594243378141,
+              "timeModified": 1594243378141,
+              "trainingJobName": "Train console_cat_recognition / zvi-console_cat_recognition-cat-recognition",
+              "type": "ZVI_CAT_RECOGNITION",
+              "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-9596-1244-d6df43f1ede5/",
+            },
+            Object {
+              "actorCreated": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "actorModified": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/c0e83460-6a25-1238-86fa-0242ac150002/model/model.zip",
+              "id": "c0e83460-6a25-1238-86fa-0242ac150002",
+              "moduleName": "Gundam",
+              "name": "Gundam",
+              "ready": false,
+              "runningJobId": "",
+              "timeCreated": 1595883344116,
+              "timeModified": 1595883344116,
+              "trainingJobName": "Training model: Gundam - [Label Detection]",
+              "type": "ZVI_LABEL_DETECTION",
+              "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83460-6a25-1238-86fa-0242ac150002/",
+            },
+            Object {
+              "actorCreated": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "actorModified": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/c0e83462-6a25-1238-86fa-0242ac150002/model/model.zip",
+              "id": "c0e83462-6a25-1238-86fa-0242ac150002",
+              "moduleName": "Location",
+              "name": "Location",
+              "ready": false,
+              "runningJobId": "",
+              "timeCreated": 1595888265010,
+              "timeModified": 1595888265010,
+              "trainingJobName": "Training model: Location - [Label Detection]",
+              "type": "ZVI_LABEL_DETECTION",
+              "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83462-6a25-1238-86fa-0242ac150002/",
+            },
+          ]
+        }
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      />
     </div>
-  </div>,
-  .emotion-6 {
-  background-color: #252525;
+  </details>,
+  .emotion-5 {
   border-radius: 2px;
-}
-
-.emotion-6:last-of-type > div:last-of-type {
+  background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-6:first-of-type > div {
-  border-top: none;
+.emotion-5:hover svg {
+  opacity: 1;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  background-color: #252525;
 }
 
-.emotion-3:hover {
+.emotion-2::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-2:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-3 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
 .emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -2px;
+  padding-left: 12px;
 }
 
 .emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
+  color: #808080;
 }
 
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emotion-5 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-4 {
+.emotion-3 {
   padding: 16px;
   color: #ffffff;
 }
 
-<div
-    className="emotion-6"
+<details
+    className="emotion-5"
+    onToggle={[Function]}
+    open={false}
   >
-    <div
-      className="emotion-3"
-      onClick={[Function]}
-      style={Object {}}
+    <summary
+      aria-label="Asset Labels: 0"
+      className="emotion-2"
     >
-      <button
-        aria-label="Collapse Section"
+      <svg
+        className="emotion-0"
+        data-file-name="chevron.svg"
+        height={20}
+      />
+      <span
         className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-2"
       >
         Asset Labels: 0
-      </h4>
-    </div>
+      </span>
+    </summary>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
         No labels have been added
       </div>
     </div>
-  </div>,
+  </details>,
 ]
 `;
 
@@ -696,115 +352,14 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
-  .emotion-18 {
-  background-color: #252525;
+  .emotion-5 {
   border-radius: 2px;
-}
-
-.emotion-18:last-of-type > div:last-of-type {
+  background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-18:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-5:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-5 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-5:hover svg {
   opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-4 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .emotion-3 {
@@ -812,6 +367,38 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  background-color: #252525;
+}
+
+.emotion-3::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-3:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-0 {
+  color: #808080;
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -2px;
+  padding-left: 12px;
 }
 
 .emotion-2 {
@@ -848,6 +435,7 @@ Array [
   font-weight: 400;
   padding-top: 0;
   padding-bottom: 0;
+  margin-top: -2px;
   font-weight: 500;
 }
 
@@ -871,362 +459,239 @@ Array [
   text-decoration: underline;
 }
 
-.emotion-17 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-16 {
-  padding: 16px;
-}
-
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  width: 100%;
-  padding: 0;
-}
-
-.emotion-8 {
-  color: #b3b3b3;
-}
-
-.emotion-7 {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-6 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 100%;
-  height: 40px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-9 {
-  height: 8px;
-}
-
-.emotion-10 {
-  height: 24px;
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-11 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
-  background-color: #808080;
-}
-
-.emotion-11:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-12 {
-  padding: 8px;
-}
-
-.emotion-13 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-13,
-.emotion-13:hover,
-.emotion-13:visited {
-  background-color: #73b61c;
-}
-
-.emotion-13:hover {
-  background-color: #96c955;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
-<div
-    className="emotion-18"
+<details
+    className="emotion-5"
+    onToggle={[Function]}
+    open={true}
   >
-    <div
-      className="emotion-5"
-      onClick={[Function]}
-      style={Object {}}
+    <summary
+      aria-label="Select a model and add a label"
+      className="emotion-3"
     >
-      <button
-        aria-label="Collapse Section"
+      <svg
+        className="emotion-0"
+        data-file-name="chevron.svg"
+        height={20}
+      />
+      <span
         className="emotion-1"
+      >
+        Select a model and add a label
+      </span>
+      <a
+        className="emotion-2"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
         onClick={[Function]}
-        type="button"
       >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-4"
-      >
-        <span
-          className="emotion-3"
-        >
-          Select a model and add a label.
-           
-          <a
-            className="emotion-2"
-            href="/00000000-0000-0000-0000-000000000000/models/add"
-            onClick={[Function]}
-          >
-            Create New Model
-          </a>
-        </span>
-      </h4>
-    </div>
+        Create New Model
+      </a>
+    </summary>
     <div
-      className="emotion-17"
+      className="emotion-4"
     >
-      <div
-        className="emotion-16"
-      >
-        <form
-          action=""
-          className="emotion-15"
-          method="post"
-          onSubmit={[Function]}
-        >
-          <label
-            className="emotion-8"
-          >
-            Model
-            <div
-              className="emotion-7"
-            >
-              <select
-                className="emotion-6"
-                defaultValue=""
-                disabled={false}
-                onChange={[Function]}
-              >
-                <option
-                  disabled={true}
-                  value=""
-                >
-                  Select an option...
-                </option>
-                <option
-                  value="621bf774-89d9-1244-9596-d6df43f1ede5"
-                >
-                  console_face_recognition
-                </option>
-                <option
-                  value="621bf774-89d9-9596-1244-d6df43f1ede5"
-                >
-                  console_cat_recognition
-                </option>
-                <option
-                  value="c0e83460-6a25-1238-86fa-0242ac150002"
-                >
-                  Gundam
-                </option>
-                <option
-                  value="c0e83462-6a25-1238-86fa-0242ac150002"
-                >
-                  Location
-                </option>
-              </select>
-            </div>
-          </label>
-          <div
-            className="emotion-9"
-          />
-          <Combobox
-            hasError={false}
-            label="Label"
-            onChange={[Function]}
-            options={[Function]}
-            value=""
-          />
-          <div
-            className="emotion-10"
-          />
-          <div
-            className="emotion-14"
-          >
-            <button
-              aria-disabled={true}
-              className="emotion-11"
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-            <div
-              className="emotion-12"
-            />
-            <button
-              aria-disabled={true}
-              className="emotion-13"
-              onClick={[Function]}
-              type="submit"
-            >
-              Save Label
-            </button>
-          </div>
-        </form>
-      </div>
+      <AssetLabelingAdd
+        assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+        labels={
+          Array [
+            Object {
+              "label": "Space",
+              "modelId": "621bf774-89d9-1244-9596-d6df43f1ede5",
+              "scope": "TRAIN",
+            },
+            Object {
+              "label": "Outside",
+              "modelId": "621bf774-89d9-9596-1244-d6df43f1ede5",
+              "scope": "TRAIN",
+            },
+          ]
+        }
+        models={
+          Array [
+            Object {
+              "actorCreated": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - danny@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "actorModified": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - danny@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/621bf774-89d9-1244-9596-d6df43f1ede5/zvi-console_face_recognition-face-recognition/zvi-console_face_recognition-face-recognition.zip",
+              "id": "621bf774-89d9-1244-9596-d6df43f1ede5",
+              "moduleName": "zvi-console_face_recognition-face-recognition",
+              "name": "console_face_recognition",
+              "ready": true,
+              "runningJobId": "",
+              "timeCreated": 1594243378141,
+              "timeModified": 1594243378141,
+              "trainingJobName": "Train console_face_recognition / zvi-console_face_recognition-face-recognition",
+              "type": "ZVI_FACE_RECOGNITION",
+              "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-1244-9596-d6df43f1ede5/",
+            },
+            Object {
+              "actorCreated": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - zach@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "actorModified": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - zach@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/621bf774-89d9-9596-1244-d6df43f1ede5/zvi-console_cat_recognition-cat-recognition/zvi-console_cat_recognition-cat-recognition.zip",
+              "id": "621bf774-89d9-9596-1244-d6df43f1ede5",
+              "moduleName": "zvi-console_cat_recognition-cat-recognition",
+              "name": "console_cat_recognition",
+              "ready": false,
+              "runningJobId": "",
+              "timeCreated": 1594243378141,
+              "timeModified": 1594243378141,
+              "trainingJobName": "Train console_cat_recognition / zvi-console_cat_recognition-cat-recognition",
+              "type": "ZVI_CAT_RECOGNITION",
+              "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-9596-1244-d6df43f1ede5/",
+            },
+            Object {
+              "actorCreated": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "actorModified": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/c0e83460-6a25-1238-86fa-0242ac150002/model/model.zip",
+              "id": "c0e83460-6a25-1238-86fa-0242ac150002",
+              "moduleName": "Gundam",
+              "name": "Gundam",
+              "ready": false,
+              "runningJobId": "",
+              "timeCreated": 1595883344116,
+              "timeModified": 1595883344116,
+              "trainingJobName": "Training model: Gundam - [Label Detection]",
+              "type": "ZVI_LABEL_DETECTION",
+              "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83460-6a25-1238-86fa-0242ac150002/",
+            },
+            Object {
+              "actorCreated": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "actorModified": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/c0e83462-6a25-1238-86fa-0242ac150002/model/model.zip",
+              "id": "c0e83462-6a25-1238-86fa-0242ac150002",
+              "moduleName": "Location",
+              "name": "Location",
+              "ready": false,
+              "runningJobId": "",
+              "timeCreated": 1595888265010,
+              "timeModified": 1595888265010,
+              "trainingJobName": "Training model: Location - [Label Detection]",
+              "type": "ZVI_LABEL_DETECTION",
+              "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83462-6a25-1238-86fa-0242ac150002/",
+            },
+          ]
+        }
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      />
     </div>
-  </div>,
-  .emotion-4 {
-  background-color: #252525;
+  </details>,
+  .emotion-16 {
   border-radius: 2px;
-}
-
-.emotion-4:last-of-type > div:last-of-type {
+  background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-4:first-of-type > div {
-  border-top: none;
+.emotion-16:hover svg {
+  opacity: 1;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  background-color: #252525;
 }
 
-.emotion-3:hover {
+.emotion-2::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-2:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-3 h4 {
-  font-size: 15px;
-  font-weight: 400;
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -2px;
+  padding-left: 12px;
 }
 
-.emotion-1 {
+.emotion-0 {
+  color: #808080;
+}
+
+.emotion-14 {
+  width: 100%;
+  color: #808080;
+  border-spacing: 0;
+}
+
+.emotion-3 {
+  text-align: left;
+  font-family: Roboto Condensed;
+  font-weight: 500;
+}
+
+.emotion-3 th {
+  text-transform: uppercase;
+  padding: 12px;
+  padding-top: 16px;
+  padding-left: 16px;
+}
+
+.emotion-8 {
+  text-align: left;
+  font-family: Roboto Condensed;
+  font-weight: 500;
+}
+
+.emotion-8:nth-last-of-type(2) {
+  width: 100%;
+}
+
+.emotion-8:hover {
+  background-color: #0074f538;
+}
+
+.emotion-8 td {
+  border-top: 1px solid #3b3b3b;
+  padding: 12px;
+  padding-left: 16px;
+}
+
+.emotion-4 {
+  white-space: nowrap;
+}
+
+.emotion-5 {
+  width: 100%;
+  word-break: break-all;
+}
+
+.emotion-7 {
+  position: relative;
+}
+
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1256,74 +721,134 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
-  color: #808080;
   padding: 0;
+  color: #808080;
+  padding: 6px;
+  margin: -6px;
 }
 
-.emotion-1:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
+  color: #ffffff !important;
 }
 
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-<div
-    className="emotion-4"
+<details
+    className="emotion-16"
+    onToggle={[Function]}
+    open={false}
   >
-    <div
-      className="emotion-3"
-      onClick={[Function]}
-      style={Object {}}
+    <summary
+      aria-label="Asset Labels: 2"
+      className="emotion-2"
     >
-      <button
-        aria-label="Expand Section"
+      <svg
+        className="emotion-0"
+        data-file-name="chevron.svg"
+        height={20}
+      />
+      <span
         className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-2"
       >
         Asset Labels: 2
-      </h4>
+      </span>
+    </summary>
+    <div
+      className="emotion-15"
+    >
+      
+      <table
+        className="emotion-14"
+      >
+        <thead>
+          <tr
+            className="emotion-3"
+          >
+            <th>
+              Model
+            </th>
+            <th>
+              Label
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            className="emotion-8"
+          >
+            <td
+              className="emotion-4"
+            >
+              console_face_recognition
+            </td>
+            <td
+              className="emotion-5"
+            >
+              Space
+            </td>
+            <td>
+              <div
+                className="emotion-7"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="actions emotion-6"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="kebab.svg"
+                    height={20}
+                  />
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr
+            className="emotion-8"
+          >
+            <td
+              className="emotion-4"
+            >
+              console_cat_recognition
+            </td>
+            <td
+              className="emotion-5"
+            >
+              Outside
+            </td>
+            <td>
+              <div
+                className="emotion-7"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="actions emotion-6"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="kebab.svg"
+                    height={20}
+                  />
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </div>,
+  </details>,
 ]
 `;
 
@@ -1340,115 +865,14 @@ Array [
   >
     TIFF_1MB.tiff
   </div>,
-  .emotion-18 {
-  background-color: #252525;
+  .emotion-5 {
   border-radius: 2px;
-}
-
-.emotion-18:last-of-type > div:last-of-type {
+  background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-18:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-5:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-5 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
+.emotion-5:hover svg {
   opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-4 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .emotion-3 {
@@ -1456,6 +880,38 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  background-color: #252525;
+}
+
+.emotion-3::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-3:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-0 {
+  color: #808080;
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -2px;
+  padding-left: 12px;
 }
 
 .emotion-2 {
@@ -1492,6 +948,7 @@ Array [
   font-weight: 400;
   padding-top: 0;
   padding-bottom: 0;
+  margin-top: -2px;
   font-weight: 500;
 }
 
@@ -1515,3070 +972,239 @@ Array [
   text-decoration: underline;
 }
 
-.emotion-17 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-16 {
-  padding: 16px;
-}
-
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  width: 100%;
-  padding: 0;
-}
-
-.emotion-8 {
-  color: #b3b3b3;
-}
-
-.emotion-7 {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-6 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 100%;
-  height: 40px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-9 {
-  height: 8px;
-}
-
-.emotion-10 {
-  height: 24px;
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-11 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
-  background-color: #808080;
-}
-
-.emotion-11:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-12 {
-  padding: 8px;
-}
-
-.emotion-13 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-13,
-.emotion-13:hover,
-.emotion-13:visited {
-  background-color: #73b61c;
-}
-
-.emotion-13:hover {
-  background-color: #96c955;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
-<div
-    className="emotion-18"
+<details
+    className="emotion-5"
+    onToggle={[Function]}
+    open={true}
   >
-    <div
-      className="emotion-5"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <button
-        aria-label="Collapse Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-4"
-      >
-        <span
-          className="emotion-3"
-        >
-          Select a model and add a label.
-           
-          <a
-            className="emotion-2"
-            href="/00000000-0000-0000-0000-000000000000/models/add"
-            onClick={[Function]}
-          >
-            Create New Model
-          </a>
-        </span>
-      </h4>
-    </div>
-    <div
-      className="emotion-17"
-    >
-      <div
-        className="emotion-16"
-      >
-        <form
-          action=""
-          className="emotion-15"
-          method="post"
-          onSubmit={[Function]}
-        >
-          <label
-            className="emotion-8"
-          >
-            Model
-            <div
-              className="emotion-7"
-            >
-              <select
-                className="emotion-6"
-                defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
-                disabled={false}
-                onChange={[Function]}
-              >
-                <option
-                  disabled={true}
-                  value=""
-                >
-                  Select an option...
-                </option>
-                <option
-                  value="621bf774-89d9-1244-9596-d6df43f1ede5"
-                >
-                  console_face_recognition
-                </option>
-                <option
-                  value="621bf774-89d9-9596-1244-d6df43f1ede5"
-                >
-                  console_cat_recognition
-                </option>
-                <option
-                  value="c0e83460-6a25-1238-86fa-0242ac150002"
-                >
-                  Gundam
-                </option>
-                <option
-                  value="c0e83462-6a25-1238-86fa-0242ac150002"
-                >
-                  Location
-                </option>
-              </select>
-            </div>
-          </label>
-          <div
-            className="emotion-9"
-          />
-          <Combobox
-            hasError={false}
-            label="Label"
-            onChange={[Function]}
-            options={[Function]}
-            value=""
-          />
-          <div
-            className="emotion-10"
-          />
-          <div
-            className="emotion-14"
-          >
-            <button
-              aria-disabled={true}
-              className="emotion-11"
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-            <div
-              className="emotion-12"
-            />
-            <button
-              aria-disabled={true}
-              className="emotion-13"
-              onClick={[Function]}
-              type="submit"
-            >
-              Save Label
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>,
-  .emotion-4 {
-  background-color: #252525;
-  border-radius: 2px;
-}
-
-.emotion-4:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-4:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-3:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-3 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-<div
-    className="emotion-4"
-  >
-    <div
+    <summary
+      aria-label="Select a model and add a label"
       className="emotion-3"
-      onClick={[Function]}
-      style={Object {}}
     >
-      <button
-        aria-label="Expand Section"
+      <svg
+        className="emotion-0"
+        data-file-name="chevron.svg"
+        height={20}
+      />
+      <span
         className="emotion-1"
-        onClick={[Function]}
-        type="button"
       >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
+        Select a model and add a label
+      </span>
+      <a
         className="emotion-2"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
+        onClick={[Function]}
       >
-        Asset Labels: 2
-      </h4>
+        Create New Model
+      </a>
+    </summary>
+    <div
+      className="emotion-4"
+    >
+      <AssetLabelingAdd
+        assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+        labels={
+          Array [
+            Object {
+              "label": "Space",
+              "modelId": "621bf774-89d9-1244-9596-d6df43f1ede5",
+              "scope": "TRAIN",
+            },
+            Object {
+              "label": "Outside",
+              "modelId": "621bf774-89d9-9596-1244-d6df43f1ede5",
+              "scope": "TRAIN",
+            },
+          ]
+        }
+        models={
+          Array [
+            Object {
+              "actorCreated": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - danny@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "actorModified": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - danny@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/621bf774-89d9-1244-9596-d6df43f1ede5/zvi-console_face_recognition-face-recognition/zvi-console_face_recognition-face-recognition.zip",
+              "id": "621bf774-89d9-1244-9596-d6df43f1ede5",
+              "moduleName": "zvi-console_face_recognition-face-recognition",
+              "name": "console_face_recognition",
+              "ready": true,
+              "runningJobId": "",
+              "timeCreated": 1594243378141,
+              "timeModified": 1594243378141,
+              "trainingJobName": "Train console_face_recognition / zvi-console_face_recognition-face-recognition",
+              "type": "ZVI_FACE_RECOGNITION",
+              "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-1244-9596-d6df43f1ede5/",
+            },
+            Object {
+              "actorCreated": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - zach@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "actorModified": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - zach@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/621bf774-89d9-9596-1244-d6df43f1ede5/zvi-console_cat_recognition-cat-recognition/zvi-console_cat_recognition-cat-recognition.zip",
+              "id": "621bf774-89d9-9596-1244-d6df43f1ede5",
+              "moduleName": "zvi-console_cat_recognition-cat-recognition",
+              "name": "console_cat_recognition",
+              "ready": false,
+              "runningJobId": "",
+              "timeCreated": 1594243378141,
+              "timeModified": 1594243378141,
+              "trainingJobName": "Train console_cat_recognition / zvi-console_cat_recognition-cat-recognition",
+              "type": "ZVI_CAT_RECOGNITION",
+              "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-9596-1244-d6df43f1ede5/",
+            },
+            Object {
+              "actorCreated": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "actorModified": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/c0e83460-6a25-1238-86fa-0242ac150002/model/model.zip",
+              "id": "c0e83460-6a25-1238-86fa-0242ac150002",
+              "moduleName": "Gundam",
+              "name": "Gundam",
+              "ready": false,
+              "runningJobId": "",
+              "timeCreated": 1595883344116,
+              "timeModified": 1595883344116,
+              "trainingJobName": "Training model: Gundam - [Label Detection]",
+              "type": "ZVI_LABEL_DETECTION",
+              "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83460-6a25-1238-86fa-0242ac150002/",
+            },
+            Object {
+              "actorCreated": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "actorModified": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
+              "deploySearch": Object {
+                "query": Object {
+                  "matchAll": Object {},
+                },
+              },
+              "fileId": "models/c0e83462-6a25-1238-86fa-0242ac150002/model/model.zip",
+              "id": "c0e83462-6a25-1238-86fa-0242ac150002",
+              "moduleName": "Location",
+              "name": "Location",
+              "ready": false,
+              "runningJobId": "",
+              "timeCreated": 1595888265010,
+              "timeModified": 1595888265010,
+              "trainingJobName": "Training model: Location - [Label Detection]",
+              "type": "ZVI_LABEL_DETECTION",
+              "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83462-6a25-1238-86fa-0242ac150002/",
+            },
+          ]
+        }
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      />
     </div>
-  </div>,
-]
-`;
-
-exports[`<AssetLabeling /> should render with a selected asset 3`] = `
-Array [
-  .emotion-0 {
-  padding: 16px;
-  border-bottom: 1px solid #3b3b3b;
-  color: #0074f5;
-}
-
-<div
-    className="emotion-0"
-  >
-    TIFF_1MB.tiff
-  </div>,
-  .emotion-18 {
-  background-color: #252525;
+  </details>,
+  .emotion-16 {
   border-radius: 2px;
-}
-
-.emotion-18:last-of-type > div:last-of-type {
+  background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-18:first-of-type > div {
-  border-top: none;
+.emotion-16:hover svg {
+  opacity: 1;
 }
 
-.emotion-5 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  background-color: #252525;
 }
 
-.emotion-5:hover {
+.emotion-2::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-2:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-5 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
 .emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -2px;
+  padding-left: 12px;
 }
 
 .emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-4 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
-  padding-top: 0;
-  padding-bottom: 0;
-  font-weight: 500;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
-  color: #73b61c;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.emotion-17 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-16 {
-  padding: 16px;
-}
-
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  width: 100%;
-  padding: 0;
-}
-
-.emotion-8 {
-  color: #b3b3b3;
-}
-
-.emotion-7 {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-6 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 100%;
-  height: 40px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-9 {
-  height: 8px;
-}
-
-.emotion-10 {
-  height: 24px;
+  color: #808080;
 }
 
 .emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-11 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
-  background-color: #808080;
-}
-
-.emotion-11:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-12 {
-  padding: 8px;
-}
-
-.emotion-13 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-13,
-.emotion-13:hover,
-.emotion-13:visited {
-  background-color: #73b61c;
-}
-
-.emotion-13:hover {
-  background-color: #96c955;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
-<div
-    className="emotion-18"
-  >
-    <div
-      className="emotion-5"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <button
-        aria-label="Collapse Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-4"
-      >
-        <span
-          className="emotion-3"
-        >
-          Select a model and add a label.
-           
-          <a
-            className="emotion-2"
-            href="/00000000-0000-0000-0000-000000000000/models/add"
-            onClick={[Function]}
-          >
-            Create New Model
-          </a>
-        </span>
-      </h4>
-    </div>
-    <div
-      className="emotion-17"
-    >
-      <div
-        className="emotion-16"
-      >
-        <form
-          action=""
-          className="emotion-15"
-          method="post"
-          onSubmit={[Function]}
-        >
-          <label
-            className="emotion-8"
-          >
-            Model
-            <div
-              className="emotion-7"
-            >
-              <select
-                className="emotion-6"
-                defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
-                disabled={false}
-                onChange={[Function]}
-              >
-                <option
-                  disabled={true}
-                  value=""
-                >
-                  Select an option...
-                </option>
-                <option
-                  value="621bf774-89d9-1244-9596-d6df43f1ede5"
-                >
-                  console_face_recognition
-                </option>
-                <option
-                  value="621bf774-89d9-9596-1244-d6df43f1ede5"
-                >
-                  console_cat_recognition
-                </option>
-                <option
-                  value="c0e83460-6a25-1238-86fa-0242ac150002"
-                >
-                  Gundam
-                </option>
-                <option
-                  value="c0e83462-6a25-1238-86fa-0242ac150002"
-                >
-                  Location
-                </option>
-              </select>
-            </div>
-          </label>
-          <div
-            className="emotion-9"
-          />
-          <Combobox
-            hasError={false}
-            label="Label"
-            onChange={[Function]}
-            options={[Function]}
-            value="Flimflarm"
-          />
-          <div
-            className="emotion-10"
-          />
-          <div
-            className="emotion-14"
-          >
-            <button
-              aria-disabled={true}
-              className="emotion-11"
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-            <div
-              className="emotion-12"
-            />
-            <button
-              className="emotion-13"
-              onClick={[Function]}
-              type="submit"
-            >
-              Save Label
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>,
-  .emotion-4 {
-  background-color: #252525;
-  border-radius: 2px;
-}
-
-.emotion-4:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-4:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-3:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-3 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-<div
-    className="emotion-4"
-  >
-    <div
-      className="emotion-3"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <button
-        aria-label="Expand Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-2"
-      >
-        Asset Labels: 2
-      </h4>
-    </div>
-  </div>,
-]
-`;
-
-exports[`<AssetLabeling /> should render with a selected asset 4`] = `
-Array [
-  .emotion-0 {
-  padding: 16px;
-  border-bottom: 1px solid #3b3b3b;
-  color: #0074f5;
-}
-
-<div
-    className="emotion-0"
-  >
-    TIFF_1MB.tiff
-  </div>,
-  .emotion-18 {
-  background-color: #252525;
-  border-radius: 2px;
-}
-
-.emotion-18:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-18:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-5:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-5 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-4 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
-  padding-top: 0;
-  padding-bottom: 0;
-  font-weight: 500;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
-  color: #73b61c;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.emotion-17 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-16 {
-  padding: 16px;
-}
-
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  width: 100%;
-  padding: 0;
-}
-
-.emotion-8 {
-  color: #b3b3b3;
-}
-
-.emotion-7 {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-6 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 100%;
-  height: 40px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-9 {
-  height: 8px;
-}
-
-.emotion-10 {
-  height: 24px;
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-11 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
-  background-color: #808080;
-}
-
-.emotion-11:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-12 {
-  padding: 8px;
-}
-
-.emotion-13 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-13,
-.emotion-13:hover,
-.emotion-13:visited {
-  background-color: #73b61c;
-}
-
-.emotion-13:hover {
-  background-color: #96c955;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
-<div
-    className="emotion-18"
-  >
-    <div
-      className="emotion-5"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <button
-        aria-label="Collapse Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-4"
-      >
-        <span
-          className="emotion-3"
-        >
-          Select a model and add a label.
-           
-          <a
-            className="emotion-2"
-            href="/00000000-0000-0000-0000-000000000000/models/add"
-            onClick={[Function]}
-          >
-            Create New Model
-          </a>
-        </span>
-      </h4>
-    </div>
-    <div
-      className="emotion-17"
-    >
-      <div
-        className="emotion-16"
-      >
-        <form
-          action=""
-          className="emotion-15"
-          method="post"
-          onSubmit={[Function]}
-        >
-          <label
-            className="emotion-8"
-          >
-            Model
-            <div
-              className="emotion-7"
-            >
-              <select
-                className="emotion-6"
-                defaultValue="c0e83460-6a25-1238-86fa-0242ac150002"
-                disabled={false}
-                onChange={[Function]}
-              >
-                <option
-                  disabled={true}
-                  value=""
-                >
-                  Select an option...
-                </option>
-                <option
-                  value="621bf774-89d9-1244-9596-d6df43f1ede5"
-                >
-                  console_face_recognition
-                </option>
-                <option
-                  value="621bf774-89d9-9596-1244-d6df43f1ede5"
-                >
-                  console_cat_recognition
-                </option>
-                <option
-                  value="c0e83460-6a25-1238-86fa-0242ac150002"
-                >
-                  Gundam
-                </option>
-                <option
-                  value="c0e83462-6a25-1238-86fa-0242ac150002"
-                >
-                  Location
-                </option>
-              </select>
-            </div>
-          </label>
-          <div
-            className="emotion-9"
-          />
-          <Combobox
-            hasError={false}
-            label="Label"
-            onChange={[Function]}
-            options={[Function]}
-            value="FlamFlirm"
-          />
-          <div
-            className="emotion-10"
-          />
-          <div
-            className="emotion-14"
-          >
-            <button
-              aria-disabled={true}
-              className="emotion-11"
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-            <div
-              className="emotion-12"
-            />
-            <button
-              className="emotion-13"
-              onClick={[Function]}
-              type="submit"
-            >
-              Save Label
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>,
-  .emotion-4 {
-  background-color: #252525;
-  border-radius: 2px;
-}
-
-.emotion-4:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-4:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-3:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-3 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-<div
-    className="emotion-4"
-  >
-    <div
-      className="emotion-3"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <button
-        aria-label="Expand Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-2"
-      >
-        Asset Labels: 2
-      </h4>
-    </div>
-  </div>,
-]
-`;
-
-exports[`<AssetLabeling /> should render with a selected asset 5`] = `
-Array [
-  .emotion-0 {
-  padding: 16px;
-  border-bottom: 1px solid #3b3b3b;
-  color: #0074f5;
-}
-
-<div
-    className="emotion-0"
-  >
-    TIFF_1MB.tiff
-  </div>,
-  .emotion-18 {
-  background-color: #252525;
-  border-radius: 2px;
-}
-
-.emotion-18:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-18:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-5:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-5 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-4 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
-  padding-top: 0;
-  padding-bottom: 0;
-  font-weight: 500;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
-  color: #73b61c;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.emotion-17 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-16 {
-  padding: 16px;
-}
-
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  width: 100%;
-  padding: 0;
-}
-
-.emotion-8 {
-  color: #b3b3b3;
-}
-
-.emotion-7 {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-6 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 100%;
-  height: 40px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-9 {
-  height: 8px;
-}
-
-.emotion-10 {
-  height: 24px;
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-11 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
-  background-color: #808080;
-}
-
-.emotion-11:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-12 {
-  padding: 8px;
-}
-
-.emotion-13 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-13,
-.emotion-13:hover,
-.emotion-13:visited {
-  background-color: #73b61c;
-}
-
-.emotion-13:hover {
-  background-color: #96c955;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
-<div
-    className="emotion-18"
-  >
-    <div
-      className="emotion-5"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <button
-        aria-label="Collapse Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-4"
-      >
-        <span
-          className="emotion-3"
-        >
-          Select a model and add a label.
-           
-          <a
-            className="emotion-2"
-            href="/00000000-0000-0000-0000-000000000000/models/add"
-            onClick={[Function]}
-          >
-            Create New Model
-          </a>
-        </span>
-      </h4>
-    </div>
-    <div
-      className="emotion-17"
-    >
-      <div
-        className="emotion-16"
-      >
-        <form
-          action=""
-          className="emotion-15"
-          method="post"
-          onSubmit={[Function]}
-        >
-          <label
-            className="emotion-8"
-          >
-            Model
-            <div
-              className="emotion-7"
-            >
-              <select
-                className="emotion-6"
-                defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
-                disabled={false}
-                onChange={[Function]}
-              >
-                <option
-                  disabled={true}
-                  value=""
-                >
-                  Select an option...
-                </option>
-                <option
-                  value="621bf774-89d9-1244-9596-d6df43f1ede5"
-                >
-                  console_face_recognition
-                </option>
-                <option
-                  value="621bf774-89d9-9596-1244-d6df43f1ede5"
-                >
-                  console_cat_recognition
-                </option>
-                <option
-                  value="c0e83460-6a25-1238-86fa-0242ac150002"
-                >
-                  Gundam
-                </option>
-                <option
-                  value="c0e83462-6a25-1238-86fa-0242ac150002"
-                >
-                  Location
-                </option>
-              </select>
-            </div>
-          </label>
-          <div
-            className="emotion-9"
-          />
-          <Combobox
-            hasError={false}
-            label="Label"
-            onChange={[Function]}
-            options={[Function]}
-            value=""
-          />
-          <div
-            className="emotion-10"
-          />
-          <div
-            className="emotion-14"
-          >
-            <button
-              aria-disabled={true}
-              className="emotion-11"
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-            <div
-              className="emotion-12"
-            />
-            <button
-              aria-disabled={true}
-              className="emotion-13"
-              onClick={[Function]}
-              type="submit"
-            >
-              Save Label
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>,
-  .emotion-4 {
-  background-color: #252525;
-  border-radius: 2px;
-}
-
-.emotion-4:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-4:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-3:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-3 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-<div
-    className="emotion-4"
-  >
-    <div
-      className="emotion-3"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <button
-        aria-label="Expand Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-2"
-      >
-        Asset Labels: 2
-      </h4>
-    </div>
-  </div>,
-]
-`;
-
-exports[`<AssetLabeling /> should render with a selected asset 6`] = `
-Array [
-  .emotion-0 {
-  padding: 16px;
-  border-bottom: 1px solid #3b3b3b;
-  color: #0074f5;
-}
-
-<div
-    className="emotion-0"
-  >
-    TIFF_1MB.tiff
-  </div>,
-  .emotion-18 {
-  background-color: #252525;
-  border-radius: 2px;
-}
-
-.emotion-18:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-18:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-5:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-5 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-4 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
-  padding-top: 0;
-  padding-bottom: 0;
-  font-weight: 500;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
-  color: #73b61c;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.emotion-17 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-16 {
-  padding: 16px;
-}
-
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  width: 100%;
-  padding: 0;
-}
-
-.emotion-8 {
-  color: #b3b3b3;
-}
-
-.emotion-7 {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-6 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 100%;
-  height: 40px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-9 {
-  height: 8px;
-}
-
-.emotion-10 {
-  height: 24px;
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-11 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
-  background-color: #808080;
-}
-
-.emotion-11:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-12 {
-  padding: 8px;
-}
-
-.emotion-13 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-13,
-.emotion-13:hover,
-.emotion-13:visited {
-  background-color: #73b61c;
-}
-
-.emotion-13:hover {
-  background-color: #96c955;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
-<div
-    className="emotion-18"
-  >
-    <div
-      className="emotion-5"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <button
-        aria-label="Collapse Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-4"
-      >
-        <span
-          className="emotion-3"
-        >
-          Select a model and add a label.
-           
-          <a
-            className="emotion-2"
-            href="/00000000-0000-0000-0000-000000000000/models/add"
-            onClick={[Function]}
-          >
-            Create New Model
-          </a>
-        </span>
-      </h4>
-    </div>
-    <div
-      className="emotion-17"
-    >
-      <div
-        className="emotion-16"
-      >
-        <form
-          action=""
-          className="emotion-15"
-          method="post"
-          onSubmit={[Function]}
-        >
-          <label
-            className="emotion-8"
-          >
-            Model
-            <div
-              className="emotion-7"
-            >
-              <select
-                className="emotion-6"
-                defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
-                disabled={false}
-                onChange={[Function]}
-              >
-                <option
-                  disabled={true}
-                  value=""
-                >
-                  Select an option...
-                </option>
-                <option
-                  value="621bf774-89d9-1244-9596-d6df43f1ede5"
-                >
-                  console_face_recognition
-                </option>
-                <option
-                  value="621bf774-89d9-9596-1244-d6df43f1ede5"
-                >
-                  console_cat_recognition
-                </option>
-                <option
-                  value="c0e83460-6a25-1238-86fa-0242ac150002"
-                >
-                  Gundam
-                </option>
-                <option
-                  value="c0e83462-6a25-1238-86fa-0242ac150002"
-                >
-                  Location
-                </option>
-              </select>
-            </div>
-          </label>
-          <div
-            className="emotion-9"
-          />
-          <Combobox
-            hasError={false}
-            label="Label"
-            onChange={[Function]}
-            options={[Function]}
-            value=""
-          />
-          <div
-            className="emotion-10"
-          />
-          <div
-            className="emotion-14"
-          >
-            <button
-              aria-disabled={true}
-              className="emotion-11"
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-            <div
-              className="emotion-12"
-            />
-            <button
-              aria-disabled={true}
-              className="emotion-13"
-              onClick={[Function]}
-              type="submit"
-            >
-              Save Label
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>,
-  .emotion-17 {
-  background-color: #252525;
-  border-radius: 2px;
-}
-
-.emotion-17:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-17:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-3:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-3 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emotion-16 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-15 {
   width: 100%;
   color: #808080;
   border-spacing: 0;
 }
 
-.emotion-4 {
+.emotion-3 {
   text-align: left;
   font-family: Roboto Condensed;
   font-weight: 500;
 }
 
-.emotion-4 th {
+.emotion-3 th {
   text-transform: uppercase;
   padding: 12px;
   padding-top: 16px;
   padding-left: 16px;
 }
 
-.emotion-9 {
+.emotion-8 {
   text-align: left;
   font-family: Roboto Condensed;
   font-weight: 500;
 }
 
-.emotion-9:nth-last-of-type(2) {
+.emotion-8:nth-last-of-type(2) {
   width: 100%;
 }
 
-.emotion-9:hover {
+.emotion-8:hover {
   background-color: #0074f538;
 }
 
-.emotion-9 td {
+.emotion-8 td {
   border-top: 1px solid #3b3b3b;
   padding: 12px;
   padding-left: 16px;
 }
 
-.emotion-5 {
+.emotion-4 {
   white-space: nowrap;
 }
 
-.emotion-6 {
+.emotion-5 {
   width: 100%;
   word-break: break-all;
 }
 
-.emotion-8 {
+.emotion-7 {
   position: relative;
 }
 
-.emotion-7 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -4614,56 +1240,50 @@ Array [
   margin: -6px;
 }
 
-.emotion-7:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7:hover,
-.emotion-7.focus-visible:focus {
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
   color: #ffffff !important;
 }
 
-<div
-    className="emotion-17"
+<details
+    className="emotion-16"
+    onToggle={[Function]}
+    open={false}
   >
-    <div
-      className="emotion-3"
-      onClick={[Function]}
-      style={Object {}}
+    <summary
+      aria-label="Asset Labels: 2"
+      className="emotion-2"
     >
-      <button
-        aria-label="Collapse Section"
+      <svg
+        className="emotion-0"
+        data-file-name="chevron.svg"
+        height={20}
+      />
+      <span
         className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-2"
       >
         Asset Labels: 2
-      </h4>
-    </div>
+      </span>
+    </summary>
     <div
-      className="emotion-16"
+      className="emotion-15"
     >
       
       <table
-        className="emotion-15"
+        className="emotion-14"
       >
         <thead>
           <tr
-            className="emotion-4"
+            className="emotion-3"
           >
             <th>
               Model
@@ -4675,869 +1295,25 @@ Array [
         </thead>
         <tbody>
           <tr
-            className="emotion-9"
-          >
-            <td
-              className="emotion-5"
-            >
-              console_face_recognition
-            </td>
-            <td
-              className="emotion-6"
-            >
-              Space
-            </td>
-            <td>
-              <div
-                className="emotion-8"
-              >
-                <button
-                  aria-label="Toggle Actions Menu"
-                  className="actions emotion-7"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <svg
-                    data-file-name="kebab.svg"
-                    height={20}
-                  />
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr
-            className="emotion-9"
-          >
-            <td
-              className="emotion-5"
-            >
-              console_cat_recognition
-            </td>
-            <td
-              className="emotion-6"
-            >
-              Outside
-            </td>
-            <td>
-              <div
-                className="emotion-8"
-              >
-                <button
-                  aria-label="Toggle Actions Menu"
-                  className="actions emotion-7"
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <svg
-                    data-file-name="kebab.svg"
-                    height={20}
-                  />
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>,
-]
-`;
-
-exports[`<AssetLabeling /> should render with a selected asset 7`] = `
-Array [
-  .emotion-0 {
-  padding: 16px;
-  border-bottom: 1px solid #3b3b3b;
-  color: #0074f5;
-}
-
-<div
-    className="emotion-0"
-  >
-    TIFF_1MB.tiff
-  </div>,
-  .emotion-18 {
-  background-color: #252525;
-  border-radius: 2px;
-}
-
-.emotion-18:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-18:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-5:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-5 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-4 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
-  padding-top: 0;
-  padding-bottom: 0;
-  font-weight: 500;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
-  color: #73b61c;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.emotion-17 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-16 {
-  padding: 16px;
-}
-
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  width: 100%;
-  padding: 0;
-}
-
-.emotion-8 {
-  color: #b3b3b3;
-}
-
-.emotion-7 {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-6 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 100%;
-  height: 40px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-9 {
-  height: 8px;
-}
-
-.emotion-10 {
-  height: 24px;
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-11 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
-  background-color: #808080;
-}
-
-.emotion-11:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-12 {
-  padding: 8px;
-}
-
-.emotion-13 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 0;
-}
-
-.emotion-13:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-13[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-13,
-.emotion-13:hover,
-.emotion-13:visited {
-  background-color: #73b61c;
-}
-
-.emotion-13:hover {
-  background-color: #96c955;
-}
-
-.emotion-13[aria-disabled=true] {
-  background-color: #808080;
-}
-
-<div
-    className="emotion-18"
-  >
-    <div
-      className="emotion-5"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <button
-        aria-label="Collapse Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-4"
-      >
-        <span
-          className="emotion-3"
-        >
-          Select a model and add a label.
-           
-          <a
-            className="emotion-2"
-            href="/00000000-0000-0000-0000-000000000000/models/add"
-            onClick={[Function]}
-          >
-            Create New Model
-          </a>
-        </span>
-      </h4>
-    </div>
-    <div
-      className="emotion-17"
-    >
-      <div
-        className="emotion-16"
-      >
-        <form
-          action=""
-          className="emotion-15"
-          method="post"
-          onSubmit={[Function]}
-        >
-          <label
             className="emotion-8"
           >
-            Model
-            <div
-              className="emotion-7"
-            >
-              <select
-                className="emotion-6"
-                defaultValue="621bf774-89d9-1244-9596-d6df43f1ede5"
-                disabled={false}
-                onChange={[Function]}
-              >
-                <option
-                  disabled={true}
-                  value=""
-                >
-                  Select an option...
-                </option>
-                <option
-                  value="621bf774-89d9-1244-9596-d6df43f1ede5"
-                >
-                  console_face_recognition
-                </option>
-                <option
-                  value="621bf774-89d9-9596-1244-d6df43f1ede5"
-                >
-                  console_cat_recognition
-                </option>
-                <option
-                  value="c0e83460-6a25-1238-86fa-0242ac150002"
-                >
-                  Gundam
-                </option>
-                <option
-                  value="c0e83462-6a25-1238-86fa-0242ac150002"
-                >
-                  Location
-                </option>
-              </select>
-            </div>
-          </label>
-          <div
-            className="emotion-9"
-          />
-          <Combobox
-            hasError={false}
-            label="Label"
-            onChange={[Function]}
-            options={[Function]}
-            value="Space"
-          />
-          <div
-            className="emotion-10"
-          />
-          <div
-            className="emotion-14"
-          >
-            <button
-              aria-disabled={true}
-              className="emotion-11"
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-            <div
-              className="emotion-12"
-            />
-            <button
-              aria-disabled={true}
-              className="emotion-13"
-              onClick={[Function]}
-              type="submit"
-            >
-              Label Saved
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>,
-  .emotion-17 {
-  background-color: #252525;
-  border-radius: 2px;
-}
-
-.emotion-17:last-of-type > div:last-of-type {
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-17:first-of-type > div {
-  border-top: none;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-}
-
-.emotion-3:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-3 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emotion-16 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-15 {
-  width: 100%;
-  color: #808080;
-  border-spacing: 0;
-}
-
-.emotion-4 {
-  text-align: left;
-  font-family: Roboto Condensed;
-  font-weight: 500;
-}
-
-.emotion-4 th {
-  text-transform: uppercase;
-  padding: 12px;
-  padding-top: 16px;
-  padding-left: 16px;
-}
-
-.emotion-9 {
-  text-align: left;
-  font-family: Roboto Condensed;
-  font-weight: 500;
-}
-
-.emotion-9:nth-last-of-type(2) {
-  width: 100%;
-}
-
-.emotion-9:hover {
-  background-color: #0074f538;
-}
-
-.emotion-9 td {
-  border-top: 1px solid #3b3b3b;
-  padding: 12px;
-  padding-left: 16px;
-}
-
-.emotion-5 {
-  white-space: nowrap;
-}
-
-.emotion-6 {
-  width: 100%;
-  word-break: break-all;
-}
-
-.emotion-8 {
-  position: relative;
-}
-
-.emotion-7 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  color: #808080;
-  padding: 6px;
-  margin: -6px;
-}
-
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-7:hover,
-.emotion-7.focus-visible:focus {
-  color: #ffffff !important;
-}
-
-<div
-    className="emotion-17"
-  >
-    <div
-      className="emotion-3"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <button
-        aria-label="Collapse Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="chevron.svg"
-          height={20}
-        />
-      </button>
-      <h4
-        className="emotion-2"
-      >
-        Asset Labels: 2
-      </h4>
-    </div>
-    <div
-      className="emotion-16"
-    >
-      
-      <table
-        className="emotion-15"
-      >
-        <thead>
-          <tr
-            className="emotion-4"
-          >
-            <th>
-              Model
-            </th>
-            <th>
-              Label
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            className="emotion-9"
-          >
             <td
-              className="emotion-5"
+              className="emotion-4"
             >
               console_face_recognition
             </td>
             <td
-              className="emotion-6"
+              className="emotion-5"
             >
               Space
             </td>
             <td>
               <div
-                className="emotion-8"
+                className="emotion-7"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-7"
+                  className="actions emotion-6"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -5551,25 +1327,25 @@ Array [
             </td>
           </tr>
           <tr
-            className="emotion-9"
+            className="emotion-8"
           >
             <td
-              className="emotion-5"
+              className="emotion-4"
             >
               console_cat_recognition
             </td>
             <td
-              className="emotion-6"
+              className="emotion-5"
             >
               Outside
             </td>
             <td>
               <div
-                className="emotion-8"
+                className="emotion-7"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-7"
+                  className="actions emotion-6"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -5585,6 +1361,6 @@ Array [
         </tbody>
       </table>
     </div>
-  </div>,
+  </details>,
 ]
 `;
