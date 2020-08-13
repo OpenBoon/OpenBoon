@@ -218,6 +218,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
         # Only returns the specified fields in the metadata
         query['_source'] = fields
+        query['track_total_hits'] = True
 
         return self._zmlp_list_from_es(request, search_filter=query, base_url=path,
                                        serializer_class=SearchAssetSerializer,

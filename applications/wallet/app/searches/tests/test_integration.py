@@ -394,7 +394,8 @@ class TestQuery(BaseFiltersTestCase):
                              '_source': ['id',
                                          'source*',
                                          'files*',
-                                         'media*']}
+                                         'media*'],
+                             'track_total_hits': True}
             return Response(status=status.HTTP_200_OK)
 
         path = reverse('search-query', kwargs={'project_pk': project.id})
