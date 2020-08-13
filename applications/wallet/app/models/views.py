@@ -37,6 +37,10 @@ class ModelViewSet(BaseProjectViewSet):
         """Retrieve the details for this specific model."""
         return self._zmlp_retrieve(request, pk=pk, item_modifier=item_modifier)
 
+    def destroy(self, request, project_pk, pk):
+        """Deletes a model."""
+        return self._zmlp_destroy(request, pk)
+
     def create(self, request, project_pk):
         """Create a model for this project.
 
