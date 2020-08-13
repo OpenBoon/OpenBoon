@@ -154,6 +154,18 @@ class TestModelViewSetActions:
         assert content == {'count': 1,
                            'results': [{'label': 'Mountains', 'count': 8}]}
 
+    def test_rename_label(self, login, project, api_client, monkeypatch):
+        def mock_response(*args, **kwargs):
+            return {'updated': 26}
+
+        model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        monkeypatch.setattr(ZmlpClient, 'put', mock_response)
+        path = reverse('model-rename-label', kwargs={'project_pk': project.id,
+                                                     'pk': model_id})
+        response = api_client.put(path, {'label': 'Dog', 'newLabel': 'Cat'})
+        content = check_response(response)
+        assert content == {'updated': 26}
+
 
 class TestLabelingEndpoints:
 
