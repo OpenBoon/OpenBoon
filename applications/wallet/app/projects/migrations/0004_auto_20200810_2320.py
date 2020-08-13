@@ -7,7 +7,7 @@ import django_cryptography.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('projects', '0003_recreate_membership_api_keys'),
+        ('projects', '0002_auto_20200528_2041'),
     ]
 
     operations = [
