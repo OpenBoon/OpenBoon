@@ -20,7 +20,7 @@ const Breadcrumbs = ({ crumbs }) => {
   const { query } = useRouter()
 
   return (
-    <div css={{ display: 'flex' }}>
+    <div css={{ display: 'flex', flexShrink: 0 }}>
       {crumbs.map(({ title, href }, index) => {
         const isLastCrumb = index === crumbs.length - 1
 

@@ -33,7 +33,6 @@ exports[`<LoginWithGoogle /> should recover from an error 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;

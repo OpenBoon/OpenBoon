@@ -213,8 +213,7 @@ class BaseProjectViewSet(ViewSet):
         """
         # Check for pagination query params first, and then check the post body
         payload = {'from': request.query_params.get('from', request.data.get('from', 0)),
-                   'size': request.query_params.get('size', request.data.get('size',
-                                                                             self.pagination_class.default_limit))}  # noqa
+                   'size': request.query_params.get('size', request.data.get('size', self.pagination_class.default_limit))}  # noqa
         content = self._zmlp_get_content_from_es_search(request, base_url=base_url,
                                                         search_filter=search_filter,
                                                         payload=payload)

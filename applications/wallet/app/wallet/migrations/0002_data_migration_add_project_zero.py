@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('wallet', '0001_data_migration_add_superuser'),
-        ('projects', '0001_initial'),
+        ('projects', '0004_auto_20200810_2320'),
         ('subscriptions', '0002_auto_20200528_2041'),
     ]
 

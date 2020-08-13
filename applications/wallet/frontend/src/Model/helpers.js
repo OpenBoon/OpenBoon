@@ -8,7 +8,7 @@ export const onTrain = async ({ apply, projectId, modelId, setError }) => {
     setError('')
 
     const { jobId } = await fetcher(
-      `/api/v1/projects/${projectId}/${modelId}/train/`,
+      `/api/v1/projects/${projectId}/models/${modelId}/train/`,
       {
         body: JSON.stringify({ apply }),
         method: 'POST',
@@ -16,7 +16,7 @@ export const onTrain = async ({ apply, projectId, modelId, setError }) => {
     )
 
     mutate(
-      `/api/v1/projects/${projectId}/${modelId}/`,
+      `/api/v1/projects/${projectId}/models/${modelId}/`,
       {
         ready: true,
         runningJobId: jobId,

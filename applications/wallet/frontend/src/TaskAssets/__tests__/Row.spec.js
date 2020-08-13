@@ -30,8 +30,8 @@ describe('<TaskAssetsRow />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Expand Section' })
-        .props.onClick()
+        .findByType('details')
+        .props.onToggle({ target: { open: true } })
     })
 
     expect(component.toJSON()).toMatchSnapshot()

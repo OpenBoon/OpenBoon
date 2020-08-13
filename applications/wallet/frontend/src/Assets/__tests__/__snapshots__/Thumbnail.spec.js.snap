@@ -37,7 +37,6 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -102,7 +101,6 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -156,7 +154,6 @@ exports[`<AssetsThumbnail /> should render properly a valid asset 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -258,7 +255,6 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -323,7 +319,6 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -377,7 +372,6 @@ exports[`<AssetsThumbnail /> should render properly a valid selected asset 1`] =
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -511,7 +505,6 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -576,7 +569,6 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -630,7 +622,6 @@ exports[`<AssetsThumbnail /> should render properly a video asset 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -762,7 +753,6 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -827,7 +817,6 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -881,7 +870,6 @@ exports[`<AssetsThumbnail /> should render properly an asset without thumbnails 
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -999,7 +987,6 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1064,7 +1051,6 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1118,7 +1104,6 @@ exports[`<AssetsThumbnail /> should render properly an invalid asset 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;

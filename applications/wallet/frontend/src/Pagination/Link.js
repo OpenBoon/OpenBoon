@@ -18,6 +18,7 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
 
   const styles = {
     display: 'flex',
+    flexShrink: 0,
     alignItems: 'center',
     padding: `${spacing.base}px ${spacing.moderate}px`,
     backgroundColor: colors.structure.steel,

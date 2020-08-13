@@ -2,7 +2,17 @@
 
 exports[`<Task /> should render properly for Assets 1`] = `
 Array [
-  .emotion-2 {
+  .emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -44,7 +54,7 @@ Array [
 }
 
 <div
-    className="emotion-2"
+    className="emotion-7"
   >
     <div
       className="emotion-2"
@@ -86,7 +96,13 @@ Array [
       Task Details
     </h2>
   </div>,
-  .emotion-0 {
+  .emotion-20 {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-0 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
@@ -141,7 +157,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -214,7 +229,9 @@ Array [
   color: #b3b3b3;
 }
 
-<div>
+<div
+    className="emotion-20"
+  >
     <h3
       className="emotion-0"
     >
@@ -326,6 +343,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-6 {
@@ -444,7 +464,17 @@ Array [
 
 exports[`<Task /> should render properly for Errors 1`] = `
 Array [
-  .emotion-2 {
+  .emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -486,7 +516,7 @@ Array [
 }
 
 <div
-    className="emotion-2"
+    className="emotion-7"
   >
     <div
       className="emotion-2"
@@ -528,7 +558,13 @@ Array [
       Task Details
     </h2>
   </div>,
-  .emotion-0 {
+  .emotion-20 {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-0 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
@@ -583,7 +619,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -656,7 +691,9 @@ Array [
   color: #b3b3b3;
 }
 
-<div>
+<div
+    className="emotion-20"
+  >
     <h3
       className="emotion-0"
     >
@@ -768,6 +805,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-6 {
@@ -888,7 +928,17 @@ Array [
 
 exports[`<Task /> should render properly for Log 1`] = `
 Array [
-  .emotion-2 {
+  .emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -930,7 +980,7 @@ Array [
 }
 
 <div
-    className="emotion-2"
+    className="emotion-7"
   >
     <div
       className="emotion-2"
@@ -972,7 +1022,13 @@ Array [
       Task Details
     </h2>
   </div>,
-  .emotion-0 {
+  .emotion-22 {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-0 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
@@ -1027,7 +1083,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1104,7 +1159,9 @@ Array [
   font-style: italic;
 }
 
-<div>
+<div
+    className="emotion-22"
+  >
     <h3
       className="emotion-0"
     >
@@ -1224,6 +1281,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-6 {
@@ -1318,7 +1378,17 @@ Array [
 
 exports[`<Task /> should render properly for Script 1`] = `
 Array [
-  .emotion-2 {
+  .emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1360,7 +1430,7 @@ Array [
 }
 
 <div
-    className="emotion-2"
+    className="emotion-7"
   >
     <div
       className="emotion-2"
@@ -1402,7 +1472,13 @@ Array [
       Task Details
     </h2>
   </div>,
-  .emotion-0 {
+  .emotion-20 {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-0 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
@@ -1457,7 +1533,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1530,7 +1605,9 @@ Array [
   color: #b3b3b3;
 }
 
-<div>
+<div
+    className="emotion-20"
+  >
     <h3
       className="emotion-0"
     >
@@ -1642,6 +1719,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-6 {

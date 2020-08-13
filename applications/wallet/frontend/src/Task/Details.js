@@ -29,7 +29,7 @@ const TaskDetails = () => {
   })
 
   return (
-    <div>
+    <div css={{ flexShrink: 0 }}>
       <h3
         css={{
           fontSize: typography.size.medium,

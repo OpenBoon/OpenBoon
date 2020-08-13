@@ -81,6 +81,7 @@ const FiltersMenu = ({
           flexDirection: 'column',
           padding: spacing.moderate,
           borderBottom: constants.borders.regular.smoke,
+          flexShrink: 0,
         }}
       >
         <label>
@@ -161,7 +162,7 @@ const FiltersMenu = ({
           )}
       </div>
 
-      <div css={{ padding: spacing.base, display: 'flex' }}>
+      <div css={{ padding: spacing.base, display: 'flex', flexShrink: 0 }}>
         <Button
           variant={VARIANTS.SECONDARY}
           onClick={() => setIsMenuOpen(false)}
@@ -179,6 +180,7 @@ const FiltersMenu = ({
         <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
         <Button
+          type="submit"
           aria-label="Add Filters"
           variant={VARIANTS.PRIMARY}
           onClick={() => {

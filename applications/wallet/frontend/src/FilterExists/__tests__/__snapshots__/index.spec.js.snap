@@ -1,14 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FilterExists /> should select "Exists" 1`] = `
-.emotion-20 {
+.emotion-21 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-20:hover svg {
+.emotion-21:hover summary svg {
   opacity: 1;
+}
+
+.emotion-9 {
+  list-style-type: none;
+  padding: 8px;
+  background-color: #252525;
+}
+
+.emotion-9::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-9:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
 }
 
 .emotion-8 {
@@ -20,17 +35,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 8px;
-  background-color: #252525;
-}
-
-.emotion-8::-webkit-details-marker {
-  display: none;
-}
-
-.emotion-8:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
 }
 
 .emotion-0 {
@@ -92,7 +96,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -177,7 +180,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -233,22 +235,22 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   background-color: #3b3b3b;
 }
 
-.emotion-19 {
+.emotion-20 {
   max-height: 500px;
   overflow-y: auto;
 }
 
-.emotion-18 {
+.emotion-19 {
   padding: 16px;
 }
 
-.emotion-17 {
+.emotion-18 {
   padding-top: 8px;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.emotion-15 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -257,7 +259,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   border-radius: 2px;
 }
 
-.emotion-14 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -277,7 +279,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -298,30 +299,30 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   color: #ffffff;
 }
 
-.emotion-14:hover {
+.emotion-15:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-14:hover,
-.emotion-14.focus-visible:focus {
+.emotion-15:hover,
+.emotion-15.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-14:hover svg,
-.emotion-14.focus-visible:focus svg {
+.emotion-15:hover svg,
+.emotion-15.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-10 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -332,11 +333,11 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   align-items: center;
 }
 
-.emotion-9 {
+.emotion-10 {
   padding-left: 4px;
 }
 
-.emotion-11 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -356,7 +357,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -377,99 +377,105 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   color: #808080;
 }
 
-.emotion-11:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11:hover,
-.emotion-11.focus-visible:focus {
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-11:hover svg,
-.emotion-11.focus-visible:focus svg {
+.emotion-12:hover svg,
+.emotion-12.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-16 {
+.emotion-17 {
   color: #808080;
   text-align: center;
   padding-top: 8px;
 }
 
 <details
-  className="emotion-20"
+  className="emotion-21"
   onToggle={[Function]}
   open={true}
 >
   <summary
     aria-label="location.point"
-    className="emotion-8"
+    className="emotion-9"
   >
-    <svg
-      className="emotion-0"
-      data-file-name="chevron.svg"
-      height={20}
-    />
-    <span
-      className="emotion-1"
+    <div
+      className="emotion-8"
     >
       <svg
-        color="#73b61c"
-        data-file-name="missing.svg"
+        className="emotion-0"
+        data-file-name="chevron.svg"
         height={20}
       />
-    </span>
-    <span
-      className="emotion-2"
-    >
-      location.point
-    </span>
-    <div
-      className="emotion-7"
-    >
-      <button
-        aria-label="Disable Filter"
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
+      <span
+        className="emotion-1"
       >
         <svg
-          className="emotion-3"
-          color="#808080"
-          data-file-name="hidden.svg"
+          color="#73b61c"
+          data-file-name="missing.svg"
           height={20}
         />
-      </button>
-      <button
-        aria-label="Delete Filter"
-        className="emotion-6"
-        onClick={[Function]}
-        type="button"
+      </span>
+      <span
+        className="emotion-2"
       >
-        <svg
-          className="emotion-3"
-          color="#808080"
-          data-file-name="cross.svg"
-          height={20}
-        />
-      </button>
+        location.point
+      </span>
+      <div
+        className="emotion-7"
+      >
+        <button
+          aria-label="Disable Filter"
+          className="emotion-4"
+          onClick={[Function]}
+          title="Disable Filter"
+          type="button"
+        >
+          <svg
+            className="emotion-3"
+            color="#808080"
+            data-file-name="hidden.svg"
+            height={20}
+          />
+        </button>
+        <button
+          aria-label="Delete Filter"
+          className="emotion-6"
+          onClick={[Function]}
+          title="Delete Filter"
+          type="button"
+        >
+          <svg
+            className="emotion-3"
+            color="#808080"
+            data-file-name="cross.svg"
+            height={20}
+          />
+        </button>
+      </div>
     </div>
   </summary>
   <div
-    className="emotion-19"
+    className="emotion-20"
   >
     <div
-      className="emotion-18"
+      className="emotion-19"
     >
       <FilterReset
         assetId=""
@@ -499,26 +505,26 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
         projectId="76917058-b147-4556-987a-0a0f11e46d9b"
       />
       <div
-        className="emotion-17"
+        className="emotion-18"
       >
         <div
-          className="emotion-15"
+          className="emotion-16"
         >
           <button
             aria-label="Exists"
-            className="emotion-11"
+            className="emotion-12"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-10"
+              className="emotion-11"
             >
               <svg
                 data-file-name="exists.svg"
                 height={20}
               />
               <div
-                className="emotion-9"
+                className="emotion-10"
               >
                 Exists
               </div>
@@ -526,19 +532,19 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
           </button>
           <button
             aria-label="Missing"
-            className="emotion-14"
+            className="emotion-15"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-10"
+              className="emotion-11"
             >
               <svg
                 data-file-name="missing.svg"
                 height={20}
               />
               <div
-                className="emotion-9"
+                className="emotion-10"
               >
                 Missing
               </div>
@@ -546,7 +552,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
           </button>
         </div>
         <div
-          className="emotion-16"
+          className="emotion-17"
         >
           <span>
             Show assets 
@@ -565,14 +571,29 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 `;
 
 exports[`<FilterExists /> should select "Missing" 1`] = `
-.emotion-20 {
+.emotion-21 {
   border-radius: 2px;
   background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-20:hover svg {
+.emotion-21:hover summary svg {
   opacity: 1;
+}
+
+.emotion-9 {
+  list-style-type: none;
+  padding: 8px;
+  background-color: #252525;
+}
+
+.emotion-9::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-9:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
 }
 
 .emotion-8 {
@@ -584,17 +605,6 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 8px;
-  background-color: #252525;
-}
-
-.emotion-8::-webkit-details-marker {
-  display: none;
-}
-
-.emotion-8:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
 }
 
 .emotion-0 {
@@ -656,7 +666,6 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -741,7 +750,6 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -797,22 +805,22 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   background-color: #3b3b3b;
 }
 
-.emotion-19 {
+.emotion-20 {
   max-height: 500px;
   overflow-y: auto;
 }
 
-.emotion-18 {
+.emotion-19 {
   padding: 16px;
 }
 
-.emotion-17 {
+.emotion-18 {
   padding-top: 8px;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.emotion-15 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -821,7 +829,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   border-radius: 2px;
 }
 
-.emotion-11 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -841,7 +849,6 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -862,30 +869,30 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   color: #ffffff;
 }
 
-.emotion-11:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11:hover,
-.emotion-11.focus-visible:focus {
+.emotion-12:hover,
+.emotion-12.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-11:hover svg,
-.emotion-11.focus-visible:focus svg {
+.emotion-12:hover svg,
+.emotion-12.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-10 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -896,11 +903,11 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   align-items: center;
 }
 
-.emotion-9 {
+.emotion-10 {
   padding-left: 4px;
 }
 
-.emotion-14 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -920,7 +927,6 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -941,99 +947,105 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   color: #808080;
 }
 
-.emotion-14:hover {
+.emotion-15:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-14:hover,
-.emotion-14.focus-visible:focus {
+.emotion-15:hover,
+.emotion-15.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-14:hover svg,
-.emotion-14.focus-visible:focus svg {
+.emotion-15:hover svg,
+.emotion-15.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-16 {
+.emotion-17 {
   color: #808080;
   text-align: center;
   padding-top: 8px;
 }
 
 <details
-  className="emotion-20"
+  className="emotion-21"
   onToggle={[Function]}
   open={true}
 >
   <summary
     aria-label="location.point"
-    className="emotion-8"
+    className="emotion-9"
   >
-    <svg
-      className="emotion-0"
-      data-file-name="chevron.svg"
-      height={20}
-    />
-    <span
-      className="emotion-1"
+    <div
+      className="emotion-8"
     >
       <svg
-        color="#73b61c"
-        data-file-name="exists.svg"
+        className="emotion-0"
+        data-file-name="chevron.svg"
         height={20}
       />
-    </span>
-    <span
-      className="emotion-2"
-    >
-      location.point
-    </span>
-    <div
-      className="emotion-7"
-    >
-      <button
-        aria-label="Disable Filter"
-        className="emotion-4"
-        onClick={[Function]}
-        type="button"
+      <span
+        className="emotion-1"
       >
         <svg
-          className="emotion-3"
-          color="#808080"
-          data-file-name="hidden.svg"
+          color="#73b61c"
+          data-file-name="exists.svg"
           height={20}
         />
-      </button>
-      <button
-        aria-label="Delete Filter"
-        className="emotion-6"
-        onClick={[Function]}
-        type="button"
+      </span>
+      <span
+        className="emotion-2"
       >
-        <svg
-          className="emotion-3"
-          color="#808080"
-          data-file-name="cross.svg"
-          height={20}
-        />
-      </button>
+        location.point
+      </span>
+      <div
+        className="emotion-7"
+      >
+        <button
+          aria-label="Disable Filter"
+          className="emotion-4"
+          onClick={[Function]}
+          title="Disable Filter"
+          type="button"
+        >
+          <svg
+            className="emotion-3"
+            color="#808080"
+            data-file-name="hidden.svg"
+            height={20}
+          />
+        </button>
+        <button
+          aria-label="Delete Filter"
+          className="emotion-6"
+          onClick={[Function]}
+          title="Delete Filter"
+          type="button"
+        >
+          <svg
+            className="emotion-3"
+            color="#808080"
+            data-file-name="cross.svg"
+            height={20}
+          />
+        </button>
+      </div>
     </div>
   </summary>
   <div
-    className="emotion-19"
+    className="emotion-20"
   >
     <div
-      className="emotion-18"
+      className="emotion-19"
     >
       <FilterReset
         assetId=""
@@ -1063,26 +1075,26 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
         projectId="76917058-b147-4556-987a-0a0f11e46d9b"
       />
       <div
-        className="emotion-17"
+        className="emotion-18"
       >
         <div
-          className="emotion-15"
+          className="emotion-16"
         >
           <button
             aria-label="Exists"
-            className="emotion-11"
+            className="emotion-12"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-10"
+              className="emotion-11"
             >
               <svg
                 data-file-name="exists.svg"
                 height={20}
               />
               <div
-                className="emotion-9"
+                className="emotion-10"
               >
                 Exists
               </div>
@@ -1090,19 +1102,19 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
           </button>
           <button
             aria-label="Missing"
-            className="emotion-14"
+            className="emotion-15"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-10"
+              className="emotion-11"
             >
               <svg
                 data-file-name="missing.svg"
                 height={20}
               />
               <div
-                className="emotion-9"
+                className="emotion-10"
               >
                 Missing
               </div>
@@ -1110,7 +1122,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
           </button>
         </div>
         <div
-          className="emotion-16"
+          className="emotion-17"
         >
           <span>
             Show assets with the field "
