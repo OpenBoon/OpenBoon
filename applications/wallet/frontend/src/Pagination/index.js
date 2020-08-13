@@ -9,7 +9,7 @@ const Pagination = ({ currentPage, totalPages }) => {
   if (totalPages === 1) return null
 
   return (
-    <div css={{ display: 'flex', justifyContent: 'flex-end' }}>
+    <div css={{ display: 'flex', justifyContent: 'flex-end', flexShrink: 0 }}>
       <PaginationLink
         currentPage={currentPage}
         totalPages={totalPages}

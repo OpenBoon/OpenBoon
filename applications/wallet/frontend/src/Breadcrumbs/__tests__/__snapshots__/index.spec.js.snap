@@ -1,6 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Breadcrumbs /> should render properly 1`] = `
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
 .emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -35,7 +45,7 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-2"
+  className="emotion-3"
 >
   <div
     className="emotion-2"

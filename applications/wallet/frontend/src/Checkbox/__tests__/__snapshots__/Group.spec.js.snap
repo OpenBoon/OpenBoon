@@ -54,7 +54,6 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
 }
 
 .emotion-3 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -270,7 +269,6 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
 }
 
 .emotion-3 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;

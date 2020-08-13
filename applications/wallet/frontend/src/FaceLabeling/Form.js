@@ -106,7 +106,7 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
           })}
         </div>
 
-        <div css={{ padding: spacing.base, display: 'flex' }}>
+        <div css={{ padding: spacing.base, display: 'flex', flexShrink: 0 }}>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
             onClick={() => {
