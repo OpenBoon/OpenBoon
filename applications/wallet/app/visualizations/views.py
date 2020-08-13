@@ -59,11 +59,23 @@ class VisualizationViewSet(CamelCaseRendererMixin,
                     "type": "facet",
                     "id": "$uniqueIdentifier",
                     "attribute": "$attribute.dot.path",
-                    "options": [
+                    "fieldType": "facet"       # or "labelConfidence"
+                    "options": {
                         "order": "desc",       # Sort order, desc or asc
                         "size": 10,            # Limit # of facets/buckets returned
                         "minimum_count": 2     # Min. # of hits a facet needs to be returned
-                    ]
+                    }
+                }
+
+            Histogram:
+                {
+                    "type": "histogram",
+                    "id": "$uniqueIdentifier",
+                    "attribute": "$attribute.dot.path",
+                    "fieldType": "range"        # or "labelConfidence"
+                    "options": {
+                        "size": 10              # Default size is 10 buckets
+                    }
                 }
 
         Args:
