@@ -1,3 +1,5 @@
+import os
+
 from django.http import Http404
 from rest_framework import status
 from rest_framework.decorators import action
@@ -7,7 +9,7 @@ from zmlp.entity.model import LabelScope
 
 from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 AddLabelsSerializer, UpdateLabelsSerializer,
-                                RemoveLabelsSerializer)
+                                RemoveLabelsSerializer, RenameLabelSerializer)
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
@@ -109,7 +111,7 @@ class ModelViewSet(BaseProjectViewSet):
         current model.
 
         Expected Body:
-            ```
+
             {
                 "add_labels": [
                     {"assetId": $assetId,
@@ -121,6 +123,7 @@ class ModelViewSet(BaseProjectViewSet):
                     ...
                 ]
             }
+
         """
         serializer = AddLabelsSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -188,6 +191,24 @@ class ModelViewSet(BaseProjectViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': msg})
 
         return Response(status=status.HTTP_200_OK, data={})
+
+    @action(methods=['put'], detail=True)
+    def rename_label(self, request, project_pk, pk):
+        """Allows renaming an existing label. Requires the original label name and a new
+        label name.
+
+        Expected Body:
+
+            {
+                "label": "Dog",
+                "newLabel": "Cat"
+            }
+
+        """
+        path = os.path.join(self.zmlp_root_api_path, pk, 'labels')
+        serializer = RenameLabelSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(request.client.put(path, serializer.validated_data))
 
     def _get_assets_and_labels(self, app, model, data):
         """Get a list of Label objects from request data."""
