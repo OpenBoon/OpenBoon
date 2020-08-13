@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types'
 
 import { useLocalStorageState } from '../LocalStorage/helpers'
@@ -75,7 +73,7 @@ const Accordion = ({
   return (
     <details
       css={{
-        ':hover': { svg: { opacity: 1 } },
+        ':hover': { summary: { svg: { opacity: 1 } } },
         borderRadius: constants.borderRadius.small,
         backgroundColor: STYLES[variant].BACKGROUND_COLOR,
         ...STYLES[variant].details,
@@ -86,8 +84,7 @@ const Accordion = ({
       <summary
         aria-label={title}
         css={{
-          display: 'flex',
-          alignItems: 'center',
+          listStyleType: 'none',
           '::-webkit-details-marker': { display: 'none' },
           ':hover': {
             cursor: 'pointer',
@@ -97,41 +94,43 @@ const Accordion = ({
           backgroundColor: STYLES[variant].SUMMARY_BACKGROUND_COLOR,
         }}
       >
-        <ChevronSvg
-          height={constants.icons.regular}
-          css={{
-            color: colors.structure.steel,
-            transform: isOpen ? 'rotate(-180deg)' : '',
-          }}
-        />
-
-        {!!icon && (
-          <span
+        <div css={{ display: 'flex', alignItems: 'center' }}>
+          <ChevronSvg
+            height={constants.icons.regular}
             css={{
-              display: 'flex',
-              paddingLeft: STYLES[variant].PADDING,
+              color: colors.structure.steel,
+              transform: isOpen ? 'rotate(-180deg)' : '',
             }}
-          >
-            {icon}
-          </span>
-        )}
+          />
 
-        {!hideTitle && (
-          <span
-            css={{
-              flex: 1,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              marginTop: -spacing.mini,
-              paddingLeft: STYLES[variant].PADDING,
-              ...STYLES[variant].title,
-            }}
-          >
-            {title}
-          </span>
-        )}
+          {!!icon && (
+            <span
+              css={{
+                display: 'flex',
+                paddingLeft: STYLES[variant].PADDING,
+              }}
+            >
+              {icon}
+            </span>
+          )}
 
-        {actions}
+          {!hideTitle && (
+            <span
+              css={{
+                flex: 1,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                marginTop: -spacing.mini,
+                paddingLeft: STYLES[variant].PADDING,
+                ...STYLES[variant].title,
+              }}
+            >
+              {title}
+            </span>
+          )}
+
+          {actions}
+        </div>
       </summary>
 
       <div

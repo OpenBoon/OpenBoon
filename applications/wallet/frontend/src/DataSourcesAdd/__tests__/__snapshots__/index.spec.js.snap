@@ -19,6 +19,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -120,7 +123,7 @@ Array [
     </ul>
   </nav>,
   "",
-  .emotion-138 {
+  .emotion-140 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -375,7 +378,6 @@ Array [
 }
 
 .emotion-31 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -458,17 +460,32 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-67 {
+.emotion-68 {
   padding-top: 16px;
 }
 
-.emotion-66 {
+.emotion-67 {
   border-radius: 2px;
   background-color: #3b3b3b;
 }
 
-.emotion-66:hover svg {
+.emotion-67:hover summary svg {
   opacity: 1;
+}
+
+.emotion-63 {
+  list-style-type: none;
+  padding: 16px;
+  background-color: #3b3b3b;
+}
+
+.emotion-63::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-63:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
 }
 
 .emotion-62 {
@@ -480,17 +497,6 @@ Array [
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 16px;
-  background-color: #3b3b3b;
-}
-
-.emotion-62::-webkit-details-marker {
-  display: none;
-}
-
-.emotion-62:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
 }
 
 .emotion-60 {
@@ -513,20 +519,20 @@ Array [
   font-weight: 700;
 }
 
-.emotion-65 {
+.emotion-66 {
   border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
 
-.emotion-63 {
+.emotion-64 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
   padding-bottom: 16px;
 }
 
-.emotion-64 {
+.emotion-65 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -538,7 +544,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-64 li {
+.emotion-65 li {
   width: 33%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -551,23 +557,23 @@ Array [
   padding-right: 40px;
 }
 
-.emotion-64 svg {
+.emotion-65 svg {
   color: #73b61c;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
 }
 
-.emotion-64 span {
+.emotion-65 span {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-134 {
+.emotion-136 {
   padding-top: 16px;
 }
 
-.emotion-69 {
+.emotion-70 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -575,7 +581,7 @@ Array [
   padding-left: 16px;
 }
 
-.emotion-71 {
+.emotion-73 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -583,7 +589,7 @@ Array [
   max-width: 600px;
 }
 
-.emotion-99 {
+.emotion-101 {
   border: none;
   padding: 0;
   margin: 0;
@@ -591,7 +597,7 @@ Array [
   padding-bottom: 32px;
 }
 
-.emotion-72 {
+.emotion-74 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -600,76 +606,76 @@ Array [
   font-weight: 500;
 }
 
-.emotion-73 {
+.emotion-75 {
   clear: both;
 }
 
-.emotion-98 {
+.emotion-100 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-98 th,
-.emotion-98 td {
+.emotion-100 th,
+.emotion-100 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-98 th:first-of-type,
-.emotion-98 td:first-of-type {
+.emotion-100 th:first-of-type,
+.emotion-100 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-98 th:nth-of-type(2),
-.emotion-98 td:nth-of-type(2) {
+.emotion-100 th:nth-of-type(2),
+.emotion-100 td:nth-of-type(2) {
   min-width: 300px;
 }
 
-.emotion-98 th:nth-of-type(3),
-.emotion-98 td:nth-of-type(3) {
+.emotion-100 th:nth-of-type(3),
+.emotion-100 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-98 th {
+.emotion-100 th {
   color: #b3b3b3;
   font-weight: 500;
 }
 
-.emotion-98 td {
+.emotion-100 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-98 td:first-of-type {
+.emotion-100 td:first-of-type {
   border: none;
 }
 
-.emotion-98 td:nth-of-type(2) {
+.emotion-100 td:nth-of-type(2) {
   font-family: Roboto Mono;
 }
 
-.emotion-98 tr:hover td {
+.emotion-100 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-98 tr:hover + tr td {
+.emotion-100 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-98 tr:last-of-type td {
+.emotion-100 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-98 tr:last-of-type td:first-of-type {
+.emotion-100 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-79 {
+.emotion-81 {
   cursor: pointer;
 }
 
-.emotion-78 {
+.emotion-80 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -678,7 +684,7 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-137 {
+.emotion-139 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -687,12 +693,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-137 button,
-.emotion-137 a {
+.emotion-139 button,
+.emotion-139 a {
   margin-right: 16px;
 }
 
-.emotion-135 {
+.emotion-137 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -712,7 +718,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -724,30 +729,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-135:hover {
+.emotion-137:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-135[aria-disabled=true] {
+.emotion-137[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-135,
-.emotion-135:hover,
-.emotion-135:visited {
+.emotion-137,
+.emotion-137:hover,
+.emotion-137:visited {
   background-color: #808080;
 }
 
-.emotion-135:hover {
+.emotion-137:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-135[aria-disabled=true] {
+.emotion-137[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-136 {
+.emotion-138 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -767,7 +772,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -779,32 +783,32 @@ Array [
   background-color: transparent;
 }
 
-.emotion-136:hover {
+.emotion-138:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-136[aria-disabled=true] {
+.emotion-138[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-136,
-.emotion-136:hover,
-.emotion-136:visited {
+.emotion-138,
+.emotion-138:hover,
+.emotion-138:visited {
   background-color: #73b61c;
 }
 
-.emotion-136:hover {
+.emotion-138:hover {
   background-color: #96c955;
 }
 
-.emotion-136[aria-disabled=true] {
+.emotion-138[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-138"
+    className="emotion-140"
     method="post"
     onSubmit={[Function]}
   >
@@ -1158,38 +1162,42 @@ Array [
       Choose the type of analysis you would like performed on your data set:
     </p>
     <div
-      className="emotion-67"
+      className="emotion-68"
     >
       <details
-        className="emotion-66"
+        className="emotion-67"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="Zorroa Automatic Analysis"
-          className="emotion-62"
+          className="emotion-63"
         >
-          <svg
-            className="emotion-60"
-            data-file-name="chevron.svg"
-            height={20}
-          />
-          <span
-            className="emotion-61"
+          <div
+            className="emotion-62"
           >
-            Zorroa Automatic Analysis
-          </span>
+            <svg
+              className="emotion-60"
+              data-file-name="chevron.svg"
+              height={20}
+            />
+            <span
+              className="emotion-61"
+            >
+              Zorroa Automatic Analysis
+            </span>
+          </div>
         </summary>
         <div
-          className="emotion-65"
+          className="emotion-66"
         >
           <p
-            className="emotion-63"
+            className="emotion-64"
           >
             The following basic analysis is applied to all data sets.
           </p>
           <ul
-            className="emotion-64"
+            className="emotion-65"
           >
             <li>
               <svg
@@ -1232,54 +1240,58 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-134"
+      className="emotion-136"
     >
       <details
-        className="emotion-66"
+        className="emotion-67"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="zorroa"
-          className="emotion-62"
+          className="emotion-63"
         >
-          <svg
-            className="emotion-60"
-            data-file-name="chevron.svg"
-            height={20}
-          />
-          <span
-            className="emotion-69"
+          <div
+            className="emotion-62"
           >
-            <img
-              alt="zorroa"
-              height={32}
-              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+            <svg
+              className="emotion-60"
+              data-file-name="chevron.svg"
+              height={20}
             />
-          </span>
+            <span
+              className="emotion-70"
+            >
+              <img
+                alt="zorroa"
+                height={32}
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+              />
+            </span>
+          </div>
         </summary>
         <div
-          className="emotion-65"
+          className="emotion-66"
         >
           <p
-            className="emotion-71"
+            className="emotion-73"
           >
             These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
           </p>
           <fieldset
-            className="emotion-99"
+            className="emotion-101"
           >
             <legend
-              className="emotion-72"
+              className="emotion-74"
             >
               Visual Intelligence
             </legend>
             <div
-              className="emotion-73"
+              className="emotion-75"
             />
             <table
               cellSpacing="0"
-              className="emotion-98"
+              className="emotion-100"
             >
               <thead>
                 <tr>
@@ -1296,12 +1308,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-79"
+                  className="emotion-81"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-78"
+                      className="emotion-80"
                     >
                       <div
                         className="emotion-34"
@@ -1340,12 +1352,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-79"
+                  className="emotion-81"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-78"
+                      className="emotion-80"
                     >
                       <div
                         className="emotion-34"
@@ -1384,12 +1396,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-79"
+                  className="emotion-81"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-78"
+                      className="emotion-80"
                     >
                       <div
                         className="emotion-34"
@@ -1428,12 +1440,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-79"
+                  className="emotion-81"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-78"
+                      className="emotion-80"
                     >
                       <div
                         className="emotion-34"
@@ -1475,19 +1487,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-99"
+            className="emotion-101"
           >
             <legend
-              className="emotion-72"
+              className="emotion-74"
             >
               Zorroa Timeline Extraction
             </legend>
             <div
-              className="emotion-73"
+              className="emotion-75"
             />
             <table
               cellSpacing="0"
-              className="emotion-98"
+              className="emotion-100"
             >
               <thead>
                 <tr>
@@ -1504,12 +1516,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-79"
+                  className="emotion-81"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-78"
+                      className="emotion-80"
                     >
                       <div
                         className="emotion-34"
@@ -1548,12 +1560,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-79"
+                  className="emotion-81"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-78"
+                      className="emotion-80"
                     >
                       <div
                         className="emotion-34"
@@ -1592,12 +1604,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-79"
+                  className="emotion-81"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-78"
+                      className="emotion-80"
                     >
                       <div
                         className="emotion-34"
@@ -1639,19 +1651,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-99"
+            className="emotion-101"
           >
             <legend
-              className="emotion-72"
+              className="emotion-74"
             >
               Zorroa Visual Intelligence
             </legend>
             <div
-              className="emotion-73"
+              className="emotion-75"
             />
             <table
               cellSpacing="0"
-              className="emotion-98"
+              className="emotion-100"
             >
               <thead>
                 <tr>
@@ -1668,12 +1680,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-79"
+                  className="emotion-81"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-78"
+                      className="emotion-80"
                     >
                       <div
                         className="emotion-34"
@@ -1718,10 +1730,10 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-137"
+      className="emotion-139"
     >
       <a
-        className="emotion-135"
+        className="emotion-137"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -1730,7 +1742,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-136"
+        className="emotion-138"
         onClick={[Function]}
         type="submit"
       >
@@ -1760,6 +1772,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -1861,7 +1876,7 @@ Array [
     </ul>
   </nav>,
   "",
-  .emotion-156 {
+  .emotion-158 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2116,7 +2131,6 @@ Array [
 }
 
 .emotion-49 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -2199,17 +2213,32 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-85 {
+.emotion-86 {
   padding-top: 16px;
 }
 
-.emotion-84 {
+.emotion-85 {
   border-radius: 2px;
   background-color: #3b3b3b;
 }
 
-.emotion-84:hover svg {
+.emotion-85:hover summary svg {
   opacity: 1;
+}
+
+.emotion-81 {
+  list-style-type: none;
+  padding: 16px;
+  background-color: #3b3b3b;
+}
+
+.emotion-81::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-81:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
 }
 
 .emotion-80 {
@@ -2221,17 +2250,6 @@ Array [
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 16px;
-  background-color: #3b3b3b;
-}
-
-.emotion-80::-webkit-details-marker {
-  display: none;
-}
-
-.emotion-80:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
 }
 
 .emotion-78 {
@@ -2254,20 +2272,20 @@ Array [
   font-weight: 700;
 }
 
-.emotion-83 {
+.emotion-84 {
   border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
 
-.emotion-81 {
+.emotion-82 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
   padding-bottom: 16px;
 }
 
-.emotion-82 {
+.emotion-83 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2279,7 +2297,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-82 li {
+.emotion-83 li {
   width: 33%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2292,23 +2310,23 @@ Array [
   padding-right: 40px;
 }
 
-.emotion-82 svg {
+.emotion-83 svg {
   color: #73b61c;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
 }
 
-.emotion-82 span {
+.emotion-83 span {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-152 {
+.emotion-154 {
   padding-top: 16px;
 }
 
-.emotion-87 {
+.emotion-88 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2316,7 +2334,7 @@ Array [
   padding-left: 16px;
 }
 
-.emotion-89 {
+.emotion-91 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -2324,7 +2342,7 @@ Array [
   max-width: 600px;
 }
 
-.emotion-117 {
+.emotion-119 {
   border: none;
   padding: 0;
   margin: 0;
@@ -2332,7 +2350,7 @@ Array [
   padding-bottom: 32px;
 }
 
-.emotion-90 {
+.emotion-92 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -2341,76 +2359,76 @@ Array [
   font-weight: 500;
 }
 
-.emotion-91 {
+.emotion-93 {
   clear: both;
 }
 
-.emotion-116 {
+.emotion-118 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-116 th,
-.emotion-116 td {
+.emotion-118 th,
+.emotion-118 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-116 th:first-of-type,
-.emotion-116 td:first-of-type {
+.emotion-118 th:first-of-type,
+.emotion-118 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-116 th:nth-of-type(2),
-.emotion-116 td:nth-of-type(2) {
+.emotion-118 th:nth-of-type(2),
+.emotion-118 td:nth-of-type(2) {
   min-width: 300px;
 }
 
-.emotion-116 th:nth-of-type(3),
-.emotion-116 td:nth-of-type(3) {
+.emotion-118 th:nth-of-type(3),
+.emotion-118 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-116 th {
+.emotion-118 th {
   color: #b3b3b3;
   font-weight: 500;
 }
 
-.emotion-116 td {
+.emotion-118 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-116 td:first-of-type {
+.emotion-118 td:first-of-type {
   border: none;
 }
 
-.emotion-116 td:nth-of-type(2) {
+.emotion-118 td:nth-of-type(2) {
   font-family: Roboto Mono;
 }
 
-.emotion-116 tr:hover td {
+.emotion-118 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-116 tr:hover + tr td {
+.emotion-118 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-116 tr:last-of-type td {
+.emotion-118 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-116 tr:last-of-type td:first-of-type {
+.emotion-118 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-97 {
+.emotion-99 {
   cursor: pointer;
 }
 
-.emotion-96 {
+.emotion-98 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -2419,7 +2437,7 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-155 {
+.emotion-157 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2428,12 +2446,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-155 button,
-.emotion-155 a {
+.emotion-157 button,
+.emotion-157 a {
   margin-right: 16px;
 }
 
-.emotion-153 {
+.emotion-155 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2453,7 +2471,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -2465,30 +2482,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-153:hover {
+.emotion-155:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-153[aria-disabled=true] {
+.emotion-155[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-153,
-.emotion-153:hover,
-.emotion-153:visited {
+.emotion-155,
+.emotion-155:hover,
+.emotion-155:visited {
   background-color: #808080;
 }
 
-.emotion-153:hover {
+.emotion-155:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-153[aria-disabled=true] {
+.emotion-155[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-154 {
+.emotion-156 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2508,7 +2525,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -2520,26 +2536,26 @@ Array [
   background-color: transparent;
 }
 
-.emotion-154:hover {
+.emotion-156:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-154[aria-disabled=true] {
+.emotion-156[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-154,
-.emotion-154:hover,
-.emotion-154:visited {
+.emotion-156,
+.emotion-156:hover,
+.emotion-156:visited {
   background-color: #73b61c;
 }
 
-.emotion-154:hover {
+.emotion-156:hover {
   background-color: #96c955;
 }
 
-.emotion-154[aria-disabled=true] {
+.emotion-156[aria-disabled=true] {
   background-color: #808080;
 }
 
@@ -2550,7 +2566,7 @@ Array [
 
 <form
     action=""
-    className="emotion-156"
+    className="emotion-158"
     method="post"
     onSubmit={[Function]}
   >
@@ -3002,38 +3018,42 @@ Array [
       Choose the type of analysis you would like performed on your data set:
     </p>
     <div
-      className="emotion-85"
+      className="emotion-86"
     >
       <details
-        className="emotion-84"
+        className="emotion-85"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="Zorroa Automatic Analysis"
-          className="emotion-80"
+          className="emotion-81"
         >
-          <svg
-            className="emotion-78"
-            data-file-name="chevron.svg"
-            height={20}
-          />
-          <span
-            className="emotion-79"
+          <div
+            className="emotion-80"
           >
-            Zorroa Automatic Analysis
-          </span>
+            <svg
+              className="emotion-78"
+              data-file-name="chevron.svg"
+              height={20}
+            />
+            <span
+              className="emotion-79"
+            >
+              Zorroa Automatic Analysis
+            </span>
+          </div>
         </summary>
         <div
-          className="emotion-83"
+          className="emotion-84"
         >
           <p
-            className="emotion-81"
+            className="emotion-82"
           >
             The following basic analysis is applied to all data sets.
           </p>
           <ul
-            className="emotion-82"
+            className="emotion-83"
           >
             <li>
               <svg
@@ -3076,54 +3096,58 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-152"
+      className="emotion-154"
     >
       <details
-        className="emotion-84"
+        className="emotion-85"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="zorroa"
-          className="emotion-80"
+          className="emotion-81"
         >
-          <svg
-            className="emotion-78"
-            data-file-name="chevron.svg"
-            height={20}
-          />
-          <span
-            className="emotion-87"
+          <div
+            className="emotion-80"
           >
-            <img
-              alt="zorroa"
-              height={32}
-              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+            <svg
+              className="emotion-78"
+              data-file-name="chevron.svg"
+              height={20}
             />
-          </span>
+            <span
+              className="emotion-88"
+            >
+              <img
+                alt="zorroa"
+                height={32}
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+              />
+            </span>
+          </div>
         </summary>
         <div
-          className="emotion-83"
+          className="emotion-84"
         >
           <p
-            className="emotion-89"
+            className="emotion-91"
           >
             These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
           </p>
           <fieldset
-            className="emotion-117"
+            className="emotion-119"
           >
             <legend
-              className="emotion-90"
+              className="emotion-92"
             >
               Visual Intelligence
             </legend>
             <div
-              className="emotion-91"
+              className="emotion-93"
             />
             <table
               cellSpacing="0"
-              className="emotion-116"
+              className="emotion-118"
             >
               <thead>
                 <tr>
@@ -3140,12 +3164,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-97"
+                  className="emotion-99"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-96"
+                      className="emotion-98"
                     >
                       <div
                         className="emotion-52"
@@ -3184,12 +3208,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-97"
+                  className="emotion-99"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-96"
+                      className="emotion-98"
                     >
                       <div
                         className="emotion-52"
@@ -3228,12 +3252,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-97"
+                  className="emotion-99"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-96"
+                      className="emotion-98"
                     >
                       <div
                         className="emotion-52"
@@ -3272,12 +3296,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-97"
+                  className="emotion-99"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-96"
+                      className="emotion-98"
                     >
                       <div
                         className="emotion-52"
@@ -3319,19 +3343,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-117"
+            className="emotion-119"
           >
             <legend
-              className="emotion-90"
+              className="emotion-92"
             >
               Zorroa Timeline Extraction
             </legend>
             <div
-              className="emotion-91"
+              className="emotion-93"
             />
             <table
               cellSpacing="0"
-              className="emotion-116"
+              className="emotion-118"
             >
               <thead>
                 <tr>
@@ -3348,12 +3372,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-97"
+                  className="emotion-99"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-96"
+                      className="emotion-98"
                     >
                       <div
                         className="emotion-52"
@@ -3392,12 +3416,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-97"
+                  className="emotion-99"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-96"
+                      className="emotion-98"
                     >
                       <div
                         className="emotion-52"
@@ -3436,12 +3460,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-97"
+                  className="emotion-99"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-96"
+                      className="emotion-98"
                     >
                       <div
                         className="emotion-52"
@@ -3483,19 +3507,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-117"
+            className="emotion-119"
           >
             <legend
-              className="emotion-90"
+              className="emotion-92"
             >
               Zorroa Visual Intelligence
             </legend>
             <div
-              className="emotion-91"
+              className="emotion-93"
             />
             <table
               cellSpacing="0"
-              className="emotion-116"
+              className="emotion-118"
             >
               <thead>
                 <tr>
@@ -3512,12 +3536,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-97"
+                  className="emotion-99"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-96"
+                      className="emotion-98"
                     >
                       <div
                         className="emotion-52"
@@ -3562,10 +3586,10 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-155"
+      className="emotion-157"
     >
       <a
-        className="emotion-153"
+        className="emotion-155"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -3574,7 +3598,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-154"
+        className="emotion-156"
         onClick={[Function]}
         type="submit"
       >
@@ -3604,6 +3628,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -3705,7 +3732,7 @@ Array [
     </ul>
   </nav>,
   "",
-  .emotion-150 {
+  .emotion-152 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3960,7 +3987,6 @@ Array [
 }
 
 .emotion-43 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -4043,17 +4069,32 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-79 {
+.emotion-80 {
   padding-top: 16px;
 }
 
-.emotion-78 {
+.emotion-79 {
   border-radius: 2px;
   background-color: #3b3b3b;
 }
 
-.emotion-78:hover svg {
+.emotion-79:hover summary svg {
   opacity: 1;
+}
+
+.emotion-75 {
+  list-style-type: none;
+  padding: 16px;
+  background-color: #3b3b3b;
+}
+
+.emotion-75::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-75:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
 }
 
 .emotion-74 {
@@ -4065,17 +4106,6 @@ Array [
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 16px;
-  background-color: #3b3b3b;
-}
-
-.emotion-74::-webkit-details-marker {
-  display: none;
-}
-
-.emotion-74:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
 }
 
 .emotion-72 {
@@ -4098,20 +4128,20 @@ Array [
   font-weight: 700;
 }
 
-.emotion-77 {
+.emotion-78 {
   border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
 
-.emotion-75 {
+.emotion-76 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
   padding-bottom: 16px;
 }
 
-.emotion-76 {
+.emotion-77 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4123,7 +4153,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-76 li {
+.emotion-77 li {
   width: 33%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -4136,23 +4166,23 @@ Array [
   padding-right: 40px;
 }
 
-.emotion-76 svg {
+.emotion-77 svg {
   color: #73b61c;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
 }
 
-.emotion-76 span {
+.emotion-77 span {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-146 {
+.emotion-148 {
   padding-top: 16px;
 }
 
-.emotion-81 {
+.emotion-82 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4160,7 +4190,7 @@ Array [
   padding-left: 16px;
 }
 
-.emotion-83 {
+.emotion-85 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -4168,7 +4198,7 @@ Array [
   max-width: 600px;
 }
 
-.emotion-111 {
+.emotion-113 {
   border: none;
   padding: 0;
   margin: 0;
@@ -4176,7 +4206,7 @@ Array [
   padding-bottom: 32px;
 }
 
-.emotion-84 {
+.emotion-86 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -4185,76 +4215,76 @@ Array [
   font-weight: 500;
 }
 
-.emotion-85 {
+.emotion-87 {
   clear: both;
 }
 
-.emotion-110 {
+.emotion-112 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-110 th,
-.emotion-110 td {
+.emotion-112 th,
+.emotion-112 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-110 th:first-of-type,
-.emotion-110 td:first-of-type {
+.emotion-112 th:first-of-type,
+.emotion-112 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-110 th:nth-of-type(2),
-.emotion-110 td:nth-of-type(2) {
+.emotion-112 th:nth-of-type(2),
+.emotion-112 td:nth-of-type(2) {
   min-width: 300px;
 }
 
-.emotion-110 th:nth-of-type(3),
-.emotion-110 td:nth-of-type(3) {
+.emotion-112 th:nth-of-type(3),
+.emotion-112 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-110 th {
+.emotion-112 th {
   color: #b3b3b3;
   font-weight: 500;
 }
 
-.emotion-110 td {
+.emotion-112 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-110 td:first-of-type {
+.emotion-112 td:first-of-type {
   border: none;
 }
 
-.emotion-110 td:nth-of-type(2) {
+.emotion-112 td:nth-of-type(2) {
   font-family: Roboto Mono;
 }
 
-.emotion-110 tr:hover td {
+.emotion-112 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-110 tr:hover + tr td {
+.emotion-112 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-110 tr:last-of-type td {
+.emotion-112 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-110 tr:last-of-type td:first-of-type {
+.emotion-112 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-91 {
+.emotion-93 {
   cursor: pointer;
 }
 
-.emotion-90 {
+.emotion-92 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -4263,7 +4293,7 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-149 {
+.emotion-151 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4272,12 +4302,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-149 button,
-.emotion-149 a {
+.emotion-151 button,
+.emotion-151 a {
   margin-right: 16px;
 }
 
-.emotion-147 {
+.emotion-149 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -4297,7 +4327,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -4309,30 +4338,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-147:hover {
+.emotion-149:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-147[aria-disabled=true] {
+.emotion-149[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-147,
-.emotion-147:hover,
-.emotion-147:visited {
+.emotion-149,
+.emotion-149:hover,
+.emotion-149:visited {
   background-color: #808080;
 }
 
-.emotion-147:hover {
+.emotion-149:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-147[aria-disabled=true] {
+.emotion-149[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-148 {
+.emotion-150 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -4352,7 +4381,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -4364,26 +4392,26 @@ Array [
   background-color: transparent;
 }
 
-.emotion-148:hover {
+.emotion-150:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-148[aria-disabled=true] {
+.emotion-150[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-148,
-.emotion-148:hover,
-.emotion-148:visited {
+.emotion-150,
+.emotion-150:hover,
+.emotion-150:visited {
   background-color: #73b61c;
 }
 
-.emotion-148:hover {
+.emotion-150:hover {
   background-color: #96c955;
 }
 
-.emotion-148[aria-disabled=true] {
+.emotion-150[aria-disabled=true] {
   background-color: #808080;
 }
 
@@ -4394,7 +4422,7 @@ Array [
 
 <form
     action=""
-    className="emotion-150"
+    className="emotion-152"
     method="post"
     onSubmit={[Function]}
   >
@@ -4813,38 +4841,42 @@ Array [
       Choose the type of analysis you would like performed on your data set:
     </p>
     <div
-      className="emotion-79"
+      className="emotion-80"
     >
       <details
-        className="emotion-78"
+        className="emotion-79"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="Zorroa Automatic Analysis"
-          className="emotion-74"
+          className="emotion-75"
         >
-          <svg
-            className="emotion-72"
-            data-file-name="chevron.svg"
-            height={20}
-          />
-          <span
-            className="emotion-73"
+          <div
+            className="emotion-74"
           >
-            Zorroa Automatic Analysis
-          </span>
+            <svg
+              className="emotion-72"
+              data-file-name="chevron.svg"
+              height={20}
+            />
+            <span
+              className="emotion-73"
+            >
+              Zorroa Automatic Analysis
+            </span>
+          </div>
         </summary>
         <div
-          className="emotion-77"
+          className="emotion-78"
         >
           <p
-            className="emotion-75"
+            className="emotion-76"
           >
             The following basic analysis is applied to all data sets.
           </p>
           <ul
-            className="emotion-76"
+            className="emotion-77"
           >
             <li>
               <svg
@@ -4887,54 +4919,58 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-146"
+      className="emotion-148"
     >
       <details
-        className="emotion-78"
+        className="emotion-79"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="zorroa"
-          className="emotion-74"
+          className="emotion-75"
         >
-          <svg
-            className="emotion-72"
-            data-file-name="chevron.svg"
-            height={20}
-          />
-          <span
-            className="emotion-81"
+          <div
+            className="emotion-74"
           >
-            <img
-              alt="zorroa"
-              height={32}
-              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+            <svg
+              className="emotion-72"
+              data-file-name="chevron.svg"
+              height={20}
             />
-          </span>
+            <span
+              className="emotion-82"
+            >
+              <img
+                alt="zorroa"
+                height={32}
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+              />
+            </span>
+          </div>
         </summary>
         <div
-          className="emotion-77"
+          className="emotion-78"
         >
           <p
-            className="emotion-83"
+            className="emotion-85"
           >
             These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
           </p>
           <fieldset
-            className="emotion-111"
+            className="emotion-113"
           >
             <legend
-              className="emotion-84"
+              className="emotion-86"
             >
               Visual Intelligence
             </legend>
             <div
-              className="emotion-85"
+              className="emotion-87"
             />
             <table
               cellSpacing="0"
-              className="emotion-110"
+              className="emotion-112"
             >
               <thead>
                 <tr>
@@ -4951,12 +4987,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-91"
+                  className="emotion-93"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-90"
+                      className="emotion-92"
                     >
                       <div
                         className="emotion-46"
@@ -4995,12 +5031,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-91"
+                  className="emotion-93"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-90"
+                      className="emotion-92"
                     >
                       <div
                         className="emotion-46"
@@ -5039,12 +5075,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-91"
+                  className="emotion-93"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-90"
+                      className="emotion-92"
                     >
                       <div
                         className="emotion-46"
@@ -5083,12 +5119,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-91"
+                  className="emotion-93"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-90"
+                      className="emotion-92"
                     >
                       <div
                         className="emotion-46"
@@ -5130,19 +5166,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-111"
+            className="emotion-113"
           >
             <legend
-              className="emotion-84"
+              className="emotion-86"
             >
               Zorroa Timeline Extraction
             </legend>
             <div
-              className="emotion-85"
+              className="emotion-87"
             />
             <table
               cellSpacing="0"
-              className="emotion-110"
+              className="emotion-112"
             >
               <thead>
                 <tr>
@@ -5159,12 +5195,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-91"
+                  className="emotion-93"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-90"
+                      className="emotion-92"
                     >
                       <div
                         className="emotion-46"
@@ -5203,12 +5239,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-91"
+                  className="emotion-93"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-90"
+                      className="emotion-92"
                     >
                       <div
                         className="emotion-46"
@@ -5247,12 +5283,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-91"
+                  className="emotion-93"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-90"
+                      className="emotion-92"
                     >
                       <div
                         className="emotion-46"
@@ -5294,19 +5330,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-111"
+            className="emotion-113"
           >
             <legend
-              className="emotion-84"
+              className="emotion-86"
             >
               Zorroa Visual Intelligence
             </legend>
             <div
-              className="emotion-85"
+              className="emotion-87"
             />
             <table
               cellSpacing="0"
-              className="emotion-110"
+              className="emotion-112"
             >
               <thead>
                 <tr>
@@ -5323,12 +5359,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-91"
+                  className="emotion-93"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-90"
+                      className="emotion-92"
                     >
                       <div
                         className="emotion-46"
@@ -5373,10 +5409,10 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-149"
+      className="emotion-151"
     >
       <a
-        className="emotion-147"
+        className="emotion-149"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -5385,7 +5421,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-148"
+        className="emotion-150"
         onClick={[Function]}
         type="submit"
       >
@@ -5415,6 +5451,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -5516,7 +5555,7 @@ Array [
     </ul>
   </nav>,
   "",
-  .emotion-149 {
+  .emotion-151 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -5771,7 +5810,6 @@ Array [
 }
 
 .emotion-42 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -5854,17 +5892,32 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-78 {
+.emotion-79 {
   padding-top: 16px;
 }
 
-.emotion-77 {
+.emotion-78 {
   border-radius: 2px;
   background-color: #3b3b3b;
 }
 
-.emotion-77:hover svg {
+.emotion-78:hover summary svg {
   opacity: 1;
+}
+
+.emotion-74 {
+  list-style-type: none;
+  padding: 16px;
+  background-color: #3b3b3b;
+}
+
+.emotion-74::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-74:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
 }
 
 .emotion-73 {
@@ -5876,17 +5929,6 @@ Array [
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 16px;
-  background-color: #3b3b3b;
-}
-
-.emotion-73::-webkit-details-marker {
-  display: none;
-}
-
-.emotion-73:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
 }
 
 .emotion-71 {
@@ -5909,20 +5951,20 @@ Array [
   font-weight: 700;
 }
 
-.emotion-76 {
+.emotion-77 {
   border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
 
-.emotion-74 {
+.emotion-75 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
   padding-bottom: 16px;
 }
 
-.emotion-75 {
+.emotion-76 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -5934,7 +5976,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-75 li {
+.emotion-76 li {
   width: 33%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -5947,23 +5989,23 @@ Array [
   padding-right: 40px;
 }
 
-.emotion-75 svg {
+.emotion-76 svg {
   color: #73b61c;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
 }
 
-.emotion-75 span {
+.emotion-76 span {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-145 {
+.emotion-147 {
   padding-top: 16px;
 }
 
-.emotion-80 {
+.emotion-81 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -5971,7 +6013,7 @@ Array [
   padding-left: 16px;
 }
 
-.emotion-82 {
+.emotion-84 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -5979,7 +6021,7 @@ Array [
   max-width: 600px;
 }
 
-.emotion-110 {
+.emotion-112 {
   border: none;
   padding: 0;
   margin: 0;
@@ -5987,7 +6029,7 @@ Array [
   padding-bottom: 32px;
 }
 
-.emotion-83 {
+.emotion-85 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -5996,76 +6038,76 @@ Array [
   font-weight: 500;
 }
 
-.emotion-84 {
+.emotion-86 {
   clear: both;
 }
 
-.emotion-109 {
+.emotion-111 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-109 th,
-.emotion-109 td {
+.emotion-111 th,
+.emotion-111 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-109 th:first-of-type,
-.emotion-109 td:first-of-type {
+.emotion-111 th:first-of-type,
+.emotion-111 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-109 th:nth-of-type(2),
-.emotion-109 td:nth-of-type(2) {
+.emotion-111 th:nth-of-type(2),
+.emotion-111 td:nth-of-type(2) {
   min-width: 300px;
 }
 
-.emotion-109 th:nth-of-type(3),
-.emotion-109 td:nth-of-type(3) {
+.emotion-111 th:nth-of-type(3),
+.emotion-111 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-109 th {
+.emotion-111 th {
   color: #b3b3b3;
   font-weight: 500;
 }
 
-.emotion-109 td {
+.emotion-111 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-109 td:first-of-type {
+.emotion-111 td:first-of-type {
   border: none;
 }
 
-.emotion-109 td:nth-of-type(2) {
+.emotion-111 td:nth-of-type(2) {
   font-family: Roboto Mono;
 }
 
-.emotion-109 tr:hover td {
+.emotion-111 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-109 tr:hover + tr td {
+.emotion-111 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-109 tr:last-of-type td {
+.emotion-111 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-109 tr:last-of-type td:first-of-type {
+.emotion-111 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-90 {
+.emotion-92 {
   cursor: pointer;
 }
 
-.emotion-89 {
+.emotion-91 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -6074,7 +6116,7 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-148 {
+.emotion-150 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -6083,12 +6125,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-148 button,
-.emotion-148 a {
+.emotion-150 button,
+.emotion-150 a {
   margin-right: 16px;
 }
 
-.emotion-146 {
+.emotion-148 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -6108,7 +6150,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -6120,30 +6161,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-146:hover {
+.emotion-148:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-146[aria-disabled=true] {
+.emotion-148[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-146,
-.emotion-146:hover,
-.emotion-146:visited {
+.emotion-148,
+.emotion-148:hover,
+.emotion-148:visited {
   background-color: #808080;
 }
 
-.emotion-146:hover {
+.emotion-148:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-146[aria-disabled=true] {
+.emotion-148[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-147 {
+.emotion-149 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -6163,7 +6204,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -6175,26 +6215,26 @@ Array [
   background-color: transparent;
 }
 
-.emotion-147:hover {
+.emotion-149:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-147[aria-disabled=true] {
+.emotion-149[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-147,
-.emotion-147:hover,
-.emotion-147:visited {
+.emotion-149,
+.emotion-149:hover,
+.emotion-149:visited {
   background-color: #73b61c;
 }
 
-.emotion-147:hover {
+.emotion-149:hover {
   background-color: #96c955;
 }
 
-.emotion-147[aria-disabled=true] {
+.emotion-149[aria-disabled=true] {
   background-color: #808080;
 }
 
@@ -6205,7 +6245,7 @@ Array [
 
 <form
     action=""
-    className="emotion-149"
+    className="emotion-151"
     method="post"
     onSubmit={[Function]}
   >
@@ -6619,38 +6659,42 @@ Array [
       Choose the type of analysis you would like performed on your data set:
     </p>
     <div
-      className="emotion-78"
+      className="emotion-79"
     >
       <details
-        className="emotion-77"
+        className="emotion-78"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="Zorroa Automatic Analysis"
-          className="emotion-73"
+          className="emotion-74"
         >
-          <svg
-            className="emotion-71"
-            data-file-name="chevron.svg"
-            height={20}
-          />
-          <span
-            className="emotion-72"
+          <div
+            className="emotion-73"
           >
-            Zorroa Automatic Analysis
-          </span>
+            <svg
+              className="emotion-71"
+              data-file-name="chevron.svg"
+              height={20}
+            />
+            <span
+              className="emotion-72"
+            >
+              Zorroa Automatic Analysis
+            </span>
+          </div>
         </summary>
         <div
-          className="emotion-76"
+          className="emotion-77"
         >
           <p
-            className="emotion-74"
+            className="emotion-75"
           >
             The following basic analysis is applied to all data sets.
           </p>
           <ul
-            className="emotion-75"
+            className="emotion-76"
           >
             <li>
               <svg
@@ -6693,54 +6737,58 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-145"
+      className="emotion-147"
     >
       <details
-        className="emotion-77"
+        className="emotion-78"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="zorroa"
-          className="emotion-73"
+          className="emotion-74"
         >
-          <svg
-            className="emotion-71"
-            data-file-name="chevron.svg"
-            height={20}
-          />
-          <span
-            className="emotion-80"
+          <div
+            className="emotion-73"
           >
-            <img
-              alt="zorroa"
-              height={32}
-              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+            <svg
+              className="emotion-71"
+              data-file-name="chevron.svg"
+              height={20}
             />
-          </span>
+            <span
+              className="emotion-81"
+            >
+              <img
+                alt="zorroa"
+                height={32}
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+              />
+            </span>
+          </div>
         </summary>
         <div
-          className="emotion-76"
+          className="emotion-77"
         >
           <p
-            className="emotion-82"
+            className="emotion-84"
           >
             These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
           </p>
           <fieldset
-            className="emotion-110"
+            className="emotion-112"
           >
             <legend
-              className="emotion-83"
+              className="emotion-85"
             >
               Visual Intelligence
             </legend>
             <div
-              className="emotion-84"
+              className="emotion-86"
             />
             <table
               cellSpacing="0"
-              className="emotion-109"
+              className="emotion-111"
             >
               <thead>
                 <tr>
@@ -6757,12 +6805,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-90"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-89"
+                      className="emotion-91"
                     >
                       <div
                         className="emotion-45"
@@ -6801,12 +6849,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-90"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-89"
+                      className="emotion-91"
                     >
                       <div
                         className="emotion-45"
@@ -6845,12 +6893,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-90"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-89"
+                      className="emotion-91"
                     >
                       <div
                         className="emotion-45"
@@ -6889,12 +6937,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-90"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-89"
+                      className="emotion-91"
                     >
                       <div
                         className="emotion-45"
@@ -6936,19 +6984,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-110"
+            className="emotion-112"
           >
             <legend
-              className="emotion-83"
+              className="emotion-85"
             >
               Zorroa Timeline Extraction
             </legend>
             <div
-              className="emotion-84"
+              className="emotion-86"
             />
             <table
               cellSpacing="0"
-              className="emotion-109"
+              className="emotion-111"
             >
               <thead>
                 <tr>
@@ -6965,12 +7013,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-90"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-89"
+                      className="emotion-91"
                     >
                       <div
                         className="emotion-45"
@@ -7009,12 +7057,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-90"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-89"
+                      className="emotion-91"
                     >
                       <div
                         className="emotion-45"
@@ -7053,12 +7101,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-90"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-89"
+                      className="emotion-91"
                     >
                       <div
                         className="emotion-45"
@@ -7100,19 +7148,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-110"
+            className="emotion-112"
           >
             <legend
-              className="emotion-83"
+              className="emotion-85"
             >
               Zorroa Visual Intelligence
             </legend>
             <div
-              className="emotion-84"
+              className="emotion-86"
             />
             <table
               cellSpacing="0"
-              className="emotion-109"
+              className="emotion-111"
             >
               <thead>
                 <tr>
@@ -7129,12 +7177,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-90"
+                  className="emotion-92"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-89"
+                      className="emotion-91"
                     >
                       <div
                         className="emotion-45"
@@ -7179,10 +7227,10 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-148"
+      className="emotion-150"
     >
       <a
-        className="emotion-146"
+        className="emotion-148"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -7191,7 +7239,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-147"
+        className="emotion-149"
         onClick={[Function]}
         type="submit"
       >

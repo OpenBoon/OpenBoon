@@ -77,7 +77,6 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -490,7 +489,6 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -552,7 +550,6 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;

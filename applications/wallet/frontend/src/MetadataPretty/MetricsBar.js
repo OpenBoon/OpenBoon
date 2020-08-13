@@ -57,7 +57,7 @@ const MetadataPrettyMetricsBar = ({ pipeline }) => {
                 setLegend({
                   executionTime: processor.executionTime,
                   processor: processor.processor,
-                  color: PIPELINE_COLORS[index],
+                  color: PIPELINE_COLORS[colorIndex],
                 })
               }
               onMouseLeave={() => setLegend({})}

@@ -2,7 +2,17 @@
 
 exports[`<TaskError /> should render properly with a fatal error 1`] = `
 Array [
-  .emotion-2 {
+  .emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -44,7 +54,7 @@ Array [
 }
 
 <div
-    className="emotion-2"
+    className="emotion-10"
   >
     <div
       className="emotion-2"
@@ -214,7 +224,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -448,6 +457,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-2 {
@@ -578,7 +590,17 @@ Array [
 
 exports[`<TaskError /> should render properly with a non-fatal error 1`] = `
 Array [
-  .emotion-2 {
+  .emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -620,7 +642,7 @@ Array [
 }
 
 <div
-    className="emotion-2"
+    className="emotion-10"
   >
     <div
       className="emotion-2"
@@ -790,7 +812,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1024,6 +1045,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -1192,7 +1216,17 @@ Array [
 
 exports[`<TaskError /> should render properly with a non-fatal error 2`] = `
 Array [
-  .emotion-2 {
+  .emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1234,7 +1268,7 @@ Array [
 }
 
 <div
-    className="emotion-2"
+    className="emotion-10"
   >
     <div
       className="emotion-2"
@@ -1404,7 +1438,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1500,7 +1533,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1737,6 +1769,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -1905,7 +1940,17 @@ Array [
 
 exports[`<TaskError /> should render properly with an asset 1`] = `
 Array [
-  .emotion-2 {
+  .emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1947,7 +1992,7 @@ Array [
 }
 
 <div
-    className="emotion-2"
+    className="emotion-10"
   >
     <div
       className="emotion-2"
@@ -2117,7 +2162,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -2351,6 +2395,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {

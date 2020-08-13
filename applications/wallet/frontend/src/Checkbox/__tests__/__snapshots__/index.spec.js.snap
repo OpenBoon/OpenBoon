@@ -24,7 +24,6 @@ exports[`<Checkbox /> should render properly 1`] = `
 }
 
 .emotion-0 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -178,7 +177,6 @@ exports[`<Checkbox /> should render properly 2`] = `
 }
 
 .emotion-0 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -293,7 +291,6 @@ exports[`<Checkbox /> should render properly checked and disabled 1`] = `
 }
 
 .emotion-0 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -388,7 +385,6 @@ exports[`<Checkbox /> should render properly disabled 1`] = `
 }
 
 .emotion-0 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;

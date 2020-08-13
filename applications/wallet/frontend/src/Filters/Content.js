@@ -44,6 +44,8 @@ const FiltersContent = ({
             variant={VARIANTS.PRIMARY}
             style={{
               flex: 1,
+              paddingLeft: 0,
+              paddingRight: 0,
               minWidth: BUTTON_SIZE,
               maxWidth: !hasFilters ? BUTTON_SIZE : '',
             }}
@@ -63,7 +65,12 @@ const FiltersContent = ({
             <Button
               aria-label="Clear All Filters"
               variant={VARIANTS.SECONDARY}
-              style={{ flex: 1, minWidth: BUTTON_SIZE }}
+              style={{
+                flex: 1,
+                paddingLeft: 0,
+                paddingRight: 0,
+                minWidth: BUTTON_SIZE,
+              }}
               isDisabled={filters.length === 0}
               onClick={() => {
                 dispatch({

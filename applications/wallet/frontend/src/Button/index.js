@@ -13,7 +13,6 @@ const BASE = ({ isDisabled }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: constants.borderRadius.small,
-  margin: 0,
   padding: `${spacing.moderate}px ${spacing.spacious}px`,
   whiteSpace: 'nowrap',
   fontSize: typography.size.regular,

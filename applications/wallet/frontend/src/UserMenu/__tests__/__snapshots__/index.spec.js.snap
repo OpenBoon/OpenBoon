@@ -29,7 +29,6 @@ exports[`<UserMenu /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -91,7 +90,6 @@ exports[`<UserMenu /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   border: 0;
-  margin: 0;
   padding: 0;
   width: 28px;
   height: 28px;
@@ -178,7 +176,6 @@ exports[`<UserMenu /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -230,7 +227,6 @@ exports[`<UserMenu /> should render properly 2`] = `
   -ms-flex-align: center;
   align-items: center;
   border: 0;
-  margin: 0;
   padding: 0;
   width: 28px;
   height: 28px;
@@ -306,7 +302,6 @@ exports[`<UserMenu /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -470,7 +465,6 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -532,7 +526,6 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   -ms-flex-align: center;
   align-items: center;
   border: 0;
-  margin: 0;
   padding: 0;
   width: 28px;
   height: 28px;

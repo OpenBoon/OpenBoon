@@ -28,6 +28,7 @@ const StylesReset = () => (
           backgroundColor: colors.structure.soot,
         },
         'input, textarea, select, button': {
+          margin: 0,
           fontFamily: 'inherit',
         },
         'h1, h2, h3, h4': { margin: 0, padding: 0 },
