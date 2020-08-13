@@ -16,12 +16,10 @@ from wallet.paginators import ZMLPFromSizePagination
 
 def item_modifier(request, item):
     app = request.app
-    name_prefix = f'Train {item["name"]}'
-    running_jobs = app.jobs.find_jobs(state='InProgress')
-    running_job_id = ''
-    for job in running_jobs:
-        if job.name.startswith(name_prefix):
-            running_job_id = job.id
+    running_jobs = app.jobs.find_jobs(state='InProgress', name=item['trainingJobName'],
+                                      sort=['timeCreated:d'])
+    running_jobs = list(running_jobs)
+    running_job_id = running_jobs[0].id if running_jobs else ''
     item['runningJobId'] = running_job_id
 
 
