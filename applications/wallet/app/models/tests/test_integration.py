@@ -64,6 +64,23 @@ class TestModelViewSetRetrieve:
         assert set(model_fields) == set(content.keys())
 
 
+class TestModelViewSetDestroy:
+
+    def test_destroy(self, login, project, api_client, monkeypatch, model_fields):
+
+        def mock_response(*args, **kwrags):
+            return {'type': 'model', 'id': 'b9c52abf-9914-1020-b9f0-0242ac12000a', 'op': 'delete', 'success': True}  # noqa
+
+        model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        path = reverse('model-detail', kwargs={'project_pk': project.id,
+                                               'pk': model_id})
+        monkeypatch.setattr(ZmlpClient, 'delete', mock_response)
+        response = api_client.delete(path)
+        content = check_response(response)
+        assert content['id'] == model_id
+        assert content['success']
+
+
 class TestModelViewSetCreate:
 
     def test_create(self, login, project, api_client, monkeypatch, model_fields):
