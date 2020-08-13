@@ -72,7 +72,6 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.processor.process(self.frame)
         assert len(self.frame.asset.get_attr('files')) == 3
 
-
     @patch.object(ProjectStorage, 'store_file')
     def test_process_large(self, store_patch):
         self.frame.asset.set_attr("source.path", BEER)
