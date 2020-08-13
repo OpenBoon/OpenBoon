@@ -177,5 +177,8 @@ class HistogramVisualization(BaseVisualization):
         agg_data = response['aggregations'][agg_key]
         min, max = agg_data['min'], agg_data['max']
         # Calculate correct interval to get the # of buckets we want
-        interval = (max - min) / (size - 1)
+        if size == 1:
+            interval = max - min
+        else:
+            interval = (max - min) / (size - 1)
         return interval, min

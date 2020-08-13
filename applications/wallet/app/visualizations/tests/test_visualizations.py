@@ -142,3 +142,38 @@ class TestHistogram(TestBaseVisualizationTestCase):
                 'offset': 10500219.0
             }
         }
+
+    def test_get_agg_normal_field_(self, data, monkeypatch, zmlp_apikey):
+
+        data['fieldType'] = 'range'
+        data['options']['size'] = 1
+
+        def mock_response(*args, **kwargs):
+            return {'took': 4, 'timed_out': False,
+                    '_shards': {'total': 2, 'successful': 2, 'skipped': 0, 'failed': 0},
+                    'hits': {
+                        'total': {
+                            'value': 38,
+                            'relation': 'eq'
+                        },
+                        'max_score': None,
+                        'hits': []},
+                    'aggregations': {
+                        'stats#mySpecialGuy': {
+                            'count': 38,
+                            'min': 10500219.0,
+                            'max': 23002209.0,
+                            'avg': 15336417.631578946,
+                            'sum': 582783870.0}}}
+
+        client = ZmlpClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
+        viz = self.Viz(data, Mock(client=client), query={})
+        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        agg = viz.get_es_agg()
+        assert agg == {
+            'histogram': {
+                'field': 'media.author',
+                'interval': 12501990.0,
+                'offset': 10500219.0
+            }
+        }
