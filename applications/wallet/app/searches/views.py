@@ -1,5 +1,6 @@
 from django.http import Http404
-from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer
+from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer, \
+    CamelCaseJSONRenderer
 from flatten_dict import flatten
 from rest_framework import status
 from rest_framework.decorators import action
@@ -15,7 +16,6 @@ from assets.views import asset_modifier
 from projects.views import BaseProjectViewSet
 from searches.models import Search
 from searches.serializers import SearchSerializer, SearchAssetSerializer
-from wallet.mixins import CamelCaseRendererMixin
 from wallet.paginators import FromSizePagination, ZMLPFromSizePagination
 from .utils import FieldUtility, FilterBuddy
 
@@ -41,8 +41,7 @@ def search_asset_modifier(request, item):
         del(item['metadata']['media'])
 
 
-class SearchViewSet(CamelCaseRendererMixin,
-                    CreateModelMixin,
+class SearchViewSet(CreateModelMixin,
                     UpdateModelMixin,
                     ListModelMixin,
                     RetrieveModelMixin,
@@ -224,7 +223,8 @@ class SearchViewSet(CamelCaseRendererMixin,
                                        item_modifier=search_asset_modifier,
                                        pagination_class=ZMLPFromSizePagination)
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'],
+            renderer_classes=[CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer])
     def aggregate(self, request, project_pk):
         """Takes a filter querystring and runs the aggregation to populate that filter's UI.
 
