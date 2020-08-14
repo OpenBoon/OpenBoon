@@ -8,6 +8,11 @@ resource "kubernetes_deployment" "reporter" {
   }
   spec {
     replicas = 1
+    selector {
+      match_labels = {
+        app = "reporter"
+      }
+    }
     template {
       metadata {
         labels = {
