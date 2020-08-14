@@ -11,22 +11,6 @@ import { dispatch, ACTIONS } from '../Filters/helpers'
 
 import { formatOptions } from './helpers'
 
-const BUTTON_STYLE = {
-  padding: spacing.small,
-  paddingLeft: spacing.moderate / 2,
-  paddingRight: spacing.moderate / 2,
-  borderRadius: spacing.mini,
-  backgroundColor: colors.structure.smoke,
-  color: colors.structure.zinc,
-  lineHeight: typography.height.regular,
-  fontSize: typography.size.regular,
-  fontFamily: typography.family.condensed,
-  textTransform: 'uppercase',
-  ':hover, :focus': {
-    color: colors.structure.white,
-  },
-}
-
 const FilterReset = ({
   pathname,
   projectId,
@@ -72,11 +56,19 @@ const FilterReset = ({
             })
           }}
           css={{
-            ...BUTTON_STYLE,
-            border: 'none',
+            padding: spacing.small,
+            paddingLeft: spacing.moderate / 2,
             paddingRight: constants.icons.regular + spacing.moderate / 2,
+            lineHeight: typography.height.regular,
+            fontSize: typography.size.regular,
+            fontFamily: typography.family.condensed,
+            textTransform: 'uppercase',
+            color: colors.structure.zinc,
+            border: 'none',
+            borderRadius: spacing.mini,
             MozAppearance: 'none',
             WebkitAppearance: 'none',
+            backgroundColor: colors.structure.smoke,
             backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2IzYjNiMyIgLz4KPC9zdmc+')`,
             backgroundRepeat: `no-repeat, repeat`,
             backgroundPosition: `right top -2px`,
@@ -101,8 +93,7 @@ const FilterReset = ({
 
       {filter.type !== 'exists' && (
         <Button
-          style={BUTTON_STYLE}
-          variant={VARIANTS.NEUTRAL}
+          variant={VARIANTS.MICRO}
           onClick={() => {
             const { type, values: { ids } = {} } = filter
 

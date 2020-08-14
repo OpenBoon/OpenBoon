@@ -37,9 +37,7 @@ describe('<ChartFacet />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
-      component.root
-        .findByProps({ 'aria-label': 'Add Field Filter' })
-        .props.onClick()
+      component.root.findByProps({ 'aria-label': 'Add Filter' }).props.onClick()
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(

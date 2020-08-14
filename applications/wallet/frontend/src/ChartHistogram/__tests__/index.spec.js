@@ -24,11 +24,38 @@ describe('<ChartHistogram />', () => {
       values: '10',
     }
 
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
     const component = TestRenderer.create(
       <ChartHistogram chart={chart} chartIndex={0} dispatch={noop} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Add Filter' }).props.onClick()
+    })
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      {
+        pathname: '/[projectId]/visualizer/data-visualization',
+        query: {
+          projectId: PROJECT_ID,
+          query: btoa(
+            JSON.stringify([
+              {
+                type: 'labelConfidence',
+                attribute: 'analysis.zvi-face-detection',
+                values: {},
+              },
+            ]),
+          ),
+        },
+      },
+      `/${PROJECT_ID}/visualizer/data-visualization?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1mYWNlLWRldGVjdGlvbiIsInZhbHVlcyI6e319XQ==`,
+    )
   })
 
   it('should render properly without an attribute', () => {

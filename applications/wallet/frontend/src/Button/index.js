@@ -135,6 +135,21 @@ const STYLES = {
       color: colors.structure.steel,
     },
   },
+  MICRO: {
+    padding: spacing.small,
+    paddingLeft: spacing.moderate / 2,
+    paddingRight: spacing.moderate / 2,
+    borderRadius: spacing.mini,
+    backgroundColor: colors.structure.smoke,
+    color: colors.structure.zinc,
+    lineHeight: typography.height.regular,
+    fontSize: typography.size.regular,
+    fontFamily: typography.family.condensed,
+    textTransform: 'uppercase',
+    ':hover, :focus': {
+      color: colors.structure.white,
+    },
+  },
 }
 
 export const VARIANTS = Object.keys(STYLES).reduce(
