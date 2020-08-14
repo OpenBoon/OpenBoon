@@ -37,6 +37,7 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
         flexWrap: 'wrap',
         '> div': {
           display: 'flex',
+          justifyContent: 'flex-end',
           flexDirection: 'column',
           width: `calc(${(1 / 3) * 100}% - ${(spacing.normal * 2) / 3}px)`,
           marginRight: spacing.normal,
@@ -81,17 +82,10 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
         >
           &nbsp;
         </div>
-        <div
-          css={{
-            flex: 1,
-            display: 'flex',
-            alignItems: 'stretch',
-            justifyContent: 'stretch',
-          }}
-        >
+        <div css={{ display: 'flex' }}>
           <Button
             aria-label="Add Filter"
-            variant={VARIANTS.ICON}
+            variant={VARIANTS.MICRO}
             onClick={() => {
               dispatch({
                 type: ACTIONS.ADD_FILTER,
@@ -103,11 +97,7 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
                 },
               })
             }}
-            css={{
-              flex: 1,
-              display: 'flex',
-              fontFamily: typography.family.condensed,
-            }}
+            css={{ flex: 1, display: 'flex' }}
           >
             <div css={{ display: 'flex', alignItems: 'center' }}>
               <div css={{ display: 'flex', paddingRight: spacing.small }}>
