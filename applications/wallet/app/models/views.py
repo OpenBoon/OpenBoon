@@ -1,3 +1,5 @@
+import os
+
 from django.http import Http404
 from rest_framework import status
 from rest_framework.decorators import action
@@ -7,19 +9,17 @@ from zmlp.entity.model import LabelScope
 
 from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 AddLabelsSerializer, UpdateLabelsSerializer,
-                                RemoveLabelsSerializer)
+                                RemoveLabelsSerializer, RenameLabelSerializer)
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
 
 def item_modifier(request, item):
     app = request.app
-    name_prefix = f'Train {item["name"]}'
-    running_jobs = app.jobs.find_jobs(state='InProgress')
-    running_job_id = ''
-    for job in running_jobs:
-        if job.name.startswith(name_prefix):
-            running_job_id = job.id
+    running_jobs = app.jobs.find_jobs(state='InProgress', name=item['trainingJobName'],
+                                      sort=['timeCreated:d'])
+    running_jobs = list(running_jobs)
+    running_job_id = running_jobs[0].id if running_jobs else ''
     item['runningJobId'] = running_job_id
 
 
@@ -36,6 +36,10 @@ class ModelViewSet(BaseProjectViewSet):
     def retrieve(self, request, project_pk, pk):
         """Retrieve the details for this specific model."""
         return self._zmlp_retrieve(request, pk=pk, item_modifier=item_modifier)
+
+    def destroy(self, request, project_pk, pk):
+        """Deletes a model."""
+        return self._zmlp_destroy(request, pk)
 
     def create(self, request, project_pk):
         """Create a model for this project.
@@ -105,7 +109,7 @@ class ModelViewSet(BaseProjectViewSet):
         current model.
 
         Expected Body:
-            ```
+
             {
                 "add_labels": [
                     {"assetId": $assetId,
@@ -117,6 +121,7 @@ class ModelViewSet(BaseProjectViewSet):
                     ...
                 ]
             }
+
         """
         serializer = AddLabelsSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -184,6 +189,24 @@ class ModelViewSet(BaseProjectViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': msg})
 
         return Response(status=status.HTTP_200_OK, data={})
+
+    @action(methods=['put'], detail=True)
+    def rename_label(self, request, project_pk, pk):
+        """Allows renaming an existing label. Requires the original label name and a new
+        label name.
+
+        Expected Body:
+
+            {
+                "label": "Dog",
+                "newLabel": "Cat"
+            }
+
+        """
+        path = os.path.join(self.zmlp_root_api_path, pk, 'labels')
+        serializer = RenameLabelSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(request.client.put(path, serializer.validated_data))
 
     def _get_assets_and_labels(self, app, model, data):
         """Get a list of Label objects from request data."""

@@ -47,3 +47,8 @@ class UpdateLabelsSerializer(serializers.Serializer):
 
 class RemoveLabelsSerializer(serializers.Serializer):
     removeLabels = LabelSerializer(many=True)
+
+
+class RenameLabelSerializer(serializers.Serializer):
+    label = serializers.CharField(required=True)
+    newLabel = serializers.CharField(required=True)
