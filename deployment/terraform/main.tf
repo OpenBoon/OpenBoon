@@ -314,3 +314,12 @@ module "gcp-marketplace-integration" {
 module "elasticsearch-hq" {
   source = "./modules/elasticsearch-hq"
 }
+
+module "reporter" {
+  source            = "./modules/reporter"
+  inception-key-b64 = local.inception-key-b64
+  project           = var.project
+  container-tag     = var.container-tag
+  image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
+  zmlp-api-url      = "http://${module.api-gateway.ip-address}"
+}

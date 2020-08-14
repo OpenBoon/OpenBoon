@@ -189,7 +189,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
       type = "External"
       external {
         metric {
-          name = "custom.googleapis.com|zmlp|total-waiting-jobs"
+          name = "custom.googleapis.com|zmlp|total-pending-tasks"
         }
         target {
           type  = "Value"
