@@ -21,7 +21,7 @@ describe('Visualizer', function () {
 
       cy.contains('Add Metadata Filters').click()
 
-      cy.get('summary').contains('Source').click()
+      cy.get('summary[aria-label="Source"]').click()
 
       cy.contains('filesize').click()
 
@@ -47,7 +47,7 @@ describe('Visualizer', function () {
 
       cy.contains('Add Metadata Filters').click()
 
-      cy.get('summary').contains('Location').click()
+      cy.get('summary[aria-label="Location"]').click()
 
       cy.contains('city').click()
 
@@ -71,7 +71,7 @@ describe('Visualizer', function () {
 
       cy.contains('Add Metadata Filters').click()
 
-      cy.get('summary').contains('Analysis').click()
+      cy.get('summary[aria-label="Analysis"]').click()
 
       cy.contains('zvi-text-detection').click()
 
@@ -99,7 +99,7 @@ describe('Visualizer', function () {
 
       cy.contains('Add Metadata Filters').click()
 
-      cy.get('summary').contains('Analysis').click()
+      cy.get('summary[aria-label="Analysis"]').click()
 
       cy.contains('zvi-label-detection').click()
 
