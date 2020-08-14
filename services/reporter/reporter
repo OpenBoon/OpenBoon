@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+import os
+import sys
+import argparse
+from time import sleep
+
+from lib.metrics import JobQueueMetrics
+
+from google.cloud import monitoring_v3
+from zmlp import ZmlpClient
+
+REGISTERED_METRICS = (JobQueueMetrics,)
+
+
+class Reporter:
+
+    def __init__(self, project_id=None, interval=None, zmlp_api_url=None, inception_key_b64=None):
+        self.project_id = project_id or os.getenv('PROJECT_ID', 'zvi-dev')
+        self.interval = interval or os.getenv('COLLECTION_INTERVAL', 60)
+        zmlp_api_url = zmlp_api_url or os.getenv('ZMLP_API_URL', 'https://dev.api.zvi.zorroa.com')
+        inception_key_b64 = os.getenv('INCEPTION_KEY_B64')
+
+        self.monitoring_client = monitoring_v3.MetricServiceClient()
+        self.zmlp_client = ZmlpClient(apikey=inception_key_b64, server=zmlp_api_url)
+
+    def monitor(self):
+        """Loops and collects and reports the registered statistics."""
+        try:
+            while True:
+                print('Starting a round of metric collection:')
+                self.publish()
+                print(f'Completed current round of metric collection. Sleeping for {self.interval} seconds.')
+                sleep(self.interval)
+        except KeyboardInterrupt:
+            print('Terminated by User, Metric Reporter exiting.')
+            sys.exit(1)
+
+    def publish(self):
+        for Metric in REGISTERED_METRICS:
+            Metric(self.monitoring_client, self.zmlp_client, self.project_id).publish()
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Report ZVI Metrics to GCP Monitoring.')
+    args = parser.parse_args()
+    reporter = Reporter()
+    reporter.monitor()
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('Interrupted, exiting.')
+        sys.exit(1)
+
