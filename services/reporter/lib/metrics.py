@@ -4,20 +4,30 @@ from zmlp import ZmlpClient
 
 
 class MetricValue(object):
-    """Describes a metric to publish to GCP Monitoring."""
-    def __init__(self, metric_type, value, resource_type='global'):
+    """Describes a metric to publish to GCP Monitoring.
+
+    Args:
+        metric_type(str): Metric type to pass to GCP. This is the name of your custom metric
+         and must start with "custom.googleapis.com/" and has a path-style format. For more
+         information see https://cloud.google.com/monitoring/custom-metrics/creating-metrics#custom_metric_names
+        value(int): Integer value to publish for the metric.
+
+    """
+    def __init__(self, metric_type, value):
+        if not metric_type.startswith('custom.googleapis.com/'):
+            raise ValueError('Metric types must start with custom.googleapis.com/.')
         self.metric_type = metric_type
         self.value = value
-        self.resource_type = resource_type
 
 
 class BaseMetric(object):
     """Base class all Metrics inherit from. Each concrete Metric must override the get_metric_values
-    function and have it return a list of MetricValue objects to publish. This implementation
-    is currently limited to supporting int64 gauge metrics.
+    function and have it return a list of MetricValue objects to publish.
 
-    More explanation of these topics can be found at
-    https://cloud.google.com/monitoring/custom-metrics/creating-metrics
+    NOTE: This implementation is currently limited to supporting int64 gauge metrics with a
+    resource type of "global". As needed this should be expanded to support more varied metrics.
+    More information can be found at
+    https://cloud.google.com/monitoring/custom-metrics/creating-metrics.
 
     """
     def __init__(self, monitoring_client, zmlp_client, project_id):
@@ -29,7 +39,7 @@ class BaseMetric(object):
         for metric_value in list(self.get_metric_values()):
             series = monitoring_v3.types.TimeSeries()
             series.metric.type = metric_value.metric_type
-            series.resource.type = metric_value.resource_type
+            series.resource.type = 'global'
             point = series.points.add()
             now = time.time()
             point.interval.end_time.seconds = int(now)

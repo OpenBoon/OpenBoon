@@ -12,7 +12,10 @@ REGISTERED_METRICS = (JobQueueMetrics,)
 
 
 class Reporter:
+    """Publishes metrics to the GCP Monitoring service. For information about the arguments
+    for this class and how to configure it please view the README.md.
 
+    """
     def __init__(self, project_id=None, interval=None, zmlp_api_url=None, inception_key_b64=None):
         self.project_id = project_id or os.getenv('PROJECT_ID', 'zvi-dev')
         self.interval = int(interval or os.getenv('COLLECTION_INTERVAL', 60))
@@ -35,6 +38,7 @@ class Reporter:
             sys.exit(1)
 
     def publish(self):
+        """Publishes all of the registered metrics."""
         for Metric in REGISTERED_METRICS:
             Metric(self.monitoring_client, self.zmlp_client, self.project_id).publish()
 
