@@ -255,6 +255,11 @@ module "analyst" {
   archivist-url          = "http://${module.archivist.ip-address}"
   officer-url            = "http://${module.officer.ip-address}:7078"
   container-tag          = var.container-tag
+  memory-request         = var.analyst-memory-request
+  memory-limit           = var.analyst-memory-limit
+  cpu-request            = var.analyst-cpu-request
+  cpu-limit              = var.analyst-cpu-limit
+  machine-type           = var.analyst-machine-type
 }
 
 module "wallet" {
