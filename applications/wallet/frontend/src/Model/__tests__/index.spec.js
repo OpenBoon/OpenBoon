@@ -17,12 +17,31 @@ describe('<Model />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
-      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+        action: 'edit-label-success',
+      },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: model,
+    require('swr').__setMockUseSWRResponse({ data: model })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Model />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly in edit label mode', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID, edit: 'cat' },
     })
+
+    require('swr').__setMockUseSWRResponse({ data: model })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>

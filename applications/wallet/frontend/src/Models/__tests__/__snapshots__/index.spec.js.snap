@@ -209,6 +209,7 @@ Array [
         >
           <a
             className="emotion-0"
+            onClick={[Function]}
           >
             View all
           </a>
@@ -224,6 +225,7 @@ Array [
         >
           <a
             className="emotion-2"
+            onClick={[Function]}
           >
             Create New Model
           </a>
@@ -760,6 +762,7 @@ Array [
         >
           <a
             className="emotion-0"
+            onClick={[Function]}
           >
             View all
           </a>
@@ -775,6 +778,7 @@ Array [
         >
           <a
             className="emotion-2"
+            onClick={[Function]}
           >
             Create New Model
           </a>

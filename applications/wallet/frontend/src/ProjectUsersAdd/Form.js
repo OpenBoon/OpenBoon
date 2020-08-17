@@ -2,6 +2,8 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
+import { spacing } from '../Styles'
+
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
@@ -10,7 +12,6 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
-import { spacing } from '../Styles'
 
 import { onSubmit } from './helpers'
 

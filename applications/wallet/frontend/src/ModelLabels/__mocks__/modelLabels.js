@@ -3,8 +3,8 @@ const modelLabels = {
   next: null,
   previous: null,
   results: [
-    { label: 'mark', count: 1 },
-    { label: 'nina', count: 1 },
+    { label: 'cat', count: 1 },
+    { label: 'dog', count: 1 },
   ],
 }
 

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -7,10 +9,11 @@ import { colors, spacing, typography } from '../Styles'
 const TABS_UNDERLINE_WIDTH = 1
 const TAB_BOTTOM_WIDTH = 2
 
-const TabsLink = ({ title, href }) => {
+const TabsLink = ({ title, href, isSelected }) => {
   const { pathname, query } = useRouter()
 
-  const isCurrentPage = pathname === href
+  const isCurrentPage =
+    isSelected || (pathname === href && isSelected !== false)
 
   return (
     <li
@@ -25,9 +28,14 @@ const TabsLink = ({ title, href }) => {
           .split('/')
           .map((s) => s.replace(/\[(.*)\]/gi, (_, group) => query[group]))
           .join('/')}
-        passHref
+        passHref={!isSelected}
       >
         <a
+          onClick={(event) => {
+            if (isSelected) {
+              event.preventDefault()
+            }
+          }}
           css={{
             border: `0 ${colors.key.one} solid`,
             borderBottomWidth: isCurrentPage ? TAB_BOTTOM_WIDTH : 0,
@@ -53,9 +61,14 @@ const TabsLink = ({ title, href }) => {
   )
 }
 
+TabsLink.defaultProps = {
+  isSelected: undefined,
+}
+
 TabsLink.propTypes = {
   title: PropTypes.string.isRequired,
   href: PropTypes.string.isRequired,
+  isSelected: PropTypes.bool,
 }
 
 export default TabsLink
