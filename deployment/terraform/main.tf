@@ -255,6 +255,11 @@ module "analyst" {
   archivist-url          = "http://${module.archivist.ip-address}"
   officer-url            = "http://${module.officer.ip-address}:7078"
   container-tag          = var.container-tag
+  memory-request         = var.analyst-memory-request
+  memory-limit           = var.analyst-memory-limit
+  cpu-request            = var.analyst-cpu-request
+  cpu-limit              = var.analyst-cpu-limit
+  machine-type           = var.analyst-machine-type
 }
 
 module "wallet" {
@@ -313,4 +318,13 @@ module "gcp-marketplace-integration" {
 
 module "elasticsearch-hq" {
   source = "./modules/elasticsearch-hq"
+}
+
+module "reporter" {
+  source            = "./modules/reporter"
+  inception-key-b64 = local.inception-key-b64
+  project           = var.project
+  container-tag     = var.container-tag
+  image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
+  zmlp-api-url      = "http://${module.api-gateway.ip-address}"
 }

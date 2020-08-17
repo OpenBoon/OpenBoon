@@ -3,7 +3,13 @@ import Router from 'next/router'
 
 import { fetcher, revalidate } from '../Fetch/helpers'
 
-export const onTrain = async ({ apply, projectId, modelId, setError }) => {
+export const onTrain = async ({
+  model,
+  apply,
+  projectId,
+  modelId,
+  setError,
+}) => {
   try {
     setError('')
 
@@ -18,6 +24,7 @@ export const onTrain = async ({ apply, projectId, modelId, setError }) => {
     mutate(
       `/api/v1/projects/${projectId}/models/${modelId}/`,
       {
+        ...model,
         ready: true,
         runningJobId: jobId,
       },
@@ -35,7 +42,6 @@ export const onDelete = ({
 }) => async () => {
   setDeleteModalOpen(false)
 
-  // TODO: update endpoint
   await fetcher(`/api/v1/projects/${projectId}/models/${modelId}/`, {
     method: 'DELETE',
   })
