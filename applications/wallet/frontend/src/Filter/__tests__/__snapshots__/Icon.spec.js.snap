@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilterIcon /> should render properly 1`] = `
+<svg
+  color="#73b61c"
+  data-file-name="range.svg"
+  height={20}
+/>
+`;

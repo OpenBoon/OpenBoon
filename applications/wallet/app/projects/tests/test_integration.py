@@ -90,7 +90,7 @@ def test_projects_view_with_projects(project, zmlp_project_user, api_client):
 
 def test_projects_view_inactive_projects(project, zmlp_project_user, api_client):
     api_client.force_authenticate(zmlp_project_user)
-    project.is_active = False
+    project.isActive = False
     project.save()
     response = api_client.get(reverse('project-list')).json()
     assert response['count'] == 0
@@ -163,7 +163,7 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
     project.sync_with_zmlp()
 
     # Test a disabled project.
-    project.is_active = False
+    project.isActive = False
     project.save()
     monkeypatch.setattr(ZmlpClient, 'put', mock_put_enable_project)
     project.sync_with_zmlp()
@@ -203,7 +203,7 @@ def test_project_sync_with_zmlp_with_subscription(monkeypatch, project_zero_user
 def test_project_managers(project):
     assert Project.objects.all().count() == 1
     assert str(project.id) == str(Project.objects.first().id)
-    project.is_active = False
+    project.isActive = False
     project.save()
     assert Project.objects.all().count() == 0
     assert Project.all_objects.all().count() == 1

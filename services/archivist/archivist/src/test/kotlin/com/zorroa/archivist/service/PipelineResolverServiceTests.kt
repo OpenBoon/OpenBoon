@@ -13,6 +13,7 @@ import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.Provider
 import com.zorroa.archivist.domain.FileType
+import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
@@ -45,7 +46,7 @@ class PipelineResolverServiceTests : AbstractTest() {
         val pipeline = pipelineService.create(pspec)
 
         val resolved = pipelineResolverService.resolve(pipeline.name, null)
-        val last = resolved.last()
+        val last = resolved.execute.last()
         assertEquals("zmlp_analysis.zvi.ZviObjectDetectionProcessor", last.className)
         assertEquals("zmlp/plugins-analysis", last.image)
     }
@@ -57,7 +58,8 @@ class PipelineResolverServiceTests : AbstractTest() {
         val pspec = PipelineSpec("test", modules = listOf("zvi-object-detection"))
         val pipeline = pipelineService.create(pspec)
 
-        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("zvi-label-detection"))
+        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("zvi-label-detection"))
+        val resolved = rpipeline.execute
         val last = resolved.last()
         assertEquals(last.className, "zmlp_analysis.zvi.ZviLabelDetectionProcessor")
         assertEquals(last.image, "zmlp/plugins-analysis")
@@ -68,13 +70,25 @@ class PipelineResolverServiceTests : AbstractTest() {
     }
 
     @Test
+    fun resolveAndCheckGlobals() {
+        pipelineModService.updateStandardMods()
+
+        val pspec = PipelineSpec("test", modules = listOf("zvi-object-detection"))
+        val pipeline = pipelineService.create(pspec)
+
+        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("zvi-label-detection"))
+        Json.prettyPrint(rpipeline)
+    }
+
+    @Test
     fun resolveUsingPipelineNameAndMinusModules() {
         pipelineModService.updateStandardMods()
 
         val pspec = PipelineSpec("test", modules = listOf("zvi-document-page-extraction"))
         val pipeline = pipelineService.create(pspec)
 
-        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-document-page-extraction"))
+        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-document-page-extraction"))
+        val resolved = rpipeline.execute
         val last = resolved.last()
 
         assertEquals(last.className, "zmlp_analysis.zvi.ZviSimilarityProcessor")
@@ -86,14 +100,14 @@ class PipelineResolverServiceTests : AbstractTest() {
         val pipeline = pipelineService.create(PipelineSpec("test"))
         val resolved = pipelineResolverService.resolve(pipeline.id)
         // The resolved size is 1 less because the prepend marker is removed.
-        assertEquals(resolved.size, pipelineResolverService.getStandardPipeline().size - 1)
+        assertEquals(resolved.execute.size, pipelineResolverService.getStandardPipeline().size - 1)
     }
 
     @Test
     fun testResolveDefaultPipeline() {
         val resolved = pipelineResolverService.resolve()
         // The resolved size is 1 less because the prepend marker is removed.
-        assertEquals(resolved.size, pipelineResolverService.getStandardPipeline().size - 1)
+        assertEquals(resolved.execute.size, pipelineResolverService.getStandardPipeline().size - 1)
     }
 
     @Test
@@ -133,9 +147,55 @@ class PipelineResolverServiceTests : AbstractTest() {
                 modules = listOf(mod1.name, mod2.name)
             )
         )
-        val resolved = pipelineResolverService.resolve(pipeline.id)
+        val rpipe = pipelineResolverService.resolve(pipeline.id)
+        val resolved = rpipe.execute
         assertEquals("last_processor", resolved.last().className)
         assertEquals("append_processor", resolved[resolved.size - 2].className)
+    }
+
+    @Test
+    fun resolveDependAddBefore() {
+        val spec1 = PipelineModSpec(
+            "append", "A append module",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Documents),
+            listOf(
+                ModOp(ModOpType.DEPEND, listOf("depend-module")),
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(ProcessorRef("append_processor", "zmlp-plugins-foo"))
+                )
+            )
+        )
+        val spec2 = PipelineModSpec(
+            "depend-module", "Added before",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(ProcessorRef("depend_processor", "zmlp-plugins-foo"))
+                )
+            )
+        )
+        val mod1 = pipelineModService.create(spec1)
+        pipelineModService.create(spec2)
+
+        val pipeline = pipelineService.create(
+            PipelineSpec(
+                "test",
+                modules = listOf(mod1.name)
+            )
+        )
+        val rpipe = pipelineResolverService.resolve(pipeline.id)
+        val resolved = rpipe.execute
+
+        assertEquals("append_processor", resolved.last().className)
+        assertEquals("depend_processor", resolved[resolved.size - 2].className)
     }
 
     @Test
@@ -395,6 +455,6 @@ class PipelineResolverServiceTests : AbstractTest() {
                 pipeline.name, pipeline.processors, mods
             )
         )
-        return pipelineResolverService.resolve(pipeline.id)
+        return pipelineResolverService.resolve(pipeline.id).execute
     }
 }

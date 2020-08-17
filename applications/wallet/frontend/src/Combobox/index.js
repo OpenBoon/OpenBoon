@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import ComboboxContainer from './Container'
 import ComboboxInput from './Input'
@@ -7,27 +7,36 @@ import ComboboxOptions from './Options'
 
 import { spacing, colors, typography } from '../Styles'
 
+// A key={reloadKey} must be used to prevent dropdown staying open on save
+// Submit/Cancel buttons should increment the reloadKey
 const Combobox = ({
-  id,
-  inputLabel,
+  label,
   options,
-  originalValue,
-  currentValue,
+  value,
   onChange,
   hasError,
   errorMessage,
 }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const [showAllOptions, setShowAllOptions] = useState(true)
-  const filteredOptions = options.filter(
-    (option) =>
-      showAllOptions ||
-      option.label.toLowerCase().includes(currentValue.toLowerCase()),
-  )
+  const [fetchedOptions, setFetchedOptions] = useState([])
 
-  const handleOnChange = ({ value, showAll = true }) => {
-    setShowAllOptions(showAll)
-    onChange({ value })
-  }
+  useEffect(() => {
+    const fetchOptions = async () => {
+      setIsLoading(true)
+
+      const data = await options()
+
+      setFetchedOptions(data)
+      setIsLoading(false)
+    }
+
+    if (typeof options === 'function') {
+      fetchOptions()
+    } else {
+      setFetchedOptions(options)
+    }
+  }, [options])
 
   return (
     <div css={{ flex: 1 }}>
@@ -37,27 +46,30 @@ const Combobox = ({
           color: colors.structure.steel,
         }}
       >
-        {inputLabel}
+        {label}
       </div>
       <ComboboxContainer
-        onSelect={(value) => {
-          handleOnChange({ value })
+        onSelect={(newValue) => {
+          setShowAllOptions(true)
+
+          onChange({ value: newValue })
         }}
       >
         <ComboboxInput
-          id={id}
-          value={currentValue}
+          value={value}
           hasError={hasError}
-          onChange={(event) => {
-            handleOnChange({ value: event.target.value, showAll: false })
-          }}
-          onBlur={(event) => {
-            if (!event.target.value) {
-              handleOnChange({ value: originalValue })
-            }
+          onChange={({ target }) => {
+            setShowAllOptions(false)
+
+            onChange({ value: target.value })
           }}
         />
-        <ComboboxOptions options={filteredOptions} />
+        <ComboboxOptions
+          options={fetchedOptions}
+          isLoading={isLoading}
+          showAllOptions={showAllOptions}
+          value={value}
+        />
       </ComboboxContainer>
 
       {hasError && errorMessage && (
@@ -80,16 +92,17 @@ Combobox.defaultProps = {
 }
 
 Combobox.propTypes = {
-  id: PropTypes.string.isRequired,
-  inputLabel: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      count: PropTypes.number.isRequired,
-    }),
-  ).isRequired,
-  originalValue: PropTypes.string.isRequired,
-  currentValue: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  options: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        count: PropTypes.number,
+      }),
+    ),
+  ]).isRequired,
+  value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   hasError: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string,

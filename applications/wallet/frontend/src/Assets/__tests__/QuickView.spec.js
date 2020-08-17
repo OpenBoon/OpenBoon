@@ -15,7 +15,7 @@ describe('<AssetsQuickView />', () => {
     require('next/router').__setMockPushFunction(mockRouterPush)
 
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, id: assets.results[2].id },
+      query: { projectId: PROJECT_ID, assetId: assets.results[2].id },
     })
 
     const component = TestRenderer.create(
@@ -46,10 +46,10 @@ describe('<AssetsQuickView />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: PROJECT_ID,
-          id: assets.results[1].id,
+          assetId: assets.results[1].id,
         },
       },
-      `/${PROJECT_ID}/visualizer?id=${assets.results[1].id}`,
+      `/${PROJECT_ID}/visualizer?assetId=${assets.results[1].id}`,
     )
 
     // Right Arrow
@@ -64,10 +64,10 @@ describe('<AssetsQuickView />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: PROJECT_ID,
-          id: assets.results[3].id,
+          assetId: assets.results[3].id,
         },
       },
-      `/${PROJECT_ID}/visualizer?id=${assets.results[3].id}`,
+      `/${PROJECT_ID}/visualizer?assetId=${assets.results[3].id}`,
     )
 
     // Up Arrow
@@ -82,10 +82,10 @@ describe('<AssetsQuickView />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: PROJECT_ID,
-          id: assets.results[0].id,
+          assetId: assets.results[0].id,
         },
       },
-      `/${PROJECT_ID}/visualizer?id=${assets.results[0].id}`,
+      `/${PROJECT_ID}/visualizer?assetId=${assets.results[0].id}`,
     )
 
     // Down Arrow
@@ -100,10 +100,10 @@ describe('<AssetsQuickView />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: PROJECT_ID,
-          id: assets.results[4].id,
+          assetId: assets.results[4].id,
         },
       },
-      `/${PROJECT_ID}/visualizer?id=${assets.results[4].id}`,
+      `/${PROJECT_ID}/visualizer?assetId=${assets.results[4].id}`,
     )
 
     // Close QuickView
@@ -148,7 +148,7 @@ describe('<AssetsQuickView />', () => {
     require('next/router').__setMockPushFunction(mockRouterPush)
 
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, id: assets.results[2].id },
+      query: { projectId: PROJECT_ID, assetId: assets.results[2].id },
     })
 
     const component = TestRenderer.create(

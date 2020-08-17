@@ -19,7 +19,7 @@ describe('<Assets />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: undefined })
+    require('swr').__setMockUseSWRInfiniteResponse()
 
     const component = TestRenderer.create(<Assets />)
 
@@ -32,8 +32,7 @@ describe('<Assets />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: assets })
-    require('swr').__setPageSWRs([{ data: assets }])
+    require('swr').__setMockUseSWRInfiniteResponse([assets])
 
     const component = TestRenderer.create(<Assets />)
 
@@ -86,8 +85,7 @@ describe('<Assets />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
-    require('swr').__setPageSWRs([{ data: { count: 0, results: [] } }])
+    require('swr').__setMockUseSWRInfiniteResponse([{ count: 0, results: [] }])
 
     const component = TestRenderer.create(<Assets />)
 
@@ -102,7 +100,7 @@ describe('<Assets />', () => {
       pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
-        id: ASSET_ID,
+        assetId: ASSET_ID,
         query: encode({
           filters: [
             {
@@ -115,8 +113,7 @@ describe('<Assets />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
-    require('swr').__setPageSWRs([{ data: { count: 0, results: [] } }])
+    require('swr').__setMockUseSWRInfiniteResponse([{ count: 0, results: [] }])
 
     const component = TestRenderer.create(<Assets />)
 
@@ -131,9 +128,9 @@ describe('<Assets />', () => {
     expect(mockPush).toHaveBeenCalledWith(
       {
         pathname: '/[projectId]/visualizer',
-        query: { id: ASSET_ID, projectId: PROJECT_ID },
+        query: { assetId: ASSET_ID, projectId: PROJECT_ID },
       },
-      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}`,
     )
   })
 
@@ -142,12 +139,11 @@ describe('<Assets />', () => {
       pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
-        id: ASSET_ID,
+        assetId: ASSET_ID,
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: { count: 0, results: [] } })
-    require('swr').__setPageSWRs([{ data: { count: 0, results: [] } }])
+    require('swr').__setMockUseSWRInfiniteResponse([{ count: 0, results: [] }])
 
     const component = TestRenderer.create(<Assets />)
 

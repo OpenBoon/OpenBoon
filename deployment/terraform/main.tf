@@ -5,7 +5,7 @@ terraform {
     organization = "zorroa"
 
     workspaces {
-      name = "zvi-prod"
+      name = "zvi-dev"
     }
   }
 }
@@ -16,7 +16,7 @@ provider "google" {
   project     = var.project
   region      = "${var.country}-${var.region}"
   zone        = "${var.country}-${var.region}-${var.zone}"
-  version     = ">= 3.8.0"
+  version     = ">= 3.33.0"
 }
 
 provider "google-beta" {
@@ -24,7 +24,7 @@ provider "google-beta" {
   project     = var.project
   region      = "${var.country}-${var.region}"
   zone        = "${var.country}-${var.region}-${var.zone}"
-  version     = ">= 3.8.0"
+  version     = ">= 3.33.0"
 }
 
 provider "kubernetes" {
@@ -35,13 +35,17 @@ provider "kubernetes" {
   client_certificate     = module.gke-cluster.client_certificate
   client_key             = module.gke-cluster.client_key
   cluster_ca_certificate = module.gke-cluster.cluster_ca_certificate
-  version                = ">= 1.11.2"
+  version                = ">= 1.12.0"
 }
 
 ## GCP Infrastructure ###################################################################
 module "gke-cluster" {
   source = "./modules/gke-cluster"
   zone   = local.zone
+}
+
+module "stackdriver-adapter" {
+  source = "./modules/stackdriver-adapter"
 }
 
 module "postgres" {
@@ -251,6 +255,11 @@ module "analyst" {
   archivist-url          = "http://${module.archivist.ip-address}"
   officer-url            = "http://${module.officer.ip-address}:7078"
   container-tag          = var.container-tag
+  memory-request         = var.analyst-memory-request
+  memory-limit           = var.analyst-memory-limit
+  cpu-request            = var.analyst-cpu-request
+  cpu-limit              = var.analyst-cpu-limit
+  machine-type           = var.analyst-machine-type
 }
 
 module "wallet" {
@@ -309,4 +318,13 @@ module "gcp-marketplace-integration" {
 
 module "elasticsearch-hq" {
   source = "./modules/elasticsearch-hq"
+}
+
+module "reporter" {
+  source            = "./modules/reporter"
+  inception-key-b64 = local.inception-key-b64
+  project           = var.project
+  container-tag     = var.container-tag
+  image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
+  zmlp-api-url      = "http://${module.api-gateway.ip-address}"
 }

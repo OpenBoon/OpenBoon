@@ -3,7 +3,7 @@ import useSWR from 'swr'
 
 import filterShape from './shape'
 
-import { colors, spacing, typography } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
@@ -56,21 +56,24 @@ const FilterReset = ({
             })
           }}
           css={{
-            backgroundColor: colors.structure.transparent,
-            border: 'none',
-            fontSize: typography.size.regular,
+            padding: spacing.small,
+            paddingLeft: spacing.moderate / 2,
+            paddingRight: constants.icons.regular + spacing.moderate / 2,
             lineHeight: typography.height.regular,
-            MozAppearance: 'none',
-            WebkitAppearance: 'none',
-            backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2IzYjNiMyIgLz4KPC9zdmc+')`,
-            backgroundRepeat: `no-repeat, repeat`,
-            backgroundPosition: `right top 50%`,
-            paddingRight: spacing.comfy,
-            color: colors.structure.zinc,
+            fontSize: typography.size.regular,
             fontFamily: typography.family.condensed,
             textTransform: 'uppercase',
+            color: colors.structure.zinc,
+            border: 'none',
+            borderRadius: spacing.mini,
+            MozAppearance: 'none',
+            WebkitAppearance: 'none',
+            backgroundColor: colors.structure.smoke,
+            backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2IzYjNiMyIgLz4KPC9zdmc+')`,
+            backgroundRepeat: `no-repeat, repeat`,
+            backgroundPosition: `right top -2px`,
             cursor: 'pointer',
-            ':hover': {
+            ':hover, :focus': {
               color: colors.structure.white,
               backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+')`,
             },
@@ -90,16 +93,7 @@ const FilterReset = ({
 
       {filter.type !== 'exists' && (
         <Button
-          style={{
-            width: '100%',
-            color: colors.structure.zinc,
-            fontFamily: typography.family.condensed,
-            textTransform: 'uppercase',
-            ':hover': {
-              color: colors.structure.white,
-            },
-          }}
-          variant={VARIANTS.NEUTRAL}
+          variant={VARIANTS.MICRO}
           onClick={() => {
             const { type, values: { ids } = {} } = filter
 

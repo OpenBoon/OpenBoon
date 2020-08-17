@@ -12,7 +12,7 @@ resource "google_container_node_pool" "analyst" {
   }
 
   node_config {
-    preemptible = true
+    preemptible  = true
     machine_type = var.machine-type
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
@@ -40,7 +40,7 @@ resource "google_container_node_pool" "analyst" {
 }
 
 resource "random_string" "analyst-shared-key" {
-  length = 50
+  length  = 50
   special = false
 }
 
@@ -110,11 +110,11 @@ resource "kubernetes_deployment" "analyst" {
           image_pull_policy = "Always"
           volume_mount {
             mount_path = "/tmp"
-            name = "tmp"
+            name       = "tmp"
           }
           volume_mount {
             mount_path = "/var/run/docker.sock"
-            name = "dockersock"
+            name       = "dockersock"
           }
           volume_mount {
             name       = "dockerhubcreds"
@@ -130,7 +130,7 @@ resource "kubernetes_deployment" "analyst" {
             value = random_string.analyst-shared-key.result
           }
           env {
-            name = "OFFICER_URL"
+            name  = "OFFICER_URL"
             value = var.officer-url
           }
           liveness_probe {
@@ -185,7 +185,18 @@ resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
       kind        = "Deployment"
       name        = "analyst"
     }
-    target_cpu_utilization_percentage = 75
+    metric {
+      type = "External"
+      external {
+        metric {
+          name = "custom.googleapis.com|zmlp|total-pending-tasks"
+        }
+        target {
+          type  = "Value"
+          value = 1
+        }
+      }
+    }
   }
   lifecycle {
     ignore_changes = [spec[0].max_replicas, spec[0].min_replicas]

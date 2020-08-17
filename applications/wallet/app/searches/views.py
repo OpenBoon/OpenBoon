@@ -1,21 +1,21 @@
 from django.http import Http404
-from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer
+from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer, \
+    CamelCaseJSONRenderer
 from flatten_dict import flatten
-from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
-                                   CreateModelMixin, UpdateModelMixin, DestroyModelMixin)
-from rest_framework.viewsets import GenericViewSet
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
+                                   CreateModelMixin, UpdateModelMixin, DestroyModelMixin)
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 from rest_framework_csv.renderers import CSVRenderer
 from zmlp.search import AssetSearchScroller
 
-from assets.views import asset_modifier
 from assets.utils import get_asset_style, get_video_length, get_thumbnail_and_video_urls
+from assets.views import asset_modifier
 from projects.views import BaseProjectViewSet
 from searches.models import Search
 from searches.serializers import SearchSerializer, SearchAssetSerializer
-from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import FromSizePagination, ZMLPFromSizePagination
 from .utils import FieldUtility, FilterBuddy
 
@@ -24,15 +24,15 @@ def search_asset_modifier(request, item):
     asset_modifier(request, item)
 
     # Set the AssetStyle for the frontend.
-    item['asset_style'] = get_asset_style(item)
+    item['assetStyle'] = get_asset_style(item)
 
     # Set the videoLength
-    item['video_length'] = get_video_length(item)
+    item['videoLength'] = get_video_length(item)
 
     # Set thumbnail and video urls
     thumbnail_url, video_proxy_url = get_thumbnail_and_video_urls(request, item)
-    item['thumbnail_url'] = thumbnail_url
-    item['video_proxy_url'] = video_proxy_url
+    item['thumbnailUrl'] = thumbnail_url
+    item['videoProxyUrl'] = video_proxy_url
 
     # Cleanup
     if 'files' in item['metadata']:
@@ -41,8 +41,7 @@ def search_asset_modifier(request, item):
         del(item['metadata']['media'])
 
 
-class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
-                    CreateModelMixin,
+class SearchViewSet(CreateModelMixin,
                     UpdateModelMixin,
                     ListModelMixin,
                     RetrieveModelMixin,
@@ -68,7 +67,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
         if 'project' not in request.data:
             request.data['project'] = kwargs['project_pk']
         # Always correct the created_by value
-        request.data['created_by'] = str(request.user.id)
+        request.data['createdBy'] = str(request.user.id)
         return super(SearchViewSet, self).create(request, *args, **kwargs)
 
     @action(detail=False, methods=['get'])
@@ -184,6 +183,20 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             *Note:* The scope value can be set to 'all', 'train', or 'test'.
 
+        Date:
+
+            {
+                "type": "date",
+                "attribute": "system.timeCreated",
+                "values": {
+                    "min": "2020-05-30T00:00:00Z",
+                    "max": "2020-07-31T00:00:00Z"
+                }
+            }
+
+            *Note:* The `min` and `max` values need to be in "yyyy-mm-ddTHH:MM:SSZ"
+            format (ISO 8601).
+
         """
         path = 'api/v3/assets'
         fields = ['id',
@@ -204,13 +217,15 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
         # Only returns the specified fields in the metadata
         query['_source'] = fields
+        query['track_total_hits'] = True
 
         return self._zmlp_list_from_es(request, search_filter=query, base_url=path,
                                        serializer_class=SearchAssetSerializer,
                                        item_modifier=search_asset_modifier,
                                        pagination_class=ZMLPFromSizePagination)
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'],
+            renderer_classes=[CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer])
     def aggregate(self, request, project_pk):
         """Takes a filter querystring and runs the aggregation to populate that filter's UI.
 
@@ -249,7 +264,14 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             {
                 "type": "labelConfidence",
-                "attribute": "analysis.zvi-label-detection",
+                "attribute": "analysis.zvi-label-detection"
+            }
+
+        Date:
+
+            {
+                "type": "date",
+                "attribute": "system.timeCreated"
             }
 
         Labels:

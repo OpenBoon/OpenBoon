@@ -88,7 +88,6 @@ exports[`<Assets /> should render empty properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -256,7 +255,6 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -413,7 +411,6 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -569,7 +566,6 @@ exports[`<Assets /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -621,7 +617,6 @@ exports[`<Assets /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -764,7 +759,6 @@ exports[`<Assets /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -816,7 +810,6 @@ exports[`<Assets /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -959,7 +952,6 @@ exports[`<Assets /> should render properly 3`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1011,7 +1003,6 @@ exports[`<Assets /> should render properly 3`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1107,37 +1098,12 @@ exports[`<Assets /> should render properly while loading 1`] = `
   }
 }
 
-.emotion-4 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-3 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  position: relative;
-  margin-bottom: -2px;
-  box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
-}
-
 .emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 100%;
+  margin: 1px;
+  margin-top: 0;
 }
 
 .emotion-1 {
@@ -1173,25 +1139,17 @@ exports[`<Assets /> should render properly while loading 1`] = `
 }
 
 <div
-  className="emotion-4"
+  className="emotion-2"
 >
   <div
-    className="emotion-3"
+    className="Loading emotion-1"
   >
-    <div
-      className="emotion-2"
-    >
-      <div
-        className="Loading emotion-1"
-      >
-        <svg
-          className="emotion-0"
-          data-file-name="generating.svg"
-          height={20}
-        />
-        Loading...
-      </div>
-    </div>
+    <svg
+      className="emotion-0"
+      data-file-name="generating.svg"
+      height={20}
+    />
+    Loading...
   </div>
 </div>
 `;

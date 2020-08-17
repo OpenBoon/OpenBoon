@@ -1,12 +1,9 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types'
 
 import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import { typography, colors, spacing, constants } from '../Styles'
 
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import AssetsThumbnail from '../Assets/Thumbnail'
 import SuspenseBoundary from '../SuspenseBoundary'
 
@@ -33,75 +30,75 @@ const TaskAssetsRow = ({
     initialValue: false,
   })
 
-  const toggle = () => setOpen({ value: !isOpen })
-
   return (
-    <div
+    <details
       css={{
         backgroundColor: colors.structure.mattGrey,
         borderBottom: constants.borders.regular.smoke,
       }}
+      open={isOpen}
+      onToggle={({ target: { open } }) => setOpen({ value: open })}
     >
-      <div
+      <summary
+        aria-label={filename}
         css={{
-          display: 'flex',
-          alignItems: 'center',
+          listStyleType: 'none',
+          '::-webkit-details-marker': { display: 'none' },
           ':hover': {
             cursor: 'pointer',
             backgroundColor: colors.structure.iron,
+            svg: { color: colors.structure.white },
           },
         }}
-        onClick={toggle}
       >
-        <div css={{ width: constants.icons.regular * 3, textAlign: 'center' }}>
-          {index}
-        </div>
-
-        <div
-          css={{
-            width: THUMBNAIL_SIZE,
-            minWidth: THUMBNAIL_SIZE,
-            height: THUMBNAIL_SIZE,
-          }}
-        >
-          <AssetsThumbnail asset={asset} isActive={false} />
-        </div>
-
-        <h4
-          css={{
-            flex: 1,
-            display: 'flex',
-            fontSize: typography.size.medium,
-            lineHeight: typography.height.medium,
-            fontWeight: typography.weight.regular,
-            paddingLeft: spacing.moderate,
-          }}
-        >
-          {filename}
-        </h4>
-
-        <div css={{ width: constants.icons.regular * 2, textAlign: 'center' }}>
-          <Button
-            aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
-            variant={BUTTON_VARIANTS.ICON}
-            onClick={toggle}
-            css={{ padding: 0 }}
+        <div css={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            css={{ width: constants.icons.regular * 3, textAlign: 'center' }}
           >
+            {index}
+          </div>
+
+          <div
+            css={{
+              width: THUMBNAIL_SIZE,
+              minWidth: THUMBNAIL_SIZE,
+              height: THUMBNAIL_SIZE,
+            }}
+          >
+            <AssetsThumbnail asset={asset} isActive={false} />
+          </div>
+
+          <h4
+            css={{
+              flex: 1,
+              display: 'flex',
+              fontSize: typography.size.medium,
+              lineHeight: typography.height.medium,
+              fontWeight: typography.weight.regular,
+              paddingLeft: spacing.moderate,
+            }}
+          >
+            {filename}
+          </h4>
+
+          <div css={{ width: constants.icons.regular * 2 }}>
             <ChevronSvg
               height={constants.icons.regular}
               css={{
+                color: colors.structure.steel,
                 transform: isOpen ? 'rotate(-180deg)' : '',
               }}
             />
-          </Button>
+          </div>
         </div>
-      </div>
+      </summary>
 
       {isOpen && (
         <div
           css={{
             height: MAX_HEIGHT,
             overflow: 'auto',
+            backgroundColor: colors.structure.coal,
           }}
         >
           <SuspenseBoundary isTransparent>
@@ -109,7 +106,7 @@ const TaskAssetsRow = ({
           </SuspenseBoundary>
         </div>
       )}
-    </div>
+    </details>
   )
 }
 

@@ -50,7 +50,7 @@ describe('<AssetsThumbnail />', () => {
   it('should render properly a video asset', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     const component = TestRenderer.create(
@@ -63,7 +63,7 @@ describe('<AssetsThumbnail />', () => {
   it('should render properly a valid selected asset', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     const component = TestRenderer.create(
@@ -102,7 +102,9 @@ describe('<AssetsThumbnail />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Find similar images' })
+        .findByProps({
+          'aria-label': `Find similar images to ${assets.results[0].metadata.source.filename}`,
+        })
         .props.onClick()
     })
 
@@ -126,6 +128,51 @@ describe('<AssetsThumbnail />', () => {
     )
   })
 
+  it('should add a new similarity search and navigate to visualizer grid', () => {
+    const SIMILAR_ASSET_ID = assets.results[1].id
+
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer/[id]',
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+    })
+
+    const component = TestRenderer.create(
+      <AssetsThumbnail asset={assets.results[1]} isActive />,
+    )
+
+    act(() => {
+      component.root
+        .findByProps({
+          'aria-label': `Find similar images to ${assets.results[1].metadata.source.filename}`,
+        })
+        .props.onClick()
+    })
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      {
+        pathname: '/[projectId]/visualizer',
+        query: {
+          query: btoa(
+            JSON.stringify([
+              {
+                type: 'similarity',
+                attribute: 'analysis.zvi-image-similarity',
+                values: { ids: [SIMILAR_ASSET_ID], minScore: 0.75 },
+              },
+            ]),
+          ),
+          projectId: PROJECT_ID,
+          assetId: ASSET_ID,
+        },
+      },
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXSwibWluU2NvcmUiOjAuNzV9fV0=',
+    )
+  })
+
   it('should replace an existing similarity search', () => {
     const mockRouterPush = jest.fn()
     const oldQuery = btoa(
@@ -142,7 +189,7 @@ describe('<AssetsThumbnail />', () => {
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, id: ASSET_ID, query: oldQuery },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID, query: oldQuery },
     })
 
     const component = TestRenderer.create(
@@ -151,7 +198,9 @@ describe('<AssetsThumbnail />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Find similar images' })
+        .findByProps({
+          'aria-label': `Find similar images to ${assets.results[1].metadata.source.filename}`,
+        })
         .props.onClick()
     })
 
@@ -168,11 +217,11 @@ describe('<AssetsThumbnail />', () => {
               },
             ]),
           ),
-          id: ASSET_ID,
+          assetId: ASSET_ID,
           projectId: PROJECT_ID,
         },
       },
-      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXSwibWluU2NvcmUiOjAuNzV9fV0=`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}&query=W3sidHlwZSI6InNpbWlsYXJpdHkiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmktaW1hZ2Utc2ltaWxhcml0eSIsInZhbHVlcyI6eyJpZHMiOlsiM0REbnVDTnJ1WGlYdFJqS3h3R0p0MlVQR05UQVp1dDQiXSwibWluU2NvcmUiOjAuNzV9fV0=`,
     )
   })
 })

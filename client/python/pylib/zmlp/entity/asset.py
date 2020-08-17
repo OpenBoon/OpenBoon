@@ -361,6 +361,17 @@ class Asset(DocumentMixin):
         """
         return self.get_attr("source.path")
 
+    @property
+    def extension(self):
+        """
+        The file extension of the asset, lower cases.
+
+        Returns:
+            str: The file extension
+
+        """
+        return self.get_attr("source.extension").lower()
+
     def add_file(self, stored_file):
         """
         Adds the StoredFile record to the asset's list of associated files.

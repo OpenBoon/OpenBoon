@@ -43,9 +43,34 @@ variable "clarifai-key" {
   description = "Secret key to allow access to the Clarifai API."
 }
 
+variable "analyst-memory-request" {
+  description = "Memory request for Analyst pods."
+  default     = "2Gi"
+}
+
+variable "analyst-memory-limit" {
+  description = "Memory limit for Analyst pods."
+  default     = "3Gi"
+}
+
+variable "analyst-cpu-request" {
+  description = "CPU request for Analyst pods."
+  default     = "0.5"
+}
+
+variable "analyst-cpu-limit" {
+  description = "CPU limit for Analyst pods."
+  default     = "1"
+}
+
+variable "analyst-machine-type" {
+  description = "Machine type for the Analysts' node pool."
+  default     = "custom-6-18176"
+}
+
 variable "container-tag" {
   description = "Tag to use for all zvi service docker contianers."
-  default = "stable"
+  default     = "stable"
 }
 
 variable "country" {
@@ -70,32 +95,32 @@ variable "sql-tier" {
 
 variable "deploy-marketplace-integration" {
   description = "If this variable exists the GCP Marketplace integration will be deployed."
-  default = ""
+  default     = ""
 }
 
 variable "marketplace-credentials" {
   description = "GCP Service Account JSON key to use with the GCP Procurement API."
-  default = ""
+  default     = ""
 }
 
 variable "wallet-debug" {
   description = "Turns Debug mode on for the Console/Wallet"
-  default = "false"
+  default     = "false"
 }
 
 variable "wallet-browsable-api" {
   description = "Turns on the Wallet/Console browsable API for an environment."
-  default = "false"
+  default     = "false"
 }
 
 variable "wallet-superadmin" {
   description = "Turns on a more advanced Django Admin view at /superadmin."
-  default = "false"
+  default     = "false"
 }
 
 variable "wallet-use-model-ids-for-label-filters" {
   description = "Feature flag for label filters return in the Console"
-  default = "false"
+  default     = "false"
 }
 
 ## Generated Variables

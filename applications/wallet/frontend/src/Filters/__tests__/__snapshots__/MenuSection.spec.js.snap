@@ -42,7 +42,6 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
 }
 
 .emotion-0 {
-  margin: 0;
   padding: 0;
   width: 16px;
   height: 16px;
@@ -179,7 +178,6 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
 }
 
 .emotion-1 {
-  margin: 0;
   padding: 0;
   width: 16px;
   height: 16px;
@@ -348,7 +346,6 @@ exports[`<FiltersMenuSection /> should render properly for an "exists" filter 1`
 }
 
 .emotion-0 {
-  margin: 0;
   padding: 0;
   width: 16px;
   height: 16px;

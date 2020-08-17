@@ -19,7 +19,7 @@ describe('<ResetPasswordConfirm />', () => {
     // Set new password
     act(() => {
       component.root
-        .findByProps({ id: 'newPassword' })
+        .findByProps({ id: 'newPassword1' })
         .props.onChange({ target: { value: 'foo' } })
 
       // Set unmatching confirm password

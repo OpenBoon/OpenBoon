@@ -1,6 +1,17 @@
 import { mutate } from 'swr'
 
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, revalidate } from '../Fetch/helpers'
+
+export const getOptions = async ({ modelId, projectId }) => {
+  if (!modelId) {
+    return []
+  }
+  const { results } = await revalidate({
+    key: `/api/v1/projects/${projectId}/models/${modelId}/get_labels`,
+  })
+
+  return results
+}
 
 export const getSubmitText = ({ state, existingLabel }) => {
   const { success, isLoading } = state
@@ -17,11 +28,11 @@ export const getSubmitText = ({ state, existingLabel }) => {
 }
 
 const getLabelAction = ({ body }) => {
-  if (body.add_labels && body.remove_labels) {
+  if (body.addLabels && body.removeLabels) {
     return 'update'
   }
 
-  if (body.remove_labels) {
+  if (body.removeLabels) {
     return 'delete'
   }
 
@@ -30,7 +41,7 @@ const getLabelAction = ({ body }) => {
 
 export const onSubmit = async ({
   dispatch,
-  state: { modelId, label },
+  state: { modelId, label, reloadKey },
   labels,
   projectId,
   assetId,
@@ -46,11 +57,11 @@ export const onSubmit = async ({
   const body = {}
 
   if (existingModel) {
-    body.remove_labels = [{ assetId, label: existingModel.label }]
+    body.removeLabels = [{ assetId, label: existingModel.label }]
   }
 
   if (label !== '') {
-    body.add_labels = [{ assetId, label }]
+    body.addLabels = [{ assetId, label }]
   }
 
   const labelAction = getLabelAction({ body })
@@ -67,6 +78,7 @@ export const onSubmit = async ({
     mutate(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
     dispatch({
+      reloadKey: reloadKey + 1,
       success: true,
       isLoading: false,
       errors: {},
@@ -108,7 +120,7 @@ export const onDelete = async ({
       {
         method: 'DELETE',
         body: JSON.stringify({
-          remove_labels: [
+          removeLabels: [
             {
               assetId,
               label,

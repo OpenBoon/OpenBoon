@@ -69,7 +69,7 @@ describe('<FilterTextDetection />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
           query: encodedQuery,
         },
       },
@@ -149,7 +149,7 @@ describe('<FilterTextDetection />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
           query: encodedQuery,
         },
       },

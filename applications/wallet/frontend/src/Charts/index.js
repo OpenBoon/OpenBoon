@@ -8,6 +8,7 @@ import { spacing } from '../Styles'
 
 import ChartFacet from '../ChartFacet'
 import ChartRange from '../ChartRange'
+import ChartHistogram from '../ChartHistogram'
 
 import { MIN_ROW_HEIGHT, breakpoints, cols, setAllLayouts } from './helpers'
 
@@ -46,6 +47,18 @@ const Charts = ({ charts, layouts, dispatch, setLayouts }) => {
                 return (
                   <div key={chart.id}>
                     <ChartRange
+                      chart={chart}
+                      chartIndex={index}
+                      dispatch={dispatch}
+                    />
+                  </div>
+                )
+              }
+
+              case 'histogram': {
+                return (
+                  <div key={chart.id}>
+                    <ChartHistogram
                       chart={chart}
                       chartIndex={index}
                       dispatch={dispatch}

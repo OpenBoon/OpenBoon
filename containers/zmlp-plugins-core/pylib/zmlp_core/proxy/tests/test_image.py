@@ -13,6 +13,7 @@ BEER = zorroa_test_data("images/set02/beer_kettle_01.jpg")
 VIDEO = zorroa_test_data("video/dc.webm")
 TOUCAN = zorroa_test_data("images/set01/toucan.jpg")
 TIFF = zorroa_test_data("office/multipage_tiff_small.tif")
+EXR = zorroa_test_data("images/set06/grid-overscan.exr")
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -48,6 +49,20 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.frame.asset.set_attr("clip.length", 5)
         self.frame.asset.set_attr("clip.start", 1)
         self.frame.asset.set_attr("source.path", TIFF)
+        self.frame.asset.set_attr("media.length", 3)
+        self.frame.asset.set_attr('media.width', 3264)
+        self.frame.asset.set_attr('media.height', 2448)
+        store_patch.side_effect = [StoredFile(self.storage_patch1),
+                                   StoredFile(self.storage_patch2),
+                                   StoredFile(self.storage_patch3)]
+        self.processor.process(self.frame)
+        assert len(self.frame.asset.get_attr('files')) == 3
+
+    @patch.object(ProjectStorage, 'store_file')
+    def test_process_hdr(self, store_patch):
+        self.frame.asset.set_attr("clip.length", 5)
+        self.frame.asset.set_attr("clip.start", 1)
+        self.frame.asset.set_attr("source.path", EXR)
         self.frame.asset.set_attr("media.length", 3)
         self.frame.asset.set_attr('media.width', 3264)
         self.frame.asset.set_attr('media.height', 2448)

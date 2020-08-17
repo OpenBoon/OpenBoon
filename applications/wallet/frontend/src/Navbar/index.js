@@ -44,7 +44,6 @@ const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
               justifyContent: 'center',
               alignItems: 'center',
               padding: spacing.base,
-              margin: 0,
               marginLeft: -spacing.base,
               cursor: 'pointer',
             }}

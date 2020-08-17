@@ -2,9 +2,13 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, typography, constants } from '../Styles'
 
+import { capitalizeFirstLetter } from '../Text/helpers'
+
 import Button, { VARIANTS } from '../Button'
 
 import { TYPES, ACTIONS } from './reducer'
+
+import Feature, { ENVS } from '../Feature'
 
 const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
   return (
@@ -44,7 +48,7 @@ const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
             >
               Data visualizations are representations of specific information
               from dataset. Adjusting the filters will allow you to dynamically
-              view the affect they have on the search results. Data
+              view the effect they have on the search results. Data
               visualization can be shared with other users in the projects by
               exporting and then uploading.
             </p>
@@ -64,79 +68,86 @@ const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
           )}
         </div>
 
-        {TYPES.map(({ type, icon, name, legend }) => {
-          return (
-            <div
-              key={name}
-              css={{
-                display: 'flex',
-                paddingTop: spacing.normal,
-                paddingBottom: spacing.normal,
-                borderBottom: constants.borders.regular.smoke,
-              }}
-            >
+        {TYPES.map(
+          ({
+            type,
+            icon,
+            legend,
+            flag = '',
+            envs = [...Object.values(ENVS)],
+          }) => (
+            <Feature key={type} flag={flag} envs={envs}>
               <div
                 css={{
                   display: 'flex',
-                  padding: spacing.moderate,
-                  backgroundColor: colors.structure.iron,
-                  borderRadius: constants.borderRadius.small,
-                }}
-              >
-                {icon}
-              </div>
-
-              <div
-                css={{
-                  flex: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  paddingLeft: spacing.normal,
-                  paddingRight: spacing.normal,
+                  paddingTop: spacing.normal,
+                  paddingBottom: spacing.normal,
+                  borderBottom: constants.borders.regular.smoke,
                 }}
               >
                 <div
                   css={{
-                    fontSize: typography.size.regular,
-                    lineHeight: typography.height.regular,
-                    fontWeight: typography.weight.medium,
+                    display: 'flex',
+                    padding: spacing.moderate,
+                    backgroundColor: colors.structure.iron,
+                    borderRadius: constants.borderRadius.small,
                   }}
                 >
-                  {name}
+                  {icon}
                 </div>
                 <div
                   css={{
-                    fontSize: typography.size.regular,
-                    lineHeight: typography.height.regular,
-                    fontWeight: typography.weight.medium,
-                    color: colors.structure.zinc,
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    paddingLeft: spacing.normal,
+                    paddingRight: spacing.normal,
                   }}
                 >
-                  {legend}
+                  <div
+                    css={{
+                      fontSize: typography.size.regular,
+                      lineHeight: typography.height.regular,
+                      fontWeight: typography.weight.medium,
+                    }}
+                  >
+                    {capitalizeFirstLetter({ word: type })}
+                  </div>
+                  <div
+                    css={{
+                      fontSize: typography.size.regular,
+                      lineHeight: typography.height.regular,
+                      fontWeight: typography.weight.medium,
+                      color: colors.structure.zinc,
+                    }}
+                  >
+                    {legend}
+                  </div>
+                </div>
+                <div
+                  css={{
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Button
+                    variant={VARIANTS.SECONDARY_SMALL}
+                    onClick={() => {
+                      dispatch({
+                        type: ACTIONS.CREATE,
+                        payload: { type },
+                      })
+                      setIsCreating(false)
+                    }}
+                  >
+                    Create
+                  </Button>
                 </div>
               </div>
-
-              <div
-                css={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <Button
-                  variant={VARIANTS.SECONDARY_SMALL}
-                  onClick={() => {
-                    dispatch({ type: ACTIONS.CREATE, payload: { type } })
-
-                    setIsCreating(false)
-                  }}
-                >
-                  Create
-                </Button>
-              </div>
-            </div>
-          )
-        })}
+            </Feature>
+          ),
+        )}
       </div>
     </div>
   )

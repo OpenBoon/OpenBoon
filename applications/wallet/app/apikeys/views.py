@@ -14,7 +14,8 @@ class ApikeyViewSet(BaseProjectViewSet):
     zmlp_only = True
 
     def list(self, request, project_pk):
-        return self._zmlp_list_from_search(request)
+        query = {'sort': ['timeCreated:desc']}
+        return self._zmlp_list_from_search(request, search_filter=query)
 
     def retrieve(self, request, project_pk, pk):
         return self._zmlp_retrieve(request, pk)

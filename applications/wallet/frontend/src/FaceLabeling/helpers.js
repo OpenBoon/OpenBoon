@@ -37,7 +37,7 @@ export const onSave = async ({
     await mutate(`/api/v1/projects/${projectId}/faces/labels/`)
     await mutate(`/api/v1/projects/${projectId}/faces/status/`)
 
-    dispatch({ isLoading: false })
+    dispatch({ isChanged: false, isLoading: false })
   } catch (response) {
     try {
       const errorObject = await response.json()

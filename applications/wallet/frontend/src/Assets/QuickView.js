@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Router, { useRouter } from 'next/router'
 
-import { spacing, colors, constants } from '../Styles'
+import { spacing, colors, constants, zIndex } from '../Styles'
 
 import CrossSvg from '../Icons/cross.svg'
 
@@ -13,12 +13,12 @@ import { getQueryString } from '../Fetch/helpers'
 
 const AssetsQuickView = ({ assets, columnCount }) => {
   const {
-    query: { projectId, id: selectedId, query },
+    query: { projectId, assetId, query },
   } = useRouter()
 
   const [isVisible, setIsVisible] = useState(false)
 
-  const index = assets.findIndex(({ id }) => id === selectedId)
+  const index = assets.findIndex(({ id }) => id === assetId)
 
   const { id: previousId } = index > 0 ? assets[index - 1] : {}
   const { id: nextId } =
@@ -39,7 +39,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
     /* istanbul ignore next */
     if (['INPUT', 'TEXTAREA'].includes(tagName)) return
 
-    if (!selectedId) return
+    if (!assetId) return
 
     if (code === 'Escape') {
       setIsVisible(false)
@@ -57,10 +57,10 @@ const AssetsQuickView = ({ assets, columnCount }) => {
       Router.push(
         {
           pathname: '/[projectId]/visualizer',
-          query: { projectId, id: previousId, query },
+          query: { projectId, assetId: previousId, query },
         },
         `/${projectId}/visualizer${getQueryString({
-          id: previousId,
+          assetId: previousId,
           query,
         })}`,
       )
@@ -72,9 +72,9 @@ const AssetsQuickView = ({ assets, columnCount }) => {
       Router.push(
         {
           pathname: '/[projectId]/visualizer',
-          query: { projectId, id: nextId, query },
+          query: { projectId, assetId: nextId, query },
         },
-        `/${projectId}/visualizer${getQueryString({ id: nextId, query })}`,
+        `/${projectId}/visualizer${getQueryString({ assetId: nextId, query })}`,
       )
 
       event.preventDefault()
@@ -84,10 +84,10 @@ const AssetsQuickView = ({ assets, columnCount }) => {
       Router.push(
         {
           pathname: '/[projectId]/visualizer',
-          query: { projectId, id: previousRowId, query },
+          query: { projectId, assetId: previousRowId, query },
         },
         `/${projectId}/visualizer${getQueryString({
-          id: previousRowId,
+          assetId: previousRowId,
           query,
         })}`,
       )
@@ -99,10 +99,10 @@ const AssetsQuickView = ({ assets, columnCount }) => {
       Router.push(
         {
           pathname: '/[projectId]/visualizer',
-          query: { projectId, id: nextRowId, query },
+          query: { projectId, assetId: nextRowId, query },
         },
         `/${projectId}/visualizer${getQueryString({
-          id: nextRowId,
+          assetId: nextRowId,
           query,
         })}`,
       )
@@ -117,7 +117,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
     return () => document.removeEventListener('keydown', keydownHandler)
   })
 
-  if (isVisible && projectId && selectedId) {
+  if (isVisible && projectId && assetId) {
     return (
       <div
         css={{
@@ -126,7 +126,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           bottom: 0,
           left: 0,
           right: 0,
-          zIndex: 999,
+          zIndex: zIndex.layout.modal,
           backgroundColor: constants.overlay,
         }}
       >
@@ -161,11 +161,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           }}
         >
           <SuspenseBoundary isTransparent>
-            <AssetAsset
-              key={selectedId}
-              projectId={projectId}
-              assetId={selectedId}
-            />
+            <AssetAsset key={assetId} projectId={projectId} assetId={assetId} />
           </SuspenseBoundary>
         </div>
       </div>

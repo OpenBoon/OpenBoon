@@ -3,7 +3,11 @@ import { Combobox as ReachCombobox } from '@reach/combobox'
 
 const ComboboxContainer = ({ onSelect, children }) => {
   return (
-    <ReachCombobox openOnFocus onSelect={onSelect}>
+    <ReachCombobox
+      openOnFocus
+      onSelect={onSelect}
+      css={{ position: 'relative' }}
+    >
       {children}
     </ReachCombobox>
   )

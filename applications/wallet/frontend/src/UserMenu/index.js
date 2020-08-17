@@ -42,7 +42,6 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   border: 0,
-                  margin: 0,
                   padding: 0,
                   width: SIZE,
                   height: SIZE,

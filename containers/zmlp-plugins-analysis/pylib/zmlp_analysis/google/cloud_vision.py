@@ -81,6 +81,26 @@ class AbstractCloudVisionProcessor(AssetProcessor):
                 content = fp.read()
             return types.Image(content=content)
 
+    def get_ocr_image(self, asset, fallback_proxy):
+        """
+        Loads the ocr-proxy into a Google Vision Image which is
+        used for calling various vision services.  If there is no
+        OCR proxy then the fallback proxy is used.
+
+        Args:
+            asset: (Asset): The asset with the proxy files.
+            fallback_proxy (StoredFile): The StoredFile instance.
+
+        Returns:
+            google.cloud.vision.types.Image
+
+        """
+        ocr_proxy = asset.get_files(category='ocr-proxy')
+        if ocr_proxy:
+            return self.get_vision_image(ocr_proxy[0])
+        else:
+            return self.get_vision_image(fallback_proxy)
+
 
 class CloudVisionDetectImageText(AbstractCloudVisionProcessor):
     """Executes Image Text Detection the Cloud Vision API."""
@@ -92,7 +112,8 @@ class CloudVisionDetectImageText(AbstractCloudVisionProcessor):
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
     def detect(self, asset, proxy):
         """Executes text detection on images using the Cloud Vision API."""
-        rsp = self.image_annotator.text_detection(image=self.get_vision_image(proxy))
+        # ImageText doesn't use an OCR proxy, t
+        rsp = self.image_annotator.text_detection(image=self.get_ocr_image(asset, proxy))
         result = rsp.full_text_annotation
 
         text = result.text
@@ -112,7 +133,7 @@ class CloudVisionDetectDocumentText(AbstractCloudVisionProcessor):
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
     def detect(self, asset, proxy):
-        rsp = self.image_annotator.document_text_detection(image=self.get_vision_image(proxy))
+        rsp = self.image_annotator.document_text_detection(image=self.get_ocr_image(asset, proxy))
         text = rsp.full_text_annotation.text
         if not text:
             return

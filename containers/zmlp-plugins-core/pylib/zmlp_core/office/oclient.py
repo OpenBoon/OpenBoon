@@ -21,7 +21,7 @@ class OfficerClient(object):
     # because the page cache isn't always under the current asset's id.
     tmp_loc_attr = 'tmp.officer_page_cache_location'
 
-    def __init__(self, url=None):
+    def __init__(self, url=None, dpi=150):
         """
         Create a new OfficerClient instance.
 
@@ -30,6 +30,7 @@ class OfficerClient(object):
             variable and finally default to 'http://officer:7078'
         """
         self.url = url or os.environ.get('OFFICER_URL', 'http://officer:7078')
+        self.dpi = dpi
 
     @property
     def render_url(self):
@@ -42,20 +43,20 @@ class OfficerClient(object):
         return '{}/exists'.format(self.url)
 
     @backoff.on_exception(backoff.expo, requests.exceptions.HTTPError, max_time=5 * 60)
-    def render(self, asset, page):
+    def render(self, asset, page, disable_images=False):
         """
         Render thumbnails and metadata for the given Asset.
 
         Args:
             asset (Asset): The asset we're going to render
             page (int): The page number, None for all pages.
-
+            disable_images (bool): Disable the image render.
         Returns:
             (str): An internal ZMLP URL where the thumbnails and metadata are located.
 
         """
         try:
-            post_files = self._get_render_request_body(asset, page)
+            post_files = self._get_render_request_body(asset, page, disable_images)
             rsp = requests.post(self.render_url,
                                 files=post_files)
             rsp.raise_for_status()
@@ -104,7 +105,7 @@ class OfficerClient(object):
         else:
             rsp.raise_for_status()
 
-    def _get_render_request_body(self, asset, page):
+    def _get_render_request_body(self, asset, page, disable_images):
         """
         Formulates a multi-part request body in order to upload a file
         to be rendered to officer.
@@ -112,7 +113,7 @@ class OfficerClient(object):
         Args:
             asset (Asset): The asset we're going to upload.
             page (int): The page number or None to render all pages.
-
+            disable_images (bool): Disable image rendering.
         Returns:
             list : An array which can be used for a multi-part upload.
 
@@ -129,7 +130,9 @@ class OfficerClient(object):
         body = {
             'fileName': asset.uri,
             'outputDir': asset.id,
-            'page': page
+            'page': page,
+            'disableImageRender': disable_images,
+            'dpi': self.dpi
         }
 
         # combine the file and json body into a multi-part request

@@ -20,8 +20,8 @@ class Subscription(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     project = models.OneToOneField(Project, on_delete=models.CASCADE)
     tier = models.CharField(max_length=20, choices=Tier.choices, default=Tier.ESSENTIALS)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    createdDate = models.DateTimeField(auto_now_add=True)
+    modifiedDate = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.project}'

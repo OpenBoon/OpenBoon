@@ -31,7 +31,7 @@ def query():
 @pytest.fixture()
 def search(project, user, query):
     return Search.objects.create(project=project, name='Test Search', search=query,
-                                 created_by=user)
+                                 createdBy=user)
 
 
 class TestSearchViewSetList:
@@ -53,7 +53,7 @@ class TestSearchViewSetList:
     def test_list_filters_by_project(self, zmlp_project_membership, login, api_client, project,
                                      project2, search, query):
         Search.objects.create(project=project2, name='Other Project Search', search=query,
-                              created_by=zmlp_project_membership.user)
+                              createdBy=zmlp_project_membership.user)
         response = api_client.get(reverse('search-list', kwargs={'project_pk': str(project.id)}))
         results = check_response(response)['results']
         assert len(results) == 1
@@ -89,7 +89,7 @@ class TestSearchViewSetCreate:
             "project": str(project.id),
             "name": "Tester",
             "search": query,
-            "created_by": str(user.id)
+            "createdBy": str(user.id)
         }
         response = api_client.post(reverse('search-list', kwargs={'project_pk': str(project.id)}), body)  # noqa
         content = check_response(response, status.HTTP_201_CREATED)
@@ -99,7 +99,7 @@ class TestSearchViewSetCreate:
         body = {
             "name": "Tester",
             "search": query,
-            "created_by": str(user.id)
+            "createdBy": str(user.id)
         }
         response = api_client.post(reverse('search-list', kwargs={'project_pk': str(project.id)}),
                                    body)  # noqa
@@ -110,10 +110,10 @@ class TestSearchViewSetCreate:
         body = {
             "project": str(project.id),
             "search": query,
-            "created_by": str(user.id)
+            "createdBy": str(user.id)
         }
         response = api_client.post(reverse('search-list', kwargs={'project_pk': str(project.id)}),
-                                   body)  # noqa
+                                   body)
         content = check_response(response, status.HTTP_400_BAD_REQUEST)
         assert content['name'] == ['This field is required.']
 
@@ -121,7 +121,7 @@ class TestSearchViewSetCreate:
         body = {
             "project": str(project.id),
             "name": "Tester",
-            "created_by": str(user.id)
+            "createdBy": str(user.id)
         }
         response = api_client.post(reverse('search-list', kwargs={'project_pk': str(project.id)}),
                                    body)  # noqa
@@ -144,7 +144,7 @@ class TestSearchViewSetUpdate:
 
     def test_update(self, zmlp_project_membership, login, api_client, query, project, user):
         search = Search.objects.create(project=project, name='My Old Search',
-                                       search=query, created_by=user)
+                                       search=query, createdBy=user)
         response = api_client.get(reverse('search-list', kwargs={'project_pk': str(project.id)}))
         results = check_response(response)['results']
         assert len(results) == 1
@@ -155,7 +155,7 @@ class TestSearchViewSetUpdate:
             "project": str(project.id),
             "name": "Tester",
             "search": new_query,
-            "created_by": str(user.id)
+            "createdBy": str(user.id)
         }
         response = api_client.put(reverse('search-detail', kwargs={'project_pk': str(project.id),
                                                                    'pk': str(search.id)}), body)
@@ -167,7 +167,7 @@ class TestSearchViewSetUpdate:
     def test_partial_with_bad_method(self, zmlp_project_membership, login, api_client, query,
                                      project, user):
         search = Search.objects.create(project=project, name='My Old Search',
-                                       search=query, created_by=user)
+                                       search=query, createdBy=user)
 
         new_query = {"hey": "you guys"}
         body = {
@@ -181,7 +181,7 @@ class TestSearchViewSetUpdate:
 
     def test_partial_update(self, zmlp_project_membership, login, api_client, query, project, user):
         search = Search.objects.create(project=project, name='My Old Search',
-                                       search=query, created_by=user)
+                                       search=query, createdBy=user)
         response = api_client.get(reverse('search-list', kwargs={'project_pk': str(project.id)}))
         results = check_response(response)['results']
         assert len(results) == 1
@@ -208,7 +208,7 @@ class TestSearchDestroy:
 
     def test_destroy_non_member(self, zmlp_project_membership, login, api_client, project2, query):
         search2 = Search.objects.create(project=project2, name='Other Project Search', search=query,
-                                        created_by=zmlp_project_membership.user)
+                                        createdBy=zmlp_project_membership.user)
         response = api_client.delete(reverse('search-detail', kwargs={'project_pk': str(project2.id),  # noqa
                                                                       'pk': str(search2.id)}))
         assert response.status_code == status.HTTP_403_FORBIDDEN
@@ -228,6 +228,20 @@ class TestFieldsAction:
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response)
         assert content['analysis']['zvi']['tinyProxy'] == ['exists']
+        assert content['clip']['start'] == ['range', 'exists']
+        assert content['media']['type'] == ['facet', 'exists']
+        assert content['aux'] == ['exists']
+        assert content['tmp'] == ['exists']
+
+    def test_get_field_with_underscore(self, login, api_client, monkeypatch, mapping_response,
+                                       project):
+        def mock_response(*args, **kwargs):
+            return {'u1oi7jlkrqcxxvkc': {'aliases': {}, 'mappings': {'dynamic': 'strict', 'dynamic_templates': [{'analysis_label': {'path_match': 'analysis.*.predictions.label', 'match_mapping_type': 'string', 'mapping': {'fields': {'fulltext': {'analyzer': 'default', 'type': 'text'}}, 'type': 'keyword'}}}, {'analysis_score': {'path_match': 'analysis.*.predictions.score', 'mapping': {'coerce': True, 'type': 'float'}}}, {'analysis_point': {'path_match': 'analysis.*.predictions.point', 'mapping': {'type': 'geo_point'}}}, {'analysis_bbox': {'path_match': 'analysis.*.predictions.bbox', 'mapping': {'type': 'float'}}}, {'analysis_tags': {'path_match': 'analysis.*.predictions.tags', 'match_mapping_type': 'string', 'mapping': {'fields': {'fulltext': {'analyzer': 'default', 'type': 'text'}}, 'type': 'keyword'}}}, {'simhash': {'match': 'simhash', 'match_mapping_type': 'string', 'match_pattern': 'regex', 'mapping': {'index': False, 'type': 'keyword'}}}, {'content': {'match': 'content', 'match_mapping_type': 'string', 'mapping': {'analyzer': 'default', 'type': 'text'}}}], 'properties': {'analysis': {'dynamic': 'true', 'properties': {'analyis_underscore': {'properties': {'tinyProxy': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}}}}, 'zvi-image-similarity': {'properties': {'simhash': {'type': 'keyword', 'index': False}, 'type': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}}}}}}, 'aux': {'type': 'object', 'enabled': False}, 'clip': {'dynamic': 'strict', 'properties': {'length': {'type': 'double'}, 'pile': {'type': 'keyword'}, 'sourceAssetId': {'type': 'keyword'}, 'start': {'type': 'double'}, 'stop': {'type': 'double'}, 'timeline': {'type': 'keyword'}, 'type': {'type': 'keyword'}}}, 'files': {'type': 'object', 'enabled': False}, 'location': {'dynamic': 'strict', 'properties': {'city': {'type': 'keyword'}, 'code': {'type': 'keyword'}, 'country': {'type': 'keyword'}, 'point': {'type': 'geo_point'}}}, 'media': {'dynamic': 'strict', 'properties': {'aspect': {'type': 'float'}, 'author': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'content': {'type': 'text'}, 'description': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'height': {'type': 'float'}, 'keywords': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'length': {'type': 'float'}, 'orientation': {'type': 'keyword'}, 'timeCreated': {'type': 'date'}, 'title': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'type': {'type': 'keyword'}, 'width': {'type': 'float'}}}, 'metrics': {'dynamic': 'strict', 'properties': {'pipeline': {'type': 'nested', 'dynamic': 'strict', 'properties': {'checksum': {'type': 'long'}, 'error': {'type': 'keyword'}, 'executionDate': {'type': 'date'}, 'executionTime': {'type': 'double'}, 'module': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'processor': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}}}}}, 'source': {'dynamic': 'strict', 'properties': {'checksum': {'type': 'long'}, 'extension': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'filename': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'filesize': {'type': 'long'}, 'mimetype': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'path': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}, 'path': {'type': 'text', 'analyzer': 'path_analyzer', 'fielddata': True}}}}}, 'system': {'dynamic': 'strict', 'properties': {'dataSourceId': {'type': 'keyword'}, 'jobId': {'type': 'keyword'}, 'projectId': {'type': 'keyword'}, 'state': {'type': 'keyword'}, 'taskId': {'type': 'keyword'}, 'timeCreated': {'type': 'date'}, 'timeModified': {'type': 'date'}}}, 'tmp': {'type': 'object', 'enabled': False}}}, 'settings': {'index': {'mapping': {'coerce': 'false', 'ignore_malformed': 'false'}, 'number_of_shards': '2', 'provided_name': 'u1oi7jlkrqcxxvkc', 'creation_date': '1586588369756', 'analysis': {'filter': {'delimiter_filter': {'type': 'word_delimiter', 'preserve_original': 'true'}, 'stemmer_english': {'type': 'stemmer', 'language': 'english'}}, 'analyzer': {'default': {'filter': ['trim', 'stop', 'lowercase', 'delimiter_filter', 'stemmer_english'], 'tokenizer': 'standard'}, 'path_analyzer': {'type': 'custom', 'tokenizer': 'path_tokenizer'}}, 'tokenizer': {'path_tokenizer': {'type': 'path_hierarchy', 'delimiter': '/'}}}, 'number_of_replicas': '0', 'uuid': 'Y1vGPS26QWGiDJNhtV8FLQ', 'version': {'created': '7050199'}}}}}  # noqa
+
+        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
+        content = check_response(response)
+        assert content['analysis']['analyis_underscore']['tinyProxy'] == ['exists']
         assert content['clip']['start'] == ['range', 'exists']
         assert content['media']['type'] == ['facet', 'exists']
         assert content['aux'] == ['exists']
@@ -299,36 +313,36 @@ class TestSearchAssetModifier:
 
     def test_add_asset_style_image(self, mock_request, image_item):
         search_asset_modifier(mock_request, image_item)
-        assert image_item['asset_style'] == 'image'
+        assert image_item['assetStyle'] == 'image'
 
     def test_add_asset_style_document(self, mock_request, document_item):
         search_asset_modifier(mock_request, document_item)
         # Documents should have the image style
-        assert document_item['asset_style'] == 'image'
+        assert document_item['assetStyle'] == 'image'
 
     def test_add_asset_style_video(self, mock_request, video_item):
         search_asset_modifier(mock_request, video_item)
-        assert video_item['asset_style'] == 'video'
+        assert video_item['assetStyle'] == 'video'
 
     def test_add_video_length_for_image(self, mock_request, image_item):
         search_asset_modifier(mock_request, image_item)
-        assert image_item['video_length'] is None
+        assert image_item['videoLength'] is None
 
     def test_add_video_length_for_video(self, mock_request, video_item):
         search_asset_modifier(mock_request, video_item)
-        assert video_item['video_length'] == 15.048367
+        assert video_item['videoLength'] == 15.048367
 
     def test_videoUrl_for_image(self, mock_request, image_item):
         search_asset_modifier(mock_request, image_item)
-        assert image_item['video_proxy_url'] is None
+        assert image_item['videoProxyUrl'] is None
 
     def test_videoUrl_for_video(self, mock_request, video_item):
         search_asset_modifier(mock_request, video_item)
-        assert video_item['video_proxy_url'] == 'http://testserver/api/v1/projects/asdf/assets/mUqByg6ARFdORH1UaO2NH4JvxfN2Wk7W/files/category/proxy/name/video_640x360.mp4/'  # noqa
+        assert video_item['videoProxyUrl'] == 'http://testserver/api/v1/projects/asdf/assets/mUqByg6ARFdORH1UaO2NH4JvxfN2Wk7W/files/category/proxy/name/video_640x360.mp4/'  # noqa
 
     def test_fullscreen_url_not_included(self, mock_request, video_item):
         search_asset_modifier(mock_request, video_item)
-        assert 'fullscreen_url' not in video_item
+        assert 'fullscreenUrl' not in video_item
 
 
 class TestQuery(BaseFiltersTestCase):
@@ -394,7 +408,8 @@ class TestQuery(BaseFiltersTestCase):
                              '_source': ['id',
                                          'source*',
                                          'files*',
-                                         'media*']}
+                                         'media*'],
+                             'track_total_hits': True}
             return Response(status=status.HTTP_200_OK)
 
         path = reverse('search-query', kwargs={'project_pk': project.id})
@@ -418,7 +433,8 @@ class TestAggregate(BaseFiltersTestCase):
                             'min': 7555.0,
                             'max': 64657027.0,
                             'avg': 5725264.875,
-                            'sum': 137406357.0}}}
+                            'sum': 137406357.0,
+                            'doc_count': 24}}}
 
         def mock_init(*args, **kwargs):
             # Need to override the internally created name so we can parse our fake response
@@ -435,6 +451,7 @@ class TestAggregate(BaseFiltersTestCase):
         assert content['count'] == 24
         assert content['results']['min'] == 7555.0
         assert content['results']['max'] == 64657027.0
+        assert content['results']['docCount'] == 24
 
     def test_get_missing_querystring(self, login, api_client, project, range_agg_qs):
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}))

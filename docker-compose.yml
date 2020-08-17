@@ -270,3 +270,10 @@ services:
     build:
       context: containers/zmlp-plugins-analysis
     command: echo
+
+  reporter:
+    image: zmlp/reporter:latest
+    build:
+      context: .
+      dockerfile: services/reporter/Dockerfile
+    command: echo

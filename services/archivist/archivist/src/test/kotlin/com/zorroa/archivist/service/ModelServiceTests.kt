@@ -22,6 +22,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class ModelServiceTests : AbstractTest() {
@@ -35,13 +36,16 @@ class ModelServiceTests : AbstractTest() {
     @Autowired
     lateinit var assetSearchService: AssetSearchService
 
+    @Autowired
+    lateinit var pipelineModService: PipelineModService
+
     val testSearch =
         """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
 
-    fun create(): Model {
+    fun create(type: ModelType = ModelType.ZVI_LABEL_DETECTION): Model {
         val mspec = ModelSpec(
             "test",
-            ModelType.ZVI_LABEL_DETECTION,
+            type,
             deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         return modelService.createModel(mspec)
@@ -143,6 +147,16 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testPublishModelWithDepend() {
+        val model1 = create(ModelType.ZVI_FACE_RECOGNITION)
+        val mod = modelService.publishModel(model1)
+        Json.prettyPrint(mod)
+        assertEquals(ModOpType.DEPEND, mod.ops[0].type)
+        assertEquals(ModOpType.APPEND, mod.ops[1].type)
+        assertEquals(ModelType.ZVI_FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
+    }
+
+    @Test
     fun testPublishModelUpdate() {
         val model1 = create()
         val mod1 = modelService.publishModel(model1)
@@ -233,12 +247,7 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun getLabelCounts() {
         val model = create()
-        val specs = listOf(
-            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("beaver")),
-            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("ant")),
-            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
-            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
-        )
+        val specs = dataSet(model)
 
         assetService.batchCreate(
             BatchCreateAssetsRequest(specs)
@@ -255,11 +264,73 @@ class ModelServiceTests : AbstractTest() {
         assertEquals("zanzibar", keys[3])
     }
 
+    @Test
+    fun testRenameLabel() {
+        val model = create()
+        val specs = dataSet(model)
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs)
+        )
+        modelService.updateLabel(model, "beaver", "horse")
+        refreshElastic()
+        val counts = modelService.getLabelCounts(model)
+        assertEquals(1, counts["ant"])
+        assertEquals(2, counts["horse"])
+        assertEquals(null, counts["beaver"])
+        assertEquals(1, counts["zanzibar"])
+    }
+
+    @Test
+    fun testRenameLabelToNullForDelete() {
+        val model = create()
+        val specs = dataSet(model)
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(specs)
+        )
+        modelService.updateLabel(model, "horse", null)
+        refreshElastic()
+
+        val counts = modelService.getLabelCounts(model)
+        assertEquals(1, counts["ant"])
+        assertEquals(null, counts["horse"])
+        assertEquals(1, counts["beaver"])
+        assertEquals(1, counts["zanzibar"])
+    }
+
+    @Test
+    fun testDeleteModel() {
+        val model = create()
+        val specs = dataSet(model)
+
+        assetService.batchCreate(BatchCreateAssetsRequest(specs))
+        modelService.publishModel(model)
+
+        assertNotNull(pipelineModService.findByName(model.moduleName, false))
+
+        modelService.deleteModel(model)
+        Thread.sleep(2000)
+
+        val counts = modelService.getLabelCounts(model)
+        assertTrue(counts.isEmpty())
+        assertNull(pipelineModService.findByName(model.moduleName, false))
+    }
+
     fun assertModel(model: Model) {
         assertEquals(ModelType.ZVI_LABEL_DETECTION, model.type)
         assertEquals("test", model.name)
         assertEquals("test", model.moduleName)
         assertTrue(model.fileId.endsWith("model.zip"))
         assertFalse(model.ready)
+    }
+
+    fun dataSet(model: Model): List<AssetSpec> {
+        return listOf(
+            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("beaver")),
+            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("ant")),
+            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
+            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
+        )
     }
 }

@@ -20,7 +20,6 @@ const RadioIcon = ({ value, isChecked }) => {
         value={value}
         defaultChecked={isChecked}
         css={{
-          margin: 0,
           padding: 0,
           WebkitAppearance: 'none',
           borderRadius: RADIO_BUTTON_SIZE,

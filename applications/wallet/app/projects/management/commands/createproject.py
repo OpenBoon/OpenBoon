@@ -25,8 +25,8 @@ class Command(BaseCommand):
         with transaction.atomic():
             project = Project.all_objects.get_or_create(id=options['id'], name=options['name'])[0]
             client = get_zmlp_superuser_client(project_id=str(project.id))
-            if not project.is_active:
-                project.is_active = True
+            if not project.isActive:
+                project.isActive = True
                 project.save()
             project.sync_with_zmlp()
             try:

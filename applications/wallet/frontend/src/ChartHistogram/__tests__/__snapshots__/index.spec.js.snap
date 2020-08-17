@@ -1,0 +1,919 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChartHistogram /> should render properly 1`] = `
+.emotion-15 {
+  height: 100%;
+  overflow: hidden;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-14 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #252525;
+  border-radius: 2px;
+  padding: 16px;
+  padding-top: 8px;
+}
+
+.emotion-5 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-bottom: 24px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-right: -8px;
+}
+
+.emotion-4:hover button svg {
+  opacity: 1;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-right: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  padding: 6px;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1 svg {
+  opacity: 0;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-2 {
+  width: 2px;
+}
+
+.emotion-13 {
+  height: 0%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100%;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-7 {
+  height: 24px;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 2px;
+  background-color: #3b3b3b;
+  color: #b3b3b3;
+  line-height: 19px;
+  font-size: 15px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-10[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-10:hover,
+.emotion-10:focus {
+  color: #ffffff;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 {
+  padding-right: 8px;
+}
+
+<div
+  className="emotion-15"
+>
+  <div
+    className="emotion-14"
+  >
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-4"
+      >
+        <h3
+          className="emotion-0"
+        >
+          analysis.zvi-face-detection
+        </h3>
+        <button
+          aria-label="Edit Chart"
+          className="emotion-1"
+          onClick={[Function]}
+          title="Edit"
+          type="button"
+        >
+          <svg
+            data-file-name="pen.svg"
+            height={20}
+          />
+        </button>
+        <div
+          className="emotion-2"
+        />
+        <button
+          aria-label="Delete Chart"
+          className="emotion-1"
+          onClick={[Function]}
+          title="Delete"
+          type="button"
+        >
+          <svg
+            data-file-name="cross.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      className="emotion-13"
+    >
+      <div
+        className="emotion-12"
+      >
+        <div
+          className="emotion-6"
+        >
+          <div>
+            type: histogram
+          </div>
+          <div>
+            id: 972a8ab5-cdcb-4eea-ada7-f1c88d997fed
+          </div>
+          <div>
+            attribute: analysis.zvi-face-detection
+          </div>
+          <div>
+            scale: absolute
+          </div>
+          <div>
+            values: 10
+          </div>
+        </div>
+        <div
+          className="emotion-7"
+        />
+        <div
+          className="emotion-11"
+        >
+          <button
+            aria-label="Add Filter"
+            className="emotion-10"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-9"
+            >
+              <svg
+                className="emotion-8"
+                data-file-name="filter.svg"
+                height={20}
+              />
+              Add Filter
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
+.emotion-34 {
+  height: 100%;
+  overflow: hidden;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-33 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #252525;
+  border-radius: 2px;
+  padding: 16px;
+  padding-top: 8px;
+}
+
+.emotion-32 {
+  height: 0%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-31 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  width: auto;
+  padding: 0;
+}
+
+.emotion-0 {
+  padding-top: 8px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-1 {
+  height: 24px;
+}
+
+.emotion-16 [data-reach-listbox-input][data-state="expanded"] {
+  box-shadow: 0 2px 6px 0 #000000;
+}
+
+.emotion-2 {
+  padding-bottom: 8px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-15 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border-radius: 2px;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  border: none;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.emotion-14 {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.emotion-14:focus-within {
+  outline: none;
+  box-shadow: none;
+}
+
+.emotion-13 {
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
+}
+
+.emotion-12 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background-color: #808080;
+  box-shadow: 0 2px 6px 0 #000000;
+}
+
+.emotion-5 {
+  padding: 4px;
+}
+
+.emotion-4 {
+  width: 100%;
+  padding: 12px 8px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  border: 2px solid transparent;
+}
+
+.emotion-4:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
+.emotion-11 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  margin: 0;
+  overflow: auto;
+  max-height: 350px;
+  background-color: #808080;
+  color: #ffffff;
+  font-weight: 500;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-10 {
+  list-style: none;
+  padding-left: 0;
+  padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-9 {
+  padding-bottom: 2px;
+}
+
+.emotion-6 {
+  padding-left: 8px;
+}
+
+.emotion-8 {
+  padding: 0;
+}
+
+.emotion-7 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 24px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-7:hover {
+  background: #b3b3b3;
+  cursor: pointer;
+}
+
+.emotion-20 {
+  color: #b3b3b3;
+}
+
+.emotion-19 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-18 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 300px;
+  height: 40px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  padding-left: 12px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  background-position: right 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-21 {
+  height: 16px;
+}
+
+.emotion-25 {
+  padding-top: 8px;
+}
+
+.emotion-22 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-24 {
+  position: relative;
+}
+
+.emotion-23 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-23:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
+.emotion-23:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-30 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-27 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-27:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-27[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-27,
+.emotion-27:hover,
+.emotion-27:visited {
+  background-color: #808080;
+}
+
+.emotion-27:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-27[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-28 {
+  width: 8px;
+}
+
+.emotion-29 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-29:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-29[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-29,
+.emotion-29:hover,
+.emotion-29:visited {
+  background-color: #73b61c;
+}
+
+.emotion-29:hover {
+  background-color: #96c955;
+}
+
+.emotion-29[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+  className="emotion-34"
+>
+  <div
+    className="emotion-33"
+  >
+    <div
+      className="emotion-32"
+    >
+      <form
+        action=""
+        className="emotion-31"
+        method="post"
+        onSubmit={[Function]}
+      >
+        <h2
+          className="emotion-0"
+        >
+          Histogram
+           Visualization
+        </h2>
+        <div
+          className="emotion-1"
+        />
+        <label
+          className="emotion-16"
+        >
+          <div
+            className="emotion-2"
+          >
+            Metadata Type
+          </div>
+          <ListboxInput
+            className="emotion-15"
+            defaultValue=""
+            onChange={[Function]}
+          >
+            <ListboxButton
+              arrow={
+                <Unknown
+                  color="#ffffff"
+                  height={20}
+                />
+              }
+              className="emotion-3"
+            >
+              Select Type
+            </ListboxButton>
+            <ListboxPopover
+              className="emotion-14"
+            >
+              <div
+                className="emotion-13"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  <div
+                    className="emotion-5"
+                  >
+                    <input
+                      aria-label="Filter options"
+                      className="emotion-4"
+                      onChange={[Function]}
+                      type="search"
+                      value=""
+                    />
+                  </div>
+                  <ListboxList
+                    className="emotion-11"
+                  >
+                    <ul
+                      aria-labelledby="Analysis"
+                      className="emotion-10"
+                      role="group"
+                    >
+                      <li
+                        className="emotion-9"
+                        role="presentation"
+                      >
+                        <span
+                          className="emotion-6"
+                        >
+                          Analysis
+                        </span>
+                        <ul
+                          className="emotion-8"
+                        >
+                          <ListboxOption
+                            className="emotion-7"
+                            value="analysis.zvi-face-detection"
+                          >
+                            zvi-face-detection
+                          </ListboxOption>
+                        </ul>
+                      </li>
+                    </ul>
+                  </ListboxList>
+                </div>
+              </div>
+            </ListboxPopover>
+          </ListboxInput>
+        </label>
+        <div
+          className="emotion-1"
+        />
+        <label
+          className="emotion-20"
+        >
+          Select the histogram type
+          <div
+            className="emotion-19"
+          >
+            <select
+              className="emotion-18"
+              defaultValue="absolute"
+              disabled={false}
+              onChange={[Function]}
+            >
+              <option
+                disabled={true}
+                value=""
+              >
+                Select an option...
+              </option>
+              <option
+                value="absolute"
+              >
+                Absolute
+              </option>
+              <option
+                value="relative"
+              >
+                Relative
+              </option>
+            </select>
+          </div>
+        </label>
+        <div
+          className="emotion-21"
+        />
+        <div
+          className="emotion-25"
+        >
+          <label
+            className="emotion-22"
+            htmlFor="values"
+          >
+            Number of Values Shown
+          </label>
+          <div
+            className="emotion-24"
+          >
+            <input
+              className="emotion-23"
+              disabled={false}
+              id="values"
+              name="values"
+              onChange={[Function]}
+              type="number"
+              value="10"
+            />
+          </div>
+          <div
+            className="emotion-25"
+          >
+             
+          </div>
+        </div>
+        <div
+          className="emotion-30"
+        >
+          <button
+            className="emotion-27"
+            onClick={[Function]}
+            type="button"
+          >
+            Cancel
+          </button>
+          <div
+            className="emotion-28"
+          />
+          <button
+            aria-disabled={true}
+            className="emotion-29"
+            onClick={[Function]}
+            type="submit"
+          >
+            Save Visualization
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;

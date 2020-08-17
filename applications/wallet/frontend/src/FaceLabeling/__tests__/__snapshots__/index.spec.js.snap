@@ -52,7 +52,7 @@ Array [
     AssetFilename.jpg
   </div>,
   "",
-  .emotion-10 {
+  .emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -69,7 +69,7 @@ Array [
   overflow: hidden;
 }
 
-.emotion-5 {
+.emotion-2 {
   padding: 16px;
   background-color: #191919;
   -webkit-flex: 1;
@@ -78,7 +78,7 @@ Array [
   overflow: auto;
 }
 
-.emotion-4 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -97,47 +97,18 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-3 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-1 {
-  padding-bottom: 8px;
-  color: #808080;
-}
-
-.emotion-2 {
-  width: 100%;
-  padding: 8px;
-  outline: 1px solid transparent;
-  background-color: #3b3b3b;
-  color: #ffffff;
-  font-weight: 500;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  margin-bottom: 1px;
-}
-
-.emotion-2:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-2:focus {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-.emotion-9 {
+.emotion-6 {
   padding: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
-.emotion-6 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -157,7 +128,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -172,35 +142,35 @@ Array [
   flex: 1;
 }
 
-.emotion-6:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6,
-.emotion-6:hover,
-.emotion-6:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
   background-color: #808080;
 }
 
-.emotion-6:hover {
+.emotion-3:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-7 {
+.emotion-4 {
   width: 8px;
   min-width: 8px;
 }
 
-.emotion-8 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -220,7 +190,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -235,40 +204,40 @@ Array [
   flex: 1;
 }
 
-.emotion-8:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
   background-color: #73b61c;
 }
 
-.emotion-8:hover {
+.emotion-5:hover {
   background-color: #96c955;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-10"
+    className="emotion-7"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-5"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-1"
       >
         <img
           alt={
@@ -289,54 +258,32 @@ Array [
             ]
           }
         />
-        <div
-          className="emotion-3"
-        >
-          <div
-            className="emotion-1"
-          >
-            Name
-          </div>
-          <div
-            data-reach-combobox=""
-          >
-            <input
-              aria-autocomplete="both"
-              aria-controls="listbox--1"
-              aria-expanded={false}
-              aria-haspopup="listbox"
-              className="emotion-2"
-              data-reach-combobox-input=""
-              id="MNONPMMKPLRLONLJMRLNM"
-              onBlur={[Function]}
-              onChange={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              role="combobox"
-              value="face1"
-            />
-          </div>
-        </div>
+        <Combobox
+          hasError={false}
+          label="Name"
+          onChange={[Function]}
+          options={Array []}
+          value="face1"
+        />
       </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-6"
     >
       <button
         aria-disabled={true}
-        className="emotion-6"
+        className="emotion-3"
         onClick={[Function]}
         type="button"
       >
         Cancel
       </button>
       <div
-        className="emotion-7"
+        className="emotion-4"
       />
       <button
         aria-disabled={true}
-        className="emotion-8"
+        className="emotion-5"
         onClick={[Function]}
         type="submit"
       >
@@ -363,7 +310,7 @@ Array [
     AssetFilename.jpg
   </div>,
   "",
-  .emotion-10 {
+  .emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -380,7 +327,7 @@ Array [
   overflow: hidden;
 }
 
-.emotion-5 {
+.emotion-2 {
   padding: 16px;
   background-color: #191919;
   -webkit-flex: 1;
@@ -389,7 +336,7 @@ Array [
   overflow: auto;
 }
 
-.emotion-4 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -408,52 +355,23 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-3 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-1 {
-  padding-bottom: 8px;
-  color: #808080;
-}
-
-.emotion-2 {
-  width: 100%;
-  padding: 8px;
-  outline: 1px solid transparent;
-  background-color: #3b3b3b;
-  color: #ffffff;
-  font-weight: 500;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  margin-bottom: 1px;
-}
-
-.emotion-2:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-2:focus {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-.emotion-9 {
+.emotion-6 {
   padding: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
-.emotion-7 {
+.emotion-4 {
   width: 8px;
   min-width: 8px;
 }
 
-.emotion-6 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -473,7 +391,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -488,30 +405,30 @@ Array [
   flex: 1;
 }
 
-.emotion-6:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6,
-.emotion-6:hover,
-.emotion-6:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
   background-color: #808080;
 }
 
-.emotion-6:hover {
+.emotion-3:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-8 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -531,7 +448,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -546,40 +462,40 @@ Array [
   flex: 1;
 }
 
-.emotion-8:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
   background-color: #73b61c;
 }
 
-.emotion-8:hover {
+.emotion-5:hover {
   background-color: #96c955;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-10"
+    className="emotion-7"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-5"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-1"
       >
         <img
           alt={
@@ -600,52 +516,30 @@ Array [
             ]
           }
         />
-        <div
-          className="emotion-3"
-        >
-          <div
-            className="emotion-1"
-          >
-            Name
-          </div>
-          <div
-            data-reach-combobox=""
-          >
-            <input
-              aria-autocomplete="both"
-              aria-controls="listbox--1"
-              aria-expanded={true}
-              aria-haspopup="listbox"
-              className="emotion-2"
-              data-reach-combobox-input=""
-              id="MNONPMMKPLRLONLJMRLNM"
-              onBlur={[Function]}
-              onChange={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              role="combobox"
-              value="Jane"
-            />
-          </div>
-        </div>
+        <Combobox
+          hasError={false}
+          label="Name"
+          onChange={[Function]}
+          options={Array []}
+          value="Jane"
+        />
       </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-6"
     >
       <button
-        className="emotion-6"
+        className="emotion-3"
         onClick={[Function]}
         type="button"
       >
         Cancel
       </button>
       <div
-        className="emotion-7"
+        className="emotion-4"
       />
       <button
-        className="emotion-8"
+        className="emotion-5"
         onClick={[Function]}
         type="submit"
       >
@@ -722,7 +616,7 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-10 {
+  .emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -739,7 +633,7 @@ Array [
   overflow: hidden;
 }
 
-.emotion-5 {
+.emotion-2 {
   padding: 16px;
   background-color: #191919;
   -webkit-flex: 1;
@@ -748,7 +642,7 @@ Array [
   overflow: auto;
 }
 
-.emotion-4 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -767,52 +661,23 @@ Array [
   margin-right: 16px;
 }
 
-.emotion-3 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-1 {
-  padding-bottom: 8px;
-  color: #808080;
-}
-
-.emotion-2 {
-  width: 100%;
-  padding: 8px;
-  outline: 1px solid transparent;
-  background-color: #3b3b3b;
-  color: #ffffff;
-  font-weight: 500;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  margin-bottom: 1px;
-}
-
-.emotion-2:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-2:focus {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-.emotion-9 {
+.emotion-6 {
   padding: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
-.emotion-7 {
+.emotion-4 {
   width: 8px;
   min-width: 8px;
 }
 
-.emotion-6 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -832,7 +697,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -847,30 +711,30 @@ Array [
   flex: 1;
 }
 
-.emotion-6:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6,
-.emotion-6:hover,
-.emotion-6:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
   background-color: #808080;
 }
 
-.emotion-6:hover {
+.emotion-3:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-8 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -890,7 +754,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -905,40 +768,40 @@ Array [
   flex: 1;
 }
 
-.emotion-8:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
   background-color: #73b61c;
 }
 
-.emotion-8:hover {
+.emotion-5:hover {
   background-color: #96c955;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-10"
+    className="emotion-7"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-5"
+      className="emotion-2"
     >
       <div
-        className="emotion-4"
+        className="emotion-1"
       >
         <img
           alt={
@@ -959,52 +822,30 @@ Array [
             ]
           }
         />
-        <div
-          className="emotion-3"
-        >
-          <div
-            className="emotion-1"
-          >
-            Name
-          </div>
-          <div
-            data-reach-combobox=""
-          >
-            <input
-              aria-autocomplete="both"
-              aria-controls="listbox--9"
-              aria-expanded={false}
-              aria-haspopup="listbox"
-              className="emotion-2"
-              data-reach-combobox-input=""
-              id="MNONPMMKPLRLONLJMRLNM"
-              onBlur={[Function]}
-              onChange={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              role="combobox"
-              value="Jane"
-            />
-          </div>
-        </div>
+        <Combobox
+          hasError={false}
+          label="Name"
+          onChange={[Function]}
+          options={Array []}
+          value="Jane"
+        />
       </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-6"
     >
       <button
-        className="emotion-6"
+        className="emotion-3"
         onClick={[Function]}
         type="button"
       >
         Cancel
       </button>
       <div
-        className="emotion-7"
+        className="emotion-4"
       />
       <button
-        className="emotion-8"
+        className="emotion-5"
         onClick={[Function]}
         type="submit"
       >
