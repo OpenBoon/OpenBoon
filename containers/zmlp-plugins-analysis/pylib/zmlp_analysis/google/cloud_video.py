@@ -120,6 +120,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                     annotation.entity.description,
                     track.confidence))
         asset.add_analysis('gcp-video-logo-detection', analysis)
+        timeline = cloud_timeline.build_logo_detection_timeline(results)
+        file_storage.assets.store_timeline(asset, timeline)
 
     def handle_detect_objects(self, asset, annotation_result):
         """

@@ -56,6 +56,37 @@ def build_object_detection_timeline(annotations):
     return timeline
 
 
+def build_logo_detection_timeline(annotations):
+    """
+    Build a timeline for video logo detection.
+
+    Args:
+        annotations (AnnotateVideoResponse):
+
+    Returns:
+        Timeline: The populated Timeline.
+
+    """
+    timeline = ztl.Timeline("gcp-video-logo-detection")
+    track = timeline.add_track("Detected Logo")
+    for annotation in annotations.logo_recognition_annotations:
+        labels = set([annotation.entity.description])
+
+        for segment in annotation.segments:
+            if not segment.start_time_offset:
+                clip_start = 0
+            else:
+                clip_start = convert_offset(segment.start_time_offset)
+
+            clip_stop = convert_offset(segment.end_time_offset)
+
+        for label in labels:
+            track = timeline.add_track(label)
+            track.add_clip(clip_start, clip_stop)
+
+    return timeline
+
+
 def build_content_moderation_timeline(annotations):
     """
     Use the explicit annotation to build a timeline.
