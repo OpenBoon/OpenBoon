@@ -34,7 +34,7 @@ Array [
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
   <div>
-    Label prediction confidence score:
+    Confidence score:
      
     N/A
   </div>,
@@ -171,7 +171,7 @@ Array [
     className="emotion-0"
   >
     <div>
-      LABEL
+      PREDICTION
     </div>
     <div>
       COUNT
@@ -215,7 +215,7 @@ Array [
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
   <div>
-    Label prediction confidence score:
+    Confidence score:
      
     N/A
   </div>,
@@ -352,7 +352,7 @@ Array [
     className="emotion-0"
   >
     <div>
-      LABEL
+      PREDICTION
     </div>
     <div>
       COUNT
@@ -384,7 +384,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -651,7 +650,7 @@ Array [
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
   <div>
-    Label prediction confidence score:
+    Confidence score:
      
     N/A
   </div>,
@@ -788,7 +787,7 @@ Array [
     className="emotion-0"
   >
     <div>
-      LABEL
+      PREDICTION
     </div>
     <div>
       COUNT
@@ -820,7 +819,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -967,7 +965,7 @@ Array [
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
   <div>
-    Label prediction confidence score:
+    Confidence score:
      
     All
   </div>,
@@ -1104,7 +1102,7 @@ Array [
     className="emotion-0"
   >
     <div>
-      LABEL
+      PREDICTION
     </div>
     <div>
       COUNT
@@ -1136,7 +1134,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1214,7 +1211,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;

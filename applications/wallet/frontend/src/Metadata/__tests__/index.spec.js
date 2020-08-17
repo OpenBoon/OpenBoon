@@ -27,19 +27,12 @@ describe('<Metadata />', () => {
     require('swr').__setMockUseSWRResponse({ data: asset })
 
     require('next/router').__setUseRouter({
-      query: { id: ASSET_ID, projectId: PROJECT_ID },
+      query: { assetId: ASSET_ID, projectId: PROJECT_ID },
     })
 
     const component = TestRenderer.create(<Metadata />)
 
     expect(component.toJSON()).toMatchSnapshot()
-
-    // Open all Accordions
-    act(() => {
-      component.root
-        .findAllByProps({ 'aria-label': 'Expand Section' })
-        .forEach((section) => section.props.onClick())
-    })
 
     act(() => {
       component.root.findByProps({ children: 'raw json' }).props.onClick()

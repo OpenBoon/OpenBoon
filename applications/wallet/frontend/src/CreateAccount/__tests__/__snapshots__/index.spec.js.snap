@@ -206,7 +206,6 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-35 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -296,7 +295,6 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -351,7 +349,6 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -853,7 +850,6 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-32 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -943,7 +939,6 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -998,7 +993,6 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;

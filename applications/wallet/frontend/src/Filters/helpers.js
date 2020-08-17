@@ -158,10 +158,10 @@ export const dispatch = ({ type, payload }) => {
       Router.push(
         {
           pathname,
-          query: { projectId, id: assetId, query },
+          query: { projectId, assetId, query },
         },
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
-          id: assetId,
+          assetId,
           query,
         })}`,
       )
@@ -190,10 +190,10 @@ export const dispatch = ({ type, payload }) => {
       Router.push(
         {
           pathname,
-          query: { projectId, id: assetId, query },
+          query: { projectId, assetId, query },
         },
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
-          id: assetId,
+          assetId,
           query,
         })}`,
       )
@@ -214,10 +214,10 @@ export const dispatch = ({ type, payload }) => {
       Router.push(
         {
           pathname,
-          query: { projectId, id: assetId, query },
+          query: { projectId, assetId, query },
         },
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
-          id: assetId,
+          assetId,
           query,
         })}`,
       )
@@ -226,7 +226,7 @@ export const dispatch = ({ type, payload }) => {
     }
 
     case ACTIONS.APPLY_SIMILARITY: {
-      const { projectId, assetId, selectedId, query: q, attribute } = payload
+      const { projectId, assetId, thumbnailId, query: q, attribute } = payload
 
       const filters = decode({ query: q })
 
@@ -242,7 +242,7 @@ export const dispatch = ({ type, payload }) => {
       const similarityFilter = {
         type: 'similarity',
         attribute,
-        values: { ids: [assetId], minScore },
+        values: { ids: [thumbnailId], minScore },
       }
 
       const combinedFilters =
@@ -261,12 +261,12 @@ export const dispatch = ({ type, payload }) => {
           pathname: '/[projectId]/visualizer',
           query: {
             projectId,
-            id: selectedId,
+            assetId,
             query,
           },
         },
         `/${projectId}/visualizer${getQueryString({
-          id: selectedId,
+          assetId,
           query,
         })}`,
       )
@@ -280,10 +280,10 @@ export const dispatch = ({ type, payload }) => {
       Router.push(
         {
           pathname,
-          query: { projectId, id: assetId },
+          query: { projectId, assetId },
         },
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
-          id: assetId,
+          assetId,
         })}`,
       )
 

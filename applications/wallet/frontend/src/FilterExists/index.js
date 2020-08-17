@@ -12,7 +12,7 @@ import { dispatch, ACTIONS } from '../Filters/helpers'
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import Button, { VARIANTS } from '../Button'
 import FilterReset from '../Filter/Reset'
-import FilterTitle from '../Filter/Title'
+import FilterIcon from '../Filter/Icon'
 import FilterActions from '../Filter/Actions'
 
 export const noop = () => {}
@@ -29,7 +29,8 @@ const FilterExists = ({
   return (
     <Accordion
       variant={ACCORDION_VARIANTS.FILTER}
-      title={<FilterTitle filter={filter} />}
+      icon={<FilterIcon filter={filter} />}
+      title={filter.attribute}
       actions={
         <FilterActions
           pathname={pathname}

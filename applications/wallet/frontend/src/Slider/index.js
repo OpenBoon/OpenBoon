@@ -68,7 +68,6 @@ const Slider = ({ step, domain, values, isDisabled, onUpdate, onChange }) => {
                   aria-valuenow={value}
                   css={{
                     padding: 0,
-                    margin: 0,
                     border: 'none',
                     left: `${percent}%`,
                     position: 'absolute',

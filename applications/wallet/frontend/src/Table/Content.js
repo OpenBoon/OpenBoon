@@ -4,9 +4,11 @@ import useSWR from 'swr'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import FetchAhead from '../Fetch/Ahead'
 import Pagination from '../Pagination'
 
 import KebabSvg from '../Icons/kebab.svg'
+
 import TableException from './Exception'
 import TableRefresh from './Refresh'
 
@@ -42,6 +44,7 @@ const TableContent = ({
           alignItems: 'flex-end',
           justifyContent: 'space-between',
           paddingBottom: spacing.normal,
+          flexShrink: 0,
         }}
       >
         <h3
@@ -54,6 +57,7 @@ const TableContent = ({
         >
           Number of {legend}: {count}
         </h3>
+
         {refreshButton && (
           <TableRefresh
             onClick={revalidate}
@@ -156,6 +160,7 @@ const TableContent = ({
                 ))}
               </tr>
             </thead>
+
             <tbody>
               {count === 0 ? (
                 <TableException numColumns={columns.length}>
@@ -176,6 +181,14 @@ const TableContent = ({
           currentPage={parsedPage}
           totalPages={Math.ceil(count / SIZE)}
         />
+      )}
+
+      {count > 0 && parsedPage < Math.ceil(count / SIZE) && (
+        <FetchAhead url={`${url}?from=${from + SIZE}&size=${SIZE}`} />
+      )}
+
+      {count > 0 && parsedPage > 1 && (
+        <FetchAhead url={`${url}?from=${from - SIZE}&size=${SIZE}`} />
       )}
 
       {count > 0 && <div>&nbsp;</div>}

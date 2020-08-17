@@ -55,7 +55,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -542,7 +541,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -765,7 +763,6 @@ exports[`<MetadataPrettySwitch /> should render long content text 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -929,7 +926,6 @@ exports[`<MetadataPrettySwitch /> should render regular text values 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1028,7 +1024,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1200,7 +1195,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1265,7 +1259,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1319,7 +1312,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1421,10 +1413,12 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             className="emotion-11"
           >
             <a
+              aria-label="Select asset irr.pdf"
               className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
+              title="irr.pdf"
             >
               <img
                 alt="irr.pdf"
@@ -1433,9 +1427,10 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
               />
             </a>
             <button
-              aria-label="Find similar images"
+              aria-label="Find similar images to irr.pdf"
               className="emotion-9"
               onClick={[Function]}
+              title="Find similar images"
               type="button"
             >
               <svg
@@ -1445,10 +1440,12 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
               />
             </button>
             <a
+              aria-label="Asset details irr.pdf"
               className="emotion-10"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4"
               onClick={[Function]}
               onMouseEnter={[Function]}
+              title="Asset details"
             >
               <svg
                 color="#ffffff"
@@ -1465,10 +1462,12 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             className="emotion-11"
           >
             <a
+              aria-label="Select asset irr.pdf"
               className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
+              title="irr.pdf"
             >
               <img
                 alt="irr.pdf"
@@ -1477,9 +1476,10 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
               />
             </a>
             <button
-              aria-label="Find similar images"
+              aria-label="Find similar images to irr.pdf"
               className="emotion-9"
               onClick={[Function]}
+              title="Find similar images"
               type="button"
             >
               <svg
@@ -1489,10 +1489,12 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
               />
             </button>
             <a
+              aria-label="Asset details irr.pdf"
               className="emotion-10"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
               onClick={[Function]}
               onMouseEnter={[Function]}
+              title="Asset details"
             >
               <svg
                 color="#ffffff"
@@ -1509,10 +1511,12 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             className="emotion-11"
           >
             <a
+              aria-label="Select asset irr.pdf"
               className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
+              title="irr.pdf"
             >
               <img
                 alt="irr.pdf"
@@ -1521,9 +1525,10 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
               />
             </a>
             <button
-              aria-label="Find similar images"
+              aria-label="Find similar images to irr.pdf"
               className="emotion-9"
               onClick={[Function]}
+              title="Find similar images"
               type="button"
             >
               <svg
@@ -1533,10 +1538,12 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
               />
             </button>
             <a
+              aria-label="Asset details irr.pdf"
               className="emotion-10"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r"
               onClick={[Function]}
               onMouseEnter={[Function]}
+              title="Asset details"
             >
               <svg
                 color="#ffffff"
@@ -1553,10 +1560,12 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
             className="emotion-11"
           >
             <a
+              aria-label="Select asset FatManOnABike1914.mp4"
               className="emotion-8"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
+              title="FatManOnABike1914.mp4"
             >
               <img
                 alt="FatManOnABike1914.mp4"
@@ -1565,9 +1574,10 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
               />
             </a>
             <button
-              aria-label="Find similar images"
+              aria-label="Find similar images to FatManOnABike1914.mp4"
               className="emotion-9"
               onClick={[Function]}
+              title="Find similar images"
               type="button"
             >
               <svg
@@ -1577,10 +1587,12 @@ exports[`<MetadataPrettySwitch /> should render similarity detection properly 1`
               />
             </button>
             <a
+              aria-label="Asset details FatManOnABike1914.mp4"
               className="emotion-10"
               href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer/srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               onClick={[Function]}
               onMouseEnter={[Function]}
+              title="Asset details"
             >
               <svg
                 color="#ffffff"
@@ -1622,7 +1634,6 @@ exports[`<MetadataPrettySwitch /> should render similarity detection with no dat
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;

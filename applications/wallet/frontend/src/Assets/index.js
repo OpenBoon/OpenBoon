@@ -28,7 +28,7 @@ const PADDING_SIZE = spacing.small
 const Assets = () => {
   const {
     pathname,
-    query: { projectId, id: selectedId, query },
+    query: { projectId, assetId, query },
   } = useRouter()
 
   const innerRef = useRef()
@@ -73,10 +73,9 @@ const Assets = () => {
     : []
 
   const selectedRow =
-    assets.length && selectedId
+    assets.length && assetId
       ? Math.floor(
-          assets.findIndex((item) => item && item.id === selectedId) /
-            columnCount,
+          assets.findIndex((item) => item && item.id === assetId) / columnCount,
         )
       : ''
 
@@ -93,7 +92,7 @@ const Assets = () => {
         rowIndex: selectedRow,
       })
     }
-  }, [selectedRow, columnCount, selectedId, virtualLoaderRef])
+  }, [selectedRow, columnCount, assetId, virtualLoaderRef])
 
   if (!data) {
     return (
@@ -121,7 +120,7 @@ const Assets = () => {
           <AssetsEmpty
             pathname={pathname}
             projectId={projectId}
-            assetId={selectedId}
+            assetId={assetId}
             query={query}
           />
         )}

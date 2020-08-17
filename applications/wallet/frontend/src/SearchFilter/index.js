@@ -82,7 +82,6 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
             backgroundColor: hasSearch
               ? colors.key.one
               : colors.structure.steel,
-            margin: 0,
             padding: 0,
             border: 0,
             cursor: searchString === '' ? 'not-allowed' : 'pointer',

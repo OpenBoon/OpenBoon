@@ -7,5 +7,9 @@ describe('<Filter /> helpers', () => {
         'similarity range',
       )
     })
+
+    it('should format "label confidence"', () => {
+      expect(formatOptions({ option: 'labelConfidence' })).toEqual('prediction')
+    })
   })
 })

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import filterShape from '../Filter/shape'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
-import FilterTitle from '../Filter/Title'
+import FilterIcon from '../Filter/Icon'
 import FilterActions from '../Filter/Actions'
 
 import FilterTextSearch from './Search'
@@ -35,7 +35,8 @@ const FilterText = ({
     <Accordion
       cacheKey={`FilterText.${attribute}`}
       variant={ACCORDION_VARIANTS.FILTER}
-      title={<FilterTitle filter={filter} />}
+      icon={<FilterIcon filter={filter} />}
+      title={filter.attribute}
       actions={
         <FilterActions
           pathname={pathname}

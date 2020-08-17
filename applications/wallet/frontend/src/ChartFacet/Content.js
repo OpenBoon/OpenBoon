@@ -205,8 +205,8 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
         }}
       >
         <Button
-          aria-label="Add Field Filter"
-          variant={VARIANTS.ICON}
+          aria-label="Add Filter"
+          variant={VARIANTS.MICRO}
           onClick={() => {
             dispatch({
               type: ACTIONS.ADD_FILTER,
@@ -218,17 +218,12 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
               },
             })
           }}
-          css={{
-            padding: spacing.normal,
-            display: 'flex',
-            fontFamily: typography.family.condensed,
-          }}
         >
           <div css={{ display: 'flex', alignItems: 'center' }}>
             <div css={{ display: 'flex', paddingRight: spacing.small }}>
               <FilterSvg height={constants.icons.regular} />
             </div>
-            Add Field Filter
+            Add Filter
           </div>
         </Button>
       </div>

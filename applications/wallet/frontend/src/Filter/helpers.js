@@ -3,5 +3,9 @@ export const formatOptions = ({ option }) => {
     return 'similarity range'
   }
 
+  if (option === 'labelConfidence') {
+    return 'prediction'
+  }
+
   return option
 }

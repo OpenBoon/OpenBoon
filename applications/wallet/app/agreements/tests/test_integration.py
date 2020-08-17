@@ -10,17 +10,17 @@ pytestmark = pytest.mark.django_db
 class TestAgreementModel:
 
     def test_model(self, user):
-        agreement = Agreement(user=user, policies_date='20200311', ip_address='127.0.0.1')
+        agreement = Agreement(user=user, policiesDate='20200311', ipAddress='127.0.0.1')
         agreement.save()
         agreement = Agreement.objects.get(id=agreement.id)
         assert agreement.user == user
-        assert agreement.ip_address == '127.0.0.1'
-        assert agreement.policies_date == '20200311'
-        assert agreement.created_date
-        assert agreement.modified_date
+        assert agreement.ipAddress == '127.0.0.1'
+        assert agreement.policiesDate == '20200311'
+        assert agreement.createdDate
+        assert agreement.modifiedDate
 
     def test_str(self, user):
-        agreement = Agreement(user=user, policies_date='20200311')
+        agreement = Agreement(user=user, policiesDate='20200311')
         agreement.save()
         assert str(agreement) == f'{user} - 20200311'
 
@@ -33,8 +33,8 @@ class TestAgreementList:
         assert response.json()['results'] == []
 
     def test_get_list(self, zmlp_project_user, api_client, login):
-        agreement = Agreement(user=zmlp_project_user, policies_date='20200311',
-                              ip_address='127.0.0.1')
+        agreement = Agreement(user=zmlp_project_user, policiesDate='20200311',
+                              ipAddress='127.0.0.1')
         agreement.save()
         response = api_client.get(reverse('agreement-list'))
         assert response.status_code == status.HTTP_200_OK
@@ -52,7 +52,7 @@ class TestAgreementList:
 class TestAgreementCreate:
 
     def test_create_forwarded_for(self, zmlp_project_user, api_client, login):
-        body = {'policies_date': '20200311'}
+        body = {'policiesDate': '20200311'}
         response = api_client.post(reverse('agreement-list'),
                                    body, **{'HTTP_X_FORWARDED_FOR': '127.0.0.1,proxy1,proxy2'})
         assert response.status_code == status.HTTP_201_CREATED
@@ -65,7 +65,7 @@ class TestAgreementCreate:
         assert result['modifiedDate']
 
     def test_create_remote_addr(self, zmlp_project_user, api_client, login):
-        body = {'policies_date': '20200311'}
+        body = {'policiesDate': '20200311'}
         response = api_client.post(reverse('agreement-list'), body)
         assert response.status_code == status.HTTP_201_CREATED
         result = response.json()
@@ -76,18 +76,18 @@ class TestAgreementCreate:
         response = api_client.post(reverse('agreement-list', ), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         result = response.json()
-        assert result['detail'] == 'Missing `policies_date` in the request.'
+        assert result['detail'] == 'Missing `policiesDate` in the request.'
 
     def test_create_short_policies_date(self, zmlp_project_user, api_client, login):
-        body = {'policies_date': '2020311'}
+        body = {'policiesDate': '2020311'}
         response = api_client.post(reverse('agreement-list'), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         result = response.json()
-        assert result['detail'] == 'Value for `policies_date` must be an 8 character date string in the YYYYMMDD format.'  # noqa
+        assert result['detail'] == 'Value for `policiesDate` must be an 8 character date string in the YYYYMMDD format.'  # noqa
 
     def test_create_bad_format_policies_date(self, zmlp_project_user, api_client, login):
-        body = {'policies_date': '2020311d'}
+        body = {'policiesDate': '2020311d'}
         response = api_client.post(reverse('agreement-list'), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         result = response.json()
-        assert result['detail'] == 'Value for `policies_date` must be an 8 character date string in the YYYYMMDD format.'  # noqa
+        assert result['detail'] == 'Value for `policiesDate` must be an 8 character date string in the YYYYMMDD format.'  # noqa

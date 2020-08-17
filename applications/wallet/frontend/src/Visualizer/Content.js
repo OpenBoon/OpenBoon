@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 
 import { colors, constants, spacing } from '../Styles'
 
+import FetchAhead from '../Fetch/Ahead'
 import Panel from '../Panel'
 import Assets from '../Assets'
 import Filters from '../Filters'
@@ -22,7 +23,7 @@ let reloadKey = 0
 
 const VisualizerContent = () => {
   const {
-    query: { id: assetId, action },
+    query: { projectId, assetId, action },
   } = useRouter()
 
   if (action === 'delete-asset-success') {
@@ -44,6 +45,9 @@ const VisualizerContent = () => {
       }}
     >
       <div css={{ display: 'flex', height: '100%', overflowY: 'hidden' }}>
+        <FetchAhead url={`/api/v1/projects/${projectId}/searches/fields/`} />
+        <FetchAhead url={`/api/v1/projects/${projectId}/models/`} />
+
         <Panel openToThe="right">
           {{
             filters: {
@@ -53,7 +57,9 @@ const VisualizerContent = () => {
             },
           }}
         </Panel>
+
         <Assets key={reloadKey} />
+
         <Panel openToThe="left">
           {{
             metadata: {

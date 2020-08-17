@@ -6,7 +6,14 @@ import TabsLink from './Link'
 
 const Tabs = ({ tabs }) => {
   return (
-    <nav css={{ padding: spacing.normal, paddingLeft: 0, paddingRight: 0 }}>
+    <nav
+      css={{
+        padding: spacing.normal,
+        paddingLeft: 0,
+        paddingRight: 0,
+        flexShrink: 0,
+      }}
+    >
       <ul
         css={{
           listStyleType: 'none',

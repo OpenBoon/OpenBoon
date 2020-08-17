@@ -15,7 +15,7 @@ class ModelSerializer(serializers.Serializer):
     actorCreated = serializers.CharField(required=False)
     actorModified = serializers.CharField(required=False)
     url = serializers.CharField(required=False)
-    running_job_id = serializers.CharField(required=False, default='', allow_blank=True)
+    runningJobId = serializers.CharField(required=False, default='', allow_blank=True)
 
 
 class ModelTypeSerializer(serializers.Serializer):
@@ -29,7 +29,7 @@ class ModelTypeSerializer(serializers.Serializer):
 
 
 class LabelSerializer(serializers.Serializer):
-    asset_id = serializers.CharField(required=True)
+    assetId = serializers.CharField(required=True)
     label = serializers.CharField(required=True)
     bbox = serializers.ListField(default=None)
     simhash = serializers.CharField(default=None)
@@ -37,13 +37,18 @@ class LabelSerializer(serializers.Serializer):
 
 
 class AddLabelsSerializer(serializers.Serializer):
-    add_labels = LabelSerializer(many=True)
+    addLabels = LabelSerializer(many=True)
 
 
 class UpdateLabelsSerializer(serializers.Serializer):
-    add_labels = LabelSerializer(many=True)
-    remove_labels = LabelSerializer(many=True)
+    addLabels = LabelSerializer(many=True)
+    removeLabels = LabelSerializer(many=True)
 
 
 class RemoveLabelsSerializer(serializers.Serializer):
-    remove_labels = LabelSerializer(many=True)
+    removeLabels = LabelSerializer(many=True)
+
+
+class RenameLabelSerializer(serializers.Serializer):
+    label = serializers.CharField(required=True)
+    newLabel = serializers.CharField(required=True)

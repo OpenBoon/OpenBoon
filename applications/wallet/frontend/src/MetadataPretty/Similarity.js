@@ -13,7 +13,7 @@ const THUMBNAIL_SIZE = 100
 
 const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
   const {
-    query: { projectId, id: assetId },
+    query: { projectId, assetId },
   } = useRouter()
 
   const query = encode({

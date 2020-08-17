@@ -10,7 +10,7 @@ const MetadataPrettyPredictionsQuery = ({ name, path }) => {
   const attr = `${path}${name}&width=${BBOX_SIZE}`
 
   const {
-    query: { projectId, id: assetId },
+    query: { projectId, assetId },
   } = useRouter()
 
   const { data } = useSWR(

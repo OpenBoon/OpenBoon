@@ -13,7 +13,6 @@ const BASE = ({ isDisabled }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: constants.borderRadius.small,
-  margin: 0,
   padding: `${spacing.moderate}px ${spacing.spacious}px`,
   whiteSpace: 'nowrap',
   fontSize: typography.size.regular,
@@ -134,6 +133,21 @@ const STYLES = {
     },
     '&[aria-disabled=true]': {
       color: colors.structure.steel,
+    },
+  },
+  MICRO: {
+    padding: spacing.small,
+    paddingLeft: spacing.moderate / 2,
+    paddingRight: spacing.moderate / 2,
+    borderRadius: spacing.mini,
+    backgroundColor: colors.structure.smoke,
+    color: colors.structure.zinc,
+    lineHeight: typography.height.regular,
+    fontSize: typography.size.regular,
+    fontFamily: typography.family.condensed,
+    textTransform: 'uppercase',
+    ':hover, :focus': {
+      color: colors.structure.white,
     },
   },
 }

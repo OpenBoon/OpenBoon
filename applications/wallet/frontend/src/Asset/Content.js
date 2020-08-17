@@ -6,16 +6,20 @@ import SuspenseBoundary from '../SuspenseBoundary'
 import Panel from '../Panel'
 import Metadata from '../Metadata'
 import AssetDelete from '../AssetDelete'
+import FaceLabeling from '../FaceLabeling'
+import AssetLabeling from '../AssetLabeling'
 
 import InformationSvg from '../Icons/information.svg'
 import TrashSvg from '../Icons/trash.svg'
+import FaceDetectionSvg from '../Icons/faceDetection.svg'
+import PenSvg from '../Icons/pen.svg'
 
 import AssetAsset from './Asset'
 import AssetNavigation from './Navigation'
 
 const AssetContent = () => {
   const {
-    query: { projectId, id: assetId, query = '' },
+    query: { projectId, assetId, query = '' },
   } = useRouter()
 
   return (
@@ -63,6 +67,18 @@ const AssetContent = () => {
               title: 'Asset Metadata',
               icon: <InformationSvg height={constants.icons.regular} />,
               content: <Metadata />,
+            },
+            faceLabeling: {
+              title: 'Face Recognition Training',
+              icon: <FaceDetectionSvg height={constants.icons.regular} />,
+              content: <FaceLabeling />,
+            },
+            assetLabeling: {
+              title: 'Add Labels To Model',
+              icon: <PenSvg height={constants.icons.regular} />,
+              content: <AssetLabeling />,
+              flag: 'asset-labeling',
+              envs: [],
             },
             delete: {
               title: 'Delete',

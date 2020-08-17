@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
@@ -10,14 +10,23 @@ import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import Listbox from '../Listbox'
+import Select from '../Select'
 import { capitalizeFirstLetter } from '../Text/helpers'
 import { ACTIONS } from '../DataVisualization/reducer'
 
 import { formatFields } from './helpers'
 
+const INITIAL_STATE = ({ attribute, values, scale }) => ({
+  attribute: attribute || '',
+  values: values || '10',
+  scale: scale || 'absolute',
+})
+
+const reducer = (state, action) => ({ ...state, ...action })
+
 const ChartFormContent = ({
   chart,
-  chart: { type },
+  chart: { type, attribute, values, scale },
   chartIndex,
   dispatch,
   isEditing,
@@ -27,8 +36,9 @@ const ChartFormContent = ({
     query: { projectId },
   } = useRouter()
 
-  const [attribute, setAttribute] = useState(chart.attribute || '')
-  const [values, setValues] = useState(chart.values || '10')
+  const initializedState = INITIAL_STATE({ attribute, values, scale })
+
+  const [state, formDispatch] = useReducer(reducer, initializedState)
 
   const { data: fields } = useSWR(
     `/api/v1/projects/${projectId}/searches/fields/`,
@@ -36,7 +46,7 @@ const ChartFormContent = ({
 
   const filteredFields = formatFields({ fields, type })
 
-  const splitAttribute = attribute.split('.')
+  const splitAttribute = state.attribute.split('.')
   const shortenedAttribute = splitAttribute[splitAttribute.length - 1]
 
   return (
@@ -61,15 +71,30 @@ const ChartFormContent = ({
 
       <Listbox
         label="Metadata Type"
-        value={attribute}
+        value={state.attribute}
         placeholder={shortenedAttribute || 'Select Type'}
         options={filteredFields}
-        onChange={({ value }) => setAttribute(value)}
+        onChange={({ value }) => formDispatch({ attribute: value })}
       />
 
-      {type === 'range' && <div css={{ height: spacing.spacious }} />}
+      {type === 'histogram' && (
+        <>
+          <div css={{ height: spacing.comfy }} />
 
-      {type === 'facet' && (
+          <Select
+            label="Select the histogram type"
+            defaultValue={state.scale}
+            options={[
+              { value: 'absolute', label: 'Absolute' },
+              { value: 'relative', label: 'Relative' },
+            ]}
+            isRequired={false}
+            onChange={({ value }) => formDispatch({ scale: value })}
+          />
+        </>
+      )}
+
+      {(type === 'facet' || type === 'histogram') && (
         <>
           <div css={{ height: spacing.normal }} />
 
@@ -78,13 +103,17 @@ const ChartFormContent = ({
             variant={INPUT_VARIANTS.SECONDARY}
             label="Number of Values Shown"
             type="number"
-            value={values}
-            onChange={({ target: { value } }) => setValues(value)}
+            value={state.values}
+            onChange={({ target: { value } }) =>
+              formDispatch({ values: value })
+            }
             hasError={false}
             errorMessage=""
           />
         </>
       )}
+
+      {type === 'range' && <div css={{ height: spacing.spacious }} />}
 
       <div css={{ display: 'flex' }}>
         <Button
@@ -106,13 +135,16 @@ const ChartFormContent = ({
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          isDisabled={!attribute}
+          isDisabled={!state.attribute}
           onClick={() => {
             dispatch({
               type: ACTIONS.UPDATE,
               payload: {
                 chartIndex,
-                updatedChart: { ...chart, attribute, values },
+                updatedChart: {
+                  ...chart,
+                  ...state,
+                },
               },
             })
             setIsEditing(false)

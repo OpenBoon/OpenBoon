@@ -23,7 +23,6 @@ const CheckboxIcon = ({ size, value, isChecked, isDisabled, onClick }) => (
       defaultChecked={isChecked}
       onClick={onClick}
       css={{
-        margin: 0,
         padding: 0,
         width: size,
         height: size,

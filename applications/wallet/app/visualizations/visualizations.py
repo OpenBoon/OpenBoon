@@ -1,3 +1,4 @@
+import copy
 from rest_framework.exceptions import ValidationError
 
 
@@ -9,9 +10,10 @@ class BaseVisualization(object):
     required_option_keys = []
     agg_prefix = ''
 
-    def __init__(self, data, zmlp_app=None):
+    def __init__(self, data, request=None, query=None):
         self.data = data
-        self.zmlp_app = zmlp_app
+        self.request = request
+        self.query = query
         self.errors = []
 
     def __eq__(self, other):
@@ -107,9 +109,12 @@ class FacetVisualization(BaseVisualization):
 
     def get_es_agg(self):
         attribute = self.data['attribute']
+        field_type = self.data.get('fieldType', 'facet')
         order = self.options.get('order', 'desc')
-        minimum_count = self.options.get('minimum_count')
+        minimum_count = self.options.get('minimumCount')
         size = self.options.get('size', 1000)
+        if field_type == 'labelConfidence':
+            attribute = f'{attribute}.predictions.label'
         agg = {
             'terms': {
                 'field': attribute,
@@ -121,3 +126,59 @@ class FacetVisualization(BaseVisualization):
         if minimum_count:
             agg['terms']['min_doc_count'] = minimum_count
         return agg
+
+
+class HistogramVisualization(BaseVisualization):
+
+    type = 'histogram'
+    required_keys = ['id', 'attribute', 'fieldType']
+    required_option_keys = []
+    agg_prefix = 'histogram'
+
+    def get_es_agg(self):
+        attribute = self.data['attribute']
+        field_type = self.data['fieldType']
+        if field_type == "labelConfidence":
+            attribute = f'{attribute}.predictions.score'
+        size = self.options.get('size', 10)
+        if size < 1:
+            size = 1
+        interval, offset = self.get_interval_and_offset(attribute, size)
+        # We always send the histogram query with an interval and offset to enforce the
+        # correct number of buckets
+        return {
+            "histogram": {
+                "field": attribute,
+                "interval": interval,
+                "offset": offset
+            }
+        }
+
+    def get_interval_and_offset(self, attribute, size):
+        """Calculates the appropriate interval and offset for the selected # of buckets"""
+        client = self.request.client
+        # Use the existing query if it exists
+        if self.query:
+            query = copy.deepcopy(self.query)
+        else:
+            query = {}
+        # Add stat aggregation to the query to get the min and max values
+        query['size'] = 0
+        query['aggs'] = {
+            self.id: {
+                'stats': {
+                    'field': attribute
+                }
+            }
+        }
+        response = client.post('api/v3/assets/_search', query)
+        # Get the min and max from the response
+        agg_key = f'stats#{self.id}'
+        agg_data = response['aggregations'][agg_key]
+        min, max = agg_data['min'], agg_data['max']
+        # Calculate correct interval to get the # of buckets we want
+        if size == 1:
+            interval = max - min
+        else:
+            interval = (max - min) / (size - 1)
+        return interval, min

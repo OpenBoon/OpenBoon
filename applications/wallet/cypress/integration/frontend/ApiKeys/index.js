@@ -1,12 +1,12 @@
 describe('Api Keys', function () {
   it('can be created', function () {
-    const now = Date.now()
+    const apiKeyName = `cypress-frontend-${Date.now()}`
 
     cy.login()
 
     cy.visit(`/${this.PROJECT_ID}/api-keys/add`)
 
-    cy.get('input[name=name]').type(now)
+    cy.get('input[name=name]').type(apiKeyName)
 
     cy.contains('Assets Read').click()
 
@@ -18,13 +18,13 @@ describe('Api Keys', function () {
 
     cy.visit(`/${this.PROJECT_ID}/api-keys`)
 
-    cy.contains(now)
+    cy.contains(apiKeyName)
 
     cy.contains('Assets Read')
   })
 
   it('can be deleted', function () {
-    const now = Date.now()
+    const apiKeyName = `cypress-frontend-${Date.now()}`
 
     cy.login()
 
@@ -32,7 +32,7 @@ describe('Api Keys', function () {
       method: 'POST',
       url: `/api/v1/projects/${this.PROJECT_ID}/api_keys/`,
       body: {
-        name: now,
+        name: apiKeyName,
         permissions: ['AssetsRead', 'AssetsDelete'],
       },
       log: false,
@@ -40,12 +40,12 @@ describe('Api Keys', function () {
 
     cy.visit(`/${this.PROJECT_ID}/api-keys`)
 
-    cy.contains(now).siblings().last().click()
+    cy.contains(apiKeyName).siblings().last().click()
 
     cy.get('button').contains('Delete').click()
 
     cy.contains('Delete Permanently').click()
 
-    cy.contains(now).should('not.exist')
+    cy.contains(apiKeyName).should('not.exist')
   })
 })

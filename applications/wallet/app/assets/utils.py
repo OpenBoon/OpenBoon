@@ -185,7 +185,7 @@ def get_video_length(item):
         str: The length of this assets video, if it exists.
     """
     try:
-        if item['asset_style'] == 'video':
+        if item['assetStyle'] == 'video':
             return item['metadata']['media']['length']
         else:
             return None

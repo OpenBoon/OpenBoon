@@ -8,7 +8,7 @@ import AssetLabelingContent from './Content'
 
 const AssetLabeling = () => {
   const {
-    query: { projectId, id: assetId },
+    query: { projectId, assetId },
   } = useRouter()
 
   return assetId ? (

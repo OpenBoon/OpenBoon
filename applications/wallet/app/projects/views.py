@@ -17,7 +17,6 @@ from projects.clients import ZviClient
 from projects.models import Membership, Project
 from projects.permissions import ManagerUserPermissions
 from projects.serializers import ProjectSerializer, ProjectUserSerializer
-from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import FromSizePagination
 
 logger = logging.getLogger(__name__)
@@ -214,8 +213,7 @@ class BaseProjectViewSet(ViewSet):
         """
         # Check for pagination query params first, and then check the post body
         payload = {'from': request.query_params.get('from', request.data.get('from', 0)),
-                   'size': request.query_params.get('size', request.data.get('size',
-                                                                             self.pagination_class.default_limit))}  # noqa
+                   'size': request.query_params.get('size', request.data.get('size', self.pagination_class.default_limit))}  # noqa
         content = self._zmlp_get_content_from_es_search(request, base_url=base_url,
                                                         search_filter=search_filter,
                                                         payload=payload)
@@ -385,8 +383,7 @@ class BaseProjectViewSet(ViewSet):
         return response.json()
 
 
-class ProjectViewSet(ConvertCamelToSnakeViewSetMixin,
-                     ListModelMixin,
+class ProjectViewSet(ListModelMixin,
                      RetrieveModelMixin,
                      GenericViewSet):
     """
@@ -402,10 +399,10 @@ class ProjectViewSet(ConvertCamelToSnakeViewSetMixin,
     serializer_class = ProjectSerializer
 
     def get_queryset(self):
-        return self.request.user.projects.filter(is_active=True)
+        return self.request.user.projects.filter(isActive=True)
 
 
-class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
+class ProjectUserViewSet(BaseProjectViewSet):
     """Users who are Members of this Project.
 
     Available HTTP methods, endpoints, and what they do:
@@ -469,7 +466,7 @@ class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
                 response = self._create_project_user(request, project_pk, entry)
                 content = {'email': entry.get('email'),
                            'roles': entry.get('roles'),
-                           'status_code': response.status_code,
+                           'statusCode': response.status_code,
                            'body': response.data}
                 if response.status_code in [status.HTTP_201_CREATED, status.HTTP_200_OK]:
                     response_body['results']['succeeded'].append(content)
