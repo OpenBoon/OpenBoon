@@ -560,13 +560,13 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 `;
 
 exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
-.emotion-34 {
+.emotion-30 {
   height: 100%;
   overflow: hidden;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-33 {
+.emotion-29 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -581,14 +581,14 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   padding-top: 8px;
 }
 
-.emotion-32 {
+.emotion-28 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-31 {
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -751,52 +751,25 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   cursor: pointer;
 }
 
-.emotion-20 {
-  color: #b3b3b3;
-}
-
-.emotion-19 {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-18 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 300px;
-  height: 40px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-21 {
+.emotion-17 {
   height: 16px;
 }
 
-.emotion-25 {
+.emotion-21 {
   padding-top: 8px;
 }
 
-.emotion-22 {
+.emotion-18 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-24 {
+.emotion-20 {
   position: relative;
 }
 
-.emotion-23 {
+.emotion-19 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -808,24 +781,24 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   border-width: 2px;
 }
 
-.emotion-23:focus {
+.emotion-19:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-23:focus {
+.emotion-19:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-30 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-27 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -859,34 +832,34 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   flex: 1;
 }
 
-.emotion-27:hover {
+.emotion-23:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-27[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-27,
-.emotion-27:hover,
-.emotion-27:visited {
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited {
   background-color: #808080;
 }
 
-.emotion-27:hover {
+.emotion-23:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-27[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-28 {
+.emotion-24 {
   width: 8px;
 }
 
-.emotion-29 {
+.emotion-25 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -920,41 +893,41 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   flex: 1;
 }
 
-.emotion-29:hover {
+.emotion-25:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-29[aria-disabled=true] {
+.emotion-25[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-29,
-.emotion-29:hover,
-.emotion-29:visited {
+.emotion-25,
+.emotion-25:hover,
+.emotion-25:visited {
   background-color: #73b61c;
 }
 
-.emotion-29:hover {
+.emotion-25:hover {
   background-color: #96c955;
 }
 
-.emotion-29[aria-disabled=true] {
+.emotion-25[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-  className="emotion-34"
+  className="emotion-30"
 >
   <div
-    className="emotion-33"
+    className="emotion-29"
   >
     <div
-      className="emotion-32"
+      className="emotion-28"
     >
       <form
         action=""
-        className="emotion-31"
+        className="emotion-27"
         method="post"
         onSubmit={[Function]}
       >
@@ -1047,57 +1020,22 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
           </ListboxInput>
         </label>
         <div
-          className="emotion-1"
+          className="emotion-17"
         />
-        <label
-          className="emotion-20"
-        >
-          Select the histogram type
-          <div
-            className="emotion-19"
-          >
-            <select
-              className="emotion-18"
-              defaultValue="absolute"
-              disabled={false}
-              onChange={[Function]}
-            >
-              <option
-                disabled={true}
-                value=""
-              >
-                Select an option...
-              </option>
-              <option
-                value="absolute"
-              >
-                Absolute
-              </option>
-              <option
-                value="relative"
-              >
-                Relative
-              </option>
-            </select>
-          </div>
-        </label>
         <div
           className="emotion-21"
-        />
-        <div
-          className="emotion-25"
         >
           <label
-            className="emotion-22"
+            className="emotion-18"
             htmlFor="values"
           >
             Number of Values Shown
           </label>
           <div
-            className="emotion-24"
+            className="emotion-20"
           >
             <input
-              className="emotion-23"
+              className="emotion-19"
               disabled={false}
               id="values"
               name="values"
@@ -1107,27 +1045,27 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
             />
           </div>
           <div
-            className="emotion-25"
+            className="emotion-21"
           >
              
           </div>
         </div>
         <div
-          className="emotion-30"
+          className="emotion-26"
         >
           <button
-            className="emotion-27"
+            className="emotion-23"
             onClick={[Function]}
             type="button"
           >
             Cancel
           </button>
           <div
-            className="emotion-28"
+            className="emotion-24"
           />
           <button
             aria-disabled={true}
-            className="emotion-29"
+            className="emotion-25"
             onClick={[Function]}
             type="submit"
           >
