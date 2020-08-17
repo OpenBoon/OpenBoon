@@ -38,7 +38,12 @@ describe('<Model />', () => {
   it('should render properly in edit label mode', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
-      query: { projectId: PROJECT_ID, modelId: MODEL_ID, edit: 'cat' },
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+        action: 'delete-label-success',
+        edit: 'cat',
+      },
     })
 
     require('swr').__setMockUseSWRResponse({ data: model })

@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 
 import { typography, spacing } from '../Styles'
 
 import { encode } from '../Filters/helpers'
+import { fetcher, revalidate } from '../Fetch/helpers'
 
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
@@ -13,7 +14,7 @@ import ButtonGroup from '../Button/Group'
 import Modal from '../Modal'
 import Tabs from '../Tabs'
 
-import { onTrain, onDelete } from './helpers'
+import { onTrain } from './helpers'
 
 const LINE_HEIGHT = '23px'
 
@@ -25,6 +26,7 @@ const ModelDetails = () => {
   const [error, setError] = useState('')
 
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const { data: model } = useSWR(
     `/api/v1/projects/${projectId}/models/${modelId}/`,
@@ -124,11 +126,28 @@ const ModelDetails = () => {
           <Modal
             title="Delete Model"
             message="Deleting this model cannot be undone."
-            action="Delete Permanently"
+            action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
             onCancel={() => {
               setDeleteModalOpen(false)
             }}
-            onConfirm={onDelete({ setDeleteModalOpen, projectId, modelId })}
+            onConfirm={async () => {
+              setIsDeleting(true)
+
+              await fetcher(
+                `/api/v1/projects/${projectId}/models/${modelId}/`,
+                { method: 'DELETE' },
+              )
+
+              await revalidate({
+                key: `/api/v1/projects/${projectId}/models/`,
+                paginated: true,
+              })
+
+              Router.push(
+                '/[projectId]/models?action=delete-model-success',
+                `/${projectId}/models`,
+              )
+            }}
           />
         )}
       </ButtonGroup>

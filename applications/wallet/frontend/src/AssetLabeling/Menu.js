@@ -2,18 +2,18 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { mutate } from 'swr'
 
 import { colors } from '../Styles'
 
 import { useLocalStorageState } from '../LocalStorage/helpers'
 import { ACTIONS, dispatch } from '../Filters/helpers'
+import { fetcher } from '../Fetch/helpers'
 
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
-
-import { onDelete } from './helpers'
 
 const AssetLabelingMenu = ({
   label,
@@ -28,6 +28,7 @@ const AssetLabelingMenu = ({
   } = useRouter()
 
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const [, setLocalModelId] = useLocalStorageState({
     key: `AssetLabelingAdd.${projectId}.modelId`,
@@ -118,20 +119,30 @@ const AssetLabelingMenu = ({
         <Modal
           title="Delete Label"
           message="Deleting this label cannot be undone."
-          action="Delete Permanently"
+          action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
           onCancel={() => {
             setDeleteModalOpen(false)
           }}
-          onConfirm={() => {
-            setDeleteModalOpen(false)
+          onConfirm={async () => {
+            setIsDeleting(true)
 
-            onDelete({
-              modelId,
-              label,
-              projectId,
-              assetId: id || assetId,
-              setError,
-            })
+            setError('')
+
+            try {
+              await fetcher(
+                `/api/v1/projects/${projectId}/models/${modelId}/delete_labels/`,
+                {
+                  method: 'DELETE',
+                  body: JSON.stringify({ removeLabels: [{ assetId, label }] }),
+                },
+              )
+
+              await mutate(`/api/v1/projects/${projectId}/assets/${assetId}/`)
+            } catch (response) {
+              setError('Something went wrong. Please try again.')
+
+              setDeleteModalOpen(false)
+            }
 
             // In the case where a user is deleting a Model/Label that matches
             // the current Model/Label value in the `AssetLabelingAdd` form,

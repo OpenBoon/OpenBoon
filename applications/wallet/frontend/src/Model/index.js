@@ -30,14 +30,12 @@ const Model = () => {
         ]}
       />
 
-      {action === 'edit-label-success' && (
-        <div
-          css={{
-            display: 'flex',
-            paddingBottom: spacing.normal,
-          }}
-        >
-          <FlashMessage variant={VARIANTS.SUCCESS}>Label updated.</FlashMessage>
+      {!!action && (
+        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+          <FlashMessage variant={VARIANTS.SUCCESS}>
+            {action === 'edit-label-success' && 'Label updated.'}
+            {action === 'delete-label-success' && 'Label deleted.'}
+          </FlashMessage>
         </div>
       )}
 

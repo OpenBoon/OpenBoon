@@ -2,7 +2,7 @@ if (!Cypress.env('USERNAME') || !Cypress.env('PASSWORD')) {
   throw new Error('Please provide a username and password.')
 }
 
-Cypress.on('uncaught:exception', (err, runnable) => {
+Cypress.on('uncaught:exception', () => {
   return false
 })
 
