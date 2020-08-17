@@ -106,34 +106,3 @@ export const onSubmit = async ({
     }
   }
 }
-
-export const onDelete = async ({
-  modelId,
-  label,
-  setError,
-  projectId,
-  assetId,
-}) => {
-  try {
-    await fetcher(
-      `/api/v1/projects/${projectId}/models/${modelId}/delete_labels/`,
-      {
-        method: 'DELETE',
-        body: JSON.stringify({
-          removeLabels: [
-            {
-              assetId,
-              label,
-            },
-          ],
-        }),
-      },
-    )
-
-    mutate(`/api/v1/projects/${projectId}/assets/${assetId}/`)
-
-    setError('')
-  } catch (response) {
-    setError('Something went wrong. Please try again.')
-  }
-}

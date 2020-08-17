@@ -11,6 +11,7 @@ import Modal from '../Modal'
 
 const ModelLabelsMenu = ({ projectId, modelId, label, revalidate }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   return (
     <Menu open="left" button={ButtonActions}>
@@ -46,24 +47,29 @@ const ModelLabelsMenu = ({ projectId, modelId, label, revalidate }) => {
                   <Modal
                     title="Delete Label"
                     message="Deleting this label cannot be undone."
-                    action="Delete Permanently"
+                    action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
                     onCancel={() => {
                       setDeleteModalOpen(false)
 
                       onClick()
                     }}
                     onConfirm={async () => {
-                      setDeleteModalOpen(false)
+                      setIsDeleting(true)
 
-                      onClick()
-
-                      // TODO: update endpoint
                       await fetcher(
-                        `/api/v1/projects/${projectId}/models/${modelId}/delete_labels/`,
-                        { method: 'DELETE', body: JSON.stringify({ label }) },
+                        `/api/v1/projects/${projectId}/models/${modelId}/destroy_labels/`,
+                        {
+                          method: 'DELETE',
+                          body: JSON.stringify({ labelNames: [label] }),
+                        },
                       )
 
-                      revalidate()
+                      await revalidate()
+
+                      Router.push(
+                        '/[projectId]/models/[modelId]?action=delete-label-success',
+                        `/${projectId}/models/${modelId}`,
+                      )
                     }}
                   />
                 )}

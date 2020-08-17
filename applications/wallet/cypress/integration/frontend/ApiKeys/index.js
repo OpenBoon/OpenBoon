@@ -1,8 +1,12 @@
 describe('Api Keys', function () {
-  it('can be created', function () {
+  it('can be created and deleted', function () {
     const apiKeyName = `cypress-frontend-${Date.now()}`
 
     cy.login()
+
+    /**
+     * Create
+     */
 
     cy.visit(`/${this.PROJECT_ID}/api-keys/add`)
 
@@ -16,27 +20,9 @@ describe('Api Keys', function () {
 
     cy.contains('Assets Read')
 
-    cy.visit(`/${this.PROJECT_ID}/api-keys`)
-
-    cy.contains(apiKeyName)
-
-    cy.contains('Assets Read')
-  })
-
-  it('can be deleted', function () {
-    const apiKeyName = `cypress-frontend-${Date.now()}`
-
-    cy.login()
-
-    cy.fetch({
-      method: 'POST',
-      url: `/api/v1/projects/${this.PROJECT_ID}/api_keys/`,
-      body: {
-        name: apiKeyName,
-        permissions: ['AssetsRead', 'AssetsDelete'],
-      },
-      log: false,
-    })
+    /**
+     * Delete
+     */
 
     cy.visit(`/${this.PROJECT_ID}/api-keys`)
 
@@ -45,6 +31,9 @@ describe('Api Keys', function () {
     cy.get('button').contains('Delete').click()
 
     cy.contains('Delete Permanently').click()
+
+    // TODO: uncomment me after this MR has been merged
+    // cy.contains('API Key deleted.')
 
     cy.contains(apiKeyName).should('not.exist')
   })
