@@ -1,6 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import fields from '../../Filters/__mocks__/fields'
+import aggregate from '../__mocks__/aggregate'
 
 import ChartHistogram from '..'
 
@@ -20,9 +21,10 @@ describe('<ChartHistogram />', () => {
       id: CHART_ID,
       type: 'histogram',
       attribute: 'analysis.zvi-face-detection',
-      scale: 'absolute',
       values: '10',
     }
+
+    require('swr').__setMockUseSWRResponse({ data: aggregate })
 
     const mockRouterPush = jest.fn()
 
@@ -56,6 +58,28 @@ describe('<ChartHistogram />', () => {
       },
       `/${PROJECT_ID}/visualizer/data-visualization?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1mYWNlLWRldGVjdGlvbiIsInZhbHVlcyI6e319XQ==`,
     )
+  })
+
+  it('should render properly without data', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer/data-visualization',
+      query: { projectId: PROJECT_ID },
+    })
+
+    const chart = {
+      id: CHART_ID,
+      type: 'histogram',
+      attribute: 'analysis.zvi-face-detection',
+      values: '10',
+    }
+
+    require('swr').__setMockUseSWRResponse({})
+
+    const component = TestRenderer.create(
+      <ChartHistogram chart={chart} chartIndex={0} dispatch={noop} />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should render properly without an attribute', () => {
