@@ -2,10 +2,11 @@ import { mutate } from 'swr'
 
 import { fetcher, revalidate } from '../Fetch/helpers'
 
-export const getOptions = async ({ modelId, projectId }) => {
+export const getOptions = async ({ projectId, modelId }) => {
   if (!modelId) {
     return []
   }
+
   const { results } = await revalidate({
     key: `/api/v1/projects/${projectId}/models/${modelId}/get_labels`,
   })
@@ -45,8 +46,6 @@ export const onSubmit = async ({
   labels,
   projectId,
   assetId,
-  setLocalModelId,
-  setLocalLabel,
 }) => {
   dispatch({ isLoading: true })
 
@@ -83,10 +82,6 @@ export const onSubmit = async ({
       isLoading: false,
       errors: {},
     })
-
-    setLocalModelId({ value: modelId })
-
-    setLocalLabel({ value: label })
   } catch (response) {
     try {
       const errors = await response.json()
