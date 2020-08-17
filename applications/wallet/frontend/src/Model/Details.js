@@ -19,7 +19,7 @@ const LINE_HEIGHT = '23px'
 
 const ModelDetails = () => {
   const {
-    query: { projectId, modelId },
+    query: { projectId, modelId, edit = '' },
   } = useRouter()
 
   const [error, setError] = useState('')
@@ -134,31 +134,46 @@ const ModelDetails = () => {
       </ButtonGroup>
 
       <Tabs
-        tabs={[{ title: 'View Labels', href: '/[projectId]/models/[modelId]' }]}
+        tabs={[
+          {
+            title: 'View Labels',
+            href: '/[projectId]/models/[modelId]',
+            isSelected: edit ? false : undefined,
+          },
+          edit
+            ? {
+                title: 'Edit Label',
+                href: '/[projectId]/models/[modelId]',
+                isSelected: true,
+              }
+            : {},
+        ]}
       />
 
-      <div
-        css={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          marginBottom: -spacing.normal,
-        }}
-      >
-        <Link
-          href={`/[projectId]/visualizer?query=${encodedFilter}`}
-          as={`/${projectId}/visualizer?query=${encodedFilter}`}
-          passHref
+      {!edit && (
+        <div
+          css={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            marginBottom: -spacing.normal,
+          }}
         >
-          <Button
-            variant={BUTTON_VARIANTS.SECONDARY}
-            onClick={() => {
-              localStorage.setItem('rightOpeningPanel', '"filters"')
-            }}
+          <Link
+            href={`/[projectId]/visualizer?query=${encodedFilter}`}
+            as={`/${projectId}/visualizer?query=${encodedFilter}`}
+            passHref
           >
-            Add Label Filter &amp; View in Visualizer
-          </Button>
-        </Link>
-      </div>
+            <Button
+              variant={BUTTON_VARIANTS.SECONDARY}
+              onClick={() => {
+                localStorage.setItem('rightOpeningPanel', '"filters"')
+              }}
+            >
+              Add Label Filter &amp; View in Visualizer
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   )
 }

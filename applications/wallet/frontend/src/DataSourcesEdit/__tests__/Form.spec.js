@@ -13,11 +13,13 @@ const MODULE = providers.results[0].categories[0].modules[0]
 
 describe('<DataSourcesEditForm />', () => {
   it('should render properly', async () => {
-    const mockFn = jest.fn()
-    const mockScrollTo = jest.fn()
-    Object.defineProperty(global.window, 'scrollTo', { value: mockScrollTo })
+    const mockRouterPush = jest.fn()
 
-    require('next/router').__setMockPushFunction(mockFn)
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    const mockScrollTo = jest.fn()
+
+    Object.defineProperty(global.window, 'scrollTo', { value: mockScrollTo })
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/data-sources/add',
@@ -116,7 +118,7 @@ describe('<DataSourcesEditForm />', () => {
       }),
     })
 
-    expect(mockFn).toHaveBeenCalledWith(
+    expect(mockRouterPush).toHaveBeenCalledWith(
       '/[projectId]/data-sources?action=edit-datasource-success',
       `/${PROJECT_ID}/data-sources`,
     )

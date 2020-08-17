@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import Router from 'next/router'
 
 import { fetcher } from '../Fetch/helpers'
 
@@ -16,6 +17,20 @@ const ModelLabelsMenu = ({ projectId, modelId, label, revalidate }) => {
       {({ onClick }) => (
         <div>
           <ul>
+            <li>
+              <Button
+                variant={VARIANTS.MENU_ITEM}
+                onClick={() => {
+                  Router.push(
+                    `/[projectId]/models/[modelId]?edit=${label}`,
+                    `/${projectId}/models/${modelId}`,
+                  )
+                }}
+                isDisabled={false}
+              >
+                Edit
+              </Button>
+            </li>
             <li>
               <>
                 <Button
