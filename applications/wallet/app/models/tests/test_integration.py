@@ -183,6 +183,18 @@ class TestModelViewSetActions:
         content = check_response(response)
         assert content == {'updated': 26}
 
+    def test_destroy_label(self, login, project, api_client, monkeypatch):
+        def mock_response(*args, **kwargs):
+            return {'updated': 1}
+
+        model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
+        monkeypatch.setattr(ZmlpClient, 'delete', mock_response)
+        path = reverse('model-destroy-label', kwargs={'project_pk': project.id,
+                                                      'pk': model_id})
+        response = api_client.delete(path, {'label': 'Dog'})
+        content = check_response(response)
+        assert content == {'updated': 1}
+
 
 class TestLabelingEndpoints:
 
