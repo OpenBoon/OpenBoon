@@ -31,14 +31,12 @@ const Combobox = ({
       setIsLoading(false)
     }
 
-    if (!fetchedOptions.length) {
-      if (typeof options === 'function') {
-        fetchOptions()
-      } else {
-        setFetchedOptions(options)
-      }
+    if (typeof options === 'function') {
+      fetchOptions()
+    } else {
+      setFetchedOptions(options)
     }
-  }, [options, fetchedOptions])
+  }, [options])
 
   return (
     <div css={{ flex: 1 }}>
