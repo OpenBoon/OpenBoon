@@ -152,6 +152,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
+    @patch.object(file_storage.assets, 'store_timeline')
     def test_detect_objects(self, store_tl_patch,
                             blob_patch, proxy_patch, annot_patch, client_patch):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
