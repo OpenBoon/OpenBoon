@@ -10,23 +10,21 @@ import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import Listbox from '../Listbox'
-import Select from '../Select'
 import { capitalizeFirstLetter } from '../Text/helpers'
 import { ACTIONS } from '../DataVisualization/reducer'
 
 import { formatFields } from './helpers'
 
-const INITIAL_STATE = ({ attribute, values, scale }) => ({
+const INITIAL_STATE = ({ attribute, values }) => ({
   attribute: attribute || '',
   values: values || '10',
-  scale: scale || 'absolute',
 })
 
 const reducer = (state, action) => ({ ...state, ...action })
 
 const ChartFormContent = ({
   chart,
-  chart: { type, attribute, values, scale },
+  chart: { type, attribute, values },
   chartIndex,
   dispatch,
   isEditing,
@@ -36,7 +34,7 @@ const ChartFormContent = ({
     query: { projectId },
   } = useRouter()
 
-  const initializedState = INITIAL_STATE({ attribute, values, scale })
+  const initializedState = INITIAL_STATE({ attribute, values })
 
   const [state, formDispatch] = useReducer(reducer, initializedState)
 
@@ -76,23 +74,6 @@ const ChartFormContent = ({
         options={filteredFields}
         onChange={({ value }) => formDispatch({ attribute: value })}
       />
-
-      {type === 'histogram' && (
-        <>
-          <div css={{ height: spacing.comfy }} />
-
-          <Select
-            label="Select the histogram type"
-            defaultValue={state.scale}
-            options={[
-              { value: 'absolute', label: 'Absolute' },
-              { value: 'relative', label: 'Relative' },
-            ]}
-            isRequired={false}
-            onChange={({ value }) => formDispatch({ scale: value })}
-          />
-        </>
-      )}
 
       {(type === 'facet' || type === 'histogram') && (
         <>

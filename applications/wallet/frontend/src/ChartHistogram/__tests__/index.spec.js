@@ -110,13 +110,6 @@ describe('<ChartHistogram />', () => {
         .props.onChange({ value: 'analysis.zvi-face-detection' })
     })
 
-    // Select scale
-    act(() => {
-      component.root
-        .findByProps({ label: 'Select the histogram type' })
-        .props.onChange({ value: 'relative' })
-    })
-
     // Set Values
     act(() => {
       component.root
@@ -138,7 +131,6 @@ describe('<ChartHistogram />', () => {
         updatedChart: {
           id: CHART_ID,
           type: 'histogram',
-          scale: 'relative',
           attribute: 'analysis.zvi-face-detection',
           values: '5',
         },
