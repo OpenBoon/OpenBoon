@@ -178,8 +178,8 @@ resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
     }
   }
   spec {
-    max_replicas = 2
-    min_replicas = 1
+    max_replicas = 20
+    min_replicas = 5
     scale_target_ref {
       api_version = "apps/v1"
       kind        = "Deployment"
@@ -190,6 +190,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
       external {
         metric {
           name = "custom.googleapis.com|zmlp|total-pending-tasks"
+          selector {}
         }
         target {
           type  = "Value"
