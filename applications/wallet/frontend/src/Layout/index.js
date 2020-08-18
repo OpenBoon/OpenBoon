@@ -5,10 +5,11 @@ import {
   enableBodyScroll,
   clearAllBodyScrollLocks,
 } from 'body-scroll-lock'
+import { SkipNavLink, SkipNavContent } from '@reach/skip-nav'
 
 import userShape from '../User/shape'
 
-import { constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography, zIndex } from '../Styles'
 
 import Navbar from '../Navbar'
 import UserMenu from '../UserMenu'
@@ -27,6 +28,20 @@ const Layout = ({ user, logout, children }) => {
 
   return (
     <div css={{ height: '100%' }}>
+      <SkipNavLink
+        css={{
+          ':focus': {
+            backgroundColor: colors.structure.smoke,
+            boxShadow: constants.boxShadows.default,
+            zIndex: zIndex.layout.navbar + 1,
+            borderRadius: constants.borderRadius.small,
+            fontSize: typography.size.regular,
+            lineHeight: typography.height.regular,
+            fontWeight: typography.weight.medium,
+          },
+        }}
+      />
+
       <Navbar
         projectId={user.projectId}
         isSidebarOpen={isSidebarOpen}
@@ -41,6 +56,8 @@ const Layout = ({ user, logout, children }) => {
         setSidebarOpen={setSidebarOpen}
         ref={sidebarRef}
       />
+
+      <SkipNavContent />
 
       <div
         css={{
