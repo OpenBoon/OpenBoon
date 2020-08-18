@@ -126,8 +126,18 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                     annotation.entity.description,
                     track.confidence))
         asset.add_analysis('gcp-video-logo-detection', analysis)
+        timeline = cloud_timeline.build_logo_detection_timeline(results)
+        file_storage.assets.store_timeline(asset, timeline)
 
     def handle_detect_objects(self, asset, annotation_result):
+        """
+        Detect objects in video.
+
+        Args:
+            asset (Asset): The asset to process.
+            results (dict): The JSON compatible result.
+
+        """
         analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_objects'),
                                           collapse_labels=True)
         for annotation in annotation_result.object_annotations:
@@ -136,6 +146,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             analysis.add_prediction(pred)
 
         asset.add_analysis('gcp-video-object-detection', analysis)
+        timeline = cloud_timeline.build_object_detection_timeline(annotation_result)
+        file_storage.assets.store_timeline(asset, timeline)
 
     def handle_detect_labels(self, asset, results):
         """

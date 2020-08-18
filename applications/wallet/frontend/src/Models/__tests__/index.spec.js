@@ -72,11 +72,14 @@ describe('<Models />', () => {
     expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
 
     expect(spy).toHaveBeenCalledWith(
-      'AssetLabelingAdd.modelId',
+      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
       `"${MODEL_ID}"`,
     )
 
-    expect(spy).toHaveBeenCalledWith('AssetLabelingAdd.label', `""`)
+    expect(spy).toHaveBeenCalledWith(
+      `AssetLabelingAdd.${PROJECT_ID}.label`,
+      `""`,
+    )
 
     spy.mockClear()
   })
@@ -110,11 +113,14 @@ describe('<Models />', () => {
     expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
 
     expect(spy).not.toHaveBeenCalledWith(
-      'AssetLabelingAdd.modelId',
+      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
       `"${MODEL_ID}"`,
     )
 
-    expect(spy).not.toHaveBeenCalledWith('AssetLabelingAdd.label', `""`)
+    expect(spy).not.toHaveBeenCalledWith(
+      `AssetLabelingAdd.${PROJECT_ID}.label`,
+      `""`,
+    )
 
     spy.mockClear()
   })

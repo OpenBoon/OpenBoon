@@ -20,7 +20,7 @@ ROLES = [(role['name'], role['name'].replace('_', ' ')) for role in settings.ROL
 class ActiveProjectManager(models.Manager):
     """Model manager that only returns projects that are active."""
     def get_queryset(self):
-        return super(ActiveProjectManager, self).get_queryset().filter(is_active=True)
+        return super(ActiveProjectManager, self).get_queryset().filter(isActive=True)
 
 
 class Project(models.Model):
@@ -32,7 +32,7 @@ class Project(models.Model):
     name = models.CharField(max_length=144, default=random_project_name)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='projects.Membership',
                                    related_name='projects')
-    is_active = models.BooleanField(default=True)
+    isActive = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -72,8 +72,8 @@ class Project(models.Model):
                        {'tier': self.subscription.tier.upper()})
 
         # Sync the project status.
-        if self.is_active != project['enabled']:
-            if self.is_active:
+        if self.isActive != project['enabled']:
+            if self.isActive:
                 project_status_response = client.put(f'/api/v1/projects/{self.id}/_enable', {})
             else:
                 project_status_response = client.put(f'/api/v1/projects/{self.id}/_disable', {})

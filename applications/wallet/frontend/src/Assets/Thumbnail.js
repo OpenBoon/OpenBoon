@@ -10,34 +10,32 @@ import SimilaritySvg from '../Icons/similarity.svg'
 import Button, { VARIANTS } from '../Button'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
+import { getQueryString } from '../Fetch/helpers'
+
 import { formatSeconds } from './helpers'
 
 const AssetsThumbnail = ({
   asset: {
-    id,
+    id: thumbnailId,
     metadata: { source },
     thumbnailUrl,
     videoLength,
   },
   isActive,
+  attribute,
 }) => {
   const { filename } = source || {}
 
   const {
-    pathname,
-    query: { projectId, id: selectedId, query },
+    query: { projectId, assetId, query },
   } = useRouter()
 
-  const isSelected = id === selectedId
+  const isSelected = thumbnailId === assetId
 
-  const queryParams = Object.entries({
-    ...(isSelected ? {} : { id }),
+  const queryString = getQueryString({
+    ...(isSelected ? {} : { assetId: thumbnailId }),
     ...(query ? { query } : {}),
   })
-    .map(([key, value]) => `${key}=${value}`)
-    .join('&')
-
-  const queryString = queryParams ? `?${queryParams}` : ''
 
   const { pathname: thumbnailSrc } = new URL(thumbnailUrl)
 
@@ -69,6 +67,8 @@ const AssetsThumbnail = ({
           passHref
         >
           <Button
+            title={filename}
+            aria-label={`Select asset ${filename}`}
             variant={VARIANTS.NEUTRAL}
             css={{
               width: '100%',
@@ -98,7 +98,8 @@ const AssetsThumbnail = ({
 
       {isActive && (
         <Button
-          aria-label="Find similar images"
+          title="Find similar images"
+          aria-label={`Find similar images to ${filename}`}
           variant={VARIANTS.NEUTRAL}
           style={{
             opacity: 0,
@@ -116,11 +117,11 @@ const AssetsThumbnail = ({
             dispatch({
               type: ACTIONS.APPLY_SIMILARITY,
               payload: {
-                pathname,
                 projectId,
-                assetId: id,
-                selectedId,
+                thumbnailId,
+                assetId,
                 query,
+                attribute,
               },
             })
           }}
@@ -134,11 +135,15 @@ const AssetsThumbnail = ({
 
       {isActive && (
         <Link
-          href={`/[projectId]/visualizer/[id]${queryString}`}
-          as={`/${projectId}/visualizer/${id}${queryString}`}
+          href={`/[projectId]/visualizer/[assetId]${getQueryString({ query })}`}
+          as={`/${projectId}/visualizer/${thumbnailId}${getQueryString({
+            query,
+          })}`}
           passHref
         >
           <Button
+            title="Asset details"
+            aria-label={`Asset details ${filename}`}
             variant={VARIANTS.NEUTRAL}
             style={{
               opacity: 0,
@@ -179,6 +184,10 @@ const AssetsThumbnail = ({
   )
 }
 
+AssetsThumbnail.defaultProps = {
+  attribute: 'analysis.zvi-image-similarity',
+}
+
 AssetsThumbnail.propTypes = {
   asset: PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -196,6 +205,7 @@ AssetsThumbnail.propTypes = {
     videoProxyUrl: PropTypes.string,
   }).isRequired,
   isActive: PropTypes.bool.isRequired,
+  attribute: PropTypes.string,
 }
 
 export default AssetsThumbnail

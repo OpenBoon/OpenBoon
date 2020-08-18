@@ -1,15 +1,16 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.domain.ProjectTierUpdate
+import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Before
@@ -27,7 +28,7 @@ class ProjectControllerTests : MockMvcTest() {
     lateinit var testSpec: ProjectSpec
 
     @Autowired
-    lateinit var projectStorageService: ProjectStorageService
+    lateinit var indexRouteDao: IndexRouteDao
 
     @Autowired
     lateinit var projectQuotasDao: ProjectQuotasDao
@@ -174,7 +175,6 @@ class ProjectControllerTests : MockMvcTest() {
 
     @Test
     fun rename() {
-        val pid = getProjectId()
         var update = ProjectNameUpdate("new Name")
 
         mvc.perform(
@@ -188,6 +188,35 @@ class ProjectControllerTests : MockMvcTest() {
                 jsonPath(
                     "$.op",
                     CoreMatchers.anything()
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun setIndex() {
+        val pid = getProjectId()
+        val testSpec = IndexRouteSpec(
+            "test", 1, shards = 1, replicas = 0
+        )
+        val route = indexRoutingService.createIndexRoute(testSpec)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/projects/$pid/_index/${route.id}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andExpect(
+                jsonPath(
+                    "$.op",
+                    CoreMatchers.anything()
+                )
+            )
+            .andExpect(
+                jsonPath(
+                    "$.success",
+                    CoreMatchers.equalTo(true)
                 )
             )
             .andReturn()

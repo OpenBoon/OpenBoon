@@ -32,13 +32,13 @@ const FiltersMenu = ({
   const [newFilters, setNewFilters] = useState({})
   const [fieldsFilter, setFieldsFilter] = useState('')
 
-  const onClick = ({ type, attribute }) => (value) => {
+  const onClick = ({ type, attribute, modelId }) => (value) => {
     if (value) {
       const values = type === 'exists' ? { exists: true } : {}
 
       setNewFilters((nF) => ({
         ...nF,
-        [attribute]: { type, attribute, values },
+        [attribute]: { type, attribute, values, modelId },
       }))
     } else {
       setNewFilters((nF) => {
@@ -81,6 +81,7 @@ const FiltersMenu = ({
           flexDirection: 'column',
           padding: spacing.moderate,
           borderBottom: constants.borders.regular.smoke,
+          flexShrink: 0,
         }}
       >
         <label>
@@ -146,6 +147,7 @@ const FiltersMenu = ({
                     return (
                       <FiltersMenuSection
                         key={subKey}
+                        projectId={projectId}
                         path={key}
                         attribute={subKey}
                         value={subValue}
@@ -160,9 +162,8 @@ const FiltersMenu = ({
           )}
       </div>
 
-      <div css={{ padding: spacing.base, display: 'flex' }}>
+      <div css={{ padding: spacing.base, display: 'flex', flexShrink: 0 }}>
         <Button
-          aria-label="Cancel"
           variant={VARIANTS.SECONDARY}
           onClick={() => setIsMenuOpen(false)}
           style={{
@@ -179,7 +180,8 @@ const FiltersMenu = ({
         <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
         <Button
-          aria-label="Add Field Filters"
+          type="submit"
+          aria-label="Add Filters"
           variant={VARIANTS.PRIMARY}
           onClick={() => {
             dispatch({
@@ -205,7 +207,7 @@ const FiltersMenu = ({
           isDisabled={Object.keys(newFilters).length === 0}
         >
           <PlusSvg height={16} />
-          Add Field Filters
+          Add Filters
         </Button>
       </div>
     </div>

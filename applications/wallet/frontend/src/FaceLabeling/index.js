@@ -9,7 +9,7 @@ import FaceLabelingContent from './Content'
 
 const FaceLabeling = () => {
   const {
-    query: { projectId, id: assetId },
+    query: { projectId, assetId },
   } = useRouter()
 
   return (

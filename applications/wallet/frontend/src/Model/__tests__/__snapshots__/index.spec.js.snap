@@ -16,6 +16,60 @@ Array [
       ]
     }
   />,
+  .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-0"
+        role="alert"
+      >
+        Label updated.
+      </div>
+    </div>
+  </div>,
   @keyframes animation-0 {
   from {
     -webkit-transform: rotate(0deg);
@@ -67,7 +121,7 @@ Array [
 }
 
 .emotion-1 a {
-  color: #0273f5;
+  color: #0074f5;
 }
 
 .emotion-4 {
@@ -112,7 +166,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -167,7 +220,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -206,6 +258,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-11 {
@@ -269,7 +324,7 @@ Array [
       >
         <svg
           className="emotion-0"
-          color="#0273f5"
+          color="#0074f5"
           data-file-name="generating.svg"
           height={20}
         />
@@ -369,7 +424,7 @@ Array [
     >
       <a
         className="emotion-7"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsInZhbHVlcyI6e319XQ=="
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -378,5 +433,682 @@ Array [
     </div>
   </div>,
   <ModelLabels />,
+  "",
+]
+`;
+
+exports[`<Model /> should render properly in edit label mode 1`] = `
+Array [
+  <Breadcrumbs
+    crumbs={
+      Array [
+        Object {
+          "href": "/[projectId]/models",
+          "title": "Custom Models",
+        },
+        Object {
+          "href": false,
+          "title": "Model Details",
+        },
+      ]
+    }
+  />,
+  .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-0"
+        role="alert"
+      >
+        Label deleted.
+      </div>
+    </div>
+  </div>,
+  @keyframes animation-0 {
+  from {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-animation: animation-0 2s linear infinite;
+  animation: animation-0 2s linear infinite;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-1 a {
+  color: #0074f5;
+}
+
+.emotion-4 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 17px;
+  line-height: 23px;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-8 button,
+.emotion-8 a {
+  margin-right: 16px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
+  background-color: #808080;
+}
+
+.emotion-5:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  background-color: #808080;
+}
+
+.emotion-7:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-7[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-14 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-13 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-10 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-11 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-11:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-9 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-9:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+<div>
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-2"
+      >
+        <svg
+          className="emotion-0"
+          color="#0074f5"
+          data-file-name="generating.svg"
+          height={20}
+        />
+        <div
+          className="emotion-1"
+          role="alert"
+        >
+          "
+          console_face_recognition
+          " training in progress.
+           
+          <a
+            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+          >
+            Check Status
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <ul
+      className="emotion-4"
+    >
+      <li>
+        <strong>
+          Model Name:
+        </strong>
+         
+        console_face_recognition
+      </li>
+      <li>
+        <strong>
+          Model Type:
+        </strong>
+         
+        ZVI_FACE_RECOGNITION
+      </li>
+      <li>
+        <strong>
+          Module Name:
+        </strong>
+         
+        zvi-console_face_recognition-face-recognition
+      </li>
+    </ul>
+    <div
+      className="emotion-8"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        Train
+      </button>
+      <button
+        aria-disabled={true}
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        Train & Apply
+      </button>
+      <button
+        className="emotion-7"
+        onClick={[Function]}
+        type="button"
+      >
+        Delete
+      </button>
+    </div>
+    <nav
+      className="emotion-14"
+    >
+      <ul
+        className="emotion-13"
+      >
+        <li
+          className="emotion-10"
+        >
+          <a
+            className="emotion-9"
+            href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+          >
+            View Labels
+          </a>
+        </li>
+        <li
+          className="emotion-10"
+        >
+          <a
+            className="emotion-11"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+          >
+            Edit Label
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>,
+  .emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-7 button,
+.emotion-7 a {
+  margin-right: 16px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
+  background-color: #808080;
+}
+
+.emotion-5:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+}
+
+.emotion-0 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-1 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
+.emotion-1:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited {
+  background-color: #73b61c;
+}
+
+.emotion-6:hover {
+  background-color: #96c955;
+}
+
+.emotion-6[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-8"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-0"
+        htmlFor="newLabel"
+      >
+        Label
+      </label>
+      <div
+        className="emotion-2"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-1"
+          disabled={false}
+          id="newLabel"
+          name="newLabel"
+          onChange={[Function]}
+          type="text"
+          value="cat"
+        />
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-7"
+    >
+      <a
+        className="emotion-5"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Cancel
+      </a>
+      <button
+        aria-disabled={true}
+        className="emotion-6"
+        onClick={[Function]}
+        type="submit"
+      >
+        Save Label Changes
+      </button>
+    </div>
+  </form>,
 ]
 `;

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
-import com.zorroa.archivist.domain.IndexMigrationSpec
+import com.zorroa.archivist.domain.IndexToIndexMigrationSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexTaskState
 import com.zorroa.archivist.domain.IndexTaskType
@@ -34,7 +34,7 @@ class IndexTaskControllerTests : MockMvcTest() {
     fun getEsTaskInfo() {
         val testSpec = IndexRouteSpec("test", 1)
         val route = indexRoutingService.createIndexRoute(testSpec)
-        val spec = IndexMigrationSpec(route.id)
+        val spec = IndexToIndexMigrationSpec(indexRouteDao.getProjectRoute().id, route.id)
         val task = indexTaskService.createIndexMigrationTask(spec)
 
         mvc.perform(
@@ -56,7 +56,7 @@ class IndexTaskControllerTests : MockMvcTest() {
     fun testGetAllRunning() {
         val testSpec = IndexRouteSpec("test", 1)
         val route = indexRoutingService.createIndexRoute(testSpec)
-        val spec = IndexMigrationSpec(route.id)
+        val spec = IndexToIndexMigrationSpec(indexRouteDao.getProjectRoute().id, route.id)
         indexTaskService.createIndexMigrationTask(spec)
 
         mvc.perform(
@@ -79,7 +79,7 @@ class IndexTaskControllerTests : MockMvcTest() {
         val testSpec = IndexRouteSpec("test", 1)
         val srcRoute = indexRouteDao.getProjectRoute()
         val route = indexRoutingService.createIndexRoute(testSpec)
-        val spec = IndexMigrationSpec(route.id)
+        val spec = IndexToIndexMigrationSpec(srcRoute.id, route.id)
         val task = indexTaskService.createIndexMigrationTask(spec)
 
         mvc.perform(

@@ -173,7 +173,6 @@ exports[`<Authentication /> should render properly when user needs to approve ne
 }
 
 .emotion-3 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -261,7 +260,6 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;

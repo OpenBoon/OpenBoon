@@ -23,6 +23,7 @@ const FilterActions = ({
   return (
     <div css={{ display: 'flex', alignItems: 'center' }}>
       <Button
+        title={`${isDisabled ? 'Enable' : 'Disable'} Filter`}
         aria-label={`${isDisabled ? 'Enable' : 'Disable'} Filter`}
         variant={VARIANTS.ICON}
         css={{
@@ -66,6 +67,7 @@ const FilterActions = ({
       </Button>
 
       <Button
+        title="Delete Filter"
         aria-label="Delete Filter"
         variant={VARIANTS.ICON}
         css={{

@@ -6,7 +6,14 @@ import TabsLink from './Link'
 
 const Tabs = ({ tabs }) => {
   return (
-    <nav css={{ padding: spacing.normal, paddingLeft: 0, paddingRight: 0 }}>
+    <nav
+      css={{
+        padding: spacing.normal,
+        paddingLeft: 0,
+        paddingRight: 0,
+        flexShrink: 0,
+      }}
+    >
       <ul
         css={{
           listStyleType: 'none',
@@ -18,8 +25,13 @@ const Tabs = ({ tabs }) => {
       >
         {tabs
           .filter(({ title, href }) => title && href)
-          .map(({ title, href }) => (
-            <TabsLink key={href} title={title} href={href} />
+          .map(({ title, href, isSelected }) => (
+            <TabsLink
+              key={`${href}${isSelected}`}
+              title={title}
+              href={href}
+              isSelected={isSelected}
+            />
           ))}
       </ul>
     </nav>
@@ -31,6 +43,7 @@ Tabs.propTypes = {
     PropTypes.shape({
       title: PropTypes.string,
       href: PropTypes.string,
+      isSelected: PropTypes.bool,
     }).isRequired,
   ).isRequired,
 }

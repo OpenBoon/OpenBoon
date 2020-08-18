@@ -18,7 +18,7 @@ Array [
   .emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
-  color: #0273f5;
+  color: #0074f5;
 }
 
 <div
@@ -95,7 +95,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -204,7 +203,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -258,7 +256,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -314,32 +311,28 @@ Array [
       </button>
     </div>
   </div>,
-  .emotion-45 {
+  .emotion-108 {
   overflow: auto;
 }
 
-.emotion-4 {
-  background-color: #252525;
+.emotion-18 {
   border-radius: 2px;
-}
-
-.emotion-4:last-of-type > div:last-of-type {
+  background-color: #191919;
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-4:first-of-type > div {
-  border-top: none;
+.emotion-18:hover summary svg {
+  opacity: 1;
 }
 
 .emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-top: 1px solid #3b3b3b;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
+  list-style-type: none;
+  padding: 12px;
+  background-color: #252525;
+}
+
+.emotion-3::-webkit-details-marker {
+  display: none;
 }
 
 .emotion-3:hover {
@@ -347,328 +340,1447 @@ Array [
   background-color: #2e2e2e;
 }
 
-.emotion-3 h4 {
-  font-size: 15px;
-  font-weight: 400;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
 }
 
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
+.emotion-0 {
   color: #808080;
 }
 
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -2px;
   padding-left: 12px;
-  padding-right: 8px;
+}
+
+.emotion-5 {
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-4 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+  padding-bottom: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-15 {
+  padding-left: 16px;
+}
+
+.emotion-6 {
+  width: 100%;
+}
+
+.emotion-6:not(:first-of-type) {
+  border-top: 4px solid #4a4a4a;
+}
+
+.emotion-69 {
+  padding: 16px;
+  padding-bottom: 24px;
+}
+
+.emotion-61 {
+  padding-bottom: 12px;
+}
+
+.emotion-68 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  height: 9px;
+  position: relative;
+}
+
+.emotion-67 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.emotion-62 {
+  height: 100%;
+  -webkit-flex: 0.11 0 auto;
+  -ms-flex: 0.11 0 auto;
+  flex: 0.11 0 auto;
+  min-width: 8px;
+  background-color: #0074f5;
+  border: 2px solid transparent;
+}
+
+.emotion-62:hover,
+.emotion-62.focus-visible:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 1px solid transparent;
+}
+
+.emotion-62:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-62:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-63 {
+  height: 100%;
+  -webkit-flex: 0.26 0 auto;
+  -ms-flex: 0.26 0 auto;
+  flex: 0.26 0 auto;
+  min-width: 8px;
+  background-color: #a03dc7;
+  border: 2px solid transparent;
+}
+
+.emotion-63:hover,
+.emotion-63.focus-visible:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 1px solid transparent;
+}
+
+.emotion-63:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-63:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-64 {
+  height: 100%;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  min-width: 8px;
+  background-color: #d6680b;
+  border: 2px solid transparent;
+}
+
+.emotion-64:hover,
+.emotion-64.focus-visible:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 1px solid transparent;
+}
+
+.emotion-64:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-64:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-65 {
+  height: 100%;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  min-width: 8px;
+  background-color: #ebb52e;
+  border: 2px solid transparent;
+}
+
+.emotion-65:hover,
+.emotion-65.focus-visible:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 1px solid transparent;
+}
+
+.emotion-65:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-65:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-66 {
+  height: 100%;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  min-width: 8px;
+  background-color: #00bdc1;
+  border: 2px solid transparent;
+}
+
+.emotion-66:hover,
+.emotion-66.focus-visible:focus {
+  position: relative;
+  height: 13px;
+  top: -2px;
+  border: 2px solid #ffffff;
+  outline: 1px solid transparent;
+}
+
+.emotion-66:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-66:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-72 {
+  width: 100%;
+}
+
+.emotion-72:not(:first-of-type) {
+  border-top: 4px solid #4a4a4a;
+}
+
+.emotion-71 {
+  font-family: Roboto Condensed;
+  padding: 16px;
+}
+
+.emotion-70 {
+  padding-top: 8px;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 <div
-    className="emotion-45"
+    className="emotion-108"
   >
-    <div
-      className="emotion-4"
+    <details
+      className="emotion-18"
+      onToggle={[Function]}
+      open={false}
     >
-      <div
+      <summary
+        aria-label="Analysis"
         className="emotion-3"
-        onClick={[Function]}
-        style={Object {}}
       >
-        <button
-          aria-label="Expand Section"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
+        <div
+          className="emotion-2"
         >
           <svg
             className="emotion-0"
             data-file-name="chevron.svg"
             height={20}
           />
-        </button>
-        <h4
-          className="emotion-2"
-        >
-          Analysis
-        </h4>
-      </div>
-    </div>
-    <div
-      className="emotion-4"
-    >
+          <span
+            className="emotion-1"
+          >
+            Analysis
+          </span>
+        </div>
+      </summary>
       <div
-        className="emotion-3"
-        onClick={[Function]}
-        style={Object {}}
+        className="emotion-17"
       >
-        <button
-          aria-label="Expand Section"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
+        <div
+          className="emotion-16"
+        >
+          <div
+            className="emotion-5"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="analysis..zvi"
+              >
+                Zvi
+              </span>
+            </div>
+            <div />
+          </div>
+          <div
+            className="emotion-15"
+          >
+            <div
+              className="emotion-6"
+            >
+              <MetadataPrettyRow
+                name="0"
+                path="analysis..zvi"
+                value="#"
+              />
+              <MetadataPrettyRow
+                name="1"
+                path="analysis..zvi"
+                value="f"
+              />
+              <MetadataPrettyRow
+                name="2"
+                path="analysis..zvi"
+                value="3"
+              />
+              <MetadataPrettyRow
+                name="3"
+                path="analysis..zvi"
+                value="d"
+              />
+              <MetadataPrettyRow
+                name="4"
+                path="analysis..zvi"
+                value="f"
+              />
+              <MetadataPrettyRow
+                name="5"
+                path="analysis..zvi"
+                value="c"
+              />
+              <MetadataPrettyRow
+                name="6"
+                path="analysis..zvi"
+                value="3"
+              />
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <MetadataPrettyRow
+                name="0"
+                path="analysis..zvi"
+                value="#"
+              />
+              <MetadataPrettyRow
+                name="1"
+                path="analysis..zvi"
+                value="f"
+              />
+              <MetadataPrettyRow
+                name="2"
+                path="analysis..zvi"
+                value="4"
+              />
+              <MetadataPrettyRow
+                name="3"
+                path="analysis..zvi"
+                value="e"
+              />
+              <MetadataPrettyRow
+                name="4"
+                path="analysis..zvi"
+                value="f"
+              />
+              <MetadataPrettyRow
+                name="5"
+                path="analysis..zvi"
+                value="d"
+              />
+              <MetadataPrettyRow
+                name="6"
+                path="analysis..zvi"
+                value="8"
+              />
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <MetadataPrettyRow
+                name="0"
+                path="analysis..zvi"
+                value="#"
+              />
+              <MetadataPrettyRow
+                name="1"
+                path="analysis..zvi"
+                value="c"
+              />
+              <MetadataPrettyRow
+                name="2"
+                path="analysis..zvi"
+                value="1"
+              />
+              <MetadataPrettyRow
+                name="3"
+                path="analysis..zvi"
+                value="8"
+              />
+              <MetadataPrettyRow
+                name="4"
+                path="analysis..zvi"
+                value="f"
+              />
+              <MetadataPrettyRow
+                name="5"
+                path="analysis..zvi"
+                value="4"
+              />
+              <MetadataPrettyRow
+                name="6"
+                path="analysis..zvi"
+                value="6"
+              />
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <MetadataPrettyRow
+                name="0"
+                path="analysis..zvi"
+                value="#"
+              />
+              <MetadataPrettyRow
+                name="1"
+                path="analysis..zvi"
+                value="e"
+              />
+              <MetadataPrettyRow
+                name="2"
+                path="analysis..zvi"
+                value="b"
+              />
+              <MetadataPrettyRow
+                name="3"
+                path="analysis..zvi"
+                value="d"
+              />
+              <MetadataPrettyRow
+                name="4"
+                path="analysis..zvi"
+                value="f"
+              />
+              <MetadataPrettyRow
+                name="5"
+                path="analysis..zvi"
+                value="b"
+              />
+              <MetadataPrettyRow
+                name="6"
+                path="analysis..zvi"
+                value="d"
+              />
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <MetadataPrettyRow
+                name="0"
+                path="analysis..zvi"
+                value="#"
+              />
+              <MetadataPrettyRow
+                name="1"
+                path="analysis..zvi"
+                value="c"
+              />
+              <MetadataPrettyRow
+                name="2"
+                path="analysis..zvi"
+                value="c"
+              />
+              <MetadataPrettyRow
+                name="3"
+                path="analysis..zvi"
+                value="d"
+              />
+              <MetadataPrettyRow
+                name="4"
+                path="analysis..zvi"
+                value="3"
+              />
+              <MetadataPrettyRow
+                name="5"
+                path="analysis..zvi"
+                value="c"
+              />
+              <MetadataPrettyRow
+                name="6"
+                path="analysis..zvi"
+                value="0"
+              />
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <MetadataPrettyRow
+                name="0"
+                path="analysis..zvi"
+                value="#"
+              />
+              <MetadataPrettyRow
+                name="1"
+                path="analysis..zvi"
+                value="e"
+              />
+              <MetadataPrettyRow
+                name="2"
+                path="analysis..zvi"
+                value="7"
+              />
+              <MetadataPrettyRow
+                name="3"
+                path="analysis..zvi"
+                value="d"
+              />
+              <MetadataPrettyRow
+                name="4"
+                path="analysis..zvi"
+                value="4"
+              />
+              <MetadataPrettyRow
+                name="5"
+                path="analysis..zvi"
+                value="b"
+              />
+              <MetadataPrettyRow
+                name="6"
+                path="analysis..zvi"
+                value="b"
+              />
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <MetadataPrettyRow
+                name="0"
+                path="analysis..zvi"
+                value="#"
+              />
+              <MetadataPrettyRow
+                name="1"
+                path="analysis..zvi"
+                value="b"
+              />
+              <MetadataPrettyRow
+                name="2"
+                path="analysis..zvi"
+                value="e"
+              />
+              <MetadataPrettyRow
+                name="3"
+                path="analysis..zvi"
+                value="a"
+              />
+              <MetadataPrettyRow
+                name="4"
+                path="analysis..zvi"
+                value="e"
+              />
+              <MetadataPrettyRow
+                name="5"
+                path="analysis..zvi"
+                value="8"
+              />
+              <MetadataPrettyRow
+                name="6"
+                path="analysis..zvi"
+                value="e"
+              />
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <MetadataPrettyRow
+                name="0"
+                path="analysis..zvi"
+                value="#"
+              />
+              <MetadataPrettyRow
+                name="1"
+                path="analysis..zvi"
+                value="c"
+              />
+              <MetadataPrettyRow
+                name="2"
+                path="analysis..zvi"
+                value="a"
+              />
+              <MetadataPrettyRow
+                name="3"
+                path="analysis..zvi"
+                value="b"
+              />
+              <MetadataPrettyRow
+                name="4"
+                path="analysis..zvi"
+                value="f"
+              />
+              <MetadataPrettyRow
+                name="5"
+                path="analysis..zvi"
+                value="9"
+              />
+              <MetadataPrettyRow
+                name="6"
+                path="analysis..zvi"
+                value="e"
+              />
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <MetadataPrettyRow
+                name="0"
+                path="analysis..zvi"
+                value="#"
+              />
+              <MetadataPrettyRow
+                name="1"
+                path="analysis..zvi"
+                value="d"
+              />
+              <MetadataPrettyRow
+                name="2"
+                path="analysis..zvi"
+                value="2"
+              />
+              <MetadataPrettyRow
+                name="3"
+                path="analysis..zvi"
+                value="c"
+              />
+              <MetadataPrettyRow
+                name="4"
+                path="analysis..zvi"
+                value="0"
+              />
+              <MetadataPrettyRow
+                name="5"
+                path="analysis..zvi"
+                value="9"
+              />
+              <MetadataPrettyRow
+                name="6"
+                path="analysis..zvi"
+                value="c"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-18"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="Clip"
+        className="emotion-3"
+      >
+        <div
+          className="emotion-2"
         >
           <svg
             className="emotion-0"
             data-file-name="chevron.svg"
             height={20}
           />
-        </button>
-        <h4
-          className="emotion-2"
-        >
-          Clip
-        </h4>
-      </div>
-    </div>
-    <div
-      className="emotion-4"
-    >
+          <span
+            className="emotion-1"
+          >
+            Clip
+          </span>
+        </div>
+      </summary>
       <div
-        className="emotion-3"
-        onClick={[Function]}
-        style={Object {}}
+        className="emotion-17"
       >
-        <button
-          aria-label="Expand Section"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
+        <div
+          className="emotion-16"
+        >
+          <MetadataPrettyRow
+            name="type"
+            path="clip."
+            value="page"
+          />
+          <MetadataPrettyRow
+            name="start"
+            path="clip."
+            value={1}
+          />
+          <MetadataPrettyRow
+            name="stop"
+            path="clip."
+            value={1}
+          />
+          <MetadataPrettyRow
+            name="length"
+            path="clip."
+            value={1}
+          />
+          <MetadataPrettyRow
+            name="pile"
+            path="clip."
+            value="pUn6wBxUN7x9JxOxLkvruOyNdYA"
+          />
+          <MetadataPrettyRow
+            name="sourceAssetId"
+            path="clip."
+            value="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+          />
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-18"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="Files"
+        className="emotion-3"
+      >
+        <div
+          className="emotion-2"
         >
           <svg
             className="emotion-0"
             data-file-name="chevron.svg"
             height={20}
           />
-        </button>
-        <h4
-          className="emotion-2"
-        >
-          Files
-        </h4>
-      </div>
-    </div>
-    <div
-      className="emotion-4"
-    >
+          <span
+            className="emotion-1"
+          >
+            Files
+          </span>
+        </div>
+      </summary>
       <div
-        className="emotion-3"
-        onClick={[Function]}
-        style={Object {}}
+        className="emotion-17"
       >
-        <button
-          aria-label="Expand Section"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
+        <div
+          className="emotion-6"
+        >
+          <MetadataPrettyRow
+            name="name"
+            path="files"
+            value="image_650x434.jpg"
+          />
+          <MetadataPrettyRow
+            name="category"
+            path="files"
+            value="proxy"
+          />
+          <MetadataPrettyRow
+            name="mimetype"
+            path="files"
+            value="image/jpeg"
+          />
+          <MetadataPrettyRow
+            name="size"
+            path="files"
+            value={89643}
+          />
+          <div
+            className="emotion-5"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.attrs"
+              >
+                Attrs
+              </span>
+            </div>
+            <div />
+          </div>
+          <div
+            className="emotion-15"
+          >
+            <MetadataPrettyRow
+              name="width"
+              path="files.attrs"
+              value={650}
+            />
+            <MetadataPrettyRow
+              name="height"
+              path="files.attrs"
+              value={434}
+            />
+          </div>
+          <MetadataPrettyRow
+            name="url"
+            path="files"
+            value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg"
+          />
+        </div>
+        <div
+          className="emotion-6"
+        >
+          <MetadataPrettyRow
+            name="name"
+            path="files"
+            value="image_512x341.jpg"
+          />
+          <MetadataPrettyRow
+            name="category"
+            path="files"
+            value="proxy"
+          />
+          <MetadataPrettyRow
+            name="mimetype"
+            path="files"
+            value="image/jpeg"
+          />
+          <MetadataPrettyRow
+            name="size"
+            path="files"
+            value={60713}
+          />
+          <div
+            className="emotion-5"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.attrs"
+              >
+                Attrs
+              </span>
+            </div>
+            <div />
+          </div>
+          <div
+            className="emotion-15"
+          >
+            <MetadataPrettyRow
+              name="width"
+              path="files.attrs"
+              value={512}
+            />
+            <MetadataPrettyRow
+              name="height"
+              path="files.attrs"
+              value={341}
+            />
+          </div>
+          <MetadataPrettyRow
+            name="url"
+            path="files"
+            value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg"
+          />
+        </div>
+        <div
+          className="emotion-6"
+        >
+          <MetadataPrettyRow
+            name="name"
+            path="files"
+            value="image_320x213.jpg"
+          />
+          <MetadataPrettyRow
+            name="category"
+            path="files"
+            value="proxy"
+          />
+          <MetadataPrettyRow
+            name="mimetype"
+            path="files"
+            value="image/jpeg"
+          />
+          <MetadataPrettyRow
+            name="size"
+            path="files"
+            value={30882}
+          />
+          <div
+            className="emotion-5"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.attrs"
+              >
+                Attrs
+              </span>
+            </div>
+            <div />
+          </div>
+          <div
+            className="emotion-15"
+          >
+            <MetadataPrettyRow
+              name="width"
+              path="files.attrs"
+              value={320}
+            />
+            <MetadataPrettyRow
+              name="height"
+              path="files.attrs"
+              value={213}
+            />
+          </div>
+          <MetadataPrettyRow
+            name="url"
+            path="files"
+            value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg"
+          />
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-18"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="Labels"
+        className="emotion-3"
+      >
+        <div
+          className="emotion-2"
         >
           <svg
             className="emotion-0"
             data-file-name="chevron.svg"
             height={20}
           />
-        </button>
-        <h4
-          className="emotion-2"
-        >
-          Labels
-        </h4>
-      </div>
-    </div>
-    <div
-      className="emotion-4"
-    >
+          <span
+            className="emotion-1"
+          >
+            Labels
+          </span>
+        </div>
+      </summary>
       <div
-        className="emotion-3"
-        onClick={[Function]}
-        style={Object {}}
+        className="emotion-17"
       >
-        <button
-          aria-label="Expand Section"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
+        <MetadataPrettyLabels />
+      </div>
+    </details>
+    <details
+      className="emotion-18"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="Media"
+        className="emotion-3"
+      >
+        <div
+          className="emotion-2"
         >
           <svg
             className="emotion-0"
             data-file-name="chevron.svg"
             height={20}
           />
-        </button>
-        <h4
-          className="emotion-2"
-        >
-          Media
-        </h4>
-      </div>
-    </div>
-    <div
-      className="emotion-4"
-    >
+          <span
+            className="emotion-1"
+          >
+            Media
+          </span>
+        </div>
+      </summary>
       <div
-        className="emotion-3"
-        onClick={[Function]}
-        style={Object {}}
+        className="emotion-17"
       >
-        <button
-          aria-label="Expand Section"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
+        <div
+          className="emotion-16"
+        >
+          <MetadataPrettyRow
+            name="width"
+            path="media."
+            value={650}
+          />
+          <MetadataPrettyRow
+            name="height"
+            path="media."
+            value={434}
+          />
+          <MetadataPrettyRow
+            name="aspect"
+            path="media."
+            value={1.5}
+          />
+          <MetadataPrettyRow
+            name="orientation"
+            path="media."
+            value="landscape"
+          />
+          <MetadataPrettyRow
+            name="type"
+            path="media."
+            value="image"
+          />
+          <MetadataPrettyRow
+            name="length"
+            path="media."
+            value={1}
+          />
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-18"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="Metrics"
+        className="emotion-3"
+      >
+        <div
+          className="emotion-2"
         >
           <svg
             className="emotion-0"
             data-file-name="chevron.svg"
             height={20}
           />
-        </button>
-        <h4
-          className="emotion-2"
-        >
-          Metrics
-        </h4>
-      </div>
-    </div>
-    <div
-      className="emotion-4"
-    >
+          <span
+            className="emotion-1"
+          >
+            Metrics
+          </span>
+        </div>
+      </summary>
       <div
-        className="emotion-3"
-        onClick={[Function]}
-        style={Object {}}
+        className="emotion-17"
       >
-        <button
-          aria-label="Expand Section"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
+        <div
+          className="emotion-69"
+        >
+          <div
+            className="emotion-61"
+          >
+            Processors: 
+            5
+          </div>
+          <div
+            className="emotion-68"
+          >
+            <div
+              className="emotion-67"
+            >
+              <button
+                aria-label="zmlp_core.core.processors.PreCacheSourceFileProcessor"
+                className="emotion-62"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseDown={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                type="button"
+              />
+              <button
+                aria-label="zmlp_core.image.importers.ImageImporter"
+                className="emotion-63"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseDown={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                type="button"
+              />
+              <button
+                aria-label="zmlp_core.office.importers.OfficeImporter"
+                className="emotion-64"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseDown={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                type="button"
+              />
+              <button
+                aria-label="zmlp_core.video.VideoImporter"
+                className="emotion-65"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseDown={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                type="button"
+              />
+              <button
+                aria-label="zmlp_core.core.processors.AssertAttributesProcessor"
+                className="emotion-66"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseDown={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                type="button"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-72"
+        >
+          <div
+            className="emotion-71"
+          >
+            PROCESSOR
+            <div
+              className="emotion-70"
+              title="zmlp_core.core.processors.PreCacheSourceFileProcessor"
+            >
+              zmlp_core.core.processors.PreCacheSourceFileProcessor
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={1621235190}
+          />
+          <MetadataPrettyRow
+            name="executionTime"
+            path="metrics.pipeline"
+            value={0.11}
+          />
+          <MetadataPrettyRow
+            name="executionDate"
+            path="metrics.pipeline"
+            value="2020-03-03T21:22:27.694149"
+          />
+        </div>
+        <div
+          className="emotion-72"
+        >
+          <div
+            className="emotion-71"
+          >
+            PROCESSOR
+            <div
+              className="emotion-70"
+              title="zmlp_core.image.importers.ImageImporter"
+            >
+              zmlp_core.image.importers.ImageImporter
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={1426657387}
+          />
+          <MetadataPrettyRow
+            name="executionTime"
+            path="metrics.pipeline"
+            value={0.26}
+          />
+          <MetadataPrettyRow
+            name="executionDate"
+            path="metrics.pipeline"
+            value="2020-03-03T21:22:28.215069"
+          />
+        </div>
+        <div
+          className="emotion-72"
+        >
+          <div
+            className="emotion-71"
+          >
+            PROCESSOR
+            <div
+              className="emotion-70"
+              title="zmlp_core.office.importers.OfficeImporter"
+            >
+              zmlp_core.office.importers.OfficeImporter
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={2001473853}
+          />
+          <MetadataPrettyRow
+            name="executionTime"
+            path="metrics.pipeline"
+            value={0}
+          />
+        </div>
+        <div
+          className="emotion-72"
+        >
+          <div
+            className="emotion-71"
+          >
+            PROCESSOR
+            <div
+              className="emotion-70"
+              title="zmlp_core.video.VideoImporter"
+            >
+              zmlp_core.video.VideoImporter
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={3310423168}
+          />
+          <MetadataPrettyRow
+            name="executionTime"
+            path="metrics.pipeline"
+            value={0}
+          />
+        </div>
+        <div
+          className="emotion-72"
+        >
+          <div
+            className="emotion-71"
+          >
+            PROCESSOR
+            <div
+              className="emotion-70"
+              title="zmlp_core.core.processors.AssertAttributesProcessor"
+            >
+              zmlp_core.core.processors.AssertAttributesProcessor
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={1841569083}
+          />
+          <MetadataPrettyRow
+            name="executionTime"
+            path="metrics.pipeline"
+            value={0}
+          />
+          <MetadataPrettyRow
+            name="executionDate"
+            path="metrics.pipeline"
+            value="2020-03-03T21:22:29.654215"
+          />
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-18"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="Similarity"
+        className="emotion-3"
+      >
+        <div
+          className="emotion-2"
         >
           <svg
             className="emotion-0"
             data-file-name="chevron.svg"
             height={20}
           />
-        </button>
-        <h4
-          className="emotion-2"
-        >
-          Similarity
-        </h4>
-      </div>
-    </div>
-    <div
-      className="emotion-4"
-    >
+          <span
+            className="emotion-1"
+          >
+            Similarity
+          </span>
+        </div>
+      </summary>
       <div
-        className="emotion-3"
-        onClick={[Function]}
-        style={Object {}}
+        className="emotion-17"
       >
-        <button
-          aria-label="Expand Section"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
+        <div
+          className="emotion-16"
+        >
+          <MetadataPrettyRow
+            name="simhash"
+            path="similarity."
+            value="NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP"
+          />
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-18"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="Source"
+        className="emotion-3"
+      >
+        <div
+          className="emotion-2"
         >
           <svg
             className="emotion-0"
             data-file-name="chevron.svg"
             height={20}
           />
-        </button>
-        <h4
-          className="emotion-2"
-        >
-          Source
-        </h4>
-      </div>
-    </div>
-    <div
-      className="emotion-4"
-    >
+          <span
+            className="emotion-1"
+          >
+            Source
+          </span>
+        </div>
+      </summary>
       <div
-        className="emotion-3"
-        onClick={[Function]}
-        style={Object {}}
+        className="emotion-17"
       >
-        <button
-          aria-label="Expand Section"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
+        <div
+          className="emotion-16"
+        >
+          <MetadataPrettyRow
+            name="path"
+            path="source."
+            value="gs://zorroa-dev-data/image/TIFF_1MB.tiff"
+          />
+          <MetadataPrettyRow
+            name="extension"
+            path="source."
+            value="tiff"
+          />
+          <MetadataPrettyRow
+            name="filename"
+            path="source."
+            value="TIFF_1MB.tiff"
+          />
+          <MetadataPrettyRow
+            name="mimetype"
+            path="source."
+            value="image/tiff"
+          />
+          <MetadataPrettyRow
+            name="filesize"
+            path="source."
+            value={1131930}
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="source."
+            value={1867533868}
+          />
+          <MetadataPrettyRow
+            name="url"
+            path="source."
+            value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff"
+          />
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-18"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="System"
+        className="emotion-3"
+      >
+        <div
+          className="emotion-2"
         >
           <svg
             className="emotion-0"
             data-file-name="chevron.svg"
             height={20}
           />
-        </button>
-        <h4
-          className="emotion-2"
+          <span
+            className="emotion-1"
+          >
+            System
+          </span>
+        </div>
+      </summary>
+      <div
+        className="emotion-17"
+      >
+        <div
+          className="emotion-16"
         >
-          System
-        </h4>
+          <MetadataPrettyRow
+            name="jobId"
+            path="system."
+            value="106d4be1-5d95-11ea-baea-364023b135f5"
+          />
+          <MetadataPrettyRow
+            name="dataSourceId"
+            path="system."
+            value="10509c20-5d95-11ea-baea-364023b135f5"
+          />
+          <MetadataPrettyRow
+            name="timeCreated"
+            path="system."
+            value="2020-03-03T21:22:24.922700Z"
+          />
+          <MetadataPrettyRow
+            name="state"
+            path="system."
+            value="Analyzed"
+          />
+          <MetadataPrettyRow
+            name="projectId"
+            path="system."
+            value="89382033-bcbb-4c8f-81a9-3d0883298a81"
+          />
+          <MetadataPrettyRow
+            name="taskId"
+            path="system."
+            value="106e0f32-5d95-11ea-baea-364023b135f5"
+          />
+          <MetadataPrettyRow
+            name="timeModified"
+            path="system."
+            value="2020-03-03T21:22:47.575195Z"
+          />
+        </div>
       </div>
-    </div>
+    </details>
   </div>,
 ]
 `;
@@ -678,7 +1790,7 @@ Array [
   .emotion-0 {
   padding: 16px;
   border-bottom: 1px solid #3b3b3b;
-  color: #0273f5;
+  color: #0074f5;
 }
 
 <div
@@ -755,7 +1867,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -864,7 +1975,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -918,7 +2028,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;

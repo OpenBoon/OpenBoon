@@ -15,9 +15,9 @@ class Search(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     search = JSONField()
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User, on_delete=models.PROTECT)
+    createdDate = models.DateTimeField(auto_now_add=True)
+    modifiedDate = models.DateTimeField(auto_now=True)
+    createdBy = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name_plural = 'Searches'

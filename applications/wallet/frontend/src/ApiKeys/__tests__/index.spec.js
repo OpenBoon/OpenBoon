@@ -13,7 +13,7 @@ describe('<ApiKeys />', () => {
   it('should render properly with no api keys', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/api-keys',
-      query: { projectId: PROJECT_ID },
+      query: { projectId: PROJECT_ID, action: 'delete-apikey-success' },
     })
 
     require('swr').__setMockUseSWRResponse({

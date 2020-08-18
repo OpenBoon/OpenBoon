@@ -20,7 +20,7 @@ const StylesReset = () => (
           MozOsxFontSmoothing: 'grayscale',
         },
         body: {
-          fontFamily: `Roboto, Avenir, "sans-serif"`,
+          fontFamily: typography.family.regular,
           fontSize: typography.size.regular,
           lineHeight: typography.height.regular,
           fontWeight: typography.weight.regular,
@@ -28,6 +28,7 @@ const StylesReset = () => (
           backgroundColor: colors.structure.soot,
         },
         'input, textarea, select, button': {
+          margin: 0,
           fontFamily: 'inherit',
         },
         'h1, h2, h3, h4': { margin: 0, padding: 0 },

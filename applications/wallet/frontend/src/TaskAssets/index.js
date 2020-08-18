@@ -36,6 +36,7 @@ const TaskAssets = () => {
           alignItems: 'flex-end',
           justifyContent: 'space-between',
           paddingBottom: spacing.normal,
+          flexShrink: 0,
         }}
       >
         <h3

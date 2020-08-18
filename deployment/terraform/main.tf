@@ -5,7 +5,7 @@ terraform {
     organization = "zorroa"
 
     workspaces {
-      name = "zvi-prod"
+      name = "zvi-dev"
     }
   }
 }
@@ -16,7 +16,7 @@ provider "google" {
   project     = var.project
   region      = "${var.country}-${var.region}"
   zone        = "${var.country}-${var.region}-${var.zone}"
-  version     = ">= 3.8.0"
+  version     = ">= 3.33.0"
 }
 
 provider "google-beta" {
@@ -24,7 +24,7 @@ provider "google-beta" {
   project     = var.project
   region      = "${var.country}-${var.region}"
   zone        = "${var.country}-${var.region}-${var.zone}"
-  version     = ">= 3.8.0"
+  version     = ">= 3.33.0"
 }
 
 provider "kubernetes" {
@@ -35,7 +35,7 @@ provider "kubernetes" {
   client_certificate     = module.gke-cluster.client_certificate
   client_key             = module.gke-cluster.client_key
   cluster_ca_certificate = module.gke-cluster.cluster_ca_certificate
-  version                = ">= 1.11.2"
+  version                = ">= 1.12.0"
 }
 
 ## GCP Infrastructure ###################################################################
@@ -44,10 +44,15 @@ module "gke-cluster" {
   zone   = local.zone
 }
 
+module "stackdriver-adapter" {
+  source = "./modules/stackdriver-adapter"
+}
+
 module "postgres" {
-  source  = "./modules/postgres"
-  project = var.project
-  region  = local.region
+  source   = "./modules/postgres"
+  project  = var.project
+  region   = local.region
+  sql-tier = var.sql-tier
 }
 
 module "redis" {
@@ -58,12 +63,29 @@ module "minio" {
   source = "./modules/minio"
 }
 
+resource "google_storage_bucket" "access-logs" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  name = "${var.project}-zmlp-bucket-access-logs"
+  versioning {
+    enabled = true
+  }
+}
+
 resource "google_storage_bucket" "system" {
   lifecycle {
     prevent_destroy = true
   }
   name = "${var.project}-zmlp-system-bucket"
+  versioning {
+    enabled = true
+  }
+  logging {
+    log_bucket = google_storage_bucket.access-logs.name
+  }
 }
+
 
 ## Secrets ###############################################################################
 resource "random_string" "access-key" {
@@ -168,6 +190,7 @@ module "elasticsearch" {
   container-cluster-name = module.gke-cluster.name
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   container-tag          = var.container-tag
+  log-bucket-name        = google_storage_bucket.access-logs.name
 }
 
 module "archivist" {
@@ -186,6 +209,7 @@ module "archivist" {
   analyst-shared-key      = module.analyst.shared-key
   container-tag           = var.container-tag
   es-backup-bucket-name   = module.elasticsearch.backup-bucket-name
+  log-bucket-name         = google_storage_bucket.access-logs.name
 }
 
 module "auth-server" {
@@ -231,28 +255,34 @@ module "analyst" {
   archivist-url          = "http://${module.archivist.ip-address}"
   officer-url            = "http://${module.officer.ip-address}:7078"
   container-tag          = var.container-tag
+  memory-request         = var.analyst-memory-request
+  memory-limit           = var.analyst-memory-limit
+  cpu-request            = var.analyst-cpu-request
+  cpu-limit              = var.analyst-cpu-limit
+  machine-type           = var.analyst-machine-type
 }
 
 module "wallet" {
-  source                  = "./modules/wallet"
-  project                 = var.project
-  container-cluster-name  = module.gke-cluster.name
-  image-pull-secret       = kubernetes_secret.dockerhub.metadata[0].name
-  pg_host                 = module.postgres.ip-address
-  sql-instance-name       = module.postgres.instance-name
-  sql-service-account-key = module.postgres.sql-service-account-key
-  sql-connection-name     = module.postgres.connection-name
-  zmlp-api-url            = "http://${module.api-gateway.ip-address}"
-  smtp-password           = var.smtp-password
-  google-oauth-client-id  = var.google-oauth-client-id
-  environment             = var.environment
-  inception-key-b64       = local.inception-key-b64
-  domain                  = var.wallet-domain
-  container-tag           = var.container-tag
-  browsable               = var.wallet-browsable-api
-  marketplace-project     = "zorroa-public"
-  marketplace-credentials = var.marketplace-credentials
-  superadmin              = var.wallet-superadmin
+  source                          = "./modules/wallet"
+  project                         = var.project
+  container-cluster-name          = module.gke-cluster.name
+  image-pull-secret               = kubernetes_secret.dockerhub.metadata[0].name
+  pg_host                         = module.postgres.ip-address
+  sql-instance-name               = module.postgres.instance-name
+  sql-service-account-key         = module.postgres.sql-service-account-key
+  sql-connection-name             = module.postgres.connection-name
+  zmlp-api-url                    = "http://${module.api-gateway.ip-address}"
+  smtp-password                   = var.smtp-password
+  google-oauth-client-id          = var.google-oauth-client-id
+  environment                     = var.environment
+  inception-key-b64               = local.inception-key-b64
+  domain                          = var.wallet-domain
+  container-tag                   = var.container-tag
+  browsable                       = var.wallet-browsable-api
+  marketplace-project             = "zorroa-public"
+  marketplace-credentials         = var.marketplace-credentials
+  superadmin                      = var.wallet-superadmin
+  use-model-ids-for-label-filters = var.wallet-use-model-ids-for-label-filters
 }
 
 module "ml-bbq" {
@@ -288,4 +318,13 @@ module "gcp-marketplace-integration" {
 
 module "elasticsearch-hq" {
   source = "./modules/elasticsearch-hq"
+}
+
+module "reporter" {
+  source            = "./modules/reporter"
+  inception-key-b64 = local.inception-key-b64
+  project           = var.project
+  container-tag     = var.container-tag
+  image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
+  zmlp-api-url      = "http://${module.api-gateway.ip-address}"
 }

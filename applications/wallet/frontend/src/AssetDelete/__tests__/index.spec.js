@@ -24,7 +24,7 @@ describe('<AssetDelete />', () => {
   it('should render properly when an asset is selected', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     require('swr').__setMockUseSWRResponse({ data: asset })
@@ -95,7 +95,7 @@ describe('<AssetDelete />', () => {
     const mockFn = jest.fn()
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, id: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
     require('swr').__setMockUseSWRResponse({ data: asset })

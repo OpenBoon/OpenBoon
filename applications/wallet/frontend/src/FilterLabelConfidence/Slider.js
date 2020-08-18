@@ -42,7 +42,7 @@ const FilterLabelConfidenceSlider = ({
       />
 
       <div>
-        Label prediction confidence score:{' '}
+        Confidence score:{' '}
         {formatRange({ min: rangeValues[0], max: rangeValues[1], labels })}
       </div>
 

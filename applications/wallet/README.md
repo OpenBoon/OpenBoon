@@ -35,6 +35,8 @@ you are doing.
 1. _Frontend Development_ - Use the Frontend development server. For the
    Backend, you can either use the runserver or the Docker Compose.
 1. _Backend Development_ - Use the Backend Development server.
+1. _Using Development Server_ - Run a local django runserver against the Google Cloud Dev 
+   environment.
 
 ---
 
@@ -161,6 +163,49 @@ _Exceptions and Extension to the Rules:_
   These tests are located in `wallet.tests`.
 - Code coverage must meet or exceed 98% in order to pass CI.
 
+## Using Development Server
+
+When you need to test against large datasets, importing them locally can take too
+much time. The Development Server running in GCP has a number of example projects already
+setup and it's possible to run your local Django code in a runserver that talks to the Dev
+Server databases. The steps below assume that you're using PyCharm and have access to the
+"zvi-dev" GCP project.
+
+### Setup a Pycharm Configuration
+
+1. Add a new Pycharm Configuration - if you already have a Runserver configuration setup then
+copying that is a quick way to get started. Make sure the following settings are set:
+    * Script path: `Absolute path to your manage.py file`
+    * Paramaters: `runserver`
+    * Environment Variables:
+        * `DJANGO_SETTINGS_MODULE: wallet.settings`
+        * `ZMLP_API_URL: https://dev.api.zvi.zorroa.com`
+        * `DEBUG: true`
+        * `BROWSABLE: true`
+        * `SUPERADMIN: true`
+        * `INCEPTION_KEY_B64`: `Pull from the Dev Server's Wallet Service Yaml`
+        * `PG_HOST: localhost`
+        * `PG_PASSWORD`: `Pull from the Dev Server's Wallet Service Yaml`
+        * `SMTP_PASSWORD`: `Pull from the Dev Server's Wallet Service Yaml`
+        * `ENVIRONMENT: zvi-dev`
+        * `FQDN: https://dev.console.zvi.zorroa.com`
+    * Python Interpreter: `Your local environments Project Interpreter`
+    * Working Directory: `path to wallet/app`
+
+### Setup a Google Cloud SQL Proxy
+
+1. Follow the [Quickstart](https://cloud.google.com/sql/docs/postgres/quickstart-proxy-test#macos-64-bit) for setting up a local Cloud SQL Proxy.
+
+### Run/Debug a Development Server
+
+1. The Cloud SQL Proxy will forward all requests to `localhost:5432` to the Dev Server's Postgres
+    Database. *NOTE*: Make sure you don't have anything already running and listening on that port,
+    such as a local instance of Postgres, or a local Docker Compose setup.
+1. Start the Cloud Sql Proxy.
+1. Start the new Pycharm Runserver Configuration.
+1. Navigate to `localhost:8000` in your browser, and login using the Dev Server Credentials
+   at the `api/v1/login` endpoint.
+
 ## Building and Running the Docker Container
 
 The Dockerfile builds a container with the Django project that is capable of
@@ -212,3 +257,10 @@ wallet container.
 | PG_PASSWORD | Password to be used by the wallet Postgres user. |
 | SMTP_PASSWORD | Password for the MailGun SMTP server used for sending emails. |
 | GOOGLE_OAUTH_CLIENT_ID | Client ID for Google OAuth used for Google sign in. |
+
+There are also specific Feature Flags that can be set be either directly overriding their
+value in the Django settings file, or by setting an environment variable (with any value).  
+
+| Backend Feature Flags | Effect |
+| --------------------- | ------ |
+| USE_MODEL_IDS_FOR_LABEL_FILTERS | Returns a Models ID instead of a name in the field endpoints return for Labels. | 

@@ -13,6 +13,7 @@ const combinations = variants.reduce((accumulator, variant) => {
 describe('<Button />', () => {
   combinations.forEach(([variant, href]) => {
     const linkOrButton = href ? 'Link' : 'Button'
+
     it(`should render properly for ${variant} ${linkOrButton}`, () => {
       const component = TestRenderer.create(
         <Button variant={variant} href={href}>
@@ -36,6 +37,7 @@ describe('<Button />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     component.root.findByProps({ type: 'button' }).props.onClick()
+
     expect(mockTestFunc).toHaveBeenCalled()
   })
 
@@ -69,6 +71,7 @@ describe('<Button />', () => {
     component.root.findByProps({ type: 'button' }).props.onClick({
       preventDefault: () => {},
     })
+
     expect(mockTestFunc).not.toHaveBeenCalled()
   })
 })

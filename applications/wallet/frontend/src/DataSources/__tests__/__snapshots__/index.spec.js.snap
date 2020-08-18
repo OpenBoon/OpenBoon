@@ -83,6 +83,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -103,6 +106,30 @@ Array [
 
 .emotion-0 {
   border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2 {
+  border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -121,7 +148,7 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
@@ -149,7 +176,7 @@ Array [
         className="emotion-1"
       >
         <a
-          className="emotion-0"
+          className="emotion-2"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -184,6 +211,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-0 {
@@ -343,7 +373,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -756,6 +785,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -881,6 +913,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-0 {
@@ -1040,7 +1075,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1392,10 +1426,70 @@ Array [
   >
     Data Sources
   </h2>,
+  .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+.emotion-0 a {
+  color: #009f22;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-0"
+        role="alert"
+      >
+        Data source
+         deleted
+        .
+         
+      </div>
+    </div>
+  </div>,
   .emotion-5 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -1521,6 +1615,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-0 {

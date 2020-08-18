@@ -13,7 +13,7 @@ const Filters = () => {
 
   const {
     pathname,
-    query: { projectId, id: assetId = '', query },
+    query: { projectId, assetId = '', query },
   } = useRouter()
 
   const filters = decode({ query })

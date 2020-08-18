@@ -10,6 +10,8 @@ const noop = () => () => {}
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 
+jest.mock('../MenuSection', () => 'FiltersMenuSection')
+
 describe('<Filters />', () => {
   it('should render properly', () => {
     const mockRouterPush = jest.fn()
@@ -61,7 +63,7 @@ describe('<Filters />', () => {
               { type: 'textContent', attribute: '', values: { query: 'Cat' } },
             ]),
           ),
-          id: '',
+          assetId: '',
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
         },
       },
@@ -78,7 +80,7 @@ describe('<Filters />', () => {
       pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
-        id: ASSET_ID,
+        assetId: ASSET_ID,
       },
     })
 
@@ -111,11 +113,11 @@ describe('<Filters />', () => {
               { type: 'textContent', attribute: '', values: { query: 'Cat' } },
             ]),
           ),
-          id: 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C',
+          assetId: 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C',
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C&query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C&query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
     )
   })
 
@@ -162,7 +164,7 @@ describe('<Filters />', () => {
             ]),
           ),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
         },
       },
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In0sImlzRGlzYWJsZWQiOnRydWV9XQ==',
@@ -217,7 +219,7 @@ describe('<Filters />', () => {
             ]),
           ),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
         },
       },
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In0sImlzRGlzYWJsZWQiOmZhbHNlfV0=',
@@ -264,7 +266,7 @@ describe('<Filters />', () => {
             ]),
           ),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
         },
       },
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
@@ -304,7 +306,7 @@ describe('<Filters />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
           query: '',
         },
       },
@@ -345,14 +347,14 @@ describe('<Filters />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
         },
       },
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer',
     )
   })
 
-  it('should open the menu', () => {
+  it('should open and close the menu', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
       query: {
@@ -371,19 +373,10 @@ describe('<Filters />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    // Expand Analysis Section
-    act(() => {
-      component.root
-        .findAllByProps({ 'aria-label': 'Expand Section' })[0]
-        .props.onClick({ preventDefault: noop })
-    })
-
-    expect(component.toJSON()).toMatchSnapshot()
-
     // close the menu
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Cancel' })
+        .findByProps({ children: 'Cancel' })
         .props.onClick({ preventDefault: noop })
     })
   })
@@ -418,37 +411,30 @@ describe('<Filters />', () => {
         .props.onChange({ target: { value: 'e' } })
     })
 
-    // Expand Clip Section
-    act(() => {
-      component.root
-        .findAllByProps({ 'aria-label': 'Expand Section' })[3]
-        .props.onClick({ preventDefault: noop })
-    })
-
     // enable first checkbox
     act(() => {
       component.root
-        .findByProps({ value: 'clip.length' })
-        .props.onClick({ preventDefault: noop })
+        .findAllByType('FiltersMenuSection')[0]
+        .props.onClick({ type: 'range', attribute: 'clip.length' })(true)
     })
 
     // enable then disable second checkbox
     act(() => {
       component.root
-        .findByProps({ value: 'clip.pile' })
-        .props.onClick({ preventDefault: noop })
+        .findAllByType('FiltersMenuSection')[0]
+        .props.onClick({ type: 'facet', attribute: 'clip.pile' })(true)
     })
 
     act(() => {
       component.root
-        .findByProps({ value: 'clip.pile' })
-        .props.onClick({ preventDefault: noop })
+        .findAllByType('FiltersMenuSection')[0]
+        .props.onClick({ type: 'facet', attribute: 'clip.pile' })(false)
     })
 
     // submit
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Add Field Filters' })
+        .findByProps({ 'aria-label': 'Add Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -457,7 +443,7 @@ describe('<Filters />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
           query: btoa(
             JSON.stringify([
               {
@@ -496,24 +482,17 @@ describe('<Filters />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    // Expand Location Section
-    act(() => {
-      component.root
-        .findAllByProps({ 'aria-label': 'Expand Section' })[6]
-        .props.onClick({ preventDefault: noop })
-    })
-
     // enable last checkbox
     act(() => {
       component.root
-        .findByProps({ value: 'location.point' })
-        .props.onClick({ preventDefault: noop })
+        .findAllByType('FiltersMenuSection')[0]
+        .props.onClick({ type: 'exists', attribute: 'location.point' })(true)
     })
 
     // submit
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Add Field Filters' })
+        .findByProps({ 'aria-label': 'Add Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -522,7 +501,7 @@ describe('<Filters />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          id: '',
+          assetId: '',
           query: btoa(
             JSON.stringify([
               {

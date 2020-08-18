@@ -19,6 +19,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -375,7 +378,6 @@ Array [
 }
 
 .emotion-31 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -463,19 +465,22 @@ Array [
 }
 
 .emotion-67 {
-  background-color: #3b3b3b;
   border-radius: 2px;
+  background-color: #3b3b3b;
+}
+
+.emotion-67:hover summary svg {
+  opacity: 1;
 }
 
 .emotion-63 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-left: 12px;
+  list-style-type: none;
+  padding: 16px;
+  background-color: #3b3b3b;
+}
+
+.emotion-63::-webkit-details-marker {
+  display: none;
 }
 
 .emotion-63:hover {
@@ -483,88 +488,39 @@ Array [
   background-color: #2e2e2e;
 }
 
-.emotion-63 h4 {
-  font-weight: 700;
-}
-
-.emotion-61 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-62 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-61:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-61[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-61:hover,
-.emotion-61.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-61:hover svg,
-.emotion-61.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-61[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-60 {
+  color: #808080;
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-62 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+.emotion-61 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: -2px;
+  padding-left: 16px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
 }
 
 .emotion-66 {
+  border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
@@ -615,6 +571,14 @@ Array [
 
 .emotion-136 {
   padding-top: 16px;
+}
+
+.emotion-70 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 16px;
 }
 
 .emotion-73 {
@@ -754,7 +718,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -809,7 +772,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -939,6 +901,7 @@ Array [
             <select
               className="emotion-13"
               defaultValue=""
+              disabled={false}
               onChange={[Function]}
             >
               <option
@@ -1201,32 +1164,30 @@ Array [
     <div
       className="emotion-68"
     >
-      <div
+      <details
         className="emotion-67"
+        onToggle={[Function]}
+        open={true}
       >
-        <div
+        <summary
+          aria-label="Zorroa Automatic Analysis"
           className="emotion-63"
-          onClick={[Function]}
-          style={Object {}}
         >
-          <button
-            aria-label="Collapse Section"
-            className="emotion-61"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-62"
           >
             <svg
               className="emotion-60"
               data-file-name="chevron.svg"
               height={20}
             />
-          </button>
-          <h4
-            className="emotion-62"
-          >
-            Zorroa Automatic Analysis
-          </h4>
-        </div>
+            <span
+              className="emotion-61"
+            >
+              Zorroa Automatic Analysis
+            </span>
+          </div>
+        </summary>
         <div
           className="emotion-66"
         >
@@ -1276,41 +1237,39 @@ Array [
             </li>
           </ul>
         </div>
-      </div>
+      </details>
     </div>
     <div
       className="emotion-136"
     >
-      <div
+      <details
         className="emotion-67"
+        onToggle={[Function]}
+        open={true}
       >
-        <div
+        <summary
+          aria-label="zorroa"
           className="emotion-63"
-          onClick={[Function]}
-          style={Object {}}
         >
-          <button
-            aria-label="Collapse Section"
-            className="emotion-61"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-62"
           >
             <svg
               className="emotion-60"
               data-file-name="chevron.svg"
               height={20}
             />
-          </button>
-          <h4
-            className="emotion-62"
-          >
-            <img
-              alt="zorroa"
-              height={32}
-              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
-            />
-          </h4>
-        </div>
+            <span
+              className="emotion-70"
+            >
+              <img
+                alt="zorroa"
+                height={32}
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+              />
+            </span>
+          </div>
+        </summary>
         <div
           className="emotion-66"
         >
@@ -1768,7 +1727,7 @@ Array [
             </table>
           </fieldset>
         </div>
-      </div>
+      </details>
     </div>
     <div
       className="emotion-139"
@@ -1813,6 +1772,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -2169,7 +2131,6 @@ Array [
 }
 
 .emotion-49 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -2257,19 +2218,22 @@ Array [
 }
 
 .emotion-85 {
-  background-color: #3b3b3b;
   border-radius: 2px;
+  background-color: #3b3b3b;
+}
+
+.emotion-85:hover summary svg {
+  opacity: 1;
 }
 
 .emotion-81 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-left: 12px;
+  list-style-type: none;
+  padding: 16px;
+  background-color: #3b3b3b;
+}
+
+.emotion-81::-webkit-details-marker {
+  display: none;
 }
 
 .emotion-81:hover {
@@ -2277,88 +2241,39 @@ Array [
   background-color: #2e2e2e;
 }
 
-.emotion-81 h4 {
-  font-weight: 700;
-}
-
-.emotion-79 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-80 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-79:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-79[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-79:hover,
-.emotion-79.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-79:hover svg,
-.emotion-79.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-79[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-78 {
+  color: #808080;
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-80 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+.emotion-79 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: -2px;
+  padding-left: 16px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
 }
 
 .emotion-84 {
+  border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
@@ -2409,6 +2324,14 @@ Array [
 
 .emotion-154 {
   padding-top: 16px;
+}
+
+.emotion-88 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 16px;
 }
 
 .emotion-91 {
@@ -2548,7 +2471,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -2603,7 +2525,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -2738,6 +2659,7 @@ Array [
             <select
               className="emotion-13"
               defaultValue=""
+              disabled={false}
               onChange={[Function]}
             >
               <option
@@ -3098,32 +3020,30 @@ Array [
     <div
       className="emotion-86"
     >
-      <div
+      <details
         className="emotion-85"
+        onToggle={[Function]}
+        open={true}
       >
-        <div
+        <summary
+          aria-label="Zorroa Automatic Analysis"
           className="emotion-81"
-          onClick={[Function]}
-          style={Object {}}
         >
-          <button
-            aria-label="Collapse Section"
-            className="emotion-79"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-80"
           >
             <svg
               className="emotion-78"
               data-file-name="chevron.svg"
               height={20}
             />
-          </button>
-          <h4
-            className="emotion-80"
-          >
-            Zorroa Automatic Analysis
-          </h4>
-        </div>
+            <span
+              className="emotion-79"
+            >
+              Zorroa Automatic Analysis
+            </span>
+          </div>
+        </summary>
         <div
           className="emotion-84"
         >
@@ -3173,41 +3093,39 @@ Array [
             </li>
           </ul>
         </div>
-      </div>
+      </details>
     </div>
     <div
       className="emotion-154"
     >
-      <div
+      <details
         className="emotion-85"
+        onToggle={[Function]}
+        open={true}
       >
-        <div
+        <summary
+          aria-label="zorroa"
           className="emotion-81"
-          onClick={[Function]}
-          style={Object {}}
         >
-          <button
-            aria-label="Collapse Section"
-            className="emotion-79"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-80"
           >
             <svg
               className="emotion-78"
               data-file-name="chevron.svg"
               height={20}
             />
-          </button>
-          <h4
-            className="emotion-80"
-          >
-            <img
-              alt="zorroa"
-              height={32}
-              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
-            />
-          </h4>
-        </div>
+            <span
+              className="emotion-88"
+            >
+              <img
+                alt="zorroa"
+                height={32}
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+              />
+            </span>
+          </div>
+        </summary>
         <div
           className="emotion-84"
         >
@@ -3665,7 +3583,7 @@ Array [
             </table>
           </fieldset>
         </div>
-      </div>
+      </details>
     </div>
     <div
       className="emotion-157"
@@ -3710,6 +3628,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -4066,7 +3987,6 @@ Array [
 }
 
 .emotion-43 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -4154,19 +4074,22 @@ Array [
 }
 
 .emotion-79 {
-  background-color: #3b3b3b;
   border-radius: 2px;
+  background-color: #3b3b3b;
+}
+
+.emotion-79:hover summary svg {
+  opacity: 1;
 }
 
 .emotion-75 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-left: 12px;
+  list-style-type: none;
+  padding: 16px;
+  background-color: #3b3b3b;
+}
+
+.emotion-75::-webkit-details-marker {
+  display: none;
 }
 
 .emotion-75:hover {
@@ -4174,88 +4097,39 @@ Array [
   background-color: #2e2e2e;
 }
 
-.emotion-75 h4 {
-  font-weight: 700;
-}
-
-.emotion-73 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-74 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-73:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-73[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-73:hover,
-.emotion-73.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-73:hover svg,
-.emotion-73.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-73[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-72 {
+  color: #808080;
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-74 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+.emotion-73 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: -2px;
+  padding-left: 16px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
 }
 
 .emotion-78 {
+  border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
@@ -4306,6 +4180,14 @@ Array [
 
 .emotion-148 {
   padding-top: 16px;
+}
+
+.emotion-82 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 16px;
 }
 
 .emotion-85 {
@@ -4445,7 +4327,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -4500,7 +4381,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -4635,6 +4515,7 @@ Array [
             <select
               className="emotion-13"
               defaultValue=""
+              disabled={false}
               onChange={[Function]}
             >
               <option
@@ -4962,32 +4843,30 @@ Array [
     <div
       className="emotion-80"
     >
-      <div
+      <details
         className="emotion-79"
+        onToggle={[Function]}
+        open={true}
       >
-        <div
+        <summary
+          aria-label="Zorroa Automatic Analysis"
           className="emotion-75"
-          onClick={[Function]}
-          style={Object {}}
         >
-          <button
-            aria-label="Collapse Section"
-            className="emotion-73"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-74"
           >
             <svg
               className="emotion-72"
               data-file-name="chevron.svg"
               height={20}
             />
-          </button>
-          <h4
-            className="emotion-74"
-          >
-            Zorroa Automatic Analysis
-          </h4>
-        </div>
+            <span
+              className="emotion-73"
+            >
+              Zorroa Automatic Analysis
+            </span>
+          </div>
+        </summary>
         <div
           className="emotion-78"
         >
@@ -5037,41 +4916,39 @@ Array [
             </li>
           </ul>
         </div>
-      </div>
+      </details>
     </div>
     <div
       className="emotion-148"
     >
-      <div
+      <details
         className="emotion-79"
+        onToggle={[Function]}
+        open={true}
       >
-        <div
+        <summary
+          aria-label="zorroa"
           className="emotion-75"
-          onClick={[Function]}
-          style={Object {}}
         >
-          <button
-            aria-label="Collapse Section"
-            className="emotion-73"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-74"
           >
             <svg
               className="emotion-72"
               data-file-name="chevron.svg"
               height={20}
             />
-          </button>
-          <h4
-            className="emotion-74"
-          >
-            <img
-              alt="zorroa"
-              height={32}
-              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
-            />
-          </h4>
-        </div>
+            <span
+              className="emotion-82"
+            >
+              <img
+                alt="zorroa"
+                height={32}
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+              />
+            </span>
+          </div>
+        </summary>
         <div
           className="emotion-78"
         >
@@ -5529,7 +5406,7 @@ Array [
             </table>
           </fieldset>
         </div>
-      </div>
+      </details>
     </div>
     <div
       className="emotion-151"
@@ -5574,6 +5451,9 @@ Array [
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-4 {
@@ -5930,7 +5810,6 @@ Array [
 }
 
 .emotion-42 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -6018,19 +5897,22 @@ Array [
 }
 
 .emotion-78 {
-  background-color: #3b3b3b;
   border-radius: 2px;
+  background-color: #3b3b3b;
+}
+
+.emotion-78:hover summary svg {
+  opacity: 1;
 }
 
 .emotion-74 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-left: 12px;
+  list-style-type: none;
+  padding: 16px;
+  background-color: #3b3b3b;
+}
+
+.emotion-74::-webkit-details-marker {
+  display: none;
 }
 
 .emotion-74:hover {
@@ -6038,88 +5920,39 @@ Array [
   background-color: #2e2e2e;
 }
 
-.emotion-74 h4 {
-  font-weight: 700;
-}
-
-.emotion-72 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-73 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 0;
-}
-
-.emotion-72:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-72[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-72:hover,
-.emotion-72.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-72:hover svg,
-.emotion-72.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-72[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-71 {
+  color: #808080;
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-73 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-right: 8px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+.emotion-72 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: -2px;
+  padding-left: 16px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
 }
 
 .emotion-77 {
+  border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
@@ -6170,6 +6003,14 @@ Array [
 
 .emotion-147 {
   padding-top: 16px;
+}
+
+.emotion-81 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 16px;
 }
 
 .emotion-84 {
@@ -6309,7 +6150,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -6364,7 +6204,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -6499,6 +6338,7 @@ Array [
             <select
               className="emotion-13"
               defaultValue=""
+              disabled={false}
               onChange={[Function]}
             >
               <option
@@ -6821,32 +6661,30 @@ Array [
     <div
       className="emotion-79"
     >
-      <div
+      <details
         className="emotion-78"
+        onToggle={[Function]}
+        open={true}
       >
-        <div
+        <summary
+          aria-label="Zorroa Automatic Analysis"
           className="emotion-74"
-          onClick={[Function]}
-          style={Object {}}
         >
-          <button
-            aria-label="Collapse Section"
-            className="emotion-72"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-73"
           >
             <svg
               className="emotion-71"
               data-file-name="chevron.svg"
               height={20}
             />
-          </button>
-          <h4
-            className="emotion-73"
-          >
-            Zorroa Automatic Analysis
-          </h4>
-        </div>
+            <span
+              className="emotion-72"
+            >
+              Zorroa Automatic Analysis
+            </span>
+          </div>
+        </summary>
         <div
           className="emotion-77"
         >
@@ -6896,41 +6734,39 @@ Array [
             </li>
           </ul>
         </div>
-      </div>
+      </details>
     </div>
     <div
       className="emotion-147"
     >
-      <div
+      <details
         className="emotion-78"
+        onToggle={[Function]}
+        open={true}
       >
-        <div
+        <summary
+          aria-label="zorroa"
           className="emotion-74"
-          onClick={[Function]}
-          style={Object {}}
         >
-          <button
-            aria-label="Collapse Section"
-            className="emotion-72"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-73"
           >
             <svg
               className="emotion-71"
               data-file-name="chevron.svg"
               height={20}
             />
-          </button>
-          <h4
-            className="emotion-73"
-          >
-            <img
-              alt="zorroa"
-              height={32}
-              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
-            />
-          </h4>
-        </div>
+            <span
+              className="emotion-81"
+            >
+              <img
+                alt="zorroa"
+                height={32}
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+              />
+            </span>
+          </div>
+        </summary>
         <div
           className="emotion-77"
         >
@@ -7388,7 +7224,7 @@ Array [
             </table>
           </fieldset>
         </div>
-      </div>
+      </details>
     </div>
     <div
       className="emotion-150"

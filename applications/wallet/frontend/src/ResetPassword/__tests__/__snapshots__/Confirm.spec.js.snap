@@ -52,7 +52,7 @@ Array [
   >
     <label
       className="emotion-0"
-      htmlFor="newPassword"
+      htmlFor="newPassword1"
     >
       Password
     </label>
@@ -63,8 +63,8 @@ Array [
         autoFocus={true}
         className="emotion-1"
         disabled={false}
-        id="newPassword"
-        name="newPassword"
+        id="newPassword1"
+        name="newPassword1"
         onChange={[Function]}
         type="password"
         value=""
@@ -167,7 +167,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -269,7 +268,7 @@ Array [
   >
     <label
       className="emotion-0"
-      htmlFor="newPassword"
+      htmlFor="newPassword1"
     >
       Password
     </label>
@@ -280,8 +279,8 @@ Array [
         autoFocus={true}
         className="emotion-1"
         disabled={false}
-        id="newPassword"
-        name="newPassword"
+        id="newPassword1"
+        name="newPassword1"
         onChange={[Function]}
         type="password"
         value="foo"
@@ -384,7 +383,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -485,7 +483,7 @@ Array [
   >
     <label
       className="emotion-0"
-      htmlFor="newPassword"
+      htmlFor="newPassword1"
     >
       Password
     </label>
@@ -496,8 +494,8 @@ Array [
         autoFocus={true}
         className="emotion-1"
         disabled={false}
-        id="newPassword"
-        name="newPassword"
+        id="newPassword1"
+        name="newPassword1"
         onChange={[Function]}
         type="password"
         value="foo"
@@ -600,7 +598,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -665,7 +662,7 @@ Array [
   >
     Enter New Password
   </h3>,
-  .emotion-3 {
+  .emotion-4 {
   padding-top: 8px;
 }
 
@@ -687,7 +684,7 @@ Array [
   width: 100%;
   color: #000000;
   background-color: #ffffff;
-  border: 1px solid transparent;
+  border: 1px solid #c92300;
   border-width: 2px;
 }
 
@@ -696,12 +693,17 @@ Array [
   outline: #73b61c;
 }
 
+.emotion-3 {
+  color: #c92300;
+  font-style: italic;
+}
+
 <div
-    className="emotion-3"
+    className="emotion-4"
   >
     <label
       className="emotion-0"
-      htmlFor="newPassword"
+      htmlFor="newPassword1"
     >
       Password
     </label>
@@ -712,16 +714,21 @@ Array [
         autoFocus={true}
         className="emotion-1"
         disabled={false}
-        id="newPassword"
-        name="newPassword"
+        id="newPassword1"
+        name="newPassword1"
         onChange={[Function]}
         type="password"
         value="foo"
       />
     </div>
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
+      <span
+        className="emotion-3"
+      >
+        Error
+      </span>
        
     </div>
   </div>,
@@ -826,7 +833,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;

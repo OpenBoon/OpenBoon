@@ -12,6 +12,7 @@ import Button, { VARIANTS } from '../Button'
 import FilterText from '../FilterText'
 import FilterExists from '../FilterExists'
 import FilterFacet from '../FilterFacet'
+import FilterLabel from '../FilterLabel'
 import FilterRange from '../FilterRange'
 import FilterLabelConfidence from '../FilterLabelConfidence'
 import FilterSimilarity from '../FilterSimilarity'
@@ -43,6 +44,8 @@ const FiltersContent = ({
             variant={VARIANTS.PRIMARY}
             style={{
               flex: 1,
+              paddingLeft: 0,
+              paddingRight: 0,
               minWidth: BUTTON_SIZE,
               maxWidth: !hasFilters ? BUTTON_SIZE : '',
             }}
@@ -62,7 +65,12 @@ const FiltersContent = ({
             <Button
               aria-label="Clear All Filters"
               variant={VARIANTS.SECONDARY}
-              style={{ flex: 1, minWidth: BUTTON_SIZE }}
+              style={{
+                flex: 1,
+                paddingLeft: 0,
+                paddingRight: 0,
+                minWidth: BUTTON_SIZE,
+              }}
               isDisabled={filters.length === 0}
               onClick={() => {
                 dispatch({
@@ -105,9 +113,21 @@ const FiltersContent = ({
               )
 
             case 'facet':
-            case 'label':
               return (
                 <FilterFacet
+                  key={`${filter.type}-${index}`}
+                  pathname={pathname}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
+            case 'label':
+              return (
+                <FilterLabel
                   key={`${filter.type}-${index}`}
                   pathname={pathname}
                   projectId={projectId}

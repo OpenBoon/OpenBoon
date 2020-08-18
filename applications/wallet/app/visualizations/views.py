@@ -5,10 +5,10 @@ from rest_framework.response import Response
 from projects.views import BaseProjectViewSet
 from searches.utils import FieldUtility, FilterBuddy
 from .utils import VizBuddy
-from wallet.mixins import ConvertCamelToSnakeViewSetMixin
+from wallet.mixins import CamelCaseRendererMixin
 
 
-class VisualizationViewSet(ConvertCamelToSnakeViewSetMixin,
+class VisualizationViewSet(CamelCaseRendererMixin,
                            BaseProjectViewSet):
 
     zmlp_only = True
@@ -59,11 +59,23 @@ class VisualizationViewSet(ConvertCamelToSnakeViewSetMixin,
                     "type": "facet",
                     "id": "$uniqueIdentifier",
                     "attribute": "$attribute.dot.path",
-                    "options": [
+                    "fieldType": "facet"       # or "labelConfidence"
+                    "options": {
                         "order": "desc",       # Sort order, desc or asc
                         "size": 10,            # Limit # of facets/buckets returned
                         "minimum_count": 2     # Min. # of hits a facet needs to be returned
-                    ]
+                    }
+                }
+
+            Histogram:
+                {
+                    "type": "histogram",
+                    "id": "$uniqueIdentifier",
+                    "attribute": "$attribute.dot.path",
+                    "fieldType": "range"        # or "labelConfidence"
+                    "options": {
+                        "size": 10              # Default size is 10 buckets
+                    }
                 }
 
         Args:

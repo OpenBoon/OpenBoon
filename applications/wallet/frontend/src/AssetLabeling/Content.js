@@ -11,7 +11,7 @@ import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import AssetLabelingAdd from './Add'
 import AssetLabelingList from './List'
 
-const AssetLabelingContent = ({ projectId, assetId, query }) => {
+const AssetLabelingContent = ({ projectId, assetId }) => {
   const [reloadKey, setReloadKey] = useState(0)
   const [error, setError] = useState('')
 
@@ -45,22 +45,21 @@ const AssetLabelingContent = ({ projectId, assetId, query }) => {
       </div>
       <Accordion
         variant={ACCORDION_VARIANTS.PANEL}
-        title={
-          <span css={{ display: 'flex' }}>
-            Select a model and add a label.{' '}
-            <Button
-              variant={BUTTON_VARIANTS.LINK}
-              href={`/${projectId}/models/add`}
-              onClick={(event) => event.stopPropagation()}
-              css={{
-                paddingTop: 0,
-                paddingBottom: 0,
-                fontWeight: typography.weight.medium,
-              }}
-            >
-              Create New Model
-            </Button>
-          </span>
+        title="Select a model and add a label"
+        actions={
+          <Button
+            variant={BUTTON_VARIANTS.LINK}
+            href={`/${projectId}/models/add`}
+            onClick={(event) => event.stopPropagation()}
+            css={{
+              paddingTop: 0,
+              paddingBottom: 0,
+              marginTop: -spacing.mini,
+              fontWeight: typography.weight.medium,
+            }}
+          >
+            Create New Model
+          </Button>
         }
         cacheKey="AssetLabeling.Add"
         isInitiallyOpen
@@ -93,10 +92,7 @@ const AssetLabelingContent = ({ projectId, assetId, query }) => {
           <AssetLabelingList
             models={models}
             labels={labels}
-            projectId={projectId}
-            assetId={assetId}
             triggerReload={triggerReload}
-            query={query}
             setError={setError}
           />
         </>
@@ -108,7 +104,6 @@ const AssetLabelingContent = ({ projectId, assetId, query }) => {
 AssetLabelingContent.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  query: PropTypes.string.isRequired,
 }
 
 export default AssetLabelingContent

@@ -1,12 +1,16 @@
 describe('DataSources', function () {
-  it('can be created', function () {
-    const now = Date.now()
+  it('can be created and deleted', function () {
+    const dataSourceName = `cypress-frontend-${Date.now()}`
 
     cy.login()
 
+    /**
+     * Create
+     */
+
     cy.visit(`/${this.PROJECT_ID}/data-sources/add`)
 
-    cy.get('input[name=name]').type(now)
+    cy.get('input[name=name]').type(dataSourceName)
 
     cy.contains('Source Type')
       .get('select')
@@ -20,6 +24,19 @@ describe('DataSources', function () {
 
     cy.contains('Data source created.')
 
-    cy.contains(now)
+    /**
+     * Delete
+     */
+
+    cy.contains(dataSourceName).siblings().last().click()
+
+    cy.contains('Delete').click()
+
+    cy.contains('Delete Permanently').click()
+
+    // TODO: uncomment me after this MR has been merged
+    // cy.contains('Data source deleted.')
+
+    cy.contains(dataSourceName).should('not.exist')
   })
 })

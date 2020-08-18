@@ -4,7 +4,7 @@ import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineFilter
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
-import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ResolvedPipeline
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.PipelineResolverService
 import com.zorroa.archivist.service.PipelineService
@@ -89,7 +89,7 @@ class PipelineController @Autowired constructor(
 
     @ApiOperation("Resolve a Pipeline to its list of processors.")
     @GetMapping(value = ["/api/v1/pipelines/{id}/_resolve"])
-    fun resolve(@ApiParam("UUID of the Pipeline.") @PathVariable id: UUID): List<ProcessorRef> {
+    fun resolve(@ApiParam("UUID of the Pipeline.") @PathVariable id: UUID): ResolvedPipeline {
         return pipeineResolverService.resolve(id)
     }
 }

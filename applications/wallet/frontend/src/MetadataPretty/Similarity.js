@@ -11,16 +11,16 @@ import AssetsThumbnail from '../Assets/Thumbnail'
 
 const THUMBNAIL_SIZE = 100
 
-const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
+const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
   const {
-    query: { projectId, id: assetId },
+    query: { projectId, assetId },
   } = useRouter()
 
   const query = encode({
     filters: [
       {
         type: 'similarity',
-        attribute: 'analysis.zvi-image-similarity',
+        attribute: `${path}${name}`,
         values: { ids: [assetId] },
       },
     ],
@@ -36,9 +36,6 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
     <>
       <div
         css={{
-          '&:not(:first-of-type)': {
-            borderTop: constants.borders.large.smoke,
-          },
           padding: spacing.normal,
           paddingBottom: spacing.base,
           fontFamily: typography.family.mono,
@@ -69,7 +66,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
           css={{
             display: 'flex',
             ':hover': {
-              backgroundColor: `${colors.signal.electricBlue.base}${constants.opacity.hex22Pct}`,
+              backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
               svg: { opacity: 1 },
             },
           }}
@@ -142,7 +139,11 @@ const MetadataPrettySimilarity = ({ name, value: { simhash } }) => {
                       height: THUMBNAIL_SIZE,
                     }}
                   >
-                    <AssetsThumbnail asset={asset} isActive />
+                    <AssetsThumbnail
+                      asset={asset}
+                      isActive
+                      attribute={`${path}${name}`}
+                    />
                   </div>
                 ))}
             </div>
@@ -158,6 +159,7 @@ MetadataPrettySimilarity.propTypes = {
   value: PropTypes.shape({
     simhash: PropTypes.string.isRequired,
   }).isRequired,
+  path: PropTypes.string.isRequired,
 }
 
 export default MetadataPrettySimilarity

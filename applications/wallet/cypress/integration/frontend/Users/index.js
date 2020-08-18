@@ -4,7 +4,9 @@ describe('Users', function () {
 
     cy.get('input[name=username]').type(Cypress.env('USERNAME'))
 
-    cy.get('input[name=password]').type(Cypress.env('PASSWORD')).type('{enter}')
+    cy.get('input[name=password]')
+      .type(Cypress.env('PASSWORD'), { log: false })
+      .type('{enter}')
 
     cy.contains('Account Overview')
   })

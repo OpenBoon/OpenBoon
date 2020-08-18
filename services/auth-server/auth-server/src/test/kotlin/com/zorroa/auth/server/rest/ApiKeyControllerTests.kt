@@ -197,6 +197,28 @@ class ApiKeyControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testSearch_sort_timeCreated() {
+        val filter = ApiKeyFilter(names = listOf("standard-key"))
+        filter.sort = listOf("timeCreated:desc")
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/auth/v1/apikey/_search")
+                .headers(superAdmin(mockKey.projectId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json.writeValueAsBytes(filter))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.list[0].name", CoreMatchers.equalTo("standard-key")))
+            .andExpect(
+                jsonPath(
+                    "$.list[0].permissions[0]",
+                    CoreMatchers.containsString("AssetsRead")
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
     fun testFindOne_rsp_404() {
         val filter = ApiKeyFilter(names = listOf("mrcatlady"))
 

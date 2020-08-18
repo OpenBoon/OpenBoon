@@ -134,7 +134,7 @@ class AssetSearchServiceImpl : AssetSearchService {
             "post_filter", "minscore", "suggest",
             "highlight", "collapse", "_source",
             "slice", "aggs", "aggregations", "sort",
-            "search_after"
+            "search_after", "track_total_hits"
         )
     }
 }

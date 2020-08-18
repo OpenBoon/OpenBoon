@@ -43,7 +43,6 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -98,7 +97,6 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -137,6 +135,9 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-10 {
@@ -315,6 +316,7 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
         >
           <a
             className="emotion-8"
+            onClick={[Function]}
           >
             View Labels
           </a>
@@ -326,8 +328,8 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
     className="emotion-13"
   >
     <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsInZhbHVlcyI6e319XQ=="
-      href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsInZhbHVlcyI6e319XQ=="
+      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+      href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
       passHref={true}
     >
       <button

@@ -2,8 +2,6 @@ import logging
 from pytest import approx
 from unittest.mock import patch
 
-from google.cloud import automl_v1beta1 as automl
-
 from zmlp.app import ModelApp
 from zmlp.entity import Model
 from zmlp_analysis.google import AutoMLModelClassifier
@@ -17,10 +15,10 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
     model = "ICN94225947477147648"
     test_img = zorroa_test_path("training/test_dsy.jpg")
 
+    @patch("zmlp_analysis.google.automl.automl.PredictionServiceClient")
     @patch.object(ModelApp, "get_model")
-    @patch.object(automl.PredictionServiceClient, "predict")
     @patch("zmlp_analysis.google.automl.get_proxy_level_path")
-    def test_predict(self, proxy_patch, predict_patch, model_patch):
+    def test_predict(self, proxy_patch, model_patch, client_patch):
         name = "flowers"
         model_patch.return_value = Model(
             {
@@ -31,8 +29,7 @@ class AutoMLModelClassifierTests(PluginUnitTestCase):
                 "moduleName": name
             }
         )
-
-        predict_patch.return_value = MockPrediction()
+        client_patch.return_value = MockAutoMLClient()
 
         args = {"model_id": self.model, "automl_model_id": MockAutoMLClient()}
 
@@ -55,6 +52,9 @@ class MockAutoMLClient:
     @property
     def name(self):
         return 'projects/zorroa-poc-dev/locations/us-central1/models/ICN94225947477147648'
+
+    def predict(self, *args):
+        return MockPrediction()
 
 
 class MockPrediction:

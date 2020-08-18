@@ -32,7 +32,8 @@ enum class ModelType(
     val provider: String,
     val deployOnTrainingSet: Boolean,
     val minConcepts: Int,
-    val minExamples: Int
+    val minExamples: Int,
+    val dependencies: List<String>
 ) {
     ZVI_KNN_CLASSIFIER(
         "zmlp_train.knn.KnnLabelDetectionTrainer",
@@ -47,7 +48,8 @@ enum class ModelType(
         Provider.ZORROA,
         true,
         1,
-        1
+        1,
+        listOf()
     ),
     ZVI_LABEL_DETECTION(
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
@@ -64,7 +66,8 @@ enum class ModelType(
         Provider.ZORROA,
         false,
         2,
-        10
+        10,
+        listOf()
     ),
     ZVI_FACE_RECOGNITION(
         "zmlp_train.face_rec.KnnFaceRecognitionTrainer",
@@ -77,7 +80,8 @@ enum class ModelType(
         Provider.ZORROA,
         true,
         1,
-        1
+        1,
+        listOf("zvi-face-detection")
     ),
     GCP_LABEL_DETECTION(
         "zmlp_train.automl.AutoMLModelTrainer",
@@ -90,7 +94,8 @@ enum class ModelType(
         Provider.GOOGLE,
         true,
         2,
-        10
+        10,
+        listOf()
     );
 
     fun asMap(): Map<String, Any> {
@@ -101,7 +106,8 @@ enum class ModelType(
             "provider" to provider,
             "deployOnTrainingSet" to deployOnTrainingSet,
             "minConcepts" to minConcepts,
-            "minExamples" to minExamples
+            "minExamples" to minExamples,
+            "dependencies" to dependencies
         )
     }
 }
@@ -352,7 +358,7 @@ class Label(
     }
 }
 
-@ApiModel("ModelApplyResponse", description = "The reponse to applying a model, either for testing or productions")
+@ApiModel("ModelApplyResponse", description = "The response to applying a model, either for testing or productions")
 class ModelApplyResponse(
 
     @ApiModelProperty("Tbe number of Assets that will be processed.")
@@ -360,4 +366,14 @@ class ModelApplyResponse(
 
     @ApiModelProperty("The ID of the job that is processing Assets.")
     val job: Job? = null
+)
+
+@ApiModel("Update Label Request", description = "Update or remove a given label.")
+class UpdateLabelRequest(
+
+    @ApiModelProperty("The name of the old label")
+    val label: String,
+
+    @ApiModelProperty("The name of the new label or null/empty string if the label should be removed.")
+    val newLabel: String? = null
 )

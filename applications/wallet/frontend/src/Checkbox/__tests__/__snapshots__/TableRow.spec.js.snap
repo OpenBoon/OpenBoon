@@ -23,7 +23,6 @@ exports[`<CheckboxTableRow /> should render properly 1`] = `
 }
 
 .emotion-0 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
@@ -131,7 +130,6 @@ exports[`<CheckboxTableRow /> should render properly 2`] = `
 }
 
 .emotion-0 {
-  margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;

@@ -5,7 +5,7 @@ import filterShape from '../Filter/shape'
 import { spacing } from '../Styles'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
-import FilterTitle from '../Filter/Title'
+import FilterIcon from '../Filter/Icon'
 import FilterActions from '../Filter/Actions'
 import SuspenseBoundary from '../SuspenseBoundary'
 
@@ -22,7 +22,8 @@ const FilterFacet = ({
   return (
     <Accordion
       variant={ACCORDION_VARIANTS.FILTER}
-      title={<FilterTitle filter={filter} />}
+      icon={<FilterIcon filter={filter} />}
+      title={filter.attribute}
       actions={
         <FilterActions
           pathname={pathname}

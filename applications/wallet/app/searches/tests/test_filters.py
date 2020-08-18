@@ -6,7 +6,7 @@ from zmlp import ZmlpApp, ZmlpClient
 
 from searches.filters import (BaseFilter, RangeFilter, ExistsFilter, FacetFilter,
                               LabelConfidenceFilter, TextContentFilter,
-                              SimilarityFilter)
+                              SimilarityFilter, LabelFilter, DateFilter)
 
 
 class MockFilter(BaseFilter):
@@ -312,7 +312,7 @@ class TestFacetFilter(FilterBaseTestCase):
         }
 
     def test_get_es_agg_with_count(self, mock_data):
-        mock_data['minimum_count'] = 10
+        mock_data['minimumCount'] = 10
         _filter = FacetFilter(mock_data)
         agg = _filter.get_es_agg()
         name = list(agg['aggs'].keys())[0]
@@ -650,3 +650,140 @@ class TestSimilarityFilter(FilterBaseTestCase):
                                                'FPPDBHPPCPAAPCCJBBFDPAGIPPPHCPPPCOBLBBPBNNPPJPJPALLIGBPPMAEHAJBFJPOPPPAPABPEPPPJJPFHGGCPPDKECDPPCOIJPIHCIOEPJPCPBFFIAGPJOFGMCPDAGJMPKFHJDPPPPEDBPPPCKOPPOBALDAPOJPPPPEBPANPAPPGPPPPIPPNPEIPPPPHIDPHHBOPDCKJFPPPKPNJHPJGPFPAGKIKIKPODFGAPGPHPPAJPJPGDCAPPIOCPPPJJEEPPPDPFPKJKJKPDPCEDPJFJPLPBPPGPPNPGLPPMCNCEPDPFFHPAOFBEMPPCLPPIMPMDNNMPOBPCPIMJKDKPPPPPCPPPPPGPPPPPDDCODIPPAAKLEPPPAPGFOPBCMPKEFKBPPBJJFPPPGPIPPBBAPDPBJFPBBPPFDFNDIAPPBGDPJAAPNINPFGPDHPPGPAPCLPAFLPPPPPPPPBPCPFCPFKJNPMBFPPJKJLECLNPPEPEPPPNMPLPCEBPFBPAOELLHICPPMAIHEFNLGPAPPPPFPAPODPGLAFPPPPLPPBDPPCFPPKKNFNANCPEPPJPPPCBLPEPPPDPEMOOGPKPBPPCPMJEOJPDJPMPIEJEIMPBGADPOPPCPBPCPDPONIGPOKGMPJPPBFPEFOAPEFPIHPODPPPGBPAFPPFJCBPAPPKPAAPPDLLHPFEBLPOIMPPDPCPPDAPCPFEPPBOPNGPPHGPPPPPJPNHPIBEPPPPEPAPBDPPPBPIPPGAOKKALEPFMBMPJBPPAPMKMPEPPFPKNJPMPBPEOEPLPPLMDAPPPLAPNPDAPCHPHHPAPPFPPMFPKCBPHBECPDPNPPAPCGPDDPPDPPEPAPNPCNCPFBCKFMPJPFGONPBILPFPFPKGKPPPJIPFBFKEBDCGDIPEBPEPHICPFPPPIHMBOPHFGPPEPANPPPMCPKPPPPPBCPPJPMAFAHBPLEPBIAFPPPABPEPPGAJPPPCPJAFMPDHCPBAPPPPCBCPPPDPHJNAPAPCFMPPPIPEPDPBGOONBPMPMONPONPPPMPFPNPEFCGJBPADHCMPEKPPELKHOPPPDHMFHMPGPLAIPBEDPPPPKBPPFINPFPMPPPPPBPODKPJDBPPGPBKEFLHPPPPCLPBPIPOLPPPAEPAOKPEHOPBPPIDPHEPPPAMPPBPPEHKFGPMPBPPFPHPPPEAPMPLPPNIPPBGBAIPMKKPPLDGPPBAPEPCGPPPPKAMAACFDPENHJPMPPHPAPPMPKABDPBBPPHLJJPAFDEMBLFPPAPGPPPPNAOPBBBPALNPPPPMAIKPOACEGPIPPDMGDAPBLCPPDDPEPPPBGPGAPPMFPFBPPCBKPNBPFCAOBBNPPNEDCPKPOINNBPPPEADPBPPDIBDPPCACBPJPHIBDHICJPHPPCEKPLGPBGKPPJPIPPACPACPNPPPPPPPHKFPJEKPKFFNPPBOFNKPPPDIBPPDPPBEHFCPPPDPIPDMPPGLAPBPHEPBPHCCDHOBEACPBPIPGPPPHBPPCGMPPCCEMPPHFPEDPDHPPGLPAJFNDKPPPPPPNDNOEDPDPDMPIBPOKDPPIPPLCKPMGBKPPPGPPPEMPIPPPDINCPCEFPCJPPGPJPCNAAIPGPKDPJACPHPEAEDPPPPBJJPEIJDFIPLPPCABGPPEDDPFDFBPPPPEDPPLJGPPCPPCPFKPPADPFPPMPPPGNIPBPPGPDPPPPDKIFPPCPGHFEBIGGPPPJCPEDPEPPMPPIPPPGHPPDKHPPDPOPPGPCPPGPAMOHFKFMPOPPJOLFPFFPCJIMPCPPPEAPCHPHMCPDOCDPPPOLJPPPLPNNDGFGCHJEPCPIAPCJNPPPFPCPPPPPPDPDADPJKDCGPPHPPEFPJHCDEPCGAJHGPPOKLPPLPPEGPKPJJPEPGPKIFDJOCPJNPPNGBPBHMBIPPGPPBPDEJBIPJGNCPOPJAOJGPKGJELHCHBFFLPNIBPAINPPOGNPCLCKEPFPPPPPPPPGPBCCPGPDPDBAIEHBEAOCPPCENEADIBFAGMIPPMFPMAPELLBOP']}},  # noqa
                             'boost': 0.8,
                             'min_score': 0.5}}]}}}
+
+
+class TestLabelsFilter(FilterBaseTestCase):
+
+    Filter = LabelFilter
+
+    @pytest.fixture
+    def mock_data(self):
+        return {'type': LabelFilter.type,
+                'modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}
+
+    @pytest.fixture
+    def mock_query_data(self, mock_data):
+        data = mock_data
+        data['values'] = {'labels': ['Celeste', 'David']}
+        return data
+
+    def test_get_es_agg(self, mock_data):
+        _filter = self.Filter(mock_data)
+        agg_query = _filter.get_es_agg()
+        name = _filter.name
+        assert agg_query == {
+            'size': 0,
+            'query': {
+                'nested': {
+                    'path': 'labels',
+                    'query': {
+                        'bool': {
+                            'filter': [
+                                {'term': {
+                                    'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},
+            'aggs': {
+                name: {
+                    'nested': {'path': 'labels'},
+                    'aggs': {
+                        f'nested_{name}': {
+                            'terms': {
+                                'field': 'labels.label',
+                                'size': 1000}}}}}}
+
+    def test_get_es_agg_with_options(self, mock_data):
+        mock_data['order'] = 'asc'
+        mock_data['minimumCount'] = 2
+        _filter = self.Filter(mock_data)
+        agg_query = _filter.get_es_agg()
+        name = _filter.name
+        assert agg_query == {
+            'size': 0,
+            'query': {'nested': {'path': 'labels',
+                                 'query': {'bool': {'filter': [{'term': {
+                                     'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},  # noqa
+            'aggs': {name: {'nested': {'path': 'labels'},
+                            'aggs': {
+                                f'nested_{name}': {
+                                    'terms': {
+                                        'field': 'labels.label',
+                                        'min_doc_count': 2,
+                                        'order': {'_count': 'asc'},
+                                        'size': 1000}}}}}}
+
+    def test_get_query(self, mock_query_data):
+        _filter = self.Filter(mock_query_data)
+        query = _filter.get_es_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    'must': {
+                        'nested': {
+                            'path': 'labels',
+                            'query': {
+                                'bool': {
+                                    'filter': [
+                                        {'terms': {'labels.modelId': [
+                                            'bc28213f-cf3a-16a2-9f21-0242ac130003']}},
+                                        {'terms': {'labels.label': ['Celeste', 'David']}},
+                                        {'terms': {'labels.scope': ['TRAIN', 'TEST']}}
+                                    ]}}}}}
+            }
+        }
+
+    def test_get_query_set_scope(self, mock_query_data):
+        mock_query_data['values']['scope'] = 'train'
+        _filter = self.Filter(mock_query_data)
+        query = _filter.get_es_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    'must': {
+                        'nested': {
+                            'path': 'labels',
+                            'query': {
+                                'bool': {
+                                    'filter': [
+                                        {'terms': {'labels.modelId': [
+                                            'bc28213f-cf3a-16a2-9f21-0242ac130003']}},
+                                        {'terms': {'labels.label': ['Celeste', 'David']}},
+                                        {'terms': {'labels.scope': ['TRAIN']}}
+                                    ]}}}}}
+            }
+        }
+
+
+class TestDateFilter(FilterBaseTestCase):
+
+    Filter = DateFilter
+
+    @pytest.fixture
+    def mock_data(self):
+        return {
+            'type': 'date',
+            'attribute': 'system.timeCreated'
+        }
+
+    @pytest.fixture
+    def mock_query_data(self, mock_data):
+        mock_data['values'] = {'min': 123, 'max': 234}
+        return mock_data
+
+    def test_get_agg(self, mock_data):
+        _filter = self.Filter(mock_data)
+        agg = _filter.get_es_agg()
+        assert agg['aggs'][_filter.name] == {
+            'stats': {
+                'field': 'system.timeCreated'
+            }
+        }
+
+    def test_get_es_query(self, mock_query_data):
+        _filter = self.Filter(mock_query_data)
+        query = _filter.get_es_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'range': {'system.timeCreated': {'gte': 123, 'lte': 234}}}
+                    ]
+                }}}

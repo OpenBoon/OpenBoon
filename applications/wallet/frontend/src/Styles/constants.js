@@ -37,7 +37,7 @@ const borders = {
   keyOneMedium: `2px solid ${colors.key.one}`,
   keyOneLarge: `4px solid ${colors.key.one}`,
   error: `1px solid ${colors.signal.warning.base}`,
-  assetSelected: `4px solid ${colors.signal.electricBlue.base}`,
+  assetSelected: `4px solid ${colors.signal.sky.base}`,
   ...newBorders,
 }
 

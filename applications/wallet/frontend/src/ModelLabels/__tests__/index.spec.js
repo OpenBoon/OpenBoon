@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import modelLabels from '../__mocks__/modelLabels'
 
@@ -29,6 +29,10 @@ describe('<ModelLabels />', () => {
   })
 
   it('should render properly with labels', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
       query: { projectId: PROJECT_ID, modelId: MODEL_ID },
@@ -39,5 +43,22 @@ describe('<ModelLabels />', () => {
     const component = TestRenderer.create(<ModelLabels />)
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    // Open menu
+    act(() => {
+      component.root
+        .findAllByProps({ 'aria-label': 'Toggle Actions Menu' })[0]
+        .props.onClick()
+    })
+
+    // Click Edit
+    act(() => {
+      component.root.findByProps({ children: 'Edit' }).props.onClick()
+    })
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/models/[modelId]?edit=${modelLabels.results[0].label}`,
+      `/${PROJECT_ID}/models/${MODEL_ID}`,
+    )
   })
 })

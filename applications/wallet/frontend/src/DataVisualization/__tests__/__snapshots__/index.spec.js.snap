@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<DataVisualization /> should render properly 1`] = `
-.emotion-27 {
+.emotion-34 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-26 {
+.emotion-33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -66,7 +66,6 @@ exports[`<DataVisualization /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -127,7 +126,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
   background-color: #252525;
 }
 
-.emotion-25 {
+.emotion-32 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -140,7 +139,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-24 {
+.emotion-31 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -152,7 +151,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
   box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-23 {
+.emotion-30 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -268,7 +267,6 @@ exports[`<DataVisualization /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -305,10 +303,10 @@ exports[`<DataVisualization /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-27"
+  className="emotion-34"
 >
   <div
-    className="emotion-26"
+    className="emotion-33"
   >
     <div
       className="emotion-4"
@@ -338,16 +336,16 @@ exports[`<DataVisualization /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-25"
+      className="emotion-32"
     >
       <VisualizerNavigation
         itemCount={574}
       />
       <div
-        className="emotion-24"
+        className="emotion-31"
       >
         <div
-          className="emotion-23"
+          className="emotion-30"
         >
           <div
             className="emotion-8"
@@ -363,7 +361,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
               <p
                 className="emotion-6"
               >
-                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the affect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
+                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the effect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
               </p>
             </div>
           </div>
@@ -427,6 +425,43 @@ exports[`<DataVisualization /> should render properly 1`] = `
                 className="emotion-11"
               >
                 Shows the min, max, mean, median, and mode for the numerical values of a selected field.
+              </div>
+            </div>
+            <div
+              className="emotion-14"
+            >
+              <button
+                className="emotion-13"
+                onClick={[Function]}
+                type="button"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-15"
+          >
+            <div
+              className="emotion-9"
+            >
+              <svg
+                data-file-name="histogram.svg"
+                height={22}
+              />
+            </div>
+            <div
+              className="emotion-12"
+            >
+              <div
+                className="emotion-10"
+              >
+                Histogram
+              </div>
+              <div
+                className="emotion-11"
+              >
+                Shows the distribution of assets within value groups.
               </div>
             </div>
             <div
@@ -514,7 +549,6 @@ exports[`<DataVisualization /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -632,7 +666,6 @@ exports[`<DataVisualization /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -712,7 +745,6 @@ exports[`<DataVisualization /> should render properly 2`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -842,7 +874,6 @@ exports[`<DataVisualization /> should render properly 2`] = `
             }
             dispatch={[Function]}
             layouts={Object {}}
-            projectId="76917058-b147-4556-987a-0a0f11e46d9b"
             setLayouts={[Function]}
           />
         </div>
@@ -853,7 +884,7 @@ exports[`<DataVisualization /> should render properly 2`] = `
 `;
 
 exports[`<DataVisualization /> should render properly 3`] = `
-.emotion-29 {
+.emotion-36 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -872,7 +903,7 @@ exports[`<DataVisualization /> should render properly 3`] = `
   flex-direction: column;
 }
 
-.emotion-28 {
+.emotion-35 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -918,7 +949,6 @@ exports[`<DataVisualization /> should render properly 3`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -979,7 +1009,7 @@ exports[`<DataVisualization /> should render properly 3`] = `
   background-color: #252525;
 }
 
-.emotion-27 {
+.emotion-34 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -992,7 +1022,7 @@ exports[`<DataVisualization /> should render properly 3`] = `
   flex-direction: column;
 }
 
-.emotion-26 {
+.emotion-33 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1004,7 +1034,7 @@ exports[`<DataVisualization /> should render properly 3`] = `
   box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-25 {
+.emotion-32 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1120,7 +1150,6 @@ exports[`<DataVisualization /> should render properly 3`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1168,10 +1197,10 @@ exports[`<DataVisualization /> should render properly 3`] = `
 }
 
 <div
-  className="emotion-29"
+  className="emotion-36"
 >
   <div
-    className="emotion-28"
+    className="emotion-35"
   >
     <div
       className="emotion-4"
@@ -1201,16 +1230,16 @@ exports[`<DataVisualization /> should render properly 3`] = `
       </div>
     </div>
     <div
-      className="emotion-27"
+      className="emotion-34"
     >
       <VisualizerNavigation
         itemCount={574}
       />
       <div
-        className="emotion-26"
+        className="emotion-33"
       >
         <div
-          className="emotion-25"
+          className="emotion-32"
         >
           <div
             className="emotion-10"
@@ -1226,7 +1255,7 @@ exports[`<DataVisualization /> should render properly 3`] = `
               <p
                 className="emotion-6"
               >
-                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the affect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
+                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the effect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
               </p>
             </div>
             <div
@@ -1315,6 +1344,43 @@ exports[`<DataVisualization /> should render properly 3`] = `
               </button>
             </div>
           </div>
+          <div
+            className="emotion-17"
+          >
+            <div
+              className="emotion-11"
+            >
+              <svg
+                data-file-name="histogram.svg"
+                height={22}
+              />
+            </div>
+            <div
+              className="emotion-14"
+            >
+              <div
+                className="emotion-12"
+              >
+                Histogram
+              </div>
+              <div
+                className="emotion-13"
+              >
+                Shows the distribution of assets within value groups.
+              </div>
+            </div>
+            <div
+              className="emotion-16"
+            >
+              <button
+                className="emotion-8"
+                onClick={[Function]}
+                type="button"
+              >
+                Create
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1323,7 +1389,7 @@ exports[`<DataVisualization /> should render properly 3`] = `
 `;
 
 exports[`<DataVisualization /> should render properly 4`] = `
-.emotion-27 {
+.emotion-34 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -1342,7 +1408,7 @@ exports[`<DataVisualization /> should render properly 4`] = `
   flex-direction: column;
 }
 
-.emotion-26 {
+.emotion-33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1388,7 +1454,6 @@ exports[`<DataVisualization /> should render properly 4`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1449,7 +1514,7 @@ exports[`<DataVisualization /> should render properly 4`] = `
   background-color: #252525;
 }
 
-.emotion-25 {
+.emotion-32 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1462,7 +1527,7 @@ exports[`<DataVisualization /> should render properly 4`] = `
   flex-direction: column;
 }
 
-.emotion-24 {
+.emotion-31 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1474,7 +1539,7 @@ exports[`<DataVisualization /> should render properly 4`] = `
   box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-23 {
+.emotion-30 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1590,7 +1655,6 @@ exports[`<DataVisualization /> should render properly 4`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -1627,10 +1691,10 @@ exports[`<DataVisualization /> should render properly 4`] = `
 }
 
 <div
-  className="emotion-27"
+  className="emotion-34"
 >
   <div
-    className="emotion-26"
+    className="emotion-33"
   >
     <div
       className="emotion-4"
@@ -1660,16 +1724,16 @@ exports[`<DataVisualization /> should render properly 4`] = `
       </div>
     </div>
     <div
-      className="emotion-25"
+      className="emotion-32"
     >
       <VisualizerNavigation
         itemCount={574}
       />
       <div
-        className="emotion-24"
+        className="emotion-31"
       >
         <div
-          className="emotion-23"
+          className="emotion-30"
         >
           <div
             className="emotion-8"
@@ -1685,7 +1749,7 @@ exports[`<DataVisualization /> should render properly 4`] = `
               <p
                 className="emotion-6"
               >
-                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the affect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
+                Data visualizations are representations of specific information from dataset. Adjusting the filters will allow you to dynamically view the effect they have on the search results. Data visualization can be shared with other users in the projects by exporting and then uploading.
               </p>
             </div>
           </div>
@@ -1749,6 +1813,43 @@ exports[`<DataVisualization /> should render properly 4`] = `
                 className="emotion-11"
               >
                 Shows the min, max, mean, median, and mode for the numerical values of a selected field.
+              </div>
+            </div>
+            <div
+              className="emotion-14"
+            >
+              <button
+                className="emotion-13"
+                onClick={[Function]}
+                type="button"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-15"
+          >
+            <div
+              className="emotion-9"
+            >
+              <svg
+                data-file-name="histogram.svg"
+                height={22}
+              />
+            </div>
+            <div
+              className="emotion-12"
+            >
+              <div
+                className="emotion-10"
+              >
+                Histogram
+              </div>
+              <div
+                className="emotion-11"
+              >
+                Shows the distribution of assets within value groups.
               </div>
             </div>
             <div

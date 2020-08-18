@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
@@ -15,9 +15,16 @@ import { ACTIONS } from '../DataVisualization/reducer'
 
 import { formatFields } from './helpers'
 
+const INITIAL_STATE = ({ attribute, values }) => ({
+  attribute: attribute || '',
+  values: values || '10',
+})
+
+const reducer = (state, action) => ({ ...state, ...action })
+
 const ChartFormContent = ({
   chart,
-  chart: { type },
+  chart: { type, attribute, values },
   chartIndex,
   dispatch,
   isEditing,
@@ -27,8 +34,9 @@ const ChartFormContent = ({
     query: { projectId },
   } = useRouter()
 
-  const [attribute, setAttribute] = useState(chart.attribute || '')
-  const [values, setValues] = useState(chart.values || '10')
+  const initializedState = INITIAL_STATE({ attribute, values })
+
+  const [state, formDispatch] = useReducer(reducer, initializedState)
 
   const { data: fields } = useSWR(
     `/api/v1/projects/${projectId}/searches/fields/`,
@@ -36,7 +44,7 @@ const ChartFormContent = ({
 
   const filteredFields = formatFields({ fields, type })
 
-  const splitAttribute = attribute.split('.')
+  const splitAttribute = state.attribute.split('.')
   const shortenedAttribute = splitAttribute[splitAttribute.length - 1]
 
   return (
@@ -61,15 +69,13 @@ const ChartFormContent = ({
 
       <Listbox
         label="Metadata Type"
-        value={attribute}
+        value={state.attribute}
         placeholder={shortenedAttribute || 'Select Type'}
         options={filteredFields}
-        onChange={({ value }) => setAttribute(value)}
+        onChange={({ value }) => formDispatch({ attribute: value })}
       />
 
-      {type === 'range' && <div css={{ height: spacing.spacious }} />}
-
-      {type === 'facet' && (
+      {(type === 'facet' || type === 'histogram') && (
         <>
           <div css={{ height: spacing.normal }} />
 
@@ -78,13 +84,17 @@ const ChartFormContent = ({
             variant={INPUT_VARIANTS.SECONDARY}
             label="Number of Values Shown"
             type="number"
-            value={values}
-            onChange={({ target: { value } }) => setValues(value)}
+            value={state.values}
+            onChange={({ target: { value } }) =>
+              formDispatch({ values: value })
+            }
             hasError={false}
             errorMessage=""
           />
         </>
       )}
+
+      {type === 'range' && <div css={{ height: spacing.spacious }} />}
 
       <div css={{ display: 'flex' }}>
         <Button
@@ -106,13 +116,16 @@ const ChartFormContent = ({
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          isDisabled={!attribute}
+          isDisabled={!state.attribute}
           onClick={() => {
             dispatch({
               type: ACTIONS.UPDATE,
               payload: {
                 chartIndex,
-                updatedChart: { ...chart, attribute, values },
+                updatedChart: {
+                  ...chart,
+                  ...state,
+                },
               },
             })
             setIsEditing(false)

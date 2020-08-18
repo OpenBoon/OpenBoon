@@ -40,6 +40,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-0 {
@@ -69,7 +72,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -382,7 +384,7 @@ Array [
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #0273f5;
+  background-color: #0074f5;
 }
 
 .emotion-24:first-of-type {
@@ -419,7 +421,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -470,7 +471,7 @@ Array [
   -webkit-flex: 14 0 auto;
   -ms-flex: 14 0 auto;
   flex: 14 0 auto;
-  background-color: #0273f5;
+  background-color: #0074f5;
 }
 
 .emotion-39:first-of-type {
@@ -522,7 +523,7 @@ Array [
   -webkit-flex: 4 0 auto;
   -ms-flex: 4 0 auto;
   flex: 4 0 auto;
-  background-color: #0273f5;
+  background-color: #0074f5;
 }
 
 .emotion-53:first-of-type {
@@ -1664,6 +1665,9 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
 }
 
 .emotion-0 {
@@ -1693,7 +1697,6 @@ Array [
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;

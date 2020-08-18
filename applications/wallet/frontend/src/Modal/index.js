@@ -91,7 +91,11 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
             >
               Cancel
             </Button>
-            <Button variant={VARIANTS.WARNING} onClick={onConfirm}>
+            <Button
+              variant={VARIANTS.WARNING}
+              onClick={onConfirm}
+              isDisabled={action.includes('...')}
+            >
               {action}
             </Button>
           </div>

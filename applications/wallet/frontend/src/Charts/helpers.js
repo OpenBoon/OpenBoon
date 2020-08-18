@@ -6,7 +6,7 @@ const MAX_COLS = Math.ceil(FOUR_K / MIN_COL_WIDTH)
 
 const BREAKPOINTS = [...new Array(MAX_COLS)].map((_, index) => index)
 
-const MIN_ROWS = { range: 4, facet: 5 }
+const MIN_ROWS = { range: 4, facet: 5, histogram: 5 }
 
 export const MIN_ROW_HEIGHT = 50
 

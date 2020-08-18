@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Asset /> should handle no query 1`] = `
-.emotion-12 {
+.emotion-14 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Asset /> should handle no query 1`] = `
   flex-direction: column;
 }
 
-.emotion-11 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -37,6 +37,7 @@ exports[`<Asset /> should handle no query 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   width: 100%;
+  margin-right: 1px;
 }
 
 .emotion-1 {
@@ -45,7 +46,6 @@ exports[`<Asset /> should handle no query 1`] = `
   background-color: #252525;
   color: #808080;
   margin-bottom: 1px;
-  margin-right: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -80,7 +80,6 @@ exports[`<Asset /> should handle no query 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -151,14 +150,14 @@ exports[`<Asset /> should handle no query 1`] = `
   object-fit: contain;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -188,7 +187,6 @@ exports[`<Asset /> should handle no query 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -238,7 +236,7 @@ exports[`<Asset /> should handle no query 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-10 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -246,10 +244,10 @@ exports[`<Asset /> should handle no query 1`] = `
 }
 
 <div
-  className="emotion-12"
+  className="emotion-14"
 >
   <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
       className="emotion-5"
@@ -259,7 +257,7 @@ exports[`<Asset /> should handle no query 1`] = `
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -291,10 +289,10 @@ exports[`<Asset /> should handle no query 1`] = `
       </div>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-12"
     >
       <div
-        className="emotion-9"
+        className="emotion-11"
       >
         <button
           aria-label="Asset Metadata"
@@ -305,6 +303,30 @@ exports[`<Asset /> should handle no query 1`] = `
         >
           <svg
             data-file-name="information.svg"
+            height={20}
+          />
+        </button>
+        <button
+          aria-label="Face Recognition Training"
+          className="emotion-6"
+          onClick={[Function]}
+          title="Face Recognition Training"
+          type="button"
+        >
+          <svg
+            data-file-name="faceDetection.svg"
+            height={20}
+          />
+        </button>
+        <button
+          aria-label="Add Labels To Model"
+          className="emotion-6"
+          onClick={[Function]}
+          title="Add Labels To Model"
+          type="button"
+        >
+          <svg
+            data-file-name="pen.svg"
             height={20}
           />
         </button>
@@ -321,7 +343,7 @@ exports[`<Asset /> should handle no query 1`] = `
           />
         </button>
         <div
-          className="emotion-8"
+          className="emotion-10"
         />
       </div>
     </div>
@@ -330,7 +352,7 @@ exports[`<Asset /> should handle no query 1`] = `
 `;
 
 exports[`<Asset /> should render properly 1`] = `
-.emotion-12 {
+.emotion-14 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -349,7 +371,7 @@ exports[`<Asset /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-11 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -366,6 +388,7 @@ exports[`<Asset /> should render properly 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   width: 100%;
+  margin-right: 1px;
 }
 
 .emotion-1 {
@@ -374,7 +397,6 @@ exports[`<Asset /> should render properly 1`] = `
   background-color: #252525;
   color: #808080;
   margin-bottom: 1px;
-  margin-right: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -409,7 +431,6 @@ exports[`<Asset /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -480,14 +501,14 @@ exports[`<Asset /> should render properly 1`] = `
   object-fit: contain;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -517,7 +538,6 @@ exports[`<Asset /> should render properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -567,7 +587,7 @@ exports[`<Asset /> should render properly 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-10 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -575,10 +595,10 @@ exports[`<Asset /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-12"
+  className="emotion-14"
 >
   <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
       className="emotion-5"
@@ -588,7 +608,7 @@ exports[`<Asset /> should render properly 1`] = `
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=?assetId=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -613,10 +633,10 @@ exports[`<Asset /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-12"
     >
       <div
-        className="emotion-9"
+        className="emotion-11"
       >
         <button
           aria-label="Asset Metadata"
@@ -627,6 +647,30 @@ exports[`<Asset /> should render properly 1`] = `
         >
           <svg
             data-file-name="information.svg"
+            height={20}
+          />
+        </button>
+        <button
+          aria-label="Face Recognition Training"
+          className="emotion-6"
+          onClick={[Function]}
+          title="Face Recognition Training"
+          type="button"
+        >
+          <svg
+            data-file-name="faceDetection.svg"
+            height={20}
+          />
+        </button>
+        <button
+          aria-label="Add Labels To Model"
+          className="emotion-6"
+          onClick={[Function]}
+          title="Add Labels To Model"
+          type="button"
+        >
+          <svg
+            data-file-name="pen.svg"
             height={20}
           />
         </button>
@@ -643,7 +687,7 @@ exports[`<Asset /> should render properly 1`] = `
           />
         </button>
         <div
-          className="emotion-8"
+          className="emotion-10"
         />
       </div>
     </div>
@@ -652,7 +696,7 @@ exports[`<Asset /> should render properly 1`] = `
 `;
 
 exports[`<Asset /> should render videos properly 1`] = `
-.emotion-12 {
+.emotion-14 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -671,7 +715,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-11 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -688,6 +732,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   width: 100%;
+  margin-right: 1px;
 }
 
 .emotion-1 {
@@ -696,7 +741,6 @@ exports[`<Asset /> should render videos properly 1`] = `
   background-color: #252525;
   color: #808080;
   margin-bottom: 1px;
-  margin-right: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -731,7 +775,6 @@ exports[`<Asset /> should render videos properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -802,14 +845,14 @@ exports[`<Asset /> should render videos properly 1`] = `
   object-fit: contain;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-9 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -839,7 +882,6 @@ exports[`<Asset /> should render videos properly 1`] = `
   -ms-flex-pack: center;
   justify-content: center;
   border-radius: 2px;
-  margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
@@ -889,7 +931,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-10 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -897,10 +939,10 @@ exports[`<Asset /> should render videos properly 1`] = `
 }
 
 <div
-  className="emotion-12"
+  className="emotion-14"
 >
   <div
-    className="emotion-11"
+    className="emotion-13"
   >
     <div
       className="emotion-5"
@@ -910,7 +952,7 @@ exports[`<Asset /> should render videos properly 1`] = `
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=?id=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=?assetId=srL8ob5cTpCJjYoKkqqfa2ciyG425dGi&query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibWVkaWEudHlwZSIsInZhbHVlcyI6eyJmYWNldHMiOlsidmlkZW8iXX19XQ=="
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -942,10 +984,10 @@ exports[`<Asset /> should render videos properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-12"
     >
       <div
-        className="emotion-9"
+        className="emotion-11"
       >
         <button
           aria-label="Asset Metadata"
@@ -956,6 +998,30 @@ exports[`<Asset /> should render videos properly 1`] = `
         >
           <svg
             data-file-name="information.svg"
+            height={20}
+          />
+        </button>
+        <button
+          aria-label="Face Recognition Training"
+          className="emotion-6"
+          onClick={[Function]}
+          title="Face Recognition Training"
+          type="button"
+        >
+          <svg
+            data-file-name="faceDetection.svg"
+            height={20}
+          />
+        </button>
+        <button
+          aria-label="Add Labels To Model"
+          className="emotion-6"
+          onClick={[Function]}
+          title="Add Labels To Model"
+          type="button"
+        >
+          <svg
+            data-file-name="pen.svg"
             height={20}
           />
         </button>
@@ -972,7 +1038,7 @@ exports[`<Asset /> should render videos properly 1`] = `
           />
         </button>
         <div
-          className="emotion-8"
+          className="emotion-10"
         />
       </div>
     </div>

@@ -8,7 +8,7 @@ import Button, { VARIANTS } from '../Button'
 import BackSvg from '../Icons/back.svg'
 
 const AssetNavigation = ({ projectId, assetId, query }) => {
-  const idString = `?id=${assetId}`
+  const idString = `?assetId=${assetId}`
   const queryString = query ? `&query=${query}` : ''
 
   return (
@@ -19,7 +19,6 @@ const AssetNavigation = ({ projectId, assetId, query }) => {
         backgroundColor: colors.structure.lead,
         color: colors.structure.steel,
         marginBottom: spacing.hairline,
-        marginRight: spacing.hairline,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',

@@ -61,11 +61,11 @@ describe('<ModelLabelsMenu />', () => {
     expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/delete_labels/`,
+      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/destroy_labels/`,
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({
-      body: JSON.stringify({ label: 'cat' }),
+      body: JSON.stringify({ labelNames: ['cat'] }),
       headers: {
         'X-CSRFToken': 'CSRF_TOKEN',
         'Content-Type': 'application/json;charset=UTF-8',

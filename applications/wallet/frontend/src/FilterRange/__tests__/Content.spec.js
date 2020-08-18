@@ -172,7 +172,7 @@ describe('<FilterRangeContent />', () => {
       {
         pathname: '/[projectId]/visualizer',
         query: {
-          id: '',
+          assetId: '',
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
           query: btoa(
             JSON.stringify([
@@ -265,7 +265,7 @@ describe('<FilterRangeContent />', () => {
       {
         pathname: '/[projectId]/visualizer',
         query: {
-          id: '',
+          assetId: '',
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
           query: btoa(
             JSON.stringify([

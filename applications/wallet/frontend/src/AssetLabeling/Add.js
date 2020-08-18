@@ -7,12 +7,12 @@ import { spacing } from '../Styles'
 
 import { useLocalStorageState } from '../LocalStorage/helpers'
 import Form from '../Form'
-import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Select from '../Select'
+import Combobox from '../Combobox'
 
-import { onSubmit, getSubmitText } from './helpers'
+import { onSubmit, getSubmitText, getOptions } from './helpers'
 
 const INITIAL_STATE = {
   success: false,
@@ -25,24 +25,21 @@ const reducer = (state, action) => ({ ...state, ...action })
 
 const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
   const [localModelId, setLocalModelId] = useLocalStorageState({
-    key: 'AssetLabelingAdd.modelId',
-    initialValue: '',
-  })
-  const [localLabel, setLocalLabel] = useLocalStorageState({
-    key: 'AssetLabelingAdd.label',
+    key: `AssetLabelingAdd.${projectId}.modelId`,
     initialValue: '',
   })
 
-  // Prevents user from saving non-existent model where model/label
-  // are added to local storage and user switches projects
-  const modelExists = localModelId
-    ? models.find(({ id }) => id === localModelId)
-    : false
+  const [localLabel, setLocalLabel] = useLocalStorageState({
+    key: `AssetLabelingAdd.${projectId}.label`,
+    initialValue: '',
+  })
+
+  const hasModel = models.find(({ id }) => id === localModelId)
 
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL_STATE,
-    modelId: modelExists ? localModelId : '',
-    label: modelExists ? localLabel : '',
+    modelId: (hasModel && localModelId) || '',
+    label: localLabel || '',
   })
 
   const options = models.map(({ name, id }) => ({ value: id, label: name }))
@@ -60,43 +57,48 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
           </FlashMessage>
         </div>
       )}
+
       <Form style={{ width: '100%', padding: 0 }}>
         <Select
-          key={state.reloadKey}
+          key={`model${state.reloadKey}`}
           label="Model"
           options={options}
           defaultValue={state.modelId}
           onChange={({ value }) => {
-            dispatch({ modelId: value, success: false })
+            dispatch({ modelId: value, label: '', success: false })
+            setLocalModelId({ value })
           }}
           isRequired={false}
           style={{ width: '100%' }}
         />
 
-        <Input
-          id="asset-label"
-          variant={INPUT_VARIANTS.SECONDARY}
+        <div css={{ height: spacing.base }} />
+
+        <Combobox
+          key={`label${state.reloadKey}${state.modelId}`}
           label="Label"
-          type="text"
+          options={() => getOptions({ projectId, modelId: state.modelId })}
           value={state.label}
-          onChange={({ target: { value } }) =>
+          onChange={({ value }) => {
             dispatch({ label: value, success: false })
-          }
+            setLocalLabel({ value })
+          }}
           hasError={state.errors.label !== undefined}
           errorMessage={state.errors.label}
-          style={{ width: '100%' }}
         />
+
+        <div css={{ height: spacing.comfy }} />
 
         <div css={{ display: 'flex' }}>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
-            onClick={() =>
+            onClick={() => {
               dispatch({
                 modelId: localModelId,
                 label: localLabel,
                 reloadKey: state.reloadKey + 1,
               })
-            }
+            }}
             style={{ flex: 1, margin: 0 }}
             isDisabled={
               !localModelId ||
@@ -109,21 +111,15 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
           >
             Cancel
           </Button>
+
           <div css={{ padding: spacing.base }} />
+
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() =>
-              onSubmit({
-                dispatch,
-                state,
-                labels,
-                projectId,
-                assetId,
-                setLocalModelId,
-                setLocalLabel,
-              })
-            }
+            onClick={() => {
+              onSubmit({ dispatch, state, labels, projectId, assetId })
+            }}
             isDisabled={
               (!state.modelId && !localModelId) ||
               (!state.label && !localLabel) ||

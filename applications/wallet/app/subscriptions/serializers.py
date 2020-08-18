@@ -4,13 +4,13 @@ from subscriptions.models import Subscription
 
 
 class SubscriptionLimitsUsageSerializer(serializers.Serializer):
-    video_hours = serializers.SerializerMethodField()
-    image_count = serializers.SerializerMethodField()
+    videoHours = serializers.SerializerMethodField()
+    imageCount = serializers.SerializerMethodField()
 
-    def get_video_hours(self, obj):
+    def get_videoHours(self, obj):
         return obj['video_hours']
 
-    def get_image_count(self, obj):
+    def get_imageCount(self, obj):
         return obj['image_count']
 
 
@@ -20,7 +20,7 @@ class SubscriptionSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Subscription
-        fields = ('id', 'project', 'tier', 'usage', 'created_date', 'modified_date', 'url')
+        fields = ('id', 'project', 'tier', 'usage', 'createdDate', 'modifiedDate', 'url')
 
     def get_url(self, obj):
         request = self.context['request']

@@ -143,6 +143,42 @@ class ModelApp:
         """
         return self.app.client.get('/api/v3/models/{}/_label_counts'.format(as_id(model)))
 
+    def rename_label(self, model, old_label, new_label):
+        """
+        Rename a the given label to a new label name.  The new label can already exist.
+
+        Args:
+            model (Model): The Model or its unique Id.
+            old_label (str): The old label name.
+            new_label (str): The new label name.
+
+        Returns:
+            dict: a dictionary containing the number of assets updated.
+
+        """
+        body = {
+            "label": old_label,
+            "newLabel": new_label
+        }
+        return self.app.client.put('/api/v3/models/{}/labels'.format(as_id(model)), body)
+
+    def delete_label(self, model, label):
+        """
+        Removes the label from all Assets.
+
+        Args:
+            model (Model): The Model or its unique Id.
+            label (str): The label name to remove.
+
+        Returns:
+            dict: a dictionary containing the number of assets updated.
+
+        """
+        body = {
+            "label": label
+        }
+        return self.app.client.delete('/api/v3/models/{}/labels'.format(as_id(model)), body)
+
     def download_labeled_images(self, model, style, dst_dir, validation_split=0.2):
         """
         Get a TrainingSetDownloader instance which can be used to download all the
