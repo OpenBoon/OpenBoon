@@ -1,6 +1,6 @@
 from zmlp import ModelType
 from zmlpsdk import Argument, AssetProcessor, ZmlpFatalProcessorException
-from .labels import AutomlLabelDetectionSession
+from .labels import AutomlLabelDetectionSession, AutomlVideoLabelDetectionSession
 
 
 class AutoMLModelTrainer(AssetProcessor):
@@ -20,6 +20,8 @@ class AutoMLModelTrainer(AssetProcessor):
         # Check the type of model and use the correct session class.
         if self.app_model.type == ModelType.GCP_LABEL_DETECTION:
             session = AutomlLabelDetectionSession(self.app_model, self.reactor)
+        elif self.app_model.type == ModelType.GCP_VIDEO_DETECTION:
+            session = AutomlVideoLabelDetectionSession(self.app_model, self.reactor)
         else:
             raise ZmlpFatalProcessorException(f'{self.app_model.type} is not supported. ')
 
