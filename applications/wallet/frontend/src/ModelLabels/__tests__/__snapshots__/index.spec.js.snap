@@ -258,7 +258,7 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
         <tbody>
           <tr>
             <td>
-              mark
+              cat
             </td>
             <td>
               1
@@ -284,7 +284,7 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
           </tr>
           <tr>
             <td>
-              nina
+              dog
             </td>
             <td>
               1

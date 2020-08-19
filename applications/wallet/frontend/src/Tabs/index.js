@@ -25,8 +25,13 @@ const Tabs = ({ tabs }) => {
       >
         {tabs
           .filter(({ title, href }) => title && href)
-          .map(({ title, href }) => (
-            <TabsLink key={href} title={title} href={href} />
+          .map(({ title, href, isSelected }) => (
+            <TabsLink
+              key={`${href}${isSelected}`}
+              title={title}
+              href={href}
+              isSelected={isSelected}
+            />
           ))}
       </ul>
     </nav>
@@ -38,6 +43,7 @@ Tabs.propTypes = {
     PropTypes.shape({
       title: PropTypes.string,
       href: PropTypes.string,
+      isSelected: PropTypes.bool,
     }).isRequired,
   ).isRequired,
 }

@@ -29,6 +29,7 @@ const DataSources = () => {
           <FlashMessage variant={VARIANTS.SUCCESS}>
             Data source
             {action === 'add-datasource-success' && ' created'}
+            {action === 'delete-datasource-success' && ' deleted'}
             {action === 'edit-datasource-success' && ' edited'}.{' '}
             {!!jobId && (
               <Link

@@ -28,14 +28,17 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
     key: `AssetLabelingAdd.${projectId}.modelId`,
     initialValue: '',
   })
+
   const [localLabel, setLocalLabel] = useLocalStorageState({
     key: `AssetLabelingAdd.${projectId}.label`,
     initialValue: '',
   })
 
+  const hasModel = models.find(({ id }) => id === localModelId)
+
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL_STATE,
-    modelId: localModelId || '',
+    modelId: (hasModel && localModelId) || '',
     label: localLabel || '',
   })
 
@@ -54,6 +57,7 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
           </FlashMessage>
         </div>
       )}
+
       <Form style={{ width: '100%', padding: 0 }}>
         <Select
           key={`model${state.reloadKey}`}
@@ -62,6 +66,7 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
           defaultValue={state.modelId}
           onChange={({ value }) => {
             dispatch({ modelId: value, label: '', success: false })
+            setLocalModelId({ value })
           }}
           isRequired={false}
           style={{ width: '100%' }}
@@ -72,10 +77,11 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
         <Combobox
           key={`label${state.reloadKey}${state.modelId}`}
           label="Label"
-          options={() => getOptions({ modelId: state.modelId, projectId })}
+          options={() => getOptions({ projectId, modelId: state.modelId })}
           value={state.label}
           onChange={({ value }) => {
             dispatch({ label: value, success: false })
+            setLocalLabel({ value })
           }}
           hasError={state.errors.label !== undefined}
           errorMessage={state.errors.label}
@@ -86,13 +92,13 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
         <div css={{ display: 'flex' }}>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
-            onClick={() =>
+            onClick={() => {
               dispatch({
                 modelId: localModelId,
                 label: localLabel,
                 reloadKey: state.reloadKey + 1,
               })
-            }
+            }}
             style={{ flex: 1, margin: 0 }}
             isDisabled={
               !localModelId ||
@@ -105,21 +111,15 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
           >
             Cancel
           </Button>
+
           <div css={{ padding: spacing.base }} />
+
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() =>
-              onSubmit({
-                dispatch,
-                state,
-                labels,
-                projectId,
-                assetId,
-                setLocalModelId,
-                setLocalLabel,
-              })
-            }
+            onClick={() => {
+              onSubmit({ dispatch, state, labels, projectId, assetId })
+            }}
             isDisabled={
               (!state.modelId && !localModelId) ||
               (!state.label && !localLabel) ||

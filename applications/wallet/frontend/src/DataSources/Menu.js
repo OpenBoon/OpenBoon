@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
+import Router from 'next/router'
 
 import { fetcher } from '../Fetch/helpers'
 
@@ -11,6 +12,7 @@ import Modal from '../Modal'
 
 const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   return (
     <Menu open="left" button={ButtonActions}>
@@ -41,21 +43,25 @@ const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
                   <Modal
                     title="Delete Data Source"
                     message="Deleting this data source cannot be undone."
-                    action="Delete Permanently"
+                    action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
                     onCancel={() => {
                       setDeleteModalOpen(false)
                       onClick()
                     }}
                     onConfirm={async () => {
-                      setDeleteModalOpen(false)
-                      onClick()
+                      setIsDeleting(true)
 
                       await fetcher(
                         `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/`,
                         { method: 'DELETE' },
                       )
 
-                      revalidate()
+                      await revalidate()
+
+                      Router.push(
+                        '/[projectId]/data-sources?action=delete-datasource-success',
+                        `/${projectId}/data-sources`,
+                      )
                     }}
                   />
                 )}
