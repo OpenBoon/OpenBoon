@@ -9,8 +9,6 @@ import com.google.pubsub.v1.PubsubMessage
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.rabbit.core.RabbitTemplate
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -102,29 +100,5 @@ class PubSubMessagingService(
                 .build()
             return pubsubMessage
         }
-    }
-}
-
-@Service
-@Profile("rabbitmq")
-class RabbitMQMessagingService(
-    var rabbitTemplate: RabbitTemplate
-) : MessagingService {
-
-    @Value("\${archivist.messaging-service.rabbitmq.topicExchanger}")
-    lateinit var topicExchanger: String
-
-    @Value("\${archivist.messaging-service.rabbitmq.routingKey}")
-    lateinit var routingKey: String
-
-    override fun sendMessage(actionType: ActionType, projectId: UUID?, data: Map<Any, Any>) {
-
-        var content = mapOf(
-            "action" to actionType,
-            "projectId" to projectId,
-            "data" to data
-        )
-
-        rabbitTemplate.convertAndSend(topicExchanger, routingKey, content)
     }
 }
