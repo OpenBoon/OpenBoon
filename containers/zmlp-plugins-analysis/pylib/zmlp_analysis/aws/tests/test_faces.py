@@ -1,7 +1,6 @@
 from unittest.mock import patch
 
 from zmlp_analysis.aws import RekognitionFaceDetection
-from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
 
@@ -42,7 +41,7 @@ class RekognitionFaceDetectionProcessorTests(PluginUnitTestCase):
         source_path = zorroa_test_path('images/face-recognition/face1.jpg')
         target_path = zorroa_test_path('images/face-recognition/face2.jpg')
         proxy_patch.return_value = target_path
-        frame = Frame(TestAsset(target_path))
+        # frame = Frame(TestAsset(target_path))
 
         args = {"model_id": "model-id-12345"}
 
@@ -76,7 +75,6 @@ class MockAWSClient:
                 }
             ]
         }
-
 
     def compare_faces(self, SimilarityThreshold=None, SourceImage=None, TargetImage=None):
         return {
