@@ -8,6 +8,7 @@ import Metadata from '../Metadata'
 import AssetDelete from '../AssetDelete'
 import FaceLabeling from '../FaceLabeling'
 import AssetLabeling from '../AssetLabeling'
+import { ENVS } from '../Feature'
 
 import InformationSvg from '../Icons/information.svg'
 import TrashSvg from '../Icons/trash.svg'
@@ -78,7 +79,7 @@ const AssetContent = () => {
               icon: <PenSvg height={constants.icons.regular} />,
               content: <AssetLabeling />,
               flag: 'asset-labeling',
-              envs: [],
+              envs: [ENVS.QA],
             },
             delete: {
               title: 'Delete',
