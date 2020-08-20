@@ -75,6 +75,14 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   font-weight: 400;
   padding-top: 24px;
   padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-46 {
@@ -754,6 +762,14 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   font-weight: 400;
   padding-top: 24px;
   padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-43 {

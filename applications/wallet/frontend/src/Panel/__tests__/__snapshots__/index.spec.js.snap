@@ -120,14 +120,14 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
 `;
 
 exports[`<Panel /> should render properly opening to the left 2`] = `
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -137,14 +137,14 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   flex-direction: column;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   background-color: #252525;
 }
 
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -186,34 +186,34 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   border-radius: 0;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-6:hover svg,
-.emotion-6.focus-visible:focus svg {
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -231,15 +231,23 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-1 {
   white-space: nowrap;
   text-transform: uppercase;
   font-weight: 500;
   font-size: 15px;
   line-height: 19px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
-.emotion-2 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -273,30 +281,30 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   padding: 0;
 }
 
-.emotion-2:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2:hover,
-.emotion-2.focus-visible:focus {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-2:hover svg,
-.emotion-2.focus-visible:focus svg {
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -310,7 +318,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   height: 0%;
 }
 
-.emotion-5 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -323,14 +331,32 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   margin-right: 1px;
 }
 
-.emotion-1 {
+.emotion-0 {
+  color: #ffffff;
+  background-color: #0074f5;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 15.399999999999999px;
+  font-weight: 500;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-left: 8px;
+}
+
+.emotion-2 {
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
 <div
-  className="emotion-9"
+  className="emotion-10"
 >
   <Resizeable
     minWidth={400}
@@ -339,42 +365,47 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
     storageName="leftOpeningPanelWidth"
   >
     <div
-      className="emotion-5"
+      className="emotion-6"
     >
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <h2
-          className="emotion-0"
+          className="emotion-1"
         >
           Metadata
+          <span
+            className="emotion-0"
+          >
+            beta
+          </span>
         </h2>
         <button
           aria-label="Close Panel"
-          className="emotion-2"
+          className="emotion-3"
           onClick={[Function]}
           type="button"
         >
           <svg
-            className="emotion-1"
+            className="emotion-2"
             data-file-name="doubleChevron.svg"
             height={20}
           />
         </button>
       </div>
       <div
-        className="emotion-4"
+        className="emotion-5"
       >
         
       </div>
     </div>
   </Resizeable>
   <div
-    className="emotion-8"
+    className="emotion-9"
   >
     <button
       aria-label="Metadata"
-      className="emotion-6"
+      className="emotion-7"
       onClick={[Function]}
       title="Metadata"
       type="button"
@@ -385,7 +416,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
       />
     </button>
     <div
-      className="emotion-7"
+      className="emotion-8"
     />
   </div>
 </div>
@@ -641,6 +672,14 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   font-weight: 500;
   font-size: 15px;
   line-height: 19px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-5 {

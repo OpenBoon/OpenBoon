@@ -5,6 +5,7 @@ import Router from 'next/router'
 import { colors, spacing, zIndex, constants } from '../Styles'
 
 import Feature from '../Feature'
+import BetaBadge from '../BetaBadge'
 
 import DashboardSvg from '../Icons/dashboard.svg'
 import DataSourcesSvg from '../Icons/datasources.svg'
@@ -82,6 +83,7 @@ const Sidebar = forwardRef(
               <SidebarLink projectId={projectId} href="/[projectId]/models">
                 <ModelsSvg height={constants.icons.regular} />
                 Custom Models
+                <BetaBadge />
               </SidebarLink>
             </Feature>
 

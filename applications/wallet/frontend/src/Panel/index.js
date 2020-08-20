@@ -90,6 +90,7 @@ Panel.propTypes = {
       title: PropTypes.string.isRequired,
       icon: PropTypes.node.isRequired,
       content: PropTypes.node.isRequired,
+      isBeta: PropTypes.bool,
     }).isRequired,
   ).isRequired,
 }
