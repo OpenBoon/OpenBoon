@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.DispatchPriority
 import com.zorroa.archivist.domain.DispatchTask
 import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.PendingTasksCounter
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.zmlp.util.Json
@@ -37,7 +38,7 @@ interface DispatchTaskDao {
     /**
      * Return the number of pending tasks with `in progress` jobs
      */
-    fun countPendingTasks(): Int
+    fun countPendingTasks(): PendingTasksCounter
 }
 
 @Repository
@@ -74,8 +75,15 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
         return result
     }
 
-    override fun countPendingTasks(): Int {
-        return jdbc.queryForObject(COUNT_PENDING_TASKS, Int::class.java) ?: 0
+    override fun countPendingTasks(): PendingTasksCounter {
+        val result = jdbc.queryForObject(COUNT_PENDING_TASKS) { rs, _ ->
+            PendingTasksCounter(
+                rs.getLong("pending_tasks"),
+                rs.getLong("max_running_tasks")
+            )
+        }
+
+        return result ?: PendingTasksCounter()
     }
 
     companion object {
@@ -168,16 +176,17 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
             "job.int_priority,job.time_created,task.time_created LIMIT ?"
 
         private const val COUNT_PENDING_TASKS =
-            "SELECT SUM(job_count.int_task_state_0) as pending_tasks " +
-                "FROM job as job " +
-                "INNER JOIN job_count as job_count " +
+            "SELECT SUM(job_count.int_task_state_0) as pending_tasks, " +
+                "SUM(job_count.int_max_running_tasks) as max_running_tasks " +
+                "FROM job AS job " +
+                "INNER JOIN job_count AS job_count " +
                 "USING (pk_job) " +
-                "inner join task " +
-                "using(pk_job) " +
+                "INNER JOIN task " +
+                "USING(pk_job) " +
                 "WHERE " +
-                "job.int_state=0 and " +
-                "job.bool_paused=false and " +
-                "task.int_state=0 and " +
+                "job.int_state=0 AND " +
+                "job.bool_paused=false AND " +
+                "task.int_state=0 AND " +
                 "job_count.int_max_running_tasks > job_count.int_task_state_1 + int_task_state_5"
     }
 }

@@ -17,6 +17,7 @@ import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
+import com.zorroa.archivist.domain.PendingTasksCounter
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
@@ -118,9 +119,9 @@ interface DispatcherService {
     fun handleStatusUpdateEvent(taskId: TaskId, taskStatusUpdateEvent: TaskStatusUpdateEvent)
 
     /**
-     * Number of pending Tasks
+     * Number of pending Tasks and Maximum Running Tasks allowed
      */
-    fun getPendingTasks(): Int
+    fun getPendingTasks(): PendingTasksCounter
 }
 
 /**
@@ -343,7 +344,7 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getPendingTasks(): Int {
+    override fun getPendingTasks(): PendingTasksCounter {
         return dispatchTaskDao.countPendingTasks()
     }
 

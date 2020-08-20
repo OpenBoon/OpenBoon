@@ -183,11 +183,16 @@ class MaintenanceServiceImpl @Autowired constructor(
     }
 
     override fun countPendingTasks() {
-        val pendingTasksNumber = dispatcherService.getPendingTasks()
+        val tasksNumber = dispatcherService.getPendingTasks()
         meterRegistry.counter(
             meterName,
             listOf(Tag.of("event", "pending_tasks")))
-            .increment(pendingTasksNumber.toDouble())
+            .increment(tasksNumber.pendingTasks.toDouble())
+
+        meterRegistry.counter(
+            meterName,
+            listOf(Tag.of("event", "max_running_tasks")))
+            .increment(tasksNumber.pendingTasks.toDouble())
     }
 
     override fun handleExpiredJobs() {
