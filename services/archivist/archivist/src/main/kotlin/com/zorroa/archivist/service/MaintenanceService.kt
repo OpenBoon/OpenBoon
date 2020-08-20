@@ -186,12 +186,14 @@ class MaintenanceServiceImpl @Autowired constructor(
         val tasksNumber = dispatcherService.getPendingTasks()
         meterRegistry.counter(
             meterName,
-            listOf(Tag.of("event", "pending_tasks")))
+            listOf(Tag.of("event", "pending_tasks"))
+        )
             .increment(tasksNumber.pendingTasks.toDouble())
 
         meterRegistry.counter(
             meterName,
-            listOf(Tag.of("event", "max_running_tasks")))
+            listOf(Tag.of("event", "max_running_tasks"))
+        )
             .increment(tasksNumber.pendingTasks.toDouble())
     }
 
