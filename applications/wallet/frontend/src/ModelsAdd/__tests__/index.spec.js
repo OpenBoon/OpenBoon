@@ -41,6 +41,13 @@ describe('<ModelsAdd />', () => {
         .props.onChange({ target: { value: '' } })
     })
 
+    // Select valid type
+    act(() => {
+      component.root
+        .findByProps({ label: 'Model Type' })
+        .props.onChange({ value: 'GCP_LABEL_DETECTION' })
+    })
+
     // Input valid name
     act(() => {
       component.root
@@ -48,11 +55,18 @@ describe('<ModelsAdd />', () => {
         .props.onChange({ target: { value: 'My New Model' } })
     })
 
-    // Select valid type
+    // Input valid module name
     act(() => {
       component.root
-        .findByProps({ label: 'Model Type' })
-        .props.onChange({ value: 'GCP_LABEL_DETECTION' })
+        .findByProps({ id: 'moduleName' })
+        .props.onChange({ target: { value: 'my-module-name' } })
+    })
+
+    // Input valid name
+    act(() => {
+      component.root
+        .findByProps({ id: 'name' })
+        .props.onChange({ target: { value: 'My New Model Really' } })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -102,8 +116,9 @@ describe('<ModelsAdd />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
       },
       body: JSON.stringify({
-        name: 'My New Model',
         type: 'GCP_LABEL_DETECTION',
+        name: 'My New Model Really',
+        moduleName: 'my-module-name',
       }),
     })
 
