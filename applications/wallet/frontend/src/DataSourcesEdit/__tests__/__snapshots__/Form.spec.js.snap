@@ -120,6 +120,7 @@ Array [
   opacity: 0;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
+  z-index: 1;
 }
 
 .emotion-17:hover {
@@ -1713,6 +1714,7 @@ Array [
   opacity: 0;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
+  z-index: 1;
 }
 
 .emotion-16:hover {
