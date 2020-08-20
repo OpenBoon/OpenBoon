@@ -114,3 +114,4 @@ class CloudDLPDetectEntities(AssetProcessor):
             return file_storage.localize_file(ocr_proxy[0])
         else:
             return get_proxy_level_path(asset, 3)
+        
