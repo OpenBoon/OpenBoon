@@ -8,11 +8,13 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import Select from '../Select'
 
-import { onSubmit } from './helpers'
+import { onSubmit, slugify } from './helpers'
 
 const INITIAL_STATE = {
   type: '',
   name: '',
+  moduleName: '',
+  isCustomModuleName: false,
   isLoading: false,
   errors: {},
 }
@@ -50,9 +52,29 @@ const ModelsAddForm = () => {
         label="Name"
         type="text"
         value={state.name}
-        onChange={({ target: { value } }) => dispatch({ name: value })}
+        onChange={({ target: { value } }) => {
+          dispatch({
+            name: value,
+            moduleName: state.isCustomModuleName
+              ? state.moduleName
+              : slugify({ value }),
+          })
+        }}
         hasError={state.errors.name !== undefined}
         errorMessage={state.errors.name}
+      />
+
+      <Input
+        id="moduleName"
+        variant={INPUT_VARIANTS.SECONDARY}
+        label="Module Name"
+        type="text"
+        value={state.moduleName}
+        onChange={({ target: { value } }) => {
+          dispatch({ moduleName: value, isCustomModuleName: !!value })
+        }}
+        hasError={state.errors.moduleName !== undefined}
+        errorMessage={state.errors.moduleName}
       />
 
       <ButtonGroup>
@@ -60,7 +82,9 @@ const ModelsAddForm = () => {
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
           onClick={() => onSubmit({ dispatch, projectId, state })}
-          isDisabled={!state.name || state.isLoading}
+          isDisabled={
+            !state.type || !state.name || !state.moduleName || state.isLoading
+          }
         >
           {state.isLoading ? 'Creating...' : 'Create New Model'}
         </Button>
