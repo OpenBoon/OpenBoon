@@ -1,4 +1,5 @@
 import os
+import shutil
 import tempfile
 
 import matplotlib.pyplot as plt
@@ -118,6 +119,8 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             for label in labels:
                 fp.write('{}\n'.format(label))
 
+        shutil.copy2("predict.py", model_dir)
+        shutil.copy2("predict.sh", model_dir)
         mod = file_storage.models.save_model(model_dir,  self.app_model, self.arg_value('deploy'))
         self.reactor.emit_status('Published model: {}'.format(self.app_model.name))
         return mod
