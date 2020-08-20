@@ -194,7 +194,7 @@ class MaintenanceServiceImpl @Autowired constructor(
             meterName,
             listOf(Tag.of("event", "max_running_tasks"))
         )
-            .increment(tasksNumber.pendingTasks.toDouble())
+            .increment(tasksNumber.maxRunningTasks.toDouble())
     }
 
     override fun handleExpiredJobs() {
