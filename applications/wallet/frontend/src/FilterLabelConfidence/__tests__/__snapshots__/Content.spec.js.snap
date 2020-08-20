@@ -398,7 +398,7 @@ Array [
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  color: #ffffff;
+  color: #b3b3b3;
 }
 
 .emotion-5:hover {
@@ -410,7 +410,8 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
@@ -833,7 +834,7 @@ Array [
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  color: #ffffff;
+  color: #b3b3b3;
 }
 
 .emotion-5:hover {
@@ -845,7 +846,8 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
@@ -1148,7 +1150,7 @@ Array [
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  color: #ffffff;
+  color: #b3b3b3;
 }
 
 .emotion-11:hover {
@@ -1160,7 +1162,8 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-11:hover {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
@@ -1238,7 +1241,8 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-5:hover,
+.emotion-5.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }

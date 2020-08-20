@@ -2488,7 +2488,8 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-21:hover {
+.emotion-21:hover,
+.emotion-21.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
@@ -3561,6 +3562,58 @@ Array [
   font-style: italic;
 }
 
+.emotion-23 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  color: #b3b3b3;
+}
+
+.emotion-23:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-23[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-23:hover,
+.emotion-23.focus-visible:focus {
+  background-color: #0074f538;
+  color: #ffffff;
+}
+
 .emotion-12 {
   position: absolute;
   width: 100%;
@@ -3626,57 +3679,6 @@ Array [
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.emotion-23 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-  width: 100%;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  color: #ffffff;
-}
-
-.emotion-23:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-23[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-23:hover {
-  background-color: #0074f538;
-  color: #ffffff;
 }
 
 .emotion-22 {
@@ -8209,7 +8211,8 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-23:hover {
+.emotion-23:hover,
+.emotion-23.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
