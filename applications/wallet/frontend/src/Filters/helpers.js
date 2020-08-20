@@ -134,10 +134,10 @@ export const dispatch = ({ type, payload }) => {
       Router.push(
         {
           pathname,
-          query: { projectId, id: assetId, query },
+          query: { projectId, assetId, query },
         },
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
-          id: assetId,
+          assetId,
           query,
         })}`,
       )
