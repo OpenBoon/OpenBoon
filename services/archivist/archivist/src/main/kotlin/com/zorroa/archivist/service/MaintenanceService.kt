@@ -38,6 +38,11 @@ interface MaintenanceService {
     fun handleOrphanTasks()
 
     /**
+     * Count the number of Tasks that still need to be processed
+     */
+    fun countPendingTasks()
+
+    /**
      * Run all Maintenance.  Return true if lock was obtained, false if not.
      */
     fun runAll()
@@ -170,10 +175,19 @@ class MaintenanceServiceImpl @Autowired constructor(
     }
 
     override fun runAll() {
-        // TODO: cluster lock
+        // TODO: cluster lockx
         handleExpiredJobs()
         handleUnresponsiveAnalysts()
         handleOrphanTasks()
+        countPendingTasks()
+    }
+
+    override fun countPendingTasks() {
+        val pendingTasksNumber = dispatcherService.getPendingTasks()
+        meterRegistry.counter(
+            meterName,
+            listOf(Tag.of("event", "pending_tasks")))
+            .increment(pendingTasksNumber.toDouble())
     }
 
     override fun handleExpiredJobs() {

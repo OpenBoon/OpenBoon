@@ -116,6 +116,11 @@ interface DispatcherService {
      * Update Task Status
      */
     fun handleStatusUpdateEvent(taskId: TaskId, taskStatusUpdateEvent: TaskStatusUpdateEvent)
+
+    /**
+     * Number of pending Tasks
+     */
+    fun getPendingTasks(): Int
 }
 
 /**
@@ -335,6 +340,11 @@ class DispatcherServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun getWaitingTasks(minPriority: Int, count: Int): List<DispatchTask> {
         return dispatchTaskDao.getNextByJobPriority(minPriority, count)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getPendingTasks(): Int {
+        return dispatchTaskDao.countPendingTasks()
     }
 
     override fun queueTask(task: DispatchTask, endpoint: String): Boolean {

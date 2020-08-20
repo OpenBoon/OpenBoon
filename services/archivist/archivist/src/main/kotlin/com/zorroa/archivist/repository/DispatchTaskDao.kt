@@ -33,6 +33,11 @@ interface DispatchTaskDao {
      * Return a list of DispatchPriority instances, sorted by by highest priority first.
      */
     fun getDispatchPriority(): List<DispatchPriority>
+
+    /**
+     * Return the number of pending tasks with `in progress` jobs
+     */
+    fun countPendingTasks(): Int
 }
 
 @Repository
@@ -67,6 +72,10 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
         }
         result.sortBy { it.priority }
         return result
+    }
+
+    override fun countPendingTasks(): Int {
+        return jdbc.queryForObject(COUNT_PENDING_TASKS, Int::class.java) ?: 0
     }
 
     companion object {
@@ -157,5 +166,18 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
             "job.int_priority <= ? " +
             "ORDER BY " +
             "job.int_priority,job.time_created,task.time_created LIMIT ?"
+
+        private const val COUNT_PENDING_TASKS =
+            "SELECT SUM(job_count.int_task_state_0) as pending_tasks " +
+                "FROM job as job " +
+                "INNER JOIN job_count as job_count " +
+                "USING (pk_job) " +
+                "inner join task " +
+                "using(pk_job) " +
+                "WHERE " +
+                "job.int_state=0 and " +
+                "job.bool_paused=false and " +
+                "task.int_state=0 and " +
+                "job_count.int_max_running_tasks > job_count.int_task_state_1 + int_task_state_5"
     }
 }
