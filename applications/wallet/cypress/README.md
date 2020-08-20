@@ -31,3 +31,10 @@ the `CYPRESS_` prefix added to variables of the same name. For instance
 `npm run gui` will launch the Cypress UI to run the tests on your computer
 
 `npm run cli` will run the tests in a headless browser in a terminal
+
+### Assumptions
+
+- there should be a `cypress@zorroa.com` User
+- this User should have access to a `Cypress` Project
+- this Project should have at least one Asset in the Visualizer
+- there should be at least one Model named `console`
