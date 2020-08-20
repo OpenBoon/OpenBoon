@@ -78,6 +78,7 @@ const VisualizerContent = () => {
               content: <AssetLabeling />,
               flag: 'asset-labeling',
               envs: [],
+              isBeta: true,
             },
             export: {
               title: 'Export',

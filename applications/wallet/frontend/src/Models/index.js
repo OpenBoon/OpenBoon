@@ -9,6 +9,7 @@ import { spacing } from '../Styles'
 import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import PageTitle from '../PageTitle'
+import BetaBadge from '../BetaBadge'
 import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
@@ -40,7 +41,10 @@ const Models = () => {
         <title>Custom Models</title>
       </Head>
 
-      <PageTitle>Custom Models</PageTitle>
+      <PageTitle>
+        Custom Models
+        <BetaBadge />
+      </PageTitle>
 
       {action === 'add-model-success' && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
