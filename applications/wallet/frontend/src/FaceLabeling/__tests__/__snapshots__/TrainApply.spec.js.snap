@@ -72,6 +72,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   opacity: 0;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
+  z-index: 1;
 }
 
 .emotion-4:hover {
@@ -324,6 +325,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   opacity: 0;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
+  z-index: 1;
 }
 
 .emotion-4:hover {
@@ -523,6 +525,7 @@ exports[`<FaceLabelingTrainApply /> should render properly when unapplied change
   opacity: 0;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
+  z-index: 1;
 }
 
 .emotion-4:hover {

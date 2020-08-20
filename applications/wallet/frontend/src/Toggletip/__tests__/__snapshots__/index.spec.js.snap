@@ -51,6 +51,7 @@ exports[`<Toggletip /> should open properly to the right 1`] = `
   opacity: 0;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
+  z-index: 1;
 }
 
 .emotion-2:hover {

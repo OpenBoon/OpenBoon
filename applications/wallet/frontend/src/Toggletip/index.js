@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, zIndex } from '../Styles'
 
 import HelpSvg from '../Icons/help.svg'
 
@@ -62,6 +62,7 @@ const Toggletip = ({ openToThe, label, children }) => {
           visibility: 'hidden',
           opacity: 0,
           transition: 'all 0.5s ease 0.25s',
+          zIndex: zIndex.reset,
           ':hover': {
             visibility: 'visible',
             opacity: 1,

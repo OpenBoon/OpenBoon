@@ -123,7 +123,7 @@ Array [
     </ul>
   </nav>,
   "",
-  .emotion-140 {
+  .emotion-141 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -243,20 +243,27 @@ Array [
   background-size: 20px;
 }
 
-.emotion-56 {
+.emotion-57 {
   border: none;
   padding: 0;
   margin: 0;
   padding-top: 12px;
 }
 
-.emotion-27 {
+.emotion-28 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -313,6 +320,7 @@ Array [
   opacity: 0;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
+  z-index: 1;
 }
 
 .emotion-25:hover {
@@ -345,17 +353,17 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-29 {
+.emotion-30 {
   clear: both;
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
-.emotion-30 {
+.emotion-31 {
   clear: both;
 }
 
-.emotion-38 {
+.emotion-39 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -369,7 +377,7 @@ Array [
   align-items: center;
 }
 
-.emotion-34 {
+.emotion-35 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -377,7 +385,7 @@ Array [
   position: relative;
 }
 
-.emotion-31 {
+.emotion-32 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -388,7 +396,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-33 {
+.emotion-34 {
   position: absolute;
   top: 0;
   left: 0;
@@ -409,13 +417,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-32 path {
+.emotion-33 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-35 {
+.emotion-36 {
   padding-left: 24px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -427,7 +435,7 @@ Array [
   align-items: center;
 }
 
-.emotion-37 {
+.emotion-38 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -438,57 +446,57 @@ Array [
   padding-left: 24px;
 }
 
-.emotion-36 {
+.emotion-37 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-45 {
+.emotion-46 {
   padding-left: 0;
   color: #b3b3b3;
 }
 
-.emotion-57 {
+.emotion-58 {
   height: 8px;
 }
 
-.emotion-59 {
+.emotion-60 {
   margin: 0;
   padding-top: 8px;
   color: #b3b3b3;
 }
 
-.emotion-68 {
+.emotion-69 {
   padding-top: 16px;
 }
 
-.emotion-67 {
+.emotion-68 {
   border-radius: 2px;
   background-color: #3b3b3b;
 }
 
-.emotion-67:hover summary svg {
+.emotion-68:hover summary svg {
   opacity: 1;
 }
 
-.emotion-63 {
+.emotion-64 {
   list-style-type: none;
   padding: 16px;
   background-color: #3b3b3b;
 }
 
-.emotion-63::-webkit-details-marker {
+.emotion-64::-webkit-details-marker {
   display: none;
 }
 
-.emotion-63:hover {
+.emotion-64:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-62 {
+.emotion-63 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -499,14 +507,14 @@ Array [
   align-items: center;
 }
 
-.emotion-60 {
+.emotion-61 {
   color: #808080;
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-61 {
+.emotion-62 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -519,20 +527,20 @@ Array [
   font-weight: 700;
 }
 
-.emotion-66 {
+.emotion-67 {
   border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
 
-.emotion-64 {
+.emotion-65 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
   padding-bottom: 16px;
 }
 
-.emotion-65 {
+.emotion-66 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -544,7 +552,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-65 li {
+.emotion-66 li {
   width: 33%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -557,23 +565,23 @@ Array [
   padding-right: 40px;
 }
 
-.emotion-65 svg {
+.emotion-66 svg {
   color: #73b61c;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
 }
 
-.emotion-65 span {
+.emotion-66 span {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-136 {
+.emotion-137 {
   padding-top: 16px;
 }
 
-.emotion-70 {
+.emotion-71 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -581,7 +589,7 @@ Array [
   padding-left: 16px;
 }
 
-.emotion-73 {
+.emotion-74 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -589,7 +597,7 @@ Array [
   max-width: 600px;
 }
 
-.emotion-101 {
+.emotion-102 {
   border: none;
   padding: 0;
   margin: 0;
@@ -597,7 +605,7 @@ Array [
   padding-bottom: 32px;
 }
 
-.emotion-74 {
+.emotion-75 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -606,76 +614,76 @@ Array [
   font-weight: 500;
 }
 
-.emotion-75 {
+.emotion-76 {
   clear: both;
 }
 
-.emotion-100 {
+.emotion-101 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-100 th,
-.emotion-100 td {
+.emotion-101 th,
+.emotion-101 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-100 th:first-of-type,
-.emotion-100 td:first-of-type {
+.emotion-101 th:first-of-type,
+.emotion-101 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-100 th:nth-of-type(2),
-.emotion-100 td:nth-of-type(2) {
+.emotion-101 th:nth-of-type(2),
+.emotion-101 td:nth-of-type(2) {
   min-width: 300px;
 }
 
-.emotion-100 th:nth-of-type(3),
-.emotion-100 td:nth-of-type(3) {
+.emotion-101 th:nth-of-type(3),
+.emotion-101 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-100 th {
+.emotion-101 th {
   color: #b3b3b3;
   font-weight: 500;
 }
 
-.emotion-100 td {
+.emotion-101 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-100 td:first-of-type {
+.emotion-101 td:first-of-type {
   border: none;
 }
 
-.emotion-100 td:nth-of-type(2) {
+.emotion-101 td:nth-of-type(2) {
   font-family: Roboto Mono;
 }
 
-.emotion-100 tr:hover td {
+.emotion-101 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-100 tr:hover + tr td {
+.emotion-101 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-100 tr:last-of-type td {
+.emotion-101 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-100 tr:last-of-type td:first-of-type {
+.emotion-101 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-81 {
+.emotion-82 {
   cursor: pointer;
 }
 
-.emotion-80 {
+.emotion-81 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -684,7 +692,7 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-139 {
+.emotion-140 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -693,12 +701,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-139 button,
-.emotion-139 a {
+.emotion-140 button,
+.emotion-140 a {
   margin-right: 16px;
 }
 
-.emotion-137 {
+.emotion-138 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -729,30 +737,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-137:hover {
+.emotion-138:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-137[aria-disabled=true] {
+.emotion-138[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-137,
-.emotion-137:hover,
-.emotion-137:visited {
+.emotion-138,
+.emotion-138:hover,
+.emotion-138:visited {
   background-color: #808080;
 }
 
-.emotion-137:hover {
+.emotion-138:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-137[aria-disabled=true] {
+.emotion-138[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-138 {
+.emotion-139 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -783,32 +791,32 @@ Array [
   background-color: transparent;
 }
 
-.emotion-138:hover {
+.emotion-139:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-138[aria-disabled=true] {
+.emotion-139[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-138,
-.emotion-138:hover,
-.emotion-138:visited {
+.emotion-139,
+.emotion-139:hover,
+.emotion-139:visited {
   background-color: #73b61c;
 }
 
-.emotion-138:hover {
+.emotion-139:hover {
   background-color: #96c955;
 }
 
-.emotion-138[aria-disabled=true] {
+.emotion-139[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-140"
+    className="emotion-141"
     method="post"
     onSubmit={[Function]}
   >
@@ -933,75 +941,79 @@ Array [
       </div>
     </div>
     <fieldset
-      className="emotion-56"
+      className="emotion-57"
     >
       <legend
-        className="emotion-27"
+        className="emotion-28"
       >
-        Select File Types to Import
         <div
-          className="emotion-26"
+          className="emotion-27"
         >
-          <button
-            aria-details="SupportedFile Types"
-            aria-label="Supported File Types"
-            className="emotion-18"
-            type="button"
-          >
-            <svg
-              data-file-name="help.svg"
-              height={20}
-            />
-          </button>
+          Select File Types to Import
           <div
-            className="emotion-25"
-            id="SupportedFile Types"
-            role="tooltip"
+            className="emotion-26"
           >
-            <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-24"
+            <button
+              aria-details="SupportedFile Types"
+              aria-label="Supported File Types"
+              className="emotion-18"
+              type="button"
             >
-              <h3
-                className="emotion-20"
-              >
-                Supported File Types
-              </h3>
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
+            <div
+              className="emotion-25"
+              id="SupportedFile Types"
+              role="tooltip"
+            >
               <div
-                className="emotion-21"
-              >
-                <h4>
-                  Images
-                  :
-                </h4>
-                GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
-              </div>
+                className="emotion-19"
+              />
               <div
-                className="emotion-21"
+                className="emotion-24"
               >
-                <h4>
-                  Documents
-                  :
-                </h4>
-                PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
-              </div>
-              <div
-                className="emotion-21"
-              >
-                <h4>
-                  Videos
-                  :
-                </h4>
-                MP4, M4V, MOV, MPG, MPEG, OGG
+                <h3
+                  className="emotion-20"
+                >
+                  Supported File Types
+                </h3>
+                <div
+                  className="emotion-21"
+                >
+                  <h4>
+                    Images
+                    :
+                  </h4>
+                  GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
+                </div>
+                <div
+                  className="emotion-21"
+                >
+                  <h4>
+                    Documents
+                    :
+                  </h4>
+                  PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+                </div>
+                <div
+                  className="emotion-21"
+                >
+                  <h4>
+                    Videos
+                    :
+                  </h4>
+                  MP4, M4V, MOV, MPG, MPEG, OGG
+                </div>
               </div>
             </div>
           </div>
         </div>
       </legend>
       <div
-        className="emotion-29"
+        className="emotion-30"
       >
         <div>
           A minimum of one file type must be selected
@@ -1014,33 +1026,33 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-30"
+        className="emotion-31"
       />
       <label
-        className="emotion-38"
+        className="emotion-39"
       >
         <div
-          className="emotion-34"
+          className="emotion-35"
         >
           <input
-            className="emotion-31"
+            className="emotion-32"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Images"
           />
           <div
-            className="emotion-33"
+            className="emotion-34"
           >
             <svg
-              className="emotion-32"
+              className="emotion-33"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-35"
+          className="emotion-36"
         >
           <img
             alt="Image Files"
@@ -1049,40 +1061,40 @@ Array [
           />
         </div>
         <div
-          className="emotion-37"
+          className="emotion-38"
         >
           <span
-            className="emotion-36"
+            className="emotion-37"
           >
             Image Files
           </span>
         </div>
       </label>
       <label
-        className="emotion-38"
+        className="emotion-39"
       >
         <div
-          className="emotion-34"
+          className="emotion-35"
         >
           <input
-            className="emotion-31"
+            className="emotion-32"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Documents"
           />
           <div
-            className="emotion-33"
+            className="emotion-34"
           >
             <svg
-              className="emotion-32"
+              className="emotion-33"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-35"
+          className="emotion-36"
         >
           <img
             alt="Documents (PDF & MS Office)"
@@ -1091,45 +1103,45 @@ Array [
           />
         </div>
         <div
-          className="emotion-37"
+          className="emotion-38"
         >
           <span
-            className="emotion-36"
+            className="emotion-37"
           >
             Documents (PDF & MS Office)
           </span>
           <span
-            className="emotion-45"
+            className="emotion-46"
           >
             Pages will be processed and counted as individual assets
           </span>
         </div>
       </label>
       <label
-        className="emotion-38"
+        className="emotion-39"
       >
         <div
-          className="emotion-34"
+          className="emotion-35"
         >
           <input
-            className="emotion-31"
+            className="emotion-32"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Videos"
           />
           <div
-            className="emotion-33"
+            className="emotion-34"
           >
             <svg
-              className="emotion-32"
+              className="emotion-33"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-35"
+          className="emotion-36"
         >
           <img
             alt="Video Files"
@@ -1138,10 +1150,10 @@ Array [
           />
         </div>
         <div
-          className="emotion-37"
+          className="emotion-38"
         >
           <span
-            className="emotion-36"
+            className="emotion-37"
           >
             Video Files
           </span>
@@ -1149,7 +1161,7 @@ Array [
       </label>
     </fieldset>
     <div
-      className="emotion-57"
+      className="emotion-58"
     />
     <h3
       className="emotion-4"
@@ -1157,47 +1169,47 @@ Array [
       Select Analysis
     </h3>
     <p
-      className="emotion-59"
+      className="emotion-60"
     >
       Choose the type of analysis you would like performed on your data set:
     </p>
     <div
-      className="emotion-68"
+      className="emotion-69"
     >
       <details
-        className="emotion-67"
+        className="emotion-68"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="Zorroa Automatic Analysis"
-          className="emotion-63"
+          className="emotion-64"
         >
           <div
-            className="emotion-62"
+            className="emotion-63"
           >
             <svg
-              className="emotion-60"
+              className="emotion-61"
               data-file-name="chevron.svg"
               height={20}
             />
             <span
-              className="emotion-61"
+              className="emotion-62"
             >
               Zorroa Automatic Analysis
             </span>
           </div>
         </summary>
         <div
-          className="emotion-66"
+          className="emotion-67"
         >
           <p
-            className="emotion-64"
+            className="emotion-65"
           >
             The following basic analysis is applied to all data sets.
           </p>
           <ul
-            className="emotion-65"
+            className="emotion-66"
           >
             <li>
               <svg
@@ -1240,27 +1252,27 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-136"
+      className="emotion-137"
     >
       <details
-        className="emotion-67"
+        className="emotion-68"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="zorroa"
-          className="emotion-63"
+          className="emotion-64"
         >
           <div
-            className="emotion-62"
+            className="emotion-63"
           >
             <svg
-              className="emotion-60"
+              className="emotion-61"
               data-file-name="chevron.svg"
               height={20}
             />
             <span
-              className="emotion-70"
+              className="emotion-71"
             >
               <img
                 alt="zorroa"
@@ -1271,27 +1283,27 @@ Array [
           </div>
         </summary>
         <div
-          className="emotion-66"
+          className="emotion-67"
         >
           <p
-            className="emotion-73"
+            className="emotion-74"
           >
             These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
           </p>
           <fieldset
-            className="emotion-101"
+            className="emotion-102"
           >
             <legend
-              className="emotion-74"
+              className="emotion-75"
             >
               Visual Intelligence
             </legend>
             <div
-              className="emotion-75"
+              className="emotion-76"
             />
             <table
               cellSpacing="0"
-              className="emotion-100"
+              className="emotion-101"
             >
               <thead>
                 <tr>
@@ -1308,28 +1320,28 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-81"
+                  className="emotion-82"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-80"
+                      className="emotion-81"
                     >
                       <div
-                        className="emotion-34"
+                        className="emotion-35"
                       >
                         <input
-                          className="emotion-31"
+                          className="emotion-32"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-33"
+                          className="emotion-34"
                         >
                           <svg
-                            className="emotion-32"
+                            className="emotion-33"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1352,28 +1364,28 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-81"
+                  className="emotion-82"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-80"
+                      className="emotion-81"
                     >
                       <div
-                        className="emotion-34"
+                        className="emotion-35"
                       >
                         <input
-                          className="emotion-31"
+                          className="emotion-32"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-object-detection"
                         />
                         <div
-                          className="emotion-33"
+                          className="emotion-34"
                         >
                           <svg
-                            className="emotion-32"
+                            className="emotion-33"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1396,28 +1408,28 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-81"
+                  className="emotion-82"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-80"
+                      className="emotion-81"
                     >
                       <div
-                        className="emotion-34"
+                        className="emotion-35"
                       >
                         <input
-                          className="emotion-31"
+                          className="emotion-32"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-label-detection"
                         />
                         <div
-                          className="emotion-33"
+                          className="emotion-34"
                         >
                           <svg
-                            className="emotion-32"
+                            className="emotion-33"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1440,28 +1452,28 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-81"
+                  className="emotion-82"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-80"
+                      className="emotion-81"
                     >
                       <div
-                        className="emotion-34"
+                        className="emotion-35"
                       >
                         <input
-                          className="emotion-31"
+                          className="emotion-32"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-object-detection"
                         />
                         <div
-                          className="emotion-33"
+                          className="emotion-34"
                         >
                           <svg
-                            className="emotion-32"
+                            className="emotion-33"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1487,19 +1499,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-101"
+            className="emotion-102"
           >
             <legend
-              className="emotion-74"
+              className="emotion-75"
             >
               Zorroa Timeline Extraction
             </legend>
             <div
-              className="emotion-75"
+              className="emotion-76"
             />
             <table
               cellSpacing="0"
-              className="emotion-100"
+              className="emotion-101"
             >
               <thead>
                 <tr>
@@ -1516,28 +1528,28 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-81"
+                  className="emotion-82"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-80"
+                      className="emotion-81"
                     >
                       <div
-                        className="emotion-34"
+                        className="emotion-35"
                       >
                         <input
-                          className="emotion-31"
+                          className="emotion-32"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-document-page-clips"
                         />
                         <div
-                          className="emotion-33"
+                          className="emotion-34"
                         >
                           <svg
-                            className="emotion-32"
+                            className="emotion-33"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1560,28 +1572,28 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-81"
+                  className="emotion-82"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-80"
+                      className="emotion-81"
                     >
                       <div
-                        className="emotion-34"
+                        className="emotion-35"
                       >
                         <input
-                          className="emotion-31"
+                          className="emotion-32"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-image-page-clips"
                         />
                         <div
-                          className="emotion-33"
+                          className="emotion-34"
                         >
                           <svg
-                            className="emotion-32"
+                            className="emotion-33"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1604,28 +1616,28 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-81"
+                  className="emotion-82"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-80"
+                      className="emotion-81"
                     >
                       <div
-                        className="emotion-34"
+                        className="emotion-35"
                       >
                         <input
-                          className="emotion-31"
+                          className="emotion-32"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-video-shot-clips"
                         />
                         <div
-                          className="emotion-33"
+                          className="emotion-34"
                         >
                           <svg
-                            className="emotion-32"
+                            className="emotion-33"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1651,19 +1663,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-101"
+            className="emotion-102"
           >
             <legend
-              className="emotion-74"
+              className="emotion-75"
             >
               Zorroa Visual Intelligence
             </legend>
             <div
-              className="emotion-75"
+              className="emotion-76"
             />
             <table
               cellSpacing="0"
-              className="emotion-100"
+              className="emotion-101"
             >
               <thead>
                 <tr>
@@ -1680,28 +1692,28 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-81"
+                  className="emotion-82"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-80"
+                      className="emotion-81"
                     >
                       <div
-                        className="emotion-34"
+                        className="emotion-35"
                       >
                         <input
-                          className="emotion-31"
+                          className="emotion-32"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-text-detection"
                         />
                         <div
-                          className="emotion-33"
+                          className="emotion-34"
                         >
                           <svg
-                            className="emotion-32"
+                            className="emotion-33"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -1730,10 +1742,10 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-139"
+      className="emotion-140"
     >
       <a
-        className="emotion-137"
+        className="emotion-138"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -1742,7 +1754,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-138"
+        className="emotion-139"
         onClick={[Function]}
         type="submit"
       >
@@ -1876,7 +1888,7 @@ Array [
     </ul>
   </nav>,
   "",
-  .emotion-158 {
+  .emotion-159 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1996,20 +2008,27 @@ Array [
   background-size: 20px;
 }
 
-.emotion-74 {
+.emotion-75 {
   border: none;
   padding: 0;
   margin: 0;
   padding-top: 12px;
 }
 
-.emotion-45 {
+.emotion-46 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-45 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2066,6 +2085,7 @@ Array [
   opacity: 0;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
+  z-index: 1;
 }
 
 .emotion-43:hover {
@@ -2098,17 +2118,17 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-47 {
+.emotion-48 {
   clear: both;
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
-.emotion-48 {
+.emotion-49 {
   clear: both;
 }
 
-.emotion-56 {
+.emotion-57 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2122,7 +2142,7 @@ Array [
   align-items: center;
 }
 
-.emotion-52 {
+.emotion-53 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2130,7 +2150,7 @@ Array [
   position: relative;
 }
 
-.emotion-49 {
+.emotion-50 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -2141,7 +2161,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-51 {
+.emotion-52 {
   position: absolute;
   top: 0;
   left: 0;
@@ -2162,13 +2182,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-50 path {
+.emotion-51 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-53 {
+.emotion-54 {
   padding-left: 24px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2180,7 +2200,7 @@ Array [
   align-items: center;
 }
 
-.emotion-55 {
+.emotion-56 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2191,57 +2211,57 @@ Array [
   padding-left: 24px;
 }
 
-.emotion-54 {
+.emotion-55 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-63 {
+.emotion-64 {
   padding-left: 0;
   color: #b3b3b3;
 }
 
-.emotion-75 {
+.emotion-76 {
   height: 8px;
 }
 
-.emotion-77 {
+.emotion-78 {
   margin: 0;
   padding-top: 8px;
   color: #b3b3b3;
 }
 
-.emotion-86 {
+.emotion-87 {
   padding-top: 16px;
 }
 
-.emotion-85 {
+.emotion-86 {
   border-radius: 2px;
   background-color: #3b3b3b;
 }
 
-.emotion-85:hover summary svg {
+.emotion-86:hover summary svg {
   opacity: 1;
 }
 
-.emotion-81 {
+.emotion-82 {
   list-style-type: none;
   padding: 16px;
   background-color: #3b3b3b;
 }
 
-.emotion-81::-webkit-details-marker {
+.emotion-82::-webkit-details-marker {
   display: none;
 }
 
-.emotion-81:hover {
+.emotion-82:hover {
   cursor: pointer;
   background-color: #2e2e2e;
 }
 
-.emotion-80 {
+.emotion-81 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2252,14 +2272,14 @@ Array [
   align-items: center;
 }
 
-.emotion-78 {
+.emotion-79 {
   color: #808080;
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-79 {
+.emotion-80 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -2272,20 +2292,20 @@ Array [
   font-weight: 700;
 }
 
-.emotion-84 {
+.emotion-85 {
   border-top: 1px solid #4a4a4a;
   padding: 32px;
   padding-top: 16px;
 }
 
-.emotion-82 {
+.emotion-83 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
   padding-bottom: 16px;
 }
 
-.emotion-83 {
+.emotion-84 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2297,7 +2317,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-83 li {
+.emotion-84 li {
   width: 33%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2310,23 +2330,23 @@ Array [
   padding-right: 40px;
 }
 
-.emotion-83 svg {
+.emotion-84 svg {
   color: #73b61c;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
 }
 
-.emotion-83 span {
+.emotion-84 span {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-154 {
+.emotion-155 {
   padding-top: 16px;
 }
 
-.emotion-88 {
+.emotion-89 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2334,7 +2354,7 @@ Array [
   padding-left: 16px;
 }
 
-.emotion-91 {
+.emotion-92 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -2342,7 +2362,7 @@ Array [
   max-width: 600px;
 }
 
-.emotion-119 {
+.emotion-120 {
   border: none;
   padding: 0;
   margin: 0;
@@ -2350,7 +2370,7 @@ Array [
   padding-bottom: 32px;
 }
 
-.emotion-92 {
+.emotion-93 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -2359,76 +2379,76 @@ Array [
   font-weight: 500;
 }
 
-.emotion-93 {
+.emotion-94 {
   clear: both;
 }
 
-.emotion-118 {
+.emotion-119 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-118 th,
-.emotion-118 td {
+.emotion-119 th,
+.emotion-119 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-118 th:first-of-type,
-.emotion-118 td:first-of-type {
+.emotion-119 th:first-of-type,
+.emotion-119 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-118 th:nth-of-type(2),
-.emotion-118 td:nth-of-type(2) {
+.emotion-119 th:nth-of-type(2),
+.emotion-119 td:nth-of-type(2) {
   min-width: 300px;
 }
 
-.emotion-118 th:nth-of-type(3),
-.emotion-118 td:nth-of-type(3) {
+.emotion-119 th:nth-of-type(3),
+.emotion-119 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-118 th {
+.emotion-119 th {
   color: #b3b3b3;
   font-weight: 500;
 }
 
-.emotion-118 td {
+.emotion-119 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-118 td:first-of-type {
+.emotion-119 td:first-of-type {
   border: none;
 }
 
-.emotion-118 td:nth-of-type(2) {
+.emotion-119 td:nth-of-type(2) {
   font-family: Roboto Mono;
 }
 
-.emotion-118 tr:hover td {
+.emotion-119 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-118 tr:hover + tr td {
+.emotion-119 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-118 tr:last-of-type td {
+.emotion-119 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-118 tr:last-of-type td:first-of-type {
+.emotion-119 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-99 {
+.emotion-100 {
   cursor: pointer;
 }
 
-.emotion-98 {
+.emotion-99 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -2437,7 +2457,7 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-157 {
+.emotion-158 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2446,12 +2466,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-157 button,
-.emotion-157 a {
+.emotion-158 button,
+.emotion-158 a {
   margin-right: 16px;
 }
 
-.emotion-155 {
+.emotion-156 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2482,30 +2502,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-155:hover {
+.emotion-156:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-155[aria-disabled=true] {
+.emotion-156[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-155,
-.emotion-155:hover,
-.emotion-155:visited {
+.emotion-156,
+.emotion-156:hover,
+.emotion-156:visited {
   background-color: #808080;
 }
 
-.emotion-155:hover {
+.emotion-156:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-155[aria-disabled=true] {
+.emotion-156[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-156 {
+.emotion-157 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2536,26 +2556,26 @@ Array [
   background-color: transparent;
 }
 
-.emotion-156:hover {
+.emotion-157:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-156[aria-disabled=true] {
+.emotion-157[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-156,
-.emotion-156:hover,
-.emotion-156:visited {
+.emotion-157,
+.emotion-157:hover,
+.emotion-157:visited {
   background-color: #73b61c;
 }
 
-.emotion-156:hover {
+.emotion-157:hover {
   background-color: #96c955;
 }
 
-.emotion-156[aria-disabled=true] {
+.emotion-157[aria-disabled=true] {
   background-color: #808080;
 }
 
@@ -2566,7 +2586,7 @@ Array [
 
 <form
     action=""
-    className="emotion-158"
+    className="emotion-159"
     method="post"
     onSubmit={[Function]}
   >
@@ -2789,75 +2809,79 @@ Array [
       </div>
     </div>
     <fieldset
-      className="emotion-74"
+      className="emotion-75"
     >
       <legend
-        className="emotion-45"
+        className="emotion-46"
       >
-        Select File Types to Import
         <div
-          className="emotion-44"
+          className="emotion-45"
         >
-          <button
-            aria-details="SupportedFile Types"
-            aria-label="Supported File Types"
-            className="emotion-36"
-            type="button"
-          >
-            <svg
-              data-file-name="help.svg"
-              height={20}
-            />
-          </button>
+          Select File Types to Import
           <div
-            className="emotion-43"
-            id="SupportedFile Types"
-            role="tooltip"
+            className="emotion-44"
           >
-            <div
-              className="emotion-37"
-            />
-            <div
-              className="emotion-42"
+            <button
+              aria-details="SupportedFile Types"
+              aria-label="Supported File Types"
+              className="emotion-36"
+              type="button"
             >
-              <h3
-                className="emotion-38"
-              >
-                Supported File Types
-              </h3>
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
+            <div
+              className="emotion-43"
+              id="SupportedFile Types"
+              role="tooltip"
+            >
               <div
-                className="emotion-39"
-              >
-                <h4>
-                  Images
-                  :
-                </h4>
-                GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
-              </div>
+                className="emotion-37"
+              />
               <div
-                className="emotion-39"
+                className="emotion-42"
               >
-                <h4>
-                  Documents
-                  :
-                </h4>
-                PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
-              </div>
-              <div
-                className="emotion-39"
-              >
-                <h4>
-                  Videos
-                  :
-                </h4>
-                MP4, M4V, MOV, MPG, MPEG, OGG
+                <h3
+                  className="emotion-38"
+                >
+                  Supported File Types
+                </h3>
+                <div
+                  className="emotion-39"
+                >
+                  <h4>
+                    Images
+                    :
+                  </h4>
+                  GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
+                </div>
+                <div
+                  className="emotion-39"
+                >
+                  <h4>
+                    Documents
+                    :
+                  </h4>
+                  PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+                </div>
+                <div
+                  className="emotion-39"
+                >
+                  <h4>
+                    Videos
+                    :
+                  </h4>
+                  MP4, M4V, MOV, MPG, MPEG, OGG
+                </div>
               </div>
             </div>
           </div>
         </div>
       </legend>
       <div
-        className="emotion-47"
+        className="emotion-48"
       >
         <div>
           A minimum of one file type must be selected
@@ -2870,33 +2894,33 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-48"
+        className="emotion-49"
       />
       <label
-        className="emotion-56"
+        className="emotion-57"
       >
         <div
-          className="emotion-52"
+          className="emotion-53"
         >
           <input
-            className="emotion-49"
+            className="emotion-50"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Images"
           />
           <div
-            className="emotion-51"
+            className="emotion-52"
           >
             <svg
-              className="emotion-50"
+              className="emotion-51"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-53"
+          className="emotion-54"
         >
           <img
             alt="Image Files"
@@ -2905,40 +2929,40 @@ Array [
           />
         </div>
         <div
-          className="emotion-55"
+          className="emotion-56"
         >
           <span
-            className="emotion-54"
+            className="emotion-55"
           >
             Image Files
           </span>
         </div>
       </label>
       <label
-        className="emotion-56"
+        className="emotion-57"
       >
         <div
-          className="emotion-52"
+          className="emotion-53"
         >
           <input
-            className="emotion-49"
+            className="emotion-50"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Documents"
           />
           <div
-            className="emotion-51"
+            className="emotion-52"
           >
             <svg
-              className="emotion-50"
+              className="emotion-51"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-53"
+          className="emotion-54"
         >
           <img
             alt="Documents (PDF & MS Office)"
@@ -2947,45 +2971,45 @@ Array [
           />
         </div>
         <div
-          className="emotion-55"
+          className="emotion-56"
         >
           <span
-            className="emotion-54"
+            className="emotion-55"
           >
             Documents (PDF & MS Office)
           </span>
           <span
-            className="emotion-63"
+            className="emotion-64"
           >
             Pages will be processed and counted as individual assets
           </span>
         </div>
       </label>
       <label
-        className="emotion-56"
+        className="emotion-57"
       >
         <div
-          className="emotion-52"
+          className="emotion-53"
         >
           <input
-            className="emotion-49"
+            className="emotion-50"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="Videos"
           />
           <div
-            className="emotion-51"
+            className="emotion-52"
           >
             <svg
-              className="emotion-50"
+              className="emotion-51"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-53"
+          className="emotion-54"
         >
           <img
             alt="Video Files"
@@ -2994,10 +3018,10 @@ Array [
           />
         </div>
         <div
-          className="emotion-55"
+          className="emotion-56"
         >
           <span
-            className="emotion-54"
+            className="emotion-55"
           >
             Video Files
           </span>
@@ -3005,7 +3029,7 @@ Array [
       </label>
     </fieldset>
     <div
-      className="emotion-75"
+      className="emotion-76"
     />
     <h3
       className="emotion-4"
@@ -3013,47 +3037,47 @@ Array [
       Select Analysis
     </h3>
     <p
-      className="emotion-77"
+      className="emotion-78"
     >
       Choose the type of analysis you would like performed on your data set:
     </p>
     <div
-      className="emotion-86"
+      className="emotion-87"
     >
       <details
-        className="emotion-85"
+        className="emotion-86"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="Zorroa Automatic Analysis"
-          className="emotion-81"
+          className="emotion-82"
         >
           <div
-            className="emotion-80"
+            className="emotion-81"
           >
             <svg
-              className="emotion-78"
+              className="emotion-79"
               data-file-name="chevron.svg"
               height={20}
             />
             <span
-              className="emotion-79"
+              className="emotion-80"
             >
               Zorroa Automatic Analysis
             </span>
           </div>
         </summary>
         <div
-          className="emotion-84"
+          className="emotion-85"
         >
           <p
-            className="emotion-82"
+            className="emotion-83"
           >
             The following basic analysis is applied to all data sets.
           </p>
           <ul
-            className="emotion-83"
+            className="emotion-84"
           >
             <li>
               <svg
@@ -3096,27 +3120,27 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-154"
+      className="emotion-155"
     >
       <details
-        className="emotion-85"
+        className="emotion-86"
         onToggle={[Function]}
         open={true}
       >
         <summary
           aria-label="zorroa"
-          className="emotion-81"
+          className="emotion-82"
         >
           <div
-            className="emotion-80"
+            className="emotion-81"
           >
             <svg
-              className="emotion-78"
+              className="emotion-79"
               data-file-name="chevron.svg"
               height={20}
             />
             <span
-              className="emotion-88"
+              className="emotion-89"
             >
               <img
                 alt="zorroa"
@@ -3127,27 +3151,27 @@ Array [
           </div>
         </summary>
         <div
-          className="emotion-84"
+          className="emotion-85"
         >
           <p
-            className="emotion-91"
+            className="emotion-92"
           >
             These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
           </p>
           <fieldset
-            className="emotion-119"
+            className="emotion-120"
           >
             <legend
-              className="emotion-92"
+              className="emotion-93"
             >
               Visual Intelligence
             </legend>
             <div
-              className="emotion-93"
+              className="emotion-94"
             />
             <table
               cellSpacing="0"
-              className="emotion-118"
+              className="emotion-119"
             >
               <thead>
                 <tr>
@@ -3164,28 +3188,28 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-99"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-98"
+                      className="emotion-99"
                     >
                       <div
-                        className="emotion-52"
+                        className="emotion-53"
                       >
                         <input
-                          className="emotion-49"
+                          className="emotion-50"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-51"
+                          className="emotion-52"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-51"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3208,28 +3232,28 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-99"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-98"
+                      className="emotion-99"
                     >
                       <div
-                        className="emotion-52"
+                        className="emotion-53"
                       >
                         <input
-                          className="emotion-49"
+                          className="emotion-50"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-object-detection"
                         />
                         <div
-                          className="emotion-51"
+                          className="emotion-52"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-51"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3252,28 +3276,28 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-99"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-98"
+                      className="emotion-99"
                     >
                       <div
-                        className="emotion-52"
+                        className="emotion-53"
                       >
                         <input
-                          className="emotion-49"
+                          className="emotion-50"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-label-detection"
                         />
                         <div
-                          className="emotion-51"
+                          className="emotion-52"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-51"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3296,28 +3320,28 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-99"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-98"
+                      className="emotion-99"
                     >
                       <div
-                        className="emotion-52"
+                        className="emotion-53"
                       >
                         <input
-                          className="emotion-49"
+                          className="emotion-50"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-object-detection"
                         />
                         <div
-                          className="emotion-51"
+                          className="emotion-52"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-51"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3343,19 +3367,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-119"
+            className="emotion-120"
           >
             <legend
-              className="emotion-92"
+              className="emotion-93"
             >
               Zorroa Timeline Extraction
             </legend>
             <div
-              className="emotion-93"
+              className="emotion-94"
             />
             <table
               cellSpacing="0"
-              className="emotion-118"
+              className="emotion-119"
             >
               <thead>
                 <tr>
@@ -3372,28 +3396,28 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-99"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-98"
+                      className="emotion-99"
                     >
                       <div
-                        className="emotion-52"
+                        className="emotion-53"
                       >
                         <input
-                          className="emotion-49"
+                          className="emotion-50"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-document-page-clips"
                         />
                         <div
-                          className="emotion-51"
+                          className="emotion-52"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-51"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3416,28 +3440,28 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-99"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-98"
+                      className="emotion-99"
                     >
                       <div
-                        className="emotion-52"
+                        className="emotion-53"
                       >
                         <input
-                          className="emotion-49"
+                          className="emotion-50"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-image-page-clips"
                         />
                         <div
-                          className="emotion-51"
+                          className="emotion-52"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-51"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3460,28 +3484,28 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-99"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-98"
+                      className="emotion-99"
                     >
                       <div
-                        className="emotion-52"
+                        className="emotion-53"
                       >
                         <input
-                          className="emotion-49"
+                          className="emotion-50"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-video-shot-clips"
                         />
                         <div
-                          className="emotion-51"
+                          className="emotion-52"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-51"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3507,19 +3531,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-119"
+            className="emotion-120"
           >
             <legend
-              className="emotion-92"
+              className="emotion-93"
             >
               Zorroa Visual Intelligence
             </legend>
             <div
-              className="emotion-93"
+              className="emotion-94"
             />
             <table
               cellSpacing="0"
-              className="emotion-118"
+              className="emotion-119"
             >
               <thead>
                 <tr>
@@ -3536,28 +3560,28 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-99"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-98"
+                      className="emotion-99"
                     >
                       <div
-                        className="emotion-52"
+                        className="emotion-53"
                       >
                         <input
-                          className="emotion-49"
+                          className="emotion-50"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="zvi-text-detection"
                         />
                         <div
-                          className="emotion-51"
+                          className="emotion-52"
                         >
                           <svg
-                            className="emotion-50"
+                            className="emotion-51"
                             data-file-name="checkmark.svg"
                             height={20}
                           />
@@ -3586,10 +3610,10 @@ Array [
       </details>
     </div>
     <div
-      className="emotion-157"
+      className="emotion-158"
     >
       <a
-        className="emotion-155"
+        className="emotion-156"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -3598,7 +3622,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-156"
+        className="emotion-157"
         onClick={[Function]}
         type="submit"
       >
@@ -3610,6 +3634,1841 @@ Array [
 `;
 
 exports[`<DataSourcesAdd /> should render properly with no credentials 3`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Data Sources
+  </h2>,
+  .emotion-5 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-4 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-0 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+.emotion-2 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-5"
+  >
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View All
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create Data Source
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  "",
+  .emotion-153 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  width: auto;
+}
+
+.emotion-1 {
+  margin-top: 0;
+  max-width: 600px;
+  color: #b3b3b3;
+}
+
+.emotion-0 {
+  color: #73b61c;
+}
+
+.emotion-29 {
+  width: 470px;
+}
+
+.emotion-3 {
+  font-style: italic;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  color: #c92300;
+}
+
+.emotion-4 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-9 {
+  padding-top: 8px;
+}
+
+.emotion-6 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-5 {
+  color: #c92300;
+}
+
+.emotion-8 {
+  position: relative;
+}
+
+.emotion-7 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-7:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
+.emotion-7:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-28 {
+  padding-top: 8px;
+}
+
+.emotion-15 {
+  color: #b3b3b3;
+}
+
+.emotion-12 {
+  color: #c92300;
+}
+
+.emotion-14 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-13 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 300px;
+  height: 40px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  padding-left: 12px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  background-position: right 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-69 {
+  border: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+}
+
+.emotion-40 {
+  float: left;
+  padding: 0;
+  padding-bottom: 12px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-39 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-38 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-38:hover div,
+.emotion-38:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-38:hover button,
+.emotion-38:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-30 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-37 {
+  position: absolute;
+  left: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-37:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-31:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  left: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.emotion-36 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-32 {
+  font-size: 15px;
+  line-height: 19px;
+  padding-bottom: 8px;
+}
+
+.emotion-33 {
+  padding-bottom: 8px;
+}
+
+.emotion-42 {
+  clear: both;
+  padding-bottom: 16px;
+  color: #b3b3b3;
+}
+
+.emotion-43 {
+  clear: both;
+}
+
+.emotion-51 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 16px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-47 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-44 {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-46 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-45 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-48 {
+  padding-left: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-50 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 24px;
+}
+
+.emotion-49 {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
+.emotion-58 {
+  padding-left: 0;
+  color: #b3b3b3;
+}
+
+.emotion-70 {
+  height: 8px;
+}
+
+.emotion-72 {
+  margin: 0;
+  padding-top: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-81 {
+  padding-top: 16px;
+}
+
+.emotion-80 {
+  border-radius: 2px;
+  background-color: #3b3b3b;
+}
+
+.emotion-80:hover summary svg {
+  opacity: 1;
+}
+
+.emotion-76 {
+  list-style-type: none;
+  padding: 16px;
+  background-color: #3b3b3b;
+}
+
+.emotion-76::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-76:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-75 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-73 {
+  color: #808080;
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-74 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -2px;
+  padding-left: 16px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-79 {
+  border-top: 1px solid #4a4a4a;
+  padding: 32px;
+  padding-top: 16px;
+}
+
+.emotion-77 {
+  color: #b3b3b3;
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 16px;
+}
+
+.emotion-78 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: #b3b3b3;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  padding-top: 8px;
+}
+
+.emotion-78 li {
+  width: 33%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-right: 40px;
+}
+
+.emotion-78 svg {
+  color: #73b61c;
+  margin-right: 16px;
+  min-width: 20px;
+  max-width: 20px;
+}
+
+.emotion-78 span {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.emotion-149 {
+  padding-top: 16px;
+}
+
+.emotion-83 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 16px;
+}
+
+.emotion-86 {
+  color: #b3b3b3;
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 16px;
+  max-width: 600px;
+}
+
+.emotion-114 {
+  border: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 32px;
+}
+
+.emotion-87 {
+  float: left;
+  padding: 0;
+  padding-bottom: 12px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-88 {
+  clear: both;
+}
+
+.emotion-113 {
+  width: 100%;
+  color: #ffffff;
+  text-align: left;
+}
+
+.emotion-113 th,
+.emotion-113 td {
+  padding: 16px;
+  padding-left: 0;
+}
+
+.emotion-113 th:first-of-type,
+.emotion-113 td:first-of-type {
+  padding-left: 16px;
+}
+
+.emotion-113 th:nth-of-type(2),
+.emotion-113 td:nth-of-type(2) {
+  min-width: 300px;
+}
+
+.emotion-113 th:nth-of-type(3),
+.emotion-113 td:nth-of-type(3) {
+  width: 100%;
+}
+
+.emotion-113 th {
+  color: #b3b3b3;
+  font-weight: 500;
+}
+
+.emotion-113 td {
+  border-top: 1px solid #4a4a4a;
+  vertical-align: top;
+}
+
+.emotion-113 td:first-of-type {
+  border: none;
+}
+
+.emotion-113 td:nth-of-type(2) {
+  font-family: Roboto Mono;
+}
+
+.emotion-113 tr:hover td {
+  background-color: #4a4a4a;
+}
+
+.emotion-113 tr:hover + tr td {
+  border-top-color: transparent;
+}
+
+.emotion-113 tr:last-of-type td {
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-113 tr:last-of-type td:first-of-type {
+  border: none;
+}
+
+.emotion-94 {
+  cursor: pointer;
+}
+
+.emotion-93 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+.emotion-152 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-152 button,
+.emotion-152 a {
+  margin-right: 16px;
+}
+
+.emotion-150 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-150:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-150[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-150,
+.emotion-150:hover,
+.emotion-150:visited {
+  background-color: #808080;
+}
+
+.emotion-150:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-150[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-151 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-151:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-151[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-151,
+.emotion-151:hover,
+.emotion-151:visited {
+  background-color: #73b61c;
+}
+
+.emotion-151:hover {
+  background-color: #96c955;
+}
+
+.emotion-151[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-27 {
+  padding-top: 8px;
+  padding-top: 0;
+}
+
+<form
+    action=""
+    className="emotion-153"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <p
+      className="emotion-1"
+    >
+      A data source is the location where your assets are stored. Add your data source credentials below to connect and ingest the files into the Zorroa system. Zorroa will automatically run a basic analysis on your assets and you may add additional modules.
+       
+      <a
+        className="emotion-0"
+        href="https://app.gitbook.com/@zorroa/s/zmlp/client/assets/importing-assets/asset-datasource"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Learn more about data sources.
+      </a>
+    </p>
+    <div
+      className="emotion-29"
+    >
+      <span
+        className="emotion-3"
+      >
+        <span
+          className="emotion-2"
+        >
+          *
+        </span>
+         required field
+      </span>
+      <h3
+        className="emotion-4"
+      >
+        Data Source Name 
+      </h3>
+      <div
+        className="emotion-9"
+      >
+        <label
+          className="emotion-6"
+          htmlFor="name"
+        >
+          Name
+          <span
+            className="emotion-5"
+          >
+             *
+          </span>
+        </label>
+        <div
+          className="emotion-8"
+        >
+          <input
+            autoFocus={true}
+            className="emotion-7"
+            disabled={false}
+            id="name"
+            name="name"
+            onChange={[Function]}
+            type="text"
+            value="My Data Source"
+          />
+        </div>
+        <div
+          className="emotion-9"
+        >
+           
+        </div>
+      </div>
+      <h3
+        className="emotion-4"
+      >
+        Connect to Source
+      </h3>
+      <div
+        className="emotion-28"
+      >
+        <label
+          className="emotion-15"
+        >
+          Source Type
+          <span
+            className="emotion-12"
+          >
+             *
+          </span>
+          <div
+            className="emotion-14"
+          >
+            <select
+              className="emotion-13"
+              defaultValue=""
+              disabled={false}
+              onChange={[Function]}
+            >
+              <option
+                disabled={true}
+                value=""
+              >
+                Select an option...
+              </option>
+              <option
+                value="AWS"
+              >
+                Amazon Web Service (AWS)
+              </option>
+              <option
+                value="AZURE"
+              >
+                Azure
+              </option>
+              <option
+                value="GCP"
+              >
+                Google Cloud Platform (GCP)
+              </option>
+            </select>
+          </div>
+        </label>
+         
+        <div
+          className="emotion-9"
+        >
+          <label
+            className="emotion-6"
+            htmlFor="uri"
+          >
+            Storage Address
+            <span
+              className="emotion-5"
+            >
+               *
+            </span>
+          </label>
+          <div
+            className="emotion-8"
+          >
+            <input
+              className="emotion-7"
+              disabled={false}
+              id="uri"
+              name="uri"
+              onChange={[Function]}
+              type="text"
+              value="azure://"
+            />
+          </div>
+          <div
+            className="emotion-9"
+          >
+             
+          </div>
+        </div>
+        <div
+          className="emotion-27"
+        >
+          <label
+            className="emotion-6"
+            htmlFor="connection_string"
+          >
+            Connection String
+            <span
+              className="emotion-5"
+            >
+               *
+            </span>
+          </label>
+          <div
+            className="emotion-8"
+          >
+            <input
+              className="emotion-7"
+              disabled={false}
+              id="connection_string"
+              name="connection_string"
+              onChange={[Function]}
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            className="emotion-9"
+          >
+             
+          </div>
+        </div>
+      </div>
+    </div>
+    <fieldset
+      className="emotion-69"
+    >
+      <legend
+        className="emotion-40"
+      >
+        <div
+          className="emotion-39"
+        >
+          Select File Types to Import
+          <div
+            className="emotion-38"
+          >
+            <button
+              aria-details="SupportedFile Types"
+              aria-label="Supported File Types"
+              className="emotion-30"
+              type="button"
+            >
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
+            <div
+              className="emotion-37"
+              id="SupportedFile Types"
+              role="tooltip"
+            >
+              <div
+                className="emotion-31"
+              />
+              <div
+                className="emotion-36"
+              >
+                <h3
+                  className="emotion-32"
+                >
+                  Supported File Types
+                </h3>
+                <div
+                  className="emotion-33"
+                >
+                  <h4>
+                    Images
+                    :
+                  </h4>
+                  GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
+                </div>
+                <div
+                  className="emotion-33"
+                >
+                  <h4>
+                    Documents
+                    :
+                  </h4>
+                  PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+                </div>
+                <div
+                  className="emotion-33"
+                >
+                  <h4>
+                    Videos
+                    :
+                  </h4>
+                  MP4, M4V, MOV, MPG, MPEG, OGG
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </legend>
+      <div
+        className="emotion-42"
+      >
+        <div>
+          A minimum of one file type must be selected
+           
+          <span
+            className="emotion-2"
+          >
+            *
+          </span>
+        </div>
+      </div>
+      <div
+        className="emotion-43"
+      />
+      <label
+        className="emotion-51"
+      >
+        <div
+          className="emotion-47"
+        >
+          <input
+            className="emotion-44"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="Images"
+          />
+          <div
+            className="emotion-46"
+          >
+            <svg
+              className="emotion-45"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-48"
+        >
+          <img
+            alt="Image Files"
+            src="/icons/images.png"
+            width="40px"
+          />
+        </div>
+        <div
+          className="emotion-50"
+        >
+          <span
+            className="emotion-49"
+          >
+            Image Files
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-51"
+      >
+        <div
+          className="emotion-47"
+        >
+          <input
+            className="emotion-44"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="Documents"
+          />
+          <div
+            className="emotion-46"
+          >
+            <svg
+              className="emotion-45"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-48"
+        >
+          <img
+            alt="Documents (PDF & MS Office)"
+            src="/icons/documents.png"
+            width="40px"
+          />
+        </div>
+        <div
+          className="emotion-50"
+        >
+          <span
+            className="emotion-49"
+          >
+            Documents (PDF & MS Office)
+          </span>
+          <span
+            className="emotion-58"
+          >
+            Pages will be processed and counted as individual assets
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-51"
+      >
+        <div
+          className="emotion-47"
+        >
+          <input
+            className="emotion-44"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="Videos"
+          />
+          <div
+            className="emotion-46"
+          >
+            <svg
+              className="emotion-45"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-48"
+        >
+          <img
+            alt="Video Files"
+            src="/icons/videos.png"
+            width="40px"
+          />
+        </div>
+        <div
+          className="emotion-50"
+        >
+          <span
+            className="emotion-49"
+          >
+            Video Files
+          </span>
+        </div>
+      </label>
+    </fieldset>
+    <div
+      className="emotion-70"
+    />
+    <h3
+      className="emotion-4"
+    >
+      Select Analysis
+    </h3>
+    <p
+      className="emotion-72"
+    >
+      Choose the type of analysis you would like performed on your data set:
+    </p>
+    <div
+      className="emotion-81"
+    >
+      <details
+        className="emotion-80"
+        onToggle={[Function]}
+        open={true}
+      >
+        <summary
+          aria-label="Zorroa Automatic Analysis"
+          className="emotion-76"
+        >
+          <div
+            className="emotion-75"
+          >
+            <svg
+              className="emotion-73"
+              data-file-name="chevron.svg"
+              height={20}
+            />
+            <span
+              className="emotion-74"
+            >
+              Zorroa Automatic Analysis
+            </span>
+          </div>
+        </summary>
+        <div
+          className="emotion-79"
+        >
+          <p
+            className="emotion-77"
+          >
+            The following basic analysis is applied to all data sets.
+          </p>
+          <ul
+            className="emotion-78"
+          >
+            <li>
+              <svg
+                data-file-name="checkmark.svg"
+              />
+              <div>
+                <span>
+                  File Introspection
+                </span>
+                <br />
+                Extracts native metadata from file.
+              </div>
+            </li>
+            <li>
+              <svg
+                data-file-name="checkmark.svg"
+              />
+              <div>
+                <span>
+                  Similarity Hash
+                </span>
+                <br />
+                Adds a hash to all images used to quantify the similarity between images.
+              </div>
+            </li>
+            <li>
+              <svg
+                data-file-name="checkmark.svg"
+              />
+              <div>
+                <span>
+                  Proxy Creation
+                </span>
+                <br />
+                Creates proxy files suitable for web streaming for all media.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </details>
+    </div>
+    <div
+      className="emotion-149"
+    >
+      <details
+        className="emotion-80"
+        onToggle={[Function]}
+        open={true}
+      >
+        <summary
+          aria-label="zorroa"
+          className="emotion-76"
+        >
+          <div
+            className="emotion-75"
+          >
+            <svg
+              className="emotion-73"
+              data-file-name="chevron.svg"
+              height={20}
+            />
+            <span
+              className="emotion-83"
+            >
+              <img
+                alt="zorroa"
+                height={32}
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
+              />
+            </span>
+          </div>
+        </summary>
+        <div
+          className="emotion-79"
+        >
+          <p
+            className="emotion-86"
+          >
+            These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
+          </p>
+          <fieldset
+            className="emotion-114"
+          >
+            <legend
+              className="emotion-87"
+            >
+              Visual Intelligence
+            </legend>
+            <div
+              className="emotion-88"
+            />
+            <table
+              cellSpacing="0"
+              className="emotion-113"
+            >
+              <thead>
+                <tr>
+                  <th>
+                     
+                  </th>
+                  <th>
+                    Module Name
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="emotion-94"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-93"
+                    >
+                      <div
+                        className="emotion-47"
+                      >
+                        <input
+                          className="emotion-44"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-label-detection"
+                        />
+                        <div
+                          className="emotion-46"
+                        >
+                          <svg
+                            className="emotion-45"
+                            data-file-name="checkmark.svg"
+                            height={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-label-detection
+                        : 
+                        Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-label-detection
+                  </td>
+                  <td>
+                    Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-94"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-93"
+                    >
+                      <div
+                        className="emotion-47"
+                      >
+                        <input
+                          className="emotion-44"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-object-detection"
+                        />
+                        <div
+                          className="emotion-46"
+                        >
+                          <svg
+                            className="emotion-45"
+                            data-file-name="checkmark.svg"
+                            height={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-object-detection
+                        : 
+                        Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-object-detection
+                  </td>
+                  <td>
+                    Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-94"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-93"
+                    >
+                      <div
+                        className="emotion-47"
+                      >
+                        <input
+                          className="emotion-44"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zvi-label-detection"
+                        />
+                        <div
+                          className="emotion-46"
+                        >
+                          <svg
+                            className="emotion-45"
+                            data-file-name="checkmark.svg"
+                            height={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zvi-label-detection
+                        : 
+                        Generate keyword labels for image, video, and documents.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zvi-label-detection
+                  </td>
+                  <td>
+                    Generate keyword labels for image, video, and documents.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-94"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-93"
+                    >
+                      <div
+                        className="emotion-47"
+                      >
+                        <input
+                          className="emotion-44"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zvi-object-detection"
+                        />
+                        <div
+                          className="emotion-46"
+                        >
+                          <svg
+                            className="emotion-45"
+                            data-file-name="checkmark.svg"
+                            height={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zvi-object-detection
+                        : 
+                        Detect everyday objects in images, video, and documents.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zvi-object-detection
+                  </td>
+                  <td>
+                    Detect everyday objects in images, video, and documents.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+          <fieldset
+            className="emotion-114"
+          >
+            <legend
+              className="emotion-87"
+            >
+              Zorroa Timeline Extraction
+            </legend>
+            <div
+              className="emotion-88"
+            />
+            <table
+              cellSpacing="0"
+              className="emotion-113"
+            >
+              <thead>
+                <tr>
+                  <th>
+                     
+                  </th>
+                  <th>
+                    Module Name
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="emotion-94"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-93"
+                    >
+                      <div
+                        className="emotion-47"
+                      >
+                        <input
+                          className="emotion-44"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zvi-document-page-clips"
+                        />
+                        <div
+                          className="emotion-46"
+                        >
+                          <svg
+                            className="emotion-45"
+                            data-file-name="checkmark.svg"
+                            height={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zvi-document-page-clips
+                        : 
+                        Extract all pages in MS Office/PDF documents into separate assets.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zvi-document-page-clips
+                  </td>
+                  <td>
+                    Extract all pages in MS Office/PDF documents into separate assets.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-94"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-93"
+                    >
+                      <div
+                        className="emotion-47"
+                      >
+                        <input
+                          className="emotion-44"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zvi-image-page-clips"
+                        />
+                        <div
+                          className="emotion-46"
+                        >
+                          <svg
+                            className="emotion-45"
+                            data-file-name="checkmark.svg"
+                            height={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zvi-image-page-clips
+                        : 
+                        Extract all layers in multi page image formats such as tiff and psd as as separate assets
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zvi-image-page-clips
+                  </td>
+                  <td>
+                    Extract all layers in multi page image formats such as tiff and psd as as separate assets
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-94"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-93"
+                    >
+                      <div
+                        className="emotion-47"
+                      >
+                        <input
+                          className="emotion-44"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zvi-video-shot-clips"
+                        />
+                        <div
+                          className="emotion-46"
+                        >
+                          <svg
+                            className="emotion-45"
+                            data-file-name="checkmark.svg"
+                            height={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zvi-video-shot-clips
+                        : 
+                        Break video files into individual assets based on a shot detection algorithm.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zvi-video-shot-clips
+                  </td>
+                  <td>
+                    Break video files into individual assets based on a shot detection algorithm.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+          <fieldset
+            className="emotion-114"
+          >
+            <legend
+              className="emotion-87"
+            >
+              Zorroa Visual Intelligence
+            </legend>
+            <div
+              className="emotion-88"
+            />
+            <table
+              cellSpacing="0"
+              className="emotion-113"
+            >
+              <thead>
+                <tr>
+                  <th>
+                     
+                  </th>
+                  <th>
+                    Module Name
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="emotion-94"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-93"
+                    >
+                      <div
+                        className="emotion-47"
+                      >
+                        <input
+                          className="emotion-44"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zvi-text-detection"
+                        />
+                        <div
+                          className="emotion-46"
+                        >
+                          <svg
+                            className="emotion-45"
+                            data-file-name="checkmark.svg"
+                            height={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zvi-text-detection
+                        : 
+                        Utilize OCR technology to detect text on an image.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zvi-text-detection
+                  </td>
+                  <td>
+                    Utilize OCR technology to detect text on an image.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+        </div>
+      </details>
+    </div>
+    <div
+      className="emotion-152"
+    >
+      <a
+        className="emotion-150"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Cancel
+      </a>
+      <button
+        aria-disabled={true}
+        className="emotion-151"
+        onClick={[Function]}
+        type="submit"
+      >
+        Create Data Source
+      </button>
+    </div>
+  </form>,
+]
+`;
+
+exports[`<DataSourcesAdd /> should render properly with no credentials 4`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -3757,7 +5616,7 @@ Array [
   color: #73b61c;
 }
 
-.emotion-29 {
+.emotion-28 {
   width: 470px;
 }
 
@@ -3817,7 +5676,7 @@ Array [
   background-color: #ffffff;
 }
 
-.emotion-28 {
+.emotion-27 {
   padding-top: 8px;
 }
 
@@ -3877,24 +5736,31 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-37 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   position: relative;
   margin-left: 8px;
 }
 
-.emotion-38:hover div,
-.emotion-38:focus-within div {
+.emotion-37:hover div,
+.emotion-37:focus-within div {
   visibility: visible;
   opacity: 1;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
 }
 
-.emotion-38:hover button,
-.emotion-38:focus-within button {
+.emotion-37:hover button,
+.emotion-37:focus-within button {
   color: #ffffff;
 }
 
-.emotion-30 {
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3905,7 +5771,7 @@ Array [
   color: #808080;
 }
 
-.emotion-37 {
+.emotion-36 {
   position: absolute;
   left: -10px;
   top: 28px;
@@ -3922,14 +5788,15 @@ Array [
   opacity: 0;
   -webkit-transition: all 0.5s ease 0.25s;
   transition: all 0.5s ease 0.25s;
+  z-index: 1;
 }
 
-.emotion-37:hover {
+.emotion-36:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.emotion-31:before {
+.emotion-30:before {
   content: ' ';
   position: absolute;
   top: -6px;
@@ -3939,18 +5806,18 @@ Array [
   border-right: 6px solid transparent;
 }
 
-.emotion-36 {
+.emotion-35 {
   font-size: 15px;
   line-height: 19px;
 }
 
-.emotion-32 {
+.emotion-31 {
   font-size: 15px;
   line-height: 19px;
   padding-bottom: 8px;
 }
 
-.emotion-33 {
+.emotion-32 {
   padding-bottom: 8px;
 }
 
@@ -4415,7 +6282,7 @@ Array [
   background-color: #808080;
 }
 
-.emotion-27 {
+.emotion-26 {
   padding-top: 8px;
   padding-top: 0;
 }
@@ -4441,7 +6308,7 @@ Array [
       </a>
     </p>
     <div
-      className="emotion-29"
+      className="emotion-28"
     >
       <span
         className="emotion-3"
@@ -4498,7 +6365,7 @@ Array [
         Connect to Source
       </h3>
       <div
-        className="emotion-28"
+        className="emotion-27"
       >
         <label
           className="emotion-15"
@@ -4567,7 +6434,7 @@ Array [
               name="uri"
               onChange={[Function]}
               type="text"
-              value="azure://"
+              value="gs://"
             />
           </div>
           <div
@@ -4577,18 +6444,13 @@ Array [
           </div>
         </div>
         <div
-          className="emotion-27"
+          className="emotion-26"
         >
           <label
             className="emotion-6"
-            htmlFor="connection_string"
+            htmlFor="service_account_json_key"
           >
-            Connection String
-            <span
-              className="emotion-5"
-            >
-               *
-            </span>
+            Service Account JSON Key
           </label>
           <div
             className="emotion-8"
@@ -4596,8 +6458,8 @@ Array [
             <input
               className="emotion-7"
               disabled={false}
-              id="connection_string"
-              name="connection_string"
+              id="service_account_json_key"
+              name="service_account_json_key"
               onChange={[Function]}
               type="text"
               value=""
@@ -4617,63 +6479,67 @@ Array [
       <legend
         className="emotion-39"
       >
-        Select File Types to Import
         <div
           className="emotion-38"
         >
-          <button
-            aria-details="SupportedFile Types"
-            aria-label="Supported File Types"
-            className="emotion-30"
-            type="button"
-          >
-            <svg
-              data-file-name="help.svg"
-              height={20}
-            />
-          </button>
+          Select File Types to Import
           <div
             className="emotion-37"
-            id="SupportedFile Types"
-            role="tooltip"
           >
-            <div
-              className="emotion-31"
-            />
+            <button
+              aria-details="SupportedFile Types"
+              aria-label="Supported File Types"
+              className="emotion-29"
+              type="button"
+            >
+              <svg
+                data-file-name="help.svg"
+                height={20}
+              />
+            </button>
             <div
               className="emotion-36"
+              id="SupportedFile Types"
+              role="tooltip"
             >
-              <h3
-                className="emotion-32"
-              >
-                Supported File Types
-              </h3>
               <div
-                className="emotion-33"
-              >
-                <h4>
-                  Images
-                  :
-                </h4>
-                GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
-              </div>
+                className="emotion-30"
+              />
               <div
-                className="emotion-33"
+                className="emotion-35"
               >
-                <h4>
-                  Documents
-                  :
-                </h4>
-                PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
-              </div>
-              <div
-                className="emotion-33"
-              >
-                <h4>
-                  Videos
-                  :
-                </h4>
-                MP4, M4V, MOV, MPG, MPEG, OGG
+                <h3
+                  className="emotion-31"
+                >
+                  Supported File Types
+                </h3>
+                <div
+                  className="emotion-32"
+                >
+                  <h4>
+                    Images
+                    :
+                  </h4>
+                  GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
+                </div>
+                <div
+                  className="emotion-32"
+                >
+                  <h4>
+                    Documents
+                    :
+                  </h4>
+                  PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+                </div>
+                <div
+                  className="emotion-32"
+                >
+                  <h4>
+                    Videos
+                    :
+                  </h4>
+                  MP4, M4V, MOV, MPG, MPEG, OGG
+                </div>
               </div>
             </div>
           </div>
@@ -5422,1824 +7288,6 @@ Array [
       <button
         aria-disabled={true}
         className="emotion-150"
-        onClick={[Function]}
-        type="submit"
-      >
-        Create Data Source
-      </button>
-    </div>
-  </form>,
-]
-`;
-
-exports[`<DataSourcesAdd /> should render properly with no credentials 4`] = `
-Array [
-  .emotion-0 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  padding-top: 24px;
-  padding-bottom: 16px;
-}
-
-<h2
-    className="emotion-0"
-  >
-    Data Sources
-  </h2>,
-  .emotion-5 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-4 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-1 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-0 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #73b61c;
-}
-
-.emotion-2 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-<nav
-    className="emotion-5"
-  >
-    <ul
-      className="emotion-4"
-    >
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          View All
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Create Data Source
-        </a>
-      </li>
-    </ul>
-  </nav>,
-  "",
-  .emotion-151 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  width: auto;
-}
-
-.emotion-1 {
-  margin-top: 0;
-  max-width: 600px;
-  color: #b3b3b3;
-}
-
-.emotion-0 {
-  color: #73b61c;
-}
-
-.emotion-28 {
-  width: 470px;
-}
-
-.emotion-3 {
-  font-style: italic;
-  color: #b3b3b3;
-}
-
-.emotion-2 {
-  color: #c92300;
-}
-
-.emotion-4 {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-  padding-top: 16px;
-}
-
-.emotion-9 {
-  padding-top: 8px;
-}
-
-.emotion-6 {
-  display: block;
-  padding-bottom: 8px;
-  color: #b3b3b3;
-}
-
-.emotion-5 {
-  color: #c92300;
-}
-
-.emotion-8 {
-  position: relative;
-}
-
-.emotion-7 {
-  outline-offset: 0;
-  padding: 10px 12px;
-  border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  width: 100%;
-  color: #ffffff;
-  background-color: #3b3b3b;
-  border: 1px solid transparent;
-  border-width: 2px;
-}
-
-.emotion-7:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
-}
-
-.emotion-7:focus {
-  color: #000000;
-  background-color: #ffffff;
-}
-
-.emotion-27 {
-  padding-top: 8px;
-}
-
-.emotion-15 {
-  color: #b3b3b3;
-}
-
-.emotion-12 {
-  color: #c92300;
-}
-
-.emotion-14 {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-13 {
-  background-color: #808080;
-  border-radius: 2px;
-  border: none;
-  width: 300px;
-  height: 40px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  padding-left: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
-  background-repeat: no-repeat,repeat;
-  background-position: right 8px top 50%;
-  background-size: 20px;
-}
-
-.emotion-67 {
-  border: none;
-  padding: 0;
-  margin: 0;
-  padding-top: 12px;
-}
-
-.emotion-38 {
-  float: left;
-  padding: 0;
-  padding-bottom: 12px;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-37 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  margin-left: 8px;
-}
-
-.emotion-37:hover div,
-.emotion-37:focus-within div {
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-}
-
-.emotion-37:hover button,
-.emotion-37:focus-within button {
-  color: #ffffff;
-}
-
-.emotion-29 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-36 {
-  position: absolute;
-  left: -10px;
-  top: 28px;
-  color: #191919;
-  background-color: #ffffff;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  padding: 12px;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  max-width: 400px;
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-}
-
-.emotion-36:hover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.emotion-30:before {
-  content: ' ';
-  position: absolute;
-  top: -6px;
-  left: 14px;
-  border-bottom: 6px solid #ffffff;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-}
-
-.emotion-35 {
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.emotion-31 {
-  font-size: 15px;
-  line-height: 19px;
-  padding-bottom: 8px;
-}
-
-.emotion-32 {
-  padding-bottom: 8px;
-}
-
-.emotion-40 {
-  clear: both;
-  padding-bottom: 16px;
-  color: #b3b3b3;
-}
-
-.emotion-41 {
-  clear: both;
-}
-
-.emotion-49 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-45 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-}
-
-.emotion-42 {
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-.emotion-44 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: pointer;
-}
-
-.emotion-43 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 0;
-}
-
-.emotion-46 {
-  padding-left: 24px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-48 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 24px;
-}
-
-.emotion-47 {
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 700;
-}
-
-.emotion-56 {
-  padding-left: 0;
-  color: #b3b3b3;
-}
-
-.emotion-68 {
-  height: 8px;
-}
-
-.emotion-70 {
-  margin: 0;
-  padding-top: 8px;
-  color: #b3b3b3;
-}
-
-.emotion-79 {
-  padding-top: 16px;
-}
-
-.emotion-78 {
-  border-radius: 2px;
-  background-color: #3b3b3b;
-}
-
-.emotion-78:hover summary svg {
-  opacity: 1;
-}
-
-.emotion-74 {
-  list-style-type: none;
-  padding: 16px;
-  background-color: #3b3b3b;
-}
-
-.emotion-74::-webkit-details-marker {
-  display: none;
-}
-
-.emotion-74:hover {
-  cursor: pointer;
-  background-color: #2e2e2e;
-}
-
-.emotion-73 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-71 {
-  color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-72 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: -2px;
-  padding-left: 16px;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-77 {
-  border-top: 1px solid #4a4a4a;
-  padding: 32px;
-  padding-top: 16px;
-}
-
-.emotion-75 {
-  color: #b3b3b3;
-  margin: 0;
-  padding-top: 8px;
-  padding-bottom: 16px;
-}
-
-.emotion-76 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  color: #b3b3b3;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  padding-top: 8px;
-}
-
-.emotion-76 li {
-  width: 33%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  padding-right: 40px;
-}
-
-.emotion-76 svg {
-  color: #73b61c;
-  margin-right: 16px;
-  min-width: 20px;
-  max-width: 20px;
-}
-
-.emotion-76 span {
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.emotion-147 {
-  padding-top: 16px;
-}
-
-.emotion-81 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-left: 16px;
-}
-
-.emotion-84 {
-  color: #b3b3b3;
-  margin: 0;
-  padding-top: 8px;
-  padding-bottom: 16px;
-  max-width: 600px;
-}
-
-.emotion-112 {
-  border: none;
-  padding: 0;
-  margin: 0;
-  padding-top: 12px;
-  padding-bottom: 32px;
-}
-
-.emotion-85 {
-  float: left;
-  padding: 0;
-  padding-bottom: 12px;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-}
-
-.emotion-86 {
-  clear: both;
-}
-
-.emotion-111 {
-  width: 100%;
-  color: #ffffff;
-  text-align: left;
-}
-
-.emotion-111 th,
-.emotion-111 td {
-  padding: 16px;
-  padding-left: 0;
-}
-
-.emotion-111 th:first-of-type,
-.emotion-111 td:first-of-type {
-  padding-left: 16px;
-}
-
-.emotion-111 th:nth-of-type(2),
-.emotion-111 td:nth-of-type(2) {
-  min-width: 300px;
-}
-
-.emotion-111 th:nth-of-type(3),
-.emotion-111 td:nth-of-type(3) {
-  width: 100%;
-}
-
-.emotion-111 th {
-  color: #b3b3b3;
-  font-weight: 500;
-}
-
-.emotion-111 td {
-  border-top: 1px solid #4a4a4a;
-  vertical-align: top;
-}
-
-.emotion-111 td:first-of-type {
-  border: none;
-}
-
-.emotion-111 td:nth-of-type(2) {
-  font-family: Roboto Mono;
-}
-
-.emotion-111 tr:hover td {
-  background-color: #4a4a4a;
-}
-
-.emotion-111 tr:hover + tr td {
-  border-top-color: transparent;
-}
-
-.emotion-111 tr:last-of-type td {
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-111 tr:last-of-type td:first-of-type {
-  border: none;
-}
-
-.emotion-92 {
-  cursor: pointer;
-}
-
-.emotion-91 {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-}
-
-.emotion-150 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-150 button,
-.emotion-150 a {
-  margin-right: 16px;
-}
-
-.emotion-148 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-148:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-148[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-148,
-.emotion-148:hover,
-.emotion-148:visited {
-  background-color: #808080;
-}
-
-.emotion-148:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-148[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-149 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-149:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-149[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-149,
-.emotion-149:hover,
-.emotion-149:visited {
-  background-color: #73b61c;
-}
-
-.emotion-149:hover {
-  background-color: #96c955;
-}
-
-.emotion-149[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-26 {
-  padding-top: 8px;
-  padding-top: 0;
-}
-
-<form
-    action=""
-    className="emotion-151"
-    method="post"
-    onSubmit={[Function]}
-  >
-    <p
-      className="emotion-1"
-    >
-      A data source is the location where your assets are stored. Add your data source credentials below to connect and ingest the files into the Zorroa system. Zorroa will automatically run a basic analysis on your assets and you may add additional modules.
-       
-      <a
-        className="emotion-0"
-        href="https://app.gitbook.com/@zorroa/s/zmlp/client/assets/importing-assets/asset-datasource"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Learn more about data sources.
-      </a>
-    </p>
-    <div
-      className="emotion-28"
-    >
-      <span
-        className="emotion-3"
-      >
-        <span
-          className="emotion-2"
-        >
-          *
-        </span>
-         required field
-      </span>
-      <h3
-        className="emotion-4"
-      >
-        Data Source Name 
-      </h3>
-      <div
-        className="emotion-9"
-      >
-        <label
-          className="emotion-6"
-          htmlFor="name"
-        >
-          Name
-          <span
-            className="emotion-5"
-          >
-             *
-          </span>
-        </label>
-        <div
-          className="emotion-8"
-        >
-          <input
-            autoFocus={true}
-            className="emotion-7"
-            disabled={false}
-            id="name"
-            name="name"
-            onChange={[Function]}
-            type="text"
-            value="My Data Source"
-          />
-        </div>
-        <div
-          className="emotion-9"
-        >
-           
-        </div>
-      </div>
-      <h3
-        className="emotion-4"
-      >
-        Connect to Source
-      </h3>
-      <div
-        className="emotion-27"
-      >
-        <label
-          className="emotion-15"
-        >
-          Source Type
-          <span
-            className="emotion-12"
-          >
-             *
-          </span>
-          <div
-            className="emotion-14"
-          >
-            <select
-              className="emotion-13"
-              defaultValue=""
-              disabled={false}
-              onChange={[Function]}
-            >
-              <option
-                disabled={true}
-                value=""
-              >
-                Select an option...
-              </option>
-              <option
-                value="AWS"
-              >
-                Amazon Web Service (AWS)
-              </option>
-              <option
-                value="AZURE"
-              >
-                Azure
-              </option>
-              <option
-                value="GCP"
-              >
-                Google Cloud Platform (GCP)
-              </option>
-            </select>
-          </div>
-        </label>
-         
-        <div
-          className="emotion-9"
-        >
-          <label
-            className="emotion-6"
-            htmlFor="uri"
-          >
-            Storage Address
-            <span
-              className="emotion-5"
-            >
-               *
-            </span>
-          </label>
-          <div
-            className="emotion-8"
-          >
-            <input
-              className="emotion-7"
-              disabled={false}
-              id="uri"
-              name="uri"
-              onChange={[Function]}
-              type="text"
-              value="gs://"
-            />
-          </div>
-          <div
-            className="emotion-9"
-          >
-             
-          </div>
-        </div>
-        <div
-          className="emotion-26"
-        >
-          <label
-            className="emotion-6"
-            htmlFor="service_account_json_key"
-          >
-            Service Account JSON Key
-          </label>
-          <div
-            className="emotion-8"
-          >
-            <input
-              className="emotion-7"
-              disabled={false}
-              id="service_account_json_key"
-              name="service_account_json_key"
-              onChange={[Function]}
-              type="text"
-              value=""
-            />
-          </div>
-          <div
-            className="emotion-9"
-          >
-             
-          </div>
-        </div>
-      </div>
-    </div>
-    <fieldset
-      className="emotion-67"
-    >
-      <legend
-        className="emotion-38"
-      >
-        Select File Types to Import
-        <div
-          className="emotion-37"
-        >
-          <button
-            aria-details="SupportedFile Types"
-            aria-label="Supported File Types"
-            className="emotion-29"
-            type="button"
-          >
-            <svg
-              data-file-name="help.svg"
-              height={20}
-            />
-          </button>
-          <div
-            className="emotion-36"
-            id="SupportedFile Types"
-            role="tooltip"
-          >
-            <div
-              className="emotion-30"
-            />
-            <div
-              className="emotion-35"
-            >
-              <h3
-                className="emotion-31"
-              >
-                Supported File Types
-              </h3>
-              <div
-                className="emotion-32"
-              >
-                <h4>
-                  Images
-                  :
-                </h4>
-                GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
-              </div>
-              <div
-                className="emotion-32"
-              >
-                <h4>
-                  Documents
-                  :
-                </h4>
-                PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
-              </div>
-              <div
-                className="emotion-32"
-              >
-                <h4>
-                  Videos
-                  :
-                </h4>
-                MP4, M4V, MOV, MPG, MPEG, OGG
-              </div>
-            </div>
-          </div>
-        </div>
-      </legend>
-      <div
-        className="emotion-40"
-      >
-        <div>
-          A minimum of one file type must be selected
-           
-          <span
-            className="emotion-2"
-          >
-            *
-          </span>
-        </div>
-      </div>
-      <div
-        className="emotion-41"
-      />
-      <label
-        className="emotion-49"
-      >
-        <div
-          className="emotion-45"
-        >
-          <input
-            className="emotion-42"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="Images"
-          />
-          <div
-            className="emotion-44"
-          >
-            <svg
-              className="emotion-43"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-46"
-        >
-          <img
-            alt="Image Files"
-            src="/icons/images.png"
-            width="40px"
-          />
-        </div>
-        <div
-          className="emotion-48"
-        >
-          <span
-            className="emotion-47"
-          >
-            Image Files
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-49"
-      >
-        <div
-          className="emotion-45"
-        >
-          <input
-            className="emotion-42"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="Documents"
-          />
-          <div
-            className="emotion-44"
-          >
-            <svg
-              className="emotion-43"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-46"
-        >
-          <img
-            alt="Documents (PDF & MS Office)"
-            src="/icons/documents.png"
-            width="40px"
-          />
-        </div>
-        <div
-          className="emotion-48"
-        >
-          <span
-            className="emotion-47"
-          >
-            Documents (PDF & MS Office)
-          </span>
-          <span
-            className="emotion-56"
-          >
-            Pages will be processed and counted as individual assets
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-49"
-      >
-        <div
-          className="emotion-45"
-        >
-          <input
-            className="emotion-42"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="Videos"
-          />
-          <div
-            className="emotion-44"
-          >
-            <svg
-              className="emotion-43"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-46"
-        >
-          <img
-            alt="Video Files"
-            src="/icons/videos.png"
-            width="40px"
-          />
-        </div>
-        <div
-          className="emotion-48"
-        >
-          <span
-            className="emotion-47"
-          >
-            Video Files
-          </span>
-        </div>
-      </label>
-    </fieldset>
-    <div
-      className="emotion-68"
-    />
-    <h3
-      className="emotion-4"
-    >
-      Select Analysis
-    </h3>
-    <p
-      className="emotion-70"
-    >
-      Choose the type of analysis you would like performed on your data set:
-    </p>
-    <div
-      className="emotion-79"
-    >
-      <details
-        className="emotion-78"
-        onToggle={[Function]}
-        open={true}
-      >
-        <summary
-          aria-label="Zorroa Automatic Analysis"
-          className="emotion-74"
-        >
-          <div
-            className="emotion-73"
-          >
-            <svg
-              className="emotion-71"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-            <span
-              className="emotion-72"
-            >
-              Zorroa Automatic Analysis
-            </span>
-          </div>
-        </summary>
-        <div
-          className="emotion-77"
-        >
-          <p
-            className="emotion-75"
-          >
-            The following basic analysis is applied to all data sets.
-          </p>
-          <ul
-            className="emotion-76"
-          >
-            <li>
-              <svg
-                data-file-name="checkmark.svg"
-              />
-              <div>
-                <span>
-                  File Introspection
-                </span>
-                <br />
-                Extracts native metadata from file.
-              </div>
-            </li>
-            <li>
-              <svg
-                data-file-name="checkmark.svg"
-              />
-              <div>
-                <span>
-                  Similarity Hash
-                </span>
-                <br />
-                Adds a hash to all images used to quantify the similarity between images.
-              </div>
-            </li>
-            <li>
-              <svg
-                data-file-name="checkmark.svg"
-              />
-              <div>
-                <span>
-                  Proxy Creation
-                </span>
-                <br />
-                Creates proxy files suitable for web streaming for all media.
-              </div>
-            </li>
-          </ul>
-        </div>
-      </details>
-    </div>
-    <div
-      className="emotion-147"
-    >
-      <details
-        className="emotion-78"
-        onToggle={[Function]}
-        open={true}
-      >
-        <summary
-          aria-label="zorroa"
-          className="emotion-74"
-        >
-          <div
-            className="emotion-73"
-          >
-            <svg
-              className="emotion-71"
-              data-file-name="chevron.svg"
-              height={20}
-            />
-            <span
-              className="emotion-81"
-            >
-              <img
-                alt="zorroa"
-                height={32}
-                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDMuMyAzMCI+CiAgPHBhdGggZD0iTTExLjMgMGwxMS45IDQuNy0uOCAxLjd6bS0uMy45TDIzLjUgOGwtNy40IDEyLjctMi40LTEuNiA3LjgtOS42eiIgZmlsbD0iI2ZmZmZmZiIvPgogIDxwYXRoIGQ9Ik05LjQuOGwxMC44IDkuMS05LjcgMTEtMS44LTEuNyA5LjYtOC4zeiIgZmlsbD0iI2I4ZDY1MiIvPgogIDxwYXRoIGQ9Ik0xMy43IDkuNEwxLjEgMTEuOGwuNCAxLjd6bS0uMSAxTDAgMTQuOWw0LjcgMTMuOSAyLjgtMS4xLTUuOC0xMXoiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNMTUuMSAxMC41TDIuOSAxNy40IDEwLjMgMzBsMi4xLTEuMy03LjktMTB6IiBmaWxsPSIjYjhkNjUyIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk5LjMgMTAuN2gtMmwtMy45IDkuOWgybDEtMi40aDMuOGwxIDIuNGgybC0zLjktOS45em0uMyA1LjhIOTdsMS4zLTMuOSAxLjMgMy45em0tMjIuMy0xLjJjLjQtLjUuNi0xIC42LTEuNyAwLTEtLjUtMS43LTEuMy0yLjMtLjYtLjMtMS41LS41LTIuNi0uNWgtNC4zdjkuOWgxLjl2LTQuMWgyLjZsMiA0LjFoMkw3NiAxNi4yYy41LS4yLjktLjUgMS4zLS45ek03NiAxMy42YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOUg3NGMuNiAwIDEgLjEgMS40LjIuNC40LjYuNy42IDEuMnptLTExIDEuN2MuNC0uNS42LTEgLjYtMS43IDAtMS0uNS0xLjctMS4zLTIuMy0uNi0uNC0xLjUtLjYtMi42LS42aC00LjN2OS45aDEuOXYtNC4xSDYybDIgNC4xaDJsLTIuMi00LjRjLjUtLjIuOS0uNSAxLjItLjl6bS0xLjMtMS43YzAgLjUtLjEuOC0uNSAxLS4yLjEtLjUuMy0uNy40LS4zLjEtLjYuMS0xIC4xaC0yLjN2LTIuOWgyLjVjLjYgMCAxIC4xIDEuNC4yLjUuNC42LjcuNiAxLjJ6bS0yMy0xLjd2LTEuMmgtNy44djEuNWg1LjRsLTUuNiA3djEuNGg4LjF2LTEuNUgzNXptMTAuMi0xYy00LTEuNC03LjkgMi41LTYuNSA2LjUuNSAxLjUgMS43IDIuNiAzLjEgMy4xIDQgMS40IDcuOS0yLjUgNi41LTYuNS0uNS0xLjQtMS43LTIuNi0zLjEtMy4xem0xLjYgNGMuNiAyLjQtMS42IDQuNy00LjEgNC4xLTEuMi0uMy0yLjEtMS4yLTIuNC0yLjQtLjYtMi40IDEuNi00LjcgNC4xLTQuMSAxLjEuMyAyIDEuMiAyLjQgMi40em0zNS40LTRjLTQtMS40LTcuOSAyLjUtNi41IDYuNS41IDEuNSAxLjcgMi42IDMuMSAzLjEgNCAxLjQgNy45LTIuNSA2LjUtNi41LS41LTEuNC0xLjctMi42LTMuMS0zLjF6bTEuNSA0Yy42IDIuNC0xLjYgNC43LTQuMSA0LjEtMS4yLS4zLTIuMS0xLjItMi40LTIuNC0uNi0yLjQgMS42LTQuNyA0LjEtNC4xIDEuMS4zIDIuMSAxLjIgMi40IDIuNHoiLz4KPC9zdmc+Cg=="
-              />
-            </span>
-          </div>
-        </summary>
-        <div
-          className="emotion-77"
-        >
-          <p
-            className="emotion-84"
-          >
-            These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
-          </p>
-          <fieldset
-            className="emotion-112"
-          >
-            <legend
-              className="emotion-85"
-            >
-              Visual Intelligence
-            </legend>
-            <div
-              className="emotion-86"
-            />
-            <table
-              cellSpacing="0"
-              className="emotion-111"
-            >
-              <thead>
-                <tr>
-                  <th>
-                     
-                  </th>
-                  <th>
-                    Module Name
-                  </th>
-                  <th>
-                    Description
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  className="emotion-92"
-                  onClick={[Function]}
-                >
-                  <td>
-                    <label
-                      className="emotion-91"
-                    >
-                      <div
-                        className="emotion-45"
-                      >
-                        <input
-                          className="emotion-42"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="gcp-label-detection"
-                        />
-                        <div
-                          className="emotion-44"
-                        >
-                          <svg
-                            className="emotion-43"
-                            data-file-name="checkmark.svg"
-                            height={20}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="hidden"
-                      >
-                        gcp-label-detection
-                        : 
-                        Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
-                      </div>
-                    </label>
-                  </td>
-                  <td>
-                    gcp-label-detection
-                  </td>
-                  <td>
-                    Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
-                  </td>
-                </tr>
-                <tr
-                  className="emotion-92"
-                  onClick={[Function]}
-                >
-                  <td>
-                    <label
-                      className="emotion-91"
-                    >
-                      <div
-                        className="emotion-45"
-                      >
-                        <input
-                          className="emotion-42"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="gcp-object-detection"
-                        />
-                        <div
-                          className="emotion-44"
-                        >
-                          <svg
-                            className="emotion-43"
-                            data-file-name="checkmark.svg"
-                            height={20}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="hidden"
-                      >
-                        gcp-object-detection
-                        : 
-                        Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
-                      </div>
-                    </label>
-                  </td>
-                  <td>
-                    gcp-object-detection
-                  </td>
-                  <td>
-                    Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
-                  </td>
-                </tr>
-                <tr
-                  className="emotion-92"
-                  onClick={[Function]}
-                >
-                  <td>
-                    <label
-                      className="emotion-91"
-                    >
-                      <div
-                        className="emotion-45"
-                      >
-                        <input
-                          className="emotion-42"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="zvi-label-detection"
-                        />
-                        <div
-                          className="emotion-44"
-                        >
-                          <svg
-                            className="emotion-43"
-                            data-file-name="checkmark.svg"
-                            height={20}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="hidden"
-                      >
-                        zvi-label-detection
-                        : 
-                        Generate keyword labels for image, video, and documents.
-                      </div>
-                    </label>
-                  </td>
-                  <td>
-                    zvi-label-detection
-                  </td>
-                  <td>
-                    Generate keyword labels for image, video, and documents.
-                  </td>
-                </tr>
-                <tr
-                  className="emotion-92"
-                  onClick={[Function]}
-                >
-                  <td>
-                    <label
-                      className="emotion-91"
-                    >
-                      <div
-                        className="emotion-45"
-                      >
-                        <input
-                          className="emotion-42"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="zvi-object-detection"
-                        />
-                        <div
-                          className="emotion-44"
-                        >
-                          <svg
-                            className="emotion-43"
-                            data-file-name="checkmark.svg"
-                            height={20}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="hidden"
-                      >
-                        zvi-object-detection
-                        : 
-                        Detect everyday objects in images, video, and documents.
-                      </div>
-                    </label>
-                  </td>
-                  <td>
-                    zvi-object-detection
-                  </td>
-                  <td>
-                    Detect everyday objects in images, video, and documents.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </fieldset>
-          <fieldset
-            className="emotion-112"
-          >
-            <legend
-              className="emotion-85"
-            >
-              Zorroa Timeline Extraction
-            </legend>
-            <div
-              className="emotion-86"
-            />
-            <table
-              cellSpacing="0"
-              className="emotion-111"
-            >
-              <thead>
-                <tr>
-                  <th>
-                     
-                  </th>
-                  <th>
-                    Module Name
-                  </th>
-                  <th>
-                    Description
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  className="emotion-92"
-                  onClick={[Function]}
-                >
-                  <td>
-                    <label
-                      className="emotion-91"
-                    >
-                      <div
-                        className="emotion-45"
-                      >
-                        <input
-                          className="emotion-42"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="zvi-document-page-clips"
-                        />
-                        <div
-                          className="emotion-44"
-                        >
-                          <svg
-                            className="emotion-43"
-                            data-file-name="checkmark.svg"
-                            height={20}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="hidden"
-                      >
-                        zvi-document-page-clips
-                        : 
-                        Extract all pages in MS Office/PDF documents into separate assets.
-                      </div>
-                    </label>
-                  </td>
-                  <td>
-                    zvi-document-page-clips
-                  </td>
-                  <td>
-                    Extract all pages in MS Office/PDF documents into separate assets.
-                  </td>
-                </tr>
-                <tr
-                  className="emotion-92"
-                  onClick={[Function]}
-                >
-                  <td>
-                    <label
-                      className="emotion-91"
-                    >
-                      <div
-                        className="emotion-45"
-                      >
-                        <input
-                          className="emotion-42"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="zvi-image-page-clips"
-                        />
-                        <div
-                          className="emotion-44"
-                        >
-                          <svg
-                            className="emotion-43"
-                            data-file-name="checkmark.svg"
-                            height={20}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="hidden"
-                      >
-                        zvi-image-page-clips
-                        : 
-                        Extract all layers in multi page image formats such as tiff and psd as as separate assets
-                      </div>
-                    </label>
-                  </td>
-                  <td>
-                    zvi-image-page-clips
-                  </td>
-                  <td>
-                    Extract all layers in multi page image formats such as tiff and psd as as separate assets
-                  </td>
-                </tr>
-                <tr
-                  className="emotion-92"
-                  onClick={[Function]}
-                >
-                  <td>
-                    <label
-                      className="emotion-91"
-                    >
-                      <div
-                        className="emotion-45"
-                      >
-                        <input
-                          className="emotion-42"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="zvi-video-shot-clips"
-                        />
-                        <div
-                          className="emotion-44"
-                        >
-                          <svg
-                            className="emotion-43"
-                            data-file-name="checkmark.svg"
-                            height={20}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="hidden"
-                      >
-                        zvi-video-shot-clips
-                        : 
-                        Break video files into individual assets based on a shot detection algorithm.
-                      </div>
-                    </label>
-                  </td>
-                  <td>
-                    zvi-video-shot-clips
-                  </td>
-                  <td>
-                    Break video files into individual assets based on a shot detection algorithm.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </fieldset>
-          <fieldset
-            className="emotion-112"
-          >
-            <legend
-              className="emotion-85"
-            >
-              Zorroa Visual Intelligence
-            </legend>
-            <div
-              className="emotion-86"
-            />
-            <table
-              cellSpacing="0"
-              className="emotion-111"
-            >
-              <thead>
-                <tr>
-                  <th>
-                     
-                  </th>
-                  <th>
-                    Module Name
-                  </th>
-                  <th>
-                    Description
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  className="emotion-92"
-                  onClick={[Function]}
-                >
-                  <td>
-                    <label
-                      className="emotion-91"
-                    >
-                      <div
-                        className="emotion-45"
-                      >
-                        <input
-                          className="emotion-42"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="zvi-text-detection"
-                        />
-                        <div
-                          className="emotion-44"
-                        >
-                          <svg
-                            className="emotion-43"
-                            data-file-name="checkmark.svg"
-                            height={20}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="hidden"
-                      >
-                        zvi-text-detection
-                        : 
-                        Utilize OCR technology to detect text on an image.
-                      </div>
-                    </label>
-                  </td>
-                  <td>
-                    zvi-text-detection
-                  </td>
-                  <td>
-                    Utilize OCR technology to detect text on an image.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </fieldset>
-        </div>
-      </details>
-    </div>
-    <div
-      className="emotion-150"
-    >
-      <a
-        className="emotion-148"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-      >
-        Cancel
-      </a>
-      <button
-        aria-disabled={true}
-        className="emotion-149"
         onClick={[Function]}
         type="submit"
       >
