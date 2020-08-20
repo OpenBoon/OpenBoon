@@ -41,6 +41,7 @@ interface MaintenanceService {
 
     /**
      * Count the number of Tasks that still need to be processed
+     * Updates Gauges var.
      */
     fun countPendingTasks()
 
