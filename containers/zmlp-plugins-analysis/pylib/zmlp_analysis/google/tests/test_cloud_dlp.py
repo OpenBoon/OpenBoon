@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+import os
 from google.cloud.dlp_v2 import types
 
 from zmlp_analysis.google.cloud_dlp import CloudDLPDetectEntities
@@ -15,22 +16,10 @@ class MockDlpServiceClient:
         pass
 
     def inspect_content(self, _, __, ___):
-        bbox1 = types.BoundingBox(top=10, left=10, width=50, height=90)
-        bbox2 = types.BoundingBox(top=13, left=10, width=40, height=92)
-
-        content_locations = \
-            [types.ContentLocation(
-                image_location=types.ImageLocation(
-                    bounding_boxes=[bbox1, bbox2]))]
-        location = types.Location(content_locations=content_locations)
-        f1 = types.Finding(quote='May 30, 2019',
-                           info_type=types.InfoType(name='DATE'),
-                           likelihood='LIKELY',
-                           location=location)
-
-        result = types.InspectContentResponse(result=types.InspectResult(findings=[f1]))
-
-        return result
+        rsp = types.InspectContentResponse()
+        with open(os.path.dirname(__file__) + "/mock-data/dlp.dat", 'rb') as fp:
+            rsp.ParseFromString(fp.read())
+        return rsp
 
 
 class CloudDLPDetectEntitiesTests(PluginUnitTestCase):
@@ -55,6 +44,5 @@ class CloudDLPDetectEntitiesTests(PluginUnitTestCase):
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-dlp-date')
-        print(analysis)
-        assert analysis['count'] == 1
-        assert analysis['predictions'][0]['bbox'] == [0.02, 0.029, 0.117, 0.308]
+        assert analysis['count'] == 5
+        assert analysis['predictions'][0]['bbox'] == [0.168, 0.428, 0.33, 0.504]
