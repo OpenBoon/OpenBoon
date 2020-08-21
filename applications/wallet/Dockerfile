@@ -5,6 +5,9 @@ RUN apt-get -y update && apt-get -y upgrade && apt-get -y install python3 python
 COPY applications/wallet/frontend /applications/wallet/frontend
 WORKDIR /applications/wallet/frontend
 ARG CI_COMMIT_SHA
+
+RUN npm install -g npm@latest
+RUN npm cache verify
 RUN npm ci && CI_COMMIT_SHA=$CI_COMMIT_SHA npm run build
 
 # Install python dependencies.
