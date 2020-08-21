@@ -40,12 +40,6 @@ interface MaintenanceService {
     fun handleOrphanTasks()
 
     /**
-     * Count the number of Tasks that still need to be processed
-     * Updates Gauges var.
-     */
-    fun countPendingTasks()
-
-    /**
      * Run all Maintenance.  Return true if lock was obtained, false if not.
      */
     fun runAll()
@@ -167,15 +161,16 @@ class MaintenanceServiceImpl @Autowired constructor(
     }
 
     private fun initMicrometerGauges() {
+
         Gauge
             .builder("tasks.pending") {
-                tasksNumber.pendingTasks
+                dispatcherService.getPendingTasks().pendingTasks
             }
             .register(meterRegistry)
 
         Gauge
             .builder("tasks.max_running") {
-                tasksNumber.maxRunningTasks
+                dispatcherService.getPendingTasks().maxRunningTasks
             }
             .register(meterRegistry)
     }
@@ -203,12 +198,6 @@ class MaintenanceServiceImpl @Autowired constructor(
         handleExpiredJobs()
         handleUnresponsiveAnalysts()
         handleOrphanTasks()
-        countPendingTasks()
-    }
-
-    override fun countPendingTasks() {
-        // Updates variable that is observed within the Gauge
-        tasksNumber = dispatcherService.getPendingTasks()
     }
 
     override fun handleExpiredJobs() {
