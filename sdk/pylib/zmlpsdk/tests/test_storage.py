@@ -87,12 +87,26 @@ class FileCacheTests(TestCase):
             'name': 'cat.jpg',
             'category': 'proxy',
             'attrs': {},
-            'id': 'assets/123456/proxy/cat.jpg'
+            'id': 'assets/123456/proxy/cat.jpg',
+            'size': 100
         })
         post_patch.return_value = '/tmp/toucan.jpg'
         bird = zorroa_test_data('images/set01/toucan.jpg', uri=False)
         path = self.lfc.precache_file(pfile, bird)
         assert os.path.getsize(path) == os.path.getsize(bird)
+
+    @patch.object(ZmlpClient, 'stream')
+    def test_precache_file_zero_bytes(self, post_patch):
+        pfile = StoredFile({
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg',
+            'size': 0
+        })
+        post_patch.return_value = '/tmp/toucan.jpg'
+        bird = zorroa_test_data('images/set01/toucan.jpg', uri=False)
+        self.assertRaises(storage.ZmlpStorageException, self.lfc.precache_file, pfile, bird)
 
 
 class FileStorageTests(TestCase):
