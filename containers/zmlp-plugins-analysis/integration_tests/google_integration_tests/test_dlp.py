@@ -20,7 +20,8 @@ class CloudDLPDetectEntitiesTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.google.cloud_dlp.get_gcp_project_id')
     @patch.object(file_storage, 'localize_file')
     @patch.object(file_storage.assets, 'get_native_uri')
-    def test_image_text_processor(self, native_patch, localize_patch, pid_patch, init_patch, proxy_patch):
+    def test_image_text_processor(self, native_patch, localize_patch,
+                                  pid_patch, init_patch, proxy_patch):
         path = zorroa_test_path('images/dlp/87497658.jpg')
         native_patch.return_value = path
         localize_patch.return_value = path
