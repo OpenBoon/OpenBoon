@@ -178,7 +178,8 @@ class TestAssetStorage(TestCase):
         put_patch.return_value = {
             'id': '12345',
             'name': 'foo-timeline.json.gz',
-            'category': 'timeline'
+            'category': 'timeline',
+            'size': 100
         }
 
         asset = TestAsset(id='123456')
@@ -200,7 +201,8 @@ class TestAssetStorage(TestCase):
         put_patch.return_value = {
             'id': '12345',
             'name': 'cat.jpg',
-            'category': 'proxy'
+            'category': 'proxy',
+            'size': 100
         }
 
         asset = TestAsset(id='123456')
@@ -216,6 +218,7 @@ class TestAssetStorage(TestCase):
             'category': 'google',
             'attrs': {},
             'id': 'assets/123456/google/vid-int-moderation.json',
+            'size': 100
         }
         asset = TestAsset(id='123456')
         result = self.fs.assets.store_blob(
@@ -271,7 +274,8 @@ class TestProjectStorage(TestCase):
             'id': 'datasets/12345/face_model/celebs.dat',
             'name': 'celebs.dat',
             'category': 'face_model',
-            'entity': 'assets'
+            'entity': 'assets',
+            'size': 100
         }
 
         path = os.path.dirname(__file__) + '/fake_model.dat'
@@ -293,7 +297,8 @@ class TestProjectStorage(TestCase):
         put_patch.return_value = {
             'id': "asset/foo/fake/fake_model.dat",
             'name': 'fake_model.dat',
-            'category': 'fake'
+            'category': 'fake',
+            'size': 100
         }
         ds = Model({"id": "12345"})
         path = os.path.dirname(__file__) + '/fake_model.dat'
@@ -313,7 +318,8 @@ class TestProjectStorage(TestCase):
         put_patch.return_value = {
             'id': "asset/foo/fake/fake_model.dat",
             'name': 'fake_model.dat',
-            'category': 'fake'
+            'category': 'fake',
+            'size': 100
         }
         path = os.path.dirname(__file__) + '/fake_model.dat'
         fid = "dataset/12345/model/fake_model.dat"
@@ -397,7 +403,8 @@ class ModelStorageTests(TestCase):
         put_patch.return_value = {
             'id': "models/foo/fake/fake_model.dat",
             'name': 'fake_model.dat',
-            'category': 'fake'
+            'category': 'fake',
+            'size': 100
         }
         publish_patch.return_value = PipelineMod({
             'id': '12345'

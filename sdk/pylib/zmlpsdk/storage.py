@@ -322,7 +322,8 @@ class ProjectStorage(object):
             "entityId": entity_id,
             "category": category,
             "name": name,
-            "attrs": attrs or {}
+            "attrs": attrs or {},
+            "size": os.path.getsize(src_path)
         }
 
         # To upload a file into project storage, first we get a signed upload URI.
@@ -407,7 +408,8 @@ class ProjectStorage(object):
             "entityId": entity.id,
             "category": category,
             "name": name,
-            "attrs": attrs or {}
+            "attrs": attrs or {},
+            "size": os.path.getsize(tmp_path)
         }
 
         result = StoredFile(self.app.client.upload_file(
