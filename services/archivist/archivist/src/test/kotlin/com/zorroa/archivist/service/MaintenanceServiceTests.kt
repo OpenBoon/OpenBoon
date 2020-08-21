@@ -137,6 +137,5 @@ class MaintenanceServiceTests : AbstractTest() {
 
         assertEquals(1.0, pending.gauge().value())
         assertEquals(create.maxRunningTasks.toDouble(), max.gauge().value())
-
     }
 }
