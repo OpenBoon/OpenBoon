@@ -224,7 +224,7 @@ backend-py-lint:
 
 ## Backend Kotlin Lint
 backend-kotlin-lint:
-  image: kkopper/ktlint
+  image: kkopper/ktlint:0.37.2
   stage: pretest
   script:
     - ktlint services/**/*.kt lib/**/*.kt
