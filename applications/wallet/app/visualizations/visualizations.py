@@ -165,11 +165,11 @@ class HistogramVisualization(BaseVisualization):
                     }
                 }
             }
-            if self.query:
-                labels = self.query['query']['bool']['filter'][0]['terms'][
-                    f'{attribute}.predictions.label']
-                agg['aggs']['labels']['filter'] = {"terms": {f"{attribute}.predictions.label": labels}
-                }
+            labels = self._get_labels_from_query()
+            if labels:
+                agg['aggs']['labels']['filter'] = {
+                    "terms": {f"{attribute}.predictions.label": labels}
+                    }
             return agg
         else:
             interval, offset = self.get_interval_and_offset(attribute, size)
@@ -187,6 +187,17 @@ class HistogramVisualization(BaseVisualization):
         else:
             results = data['aggregations'][f'histogram#{self.id}']
         return {'id': self.id, 'results': results}
+
+    def _get_labels_from_query(self):
+        label_attr = f'{self.data["attribute"]}.predictions.label'
+        try:
+            filters = self.query['query']['bool']['filter']
+        except KeyError:
+            return None
+        for filter in filters:
+            if 'terms' in filter and label_attr in filter['terms']:
+                return filter['terms'][label_attr]
+        return None
 
     def get_interval_and_offset(self, attribute, size):
         """Calculates the appropriate interval and offset for the selected # of buckets"""
@@ -218,11 +229,8 @@ class HistogramVisualization(BaseVisualization):
         else:
             query['aggs'] = {
                 self.id: {
-                    'stats': {
-                        'extended_stats': {
-                            'field': attribute
-                        }
-
+                    'extended_stats': {
+                        'field': attribute
                     }
                 }
             }
@@ -230,15 +238,14 @@ class HistogramVisualization(BaseVisualization):
         # Get the min and max from the response
         if field_type == 'labelConfidence':
             nested_agg_name = f'nested#{self.id}'
-            nested_stats_agg_name = f'stats#nested_{self.id}'
-            agg_data = response['aggregations'][nested_agg_name]
+            agg_data = response['aggregations'][nested_agg_name]['extended_stats#stats']
         else:
-            agg_key = f'stats#{self.id}'
+            agg_key = f'extended_stats#{self.id}'
             agg_data = response['aggregations'][agg_key]
-        min, max = agg_data['extended_stats#stats']['min'], agg_data['extended_stats#stats']['max']
+        _min, _max = agg_data['min'], agg_data['max']
         # Calculate correct interval to get the # of buckets we want
         if size == 1:
-            interval = max - min
+            interval = _max - _min
         else:
-            interval = (max - min) / (size - 1)
-        return interval or 0.1, min
+            interval = (_max - _min) / (size - 1)
+        return interval or 0.1, _min
