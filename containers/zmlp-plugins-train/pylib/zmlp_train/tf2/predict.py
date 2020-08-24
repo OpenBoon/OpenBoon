@@ -94,7 +94,7 @@ def parse_args(main_args):
         description="Get model prediction for an image")
 
     parser.add_argument(
-        "--img_path",
+        "img_path",
         required=True,
         type=str,
         help="Image full path",
