@@ -2,13 +2,12 @@ from unittest.mock import patch
 
 from pytest import approx
 
-from zmlp_analysis.aws import RekognitionLabelDetection
+from zmlp_analysis.aws import RekognitionImageLabelDetection
 from zmlpsdk.base import Frame
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset, \
-    zorroa_test_path, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
 
 
-class RekognitionLabelDetectionProcessorTests(PluginUnitTestCase):
+class RekognitionImageLabelDetectionProcessorTests(PluginUnitTestCase):
     model_id = "model-id-12345"
 
     @patch("zmlp_analysis.aws.labels.get_proxy_level_path")
@@ -22,7 +21,7 @@ class RekognitionLabelDetectionProcessorTests(PluginUnitTestCase):
 
         args = expected_results[0][0]
 
-        processor = self.init_processor(RekognitionLabelDetection(), args)
+        processor = self.init_processor(RekognitionImageLabelDetection(), args)
         processor.process(frame)
 
         analysis = frame.asset.get_analysis('aws-label-detection')

@@ -1,2 +1,2 @@
 # flake8: noqa
-from .labels import RekognitionLabelDetection
+from .labels import RekognitionImageLabelDetection, RekognitionVideoLabelDetection
