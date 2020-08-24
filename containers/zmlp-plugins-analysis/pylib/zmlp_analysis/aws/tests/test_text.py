@@ -15,7 +15,7 @@ class RekognitionLabelDetectionProcessorTests(PluginUnitTestCase):
     def test_predict(self, client_patch, proxy_patch):
         client_patch.return_value = MockAWSClient()
 
-        flower_paths = zorroa_test_path("training/test_dsy.jpg")
+        flower_paths = zorroa_test_path("images/set08/meme.jpg")
         proxy_patch.return_value = flower_paths
         frame = Frame(TestAsset(flower_paths))
 
