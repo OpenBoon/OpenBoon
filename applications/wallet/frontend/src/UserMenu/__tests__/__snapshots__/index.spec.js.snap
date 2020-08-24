@@ -396,14 +396,16 @@ exports[`<UserMenu /> should render properly 2`] = `
             </a>
           </li>
           <li>
-            <button
+            <a
               className="emotion-6"
+              href="mailto:zvi-console-support@zorroa.com"
               onBlur={[Function]}
               onClick={[Function]}
-              type="button"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               Contact Support
-            </button>
+            </a>
           </li>
           <li>
             <a
