@@ -294,7 +294,8 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
@@ -633,7 +634,8 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
@@ -902,7 +904,8 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-15:hover {
+.emotion-15:hover,
+.emotion-15.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
@@ -989,7 +992,7 @@ Array [
   -ms-flex-direction: row;
   flex-direction: row;
   background-color: #0074f538;
-  color: #b3b3b3;
+  color: #ffffff;
 }
 
 .emotion-7:hover {
@@ -1001,7 +1004,8 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }

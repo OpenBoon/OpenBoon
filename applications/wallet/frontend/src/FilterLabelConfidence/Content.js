@@ -96,8 +96,10 @@ const FilterLabelConfidenceContent = ({
                   backgroundColor: isSelected
                     ? `${colors.signal.sky.base}${constants.opacity.hex22Pct}`
                     : '',
-                  color: colors.structure.white,
-                  ':hover': {
+                  color: isSelected
+                    ? colors.structure.white
+                    : colors.structure.zinc,
+                  ':hover, &.focus-visible:focus': {
                     backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
                     color: colors.structure.white,
                   },
