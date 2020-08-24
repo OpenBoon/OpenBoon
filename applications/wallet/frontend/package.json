@@ -103,7 +103,7 @@
     {
       "//": "app.js",
       "path": ".next/static/chunks/pages/_app**.js",
-      "maxSize": "25 kB"
+      "maxSize": "26 kB"
     },
     {
       "//": "error page",
@@ -121,7 +121,7 @@
     "@emotion/cache": "10.0.29",
     "@emotion/core": "10.0.35",
     "@reach/combobox": "0.11.0",
-    "@reach/listbox": "0.10.5",
+    "@reach/listbox": "0.11.0",
     "@reach/skip-nav": "0.10.5",
     "@sentry/browser": "5.21.3",
     "@svgr/webpack": "5.4.0",
