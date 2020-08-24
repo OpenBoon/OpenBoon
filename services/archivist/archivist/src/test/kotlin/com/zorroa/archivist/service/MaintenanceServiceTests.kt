@@ -121,21 +121,4 @@ class MaintenanceServiceTests : AbstractTest() {
         ).count()
         assertEquals(retryCount + 1, newRetryCount)
     }
-
-    @Test
-    fun testPendingTasksGauge() {
-        var pending = meterRegistry.get("tasks.pending")
-        var max = meterRegistry.get("tasks.max_running")
-        assertEquals(0.0, pending.gauge().value())
-
-        val spec1 = JobSpec(
-            "test_job",
-            emptyZpsScripts("priority"),
-            args = mutableMapOf("captain" to "kirk")
-        )
-        val create = jobService.create(spec1)
-
-        assertEquals(1.0, pending.gauge().value())
-        assertEquals(create.maxRunningTasks.toDouble(), max.gauge().value())
-    }
 }

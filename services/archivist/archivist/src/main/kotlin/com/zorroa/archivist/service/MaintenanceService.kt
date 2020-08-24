@@ -2,10 +2,8 @@ package com.zorroa.archivist.service
 
 import com.google.common.util.concurrent.AbstractScheduledService
 import com.zorroa.archivist.domain.AnalystState
-import com.zorroa.archivist.domain.PendingTasksCounter
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
-import io.micrometer.core.instrument.Gauge
 import io.micrometer.core.instrument.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -152,28 +150,6 @@ class MaintenanceServiceImpl @Autowired constructor(
     val analystService: AnalystService,
     val config: MaintenanceConfiguration
 ) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
-
-    var tasksNumber = PendingTasksCounter()
-
-    override fun startUp() {
-        super.startUp()
-        initMicrometerGauges()
-    }
-
-    private fun initMicrometerGauges() {
-
-        Gauge
-            .builder("tasks.pending") {
-                dispatcherService.getPendingTasks().pendingTasks
-            }
-            .register(meterRegistry)
-
-        Gauge
-            .builder("tasks.max_running") {
-                dispatcherService.getPendingTasks().maxRunningTasks
-            }
-            .register(meterRegistry)
-    }
 
     override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
         logger.info("MaintenanceService is enabled: {}", config.enabled)

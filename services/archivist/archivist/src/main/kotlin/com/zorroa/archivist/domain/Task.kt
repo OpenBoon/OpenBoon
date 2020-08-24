@@ -65,7 +65,7 @@ class TaskSpec(
     val script: ZpsScript
 )
 
-open class PendingTasksCounter(
+open class PendingTasksStats(
     val pendingTasks: Long = 0L,
     val maxRunningTasks: Long = 0L
 )

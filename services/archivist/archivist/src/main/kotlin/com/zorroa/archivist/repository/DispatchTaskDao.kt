@@ -4,7 +4,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.DispatchPriority
 import com.zorroa.archivist.domain.DispatchTask
 import com.zorroa.archivist.domain.JobState
-import com.zorroa.archivist.domain.PendingTasksCounter
+import com.zorroa.archivist.domain.PendingTasksStats
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.zmlp.util.Json
@@ -38,7 +38,7 @@ interface DispatchTaskDao {
     /**
      * Return the number of pending tasks with `in progress` jobs
      */
-    fun countPendingTasks(): PendingTasksCounter
+    fun getPendingTasksStats(): PendingTasksStats
 }
 
 @Repository
@@ -75,15 +75,15 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
         return result
     }
 
-    override fun countPendingTasks(): PendingTasksCounter {
-        val result = jdbc.queryForObject(COUNT_PENDING_TASKS) { rs, _ ->
-            PendingTasksCounter(
+    override fun getPendingTasksStats(): PendingTasksStats {
+        val result = jdbc.queryForObject(GET_PENDING_TASKS_STATS) { rs, _ ->
+            PendingTasksStats(
                 rs.getLong("pending_tasks"),
                 rs.getLong("max_running_tasks")
             )
         }
 
-        return result ?: PendingTasksCounter()
+        return result ?: PendingTasksStats()
     }
 
     companion object {
@@ -175,7 +175,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
             "ORDER BY " +
             "job.int_priority,job.time_created,task.time_created LIMIT ?"
 
-        private const val COUNT_PENDING_TASKS =
+        private const val GET_PENDING_TASKS_STATS =
             "SELECT SUM(job_count.int_task_state_0) as pending_tasks, " +
                 "SUM(job_count.int_max_running_tasks) as max_running_tasks " +
                 "FROM job AS job " +

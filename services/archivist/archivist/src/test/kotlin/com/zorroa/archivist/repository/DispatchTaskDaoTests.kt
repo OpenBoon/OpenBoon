@@ -127,8 +127,8 @@ class DispatchTaskDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testCountPeddingTasks() {
-        var countPendingTasks = dispatchTaskDao.countPendingTasks()
+    fun testPeddingTasksStats() {
+        var countPendingTasks = dispatchTaskDao.getPendingTasksStats()
 
         assertEquals(0, countPendingTasks.pendingTasks)
         assertEquals(0, countPendingTasks.maxRunningTasks)
@@ -139,7 +139,7 @@ class DispatchTaskDaoTests : AbstractTest() {
         val maxRunningTasksSum =
             launchJob1.maxRunningTasks + launchJob2.maxRunningTasks + launchJob3.maxRunningTasks + 0L
 
-        countPendingTasks = dispatchTaskDao.countPendingTasks()
+        countPendingTasks = dispatchTaskDao.getPendingTasksStats()
         assertEquals(3, countPendingTasks.pendingTasks)
         assertEquals(maxRunningTasksSum, countPendingTasks.maxRunningTasks)
     }
