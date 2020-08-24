@@ -6,12 +6,13 @@ import DoubleChevronSvg from '../Icons/doubleChevron.svg'
 
 import Button, { VARIANTS } from '../Button'
 import Resizeable from '../Resizeable'
+import BetaBadge from '../BetaBadge'
 
 const MIN_WIDTH = 400
 
 const PanelContent = ({
   openToThe,
-  panel: { title, content },
+  panel: { title, content, isBeta },
   setOpenPanel,
 }) => {
   return (
@@ -51,9 +52,12 @@ const PanelContent = ({
               fontWeight: typography.weight.medium,
               fontSize: typography.size.regular,
               lineHeight: typography.height.regular,
+              display: 'flex',
+              alignItems: 'center',
             }}
           >
             {title}
+            {isBeta && <BetaBadge />}
           </h2>
           <Button
             aria-label="Close Panel"
@@ -94,6 +98,7 @@ PanelContent.propTypes = {
     title: PropTypes.string.isRequired,
     icon: PropTypes.node.isRequired,
     content: PropTypes.node.isRequired,
+    isBeta: PropTypes.bool,
   }).isRequired,
   setOpenPanel: PropTypes.func.isRequired,
 }

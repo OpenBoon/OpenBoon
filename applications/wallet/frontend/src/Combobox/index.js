@@ -5,7 +5,7 @@ import ComboboxContainer from './Container'
 import ComboboxInput from './Input'
 import ComboboxOptions from './Options'
 
-import { spacing, colors, typography } from '../Styles'
+import { colors, typography } from '../Styles'
 
 // A key={reloadKey} must be used to prevent dropdown staying open on save
 // Submit/Cancel buttons should increment the reloadKey
@@ -39,15 +39,13 @@ const Combobox = ({
   }, [options])
 
   return (
-    <div css={{ flex: 1 }}>
-      <div
-        css={{
-          paddingBottom: spacing.base,
-          color: colors.structure.steel,
-        }}
-      >
-        {label}
-      </div>
+    <label
+      css={{
+        color: colors.structure.zinc,
+        flex: 1,
+      }}
+    >
+      {label}
       <ComboboxContainer
         onSelect={(newValue) => {
           setShowAllOptions(true)
@@ -71,19 +69,17 @@ const Combobox = ({
           value={value}
         />
       </ComboboxContainer>
-
       {hasError && errorMessage && (
         <div
           css={{
             fontStyle: typography.style.italic,
             color: colors.signal.warning.base,
-            paddingTop: spacing.base,
           }}
         >
           {errorMessage}
         </div>
       )}
-    </div>
+    </label>
   )
 }
 

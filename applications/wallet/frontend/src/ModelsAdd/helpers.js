@@ -2,10 +2,23 @@ import Router from 'next/router'
 
 import { fetcher, revalidate, getQueryString } from '../Fetch/helpers'
 
+export const slugify = ({ value }) => {
+  // https://gist.github.com/codeguy/6684588#gistcomment-3361909
+  return value
+    .toString()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+}
+
 export const onSubmit = async ({
   dispatch,
   projectId,
-  state: { name, type },
+  state: { type, name, moduleName },
 }) => {
   dispatch({ isLoading: true })
 
@@ -14,7 +27,7 @@ export const onSubmit = async ({
       results: { id: modelId },
     } = await fetcher(`/api/v1/projects/${projectId}/models/`, {
       method: 'POST',
-      body: JSON.stringify({ name, type }),
+      body: JSON.stringify({ type, name, moduleName }),
     })
 
     await revalidate({
