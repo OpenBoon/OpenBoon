@@ -1,22 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Combobox should render properly with a options function 1`] = `
-.emotion-3 {
+.emotion-2 {
+  color: #b3b3b3;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-0 {
-  padding-bottom: 8px;
-  color: #808080;
-}
-
-.emotion-2 {
-  position: relative;
-}
-
 .emotion-1 {
+  position: relative;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
   width: 100%;
   padding: 8px;
   outline: 1px solid transparent;
@@ -28,25 +26,21 @@ exports[`Combobox should render properly with a options function 1`] = `
   margin-bottom: 1px;
 }
 
-.emotion-1:hover {
+.emotion-0:hover {
   border: 1px solid #808080;
 }
 
-.emotion-1:focus {
+.emotion-0:focus {
   background-color: #ffffff;
   color: #000000;
 }
 
-<div
-  className="emotion-3"
+<label
+  className="emotion-2"
 >
+  inputLabel
   <div
-    className="emotion-0"
-  >
-    inputLabel
-  </div>
-  <div
-    className="emotion-2"
+    className="emotion-1"
     data-reach-combobox=""
   >
     <input
@@ -55,7 +49,7 @@ exports[`Combobox should render properly with a options function 1`] = `
       aria-expanded={false}
       aria-haspopup="listbox"
       autoComplete="off"
-      className="emotion-1"
+      className="emotion-0"
       data-reach-combobox-input=""
       onBlur={[Function]}
       onChange={[Function]}
@@ -67,26 +61,24 @@ exports[`Combobox should render properly with a options function 1`] = `
     />
     <span />
   </div>
-</div>
+</label>
 `;
 
 exports[`Combobox should render properly with an options array 1`] = `
-.emotion-3 {
+.emotion-2 {
+  color: #b3b3b3;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-0 {
-  padding-bottom: 8px;
-  color: #808080;
-}
-
-.emotion-2 {
-  position: relative;
-}
-
 .emotion-1 {
+  position: relative;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
   width: 100%;
   padding: 8px;
   outline: 1px solid transparent;
@@ -98,25 +90,21 @@ exports[`Combobox should render properly with an options array 1`] = `
   margin-bottom: 1px;
 }
 
-.emotion-1:hover {
+.emotion-0:hover {
   border: 1px solid #808080;
 }
 
-.emotion-1:focus {
+.emotion-0:focus {
   background-color: #ffffff;
   color: #000000;
 }
 
-<div
-  className="emotion-3"
+<label
+  className="emotion-2"
 >
+  inputLabel
   <div
-    className="emotion-0"
-  >
-    inputLabel
-  </div>
-  <div
-    className="emotion-2"
+    className="emotion-1"
     data-reach-combobox=""
   >
     <input
@@ -125,7 +113,7 @@ exports[`Combobox should render properly with an options array 1`] = `
       aria-expanded={false}
       aria-haspopup="listbox"
       autoComplete="off"
-      className="emotion-1"
+      className="emotion-0"
       data-reach-combobox-input=""
       onBlur={[Function]}
       onChange={[Function]}
@@ -136,26 +124,24 @@ exports[`Combobox should render properly with an options array 1`] = `
       value="label0"
     />
   </div>
-</div>
+</label>
 `;
 
 exports[`Combobox should render properly with error 1`] = `
-.emotion-4 {
+.emotion-3 {
+  color: #b3b3b3;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-0 {
-  padding-bottom: 8px;
-  color: #808080;
-}
-
-.emotion-2 {
-  position: relative;
-}
-
 .emotion-1 {
+  position: relative;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
   width: 100%;
   padding: 8px;
   outline: 1px solid transparent;
@@ -167,31 +153,26 @@ exports[`Combobox should render properly with error 1`] = `
   margin-bottom: 1px;
 }
 
-.emotion-1:hover {
+.emotion-0:hover {
   border: 1px solid #808080;
 }
 
-.emotion-1:focus {
+.emotion-0:focus {
   background-color: #ffffff;
   color: #000000;
 }
 
-.emotion-3 {
+.emotion-2 {
   font-style: italic;
   color: #c92300;
-  padding-top: 8px;
 }
 
-<div
-  className="emotion-4"
+<label
+  className="emotion-3"
 >
+  inputLabel
   <div
-    className="emotion-0"
-  >
-    inputLabel
-  </div>
-  <div
-    className="emotion-2"
+    className="emotion-1"
     data-reach-combobox=""
   >
     <input
@@ -200,7 +181,7 @@ exports[`Combobox should render properly with error 1`] = `
       aria-expanded={false}
       aria-haspopup="listbox"
       autoComplete="off"
-      className="emotion-1"
+      className="emotion-0"
       data-reach-combobox-input=""
       onBlur={[Function]}
       onChange={[Function]}
@@ -213,9 +194,9 @@ exports[`Combobox should render properly with error 1`] = `
     <span />
   </div>
   <div
-    className="emotion-3"
+    className="emotion-2"
   >
     error
   </div>
-</div>
+</label>
 `;

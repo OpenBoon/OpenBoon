@@ -19,6 +19,11 @@ interface ModelDao : JpaRepository<Model, UUID> {
 interface ModelJdbcDao {
 
     /**
+     * Delete the model
+     */
+    fun delete(model: Model): Boolean
+
+    /**
      * Find a [KPagedList] of [Model] that match the given [ModelFilter]
      * The [Project] filter is applied automatically.
      */
@@ -63,6 +68,10 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
         return throwWhenNotFound("Model not found") {
             return KPagedList(1L, filter.page, jdbc.query(query, MAPPER, *values))[0]
         }
+    }
+
+    override fun delete(model: Model): Boolean {
+        return jdbc.update("DELETE FROM model where pk_model=?", model.id) == 1
     }
 
     override fun find(filter: ModelFilter): KPagedList<Model> {

@@ -118,7 +118,7 @@ const DataSourcesAddForm = () => {
 
         <CheckboxGroup
           legend={
-            <>
+            <div css={{ display: 'flex' }}>
               Select File Types to Import
               <Toggletip openToThe="right" label="Supported File Types">
                 <div
@@ -144,7 +144,7 @@ const DataSourcesAddForm = () => {
                   ))}
                 </div>
               </Toggletip>
-            </>
+            </div>
           }
           description={
             <div>

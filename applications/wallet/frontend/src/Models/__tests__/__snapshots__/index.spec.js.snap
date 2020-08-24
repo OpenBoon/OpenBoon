@@ -2,18 +2,49 @@
 
 exports[`<Models /> should render properly with models 1`] = `
 Array [
-  .emotion-0 {
+  .emotion-1 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
   padding-top: 24px;
   padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  color: #ffffff;
+  background-color: #0074f5;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 15.399999999999999px;
+  font-weight: 500;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-left: 8px;
 }
 
 <h2
-    className="emotion-0"
+    className="emotion-1"
   >
     Custom Models
+    <span
+      className="emotion-0"
+    >
+      beta
+    </span>
   </h2>,
   .emotion-2 {
   display: -webkit-box;
@@ -567,18 +598,49 @@ Array [
 
 exports[`<Models /> should render properly with no models 1`] = `
 Array [
-  .emotion-0 {
+  .emotion-1 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
   padding-top: 24px;
   padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  color: #ffffff;
+  background-color: #0074f5;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 15.399999999999999px;
+  font-weight: 500;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-left: 8px;
 }
 
 <h2
-    className="emotion-0"
+    className="emotion-1"
   >
     Custom Models
+    <span
+      className="emotion-0"
+    >
+      beta
+    </span>
   </h2>,
   .emotion-2 {
   display: -webkit-box;
