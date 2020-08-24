@@ -32,6 +32,9 @@ import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.ActionListener
 import org.elasticsearch.client.RequestOptions
@@ -229,18 +232,20 @@ class ModelServiceImpl(
     }
 
     override fun deleteModel(model: Model) {
-        modelDao.delete(model)
+        modelJdbcDao.delete(model)
 
         pipelineModService.findByName(model.moduleName, false)?.let {
             pipelineModService.delete(it.id)
         }
 
-        try {
-            fileStorageService.recursiveDelete(
-                ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString())
-            )
-        } catch (e: Exception) {
-            logger.error("Failed to delete files associated with model: ${model.id}")
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                fileStorageService.recursiveDelete(
+                    ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString())
+                )
+            } catch (e: Exception) {
+                logger.error("Failed to delete files associated with model: ${model.id}")
+            }
         }
 
         val rest = indexRoutingService.getProjectRestClient()

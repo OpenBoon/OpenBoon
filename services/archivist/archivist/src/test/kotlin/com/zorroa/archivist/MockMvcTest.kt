@@ -133,23 +133,23 @@ abstract class MockMvcTest : AbstractTest() {
         return Json.Mapper.readValue(result.response.contentAsByteArray, type)
     }
 
-    protected fun <T> deserialize(result: MvcResult, type: TypeReference<T>): T {
+    fun <T> deserialize(result: MvcResult, type: TypeReference<T>): T {
         return Json.Mapper.readValue(result.response.contentAsByteArray, type)
     }
 
-    protected fun admin(): HttpHeaders {
+    fun admin(): HttpHeaders {
         val headers = HttpHeaders()
         headers["Authorization"] = "Bearer ADMIN"
         return headers
     }
 
-    protected fun job(): HttpHeaders {
+    fun job(): HttpHeaders {
         val headers = HttpHeaders()
         headers["Authorization"] = "Bearer JOBRUNNER"
         return headers
     }
 
-    protected fun analyst(): HttpHeaders {
+    fun analyst(): HttpHeaders {
         val headers = HttpHeaders()
         headers["Authorization"] = "Bearer ANALYST"
         return headers

@@ -71,6 +71,7 @@ describe('<Panel />', () => {
             title: 'Metadata',
             icon: <DashboardSvg height={constants.icons.regular} />,
             content: '',
+            isBeta: true,
           },
         }}
       </Panel>,
