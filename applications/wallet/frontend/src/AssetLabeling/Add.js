@@ -121,7 +121,8 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
               onSubmit({ dispatch, state, labels, projectId, assetId })
             }}
             isDisabled={
-              (!state.modelId && !localModelId) ||
+              !hasModel ||
+              !state.modelId ||
               (!state.label && !localLabel) ||
               state.isLoading ||
               (state.success && !state.isLoading) ||
