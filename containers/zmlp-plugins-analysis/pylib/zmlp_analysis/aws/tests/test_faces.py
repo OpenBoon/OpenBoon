@@ -31,33 +31,6 @@ class RekognitionFaceDetectionProcessorTests(PluginUnitTestCase):
             0.5119047239422798
         ]
 
-    @patch("zmlp_analysis.aws.faces.get_proxy_level_path")
-    @patch('zmlp_analysis.aws.faces.get_zvi_rekognition_client')
-    @patch("zmlp_analysis.aws.faces.LabelDetectionAnalysis")
-    def test_compare(self, analysis_patch, client_patch, proxy_patch):
-        client_patch.return_value = MockAWSClient()
-        analysis_patch.return_value = MockLabelDetectionAnalysis()
-
-        source_path = zorroa_test_path('images/face-recognition/face1.jpg')
-        target_path = zorroa_test_path('images/face-recognition/face2.jpg')
-        proxy_patch.return_value = target_path
-        # frame = Frame(TestAsset(target_path))
-
-        args = {"model_id": "model-id-12345"}
-
-        processor = self.init_processor(RekognitionFaceDetection(), args)
-        results = processor.compare(source_path, target_path)
-
-        r = results[0]
-        assert r[0] == 'face0'  # label name
-        assert r[1] == 99.90  # confidence score
-        assert r[2] == [  # bounding box
-            0.2811230421066284,
-            0.4751185476779938,
-            0.2983958963304758,
-            0.5119047239422798
-        ]
-
 
 class MockAWSClient:
 
