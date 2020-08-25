@@ -121,7 +121,6 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         tf2_dir = os.path.dirname(os.path.realpath(__file__))
         shutil.copy2(os.path.join(tf2_dir, "predict.py"), model_dir)
-        shutil.copy2(os.path.join(tf2_dir, "predict.sh"), model_dir)
         mod = file_storage.models.save_model(model_dir,  self.app_model, self.arg_value('deploy'))
         self.reactor.emit_status('Published model: {}'.format(self.app_model.name))
         return mod
