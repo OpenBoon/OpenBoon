@@ -91,3 +91,22 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         frame = Frame(asset)
         self.processor.process(frame)
         assert 'dog' in asset.get_attr('analysis.gcp-speech-to-text.content')
+
+    @patch.object(file_storage.assets, 'store_blob')
+    @patch.object(file_storage.assets, 'store_file')
+    @patch.object(file_storage.assets, 'get_native_uri')
+    @patch.object(file_storage, 'localize_file')
+    @patch('zmlp_analysis.google.cloud_speech.initialize_gcp_client')
+    def test_speech_detection_no_audio(self, speech_patch, localize_patch,
+                              native_url_patch, store_patch, store_blob_patch):
+        speech_patch.return_value = MockSpeechToTextClient()
+        localize_patch.return_value = zorroa_test_path("video/no_audio.mp4")
+        native_url_patch.return_value = 'gs://zorroa-dev-data/video/audio8D0_VU.flac'
+        store_patch.return_value = get_mock_stored_file()
+        store_blob_patch.return_value = get_mock_stored_file()
+
+        asset = TestAsset('gs://zorroa-dev-data/video/no_audio.mp4')
+        asset.set_attr('media.length', 15.0)
+        asset.set_attr('clip.track', 'full')
+        frame = Frame(asset)
+        self.processor.process(frame)

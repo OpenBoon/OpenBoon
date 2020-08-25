@@ -1,6 +1,7 @@
 import subprocess
 import tempfile
 import time
+from os import path
 
 import backoff
 from google.api_core.exceptions import ResourceExhausted
@@ -53,6 +54,10 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
             return
 
         audio_uri = self.get_audio_proxy_uri(asset)
+        if audio_uri is None:
+            self.logger.warning('Skipping, video has no audio.')
+            return
+
         audio_result = self.recognize_speech(audio_uri)
 
         # The speech to text results come with multiple possibilities per segment, we
@@ -128,7 +133,13 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
                         audio_fname]
 
             self.logger.info('Executing {}'.format(" ".join(cmd_line)))
-            subprocess.check_call(cmd_line)
+            try:
+                subprocess.check_call(cmd_line)
+            except subprocess.CalledProcessError:
+                pass
+
+        if not path.exists(audio_fname):
+            return None
 
         sfile = file_storage.assets.store_file(
             audio_fname, asset, 'audio', rename='audio_proxy.flac')
