@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
-from django.test import override_settings
 from zmlp import ZmlpClient
+from zmlp.client import ZmlpDuplicateException
 
 pytestmark = pytest.mark.django_db
 
@@ -25,7 +25,6 @@ def list_data():
 
 class TestApikey:
 
-    @override_settings(PLATFORM='zmlp')
     def test_get_zmlp_list(self, zmlp_project_user, project, api_client, monkeypatch, list_data):
 
         def mock_api_response(*args, **kwargs):
@@ -39,7 +38,6 @@ class TestApikey:
         content = response.json()
         assert len(content['results']) == 2
 
-    @override_settings(PLATFORM='zmlp')
     def test_get_detail(self, zmlp_project_user, project, api_client, monkeypatch, detail_data):
 
         def mock_api_response(*args, **kwargs):
@@ -55,7 +53,6 @@ class TestApikey:
         content = response.json()
         assert content['id'] == 'b3a09695-b9fb-40bd-8ea8-bbe0c2cba33f'
 
-    @override_settings(PLATFORM='zmlp')
     def test_post_create(self, zmlp_project_user, project, api_client, monkeypatch, detail_data):
 
         def mock_post_response(*args, **kwargs):
@@ -76,7 +73,6 @@ class TestApikey:
         content = response.json()
         assert content == {'secretKey': 'secret', 'accessKey': 'access'}
 
-    @override_settings(PLATFORM='zmlp')
     def test_post_create_bad_body(self, zmlp_project_user, project, api_client,
                                   monkeypatch, detail_data):
 
@@ -91,7 +87,24 @@ class TestApikey:
         assert response.content == (b'{"name":["This field is required."],"permissions":'
                                     b'["This field is required."]}')
 
-    @override_settings(PLATFORM='zmlp')
+    def test_post_create_existing_name(self, zmlp_project_user, project, api_client,
+                                       monkeypatch, login):
+        def mock_api_response(*args, **kwargs):
+            raise ZmlpDuplicateException({})
+
+        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'name': 'job-runner',
+                'permissions': ['JobRunner', 'AssetsWrite', 'AssetsRead',
+                                'StorageCreate']}
+        response = api_client.post(
+            reverse('apikey-list', kwargs={'project_pk': project.id}), body)
+        assert response.status_code == 409
+        assert response.json() == {
+            'name': ['An API Key with this name already exists. Please choose another.']
+        }
+
     def test_delete_detail(self, zmlp_project_user, project, api_client, monkeypatch, detail_data):
         def mock_api_response(*args, **kwargs):
             return {}
