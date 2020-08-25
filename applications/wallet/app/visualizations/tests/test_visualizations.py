@@ -78,58 +78,68 @@ class TestHistogram(TestBaseVisualizationTestCase):
         }
 
     def test_get_agg(self, data, monkeypatch, zmlp_apikey):
-
         def mock_response(*args, **kwargs):
-            return {'took': 4, 'timed_out': False,
-                    '_shards': {'total': 2, 'successful': 2, 'skipped': 0, 'failed': 0},
-                    'hits': {
-                        'total': {
-                            'value': 38,
-                            'relation': 'eq'
-                        },
-                        'max_score': None,
-                        'hits': []},
-                    'aggregations': {
-                        'stats#mySpecialGuy': {
-                            'count': 38,
+            return {
+                'took': 0,
+                'timed_out': False,
+                '_shards': {'total': 2, 'successful': 2, 'skipped': 0, 'failed': 0},
+                'hits': {'total': {'value': 2, 'relation': 'eq'}, 'max_score': None,
+                         'hits': []},
+                'aggregations': {
+                    'nested#mySpecialGuy': {
+                        'doc_count': 3,
+                        'extended_stats#stats': {
+                            'count': 3,
                             'min': 10500219.0,
                             'max': 23002209.0,
                             'avg': 15336417.631578946,
-                            'sum': 582783870.0}}}
+                            'sum': 582783870.0,
+                            'sum_of_squares': 1.186705982893944,
+                            'variance': 0.08494821988646191,
+                            'std_deviation': 0.2914587790519646,
+                            'std_deviation_bounds': {
+                                'upper': 1.140250888417294,
+                                'lower': -0.025584227790564573}}}}}
 
         client = ZmlpClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
         viz = self.Viz(data, Mock(client=client), query={})
         monkeypatch.setattr(ZmlpClient, 'post', mock_response)
         agg = viz.get_es_agg()
         assert agg == {
-            'histogram': {
-                'field': 'media.author.predictions.score',
-                'interval': 1389110.0,
-                'offset': 10500219.0
-            }
-        }
+            'aggs': {
+                'labels': {
+                    'aggs': {
+                        'scores': {
+                            'histogram': {'field': 'media.author.predictions.score',
+                                          'interval': 1389110.0,
+                                          'offset': 10500219.0}}},
+                    'filter': {'match_all': {}}}},
+            'nested': {'path': 'media.author.predictions'}}
 
     def test_get_agg_normal_field(self, data, monkeypatch, zmlp_apikey):
 
         data['fieldType'] = 'range'
 
         def mock_response(*args, **kwargs):
-            return {'took': 4, 'timed_out': False,
-                    '_shards': {'total': 2, 'successful': 2, 'skipped': 0, 'failed': 0},
-                    'hits': {
-                        'total': {
-                            'value': 38,
-                            'relation': 'eq'
-                        },
-                        'max_score': None,
-                        'hits': []},
-                    'aggregations': {
-                        'stats#mySpecialGuy': {
-                            'count': 38,
-                            'min': 10500219.0,
-                            'max': 23002209.0,
-                            'avg': 15336417.631578946,
-                            'sum': 582783870.0}}}
+            return {
+                'took': 2,
+                'timed_out': False,
+                '_shards': {'total': 2, 'successful': 2, 'skipped': 0, 'failed': 0},
+                'hits': {'total': {'value': 38, 'relation': 'eq'},
+                         'max_score': None, 'hits': []},
+                'aggregations': {
+                    'extended_stats#mySpecialGuy': {
+                        'count': 38,
+                        'min': 10500219.0,
+                        'max': 23002209.0,
+                        'avg': 15336417.631578946,
+                        'sum': 582783870.0,
+                        'sum_of_squares': 23148928703501.0,
+                        'variance': 2292811297.163797,
+                        'std_deviation': 47883.309170981454,
+                        'std_deviation_bounds': {
+                            'upper': 159115.49739399232,
+                            'lower': -32417.739289933488}}}}
 
         client = ZmlpClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
         viz = self.Viz(data, Mock(client=client), query={})
@@ -139,41 +149,6 @@ class TestHistogram(TestBaseVisualizationTestCase):
             'histogram': {
                 'field': 'media.author',
                 'interval': 1389110.0,
-                'offset': 10500219.0
-            }
-        }
-
-    def test_get_agg_normal_field_(self, data, monkeypatch, zmlp_apikey):
-
-        data['fieldType'] = 'range'
-        data['options']['size'] = 1
-
-        def mock_response(*args, **kwargs):
-            return {'took': 4, 'timed_out': False,
-                    '_shards': {'total': 2, 'successful': 2, 'skipped': 0, 'failed': 0},
-                    'hits': {
-                        'total': {
-                            'value': 38,
-                            'relation': 'eq'
-                        },
-                        'max_score': None,
-                        'hits': []},
-                    'aggregations': {
-                        'stats#mySpecialGuy': {
-                            'count': 38,
-                            'min': 10500219.0,
-                            'max': 23002209.0,
-                            'avg': 15336417.631578946,
-                            'sum': 582783870.0}}}
-
-        client = ZmlpClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
-        viz = self.Viz(data, Mock(client=client), query={})
-        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
-        agg = viz.get_es_agg()
-        assert agg == {
-            'histogram': {
-                'field': 'media.author',
-                'interval': 12501990.0,
                 'offset': 10500219.0
             }
         }

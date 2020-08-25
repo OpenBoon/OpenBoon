@@ -54,6 +54,8 @@ const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
                 '&:nth-last-of-type(2)': { width: '100%' },
                 ':hover': {
                   backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
+                  color: colors.structure.white,
+                  svg: { color: colors.structure.white },
                 },
                 td: {
                   borderTop: constants.borders.regular.smoke,

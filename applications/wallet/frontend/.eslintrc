@@ -3,7 +3,6 @@
   "plugins": ["react-hooks", "emotion"],
   "parser": "babel-eslint",
   "env": { "browser": true, "jest": true },
-  "globals": { "zE": true },
   "rules": {
     "emotion/import-from-emotion": "error",
     "emotion/no-vanilla": "error",

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import stylesShape from '../Styles/shape'
 
-import { colors, constants, zIndex, spacing } from '../Styles'
+import { colors, constants, zIndex, spacing, typography } from '../Styles'
 
 import { onBlur as onBlurHelper } from './helpers'
 
@@ -31,6 +31,7 @@ const Menu = ({ button, children, open, style }) => {
             borderRadius: constants.borderRadius.small,
             boxShadow: constants.boxShadows.menu,
             minWidth: WIDTH,
+            fontFamily: typography.family.regular,
             ul: {
               listStyleType: 'none',
               padding: 0,
