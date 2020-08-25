@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-import { colors, spacing } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 
@@ -16,7 +16,13 @@ const AssetLabeling = () => {
       <AssetLabelingContent projectId={projectId} assetId={assetId} />
     </SuspenseBoundary>
   ) : (
-    <div css={{ padding: spacing.normal, color: colors.structure.white }}>
+    <div
+      css={{
+        padding: spacing.normal,
+        color: colors.structure.white,
+        fontStyle: typography.style.italic,
+      }}
+    >
       Select an asset to add labels.
     </div>
   )

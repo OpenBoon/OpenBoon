@@ -303,6 +303,7 @@ Array [
 .emotion-4 {
   padding: 16px;
   color: #ffffff;
+  font-style: italic;
 }
 
 <details
@@ -347,6 +348,7 @@ exports[`<AssetLabeling /> should render properly with no selected asset 1`] = `
 .emotion-0 {
   padding: 16px;
   color: #ffffff;
+  font-style: italic;
 }
 
 <div

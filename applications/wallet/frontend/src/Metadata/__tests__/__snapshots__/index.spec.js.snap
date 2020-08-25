@@ -4,6 +4,7 @@ exports[`<Metadata /> should render properly 1`] = `
 .emotion-0 {
   padding: 16px;
   color: #ffffff;
+  font-style: italic;
 }
 
 <div
