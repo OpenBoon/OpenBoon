@@ -44,20 +44,7 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
           {name}
         </div>
 
-        <table
-          css={{
-            fontFamily: typography.family.mono,
-            fontSize: typography.size.small,
-            lineHeight: typography.height.small,
-            color: colors.structure.white,
-            width: '100%',
-            borderSpacing: 0,
-            td: {
-              paddingRight: spacing.base,
-              paddingLeft: 0,
-            },
-          }}
-        >
+        <table>
           <thead>
             <tr>
               {columns.map((column) => {
@@ -94,10 +81,14 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
                   // eslint-disable-next-line react/no-array-index-key
                   key={`${prediction.label}-${index}`}
                   css={{
-                    verticalAlign: 'bottom',
                     td: {
+                      verticalAlign: 'bottom',
+                      fontFamily: typography.family.mono,
+                      fontSize: typography.size.small,
+                      lineHeight: typography.height.small,
                       padding: spacing.base,
                       paddingLeft: 0,
+                      paddingRight: spacing.base,
                       borderBottom: constants.borders.regular.smoke,
                     },
                   }}

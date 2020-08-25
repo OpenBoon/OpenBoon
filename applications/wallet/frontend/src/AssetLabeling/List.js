@@ -15,20 +15,14 @@ const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
     )
 
   return (
-    <table
-      css={{
-        width: '100%',
-        color: colors.structure.steel,
-        borderSpacing: 0,
-      }}
-    >
+    <table css={{ color: colors.structure.steel }}>
       <thead>
         <tr
           css={{
-            textAlign: 'left',
-            fontFamily: typography.family.condensed,
-            fontWeight: typography.weight.medium,
             th: {
+              textAlign: 'left',
+              fontFamily: typography.family.condensed,
+              fontWeight: typography.weight.regular,
               textTransform: 'uppercase',
               padding: spacing.moderate,
               paddingTop: spacing.normal,
