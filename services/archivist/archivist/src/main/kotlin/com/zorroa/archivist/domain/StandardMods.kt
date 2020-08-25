@@ -506,6 +506,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                             mutableMapOf()
                         )
                     )
+                ),
+                ModOp(
+                    ModOpType.SET_ARGS,
+                    mapOf("ocr" to true),
+                    OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
             true
