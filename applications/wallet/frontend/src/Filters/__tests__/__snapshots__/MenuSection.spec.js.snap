@@ -11,12 +11,18 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
 }
 
 .emotion-7 {
+  color: #b3b3b3;
   padding: 8px;
   margin-left: -32px;
 }
 
 .emotion-7:hover {
   background-color: #0074f538;
+  color: #ffffff;
+}
+
+.emotion-7:hover svg {
+  color: #ffffff;
 }
 
 .emotion-6 {
@@ -87,7 +93,6 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
 }
 
 .emotion-4 {
-  color: #b3b3b3;
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -147,12 +152,18 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
 }
 
 .emotion-8 {
+  color: #b3b3b3;
   padding: 8px;
   margin-left: -32px;
 }
 
 .emotion-8:hover {
   background-color: #0074f538;
+  color: #ffffff;
+}
+
+.emotion-8:hover svg {
+  color: #ffffff;
 }
 
 .emotion-7 {
@@ -223,7 +234,6 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
 }
 
 .emotion-5 {
-  color: #b3b3b3;
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
@@ -315,12 +325,18 @@ exports[`<FiltersMenuSection /> should render properly for an "exists" filter 1`
 }
 
 .emotion-7 {
+  color: #b3b3b3;
   padding: 8px;
   margin-left: -32px;
 }
 
 .emotion-7:hover {
   background-color: #0074f538;
+  color: #ffffff;
+}
+
+.emotion-7:hover svg {
+  color: #ffffff;
 }
 
 .emotion-6 {
@@ -391,7 +407,6 @@ exports[`<FiltersMenuSection /> should render properly for an "exists" filter 1`
 }
 
 .emotion-4 {
-  color: #b3b3b3;
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
