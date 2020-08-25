@@ -15,7 +15,6 @@ class RekognitionUnsafeDetection(AssetProcessor):
     def __init__(self):
         super(RekognitionUnsafeDetection, self).__init__()
         self.client = None
-        self.analysis = None
 
     def init(self):
         # AWS client
@@ -30,20 +29,21 @@ class RekognitionUnsafeDetection(AssetProcessor):
         """
         asset = frame.asset
         proxy_path = get_proxy_level_path(asset, 0)
-        self.analysis = LabelDetectionAnalysis()
+        analysis = LabelDetectionAnalysis()
 
-        for ls in self.predict(proxy_path):
-            self.analysis.add_label_and_score(ls[0], ls[1])
+        for ls in self.predict(proxy_path, int(analysis.min_score)):
+            analysis.add_label_and_score(ls[0], ls[1])
 
-        asset.add_analysis(self.namespace, self.analysis)
+        asset.add_analysis(self.namespace, analysis)
 
-    def predict(self, path):
+    def predict(self, path, min_score):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
             (label, score)]
 
         Args:
             path (str): image path
+            min_score (int): miminum confidence value
 
         Returns:
             list: a list of predictions
@@ -55,7 +55,7 @@ class RekognitionUnsafeDetection(AssetProcessor):
         img_json = {'Bytes': source_bytes}
         response = self.client.detect_moderation_labels(
             Image=img_json,
-            MinConfidence=self.analysis.min_score
+            MinConfidence=min_score
         )
 
         # get list of labels

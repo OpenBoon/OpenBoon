@@ -8,7 +8,6 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get
 
 
 class RekognitionUnsafeDetectionProcessorTests(PluginUnitTestCase):
-    model_id = "model-id-12345"
 
     @patch("zmlp_analysis.aws.nsfw.get_proxy_level_path")
     @patch('zmlp_analysis.aws.nsfw.get_zvi_rekognition_client')
