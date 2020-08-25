@@ -14,5 +14,5 @@ class RolesViewSet(BaseProjectViewSet):
     def list(self, request, project_pk):
         serializer = self.get_serializer(data=settings.ROLES, many=True)
         if not serializer.is_valid():
-            return Response({'detail': serializer.errors}, status=status.status_500)
+            return Response(serializer.errors, status=status.status_500)
         return Response({'results': serializer.data})
