@@ -252,6 +252,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   border-radius: 2px;
   box-shadow: 0 4px 7px 0 #000000;
   min-width: 200px;
+  font-family: Roboto,Avenir,"sans-serif";
 }
 
 .emotion-11 ul {

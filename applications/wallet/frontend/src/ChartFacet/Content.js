@@ -109,9 +109,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
                   ':hover, &.focus-visible:focus': {
                     backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
                     color: colors.structure.white,
-                    svg: {
-                      color: colors.structure.white,
-                    },
+                    svg: { color: colors.structure.white },
                   },
                 }}
                 variant={VARIANTS.NEUTRAL}

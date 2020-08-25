@@ -105,10 +105,12 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  color: #b3b3b3;
 }
 
 .emotion-3:hover {
   background-color: #0074f538;
+  color: #ffffff;
 }
 
 .emotion-3:hover svg {
@@ -119,7 +121,6 @@ Array [
   width: 100%;
   padding: 12px 16px;
   word-break: break-word;
-  color: #b3b3b3;
 }
 
 .emotion-2 {

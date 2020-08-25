@@ -67,14 +67,12 @@ const STYLES = {
       paddingLeft: spacing.base,
     },
     value: {
-      color: colors.structure.zinc,
       fontFamily: typography.family.mono,
       fontSize: typography.size.small,
       lineHeight: typography.height.small,
     },
     legend: {
       paddingLeft: spacing.moderate,
-      color: colors.structure.zinc,
     },
   },
 }

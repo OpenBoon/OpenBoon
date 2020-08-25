@@ -24,10 +24,13 @@ const FiltersMenuOption = ({ option, label, filters, onClick }) => {
     >
       <div
         css={{
+          color: colors.structure.zinc,
           padding: spacing.base,
           marginLeft: -OFFSET,
           ':hover': {
             backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
+            color: colors.structure.white,
+            svg: { color: colors.structure.white },
           },
         }}
       >

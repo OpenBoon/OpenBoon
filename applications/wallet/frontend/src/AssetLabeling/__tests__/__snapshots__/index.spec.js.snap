@@ -696,6 +696,11 @@ Array [
 
 .emotion-9:hover {
   background-color: #0074f538;
+  color: #ffffff;
+}
+
+.emotion-9:hover svg {
+  color: #ffffff;
 }
 
 .emotion-9 td {
@@ -1223,6 +1228,11 @@ Array [
 
 .emotion-9:hover {
   background-color: #0074f538;
+  color: #ffffff;
+}
+
+.emotion-9:hover svg {
+  color: #ffffff;
 }
 
 .emotion-9 td {
