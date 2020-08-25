@@ -95,7 +95,7 @@ const ModelDetails = () => {
         <Button
           variant={BUTTON_VARIANTS.SECONDARY}
           onClick={() =>
-            onTrain({ model, apply: false, projectId, modelId, setError })
+            onTrain({ model, deploy: false, projectId, modelId, setError })
           }
           isDisabled={ready}
         >
@@ -105,7 +105,7 @@ const ModelDetails = () => {
         <Button
           variant={BUTTON_VARIANTS.SECONDARY}
           onClick={() =>
-            onTrain({ model, apply: true, projectId, modelId, setError })
+            onTrain({ model, deploy: true, projectId, modelId, setError })
           }
           isDisabled={ready}
         >
