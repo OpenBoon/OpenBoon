@@ -58,11 +58,13 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 8px;
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
+  padding-right: 4px;
 }
 
 .emotion-7 {
@@ -628,11 +630,13 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 8px;
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
+  padding-right: 4px;
 }
 
 .emotion-7 {

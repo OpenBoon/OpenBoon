@@ -528,6 +528,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 16px;
   font-size: 17px;
@@ -2301,6 +2302,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 16px;
   font-size: 17px;
@@ -4177,6 +4179,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 16px;
   font-size: 17px;
@@ -6020,6 +6023,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 16px;
   font-size: 17px;
