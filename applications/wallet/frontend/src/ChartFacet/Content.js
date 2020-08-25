@@ -200,6 +200,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          paddingTop: spacing.base,
         }}
       >
         <Button
@@ -217,7 +218,12 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
             })
           }}
         >
-          <div css={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            css={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <div css={{ display: 'flex', paddingRight: spacing.small }}>
               <FilterSvg height={constants.icons.regular} />
             </div>
