@@ -1,18 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] = `
-.emotion-6 {
+.emotion-5 {
   padding-top: 16px;
   padding-bottom: 24px;
-}
-
-.emotion-5 {
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
-  width: 100%;
-  border-spacing: 0;
 }
 
 .emotion-0 {
@@ -44,11 +35,9 @@ exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] 
 }
 
 <div
-  className="emotion-6"
+  className="emotion-5"
 >
-  <table
-    className="emotion-5"
-  >
+  <table>
     <thead>
       <tr>
         <td
@@ -170,18 +159,9 @@ exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] 
 `;
 
 exports[`<MetadataPrettyLabels /> should render properly on the grid 1`] = `
-.emotion-6 {
+.emotion-5 {
   padding-top: 16px;
   padding-bottom: 24px;
-}
-
-.emotion-5 {
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
-  width: 100%;
-  border-spacing: 0;
 }
 
 .emotion-0 {
@@ -213,11 +193,9 @@ exports[`<MetadataPrettyLabels /> should render properly on the grid 1`] = `
 }
 
 <div
-  className="emotion-6"
+  className="emotion-5"
 >
-  <table
-    className="emotion-5"
-  >
+  <table>
     <thead>
       <tr>
         <td

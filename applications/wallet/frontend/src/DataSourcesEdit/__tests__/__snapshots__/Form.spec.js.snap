@@ -472,7 +472,6 @@ Array [
 }
 
 .emotion-91 {
-  width: 100%;
   color: #ffffff;
   text-align: left;
 }
@@ -1109,7 +1108,6 @@ Array [
               className="emotion-66"
             />
             <table
-              cellSpacing="0"
               className="emotion-91"
             >
               <thead>
@@ -1317,7 +1315,6 @@ Array [
               className="emotion-66"
             />
             <table
-              cellSpacing="0"
               className="emotion-91"
             >
               <thead>
@@ -1481,7 +1478,6 @@ Array [
               className="emotion-66"
             />
             <table
-              cellSpacing="0"
               className="emotion-91"
             >
               <thead>
@@ -2066,7 +2062,6 @@ Array [
 }
 
 .emotion-90 {
-  width: 100%;
   color: #ffffff;
   text-align: left;
 }
@@ -2671,7 +2666,6 @@ Array [
               className="emotion-65"
             />
             <table
-              cellSpacing="0"
               className="emotion-90"
             >
               <thead>
@@ -2879,7 +2873,6 @@ Array [
               className="emotion-65"
             />
             <table
-              cellSpacing="0"
               className="emotion-90"
             >
               <thead>
@@ -3043,7 +3036,6 @@ Array [
               className="emotion-65"
             />
             <table
-              cellSpacing="0"
               className="emotion-90"
             >
               <thead>
