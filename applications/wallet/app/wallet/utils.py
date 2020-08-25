@@ -5,6 +5,14 @@ import json
 from django.conf import settings
 from zmlp import ZmlpClient
 
+from wallet.exceptions import InvalidZmlpDataError
+
+
+def validate_zmlp_data(serializer):
+    """Returns a Response object to be used when data returned by ZMLP is invalid."""
+    if not serializer.is_valid():
+        raise InvalidZmlpDataError(detail=serializer.errors)
+
 
 def get_zmlp_superuser_client(project_id=None):
     """
