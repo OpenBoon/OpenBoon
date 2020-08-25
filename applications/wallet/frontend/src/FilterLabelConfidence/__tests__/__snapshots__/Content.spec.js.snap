@@ -33,7 +33,14 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  <div>
+  .emotion-0 {
+  padding-top: 8px;
+  font-style: italic;
+}
+
+<div
+    className="emotion-0"
+  >
     Confidence score:
      
     N/A
@@ -214,7 +221,14 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  <div>
+  .emotion-0 {
+  padding-top: 8px;
+  font-style: italic;
+}
+
+<div
+    className="emotion-0"
+  >
     Confidence score:
      
     N/A
@@ -650,7 +664,14 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  <div>
+  .emotion-0 {
+  padding-top: 8px;
+  font-style: italic;
+}
+
+<div
+    className="emotion-0"
+  >
     Confidence score:
      
     N/A
@@ -966,7 +987,14 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  <div>
+  .emotion-0 {
+  padding-top: 8px;
+  font-style: italic;
+}
+
+<div
+    className="emotion-0"
+  >
     Confidence score:
      
     All
