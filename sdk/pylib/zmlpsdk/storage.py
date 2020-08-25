@@ -515,26 +515,25 @@ class FileCache(object):
             str: The precache location.
 
         """
-        sfile_size = sfile.size
-        if sfile_size > 0:
-            _, suffix = os.path.splitext(sfile.name)
-            cache_path = self.get_path(sfile.id, suffix)
-            precache_path = urlparse(str(src_path)).path
+        if sfile.size == 0:
+            raise ZmlpStorageException('Cannot precache, file size is 0 bytes.')
 
-            # If the tmp file is in the task cache, just symlink it into file storage cache.
-            if src_path.startswith(os.environ.get("TMPDIR", "/tmp")):
-                symlinked = True
-                os.symlink(src_path, cache_path)
-            else:
-                symlinked = False
-                shutil.copy(urlparse(precache_path).path, cache_path)
+        _, suffix = os.path.splitext(sfile.name)
+        cache_path = self.get_path(sfile.id, suffix)
+        precache_path = urlparse(str(src_path)).path
 
-            name = os.path.basename(src_path)
-            logger.info(f'Pre-caching {name}, linked: {symlinked}')
-
-            return cache_path
+        # If the tmp file is in the task cache, just symlink it into file storage cache.
+        if src_path.startswith(os.environ.get("TMPDIR", "/tmp")):
+            symlinked = True
+            os.symlink(src_path, cache_path)
         else:
-            raise ZmlpStorageException('Cannot precache, file size is {} bytes'.format(sfile_size))
+            symlinked = False
+            shutil.copy(urlparse(precache_path).path, cache_path)
+
+        name = os.path.basename(src_path)
+        logger.info(f'Pre-caching {name}, linked: {symlinked}')
+
+        return cache_path
 
     def localize_uri(self, uri):
         """
