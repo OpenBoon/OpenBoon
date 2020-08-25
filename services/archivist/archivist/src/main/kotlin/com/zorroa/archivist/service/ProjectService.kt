@@ -5,6 +5,7 @@ import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.IndexRoute
+import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineMode
@@ -269,12 +270,66 @@ class ProjectServiceImpl constructor(
         val project = projectDao.findById(projectId).orElseThrow {
             EmptyResultDataAccessException("Project not found", 1)
         }
-
         projectCustomDao.setEnabled(project.id, value)
         authServerClient.updateApiKeyEnabledByProject(project.id, value)
         enabledCache.invalidate(project.id)
+
+        if (value)
+            enableProject(project)
+        else
+            disableProject(project)
+    }
+
+    private fun enableProject(project: Project) {
+
+        val indexRoute =
+            if (project.indexRouteId != null)
+                indexRoutingService.getIndexRoute(project.indexRouteId)
+            else
+                indexRoutingService.findOne(IndexRouteFilter(projectIds = listOf(project.id)))
+
+        indexRoute?.let {
+            indexRoutingService.openIndex(it)
+
+            logger.event(
+                LogObject.INDEX_ROUTE, LogAction.DISABLE,
+                mapOf(
+                    "indexRouteId" to indexRoute.id,
+                    "cluster" to indexRoute.clusterId
+                )
+            )
+        }
+
         logger.event(
-            LogObject.PROJECT, if (value) LogAction.ENABLE else LogAction.DISABLE,
+            LogObject.PROJECT, LogAction.ENABLE,
+            mapOf(
+                "projectId" to project.id,
+                "projectName" to project.name
+            )
+        )
+    }
+
+    private fun disableProject(project: Project) {
+        val idxs = indexRoutingService.getAll(
+            IndexRouteFilter(
+                projectIds = listOf(project.id)
+            )
+        )
+
+        idxs.forEach {
+            indexRoutingService.closeIndex(it)
+
+            logger.event(
+                LogObject.INDEX_ROUTE, LogAction.DISABLE,
+                mapOf(
+                    "indexRoute" to it.id,
+                    "cluster" to it.clusterId
+                )
+            )
+        }
+
+        logger.event(
+            LogObject.PROJECT, LogAction.DISABLE,
             mapOf(
                 "projectId" to project.id,
                 "projectName" to project.name

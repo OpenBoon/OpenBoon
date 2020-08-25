@@ -64,6 +64,10 @@ const StylesReset = () => (
           color: colors.structure.coal,
           cursor: 'pointer',
         },
+        table: {
+          width: '100%',
+          borderSpacing: 0,
+        },
         '.js-focus-visible :focus:not(.focus-visible)': {
           outline: 'none',
         },

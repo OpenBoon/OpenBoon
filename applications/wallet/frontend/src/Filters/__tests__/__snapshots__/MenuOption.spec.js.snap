@@ -11,12 +11,18 @@ exports[`<FiltersMenuOption /> should render properly 1`] = `
 }
 
 .emotion-7 {
+  color: #b3b3b3;
   padding: 8px;
   margin-left: -32px;
 }
 
 .emotion-7:hover {
   background-color: #0074f538;
+  color: #ffffff;
+}
+
+.emotion-7:hover svg {
+  color: #ffffff;
 }
 
 .emotion-6 {
@@ -88,7 +94,6 @@ exports[`<FiltersMenuOption /> should render properly 1`] = `
 }
 
 .emotion-4 {
-  color: #b3b3b3;
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;

@@ -70,8 +70,11 @@ const FilterReset = ({
             WebkitAppearance: 'none',
             backgroundColor: colors.structure.smoke,
             backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2IzYjNiMyIgLz4KPC9zdmc+')`,
-            backgroundRepeat: `no-repeat, repeat`,
-            backgroundPosition: `right top -2px`,
+            backgroundRepeat: `no-repeat`,
+            backgroundSize: constants.icons.regular,
+            backgroundPosition: `right ${spacing.moderate / 4}px top ${
+              spacing.moderate / 4
+            }px`,
             cursor: 'pointer',
             ':hover, :focus': {
               color: colors.structure.white,

@@ -109,9 +109,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
                   ':hover, &.focus-visible:focus': {
                     backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
                     color: colors.structure.white,
-                    svg: {
-                      color: colors.structure.white,
-                    },
+                    svg: { color: colors.structure.white },
                   },
                 }}
                 variant={VARIANTS.NEUTRAL}
@@ -202,6 +200,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          paddingTop: spacing.base,
         }}
       >
         <Button
@@ -219,7 +218,12 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
             })
           }}
         >
-          <div css={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            css={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <div css={{ display: 'flex', paddingRight: spacing.small }}>
               <FilterSvg height={constants.icons.regular} />
             </div>

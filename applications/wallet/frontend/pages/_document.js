@@ -2,7 +2,6 @@ import React from 'react'
 import Document, { Head, Main, NextScript } from 'next/document'
 
 import StylesReset from '../src/Styles/Reset'
-import Zendesk from '../src/Zendesk'
 
 class MyDocument extends Document {
   render() {
@@ -34,7 +33,6 @@ class MyDocument extends Document {
             crossOrigin="anonymous"
           />
         </Head>
-        <Zendesk />
         <StylesReset />
         <body>
           <Main />

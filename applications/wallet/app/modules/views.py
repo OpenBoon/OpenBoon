@@ -4,6 +4,7 @@ from modules.models import Provider
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 from modules.serializers import ModuleSerializer, ProviderSerializer
+from wallet.utils import validate_zmlp_data
 
 
 class ModuleViewSet(BaseProjectViewSet):
@@ -45,6 +46,5 @@ class ProviderViewSet(BaseProjectViewSet):
                                 'description': provider.description,
                                 'categories': categories})
         serializer = ProviderSerializer(data=results, many=True)
-        if not serializer.is_valid():
-            return Response({'detail': serializer.errors}, status=500)
+        validate_zmlp_data(serializer)
         return Response({'results': serializer.validated_data})

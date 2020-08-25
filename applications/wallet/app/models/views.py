@@ -59,10 +59,7 @@ class ModelViewSet(BaseProjectViewSet):
             (Response): Returns a 201 if the model was created.
         """
         serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(status=status.HTTP_400_BAD_REQUEST,
-                            data={'detail': serializer.errors})
-
+        serializer.is_valid(raise_exception=True)
         response = request.client.post(self.zmlp_root_api_path, serializer.validated_data)
         return Response(status=status.HTTP_201_CREATED, data={'results': response})
 

@@ -200,6 +200,21 @@ class IndexRoutingServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testOpenIndex() {
+        var route = indexRouteDao.getProjectRoute()
+        var state = indexRoutingService.getEsIndexState(route)
+        assertEquals("open", state["status"])
+
+        assertTrue(indexRoutingService.closeIndex(route))
+        state = indexRoutingService.getEsIndexState(route)
+        assertEquals("close", state["status"])
+
+        assertTrue(indexRoutingService.openIndex(route))
+        state = indexRoutingService.getEsIndexState(route)
+        assertEquals("open", state["status"])
+    }
+
+    @Test
     fun testGetEsIndexState() {
         val route = indexRouteDao.getProjectRoute()
         val result = indexRoutingService.getEsIndexState(route)
