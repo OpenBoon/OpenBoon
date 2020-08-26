@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-import { spacing } from '../Styles'
+import { spacing, typography } from '../Styles'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
@@ -27,7 +27,11 @@ const AssetDelete = () => {
 
   if (!assetId) {
     return (
-      <div css={{ padding: spacing.normal }}>Select an asset to delete.</div>
+      <div
+        css={{ padding: spacing.normal, fontStyle: typography.style.italic }}
+      >
+        Select an asset to delete.
+      </div>
     )
   }
 
