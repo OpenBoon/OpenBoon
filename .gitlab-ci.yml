@@ -23,7 +23,8 @@ wallet-integration-test-suite:
     - cd applications/wallet/cypress
     - npm ci
   script:
-    - npm run cli
+    - npm run cli -- --record --group Backend --spec 'integration/backend/**/*'
+    - npm run cli -- --record --group Frontend --spec 'integration/frontend/**/*'
   artifacts:
     when: always
     paths:
