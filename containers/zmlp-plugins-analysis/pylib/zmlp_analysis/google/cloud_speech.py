@@ -56,13 +56,10 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
             return
 
         if not self.has_audio(file_storage.localize_file(asset)):
-            return
-
-        audio_uri = self.get_audio_proxy_uri(asset)
-        if not audio_uri:
             self.logger.warning('Skipping, video has no audio.')
             return
 
+        audio_uri = self.get_audio_proxy_uri(asset)
         audio_result = self.recognize_speech(audio_uri)
 
         # The speech to text results come with multiple possibilities per segment, we
