@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.DispatchPriority
 import com.zorroa.archivist.domain.DispatchTask
 import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.PendingTasksStats
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.zmlp.util.Json
@@ -33,6 +34,11 @@ interface DispatchTaskDao {
      * Return a list of DispatchPriority instances, sorted by by highest priority first.
      */
     fun getDispatchPriority(): List<DispatchPriority>
+
+    /**
+     * Return the number of pending tasks with `in progress` jobs
+     */
+    fun getPendingTasksStats(): PendingTasksStats
 }
 
 @Repository
@@ -67,6 +73,17 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
         }
         result.sortBy { it.priority }
         return result
+    }
+
+    override fun getPendingTasksStats(): PendingTasksStats {
+        val result = jdbc.queryForObject(GET_PENDING_TASKS_STATS) { rs, _ ->
+            PendingTasksStats(
+                rs.getLong("pending_tasks"),
+                rs.getLong("max_running_tasks")
+            )
+        }
+
+        return result ?: PendingTasksStats()
     }
 
     companion object {
@@ -157,5 +174,19 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
             "job.int_priority <= ? " +
             "ORDER BY " +
             "job.int_priority,job.time_created,task.time_created LIMIT ?"
+
+        private const val GET_PENDING_TASKS_STATS =
+            "SELECT SUM(job_count.int_task_state_0) as pending_tasks, " +
+                "SUM(job_count.int_max_running_tasks) as max_running_tasks " +
+                "FROM job AS job " +
+                "INNER JOIN job_count AS job_count " +
+                "USING (pk_job) " +
+                "INNER JOIN task " +
+                "USING(pk_job) " +
+                "WHERE " +
+                "job.int_state=0 AND " +
+                "job.bool_paused=false AND " +
+                "task.int_state=0 AND " +
+                "job_count.int_max_running_tasks > job_count.int_task_state_1 + int_task_state_5"
     }
 }

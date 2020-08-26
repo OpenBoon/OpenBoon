@@ -47,13 +47,6 @@ class CloudDLPDetectEntities(AssetProcessor):
         pid = get_gcp_project_id()
 
         p_path = self.get_proxy_image(frame.asset)
-        print('###############')
-        print('###############')
-        print('###############')
-        print(p_path)
-        print('###############')
-        print('###############')
-        print('###############')
 
         img = cv2.imread(p_path)
         item = {"byte_item": {"type": 1, "data": cv2.imencode('.jpg', img)[1].tobytes()}}

@@ -182,6 +182,12 @@ resource "google_project_service" "vision" {
   disable_on_destroy = false
 }
 
+resource "google_project_service" "dlp" {
+  service            = "dlp.googleapis.com"
+  disable_on_destroy = false
+}
+
+
 ## ZMLP Services ######################################################################
 module "elasticsearch" {
   source                 = "./modules/elasticsearch"

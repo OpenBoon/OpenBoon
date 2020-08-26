@@ -18,16 +18,7 @@ const MetadataPrettyLabels = () => {
 
   return (
     <div css={{ paddingTop: spacing.normal, paddingBottom: spacing.comfy }}>
-      <table
-        css={{
-          fontFamily: typography.family.mono,
-          fontSize: typography.size.small,
-          lineHeight: typography.height.small,
-          color: colors.structure.white,
-          width: '100%',
-          borderSpacing: 0,
-        }}
-      >
+      <table>
         <thead>
           <tr>
             <td css={{ minWidth: spacing.normal }} />

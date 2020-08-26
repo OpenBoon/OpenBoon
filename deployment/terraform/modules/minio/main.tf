@@ -30,6 +30,9 @@ resource "kubernetes_deployment" "minio" {
   metadata {
     name      = "minio"
     namespace = var.namespace
+    labels = {
+      app = "minio"
+    }
   }
   spec {
     selector {

@@ -4,6 +4,7 @@ exports[`<Metadata /> should render properly 1`] = `
 .emotion-0 {
   padding: 16px;
   color: #ffffff;
+  font-style: italic;
 }
 
 <div
@@ -361,6 +362,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 12px;
 }

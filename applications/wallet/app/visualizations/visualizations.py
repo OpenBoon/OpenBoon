@@ -70,9 +70,9 @@ class BaseVisualization(object):
         Returns:
             (dict): The response component specific to this visualization.
         """
-        agg_name = f'{self.agg_prefix}#{self.id}'
+        results = data['aggregations'][f'{self.agg_prefix}#{self.id}']
         response = {'id': self.id,
-                    'results': data['aggregations'][agg_name]}
+                    'results': results}
         return response
 
     def get_es_agg(self):
@@ -133,30 +133,76 @@ class HistogramVisualization(BaseVisualization):
     type = 'histogram'
     required_keys = ['id', 'attribute', 'fieldType']
     required_option_keys = []
-    agg_prefix = 'histogram'
+    agg_prefix = 'filter#labels.histogram#scores'
 
     def get_es_agg(self):
         attribute = self.data['attribute']
         field_type = self.data['fieldType']
-        if field_type == "labelConfidence":
-            attribute = f'{attribute}.predictions.score'
         size = self.options.get('size', 10)
         if size < 1:
             size = 1
-        interval, offset = self.get_interval_and_offset(attribute, size)
-        # We always send the histogram query with an interval and offset to enforce the
-        # correct number of buckets
-        return {
-            "histogram": {
-                "field": attribute,
-                "interval": interval,
-                "offset": offset
+        if field_type == 'labelConfidence':
+            interval, offset = self.get_interval_and_offset(f'{attribute}.predictions.score',
+                                                            size)
+            agg = {
+                "nested": {
+                    "path": f"{attribute}.predictions"
+                },
+                "aggs": {
+                    "labels": {
+                        'filter': {
+                            'match_all': {}
+                        },
+                        "aggs": {
+                            "scores": {
+                                "histogram": {
+                                    "field": f"{attribute}.predictions.score",
+                                    "interval": interval,
+                                    'offset': offset
+                                }
+                            }
+                        }
+                    }
+                }
             }
-        }
+            labels = self._get_labels_from_query()
+            if labels:
+                agg['aggs']['labels']['filter'] = {
+                    "terms": {f"{attribute}.predictions.label": labels}
+                    }
+            return agg
+        else:
+            interval, offset = self.get_interval_and_offset(attribute, size)
+            return {
+                "histogram": {
+                    "field": attribute,
+                    "interval": interval,
+                    "offset": offset
+                }
+            }
+
+    def serialize_response_data(self, data):
+        if self.data['fieldType'] == 'labelConfidence':
+            results = data['aggregations'][f'nested#{self.id}']['filter#labels']['histogram#scores']
+        else:
+            results = data['aggregations'][f'histogram#{self.id}']
+        return {'id': self.id, 'results': results}
+
+    def _get_labels_from_query(self):
+        label_attr = f'{self.data["attribute"]}.predictions.label'
+        try:
+            filters = self.query['query']['bool']['filter']
+        except KeyError:
+            return None
+        for filter in filters:
+            if 'terms' in filter and label_attr in filter['terms']:
+                return filter['terms'][label_attr]
+        return None
 
     def get_interval_and_offset(self, attribute, size):
         """Calculates the appropriate interval and offset for the selected # of buckets"""
         client = self.request.client
+        field_type = self.data['fieldType']
         # Use the existing query if it exists
         if self.query:
             query = copy.deepcopy(self.query)
@@ -164,21 +210,42 @@ class HistogramVisualization(BaseVisualization):
             query = {}
         # Add stat aggregation to the query to get the min and max values
         query['size'] = 0
-        query['aggs'] = {
-            self.id: {
-                'stats': {
-                    'field': attribute
+        if field_type == 'labelConfidence':
+            query['aggs'] = {
+                self.id: {
+                    'nested': {
+                        'path': attribute.replace('.score', '')
+                    },
+                    'aggs': {
+                        'stats': {
+                            'extended_stats': {
+                                'field': attribute
+                            }
+
+                        }
+                    }
                 }
             }
-        }
+        else:
+            query['aggs'] = {
+                self.id: {
+                    'extended_stats': {
+                        'field': attribute
+                    }
+                }
+            }
         response = client.post('api/v3/assets/_search', query)
         # Get the min and max from the response
-        agg_key = f'stats#{self.id}'
-        agg_data = response['aggregations'][agg_key]
-        min, max = agg_data['min'], agg_data['max']
+        if field_type == 'labelConfidence':
+            nested_agg_name = f'nested#{self.id}'
+            agg_data = response['aggregations'][nested_agg_name]['extended_stats#stats']
+        else:
+            agg_key = f'extended_stats#{self.id}'
+            agg_data = response['aggregations'][agg_key]
+        _min, _max = agg_data['min'], agg_data['max']
         # Calculate correct interval to get the # of buckets we want
         if size == 1:
-            interval = max - min
+            interval = _max - _min
         else:
-            interval = (max - min) / (size - 1)
-        return interval, min
+            interval = (_max - _min) / (size - 1)
+        return interval or 0.1, _min

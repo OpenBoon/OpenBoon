@@ -126,6 +126,24 @@ class DispatchTaskDaoTests : AbstractTest() {
         assertEquals(0, priority.priority)
     }
 
+    @Test
+    fun testPeddingTasksStats() {
+        var countPendingTasks = dispatchTaskDao.getPendingTasksStats()
+
+        assertEquals(0, countPendingTasks.pendingTasks)
+        assertEquals(0, countPendingTasks.maxRunningTasks)
+
+        val launchJob1 = launchJob(JobPriority.Standard)
+        val launchJob2 = launchJob(JobPriority.Standard)
+        val launchJob3 = launchJob(JobPriority.Standard)
+        val maxRunningTasksSum =
+            launchJob1.maxRunningTasks + launchJob2.maxRunningTasks + launchJob3.maxRunningTasks + 0L
+
+        countPendingTasks = dispatchTaskDao.getPendingTasksStats()
+        assertEquals(3, countPendingTasks.pendingTasks)
+        assertEquals(maxRunningTasksSum, countPendingTasks.maxRunningTasks)
+    }
+
     fun launchJob(priority: Int): Job {
         val spec1 = JobSpec(
             "test_job_p$priority",

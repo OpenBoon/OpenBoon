@@ -3,6 +3,10 @@
 exports[`<MetadataPrettyLabelsContent /> should render properly 1`] = `
 Array [
   .emotion-9 {
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
   vertical-align: bottom;
 }
 
@@ -178,6 +182,10 @@ Array [
     />
   </tr>,
   .emotion-9 {
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
   vertical-align: bottom;
 }
 

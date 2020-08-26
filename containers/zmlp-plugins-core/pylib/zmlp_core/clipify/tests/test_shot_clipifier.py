@@ -21,7 +21,8 @@ class ShotDetectionVideoClipifierTests(PluginUnitTestCase):
             "attrs": {
                 "width": 1,
                 "height": 1
-            }
+            },
+            'size': 100
         }
         video_path = zorroa_test_data('video/sample_ipad.m4v')
         file_storage.cache.precache_file(StoredFile(proxy), video_path)
@@ -49,7 +50,8 @@ class ShotDetectionVideoClipifierTests(PluginUnitTestCase):
             "attrs": {
                 "width": 1,
                 "height": 1
-            }
+            },
+            'size': 100
         }
 
         # Set preconditions

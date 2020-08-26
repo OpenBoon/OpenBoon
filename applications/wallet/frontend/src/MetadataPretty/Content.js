@@ -47,8 +47,10 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
         <div
           css={{
             display: 'flex',
+            color: colors.structure.zinc,
             ':hover': {
               backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
+              color: colors.structure.white,
               svg: { opacity: 1 },
             },
           }}
@@ -58,7 +60,6 @@ const MetadataPrettyContent = ({ name, value: { content } }) => {
               width: '100%',
               padding: `${spacing.moderate}px ${spacing.normal}px`,
               wordBreak: 'break-word',
-              color: colors.structure.zinc,
             }}
           >
             {content}

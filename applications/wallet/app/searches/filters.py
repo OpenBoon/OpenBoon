@@ -256,25 +256,39 @@ class LabelConfidenceFilter(BaseFilter):
         min = self.data['values']['min']
         max = self.data['values']['max']
         return {
-            'query': {
-                'bool': {
-                    'must': [{
-                        'script_score': {
-                            'query': {
-                                'terms': {f'{attribute}.predictions.label': labels}
-                            },
-                            'script': {
-                                'source': 'kwconf',
-                                'lang': 'zorroa-kwconf',
-                                'params': {
-                                    'field': f'{attribute}.predictions',
-                                    'labels': labels,
-                                    'range': [min, max]
+            "query": {
+                "bool": {
+                    "filter": [
+                        {
+                            "terms": {
+                                f"{attribute}.predictions.label": labels
+                            }
+                        },
+                        {"nested": {
+                            "path": f"{attribute}.predictions",
+                            "query": {
+                                "bool": {
+                                    "filter": [
+                                        {
+                                            "terms": {
+                                                f"{attribute}.predictions.label": labels
+                                            }
+                                        },
+                                        {
+                                            "range": {
+                                                f"{attribute}.predictions.score": {
+                                                    "from": min,
+                                                    "to": max
+                                                }
+                                            }
+                                        }
+                                    ]
                                 }
-                            },
-                            'min_score': min
+
+                            }
                         }
-                    }]
+                        }
+                    ]
                 }
             }
         }

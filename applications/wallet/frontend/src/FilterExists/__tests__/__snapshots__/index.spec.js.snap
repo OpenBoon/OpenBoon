@@ -58,11 +58,13 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 8px;
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
+  padding-right: 4px;
 }
 
 .emotion-7 {
@@ -158,81 +160,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 
 .emotion-3 {
   opacity: 0;
-}
-
-.emotion-6 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 4px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border-radius: 2px;
-}
-
-.emotion-6:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-6:hover svg,
-.emotion-6.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
-  background-color: #3b3b3b;
 }
 
 .emotion-20 {
@@ -456,7 +383,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
         </button>
         <button
           aria-label="Delete Filter"
-          className="emotion-6"
+          className="emotion-4"
           onClick={[Function]}
           title="Delete Filter"
           type="button"
@@ -628,11 +555,13 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 8px;
   font-family: Roboto Mono;
   font-size: 14px;
   line-height: 18px;
+  padding-right: 4px;
 }
 
 .emotion-7 {
@@ -728,81 +657,6 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 
 .emotion-3 {
   opacity: 0;
-}
-
-.emotion-6 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 4px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border-radius: 2px;
-}
-
-.emotion-6:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-6:hover svg,
-.emotion-6.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-6[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
-  background-color: #3b3b3b;
 }
 
 .emotion-20 {
@@ -1026,7 +880,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
         </button>
         <button
           aria-label="Delete Filter"
-          className="emotion-6"
+          className="emotion-4"
           onClick={[Function]}
           title="Delete Filter"
           type="button"

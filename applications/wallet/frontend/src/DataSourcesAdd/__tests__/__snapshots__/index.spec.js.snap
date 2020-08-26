@@ -528,6 +528,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 16px;
   font-size: 17px;
@@ -627,7 +628,6 @@ Array [
 }
 
 .emotion-101 {
-  width: 100%;
   color: #ffffff;
   text-align: left;
 }
@@ -1310,7 +1310,6 @@ Array [
               className="emotion-76"
             />
             <table
-              cellSpacing="0"
               className="emotion-101"
             >
               <thead>
@@ -1518,7 +1517,6 @@ Array [
               className="emotion-76"
             />
             <table
-              cellSpacing="0"
               className="emotion-101"
             >
               <thead>
@@ -1682,7 +1680,6 @@ Array [
               className="emotion-76"
             />
             <table
-              cellSpacing="0"
               className="emotion-101"
             >
               <thead>
@@ -2301,6 +2298,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 16px;
   font-size: 17px;
@@ -2400,7 +2398,6 @@ Array [
 }
 
 .emotion-119 {
-  width: 100%;
   color: #ffffff;
   text-align: left;
 }
@@ -3186,7 +3183,6 @@ Array [
               className="emotion-94"
             />
             <table
-              cellSpacing="0"
               className="emotion-119"
             >
               <thead>
@@ -3394,7 +3390,6 @@ Array [
               className="emotion-94"
             />
             <table
-              cellSpacing="0"
               className="emotion-119"
             >
               <thead>
@@ -3558,7 +3553,6 @@ Array [
               className="emotion-94"
             />
             <table
-              cellSpacing="0"
               className="emotion-119"
             >
               <thead>
@@ -4177,6 +4171,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 16px;
   font-size: 17px;
@@ -4276,7 +4271,6 @@ Array [
 }
 
 .emotion-113 {
-  width: 100%;
   color: #ffffff;
   text-align: left;
 }
@@ -5029,7 +5023,6 @@ Array [
               className="emotion-88"
             />
             <table
-              cellSpacing="0"
               className="emotion-113"
             >
               <thead>
@@ -5237,7 +5230,6 @@ Array [
               className="emotion-88"
             />
             <table
-              cellSpacing="0"
               className="emotion-113"
             >
               <thead>
@@ -5401,7 +5393,6 @@ Array [
               className="emotion-88"
             />
             <table
-              cellSpacing="0"
               className="emotion-113"
             >
               <thead>
@@ -6020,6 +6011,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 16px;
   font-size: 17px;
@@ -6119,7 +6111,6 @@ Array [
 }
 
 .emotion-112 {
-  width: 100%;
   color: #ffffff;
   text-align: left;
 }
@@ -6867,7 +6858,6 @@ Array [
               className="emotion-87"
             />
             <table
-              cellSpacing="0"
               className="emotion-112"
             >
               <thead>
@@ -7075,7 +7065,6 @@ Array [
               className="emotion-87"
             />
             <table
-              cellSpacing="0"
               className="emotion-112"
             >
               <thead>
@@ -7239,7 +7228,6 @@ Array [
               className="emotion-87"
             />
             <table
-              cellSpacing="0"
               className="emotion-112"
             >
               <thead>
