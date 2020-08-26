@@ -148,10 +148,10 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         """Returns the json results of an ffprobe command as a dictionary.
 
         Args:
-            src_path (str): Path the the medis.
+            src_path (str): Path the the media.
 
         Returns:
-            dict: The media properties extracgted by ffprobe
+            True is media has at least one audio stream, False otherwise.
         """
 
         cmd = ['ffprobe',
