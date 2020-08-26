@@ -6,4 +6,4 @@ export PYTHONPATH="${PWD}/../pylib:${PWD}/../../../sdk/pylib:${PWD}/../../admin/
 #export ZMLP_APIKEY_FILE="qa.json"
 #export ZMLP_APIKEY_FILE="prod.json"
 #export ZMLP_SERVER="https://dev.api.zvi.zorroa.com"
-#export ZMLP_PROJECT="a0952c03-cc04-461c-a367-9ffae8c4199a"
+#export ZMLP_PROJECT=""
