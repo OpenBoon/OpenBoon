@@ -85,6 +85,11 @@ resource "kubernetes_secret" "archivist-sa-key" {
 }
 
 ## K8S Deployment
+resource "random_string" "monitor-password" {
+  length  = 16
+  special = false
+}
+
 resource "kubernetes_deployment" "archivist" {
   provider = kubernetes
   lifecycle {
@@ -243,6 +248,10 @@ resource "kubernetes_deployment" "archivist" {
           env {
             name  = "ARCHIVIST_ES_BACKUP_BUCKET_NAME"
             value = var.es-backup-bucket-name
+          }
+          env {
+            name  = "MANAGEMENT_ENDPOINTS_PASSWORD"
+            value = random_string.monitor-password.result
           }
         }
       }
