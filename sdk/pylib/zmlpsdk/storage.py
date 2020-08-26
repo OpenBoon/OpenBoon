@@ -516,7 +516,7 @@ class FileCache(object):
 
         """
         if sfile.size == 0:
-            raise ZmlpStorageException('Cannot precache, file size is 0 bytes.')
+            raise ZmlpStorageException(f'Cannot precache {src_path}, file size is 0 bytes.')
 
         _, suffix = os.path.splitext(sfile.name)
         cache_path = self.get_path(sfile.id, suffix)
@@ -680,7 +680,7 @@ class FileStorage(object):
         elif isinstance(rep, StoredFile):
             return self.projects.localize_file(rep)
         else:
-            raise ValueError("cannot localize file, unable to determine the remote file source")
+            raise ZmlpStorageException("cannot localize file, unable to determine the remote file source")
 
 
 class ZmlpStorageException(ZmlpException):
