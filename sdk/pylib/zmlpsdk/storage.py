@@ -680,7 +680,8 @@ class FileStorage(object):
         elif isinstance(rep, StoredFile):
             return self.projects.localize_file(rep)
         else:
-            raise ZmlpStorageException("cannot localize file, unable to determine the remote file source")
+            raise ZmlpStorageException(
+                f'cannot localize file {rep} unable to determine the remote file source')
 
 
 class ZmlpStorageException(ZmlpException):
