@@ -39,6 +39,19 @@ describe('<ModelDetails />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    expect(fetch.mock.calls[0][0]).toEqual(
+      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/train/`,
+    )
+
+    expect(fetch.mock.calls[0][1]).toEqual({
+      headers: {
+        'X-CSRFToken': 'CSRF_TOKEN',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+      body: '{"deploy":false}',
+    })
   })
 
   it('should handle train & apply success properly', async () => {
@@ -64,6 +77,19 @@ describe('<ModelDetails />', () => {
       component.root
         .findByProps({ children: 'Train & Apply' })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    expect(fetch.mock.calls[0][0]).toEqual(
+      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/train/`,
+    )
+
+    expect(fetch.mock.calls[0][1]).toEqual({
+      headers: {
+        'X-CSRFToken': 'CSRF_TOKEN',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+      body: '{"deploy":true}',
     })
 
     expect(mockMutate).toHaveBeenCalledWith({

@@ -18,6 +18,7 @@ from projects.models import Membership, Project
 from projects.permissions import ManagerUserPermissions
 from projects.serializers import ProjectSerializer, ProjectUserSerializer
 from wallet.paginators import FromSizePagination
+from wallet.utils import validate_zmlp_data
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -182,8 +183,7 @@ class BaseProjectViewSet(ViewSet):
             serializer = serializer_class(data=items, many=True)
         else:
             serializer = self.get_serializer(data=items, many=True)
-        if not serializer.is_valid():
-            return Response({'detail': serializer.errors}, status=500)
+        validate_zmlp_data(serializer)
         content['list'] = serializer.validated_data
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(content, request)
@@ -225,8 +225,7 @@ class BaseProjectViewSet(ViewSet):
         else:
             serializer = self.get_serializer(data=items, many=True)
 
-        if not serializer.is_valid():
-            return Response({'detail': serializer.errors}, status=500)
+        validate_zmlp_data(serializer)
         results = {'list': serializer.validated_data,
                    'page': {'from': payload['from'],
                             'size': payload['size'],
@@ -311,8 +310,7 @@ class BaseProjectViewSet(ViewSet):
         else:
             serializer = self.get_serializer(data=response, many=True)
 
-        if not serializer.is_valid():
-            return Response({'detail': serializer.errors}, status=500)
+        validate_zmlp_data(serializer)
         return Response({'results': serializer.data})
 
     def _zmlp_retrieve(self, request, pk, item_modifier=None):
@@ -334,8 +332,7 @@ class BaseProjectViewSet(ViewSet):
         if item_modifier:
             item_modifier(request, content)
         serializer = self.get_serializer(data=content)
-        if not serializer.is_valid():
-            return Response({'detail': serializer.errors}, status=500)
+        validate_zmlp_data(serializer)
         return Response(serializer.data)
 
     def _zmlp_destroy(self, request, pk):

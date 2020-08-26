@@ -31,9 +31,7 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
       </legend>
       <div css={{ clear: 'both' }} />
       <table
-        cellSpacing="0"
         css={{
-          width: '100%',
           color: colors.structure.white,
           textAlign: 'left',
           'th, td': {

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
-import { colors, spacing } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 import FaceLabelingForm from './Form'
 
@@ -12,7 +12,13 @@ const FaceLabelingContent = ({ projectId, assetId }) => {
 
   if (predictions.length < 1) {
     return (
-      <div css={{ padding: spacing.normal, color: colors.structure.white }}>
+      <div
+        css={{
+          padding: spacing.normal,
+          color: colors.structure.white,
+          fontStyle: typography.style.italic,
+        }}
+      >
         No faces have been detected in this asset for naming and training.
         Please select another asset.
       </div>
