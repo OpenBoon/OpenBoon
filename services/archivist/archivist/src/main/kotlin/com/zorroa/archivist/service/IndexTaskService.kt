@@ -225,6 +225,7 @@ class IndexTaskMonitor(
         }
 
         logger.info("ES reindex task completed: ${task.esTaskId} : ${esTask.isCompleted}")
+        logger.info("Status: ${esTask.taskInfo.status}")
 
         return withAuth(InternalThreadAuthentication(indexRoute.projectId, setOf())) {
 
