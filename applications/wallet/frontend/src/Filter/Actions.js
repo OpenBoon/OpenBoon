@@ -78,6 +78,9 @@ const FilterActions = ({
           borderRadius: constants.borderRadius.small,
           ':hover, &.focus-visible:focus': {
             backgroundColor: colors.structure.smoke,
+            svg: {
+              color: colors.structure.white,
+            },
           },
         }}
         onClick={(event) => {

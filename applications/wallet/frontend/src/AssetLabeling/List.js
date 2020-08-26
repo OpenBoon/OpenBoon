@@ -9,7 +9,13 @@ import AssetLabelingMenu from './Menu'
 const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
   if (!labels.length)
     return (
-      <div css={{ padding: spacing.normal, color: colors.structure.white }}>
+      <div
+        css={{
+          padding: spacing.normal,
+          color: colors.structure.white,
+          fontStyle: typography.style.italic,
+        }}
+      >
         No labels have been added
       </div>
     )

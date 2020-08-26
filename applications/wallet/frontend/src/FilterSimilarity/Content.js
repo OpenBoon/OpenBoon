@@ -85,7 +85,7 @@ const FilterSimilarityContent = ({
         />
       </div>
 
-      <div css={{ fontStyle: 'italic' }}>
+      <div css={{ fontStyle: typography.style.italic }}>
         Similarity Range: {formatValue({ attribute, value }).toFixed(2)}
       </div>
 

@@ -464,6 +464,7 @@ exports[`<AssetDelete /> should render properly when asset is deleted 1`] = `
 exports[`<AssetDelete /> should render properly when no asset is selected 1`] = `
 .emotion-0 {
   padding: 16px;
+  font-style: italic;
 }
 
 <div
