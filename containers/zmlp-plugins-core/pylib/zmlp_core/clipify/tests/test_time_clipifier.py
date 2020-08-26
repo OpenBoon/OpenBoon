@@ -20,7 +20,8 @@ class TimeBasedVideoClipifierTests(PluginUnitTestCase):
             "attrs": {
                 "width": 1,
                 "height": 1
-            }
+            },
+            'size': 100
         }
 
         video_path = zorroa_test_data('video/sample_ipad.m4v')
