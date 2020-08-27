@@ -44,6 +44,7 @@ import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptType
 import org.elasticsearch.search.aggregations.AggregationBuilders
 import org.elasticsearch.search.aggregations.BucketOrder
+import org.elasticsearch.search.aggregations.bucket.filter.Filter
 import org.elasticsearch.search.aggregations.bucket.nested.Nested
 import org.elasticsearch.search.aggregations.bucket.terms.Terms
 import org.slf4j.LoggerFactory
@@ -355,16 +356,20 @@ class ModelServiceImpl(
     @Transactional(propagation = Propagation.SUPPORTS)
     override fun getLabelCounts(model: Model): Map<String, Long> {
         val rest = indexRoutingService.getProjectRestClient()
+        val modelIdFilter = QueryBuilders.termQuery("labels.modelId", model.id.toString())
         val query = QueryBuilders.nestedQuery(
             "labels",
-            QueryBuilders.termQuery("labels.modelId", model.id.toString()), ScoreMode.None
+            modelIdFilter, ScoreMode.None
         )
         val agg = AggregationBuilders.nested("nested_labels", "labels")
             .subAggregation(
-                AggregationBuilders.terms("labels")
-                    .field("labels.label")
-                    .size(1000)
-                    .order(BucketOrder.key(true))
+                AggregationBuilders.filter("filtered", modelIdFilter)
+                    .subAggregation(
+                        AggregationBuilders.terms("labels")
+                            .field("labels.label")
+                            .size(1000)
+                            .order(BucketOrder.key(true))
+                    )
             )
 
         val req = rest.newSearchBuilder()
@@ -374,7 +379,9 @@ class ModelServiceImpl(
         req.source.fetchSource(false)
 
         val rsp = rest.client.search(req.request, RequestOptions.DEFAULT)
-        val buckets = rsp.aggregations.get<Nested>("nested_labels").aggregations.get<Terms>("labels")
+        val buckets = rsp.aggregations.get<Nested>("nested_labels")
+            .aggregations.get<Filter>("filtered")
+            .aggregations.get<Terms>("labels")
 
         // Use a LinkedHashMap to maintain sort on the labels.
         val result = LinkedHashMap<String, Long>()

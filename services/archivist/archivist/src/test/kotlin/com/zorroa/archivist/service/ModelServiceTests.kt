@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.Label
 import com.zorroa.archivist.domain.ModOpType
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelApplyRequest
@@ -13,6 +14,7 @@ import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
 import com.zorroa.archivist.domain.ModelType
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.util.Json
 import org.junit.Test
@@ -42,9 +44,9 @@ class ModelServiceTests : AbstractTest() {
     val testSearch =
         """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
 
-    fun create(type: ModelType = ModelType.ZVI_LABEL_DETECTION): Model {
+    fun create(name: String = "test", type: ModelType = ModelType.ZVI_LABEL_DETECTION): Model {
         val mspec = ModelSpec(
-            "test",
+            name,
             type,
             deploySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
@@ -136,8 +138,6 @@ class ModelServiceTests : AbstractTest() {
     fun testPublishModel() {
         val model1 = create()
         val mod = modelService.publishModel(model1)
-        Json.prettyPrint(mod)
-        Json.prettyPrint(model1)
         assertEquals(getProjectId(), mod.projectId)
         assertEquals(model1.moduleName, mod.name)
         assertEquals("Zorroa", mod.provider)
@@ -148,9 +148,8 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testPublishModelWithDepend() {
-        val model1 = create(ModelType.ZVI_FACE_RECOGNITION)
+        val model1 = create(type = ModelType.ZVI_FACE_RECOGNITION)
         val mod = modelService.publishModel(model1)
-        Json.prettyPrint(mod)
         assertEquals(ModOpType.DEPEND, mod.ops[0].type)
         assertEquals(ModOpType.APPEND, mod.ops[1].type)
         assertEquals(ModelType.ZVI_FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
@@ -246,14 +245,29 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun getLabelCounts() {
-        val model = create()
-        val specs = dataSet(model)
+        val model1 = create("test1")
+        val model2 = create("test2")
 
-        assetService.batchCreate(
-            BatchCreateAssetsRequest(specs)
+        val rsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(dataSet(model1))
         )
 
-        val counts = modelService.getLabelCounts(model)
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                // Validate adding 2 identical labels only adds 1
+                mapOf(
+                    rsp.created[0] to listOf(
+                        Label(model2.id, "house"),
+                    ),
+                    rsp.created[1] to listOf(
+                        Label(model2.id, "tree"),
+                    )
+                )
+            )
+        )
+
+        val counts = modelService.getLabelCounts(model1)
+        assertEquals(4, counts.size)
         assertEquals(1, counts["ant"])
         assertEquals(1, counts["horse"])
         assertEquals(1, counts["beaver"])
