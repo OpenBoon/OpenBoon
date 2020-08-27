@@ -1,7 +1,9 @@
 import json
+import os
 import uuid
 from functools import lru_cache
 
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from zmlp import DataSource
 from zmlp.client import ZmlpDuplicateException
@@ -122,6 +124,12 @@ Below are examples of all 3.
 
     def destroy(self, request, project_pk, pk):
         return self._zmlp_destroy(request, pk)
+
+    @action(detail=True, methods=['post', 'put'])
+    def scan(self, request, project_pk, pk):
+        path = os.path.join(self.zmlp_root_api_path, pk, '_import')
+        response = request.client.post(path, {})
+        return Response({'jobId': response['id']})
 
     @lru_cache(maxsize=128)
     def _get_module_name(self, module_id, client):

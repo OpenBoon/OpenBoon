@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Link from 'next/link'
 import Router from 'next/router'
 
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, getQueryString } from '../Fetch/helpers'
 
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
@@ -19,6 +19,34 @@ const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
       {({ onClick }) => (
         <div>
           <ul>
+            <li>
+              <Button
+                variant={VARIANTS.MENU_ITEM}
+                onClick={async () => {
+                  onClick()
+
+                  const {
+                    jobId,
+                  } = await fetcher(
+                    `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/scan/`,
+                    { method: 'POST' },
+                  )
+
+                  const queryString = getQueryString({
+                    action: 'scan-datasource-success',
+                    jobId,
+                  })
+
+                  Router.push(
+                    `/[projectId]/data-sources${queryString}`,
+                    `/${projectId}/data-sources`,
+                  )
+                }}
+                isDisabled={false}
+              >
+                Scan For New Files
+              </Button>
+            </li>
             <li>
               <Link
                 href="/[projectId]/data-sources/[dataSourceId]/edit"
