@@ -8,6 +8,7 @@ from unittest.mock import patch
 from zmlpsdk.cloud import get_google_storage_client, get_pipeline_storage_client, \
     get_aws_client, get_credentials_blob, get_azure_storage_client
 from zmlp.client import ZmlpClient
+from zmlpsdk.testing import zorroa_test_path
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -26,19 +27,18 @@ class TetCloudUtilFunction(TestCase):
         Ensure we load a service account file from the
         GOOGLE_APPLICATION_CREDENTIALS environment variable.
         """
-        local_dir = os.path.dirname(__file__)
-        path = os.path.join(local_dir, 'fake_gcs_account.json')
+        path = zorroa_test_path('creds/gcp_test.json')
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = path
         try:
             client = get_google_storage_client()
-            assert "fake_service_account@zorroa-deploy.iam.gserviceaccount.com" == \
+            assert 'zorroa-processors@zgcp-1.iam.gserviceaccount.com' == \
                    client._credentials._service_account_email
         finally:
             del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
     @patch.object(ZmlpClient, 'get')
     def test_get_google_storage_client_from_job_creds(self, get_patch):
-        with open(os.path.dirname(__file__) + '/fake_gcs_account.json', 'r') as fp:
+        with open(zorroa_test_path('creds/gcp_test.json'), 'r') as fp:
             gcs_creds = fp.read()
 
         get_patch.return_value = json.loads(gcs_creds)
@@ -46,8 +46,9 @@ class TetCloudUtilFunction(TestCase):
         os.environ['ZMLP_CREDENTIALS_TYPES'] = 'GCP'
         try:
             client = get_google_storage_client()
-            assert 'fake_service_account@zorroa-deploy.iam.gserviceaccount.com' == \
-                   client._credentials._service_account_email
+            assert client._credentials._service_account_email == \
+                   'zorroa-processors@zgcp-1.iam.gserviceaccount.com'
+
         finally:
             del os.environ['ZMLP_JOB_ID']
             del os.environ['ZMLP_CREDENTIALS_TYPES']
