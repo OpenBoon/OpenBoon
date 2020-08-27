@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<DataSourcesMenu /> should render properly 1`] = `
-.emotion-4 {
+.emotion-5 {
   position: relative;
 }
 
@@ -54,7 +54,7 @@ exports[`<DataSourcesMenu /> should render properly 1`] = `
   color: #ffffff !important;
 }
 
-.emotion-3 {
+.emotion-4 {
   position: absolute;
   z-index: 1;
   top: 100%;
@@ -66,7 +66,7 @@ exports[`<DataSourcesMenu /> should render properly 1`] = `
   font-family: Roboto,Avenir,"sans-serif";
 }
 
-.emotion-3 ul {
+.emotion-4 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -74,7 +74,7 @@ exports[`<DataSourcesMenu /> should render properly 1`] = `
   margin: 0;
 }
 
-.emotion-3 li {
+.emotion-4 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -136,7 +136,7 @@ exports[`<DataSourcesMenu /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-4"
+  className="emotion-5"
 >
   <button
     aria-label="Toggle Actions Menu"
@@ -151,10 +151,19 @@ exports[`<DataSourcesMenu /> should render properly 1`] = `
     />
   </button>
   <div
-    className="emotion-3"
+    className="emotion-4"
   >
     <div>
       <ul>
+        <li>
+          <button
+            className="emotion-1"
+            onClick={[Function]}
+            type="button"
+          >
+            Scan For New Files
+          </button>
+        </li>
         <li>
           <a
             className="emotion-1"
