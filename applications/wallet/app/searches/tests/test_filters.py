@@ -673,16 +673,24 @@ class TestLabelsFilter(FilterBaseTestCase):
                     'query': {
                         'bool': {
                             'filter': [
-                                {'term': {
-                                    'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},
+                                {'term': {'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},  # noqa
             'aggs': {
                 name: {
-                    'nested': {'path': 'labels'},
+                    'nested': {
+                        'path': 'labels'
+                    },
                     'aggs': {
-                        f'nested_{name}': {
-                            'terms': {
-                                'field': 'labels.label',
-                                'size': 1000}}}}}}
+                        'modelId': {
+                            'filter': {
+                                'term': {
+                                    'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'
+                                }
+                            },
+                            'aggs': {
+                                f'nested_{name}': {
+                                    'terms': {
+                                        'field': 'labels.label',
+                                        'size': 1000}}}}}}}}
 
     def test_get_es_agg_with_options(self, mock_data):
         mock_data['order'] = 'asc'
@@ -697,12 +705,14 @@ class TestLabelsFilter(FilterBaseTestCase):
                                      'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},  # noqa
             'aggs': {name: {'nested': {'path': 'labels'},
                             'aggs': {
-                                f'nested_{name}': {
-                                    'terms': {
-                                        'field': 'labels.label',
-                                        'min_doc_count': 2,
-                                        'order': {'_count': 'asc'},
-                                        'size': 1000}}}}}}
+                                'modelId': {
+                                    'filter': {'term': {'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}},  # noqa
+                                    'aggs': {f'nested_{name}': {
+                                        'terms': {
+                                            'field': 'labels.label',
+                                            'size': 1000,
+                                            'order': {'_count': 'asc'},
+                                            'min_doc_count': 2}}}}}}}}
 
     def test_get_query(self, mock_query_data):
         _filter = self.Filter(mock_query_data)
