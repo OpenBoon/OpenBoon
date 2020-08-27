@@ -98,6 +98,7 @@ class IndexTaskServiceImpl(
             .setSourceIndices(srcRoute.indexName)
             .setSourceQuery(QueryBuilders.matchAllQuery())
             .setDestIndex(dstRoute.indexName)
+            .setSourceBatchSize(500)
 
         val uri = URI(srcRoute.clusterUrl)
 
