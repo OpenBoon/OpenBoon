@@ -17,16 +17,7 @@ describe('Visualizer', function () {
 
       cy.visit(`/${this.PROJECT_ID}/visualizer`)
 
-      cy.get('a[aria-label*="Select asset"]')
-        .first()
-        // element tends to rerender/detach, which confuses cypress
-        // so we pass `{ force: true }` to keep going
-        // cf https://github.com/cypress-io/cypress/issues/7306
-        .click({ force: true })
-        .then((response) => {
-          const { href } = response[0]
-          cy.url().should('eq', href)
-        })
+      cy.selectFirstAsset()
 
       cy.url().should('match', /(.*)\/visualizer\?assetId=(.*)/)
     })

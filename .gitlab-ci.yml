@@ -18,13 +18,13 @@ stages:
 ## Wallet Integration CI Tests
 wallet-integration-test-suite:
   stage: test
-  image: cypress/base
+  image: cypress/browsers:node14.7.0-chrome84
   before_script:
     - cd applications/wallet/cypress
     - npm ci
   script:
-    - npm run cli -- --record --group Backend --spec 'integration/backend/**/*'
-    - npm run cli -- --record --group Frontend --spec 'integration/frontend/**/*'
+    - npm run cli -- --browser chrome --headless --record --group Backend --spec 'integration/backend/**/*'
+    - npm run cli -- --browser chrome --headless --record --group Frontend --spec 'integration/frontend/**/*'
   artifacts:
     when: always
     paths:
