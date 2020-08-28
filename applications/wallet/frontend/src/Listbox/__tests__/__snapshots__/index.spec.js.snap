@@ -78,15 +78,47 @@ exports[`Listbox should render properly 1`] = `
 
 .emotion-2 {
   width: 100%;
-  padding: 12px 8px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
   border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  border: 2px solid transparent;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
 }
 
 .emotion-2:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 .emotion-4 {
@@ -139,9 +171,10 @@ exports[`Listbox should render properly 1`] = `
             className="emotion-3"
           >
             <input
-              aria-label="Filter options"
+              aria-label="Filter Types"
               className="emotion-2"
               onChange={[Function]}
+              placeholder="Filter types"
               type="search"
               value=""
             />
@@ -280,15 +313,47 @@ exports[`Listbox should render properly 2`] = `
 
 .emotion-2 {
   width: 100%;
-  padding: 12px 8px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
   border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  border: 2px solid transparent;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
 }
 
 .emotion-2:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 .emotion-4 {
@@ -332,9 +397,10 @@ exports[`Listbox should render properly 2`] = `
             className="emotion-3"
           >
             <input
-              aria-label="Filter options"
+              aria-label="Filter Types"
               className="emotion-2"
               onChange={[Function]}
+              placeholder="Filter types"
               type="search"
               value="qwerty"
             />
@@ -429,15 +495,47 @@ exports[`Listbox should render properly 3`] = `
 
 .emotion-2 {
   width: 100%;
-  padding: 12px 8px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
   border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  border: 2px solid transparent;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
 }
 
 .emotion-2:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 .emotion-4 {
@@ -490,9 +588,10 @@ exports[`Listbox should render properly 3`] = `
             className="emotion-3"
           >
             <input
-              aria-label="Filter options"
+              aria-label="Filter Types"
               className="emotion-2"
               onChange={[Function]}
+              placeholder="Filter types"
               type="search"
               value="time"
             />
@@ -596,15 +695,47 @@ exports[`Listbox should render properly 4`] = `
 
 .emotion-2 {
   width: 100%;
-  padding: 12px 8px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
   border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  border: 2px solid transparent;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
 }
 
 .emotion-2:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 .emotion-4 {
@@ -657,9 +788,10 @@ exports[`Listbox should render properly 4`] = `
             className="emotion-3"
           >
             <input
-              aria-label="Filter options"
+              aria-label="Filter Types"
               className="emotion-2"
               onChange={[Function]}
+              placeholder="Filter types"
               type="search"
               value="time"
             />
@@ -763,15 +895,47 @@ exports[`Listbox should render properly with existing attribute 1`] = `
 
 .emotion-2 {
   width: 100%;
-  padding: 12px 8px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
   border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  border: 2px solid transparent;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-2::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-2:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-2::placeholder {
+  font-style: italic;
+}
+
+.emotion-2:hover {
+  border: 1px solid #808080;
 }
 
 .emotion-2:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 .emotion-4 {
@@ -824,9 +988,10 @@ exports[`Listbox should render properly with existing attribute 1`] = `
             className="emotion-3"
           >
             <input
-              aria-label="Filter options"
+              aria-label="Filter Types"
               className="emotion-2"
               onChange={[Function]}
+              placeholder="Filter types"
               type="search"
               value=""
             />
