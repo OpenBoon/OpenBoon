@@ -135,7 +135,7 @@ class ModelViewSet(BaseProjectViewSet):
                 app.assets.update_labels(asset, add_labels=label)
         else:
             msg = 'No valid labels sent for creation.'
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': msg})
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': [msg]})
 
         return Response(status=status.HTTP_201_CREATED, data={})
 
@@ -164,7 +164,7 @@ class ModelViewSet(BaseProjectViewSet):
                                          remove_labels=by_asset[asset]['remove'])
         else:
             msg = 'No valid label updates sent.'
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': msg})
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': [msg]})
 
         return Response(status=status.HTTP_200_OK, data={})
 
@@ -184,7 +184,7 @@ class ModelViewSet(BaseProjectViewSet):
                 app.assets.update_labels(asset, remove_labels=label)
         else:
             msg = 'No valid labels sent for creation.'
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': msg})
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': [msg]})
 
         return Response(status=status.HTTP_200_OK, data={})
 
