@@ -81,7 +81,7 @@ describe('<FilterTextDetection />', () => {
     const filter = {
       type: 'textContent',
       attribute: 'analysis.zvi-text-content',
-      values: { query: ['cats'] },
+      values: { query: 'cats' },
     }
 
     const component = TestRenderer.create(
@@ -108,7 +108,7 @@ describe('<FilterTextDetection />', () => {
     const filter = {
       type: 'textContent',
       attribute: 'analysis.zvi-text-content',
-      values: { query: ['cats'] },
+      values: { query: 'cats' },
     }
 
     const mockRouterPush = jest.fn()

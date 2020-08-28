@@ -13,6 +13,8 @@ import ChevronSvg from '../Icons/chevron.svg'
 
 import { constants, spacing, colors, typography } from '../Styles'
 
+import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
+
 import ListboxOptions from './Options'
 import { getFilteredOptions } from './helpers'
 
@@ -105,24 +107,12 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
               }}
             >
               <div css={{ padding: spacing.small }}>
-                <input
-                  aria-label="Filter options"
-                  type="search"
+                <InputSearch
+                  aria-label="Filter Types"
+                  placeholder="Filter types"
                   value={searchString}
-                  onChange={({ target: { value: searchValue } }) =>
-                    setSearchString(searchValue)
-                  }
-                  css={{
-                    width: '100%',
-                    padding: `${spacing.moderate}px ${spacing.base}px`,
-                    borderRadius: constants.borderRadius.small,
-                    boxShadow: constants.boxShadows.input,
-                    border: constants.borders.medium.transparent,
-                    '&:focus': {
-                      border: constants.borders.keyOneMedium,
-                      outline: colors.key.one,
-                    },
-                  }}
+                  onChange={({ value: v }) => setSearchString(v)}
+                  variant={INPUT_SEARCH_VARIANTS.LIGHT}
                 />
               </div>
 

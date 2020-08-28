@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 
-import { colors, constants, spacing, typography } from '../Styles'
-import SearchSvg from '../Icons/search.svg'
+import { colors, constants, spacing } from '../Styles'
+import PlusSvg from '../Icons/plus.svg'
 import CrossSvg from '../Icons/cross.svg'
 
 import filterShape from '../Filter/shape'
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
 import Button, { VARIANTS } from '../Button'
+
+import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
 
 const BUTTON_SIZE = 42
 
@@ -107,39 +109,15 @@ const FilterTextDetection = ({
             position: 'relative',
           }}
         >
-          <input
-            // eslint-disable-next-line jsx-a11y/no-autofocus
+          <InputSearch
             autoFocus
-            type="search"
-            placeholder="Search text"
+            aria-label="Add Text Detection Filter"
+            placeholder="Filter by detected text"
             value={searchString}
-            onChange={({ target: { value } }) => setSearchString(value)}
-            css={{
-              flex: 1,
-              border: constants.borders.regular.transparent,
-              padding: spacing.moderate,
-              borderTopLeftRadius: constants.borderRadius.small,
-              borderBottomLeftRadius: constants.borderRadius.small,
-              color: colors.structure.pebble,
-              backgroundColor: colors.structure.mattGrey,
-              ':focus': {
-                outline: constants.borders.regular.transparent,
-                border: constants.borders.keyOneRegular,
-                ':hover': {
-                  border: constants.borders.keyOneRegular,
-                },
-                color: colors.structure.coal,
-                backgroundColor: colors.structure.white,
-              },
-              ':hover': {
-                border: constants.borders.regular.steel,
-              },
-              paddingLeft: spacing.moderate,
-              '::placeholder': {
-                fontStyle: typography.style.italic,
-              },
-            }}
+            onChange={({ value }) => setSearchString(value)}
+            variant={INPUT_SEARCH_VARIANTS.DARK}
           />
+
           <button
             type="submit"
             aria-disabled={!searchString}
@@ -164,9 +142,12 @@ const FilterTextDetection = ({
               })
             }}
             css={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
               width: BUTTON_SIZE,
-              borderTopRightRadius: constants.borderRadius.small,
-              borderBottomRightRadius: constants.borderRadius.small,
+              marginLeft: spacing.small,
+              borderRadius: constants.borderRadius.small,
               color: hasSearch
                 ? colors.structure.white
                 : colors.structure.black,
@@ -178,9 +159,11 @@ const FilterTextDetection = ({
               cursor: searchString === '' ? 'not-allowed' : 'pointer',
             }}
           >
-            <SearchSvg
+            <PlusSvg
               height={constants.icons.regular}
-              css={{ color: colors.structure.white }}
+              color={
+                searchString ? colors.structure.white : colors.structure.smoke
+              }
             />
           </button>
         </div>

@@ -58,7 +58,7 @@ const FilterLabelConfidenceContent = ({
       />
 
       <FilterSearch
-        placeholder="Search labels"
+        placeholder="Filter labels"
         searchString={searchString}
         onChange={({ value }) => {
           setSearchString(value)
