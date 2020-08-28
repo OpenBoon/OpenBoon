@@ -171,11 +171,11 @@ exports[`<FilterTextDetection /> should clear a text detection 1`] = `
 `;
 
 exports[`<FilterTextDetection /> should edit a text detection 1`] = `
-.emotion-4 {
+.emotion-3 {
   padding: 16px;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -185,31 +185,20 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
 }
 
 .emotion-0 {
+  width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  border: 1px solid transparent;
   padding: 12px;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  padding-left: 32px;
+  border: 1px solid transparent;
+  border-radius: 2px;
   color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
   background-color: #2e2e2e;
-  padding-left: 12px;
-}
-
-.emotion-0:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #73b61c;
-  color: #191919;
-  background-color: #ffffff;
-}
-
-.emotion-0:focus:hover {
-  border: 1px solid #73b61c;
-}
-
-.emotion-0:hover {
-  border: 1px solid #808080;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 .emotion-0::-webkit-input-placeholder {
@@ -228,14 +217,34 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
   font-style: italic;
 }
 
-.emotion-1 {
-  color: #ffffff;
+.emotion-0:hover {
+  border: 1px solid #808080;
 }
 
-.emotion-2 {
+.emotion-0:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   width: 42px;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  margin-left: 4px;
+  border-radius: 2px;
   color: #ffffff;
   background-color: #73b61c;
   padding: 0;
@@ -249,33 +258,30 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
   onSubmit={[Function]}
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <input
+        aria-label="Add Text Detection Filter"
         autoFocus={true}
         className="emotion-0"
         onChange={[Function]}
-        placeholder="Search text"
+        placeholder="Filter by detected text"
         type="search"
-        value={
-          Array [
-            "cats",
-          ]
-        }
+        value="cats"
       />
       <button
         aria-disabled={false}
         aria-label="Search"
-        className="emotion-2"
+        className="emotion-1"
         onClick={[Function]}
         type="submit"
       >
         <svg
-          className="emotion-1"
-          data-file-name="search.svg"
+          color="#ffffff"
+          data-file-name="plus.svg"
           height={20}
         />
       </button>
@@ -285,11 +291,11 @@ exports[`<FilterTextDetection /> should edit a text detection 1`] = `
 `;
 
 exports[`<FilterTextDetection /> should select a facet 1`] = `
-.emotion-4 {
+.emotion-3 {
   padding: 16px;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -299,31 +305,20 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
 }
 
 .emotion-0 {
+  width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  border: 1px solid transparent;
   padding: 12px;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  padding-left: 32px;
+  border: 1px solid transparent;
+  border-radius: 2px;
   color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
   background-color: #2e2e2e;
-  padding-left: 12px;
-}
-
-.emotion-0:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #73b61c;
-  color: #191919;
-  background-color: #ffffff;
-}
-
-.emotion-0:focus:hover {
-  border: 1px solid #73b61c;
-}
-
-.emotion-0:hover {
-  border: 1px solid #808080;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 .emotion-0::-webkit-input-placeholder {
@@ -342,19 +337,39 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
   font-style: italic;
 }
 
-.emotion-2 {
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-0:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   width: 42px;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  margin-left: 4px;
+  border-radius: 2px;
   color: #000000;
   background-color: #808080;
   padding: 0;
   border: 0;
   cursor: not-allowed;
-}
-
-.emotion-1 {
-  color: #ffffff;
 }
 
 <form
@@ -363,29 +378,30 @@ exports[`<FilterTextDetection /> should select a facet 1`] = `
   onSubmit={[Function]}
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <input
+        aria-label="Add Text Detection Filter"
         autoFocus={true}
         className="emotion-0"
         onChange={[Function]}
-        placeholder="Search text"
+        placeholder="Filter by detected text"
         type="search"
         value=""
       />
       <button
         aria-disabled={true}
         aria-label="Search"
-        className="emotion-2"
+        className="emotion-1"
         onClick={[Function]}
         type="submit"
       >
         <svg
-          className="emotion-1"
-          data-file-name="search.svg"
+          color="#3b3b3b"
+          data-file-name="plus.svg"
           height={20}
         />
       </button>

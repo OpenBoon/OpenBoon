@@ -14,7 +14,6 @@ import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
 
-import ModelsCopy from './Copy'
 import ModelsEmpty from './Empty'
 import ModelsRow from './Row'
 
@@ -76,8 +75,6 @@ const Models = () => {
           <FlashMessage variant={VARIANTS.SUCCESS}>Model deleted.</FlashMessage>
         </div>
       )}
-
-      <ModelsCopy projectId={projectId} />
 
       <Tabs
         tabs={[

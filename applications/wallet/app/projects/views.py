@@ -26,7 +26,8 @@ User = get_user_model()
 ES_SEARCH_TERMS = ['query', 'from', 'size', 'timeout',
                    'post_filter', 'minscore', 'suggest',
                    'highlight', 'collapse', '_source',
-                   'slice', 'aggs', 'aggregations', 'sort']
+                   'slice', 'aggs', 'aggregations', 'sort',
+                   'track_total_hits']
 
 
 class BaseProjectViewSet(ViewSet):

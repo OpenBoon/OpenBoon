@@ -412,19 +412,28 @@ class LabelFilter(BaseFilter):
                         "path": "labels"
                     },
                     "aggs": {
-                        f'nested_{self.name}': {
-                            "terms": {
-                                "field": "labels.label",
-                                "size": 1000
+                        "modelId": {
+                            "filter": {
+                                "term": {
+                                    "labels.modelId": modelId
+                                }
+                            },
+                            "aggs": {
+                                f'nested_{self.name}': {
+                                    "terms": {
+                                        "field": "labels.label",
+                                        "size": 1000
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }}
         if order:
-            agg['aggs'][self.name]['aggs'][f'nested_{self.name}']['terms']['order'] = {'_count': order}  # noqa
+            agg['aggs'][self.name]['aggs']['modelId']['aggs'][f'nested_{self.name}']['terms']['order'] = {'_count': order}  # noqa
         if minimumCount:
-            agg['aggs'][self.name]['aggs'][f'nested_{self.name}']['terms']['min_doc_count'] = minimumCount  # noqa
+            agg['aggs'][self.name]['aggs']['modelId']['aggs'][f'nested_{self.name}']['terms']['min_doc_count'] = minimumCount  # noqa
         return agg
 
     def get_es_query(self):
@@ -464,7 +473,7 @@ class LabelFilter(BaseFilter):
         count = response['hits']['total']['value']
         nested_agg_name = f'nested#{self.name}'
         terms_agg_name = f'sterms#nested_{self.name}'
-        data = response['aggregations'][nested_agg_name][terms_agg_name]
+        data = response['aggregations'][nested_agg_name]['filter#modelId'][terms_agg_name]
         return {'count': count, 'results': data}
 
 

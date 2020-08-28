@@ -61,7 +61,7 @@ const FilterFacet = ({
       <div css={{ height: spacing.moderate }} />
 
       <FilterSearch
-        placeholder="Search facets"
+        placeholder="Filter facets"
         searchString={searchString}
         onChange={({ value }) => {
           setSearchString(value)
