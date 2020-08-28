@@ -1,6 +1,5 @@
 from unittest.mock import patch
 
-import os
 from google.cloud.dlp_v2 import types
 
 from zmlp_analysis.google.cloud_dlp import CloudDLPDetectEntities
@@ -21,7 +20,8 @@ class MockDlpServiceClient:
         content_location = types.dlp.ContentLocation(image_location=image_location)
         location = types.dlp.Location(content_locations=[content_location])
         infotype = types.storage.InfoType(name='DATE')
-        finding = types.dlp.Finding(info_type=infotype, quote='June 28,1993', location=location, likelihood=5)
+        finding = types.dlp.Finding(info_type=infotype, quote='June 28,1993',
+                                    location=location, likelihood=5)
         result = types.dlp.InspectResult(findings=[finding, finding, finding, finding, finding])
 
         response = types.dlp.InspectContentResponse(result=result)
