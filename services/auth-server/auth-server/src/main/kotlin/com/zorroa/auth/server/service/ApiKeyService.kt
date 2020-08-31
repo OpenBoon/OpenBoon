@@ -176,7 +176,7 @@ class ApiKeyServiceImpl constructor(
         apiKeyRepository.delete(apiKey)
     }
 
-    override fun deleteByProject(projectUUID: UUID){
+    override fun deleteByProject(projectUUID: UUID) {
         apiKeyRepository.deleteByProjectId(projectUUID)
 
         logger.event(
@@ -222,4 +222,3 @@ class ApiKeyServiceImpl constructor(
         private val systemKeys: Set<String> = setOf("job-runner")
     }
 }
-
