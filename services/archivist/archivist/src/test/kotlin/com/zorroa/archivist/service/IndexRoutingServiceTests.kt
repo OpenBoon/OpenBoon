@@ -3,12 +3,14 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.repository.IndexRouteDao
+import com.zorroa.archivist.security.getProjectId
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest
 import org.elasticsearch.client.RequestOptions
 import org.junit.After
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
@@ -200,6 +202,40 @@ class IndexRoutingServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testBatchCloseIndex() {
+        val spec1 = IndexRouteSpec("test", 1, shards = 1, replicas = 0)
+        val spec2 = IndexRouteSpec("test", 1, shards = 1, replicas = 0)
+
+        val ir1 = indexRoutingService.createIndexRoute(spec1)
+        val ir2 = indexRoutingService.createIndexRoute(spec2)
+
+        indexRoutingService.batchCloseIndex(listOf(ir1, ir2))
+
+        val esIndexState1 = indexRoutingService.getEsIndexState(ir1)
+        val esIndexState2 = indexRoutingService.getEsIndexState(ir2)
+
+        assertEquals("close", esIndexState1["status"])
+        assertEquals("close", esIndexState2["status"])
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testBatchDeleteIndex() {
+        val spec1 = IndexRouteSpec("test", 1, shards = 1, replicas = 0)
+        val spec2 = IndexRouteSpec("test", 1, shards = 1, replicas = 0)
+
+        val ir1 = indexRoutingService.createIndexRoute(spec1)
+        val ir2 = indexRoutingService.createIndexRoute(spec2)
+
+        val routes = listOf(ir1, ir2)
+        indexRoutingService.batchCloseIndex(routes)
+        val batchDeleteIndex = indexRoutingService.batchDeleteIndex(routes)
+
+        assertEquals(true, batchDeleteIndex)
+
+        indexRoutingService.getIndexRoute(ir1.id)
+    }
+
+    @Test
     fun testOpenIndex() {
         var route = indexRouteDao.getProjectRoute()
         var state = indexRoutingService.getEsIndexState(route)
@@ -231,5 +267,17 @@ class IndexRoutingServiceTests : AbstractTest() {
         val route = indexRoutingService.createIndexRoute(spec)
         indexRoutingService.closeIndex(route)
         assertTrue(indexRoutingService.deleteIndex(route, force = true))
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testCloseAndDeleteProjectIndexes(){
+        val spec1 = IndexRouteSpec("test", 1, shards = 1, replicas = 0)
+
+        val ir1 = indexRoutingService.createIndexRoute(spec1)
+
+        indexRoutingService.closeAndDeleteProjectIndexes(getProjectId())
+
+        indexRoutingService.getIndexRoute(ir1.id)
+
     }
 }

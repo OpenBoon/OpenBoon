@@ -163,6 +163,11 @@ interface IndexRoutingService {
     fun closeIndex(route: IndexRoute): Boolean
 
     /**
+     * Close indexes grouping by clusters
+     */
+    fun batchCloseIndex(routes: List<IndexRoute>)
+
+    /**
      * Reopen the index
      */
     fun openIndex(route: IndexRoute): Boolean
@@ -178,9 +183,19 @@ interface IndexRoutingService {
     fun deleteIndex(route: IndexRoute, force: Boolean = false): Boolean
 
     /**
+     * Delete a batch of IndexRoute grouping by cluster
+     */
+    fun batchDeleteIndex(routes: List<IndexRoute>): Boolean
+
+    /**
      * Close and delete the given index.
      */
     fun closeAndDeleteIndex(route: IndexRoute): Boolean
+
+    /**
+     * Close and delete all Indexes of a Project.
+     */
+    fun closeAndDeleteProjectIndexes(projectUUID: UUID)
 
     /**
      * Sets the index refresh interval. Setting to -1 disables refreshing, this is used
@@ -486,6 +501,72 @@ constructor(
         return rsp.isAcknowledged
     }
 
+    override fun batchCloseIndex(routes: List<IndexRoute>) {
+
+        routes.groupBy {
+            it.clusterUrl
+        }
+            .forEach {
+
+                val indexMapNameIndex = it.value.map { i -> i.indexName to i.id }.toMap()
+                val rsp = esClientCache
+                    .getRestHighLevelClient(it.key)
+                    .indices()
+                    .close(
+                        CloseIndexRequest(*indexMapNameIndex.keys.toTypedArray()),
+                        RequestOptions.DEFAULT
+                    )
+
+                if (rsp.isAcknowledged) {
+                    rsp.indices.forEach { indexResult ->
+                        if (!indexResult.hasFailures()) {
+                            indexMapNameIndex[indexResult.index]?.let { uuid ->
+                                indexRouteDao.setState(uuid, IndexRouteState.CLOSED)
+                                logger.event(
+                                    LogObject.INDEX_ROUTE, LogAction.STATE_CHANGE,
+                                    mapOf(
+                                        "indexRouteId" to uuid,
+                                        "indexRouteState" to IndexRouteState.CLOSED.name
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+    }
+
+    override fun batchDeleteIndex(routes: List<IndexRoute>): Boolean {
+
+        routes.groupBy {
+            it.clusterUrl
+        }.forEach {
+
+            val indexMapNameIndex = it.value.map { i -> i.indexName to i.id }.toMap()
+            val rsp = esClientCache
+                .getRestHighLevelClient(it.key)
+                .indices()
+                .delete(
+                    DeleteIndexRequest(*indexMapNameIndex.keys.toTypedArray()),
+                    RequestOptions.DEFAULT
+                )
+
+            if (rsp.isAcknowledged) {
+                it.value.forEach { indexRoute ->
+                    logger.event(
+                        LogObject.INDEX_ROUTE, LogAction.DELETE,
+                        mapOf(
+                            "indexRouteId" to indexRoute.id,
+                            "indexRouteName" to indexRoute.indexName
+                        )
+                    )
+                    indexRouteDao.delete(indexRoute)
+                }
+            }
+        }
+        return true
+    }
+
     override fun openIndex(route: IndexRoute): Boolean {
         val rsp = getClusterRestClient(route).client.indices()
             .open(OpenIndexRequest(route.indexName), RequestOptions.DEFAULT)
@@ -528,6 +609,12 @@ constructor(
             return indexRouteDao.delete(route)
         }
         return false
+    }
+
+    override fun closeAndDeleteProjectIndexes(projectUUID: UUID) {
+        val indexes = getAll(IndexRouteFilter(projectIds = listOf(projectUUID))).toList()
+        batchCloseIndex(indexes)
+        batchDeleteIndex(indexes)
     }
 
     override fun closeAndDeleteIndex(route: IndexRoute): Boolean {
