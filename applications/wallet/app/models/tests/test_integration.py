@@ -15,8 +15,8 @@ pytestmark = pytest.mark.django_db
 @pytest.fixture
 def model_fields():
     return ['id', 'name', 'type', 'moduleName', 'fileId', 'trainingJobName',
-            'ready', 'deploySearch', 'timeCreated', 'timeModified', 'actorCreated',
-            'actorModified', 'url', 'runningJobId']
+            'unappliedChanges', 'deploySearch', 'timeCreated', 'timeModified', 'actorCreated',
+            'actorModified', 'url']
 
 
 class TestModelViewSetList:
@@ -38,7 +38,6 @@ class TestModelViewSetList:
         assert len(results) == 2
         assert results[0]['name'] == 'Labeller'
         assert results[0]['type'] == 'ZVI_LABEL_DETECTION'
-        assert results[0]['runningJobId'] == ''
         assert set(model_fields) == set(results[0].keys())
 
 
@@ -52,16 +51,28 @@ class TestModelViewSetRetrieve:
         def job_response(*args, **kwargs):
             return []
 
+        def model_info_response(*args, **kwargs):
+            return Mock(min_concepts=2, min_examples=3)
+
+        def label_counts_response(*args, **kwargs):
+            return {'test': 2, 'tester': 3}
+
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
         path = reverse('model-detail', kwargs={'project_pk': project.id,
                                                'pk': model_id})
         monkeypatch.setattr(ZmlpClient, 'get', mock_response)
         monkeypatch.setattr(ZmlpClient, 'iter_paged_results', job_response)
+        monkeypatch.setattr(ModelApp, 'get_model_type_info', model_info_response)
+        monkeypatch.setattr(ModelApp, 'get_label_counts', label_counts_response)
         response = api_client.get(path)
         content = check_response(response)
         assert content['id'] == model_id
         model_fields.remove('url')
+        model_fields.extend(['runningJobId', 'modelTypeRestrictions'])
         assert set(model_fields) == set(content.keys())
+        restrictions = content['modelTypeRestrictions']
+        assert restrictions['minConceptsSatisfied'] is True
+        assert restrictions['minExamplesSatisfied'] is False
 
 
 class TestModelViewSetDestroy:
