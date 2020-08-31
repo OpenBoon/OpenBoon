@@ -32,6 +32,9 @@ import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.ActionListener
 import org.elasticsearch.client.RequestOptions
@@ -41,6 +44,7 @@ import org.elasticsearch.script.Script
 import org.elasticsearch.script.ScriptType
 import org.elasticsearch.search.aggregations.AggregationBuilders
 import org.elasticsearch.search.aggregations.BucketOrder
+import org.elasticsearch.search.aggregations.bucket.filter.Filter
 import org.elasticsearch.search.aggregations.bucket.nested.Nested
 import org.elasticsearch.search.aggregations.bucket.terms.Terms
 import org.slf4j.LoggerFactory
@@ -229,18 +233,20 @@ class ModelServiceImpl(
     }
 
     override fun deleteModel(model: Model) {
-        modelDao.delete(model)
+        modelJdbcDao.delete(model)
 
         pipelineModService.findByName(model.moduleName, false)?.let {
             pipelineModService.delete(it.id)
         }
 
-        try {
-            fileStorageService.recursiveDelete(
-                ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString())
-            )
-        } catch (e: Exception) {
-            logger.error("Failed to delete files associated with model: ${model.id}")
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                fileStorageService.recursiveDelete(
+                    ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString())
+                )
+            } catch (e: Exception) {
+                logger.error("Failed to delete files associated with model: ${model.id}")
+            }
         }
 
         val rest = indexRoutingService.getProjectRestClient()
@@ -350,16 +356,20 @@ class ModelServiceImpl(
     @Transactional(propagation = Propagation.SUPPORTS)
     override fun getLabelCounts(model: Model): Map<String, Long> {
         val rest = indexRoutingService.getProjectRestClient()
+        val modelIdFilter = QueryBuilders.termQuery("labels.modelId", model.id.toString())
         val query = QueryBuilders.nestedQuery(
             "labels",
-            QueryBuilders.termQuery("labels.modelId", model.id.toString()), ScoreMode.None
+            modelIdFilter, ScoreMode.None
         )
         val agg = AggregationBuilders.nested("nested_labels", "labels")
             .subAggregation(
-                AggregationBuilders.terms("labels")
-                    .field("labels.label")
-                    .size(1000)
-                    .order(BucketOrder.key(true))
+                AggregationBuilders.filter("filtered", modelIdFilter)
+                    .subAggregation(
+                        AggregationBuilders.terms("labels")
+                            .field("labels.label")
+                            .size(1000)
+                            .order(BucketOrder.key(true))
+                    )
             )
 
         val req = rest.newSearchBuilder()
@@ -369,7 +379,9 @@ class ModelServiceImpl(
         req.source.fetchSource(false)
 
         val rsp = rest.client.search(req.request, RequestOptions.DEFAULT)
-        val buckets = rsp.aggregations.get<Nested>("nested_labels").aggregations.get<Terms>("labels")
+        val buckets = rsp.aggregations.get<Nested>("nested_labels")
+            .aggregations.get<Filter>("filtered")
+            .aggregations.get<Terms>("labels")
 
         // Use a LinkedHashMap to maintain sort on the labels.
         val result = LinkedHashMap<String, Long>()

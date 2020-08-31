@@ -12,6 +12,7 @@ from searches.serializers import SearchAssetSerializer
 from searches.views import search_asset_modifier
 from wallet.mixins import CamelCaseRendererMixin
 from wallet.paginators import ZMLPFromSizePagination
+from wallet.utils import validate_zmlp_data
 
 
 def set_asset_total_count(asset_counts):
@@ -276,8 +277,7 @@ class TaskErrorViewSet(BaseProjectViewSet):
         error = request.client.post(url, {'ids': [pk]})
         task_error_item_modifier(request, error)
         serializer = self.get_serializer(data=error)
-        if not serializer.is_valid():
-            return Response({'detail': serializer.errors}, status=500)
+        validate_zmlp_data(serializer)
         return Response(serializer.validated_data)
 
 

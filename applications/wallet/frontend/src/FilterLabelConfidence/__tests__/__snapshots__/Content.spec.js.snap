@@ -33,7 +33,14 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  <div>
+  .emotion-0 {
+  padding-top: 8px;
+  font-style: italic;
+}
+
+<div
+    className="emotion-0"
+  >
     Confidence score:
      
     N/A
@@ -102,28 +109,19 @@ Array [
 
 .emotion-0 {
   width: 100%;
-  border: 1px solid transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   padding: 12px;
   padding-left: 32px;
+  border: 1px solid transparent;
   border-radius: 2px;
   color: #e0e0e0;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
   background-repeat: no-repeat,repeat;
   background-position: left 8px top 50%;
   background-size: 20px;
-}
-
-.emotion-0:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-0:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #73b61c;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-color: #2e2e2e;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 .emotion-0::-webkit-input-placeholder {
@@ -142,13 +140,26 @@ Array [
   font-style: italic;
 }
 
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-0:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
 <div
     className="emotion-1"
   >
     <input
+      aria-label="Filter labels"
       className="emotion-0"
       onChange={[Function]}
-      placeholder="Search labels"
+      placeholder="Filter labels"
       type="search"
       value=""
     />
@@ -214,7 +225,14 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  <div>
+  .emotion-0 {
+  padding-top: 8px;
+  font-style: italic;
+}
+
+<div
+    className="emotion-0"
+  >
     Confidence score:
      
     N/A
@@ -283,28 +301,19 @@ Array [
 
 .emotion-0 {
   width: 100%;
-  border: 1px solid transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   padding: 12px;
   padding-left: 32px;
+  border: 1px solid transparent;
   border-radius: 2px;
   color: #e0e0e0;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
   background-repeat: no-repeat,repeat;
   background-position: left 8px top 50%;
   background-size: 20px;
-}
-
-.emotion-0:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-0:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #73b61c;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-color: #2e2e2e;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 .emotion-0::-webkit-input-placeholder {
@@ -323,13 +332,26 @@ Array [
   font-style: italic;
 }
 
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-0:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
 <div
     className="emotion-1"
   >
     <input
+      aria-label="Filter labels"
       className="emotion-0"
       onChange={[Function]}
-      placeholder="Search labels"
+      placeholder="Filter labels"
       type="search"
       value=""
     />
@@ -358,13 +380,13 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-24 {
+  .emotion-32 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-5 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -398,24 +420,25 @@ Array [
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  color: #ffffff;
+  color: #b3b3b3;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 100%;
 }
 
@@ -437,7 +460,7 @@ Array [
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-3 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -452,51 +475,61 @@ Array [
   line-height: 18px;
 }
 
-.emotion-6 {
+.emotion-3 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-4 {
+  padding-left: 8px;
+}
+
+.emotion-8 {
   width: 56%;
   border-top: 4px solid #808080;
 }
 
-.emotion-7 {
+.emotion-9 {
   height: 4px;
   width: 44%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-12 {
+.emotion-16 {
   width: 42%;
   border-top: 4px solid #808080;
 }
 
-.emotion-13 {
+.emotion-17 {
   height: 4px;
   width: 58%;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-18 {
+.emotion-24 {
   width: 34%;
   border-top: 4px solid #808080;
 }
 
-.emotion-19 {
+.emotion-25 {
   height: 4px;
   width: 66%;
   border-top: 1px solid #3b3b3b;
 }
 
 <ul
-    className="emotion-24"
+    className="emotion-32"
   >
     <li>
       <button
         aria-label="web_site"
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
@@ -509,12 +542,16 @@ Array [
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               web_site
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               134
             </div>
           </div>
@@ -524,30 +561,34 @@ Array [
     <li>
       <button
         aria-label="alp"
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
           >
             <div
-              className="emotion-6"
+              className="emotion-8"
             />
             <div
-              className="emotion-7"
+              className="emotion-9"
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               alp
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               75
             </div>
           </div>
@@ -557,30 +598,34 @@ Array [
     <li>
       <button
         aria-label="sports_car"
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
           >
             <div
-              className="emotion-12"
+              className="emotion-16"
             />
             <div
-              className="emotion-13"
+              className="emotion-17"
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               sports_car
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               56
             </div>
           </div>
@@ -590,30 +635,34 @@ Array [
     <li>
       <button
         aria-label="menu"
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
           >
             <div
-              className="emotion-18"
+              className="emotion-24"
             />
             <div
-              className="emotion-19"
+              className="emotion-25"
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               menu
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               45
             </div>
           </div>
@@ -649,7 +698,14 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  <div>
+  .emotion-0 {
+  padding-top: 8px;
+  font-style: italic;
+}
+
+<div
+    className="emotion-0"
+  >
     Confidence score:
      
     N/A
@@ -718,28 +774,19 @@ Array [
 
 .emotion-0 {
   width: 100%;
-  border: 1px solid transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   padding: 12px;
   padding-left: 32px;
+  border: 1px solid transparent;
   border-radius: 2px;
   color: #e0e0e0;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
   background-repeat: no-repeat,repeat;
   background-position: left 8px top 50%;
   background-size: 20px;
-}
-
-.emotion-0:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-0:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #73b61c;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-color: #2e2e2e;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 .emotion-0::-webkit-input-placeholder {
@@ -758,13 +805,26 @@ Array [
   font-style: italic;
 }
 
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-0:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
 <div
     className="emotion-1"
   >
     <input
+      aria-label="Filter labels"
       className="emotion-0"
       onChange={[Function]}
-      placeholder="Search labels"
+      placeholder="Filter labels"
       type="search"
       value="web"
     />
@@ -793,13 +853,13 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-6 {
+  .emotion-8 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-5 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -833,24 +893,25 @@ Array [
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  color: #ffffff;
+  color: #b3b3b3;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 100%;
 }
 
@@ -872,7 +933,7 @@ Array [
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-3 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -887,18 +948,28 @@ Array [
   line-height: 18px;
 }
 
+.emotion-3 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-4 {
+  padding-left: 8px;
+}
+
 <ul
-    className="emotion-6"
+    className="emotion-8"
   >
     <li>
       <button
         aria-label="web_site"
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
@@ -911,12 +982,16 @@ Array [
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               web_site
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               134
             </div>
           </div>
@@ -964,7 +1039,14 @@ Array [
     pathname="/[projectId]/visualizer"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  <div>
+  .emotion-0 {
+  padding-top: 8px;
+  font-style: italic;
+}
+
+<div
+    className="emotion-0"
+  >
     Confidence score:
      
     All
@@ -1033,28 +1115,19 @@ Array [
 
 .emotion-0 {
   width: 100%;
-  border: 1px solid transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   padding: 12px;
   padding-left: 32px;
+  border: 1px solid transparent;
   border-radius: 2px;
   color: #e0e0e0;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
   background-repeat: no-repeat,repeat;
   background-position: left 8px top 50%;
   background-size: 20px;
-}
-
-.emotion-0:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-0:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #73b61c;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-color: #2e2e2e;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
 .emotion-0::-webkit-input-placeholder {
@@ -1073,13 +1146,26 @@ Array [
   font-style: italic;
 }
 
+.emotion-0:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-0:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #73b61c;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
 <div
     className="emotion-1"
   >
     <input
+      aria-label="Filter labels"
       className="emotion-0"
       onChange={[Function]}
-      placeholder="Search labels"
+      placeholder="Filter labels"
       type="search"
       value=""
     />
@@ -1108,13 +1194,13 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-24 {
+  .emotion-32 {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.emotion-11 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1148,24 +1234,25 @@ Array [
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  color: #ffffff;
+  color: #b3b3b3;
 }
 
-.emotion-11:hover {
+.emotion-15:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11:hover {
+.emotion-15:hover,
+.emotion-15.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 100%;
 }
 
@@ -1176,7 +1263,7 @@ Array [
   display: flex;
 }
 
-.emotion-3 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1191,7 +1278,17 @@ Array [
   line-height: 18px;
 }
 
-.emotion-5 {
+.emotion-3 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.emotion-4 {
+  padding-left: 8px;
+}
+
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1229,16 +1326,17 @@ Array [
   color: #ffffff;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   background-color: #0074f538;
   color: #ffffff;
 }
@@ -1254,23 +1352,23 @@ Array [
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-6 {
+.emotion-8 {
   width: 0%;
   border-top: 4px solid #808080;
 }
 
 <ul
-    className="emotion-24"
+    className="emotion-32"
   >
     <li>
       <button
         aria-label="web_site"
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
@@ -1283,12 +1381,16 @@ Array [
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               web_site
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               0
             </div>
           </div>
@@ -1298,30 +1400,34 @@ Array [
     <li>
       <button
         aria-label="alp"
-        className="emotion-11"
+        className="emotion-15"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
           >
             <div
-              className="emotion-6"
+              className="emotion-8"
             />
             <div
               className="emotion-1"
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               alp
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               0
             </div>
           </div>
@@ -1331,30 +1437,34 @@ Array [
     <li>
       <button
         aria-label="sports_car"
-        className="emotion-11"
+        className="emotion-15"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
           >
             <div
-              className="emotion-6"
+              className="emotion-8"
             />
             <div
               className="emotion-1"
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               sports_car
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               0
             </div>
           </div>
@@ -1364,30 +1474,34 @@ Array [
     <li>
       <button
         aria-label="menu"
-        className="emotion-11"
+        className="emotion-15"
         onClick={[Function]}
         type="button"
       >
         <div
-          className="emotion-4"
+          className="emotion-6"
         >
           <div
             className="emotion-2"
           >
             <div
-              className="emotion-6"
+              className="emotion-8"
             />
             <div
               className="emotion-1"
             />
           </div>
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            <div>
+            <div
+              className="emotion-3"
+            >
               menu
             </div>
-            <div>
+            <div
+              className="emotion-4"
+            >
               0
             </div>
           </div>

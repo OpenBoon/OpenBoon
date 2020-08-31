@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import Router from 'next/router'
 
 import { fetcher } from '../Fetch/helpers'
 
@@ -10,6 +11,7 @@ import Modal from '../Modal'
 
 const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   return (
     <Menu open="left" button={ButtonActions}>
@@ -31,23 +33,26 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
                   <Modal
                     title="Delete API Key"
                     message="Deleting this key cannot be undone."
-                    action="Delete Permanently"
+                    action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
                     onCancel={() => {
                       setDeleteModalOpen(false)
 
                       onClick()
                     }}
                     onConfirm={async () => {
-                      setDeleteModalOpen(false)
-
-                      onClick()
+                      setIsDeleting(true)
 
                       await fetcher(
                         `/api/v1/projects/${projectId}/api_keys/${apiKeyId}/`,
                         { method: 'DELETE' },
                       )
 
-                      revalidate()
+                      await revalidate()
+
+                      Router.push(
+                        '/[projectId]/api-keys?action=delete-apikey-success',
+                        `/${projectId}/api-keys`,
+                      )
                     }}
                   />
                 )}

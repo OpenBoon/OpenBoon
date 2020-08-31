@@ -2,18 +2,49 @@
 
 exports[`<Models /> should render properly with models 1`] = `
 Array [
-  .emotion-0 {
+  .emotion-1 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
   padding-top: 24px;
   padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  color: #ffffff;
+  background-color: #0074f5;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 15.399999999999999px;
+  font-weight: 500;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-left: 8px;
 }
 
 <h2
-    className="emotion-0"
+    className="emotion-1"
   >
     Custom Models
+    <span
+      className="emotion-0"
+    >
+      beta
+    </span>
   </h2>,
   .emotion-2 {
   display: -webkit-box;
@@ -81,43 +112,6 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-2 {
-  max-width: 600px;
-  color: #b3b3b3;
-}
-
-.emotion-0 {
-  color: #73b61c;
-}
-
-<p
-    className="emotion-2"
-  >
-    FINAL COPY NEEDED Steps in adding labels and then coming back to the model detail page to train. Once a model has been trained it will be available to add to
-     
-    <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
-      href="/[projectId]/data-sources"
-      passHref={true}
-    >
-      <a
-        className="emotion-0"
-      >
-        data sources
-      </a>
-    </Link>
-    . Learn more about
-     
-    <a
-      className="emotion-0"
-      href="https://app.gitbook.com/@zorroa/s/zmlp/client/data-sets"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      custom models
-    </a>
-    .
-  </p>,
   .emotion-5 {
   padding: 16px;
   padding-left: 0;
@@ -209,6 +203,7 @@ Array [
         >
           <a
             className="emotion-0"
+            onClick={[Function]}
           >
             View all
           </a>
@@ -224,6 +219,7 @@ Array [
         >
           <a
             className="emotion-2"
+            onClick={[Function]}
           >
             Create New Model
           </a>
@@ -296,9 +292,7 @@ Array [
 }
 
 .emotion-18 {
-  width: 100%;
   height: auto;
-  border-spacing: 0;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
@@ -565,18 +559,49 @@ Array [
 
 exports[`<Models /> should render properly with no models 1`] = `
 Array [
-  .emotion-0 {
+  .emotion-1 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
   padding-top: 24px;
   padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  color: #ffffff;
+  background-color: #0074f5;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 15.399999999999999px;
+  font-weight: 500;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-left: 8px;
 }
 
 <h2
-    className="emotion-0"
+    className="emotion-1"
   >
     Custom Models
+    <span
+      className="emotion-0"
+    >
+      beta
+    </span>
   </h2>,
   .emotion-2 {
   display: -webkit-box;
@@ -632,43 +657,6 @@ Array [
       </div>
     </div>
   </div>,
-  .emotion-2 {
-  max-width: 600px;
-  color: #b3b3b3;
-}
-
-.emotion-0 {
-  color: #73b61c;
-}
-
-<p
-    className="emotion-2"
-  >
-    FINAL COPY NEEDED Steps in adding labels and then coming back to the model detail page to train. Once a model has been trained it will be available to add to
-     
-    <Link
-      as="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
-      href="/[projectId]/data-sources"
-      passHref={true}
-    >
-      <a
-        className="emotion-0"
-      >
-        data sources
-      </a>
-    </Link>
-    . Learn more about
-     
-    <a
-      className="emotion-0"
-      href="https://app.gitbook.com/@zorroa/s/zmlp/client/data-sets"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      custom models
-    </a>
-    .
-  </p>,
   .emotion-5 {
   padding: 16px;
   padding-left: 0;
@@ -760,6 +748,7 @@ Array [
         >
           <a
             className="emotion-0"
+            onClick={[Function]}
           >
             View all
           </a>
@@ -775,6 +764,7 @@ Array [
         >
           <a
             className="emotion-2"
+            onClick={[Function]}
           >
             Create New Model
           </a>
@@ -835,9 +825,7 @@ Array [
 }
 
 .emotion-9 {
-  width: 100%;
   height: 100%;
-  border-spacing: 0;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }

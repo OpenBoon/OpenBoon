@@ -105,10 +105,12 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  color: #b3b3b3;
 }
 
 .emotion-3:hover {
   background-color: #0074f538;
+  color: #ffffff;
 }
 
 .emotion-3:hover svg {
@@ -119,7 +121,6 @@ Array [
   width: 100%;
   padding: 12px 16px;
   word-break: break-word;
-  color: #b3b3b3;
 }
 
 .emotion-2 {
@@ -197,12 +198,12 @@ Array [
 `;
 
 exports[`<MetadataPrettySwitch /> should render label detection with box images properly 1`] = `
-.emotion-15 {
+.emotion-14 {
   padding: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-15:not(:first-of-type) {
+.emotion-14:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
 }
 
@@ -212,20 +213,6 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   line-height: 18px;
   color: #ffffff;
   padding-bottom: 16px;
-}
-
-.emotion-14 {
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
-  width: 100%;
-  border-spacing: 0;
-}
-
-.emotion-14 td {
-  padding-right: 8px;
-  padding-left: 0;
 }
 
 .emotion-1 {
@@ -248,13 +235,14 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   width: 100%;
 }
 
-.emotion-8 {
-  vertical-align: bottom;
-}
-
 .emotion-8 td {
+  vertical-align: bottom;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   padding: 8px;
   padding-left: 0;
+  padding-right: 8px;
   border-bottom: 1px solid #3b3b3b;
 }
 
@@ -270,7 +258,7 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
   display: flex;
 }
 
-.emotion-16:not(:first-of-type) {
+.emotion-15:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
 }
 
@@ -281,19 +269,17 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
 }
 
 <div
-  className="emotion-16"
+  className="emotion-15"
 >
   <div
-    className="emotion-15"
+    className="emotion-14"
   >
     <div
       className="emotion-0"
     >
       zvi-object-detection
     </div>
-    <table
-      className="emotion-14"
-    >
+    <table>
       <thead>
         <tr>
           <th
@@ -398,12 +384,12 @@ exports[`<MetadataPrettySwitch /> should render label detection with box images 
 
 exports[`<MetadataPrettySwitch /> should render label with no box images detection properly 1`] = `
 Array [
-  .emotion-10 {
+  .emotion-9 {
   padding: 16px;
   padding-bottom: 24px;
 }
 
-.emotion-10:not(:first-of-type) {
+.emotion-9:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
 }
 
@@ -413,20 +399,6 @@ Array [
   line-height: 18px;
   color: #ffffff;
   padding-bottom: 16px;
-}
-
-.emotion-9 {
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
-  width: 100%;
-  border-spacing: 0;
-}
-
-.emotion-9 td {
-  padding-right: 8px;
-  padding-left: 0;
 }
 
 .emotion-1 {
@@ -449,13 +421,14 @@ Array [
   width: 100%;
 }
 
-.emotion-5 {
-  vertical-align: bottom;
-}
-
 .emotion-5 td {
+  vertical-align: bottom;
+  font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   padding: 8px;
   padding-left: 0;
+  padding-right: 8px;
   border-bottom: 1px solid #3b3b3b;
 }
 
@@ -465,16 +438,14 @@ Array [
 }
 
 <div
-    className="emotion-10"
+    className="emotion-9"
   >
     <div
       className="emotion-0"
     >
       zvi-label-detection
     </div>
-    <table
-      className="emotion-9"
-    >
+    <table>
       <thead>
         <tr>
           <th

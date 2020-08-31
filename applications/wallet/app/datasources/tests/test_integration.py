@@ -234,3 +234,15 @@ def test_datasource_viewset_update_bad_data(api_client, monkeypatch, zmlp_projec
     assert response.status_code == 400
     assert response.json() == {'name': ['This field is required.'],
                                'uri': ['This field is required.']}
+
+
+def test_datasource_actions_create_scan(api_client, monkeypatch, zmlp_project_user, login, project):
+    job_response = {'id': '3875a3e4-4d32-1617-ac79-5a9c7735885a', 'projectId': '8aff54cf-2546-4f67-8861-5e23bb4241b5', 'dataSourceId': '84d73472-e0cf-1bd4-a18a-5a9c7735885a', 'name': 'Applying modules: gcp-video-logo-detection,gcp-video-object-detection,gcp-video-text-detection,gcp-video-label-detection to gs://zorroa-dev-data/pexels', 'state': 'InProgress', 'assetCounts': {'assetTotalCount': 0, 'assetCreatedCount': 0, 'assetReplacedCount': 0, 'assetWarningCount': 0, 'assetErrorCount': 0}, 'taskCounts': {'tasksTotal': 1, 'tasksWaiting': 1, 'tasksRunning': 0, 'tasksSuccess': 0, 'tasksFailure': 0, 'tasksSkipped': 0, 'tasksQueued': 0, 'tasksDepend': 0}, 'timeStarted': -1, 'timeUpdated': 1598308295227, 'timeCreated': 1598308295227, 'timeStopped': -1, 'priority': 100, 'paused': False, 'timePauseExpired': -1, 'maxRunningTasks': 1024, 'jobId': '3875a3e4-4d32-1617-ac79-5a9c7735885a'}  # noqa
+
+    def mock_post_response(*args, **kwargs):
+        return job_response
+
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
+    kwargs = {'project_pk': project.id, 'pk': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b'}
+    response = api_client.post(reverse('datasource-scan', kwargs=kwargs), {})
+    assert response.json() == {'jobId': job_response['id']}

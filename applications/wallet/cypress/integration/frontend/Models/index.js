@@ -1,8 +1,12 @@
 describe('Models', function () {
-  it('can be created', function () {
+  it('can be created and deleted', function () {
     const modelName = `cypress-frontend-${Date.now()}`
 
     cy.login()
+
+    /**
+     * Create
+     */
 
     cy.visit(`/${this.PROJECT_ID}/models/add`)
 
@@ -14,6 +18,23 @@ describe('Models', function () {
 
     cy.contains('Model created.')
 
-    cy.contains(modelName)
+    /**
+     * Delete
+     */
+
+    cy.contains(modelName).click()
+
+    cy.contains('Delete').click()
+
+    cy.contains('Delete Permanently').click()
+
+    cy.url().should(
+      'eq',
+      `${Cypress.config('baseUrl')}/${this.PROJECT_ID}/models`,
+    )
+
+    cy.contains('Model deleted.')
+
+    cy.contains(modelName).should('not.exist')
   })
 })

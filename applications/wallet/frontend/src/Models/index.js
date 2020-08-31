@@ -9,11 +9,11 @@ import { spacing } from '../Styles'
 import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import PageTitle from '../PageTitle'
+import BetaBadge from '../BetaBadge'
 import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
 
-import ModelsCopy from './Copy'
 import ModelsEmpty from './Empty'
 import ModelsRow from './Row'
 
@@ -40,7 +40,10 @@ const Models = () => {
         <title>Custom Models</title>
       </Head>
 
-      <PageTitle>Custom Models</PageTitle>
+      <PageTitle>
+        Custom Models
+        <BetaBadge />
+      </PageTitle>
 
       {action === 'add-model-success' && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
@@ -72,8 +75,6 @@ const Models = () => {
           <FlashMessage variant={VARIANTS.SUCCESS}>Model deleted.</FlashMessage>
         </div>
       )}
-
-      <ModelsCopy projectId={projectId} />
 
       <Tabs
         tabs={[

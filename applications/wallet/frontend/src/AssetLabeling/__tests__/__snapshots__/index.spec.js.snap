@@ -62,6 +62,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 12px;
 }
@@ -290,6 +291,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 12px;
 }
@@ -301,6 +303,7 @@ Array [
 .emotion-4 {
   padding: 16px;
   color: #ffffff;
+  font-style: italic;
 }
 
 <details
@@ -345,6 +348,7 @@ exports[`<AssetLabeling /> should render properly with no selected asset 1`] = `
 .emotion-0 {
   padding: 16px;
   color: #ffffff;
+  font-style: italic;
 }
 
 <div
@@ -416,6 +420,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 12px;
 }
@@ -657,6 +662,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 12px;
 }
@@ -666,18 +672,13 @@ Array [
 }
 
 .emotion-15 {
-  width: 100%;
   color: #808080;
-  border-spacing: 0;
-}
-
-.emotion-4 {
-  text-align: left;
-  font-family: Roboto Condensed;
-  font-weight: 500;
 }
 
 .emotion-4 th {
+  text-align: left;
+  font-family: Roboto Condensed;
+  font-weight: 400;
   text-transform: uppercase;
   padding: 12px;
   padding-top: 16px;
@@ -696,6 +697,11 @@ Array [
 
 .emotion-9:hover {
   background-color: #0074f538;
+  color: #ffffff;
+}
+
+.emotion-9:hover svg {
+  color: #ffffff;
 }
 
 .emotion-9 td {
@@ -943,6 +949,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 12px;
 }
@@ -1184,6 +1191,7 @@ Array [
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: -2px;
   padding-left: 12px;
 }
@@ -1193,18 +1201,13 @@ Array [
 }
 
 .emotion-15 {
-  width: 100%;
   color: #808080;
-  border-spacing: 0;
-}
-
-.emotion-4 {
-  text-align: left;
-  font-family: Roboto Condensed;
-  font-weight: 500;
 }
 
 .emotion-4 th {
+  text-align: left;
+  font-family: Roboto Condensed;
+  font-weight: 400;
   text-transform: uppercase;
   padding: 12px;
   padding-top: 16px;
@@ -1223,6 +1226,11 @@ Array [
 
 .emotion-9:hover {
   background-color: #0074f538;
+  color: #ffffff;
+}
+
+.emotion-9:hover svg {
+  color: #ffffff;
 }
 
 .emotion-9 td {

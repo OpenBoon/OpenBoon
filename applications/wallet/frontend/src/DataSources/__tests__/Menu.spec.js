@@ -73,4 +73,43 @@ describe('<DataSourcesMenu />', () => {
 
     expect(mockFn).toHaveBeenCalledWith()
   })
+
+  it('should scan for new files.', async () => {
+    const mockFn = jest.fn()
+    const component = TestRenderer.create(
+      <DataSourcesMenu
+        projectId={PROJECT_ID}
+        dataSourceId={DATA_SOURCE_ID}
+        revalidate={mockFn}
+      />,
+    )
+
+    // Open Menu
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Toggle Actions Menu' })
+        .props.onClick()
+    })
+
+    // Select Import New Files
+    act(() => {
+      component.root
+        .findByProps({ children: 'Scan For New Files' })
+        .props.onClick()
+    })
+
+    expect(fetch.mock.calls[0][0]).toEqual(
+      `/api/v1/projects/${PROJECT_ID}/data_sources/${DATA_SOURCE_ID}/scan/`,
+    )
+
+    expect(fetch.mock.calls[0][1]).toEqual({
+      headers: {
+        'X-CSRFToken': 'CSRF_TOKEN',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+    })
+
+    expect(mockFn).not.toHaveBeenCalled()
+  })
 })

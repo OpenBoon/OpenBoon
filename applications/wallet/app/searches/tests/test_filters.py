@@ -404,25 +404,22 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'must': [
-                        {'script_score': {
+                    'filter': [
+                        {
+                            'terms': {'analysis.zvi-label-detection.predictions.label': [
+                                'value1',
+                                'value2']}},
+                        {'nested': {
+                            'path': 'analysis.zvi-label-detection.predictions',
                             'query': {
-                                'terms': {
-                                    'analysis.zvi-label-detection.predictions.label': ['value1', 'value2']  # noqa
-                                }
-                            },
-                            'script': {
-                                'source': 'kwconf',
-                                'lang': 'zorroa-kwconf',
-                                'params': {
-                                    'field': 'analysis.zvi-label-detection.predictions',
-                                    'labels': ['value1',
-                                               'value2'],
-                                    'range': [.5, .8]
-                                }
-                            },
-                            'min_score': .5
-                        }}]}}}
+                                'bool': {'filter': [{'terms': {
+                                    'analysis.zvi-label-detection.predictions.label': [
+                                        'value1',
+                                        'value2']}},
+                                    {'range': {
+                                        'analysis.zvi-label-detection.predictions.score': {
+                                            'from': 0.5,
+                                            'to': 0.8}}}]}}}}]}}}
 
     def test_add_to_query(self, mock_query_data):
         _filter = LabelConfidenceFilter(mock_query_data)
@@ -440,24 +437,22 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
             'query': {
                 'bool': {
                     'filter': [
-                        {'terms': {'my_attr': ['value1', 'value2']}},
-                        ],
-                    'must': [
-                        {'script_score': {
-                            'query': {
-                                'terms': {
-                                    'analysis.zvi-label-detection.predictions.label': ['value1', 'value2']  # noqa
-                                }
-                            }, 'script': {
-                                'source': 'kwconf',
-                                'lang': 'zorroa-kwconf',
-                                'params': {
-                                    'field': 'analysis.zvi-label-detection.predictions',
-                                    'labels': ['value1', 'value2'],
-                                    'range': [.5, .8]
-                                }
-                            }, 'min_score': .5
-                        }}]}}}
+                        {
+                            'terms': {'my_attr': ['value1', 'value2']}},
+                        {'terms': {
+                            'analysis.zvi-label-detection.predictions.label': [
+                                'value1',
+                                'value2']}},
+                        {'nested': {
+                            'path': 'analysis.zvi-label-detection.predictions',
+                            'query': {'bool': {'filter': [{'terms': {
+                                'analysis.zvi-label-detection.predictions.label': [
+                                    'value1',
+                                    'value2']}},
+                                {'range': {
+                                    'analysis.zvi-label-detection.predictions.score': {
+                                        'from': 0.5,
+                                        'to': 0.8}}}]}}}}]}}}
 
     def test_add_to_label_conf_query(self, mock_query_data):
         _filter = LabelConfidenceFilter(mock_query_data)
@@ -472,34 +467,33 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
         })
         query = _filter.get_es_query()
         query = _filter2.add_to_query(query)
-        assert query == {
-            'query': {
-                'bool': {
-                    'must': [
-                        {'script_score': {
-                            'query': {
-                                'terms': {
-                                    'analysis.zvi-label-detection.predictions.label': ['value1', 'value2']}},  # noqa
-                            'script': {
-                                'source': 'kwconf',
-                                'lang': 'zorroa-kwconf',
-                                'params': {
-                                    'field': 'analysis.zvi-label-detection.predictions',
-                                    'labels': ['value1', 'value2'],
-                                    'range': [0.5, 0.8]}},
-                            'min_score': 0.5}},
-                        {'script_score': {
-                            'query': {
-                                'terms': {
-                                    'analysis.zvi-object-detection.predictions.label': ['dog', 'cat']}},  # noqa
-                            'script': {
-                                'source': 'kwconf',
-                                'lang': 'zorroa-kwconf',
-                                'params': {
-                                    'field': 'analysis.zvi-object-detection.predictions',
-                                    'labels': ['dog', 'cat'],
-                                    'range': [0.2, 0.7]}},
-                            'min_score': 0.2}}]}}}
+        assert query == {'query': {'bool': {'filter': [
+            {'terms': {'analysis.zvi-label-detection.predictions.label': ['value1',
+                                                                          'value2']}},
+            {'nested': {'path': 'analysis.zvi-label-detection.predictions',
+                        'query': {
+                            'bool': {
+                                'filter': [
+                                    {'terms': {
+                                        'analysis.zvi-label-detection.predictions.label': [
+                                            'value1', 'value2']}},
+                                    {'range': {
+                                        'analysis.zvi-label-detection.predictions.score': {
+                                            'from': 0.5,
+                                            'to': 0.8}}}]}}}},
+            {'terms': {'analysis.zvi-object-detection.predictions.label': ['dog',
+                                                                           'cat']}},
+            {'nested': {'path': 'analysis.zvi-object-detection.predictions',
+                        'query': {
+                            'bool': {
+                                'filter': [
+                                    {'terms': {
+                                        'analysis.zvi-object-detection.predictions.label': [
+                                            'dog', 'cat']}},
+                                    {'range': {
+                                        'analysis.zvi-object-detection.predictions.score': {
+                                            'from': 0.2,
+                                            'to': 0.7}}}]}}}}]}}}
 
 
 class TestTextContentFilter(FilterBaseTestCase):
@@ -679,16 +673,24 @@ class TestLabelsFilter(FilterBaseTestCase):
                     'query': {
                         'bool': {
                             'filter': [
-                                {'term': {
-                                    'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},
+                                {'term': {'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},  # noqa
             'aggs': {
                 name: {
-                    'nested': {'path': 'labels'},
+                    'nested': {
+                        'path': 'labels'
+                    },
                     'aggs': {
-                        f'nested_{name}': {
-                            'terms': {
-                                'field': 'labels.label',
-                                'size': 1000}}}}}}
+                        'modelId': {
+                            'filter': {
+                                'term': {
+                                    'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'
+                                }
+                            },
+                            'aggs': {
+                                f'nested_{name}': {
+                                    'terms': {
+                                        'field': 'labels.label',
+                                        'size': 1000}}}}}}}}
 
     def test_get_es_agg_with_options(self, mock_data):
         mock_data['order'] = 'asc'
@@ -703,12 +705,14 @@ class TestLabelsFilter(FilterBaseTestCase):
                                      'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}}]}}}},  # noqa
             'aggs': {name: {'nested': {'path': 'labels'},
                             'aggs': {
-                                f'nested_{name}': {
-                                    'terms': {
-                                        'field': 'labels.label',
-                                        'min_doc_count': 2,
-                                        'order': {'_count': 'asc'},
-                                        'size': 1000}}}}}}
+                                'modelId': {
+                                    'filter': {'term': {'labels.modelId': 'bc28213f-cf3a-16a2-9f21-0242ac130003'}},  # noqa
+                                    'aggs': {f'nested_{name}': {
+                                        'terms': {
+                                            'field': 'labels.label',
+                                            'size': 1000,
+                                            'order': {'_count': 'asc'},
+                                            'min_doc_count': 2}}}}}}}}
 
     def test_get_query(self, mock_query_data):
         _filter = self.Filter(mock_query_data)

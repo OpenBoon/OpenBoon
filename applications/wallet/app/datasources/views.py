@@ -1,16 +1,18 @@
 import json
+import os
 import uuid
-
 from functools import lru_cache
 
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from zmlp.client import ZmlpDuplicateException
 from zmlp import DataSource
+from zmlp.client import ZmlpDuplicateException
 
 from datasources.serializers import DataSourceSerializer, CreateDataSourceSerializer, \
     AzureCredentialSerializer, AwsCredentialSerializer, GcpCredentialSerializer
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
+from wallet.utils import validate_zmlp_data
 
 
 def create_zmlp_credential(client, wallet_credential, project_id, datasource_name):
@@ -97,8 +99,7 @@ Below are examples of all 3.
         job = app.datasource.import_files(datasource)
         datasource._data['jobId'] = job.id
         serializer = self.get_serializer(data=datasource._data)
-        if not serializer.is_valid():
-            return Response({'detail': serializer.errors}, status=500)
+        validate_zmlp_data(serializer)
         return Response(serializer.validated_data)
 
     def list(self, request, project_pk):
@@ -118,12 +119,17 @@ Below are examples of all 3.
         job = request.app.datasource.import_files(datasource)
         datasource._data['jobId'] = job.id
         serializer = self.get_serializer(data=datasource._data)
-        if not serializer.is_valid():
-            return Response({'detail': serializer.errors}, status=500)
+        validate_zmlp_data(serializer)
         return Response(serializer.validated_data)
 
     def destroy(self, request, project_pk, pk):
         return self._zmlp_destroy(request, pk)
+
+    @action(detail=True, methods=['post', 'put'])
+    def scan(self, request, project_pk, pk):
+        path = os.path.join(self.zmlp_root_api_path, pk, '_import')
+        response = request.client.post(path, {})
+        return Response({'jobId': response['id']})
 
     @lru_cache(maxsize=128)
     def _get_module_name(self, module_id, client):

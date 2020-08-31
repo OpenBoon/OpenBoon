@@ -58,7 +58,7 @@ const FilterLabelConfidenceContent = ({
       />
 
       <FilterSearch
-        placeholder="Search labels"
+        placeholder="Filter labels"
         searchString={searchString}
         onChange={({ value }) => {
           setSearchString(value)
@@ -96,8 +96,10 @@ const FilterLabelConfidenceContent = ({
                   backgroundColor: isSelected
                     ? `${colors.signal.sky.base}${constants.opacity.hex22Pct}`
                     : '',
-                  color: colors.structure.white,
-                  ':hover': {
+                  color: isSelected
+                    ? colors.structure.white
+                    : colors.structure.zinc,
+                  ':hover, &.focus-visible:focus': {
                     backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
                     color: colors.structure.white,
                   },
@@ -165,8 +167,16 @@ const FilterLabelConfidenceContent = ({
                       lineHeight: typography.height.small,
                     }}
                   >
-                    <div>{key}</div>
-                    <div>{docCount}</div>
+                    <div
+                      css={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {key}
+                    </div>
+                    <div css={{ paddingLeft: spacing.base }}>{docCount}</div>
                   </div>
                 </div>
               </Button>

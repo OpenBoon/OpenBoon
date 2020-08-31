@@ -316,6 +316,7 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
         >
           <a
             className="emotion-8"
+            onClick={[Function]}
           >
             View Labels
           </a>

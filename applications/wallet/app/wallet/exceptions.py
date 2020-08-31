@@ -18,6 +18,12 @@ class DuplicateError(APIException):
     default_code = 'already_exists'
 
 
+class InvalidZmlpDataError(APIException):
+    status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+    default_detail = gettext_lazy('Invalid data was returned from ZMLP.')
+    default_code = 'invalid_zmlp_data'
+
+
 def zmlp_exception_handler(exc, context):
     """Custom DRF exception handler that converts ZMLP exceptions to built-in DRF exceptions."""
     exception_mapping = {ZmlpSecurityException: exceptions.PermissionDenied,

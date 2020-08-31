@@ -10,21 +10,12 @@ import com.zorroa.zmlp.service.security.EncryptionServiceImpl
 import io.sentry.spring.SentryExceptionResolver
 import io.sentry.spring.SentryServletContextInitializer
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.core.Binding
-import org.springframework.amqp.core.BindingBuilder
-import org.springframework.amqp.core.Queue
-import org.springframework.amqp.core.TopicExchange
-import org.springframework.amqp.rabbit.connection.ConnectionFactory
-import org.springframework.amqp.rabbit.core.RabbitTemplate
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
 import org.springframework.boot.web.servlet.ServletContextInitializer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
-import org.springframework.core.env.Environment
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.task.AsyncListenableTaskExecutor
 import org.springframework.http.converter.HttpMessageConverter
@@ -131,9 +122,6 @@ class ArchivistConfiguration {
 @Configuration
 class MessageServiceConfiguration {
 
-    @Autowired
-    lateinit var env: Environment
-
     @Bean
     fun requestMappingHandlerAdapter(): RequestMappingHandlerAdapter {
         val adapter = RequestMappingHandlerAdapter()
@@ -141,35 +129,5 @@ class MessageServiceConfiguration {
             MappingJackson2HttpMessageConverter()
         )
         return adapter
-    }
-
-    @Bean
-    fun queue(): Queue {
-        return Queue(env.getProperty("archivist.messaging-service.rabbitmq.queue"), false)
-    }
-
-    @Bean
-    fun exchange(): TopicExchange {
-        return TopicExchange(env.getProperty("archivist.messaging-service.rabbitmq.topicExchanger"))
-    }
-
-    @Bean
-    fun binding(queue: Queue?, exchange: TopicExchange): Binding {
-        return BindingBuilder
-            .bind(queue)
-            .to(exchange)
-            .with("archivist.messaging-service.rabbitmq.routingKey")
-    }
-
-    @Bean
-    fun amqpTemplate(connectionFactory: ConnectionFactory): RabbitTemplate {
-        val rabbitTemplate = RabbitTemplate(connectionFactory)
-        rabbitTemplate.messageConverter = messageConverter()
-        return rabbitTemplate
-    }
-
-    @Bean
-    fun messageConverter(): Jackson2JsonMessageConverter {
-        return Jackson2JsonMessageConverter()
     }
 }

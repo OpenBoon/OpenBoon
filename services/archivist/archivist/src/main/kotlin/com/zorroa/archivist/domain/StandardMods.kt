@@ -13,6 +13,7 @@ object Category {
     const val GOOGLE_VIDEO = "Google Video Intelligence"
     const val GOOGLE_VISION = "Google Vision"
     const val GOOGLE_S2TEXT = "Google Speech-To-Text"
+    const val GOOGLE_DLP = "Google Data Loss Prevention"
     const val AWS_REK = "Amazon Rekognition"
     const val ZORROA_TL = "Zorroa Timeline Extraction"
     const val ZORROA_STD = "Zorroa Visual Intelligence"
@@ -484,6 +485,32 @@ fun getStandardModules(): List<PipelineModSpec> {
                             mutableMapOf()
                         )
                     )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "gcp-dlp",
+            "Use Data Loss Prevention (DLP) to extract names, dates and addresses from scanned documents.",
+            Provider.GOOGLE,
+            Category.GOOGLE_DLP,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.CloudDLPDetectEntities",
+                            StandardContainers.ANALYSIS,
+                            mutableMapOf()
+                        )
+                    )
+                ),
+                ModOp(
+                    ModOpType.SET_ARGS,
+                    mapOf("ocr" to true),
+                    OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
             true

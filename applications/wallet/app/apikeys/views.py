@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
+from zmlp.client import ZmlpDuplicateException
 
 from apikeys.serializers import ApikeySerializer
 from apikeys.utils import create_zmlp_api_key
@@ -22,12 +23,14 @@ class ApikeyViewSet(BaseProjectViewSet):
 
     def create(self, request, project_pk):
         serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
-
-        apikey = create_zmlp_api_key(request.client, serializer.validated_data['name'],
-                                     serializer.validated_data['permissions'], encode_b64=False,
-                                     internal=serializer.validated_data.get('internal', False))
+        serializer.is_valid(raise_exception=True)
+        try:
+            apikey = create_zmlp_api_key(request.client, serializer.validated_data['name'],
+                                         serializer.validated_data['permissions'], encode_b64=False,
+                                         internal=serializer.validated_data.get('internal', False))
+        except ZmlpDuplicateException:
+            msg = 'An API Key with this name already exists. Please choose another.'
+            return Response(status=status.HTTP_409_CONFLICT, data={'name': [msg]})
         slim_key = {'accessKey': apikey['accessKey'],
                     'secretKey': apikey['secretKey']}
         return Response(status=status.HTTP_201_CREATED, data=slim_key)

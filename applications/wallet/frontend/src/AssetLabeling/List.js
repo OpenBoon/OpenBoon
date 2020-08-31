@@ -9,26 +9,26 @@ import AssetLabelingMenu from './Menu'
 const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
   if (!labels.length)
     return (
-      <div css={{ padding: spacing.normal, color: colors.structure.white }}>
+      <div
+        css={{
+          padding: spacing.normal,
+          color: colors.structure.white,
+          fontStyle: typography.style.italic,
+        }}
+      >
         No labels have been added
       </div>
     )
 
   return (
-    <table
-      css={{
-        width: '100%',
-        color: colors.structure.steel,
-        borderSpacing: 0,
-      }}
-    >
+    <table css={{ color: colors.structure.steel }}>
       <thead>
         <tr
           css={{
-            textAlign: 'left',
-            fontFamily: typography.family.condensed,
-            fontWeight: typography.weight.medium,
             th: {
+              textAlign: 'left',
+              fontFamily: typography.family.condensed,
+              fontWeight: typography.weight.regular,
               textTransform: 'uppercase',
               padding: spacing.moderate,
               paddingTop: spacing.normal,
@@ -54,6 +54,8 @@ const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
                 '&:nth-last-of-type(2)': { width: '100%' },
                 ':hover': {
                   backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
+                  color: colors.structure.white,
+                  svg: { color: colors.structure.white },
                 },
                 td: {
                   borderTop: constants.borders.regular.smoke,

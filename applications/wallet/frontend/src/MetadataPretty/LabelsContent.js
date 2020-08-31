@@ -27,6 +27,10 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
       <tr
         key={`${label.modelId}${label.label}`}
         css={{
+          fontFamily: typography.family.mono,
+          fontSize: typography.size.small,
+          lineHeight: typography.height.small,
+          color: colors.structure.white,
           verticalAlign: 'bottom',
           ':hover': {
             backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,

@@ -322,7 +322,8 @@ class ProjectStorage(object):
             "entityId": entity_id,
             "category": category,
             "name": name,
-            "attrs": attrs or {}
+            "attrs": attrs or {},
+            "size": os.path.getsize(src_path)
         }
 
         # To upload a file into project storage, first we get a signed upload URI.
@@ -407,7 +408,8 @@ class ProjectStorage(object):
             "entityId": entity.id,
             "category": category,
             "name": name,
-            "attrs": attrs or {}
+            "attrs": attrs or {},
+            "size": os.path.getsize(tmp_path)
         }
 
         result = StoredFile(self.app.client.upload_file(
@@ -513,6 +515,9 @@ class FileCache(object):
             str: The precache location.
 
         """
+        if sfile.size == 0:
+            raise ZmlpStorageException(f'Cannot precache {src_path}, file size is 0 bytes.')
+
         _, suffix = os.path.splitext(sfile.name)
         cache_path = self.get_path(sfile.id, suffix)
         precache_path = urlparse(str(src_path)).path
@@ -675,7 +680,8 @@ class FileStorage(object):
         elif isinstance(rep, StoredFile):
             return self.projects.localize_file(rep)
         else:
-            raise ValueError("cannot localize file, unable to determine the remote file source")
+            raise ZmlpStorageException(
+                f'cannot localize file {rep} unable to determine the remote file source')
 
 
 class ZmlpStorageException(ZmlpException):

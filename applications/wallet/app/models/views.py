@@ -9,7 +9,8 @@ from zmlp.entity.model import LabelScope
 
 from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 AddLabelsSerializer, UpdateLabelsSerializer,
-                                RemoveLabelsSerializer, RenameLabelSerializer)
+                                RemoveLabelsSerializer, RenameLabelSerializer,
+                                DestroyLabelSerializer)
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
@@ -58,10 +59,7 @@ class ModelViewSet(BaseProjectViewSet):
             (Response): Returns a 201 if the model was created.
         """
         serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(status=status.HTTP_400_BAD_REQUEST,
-                            data={'detail': serializer.errors})
-
+        serializer.is_valid(raise_exception=True)
         response = request.client.post(self.zmlp_root_api_path, serializer.validated_data)
         return Response(status=status.HTTP_201_CREATED, data={'results': response})
 
@@ -189,6 +187,22 @@ class ModelViewSet(BaseProjectViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': msg})
 
         return Response(status=status.HTTP_200_OK, data={})
+
+    @action(methods=['delete'], detail=True)
+    def destroy_label(self, request, project_pk, pk):
+        """Completely destroys all instances of a single label.
+
+        Expected Body:
+
+            {
+                "label": "Dog",
+            }
+
+        """
+        path = os.path.join(self.zmlp_root_api_path, pk, 'labels')
+        serializer = DestroyLabelSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(request.client.delete(path, serializer.validated_data))
 
     @action(methods=['put'], detail=True)
     def rename_label(self, request, project_pk, pk):

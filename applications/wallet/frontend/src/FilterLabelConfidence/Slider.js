@@ -41,7 +41,9 @@ const FilterLabelConfidenceSlider = ({
         onReset={() => setRangeValues([0, 1])}
       />
 
-      <div>
+      <div
+        css={{ paddingTop: spacing.base, fontStyle: typography.style.italic }}
+      >
         Confidence score:{' '}
         {formatRange({ min: rangeValues[0], max: rangeValues[1], labels })}
       </div>
@@ -58,6 +60,7 @@ const FilterLabelConfidenceSlider = ({
           <span>0.00</span>
           <span>1.00</span>
         </div>
+
         <div css={{ padding: spacing.small }}>
           <Slider
             step={0.01}

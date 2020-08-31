@@ -23,7 +23,8 @@ wallet-integration-test-suite:
     - cd applications/wallet/cypress
     - npm ci
   script:
-    - npm run cli
+    - npm run cli -- --record --group Backend --spec 'integration/backend/**/*'
+    - npm run cli -- --record --group Frontend --spec 'integration/frontend/**/*'
   artifacts:
     when: always
     paths:
@@ -224,7 +225,7 @@ backend-py-lint:
 
 ## Backend Kotlin Lint
 backend-kotlin-lint:
-  image: kkopper/ktlint
+  image: kkopper/ktlint:0.37.2
   stage: pretest
   script:
     - ktlint services/**/*.kt lib/**/*.kt
@@ -622,8 +623,6 @@ zmlp-services-unit-tests:
     - name: $LOCAL_ES_NAME
       alias: elasticsearch
       command: ["bin/elasticsearch", "-Ediscovery.type=single-node"]
-    - name: rabbitmq:3.8-management-alpine
-      alias: rabbitmq
   variables:
     POSTGRES_PASSWORD: "zorroa"
     POSTGRES_USER: "zorroa"
@@ -631,8 +630,6 @@ zmlp-services-unit-tests:
     PGDATA: "/var/lib/postgresql/data/pgdata"
     ARCHIVIST_ES_URL: "http://localhost:9200"
     SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/zorroa?currentSchema=archivist_test"
-    SPRING_RABBITMQ_USERNAME: "guest"
-    SPRING_RABBITMQ_PASSWORD: "guest"
     LOGGING_LEVEL_COM_ZORROA: "WARN"
     USER: "gitlab"
     ZMLP_STORAGE_PROJECT_ACCESSKEY: "qwerty123"

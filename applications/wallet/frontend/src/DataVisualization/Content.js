@@ -82,7 +82,6 @@ const DataVisualizationContent = () => {
 
           <div css={{ flex: 1 }}>
             <Charts
-              projectId={projectId}
               charts={charts}
               layouts={layouts}
               dispatch={dispatch}

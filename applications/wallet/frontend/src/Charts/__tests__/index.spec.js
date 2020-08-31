@@ -15,7 +15,6 @@ describe('<Charts />', () => {
       <Charts
         charts={[{ id: CHART_ID, type: 'range' }]}
         layouts={{}}
-        chartIndex={0}
         dispatch={noop}
         setLayouts={noop}
       />,
@@ -29,7 +28,6 @@ describe('<Charts />', () => {
       <Charts
         charts={[{ id: CHART_ID, type: 'facet' }]}
         layouts={{}}
-        chartIndex={0}
         dispatch={noop}
         setLayouts={noop}
       />,
@@ -43,7 +41,6 @@ describe('<Charts />', () => {
       <Charts
         charts={[{ id: CHART_ID, type: 'histogram' }]}
         layouts={{}}
-        chartIndex={0}
         dispatch={noop}
         setLayouts={noop}
       />,
@@ -57,7 +54,6 @@ describe('<Charts />', () => {
       <Charts
         charts={[{ id: CHART_ID }]}
         layouts={{}}
-        chartIndex={0}
         dispatch={noop}
         setLayouts={noop}
       />,

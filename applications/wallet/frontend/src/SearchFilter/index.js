@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, spacing, constants, typography } from '../Styles'
+import { colors, spacing, constants } from '../Styles'
 import PlusSvg from '../Icons/plus.svg'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
+
+import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
 
 const BUTTON_SIZE = 42
 
@@ -16,38 +18,13 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
   return (
     <form action="" method="post" onSubmit={(event) => event.preventDefault()}>
       <div css={{ display: 'flex' }}>
-        <input
-          type="search"
-          placeholder="Type here to create simple text filter"
+        <InputSearch
+          aria-label="Add Simple Text Filter"
+          placeholder="Type here to create a simple text filter"
           value={searchString}
-          onChange={({ target: { value } }) => setSearchString(value)}
-          css={{
-            flex: 1,
-            border: constants.borders.regular.transparent,
-            padding: spacing.moderate,
-            paddingLeft: spacing.spacious,
-            borderTopLeftRadius: constants.borderRadius.small,
-            borderBottomLeftRadius: constants.borderRadius.small,
-            color: colors.structure.pebble,
-            backgroundColor: colors.structure.coal,
-            ':hover': {
-              border: constants.borders.regular.steel,
-            },
-            ':focus': {
-              outline: constants.borders.regular.transparent,
-              border: constants.borders.keyOneRegular,
-              color: colors.structure.coal,
-              backgroundColor: colors.structure.white,
-              backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==')`,
-            },
-            '::placeholder': {
-              fontStyle: typography.style.italic,
-            },
-            backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==')`,
-            backgroundRepeat: `no-repeat, repeat`,
-            backgroundPosition: `left ${spacing.base}px top 50%`,
-            backgroundSize: constants.icons.regular,
-          }}
+          onChange={({ value }) => setSearchString(value)}
+          variant={INPUT_SEARCH_VARIANTS.DARK}
+          style={{ backgroundColor: colors.structure.coal }}
         />
         <button
           type="submit"
@@ -76,9 +53,12 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
             })
           }}
           css={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             width: BUTTON_SIZE,
-            borderTopRightRadius: constants.borderRadius.small,
-            borderBottomRightRadius: constants.borderRadius.small,
+            marginLeft: spacing.small,
+            borderRadius: constants.borderRadius.small,
             backgroundColor: hasSearch
               ? colors.key.one
               : colors.structure.steel,

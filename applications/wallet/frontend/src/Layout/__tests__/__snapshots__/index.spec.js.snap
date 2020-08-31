@@ -1,11 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Layout /> should render properly 1`] = `
-.emotion-11 {
+.emotion-12 {
   height: 100%;
 }
 
-.emotion-9 {
+.emotion-0:focus {
+  background-color: #3b3b3b;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  z-index: 101;
+  border-radius: 2px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-10 {
   position: fixed;
   top: 0;
   left: 0;
@@ -30,7 +40,7 @@ exports[`<Layout /> should render properly 1`] = `
   padding-right: 16px;
 }
 
-.emotion-2 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41,7 +51,7 @@ exports[`<Layout /> should render properly 1`] = `
   align-items: stretch;
 }
 
-.emotion-0 {
+.emotion-1 {
   border: 0;
   background-color: inherit;
   color: #808080;
@@ -62,7 +72,7 @@ exports[`<Layout /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-left: 8px;
   padding-right: 8px;
   display: -webkit-box;
@@ -75,15 +85,15 @@ exports[`<Layout /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-8 {
+.emotion-9 {
   margin-right: -12px;
 }
 
-.emotion-7 {
+.emotion-8 {
   position: relative;
 }
 
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -122,24 +132,24 @@ exports[`<Layout /> should render properly 1`] = `
   height: 100%;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   background-color: #3b3b3b;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   cursor: pointer;
 }
 
-.emotion-5 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -150,7 +160,7 @@ exports[`<Layout /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -173,11 +183,11 @@ exports[`<Layout /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-4 {
+.emotion-5 {
   margin-left: 8px;
 }
 
-.emotion-10 {
+.emotion-11 {
   margin-top: 44px;
   padding-left: 32px;
   padding-right: 32px;
@@ -193,17 +203,25 @@ exports[`<Layout /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-11"
+  className="emotion-12"
 >
+  <a
+    className="emotion-0"
+    data-reach-skip-link=""
+    data-reach-skip-nav-link=""
+    href="#reach-skip-nav"
+  >
+    Skip to content
+  </a>
   <div
-    className="emotion-9"
+    className="emotion-10"
   >
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <button
         aria-label="Open Sidebar Menu"
-        className="emotion-0"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
@@ -214,7 +232,7 @@ exports[`<Layout /> should render properly 1`] = `
       </button>
       <a
         aria-label="Home"
-        className="emotion-1"
+        className="emotion-2"
         href="/"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -229,28 +247,28 @@ exports[`<Layout /> should render properly 1`] = `
       />
     </div>
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <button
           aria-label="Open user menu"
-          className="emotion-6"
+          className="emotion-7"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
         >
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-4"
             >
               JD
             </div>
             <svg
-              className="emotion-4"
+              className="emotion-5"
               color="#808080"
               data-file-name="chevron.svg"
               height={20}
@@ -266,7 +284,11 @@ exports[`<Layout /> should render properly 1`] = `
     setSidebarOpen={[Function]}
   />
   <div
-    className="emotion-10"
+    data-reach-skip-nav-content=""
+    id="reach-skip-nav"
+  />
+  <div
+    className="emotion-11"
   >
     Hello World
   </div>
@@ -274,11 +296,21 @@ exports[`<Layout /> should render properly 1`] = `
 `;
 
 exports[`<Layout /> should render properly 2`] = `
-.emotion-11 {
+.emotion-12 {
   height: 100%;
 }
 
-.emotion-9 {
+.emotion-0:focus {
+  background-color: #3b3b3b;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  z-index: 101;
+  border-radius: 2px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-10 {
   position: fixed;
   top: 0;
   left: 0;
@@ -303,7 +335,7 @@ exports[`<Layout /> should render properly 2`] = `
   padding-right: 16px;
 }
 
-.emotion-2 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -314,7 +346,7 @@ exports[`<Layout /> should render properly 2`] = `
   align-items: stretch;
 }
 
-.emotion-0 {
+.emotion-1 {
   border: 0;
   background-color: inherit;
   color: #808080;
@@ -335,7 +367,7 @@ exports[`<Layout /> should render properly 2`] = `
   cursor: pointer;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-left: 8px;
   padding-right: 8px;
   display: -webkit-box;
@@ -348,15 +380,15 @@ exports[`<Layout /> should render properly 2`] = `
   align-items: center;
 }
 
-.emotion-8 {
+.emotion-9 {
   margin-right: -12px;
 }
 
-.emotion-7 {
+.emotion-8 {
   position: relative;
 }
 
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -395,24 +427,24 @@ exports[`<Layout /> should render properly 2`] = `
   height: 100%;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   background-color: #3b3b3b;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   cursor: pointer;
 }
 
-.emotion-5 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -423,7 +455,7 @@ exports[`<Layout /> should render properly 2`] = `
   align-items: center;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -446,11 +478,11 @@ exports[`<Layout /> should render properly 2`] = `
   font-weight: 700;
 }
 
-.emotion-4 {
+.emotion-5 {
   margin-left: 8px;
 }
 
-.emotion-10 {
+.emotion-11 {
   margin-top: 44px;
   padding-left: 32px;
   padding-right: 32px;
@@ -466,17 +498,25 @@ exports[`<Layout /> should render properly 2`] = `
 }
 
 <div
-  className="emotion-11"
+  className="emotion-12"
 >
+  <a
+    className="emotion-0"
+    data-reach-skip-link=""
+    data-reach-skip-nav-link=""
+    href="#reach-skip-nav"
+  >
+    Skip to content
+  </a>
   <div
-    className="emotion-9"
+    className="emotion-10"
   >
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <button
         aria-label="Open Sidebar Menu"
-        className="emotion-0"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
@@ -487,7 +527,7 @@ exports[`<Layout /> should render properly 2`] = `
       </button>
       <a
         aria-label="Home"
-        className="emotion-1"
+        className="emotion-2"
         href="/"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -502,28 +542,28 @@ exports[`<Layout /> should render properly 2`] = `
       />
     </div>
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <button
           aria-label="Open user menu"
-          className="emotion-6"
+          className="emotion-7"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
         >
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
             <div
-              className="emotion-3"
+              className="emotion-4"
             >
               JD
             </div>
             <svg
-              className="emotion-4"
+              className="emotion-5"
               color="#808080"
               data-file-name="chevron.svg"
               height={20}
@@ -539,7 +579,11 @@ exports[`<Layout /> should render properly 2`] = `
     setSidebarOpen={[Function]}
   />
   <div
-    className="emotion-10"
+    data-reach-skip-nav-content=""
+    id="reach-skip-nav"
+  />
+  <div
+    className="emotion-11"
   >
     Hello World
   </div>

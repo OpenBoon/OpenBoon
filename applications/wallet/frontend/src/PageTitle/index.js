@@ -11,6 +11,8 @@ const PageTitle = ({ children }) => {
         fontWeight: typography.weight.regular,
         paddingTop: spacing.comfy,
         paddingBottom: spacing.normal,
+        display: 'flex',
+        alignItems: 'center',
       }}
     >
       {children}
@@ -19,7 +21,7 @@ const PageTitle = ({ children }) => {
 }
 
 PageTitle.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default PageTitle

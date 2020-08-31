@@ -14,7 +14,7 @@ describe('<DataSources />', () => {
   it('should render properly with no data sources', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/data-sources',
-      query: { projectId: PROJECT_ID },
+      query: { projectId: PROJECT_ID, action: 'delete-datasource-success' },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -37,7 +37,7 @@ describe('<DataSources />', () => {
 
   it('should render properly with data sources', () => {
     require('next/router').__setUseRouter({
-      pathname: `/[projectId]/data-sources?action=add-datasource-success&jobId=${JOB_ID}`,
+      pathname: '/[projectId]/data-sources',
       query: {
         projectId: PROJECT_ID,
         action: 'add-datasource-success',
@@ -62,6 +62,29 @@ describe('<DataSources />', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/data-sources',
       query: { projectId: PROJECT_ID, action: 'edit-datasource-success' },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: dataSources,
+    })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <DataSources />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with scan success', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/data-sources',
+      query: {
+        projectId: PROJECT_ID,
+        action: 'scan-datasource-success',
+        jobId: JOB_ID,
+      },
     })
 
     require('swr').__setMockUseSWRResponse({

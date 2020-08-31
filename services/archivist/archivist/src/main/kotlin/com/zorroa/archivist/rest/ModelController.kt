@@ -119,7 +119,7 @@ class ModelController(
         return modelService.updateLabel(model, req.label, req.newLabel)
     }
 
-    @ApiOperation("Deletel label")
+    @ApiOperation("Delete label")
     @DeleteMapping("/api/v3/models/{id}/labels")
     fun deleteLabels(
         @ApiParam("ModelId") @PathVariable id: UUID,

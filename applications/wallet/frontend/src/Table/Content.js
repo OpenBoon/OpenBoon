@@ -77,9 +77,7 @@ const TableContent = ({
         >
           <table
             css={{
-              width: '100%',
               height: count === 0 ? '100%' : 'auto',
-              borderSpacing: 0,
               boxShadow: constants.boxShadows.default,
               whiteSpace: 'nowrap',
               tr: {

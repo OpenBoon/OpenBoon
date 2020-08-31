@@ -98,6 +98,7 @@ class IndexTaskServiceImpl(
             .setSourceIndices(srcRoute.indexName)
             .setSourceQuery(QueryBuilders.matchAllQuery())
             .setDestIndex(dstRoute.indexName)
+            .setSourceBatchSize(500)
 
         val uri = URI(srcRoute.clusterUrl)
 
@@ -225,6 +226,7 @@ class IndexTaskMonitor(
         }
 
         logger.info("ES reindex task completed: ${task.esTaskId} : ${esTask.isCompleted}")
+        logger.info("Status: ${esTask.taskInfo.status}")
 
         return withAuth(InternalThreadAuthentication(indexRoute.projectId, setOf())) {
 

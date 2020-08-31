@@ -51,6 +51,14 @@ Array [
   font-weight: 400;
   padding-top: 24px;
   padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 <div
@@ -639,6 +647,14 @@ Array [
   font-weight: 400;
   padding-top: 24px;
   padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 <div
@@ -1265,6 +1281,14 @@ Array [
   font-weight: 400;
   padding-top: 24px;
   padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 <div
@@ -1496,6 +1520,7 @@ Array [
   border-radius: 2px;
   box-shadow: 0 4px 7px 0 #000000;
   min-width: 200px;
+  font-family: Roboto,Avenir,"sans-serif";
 }
 
 .emotion-2 ul {
@@ -1989,6 +2014,14 @@ Array [
   font-weight: 400;
   padding-top: 24px;
   padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 <div

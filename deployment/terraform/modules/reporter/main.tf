@@ -1,3 +1,58 @@
+resource "google_monitoring_dashboard" "zvi" {
+  dashboard_json = <<EOF
+{
+   "displayName": "ZVI Metrics",
+   "gridLayout": {
+      "columns": "2",
+      "widgets": [
+         {
+            "title": "Job Queue - Pending Jobs",
+            "xyChart": {
+               "chartOptions": {
+                  "mode": "COLOR"
+               },
+               "dataSets": [
+                  {
+                     "minAlignmentPeriod": "60s",
+                     "plotType": "LINE",
+                     "timeSeriesQuery": {
+                        "timeSeriesFilter": {
+                           "aggregation": {
+                              "perSeriesAligner": "ALIGN_MEAN"
+                           },
+                           "filter": "metric.type=\"custom.googleapis.com/zmlp/total-pending-jobs\"",
+                           "secondaryAggregation": {}
+                        }
+                     }
+                  },
+                  {
+                     "minAlignmentPeriod": "60s",
+                     "plotType": "LINE",
+                     "timeSeriesQuery": {
+                        "timeSeriesFilter": {
+                           "aggregation": {
+                              "perSeriesAligner": "ALIGN_MEAN"
+                           },
+                           "filter": "metric.type=\"custom.googleapis.com/zmlp/total-pending-tasks\"",
+                           "secondaryAggregation": {}
+                        }
+                     }
+                  }
+               ],
+               "timeshiftDuration": "0s",
+               "yAxis": {
+                  "label": "y1Axis",
+                  "scale": "LINEAR"
+               }
+            }
+         }
+      ]
+   }
+}
+
+EOF
+}
+
 resource "kubernetes_deployment" "reporter" {
   metadata {
     name      = "reporter"

@@ -23,6 +23,7 @@ import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
+import org.elasticsearch.action.admin.indices.open.OpenIndexRequest
 import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
@@ -160,6 +161,11 @@ interface IndexRoutingService {
      * Close the index and return True.  If the index is already closed then return false.
      */
     fun closeIndex(route: IndexRoute): Boolean
+
+    /**
+     * Reopen the index
+     */
+    fun openIndex(route: IndexRoute): Boolean
 
     /**
      * Return the ES index state as a Map
@@ -474,6 +480,23 @@ constructor(
                     "indexRouteId" to route.id,
                     "indexRouteName" to route.indexName,
                     "indexRouteState" to IndexRouteState.CLOSED.name
+                )
+            )
+        }
+        return rsp.isAcknowledged
+    }
+
+    override fun openIndex(route: IndexRoute): Boolean {
+        val rsp = getClusterRestClient(route).client.indices()
+            .open(OpenIndexRequest(route.indexName), RequestOptions.DEFAULT)
+        if (rsp.isAcknowledged) {
+            indexRouteDao.setState(route, IndexRouteState.READY)
+            logger.event(
+                LogObject.INDEX_ROUTE, LogAction.STATE_CHANGE,
+                mapOf(
+                    "indexRouteId" to route.id,
+                    "indexRouteName" to route.indexName,
+                    "indexRouteState" to IndexRouteState.READY.name
                 )
             )
         }

@@ -12,6 +12,7 @@ import Export from '../Export'
 import AssetDelete from '../AssetDelete'
 import FiltersIcon from '../Filters/Icon'
 import AssetLabeling from '../AssetLabeling'
+import { ENVS } from '../Feature'
 
 import InformationSvg from '../Icons/information.svg'
 import FaceDetectionSvg from '../Icons/faceDetection.svg'
@@ -77,7 +78,8 @@ const VisualizerContent = () => {
               icon: <PenSvg height={constants.icons.regular} />,
               content: <AssetLabeling />,
               flag: 'asset-labeling',
-              envs: [],
+              envs: [ENVS.QA],
+              isBeta: true,
             },
             export: {
               title: 'Export',

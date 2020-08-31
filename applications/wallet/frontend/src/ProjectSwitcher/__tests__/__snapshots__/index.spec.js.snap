@@ -187,6 +187,7 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   border-radius: 2px;
   box-shadow: 0 4px 7px 0 #000000;
   min-width: 200px;
+  font-family: Roboto,Avenir,"sans-serif";
 }
 
 .emotion-5 ul {

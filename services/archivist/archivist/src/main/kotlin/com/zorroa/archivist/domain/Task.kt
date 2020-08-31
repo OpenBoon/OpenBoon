@@ -65,6 +65,11 @@ class TaskSpec(
     val script: ZpsScript
 )
 
+open class PendingTasksStats(
+    val pendingTasks: Long = 0L,
+    val maxRunningTasks: Long = 0L
+)
+
 interface TaskId {
     val taskId: UUID
 }

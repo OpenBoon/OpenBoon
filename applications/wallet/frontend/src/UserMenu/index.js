@@ -10,11 +10,9 @@ import ChevronSvg from '../Icons/chevron.svg'
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 
-import { openContactForm } from '../Zendesk/helpers'
-
 const SIZE = 28
 
-const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
+const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
   return (
     <div css={{ marginRight: -spacing.moderate }}>
       <Menu
@@ -99,12 +97,12 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
               </li>
               <li>
                 <Button
+                  href="mailto:zvi-console-support@zorroa.com"
+                  target="_blank"
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
                   onClick={(event) => {
                     onClick(event)
-
-                    openContactForm({ user })
                   }}
                   isDisabled={false}
                 >

@@ -50,7 +50,7 @@ describe('<AssetLabelingMenu />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           projectId: PROJECT_ID,
-          id: ASSET_ID,
+          assetId: ASSET_ID,
           query: btoa(
             JSON.stringify([
               {
@@ -63,7 +63,7 @@ describe('<AssetLabelingMenu />', () => {
           ),
         },
       },
-      `/${PROJECT_ID}/visualizer?id=${ASSET_ID}&query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1mYWNlLXJlY29nbml0aW9uIiwibW9kZWxJZCI6IjYyMWJmNzc0LTg5ZDktMTI0NC05NTk2LWQ2ZGY0M2YxZWRlNSIsInZhbHVlcyI6eyJsYWJlbHMiOlsiTWFyayBSdWZmYWxvIl19fV0=`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}&query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1mYWNlLXJlY29nbml0aW9uIiwibW9kZWxJZCI6IjYyMWJmNzc0LTg5ZDktMTI0NC05NTk2LWQ2ZGY0M2YxZWRlNSIsInZhbHVlcyI6eyJsYWJlbHMiOlsiTWFyayBSdWZmYWxvIl19fV0=`,
     )
   })
 

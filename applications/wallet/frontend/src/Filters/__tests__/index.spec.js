@@ -42,9 +42,9 @@ describe('<Filters />', () => {
     act(() => {
       component.root
         .findByProps({
-          placeholder: 'Type here to create simple text filter',
+          placeholder: 'Type here to create a simple text filter',
         })
-        .props.onChange({ target: { value: 'Cat' } })
+        .props.onChange({ value: 'Cat' })
     })
 
     // click enabled submit button
@@ -92,9 +92,9 @@ describe('<Filters />', () => {
     act(() => {
       component.root
         .findByProps({
-          placeholder: 'Type here to create simple text filter',
+          placeholder: 'Type here to create a simple text filter',
         })
-        .props.onChange({ target: { value: 'Cat' } })
+        .props.onChange({ value: 'Cat' })
     })
 
     // click enabled submit button
@@ -408,7 +408,7 @@ describe('<Filters />', () => {
     act(() => {
       component.root
         .findByProps({ placeholder: 'Filter metadata fields' })
-        .props.onChange({ target: { value: 'e' } })
+        .props.onChange({ value: 'e' })
     })
 
     // enable first checkbox

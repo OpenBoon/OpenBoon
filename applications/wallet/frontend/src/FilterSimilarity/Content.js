@@ -70,34 +70,26 @@ const FilterSimilarityContent = ({
         }}
       />
 
-      <div css={{ padding: spacing.normal }}>
-        <div
-          css={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <img
-            css={{ [largerDimension]: THUMBNAIL_SIZE }}
-            src={fileSrc}
-            alt={name}
-          />
-        </div>
+      <div
+        css={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: spacing.normal,
+        }}
+      >
+        <img
+          css={{ [largerDimension]: THUMBNAIL_SIZE }}
+          src={fileSrc}
+          alt={name}
+        />
+      </div>
 
-        <div
-          css={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            paddingTop: spacing.normal,
-            paddingBottom: spacing.normal,
-          }}
-        >
-          <span>
-            Similarity Range: {formatValue({ attribute, value }).toFixed(2)}
-          </span>
-        </div>
+      <div css={{ fontStyle: typography.style.italic }}>
+        Similarity Range: {formatValue({ attribute, value }).toFixed(2)}
+      </div>
 
+      <div css={{ padding: spacing.normal, paddingBottom: spacing.spacious }}>
         <div
           css={{
             display: 'flex',
