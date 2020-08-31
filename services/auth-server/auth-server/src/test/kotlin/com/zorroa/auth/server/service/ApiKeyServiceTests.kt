@@ -240,6 +240,29 @@ class ApiKeyServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testDeleteApiKeysByProject() {
+        val spec1 = ApiKeySpec(
+            "job-runner",
+            setOf(Permission.AssetsRead)
+        )
+        val spec2 = ApiKeySpec(
+            "not-a-job-runner",
+            setOf(Permission.AssetsRead)
+        )
+
+        val key1 = apiKeyService.create(spec1)
+        val key2 = apiKeyService.create(spec2)
+
+        var search = apiKeyService.search(ApiKeyFilter(ids = listOf(key1.id, key2.id)))
+        assertEquals(2, search.list.size)
+
+        apiKeyService.deleteByProject(getProjectId())
+
+        search = apiKeyService.search(ApiKeyFilter(ids = listOf(key1.id, key2.id)))
+        assertEquals(0, search.list.size)
+    }
+
+    @Test
     fun testFindSystemKeyById() {
         val spec = ApiKeySpec(
             "job-runner",
