@@ -71,19 +71,6 @@ class IndexApp:
         return self.app.client.iter_paged_results('/api/v1/index-routes/_search',
                                                   body, limit, Index)
 
-    def get_project_index(self, project_id):
-        """
-        Get a project index by it's unique Id.
-
-        Args:
-            project_id (Project): The Project or its unique Id.
-
-        Returns:
-            Index
-        """
-        project_id = as_id(project_id)
-        return Index(self.app.client.get(f'/api/v1/projects/{project_id}/_index'))
-
     def migrate_project_index(self, project, mapping, version, size=None, cluster=None):
         """
         Migrate the project's index to a new index with the given mapping and version.

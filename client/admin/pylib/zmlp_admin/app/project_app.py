@@ -1,5 +1,6 @@
 from zmlp.entity import Project, ProjectTier
-from ..entity import IndexSize
+from zmlp.util import as_id
+from ..entity import IndexSize, Index
 
 __all__ = [
     'ProjectApp'
@@ -43,3 +44,44 @@ class ProjectApp(object):
             Project
         """
         return Project(self.app.client.get(f'/api/v1/projects/{pid}'))
+
+    def find_projects(self, limit=0):
+        """
+        Returns a generator which can produce a list of all projects.
+
+        Args:
+            limit (int) : Limit the number of projects to the given amount.
+
+        Returns:
+            Generator: A generator of projects.
+        """
+        body = {}
+        return self.app.client.iter_paged_results('/api/v1/projects/_search',
+                                                  body, limit, Project)
+
+    def get_project_index(self, project):
+        """
+        Get a project index by it's unique Id.
+
+        Args:
+            project (Project): The Project or its unique Id.
+
+        Returns:
+            Index
+        """
+        project_id = as_id(project)
+        return Index(self.app.client.get(f'/api/v1/projects/{project_id}/_index'))
+
+    def set_project_index(self, project, index):
+        """
+        Set a project index by it's unique Id.
+
+        Args:
+            project (Project): The Project or its unique Id.
+            index (Index): The Index or its unique /Id
+        Returns:
+            dict: A status message
+        """
+        project_id = as_id(project)
+        index_id = as_id(index)
+        return self.app.client.put(f'/api/v1/projects/{project_id}/_index/{index_id}')
