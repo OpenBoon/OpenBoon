@@ -205,7 +205,7 @@ backend-py-lint:
   allow_failure: false
   script:
     - python -m pip install flake8
-    - flake8 --config .flake8.cfg sdk client/python client/zvi containers/zmlp-py3-base services/analyst containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis containers/zmlp-plugins-train
+    - flake8 --config .flake8.cfg sdk client/admin client/python client/zvi containers/zmlp-py3-base services/analyst containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis containers/zmlp-plugins-train
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
