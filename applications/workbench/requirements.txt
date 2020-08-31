@@ -22,7 +22,6 @@ scikit-learn
 scipy
 umap-learn
 tensorflow
-wordcloud
 holoviews
 tqdm
 MulticoreTSNE
