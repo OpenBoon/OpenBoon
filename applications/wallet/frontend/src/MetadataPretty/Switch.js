@@ -33,6 +33,15 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
 
   if (typeof value === 'object') {
     switch (value.type) {
+      case 'single-label':
+        return (
+          <MetadataPrettyPredictions
+            name={name}
+            value={{ predictions: [value] }}
+            path={path}
+          />
+        )
+
       case 'labels':
         return (
           <MetadataPrettyPredictions name={name} value={value} path={path} />
