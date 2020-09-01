@@ -270,7 +270,7 @@ class IndexRoutingServiceTests : AbstractTest() {
     }
 
     @Test(expected = EmptyResultDataAccessException::class)
-    fun testCloseAndDeleteProjectIndexes(){
+    fun testCloseAndDeleteProjectIndexes() {
         val spec1 = IndexRouteSpec("test", 1, shards = 1, replicas = 0)
 
         val ir1 = indexRoutingService.createIndexRoute(spec1)
@@ -278,6 +278,5 @@ class IndexRoutingServiceTests : AbstractTest() {
         indexRoutingService.closeAndDeleteProjectIndexes(getProjectId())
 
         indexRoutingService.getIndexRoute(ir1.id)
-
     }
 }

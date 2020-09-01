@@ -81,8 +81,8 @@ interface IndexRouteDao {
      * Set the state of the [IndexRoute].
      */
     fun setState(route: IndexRoute, state: IndexRouteState): Boolean
-    fun setState(routeUUID: UUID, state: IndexRouteState): Boolean
 
+    fun setState(routeUUID: UUID, state: IndexRouteState): Boolean
 }
 
 @Repository
