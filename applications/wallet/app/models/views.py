@@ -10,18 +10,44 @@ from zmlp.entity.model import LabelScope
 from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 AddLabelsSerializer, UpdateLabelsSerializer,
                                 RemoveLabelsSerializer, RenameLabelSerializer,
-                                DestroyLabelSerializer)
+                                DestroyLabelSerializer, ModelDetailSerializer)
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
 
 def item_modifier(request, item):
+    # Convert ready to unapplied changes
+    ready = item['ready']
+    del(item['ready'])
+    item['unappliedChanges'] = not ready
+
+
+def detail_item_modifier(request, item):
+    item_modifier(request, item)
     app = request.app
+
+    # Get the running job info
     running_jobs = app.jobs.find_jobs(state='InProgress', name=item['trainingJobName'],
                                       sort=['timeCreated:d'])
     running_jobs = list(running_jobs)
     running_job_id = running_jobs[0].id if running_jobs else ''
     item['runningJobId'] = running_job_id
+
+    # Get the model type restrictions
+    model_type = item['type']
+    model_id = item['id']
+    model_type_info = app.models.get_model_type_info(model_type)
+    label_counts = app.models.get_label_counts(model_id)
+    if label_counts:
+        min_examples_satisfied = all([label_counts[label] >= model_type_info.min_examples for label in label_counts])  # noqa
+    else:
+        min_examples_satisfied = False
+    model_type_restrictions = {
+        'minConcepts': model_type_info.min_concepts,
+        'minConceptsSatisfied':  len(label_counts) >= model_type_info.min_concepts,
+        'minExamples': model_type_info.min_examples,
+        'minExamplesSatisfied': min_examples_satisfied}
+    item['modelTypeRestrictions'] = model_type_restrictions
 
 
 class ModelViewSet(BaseProjectViewSet):
@@ -30,13 +56,18 @@ class ModelViewSet(BaseProjectViewSet):
     zmlp_root_api_path = '/api/v3/models'
     zmlp_only = True
 
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return ModelDetailSerializer
+        return self.serializer_class
+
     def list(self, request, project_pk):
         """List all of the Models for this project."""
         return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
     def retrieve(self, request, project_pk, pk):
         """Retrieve the details for this specific model."""
-        return self._zmlp_retrieve(request, pk=pk, item_modifier=item_modifier)
+        return self._zmlp_retrieve(request, pk=pk, item_modifier=detail_item_modifier)
 
     def destroy(self, request, project_pk, pk):
         """Deletes a model."""
