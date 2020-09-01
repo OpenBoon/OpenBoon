@@ -181,12 +181,9 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 "FROM job AS job " +
                 "INNER JOIN job_count AS job_count " +
                 "USING (pk_job) " +
-                "INNER JOIN task " +
-                "USING(pk_job) " +
                 "WHERE " +
                 "job.int_state=0 AND " +
                 "job.bool_paused=false AND " +
-                "task.int_state=0 AND " +
                 "job_count.int_max_running_tasks > job_count.int_task_state_1 + int_task_state_5"
     }
 }
