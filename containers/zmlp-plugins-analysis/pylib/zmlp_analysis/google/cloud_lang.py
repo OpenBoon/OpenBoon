@@ -4,7 +4,8 @@ import backoff
 from google.api_core.exceptions import ResourceExhausted
 from google.cloud import language
 
-from zmlpsdk import Argument, AssetProcessor
+from zmlpsdk import Argument, AssetProcessor, ZmlpFatalProcessorException
+from zmlpsdk.analysis import LabelDetectionAnalysis
 
 from .gcp_client import initialize_gcp_client
 
@@ -15,11 +16,14 @@ class CloudNaturalLanguageProcessor(AssetProcessor):
     tool_tips = {'field': 'Metadata field of the asset to submit to the Cloud Natural Language '
                           'API.'}
 
+    namespace = 'google.languageEntities.keywords'
+
     def __init__(self):
         super(CloudNaturalLanguageProcessor, self).__init__()
         self.add_arg(Argument('field', 'str', default='media.dialog',
                               toolTip=self.tool_tips['field']))
         self.client = None
+        self.results = None
 
     def init(self):
         super(CloudNaturalLanguageProcessor, self).init()
@@ -35,38 +39,59 @@ class CloudNaturalLanguageProcessor(AssetProcessor):
             str: Flattened string of all content.
 
         """
-        flat = ''
-        if type(content) == list:
-            for elem in content:
-                flat += ' ' + self.flatten_content(elem)
-            return flat
-        if type(content) == str or type(content) == str:
+        if isinstance(content, list):
+            return ' '.join(content)
+        elif isinstance(content, str):
             return content
+        else:
+            raise ZmlpFatalProcessorException('input must be list or str')
+
+    def remove_parentheticals(self, content):
+        """ Get rid of CC parentheticals
+
+        Args:
+            content (str): content string
+
+        Returns:
+            same string with parentheticals removed
+        """
+        return re.sub(r'\[.*?\]', '', content)
 
     def process(self, frame):
         asset = frame.asset
+        analysis = LabelDetectionAnalysis()
+
+        # get content
         content = asset.get_attr(self.arg_value('field'))
         self.logger.info('Content: {}'.format(content))
         if content is None:
             self.logger.info('Bailing, no content found')
             return
+
+        # pre-processing
         content = self.flatten_content(content)
+        content = self.remove_parentheticals(content)
+        self.logger.debug('Content: {}'.format(content))
 
-        # Get rid of CC parentheticals
-        content = re.sub(r'\[.*?\]', '', content)
-
-        self.logger.info('Content: {}'.format(content))
+        # analyze entities
         document = language.types.Document(content=content,
                                            type=language.enums.Document.Type.PLAIN_TEXT)
-        result = self._analyze_entities(document)
+        response = self._analyze_entities(document)
+        self.results = response.entities
+
+        if not self.results:
+            raise ZmlpFatalProcessorException('Bailing, no entities found')
+
+        # add results for analysis
         entities = []
-        for entity in result.entities:
-            entities.append(entity.name)
-        if not entities:
-            self.logger.info('Bailing, no entities found')
-            return
-        self.logger.info('Entities: {}'.format(entities))
-        asset.add_analysis('google.languageEntities.keywords', entities)
+        for entity in self.results:
+            entities.append(
+                (entity.name, entity.salience, entity.type)
+            )
+        self.logger.debug('Entities: {}'.format(entities))
+
+        [analysis.add_label_and_score(ls[0], ls[1], type=ls[2]) for ls in entities]
+        asset.add_analysis(self.namespace, analysis)
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
     def _analyze_entities(self, document):
