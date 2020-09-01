@@ -39,19 +39,22 @@ class CloudDLPDetectEntities(AssetProcessor):
         inspect_config = {
             "info_types": info_types,
             "custom_info_types": [],
-            "min_likelihood": 'POSSIBLE',
+            "min_likelihood": google.cloud.dlp_v2.Likelihood.LIKELIHOOD_UNSPECIFIED,
             "include_quote": True,
             "limits": {"max_findings_per_request": 0},
         }
 
         pid = get_gcp_project_id()
+        parent = f"projects/{pid}"
 
         p_path = self.get_proxy_image(frame.asset)
 
         img = cv2.imread(p_path)
         item = {"byte_item": {"type": 1, "data": cv2.imencode('.jpg', img)[1].tobytes()}}
 
-        rsp = self.dlp_annotator.inspect_content(pid, inspect_config, item)
+        rsp = self.dlp_annotator.inspect_content(
+            request={"parent": parent, "inspect_config": inspect_config, "item": item}
+        )
 
         findings = rsp.result.findings
         if not findings:
@@ -59,7 +62,6 @@ class CloudDLPDetectEntities(AssetProcessor):
 
         analysis_dict = {}
         for f in findings:
-
             # There are multiple bounding boxes per finding, potentially.
             # Here we find the bounding box of all those bboxes.
             xmin = 10000
