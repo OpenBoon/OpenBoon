@@ -126,6 +126,12 @@ resource "kubernetes_deployment" "reporter" {
         image_pull_secrets {
           name = var.image-pull-secret
         }
+        toleration {
+          key      = "analyst"
+          operator = "Equal"
+          value    = "false"
+          effect   = "NoSchedule"
+        }
         container {
           name              = "reporter"
           image             = "zmlp/reporter:${var.container-tag}"
