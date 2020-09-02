@@ -1,5 +1,4 @@
 import logging
-from unittest.mock import patch
 import pytest
 
 from zmlp_analysis.utils.preprocessing import flatten_content, remove_parentheticals

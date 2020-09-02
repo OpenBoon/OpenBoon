@@ -1,6 +1,5 @@
 import logging
 from unittest.mock import patch
-import pytest
 
 from zmlp_analysis.google.cloud_lang import CloudNaturalLanguageProcessor, \
     CloudNaturalLanguageSentimentProcessor
