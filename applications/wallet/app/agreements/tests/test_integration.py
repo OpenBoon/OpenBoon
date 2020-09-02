@@ -76,18 +76,18 @@ class TestAgreementCreate:
         response = api_client.post(reverse('agreement-list', ), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         result = response.json()
-        assert result['detail'] == 'Missing `policiesDate` in the request.'
+        assert result['detail'] == ['Missing `policiesDate` in the request.']
 
     def test_create_short_policies_date(self, zmlp_project_user, api_client, login):
         body = {'policiesDate': '2020311'}
         response = api_client.post(reverse('agreement-list'), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         result = response.json()
-        assert result['detail'] == 'Value for `policiesDate` must be an 8 character date string in the YYYYMMDD format.'  # noqa
+        assert result['detail'] == ['Value for `policiesDate` must be an 8 character date string in the YYYYMMDD format.']  # noqa
 
     def test_create_bad_format_policies_date(self, zmlp_project_user, api_client, login):
         body = {'policiesDate': '2020311d'}
         response = api_client.post(reverse('agreement-list'), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         result = response.json()
-        assert result['detail'] == 'Value for `policiesDate` must be an 8 character date string in the YYYYMMDD format.'  # noqa
+        assert result['detail'] == ['Value for `policiesDate` must be an 8 character date string in the YYYYMMDD format.']  # noqa

@@ -254,7 +254,7 @@ class TestFieldsAction:
         monkeypatch.setattr(ZmlpClient, 'get', mock_response)
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
-        assert content == {'detail': 'ZMLP did not return field mappings as expected.'}
+        assert content == {'detail': ['ZMLP did not return field mappings as expected.']}
 
 
 class BaseFiltersTestCase(object):
@@ -399,7 +399,7 @@ class TestQuery(BaseFiltersTestCase):
         response = api_client.get(reverse('search-query', kwargs={'project_pk': project.id}),
                                   {'query': facet_query_qs})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'Unable to decode `query` query param.'
+        assert content['detail'] == ['Unable to decode `query` query param.']
 
     def test_empty_query_sorts(self, login, api_client, project):
         def mock_list(*args, **kwargs):
@@ -456,14 +456,14 @@ class TestAggregate(BaseFiltersTestCase):
     def test_get_missing_querystring(self, login, api_client, project, range_agg_qs):
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}))
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'No `filter` query param included.'
+        assert content['detail'] == ['No `filter` query param included.']
 
     def test_get_bad_querystring_encoding(self, login, api_client, project, range_agg_qs):
         range_agg_qs = 'thisisnolongerencodedright' + range_agg_qs.decode('utf-8')
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': range_agg_qs})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'Unable to decode `filter` query param.'
+        assert content['detail'] == ['Unable to decode `filter` query param.']
 
     def test_get_missing_filter_type(self, login, api_client, project, range_agg):
         del(range_agg['type'])
@@ -471,7 +471,7 @@ class TestAggregate(BaseFiltersTestCase):
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': encoded_filter})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'Filter description is missing a `type`.'
+        assert content['detail'] == ['Filter description is missing a `type`.']
 
     def test_get_missing_filter_type(self, login, api_client, project, range_agg):
         range_agg['type'] = 'fake_type'
@@ -479,7 +479,7 @@ class TestAggregate(BaseFiltersTestCase):
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': encoded_filter})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'Unsupported filter `fake_type` given.'
+        assert content['detail'] == ['Unsupported filter `fake_type` given.']
 
     def test_bad_querystring_data_format(self, login, api_client, project):
         qs = [{'type': 'range',
@@ -489,8 +489,8 @@ class TestAggregate(BaseFiltersTestCase):
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': encoded_filter})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == ('Filter format incorrect, did not receive a single JSON '
-                                     'object for the Filter.')
+        assert content['detail'] == ['Filter format incorrect, did not receive a single JSON '
+                                     'object for the Filter.']
 
     def test_unsupported_filter(self, login, api_client, project):
         qs = {'type': 'textContent', 'attribute': 'analysis.zvi-text-detection'}
@@ -498,7 +498,7 @@ class TestAggregate(BaseFiltersTestCase):
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': encoded_filter})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == ('This Filter does not support aggregations.')
+        assert content['detail'] == ['This Filter does not support aggregations.']
 
 
 class TestMetadataExportView:

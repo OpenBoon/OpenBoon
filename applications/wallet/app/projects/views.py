@@ -5,7 +5,7 @@ import zmlp
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import transaction
-from django.http import HttpResponseForbidden, Http404
+from django.http import Http404, JsonResponse
 from rest_framework import status
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
@@ -52,13 +52,13 @@ class BaseProjectViewSet(ViewSet):
         if self.zmlp_only and settings.PLATFORM != 'zmlp':
             # This is needed to keep from returning terrible stacktraces on endpoints
             # not meant for dual platform usage
-            raise Http404()
+            raise Http404
 
         try:
             apikey = Membership.objects.get(user=request.user, project=kwargs['project_pk']).apikey
         except Membership.DoesNotExist:
-            return HttpResponseForbidden(f'{request.user.username} is not a member of '
-                                         f'the project {project}')
+            return JsonResponse(data={'detail': [f'{request.user.username} is not a member of '
+                                                 f'the project {project}']}, status=403)
 
         # Attach some useful objects for interacting with ZMLP/ZVI to the request.
         if settings.PLATFORM == 'zmlp':
@@ -456,7 +456,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
     def create(self, request, project_pk):
         batch = request.data.get('batch')
         if batch and request.data.get('email'):
-            return Response(data={'detail': 'Batch argument provided with single creation arguments.'},  # noqa
+            return Response(data={'detail': ['Batch argument provided with single creation arguments.']},  # noqa
                             status=status.HTTP_400_BAD_REQUEST)
         elif batch:
             response_body = {'results': {'succeeded': [], 'failed': []}}
@@ -479,7 +479,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         try:
             new_roles = request.data['roles']
         except KeyError:
-            return Response(data={'detail': 'Roles must be supplied.'},
+            return Response(data={'detail': ['Roles must be supplied.']},
                             status=status.HTTP_400_BAD_REQUEST)
         membership = self.get_object(pk, project_pk)
         if membership.roles != new_roles:
@@ -487,10 +487,10 @@ class ProjectUserViewSet(BaseProjectViewSet):
             try:
                 membership.sync_with_zmlp(request.client)
             except IOError:
-                return Response(data={'detail': 'Error deleting apikey.'},
+                return Response(data={'detail': ['Error deleting apikey.']},
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             except ValueError:
-                return Response(data={'detail': 'Unable to modify the admin key.'},
+                return Response(data={'detail': ['Unable to modify the admin key.']},
                                 status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(membership.user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
@@ -502,13 +502,13 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
         # Don't allow a User to remove themselves
         if request.user == membership.user:
-            return Response(data={'detail': 'Cannot remove yourself from a project.'},
+            return Response(data={'detail': ['Cannot remove yourself from a project.']},
                             status=status.HTTP_403_FORBIDDEN)
 
         try:
             membership.delete_and_sync_with_zmlp(request.client)
         except IOError:
-            return Response(data={'detail': 'Error deleting apikey.'},
+            return Response(data={'detail': ['Error deleting apikey.']},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_200_OK)
 
@@ -522,7 +522,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
             email = data['email']
             requested_roles = data['roles']
         except KeyError:
-            return Response(data={'detail': 'Email and Roles are required.'},
+            return Response(data={'detail': ['Email and Roles are required.']},
                             status=status.HTTP_400_BAD_REQUEST)
 
         # Get the current project and User
@@ -530,7 +530,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         try:
             user = User.objects.get(username=email)
         except User.DoesNotExist:
-            return Response(data={'detail': 'No user with the given email.'},
+            return Response(data={'detail': ['No user with the given email.']},
                             status=status.HTTP_404_NOT_FOUND)
 
         # If the membership already exists return the correct status code.
@@ -540,8 +540,8 @@ class ProjectUserViewSet(BaseProjectViewSet):
                 serializer = self.get_serializer(user, context={'request': request})
                 return Response(data=serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response({'detail': 'This user already exists in this project '
-                                           'with different permissions.'}, status=409)
+                return Response({'detail': ['This user already exists in this project '
+                                            'with different permissions.']}, status=409)
         except Membership.DoesNotExist:
             pass
 

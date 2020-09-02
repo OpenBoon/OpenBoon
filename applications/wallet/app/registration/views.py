@@ -66,7 +66,7 @@ Response Codes:
         try:
             validate_password(password)
         except ValidationError as e:
-            return Response({'detail': 'Password not strong enough',
+            return Response({'detail': ['Password not strong enough'],
                              'errors': e.messages}, status=422)
 
         with transaction.atomic():
@@ -83,7 +83,7 @@ Response Codes:
             # activated. Exit with generic success message to prevent phishing.
             elif User.objects.filter(username=email).exists():
                 msg = 'A user with this email address already exists.'
-                return Response(data={'detail': msg}, status=status.HTTP_409_CONFLICT)
+                return Response(data={'detail': [msg]}, status=status.HTTP_409_CONFLICT)
 
             # If the user does not exist yet then create it.
             else:
@@ -112,7 +112,7 @@ Response Codes:
         send_mail(subject=subject, message=body, html_message=html, fail_silently=False,
                   from_email='do_not_reply@zorroa.com', recipient_list=[user.username])
 
-        return Response(data={'detail': 'Success, confirmation email has been sent.'})
+        return Response(data={'detail': ['Success, confirmation email has been sent.']})
 
 
 class UserConfirmationView(APIView):
@@ -142,20 +142,20 @@ Response Codes:
             user_id = request.data['userId']
         except KeyError:
             msg = 'Confirming an email address requires sending the "token" and "userId" params.'
-            return Response(data={'detail': msg}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'detail': [msg]}, status=status.HTTP_400_BAD_REQUEST)
         try:
             token = UserRegistrationToken.objects.get(token=token, user=user_id)
         except ObjectDoesNotExist:
             raise Http404('User ID and/or token does not exist.')
         if now() - token.createdAt > timedelta(days=settings.REGISTRATION_TIMEOUT_DAYS):
             msg = 'The activation link has expired. Please sign up again.'
-            return Response(data={'detail': msg}, status=status.HTTP_403_FORBIDDEN)
+            return Response(data={'detail': [msg]}, status=status.HTTP_403_FORBIDDEN)
         user = token.user
         user.is_active = True
         with transaction.atomic():
             user.save()
             token.delete()
-        return Response(data={'detail': 'Success. User has been activated.'})
+        return Response(data={'detail': ['Success. User has been activated.']})
 
 
 class ApiPasswordChangeView(PasswordChangeView):
@@ -223,7 +223,7 @@ class LoginView(CamelCaseRendererMixin, APIView):
                                                last_name=idinfo.get('family_name'))
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             except ValueError:
-                return Response(data={'detail': 'Unauthorized: Bearer token invalid.'},
+                return Response(data={'detail': ['Unauthorized: Bearer token invalid.']},
                                 status=status.HTTP_401_UNAUTHORIZED)
 
         # Attempt to authenticate using username and password.
@@ -238,8 +238,8 @@ class LoginView(CamelCaseRendererMixin, APIView):
                 if not AxesProxyHandler().is_allowed(request, credentials=credentials):
                     message = ('This account has been locked due to too many failed login '
                                'attempts. Please contact support to unlock your account.')
-                    return Response(data={'detail': message}, status=status.HTTP_423_LOCKED)
+                    return Response(data={'detail': [message]}, status=status.HTTP_423_LOCKED)
                 else:
                     message = 'Invalid email and password combination.'
-                    return Response(data={'detail': message}, status=status.HTTP_401_UNAUTHORIZED)
+                    return Response(data={'detail': [message]}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(UserSerializer(user, context={'request': request}).data)

@@ -78,7 +78,7 @@ class SearchViewSet(CreateModelMixin,
         indexes = list(content.keys())
         if len(indexes) != 1:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            data={'detail': 'ZMLP did not return field mappings as expected.'})
+                            data={'detail': ['ZMLP did not return field mappings as expected.']})
 
         index = indexes[0]
         mappings = content[index]['mappings']
@@ -299,7 +299,7 @@ class SearchViewSet(CreateModelMixin,
             response = request.client.post(path, _filter.get_es_agg())
         except NotImplementedError:
             return Response(status=status.HTTP_400_BAD_REQUEST,
-                            data={'detail': 'This Filter does not support aggregations.'})
+                            data={'detail': ['This Filter does not support aggregations.']})
 
         return Response(status=status.HTTP_200_OK, data=_filter.serialize_agg_response(response))
 

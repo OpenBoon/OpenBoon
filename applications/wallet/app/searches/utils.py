@@ -142,12 +142,12 @@ class FilterBuddy(object):
         try:
             encoded_filter = request.query_params['filter']
         except KeyError:
-            raise InvalidRequestError(detail='No `filter` query param included.')
+            raise InvalidRequestError(detail={'detail': ['No `filter` query param included.']})
 
         try:
             decoded_filter = convert_base64_to_json(encoded_filter)
         except ValueError:
-            raise ParseError(detail='Unable to decode `filter` query param.')
+            raise ParseError(detail={'detail': ['Unable to decode `filter` query param.']})
 
         return self.get_filter_from_json(decoded_filter, request.app)
 
@@ -178,7 +178,7 @@ class FilterBuddy(object):
         try:
             converted_query = convert_base64_to_json(encoded_query)
         except ValueError:
-            raise ParseError(detail='Unable to decode `query` query param.')
+            raise ParseError(detail={'detail': ['Unable to decode `query` query param.']})
 
         filters = []
         for raw_filter in converted_query:
@@ -202,10 +202,10 @@ class FilterBuddy(object):
         try:
             filter_type = raw_filter['type']
         except KeyError:
-            raise ParseError(detail='Filter description is missing a `type`.')
+            raise ParseError(detail={'detail': ['Filter description is missing a `type`.']})
         except TypeError:
-            raise ParseError(detail='Filter format incorrect, did not receive a single '
-                                    'JSON object for the Filter.')
+            raise ParseError(detail={'detail': ['Filter format incorrect, did not receive a '
+                                                'single JSON object for the Filter.']})
 
         Filter = None
         for _filter in self.filters:
@@ -214,7 +214,7 @@ class FilterBuddy(object):
                 continue
 
         if not Filter:
-            raise ParseError(detail=f'Unsupported filter `{filter_type}` given.')
+            raise ParseError(detail={'detail': [f'Unsupported filter `{filter_type}` given.']})
 
         return Filter(raw_filter, zmlp_app)
 
