@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { spacing } from '../Styles'
 
 import Form from '../Form'
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
@@ -29,19 +29,10 @@ const LabelEdit = ({ projectId, modelId, label }) => {
 
   return (
     <Form>
-      {!!state.errors.global && (
-        <div
-          css={{
-            display: 'flex',
-            paddingTop: spacing.base,
-            paddingBottom: spacing.base,
-          }}
-        >
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-            {state.errors.global}
-          </FlashMessage>
-        </div>
-      )}
+      <FlashMessageErrors
+        errors={state.errors}
+        styles={{ marginTop: -spacing.base, paddingBottom: spacing.normal }}
+      />
 
       <Input
         autoFocus

@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FlashMessageErrors /> should render with a global error 1`] = `
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-0 a {
+  color: #c92300;
+}
+
+<div
+  className="emotion-2"
+>
+  <div
+    className="emotion-1"
+  >
+    <svg
+      color="#c92300"
+      data-file-name="warning.svg"
+      height={20}
+    />
+    <div
+      className="emotion-0"
+      role="alert"
+    >
+      Something went wrong. Please try again.
+    </div>
+  </div>
+</div>
+`;

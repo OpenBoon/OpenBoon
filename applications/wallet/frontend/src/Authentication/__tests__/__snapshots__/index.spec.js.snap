@@ -312,7 +312,6 @@ exports[`<Authentication /> should render properly when user needs to approve ne
     >
       Terms of Use and Privacy Policy
     </h3>
-    
     <div
       className="emotion-11"
     >

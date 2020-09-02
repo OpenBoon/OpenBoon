@@ -341,6 +341,10 @@ exports[`<Charts /> should render properly for "Histogram" 1`] = `
   outline: #73b61c;
 }
 
+.emotion-14:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-14:focus {
   color: #000000;
   background-color: #ffffff;

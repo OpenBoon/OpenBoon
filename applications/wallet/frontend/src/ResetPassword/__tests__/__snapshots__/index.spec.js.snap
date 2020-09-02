@@ -141,6 +141,10 @@ exports[`<ResetPassword /> should render properly 1`] = `
   outline: #73b61c;
 }
 
+.emotion-4:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-9 {
   padding-top: 16px;
   display: -webkit-box;

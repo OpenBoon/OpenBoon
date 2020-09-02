@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { colors, typography, spacing } from '../Styles'
 
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
@@ -38,18 +38,10 @@ const ResetPasswordRequest = () => {
         one.
       </div>
 
-      {!!state.error && (
-        <div
-          css={{
-            paddingTop: spacing.normal,
-            paddingBottom: spacing.moderate,
-          }}
-        >
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-            {state.error}
-          </FlashMessage>
-        </div>
-      )}
+      <FlashMessageErrors
+        errors={{ global: state.error }}
+        styles={{ paddingTop: spacing.comfy, paddingBottom: spacing.normal }}
+      />
 
       <Input
         autoFocus

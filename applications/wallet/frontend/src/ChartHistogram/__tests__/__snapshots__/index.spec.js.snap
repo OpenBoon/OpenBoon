@@ -818,6 +818,10 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
   outline: #73b61c;
 }
 
+.emotion-19:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-19:focus {
   color: #000000;
   background-color: #ffffff;

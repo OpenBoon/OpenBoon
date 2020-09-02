@@ -146,9 +146,7 @@ Array [
     initialState={
       Object {
         "credentials": Array [],
-        "errors": Object {
-          "global": "",
-        },
+        "errors": Object {},
         "fileTypes": Object {
           "Images": true,
         },

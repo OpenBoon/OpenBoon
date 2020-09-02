@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, parseResponse } from '../Fetch/helpers'
 
 export const onSubmit = async ({
   dispatch,
@@ -8,7 +8,7 @@ export const onSubmit = async ({
   userId,
   state: { roles: r },
 }) => {
-  dispatch({ isLoading: true })
+  dispatch({ isLoading: true, errors: {} })
 
   try {
     const roles = Object.keys(r).filter((key) => r[key])
@@ -23,9 +23,11 @@ export const onSubmit = async ({
       `/${projectId}/users`,
     )
   } catch (response) {
+    const errors = await parseResponse({ response })
+
     dispatch({
       isLoading: false,
-      error: 'Something went wrong. Please try again.',
+      errors,
     })
   }
 }
