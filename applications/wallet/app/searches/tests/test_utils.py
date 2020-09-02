@@ -1,7 +1,6 @@
 import pytest
 
-from django.test import override_settings
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 from rest_framework.exceptions import ParseError
 
 from wallet.exceptions import InvalidRequestError
@@ -14,183 +13,411 @@ class TestFieldUtility:
     field_service = FieldUtility()
 
     @pytest.fixture
-    def similarity_mapping(self):
-        return {
-            "mappings": {
-                "properties": {
-                    "analysis": {
-                        "dynamic": "true",
-                        "properties": {
-                            "zvi": {
-                                "properties": {
-                                    "tinyProxy": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256}}}}},
-                            "zvi-image-similarity": {
-                                "properties": {
-                                    "simhash": {
-                                        "type": "keyword",
-                                        "index": False},
-                                    "type": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256}}}}},
-                            "aux": {}
-                        }}}}}
-
-    def test_converts_similarity_blob(self, similarity_mapping):
-        properties = similarity_mapping['mappings']['properties']
-        result = self.field_service.get_fields_from_mappings(properties['analysis'])
-        assert result['zvi-image-similarity'] == ['exists', 'similarity']
+    def mapping_response(self):
+        return {'gel9ztp97ysjzoll': {'aliases': {}, 'mappings': {'dynamic': 'strict',
+                                                                 'dynamic_templates': [{
+                                                                                           'analysis_label': {
+                                                                                               'path_match': 'analysis.*.predictions',
+                                                                                               'match_mapping_type': 'object',
+                                                                                               'mapping': {
+                                                                                                   'dynamic': False,
+                                                                                                   'include_in_root': True,
+                                                                                                   'properties': {
+                                                                                                       'occurrences': {
+                                                                                                           'type': 'integer'},
+                                                                                                       'score': {
+                                                                                                           'type': 'float'},
+                                                                                                       'bbox': {
+                                                                                                           'type': 'float'},
+                                                                                                       'label': {
+                                                                                                           'type': 'keyword',
+                                                                                                           'fields': {
+                                                                                                               'fulltext': {
+                                                                                                                   'analyzer': 'default',
+                                                                                                                   'type': 'text'}}},
+                                                                                                       'point': {
+                                                                                                           'type': 'geo_point'},
+                                                                                                       'simhash': {
+                                                                                                           'index': False,
+                                                                                                           'type': 'keyword'},
+                                                                                                       'tags': {
+                                                                                                           'type': 'keyword',
+                                                                                                           'fields': {
+                                                                                                               'fulltext': {
+                                                                                                                   'analyzer': 'default',
+                                                                                                                   'type': 'text'}}}},
+                                                                                                   'type': 'nested'}}},
+                                                                                       {'simhash': {
+                                                                                           'match': 'simhash',
+                                                                                           'match_mapping_type': 'string',
+                                                                                           'match_pattern': 'regex',
+                                                                                           'mapping': {
+                                                                                               'index': False,
+                                                                                               'type': 'keyword'}}},
+                                                                                       {'content': {
+                                                                                           'match': 'content',
+                                                                                           'match_mapping_type': 'string',
+                                                                                           'mapping': {
+                                                                                               'analyzer': 'default',
+                                                                                               'type': 'text'}}}],
+                                                                 'properties': {
+                                                                     'analysis': {'dynamic': 'true',
+                                                                                  'properties': {
+                                                                                      'zvi-face-detection': {
+                                                                                          'properties': {
+                                                                                              'count': {
+                                                                                                  'type': 'long'},
+                                                                                              'predictions': {
+                                                                                                  'type': 'nested',
+                                                                                                  'include_in_root': True,
+                                                                                                  'dynamic': 'false',
+                                                                                                  'properties': {
+                                                                                                      'bbox': {
+                                                                                                          'type': 'float'},
+                                                                                                      'label': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'fields': {
+                                                                                                              'fulltext': {
+                                                                                                                  'type': 'text'}}},
+                                                                                                      'occurrences': {
+                                                                                                          'type': 'integer'},
+                                                                                                      'point': {
+                                                                                                          'type': 'geo_point'},
+                                                                                                      'score': {
+                                                                                                          'type': 'float'},
+                                                                                                      'simhash': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'index': False},
+                                                                                                      'tags': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'fields': {
+                                                                                                              'fulltext': {
+                                                                                                                  'type': 'text'}}}}},
+                                                                                              'type': {
+                                                                                                  'type': 'text',
+                                                                                                  'fields': {
+                                                                                                      'keyword': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'ignore_above': 256}}}}},
+                                                                                      'zvi-image-similarity': {
+                                                                                          'properties': {
+                                                                                              'simhash': {
+                                                                                                  'type': 'keyword',
+                                                                                                  'index': False},
+                                                                                              'type': {
+                                                                                                  'type': 'text',
+                                                                                                  'fields': {
+                                                                                                      'keyword': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'ignore_above': 256}}}}},
+                                                                                      'zvi-label-detection': {
+                                                                                          'properties': {
+                                                                                              'count': {
+                                                                                                  'type': 'long'},
+                                                                                              'predictions': {
+                                                                                                  'type': 'nested',
+                                                                                                  'include_in_root': True,
+                                                                                                  'dynamic': 'false',
+                                                                                                  'properties': {
+                                                                                                      'bbox': {
+                                                                                                          'type': 'float'},
+                                                                                                      'label': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'fields': {
+                                                                                                              'fulltext': {
+                                                                                                                  'type': 'text'}}},
+                                                                                                      'occurrences': {
+                                                                                                          'type': 'integer'},
+                                                                                                      'point': {
+                                                                                                          'type': 'geo_point'},
+                                                                                                      'score': {
+                                                                                                          'type': 'float'},
+                                                                                                      'simhash': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'index': False},
+                                                                                                      'tags': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'fields': {
+                                                                                                              'fulltext': {
+                                                                                                                  'type': 'text'}}}}},
+                                                                                              'type': {
+                                                                                                  'type': 'text',
+                                                                                                  'fields': {
+                                                                                                      'keyword': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'ignore_above': 256}}}}},
+                                                                                      'zvi-object-detection': {
+                                                                                          'properties': {
+                                                                                              'count': {
+                                                                                                  'type': 'long'},
+                                                                                              'predictions': {
+                                                                                                  'type': 'nested',
+                                                                                                  'include_in_root': True,
+                                                                                                  'dynamic': 'false',
+                                                                                                  'properties': {
+                                                                                                      'bbox': {
+                                                                                                          'type': 'float'},
+                                                                                                      'label': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'fields': {
+                                                                                                              'fulltext': {
+                                                                                                                  'type': 'text'}}},
+                                                                                                      'occurrences': {
+                                                                                                          'type': 'integer'},
+                                                                                                      'point': {
+                                                                                                          'type': 'geo_point'},
+                                                                                                      'score': {
+                                                                                                          'type': 'float'},
+                                                                                                      'simhash': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'index': False},
+                                                                                                      'tags': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'fields': {
+                                                                                                              'fulltext': {
+                                                                                                                  'type': 'text'}}}}},
+                                                                                              'type': {
+                                                                                                  'type': 'text',
+                                                                                                  'fields': {
+                                                                                                      'keyword': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'ignore_above': 256}}}}},
+                                                                                      'zvi-text-detection': {
+                                                                                          'properties': {
+                                                                                              'content': {
+                                                                                                  'type': 'text'},
+                                                                                              'type': {
+                                                                                                  'type': 'text',
+                                                                                                  'fields': {
+                                                                                                      'keyword': {
+                                                                                                          'type': 'keyword',
+                                                                                                          'ignore_above': 256}}},
+                                                                                              'words': {
+                                                                                                  'type': 'long'}}}}},
+                                                                     'aux': {'type': 'object',
+                                                                             'enabled': False},
+                                                                     'clip': {'dynamic': 'strict',
+                                                                              'properties': {
+                                                                                  'length': {
+                                                                                      'type': 'double'},
+                                                                                  'pile': {
+                                                                                      'type': 'keyword'},
+                                                                                  'sourceAssetId': {
+                                                                                      'type': 'keyword'},
+                                                                                  'start': {
+                                                                                      'type': 'double'},
+                                                                                  'stop': {
+                                                                                      'type': 'double'},
+                                                                                  'track': {
+                                                                                      'type': 'keyword'},
+                                                                                  'type': {
+                                                                                      'type': 'keyword'}}},
+                                                                     'files': {'type': 'object',
+                                                                               'enabled': False},
+                                                                     'labels': {'type': 'nested',
+                                                                                'dynamic': 'false',
+                                                                                'properties': {
+                                                                                    'bbox': {
+                                                                                        'type': 'float'},
+                                                                                    'label': {
+                                                                                        'type': 'keyword',
+                                                                                        'fields': {
+                                                                                            'fulltext': {
+                                                                                                'type': 'text'}}},
+                                                                                    'modelId': {
+                                                                                        'type': 'keyword'},
+                                                                                    'scope': {
+                                                                                        'type': 'keyword'},
+                                                                                    'simhash': {
+                                                                                        'type': 'keyword',
+                                                                                        'index': False}}},
+                                                                     'location': {
+                                                                         'dynamic': 'strict',
+                                                                         'properties': {'city': {
+                                                                             'type': 'keyword'},
+                                                                                        'code': {
+                                                                                            'type': 'keyword'},
+                                                                                        'country': {
+                                                                                            'type': 'keyword'},
+                                                                                        'point': {
+                                                                                            'type': 'geo_point'}}},
+                                                                     'media': {'dynamic': 'strict',
+                                                                               'properties': {
+                                                                                   'aspect': {
+                                                                                       'type': 'float'},
+                                                                                   'author': {
+                                                                                       'type': 'keyword',
+                                                                                       'fields': {
+                                                                                           'fulltext': {
+                                                                                               'type': 'text'}}},
+                                                                                   'content': {
+                                                                                       'type': 'text'},
+                                                                                   'description': {
+                                                                                       'type': 'keyword',
+                                                                                       'fields': {
+                                                                                           'fulltext': {
+                                                                                               'type': 'text'}}},
+                                                                                   'height': {
+                                                                                       'type': 'float'},
+                                                                                   'keywords': {
+                                                                                       'type': 'keyword',
+                                                                                       'fields': {
+                                                                                           'fulltext': {
+                                                                                               'type': 'text'}}},
+                                                                                   'length': {
+                                                                                       'type': 'float'},
+                                                                                   'orientation': {
+                                                                                       'type': 'keyword'},
+                                                                                   'timeCreated': {
+                                                                                       'type': 'date'},
+                                                                                   'title': {
+                                                                                       'type': 'keyword',
+                                                                                       'fields': {
+                                                                                           'fulltext': {
+                                                                                               'type': 'text'}}},
+                                                                                   'type': {
+                                                                                       'type': 'keyword'},
+                                                                                   'videoCodec': {
+                                                                                       'type': 'keyword'},
+                                                                                   'width': {
+                                                                                       'type': 'float'}}},
+                                                                     'metrics': {
+                                                                         'dynamic': 'strict',
+                                                                         'properties': {
+                                                                             'pipeline': {
+                                                                                 'type': 'nested',
+                                                                                 'dynamic': 'strict',
+                                                                                 'properties': {
+                                                                                     'checksum': {
+                                                                                         'type': 'long'},
+                                                                                     'error': {
+                                                                                         'type': 'keyword'},
+                                                                                     'executionDate': {
+                                                                                         'type': 'date'},
+                                                                                     'executionTime': {
+                                                                                         'type': 'double'},
+                                                                                     'module': {
+                                                                                         'type': 'keyword',
+                                                                                         'fields': {
+                                                                                             'fulltext': {
+                                                                                                 'type': 'text'}}},
+                                                                                     'processor': {
+                                                                                         'type': 'keyword',
+                                                                                         'fields': {
+                                                                                             'fulltext': {
+                                                                                                 'type': 'text'}}}}}}},
+                                                                     'source': {'dynamic': 'strict',
+                                                                                'properties': {
+                                                                                    'checksum': {
+                                                                                        'type': 'long'},
+                                                                                    'extension': {
+                                                                                        'type': 'keyword',
+                                                                                        'fields': {
+                                                                                            'fulltext': {
+                                                                                                'type': 'text'}}},
+                                                                                    'filename': {
+                                                                                        'type': 'keyword',
+                                                                                        'fields': {
+                                                                                            'fulltext': {
+                                                                                                'type': 'text'}}},
+                                                                                    'filesize': {
+                                                                                        'type': 'long'},
+                                                                                    'mimetype': {
+                                                                                        'type': 'keyword',
+                                                                                        'fields': {
+                                                                                            'fulltext': {
+                                                                                                'type': 'text'}}},
+                                                                                    'path': {
+                                                                                        'type': 'keyword',
+                                                                                        'fields': {
+                                                                                            'fulltext': {
+                                                                                                'type': 'text'},
+                                                                                            'path': {
+                                                                                                'type': 'text',
+                                                                                                'analyzer': 'path_analyzer',
+                                                                                                'fielddata': True}}}}},
+                                                                     'system': {'dynamic': 'strict',
+                                                                                'properties': {
+                                                                                    'dataSourceId': {
+                                                                                        'type': 'keyword'},
+                                                                                    'jobId': {
+                                                                                        'type': 'keyword'},
+                                                                                    'projectId': {
+                                                                                        'type': 'keyword'},
+                                                                                    'state': {
+                                                                                        'type': 'keyword'},
+                                                                                    'taskId': {
+                                                                                        'type': 'keyword'},
+                                                                                    'timeCreated': {
+                                                                                        'type': 'date'},
+                                                                                    'timeModified': {
+                                                                                        'type': 'date'}}},
+                                                                     'tmp': {'type': 'object',
+                                                                             'enabled': False}}},
+                                     'settings': {'index': {'mapping': {'coerce': 'false',
+                                                                        'ignore_malformed': 'false'},
+                                                            'number_of_shards': '2',
+                                                            'provided_name': 'gel9ztp97ysjzoll',
+                                                            'creation_date': '1598988916327',
+                                                            'analysis': {'filter': {
+                                                                'delimiter_filter': {
+                                                                    'type': 'word_delimiter',
+                                                                    'preserve_original': 'true'},
+                                                                'stemmer_english': {
+                                                                    'type': 'stemmer',
+                                                                    'language': 'english'}},
+                                                                         'analyzer': {'default': {
+                                                                             'filter': ['trim',
+                                                                                        'stop',
+                                                                                        'lowercase',
+                                                                                        'delimiter_filter',
+                                                                                        'stemmer_english'],
+                                                                             'tokenizer': 'standard'},
+                                                                                      'path_analyzer': {
+                                                                                          'type': 'custom',
+                                                                                          'tokenizer': 'path_tokenizer'}},
+                                                                         'tokenizer': {
+                                                                             'path_tokenizer': {
+                                                                                 'type': 'path_hierarchy',
+                                                                                 'delimiter': '/'}}},
+                                                            'number_of_replicas': '1',
+                                                            'uuid': 'T5t7z3FPTg-kbhmABb8g9A',
+                                                            'version': {'created': '7060299'}}}}}
 
     @pytest.fixture
-    def analysis_mappings(self):
-        return {
-            'mappings': {
-                'properties': {
-                    'analysis': {
-                        'dynamic': 'true',
-                        'properties': {
-                            'zvi-image-similarity': {
-                                'properties': {
-                                    'simhash': {
-                                        'type': 'keyword',
-                                        'index': False},
-                                    'type': {
-                                        'type': 'text',
-                                        'fields': {
-                                            'keyword': {
-                                                'type': 'keyword',
-                                                'ignore_above': 256}}}}},
-                            'zvi-label-detection': {
-                                'properties': {
-                                    'count': {
-                                        'type': 'long'},
-                                    'predictions': {
-                                        'properties': {
-                                            'label': {
-                                                'type': 'keyword',
-                                                'fields': {
-                                                    'fulltext': {
-                                                        'type': 'text'}}},
-                                            'score': {
-                                                'type': 'float',
-                                                'coerce': True}}},
-                                    'type': {
-                                        'type': 'text',
-                                        'fields': {
-                                            'keyword': {
-                                                'type': 'keyword',
-                                                'ignore_above': 256}}}}},
-                            'zvi-object-detection': {
-                                'properties': {
-                                    'count': {
-                                        'type': 'long'},
-                                    'predictions': {
-                                        'properties': {
-                                            'bbox': {
-                                                'type': 'float'},
-                                            'label': {
-                                                'type': 'keyword',
-                                                'fields': {
-                                                    'fulltext': {
-                                                        'type': 'text'}}},
-                                            'score': {
-                                                'type': 'float',
-                                                'coerce': True}}},
-                                    'type': {
-                                        'type': 'text',
-                                        'fields': {
-                                            'keyword': {
-                                                'type': 'keyword',
-                                                'ignore_above': 256}}}}},
-                            'zvi-text-detection': {
-                                'properties': {
-                                    'content': {
-                                        'type': 'text'},
-                                    'type': {
-                                        'type': 'text',
-                                        'fields': {
-                                            'keyword': {
-                                                'type': 'keyword',
-                                                'ignore_above': 256}}},
-                                    'words': {
-                                        'type': 'long'}}}}},
-                    "labels": {
-                        "type": "nested",
-                        "dynamic": "strict",
-                        "properties": {
-                            "bbox": {
-                                "type": "float"
-                            },
-                            "dataSetId": {
-                                "type": "keyword"
-                            },
-                            "label": {
-                                "type": "keyword",
-                                "fields": {
-                                    "fulltext": {
-                                        "type": "text"
-                                    }
-                                }
-                            },
-                            "modelId": {
-                                "type": "keyword"
-                            },
-                            "scope": {
-                                "type": "keyword"
-                            },
-                            "simhash": {
-                                "type": "keyword",
-                                "index": False
-                            }
-                        }
-                    },
-                }},
-        }
+    def model_response(self):
+        return {'list': [{'id': '3500f84e-26f2-1505-9aa6-0242ac13000b',
+                          'projectId': '00000000-0000-0000-0000-000000000000',
+                          'type': 'ZVI_KNN_CLASSIFIER', 'name': 'Settings',
+                          'moduleName': 'settings',
+                          'fileId': 'models/3500f84e-26f2-1505-9aa6-0242ac13000b/model/model.zip',
+                          'trainingJobName': 'Training model: Settings - [Label Detection]',
+                          'ready': False, 'deploySearch': {'query': {'match_all': {}}},
+                          'timeCreated': 1598999201703, 'timeModified': 1598999201703,
+                          'actorCreated': 'd4c9b0f8-fedc-4d22-9cff-01a0e8e1eee9/Admin Console Generated Key - a8aae7b3-4fa5-4cde-8fa5-d05a9a9700fc - software@zorroa.com_00000000-0000-0000-0000-000000000000',
+                          'actorModified': 'd4c9b0f8-fedc-4d22-9cff-01a0e8e1eee9/Admin Console Generated Key - a8aae7b3-4fa5-4cde-8fa5-d05a9a9700fc - software@zorroa.com_00000000-0000-0000-0000-000000000000'}],
+                'page': {'from': 0, 'size': 50, 'disabled': False, 'totalCount': 1}}
 
-    def test_zvi_label_detection(self, analysis_mappings):
-        properties = analysis_mappings['mappings']['properties']
-        result = self.field_service.get_fields_from_mappings(properties['analysis'])
-        assert result['zvi-label-detection'] == ['labelConfidence', 'exists']
+    @pytest.fixture
+    def MockZmlpClient(self, mapping_response, model_response):
+        return Mock(get=Mock(return_value=mapping_response),
+                    post=Mock(return_value=model_response))
 
-    @patch.object(FieldUtility, '_get_all_model_ids', return_value=['A1', 'B1'])
-    @patch.object(FieldUtility, '_get_all_model_names', return_value=['console', 'testing'])
-    def test_labels(self, model_mock, ids_mock, analysis_mappings):
-        client = Mock()
-        result = self.field_service.get_fields_from_mappings(analysis_mappings['mappings'], client)
-        assert result['labels'] == {'console': ['label'], 'testing': ['label']}
+    def test_converts_similarity_blob(self, MockZmlpClient):
+        result = self.field_service.get_filters_from_field_types(MockZmlpClient)
+        assert result['analysis']['zvi-image-similarity'] == ['exists', 'similarity']
 
-    @override_settings(FEATURE_FLAGS={'USE_MODEL_IDS_FOR_LABEL_FILTERS': True})
-    @patch.object(FieldUtility, '_get_all_model_ids', return_value=['A1', 'B1'])
-    @patch.object(FieldUtility, '_get_all_model_names', return_value=['console', 'testing'])
-    def test_labels_with_feature_flag(self, model_mock, ids_mock, analysis_mappings):
-        client = Mock()
-        result = self.field_service.get_fields_from_mappings(analysis_mappings['mappings'], client)
-        assert result['labels'] == {'A1': ['label'], 'B1': ['label']}
+    def test_zvi_label_detection(self, MockZmlpClient):
+        result = self.field_service.get_filters_from_field_types(MockZmlpClient)
+        assert result['analysis']['zvi-label-detection'] == ['labelConfidence', 'exists']
 
-    @override_settings(FEATURE_FLAGS={'USE_MODEL_IDS_FOR_LABEL_FILTERS': 'anything'})
-    @patch.object(FieldUtility, '_get_all_model_ids', return_value=['A1', 'B1'])
-    @patch.object(FieldUtility, '_get_all_model_names', return_value=['console', 'testing'])
-    def test_labels_with_feature_flag_string(self, model_mock, ids_mock, analysis_mappings):
-        client = Mock()
-        result = self.field_service.get_fields_from_mappings(analysis_mappings['mappings'],
-                                                             client)
-        assert result['labels'] == {'A1': ['label'], 'B1': ['label']}
+    def test_labels(self, MockZmlpClient):
+        result = self.field_service.get_filters_from_field_types(MockZmlpClient)
+        assert result['labels'] == {'3500f84e-26f2-1505-9aa6-0242ac13000b': ['label']}
 
-    @patch.object(FieldUtility, '_get_all_model_names', return_value=['console', 'testing'])
-    def test_labels_no_client(self, model_mock, analysis_mappings):
-        result = self.field_service.get_fields_from_mappings(analysis_mappings['mappings'])
-        assert result['labels'] == {}
-
-    def test_get_all_model_names_no_models(self):
+    def test_get_all_model_ids_no_models(self):
         client = Mock(post=Mock(return_value={'list': []}))
-        result = self.field_service._get_all_model_names(client)
+        result = self.field_service._get_all_model_ids(client)
         assert result == []
 
 
@@ -289,7 +516,8 @@ class TestFilterBoy:
         _filter = RangeFilter({'type': 'range',
                                'attribute': 'source.filesize',
                                'values': {'min': 1, 'max': 100}})
-        expected_query = {'query': {'bool': {'filter': [{'range': {'source.filesize': {'gte': 1, 'lte': 100}}}]}}}  # noqa
+        expected_query = {'query': {
+            'bool': {'filter': [{'range': {'source.filesize': {'gte': 1, 'lte': 100}}}]}}}  # noqa
         response_query = filter_boy.reduce_filters_to_query([_filter])
         assert expected_query == response_query
 

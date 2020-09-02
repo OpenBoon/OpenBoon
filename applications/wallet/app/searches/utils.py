@@ -1,6 +1,5 @@
 import logging
 
-from django.conf import settings
 from rest_framework.exceptions import ParseError
 
 from wallet.exceptions import InvalidRequestError
@@ -17,33 +16,45 @@ logger = logging.getLogger(__name__)
 
 class FieldUtility(object):
 
-    def get_fields_from_mappings(self, mappings, client=None):
-        """Converts an ES Indexes mappings response into a field:filter map."""
+    def get_filters_from_field_types(self, client=None):
+        """Returns the list of fields and their valid filters."""
+        field_types = self.get_field_types_from_field_mappings(client)
+        return self._get_child_filters_from_field_types(field_types)
+
+    def _get_child_filters_from_field_types(self, field_types):
+        """Recursive helper to parse the list of fields and convert fieldTypes to filters."""
         fields = {}
-        properties = mappings['properties']
-        for property in properties:
-            # Labels is a top level property
-            if property == 'labels':
-                # If we end up with more special cases in the future, let's create a
-                # map of properties to helper functions for this conditional.
-                fields.update(self.get_labels_field_mapping(property, properties[property],
-                                                            client=client))
+        for field in field_types:
+            if 'fieldType' in field_types[field]:
+                fields[field] = TYPE_FIELD_MAPPING[field_types[field]['fieldType']]
             else:
-                fields.update(self.get_filters_for_child_fields(property, properties[property],
-                                                                client=client))
+                fields.update({field: self._get_child_filters_from_field_types(field_types[field])})
         return fields
 
-    def get_filters_for_child_fields(self, property_name, values, client=None):
-        """Recursively build the dict structure for an attribute and retrieve it's filters.
+    def get_field_types_from_field_mappings(self, client=None):
+        """Converts an ES Indexes mappings response into a field:fieldType map."""
+        fields = {}
+        path = 'api/v3/fields/_mapping'
+        content = client.get(path)
+        indexes = list(content.keys())
+        if len(indexes) != 1:
+            raise ValueError('ZMLP did not return field mappings as expected.')
 
-        Returns:
-            <dict>: A dict of dicts where each key is part of the attribute dot path,
-            and the final value is the list of allowed filters.
-        """
+        index = indexes[0]
+        properties = content[index]['mappings']['properties']
+        for property in properties:
+            if property == 'labels':
+                fields.update(self.get_labels_field_types(property, properties[property],
+                                                          client=client))
+            else:
+                fields.update(self.get_field_types_for_child_fields(property, properties[property],
+                                                                    client=client))
+        return fields
+
+    def get_field_types_for_child_fields(self, property_name, values, client=None):
         fields = {property_name: {}}
         if 'type' in values:
-            # May need to add an override for type on similarity hash fields
-            return {property_name: TYPE_FIELD_MAPPING[values['type']]}
+            return {property_name: {'fieldType': values['type']}}
 
         if 'properties' in values:
             child_properties = values['properties']
@@ -52,56 +63,34 @@ class FieldUtility(object):
             if 'type' in child_properties:
                 schema = self.get_analysis_schema(property_name, child_properties)
                 if schema:
-                    return schema
+                    return schema.get_field_type_representation()
 
             for property in child_properties:
                 fields[property_name].update(
-                    self.get_filters_for_child_fields(property, child_properties[property]))
+                    self.get_field_types_for_child_fields(property, child_properties[property]))
 
         return fields
+
+    def get_labels_field_types(self, property_name, child_properties, client=None):
+        """"""
+        if not client:
+            logger.warning('No Client provided. Unable to retrieve models.')
+            return {'labels': {}}
+        model_key_names = self._get_all_model_ids(client)
+        model_ids = {}
+        for model_id in model_key_names:
+            model_ids[model_id] = {'fieldType': 'label'}
+
+        return {'labels': model_ids}
 
     def get_analysis_schema(self, property_name, child_properties):
         """Return the special schema for a ZMLP Analysis Schema"""
         for Klass in ANALYSIS_SCHEMAS:
             schema = Klass(property_name, child_properties)
             if schema.is_valid():
-                return schema.get_representation()
+                return schema
 
         return None
-
-    def get_labels_field_mapping(self, property_name, child_properties, client=None):
-        """Gets the available filters for all labels/models.
-
-        Args:
-            property_name (str): Name of the current field property being examined.
-            child_properties (dict): Subset of children properties for property_name.
-            client (ZMLPClient): Client that will be used to retrieve the model names.
-
-        Returns:
-            (dict): Returns the set of models/filters for the "labels" section of fields.
-        """
-        if not client:
-            logger.warning('No Client provided. Unable to retrieve models.')
-            return {'labels': {}}
-        # query for all the model names/ids, return with available filters
-        if settings.FEATURE_FLAGS['USE_MODEL_IDS_FOR_LABEL_FILTERS']:
-            # TODO: Remove flag once frontend is updated, this should be new default
-            model_key_names = self._get_all_model_ids(client)
-        else:
-            model_key_names = self._get_all_model_names(client)
-        model_filters = {}
-        for model in model_key_names:
-            model_filters[model] = ['label']
-
-        return {'labels': model_filters}
-
-    def _get_all_model_names(self, client):
-        path = '/api/v3/models/_search'
-        response = client.post(path, {})
-        names = []
-        for model in response.get('list', []):
-            names.append(model['name'])
-        return names
 
     def _get_all_model_ids(self, client):
         path = '/api/v3/models/_search'
