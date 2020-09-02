@@ -64,7 +64,6 @@ const JobMenu = ({ status, revalidate }) => {
                         asPath,
                       )
                     }}
-                    isDisabled={false}
                   >
                     {name}
                   </Button>

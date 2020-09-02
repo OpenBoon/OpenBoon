@@ -68,7 +68,8 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   background-color: #4a4a4a;
 }
 
