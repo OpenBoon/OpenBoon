@@ -34,7 +34,6 @@ const TaskErrorsMenu = ({ projectId, taskId, revalidate }) => {
 
                     revalidate()
                   }}
-                  isDisabled={false}
                 >
                   {name}
                 </Button>

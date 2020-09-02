@@ -283,7 +283,7 @@ exports[`<ChartRange /> should render properly 1`] = `
 }
 
 .emotion-19:hover,
-.emotion-19:focus {
+.emotion-19.focus-visible:focus {
   color: #ffffff;
 }
 
@@ -690,7 +690,7 @@ exports[`<ChartRange /> should render properly without data 1`] = `
 }
 
 .emotion-9:hover,
-.emotion-9:focus {
+.emotion-9.focus-visible:focus {
   color: #ffffff;
 }
 

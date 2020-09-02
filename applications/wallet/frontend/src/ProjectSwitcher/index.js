@@ -47,12 +47,7 @@ const ProjectSwitcher = ({ projectId }) => {
     <Menu
       open="right"
       button={({ onBlur, onClick, isMenuOpen }) => (
-        <Button
-          variant={VARIANTS.MENU}
-          onBlur={onBlur}
-          onClick={onClick}
-          isDisabled={false}
-        >
+        <Button variant={VARIANTS.MENU} onBlur={onBlur} onClick={onClick}>
           <div
             css={{
               display: 'flex',
@@ -97,7 +92,6 @@ const ProjectSwitcher = ({ projectId }) => {
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
                   onClick={onClick}
-                  isDisabled={false}
                 >
                   {name}
                 </Button>

@@ -31,7 +31,6 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
             }}
             onBlur={onBlur}
             onClick={onClick}
-            isDisabled={false}
           >
             <div css={{ display: 'flex', alignItems: 'center' }}>
               <div
@@ -89,7 +88,6 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
                     variant={VARIANTS.MENU_ITEM}
                     onBlur={onBlur}
                     onClick={onClick}
-                    isDisabled={false}
                   >
                     Manage Account
                   </Button>
@@ -104,7 +102,6 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
                   onClick={(event) => {
                     onClick(event)
                   }}
-                  isDisabled={false}
                 >
                   Contact Support
                 </Button>
@@ -116,7 +113,6 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
                   onClick={onClick}
-                  isDisabled={false}
                 >
                   Submit Feedback
                 </Button>
@@ -128,7 +124,6 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
                   onClick={() => logout({ redirectUrl: '/', redirectAs: '/' })}
-                  isDisabled={false}
                 >
                   Sign Out
                 </Button>

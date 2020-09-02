@@ -14,54 +14,53 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
   const [isDeleting, setIsDeleting] = useState(false)
 
   return (
-    <Menu open="left" button={ButtonActions}>
-      {({ onClick }) => (
-        <div>
-          <ul>
-            <li>
-              <>
+    <>
+      <Menu open="left" button={ButtonActions}>
+        {({ onBlur, onClick }) => (
+          <div>
+            <ul>
+              <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
                   onClick={() => {
+                    onClick()
                     setDeleteModalOpen(true)
                   }}
-                  isDisabled={false}
                 >
                   Delete
                 </Button>
-                {isDeleteModalOpen && (
-                  <Modal
-                    title="Delete API Key"
-                    message="Deleting this key cannot be undone."
-                    action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
-                    onCancel={() => {
-                      setDeleteModalOpen(false)
+              </li>
+            </ul>
+          </div>
+        )}
+      </Menu>
+      {isDeleteModalOpen && (
+        <Modal
+          title="Delete API Key"
+          message="Deleting this key cannot be undone."
+          action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
+          onCancel={() => {
+            setDeleteModalOpen(false)
+          }}
+          onConfirm={async () => {
+            setIsDeleting(true)
 
-                      onClick()
-                    }}
-                    onConfirm={async () => {
-                      setIsDeleting(true)
+            await fetcher(
+              `/api/v1/projects/${projectId}/api_keys/${apiKeyId}/`,
+              { method: 'DELETE' },
+            )
 
-                      await fetcher(
-                        `/api/v1/projects/${projectId}/api_keys/${apiKeyId}/`,
-                        { method: 'DELETE' },
-                      )
+            await revalidate()
 
-                      await revalidate()
-
-                      Router.push(
-                        '/[projectId]/api-keys?action=delete-apikey-success',
-                        `/${projectId}/api-keys`,
-                      )
-                    }}
-                  />
-                )}
-              </>
-            </li>
-          </ul>
-        </div>
+            Router.push(
+              '/[projectId]/api-keys?action=delete-apikey-success',
+              `/${projectId}/api-keys`,
+            )
+          }}
+        />
       )}
-    </Menu>
+    </>
   )
 }
 

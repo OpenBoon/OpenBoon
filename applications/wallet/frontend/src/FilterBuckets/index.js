@@ -39,6 +39,54 @@ const FilterBuckets = ({
         css={{
           display: 'flex',
           justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingBottom: spacing.normal,
+        }}
+      >
+        <div css={{ fontStyle: typography.style.italic }}>
+          {type === 'labelConfidence' ? 'Predictions' : 'Labels'} Selected:{' '}
+          {labels.length}
+        </div>
+        <div>
+          <Button
+            variant={VARIANTS.MICRO}
+            onClick={() => {
+              const newLabels = buckets.reduce((acc, { key }) => {
+                return [...acc, key]
+              }, [])
+
+              const updatedFilter = getUpdatedFilter({
+                type,
+                attribute,
+                modelId,
+                scope,
+                min,
+                max,
+                newLabels,
+              })
+
+              dispatch({
+                type: ACTIONS.UPDATE_FILTER,
+                payload: {
+                  pathname,
+                  projectId,
+                  assetId,
+                  filters,
+                  updatedFilter,
+                  filterIndex,
+                },
+              })
+            }}
+          >
+            Select All
+          </Button>
+        </div>
+      </div>
+
+      <div
+        css={{
+          display: 'flex',
+          justifyContent: 'space-between',
           paddingBottom: spacing.base,
           fontFamily: typography.family.condensed,
           color: colors.structure.zinc,

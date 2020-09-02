@@ -447,7 +447,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
 }
 
 .emotion-80:hover,
-.emotion-80:focus {
+.emotion-80.focus-visible:focus {
   color: #ffffff;
 }
 
@@ -1149,7 +1149,7 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
 }
 
 .emotion-10:hover,
-.emotion-10:focus {
+.emotion-10.focus-visible:focus {
   color: #ffffff;
 }
 

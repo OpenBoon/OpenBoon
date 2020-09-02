@@ -53,7 +53,8 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-2:hover {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
@@ -152,7 +153,8 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   color: #2e2e2e;
 }
 
-.emotion-2:hover {
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
@@ -255,7 +257,8 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   color: #2e2e2e;
 }
 
-.emotion-3:hover {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   background-color: #4a4a4a;
 }
 

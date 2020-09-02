@@ -24,12 +24,13 @@ const MetadataPrettyLabelsMenu = ({
 
   return (
     <Menu open="left" button={ButtonActions}>
-      {({ onClick }) => (
+      {({ onBlur, onClick }) => (
         <div css={{ fontFamily: typography.family.regular }}>
           <ul>
             <li>
               <Button
                 variant={VARIANTS.MENU_ITEM}
+                onBlur={onBlur}
                 onClick={() => {
                   onClick()
 
@@ -49,7 +50,6 @@ const MetadataPrettyLabelsMenu = ({
                     },
                   })
                 }}
-                isDisabled={false}
               >
                 Add Model/Label Filter
               </Button>
@@ -57,11 +57,11 @@ const MetadataPrettyLabelsMenu = ({
             <li>
               <Button
                 variant={VARIANTS.MENU_ITEM}
+                onBlur={onBlur}
                 onClick={() => {
-                  copyModelId()
                   onClick()
+                  copyModelId()
                 }}
-                isDisabled={false}
               >
                 Copy Model ID
               </Button>
@@ -70,11 +70,11 @@ const MetadataPrettyLabelsMenu = ({
               <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
                   onClick={() => {
-                    copySimhash()
                     onClick()
+                    copySimhash()
                   }}
-                  isDisabled={false}
                 >
                   Copy Simhash
                 </Button>
