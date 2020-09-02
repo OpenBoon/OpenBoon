@@ -15,7 +15,7 @@ Use the following environment variables to configure the `reporter` script.
 | Env Var | Description |
 | ------- | ----------- |
 | PROJECT_ID | ID of the GCP project to publish metrics to. |
-| COLLECTION_INTERVAL | Interval at which metrics are published. Default: 60 | 
+| COLLECTION_INTERVAL | Interval, in seconds, at which metrics are published. Default: 60 | 
 | ZMLP_API_URL | FQDN of the ZMLP api. Default: https://dev.api.zvi.zorroa.com | 
 | INCEPTION_KEY_B64 | Base64 encoded inception key for ZMLP. | 
 

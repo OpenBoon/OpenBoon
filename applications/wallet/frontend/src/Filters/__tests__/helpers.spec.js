@@ -1,38 +1,38 @@
-import { getNewFacets, cleanup, dispatch } from '../helpers'
+import { getNewLabels, cleanup, dispatch } from '../helpers'
 
 describe('<Filters /> helpers', () => {
-  describe('getNewFacets()', () => {
-    it('should remove a facet', () => {
+  describe('getNewLabels()', () => {
+    it('should remove a label', () => {
       expect(
-        getNewFacets({
-          facets: ['cat', 'dog'],
+        getNewLabels({
+          labels: ['cat', 'dog'],
           isSelected: true,
           hasModifier: true,
-          facetIndex: 1,
+          labelIndex: 1,
           key: 'dog',
         }),
       ).toEqual(['cat'])
     })
 
-    it('should add a facet', () => {
+    it('should add a label', () => {
       expect(
-        getNewFacets({
-          facets: ['cat'],
+        getNewLabels({
+          labels: ['cat'],
           isSelected: false,
           hasModifier: true,
-          facetIndex: 1,
+          labelIndex: 1,
           key: 'dog',
         }),
       ).toEqual(['cat', 'dog'])
     })
 
-    it('should select a unique facet', () => {
+    it('should select a unique label', () => {
       expect(
-        getNewFacets({
-          facets: ['cat', 'dog'],
+        getNewLabels({
+          labels: ['cat', 'dog'],
           isSelected: true,
           hasModifier: false,
-          facetIndex: 0,
+          labelIndex: 0,
           key: 'cat',
         }),
       ).toEqual(['cat'])

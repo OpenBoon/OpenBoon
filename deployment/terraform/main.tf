@@ -333,4 +333,5 @@ module "reporter" {
   container-tag     = var.container-tag
   image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
   zmlp-api-url      = "http://${module.api-gateway.ip-address}"
+  monitor-password  = module.archivist.monitor-password
 }
