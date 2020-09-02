@@ -11,6 +11,8 @@ logging.basicConfig()
 
 class TestCloudNaturalLanguageProcessor(PluginUnitTestCase):
 
+    clp_namespace = 'analysis.gcp-natural-language'
+
     def test_flatten_content(self):
         nl = CloudNaturalLanguageProcessor()
 
@@ -38,15 +40,18 @@ class TestCloudNaturalLanguageProcessor(PluginUnitTestCase):
         client_patch.return_value = MockLanguageServiceClientPatch()
 
         test_field = {'media.dialog': "Big Boi cooler than a polar bear's toenails"}
-        frame = Frame(TestAsset(attrs=test_field))
+        test_asset = TestAsset(attrs=test_field)
+        frame = Frame(test_asset)
 
         processor = self.init_processor(CloudNaturalLanguageProcessor())
         processor.process(frame)
 
-        for result in processor.results:
-            assert result.name == 'Big Boi'
-            assert result.salience == 0.99
-            assert result.type == 'PERSON'
+        results = test_asset.get_attr(self.clp_namespace)
+
+        for result in results['predictions']:
+            assert result['label'] == 'Big Boi'
+            assert result['score'] == 0.99
+            assert result['type'] == 'PERSON'
 
 
 class MockLanguageServiceClientPatch:

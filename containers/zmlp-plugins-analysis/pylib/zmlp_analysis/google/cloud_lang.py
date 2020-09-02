@@ -16,14 +16,13 @@ class CloudNaturalLanguageProcessor(AssetProcessor):
     tool_tips = {'field': 'Metadata field of the asset to submit to the Cloud Natural Language '
                           'API.'}
 
-    namespace = 'google.languageEntities.keywords'
+    namespace = 'gcp-natural-language'
 
     def __init__(self):
         super(CloudNaturalLanguageProcessor, self).__init__()
         self.add_arg(Argument('field', 'str', default='media.dialog',
                               toolTip=self.tool_tips['field']))
         self.client = None
-        self.results = None
 
     def init(self):
         super(CloudNaturalLanguageProcessor, self).init()
@@ -77,14 +76,14 @@ class CloudNaturalLanguageProcessor(AssetProcessor):
         document = language.types.Document(content=content,
                                            type=language.enums.Document.Type.PLAIN_TEXT)
         response = self._analyze_entities(document)
-        self.results = response.entities
+        results = response.entities
 
-        if not self.results:
+        if not results:
             raise ZmlpFatalProcessorException('Bailing, no entities found')
 
         # add results for analysis
         entities = []
-        for entity in self.results:
+        for entity in results:
             entities.append(
                 (entity.name, entity.salience, entity.type)
             )
