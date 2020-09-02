@@ -5,7 +5,7 @@ from rest_framework.exceptions import ParseError
 from wallet.exceptions import InvalidRequestError
 from wallet.utils import convert_base64_to_json
 from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
-                              LabelsAnalysisSchema, TYPE_FIELD_MAPPING)
+                              LabelsAnalysisSchema, FIELD_TYPE_FILTER_MAPPING)
 from searches.filters import (ExistsFilter, FacetFilter, RangeFilter, LabelConfidenceFilter,
                               TextContentFilter, SimilarityFilter, LabelFilter, DateFilter)
 
@@ -16,9 +16,9 @@ logger = logging.getLogger(__name__)
 
 class FieldUtility(object):
 
-    def get_filters_from_field_types(self, client=None):
+    def get_filter_map(self, client=None):
         """Returns the list of fields and their valid filters."""
-        field_types = self.get_field_types_from_field_mappings(client)
+        field_types = self.get_field_type_map(client)
         return self._get_child_filters_from_field_types(field_types)
 
     def _get_child_filters_from_field_types(self, field_types):
@@ -26,12 +26,12 @@ class FieldUtility(object):
         fields = {}
         for field in field_types:
             if 'fieldType' in field_types[field]:
-                fields[field] = TYPE_FIELD_MAPPING[field_types[field]['fieldType']]
+                fields[field] = FIELD_TYPE_FILTER_MAPPING[field_types[field]['fieldType']]
             else:
                 fields.update({field: self._get_child_filters_from_field_types(field_types[field])})
         return fields
 
-    def get_field_types_from_field_mappings(self, client=None):
+    def get_field_type_map(self, client=None):
         """Converts an ES Indexes mappings response into a field:fieldType map."""
         fields = {}
         path = 'api/v3/fields/_mapping'
@@ -44,14 +44,15 @@ class FieldUtility(object):
         properties = content[index]['mappings']['properties']
         for property in properties:
             if property == 'labels':
-                fields.update(self.get_labels_field_types(property, properties[property],
-                                                          client=client))
+                fields.update(self._get_labels_field_types(property, properties[property],
+                                                           client=client))
             else:
-                fields.update(self.get_field_types_for_child_fields(property, properties[property],
-                                                                    client=client))
+                fields.update(self._get_field_types_for_child_fields(property, properties[property],
+                                                                     client=client))
         return fields
 
-    def get_field_types_for_child_fields(self, property_name, values, client=None):
+    def _get_field_types_for_child_fields(self, property_name, values, client=None):
+        """Recursive helper to walk a field mapping and determine the field types."""
         fields = {property_name: {}}
         if 'type' in values:
             return {property_name: {'fieldType': values['type']}}
@@ -61,18 +62,18 @@ class FieldUtility(object):
 
             # Identify special Analysis Schemas
             if 'type' in child_properties:
-                schema = self.get_analysis_schema(property_name, child_properties)
+                schema = self._get_analysis_schema(property_name, child_properties)
                 if schema:
                     return schema.get_field_type_representation()
 
             for property in child_properties:
                 fields[property_name].update(
-                    self.get_field_types_for_child_fields(property, child_properties[property]))
+                    self._get_field_types_for_child_fields(property, child_properties[property]))
 
         return fields
 
-    def get_labels_field_types(self, property_name, child_properties, client=None):
-        """"""
+    def _get_labels_field_types(self, property_name, child_properties, client=None):
+        """Adds labels to the field type map and sets the field type for each."""
         if not client:
             logger.warning('No Client provided. Unable to retrieve models.')
             return {'labels': {}}
@@ -83,7 +84,7 @@ class FieldUtility(object):
 
         return {'labels': model_ids}
 
-    def get_analysis_schema(self, property_name, child_properties):
+    def _get_analysis_schema(self, property_name, child_properties):
         """Return the special schema for a ZMLP Analysis Schema"""
         for Klass in ANALYSIS_SCHEMAS:
             schema = Klass(property_name, child_properties)
@@ -93,12 +94,34 @@ class FieldUtility(object):
         return None
 
     def _get_all_model_ids(self, client):
+        """Returns the model IDs for all models on the current project."""
         path = '/api/v3/models/_search'
         response = client.post(path, {})
         names = []
         for model in response.get('list', []):
             names.append(model['id'])
         return names
+
+    def get_attribute_field_type(self, attribute, client):
+        """Given an attribute in dot path form, return it's field type.
+
+        Returns:
+            (str): The FieldType of the given field
+
+        Raises:
+            (ParseError): If the given attribute type can't be found or is not in the mapping.
+        """
+        field_type_map = self.get_field_type_map(client)
+        current_level = field_type_map
+        for level in attribute.split('.'):
+            if level not in current_level:
+                raise ParseError(detail=['Given attribute could not be found in field mapping.'])
+            if 'fieldType' in current_level[level]:
+                return current_level[level]['fieldType']
+            else:
+                current_level = current_level[level]
+
+        raise ParseError(detail=['Attribute given is not a valid filterable or visualizable field.'])
 
 
 class FilterBuddy(object):

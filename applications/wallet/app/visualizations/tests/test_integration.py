@@ -1,11 +1,13 @@
 import pytest
 
 from django.urls import reverse
+from unittest.mock import patch
 from rest_framework import status
 
 from zmlp import ZmlpClient
 from wallet.tests.utils import check_response
 from wallet.utils import convert_json_to_base64
+from searches.utils import FieldUtility
 
 pytestmark = pytest.mark.django_db
 
@@ -30,10 +32,12 @@ class TestVisualizationsViewSet:
         visuals = [{'type': 'range', 'id': 'myRange', 'attribute': 'media.aspect'}]
         path = reverse('visualization-load', kwargs={'project_pk': project.id})
         monkeypatch.setattr(ZmlpClient, 'post', mock_response)
-        response = api_client.get(path, {'visuals': convert_json_to_base64(visuals)})
+        with patch.object(FieldUtility, 'get_attribute_field_type', return_value='double'):
+            response = api_client.get(path, {'visuals': convert_json_to_base64(visuals)})
 
         content = check_response(response)
         assert content[0]['id'] == 'myRange'
+        assert content[0]['attributeFieldType'] == 'double'
         assert content[0]['results']['count'] == 72
         assert content[0]['results']['min'] == 0.75
         assert content[0]['results']['max'] == 1.7799999713897705
@@ -48,10 +52,12 @@ class TestVisualizationsViewSet:
         visuals = [{"type": "facet", "id": "myFacet", "attribute": "media.orientation"}]
         path = reverse('visualization-load', kwargs={'project_pk': project.id})
         monkeypatch.setattr(ZmlpClient, 'post', mock_response)
-        response = api_client.get(path, {'visuals': convert_json_to_base64(visuals)})
+        with patch.object(FieldUtility, 'get_attribute_field_type', return_value='keyword'):
+            response = api_client.get(path, {'visuals': convert_json_to_base64(visuals)})
 
         content = check_response(response)
         assert content[0]['id'] == 'myFacet'
+        assert content[0]['attributeFieldType'] == 'keyword'
         assert content[0]['results']['docCountErrorUpperBound'] == 0
         assert content[0]['results']['sumOtherDocCount'] == 0
         assert content[0]['results']['buckets'] == [
@@ -69,7 +75,8 @@ class TestVisualizationsViewSet:
                    {"type": "facet", "id": "myFacet", "attribute": "media.orientation"}]
         path = reverse('visualization-load', kwargs={'project_pk': project.id})
         monkeypatch.setattr(ZmlpClient, 'post', mock_response)
-        response = api_client.get(path, {'visuals': convert_json_to_base64(visuals)})
+        with patch.object(FieldUtility, 'get_attribute_field_type', return_value='keyword'):
+            response = api_client.get(path, {'visuals': convert_json_to_base64(visuals)})
 
         content = check_response(response)
         assert content[0]['id'] == 'myRange'
@@ -100,8 +107,9 @@ class TestVisualizationsViewSet:
                   'values': {'labels': ['face0'], 'min': 0, 'max': 1}}]
         path = reverse('visualization-load', kwargs={'project_pk': project.id})
         monkeypatch.setattr(ZmlpClient, 'post', mock_response)
-        response = api_client.get(path, {'visuals': convert_json_to_base64(visuals),
-                                         'query': convert_json_to_base64(query)})
+        with patch.object(FieldUtility, 'get_attribute_field_type', return_value='keyword'):
+            response = api_client.get(path, {'visuals': convert_json_to_base64(visuals),
+                                             'query': convert_json_to_base64(query)})
 
         content = check_response(response)
         assert content[0]['id'] == 'myRange'

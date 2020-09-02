@@ -74,7 +74,7 @@ class SearchViewSet(CreateModelMixin,
     def fields(self, request, project_pk):
         """Returns all available fields in the ES index and their type."""
         try:
-            fields = self.field_utility.get_filters_from_field_types(request.client)
+            fields = self.field_utility.get_filter_map(request.client)
         except ValueError:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data={'detail': 'ZMLP did not return field mappings as expected.'})

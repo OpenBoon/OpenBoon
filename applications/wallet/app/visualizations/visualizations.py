@@ -1,6 +1,8 @@
 import copy
 from rest_framework.exceptions import ValidationError
 
+from searches.utils import FieldUtility
+
 
 class BaseVisualization(object):
     """Abstract Visualization object all concrete Visualizations should inherit from."""
@@ -15,6 +17,8 @@ class BaseVisualization(object):
         self.request = request
         self.query = query
         self.errors = []
+        self.field_utility = FieldUtility()
+        self._field_type = None
 
     def __eq__(self, other):
         if type(self) == type(other) and self.data == other.data:
@@ -30,6 +34,15 @@ class BaseVisualization(object):
     def options(self):
         """Returns the options that were set on this visualization."""
         return self.data.get('options', {})
+
+    @property
+    def field_type(self):
+        """Returns the field type fot he attribute associated with this visualization."""
+        if self._field_type is None:
+            attribute = self.data.get('attribute')
+            self._field_type = self.field_utility.get_attribute_field_type(attribute,
+                                                                           self.request.client)
+        return self._field_type
 
     def is_valid(self, raise_exception=False):
         """Validates that every required key and options key needed was included.
@@ -72,6 +85,7 @@ class BaseVisualization(object):
         """
         results = data['aggregations'][f'{self.agg_prefix}#{self.id}']
         response = {'id': self.id,
+                    'attributeFieldType': self.field_type,
                     'results': results}
         return response
 
@@ -109,12 +123,12 @@ class FacetVisualization(BaseVisualization):
 
     def get_es_agg(self):
         attribute = self.data['attribute']
-        field_type = self.data.get('fieldType', 'facet')
         order = self.options.get('order', 'desc')
         minimum_count = self.options.get('minimumCount')
         size = self.options.get('size', 1000)
-        if field_type == 'labelConfidence':
+        if self.field_type == 'prediction':
             attribute = f'{attribute}.predictions.label'
+
         agg = {
             'terms': {
                 'field': attribute,
@@ -137,11 +151,10 @@ class HistogramVisualization(BaseVisualization):
 
     def get_es_agg(self):
         attribute = self.data['attribute']
-        field_type = self.data['fieldType']
         size = self.options.get('size', 10)
         if size < 1:
             size = 1
-        if field_type == 'labelConfidence':
+        if self.field_type == 'prediction':
             interval, offset = self.get_interval_and_offset(f'{attribute}.predictions.score',
                                                             size)
             agg = {
@@ -186,7 +199,9 @@ class HistogramVisualization(BaseVisualization):
             results = data['aggregations'][f'nested#{self.id}']['filter#labels']['histogram#scores']
         else:
             results = data['aggregations'][f'histogram#{self.id}']
-        return {'id': self.id, 'results': results}
+        return {'id': self.id,
+                'attributeFieldType': self.field_type,
+                'results': results}
 
     def _get_labels_from_query(self):
         label_attr = f'{self.data["attribute"]}.predictions.label'
@@ -202,15 +217,16 @@ class HistogramVisualization(BaseVisualization):
     def get_interval_and_offset(self, attribute, size):
         """Calculates the appropriate interval and offset for the selected # of buckets"""
         client = self.request.client
-        field_type = self.data['fieldType']
+
         # Use the existing query if it exists
         if self.query:
             query = copy.deepcopy(self.query)
         else:
             query = {}
+
         # Add stat aggregation to the query to get the min and max values
         query['size'] = 0
-        if field_type == 'labelConfidence':
+        if self.field_type == 'prediction':
             query['aggs'] = {
                 self.id: {
                     'nested': {
@@ -235,14 +251,16 @@ class HistogramVisualization(BaseVisualization):
                 }
             }
         response = client.post('api/v3/assets/_search', query)
+
         # Get the min and max from the response
-        if field_type == 'labelConfidence':
+        if self.field_type == 'prediction':
             nested_agg_name = f'nested#{self.id}'
             agg_data = response['aggregations'][nested_agg_name]['extended_stats#stats']
         else:
             agg_key = f'extended_stats#{self.id}'
             agg_data = response['aggregations'][agg_key]
         _min, _max = agg_data['min'], agg_data['max']
+
         # Calculate correct interval to get the # of buckets we want
         if size == 1:
             interval = _max - _min

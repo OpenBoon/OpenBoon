@@ -10,7 +10,8 @@ from wallet.utils import convert_json_to_base64
 
 
 class TestFieldUtility:
-    field_service = FieldUtility()
+
+    field_utility = FieldUtility()
 
     @pytest.fixture
     def mapping_response(self):
@@ -399,26 +400,51 @@ class TestFieldUtility:
                 'page': {'from': 0, 'size': 50, 'disabled': False, 'totalCount': 1}}
 
     @pytest.fixture
-    def MockZmlpClient(self, mapping_response, model_response):
+    def mock_zmlp_client(self, mapping_response, model_response):
         return Mock(get=Mock(return_value=mapping_response),
                     post=Mock(return_value=model_response))
 
-    def test_converts_similarity_blob(self, MockZmlpClient):
-        result = self.field_service.get_filters_from_field_types(MockZmlpClient)
+    def test_converts_similarity_blob(self, mock_zmlp_client):
+        result = self.field_utility.get_filter_map(mock_zmlp_client)
         assert result['analysis']['zvi-image-similarity'] == ['exists', 'similarity']
 
-    def test_zvi_label_detection(self, MockZmlpClient):
-        result = self.field_service.get_filters_from_field_types(MockZmlpClient)
+    def test_zvi_label_detection(self, mock_zmlp_client):
+        result = self.field_utility.get_filter_map(mock_zmlp_client)
         assert result['analysis']['zvi-label-detection'] == ['labelConfidence', 'exists']
 
-    def test_labels(self, MockZmlpClient):
-        result = self.field_service.get_filters_from_field_types(MockZmlpClient)
+    def test_labels(self, mock_zmlp_client):
+        result = self.field_utility.get_filter_map(mock_zmlp_client)
         assert result['labels'] == {'3500f84e-26f2-1505-9aa6-0242ac13000b': ['label']}
 
     def test_get_all_model_ids_no_models(self):
         client = Mock(post=Mock(return_value={'list': []}))
-        result = self.field_service._get_all_model_ids(client)
+        result = self.field_utility._get_all_model_ids(client)
         assert result == []
+
+    @pytest.mark.parametrize('attr,expected', [
+        ('analysis.zvi-face-detection', 'prediction'),
+        ('analysis.zvi-image-similarity', 'similarity'),
+        ('analysis.zvi-text-detection', 'text_content'),
+        ('aux', 'object'),
+        ('media.timeCreated', 'date'),
+        ('source.checksum', 'long'),
+        ('source.extension', 'keyword'),
+        ('labels.3500f84e-26f2-1505-9aa6-0242ac13000b', 'label')
+    ])
+    def test_get_attribute_field_type(self, attr, expected, mock_zmlp_client):
+        result = self.field_utility.get_attribute_field_type(attr, mock_zmlp_client)
+        assert result == expected
+
+    def test_get_attribute_field_type_nonexistant_attr(self, mock_zmlp_client):
+        with pytest.raises(ParseError) as e:
+            self.field_utility.get_attribute_field_type('howdy', mock_zmlp_client)
+        assert e.value.detail[0] == 'Given attribute could not be found in field mapping.'
+
+    def test_get_attribute_field_type_non_leaf_attr(self, mock_zmlp_client):
+        with pytest.raises(ParseError) as e:
+            self.field_utility.get_attribute_field_type('source', mock_zmlp_client)
+        assert e.value.detail[0] == ('Attribute given is not a valid '
+                                     'filterable or visualizable field.')
 
 
 class TestFilterBoy:

@@ -15,7 +15,7 @@ DATE_FILTERS = [ExistsFilter.type, DateFilter.type]
 LABEL_FILTERS = [LabelFilter.type]
 
 
-TYPE_FIELD_MAPPING = {
+FIELD_TYPE_FILTER_MAPPING = {
     'integer': NUMBER_FILTERS,
     'keyword': KEYWORD_FILTERS,
     'text': TEXT_FILTERS,
