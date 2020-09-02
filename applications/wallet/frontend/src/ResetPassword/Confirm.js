@@ -5,6 +5,7 @@ import { spacing, typography } from '../Styles'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
+import FlashMessageErrors from '../FlashMessage/Errors'
 
 import { onConfirm } from './helpers'
 
@@ -34,6 +35,11 @@ const ResetPasswordConfirm = ({ uid, token }) => {
       >
         Enter New Password
       </h3>
+
+      <FlashMessageErrors
+        errors={state.errors}
+        styles={{ paddingBottom: spacing.comfy }}
+      />
 
       <Input
         autoFocus

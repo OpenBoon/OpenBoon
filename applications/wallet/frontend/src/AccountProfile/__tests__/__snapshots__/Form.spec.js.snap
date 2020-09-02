@@ -265,6 +265,10 @@ Array [
   outline: #73b61c;
 }
 
+.emotion-1:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-1:focus {
   color: #000000;
   background-color: #ffffff;
@@ -510,6 +514,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {

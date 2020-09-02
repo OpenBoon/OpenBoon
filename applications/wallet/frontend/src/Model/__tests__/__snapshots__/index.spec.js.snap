@@ -45,6 +45,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -118,6 +119,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-1 a {
@@ -482,6 +484,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -555,6 +558,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-1 a {
@@ -993,6 +997,10 @@ Array [
 .emotion-1:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-1:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-1:focus {

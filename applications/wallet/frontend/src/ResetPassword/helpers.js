@@ -1,9 +1,9 @@
 import Router from 'next/router'
 
-import { getCsrfToken } from '../Fetch/helpers'
+import { getCsrfToken, parseResponse } from '../Fetch/helpers'
 
 export const onRequest = async ({ dispatch, state: { email } }) => {
-  dispatch({ isLoading: true })
+  dispatch({ isLoading: true, errors: {} })
 
   const csrftoken = getCsrfToken()
 
@@ -14,6 +14,7 @@ export const onRequest = async ({ dispatch, state: { email } }) => {
         'Content-Type': 'application/json;charset=UTF-8',
         'X-CSRFToken': csrftoken,
       },
+
       body: JSON.stringify({
         email,
       }),
@@ -23,7 +24,9 @@ export const onRequest = async ({ dispatch, state: { email } }) => {
 
     Router.push('/?action=password-reset-request-success', '/')
   } catch (response) {
-    dispatch({ isLoading: false, error: 'Error. Please try again.' })
+    const errors = await parseResponse({ response })
+
+    dispatch({ isLoading: false, errors })
   }
 }
 
@@ -33,7 +36,7 @@ export const onConfirm = async ({
   uid,
   token,
 }) => {
-  dispatch({ isLoading: true })
+  dispatch({ isLoading: true, errors: {} })
 
   const csrftoken = getCsrfToken()
 
@@ -56,13 +59,8 @@ export const onConfirm = async ({
 
     Router.push('/?action=password-reset-update-success', '/')
   } catch (response) {
-    const errors = await response.json()
+    const errors = await parseResponse({ response })
 
-    const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
-      acc[errorKey] = errors[errorKey].join(' ')
-      return acc
-    }, {})
-
-    dispatch({ isLoading: false, errors: parsedErrors })
+    dispatch({ isLoading: false, errors })
   }
 }

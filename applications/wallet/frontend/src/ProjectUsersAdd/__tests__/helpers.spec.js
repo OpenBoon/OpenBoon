@@ -56,7 +56,7 @@ describe('<ProjectUsersAdd /> helpers', () => {
       })
     })
 
-    it('should error', async () => {
+    it('should handle errors', async () => {
       const mockFn = jest.fn()
 
       fetch.mockRejectOnce({

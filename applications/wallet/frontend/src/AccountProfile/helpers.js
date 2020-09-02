@@ -1,12 +1,12 @@
 import { mutate } from 'swr'
 
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, parseResponse } from '../Fetch/helpers'
 
 export const onSubmit = async ({
   dispatch,
   state: { firstName, lastName },
 }) => {
-  dispatch({ isLoading: true })
+  dispatch({ isLoading: true, errors: {} })
 
   try {
     await fetcher(`/api/v1/me/`, {
@@ -23,13 +23,8 @@ export const onSubmit = async ({
 
     mutate('/api/v1/me/', (user) => ({ ...user, firstName, lastName }), false)
   } catch (response) {
-    const errors = await response.json()
-    const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
-      acc[errorKey] = errors[errorKey].join(' ')
+    const errors = await parseResponse({ response })
 
-      return acc
-    }, {})
-
-    dispatch({ success: false, isLoading: false, errors: parsedErrors })
+    dispatch({ success: false, isLoading: false, errors })
   }
 }

@@ -2,7 +2,12 @@ import Router from 'next/router'
 
 import { colors } from '../Styles'
 
-import { fetcher, revalidate, getQueryString } from '../Fetch/helpers'
+import {
+  fetcher,
+  revalidate,
+  getQueryString,
+  parseResponse,
+} from '../Fetch/helpers'
 
 export const FILE_TYPES = [
   {
@@ -34,7 +39,7 @@ export const onSubmit = async ({
   projectId,
   state: { name, uri, credentials, source, fileTypes, modules },
 }) => {
-  dispatch({ isLoading: true })
+  dispatch({ isLoading: true, errors: {} })
 
   const parsedCredentials = Object.keys(credentials[source]).reduce(
     (acc, credential) => {
@@ -79,22 +84,8 @@ export const onSubmit = async ({
       `/${projectId}/data-sources`,
     )
   } catch (response) {
-    try {
-      const errors = await response.json()
+    const errors = await parseResponse({ response })
 
-      const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
-        acc[errorKey] = errors[errorKey].join(' ')
-        return acc
-      }, {})
-
-      dispatch({ isLoading: false, errors: parsedErrors })
-
-      window.scrollTo(0, 0)
-    } catch (error) {
-      dispatch({
-        isLoading: false,
-        errors: { global: 'Something went wrong. Please try again.' },
-      })
-    }
+    dispatch({ isLoading: false, errors })
   }
 }

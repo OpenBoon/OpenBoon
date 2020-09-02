@@ -6,7 +6,7 @@ import { spacing } from '../Styles'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
@@ -24,7 +24,7 @@ const INITIAL_STATE = {
   succeeded: [],
   failed: [],
   isLoading: false,
-  errors: { global: '' },
+  errors: {},
 }
 
 const reducer = (state, action) => ({ ...state, ...action })
@@ -53,20 +53,11 @@ const ProjectUsersAddForm = () => {
   }
 
   return (
-    <div>
-      {!!state.errors.global && (
-        <div
-          css={{
-            display: 'flex',
-            paddingTop: spacing.base,
-            paddingBottom: spacing.base,
-          }}
-        >
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-            {state.errors.global}
-          </FlashMessage>
-        </div>
-      )}
+    <>
+      <FlashMessageErrors
+        errors={state.errors}
+        styles={{ paddingTop: spacing.base, paddingBottom: spacing.base }}
+      />
 
       <SectionTitle>Add User(s) to Project</SectionTitle>
 
@@ -111,7 +102,7 @@ const ProjectUsersAddForm = () => {
           </Button>
         </ButtonGroup>
       </Form>
-    </div>
+    </>
   )
 }
 

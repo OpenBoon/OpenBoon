@@ -8,7 +8,7 @@ import { spacing } from '../Styles'
 import { useLocalStorageState } from '../LocalStorage/helpers'
 import Form from '../Form'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import Select from '../Select'
 import Combobox from '../Combobox'
 
@@ -50,15 +50,11 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
 
   return (
     <div css={{ padding: spacing.normal }}>
-      {state.errors.global && (
-        <div css={{ paddingBottom: spacing.normal }}>
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-            {state.errors.global}
-          </FlashMessage>
-        </div>
-      )}
-
       <Form style={{ width: '100%', padding: 0 }}>
+        <FlashMessageErrors
+          errors={state.errors}
+          styles={{ paddingTop: spacing.base, paddingBottom: spacing.comfy }}
+        />
         <Select
           key={`model${state.reloadKey}`}
           label="Model"

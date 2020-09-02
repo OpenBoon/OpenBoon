@@ -2,7 +2,10 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
+import { spacing } from '../Styles'
+
 import Form from '../Form'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
@@ -51,6 +54,10 @@ const ApiKeysAddForm = () => {
 
   return (
     <Form>
+      <FlashMessageErrors
+        errors={state.errors}
+        styles={{ marginTop: -spacing.base, paddingBottom: spacing.normal }}
+      />
       <Input
         autoFocus
         id="name"
