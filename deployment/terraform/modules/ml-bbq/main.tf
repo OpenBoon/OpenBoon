@@ -28,8 +28,7 @@ resource "kubernetes_deployment" "ml-bbq" {
       }
       spec {
         node_selector = {
-          type      = "analyst"
-          namespace = var.namespace
+          type = "analyst"
         }
         image_pull_secrets {
           name = var.image-pull-secret
@@ -58,7 +57,7 @@ resource "kubernetes_deployment" "ml-bbq" {
           image_pull_policy = "Always"
           volume_mount {
             mount_path = "/var/run/docker.sock"
-            name = "dockersock"
+            name       = "dockersock"
           }
           volume_mount {
             name       = "dockerhubcreds"
@@ -141,7 +140,7 @@ resource "kubernetes_service" "ml-bbq" {
     port {
       name     = "8282-to-8282-tcp"
       protocol = "TCP"
-      port = "8282"
+      port     = "8282"
     }
     selector = {
       app = "ml-bbq"
