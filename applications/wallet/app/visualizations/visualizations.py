@@ -37,7 +37,7 @@ class BaseVisualization(object):
 
     @property
     def field_type(self):
-        """Returns the field type fot he attribute associated with this visualization."""
+        """Returns the field type for the attribute associated with this visualization."""
         if self._field_type is None:
             attribute = self.data.get('attribute')
             self._field_type = self.field_utility.get_attribute_field_type(attribute,
