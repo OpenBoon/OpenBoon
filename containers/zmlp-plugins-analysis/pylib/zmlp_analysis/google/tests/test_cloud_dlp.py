@@ -20,7 +20,7 @@ class MockDlpServiceClient:
         location = types.Location(content_locations=[content_location])
         infotype = types.InfoType(name='DATE')
         finding = types.Finding(info_type=infotype, quote='June 28,1993',
-                                    location=location, likelihood=5)
+                                location=location, likelihood=5)
         result = types.InspectResult(findings=[finding, finding, finding, finding, finding])
 
         response = types.InspectContentResponse(result=result)
