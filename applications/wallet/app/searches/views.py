@@ -77,7 +77,7 @@ class SearchViewSet(CreateModelMixin,
             fields = self.field_utility.get_filter_map(request.client)
         except ValueError:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            data={'detail': 'ZMLP did not return field mappings as expected.'})
+                            data={'detail': ['ZMLP did not return field mappings as expected.']})
         return Response(status=status.HTTP_200_OK, data=fields)
 
     @action(detail=False, methods=['get'])
