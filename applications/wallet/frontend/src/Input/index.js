@@ -18,6 +18,9 @@ const BASE = ({ isDisabled }) => ({
     border: constants.borders.keyOneMedium,
     outline: colors.key.one,
   },
+  '&:hover': {
+    border: constants.borders.medium.white,
+  },
 })
 
 const STYLES = {
@@ -115,6 +118,7 @@ const Input = ({
             css={{
               color: colors.signal.warning.base,
               fontStyle: typography.style.italic,
+              whiteSpace: 'pre-line',
             }}
           >
             {errorMessage}

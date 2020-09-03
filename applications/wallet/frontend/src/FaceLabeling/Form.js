@@ -4,7 +4,7 @@ import useSWR from 'swr'
 
 import { colors, spacing } from '../Styles'
 
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import Form from '../Form'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import Combobox from '../Combobox'
@@ -17,7 +17,7 @@ const INITIAL_STATE = ({ labels }) => ({
   labels,
   isChanged: false,
   isLoading: false,
-  errors: { labels: {}, global: '' },
+  errors: { labels: {} },
 })
 
 const reducer = (state, action) => ({ ...state, ...action })
@@ -41,13 +41,15 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
 
   return (
     <>
-      {state.errors.global && (
-        <div css={{ padding: spacing.normal, paddingTop: 0 }}>
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-            {state.errors.global}
-          </FlashMessage>
-        </div>
-      )}
+      <FlashMessageErrors
+        errors={state.errors}
+        styles={{
+          paddingTop: spacing.base,
+          paddingLeft: spacing.normal,
+          paddingRight: spacing.normal,
+          paddingBottom: spacing.comfy,
+        }}
+      />
       <Form
         style={{
           padding: 0,
@@ -131,7 +133,6 @@ const FaceLabelingForm = ({ projectId, assetId, predictions }) => {
                 assetId,
                 labels: state.labels,
                 predictions,
-                errors: state.errors,
                 dispatch,
               })
             }}

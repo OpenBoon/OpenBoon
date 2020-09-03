@@ -14,71 +14,69 @@ const ModelLabelsMenu = ({ projectId, modelId, label, revalidate }) => {
   const [isDeleting, setIsDeleting] = useState(false)
 
   return (
-    <Menu open="left" button={ButtonActions}>
-      {({ onClick }) => (
-        <div>
-          <ul>
-            <li>
-              <Button
-                variant={VARIANTS.MENU_ITEM}
-                onClick={() => {
-                  Router.push(
-                    `/[projectId]/models/[modelId]?edit=${label}`,
-                    `/${projectId}/models/${modelId}`,
-                  )
-                }}
-                isDisabled={false}
-              >
-                Edit
-              </Button>
-            </li>
-            <li>
-              <>
+    <>
+      <Menu open="left" button={ButtonActions}>
+        {({ onBlur, onClick }) => (
+          <div>
+            <ul>
+              <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
                   onClick={() => {
+                    Router.push(
+                      `/[projectId]/models/[modelId]?edit=${label}`,
+                      `/${projectId}/models/${modelId}`,
+                    )
+                  }}
+                >
+                  Edit
+                </Button>
+              </li>
+              <li>
+                <Button
+                  variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
+                  onClick={() => {
+                    onClick()
                     setDeleteModalOpen(true)
                   }}
-                  isDisabled={false}
                 >
                   Delete
                 </Button>
-                {isDeleteModalOpen && (
-                  <Modal
-                    title="Delete Label"
-                    message="Deleting this label cannot be undone."
-                    action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
-                    onCancel={() => {
-                      setDeleteModalOpen(false)
+              </li>
+            </ul>
+          </div>
+        )}
+      </Menu>
+      {isDeleteModalOpen && (
+        <Modal
+          title="Delete Label"
+          message="Deleting this label cannot be undone."
+          action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
+          onCancel={() => {
+            setDeleteModalOpen(false)
+          }}
+          onConfirm={async () => {
+            setIsDeleting(true)
 
-                      onClick()
-                    }}
-                    onConfirm={async () => {
-                      setIsDeleting(true)
+            await fetcher(
+              `/api/v1/projects/${projectId}/models/${modelId}/destroy_label/`,
+              {
+                method: 'DELETE',
+                body: JSON.stringify({ label }),
+              },
+            )
 
-                      await fetcher(
-                        `/api/v1/projects/${projectId}/models/${modelId}/destroy_label/`,
-                        {
-                          method: 'DELETE',
-                          body: JSON.stringify({ label }),
-                        },
-                      )
+            await revalidate()
 
-                      await revalidate()
-
-                      Router.push(
-                        '/[projectId]/models/[modelId]?action=delete-label-success',
-                        `/${projectId}/models/${modelId}`,
-                      )
-                    }}
-                  />
-                )}
-              </>
-            </li>
-          </ul>
-        </div>
+            Router.push(
+              '/[projectId]/models/[modelId]?action=delete-label-success',
+              `/${projectId}/models/${modelId}`,
+            )
+          }}
+        />
       )}
-    </Menu>
+    </>
   )
 }
 

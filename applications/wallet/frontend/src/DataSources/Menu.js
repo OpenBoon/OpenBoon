@@ -15,90 +15,96 @@ const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
   const [isDeleting, setIsDeleting] = useState(false)
 
   return (
-    <Menu open="left" button={ButtonActions}>
-      {({ onClick }) => (
-        <div>
-          <ul>
-            <li>
-              <Button
-                variant={VARIANTS.MENU_ITEM}
-                onClick={async () => {
-                  onClick()
-
-                  const {
-                    jobId,
-                  } = await fetcher(
-                    `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/scan/`,
-                    { method: 'POST' },
-                  )
-
-                  const queryString = getQueryString({
-                    action: 'scan-datasource-success',
-                    jobId,
-                  })
-
-                  Router.push(
-                    `/[projectId]/data-sources${queryString}`,
-                    `/${projectId}/data-sources`,
-                  )
-                }}
-                isDisabled={false}
-              >
-                Scan For New Files
-              </Button>
-            </li>
-            <li>
-              <Link
-                href="/[projectId]/data-sources/[dataSourceId]/edit"
-                as={`/${projectId}/data-sources/${dataSourceId}/edit`}
-                passHref
-              >
-                <Button variant={VARIANTS.MENU_ITEM}>Edit</Button>
-              </Link>
-            </li>
-            <li>
-              <>
+    <>
+      <Menu open="left" button={ButtonActions}>
+        {({ onBlur, onClick }) => (
+          <div>
+            <ul>
+              <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
+                  onClick={async () => {
+                    onClick()
+
+                    const {
+                      jobId,
+                    } = await fetcher(
+                      `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/scan/`,
+                      { method: 'POST' },
+                    )
+
+                    const queryString = getQueryString({
+                      action: 'scan-datasource-success',
+                      jobId,
+                    })
+
+                    Router.push(
+                      `/[projectId]/data-sources${queryString}`,
+                      `/${projectId}/data-sources`,
+                    )
+                  }}
+                >
+                  Scan For New Files
+                </Button>
+              </li>
+              <li>
+                <Link
+                  href="/[projectId]/data-sources/[dataSourceId]/edit"
+                  as={`/${projectId}/data-sources/${dataSourceId}/edit`}
+                  passHref
+                >
+                  <Button
+                    variant={VARIANTS.MENU_ITEM}
+                    onBlur={onBlur}
+                    onClick={onClick}
+                  >
+                    Edit
+                  </Button>
+                </Link>
+              </li>
+              <li>
+                <Button
+                  variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
                   onClick={() => {
+                    onClick()
                     setDeleteModalOpen(true)
                   }}
-                  isDisabled={false}
                 >
                   Delete
                 </Button>
-                {isDeleteModalOpen && (
-                  <Modal
-                    title="Delete Data Source"
-                    message="Deleting this data source cannot be undone."
-                    action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
-                    onCancel={() => {
-                      setDeleteModalOpen(false)
-                      onClick()
-                    }}
-                    onConfirm={async () => {
-                      setIsDeleting(true)
+              </li>
+            </ul>
+          </div>
+        )}
+      </Menu>
+      {isDeleteModalOpen && (
+        <Modal
+          title="Delete Data Source"
+          message="Deleting this data source cannot be undone."
+          action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
+          onCancel={() => {
+            setDeleteModalOpen(false)
+          }}
+          onConfirm={async () => {
+            setIsDeleting(true)
 
-                      await fetcher(
-                        `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/`,
-                        { method: 'DELETE' },
-                      )
+            await fetcher(
+              `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/`,
+              { method: 'DELETE' },
+            )
 
-                      await revalidate()
+            await revalidate()
 
-                      Router.push(
-                        '/[projectId]/data-sources?action=delete-datasource-success',
-                        `/${projectId}/data-sources`,
-                      )
-                    }}
-                  />
-                )}
-              </>
-            </li>
-          </ul>
-        </div>
+            Router.push(
+              '/[projectId]/data-sources?action=delete-datasource-success',
+              `/${projectId}/data-sources`,
+            )
+          }}
+        />
       )}
-    </Menu>
+    </>
   )
 }
 

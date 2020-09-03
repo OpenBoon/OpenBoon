@@ -45,6 +45,7 @@ exports[`<Login /> should render error 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -368,6 +369,7 @@ exports[`<Login /> should render error 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-10 a {
@@ -391,9 +393,14 @@ exports[`<Login /> should render error 1`] = `
   outline: #73b61c;
 }
 
+.emotion-14:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-16 {
   color: #c92300;
   font-style: italic;
+  white-space: pre-line;
 }
 
 <div
@@ -651,6 +658,7 @@ exports[`<Login /> should render password changed 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -826,6 +834,10 @@ exports[`<Login /> should render password changed 1`] = `
 .emotion-11:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-11:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-18 {
@@ -1184,6 +1196,7 @@ exports[`<Login /> should render properly 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -1359,6 +1372,10 @@ exports[`<Login /> should render properly 1`] = `
 .emotion-11:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-11:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-18 {
@@ -1717,6 +1734,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -1892,6 +1910,10 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 .emotion-11:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-11:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-18 {
@@ -2250,6 +2272,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -2425,6 +2448,10 @@ exports[`<Login /> should render properly on account creation success 1`] = `
 .emotion-11:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-11:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-18 {

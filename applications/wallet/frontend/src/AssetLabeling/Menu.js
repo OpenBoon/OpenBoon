@@ -44,7 +44,7 @@ const AssetLabelingMenu = ({
         button={ButtonActions}
         style={{ color: colors.structure.steel }}
       >
-        {({ onClick }) => (
+        {({ onBlur, onClick }) => (
           <ul>
             <li>
               <Link
@@ -52,7 +52,11 @@ const AssetLabelingMenu = ({
                 as={`/${projectId}/models/${modelId}`}
                 passHref
               >
-                <Button variant={VARIANTS.MENU_ITEM}>
+                <Button
+                  variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
+                  onClick={onClick}
+                >
                   View Model/Train & Apply
                 </Button>
               </Link>
@@ -60,6 +64,7 @@ const AssetLabelingMenu = ({
             <li>
               <Button
                 variant={VARIANTS.MENU_ITEM}
+                onBlur={onBlur}
                 onClick={() => {
                   onClick()
 
@@ -86,6 +91,7 @@ const AssetLabelingMenu = ({
             <li>
               <Button
                 variant={VARIANTS.MENU_ITEM}
+                onBlur={onBlur}
                 onClick={() => {
                   setLocalModelId({ value: modelId })
                   setLocalLabel({ value: label })
@@ -94,7 +100,6 @@ const AssetLabelingMenu = ({
 
                   onClick()
                 }}
-                isDisabled={false}
               >
                 Edit Label
               </Button>
@@ -102,12 +107,12 @@ const AssetLabelingMenu = ({
             <li>
               <Button
                 variant={VARIANTS.MENU_ITEM}
+                onBlur={onBlur}
                 onClick={() => {
                   setDeleteModalOpen(true)
 
                   onClick()
                 }}
-                isDisabled={false}
               >
                 Delete Label
               </Button>

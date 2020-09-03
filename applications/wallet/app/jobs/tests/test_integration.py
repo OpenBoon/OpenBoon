@@ -386,7 +386,7 @@ class TestTaskViewSet:
         api_client.force_login(zmlp_project_user)
         response = api_client.put(reverse('task-retry', kwargs={'project_pk': project.id, 'pk': 1}))
         assert response.status_code == 200
-        assert response.json()['detail'] == 'Task 1 has been successfully retried.'
+        assert response.json()['detail'] == ['Task 1 has been successfully retried.']
 
     def test_retry_failure(self, monkeypatch, api_client, zmlp_project_user, project):
         def mock_put_response(*args, **kwargs):

@@ -4,7 +4,7 @@ from uuid import uuid4
 
 import pytest
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse, HttpResponseForbidden, Http404
+from django.http import JsonResponse, Http404
 from django.test import RequestFactory, override_settings
 from django.urls import reverse
 from rest_framework import status
@@ -51,9 +51,7 @@ def test_project_view_user_does_not_belong_to_project(user, project):
     view.args = []
     view.kwargs = {'project_pk': project.id}
     response = view.dispatch(view.request, *view.args, **view.kwargs)
-    assert type(response) == HttpResponseForbidden
-    assert response.content == (b'user is not a member of the project '
-                                b'6abc33f0-4acf-4196-95ff-4cbb7f640a06')
+    assert response.status_code == 403
 
 
 @override_settings(PLATFORM='zvi')
@@ -271,7 +269,7 @@ class TestProjectUserGet:
         project_pk = zmlp_project_membership.project_id
         response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': project_pk}))
         assert response.status_code == status.HTTP_403_FORBIDDEN
-        assert response.json() == {'detail': 'You do not have permission to manage users.'}
+        assert response.json() == {'detail': ['You do not have permission to manage users.']}
 
     @override_settings(PLATFORM='zmlp')
     def test_paginated_list(self, project, zmlp_project_user, zmlp_project_membership,
@@ -338,7 +336,7 @@ class TestProjectUserGet:
                                                   'pk': 9999}))
         assert response.status_code == status.HTTP_404_NOT_FOUND
         content = response.json()
-        assert content['detail'] == 'Not found.'
+        assert content['detail'] == ['Not found.']
 
     @override_settings(PLATFORM='zmlp')
     def test_retrieve_non_member_user(self, project, zmlp_project_user, zmlp_project_membership,
@@ -351,7 +349,7 @@ class TestProjectUserGet:
                                                   'pk': user.id}))
         assert response.status_code == status.HTTP_404_NOT_FOUND
         content = response.json()
-        assert content['detail'] == 'Not found.'
+        assert content['detail'] == ['Not found.']
 
 
 class TestProjectUserDelete:
@@ -385,7 +383,7 @@ class TestProjectUserDelete:
                                                      'pk': user.id}))
         assert response.status_code == status.HTTP_404_NOT_FOUND
         content = response.json()
-        assert content['detail'] == 'Not found.'
+        assert content['detail'] == ['Not found.']
 
     @override_settings(PLATFORM='zmlp')
     def test_bad_apikey(self, project, zmlp_project_user, zmlp_project_membership,
@@ -428,7 +426,7 @@ class TestProjectUserDelete:
                                                      'pk': user.id}))
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         content = response.json()
-        assert content['detail'] == 'Error deleting apikey.'
+        assert content['detail'] == ['Error deleting apikey.']
 
 
 class TestProjectUserPost:
@@ -443,7 +441,7 @@ class TestProjectUserPost:
                                                      'pk': zmlp_project_user.id}))
         assert response.status_code == status.HTTP_403_FORBIDDEN
         content = response.json()
-        assert content['detail'] == 'Cannot remove yourself from a project.'
+        assert content['detail'] == ['Cannot remove yourself from a project.']
 
     @override_settings(PLATFORM='zmlp')
     def test_create(self, project, zmlp_project_user, zmlp_project_membership,
@@ -569,7 +567,7 @@ class TestProjectUserPost:
         assert content['failed'][0]['statusCode'] == status.HTTP_404_NOT_FOUND
         assert content['failed'][0]['email'] == 'tester3@fake.com'
         assert content['failed'][0]['roles'] == ['ML_Tools']
-        assert content['failed'][0]['body']['detail'] == 'No user with the given email.'
+        assert content['failed'][0]['body']['detail'] == ['No user with the given email.']
 
     @override_settings(PLATFORM='zmlp')
     def test_create_mixed_args(self, project, zmlp_project_user, zmlp_project_membership,
@@ -588,7 +586,7 @@ class TestProjectUserPost:
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Batch argument provided with single creation arguments.'
+        assert content['detail'] == ['Batch argument provided with single creation arguments.']
 
     @override_settings(PLATFORM='zmlp')
     def test_missing_email(self, project, zmlp_project_user, zmlp_project_membership, api_client):
@@ -598,7 +596,7 @@ class TestProjectUserPost:
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Email and Roles are required.'
+        assert content['detail'] == ['Email and Roles are required.']
 
     @override_settings(PLATFORM='zmlp')
     def test_missing_permissions(self, project, zmlp_project_user, zmlp_project_membership,
@@ -609,7 +607,7 @@ class TestProjectUserPost:
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Email and Roles are required.'
+        assert content['detail'] == ['Email and Roles are required.']
 
     @override_settings(PLATFORM='zmlp')
     def test_nonexistent_user(self, project, zmlp_project_user, zmlp_project_membership,
@@ -621,7 +619,7 @@ class TestProjectUserPost:
                                    body)  # noqa
         assert response.status_code == status.HTTP_404_NOT_FOUND
         content = response.json()
-        assert content['detail'] == 'No user with the given email.'
+        assert content['detail'] == ['No user with the given email.']
 
     @override_settings(PLATFORM='zmlp')
     def test_bad_zmlp_response(self, project, zmlp_project_user, monkeypatch, data,
@@ -638,7 +636,7 @@ class TestProjectUserPost:
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Invalid request.'
+        assert content['detail'] == ['Invalid request.']
 
 
 class TestProjectUserPut:
@@ -690,7 +688,7 @@ class TestProjectUserPut:
                                                   'pk': 1}), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Roles must be supplied.'
+        assert content['detail'] == ['Roles must be supplied.']
 
     @override_settings(PLATFORM='zmlp')
     def test_no_new_key(self, project, zmlp_project_user, monkeypatch, data,
@@ -722,7 +720,7 @@ class TestProjectUserPut:
                                                   'pk': new_user.id}), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Invalid request.'
+        assert content['detail'] == ['Invalid request.']
 
     @override_settings(PLATFORM='zmlp')
     def test_cannot_delete(self, project, zmlp_project_user, monkeypatch, data,
@@ -755,7 +753,7 @@ class TestProjectUserPut:
                                                   'pk': new_user.id}), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Invalid request.'
+        assert content['detail'] == ['Invalid request.']
 
     @override_settings(PLATFORM='zmlp')
     def test_server_error(self, project, zmlp_project_user, monkeypatch, data,
@@ -789,7 +787,7 @@ class TestProjectUserPut:
                                                   'pk': new_user.id}), body)
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         content = response.json()
-        assert content['detail'] == 'Error deleting apikey.'
+        assert content['detail'] == ['Error deleting apikey.']
 
     @override_settings(PLATFORM='zmlp')
     def test_inception_key(self, project, zmlp_project_user, monkeypatch, inception_key,
@@ -812,7 +810,7 @@ class TestProjectUserPut:
                                                   'pk': new_user.id}), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Unable to modify the admin key.'
+        assert content['detail'] == ['Unable to modify the admin key.']
 
 
 class TestMembershipModel:

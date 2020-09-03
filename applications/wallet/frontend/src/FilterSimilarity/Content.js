@@ -107,7 +107,8 @@ const FilterSimilarityContent = ({
             step={0.01}
             domain={[0.01, 1]}
             values={[value]}
-            isDisabled={!!isDisabled}
+            isMuted={!!isDisabled}
+            isDisabled={false}
             onUpdate={([newValue]) => {
               setValue(newValue)
             }}
@@ -123,7 +124,6 @@ const FilterSimilarityContent = ({
                     type,
                     attribute,
                     values: { ids, minScore: newMinScore },
-                    isDisabled,
                   },
                   filterIndex,
                 },

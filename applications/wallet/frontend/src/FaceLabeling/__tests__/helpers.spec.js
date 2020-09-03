@@ -12,12 +12,12 @@ const PREDICTIONS = [
     b64_image: 'data:image/png;base64',
   },
 ]
-const ERRORS = { labels: {}, global: '' }
+
+const noop = () => () => {}
 
 describe('<FaceLabelingForm /> helpers', () => {
   describe('onSave()', () => {
     it('should update the asset labels', async () => {
-      const mockDispatch = jest.fn()
       const mockMutate = jest.fn()
 
       require('swr').__setMockMutateFn(mockMutate)
@@ -29,8 +29,7 @@ describe('<FaceLabelingForm /> helpers', () => {
         assetId: ASSET_ID,
         labels: LABELS,
         predictions: PREDICTIONS,
-        errors: ERRORS,
-        dispatch: mockDispatch,
+        dispatch: noop,
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
@@ -47,11 +46,6 @@ describe('<FaceLabelingForm /> helpers', () => {
         },
         body:
           '{"labels":[{"bbox":[0.38,0.368,0.484,0.584],"simhash":"MNONPMMKPLRLONLJMRLNM","label":"face0"}]}',
-      })
-
-      expect(mockDispatch).toHaveBeenCalledWith({
-        isLoading: true,
-        errors: { ...ERRORS, global: '' },
       })
 
       expect(mockMutate).toHaveBeenCalledTimes(3)
@@ -63,7 +57,7 @@ describe('<FaceLabelingForm /> helpers', () => {
       fetch.mockRejectOnce({
         json: () =>
           Promise.resolve({
-            labels: [{ nonFieldErrors: ['Error message'] }],
+            global: ['Something went wrong. Please try again.'],
           }),
       })
 
@@ -72,7 +66,6 @@ describe('<FaceLabelingForm /> helpers', () => {
         assetId: ASSET_ID,
         labels: LABELS,
         predictions: PREDICTIONS,
-        errors: ERRORS,
         dispatch: mockDispatch,
       })
 
@@ -93,13 +86,11 @@ describe('<FaceLabelingForm /> helpers', () => {
       })
 
       expect(mockDispatch).toHaveBeenCalledWith({
-        isLoading: true,
-        errors: { ...ERRORS, global: '' },
-      })
-
-      expect(mockDispatch).toHaveBeenLastCalledWith({
         isLoading: false,
-        errors: { labels: {}, global: 'Error message' },
+        errors: {
+          labels: {},
+          global: 'Something went wrong. Please try again.',
+        },
       })
     })
 
@@ -115,7 +106,6 @@ describe('<FaceLabelingForm /> helpers', () => {
         assetId: ASSET_ID,
         labels: LABELS,
         predictions: PREDICTIONS,
-        errors: ERRORS,
         dispatch: mockDispatch,
       })
 
@@ -136,11 +126,6 @@ describe('<FaceLabelingForm /> helpers', () => {
       })
 
       expect(mockDispatch).toHaveBeenCalledWith({
-        isLoading: true,
-        errors: { ...ERRORS, global: '' },
-      })
-
-      expect(mockDispatch).toHaveBeenLastCalledWith({
         isLoading: false,
         errors: {
           labels: {},

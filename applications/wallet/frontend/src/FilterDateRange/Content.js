@@ -184,7 +184,8 @@ const FilterDateRangeContent = ({
             step={DAY_MS_VALUE}
             domain={sliderDomain}
             values={sliderValues}
-            isDisabled={!!isDisabled}
+            isMuted={!!isDisabled}
+            isDisabled={false}
             onUpdate={(values) => {
               const formattedValues = [new Date(values[0]), new Date(values[1])]
               setDateValues(formattedValues)

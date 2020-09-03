@@ -482,7 +482,7 @@ class TestFilterBoy:
         with pytest.raises(InvalidRequestError) as e:
             filter_boy.get_filter_from_request(request)
 
-        assert str(e.value.detail) == 'No `filter` query param included.'
+        assert str(e.value.detail['detail'][0]) == 'No `filter` query param included.'
 
     def test_get_filter_from_request_raises_parse_error(self, filter_boy):
         _filter = {'type': 'range', 'attribute': 'source.filesize'}
@@ -493,7 +493,7 @@ class TestFilterBoy:
         with pytest.raises(ParseError) as e:
             filter_boy.get_filter_from_request(request)
 
-        assert str(e.value.detail) == 'Unable to decode `filter` query param.'
+        assert str(e.value.detail['detail'][0]) == 'Unable to decode `filter` query param.'
 
     def test_get_filters_from_request(self, filter_boy):
         _filters = [{'type': 'range', 'attribute': 'source.filesize'},
@@ -516,7 +516,7 @@ class TestFilterBoy:
         with pytest.raises(ParseError) as e:
             filter_boy.get_filters_from_request(request)
 
-        assert str(e.value.detail) == 'Unable to decode `query` query param.'
+        assert str(e.value.detail['detail'][0]) == 'Unable to decode `query` query param.'
 
     def test_get_filter_from_json(self, filter_boy):
         raw_filter = {'type': 'range', 'attribute': 'source.filesize'}
@@ -529,14 +529,14 @@ class TestFilterBoy:
 
         with pytest.raises(ParseError) as e:
             filter_boy.get_filter_from_json(raw_filter)
-        assert str(e.value.detail) == 'Filter description is missing a `type`.'
+        assert str(e.value.detail['detail'][0]) == 'Filter description is missing a `type`.'
 
     def test_get_filter_from_json_raises_parse_error_unknown_type(self, filter_boy):
         raw_filter = {'type': 'foo', 'attribute': 'source.filesize'}
 
         with pytest.raises(ParseError) as e:
             filter_boy.get_filter_from_json(raw_filter)
-        assert str(e.value.detail) == 'Unsupported filter `foo` given.'
+        assert str(e.value.detail['detail'][0]) == 'Unsupported filter `foo` given.'
 
     def test_reduce_filters_to_query_single_filter(self, filter_boy):
         _filter = RangeFilter({'type': 'range',

@@ -57,7 +57,8 @@ exports[`<UserMenu /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-3:hover {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
@@ -205,7 +206,8 @@ exports[`<UserMenu /> should render properly 2`] = `
   color: #2e2e2e;
 }
 
-.emotion-3:hover {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
@@ -333,7 +335,8 @@ exports[`<UserMenu /> should render properly 2`] = `
   color: #2e2e2e;
 }
 
-.emotion-6:hover {
+.emotion-6:hover,
+.emotion-6.focus-visible:focus {
   background-color: #4a4a4a;
 }
 
@@ -496,7 +499,8 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-3:hover {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   background-color: #3b3b3b;
 }
 

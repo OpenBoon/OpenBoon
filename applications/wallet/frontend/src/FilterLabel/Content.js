@@ -3,13 +3,13 @@ import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
-import { colors, constants, spacing, typography } from '../Styles'
+import { colors, spacing } from '../Styles'
 
 import Select from '../Select'
-import Button, { VARIANTS } from '../Button'
 import FilterReset from '../Filter/Reset'
+import FilterBuckets from '../FilterBuckets'
 
-import { getNewFacets, dispatch, ACTIONS, encode } from '../Filters/helpers'
+import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 
 export const noop = () => {}
 
@@ -21,10 +21,8 @@ const FilterLabel = ({
   filter,
   filter: {
     type,
-    attribute,
     modelId,
     values: { labels = [], scope = 'all' },
-    isDisabled,
   },
   filterIndex,
 }) => {
@@ -41,8 +39,6 @@ const FilterLabel = ({
   const { results } = data || {}
 
   const { buckets = [] } = results || {}
-
-  const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
 
   return (
     <>
@@ -96,124 +92,16 @@ const FilterLabel = ({
 
       <div css={{ height: spacing.moderate }} />
 
-      <div
-        css={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          paddingBottom: spacing.base,
-          fontFamily: typography.family.condensed,
-          color: colors.structure.zinc,
-        }}
-      >
-        <div>LABEL</div>
-        <div>COUNT</div>
-      </div>
-
-      <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
-        {buckets.map(({ key, docCount = 0 }) => {
-          const offset = Math.ceil((docCount * 100) / largestCount)
-          const facetIndex = labels.findIndex((f) => f === key)
-          const isSelected = !!(facetIndex + 1)
-
-          return (
-            <li key={key}>
-              <Button
-                aria-label={key}
-                style={{
-                  width: '100%',
-                  flexDirection: 'row',
-                  backgroundColor: isSelected
-                    ? `${colors.signal.sky.base}${constants.opacity.hex22Pct}`
-                    : '',
-                  color: isSelected
-                    ? colors.structure.white
-                    : colors.structure.zinc,
-                  ':hover, &.focus-visible:focus': {
-                    backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
-                    color: colors.structure.white,
-                  },
-                }}
-                variant={VARIANTS.NEUTRAL}
-                onClick={(event) => {
-                  const hasModifier = event.metaKey || event.ctrlKey
-
-                  const newLabels = getNewFacets({
-                    facets: labels,
-                    isSelected,
-                    hasModifier,
-                    facetIndex,
-                    key,
-                  })
-
-                  const values =
-                    newLabels.length > 0
-                      ? { scope, labels: newLabels }
-                      : { scope, labels: [] }
-
-                  dispatch({
-                    type: ACTIONS.UPDATE_FILTER,
-                    payload: {
-                      pathname,
-                      projectId,
-                      assetId,
-                      filters,
-                      updatedFilter: {
-                        type,
-                        attribute,
-                        modelId,
-                        values,
-                      },
-                      filterIndex,
-                    },
-                  })
-                }}
-              >
-                <div css={{ width: '100%' }}>
-                  <div css={{ display: 'flex' }}>
-                    <div
-                      css={{
-                        width: `${offset}%`,
-                        borderTop:
-                          isDisabled || !isSelected
-                            ? constants.borders.large.steel
-                            : constants.borders.keyOneLarge,
-                      }}
-                    />
-                    <div
-                      css={{
-                        height: 4,
-                        width: `${100 - offset}%`,
-                        borderTop: constants.borders.regular.smoke,
-                      }}
-                    />
-                  </div>
-                  <div
-                    css={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      padding: spacing.base,
-                      fontFamily: typography.family.mono,
-                      fontSize: typography.size.small,
-                      lineHeight: typography.height.small,
-                    }}
-                  >
-                    <div
-                      css={{
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                      }}
-                    >
-                      {key}
-                    </div>
-                    <div css={{ paddingLeft: spacing.base }}>{docCount}</div>
-                  </div>
-                </div>
-              </Button>
-            </li>
-          )
-        })}
-      </ul>
+      <FilterBuckets
+        pathname={pathname}
+        projectId={projectId}
+        assetId={assetId}
+        filters={filters}
+        filter={filter}
+        filterIndex={filterIndex}
+        buckets={buckets}
+        searchString=""
+      />
     </>
   )
 }

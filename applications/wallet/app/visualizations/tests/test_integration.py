@@ -22,7 +22,7 @@ class TestVisualizationsViewSet:
         path = reverse('visualization-load', kwargs={'project_pk': project.id})
         response = api_client.get(path)
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
-        assert content['detail'] == 'No `visuals` query param included.'
+        assert content['detail'] == ['No `visuals` query param included.']
 
     def test_load_range(self, zmlp_project_membership, login, api_client, project, monkeypatch):
 

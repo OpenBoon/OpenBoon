@@ -40,7 +40,6 @@ const TaskErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
 
                     revalidate()
                   }}
-                  isDisabled={false}
                 >
                   Retry Task
                 </Button>

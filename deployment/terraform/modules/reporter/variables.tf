@@ -13,6 +13,9 @@ variable "image-pull-secret" {
 variable "zmlp-api-url" {
 }
 
+variable "monitor-password" {
+}
+
 variable "collection-interval" {
   default = "60"
 }

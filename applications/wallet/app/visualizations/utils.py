@@ -18,12 +18,12 @@ class VizBuddy(object):
         try:
             encoded_visualizations = request.query_params['visuals']
         except KeyError:
-            raise InvalidRequestError(detail='No `visuals` query param included.')
+            raise InvalidRequestError(detail={'detail': ['No `visuals` query param included.']})
 
         try:
             converted_visualizations = convert_base64_to_json(encoded_visualizations)
         except ValueError:
-            raise ParseError(detail='Unable to decode `visuals` query param.')
+            raise ParseError(detail={'detail': ['Unable to decode `visuals` query param.']})
 
         visualizations = []
         for raw_visual in converted_visualizations:
@@ -34,10 +34,10 @@ class VizBuddy(object):
         try:
             visualization_type = raw_visual['type']
         except KeyError:
-            raise ParseError(detail='Visualization description is missing a `type`.')
+            raise ParseError(detail={'detail': ['Visualization description is missing a `type`.']})
         except TypeError:
-            raise ParseError(detail='Visualization format incorrect, did not receive a '
-                                    'single JSON object for the Visualization.')
+            raise ParseError(detail={'detail': ['Visualization format incorrect, did not receive a '
+                                                'single JSON object for the Visualization.']})
 
         Visualization = None
         for klass in self.visualizations:
@@ -46,7 +46,8 @@ class VizBuddy(object):
                 continue
 
         if not Visualization:
-            raise ParseError(detail=f'Unsupported Visualization type `{visualization_type}` given.')
+            raise ParseError(detail={'detail': ['Unsupported Visualization type '
+                                                f'`{visualization_type}` given.']})
 
         return Visualization(raw_visual, request, self.filter_query)
 

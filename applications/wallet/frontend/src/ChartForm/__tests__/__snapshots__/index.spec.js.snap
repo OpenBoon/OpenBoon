@@ -91,6 +91,10 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   outline: #73b61c;
 }
 
+.emotion-4:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-4:focus {
   color: #000000;
   background-color: #ffffff;
@@ -443,6 +447,10 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   outline: #73b61c;
 }
 
+.emotion-4:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-4:focus {
   color: #000000;
   background-color: #ffffff;
@@ -793,6 +801,10 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
 .emotion-4:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-4:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-4:focus {

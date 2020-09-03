@@ -293,7 +293,7 @@ class SearchViewSet(CreateModelMixin,
             response = request.client.post(path, _filter.get_es_agg())
         except NotImplementedError:
             return Response(status=status.HTTP_400_BAD_REQUEST,
-                            data={'detail': 'This Filter does not support aggregations.'})
+                            data={'detail': ['This Filter does not support aggregations.']})
 
         return Response(status=status.HTTP_200_OK, data=_filter.serialize_agg_response(response))
 

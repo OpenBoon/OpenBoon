@@ -60,7 +60,6 @@ const TaskMenu = ({ revalidate }) => {
                       asPath,
                     )
                   }}
-                  isDisabled={false}
                 >
                   Retry
                 </Button>

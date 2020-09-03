@@ -117,7 +117,6 @@ const ModelDetails = () => {
           onClick={() => {
             setDeleteModalOpen(true)
           }}
-          isDisabled={false}
         >
           Delete
         </Button>

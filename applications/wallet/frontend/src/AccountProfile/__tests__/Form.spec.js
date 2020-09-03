@@ -43,6 +43,7 @@ describe('<AccountProfileForm />', () => {
         .props.onChange({ target: { value: 'Doe' } })
     })
 
+    // Mock Success
     fetch.mockResponseOnce(
       JSON.stringify({
         firstName: 'John',
@@ -50,7 +51,7 @@ describe('<AccountProfileForm />', () => {
       }),
     )
 
-    // Submit the form
+    // Click Submit
     await act(async () => {
       component.root
         .findByProps({ children: 'Save' })

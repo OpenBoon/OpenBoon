@@ -26,8 +26,7 @@ resource "google_container_node_pool" "analyst" {
       value  = "false"
     }
     labels = {
-      type      = "analyst"
-      namespace = var.namespace
+      type = "analyst"
     }
   }
   lifecycle {
@@ -74,8 +73,7 @@ resource "kubernetes_deployment" "analyst" {
       }
       spec {
         node_selector = {
-          type      = "analyst"
-          namespace = var.namespace
+          type = "analyst"
         }
         image_pull_secrets {
           name = var.image-pull-secret
@@ -189,7 +187,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
       type = "External"
       external {
         metric {
-          name = "custom.googleapis.com|zmlp|total-pending-tasks"
+          name = "custom.googleapis.com|zmlp|analyst-scale-ratio"
           selector {}
         }
         target {
