@@ -14,6 +14,8 @@ import Combobox from '../Combobox'
 
 import { onSubmit, getSubmitText, getOptions } from './helpers'
 
+import AssetLabelingShortcuts from './Shortcuts'
+
 const INITIAL_STATE = {
   success: false,
   isLoading: false,
@@ -50,6 +52,14 @@ const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
 
   return (
     <div css={{ padding: spacing.normal }}>
+      <AssetLabelingShortcuts
+        dispatch={dispatch}
+        state={state}
+        labels={labels}
+        projectId={projectId}
+        assetId={assetId}
+      />
+
       <Form style={{ width: '100%', padding: 0 }}>
         <FlashMessageErrors
           errors={state.errors}
