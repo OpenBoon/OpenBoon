@@ -135,6 +135,15 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
         )
     }
 
+    private fun deleteTaskDependency(projectId: UUID) {
+        jdbc.update(
+            "DELETE FROM depend " +
+                "WHERE pk_job_depend_on IN (SELECT pk_job FROM job WHERE pk_project = ?) " +
+                "OR pk_job_depend_er IN (SELECT pk_job FROM job WHERE pk_project = ?)",
+            projectId, projectId
+        )
+    }
+
     private fun deleteJobStatByProject(projectId: UUID) {
         jdbc.update(
             "DELETE FROM job_stat where pk_job in " +
@@ -175,6 +184,7 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
         deleteXCredentialsDatasourceByProject(projectId)
         deleteXCredentialsJob(projectId)
 
+        deleteTaskDependency(projectId)
         deleteJobStatByProject(projectId)
         deleteTaskByProject(projectId)
         deleteTaskErrorByProject(projectId)
