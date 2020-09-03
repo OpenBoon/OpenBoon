@@ -44,7 +44,7 @@ class CloudDLPDetectEntities(AssetProcessor):
         inspect_config = {
             "info_types": info_types,
             "custom_info_types": [],
-            "min_likelihood": google.cloud.dlp_v2.Likelihood.LIKELIHOOD_UNSPECIFIED,
+            "min_likelihood": "LIKELIHOOD_UNSPECIFIED",
             "include_quote": True,
             "limits": {"max_findings_per_request": 0},
         }
@@ -57,9 +57,9 @@ class CloudDLPDetectEntities(AssetProcessor):
         img = cv2.imread(p_path)
         item = {"byte_item": {"type": 1, "data": cv2.imencode('.jpg', img)[1].tobytes()}}
 
-        rsp = self.dlp_annotator.inspect_content(
-            request={"parent": parent, "inspect_config": inspect_config, "item": item}
-        )
+        rsp = self.dlp_annotator.inspect_content(parent=parent,
+                                                 inspect_config=inspect_config,
+                                                 item=item)
 
         findings = rsp.result.findings
         if not findings:

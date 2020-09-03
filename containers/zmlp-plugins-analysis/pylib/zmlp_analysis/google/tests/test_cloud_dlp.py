@@ -13,17 +13,17 @@ class MockDlpServiceClient:
     def __init__(self, *args, **kwargs):
         pass
 
-    def inspect_content(self, request={}):
-        bbox = types.dlp.BoundingBox(top=146, left=86, width=83, height=26)
-        image_location = types.dlp.ImageLocation(bounding_boxes=[bbox, bbox])
-        content_location = types.dlp.ContentLocation(image_location=image_location)
-        location = types.dlp.Location(content_locations=[content_location])
-        infotype = types.storage.InfoType(name='DATE')
-        finding = types.dlp.Finding(info_type=infotype, quote='June 28,1993',
+    def inspect_content(self, parent='', inspect_config='', item=''):
+        bbox = types.BoundingBox(top=146, left=86, width=83, height=26)
+        image_location = types.ImageLocation(bounding_boxes=[bbox, bbox])
+        content_location = types.ContentLocation(image_location=image_location)
+        location = types.Location(content_locations=[content_location])
+        infotype = types.InfoType(name='DATE')
+        finding = types.Finding(info_type=infotype, quote='June 28,1993',
                                     location=location, likelihood=5)
-        result = types.dlp.InspectResult(findings=[finding, finding, finding, finding, finding])
+        result = types.InspectResult(findings=[finding, finding, finding, finding, finding])
 
-        response = types.dlp.InspectContentResponse(result=result)
+        response = types.InspectContentResponse(result=result)
         return response
 
 
