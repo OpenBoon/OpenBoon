@@ -53,3 +53,13 @@ class CloudDLPDetectEntitiesTests(PluginUnitTestCase):
 
         assert analysis['count'] == 5
         assert analysis['predictions'][0]['bbox'] == [0.168, 0.428, 0.33, 0.504]
+        assert analysis['predictions'][0]['label'] == '06/28/1993'
+
+        name = 'BARBAZ Jr, Foo'
+        assert processor.sanitize_entity('PERSON_NAME', name) == 'Foo Barbaz Jr'
+
+        address = '666 Foobar Ave, BAZ'
+        assert processor.sanitize_entity('STREET_ADDRESS', address) == '666 Foobar Ave, Baz'
+
+        date = 'December 30, 2012'
+        assert processor.sanitize_entity('DATE', date) == '12/30/2012'
