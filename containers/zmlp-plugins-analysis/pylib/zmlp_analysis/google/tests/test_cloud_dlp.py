@@ -1,11 +1,10 @@
 from unittest.mock import patch
 
-from google.cloud.dlp_v2 import types
-
 from zmlp_analysis.google.cloud_dlp import CloudDLPDetectEntities
 from zmlp_analysis.google.cloud_vision import file_storage
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
+from google.cloud.dlp_v2 import types
 
 TOUCAN = zorroa_test_path("images/set01/toucan.jpg")
 
