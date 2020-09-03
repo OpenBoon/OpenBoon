@@ -10,7 +10,7 @@ from .gcp_client import initialize_gcp_client
 
 from nameparser import HumanName
 import dateparser
-from streetaddress import StreetAddressFormatter, StreetAddressParser
+from streetaddress import StreetAddressParser
 
 
 __all__ = [
