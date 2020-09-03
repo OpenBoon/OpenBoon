@@ -66,6 +66,7 @@ const boxShadows = {
 
 const constants = {
   borderRadius,
+  borderWidths,
   borders,
   opacity,
   boxShadows,
