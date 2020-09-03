@@ -8,6 +8,11 @@ from zmlpsdk.analysis import LabelDetectionAnalysis, Prediction
 from zmlpsdk.cloud import get_gcp_project_id
 from .gcp_client import initialize_gcp_client
 
+from nameparser import HumanName
+import dateparser
+from streetaddress import StreetAddressParser
+
+
 __all__ = [
     'CloudDLPDetectEntities'
 ]
@@ -39,7 +44,7 @@ class CloudDLPDetectEntities(AssetProcessor):
         inspect_config = {
             "info_types": info_types,
             "custom_info_types": [],
-            "min_likelihood": google.cloud.dlp_v2.Likelihood.LIKELIHOOD_UNSPECIFIED,
+            "min_likelihood": "LIKELIHOOD_UNSPECIFIED",
             "include_quote": True,
             "limits": {"max_findings_per_request": 0},
         }
@@ -52,9 +57,9 @@ class CloudDLPDetectEntities(AssetProcessor):
         img = cv2.imread(p_path)
         item = {"byte_item": {"type": 1, "data": cv2.imencode('.jpg', img)[1].tobytes()}}
 
-        rsp = self.dlp_annotator.inspect_content(
-            request={"parent": parent, "inspect_config": inspect_config, "item": item}
-        )
+        rsp = self.dlp_annotator.inspect_content(parent=parent,
+                                                 inspect_config=inspect_config,
+                                                 item=item)
 
         findings = rsp.result.findings
         if not findings:
@@ -62,6 +67,12 @@ class CloudDLPDetectEntities(AssetProcessor):
 
         analysis_dict = {}
         for f in findings:
+
+            # Sanitize value, skip if sanitized result is empty
+            value = self.sanitize_entity(f.info_type.name, f.quote)
+            if not value:
+                continue
+
             # There are multiple bounding boxes per finding, potentially.
             # Here we find the bounding box of all those bboxes.
             xmin = 10000
@@ -91,8 +102,8 @@ class CloudDLPDetectEntities(AssetProcessor):
 
             analysis_dict[f.info_type.name].add_prediction(
                 Prediction(
-                    f.quote,
-                    f.likelihood / 5.0,
+                    value,
+                    f.likelihood / 4.0,
                     bbox=rect
                 )
             )
@@ -117,3 +128,45 @@ class CloudDLPDetectEntities(AssetProcessor):
             return file_storage.localize_file(ocr_proxy[0])
         else:
             return get_proxy_level_path(asset, 3)
+
+    def sanitize_entity(self, info_type, value):
+        """
+        Sanitize values coming from DLP.
+
+        Args:
+            info_type (str): the type of the entity to sanitize.
+            value (str): the value of te entity.
+
+        Returns:
+            str: sanitized value, can be an empty string if entity was incomplete.
+        """
+        if info_type == 'PERSON_NAME':
+            name = HumanName(value)
+            name.capitalize(force=True)
+            name.title = ''
+            name.nickname = ''
+
+            value = name.full_name
+
+            if len(value.split(' ')) < 2:
+                value = ''
+
+        elif info_type == 'STREET_ADDRESS':
+            value = value.title()
+            addr_parser = StreetAddressParser()
+            addr = addr_parser.parse(value)
+            if not addr['house'] or not addr['street_name']:
+                value = ''
+
+        elif info_type == 'DATE':
+            parsers = [parser for parser in
+                       dateparser.conf.settings.PARSERS if parser != 'relative-time']
+            date = dateparser.parse(value,
+                                    settings={'STRICT_PARSING': True, 'PARSERS': parsers})
+
+            if date:
+                value = date.strftime("%m/%d/%Y")
+            else:
+                value = ''
+
+        return value

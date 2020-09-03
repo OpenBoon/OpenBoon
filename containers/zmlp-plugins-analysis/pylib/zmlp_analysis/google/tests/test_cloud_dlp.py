@@ -1,11 +1,10 @@
 from unittest.mock import patch
 
-from google.cloud.dlp_v2 import types
-
 from zmlp_analysis.google.cloud_dlp import CloudDLPDetectEntities
 from zmlp_analysis.google.cloud_vision import file_storage
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
+from google.cloud.dlp_v2 import types
 
 TOUCAN = zorroa_test_path("images/set01/toucan.jpg")
 
@@ -14,17 +13,17 @@ class MockDlpServiceClient:
     def __init__(self, *args, **kwargs):
         pass
 
-    def inspect_content(self, request={}):
-        bbox = types.dlp.BoundingBox(top=146, left=86, width=83, height=26)
-        image_location = types.dlp.ImageLocation(bounding_boxes=[bbox, bbox])
-        content_location = types.dlp.ContentLocation(image_location=image_location)
-        location = types.dlp.Location(content_locations=[content_location])
-        infotype = types.storage.InfoType(name='DATE')
-        finding = types.dlp.Finding(info_type=infotype, quote='June 28,1993',
-                                    location=location, likelihood=5)
-        result = types.dlp.InspectResult(findings=[finding, finding, finding, finding, finding])
+    def inspect_content(self, parent='', inspect_config='', item=''):
+        bbox = types.BoundingBox(top=146, left=86, width=83, height=26)
+        image_location = types.ImageLocation(bounding_boxes=[bbox, bbox])
+        content_location = types.ContentLocation(image_location=image_location)
+        location = types.Location(content_locations=[content_location])
+        infotype = types.InfoType(name='DATE')
+        finding = types.Finding(info_type=infotype, quote='June 28,1993',
+                                location=location, likelihood=5)
+        result = types.InspectResult(findings=[finding, finding, finding, finding, finding])
 
-        response = types.dlp.InspectContentResponse(result=result)
+        response = types.InspectContentResponse(result=result)
         return response
 
 
@@ -53,3 +52,13 @@ class CloudDLPDetectEntitiesTests(PluginUnitTestCase):
 
         assert analysis['count'] == 5
         assert analysis['predictions'][0]['bbox'] == [0.168, 0.428, 0.33, 0.504]
+        assert analysis['predictions'][0]['label'] == '06/28/1993'
+
+        name = 'BARBAZ Jr, Foo'
+        assert processor.sanitize_entity('PERSON_NAME', name) == 'Foo Barbaz Jr'
+
+        address = '666 Foobar Ave, BAZ'
+        assert processor.sanitize_entity('STREET_ADDRESS', address) == '666 Foobar Ave, Baz'
+
+        date = 'December 30, 2012'
+        assert processor.sanitize_entity('DATE', date) == '12/30/2012'
