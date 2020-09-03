@@ -101,10 +101,10 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
 
     private fun deleteXModuleDataSourceByProject(projectId: UUID) {
         jdbc.update(
-            "DELETE FROM x_module_data_source " +
-                "WHERE pk_module IN (SELECT pk_module FROK module WHERE pk_project = ?) " +
+            "DELETE FROM x_module_datasource " +
+                "WHERE pk_module IN (SELECT pk_module FROM module WHERE pk_project = ?) " +
                 "OR pk_datasource in (SELECT pk_datasource FROM datasource WHERE pk_project = ?)",
-            listOf(projectId, projectId)
+            projectId, projectId
         )
     }
 
@@ -113,7 +113,7 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
             "DELETE FROM x_module_pipeline " +
                 "WHERE pk_module IN (SELECT pk_module FROM module WHERE pk_project = ?) " +
                 "OR pk_pipeline IN (SELECT pk_pipeline FROM pipeline WHERE pk_project = ?)",
-            listOf(projectId, projectId)
+            projectId, projectId
         )
     }
 
@@ -122,7 +122,7 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
             "DELETE FROM x_credentials_datasource " +
                 "WHERE pk_credentials IN (SELECT pk_credentials FROM credentials WHERE pk_project = ?) " +
                 "OR pk_datasource IN (SELECT pk_datasource FROM datasource WHERE pk_project = ?)",
-            listOf(projectId, projectId)
+            projectId, projectId
         )
     }
 
@@ -131,7 +131,7 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
             "DELETE FROM x_credentials_job " +
                 "WHERE pk_credentials IN (SELECT pk_credentials FROM credentials WHERE pk_project = ?) " +
                 "OR pk_job IN (SELECT pk_job from JOB WHERE pk_project = ?)",
-            listOf(projectId, projectId)
+            projectId, projectId
         )
     }
 
