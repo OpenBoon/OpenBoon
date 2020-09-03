@@ -37,6 +37,7 @@ class TestFacetVisualization(TestBaseVisualizationTestCase):
 
     def test_get_agg(self, data):
         viz = self.Viz(data)
+        viz._field_type = 'keyword'
         agg = viz.get_es_agg()
         assert agg == {
             'terms': {
@@ -48,8 +49,8 @@ class TestFacetVisualization(TestBaseVisualizationTestCase):
         }
 
     def test_get_agg_label_confidence(self, data):
-        data['fieldType'] = 'labelConfidence'
         viz = self.Viz(data)
+        viz._field_type = 'prediction'
         agg = viz.get_es_agg()
         assert agg == {
             'terms': {
@@ -103,6 +104,7 @@ class TestHistogram(TestBaseVisualizationTestCase):
 
         client = ZmlpClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
         viz = self.Viz(data, Mock(client=client), query={})
+        viz._field_type = 'prediction'
         monkeypatch.setattr(ZmlpClient, 'post', mock_response)
         agg = viz.get_es_agg()
         assert agg == {
@@ -144,6 +146,7 @@ class TestHistogram(TestBaseVisualizationTestCase):
         client = ZmlpClient(apikey=convert_json_to_base64(zmlp_apikey), server='localhost')
         viz = self.Viz(data, Mock(client=client), query={})
         monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        viz._field_type = 'keyword'
         agg = viz.get_es_agg()
         assert agg == {
             'histogram': {

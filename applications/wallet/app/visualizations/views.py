@@ -59,7 +59,6 @@ class VisualizationViewSet(CamelCaseRendererMixin,
                     "type": "facet",
                     "id": "$uniqueIdentifier",
                     "attribute": "$attribute.dot.path",
-                    "fieldType": "facet"       # or "labelConfidence"
                     "options": {
                         "order": "desc",       # Sort order, desc or asc
                         "size": 10,            # Limit # of facets/buckets returned
@@ -67,16 +66,21 @@ class VisualizationViewSet(CamelCaseRendererMixin,
                     }
                 }
 
+                ** A Facet visualization can be created for any field with a type of "keyword" or
+                "prediction".
+
             Histogram:
                 {
                     "type": "histogram",
                     "id": "$uniqueIdentifier",
                     "attribute": "$attribute.dot.path",
-                    "fieldType": "range"        # or "labelConfidence"
                     "options": {
                         "size": 10              # Default size is 10 buckets
                     }
                 }
+
+                ** A Histogram visualization can be created for any field with a type of "integer",
+                "double", "float", "long", or "prediction".
 
         Args:
             request: The DRF request
