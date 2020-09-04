@@ -222,6 +222,10 @@ exports[`<Policies /> should render properly 1`] = `
 }
 
 .emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   padding-top: 32px;
 }
 
@@ -246,6 +250,7 @@ exports[`<Policies /> should render properly 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-2 a {

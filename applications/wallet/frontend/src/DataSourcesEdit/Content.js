@@ -22,7 +22,7 @@ const DataSourcesEditContent = () => {
     modules,
     credentials,
     isLoading: false,
-    errors: { global: '' },
+    errors: {},
   }
 
   return <DataSourcesEditForm initialState={initialState} />

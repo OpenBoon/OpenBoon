@@ -65,3 +65,33 @@ export const revalidate = async ({ key, paginated, from = 0, size = 20 }) => {
 
   return mutate(url, async () => fetcher(url))
 }
+
+export const parseResponse = async ({ response }) => {
+  window.scrollTo(0, 0)
+
+  try {
+    const errors = await response.json()
+
+    const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
+      if (errorKey === 'detail') {
+        acc.global = acc.global
+          ? [acc.global, errors.detail].join('\n')
+          : errors.detail.join('\n')
+      }
+
+      if (errorKey !== 'detail') {
+        acc[errorKey] = errors[errorKey].join('\n')
+      }
+
+      return acc
+    }, {})
+
+    if (!Object.keys(parsedErrors).length) {
+      return { global: 'Something went wrong. Please try again.' }
+    }
+
+    return parsedErrors
+  } catch (error) {
+    return { global: 'Something went wrong. Please try again.' }
+  }
+}

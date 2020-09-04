@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import { spacing, colors, typography } from '../Styles'
 
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import Button, { VARIANTS } from '../Button'
 
 import { onDelete } from './helpers'
@@ -19,11 +19,11 @@ const AssetDeleteConfirm = ({ filename, setShowDialogue }) => {
 
   return (
     <div css={{ padding: spacing.normal }}>
-      {error && (
-        <div css={{ paddingBottom: spacing.normal }}>
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>{error}</FlashMessage>
-        </div>
-      )}
+      <FlashMessageErrors
+        errors={{ global: error }}
+        styles={{ paddingTop: spacing.base, paddingBottom: spacing.normal }}
+      />
+
       <div
         css={{
           fontWeight: typography.weight.bold,

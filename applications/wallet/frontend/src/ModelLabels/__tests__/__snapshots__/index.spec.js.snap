@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ModelLabels /> should render properly with labels 1`] = `
-.emotion-13 {
+.emotion-23 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -38,7 +38,7 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
   font-weight: 400;
 }
 
-.emotion-12 {
+.emotion-22 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -65,7 +65,14 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-5 {
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-9 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -77,60 +84,53 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
   width: 1px;
 }
 
-.emotion-5:nth-of-type(1) {
+.emotion-9:nth-of-type(1) {
   width: 100%;
 }
 
-.emotion-5:not(:last-child) {
+.emotion-9:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-10 {
+.emotion-20 {
   height: auto;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 
-.emotion-10 tr {
+.emotion-20 tr {
   background-color: #252525;
 }
 
-.emotion-10 tr:nth-of-type(2n) {
+.emotion-20 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-10 tr:hover {
+.emotion-20 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-10 tr:hover .actions {
+.emotion-20 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-10 tr:hover td {
+.emotion-20 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-10 tr:hover td:first-of-type {
+.emotion-20 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-10 tr:hover td:last-of-type {
+.emotion-20 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-10 td {
-  max-width: calc(100vw / 2);
+.emotion-20 td {
+  max-width: calc(100vw / 5);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -141,20 +141,24 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
   border-right: 0;
 }
 
-.emotion-10 td:first-of-type {
+.emotion-20 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-10 td:last-of-type {
+.emotion-20 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-7 {
+.emotion-10 {
+  text-align: right;
+}
+
+.emotion-14 {
   position: relative;
 }
 
-.emotion-6 {
+.emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -189,22 +193,22 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
   margin: -6px;
 }
 
-.emotion-6:hover {
+.emotion-13:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-13[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
+.emotion-13:hover,
+.emotion-13.focus-visible:focus {
   color: #ffffff !important;
 }
 
 <div
-  className="emotion-13"
+  className="emotion-23"
 >
   <div
     className="emotion-1"
@@ -219,13 +223,13 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
     </h3>
   </div>
   <div
-    className="emotion-12"
+    className="emotion-22"
   >
     <div
-      className="emotion-11"
+      className="emotion-21"
     >
       <table
-        className="emotion-10"
+        className="emotion-20"
       >
         <thead>
           <tr>
@@ -237,13 +241,35 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
             <th
               className="emotion-2"
             >
-              Count
+              # Required
             </th>
             <th
-              className="emotion-5"
+              className="emotion-2"
+            >
+              # Labeled
+            </th>
+            <th
+              className="emotion-2"
+            >
+              # Remaining
+            </th>
+            <th
+              className="emotion-2"
             >
               <div
-                className="emotion-4"
+                className="emotion-6"
+              >
+                <svg
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </th>
+            <th
+              className="emotion-9"
+            >
+              <div
+                className="emotion-6"
               >
                 <svg
                   data-file-name="kebab.svg"
@@ -258,16 +284,29 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
             <td>
               cat
             </td>
-            <td>
+            <td
+              className="emotion-10"
+            >
+              10
+            </td>
+            <td
+              className="emotion-10"
+            >
               1
             </td>
+            <td
+              className="emotion-10"
+            >
+              9
+            </td>
+            <td />
             <td>
               <div
-                className="emotion-7"
+                className="emotion-14"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-6"
+                  className="actions emotion-13"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -284,16 +323,29 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
             <td>
               dog
             </td>
-            <td>
+            <td
+              className="emotion-10"
+            >
+              10
+            </td>
+            <td
+              className="emotion-10"
+            >
               1
             </td>
+            <td
+              className="emotion-10"
+            >
+              9
+            </td>
+            <td />
             <td>
               <div
-                className="emotion-7"
+                className="emotion-14"
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="actions emotion-6"
+                  className="actions emotion-13"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -320,7 +372,7 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
 `;
 
 exports[`<ModelLabels /> should render properly with no labels 1`] = `
-.emotion-12 {
+.emotion-16 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -357,14 +409,14 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
   font-weight: 400;
 }
 
-.emotion-11 {
+.emotion-15 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-10 {
+.emotion-14 {
   position: absolute;
   top: 0;
   left: 0;
@@ -372,45 +424,45 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
   bottom: 0;
 }
 
-.emotion-9 {
+.emotion-13 {
   height: 100%;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 
-.emotion-9 tr {
+.emotion-13 tr {
   background-color: #252525;
 }
 
-.emotion-9 tr:nth-of-type(2n) {
+.emotion-13 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-9 tr:hover {
+.emotion-13 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-9 tr:hover .actions {
+.emotion-13 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-9 tr:hover td {
+.emotion-13 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-9 tr:hover td:first-of-type {
+.emotion-13 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-9 tr:hover td:last-of-type {
+.emotion-13 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-9 td {
-  max-width: calc(100vw / 2);
+.emotion-13 td {
+  max-width: calc(100vw / 5);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -421,11 +473,11 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
   border-right: 0;
 }
 
-.emotion-9 td:first-of-type {
+.emotion-13 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-9 td:last-of-type {
+.emotion-13 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -450,7 +502,14 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-5 {
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-9 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -462,27 +521,20 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
   width: 1px;
 }
 
-.emotion-5:nth-of-type(1) {
+.emotion-9:nth-of-type(1) {
   width: 100%;
 }
 
-.emotion-5:not(:last-child) {
+.emotion-9:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-8 {
+.emotion-12 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-7 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -504,7 +556,7 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
   line-height: 19px;
 }
 
-.emotion-6 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -521,7 +573,7 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
 }
 
 <div
-  className="emotion-12"
+  className="emotion-16"
 >
   <div
     className="emotion-1"
@@ -536,13 +588,13 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
     </h3>
   </div>
   <div
-    className="emotion-11"
+    className="emotion-15"
   >
     <div
-      className="emotion-10"
+      className="emotion-14"
     >
       <table
-        className="emotion-9"
+        className="emotion-13"
       >
         <thead>
           <tr>
@@ -554,13 +606,35 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
             <th
               className="emotion-2"
             >
-              Count
+              # Required
             </th>
             <th
-              className="emotion-5"
+              className="emotion-2"
+            >
+              # Labeled
+            </th>
+            <th
+              className="emotion-2"
+            >
+              # Remaining
+            </th>
+            <th
+              className="emotion-2"
             >
               <div
-                className="emotion-4"
+                className="emotion-6"
+              >
+                <svg
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </th>
+            <th
+              className="emotion-9"
+            >
+              <div
+                className="emotion-6"
               >
                 <svg
                   data-file-name="kebab.svg"
@@ -572,16 +646,16 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
         </thead>
         <tbody>
           <tr
-            className="emotion-8"
+            className="emotion-12"
           >
             <td
-              colSpan={3}
+              colSpan={6}
             >
               <div
-                className="emotion-7"
+                className="emotion-11"
               >
                 <div
-                  className="emotion-6"
+                  className="emotion-10"
                 >
                   <svg
                     data-file-name="noJobs.svg"
@@ -597,6 +671,389 @@ exports[`<ModelLabels /> should render properly with no labels 1`] = `
         </tbody>
       </table>
     </div>
+  </div>
+</div>
+`;
+
+exports[`<ModelLabels /> should render properly with required assets per labels 1`] = `
+.emotion-23 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-0 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-22 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-2 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-2:nth-of-type(1) {
+  width: 100%;
+}
+
+.emotion-2:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-9 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-9:nth-of-type(1) {
+  width: 100%;
+}
+
+.emotion-9:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-20 {
+  height: auto;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+.emotion-20 tr {
+  background-color: #252525;
+}
+
+.emotion-20 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-20 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-20 tr:hover .actions {
+  color: #b3b3b3;
+}
+
+.emotion-20 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-20 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-20 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-20 td {
+  max-width: calc(100vw / 5);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-20 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-20 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-10 {
+  text-align: right;
+}
+
+.emotion-14 {
+  position: relative;
+}
+
+.emotion-13 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  color: #191919;
+  padding: 6px;
+  margin: -6px;
+}
+
+.emotion-13:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-13[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-13:hover,
+.emotion-13.focus-visible:focus {
+  color: #ffffff !important;
+}
+
+<div
+  className="emotion-23"
+>
+  <div
+    className="emotion-1"
+  >
+    <h3
+      className="emotion-0"
+    >
+      Number of 
+      Labels
+      : 
+      2
+    </h3>
+  </div>
+  <div
+    className="emotion-22"
+  >
+    <div
+      className="emotion-21"
+    >
+      <table
+        className="emotion-20"
+      >
+        <thead>
+          <tr>
+            <th
+              className="emotion-2"
+            >
+              Label
+            </th>
+            <th
+              className="emotion-2"
+            >
+              # Required
+            </th>
+            <th
+              className="emotion-2"
+            >
+              # Labeled
+            </th>
+            <th
+              className="emotion-2"
+            >
+              # Remaining
+            </th>
+            <th
+              className="emotion-2"
+            >
+              <div
+                className="emotion-6"
+              >
+                <svg
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </th>
+            <th
+              className="emotion-9"
+            >
+              <div
+                className="emotion-6"
+              >
+                <svg
+                  data-file-name="kebab.svg"
+                  height={20}
+                />
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              cat
+            </td>
+            <td
+              className="emotion-10"
+            >
+              1
+            </td>
+            <td
+              className="emotion-10"
+            >
+              1
+            </td>
+            <td
+              className="emotion-10"
+            >
+              -
+            </td>
+            <td>
+              <svg
+                color="#009f22"
+                data-file-name="checkmark.svg"
+                height={20}
+              />
+            </td>
+            <td>
+              <div
+                className="emotion-14"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="actions emotion-13"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="kebab.svg"
+                    height={20}
+                  />
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              dog
+            </td>
+            <td
+              className="emotion-10"
+            >
+              1
+            </td>
+            <td
+              className="emotion-10"
+            >
+              1
+            </td>
+            <td
+              className="emotion-10"
+            >
+              -
+            </td>
+            <td>
+              <svg
+                color="#009f22"
+                data-file-name="checkmark.svg"
+                height={20}
+              />
+            </td>
+            <td>
+              <div
+                className="emotion-14"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="actions emotion-13"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="kebab.svg"
+                    height={20}
+                  />
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div>
+     
+  </div>
+  <div>
+     
   </div>
 </div>
 `;

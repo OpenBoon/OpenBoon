@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-import { fetcher, revalidate } from '../Fetch/helpers'
+import { fetcher, revalidate, parseResponse } from '../Fetch/helpers'
 
 export const onSubmit = async ({
   projectId,
@@ -8,12 +8,12 @@ export const onSubmit = async ({
   dispatch,
   state: { label, newLabel },
 }) => {
-  try {
-    dispatch({
-      isLoading: true,
-      error: {},
-    })
+  dispatch({
+    isLoading: true,
+    errors: {},
+  })
 
+  try {
     await fetcher(
       `/api/v1/projects/${projectId}/models/${modelId}/rename_label/`,
       {
@@ -31,10 +31,9 @@ export const onSubmit = async ({
       '/[projectId]/models/[modelId]?action=edit-label-success',
       `/${projectId}/models/${modelId}`,
     )
-  } catch (error) {
-    dispatch({
-      isLoading: false,
-      errors: { global: 'Something went wrong. Please try again.' },
-    })
+  } catch (response) {
+    const errors = await parseResponse({ response })
+
+    dispatch({ isLoading: false, errors })
   }
 }

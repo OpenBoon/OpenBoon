@@ -44,7 +44,7 @@ const FilterLabelConfidenceSlider = ({
       <div
         css={{ paddingTop: spacing.base, fontStyle: typography.style.italic }}
       >
-        Confidence score:{' '}
+        Confidence Score:{' '}
         {formatRange({ min: rangeValues[0], max: rangeValues[1], labels })}
       </div>
 
@@ -66,7 +66,8 @@ const FilterLabelConfidenceSlider = ({
             step={0.01}
             domain={[0, 1]}
             values={rangeValues}
-            isDisabled={!!isDisabled || labels.length === 0}
+            isMuted={!!isDisabled}
+            isDisabled={labels.length === 0}
             onUpdate={(values) => setRangeValues(values)}
             onChange={([newMin, newMax]) =>
               dispatch({

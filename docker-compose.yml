@@ -184,6 +184,7 @@ services:
       SUPERADMIN: "true"
       ENVIRONMENT: localdev
       ENABLE_SENTRY: "false"
+      USE_MODEL_IDS_FOR_LABEL_FILTERS: "true"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/api/v1/health"]
       interval: 30s

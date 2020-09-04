@@ -11,7 +11,7 @@ google-cloud-speech
 google-cloud-videointelligence
 google-cloud-vision
 google-cloud-language
-google-cloud-dlp
+google-cloud-dlp==1.0.0
 google-cloud-pubsub
 googleapis-common-protos
 backoff
@@ -22,3 +22,6 @@ clarifai
 pytesseract
 facenet-pytorch
 boto3
+nameparser
+street-address
+dateparser

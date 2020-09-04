@@ -52,7 +52,7 @@ describe('<AccountProfile /> helpers', () => {
       })
     })
 
-    it('should display an error message', async () => {
+    it('should handle errors', async () => {
       const mockDispatch = jest.fn()
 
       fetch.mockRejectOnce({

@@ -73,17 +73,11 @@ class SearchViewSet(CreateModelMixin,
     @action(detail=False, methods=['get'])
     def fields(self, request, project_pk):
         """Returns all available fields in the ES index and their type."""
-        path = 'api/v3/fields/_mapping'
-        content = request.client.get(path)
-        indexes = list(content.keys())
-        if len(indexes) != 1:
+        try:
+            fields = self.field_utility.get_filter_map(request.client)
+        except ValueError:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            data={'detail': 'ZMLP did not return field mappings as expected.'})
-
-        index = indexes[0]
-        mappings = content[index]['mappings']
-        fields = self.field_utility.get_fields_from_mappings(mappings, request.client)
-
+                            data={'detail': ['ZMLP did not return field mappings as expected.']})
         return Response(status=status.HTTP_200_OK, data=fields)
 
     @action(detail=False, methods=['get'])
@@ -299,7 +293,7 @@ class SearchViewSet(CreateModelMixin,
             response = request.client.post(path, _filter.get_es_agg())
         except NotImplementedError:
             return Response(status=status.HTTP_400_BAD_REQUEST,
-                            data={'detail': 'This Filter does not support aggregations.'})
+                            data={'detail': ['This Filter does not support aggregations.']})
 
         return Response(status=status.HTTP_200_OK, data=_filter.serialize_agg_response(response))
 

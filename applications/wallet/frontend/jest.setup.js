@@ -38,3 +38,10 @@ beforeEach(() => {
     localStorage.clear()
   }
 })
+
+/**
+ * scrollTo
+ */
+if (typeof global.window !== 'undefined') {
+  global.window.scrollTo = () => {}
+}

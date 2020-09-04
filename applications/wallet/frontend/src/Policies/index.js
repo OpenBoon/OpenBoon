@@ -7,7 +7,7 @@ import { colors, constants, typography, spacing } from '../Styles'
 import LargeLogo from '../Icons/largeLogo.svg'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import FlashMessageErrors from '../FlashMessage/Errors'
 
 import { CURRENT_POLICIES_DATE, onSubmit } from './helpers'
 
@@ -19,7 +19,7 @@ const LOGO_WIDTH = 180
 const INITIAL_STATE = {
   isChecked: false,
   isLoading: false,
-  errors: { global: '' },
+  errors: {},
 }
 
 const reducer = (state, action) => ({ ...state, ...action })
@@ -69,13 +69,10 @@ const Policies = ({ userId }) => {
           Terms of Use and Privacy Policy
         </h3>
 
-        {state.errors.global && (
-          <div css={{ paddingTop: spacing.spacious }}>
-            <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-              {state.errors.global}
-            </FlashMessage>
-          </div>
-        )}
+        <FlashMessageErrors
+          errors={state.errors}
+          styles={{ paddingTop: spacing.spacious }}
+        />
 
         <div
           css={{

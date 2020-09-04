@@ -134,6 +134,7 @@ exports[`<FilterRangeContent /> should not crash if min equals max 1`] = `
           ]
         }
         isDisabled={false}
+        isMuted={false}
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.1}
@@ -319,6 +320,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
           ]
         }
         isDisabled={false}
+        isMuted={false}
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.1}
@@ -504,6 +506,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
           ]
         }
         isDisabled={false}
+        isMuted={false}
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.1}
@@ -689,6 +692,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
           ]
         }
         isDisabled={false}
+        isMuted={false}
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.1}
@@ -874,6 +878,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
           ]
         }
         isDisabled={false}
+        isMuted={false}
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.1}
@@ -1053,6 +1058,7 @@ exports[`<FilterRangeContent /> should render with no data 1`] = `
           ]
         }
         isDisabled={false}
+        isMuted={false}
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.1}

@@ -1,6 +1,11 @@
 import Router from 'next/router'
 
-import { fetcher, revalidate, getQueryString } from '../Fetch/helpers'
+import {
+  fetcher,
+  revalidate,
+  getQueryString,
+  parseResponse,
+} from '../Fetch/helpers'
 
 export const getInitialModules = ({
   initialState: { modules: existingModules },
@@ -27,7 +32,7 @@ export const onSubmit = async ({
   dataSourceId,
   state: { name, uri, fileTypes, modules, credentials },
 }) => {
-  dispatch({ isLoading: true })
+  dispatch({ isLoading: true, errors: {} })
 
   try {
     const { jobId } = await fetcher(
@@ -59,22 +64,8 @@ export const onSubmit = async ({
       `/${projectId}/data-sources`,
     )
   } catch (response) {
-    try {
-      const errors = await response.json()
+    const errors = await parseResponse({ response })
 
-      const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
-        acc[errorKey] = errors[errorKey].join(' ')
-        return acc
-      }, {})
-
-      dispatch({ isLoading: false, errors: parsedErrors })
-
-      window.scrollTo(0, 0)
-    } catch (error) {
-      dispatch({
-        isLoading: false,
-        errors: { global: 'Something went wrong. Please try again.' },
-      })
-    }
+    dispatch({ isLoading: false, errors })
   }
 }

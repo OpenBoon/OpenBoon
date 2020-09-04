@@ -390,7 +390,7 @@ exports[`<ChartHistogram /> should render properly 1`] = `
 }
 
 .emotion-24:hover,
-.emotion-24:focus {
+.emotion-24.focus-visible:focus {
   color: #ffffff;
 }
 
@@ -816,6 +816,10 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 .emotion-19:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-19:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-19:focus {
@@ -1361,7 +1365,7 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
 }
 
 .emotion-14:hover,
-.emotion-14:focus {
+.emotion-14.focus-visible:focus {
   color: #ffffff;
 }
 
