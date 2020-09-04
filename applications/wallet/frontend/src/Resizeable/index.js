@@ -107,15 +107,11 @@ const Resizeable = ({
   )
 }
 
-Resizeable.defaultProps = {
-  onMouseUp: undefined,
-}
-
 Resizeable.propTypes = {
   minSize: PropTypes.number.isRequired,
   storageName: PropTypes.string.isRequired,
   openToThe: PropTypes.oneOf(['left', 'right', 'top']).isRequired,
-  onMouseUp: PropTypes.func,
+  onMouseUp: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 }
 

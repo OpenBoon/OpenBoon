@@ -13,6 +13,8 @@ import TimelineDetections from './Detections'
 // TODO: make resizeable height
 const TIMELINE_HEIGHT = 300
 
+const MIN_HEIGHT = 300
+
 const Timeline = ({ videoRef }) => {
   return (
     <div
