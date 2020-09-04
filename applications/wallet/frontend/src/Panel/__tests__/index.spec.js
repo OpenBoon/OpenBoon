@@ -42,12 +42,12 @@ describe('<Panel />', () => {
 
     // Resize large
     act(() => {
-      component.root.findByType('Resizeable').props.onMouseUp({ width: 500 })
+      component.root.findByType('Resizeable').props.onMouseUp({ size: 500 })
     })
 
     // Resize to close
     act(() => {
-      component.root.findByType('Resizeable').props.onMouseUp({ width: 100 })
+      component.root.findByType('Resizeable').props.onMouseUp({ size: 100 })
     })
 
     // Open Panel with Icon

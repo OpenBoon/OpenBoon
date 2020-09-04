@@ -5,73 +5,99 @@ import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import { zIndex } from '../Styles'
 
-const DRAG_WIDTH = 4
+const DRAG_SIZE = 4
 
-let originX
+let originAxis
 
 const Resizeable = ({
-  minWidth,
+  minSize,
   storageName,
   openToThe,
   onMouseUp,
   children,
 }) => {
-  const [width, setWidth] = useLocalStorageState({
+  const [size, setSize] = useLocalStorageState({
     key: storageName,
-    initialValue: minWidth,
+    initialValue: minSize,
   })
 
-  const direction = openToThe === 'left' ? 1 : -1
+  const direction = openToThe === 'left' || openToThe === 'top' ? 1 : -1
 
   /* istanbul ignore next */
-  const handleMouseMove = ({ clientX }) => {
-    setWidth({ value: width - (clientX - originX) * direction })
+  const handleMouseMove = ({ clientX, clientY }) => {
+    const difference = (openToThe === 'top' ? clientY : clientX) - originAxis
+
+    setSize({ value: size - difference * direction })
   }
 
   /* istanbul ignore next */
-  const handleMouseUp = ({ clientX }) => {
-    const finalWidth = width - (clientX - originX) * direction
+  const handleMouseUp = ({ clientX, clientY }) => {
+    const difference = (openToThe === 'top' ? clientY : clientX) - originAxis
 
-    setWidth({ value: Math.max(minWidth, finalWidth) })
+    const finalSize = size - difference * direction
 
-    onMouseUp({ width: finalWidth })
+    setSize({ value: Math.max(minSize, finalSize) })
+
+    onMouseUp({ size: finalSize })
 
     window.removeEventListener('mousemove', handleMouseMove)
     window.removeEventListener('mouseup', handleMouseUp)
   }
 
   /* istanbul ignore next */
-  const handleMouseDown = ({ clientX }) => {
-    originX = clientX
+  const handleMouseDown = ({ clientX, clientY }) => {
+    originAxis = openToThe === 'top' ? clientY : clientX
 
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'stretch', flexWrap: 'nowrap' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: openToThe === 'top' ? 'column' : 'row',
+        alignItems: 'stretch',
+        flexWrap: 'nowrap',
+      }}
+    >
       {openToThe === 'left' && (
         <div
           css={{
             userSelect: 'none',
             cursor: 'col-resize',
-            width: DRAG_WIDTH,
-            marginLeft: -DRAG_WIDTH / 2,
-            marginRight: -DRAG_WIDTH / 2,
+            width: DRAG_SIZE,
+            marginLeft: -DRAG_SIZE / 2,
+            marginRight: -DRAG_SIZE / 2,
             zIndex: zIndex.layout.interactive,
           }}
           onMouseDown={handleMouseDown}
         />
       )}
-      <div css={{ flex: 1, width }}>{children}</div>
+      {openToThe === 'top' && (
+        <div
+          css={{
+            userSelect: 'none',
+            cursor: 'row-resize',
+            height: DRAG_SIZE,
+            marginTop: -DRAG_SIZE / 2,
+            marginBottom: -DRAG_SIZE / 2,
+            zIndex: zIndex.layout.interactive,
+          }}
+          onMouseDown={handleMouseDown}
+        />
+      )}
+      <div css={{ [openToThe === 'top' ? 'height' : 'width']: size }}>
+        {children}
+      </div>
       {openToThe === 'right' && (
         <div
           css={{
             userSelect: 'none',
             cursor: 'col-resize',
-            width: DRAG_WIDTH,
-            marginLeft: -DRAG_WIDTH / 2,
-            marginRight: -DRAG_WIDTH / 2,
+            width: DRAG_SIZE,
+            marginLeft: -DRAG_SIZE / 2,
+            marginRight: -DRAG_SIZE / 2,
             zIndex: zIndex.layout.interactive,
           }}
           onMouseDown={handleMouseDown}
@@ -81,11 +107,15 @@ const Resizeable = ({
   )
 }
 
+Resizeable.defaultProps = {
+  onMouseUp: undefined,
+}
+
 Resizeable.propTypes = {
-  minWidth: PropTypes.number.isRequired,
+  minSize: PropTypes.number.isRequired,
   storageName: PropTypes.string.isRequired,
-  openToThe: PropTypes.oneOf(['left', 'right']).isRequired,
-  onMouseUp: PropTypes.func.isRequired,
+  openToThe: PropTypes.oneOf(['left', 'right', 'top']).isRequired,
+  onMouseUp: PropTypes.func,
   children: PropTypes.node.isRequired,
 }
 

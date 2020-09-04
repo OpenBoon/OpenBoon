@@ -17,11 +17,11 @@ const PanelContent = ({
 }) => {
   return (
     <Resizeable
-      minWidth={MIN_WIDTH}
+      minSize={MIN_WIDTH}
       storageName={`${openToThe}OpeningPanelWidth`}
       openToThe={openToThe}
-      onMouseUp={({ width }) => {
-        if (width < MIN_WIDTH) setOpenPanel({ value: '' })
+      onMouseUp={({ size }) => {
+        if (size < MIN_WIDTH) setOpenPanel({ value: '' })
       }}
     >
       <div

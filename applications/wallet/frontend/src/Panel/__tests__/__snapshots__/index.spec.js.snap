@@ -359,7 +359,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   className="emotion-10"
 >
   <Resizeable
-    minWidth={400}
+    minSize={400}
     onMouseUp={[Function]}
     openToThe="left"
     storageName="leftOpeningPanelWidth"
@@ -782,7 +782,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
     />
   </div>
   <Resizeable
-    minWidth={400}
+    minSize={400}
     onMouseUp={[Function]}
     openToThe="right"
     storageName="rightOpeningPanelWidth"

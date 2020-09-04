@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { colors, spacing, constants } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
+import Resizeable from '../Resizeable'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
