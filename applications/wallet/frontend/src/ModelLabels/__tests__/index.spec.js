@@ -23,7 +23,9 @@ describe('<ModelLabels />', () => {
       },
     })
 
-    const component = TestRenderer.create(<ModelLabels />)
+    const component = TestRenderer.create(
+      <ModelLabels requiredAssetsPerLabel={10} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -40,7 +42,9 @@ describe('<ModelLabels />', () => {
 
     require('swr').__setMockUseSWRResponse({ data: modelLabels })
 
-    const component = TestRenderer.create(<ModelLabels />)
+    const component = TestRenderer.create(
+      <ModelLabels requiredAssetsPerLabel={10} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -60,5 +64,24 @@ describe('<ModelLabels />', () => {
       `/[projectId]/models/[modelId]?edit=${modelLabels.results[0].label}`,
       `/${PROJECT_ID}/models/${MODEL_ID}`,
     )
+  })
+
+  it('should render properly with required assets per labels', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: modelLabels })
+
+    const component = TestRenderer.create(
+      <ModelLabels requiredAssetsPerLabel={1} />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

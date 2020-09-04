@@ -1,5 +1,9 @@
 import PropTypes from 'prop-types'
 
+import { colors, constants } from '../Styles'
+
+import CheckmarkSvg from '../Icons/checkmark.svg'
+
 import ModelLabelsMenu from './Menu'
 
 const ModelLabelsRow = ({
@@ -7,12 +11,28 @@ const ModelLabelsRow = ({
   modelId,
   label: { label, count },
   revalidate,
+  requiredAssetsPerLabel,
 }) => {
   return (
     <tr>
       <td>{label}</td>
 
-      <td>{count}</td>
+      <td css={{ textAlign: 'right' }}>{requiredAssetsPerLabel}</td>
+
+      <td css={{ textAlign: 'right' }}>{count}</td>
+
+      <td css={{ textAlign: 'right' }}>
+        {count >= requiredAssetsPerLabel ? '-' : requiredAssetsPerLabel - count}
+      </td>
+
+      <td>
+        {count >= requiredAssetsPerLabel && (
+          <CheckmarkSvg
+            height={constants.icons.regular}
+            color={colors.signal.grass.base}
+          />
+        )}
+      </td>
 
       <td>
         <ModelLabelsMenu
@@ -34,6 +54,7 @@ ModelLabelsRow.propTypes = {
     count: PropTypes.number.isRequired,
   }).isRequired,
   revalidate: PropTypes.func.isRequired,
+  requiredAssetsPerLabel: PropTypes.number.isRequired,
 }
 
 export default ModelLabelsRow

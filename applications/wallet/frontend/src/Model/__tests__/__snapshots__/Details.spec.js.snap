@@ -9,7 +9,31 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
   line-height: 23px;
 }
 
-.emotion-7 {
+.emotion-5 {
+  padding-top: 8px;
+  font-style: italic;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-5 span {
+  padding-top: 4px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: #009f22;
+}
+
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -18,12 +42,12 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-7 button,
-.emotion-7 a {
+.emotion-9 button,
+.emotion-9 a {
   margin-right: 16px;
 }
 
-.emotion-4 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -49,32 +73,715 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: not-allowed;
+  cursor: pointer;
   color: #ffffff;
   background-color: transparent;
 }
 
-.emotion-4:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited {
   background-color: #808080;
 }
 
-.emotion-4:hover {
+.emotion-6:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   background-color: #808080;
+}
+
+.emotion-13 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-12 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-11 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-10 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-bottom: -16px;
+}
+
+.emotion-16 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-16:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-16[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited {
+  background-color: #808080;
+}
+
+.emotion-16:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-16[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-14 {
+  padding-right: 8px;
+}
+
+.emotion-17 {
+  width: 16px;
+}
+
+.emotion-38 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-22 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-37 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-36 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.emotion-35 {
+  height: 100%;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+.emotion-35 tr {
+  background-color: #252525;
+}
+
+.emotion-35 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-35 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-35 tr:hover .actions {
+  color: #b3b3b3;
+}
+
+.emotion-35 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-35 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-35 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-35 td {
+  max-width: calc(100vw / 5);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-35 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-35 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-24 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-24:nth-of-type(1) {
+  width: 100%;
+}
+
+.emotion-24:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-28 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-31 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-31:nth-of-type(1) {
+  width: 100%;
+}
+
+.emotion-31:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-34 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-33 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-32 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-0 a {
+  color: #c92300;
+}
+
+<div>
+  
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#c92300"
+        data-file-name="warning.svg"
+        height={20}
+      />
+      <div
+        className="emotion-0"
+        role="alert"
+      >
+        Something went wrong. Please try again.
+      </div>
+    </div>
+  </div>
+  <ul
+    className="emotion-3"
+  >
+    <li>
+      <strong>
+        Model Name:
+      </strong>
+       
+      console_face_recognition
+    </li>
+    <li>
+      <strong>
+        Model Type:
+      </strong>
+       
+      ZVI_FACE_RECOGNITION
+    </li>
+    <li>
+      <strong>
+        Module Name:
+      </strong>
+       
+      zvi-console_face_recognition-face-recognition
+    </li>
+  </ul>
+  <div
+    className="emotion-5"
+  >
+    <span
+      className="emotion-4"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+       
+      Ready to train
+    </span>
+  </div>
+  <div
+    className="emotion-9"
+  >
+    <button
+      className="emotion-6"
+      onClick={[Function]}
+      type="button"
+    >
+      Train
+    </button>
+    <button
+      className="emotion-6"
+      onClick={[Function]}
+      type="button"
+    >
+      Train & Apply
+    </button>
+    <button
+      className="emotion-6"
+      onClick={[Function]}
+      type="button"
+    >
+      Delete
+    </button>
+  </div>
+  <nav
+    className="emotion-13"
+  >
+    <ul
+      className="emotion-12"
+    >
+      <li
+        className="emotion-11"
+      >
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+          href="/[projectId]/models/[modelId]"
+          passHref={true}
+        >
+          <a
+            className="emotion-10"
+            onClick={[Function]}
+          >
+            View Labels
+          </a>
+        </Link>
+      </li>
+    </ul>
+  </nav>
+  <div
+    className="emotion-21"
+  >
+    <Link
+      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+      href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+      passHref={true}
+    >
+      <button
+        aria-label="Add Filter in Visualizer"
+        className="emotion-16"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-15"
+        >
+          <svg
+            className="emotion-14"
+            data-file-name="filter.svg"
+            height={20}
+          />
+          Add Filter in Visualizer
+        </div>
+      </button>
+    </Link>
+    <div
+      className="emotion-17"
+    />
+    <Link
+      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+      href="/[projectId]/visualizer"
+      passHref={true}
+    >
+      <button
+        aria-label="Add More Labels"
+        className="emotion-16"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-15"
+        >
+          <svg
+            className="emotion-14"
+            data-file-name="pen.svg"
+            height={20}
+          />
+          Add More Labels
+        </div>
+      </button>
+    </Link>
+  </div>
+  <div
+    className="emotion-38"
+  >
+    <div
+      className="emotion-23"
+    >
+      <h3
+        className="emotion-22"
+      >
+        Number of 
+        Labels
+        : 
+        0
+      </h3>
+    </div>
+    <div
+      className="emotion-37"
+    >
+      <div
+        className="emotion-36"
+      >
+        <table
+          className="emotion-35"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-24"
+              >
+                Label
+              </th>
+              <th
+                className="emotion-24"
+              >
+                # Required
+              </th>
+              <th
+                className="emotion-24"
+              >
+                # Labeled
+              </th>
+              <th
+                className="emotion-24"
+              >
+                # Remaining
+              </th>
+              <th
+                className="emotion-24"
+              >
+                <div
+                  className="emotion-28"
+                >
+                  <svg
+                    data-file-name="checkmark.svg"
+                    height={20}
+                  />
+                </div>
+              </th>
+              <th
+                className="emotion-31"
+              >
+                <div
+                  className="emotion-28"
+                >
+                  <svg
+                    data-file-name="kebab.svg"
+                    height={20}
+                  />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-34"
+            >
+              <td
+                colSpan={6}
+              >
+                <div
+                  className="emotion-33"
+                >
+                  <div
+                    className="emotion-32"
+                  >
+                    <svg
+                      data-file-name="noJobs.svg"
+                      width={200}
+                    />
+                    <div>
+                      There are currently no labels for this model.
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModelDetails /> should render properly with less than required labels for training 1`] = `
+.emotion-0 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 17px;
+  line-height: 23px;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+  font-style: italic;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-3 span {
+  padding-top: 4px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-7 button,
+.emotion-7 a {
+  margin-right: 16px;
 }
 
 .emotion-6 {
@@ -180,7 +887,7 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
   text-decoration: none;
 }
 
-.emotion-13 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -192,65 +899,349 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
   margin-bottom: -16px;
 }
 
-.emotion-2 {
+.emotion-14 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-bottom: 16px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   border-radius: 2px;
-  padding: 12px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
-.emotion-0 {
+.emotion-14:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-14[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-14,
+.emotion-14:hover,
+.emotion-14:visited {
+  background-color: #808080;
+}
+
+.emotion-14:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-14[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-12 {
+  padding-right: 8px;
+}
+
+.emotion-15 {
+  width: 16px;
+}
+
+.emotion-36 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-20 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-35 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding-left: 12px;
-  color: #191919;
-  font-weight: 500;
-  white-space: pre-line;
+  position: relative;
 }
 
-.emotion-0 a {
-  color: #c92300;
+.emotion-34 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.emotion-33 {
+  height: 100%;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+.emotion-33 tr {
+  background-color: #252525;
+}
+
+.emotion-33 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-33 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-33 tr:hover .actions {
+  color: #b3b3b3;
+}
+
+.emotion-33 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-33 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-33 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-33 td {
+  max-width: calc(100vw / 5);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-33 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-33 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-22 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-22:nth-of-type(1) {
+  width: 100%;
+}
+
+.emotion-22:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-29 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-29:nth-of-type(1) {
+  width: 100%;
+}
+
+.emotion-29:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-32 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-31 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-30 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.emotion-1 {
+  color: #ebb52e;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #808080;
+}
+
+.emotion-4:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-4[aria-disabled=true] {
+  background-color: #808080;
 }
 
 <div>
   
-  <div
-    className="emotion-2"
-  >
-    <div
-      className="emotion-1"
-    >
-      <svg
-        color="#c92300"
-        data-file-name="warning.svg"
-        height={20}
-      />
-      <div
-        className="emotion-0"
-        role="alert"
-      >
-        Something went wrong. Please try again.
-      </div>
-    </div>
-  </div>
+  
   <ul
-    className="emotion-3"
+    className="emotion-0"
   >
     <li>
       <strong>
@@ -274,6 +1265,31 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
       zvi-console_face_recognition-face-recognition
     </li>
   </ul>
+  <div
+    className="emotion-3"
+  >
+    <span
+      className="emotion-1"
+    >
+      1
+       more
+       
+      label is
+       required (min. =
+       
+      2
+       unique)
+    </span>
+    <span
+      className="emotion-1"
+    >
+      1
+       more assets need to be labeled (min. =
+       
+      10
+       of each label)
+    </span>
+  </div>
   <div
     className="emotion-7"
   >
@@ -326,7 +1342,7 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
     </ul>
   </nav>
   <div
-    className="emotion-13"
+    className="emotion-19"
   >
     <Link
       as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
@@ -334,13 +1350,903 @@ exports[`<ModelDetails /> should handle train errors properly 1`] = `
       passHref={true}
     >
       <button
-        className="emotion-6"
+        aria-label="Add Filter in Visualizer"
+        className="emotion-14"
         onClick={[Function]}
         type="button"
       >
-        Add Label Filter & View in Visualizer
+        <div
+          className="emotion-13"
+        >
+          <svg
+            className="emotion-12"
+            data-file-name="filter.svg"
+            height={20}
+          />
+          Add Filter in Visualizer
+        </div>
       </button>
     </Link>
+    <div
+      className="emotion-15"
+    />
+    <Link
+      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+      href="/[projectId]/visualizer"
+      passHref={true}
+    >
+      <button
+        aria-label="Add More Labels"
+        className="emotion-14"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-13"
+        >
+          <svg
+            className="emotion-12"
+            data-file-name="pen.svg"
+            height={20}
+          />
+          Add More Labels
+        </div>
+      </button>
+    </Link>
+  </div>
+  <div
+    className="emotion-36"
+  >
+    <div
+      className="emotion-21"
+    >
+      <h3
+        className="emotion-20"
+      >
+        Number of 
+        Labels
+        : 
+        0
+      </h3>
+    </div>
+    <div
+      className="emotion-35"
+    >
+      <div
+        className="emotion-34"
+      >
+        <table
+          className="emotion-33"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-22"
+              >
+                Label
+              </th>
+              <th
+                className="emotion-22"
+              >
+                # Required
+              </th>
+              <th
+                className="emotion-22"
+              >
+                # Labeled
+              </th>
+              <th
+                className="emotion-22"
+              >
+                # Remaining
+              </th>
+              <th
+                className="emotion-22"
+              >
+                <div
+                  className="emotion-26"
+                >
+                  <svg
+                    data-file-name="checkmark.svg"
+                    height={20}
+                  />
+                </div>
+              </th>
+              <th
+                className="emotion-29"
+              >
+                <div
+                  className="emotion-26"
+                >
+                  <svg
+                    data-file-name="kebab.svg"
+                    height={20}
+                  />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-32"
+            >
+              <td
+                colSpan={6}
+              >
+                <div
+                  className="emotion-31"
+                >
+                  <div
+                    className="emotion-30"
+                  >
+                    <svg
+                      data-file-name="noJobs.svg"
+                      width={200}
+                    />
+                    <div>
+                      There are currently no labels for this model.
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModelDetails /> should render properly with less than required labels for training 2`] = `
+.emotion-0 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 17px;
+  line-height: 23px;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+  font-style: italic;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-3 span {
+  padding-top: 4px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-7 button,
+.emotion-7 a {
+  margin-right: 16px;
+}
+
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited {
+  background-color: #808080;
+}
+
+.emotion-6:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-11 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-10 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-9 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-8 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-bottom: -16px;
+}
+
+.emotion-14 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-14:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-14[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-14,
+.emotion-14:hover,
+.emotion-14:visited {
+  background-color: #808080;
+}
+
+.emotion-14:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-14[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-12 {
+  padding-right: 8px;
+}
+
+.emotion-15 {
+  width: 16px;
+}
+
+.emotion-36 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-20 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-35 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-34 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.emotion-33 {
+  height: 100%;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+.emotion-33 tr {
+  background-color: #252525;
+}
+
+.emotion-33 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-33 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-33 tr:hover .actions {
+  color: #b3b3b3;
+}
+
+.emotion-33 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-33 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-33 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-33 td {
+  max-width: calc(100vw / 5);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-33 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-33 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-22 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: auto;
+}
+
+.emotion-22:nth-of-type(1) {
+  width: 100%;
+}
+
+.emotion-22:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-29 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+  width: 1px;
+}
+
+.emotion-29:nth-of-type(1) {
+  width: 100%;
+}
+
+.emotion-29:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-32 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-31 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-30 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.emotion-1 {
+  color: #ebb52e;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #808080;
+}
+
+.emotion-4:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div>
+  
+  
+  <ul
+    className="emotion-0"
+  >
+    <li>
+      <strong>
+        Model Name:
+      </strong>
+       
+      console_face_recognition
+    </li>
+    <li>
+      <strong>
+        Model Type:
+      </strong>
+       
+      ZVI_FACE_RECOGNITION
+    </li>
+    <li>
+      <strong>
+        Module Name:
+      </strong>
+       
+      zvi-console_face_recognition-face-recognition
+    </li>
+  </ul>
+  <div
+    className="emotion-3"
+  >
+    <span
+      className="emotion-1"
+    >
+      2
+       more
+       
+      labels are
+       required (min. =
+       
+      2
+       unique)
+    </span>
+    <span
+      className="emotion-1"
+    >
+      1
+       more assets need to be labeled (min. =
+       
+      10
+       of each label)
+    </span>
+  </div>
+  <div
+    className="emotion-7"
+  >
+    <button
+      aria-disabled={true}
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
+    >
+      Train
+    </button>
+    <button
+      aria-disabled={true}
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
+    >
+      Train & Apply
+    </button>
+    <button
+      className="emotion-6"
+      onClick={[Function]}
+      type="button"
+    >
+      Delete
+    </button>
+  </div>
+  <nav
+    className="emotion-11"
+  >
+    <ul
+      className="emotion-10"
+    >
+      <li
+        className="emotion-9"
+      >
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+          href="/[projectId]/models/[modelId]"
+          passHref={true}
+        >
+          <a
+            className="emotion-8"
+            onClick={[Function]}
+          >
+            View Labels
+          </a>
+        </Link>
+      </li>
+    </ul>
+  </nav>
+  <div
+    className="emotion-19"
+  >
+    <Link
+      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+      href="/[projectId]/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+      passHref={true}
+    >
+      <button
+        aria-label="Add Filter in Visualizer"
+        className="emotion-14"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-13"
+        >
+          <svg
+            className="emotion-12"
+            data-file-name="filter.svg"
+            height={20}
+          />
+          Add Filter in Visualizer
+        </div>
+      </button>
+    </Link>
+    <div
+      className="emotion-15"
+    />
+    <Link
+      as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+      href="/[projectId]/visualizer"
+      passHref={true}
+    >
+      <button
+        aria-label="Add More Labels"
+        className="emotion-14"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-13"
+        >
+          <svg
+            className="emotion-12"
+            data-file-name="pen.svg"
+            height={20}
+          />
+          Add More Labels
+        </div>
+      </button>
+    </Link>
+  </div>
+  <div
+    className="emotion-36"
+  >
+    <div
+      className="emotion-21"
+    >
+      <h3
+        className="emotion-20"
+      >
+        Number of 
+        Labels
+        : 
+        0
+      </h3>
+    </div>
+    <div
+      className="emotion-35"
+    >
+      <div
+        className="emotion-34"
+      >
+        <table
+          className="emotion-33"
+        >
+          <thead>
+            <tr>
+              <th
+                className="emotion-22"
+              >
+                Label
+              </th>
+              <th
+                className="emotion-22"
+              >
+                # Required
+              </th>
+              <th
+                className="emotion-22"
+              >
+                # Labeled
+              </th>
+              <th
+                className="emotion-22"
+              >
+                # Remaining
+              </th>
+              <th
+                className="emotion-22"
+              >
+                <div
+                  className="emotion-26"
+                >
+                  <svg
+                    data-file-name="checkmark.svg"
+                    height={20}
+                  />
+                </div>
+              </th>
+              <th
+                className="emotion-29"
+              >
+                <div
+                  className="emotion-26"
+                >
+                  <svg
+                    data-file-name="kebab.svg"
+                    height={20}
+                  />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="emotion-32"
+            >
+              <td
+                colSpan={6}
+              >
+                <div
+                  className="emotion-31"
+                >
+                  <div
+                    className="emotion-30"
+                  >
+                    <svg
+                      data-file-name="noJobs.svg"
+                      width={200}
+                    />
+                    <div>
+                      There are currently no labels for this model.
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 `;
