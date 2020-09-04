@@ -17,7 +17,7 @@ exports[`<Icons /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-115 {
+.emotion-121 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -63,7 +63,7 @@ exports[`<Icons /> should render properly 1`] = `
     Icons
   </h2>
   <div
-    className="emotion-115"
+    className="emotion-121"
   >
     <div
       className="emotion-2"
@@ -725,6 +725,22 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./pause.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="pause.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./paused.svg
       </div>
       <div
@@ -748,6 +764,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="pen.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./play.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="play.svg"
           height="100%"
           width="100%"
         />
@@ -828,6 +860,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="search.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./seek.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="seek.svg"
           height="100%"
           width="100%"
         />
