@@ -5,12 +5,14 @@ from rest_framework.exceptions import ParseError
 from wallet.exceptions import InvalidRequestError
 from wallet.utils import convert_base64_to_json
 from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
-                              LabelsAnalysisSchema, FIELD_TYPE_FILTER_MAPPING)
+                              LabelsAnalysisSchema, SingleLabelAnalysisSchema,
+                              FIELD_TYPE_FILTER_MAPPING)
 from searches.filters import (ExistsFilter, FacetFilter, RangeFilter, LabelConfidenceFilter,
                               TextContentFilter, SimilarityFilter, LabelFilter, DateFilter)
 
 
-ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema]
+ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema,
+                    SingleLabelAnalysisSchema]
 logger = logging.getLogger(__name__)
 
 
@@ -26,7 +28,10 @@ class FieldUtility(object):
         fields = {}
         for field in field_types:
             if 'fieldType' in field_types[field]:
-                fields[field] = FIELD_TYPE_FILTER_MAPPING[field_types[field]['fieldType']]
+                try:
+                    fields[field] = FIELD_TYPE_FILTER_MAPPING[field_types[field]['fieldType']]
+                except KeyError:
+                    fields[field] = FIELD_TYPE_FILTER_MAPPING['object']
             else:
                 fields.update({field: self._get_child_filters_from_field_types(field_types[field])})
         return fields
@@ -194,15 +199,15 @@ class FilterBuddy(object):
 
         filters = []
         for raw_filter in converted_query:
-            filters.append(self.get_filter_from_json(raw_filter, request.app))
+            filters.append(self.get_filter_from_json(raw_filter, request))
         return filters
 
-    def get_filter_from_json(self, raw_filter, zmlp_app=None):
+    def get_filter_from_json(self, raw_filter, request=None):
         """Converts a raw filter dict into native Wallet object.
 
         Args:
             raw_filter: The raw JSON data that represents the Filter
-            zmlp_app(ZmlpApp): ZMLP App object to pass to the instantiated filter.
+            request (Request): DRF Request object to pass to the instantiated filter.
 
         Returns:
             Filter: Wallet Filter representation of the raw data.
@@ -228,7 +233,7 @@ class FilterBuddy(object):
         if not Filter:
             raise ParseError(detail={'detail': [f'Unsupported filter `{filter_type}` given.']})
 
-        return Filter(raw_filter, zmlp_app)
+        return Filter(raw_filter, request)
 
     def reduce_filters_to_query(self, filters):
         """Takes a list of Filters and combines their separate queries into one."""
