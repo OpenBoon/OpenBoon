@@ -80,7 +80,7 @@ const ModelDetails = () => {
   })
 
   return (
-    <div>
+    <>
       {runningJobId && (
         <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.PROCESSING}>
@@ -322,7 +322,7 @@ const ModelDetails = () => {
       )}
 
       {!edit && <ModelLabels requiredAssetsPerLabel={requiredAssetsPerLabel} />}
-    </div>
+    </>
   )
 }
 
