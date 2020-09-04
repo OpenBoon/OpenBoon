@@ -89,7 +89,7 @@ const Models = () => {
         url={`/api/v1/projects/${projectId}/models/`}
         refreshKeys={[]}
         refreshButton={false}
-        columns={['Name', 'Type', 'Module', 'Ready']}
+        columns={['Name', 'Type', 'Module']}
         expandColumn={0}
         renderEmpty={<ModelsEmpty />}
         renderRow={({ result }) => (
