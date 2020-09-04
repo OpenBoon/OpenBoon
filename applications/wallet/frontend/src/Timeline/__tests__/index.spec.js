@@ -2,7 +2,10 @@ import TestRenderer from 'react-test-renderer'
 
 import Timeline from '..'
 
+const noop = () => {}
+
 jest.mock('../Controls', () => 'TimelineControls')
+jest.mock('../../Resizeable', () => 'Resizeable')
 jest.mock('../Captions', () => 'TimelineCaptions')
 jest.mock('../Playhead', () => 'TimelinePlayhead')
 jest.mock('../Detections', () => 'TimelineDetections')
@@ -37,6 +40,13 @@ describe('<Timeline />', () => {
       component.root
         .findByProps({ 'aria-label': 'Open Timeline' })
         .props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Resize to close
+    act(() => {
+      component.root.findByType('Resizeable').props.onMouseUp({ size: 100 })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
