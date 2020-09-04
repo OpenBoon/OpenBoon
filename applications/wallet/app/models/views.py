@@ -15,6 +15,37 @@ from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
 
+def get_model_type_restrictions(label_counts, min_concepts, min_examples):
+    if label_counts:
+        # Calculate number of missing labels
+        difference = min_concepts - len(label_counts)
+        if difference <= 0:
+            missing_label_count = 0
+        else:
+            missing_label_count = difference
+
+        # Calculate number of missing labels on assets
+        # Account for completely missing labels
+        missing_label_count_asset_total = missing_label_count * min_examples
+        # Account for labels that don't have the minimum amount of examples
+        label_sum = 0
+        for label in label_counts:
+            additional_labels_required = min_examples - label_counts[label]
+            if additional_labels_required > 0:
+                label_sum += additional_labels_required
+
+        missing_labels_on_assets = missing_label_count_asset_total + label_sum
+
+    else:
+        missing_label_count = min_concepts
+        missing_labels_on_assets = min_concepts * min_examples
+
+    return {'requiredLabels': min_concepts,
+            'missingLabels': missing_label_count,
+            'requiredAssetsPerLabel': min_examples,
+            'missingLabelsOnAssets': missing_labels_on_assets}
+
+
 def item_modifier(request, item):
     # Convert ready to unapplied changes
     ready = item['ready']
@@ -38,16 +69,12 @@ def detail_item_modifier(request, item):
     model_id = item['id']
     model_type_info = app.models.get_model_type_info(model_type)
     label_counts = app.models.get_label_counts(model_id)
-    if label_counts:
-        min_examples_satisfied = all([label_counts[label] >= model_type_info.min_examples for label in label_counts])  # noqa
-    else:
-        min_examples_satisfied = False
-    model_type_restrictions = {
-        'minConcepts': model_type_info.min_concepts,
-        'minConceptsSatisfied':  len(label_counts) >= model_type_info.min_concepts,
-        'minExamples': model_type_info.min_examples,
-        'minExamplesSatisfied': min_examples_satisfied}
-    item['modelTypeRestrictions'] = model_type_restrictions
+    min_examples = model_type_info.min_examples
+    min_concepts = model_type_info.min_concepts
+
+    item['modelTypeRestrictions'] = get_model_type_restrictions(label_counts,
+                                                                min_concepts,
+                                                                min_examples)
 
 
 class ModelViewSet(BaseProjectViewSet):
