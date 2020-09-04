@@ -6,7 +6,7 @@ from zmlp import ZmlpClient
 from zmlp.app import ModelApp, AssetApp
 from zmlp.entity import LabelScope
 
-from models.views import ModelViewSet
+from models.views import ModelViewSet, get_model_type_restrictions
 from wallet.tests.utils import check_response
 
 pytestmark = pytest.mark.django_db
@@ -17,6 +17,39 @@ def model_fields():
     return ['id', 'name', 'type', 'moduleName', 'fileId', 'trainingJobName',
             'unappliedChanges', 'deploySearch', 'timeCreated', 'timeModified', 'actorCreated',
             'actorModified', 'url']
+
+
+class TestGetModelTypeRestrictions:
+
+    def test_no_label_counts(self):
+        label_counts = {}
+        min_concepts = 5
+        min_examples = 10
+        result = get_model_type_restrictions(label_counts, min_concepts, min_examples)
+        assert result['missingLabels'] == 5
+        assert result['missingLabelsOnAssets'] == 50
+
+    def test_some_labels(self):
+        label_counts = {'one': 10,
+                        'two': 2}
+        min_concepts = 5
+        min_examples = 10
+        result = get_model_type_restrictions(label_counts, min_concepts, min_examples)
+        assert result['missingLabels'] == 3
+        assert result['missingLabelsOnAssets'] == 38
+
+    def test_my_spoon_is_too_big(self):
+        label_counts = {'one': 12,
+                        'two': 2,
+                        'three': 22,
+                        'four': 10,
+                        'five': 10,
+                        'six': 2}
+        min_concepts = 5
+        min_examples = 10
+        result = get_model_type_restrictions(label_counts, min_concepts, min_examples)
+        assert result['missingLabels'] == 0
+        assert result['missingLabelsOnAssets'] == 16
 
 
 class TestModelViewSetList:
@@ -71,8 +104,8 @@ class TestModelViewSetRetrieve:
         model_fields.extend(['runningJobId', 'modelTypeRestrictions'])
         assert set(model_fields) == set(content.keys())
         restrictions = content['modelTypeRestrictions']
-        assert restrictions['minConceptsSatisfied'] is True
-        assert restrictions['minExamplesSatisfied'] is False
+        assert restrictions['missingLabels'] == 0
+        assert restrictions['missingLabelsOnAssets'] == 1
 
 
 class TestModelViewSetDestroy:

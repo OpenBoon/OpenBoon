@@ -18,10 +18,10 @@ class ModelSerializer(serializers.Serializer):
 
 
 class ModelTypeRestrictionsSerializer(serializers.Serializer):
-    minConcepts = serializers.IntegerField()
-    minConceptsSatisfied = serializers.BooleanField()
-    minExamples = serializers.IntegerField()
-    minExamplesSatisfied = serializers.BooleanField()
+    requiredLabels = serializers.IntegerField()
+    missingLabels = serializers.IntegerField()
+    requiredAssetsPerLabel = serializers.IntegerField()
+    missingLabelsOnAssets = serializers.IntegerField()
 
 
 class ModelDetailSerializer(ModelSerializer):
