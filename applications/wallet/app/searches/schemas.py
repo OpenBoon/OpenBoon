@@ -30,6 +30,8 @@ FIELD_TYPE_FILTER_MAPPING = {
     'text_content': TEXT_CONTENT_FILTERS,
     'prediction': PREDICTION_FILTERS,
     'label': LABEL_FILTERS,
+    'single_label': PREDICTION_FILTERS,
+    'join': DEFAULT_FILTERS,
 }
 
 
@@ -63,17 +65,14 @@ class AbstractAnalysisSchema(object):
 
         return True
 
-    def get_representation(self):
-        """Returns the filterable fields with their appropriate filter list."""
+    def get_field_type_representation(self):
+        """Returns the field type for a given schema"""
         raise NotImplementedError()
 
 
 class SimilarityAnalysisSchema(AbstractAnalysisSchema):
 
     required_properties = ['type', 'simhash']
-
-    def get_representation(self):
-        return {f'{self.property_name}': SIMILARITY_FILTERS}
 
     def get_field_type_representation(self):
         return {f'{self.property_name}': {'fieldType': 'similarity'}}
@@ -83,9 +82,6 @@ class ContentAnalysisSchema(AbstractAnalysisSchema):
 
     required_properties = ['type', 'words', 'content']
 
-    def get_representation(self):
-        return {f'{self.property_name}': TEXT_CONTENT_FILTERS}
-
     def get_field_type_representation(self):
         return {f'{self.property_name}': {'fieldType': 'text_content'}}
 
@@ -94,8 +90,13 @@ class LabelsAnalysisSchema(AbstractAnalysisSchema):
 
     required_properties = ['type', 'predictions.label', 'predictions.score']
 
-    def get_representation(self):
-        return {f'{self.property_name}': PREDICTION_FILTERS}
-
     def get_field_type_representation(self):
         return {f'{self.property_name}': {'fieldType': 'prediction'}}
+
+
+class SingleLabelAnalysisSchema(AbstractAnalysisSchema):
+
+    required_properties = ['type', 'score', 'label']
+
+    def get_field_type_representation(self):
+        return {f'{self.property_name}': {'fieldType': 'single_label'}}
