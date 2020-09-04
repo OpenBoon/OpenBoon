@@ -121,8 +121,7 @@
       },
       "analysis": {
         "dynamic": true,
-        "properties": {
-        }
+        "properties": { }
       },
       "labels": {
         "dynamic": false,
@@ -406,6 +405,21 @@
           "mapping": {
             "type": "text",
             "analyzer": "default"
+          }
+        }
+      },
+      {
+        "default_string": {
+          "match": "*",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
           }
         }
       }
