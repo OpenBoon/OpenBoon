@@ -1,0 +1,5 @@
+if (ctx._source.containsKey("clip")) {
+    def clip = ctx._source.remove("clip");
+    ctx._source.media.pageNumber = clip.start.intValue();
+    ctx._source.media.pageStack = clip.sourceAssetId;
+}

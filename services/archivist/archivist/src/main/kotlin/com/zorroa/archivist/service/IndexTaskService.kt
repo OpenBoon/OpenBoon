@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexTask
 import com.zorroa.archivist.domain.IndexTaskState
@@ -24,9 +25,13 @@ import org.elasticsearch.common.xcontent.XContentBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.reindex.ReindexRequest
 import org.elasticsearch.index.reindex.RemoteInfo
+import org.elasticsearch.script.Script
+import org.elasticsearch.script.ScriptType
 import org.slf4j.LoggerFactory
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
+import java.io.BufferedReader
 import java.net.URI
 import java.util.Timer
 import java.util.UUID
@@ -49,6 +54,11 @@ interface IndexTaskService {
      * Migrate the specific project to a new index.
      */
     fun migrateProject(project: Project, spec: ProjectIndexMigrationSpec): IndexTask
+
+    /**
+     * Get a reindex script associated with an index version.
+     */
+    fun getReindexScript(route: IndexRoute): String?
 }
 
 @Service
@@ -88,6 +98,12 @@ class IndexTaskServiceImpl(
         )
     }
 
+    override fun getReindexScript(route: IndexRoute): String? {
+        val path = "db/migration/elasticsearch/${route.mapping}.v${route.majorVer}.painless"
+        val resource = ClassPathResource(path)
+        return resource?.inputStream.bufferedReader().use(BufferedReader::readText)
+    }
+
     override fun createIndexMigrationTask(spec: IndexToIndexMigrationSpec): IndexTask {
         val srcRoute = indexRouteDao.get(spec.srcIndexRouteId)
         val dstRoute = indexRouteDao.get(spec.dstIndexRouteId)
@@ -99,6 +115,12 @@ class IndexTaskServiceImpl(
             .setSourceQuery(QueryBuilders.matchAllQuery())
             .setDestIndex(dstRoute.indexName)
             .setSourceBatchSize(500)
+
+        if (dstRoute.majorVer > srcRoute.majorVer) {
+            getReindexScript(dstRoute)?.let {
+                req.script = Script(ScriptType.INLINE, "painless", it, mapOf())
+            }
+        }
 
         val uri = URI(srcRoute.clusterUrl)
 
@@ -147,6 +169,10 @@ class IndexTaskServiceImpl(
     override fun getEsTaskInfo(task: IndexTask): GetTaskResponse {
         val rest = indexRoutingService.getClusterRestClient(task.dstIndexRouteId ?: task.srcIndexRouteId)
         return rest.client.tasks().get(task.buildGetTaskRequest(), RequestOptions.DEFAULT).get()
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(IndexTaskServiceImpl::class.java)
     }
 }
 

@@ -1,5 +1,7 @@
 package com.zorroa.archivist.service
 
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetIdBuilder
@@ -13,7 +15,6 @@ import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchIndexFailure
 import com.zorroa.archivist.domain.BatchIndexResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
-import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.InternalTask
@@ -66,6 +67,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -90,6 +92,11 @@ interface AssetService {
      * Take a list of asset ids and return a set of valid ones.
      */
     fun getValidAssetIds(ids: Collection<String>): Set<String>
+
+    /**
+     * Return existing asset IDs by the path/page in the AssetSpec
+     */
+    fun getExistingAssetIds(specs: Collection<Asset>): Set<String>
 
     /**
      * Batch create a list of assets.  Creating adds a base asset with
@@ -162,7 +169,7 @@ interface AssetService {
      * @param newAsset The [Asset] we're creating
      * @param spec [AssetSpec] provided by the caller.
      */
-    fun deriveClip(newAsset: Asset, spec: AssetSpec): Clip
+    fun derivePage(newAsset: Asset, spec: AssetSpec)
 
     /**
      * Return true of the given asset would need reprocessing with the given Pipeline.
@@ -240,6 +247,35 @@ class AssetServiceImpl : AssetService {
         return result
     }
 
+    override fun getExistingAssetIds(specs: Collection<Asset>): Set<String> {
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newSearchRequest()
+        val bool = QueryBuilders.boolQuery()
+
+        specs.forEach {
+            val path = it.getAttr("source.path", String::class.java)
+            val subBool = QueryBuilders.boolQuery()
+            subBool.must(QueryBuilders.termQuery("source.path", path))
+
+            if (FileExtResolver.isMultiPage(FileUtils.extension(path))) {
+                val page = it.getAttr("media.pageNumber", Int::class.java)
+                subBool.must(QueryBuilders.termQuery("media.pageNumber", page))
+            }
+            bool.should(subBool)
+        }
+
+        req.source().size(specs.size)
+        req.source().query(bool)
+        req.source().fetchSource(false)
+
+        val result = mutableSetOf<String>()
+        val r = rest.client.search(req, RequestOptions.DEFAULT)
+        r.hits.forEach {
+            result.add(it.id)
+        }
+        return result
+    }
+
     override fun getAll(ids: Collection<String>): List<Asset> {
         val rest = indexRoutingService.getProjectRestClient()
         val req = rest.newSearchRequest()
@@ -266,12 +302,13 @@ class AssetServiceImpl : AssetService {
 
         for ((idx, mpfile) in req.files.withIndex()) {
             val spec = req.assets[idx]
-            val idgen = AssetIdBuilder(spec)
-                .checksum(mpfile.bytes)
-            val id = idgen.build()
+            // Have to make checksum before
+            spec.makeChecksum(mpfile.bytes)
+
+            val id = AssetIdBuilder(spec).build()
             val asset = assetSpecToAsset(id, spec)
             asset.setAttr("source.filesize", mpfile.size)
-            asset.setAttr("source.checksum", idgen.checksum)
+            asset.setAttr("source.checksum", spec.getChecksumValue())
 
             val locator = ProjectFileLocator(
                 ProjectStorageEntity.ASSETS, id, ProjectStorageCategory.SOURCE, mpfile.originalFilename
@@ -309,7 +346,7 @@ class AssetServiceImpl : AssetService {
             asset
         }
 
-        val existingAssetIds = getValidAssetIds(assetIds)
+        val existingAssetIds = getExistingAssetIds(assets)
         return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials)
     }
 
@@ -563,34 +600,48 @@ class AssetServiceImpl : AssetService {
         }
     }
 
-    override fun deriveClip(newAsset: Asset, spec: AssetSpec): Clip {
-
-        val clip = spec.clip ?: throw java.lang.IllegalArgumentException("Cannot derive a clip with a null clip")
-
-        // In this case we're deriving from another asset and a clip
-        // has to be set.
+    override fun derivePage(newAsset: Asset, spec: AssetSpec) {
         if (spec.uri.startsWith("asset:")) {
-            // Fetch the source asset and reset our source spec.uri
-            val clipSource = getAsset(spec.uri.substring(6))
-            clip.putInPile(clipSource.id)
-            spec.uri = clipSource.getAttr("source.path", String::class.java)
-                ?: throw IllegalArgumentException("The source asset for a clip cannot have a null URI")
+            spec.parentAsset = parentAssetCache.get(spec.uri.substring(6))
+        }
+
+        spec.parentAsset?.also { parentAsset ->
+            val realFilePath = parentAsset.getAttr("source.path", String::class.java)
+            spec.uri = realFilePath
+                ?: throw IllegalArgumentException("The source asset for page cannot have a null URI.")
+
+            // Not a multipage asset.
+            if (!FileExtResolver.isMultiPage(FileUtils.extension(realFilePath))) {
+                throw IllegalArgumentException("The source file does not support multiple pages.")
+            }
 
             // Copy over source files if any
-            val files = clipSource.getAttr("files", FileStorage.JSON_LIST_OF) ?: listOf()
+            val files = parentAsset.getAttr("files", FileStorage.JSON_LIST_OF) ?: listOf()
             val sourceFiles = files.let {
                 it.filter { file ->
                     file.category == ProjectStorageCategory.SOURCE
                 }
             }
+
+            if (parentAsset.attrExists("source.filesize")) {
+                newAsset.setAttr("source.filesize", parentAsset.getAttr("source.filesize"))
+            }
+
+            if (parentAsset.attrExists("source.checksum")) {
+                newAsset.setAttr("source.checksum", parentAsset.getAttr("source.checksum"))
+            }
+
             // Set the files property. The source files will reference the
             // original asset id.
             newAsset.setAttr("files", sourceFiles)
-        } else {
-            clip.putInPile(newAsset.id)
+            newAsset.setAttr("media.pageNumber", spec.getPageNumber())
+            newAsset.setAttr("media.pageStack", parentAsset.id)
+        } ?: run {
+            if (FileExtResolver.isMultiPage(FileUtils.extension(spec.getRealPath()))) {
+                newAsset.setAttr("media.pageNumber", spec.getPageNumber())
+                newAsset.setAttr("media.pageStack", AssetIdBuilder(spec.makePageOne()).build())
+            }
         }
-        newAsset.setAttr("clip", clip)
-        return clip
     }
 
     /**
@@ -683,9 +734,8 @@ class AssetServiceImpl : AssetService {
             asset.setAttr("system.timeModified", time)
             asset.setAttr("system.state", AssetState.Analyzed.toString())
         } else {
-            if (spec.clip != null) {
-                deriveClip(asset, spec)
-            }
+
+            derivePage(asset, spec)
 
             if (spec.label != null) {
                 if (!modelDao.existsByProjectIdAndId(projectId, spec.label.modelId)) {
@@ -734,19 +784,6 @@ class AssetServiceImpl : AssetService {
                 (asset.getAttr<String>("source.path"))
             )
             asset.setAttr("media.type", FileExtResolver.getType(ext))
-        }
-
-        // Got back a clip but it has no pile which means it's in its own pile.
-        // This happens during deep analysis when a file is being clipped, the first
-        // clip/page/scene will be augmented with clip start/stop points.
-        if (asset.attrExists("clip") && (
-            !asset.attrExists("clip.sourceAssetId") || !asset.attrExists("clip.pile")
-            )
-        ) {
-            val clip = asset.getAttr("clip", Clip::class.java)
-                ?: throw IllegalStateException("Invalid clip data for asset ${asset.id}")
-            clip.putInPile(asset.id)
-            asset.setAttr("clip", clip)
         }
 
         // Update various system properties.
@@ -878,6 +915,24 @@ class AssetServiceImpl : AssetService {
         }
         projectService.incrementQuotaCounters(counters)
     }
+
+    fun setParentAsset(spec: AssetSpec) {
+    }
+
+    /**
+     * A cache to store parent assets so we don't load them over and over again.
+     */
+    private val parentAssetCache = CacheBuilder.newBuilder()
+        .maximumSize(50)
+        .initialCapacity(10)
+        .concurrencyLevel(4)
+        .expireAfterWrite(5, TimeUnit.MINUTES)
+        .build(object : CacheLoader<String, Asset>() {
+            @Throws(Exception::class)
+            override fun load(assetId: String): Asset {
+                return getAsset(assetId)
+            }
+        })
 
     companion object {
 

@@ -99,6 +99,14 @@ object FileExtResolver {
         "vst"
     )
 
+    val multipage = setOf(
+        "exr",
+        "psd",
+        "tiff",
+        "tif",
+        "gif"
+    ).plus(doc)
+
     val all = doc.plus(video).plus(image).toList()
 
     val mediaTypes = mapOf(
@@ -107,6 +115,10 @@ object FileExtResolver {
         "rla" to "image/x-rla",
         "cin" to "image/x-cineon"
     )
+
+    fun isMultiPage(ext: String): Boolean {
+        return ext.toLowerCase() in multipage
+    }
 
     fun isSupported(ext: String): Boolean {
         return (ext in image || ext in video || ext in doc)

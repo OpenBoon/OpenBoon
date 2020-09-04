@@ -98,6 +98,7 @@ class CellsDocument(options: RenderRequest, inputStream: InputStream) : Document
             metadata["description"] = props.category
             metadata["timeCreated"] = convertDate(props.createdTime?.toDate())
             metadata["length"] = workbook.worksheets.count
+            metadata["pageNumber"] = page
 
             val output = ReversibleByteArrayOutputStream()
             Json.mapper.writeValue(output, metadata)

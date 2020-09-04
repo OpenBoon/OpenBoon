@@ -11,6 +11,7 @@ import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getProjectId
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.UUID
 import kotlin.test.assertEquals
 
 class IndexTaskServiceTests : AbstractTest() {
@@ -20,6 +21,9 @@ class IndexTaskServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
+
+    @Autowired
+    lateinit var assetSearchService: AssetSearchService
 
     @Test
     fun testCreateIndexToIndexMigrationTask() {
@@ -50,5 +54,32 @@ class IndexTaskServiceTests : AbstractTest() {
         assertEquals(indexRouteDao.getProjectRoute().id, task.srcIndexRouteId)
         assertEquals(task.type, IndexTaskType.REINDEX)
         assertEquals(task.state, IndexTaskState.RUNNING)
+    }
+
+    @Test
+    fun testMigrateProjectV4ToV5() {
+        val project = projectService.get(getProjectId())
+
+        // Make new v4 index.
+        val rspec = IndexRouteSpec("english_strict", 4, shards = 1, replicas = 0)
+        val route = indexRoutingService.createIndexRoute(rspec)
+        projectService.setIndexRoute(project, route)
+
+        addTestAssets("images")
+        refreshIndex()
+
+        val spec = ProjectIndexMigrationSpec("english_strict", 5, size = ProjectSize.XSMALL)
+        val task = indexTaskService.migrateProject(project, spec)
+        // Sleep while task completes
+        Thread.sleep(5000)
+
+        val newRoute = indexRoutingService.getIndexRoute(task.dstIndexRouteId as UUID)
+        projectService.setIndexRoute(project, newRoute)
+        indexRoutingService.setIndexRefreshInterval(newRoute, "5s")
+        refreshIndex()
+
+        val results = getSample(1)
+        assertEquals(100, results[0].getAttr("media.pageNumber"))
+        assertEquals("ABC123", results[0].getAttr("media.pageStack"))
     }
 }
