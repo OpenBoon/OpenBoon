@@ -767,9 +767,6 @@ class AssetServiceImpl : AssetService {
             }
             asset.setAttr("system.timeCreated", time)
             asset.setAttr("system.state", AssetState.Pending.toString())
-
-
-
         }
         if (!asset.attrExists("source.path") || asset.getAttr<String?>("source.path") == null) {
             throw java.lang.IllegalStateException("The source.path attribute cannot be null")

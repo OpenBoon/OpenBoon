@@ -204,7 +204,6 @@ class AssetServiceTests : AbstractTest() {
         Json.prettyPrint(assets)
     }
 
-
     @Test
     fun testGetExistingAssetIds() {
         AssetSpec(
