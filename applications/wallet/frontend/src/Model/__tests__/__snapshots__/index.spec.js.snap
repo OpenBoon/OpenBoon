@@ -134,7 +134,27 @@ Array [
   line-height: 23px;
 }
 
-.emotion-8 {
+.emotion-7 {
+  padding-top: 8px;
+  font-style: italic;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-7 span {
+  padding-top: 4px;
+}
+
+.emotion-5 {
+  color: #ebb52e;
+}
+
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -143,12 +163,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-8 button,
-.emotion-8 a {
+.emotion-11 button,
+.emotion-11 a {
   margin-right: 16px;
 }
 
-.emotion-5 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -179,30 +199,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-5:hover {
+.emotion-8:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-8:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-7 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -233,30 +253,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-7:hover {
+.emotion-10:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
   background-color: #808080;
 }
 
-.emotion-7:hover {
+.emotion-10:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-12 {
+.emotion-15 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -265,7 +285,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-11 {
+.emotion-14 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -276,12 +296,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-10 {
+.emotion-13 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-9 {
+.emotion-12 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -300,12 +320,12 @@ Array [
   font-weight: 700;
 }
 
-.emotion-9:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-14 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -315,6 +335,86 @@ Array [
   -ms-flex-pack: end;
   justify-content: flex-end;
   margin-bottom: -16px;
+}
+
+.emotion-18 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-18:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-18[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-18,
+.emotion-18:hover,
+.emotion-18:visited {
+  background-color: #808080;
+}
+
+.emotion-18:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-18[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-17 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-16 {
+  padding-right: 8px;
+}
+
+.emotion-19 {
+  width: 16px;
 }
 
 <div>
@@ -375,11 +475,36 @@ Array [
       </li>
     </ul>
     <div
-      className="emotion-8"
+      className="emotion-7"
+    >
+      <span
+        className="emotion-5"
+      >
+        1
+         more
+         
+        label is
+         required (min. =
+         
+        2
+         unique)
+      </span>
+      <span
+        className="emotion-5"
+      >
+        15
+         more assets need to be labeled (min. =
+         
+        10
+         of each label)
+      </span>
+    </div>
+    <div
+      className="emotion-11"
     >
       <button
         aria-disabled={true}
-        className="emotion-5"
+        className="emotion-8"
         onClick={[Function]}
         type="button"
       >
@@ -387,14 +512,14 @@ Array [
       </button>
       <button
         aria-disabled={true}
-        className="emotion-5"
+        className="emotion-8"
         onClick={[Function]}
         type="button"
       >
         Train & Apply
       </button>
       <button
-        className="emotion-7"
+        className="emotion-10"
         onClick={[Function]}
         type="button"
       >
@@ -402,16 +527,16 @@ Array [
       </button>
     </div>
     <nav
-      className="emotion-12"
+      className="emotion-15"
     >
       <ul
-        className="emotion-11"
+        className="emotion-14"
       >
         <li
-          className="emotion-10"
+          className="emotion-13"
         >
           <a
-            className="emotion-9"
+            className="emotion-12"
             href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -422,19 +547,52 @@ Array [
       </ul>
     </nav>
     <div
-      className="emotion-14"
+      className="emotion-23"
     >
       <a
-        className="emotion-7"
+        aria-label="Add Filter in Visualizer"
+        className="emotion-18"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
-        Add Label Filter & View in Visualizer
+        <div
+          className="emotion-17"
+        >
+          <svg
+            className="emotion-16"
+            data-file-name="filter.svg"
+            height={20}
+          />
+          Add Filter in Visualizer
+        </div>
+      </a>
+      <div
+        className="emotion-19"
+      />
+      <a
+        aria-label="Add More Labels"
+        className="emotion-18"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        <div
+          className="emotion-17"
+        >
+          <svg
+            className="emotion-16"
+            data-file-name="pen.svg"
+            height={20}
+          />
+          Add More Labels
+        </div>
       </a>
     </div>
+    <ModelLabels
+      requiredAssetsPerLabel={10}
+    />
   </div>,
-  <ModelLabels />,
   "",
 ]
 `;
@@ -573,7 +731,27 @@ Array [
   line-height: 23px;
 }
 
-.emotion-8 {
+.emotion-7 {
+  padding-top: 8px;
+  font-style: italic;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-7 span {
+  padding-top: 4px;
+}
+
+.emotion-5 {
+  color: #ebb52e;
+}
+
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -582,12 +760,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-8 button,
-.emotion-8 a {
+.emotion-11 button,
+.emotion-11 a {
   margin-right: 16px;
 }
 
-.emotion-5 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -618,30 +796,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-5:hover {
+.emotion-8:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-8:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-7 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -672,30 +850,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-7:hover {
+.emotion-10:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
   background-color: #808080;
 }
 
-.emotion-7:hover {
+.emotion-10:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-14 {
+.emotion-17 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -704,7 +882,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-13 {
+.emotion-16 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -715,12 +893,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-10 {
+.emotion-13 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-11 {
+.emotion-14 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -739,12 +917,12 @@ Array [
   font-weight: 700;
 }
 
-.emotion-11:hover {
+.emotion-14:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-9 {
+.emotion-12 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -764,7 +942,7 @@ Array [
   font-weight: 700;
 }
 
-.emotion-9:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
@@ -828,11 +1006,36 @@ Array [
       </li>
     </ul>
     <div
-      className="emotion-8"
+      className="emotion-7"
+    >
+      <span
+        className="emotion-5"
+      >
+        1
+         more
+         
+        label is
+         required (min. =
+         
+        2
+         unique)
+      </span>
+      <span
+        className="emotion-5"
+      >
+        15
+         more assets need to be labeled (min. =
+         
+        10
+         of each label)
+      </span>
+    </div>
+    <div
+      className="emotion-11"
     >
       <button
         aria-disabled={true}
-        className="emotion-5"
+        className="emotion-8"
         onClick={[Function]}
         type="button"
       >
@@ -840,14 +1043,14 @@ Array [
       </button>
       <button
         aria-disabled={true}
-        className="emotion-5"
+        className="emotion-8"
         onClick={[Function]}
         type="button"
       >
         Train & Apply
       </button>
       <button
-        className="emotion-7"
+        className="emotion-10"
         onClick={[Function]}
         type="button"
       >
@@ -855,16 +1058,16 @@ Array [
       </button>
     </div>
     <nav
-      className="emotion-14"
+      className="emotion-17"
     >
       <ul
-        className="emotion-13"
+        className="emotion-16"
       >
         <li
-          className="emotion-10"
+          className="emotion-13"
         >
           <a
-            className="emotion-9"
+            className="emotion-12"
             href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -873,10 +1076,10 @@ Array [
           </a>
         </li>
         <li
-          className="emotion-10"
+          className="emotion-13"
         >
           <a
-            className="emotion-11"
+            className="emotion-14"
             onClick={[Function]}
             onMouseEnter={[Function]}
           >
