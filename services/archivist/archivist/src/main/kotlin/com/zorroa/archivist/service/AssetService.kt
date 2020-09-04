@@ -746,9 +746,15 @@ class AssetServiceImpl : AssetService {
                 asset.addLabels(listOf(spec.label))
             }
 
-            asset.setAttr("source.path", spec.uri)
-            asset.setAttr("source.filename", FileUtils.filename(spec.uri))
-            asset.setAttr("source.extension", FileUtils.extension(spec.uri))
+            asset.setAttr("source.path", spec.getRealPath())
+            asset.setAttr("source.filename", FileUtils.filename(spec.getRealPath()))
+
+            val ext = FileUtils.extension(spec.getRealPath())
+            asset.setAttr("source.extension", ext)
+
+            if (FileExtResolver.getType(ext) == "video") {
+                asset.setAttr("deepVideoSearch", "movie")
+            }
 
             val mediaType = FileExtResolver.getMediaType(spec.uri)
             asset.setAttr("source.mimetype", mediaType)
@@ -761,6 +767,9 @@ class AssetServiceImpl : AssetService {
             }
             asset.setAttr("system.timeCreated", time)
             asset.setAttr("system.state", AssetState.Pending.toString())
+
+
+
         }
         if (!asset.attrExists("source.path") || asset.getAttr<String?>("source.path") == null) {
             throw java.lang.IllegalStateException("The source.path attribute cannot be null")

@@ -27,6 +27,7 @@ import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.zmlp.util.Json
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -187,6 +188,22 @@ class AssetServiceTests : AbstractTest() {
         assertNull(assets[0].getAttr("media.pageNumber"))
         assertNull(assets[0].getAttr("media.pageStack"))
     }
+
+    @Test
+    fun testBatchCreateVideo() {
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.mp4",
+            mapOf("system.hello" to "foo")
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        val assets = assetService.getAll(rsp.created)
+        Json.prettyPrint(assets)
+    }
+
 
     @Test
     fun testGetExistingAssetIds() {

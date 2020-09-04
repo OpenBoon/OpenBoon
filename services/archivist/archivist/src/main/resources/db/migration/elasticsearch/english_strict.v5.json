@@ -44,6 +44,12 @@
   "mappings": {
     "dynamic": "strict",
     "properties": {
+      "deepVideoSearch": {
+        "type": "join",
+        "relations": {
+          "movie": "clip"
+        }
+      },
       "source": {
         "dynamic": "strict",
         "properties": {
