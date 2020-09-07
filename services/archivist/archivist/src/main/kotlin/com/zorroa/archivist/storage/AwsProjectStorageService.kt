@@ -205,6 +205,23 @@ class AwsProjectStorageService constructor(
         }
     }
 
+    override fun recursiveDelete(path: String) {
+        logger.info("Recursive delete path:${properties.bucket}/$path")
+
+        try {
+            s3Client.listObjects(properties.bucket, path).objectSummaries.forEach {
+                s3Client.deleteObject(properties.bucket, it.key)
+                logDeleteEvent("${properties.bucket}${it.key}")
+            }
+        } catch (ex: AmazonS3Exception) {
+            logger.warnEvent(
+                LogObject.PROJECT_STORAGE, LogAction.DELETE,
+                "Failed to delete ${ex.message}",
+                mapOf("path" to path)
+            )
+        }
+    }
+
     companion object {
         val logger = LoggerFactory.getLogger(AwsProjectStorageService::class.java)
     }

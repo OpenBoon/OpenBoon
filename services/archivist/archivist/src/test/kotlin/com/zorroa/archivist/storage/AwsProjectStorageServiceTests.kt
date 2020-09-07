@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,6 +46,18 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         val result = projectStorageService.store(spec)
         projectStorageService.recursiveDelete(
             ProjectDirLocator(ProjectStorageEntity.ASSETS, loc.entityId)
+        )
+        // Throws ProjectStorageException
+        projectStorageService.fetch(loc)
+    }
+
+    @Test(expected = ProjectStorageException::class)
+    fun testDeleteByPath() {
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
+        val result = projectStorageService.store(spec)
+        projectStorageService.recursiveDelete(
+             "projects/${getProjectId()}"
         )
         // Throws ProjectStorageException
         projectStorageService.fetch(loc)

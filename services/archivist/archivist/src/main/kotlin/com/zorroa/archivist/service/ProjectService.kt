@@ -29,6 +29,7 @@ import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.security.withAuth
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.service.logging.LogAction
@@ -120,6 +121,11 @@ interface ProjectService {
      * Set the active index for the given project.
      */
     fun setIndexRoute(project: Project, route: IndexRoute): Boolean
+
+    /**
+     * Delete Project related storage
+     */
+    fun deleteProjectStorage(project: Project)
 }
 
 @Service
@@ -130,6 +136,7 @@ class ProjectServiceImpl constructor(
     val projectStatsDao: ProjectQuotasDao,
     val authServerClient: AuthServerClient,
     val systemStorageService: SystemStorageService,
+    var projectStorageService: ProjectStorageService,
     val properties: ApplicationProperties,
     val txEvent: TransactionEventManager
 ) : ProjectService {
@@ -406,6 +413,11 @@ class ProjectServiceImpl constructor(
             logger.warn("Failed to set new index route for project ${project.id}, likely already set to same index.")
             false
         }
+    }
+
+    override fun deleteProjectStorage(project: Project) {
+        projectStorageService.recursiveDelete("projects")
+        logger.warn("Deleted Project ${project.id} storage files")
     }
 
     // This gets called alot so hold onto the values for a while.
