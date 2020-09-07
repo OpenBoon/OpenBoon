@@ -240,7 +240,7 @@ class IndexRoutingServiceTests : AbstractTest() {
         val routes = listOf(ir1, ir2)
         indexRoutingService.batchCloseIndex(routes)
 
-        var fetchObject  = systemStorageService.fetchObject("index-clusters/${ir1.id}/backup_test.json", Map::class.java)
+        var fetchObject = systemStorageService.fetchObject("index-clusters/${ir1.id}/backup_test.json", Map::class.java)
         val batchDeleteIndex = indexRoutingService.batchDeleteIndex(routes)
 
         assertEquals(true, fetchObject.isNotEmpty())
