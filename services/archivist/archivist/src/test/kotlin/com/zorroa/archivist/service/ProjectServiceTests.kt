@@ -12,7 +12,6 @@ import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.storage.ProjectStorageException
 import com.zorroa.archivist.storage.ProjectStorageService
-import com.zorroa.zmlp.service.storage.SystemStorageException
 
 import org.junit.Test
 import org.junit.jupiter.api.assertThrows

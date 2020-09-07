@@ -416,7 +416,7 @@ class ProjectServiceImpl constructor(
     }
 
     override fun deleteProjectStorage(project: Project) {
-        projectStorageService.recursiveDelete("projects")
+        projectStorageService.recursiveDelete("projects/${project.id}")
         logger.warn("Deleted Project ${project.id} storage files")
     }
 
