@@ -59,6 +59,26 @@ class GcsSystemStorageService constructor(
         }
     }
 
+    override fun recursiveDelete(path: String) {
+        val bucket = gcs.get(properties.bucket)
+        val blobs = bucket.list(
+            Storage.BlobListOption.prefix(path),
+            Storage.BlobListOption.pageSize(100)
+        )
+
+        for (blob in blobs.iterateAll()) {
+            gcs.delete(blob.blobId)
+
+            logger.event(
+                LogObject.SYSTEM_STORAGE, LogAction.DELETE,
+                mapOf(
+                    "path" to path,
+                    "blob_id" to blob.blobId
+                )
+            )
+        }
+    }
+
     companion object {
         val logger = LoggerFactory.getLogger(GcsSystemStorageService::class.java)
     }

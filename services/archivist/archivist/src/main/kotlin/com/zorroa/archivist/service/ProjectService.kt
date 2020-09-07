@@ -120,6 +120,11 @@ interface ProjectService {
      * Set the active index for the given project.
      */
     fun setIndexRoute(project: Project, route: IndexRoute): Boolean
+
+    /**
+     * Delete System Storage files of a Project
+     */
+    fun deleteProjectSystemStorage(project: Project)
 }
 
 @Service
@@ -264,6 +269,13 @@ class ProjectServiceImpl constructor(
         systemStorageService.storeObject(
             "projects/${project.id}/keys.json", result.toList()
         )
+    }
+
+    override fun deleteProjectSystemStorage(project: Project) {
+        systemStorageService.recursiveDelete(
+            "projects/${project.id}"
+        )
+        logger.info("Deleting System Storage of Project: ${project.name}")
     }
 
     override fun setEnabled(projectId: UUID, value: Boolean) {
