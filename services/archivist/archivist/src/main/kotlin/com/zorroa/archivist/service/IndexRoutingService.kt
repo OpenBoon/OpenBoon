@@ -20,6 +20,7 @@ import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
+import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
@@ -219,6 +220,7 @@ class IndexRoutingServiceImpl @Autowired
 constructor(
     val indexRouteDao: IndexRouteDao,
     val indexClusterDao: IndexClusterDao,
+    val systemStorageService: SystemStorageService,
     val properties: ApplicationProperties,
     val txEvent: TransactionEventManager
 ) : IndexRoutingService {
@@ -561,10 +563,15 @@ constructor(
                         )
                     )
                     indexRouteDao.delete(indexRoute)
+                    deleteIndexBackups(indexRoute)
                 }
             }
         }
         return true
+    }
+
+    private fun deleteIndexBackups(indexRoute: IndexRoute) {
+        systemStorageService.recursiveDelete("index-clusters/${indexRoute.id}")
     }
 
     override fun openIndex(route: IndexRoute): Boolean {

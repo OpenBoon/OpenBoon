@@ -4,11 +4,14 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.zmlp.service.storage.SystemStorageException
+import com.zorroa.zmlp.service.storage.SystemStorageService
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest
 import org.elasticsearch.client.RequestOptions
 import org.junit.After
 import org.junit.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.mock.web.MockHttpServletRequest
@@ -24,6 +27,9 @@ class IndexRoutingServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
+
+    @Autowired
+    lateinit var systemStorageService: SystemStorageService
 
     val testSpec = IndexRouteSpec("test", 1, shards = 1, replicas = 0)
 
@@ -218,7 +224,7 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertEquals("close", esIndexState2["status"])
     }
 
-    @Test(expected = EmptyResultDataAccessException::class)
+    @Test
     fun testBatchDeleteIndex() {
         val spec1 = IndexRouteSpec("test", 1, shards = 1, replicas = 0)
         val spec2 = IndexRouteSpec("test", 1, shards = 1, replicas = 0)
@@ -226,13 +232,28 @@ class IndexRoutingServiceTests : AbstractTest() {
         val ir1 = indexRoutingService.createIndexRoute(spec1)
         val ir2 = indexRoutingService.createIndexRoute(spec2)
 
+        systemStorageService.storeObject(
+            "index-clusters/${ir1.id}/backup_test.json",
+            mapOf("foo" to "bar")
+        )
+
         val routes = listOf(ir1, ir2)
         indexRoutingService.batchCloseIndex(routes)
+
+        var fetchObject  = systemStorageService.fetchObject("index-clusters/${ir1.id}/backup_test.json", Map::class.java)
         val batchDeleteIndex = indexRoutingService.batchDeleteIndex(routes)
 
+        assertEquals(true, fetchObject.isNotEmpty())
         assertEquals(true, batchDeleteIndex)
-
-        indexRoutingService.getIndexRoute(ir1.id)
+        assertThrows<SystemStorageException> {
+            systemStorageService.fetchObject(
+                "index-clusters/${ir1.id}/backup_test.json",
+                Map::class.java
+            )
+        }
+        assertThrows<EmptyResultDataAccessException> {
+            indexRoutingService.getIndexRoute(ir1.id)
+        }
     }
 
     @Test
