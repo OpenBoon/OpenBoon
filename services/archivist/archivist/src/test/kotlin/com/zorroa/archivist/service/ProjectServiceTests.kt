@@ -158,7 +158,6 @@ class ProjectServiceTests : AbstractTest() {
 
         projectService.deleteProjectSystemStorage(project)
 
-
         assertEquals(true, obj1.isNotEmpty())
         assertEquals(true, obj2.isNotEmpty())
         assertThrows<SystemStorageException> {
