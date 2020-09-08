@@ -126,9 +126,9 @@ class ModelViewSet(BaseProjectViewSet):
     def model_types(self, request, project_pk):
         """Get the available model types from ZMLP."""
         path = f'{self.zmlp_root_api_path}/_types'
-        blacklist_names = ['ZVI_FACE_RECOGNITION']
+        excluded_names = ['ZVI_FACE_RECOGNITION']
         response = request.client.get(path)
-        filtered = [x for x in response if x['name'] not in blacklist_names]
+        filtered = [x for x in response if x['name'] not in excluded_names]
         serializer = ModelTypeSerializer(data=filtered, many=True,
                                          context=self.get_serializer_context())
         validate_zmlp_data(serializer)
