@@ -170,8 +170,9 @@ class TestModelViewSetActions:
         response = api_client.get(path)
         content = check_response(response)
         results = content['results']
-        assert len(results) == 4
+        assert len(results) == 3
         assert results[0]['name'] == 'ZVI_KNN_CLASSIFIER'
+        assert 'ZVI_FACE_RECOGNITION' not in [x['name'] for x in results]
 
     def test_train(self, login, project, api_client):
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
