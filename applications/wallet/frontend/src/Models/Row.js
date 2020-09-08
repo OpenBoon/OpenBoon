@@ -1,15 +1,11 @@
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import { colors, constants } from '../Styles'
-
 import { onRowClickRouterPush } from '../Table/helpers'
-
-import CheckmarkSvg from '../Icons/checkmark.svg'
 
 const ModelsRow = ({
   projectId,
-  model: { id: modelId, name, type, moduleName, ready },
+  model: { id: modelId, name, type, moduleName },
 }) => {
   return (
     <tr
@@ -32,13 +28,6 @@ const ModelsRow = ({
       <td>{type}</td>
 
       <td>{moduleName}</td>
-
-      <td css={{ textAlign: 'center' }}>
-        <CheckmarkSvg
-          height={constants.icons.regular}
-          color={ready ? colors.key.one : colors.structure.transparent}
-        />
-      </td>
     </tr>
   )
 }
@@ -50,7 +39,6 @@ ModelsRow.propTypes = {
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     moduleName: PropTypes.string.isRequired,
-    ready: PropTypes.bool.isRequired,
   }).isRequired,
 }
 
