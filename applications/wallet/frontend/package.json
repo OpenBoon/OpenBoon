@@ -83,7 +83,7 @@
     {
       "//": "main runtime",
       "path": ".next/static/chunks/main**.js",
-      "maxSize": "6 kB"
+      "maxSize": "7 kB"
     },
     {
       "//": "polyfill",
@@ -113,7 +113,7 @@
     {
       "//": "all pages",
       "path": ".next/static/chunks/pages/**/!(_app|_error)*.js",
-      "maxSize": "44 kB"
+      "maxSize": "45 kB"
     }
   ],
   "dependencies": {
