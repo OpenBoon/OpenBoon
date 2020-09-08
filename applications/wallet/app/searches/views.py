@@ -197,6 +197,20 @@ class SearchViewSet(CreateModelMixin,
                   'source*',
                   'files*',
                   'media*']
+
+        query = self._build_query_from_querystring(request)
+
+        # Only returns the specified fields in the metadata
+        query['_source'] = fields
+        query['track_total_hits'] = True
+
+        return self._zmlp_list_from_es(request, search_filter=query, base_url=path,
+                                       serializer_class=SearchAssetSerializer,
+                                       item_modifier=search_asset_modifier,
+                                       pagination_class=ZMLPFromSizePagination)
+
+    def _build_query_from_querystring(self, request):
+        """Helper to build the query used for query and raw_query."""
         filter_boy = FilterBuddy()
 
         _filters = filter_boy.get_filters_from_request(request)
@@ -209,14 +223,13 @@ class SearchViewSet(CreateModelMixin,
         if not query:
             query['sort'] = {'system.timeCreated': {'order': 'desc'}}
 
-        # Only returns the specified fields in the metadata
-        query['_source'] = fields
-        query['track_total_hits'] = True
+        return query
 
-        return self._zmlp_list_from_es(request, search_filter=query, base_url=path,
-                                       serializer_class=SearchAssetSerializer,
-                                       item_modifier=search_asset_modifier,
-                                       pagination_class=ZMLPFromSizePagination)
+    @action(detail=False, methods=['get'])
+    def raw_query(self, request, project_pk):
+        """Takes a query querystring and dumps out wha the raw ES query would be."""
+        query = self._build_query_from_querystring(request)
+        return Response({'results': query})
 
     @action(detail=False, methods=['get'],
             renderer_classes=[CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer])
