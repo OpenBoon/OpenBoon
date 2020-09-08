@@ -13,6 +13,7 @@ from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 DestroyLabelSerializer, ModelDetailSerializer)
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
+from wallet.utils import validate_zmlp_data
 
 
 def get_model_type_restrictions(label_counts, min_concepts, min_examples):
@@ -125,8 +126,13 @@ class ModelViewSet(BaseProjectViewSet):
     def model_types(self, request, project_pk):
         """Get the available model types from ZMLP."""
         path = f'{self.zmlp_root_api_path}/_types'
-        return self._zmlp_list_from_root(request, base_url=path,
-                                         serializer_class=ModelTypeSerializer)
+        blacklist_names = ['ZVI_FACE_RECOGNITION']
+        response = request.client.get(path)
+        filtered = [x for x in response if x['name'] not in blacklist_names]
+        serializer = ModelTypeSerializer(data=filtered, many=True,
+                                         context=self.get_serializer_context())
+        validate_zmlp_data(serializer)
+        return Response({'results': serializer.data})
 
     @action(methods=['post'], detail=True)
     def train(self, request, project_pk, pk):
