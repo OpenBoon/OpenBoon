@@ -36,6 +36,7 @@ describe('<Timeline />', () => {
       />,
     )
 
+    // Open timeline
     act(() => {
       component.root
         .findByProps({ 'aria-label': 'Open Timeline' })
@@ -44,14 +45,16 @@ describe('<Timeline />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Resize large
+    // Resize timeline
     act(() => {
       component.root.findByType('Resizeable').props.onMouseUp({ size: 500 })
     })
 
-    // Resize to close
+    // Close timeline
     act(() => {
-      component.root.findByType('Resizeable').props.onMouseUp({ size: 100 })
+      component.root
+        .findByProps({ 'aria-label': 'Open Timeline' })
+        .props.onClick()
     })
 
     expect(component.toJSON()).toMatchSnapshot()

@@ -15,15 +15,15 @@ const TIMELINE_HEIGHT = 300
 
 const MIN_HEIGHT = 300
 
+let reloadKey = 0
+
 const Timeline = ({ videoRef }) => {
   return (
-    <div
-      css={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: TIMELINE_HEIGHT,
-        overflow: 'hidden',
-      }}
+    <Resizeable
+      key={reloadKey}
+      minSize={MIN_HEIGHT}
+      storageName="assetTimelineHeight"
+      openToThe="top"
     >
       <div
         css={{
@@ -45,6 +45,15 @@ const Timeline = ({ videoRef }) => {
               ':hover, &.focus-visible:focus': {
                 backgroundColor: colors.structure.mattGrey,
               },
+            }}
+            onClick={() => {
+              reloadKey += 1
+
+              if (height > MIN_HEIGHT) {
+                setHeight({ value: MIN_HEIGHT })
+              } else {
+                setHeight({ value: 300 })
+              }
             }}
           >
             Timelime
@@ -74,7 +83,7 @@ const Timeline = ({ videoRef }) => {
 
         <TimelineDetections videoRef={videoRef} />
       </div>
-    </div>
+    </Resizeable>
   )
 }
 
