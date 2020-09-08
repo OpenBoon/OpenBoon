@@ -61,7 +61,6 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         val result1 = projectStorageService.store(spec1)
         val result2 = projectStorageService.store(spec2)
 
-
         projectStorageService.recursiveDelete(
             "projects/${getProjectId()}"
         )
