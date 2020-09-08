@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router'
-
 import { colors, constants, spacing } from '../Styles'
 
 import SuspenseBoundary from '../SuspenseBoundary'
@@ -16,13 +14,8 @@ import FaceDetectionSvg from '../Icons/faceDetection.svg'
 import PenSvg from '../Icons/pen.svg'
 
 import AssetAsset from './Asset'
-import AssetNavigation from './Navigation'
 
 const AssetContent = () => {
-  const {
-    query: { projectId, assetId, query = '' },
-  } = useRouter()
-
   return (
     <div
       css={{
@@ -51,14 +44,8 @@ const AssetContent = () => {
             marginRight: spacing.hairline,
           }}
         >
-          <AssetNavigation
-            projectId={projectId}
-            assetId={assetId}
-            query={query}
-          />
-
           <SuspenseBoundary>
-            <AssetAsset projectId={projectId} assetId={assetId} />
+            <AssetAsset />
           </SuspenseBoundary>
         </div>
 

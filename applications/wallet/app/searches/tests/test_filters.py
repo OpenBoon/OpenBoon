@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import Mock
 
 from django.core.exceptions import ImproperlyConfigured
 from rest_framework.exceptions import ValidationError
@@ -382,8 +383,9 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
                           'min': .5, 'max': .8}
         return data
 
-    def test_get_es_agg(self, mock_data):
+    def test_get_es_agg_prediction(self, mock_data):
         _filter = LabelConfidenceFilter(mock_data)
+        _filter._field_type = 'prediction'
         agg = _filter.get_es_agg()
         name = list(agg['aggs'].keys())[0]
         assert agg == {
@@ -398,8 +400,26 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
             }
         }
 
-    def test_get_es_query(self, mock_query_data):
+    def test_get_es_agg_single_label(self, mock_data):
+        _filter = LabelConfidenceFilter(mock_data)
+        _filter._field_type = 'single_label'
+        agg = _filter.get_es_agg()
+        name = list(agg['aggs'].keys())[0]
+        assert agg == {
+            'size': 0,
+            'aggs': {
+                name: {
+                    'terms': {
+                        'field': 'analysis.zvi-label-detection.label',
+                        'size': 1000
+                    }
+                }
+            }
+        }
+
+    def test_get_es_query_prediction(self, mock_query_data):
         _filter = LabelConfidenceFilter(mock_query_data)
+        _filter._field_type = 'prediction'
         query = _filter.get_es_query()
         assert query == {
             'query': {
@@ -421,8 +441,22 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
                                             'from': 0.5,
                                             'to': 0.8}}}]}}}}]}}}
 
+    def test_get_es_query_single_label(self, mock_query_data):
+        _filter = LabelConfidenceFilter(mock_query_data)
+        _filter._field_type = 'single_label'
+        query = _filter.get_es_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'terms': {'analysis.zvi-label-detection.label': ['value1',
+                                                                          'value2']}},
+                        {'range': {'analysis.zvi-label-detection.score': {'from': 0.5,
+                                                                          'to': 0.8}}}]}}}
+
     def test_add_to_query(self, mock_query_data):
         _filter = LabelConfidenceFilter(mock_query_data)
+        _filter._field_type = 'prediction'
         query = {
             'query': {
                 'bool': {
@@ -456,6 +490,7 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
 
     def test_add_to_label_conf_query(self, mock_query_data):
         _filter = LabelConfidenceFilter(mock_query_data)
+        _filter._field_type = 'prediction'
         _filter2 = LabelConfidenceFilter({
             'type': 'labelConfidence',
             'attribute': 'analysis.zvi-object-detection',
@@ -465,6 +500,7 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
                 'max': 0.7
             }
         })
+        _filter2._field_type = 'prediction'
         query = _filter.get_es_query()
         query = _filter2.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [
@@ -585,13 +621,17 @@ class TestSimilarityFilter(FilterBaseTestCase):
     def zmlp_app(self):
         return ZmlpApp({'accessKey': 'access', 'secretKey': 'secret'})
 
+    @pytest.fixture
+    def mock_request(self, zmlp_app):
+        return Mock(app=zmlp_app)
+
     @staticmethod
     def mock_post_return(*args, **kwargs):
         return {'took': 4, 'timed_out': False, '_shards': {'total': 2, 'successful': 2, 'skipped': 0, 'failed': 0}, 'hits': {'total': {'value': 2, 'relation': 'eq'}, 'max_score': 1.0, 'hits': [{'_index': '441topfgan3xuxg2', '_type': '_doc', '_id': 'GxjzTXpJvTdGf14dJ-IfejTgUJE0FlZB', '_score': 1.0, '_source': {'system': {'jobId': 'ac349441-0b36-1ad0-b0b3-b25968f5b7ae', 'dataSourceId': '4facb80c-0981-11e0-b755-363f4581d984', 'timeCreated': '2020-06-10T20:16:56.100034Z', 'state': 'Analyzed', 'projectId': '564de5f9-4027-4314-997f-a23d4e879e81', 'taskId': 'ac349442-0b36-1ad0-b0b3-b25968f5b7ae', 'timeModified': '2020-06-10T20:47:31.550642Z'}, 'source': {'path': 'gs://zorroa-dev-data/zifar/truck/8.https%3A%2F%2Fblogs-images.forbes.com%2Fsebastianblanco%2Ffiles%2F2019%2F04%2Ftoyota-hydrogen-semi-1200x679.jpg', 'extension': 'jpg', 'filename': '8.https%3A%2F%2Fblogs-images.forbes.com%2Fsebastianblanco%2Ffiles%2F2019%2F04%2Ftoyota-hydrogen-semi-1200x679.jpg', 'mimetype': 'image/jpeg', 'filesize': 86834, 'checksum': 1789416729}, 'metrics': {'pipeline': [{'processor': 'zmlp_core.core.PreCacheSourceFileProcessor', 'module': 'standard', 'checksum': 2178814325, 'executionTime': 0.26, 'executionDate': '2020-06-10T20:47:04.684568'}, {'processor': 'zmlp_core.core.FileImportProcessor', 'module': 'standard', 'checksum': 117837444, 'executionTime': 0.26, 'executionDate': '2020-06-10T20:47:05.483410'}, {'processor': 'zmlp_core.proxy.ImageProxyProcessor', 'module': 'standard', 'checksum': 457707303, 'executionTime': 3.36, 'executionDate': '2020-06-10T20:47:09.331851'}, {'processor': 'zmlp_core.proxy.VideoProxyProcessor', 'module': 'standard', 'checksum': 482873147, 'executionTime': 0}, {'processor': 'zmlp_analysis.zvi.ZviSimilarityProcessor', 'module': 'standard', 'checksum': 1879445844, 'executionTime': 0.7, 'executionDate': '2020-06-10T20:47:24.832412'}]}, 'media': {'width': 960, 'height': 543, 'aspect': 1.77, 'orientation': 'landscape', 'type': 'image', 'length': 1}, 'clip': {'type': 'page', 'start': 1.0, 'stop': 1.0, 'length': 1.0, 'pile': 'vQlzx9MA-tjYb6TWOY4_hMJMrR4', 'sourceAssetId': 'GxjzTXpJvTdGf14dJ-IfejTgUJE0FlZB'}, 'files': [{'id': 'assets/GxjzTXpJvTdGf14dJ-IfejTgUJE0FlZB/proxy/image_960x543.jpg', 'name': 'image_960x543.jpg', 'category': 'proxy', 'mimetype': 'image/jpeg', 'size': 252738, 'attrs': {'width': 960, 'height': 543}}, {'id': 'assets/GxjzTXpJvTdGf14dJ-IfejTgUJE0FlZB/proxy/image_512x289.jpg', 'name': 'image_512x289.jpg', 'category': 'proxy', 'mimetype': 'image/jpeg', 'size': 117008, 'attrs': {'width': 512, 'height': 289}}, {'id': 'assets/GxjzTXpJvTdGf14dJ-IfejTgUJE0FlZB/web-proxy/web-proxy.jpg', 'name': 'web-proxy.jpg', 'category': 'web-proxy', 'mimetype': 'image/jpeg', 'size': 92565, 'attrs': {'width': 960, 'height': 543}}], 'analysis': {'zvi-image-similarity': {'type': 'similarity', 'simhash': 'GHPCCPPPBONADNPPIPKGNACPPPPEOBPPCPFOBJFBPHPPPPIPDEDHPPIPLPPFLBFPIBPIPLPPBPPNJPPGIMIBPHDPOLHNPPPPCDNHAPPAIJBPECBHPPOJFAPIPGPNBPGDNOFPPPAOJMPPIFDICPPPBPPPNBFJEHFNFPPBPGAPBPEAPOCPPKGPPPJPECDPPIECKPPIAPGBNPPJKPNPHHMOPNNPHAMJPCPKPPDMPNJMBPDDDOPGPPFBPPPPPPNPGPDJHCKPLPPPPPBBPFKINADPPJNCHEHKAPPPPPCOPPPPPGJIPAPJPMFGPPMEPOEMKPPMPHPPLLIPPPCLONCLPJPPPKPPAPNJPPFPAPPPPPPPCNLPCOGPAFPPFPGCEPPEPOJPPPFPKEEPFGPDPPPPPAAFOPPEPIPBNCPIPPPPLEPPCPLJMAPBKEFPHPJPFMPMBCLPMBBBFPPPJPPPKPMBPPICPDDPHPHLPPPBEPIHBPPKGPJPLPPPPGKDFDPPPKFPFCIPMPCPGAEOPNCPPPMJLPKFIHHOLPPJICGPPNPAIFFPCOBLPPNPPPPCPPPPPGPPPNHPOPLPPPPKMPAHPPGFPJHPBPPAPGDKPPOOFDKGPPJGHPDPNPPAHFPPHBAEKPKPPEKPPMPJPPPLCHEABPCPPPPPPPHPPPIKPJAPBOMCPPPAKLPNNGOGMEADPIGMCPPDCPDDKNAJGLPMPPPPEGGGDCFPHBPKNPPPHHIINPPHIFIOPPPPFAPAGLPBPDPAPPPDPOBMMPJGCFOFLFBHEHBJPEFAPFPPMPFPPPIPPPPDECHBGDMEDAKIPMKJOPIPOPKFPJFOGPLKKIPPPPPBPPJPJGPPKOFPGCEPMJOCCPAPMAPPCPLNPIFGPKCIBPGMPPAHPPAGGLPPJPLPGPECIAHAPECPAPPFEEGPPAPKDBPDPLPGAPHPPPNPPEPCPPIMAEBPPOPKPPHAPPBMAPKPHPPECGPGKPJEPOFHPDPPCGPPPMAJPPPBABCPPPOLIPKPJPFIAOPKPPAAPPAPPDIPJGDPPDCHAPAFAPKDDDPPBPHPKOPJPMPPPPPPPPBKPNIPPDPILPPPDKMGPPPFDFCDDOLNBPPCFFPHFIPPDCPNPKPPPFLNBOPPCPPPEBBCPBOPBDPPMPPEPPPPENBPLGOPKPOPMPAPIPPPDJPPPCJPEPFEPAPNPPPPPPPENBFANEPPPHPPPPCPPPLADKLCAKPPDIFHNPFDBIJPAPPPPPPIPNGDIPBPJOAPPPPEPBPNNPPPIBDJPJFDHPHJAEJPBBDPIPPPLPKNADKEPGHEIPKHPOPPPAPBPIPAPPPDLPGPPEPPNPPCCPEBDADPHDBPBBCPCPGOPPDFBFLPPAKBAPPPBPPPEOHLOJBPOBBIMEJPMKODDCGBPHPPPPPPDPPKPPPPGCDPPPANMDCPNPDPBPPPDKPPHGDIJPPCPAGDCHPPPIIPBPIKPNAJCEMAPJPMKFLNPPFEBPGPHIFPAPNLPKLODBPPPHPPPPLPGHPNODIFAFPBPPCPPFGPPBPPDPPAPIBPGOPDNPPFPPPLAPICPNPFGPDNPPCPPJPGPPNPCOPGPBMLPDNPPCPPPPPDPKPPLIDMPCPLPFEIPPPBHGLPMHPPPPPJEKPPBBBHPGAALNPGPPDHNBPCBPOFPCPPKLPPOPHPBBHDGDPECCPGFPPPBGPMFPPNPPHEKPPPELPPGPPPJFPGPMBPPHFNNPPPPKEPJAECPPPFDPPIIFDLMPEOLNDCAGLPAPPEIPPPPIPEAEPPPNPONPMFPHPPDFPIHFKMPPCPICPECBEDPPPPMDPPPPAPOGPPIGBPKPLPKFPEBAFPAEPPPEPPPLPPPDPGOFPBJAPOPPDPPFCPOPAFBJGGLPMPPJBJDIPEEHJIFBDDMLJLCPAPMABPDPBPHOPFCPCPOIHEPPIBPMIPEPIBACBFOAPPBHCEGPAKDPFPEAPKPPBPIMPPPJPPPJPPIPGHMIFFPGPPPHPPOCAKAMGPPFAJPAIPPGPPGEPHPLPPPDADPCNPPPPNPGCAPAPP'}}}}, {'_index': '441topfgan3xuxg2', '_type': '_doc', '_id': 'zQpe80PC2dcqMCGmXIGpSKHMShnckiYZ', '_score': 1.0, '_source': {'system': {'jobId': 'ac349441-0b36-1ad0-b0b3-b25968f5b7ae', 'dataSourceId': '4facb80c-0981-11e0-b755-363f4581d984', 'timeCreated': '2020-06-10T20:16:56.100450Z', 'state': 'Analyzed', 'projectId': '564de5f9-4027-4314-997f-a23d4e879e81', 'taskId': 'ac349442-0b36-1ad0-b0b3-b25968f5b7ae', 'timeModified': '2020-06-10T20:47:31.550697Z'}, 'source': {'path': 'gs://zorroa-dev-data/zifar/truck/84.Bollinger-B2-3_4-Front-1280x720.jpg', 'extension': 'jpg', 'filename': '84.Bollinger-B2-3_4-Front-1280x720.jpg', 'mimetype': 'image/jpeg', 'filesize': 64138, 'checksum': 2499279810}, 'metrics': {'pipeline': [{'processor': 'zmlp_core.core.PreCacheSourceFileProcessor', 'module': 'standard', 'checksum': 2178814325, 'executionTime': 0.23, 'executionDate': '2020-06-10T20:47:04.653384'}, {'processor': 'zmlp_core.core.FileImportProcessor', 'module': 'standard', 'checksum': 117837444, 'executionTime': 0.28, 'executionDate': '2020-06-10T20:47:05.507262'}, {'processor': 'zmlp_core.proxy.ImageProxyProcessor', 'module': 'standard', 'checksum': 457707303, 'executionTime': 3.52, 'executionDate': '2020-06-10T20:47:09.500716'}, {'processor': 'zmlp_core.proxy.VideoProxyProcessor', 'module': 'standard', 'checksum': 482873147, 'executionTime': 0}, {'processor': 'zmlp_analysis.zvi.ZviSimilarityProcessor', 'module': 'standard', 'checksum': 1879445844, 'executionTime': 0.73, 'executionDate': '2020-06-10T20:47:25.565146'}]}, 'media': {'width': 1280, 'height': 720, 'aspect': 1.78, 'orientation': 'landscape', 'type': 'image', 'length': 1}, 'clip': {'type': 'page', 'start': 1.0, 'stop': 1.0, 'length': 1.0, 'pile': 'iWEg85I1kQ003hBDpSVU7nLbWj0', 'sourceAssetId': 'zQpe80PC2dcqMCGmXIGpSKHMShnckiYZ'}, 'files': [{'id': 'assets/zQpe80PC2dcqMCGmXIGpSKHMShnckiYZ/proxy/image_1024x576.jpg', 'name': 'image_1024x576.jpg', 'category': 'proxy', 'mimetype': 'image/jpeg', 'size': 223590, 'attrs': {'width': 1024, 'height': 576}}, {'id': 'assets/zQpe80PC2dcqMCGmXIGpSKHMShnckiYZ/proxy/image_512x288.jpg', 'name': 'image_512x288.jpg', 'category': 'proxy', 'mimetype': 'image/jpeg', 'size': 71762, 'attrs': {'width': 512, 'height': 288}}, {'id': 'assets/zQpe80PC2dcqMCGmXIGpSKHMShnckiYZ/web-proxy/web-proxy.jpg', 'name': 'web-proxy.jpg', 'category': 'web-proxy', 'mimetype': 'image/jpeg', 'size': 66190, 'attrs': {'width': 1024, 'height': 576}}], 'analysis': {'zvi-image-similarity': {'type': 'similarity', 'simhash': 'FPPDBHPPCPAAPCCJBBFDPAGIPPPHCPPPCOBLBBPBNNPPJPJPALLIGBPPMAEHAJBFJPOPPPAPABPEPPPJJPFHGGCPPDKECDPPCOIJPIHCIOEPJPCPBFFIAGPJOFGMCPDAGJMPKFHJDPPPPEDBPPPCKOPPOBALDAPOJPPPPEBPANPAPPGPPPPIPPNPEIPPPPHIDPHHBOPDCKJFPPPKPNJHPJGPFPAGKIKIKPODFGAPGPHPPAJPJPGDCAPPIOCPPPJJEEPPPDPFPKJKJKPDPCEDPJFJPLPBPPGPPNPGLPPMCNCEPDPFFHPAOFBEMPPCLPPIMPMDNNMPOBPCPIMJKDKPPPPPCPPPPPGPPPPPDDCODIPPAAKLEPPPAPGFOPBCMPKEFKBPPBJJFPPPGPIPPBBAPDPBJFPBBPPFDFNDIAPPBGDPJAAPNINPFGPDHPPGPAPCLPAFLPPPPPPPPBPCPFCPFKJNPMBFPPJKJLECLNPPEPEPPPNMPLPCEBPFBPAOELLHICPPMAIHEFNLGPAPPPPFPAPODPGLAFPPPPLPPBDPPCFPPKKNFNANCPEPPJPPPCBLPEPPPDPEMOOGPKPBPPCPMJEOJPDJPMPIEJEIMPBGADPOPPCPBPCPDPONIGPOKGMPJPPBFPEFOAPEFPIHPODPPPGBPAFPPFJCBPAPPKPAAPPDLLHPFEBLPOIMPPDPCPPDAPCPFEPPBOPNGPPHGPPPPPJPNHPIBEPPPPEPAPBDPPPBPIPPGAOKKALEPFMBMPJBPPAPMKMPEPPFPKNJPMPBPEOEPLPPLMDAPPPLAPNPDAPCHPHHPAPPFPPMFPKCBPHBECPDPNPPAPCGPDDPPDPPEPAPNPCNCPFBCKFMPJPFGONPBILPFPFPKGKPPPJIPFBFKEBDCGDIPEBPEPHICPFPPPIHMBOPHFGPPEPANPPPMCPKPPPPPBCPPJPMAFAHBPLEPBIAFPPPABPEPPGAJPPPCPJAFMPDHCPBAPPPPCBCPPPDPHJNAPAPCFMPPPIPEPDPBGOONBPMPMONPONPPPMPFPNPEFCGJBPADHCMPEKPPELKHOPPPDHMFHMPGPLAIPBEDPPPPKBPPFINPFPMPPPPPBPODKPJDBPPGPBKEFLHPPPPCLPBPIPOLPPPAEPAOKPEHOPBPPIDPHEPPPAMPPBPPEHKFGPMPBPPFPHPPPEAPMPLPPNIPPBGBAIPMKKPPLDGPPBAPEPCGPPPPKAMAACFDPENHJPMPPHPAPPMPKABDPBBPPHLJJPAFDEMBLFPPAPGPPPPNAOPBBBPALNPPPPMAIKPOACEGPIPPDMGDAPBLCPPDDPEPPPBGPGAPPMFPFBPPCBKPNBPFCAOBBNPPNEDCPKPOINNBPPPEADPBPPDIBDPPCACBPJPHIBDHICJPHPPCEKPLGPBGKPPJPIPPACPACPNPPPPPPPHKFPJEKPKFFNPPBOFNKPPPDIBPPDPPBEHFCPPPDPIPDMPPGLAPBPHEPBPHCCDHOBEACPBPIPGPPPHBPPCGMPPCCEMPPHFPEDPDHPPGLPAJFNDKPPPPPPNDNOEDPDPDMPIBPOKDPPIPPLCKPMGBKPPPGPPPEMPIPPPDINCPCEFPCJPPGPJPCNAAIPGPKDPJACPHPEAEDPPPPBJJPEIJDFIPLPPCABGPPEDDPFDFBPPPPEDPPLJGPPCPPCPFKPPADPFPPMPPPGNIPBPPGPDPPPPDKIFPPCPGHFEBIGGPPPJCPEDPEPPMPPIPPPGHPPDKHPPDPOPPGPCPPGPAMOHFKFMPOPPJOLFPFFPCJIMPCPPPEAPCHPHMCPDOCDPPPOLJPPPLPNNDGFGCHJEPCPIAPCJNPPPFPCPPPPPPDPDADPJKDCGPPHPPEFPJHCDEPCGAJHGPPOKLPPLPPEGPKPJJPEPGPKIFDJOCPJNPPNGBPBHMBIPPGPPBPDEJBIPJGNCPOPJAOJGPKGJELHCHBFFLPNIBPAINPPOGNPCLCKEPFPPPPPPPPGPBCCPGPDPDBAIEHBEAOCPPCENEADIBFAGMIPPMFPMAPELLBOP'}}}}]}}  # noqa
 
-    def test_get_es_query(self, mock_query_data, monkeypatch, zmlp_app):
+    def test_get_es_query(self, mock_query_data, monkeypatch, mock_request):
         monkeypatch.setattr(ZmlpClient, 'post', self.mock_post_return)
-        _filter = self.Filter(mock_query_data, zmlp_app)
+        _filter = self.Filter(mock_query_data, mock_request)
         query = _filter.get_es_query()
         assert query == {
             'query': {
@@ -615,7 +655,7 @@ class TestSimilarityFilter(FilterBaseTestCase):
         with pytest.raises(ImproperlyConfigured):
             _filter.get_es_query()
 
-    def test_get_query_with_optionals(self, monkeypatch, zmlp_app):
+    def test_get_query_with_optionals(self, monkeypatch, mock_request):
         monkeypatch.setattr(ZmlpClient, 'post', self.mock_post_return)
         _filter = self.Filter({
             'type': SimilarityFilter.type,
@@ -626,7 +666,7 @@ class TestSimilarityFilter(FilterBaseTestCase):
                 'minScore': 0.50,
                 'boost': 0.8
             }
-        }, zmlp_app)
+        }, mock_request)
         query = _filter.get_es_query()
         assert query == {
             'query': {

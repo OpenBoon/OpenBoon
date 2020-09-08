@@ -7,7 +7,7 @@ import Button, { VARIANTS } from '../Button'
 
 import BackSvg from '../Icons/back.svg'
 
-const AssetNavigation = ({ projectId, assetId, query }) => {
+const AssetNavigation = ({ projectId, assetId, query, filename }) => {
   const idString = `?assetId=${assetId}`
   const queryString = query ? `&query=${query}` : ''
 
@@ -33,6 +33,10 @@ const AssetNavigation = ({ projectId, assetId, query }) => {
           <BackSvg height={constants.icons.regular} />
         </Button>
       </Link>
+
+      <div>{filename}</div>
+
+      <div css={{ width: spacing.base * 2 + constants.icons.regular }} />
     </div>
   )
 }
@@ -41,6 +45,7 @@ AssetNavigation.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   query: PropTypes.string.isRequired,
+  filename: PropTypes.string.isRequired,
 }
 
 export default AssetNavigation
