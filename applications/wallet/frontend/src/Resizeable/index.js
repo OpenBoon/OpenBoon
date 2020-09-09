@@ -43,14 +43,14 @@ const Resizeable = ({
 
     const sizeCalculation = size - difference * direction
 
-    const finalValue =
+    const finalSize =
       sizeCalculation < childFixedSize ? minSize : sizeCalculation
 
     setSize({
-      value: finalValue,
+      value: Math.max(minSize, finalSize),
     })
 
-    onMouseUp({ size: finalValue })
+    onMouseUp({ size: finalSize })
 
     window.removeEventListener('mousemove', handleMouseMove)
     window.removeEventListener('mouseup', handleMouseUp)

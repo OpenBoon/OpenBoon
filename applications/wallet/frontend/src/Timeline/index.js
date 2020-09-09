@@ -13,7 +13,7 @@ import TimelineDetections from './Detections'
 // TODO: make resizeable height
 const TIMELINE_HEIGHT = 300
 
-const BAR_HEIGHT = 36
+const BAR_HEIGHT = 43
 const MIN_HEIGHT = 300
 
 let reloadKey = 0
@@ -40,6 +40,7 @@ const Timeline = ({ videoRef }) => {
       >
         <div>
           <Button
+            aria-label="Open Timeline"
             variant={VARIANTS.ICON}
             style={{
               padding: spacing.small,
