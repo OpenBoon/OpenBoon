@@ -338,9 +338,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
     <div
       className="emotion-32"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-31"
       >
@@ -823,9 +821,7 @@ exports[`<DataVisualization /> should render properly 2`] = `
     <div
       className="emotion-12"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-11"
       >
@@ -1232,9 +1228,7 @@ exports[`<DataVisualization /> should render properly 3`] = `
     <div
       className="emotion-34"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-33"
       >
@@ -1726,9 +1720,7 @@ exports[`<DataVisualization /> should render properly 4`] = `
     <div
       className="emotion-32"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-31"
       >

@@ -311,9 +311,7 @@ exports[`<Visualizer /> should render properly 1`] = `
     <div
       className="emotion-9"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-8"
       >
@@ -814,9 +812,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
     <div
       className="emotion-9"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-8"
       >
