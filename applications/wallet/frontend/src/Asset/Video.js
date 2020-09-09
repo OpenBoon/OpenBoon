@@ -5,6 +5,12 @@ import PropTypes from 'prop-types'
 import Feature from '../Feature'
 import Timeline from '../Timeline'
 
+// TODO: fetch tracks from backend
+const TRACKS = [
+  { label: 'English', src: '/webvtt/english.vtt' },
+  { label: 'French', src: '/webvtt/french.vtt' },
+]
+
 const AssetVideo = ({ assetRef, uri, mediaType }) => {
   const videoRef = useRef()
 
@@ -19,6 +25,11 @@ const AssetVideo = ({ assetRef, uri, mediaType }) => {
         disablePictureInPicture
       >
         <source ref={assetRef} src={uri} type={mediaType} />
+        <Feature flag="timeline" envs={[]}>
+          {TRACKS.map(({ label, src }) => {
+            return <track key={label} kind="captions" label={label} src={src} />
+          })}
+        </Feature>
       </video>
 
       <Feature flag="timeline" envs={[]}>

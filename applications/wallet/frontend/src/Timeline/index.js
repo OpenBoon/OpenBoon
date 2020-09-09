@@ -11,6 +11,8 @@ import Button, { VARIANTS } from '../Button'
 
 import { formatPaddedSeconds } from './helpers'
 
+import TimelineCaptions from './Captions'
+
 const Timeline = ({ videoRef }) => {
   const [, setTick] = useState()
 
@@ -60,13 +62,35 @@ const Timeline = ({ videoRef }) => {
         }}
       >
         <div>
-          <Button variant={VARIANTS.ICON}>Timelime</Button>
+          <Button
+            variant={VARIANTS.ICON}
+            style={{
+              padding: spacing.small,
+              ':hover, &.focus-visible:focus': {
+                backgroundColor: colors.structure.mattGrey,
+              },
+            }}
+          >
+            Timelime
+          </Button>
         </div>
 
-        <div css={{ display: 'flex' }}>
+        <div
+          css={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: spacing.small,
+          }}
+        >
           <Button
             aria-label="Previous Second"
             variant={VARIANTS.ICON}
+            style={{
+              padding: spacing.small,
+              ':hover, &.focus-visible:focus': {
+                backgroundColor: colors.structure.mattGrey,
+              },
+            }}
             onClick={async () => {
               video.pause()
               video.currentTime = Math.trunc(video.currentTime) - 1
@@ -78,9 +102,17 @@ const Timeline = ({ videoRef }) => {
             />
           </Button>
 
+          <div css={{ width: spacing.small }} />
+
           <Button
             aria-label={video.paused ? 'Play' : 'Pause'}
             variant={VARIANTS.ICON}
+            style={{
+              padding: spacing.small,
+              ':hover, &.focus-visible:focus': {
+                backgroundColor: colors.structure.mattGrey,
+              },
+            }}
             onClick={async () => {
               if (video.paused) {
                 video.play()
@@ -96,9 +128,17 @@ const Timeline = ({ videoRef }) => {
             )}
           </Button>
 
+          <div css={{ width: spacing.small }} />
+
           <Button
             aria-label="Next Second"
             variant={VARIANTS.ICON}
+            style={{
+              padding: spacing.small,
+              ':hover, &.focus-visible:focus': {
+                backgroundColor: colors.structure.mattGrey,
+              },
+            }}
             onClick={async () => {
               video.pause()
               video.currentTime = Math.trunc(video.currentTime) + 1
@@ -125,6 +165,7 @@ const Timeline = ({ videoRef }) => {
             >
               {formatPaddedSeconds({ seconds: video.currentTime })}
             </div>
+
             <div
               css={{
                 padding: spacing.small,
@@ -137,9 +178,7 @@ const Timeline = ({ videoRef }) => {
           </div>
         </div>
 
-        <div>
-          <Button variant={VARIANTS.ICON}>CC</Button>
-        </div>
+        <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
       </div>
       <div>{/* Insert Expanding Zone here */}</div>
     </div>

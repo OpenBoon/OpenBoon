@@ -4,6 +4,8 @@ import Timeline from '..'
 
 const noop = () => {}
 
+jest.mock('../Captions', () => 'TimelineCaptions')
+
 describe('<Timeline />', () => {
   it('should not render until video has loaded with duration', () => {
     const component = TestRenderer.create(
