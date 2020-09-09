@@ -58,6 +58,23 @@ describe('<FiltersMenuSection />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should not render with missing model', () => {
+    require('swr').__setMockUseSWRResponse({ data: { results: [] } })
+
+    const component = TestRenderer.create(
+      <FiltersMenuSection
+        projectId={PROJECT_ID}
+        path="labels"
+        attribute={MODEL_ID}
+        value={['label']}
+        filters={[]}
+        onClick={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toEqual(null)
+  })
+
   it('should render properly for a sub-section', () => {
     require('swr').__setMockUseSWRResponse({ data: models })
 
