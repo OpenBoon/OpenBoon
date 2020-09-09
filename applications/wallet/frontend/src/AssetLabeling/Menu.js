@@ -40,7 +40,7 @@ const AssetLabelingMenu = ({
   return (
     <>
       <Menu
-        open="left"
+        open="bottom-left"
         button={ButtonActions}
         style={{ color: colors.structure.steel }}
       >

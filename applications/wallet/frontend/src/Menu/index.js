@@ -25,8 +25,8 @@ const Menu = ({ button, children, open, style }) => {
           css={{
             position: 'absolute',
             zIndex: zIndex.reset,
-            top: '100%',
-            [open === 'left' ? 'right' : 'left']: 0,
+            [open.includes('bottom') ? 'top' : 'bottom']: '100%',
+            [open.includes('left') ? 'right' : 'left']: 0,
             backgroundColor: colors.structure.steel,
             borderRadius: constants.borderRadius.small,
             boxShadow: constants.boxShadows.menu,
@@ -54,7 +54,12 @@ Menu.defaultProps = {
 }
 
 Menu.propTypes = {
-  open: PropTypes.oneOf(['left', 'right']).isRequired,
+  open: PropTypes.oneOf([
+    'top-left',
+    'top-right',
+    'bottom-left',
+    'bottom-right',
+  ]).isRequired,
   button: PropTypes.func.isRequired,
   style: stylesShape,
   children: PropTypes.func.isRequired,

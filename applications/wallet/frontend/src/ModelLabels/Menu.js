@@ -15,7 +15,7 @@ const ModelLabelsMenu = ({ projectId, modelId, label, revalidate }) => {
 
   return (
     <>
-      <Menu open="left" button={ButtonActions}>
+      <Menu open="bottom-left" button={ButtonActions}>
         {({ onBlur, onClick }) => (
           <div>
             <ul>

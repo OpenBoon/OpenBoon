@@ -45,7 +45,7 @@ const ProjectSwitcher = ({ projectId }) => {
 
   return (
     <Menu
-      open="right"
+      open="bottom-right"
       button={({ onBlur, onClick, isMenuOpen }) => (
         <Button variant={VARIANTS.MENU} onBlur={onBlur} onClick={onClick}>
           <div

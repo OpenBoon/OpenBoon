@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Timeline /> should pause 1`] = `
-.emotion-10 {
+.emotion-11 {
   padding-left: 8px;
   padding-right: 8px;
   background-color: #252525;
@@ -51,6 +51,7 @@ exports[`<Timeline /> should pause 1`] = `
   background-color: transparent;
   padding: 8px;
   color: #808080;
+  padding: 4px;
 }
 
 .emotion-0:hover {
@@ -76,11 +77,21 @@ exports[`<Timeline /> should pause 1`] = `
   color: #808080;
 }
 
-.emotion-8 {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
+  background-color: #2e2e2e;
+}
+
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-1 {
@@ -89,7 +100,11 @@ exports[`<Timeline /> should pause 1`] = `
   transform: rotate(-180deg);
 }
 
-.emotion-7 {
+.emotion-3 {
+  width: 4px;
+}
+
+.emotion-9 {
   padding: 4px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -101,7 +116,7 @@ exports[`<Timeline /> should pause 1`] = `
   align-items: center;
 }
 
-.emotion-5 {
+.emotion-7 {
   background-color: #191919;
   padding: 4px;
   padding-left: 8px;
@@ -109,7 +124,7 @@ exports[`<Timeline /> should pause 1`] = `
   color: #0074f5;
 }
 
-.emotion-6 {
+.emotion-8 {
   padding: 4px;
   padding-left: 8px;
   padding-right: 8px;
@@ -117,7 +132,7 @@ exports[`<Timeline /> should pause 1`] = `
 
 <div>
   <div
-    className="emotion-10"
+    className="emotion-11"
   >
     <div>
       <button
@@ -129,7 +144,7 @@ exports[`<Timeline /> should pause 1`] = `
       </button>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-10"
     >
       <button
         aria-label="Previous Second"
@@ -143,6 +158,9 @@ exports[`<Timeline /> should pause 1`] = `
           height={20}
         />
       </button>
+      <div
+        className="emotion-3"
+      />
       <button
         aria-label="Pause"
         className="emotion-0"
@@ -154,6 +172,9 @@ exports[`<Timeline /> should pause 1`] = `
           height={20}
         />
       </button>
+      <div
+        className="emotion-3"
+      />
       <button
         aria-label="Next Second"
         className="emotion-0"
@@ -166,37 +187,44 @@ exports[`<Timeline /> should pause 1`] = `
         />
       </button>
       <div
-        className="emotion-7"
+        className="emotion-9"
       >
         <div
-          className="emotion-5"
+          className="emotion-7"
         >
           00:00:06
         </div>
         <div
-          className="emotion-6"
+          className="emotion-8"
         >
           / 
           00:00:18
         </div>
       </div>
     </div>
-    <div>
-      <button
-        className="emotion-0"
-        onClick={[Function]}
-        type="button"
-      >
-        CC
-      </button>
-    </div>
+    <TimelineCaptions
+      initialTrackIndex={-1}
+      videoRef={
+        Object {
+          "current": Object {
+            "addEventListener": [Function],
+            "currentTime": 6,
+            "duration": 18,
+            "pause": [MockFunction],
+            "paused": false,
+            "play": [Function],
+            "removeEventListener": [Function],
+          },
+        }
+      }
+    />
   </div>
   <div />
 </div>
 `;
 
 exports[`<Timeline /> should play 1`] = `
-.emotion-10 {
+.emotion-11 {
   padding-left: 8px;
   padding-right: 8px;
   background-color: #252525;
@@ -246,6 +274,7 @@ exports[`<Timeline /> should play 1`] = `
   background-color: transparent;
   padding: 8px;
   color: #808080;
+  padding: 4px;
 }
 
 .emotion-0:hover {
@@ -271,11 +300,21 @@ exports[`<Timeline /> should play 1`] = `
   color: #808080;
 }
 
-.emotion-8 {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
+  background-color: #2e2e2e;
+}
+
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-1 {
@@ -284,7 +323,11 @@ exports[`<Timeline /> should play 1`] = `
   transform: rotate(-180deg);
 }
 
-.emotion-7 {
+.emotion-3 {
+  width: 4px;
+}
+
+.emotion-9 {
   padding: 4px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -296,7 +339,7 @@ exports[`<Timeline /> should play 1`] = `
   align-items: center;
 }
 
-.emotion-5 {
+.emotion-7 {
   background-color: #191919;
   padding: 4px;
   padding-left: 8px;
@@ -304,7 +347,7 @@ exports[`<Timeline /> should play 1`] = `
   color: #0074f5;
 }
 
-.emotion-6 {
+.emotion-8 {
   padding: 4px;
   padding-left: 8px;
   padding-right: 8px;
@@ -312,7 +355,7 @@ exports[`<Timeline /> should play 1`] = `
 
 <div>
   <div
-    className="emotion-10"
+    className="emotion-11"
   >
     <div>
       <button
@@ -324,7 +367,7 @@ exports[`<Timeline /> should play 1`] = `
       </button>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-10"
     >
       <button
         aria-label="Previous Second"
@@ -338,6 +381,9 @@ exports[`<Timeline /> should play 1`] = `
           height={20}
         />
       </button>
+      <div
+        className="emotion-3"
+      />
       <button
         aria-label="Play"
         className="emotion-0"
@@ -349,6 +395,9 @@ exports[`<Timeline /> should play 1`] = `
           height={20}
         />
       </button>
+      <div
+        className="emotion-3"
+      />
       <button
         aria-label="Next Second"
         className="emotion-0"
@@ -361,30 +410,37 @@ exports[`<Timeline /> should play 1`] = `
         />
       </button>
       <div
-        className="emotion-7"
+        className="emotion-9"
       >
         <div
-          className="emotion-5"
+          className="emotion-7"
         >
           00:00:00
         </div>
         <div
-          className="emotion-6"
+          className="emotion-8"
         >
           / 
           00:00:18
         </div>
       </div>
     </div>
-    <div>
-      <button
-        className="emotion-0"
-        onClick={[Function]}
-        type="button"
-      >
-        CC
-      </button>
-    </div>
+    <TimelineCaptions
+      initialTrackIndex={-1}
+      videoRef={
+        Object {
+          "current": Object {
+            "addEventListener": [Function],
+            "currentTime": 0,
+            "duration": 18,
+            "pause": [Function],
+            "paused": true,
+            "play": [MockFunction],
+            "removeEventListener": [Function],
+          },
+        }
+      }
+    />
   </div>
   <div />
 </div>
