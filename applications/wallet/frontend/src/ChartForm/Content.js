@@ -72,7 +72,9 @@ const ChartFormContent = ({
         value={state.attribute}
         placeholder={shortenedAttribute || 'Select Type'}
         options={filteredFields}
-        onChange={({ value }) => formDispatch({ attribute: value })}
+        onChange={({ value }) => {
+          formDispatch({ attribute: value })
+        }}
       />
 
       {(type === 'facet' || type === 'histogram') && (

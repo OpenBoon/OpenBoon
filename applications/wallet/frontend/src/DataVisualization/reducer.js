@@ -38,12 +38,10 @@ export const ACTIONS = {
 export const reducer = (state, { type: actionType, payload }) => {
   switch (actionType) {
     case 'CREATE': {
-      const { type } = payload
-
       return [
         {
           id: uuidv4(),
-          type,
+          ...payload,
         },
         ...state,
       ]

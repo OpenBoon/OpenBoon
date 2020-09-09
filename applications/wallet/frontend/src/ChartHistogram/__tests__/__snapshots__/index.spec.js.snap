@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ChartHistogram /> should render properly 1`] = `
-.emotion-29 {
+.emotion-34 {
   height: 100%;
   overflow: hidden;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-28 {
+.emotion-33 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -127,11 +127,19 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   width: 2px;
 }
 
-.emotion-27 {
+.emotion-32 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+}
+
+.emotion-31 {
+  height: 100%;
+}
+
+.emotion-31 .Loading {
+  min-height: auto;
 }
 
 .emotion-21 {
@@ -328,7 +336,7 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   font-family: Roboto,Avenir,"sans-serif";
 }
 
-.emotion-25 {
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -409,11 +417,15 @@ exports[`<ChartHistogram /> should render properly 1`] = `
   padding-right: 8px;
 }
 
+.emotion-25 {
+  width: 8px;
+}
+
 <div
-  className="emotion-29"
+  className="emotion-34"
 >
   <div
-    className="emotion-28"
+    className="emotion-33"
   >
     <div
       className="emotion-5"
@@ -456,102 +468,126 @@ exports[`<ChartHistogram /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-27"
+      className="emotion-32"
     >
       <div
-        className="emotion-21"
+        className="emotion-31"
       >
-        <div
-          className="emotion-6"
-        >
-          Label Prediction Confidence
-        </div>
         <div
           className="emotion-21"
         >
           <div
-            className="emotion-17"
+            className="emotion-6"
           >
-            <div
-              className="emotion-7"
-              title="93974 (0.15 - 0.24)"
-            />
-            <div
-              className="emotion-8"
-              title="59476 (0.24 - 0.34)"
-            />
-            <div
-              className="emotion-9"
-              title="43784 (0.34 - 0.43)"
-            />
-            <div
-              className="emotion-10"
-              title="34280 (0.43 - 0.53)"
-            />
-            <div
-              className="emotion-11"
-              title="30313 (0.53 - 0.62)"
-            />
-            <div
-              className="emotion-12"
-              title="26139 (0.62 - 0.72)"
-            />
-            <div
-              className="emotion-13"
-              title="25302 (0.72 - 0.81)"
-            />
-            <div
-              className="emotion-14"
-              title="26865 (0.81 - 0.91)"
-            />
-            <div
-              className="emotion-15"
-              title="51524 (0.91 - 1.00)"
-            />
-            <div
-              className="emotion-16"
-              title="3667 (1.00 - 1.09)"
-            />
+            Label Prediction Confidence
           </div>
           <div
-            className="emotion-18"
-          />
-          <div
-            className="emotion-20"
-          >
-            <span>
-              0.15
-            </span>
-            <span
-              className="emotion-19"
-            >
-              Confidence Score Range
-            </span>
-            <span>
-              1.00
-            </span>
-          </div>
-        </div>
-        <div
-          className="emotion-25"
-        >
-          <button
-            aria-label="Add Filter"
-            className="emotion-24"
-            onClick={[Function]}
-            type="button"
+            className="emotion-21"
           >
             <div
-              className="emotion-23"
+              className="emotion-17"
             >
-              <svg
-                className="emotion-22"
-                data-file-name="filter.svg"
-                height={20}
+              <div
+                className="emotion-7"
+                title="93974 (0.15 - 0.24)"
               />
-              Add Filter
+              <div
+                className="emotion-8"
+                title="59476 (0.24 - 0.34)"
+              />
+              <div
+                className="emotion-9"
+                title="43784 (0.34 - 0.43)"
+              />
+              <div
+                className="emotion-10"
+                title="34280 (0.43 - 0.53)"
+              />
+              <div
+                className="emotion-11"
+                title="30313 (0.53 - 0.62)"
+              />
+              <div
+                className="emotion-12"
+                title="26139 (0.62 - 0.72)"
+              />
+              <div
+                className="emotion-13"
+                title="25302 (0.72 - 0.81)"
+              />
+              <div
+                className="emotion-14"
+                title="26865 (0.81 - 0.91)"
+              />
+              <div
+                className="emotion-15"
+                title="51524 (0.91 - 1.00)"
+              />
+              <div
+                className="emotion-16"
+                title="3667 (1.00 - 1.09)"
+              />
             </div>
-          </button>
+            <div
+              className="emotion-18"
+            />
+            <div
+              className="emotion-20"
+            >
+              <span>
+                0.15
+              </span>
+              <span
+                className="emotion-19"
+              >
+                Confidence Score Range
+              </span>
+              <span>
+                1.00
+              </span>
+            </div>
+          </div>
+          <div
+            className="emotion-29"
+          >
+            <button
+              aria-label="Add Filter"
+              className="emotion-24"
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="emotion-23"
+              >
+                <svg
+                  className="emotion-22"
+                  data-file-name="filter.svg"
+                  height={20}
+                />
+                Add Filter
+              </div>
+            </button>
+            <div
+              className="emotion-25"
+            />
+            <button
+              aria-label="Add Facet Visualization"
+              className="emotion-24"
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="emotion-23"
+              >
+                <svg
+                  className="emotion-22"
+                  data-file-name="facet.svg"
+                  height={20}
+                />
+                Add Facet Visualization
+              </div>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1116,13 +1152,13 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
 `;
 
 exports[`<ChartHistogram /> should render properly without data 1`] = `
-.emotion-19 {
+.emotion-24 {
   height: 100%;
   overflow: hidden;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-18 {
+.emotion-23 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1242,11 +1278,19 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   width: 2px;
 }
 
-.emotion-17 {
+.emotion-22 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+}
+
+.emotion-21 {
+  height: 100%;
+}
+
+.emotion-21 .Loading {
+  min-height: auto;
 }
 
 .emotion-11 {
@@ -1303,7 +1347,7 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   font-family: Roboto,Avenir,"sans-serif";
 }
 
-.emotion-15 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1384,11 +1428,15 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
   padding-right: 8px;
 }
 
+.emotion-15 {
+  width: 8px;
+}
+
 <div
-  className="emotion-19"
+  className="emotion-24"
 >
   <div
-    className="emotion-18"
+    className="emotion-23"
   >
     <div
       className="emotion-5"
@@ -1431,61 +1479,85 @@ exports[`<ChartHistogram /> should render properly without data 1`] = `
       </div>
     </div>
     <div
-      className="emotion-17"
+      className="emotion-22"
     >
       <div
-        className="emotion-11"
+        className="emotion-21"
       >
-        <div
-          className="emotion-6"
-        >
-          Label Prediction Confidence
-        </div>
         <div
           className="emotion-11"
         >
           <div
-            className="emotion-7"
-          />
-          <div
-            className="emotion-8"
-          />
-          <div
-            className="emotion-10"
+            className="emotion-6"
           >
-            <span>
-              0.00
-            </span>
-            <span
-              className="emotion-9"
-            >
-              Confidence Score Range
-            </span>
-            <span>
-              1.00
-            </span>
+            Label Prediction Confidence
           </div>
-        </div>
-        <div
-          className="emotion-15"
-        >
-          <button
-            aria-label="Add Filter"
-            className="emotion-14"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-11"
           >
             <div
-              className="emotion-13"
+              className="emotion-7"
+            />
+            <div
+              className="emotion-8"
+            />
+            <div
+              className="emotion-10"
             >
-              <svg
-                className="emotion-12"
-                data-file-name="filter.svg"
-                height={20}
-              />
-              Add Filter
+              <span>
+                0.00
+              </span>
+              <span
+                className="emotion-9"
+              >
+                Confidence Score Range
+              </span>
+              <span>
+                1.00
+              </span>
             </div>
-          </button>
+          </div>
+          <div
+            className="emotion-19"
+          >
+            <button
+              aria-label="Add Filter"
+              className="emotion-14"
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="emotion-13"
+              >
+                <svg
+                  className="emotion-12"
+                  data-file-name="filter.svg"
+                  height={20}
+                />
+                Add Filter
+              </div>
+            </button>
+            <div
+              className="emotion-15"
+            />
+            <button
+              aria-label="Add Facet Visualization"
+              className="emotion-14"
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="emotion-13"
+              >
+                <svg
+                  className="emotion-12"
+                  data-file-name="facet.svg"
+                  height={20}
+                />
+                Add Facet Visualization
+              </div>
+            </button>
+          </div>
         </div>
       </div>
     </div>
