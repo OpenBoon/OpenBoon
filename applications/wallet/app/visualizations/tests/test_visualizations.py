@@ -72,7 +72,6 @@ class TestHistogram(TestBaseVisualizationTestCase):
             'type': 'histogram',
             'id': 'mySpecialGuy',
             'attribute': 'media.author',
-            'fieldType': 'labelConfidence',
             'options': {
                 'size': 10,
             }

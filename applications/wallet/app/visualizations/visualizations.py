@@ -145,7 +145,7 @@ class FacetVisualization(BaseVisualization):
 class HistogramVisualization(BaseVisualization):
 
     type = 'histogram'
-    required_keys = ['id', 'attribute', 'fieldType']
+    required_keys = ['id', 'attribute']
     required_option_keys = []
     agg_prefix = 'filter#labels.histogram#scores'
 
@@ -195,7 +195,7 @@ class HistogramVisualization(BaseVisualization):
             }
 
     def serialize_response_data(self, data):
-        if self.data['fieldType'] == 'labelConfidence':
+        if self.field_type == 'prediction':
             results = data['aggregations'][f'nested#{self.id}']['filter#labels']['histogram#scores']
         else:
             results = data['aggregations'][f'histogram#{self.id}']
