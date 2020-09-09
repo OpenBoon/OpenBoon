@@ -359,6 +359,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   className="emotion-10"
 >
   <Resizeable
+    childFixedSize={0}
     minSize={400}
     onMouseUp={[Function]}
     openToThe="left"
@@ -782,6 +783,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
     />
   </div>
   <Resizeable
+    childFixedSize={0}
     minSize={400}
     onMouseUp={[Function]}
     openToThe="right"

@@ -15,6 +15,7 @@ const Resizeable = ({
   openToThe,
   onMouseUp,
   children,
+  childFixedSize,
 }) => {
   const [size, setSize] = useLocalStorageState({
     key: storageName,
@@ -27,18 +28,29 @@ const Resizeable = ({
   const handleMouseMove = ({ clientX, clientY }) => {
     const difference = (openToThe === 'top' ? clientY : clientX) - originAxis
 
-    setSize({ value: size - difference * direction })
+    const sizeCalculation = size - difference * direction
+
+    setSize({
+      value: childFixedSize
+        ? Math.max(minSize, sizeCalculation)
+        : sizeCalculation,
+    })
   }
 
   /* istanbul ignore next */
   const handleMouseUp = ({ clientX, clientY }) => {
     const difference = (openToThe === 'top' ? clientY : clientX) - originAxis
 
-    const finalSize = size - difference * direction
+    const sizeCalculation = size - difference * direction
 
-    setSize({ value: Math.max(minSize, finalSize) })
+    const finalValue =
+      sizeCalculation < childFixedSize ? minSize : sizeCalculation
 
-    onMouseUp({ size: finalSize })
+    setSize({
+      value: finalValue,
+    })
+
+    onMouseUp({ size: finalValue })
 
     window.removeEventListener('mousemove', handleMouseMove)
     window.removeEventListener('mouseup', handleMouseUp)
@@ -59,6 +71,7 @@ const Resizeable = ({
         flexDirection: openToThe === 'top' ? 'column' : 'row',
         alignItems: 'stretch',
         flexWrap: 'nowrap',
+        overflow: 'hidden',
       }}
     >
       {openToThe === 'left' && (
@@ -113,6 +126,7 @@ Resizeable.propTypes = {
   openToThe: PropTypes.oneOf(['left', 'right', 'top']).isRequired,
   onMouseUp: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
+  childFixedSize: PropTypes.number.isRequired,
 }
 
 export default Resizeable

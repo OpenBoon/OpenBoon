@@ -23,6 +23,7 @@ const PanelContent = ({
       onMouseUp={({ size }) => {
         if (size < MIN_WIDTH) setOpenPanel({ value: '' })
       }}
+      childFixedSize={0}
     >
       <div
         css={{

@@ -24,6 +24,7 @@ exports[`<Resizeable /> should render properly with the cursor left 1`] = `
       "display": "flex",
       "flexDirection": "row",
       "flexWrap": "nowrap",
+      "overflow": "hidden",
     }
   }
 >
@@ -63,6 +64,7 @@ exports[`<Resizeable /> should render properly with the cursor right 1`] = `
       "display": "flex",
       "flexDirection": "row",
       "flexWrap": "nowrap",
+      "overflow": "hidden",
     }
   }
 >
@@ -102,6 +104,7 @@ exports[`<Resizeable /> should render properly with the cursor top 1`] = `
       "display": "flex",
       "flexDirection": "column",
       "flexWrap": "nowrap",
+      "overflow": "hidden",
     }
   }
 >

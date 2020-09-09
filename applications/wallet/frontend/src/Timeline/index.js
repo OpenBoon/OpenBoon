@@ -13,6 +13,7 @@ import TimelineDetections from './Detections'
 // TODO: make resizeable height
 const TIMELINE_HEIGHT = 300
 
+const BAR_HEIGHT = 36
 const MIN_HEIGHT = 300
 
 let reloadKey = 0
@@ -21,7 +22,7 @@ const Timeline = ({ videoRef }) => {
   return (
     <Resizeable
       key={reloadKey}
-      minSize={MIN_HEIGHT}
+      minSize={BAR_HEIGHT}
       storageName="assetTimelineHeight"
       openToThe="top"
     >
@@ -49,10 +50,10 @@ const Timeline = ({ videoRef }) => {
             onClick={() => {
               reloadKey += 1
 
-              if (height > MIN_HEIGHT) {
-                setHeight({ value: MIN_HEIGHT })
+              if (height > BAR_HEIGHT) {
+                setHeight({ value: BAR_HEIGHT })
               } else {
-                setHeight({ value: 300 })
+                setHeight({ value: MIN_HEIGHT })
               }
             }}
           >
@@ -81,7 +82,11 @@ const Timeline = ({ videoRef }) => {
         {/* TODO: add ruler and other stuff here */}
         <div css={{ height: constants.timeline.rulerRowHeight }} />
 
-        <TimelineDetections videoRef={videoRef} />
+        <TimelineCaptions videoRef={videoRef} />
+      </div>
+
+      <div css={{ height: TIMELINE_HEIGHT, overflow: 'auto' }}>
+        <TimelineDetections />
       </div>
     </Resizeable>
   )

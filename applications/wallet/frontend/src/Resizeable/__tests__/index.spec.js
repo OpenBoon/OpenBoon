@@ -12,6 +12,7 @@ describe('<Resizeable />', () => {
         storageName="yoga-div"
         openToThe="left"
         onMouseUp={noop}
+        childFixedSize={0}
       >
         Yoga div
       </Resizeable>,
@@ -27,6 +28,7 @@ describe('<Resizeable />', () => {
         storageName="yoga-div"
         openToThe="right"
         onMouseUp={noop}
+        childFixedSize={300}
       >
         Yoga div
       </Resizeable>,
@@ -42,6 +44,7 @@ describe('<Resizeable />', () => {
         storageName="yoga-div"
         openToThe="top"
         onMouseUp={noop}
+        childFixedSize={300}
       >
         Yoga div
       </Resizeable>,
