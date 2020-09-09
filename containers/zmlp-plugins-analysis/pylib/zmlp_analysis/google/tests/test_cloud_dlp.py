@@ -65,7 +65,8 @@ class CloudDLPDetectEntitiesTests(PluginUnitTestCase):
         assert processor.sanitize_entity('STREET_ADDRESS', address) == '666 Foobar Ave Baz'
 
         address = '666 Barbaz Road, P.o box 35, foobar, FO 53921'
-        assert processor.sanitize_entity('STREET_ADDRESS', address) == '666 Barbaz Rd PO Box 35 Foobar Fo 53921'
+        assert processor.sanitize_entity('STREET_ADDRESS', address) == \
+               '666 Barbaz Rd PO Box 35 Foobar Fo 53921'
 
         date = 'December 30, 2012'
         assert processor.sanitize_entity('DATE', date) == '12/30/2012'
