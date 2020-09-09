@@ -6,11 +6,20 @@ import { constants, spacing, typography, colors } from '../Styles'
 
 import chartShape from '../Chart/shape'
 
-import { encode, cleanup, decode, ACTIONS, dispatch } from '../Filters/helpers'
-import { getQueryString } from '../Fetch/helpers'
-import Button, { VARIANTS } from '../Button'
-
 import FilterSvg from '../Icons/filter.svg'
+import HistogramSvg from '../Icons/histogram.svg'
+
+import {
+  encode,
+  cleanup,
+  decode,
+  ACTIONS as FILTER_ACTIONS,
+  dispatch as filterDispatch,
+} from '../Filters/helpers'
+import { getQueryString } from '../Fetch/helpers'
+import { ACTIONS as CHART_ACTIONS } from '../DataVisualization/reducer'
+
+import Button, { VARIANTS } from '../Button'
 
 const BAR_HEIGHT = 4
 const ICON_PADDING = spacing.small
@@ -29,14 +38,24 @@ const COLORS = [
   colors.signal.grass.base,
 ]
 
-const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
+const ChartFacetContent = ({
+  chart: { type, id, attribute, values },
+  dispatch: chartDispatch,
+}) => {
   const {
     pathname,
     query: { projectId, query },
   } = useRouter()
 
   const visuals = encode({
-    filters: [{ type, id, attribute, options: { size: values } }],
+    filters: [
+      {
+        type,
+        id,
+        attribute,
+        options: { size: parseInt(values, 10) },
+      },
+    ],
   })
 
   const q = cleanup({ query })
@@ -116,8 +135,8 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
                 onClick={() => {
                   if (isSelected) return
 
-                  dispatch({
-                    type: ACTIONS.ADD_VALUE,
+                  filterDispatch({
+                    type: FILTER_ACTIONS.ADD_VALUE,
                     payload: {
                       pathname,
                       projectId,
@@ -200,15 +219,15 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          paddingTop: spacing.base,
+          paddingTop: spacing.normal,
         }}
       >
         <Button
           aria-label="Add Filter"
           variant={VARIANTS.MICRO}
           onClick={() => {
-            dispatch({
-              type: ACTIONS.ADD_FILTER,
+            filterDispatch({
+              type: FILTER_ACTIONS.ADD_FILTER,
               payload: {
                 pathname,
                 projectId,
@@ -230,6 +249,31 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
             Add Filter
           </div>
         </Button>
+
+        <div css={{ width: spacing.base }} />
+
+        <Button
+          aria-label="Add Histogram Visualization"
+          variant={VARIANTS.MICRO}
+          onClick={() => {
+            chartDispatch({
+              type: CHART_ACTIONS.CREATE,
+              payload: {
+                type: 'histogram',
+                attribute,
+                values: 10,
+              },
+            })
+          }}
+        >
+          <div css={{ display: 'flex', alignItems: 'center' }}>
+            <HistogramSvg
+              height={constants.icons.regular}
+              css={{ paddingRight: spacing.base }}
+            />
+            Add Histogram Visualization
+          </div>
+        </Button>
       </div>
     </div>
   )
@@ -237,6 +281,7 @@ const ChartFacetContent = ({ chart: { type, id, attribute, values } }) => {
 
 ChartFacetContent.propTypes = {
   chart: PropTypes.shape(chartShape).isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default ChartFacetContent

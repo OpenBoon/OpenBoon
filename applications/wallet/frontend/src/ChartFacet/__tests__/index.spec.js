@@ -298,4 +298,36 @@ describe('<ChartFacet />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should add a histogram chart', () => {
+    const mockDispatch = jest.fn()
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer/data-visualization',
+      query: { projectId: PROJECT_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: aggregate })
+
+    const chart = {
+      id: CHART_ID,
+      type: 'facet',
+      attribute: 'system.type',
+    }
+
+    const component = TestRenderer.create(
+      <ChartFacet chart={chart} chartIndex={0} dispatch={mockDispatch} />,
+    )
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Add Histogram Visualization' })
+        .props.onClick()
+    })
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      payload: { attribute: 'system.type', type: 'histogram', values: 10 },
+      type: 'CREATE',
+    })
+  })
 })
