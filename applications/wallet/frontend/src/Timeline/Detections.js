@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router'
+
 import { colors, constants, spacing } from '../Styles'
 
 import TimelineAccordion, { COLOR_TAB_WIDTH } from './Accordion'
@@ -16,7 +18,7 @@ const COLORS = [
   colors.signal.grass.base,
 ]
 
-// fetch modules from backend
+// TODO: fetch modules from backend
 const TIMELINE_MODULES = [
   {
     name: 'gcp-video-explicit-detection',
@@ -63,6 +65,10 @@ const TIMELINE_MODULES = [
 const WIDTH = 200
 
 const TimelineDetections = () => {
+  const {
+    query: { projectId },
+  } = useRouter()
+
   return (
     <div>
       <div css={{ width: WIDTH, borderRight: constants.borders.regular.smoke }}>
@@ -73,7 +79,7 @@ const TimelineDetections = () => {
             <TimelineAccordion
               key={module.name}
               moduleColor={COLORS[colorIndex]}
-              cacheKey={`TimelineDetections.${module.name}`}
+              cacheKey={`TimelineDetections.${projectId}.${module.name}`}
               module={module}
             >
               {module.predictions.map(({ label, count }) => {
