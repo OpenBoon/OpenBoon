@@ -137,4 +137,41 @@ describe('<ChartHistogram />', () => {
       },
     })
   })
+
+  it('should add a facet chart', () => {
+    const mockDispatch = jest.fn()
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer/data-visualization',
+      query: { projectId: PROJECT_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: aggregate })
+
+    const chart = {
+      id: CHART_ID,
+      type: 'histogram',
+      attribute: 'analysis.zvi-face-detection',
+      values: '10',
+    }
+
+    const component = TestRenderer.create(
+      <ChartHistogram chart={chart} chartIndex={0} dispatch={mockDispatch} />,
+    )
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Add Facet Visualization' })
+        .props.onClick()
+    })
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      payload: {
+        attribute: 'analysis.zvi-face-detection',
+        type: 'facet',
+        values: 10,
+      },
+      type: 'CREATE',
+    })
+  })
 })

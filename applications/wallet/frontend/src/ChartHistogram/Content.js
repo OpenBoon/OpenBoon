@@ -6,16 +6,26 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import chartShape from '../Chart/shape'
 
-import { ACTIONS, cleanup, dispatch, encode } from '../Filters/helpers'
-import { getQueryString } from '../Fetch/helpers'
+import FilterSvg from '../Icons/filter.svg'
+import FacetSvg from '../Icons/facet.svg'
 
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import {
+  ACTIONS as FILTER_ACTIONS,
+  cleanup,
+  dispatch as filterDispatch,
+  encode,
+} from '../Filters/helpers'
+import { getQueryString } from '../Fetch/helpers'
+import { ACTIONS as CHART_ACTIONS } from '../DataVisualization/reducer'
+
+import Button, { VARIANTS } from '../Button'
 
 import { formatTitle } from './helpers'
 
-import FilterSvg from '../Icons/filter.svg'
-
-const ChartHistogramContent = ({ chart: { type, id, attribute, values } }) => {
+const ChartHistogramContent = ({
+  chart: { type, id, attribute, values },
+  dispatch: chartDispatch,
+}) => {
   const {
     pathname,
     query: { projectId, query },
@@ -27,7 +37,6 @@ const ChartHistogramContent = ({ chart: { type, id, attribute, values } }) => {
         type,
         id,
         attribute,
-        fieldType: 'labelConfidence',
         options: { size: parseInt(values, 10) },
       },
     ],
@@ -130,10 +139,10 @@ const ChartHistogramContent = ({ chart: { type, id, attribute, values } }) => {
       <div css={{ display: 'flex', justifyContent: 'center' }}>
         <Button
           aria-label="Add Filter"
-          variant={BUTTON_VARIANTS.MICRO}
+          variant={VARIANTS.MICRO}
           onClick={() => {
-            dispatch({
-              type: ACTIONS.ADD_FILTER,
+            filterDispatch({
+              type: FILTER_ACTIONS.ADD_FILTER,
               payload: {
                 pathname,
                 projectId,
@@ -151,6 +160,31 @@ const ChartHistogramContent = ({ chart: { type, id, attribute, values } }) => {
             Add Filter
           </div>
         </Button>
+
+        <div css={{ width: spacing.base }} />
+
+        <Button
+          aria-label="Add Facet Visualization"
+          variant={VARIANTS.MICRO}
+          onClick={() => {
+            chartDispatch({
+              type: CHART_ACTIONS.CREATE,
+              payload: {
+                type: 'facet',
+                attribute,
+                values: 10,
+              },
+            })
+          }}
+        >
+          <div css={{ display: 'flex', alignItems: 'center' }}>
+            <FacetSvg
+              height={constants.icons.regular}
+              css={{ paddingRight: spacing.base }}
+            />
+            Add Facet Visualization
+          </div>
+        </Button>
       </div>
     </div>
   )
@@ -158,6 +192,7 @@ const ChartHistogramContent = ({ chart: { type, id, attribute, values } }) => {
 
 ChartHistogramContent.propTypes = {
   chart: PropTypes.shape(chartShape).isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default ChartHistogramContent

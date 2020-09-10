@@ -167,7 +167,7 @@ def test_reset_password(api_client, user, mailoutbox):
     response = api_client.post(reverse('api-password-reset'), {'email': user.email})
     assert response.status_code == 200
     message = mailoutbox[0]
-    assert message.subject == 'Wallet Password Reset'
+    assert message.subject == 'Zorroa ZVI Password Reset'
     search = re.search(r'token=(?P<token>.*)&uid=(?P<id>.*)', message.body)
     token = search.group('token')
     uid = search.group('id')

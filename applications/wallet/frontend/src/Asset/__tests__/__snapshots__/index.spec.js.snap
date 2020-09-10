@@ -310,6 +310,16 @@ exports[`<Asset /> should handle no query 1`] = `
                 src="https://storage.googleapis.com/video.mp4"
                 type="video/mp4"
               />
+              <track
+                kind="captions"
+                label="English"
+                src="/webvtt/english.vtt"
+              />
+              <track
+                kind="captions"
+                label="French"
+                src="/webvtt/french.vtt"
+              />
             </video>
           </div>
         </div>
@@ -1041,6 +1051,16 @@ exports[`<Asset /> should render videos properly 1`] = `
               <source
                 src="https://storage.googleapis.com/video.mp4"
                 type="video/mp4"
+              />
+              <track
+                kind="captions"
+                label="English"
+                src="/webvtt/english.vtt"
+              />
+              <track
+                kind="captions"
+                label="French"
+                src="/webvtt/french.vtt"
               />
             </video>
           </div>

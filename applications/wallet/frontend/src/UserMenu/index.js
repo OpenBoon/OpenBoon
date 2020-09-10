@@ -16,7 +16,7 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
   return (
     <div css={{ marginRight: -spacing.moderate }}>
       <Menu
-        open="left"
+        open="bottom-left"
         button={({ onBlur, onClick, isMenuOpen }) => (
           <Button
             aria-label="Open user menu"
