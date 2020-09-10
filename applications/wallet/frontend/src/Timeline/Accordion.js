@@ -6,12 +6,13 @@ import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
+export const COLOR_TAB_WIDTH = 3
+
 const TimelineAccordion = ({
   cacheKey,
   moduleColor,
   module: { name, predictions },
   children,
-  actions,
 }) => {
   const [isOpen, setOpen] = useLocalStorageState({
     key: cacheKey,
@@ -21,8 +22,6 @@ const TimelineAccordion = ({
   return (
     <details
       css={{
-        ':hover': { summary: { svg: { opacity: 1 } } },
-        borderRadius: constants.borderRadius.small,
         backgroundColor: colors.structure.soot,
         borderBottom: constants.borders.regular.smoke,
       }}
@@ -44,7 +43,7 @@ const TimelineAccordion = ({
         <div css={{ display: 'flex' }}>
           <div
             css={{
-              width: 3,
+              width: COLOR_TAB_WIDTH,
               backgroundColor: moduleColor,
               marginRight: spacing.moderate,
             }}
@@ -74,16 +73,11 @@ const TimelineAccordion = ({
               padding: spacing.base,
             }}
           >{`(${predictions.length})`}</div>
-          {actions}
         </div>
       </summary>
       <div>{children}</div>
     </details>
   )
-}
-
-TimelineAccordion.defaultProps = {
-  actions: false,
 }
 
 TimelineAccordion.propTypes = {
@@ -97,7 +91,6 @@ TimelineAccordion.propTypes = {
       }),
     ).isRequired,
   }).isRequired,
-  actions: PropTypes.node,
   cacheKey: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 }

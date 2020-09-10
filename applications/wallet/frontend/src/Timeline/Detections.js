@@ -1,6 +1,6 @@
 import { colors, constants, spacing } from '../Styles'
 
-import TimelineAccordion from './Accordion'
+import TimelineAccordion, { COLOR_TAB_WIDTH } from './Accordion'
 
 const COLORS = [
   colors.signal.sky.base,
@@ -30,7 +30,7 @@ const TIMELINE_MODULES = [
     predictions: [
       { label: 'Label 1', count: 3 },
       { label: 'Label 2', count: 6 },
-      { label: 'Label 3', count: 9 },
+      { label: 'Label 3 Plus More Text to Make A Long Label String', count: 9 },
     ],
   },
   {
@@ -55,13 +55,12 @@ const TIMELINE_MODULES = [
       { label: 'Text 1', count: 2 },
       { label: 'Text 2', count: 4 },
       { label: 'Text 3', count: 6 },
-      { label: 'Text 4 Plus More Text to Make A Long Label String', count: 8 },
+      { label: 'Text 4', count: 8 },
     ],
   },
 ]
 
 const WIDTH = 200
-const COLOR_TAB_WIDTH = 3
 
 const TimelineDetections = () => {
   return (
@@ -97,12 +96,13 @@ const TimelineDetections = () => {
                     >
                       <div
                         css={{
-                          padding: spacing.base,
-                          paddingLeft: spacing.base + spacing.spacious,
                           flex: 1,
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
+                          padding: spacing.base,
+                          paddingLeft: spacing.base + spacing.spacious,
+                          paddingRight: 0,
                         }}
                       >
                         {label}
