@@ -8,14 +8,13 @@ describe('<Resizeable />', () => {
   it('should render properly with the cursor left', () => {
     const component = TestRenderer.create(
       <Resizeable
-        minSize={400}
+        minExpandedSize={400}
+        minCollapsedSize={0}
         storageName="yoga-div"
         openToThe="left"
         onMouseUp={noop}
-        childFixedSize={0}
-      >
-        Yoga div
-      </Resizeable>,
+        render={() => 'Yoga div'}
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -24,14 +23,13 @@ describe('<Resizeable />', () => {
   it('should render properly with the cursor right', () => {
     const component = TestRenderer.create(
       <Resizeable
-        minSize={400}
+        minExpandedSize={400}
+        minCollapsedSize={300}
         storageName="yoga-div"
         openToThe="right"
         onMouseUp={noop}
-        childFixedSize={300}
-      >
-        Yoga div
-      </Resizeable>,
+        render={() => 'Yoga div'}
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -40,14 +38,13 @@ describe('<Resizeable />', () => {
   it('should render properly with the cursor top', () => {
     const component = TestRenderer.create(
       <Resizeable
-        minSize={400}
+        minExpandedSize={400}
+        minCollapsedSize={300}
         storageName="yoga-div"
         openToThe="top"
         onMouseUp={noop}
-        childFixedSize={300}
-      >
-        Yoga div
-      </Resizeable>,
+        render={() => 'Yoga div'}
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

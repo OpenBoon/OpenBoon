@@ -22,8 +22,9 @@ const Timeline = ({ videoRef }) => {
   return (
     <Resizeable
       key={reloadKey}
-      minSize={BAR_HEIGHT}
-      storageName="assetTimelineHeight"
+      minExpandedSize={MIN_HEIGHT}
+      minCollapsedSize={BAR_HEIGHT}
+      storageName="Timeline.height"
       openToThe="top"
     >
       <div
@@ -50,12 +51,6 @@ const Timeline = ({ videoRef }) => {
             }}
             onClick={() => {
               reloadKey += 1
-
-              if (height > BAR_HEIGHT) {
-                setHeight({ value: BAR_HEIGHT })
-              } else {
-                setHeight({ value: MIN_HEIGHT })
-              }
             }}
           >
             Timelime

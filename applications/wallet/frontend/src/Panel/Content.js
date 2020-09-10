@@ -17,78 +17,79 @@ const PanelContent = ({
 }) => {
   return (
     <Resizeable
-      minSize={MIN_WIDTH}
-      storageName={`${openToThe}OpeningPanelWidth`}
+      minExpandedSize={MIN_WIDTH}
+      minCollapsedSize={0}
+      storageName={`PanelContent.${openToThe}.width`}
       openToThe={openToThe}
       onMouseUp={({ size }) => {
         if (size < MIN_WIDTH) setOpenPanel({ value: '' })
       }}
-      childFixedSize={0}
-    >
-      <div
-        css={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100%',
-          backgroundColor: colors.structure.lead,
-          [openToThe === 'left'
-            ? 'marginRight'
-            : 'marginLeft']: spacing.hairline,
-        }}
-      >
-        <div
-          css={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: spacing.base,
-            paddingLeft: spacing.normal,
-            borderBottom: constants.borders.regular.smoke,
-          }}
-        >
-          <h2
-            css={{
-              whiteSpace: 'nowrap',
-              textTransform: 'uppercase',
-              fontWeight: typography.weight.medium,
-              fontSize: typography.size.regular,
-              lineHeight: typography.height.regular,
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            {title}
-            {isBeta && <BetaBadge />}
-          </h2>
-          <Button
-            aria-label="Close Panel"
-            variant={VARIANTS.ICON}
-            onClick={() => setOpenPanel({ value: '' })}
-            style={{
-              padding: 0,
-            }}
-          >
-            <DoubleChevronSvg
-              height={constants.icons.regular}
-              css={{
-                transform: `rotate(${openToThe === 'left' ? -90 : 90}deg)`,
-              }}
-            />
-          </Button>
-        </div>
+      render={() => (
         <div
           css={{
             display: 'flex',
             flexDirection: 'column',
-            flex: 1,
-            // hack to make content scroll without hiding overflow (overflow needed for Toggltip visibility)
-            height: '0%',
+            height: '100%',
+            backgroundColor: colors.structure.lead,
+            [openToThe === 'left'
+              ? 'marginRight'
+              : 'marginLeft']: spacing.hairline,
           }}
         >
-          {content}
+          <div
+            css={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: spacing.base,
+              paddingLeft: spacing.normal,
+              borderBottom: constants.borders.regular.smoke,
+            }}
+          >
+            <h2
+              css={{
+                whiteSpace: 'nowrap',
+                textTransform: 'uppercase',
+                fontWeight: typography.weight.medium,
+                fontSize: typography.size.regular,
+                lineHeight: typography.height.regular,
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              {title}
+              {isBeta && <BetaBadge />}
+            </h2>
+            <Button
+              aria-label="Close Panel"
+              variant={VARIANTS.ICON}
+              onClick={() => setOpenPanel({ value: '' })}
+              style={{
+                padding: 0,
+              }}
+            >
+              <DoubleChevronSvg
+                height={constants.icons.regular}
+                css={{
+                  transform: `rotate(${openToThe === 'left' ? -90 : 90}deg)`,
+                }}
+              />
+            </Button>
+          </div>
+          <div
+            css={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              // hack to make content scroll without hiding overflow (overflow needed for Toggltip visibility)
+              height: '0%',
+            }}
+          >
+            {content}
+          </div>
         </div>
-      </div>
-    </Resizeable>
+      )}
+    />
   )
 }
 
