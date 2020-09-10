@@ -5,8 +5,6 @@ import Panel from '..'
 import { constants } from '../../Styles'
 import DashboardSvg from '../../Icons/dashboard.svg'
 
-jest.mock('../../Resizeable', () => 'Resizeable')
-
 describe('<Panel />', () => {
   it('should render properly opening to the right', () => {
     const component = TestRenderer.create(
@@ -28,26 +26,11 @@ describe('<Panel />', () => {
       component.root.findByProps({ 'aria-label': 'Filters' }).props.onClick()
     })
 
+    expect(component.toJSON()).toMatchSnapshot()
+
     // Close Panel with Icon
     act(() => {
       component.root.findByProps({ 'aria-label': 'Filters' }).props.onClick()
-    })
-
-    // Open Panel with Icon
-    act(() => {
-      component.root.findByProps({ 'aria-label': 'Filters' }).props.onClick()
-    })
-
-    expect(component.toJSON()).toMatchSnapshot()
-
-    // Resize large
-    act(() => {
-      component.root.findByType('Resizeable').props.onMouseUp({ size: 500 })
-    })
-
-    // Resize to close
-    act(() => {
-      component.root.findByType('Resizeable').props.onMouseUp({ size: 100 })
     })
 
     // Open Panel with Icon

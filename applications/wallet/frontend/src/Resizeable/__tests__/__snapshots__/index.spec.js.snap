@@ -29,6 +29,7 @@ exports[`<Resizeable /> should render properly with the cursor left 1`] = `
   }
 >
   <div
+    aria-label="Resize to the left"
     className="emotion-0"
     onMouseDown={[Function]}
   />
@@ -74,6 +75,7 @@ exports[`<Resizeable /> should render properly with the cursor right 1`] = `
     Yoga div
   </div>
   <div
+    aria-label="Resize to the right"
     className="emotion-1"
     onMouseDown={[Function]}
   />
@@ -109,6 +111,7 @@ exports[`<Resizeable /> should render properly with the cursor top 1`] = `
   }
 >
   <div
+    aria-label="Resize to the top"
     className="emotion-0"
     onMouseDown={[Function]}
   />

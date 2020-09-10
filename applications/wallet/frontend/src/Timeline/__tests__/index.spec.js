@@ -45,11 +45,6 @@ describe('<Timeline />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Resize timeline
-    act(() => {
-      component.root.findByType('Resizeable').props.onMouseUp({ size: 500 })
-    })
-
     // Close timeline
     act(() => {
       component.root

@@ -1,8 +1,6 @@
 import TestRenderer from 'react-test-renderer'
 
-import Resizeable from '..'
-
-const noop = () => () => {}
+import Resizeable, { noop } from '..'
 
 describe('<Resizeable />', () => {
   it('should render properly with the cursor left', () => {
@@ -48,5 +46,9 @@ describe('<Resizeable />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('noop should do nothing', () => {
+    expect(noop()).toBe(undefined)
   })
 })

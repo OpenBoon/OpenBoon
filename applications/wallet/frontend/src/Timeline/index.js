@@ -26,65 +26,66 @@ const Timeline = ({ videoRef }) => {
       minCollapsedSize={BAR_HEIGHT}
       storageName="Timeline.height"
       openToThe="top"
-    >
-      <div
-        css={{
-          paddingLeft: spacing.base,
-          paddingRight: spacing.base,
-          backgroundColor: colors.structure.lead,
-          color: colors.structure.steel,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottom: constants.borders.regular.smoke,
-        }}
-      >
-        <div>
-          <Button
-            aria-label="Open Timeline"
-            variant={VARIANTS.ICON}
-            style={{
-              padding: spacing.small,
-              ':hover, &.focus-visible:focus': {
-                backgroundColor: colors.structure.mattGrey,
-              },
-            }}
-            onClick={() => {
-              reloadKey += 1
+      render={({ size }) => (
+        <>
+          <div
+            css={{
+              paddingLeft: spacing.base,
+              paddingRight: spacing.base,
+              backgroundColor: colors.structure.lead,
+              color: colors.structure.steel,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderBottom: constants.borders.regular.smoke,
             }}
           >
-            Timelime
-          </Button>
-        </div>
+            <div>
+              <Button
+                aria-label="Open Timeline"
+                variant={VARIANTS.ICON}
+                style={{
+                  padding: spacing.small,
+                  ':hover, &.focus-visible:focus': {
+                    backgroundColor: colors.structure.mattGrey,
+                  },
+                }}
+                onClick={() => {
+                  reloadKey += 1
+                }}
+              >
+                Timelime
+              </Button>
+            </div>
+            <TimelineControls />
+            <div
+              css={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                height: '0%',
+                position: 'relative',
+                marginLeft: constants.timeline.modulesWidth,
+                borderLeft: constants.borders.regular.smoke,
+              }}
+            >
+              <TimelinePlayhead videoRef={videoRef} />
 
-        <TimelineControls videoRef={videoRef} />
+              {/* TODO: add ruler and other stuff here */}
+              <div css={{ height: constants.timeline.rulerRowHeight }} />
 
-        <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
-      </div>
+              <TimelineCaptions videoRef={videoRef} />
+            </div>{' '}
+          </div>
 
-      <div
-        css={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          height: '0%',
-          position: 'relative',
-          marginLeft: constants.timeline.modulesWidth,
-          borderLeft: constants.borders.regular.smoke,
-        }}
-      >
-        <TimelinePlayhead videoRef={videoRef} />
-
-        {/* TODO: add ruler and other stuff here */}
-        <div css={{ height: constants.timeline.rulerRowHeight }} />
-
-        <TimelineCaptions videoRef={videoRef} />
-      </div>
-
-      <div css={{ height: TIMELINE_HEIGHT, overflow: 'auto' }}>
-        <TimelineDetections />
-      </div>
-    </Resizeable>
+          {size >= MIN_HEIGHT && (
+            <div css={{ height: TIMELINE_HEIGHT, overflow: 'auto' }}>
+              <TimelineDetections />
+            </div>
+          )}
+        </>
+      )}
+    />
   )
 }
 

@@ -11,9 +11,7 @@ export const getFinalSize = ({
     }
 
     // snap up
-    if (sizeCalculation > startingAxis) {
-      return minExpandedSize
-    }
+    return minExpandedSize
   }
 
   return sizeCalculation

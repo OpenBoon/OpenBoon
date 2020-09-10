@@ -8,6 +8,8 @@ import { zIndex } from '../Styles'
 
 import { getFinalSize } from './helpers'
 
+export const noop = () => {}
+
 const DRAG_SIZE = 4
 
 let originAxis
@@ -135,12 +137,16 @@ const Resizeable = ({
   )
 }
 
+Resizeable.defaultProps = {
+  onMouseUp: noop,
+}
+
 Resizeable.propTypes = {
   minExpandedSize: PropTypes.number.isRequired,
   minCollapsedSize: PropTypes.number.isRequired,
   storageName: PropTypes.string.isRequired,
   openToThe: PropTypes.oneOf(['left', 'right', 'top']).isRequired,
-  onMouseUp: PropTypes.func.isRequired,
+  onMouseUp: PropTypes.func,
   render: PropTypes.func.isRequired,
 }
 

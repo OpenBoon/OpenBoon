@@ -8,6 +8,8 @@ import Button, { VARIANTS } from '../Button'
 import Resizeable from '../Resizeable'
 import BetaBadge from '../BetaBadge'
 
+import { handleMouseUp } from './helpers'
+
 const MIN_WIDTH = 400
 
 const PanelContent = ({
@@ -21,9 +23,7 @@ const PanelContent = ({
       minCollapsedSize={0}
       storageName={`PanelContent.${openToThe}.width`}
       openToThe={openToThe}
-      onMouseUp={({ size }) => {
-        if (size < MIN_WIDTH) setOpenPanel({ value: '' })
-      }}
+      onMouseUp={handleMouseUp({ minWidth: MIN_WIDTH, setOpenPanel })}
       render={() => (
         <div
           css={{
