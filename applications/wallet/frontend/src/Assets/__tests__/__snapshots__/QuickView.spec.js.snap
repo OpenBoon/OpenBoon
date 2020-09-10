@@ -113,8 +113,7 @@ exports[`<AssetsQuickView /> should render properly 1`] = `
     className="emotion-1"
   >
     <AssetAsset
-      assetId="iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo"
-      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      isQuickView={true}
     />
   </div>
 </div>

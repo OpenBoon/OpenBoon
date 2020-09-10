@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
@@ -9,7 +10,7 @@ import AssetVideo from './Video'
 
 const FALLBACK_IMG = '/icons/fallback_3x.png'
 
-const AssetAsset = () => {
+const AssetAsset = ({ isQuickView }) => {
   const [hasError, setHasError] = useState(false)
 
   const {
@@ -49,12 +50,14 @@ const AssetAsset = () => {
 
   return (
     <>
-      <AssetNavigation
-        projectId={projectId}
-        assetId={assetId}
-        query={query}
-        filename={filename}
-      />
+      {!isQuickView && (
+        <AssetNavigation
+          projectId={projectId}
+          assetId={assetId}
+          query={query}
+          filename={filename}
+        />
+      )}
 
       <div
         css={{
@@ -72,7 +75,12 @@ const AssetAsset = () => {
           css={{ width: '100%', height: '100%', marginTop: spacing.hairline }}
         >
           {isVideo && !hasError ? (
-            <AssetVideo assetRef={assetRef} uri={uri} mediaType={mediaType} />
+            <AssetVideo
+              assetRef={assetRef}
+              uri={uri}
+              mediaType={mediaType}
+              isQuickView={isQuickView}
+            />
           ) : (
             <img
               ref={assetRef}
@@ -85,6 +93,10 @@ const AssetAsset = () => {
       </div>
     </>
   )
+}
+
+AssetAsset.propTypes = {
+  isQuickView: PropTypes.bool.isRequired,
 }
 
 export default AssetAsset

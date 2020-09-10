@@ -45,7 +45,7 @@ const AssetContent = () => {
           }}
         >
           <SuspenseBoundary>
-            <AssetAsset />
+            <AssetAsset isQuickView={false} />
           </SuspenseBoundary>
         </div>
 
