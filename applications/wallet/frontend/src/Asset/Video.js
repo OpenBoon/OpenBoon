@@ -11,7 +11,7 @@ const TRACKS = [
   { label: 'French', src: '/webvtt/french.vtt' },
 ]
 
-const AssetVideo = ({ assetRef, uri, mediaType }) => {
+const AssetVideo = ({ assetRef, uri, mediaType, isQuickView }) => {
   const videoRef = useRef()
 
   return (
@@ -32,9 +32,11 @@ const AssetVideo = ({ assetRef, uri, mediaType }) => {
         </Feature>
       </video>
 
-      <Feature flag="timeline" envs={[]}>
-        <Timeline videoRef={videoRef} />
-      </Feature>
+      {!isQuickView && (
+        <Feature flag="timeline" envs={[]}>
+          <Timeline videoRef={videoRef} />
+        </Feature>
+      )}
     </div>
   )
 }
@@ -43,6 +45,7 @@ AssetVideo.propTypes = {
   assetRef: PropTypes.shape({}).isRequired,
   uri: PropTypes.string.isRequired,
   mediaType: PropTypes.string.isRequired,
+  isQuickView: PropTypes.bool.isRequired,
 }
 
 export default AssetVideo
