@@ -73,7 +73,7 @@ const TimelineDetections = () => {
             <TimelineAccordion
               key={module.name}
               moduleColor={COLORS[colorIndex]}
-              cacheKey={`TimelineModules.${module.name}`}
+              cacheKey={`TimelineDetections.${module.name}`}
               module={module}
             >
               {module.predictions.map(({ label, count }) => {
