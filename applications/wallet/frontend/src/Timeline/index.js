@@ -12,6 +12,9 @@ import Button, { VARIANTS } from '../Button'
 import { formatPaddedSeconds } from './helpers'
 
 import TimelineCaptions from './Captions'
+import TimelineDetections from './Detections'
+
+const TIMELINE_HEIGHT = 200
 
 const Timeline = ({ videoRef }) => {
   const [, setTick] = useState()
@@ -59,6 +62,7 @@ const Timeline = ({ videoRef }) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          borderBottom: constants.borders.regular.smoke,
         }}
       >
         <div>
@@ -180,7 +184,9 @@ const Timeline = ({ videoRef }) => {
 
         <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
       </div>
-      <div>{/* Insert Expanding Zone here */}</div>
+      <div css={{ height: TIMELINE_HEIGHT, overflow: 'auto' }}>
+        <TimelineDetections />
+      </div>
     </div>
   )
 }
