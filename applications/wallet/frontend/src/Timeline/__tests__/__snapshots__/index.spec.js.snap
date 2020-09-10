@@ -18,6 +18,7 @@ exports[`<Timeline /> should pause 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  border-bottom: 1px solid #3b3b3b;
 }
 
 .emotion-0 {
@@ -128,6 +129,11 @@ exports[`<Timeline /> should pause 1`] = `
   padding: 4px;
   padding-left: 8px;
   padding-right: 8px;
+}
+
+.emotion-12 {
+  height: 200px;
+  overflow: auto;
 }
 
 <div>
@@ -219,7 +225,11 @@ exports[`<Timeline /> should pause 1`] = `
       }
     />
   </div>
-  <div />
+  <div
+    className="emotion-12"
+  >
+    <TimelineDetections />
+  </div>
 </div>
 `;
 
@@ -241,6 +251,7 @@ exports[`<Timeline /> should play 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  border-bottom: 1px solid #3b3b3b;
 }
 
 .emotion-0 {
@@ -353,6 +364,11 @@ exports[`<Timeline /> should play 1`] = `
   padding-right: 8px;
 }
 
+.emotion-12 {
+  height: 200px;
+  overflow: auto;
+}
+
 <div>
   <div
     className="emotion-11"
@@ -442,6 +458,10 @@ exports[`<Timeline /> should play 1`] = `
       }
     />
   </div>
-  <div />
+  <div
+    className="emotion-12"
+  >
+    <TimelineDetections />
+  </div>
 </div>
 `;

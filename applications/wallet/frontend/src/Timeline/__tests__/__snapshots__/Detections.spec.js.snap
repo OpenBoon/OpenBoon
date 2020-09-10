@@ -1,0 +1,1386 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TimelineDetections /> should render properly 1`] = `
+.emotion-110 {
+  width: 200px;
+  border-right: 1px solid #3b3b3b;
+}
+
+.emotion-16 {
+  border-radius: 2px;
+  background-color: #212121;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-16:hover summary svg {
+  opacity: 1;
+}
+
+.emotion-5 {
+  list-style-type: none;
+  background-color: #212121;
+}
+
+.emotion-5::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-5:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  width: 3px;
+  background-color: #0074f5;
+  margin-right: 12px;
+}
+
+.emotion-1 {
+  color: #0074f5;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px;
+  padding-right: 0;
+}
+
+.emotion-3 {
+  padding: 8px;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
+  width: 3px;
+  background-color: #0074f5;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  border-top: 1px solid #3b3b3b;
+  background-color: #191919;
+  overflow: hidden;
+}
+
+.emotion-7 {
+  padding: 8px;
+  padding-left: 40px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.emotion-8 {
+  padding: 8px;
+}
+
+.emotion-17 {
+  width: 3px;
+  background-color: #a03dc7;
+  margin-right: 12px;
+}
+
+.emotion-18 {
+  color: #a03dc7;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-23 {
+  width: 3px;
+  background-color: #a03dc7;
+}
+
+.emotion-39 {
+  width: 3px;
+  background-color: #d6680b;
+  margin-right: 12px;
+}
+
+.emotion-40 {
+  color: #d6680b;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-45 {
+  width: 3px;
+  background-color: #d6680b;
+}
+
+.emotion-61 {
+  width: 3px;
+  background-color: #ebb52e;
+  margin-right: 12px;
+}
+
+.emotion-62 {
+  color: #ebb52e;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-67 {
+  width: 3px;
+  background-color: #ebb52e;
+}
+
+.emotion-83 {
+  width: 3px;
+  background-color: #00bdc1;
+  margin-right: 12px;
+}
+
+.emotion-84 {
+  color: #00bdc1;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-89 {
+  width: 3px;
+  background-color: #00bdc1;
+}
+
+<div>
+  <div
+    className="emotion-110"
+  >
+    <details
+      className="emotion-16"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-explicit-detection"
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-0"
+          />
+           
+          <svg
+            className="emotion-1"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+          >
+            gcp-video-explicit-detection
+          </div>
+          <div
+            className="emotion-3"
+          >
+            (2)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-6"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Gh st
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-6"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Busters
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-16"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-label-detection"
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-17"
+          />
+           
+          <svg
+            className="emotion-18"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+          >
+            gcp-video-label-detection
+          </div>
+          <div
+            className="emotion-3"
+          >
+            (3)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-23"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Label 1
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-23"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Label 2
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (6)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-23"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Label 3
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (9)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-16"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-logo-detection"
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-39"
+          />
+           
+          <svg
+            className="emotion-40"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+          >
+            gcp-video-logo-detection
+          </div>
+          <div
+            className="emotion-3"
+          >
+            (3)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-45"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Logo 1
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (1)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-45"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Logo 2
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-45"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Logo 3
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (5)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-16"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-object-detection"
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-61"
+          />
+           
+          <svg
+            className="emotion-62"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+          >
+            gcp-video-object-detection
+          </div>
+          <div
+            className="emotion-3"
+          >
+            (3)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-67"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Object 1
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-67"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Object 2
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (4)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-67"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Object 3
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (4)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-16"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-text-detection"
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-83"
+          />
+           
+          <svg
+            className="emotion-84"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+          >
+            gcp-video-text-detection
+          </div>
+          <div
+            className="emotion-3"
+          >
+            (4)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-89"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Text 1
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (2)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-89"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Text 2
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (4)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-89"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Text 3
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (6)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-89"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Text 4 Plus More Text to Make A Long Label String
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (8)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+  <div />
+</div>
+`;
+
+exports[`<TimelineDetections /> should render properly 2`] = `
+.emotion-110 {
+  width: 200px;
+  border-right: 1px solid #3b3b3b;
+}
+
+.emotion-16 {
+  border-radius: 2px;
+  background-color: #212121;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-16:hover summary svg {
+  opacity: 1;
+}
+
+.emotion-5 {
+  list-style-type: none;
+  background-color: #212121;
+}
+
+.emotion-5::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-5:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  width: 3px;
+  background-color: #0074f5;
+  margin-right: 12px;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px;
+  padding-right: 0;
+}
+
+.emotion-3 {
+  padding: 8px;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
+  width: 3px;
+  background-color: #0074f5;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  border-top: 1px solid #3b3b3b;
+  background-color: #191919;
+  overflow: hidden;
+}
+
+.emotion-7 {
+  padding: 8px;
+  padding-left: 40px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.emotion-8 {
+  padding: 8px;
+}
+
+.emotion-17 {
+  width: 3px;
+  background-color: #a03dc7;
+  margin-right: 12px;
+}
+
+.emotion-18 {
+  color: #a03dc7;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-23 {
+  width: 3px;
+  background-color: #a03dc7;
+}
+
+.emotion-39 {
+  width: 3px;
+  background-color: #d6680b;
+  margin-right: 12px;
+}
+
+.emotion-40 {
+  color: #d6680b;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-45 {
+  width: 3px;
+  background-color: #d6680b;
+}
+
+.emotion-61 {
+  width: 3px;
+  background-color: #ebb52e;
+  margin-right: 12px;
+}
+
+.emotion-62 {
+  color: #ebb52e;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-67 {
+  width: 3px;
+  background-color: #ebb52e;
+}
+
+.emotion-83 {
+  width: 3px;
+  background-color: #00bdc1;
+  margin-right: 12px;
+}
+
+.emotion-84 {
+  color: #00bdc1;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-89 {
+  width: 3px;
+  background-color: #00bdc1;
+}
+
+.emotion-1 {
+  color: #0074f5;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+<div>
+  <div
+    className="emotion-110"
+  >
+    <details
+      className="emotion-16"
+      onToggle={[Function]}
+      open={true}
+    >
+      <summary
+        aria-label="gcp-video-explicit-detection"
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-0"
+          />
+           
+          <svg
+            className="emotion-1"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+          >
+            gcp-video-explicit-detection
+          </div>
+          <div
+            className="emotion-3"
+          >
+            (2)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-6"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Gh st
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-6"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Busters
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-16"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-label-detection"
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-17"
+          />
+           
+          <svg
+            className="emotion-18"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+          >
+            gcp-video-label-detection
+          </div>
+          <div
+            className="emotion-3"
+          >
+            (3)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-23"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Label 1
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-23"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Label 2
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (6)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-23"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Label 3
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (9)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-16"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-logo-detection"
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-39"
+          />
+           
+          <svg
+            className="emotion-40"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+          >
+            gcp-video-logo-detection
+          </div>
+          <div
+            className="emotion-3"
+          >
+            (3)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-45"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Logo 1
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (1)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-45"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Logo 2
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-45"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Logo 3
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (5)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-16"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-object-detection"
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-61"
+          />
+           
+          <svg
+            className="emotion-62"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+          >
+            gcp-video-object-detection
+          </div>
+          <div
+            className="emotion-3"
+          >
+            (3)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-67"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Object 1
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-67"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Object 2
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (4)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-67"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Object 3
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (4)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details
+      className="emotion-16"
+      onToggle={[Function]}
+      open={false}
+    >
+      <summary
+        aria-label="gcp-video-text-detection"
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-83"
+          />
+           
+          <svg
+            className="emotion-84"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+          >
+            gcp-video-text-detection
+          </div>
+          <div
+            className="emotion-3"
+          >
+            (4)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-89"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Text 1
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (2)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-89"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Text 2
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (4)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-89"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Text 3
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (6)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-89"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Text 4 Plus More Text to Make A Long Label String
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (8)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+  <div />
+</div>
+`;
