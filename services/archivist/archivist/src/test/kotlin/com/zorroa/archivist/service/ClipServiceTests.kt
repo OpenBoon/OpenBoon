@@ -35,8 +35,8 @@ class ClipServiceTests : AbstractTest() {
 
         asset = getSample(1, "video")[0]
         val clips = listOf(
-            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, "cat", 0.5),
-            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), "cat", 0.5)
+            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
+            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
         timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
@@ -55,12 +55,12 @@ class ClipServiceTests : AbstractTest() {
     fun createDuplicateClips() {
         val asset = getSample(2, "video")[1]
         val clips = listOf(
-            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), "dog", 0.9),
+            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), listOf("dog"), 0.9),
             // All these should be skipped.
-            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), "dog", 0.1),
-            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), "dog", 0.4),
-            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), "dog", 0.6),
-            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), "dog", 0.11)
+            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), listOf("dog"), 0.1),
+            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), listOf("dog"), 0.4),
+            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), listOf("dog"), 0.6),
+            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), listOf("dog"), 0.11)
         )
         val track = TrackSpec("dogs", clips)
         val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))

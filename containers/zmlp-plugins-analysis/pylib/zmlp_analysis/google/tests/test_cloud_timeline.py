@@ -19,9 +19,9 @@ class TestCloudTimelineBuilder(PluginUnitTestCase):
         clips = timeline.tracks['Speech Transcription']['clips']
         clips = sorted(clips, key=lambda i: i['start'])
 
-        assert 'We have main engine start or three two one.' == clips[0]["content"]
-        assert 'robots memory synced and locked' == clips[3]["content"]
-        assert 'this is pretty freaky.' == clips[4]["content"]
+        assert ['We have main engine start or three two one.'] == clips[0]["content"]
+        assert ['robots memory synced and locked'] == clips[3]["content"]
+        assert ['this is pretty freaky.'] == clips[4]["content"]
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     def test_save_text_timeline(self, _):
@@ -33,21 +33,19 @@ class TestCloudTimelineBuilder(PluginUnitTestCase):
         clips = timeline.tracks['Detected Text']['clips']
         clips = sorted(clips, key=lambda i: i['start'])
 
-        assert 'into the world of sanitation' == clips[0]["content"]
-        assert 'there\'s more coming -- (Laughter)-' == clips[1]["content"]
-        assert 'sanitation, toilets and poop,' == clips[2]["content"]
-        assert 'and I have yet to emerge.' == clips[3]["content"]
+        assert ['into the world of sanitation'] == clips[0]["content"]
+        assert ['there\'s more coming -- (Laughter)-'] == clips[1]["content"]
+        assert ['sanitation, toilets and poop,'] == clips[2]["content"]
+        assert ['and I have yet to emerge.'] == clips[3]["content"]
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     def test_save_label_timeline(self, _):
         annots = self.load_results('detect-labels.dat')
         timeline = cloud_timeline.save_label_detection_timeline(TestAsset(id="123"), annots)
-        import pprint
-        pprint.pprint(timeline.tracks)
         assert 'gcp-video-label-detection' == timeline.name
         assert 4.416666 == timeline.tracks['people']['clips'][0]['stop']
         assert 0 == timeline.tracks['people']['clips'][0]['start']
-        assert 0.477 == timeline.tracks['people']['clips'][0]['score']
+        assert 0.266 == timeline.tracks['people']['clips'][0]['score']
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     def test_save_logo_detection_timeline(self, _):
@@ -71,11 +69,11 @@ class TestCloudTimelineBuilder(PluginUnitTestCase):
         timeline = cloud_timeline.save_content_moderation_timeline(TestAsset(id="123"), annots)
 
         expect = [
-            'Very Unlikely',
-            'Very Unlikely',
-            'Very Unlikely',
-            'Unlikely',
-            'Unlikely'
+            ['Very Unlikely'],
+            ['Very Unlikely'],
+            ['Very Unlikely'],
+            ['Unlikely'],
+            ['Unlikely']
         ]
         idx = 0
         for track in timeline.tracks.values():

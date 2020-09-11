@@ -51,7 +51,7 @@ class TimelineBuilder:
         clip = {
             "start": start,
             "stop":  stop,
-            "content": content.replace("\n", " ").strip(),
+            "content": [c.replace("\n", " ").strip() for c in as_collection(content)],
             "score": round(score, 3),
             "tags": as_collection(tags)
         }

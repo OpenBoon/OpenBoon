@@ -537,8 +537,8 @@ class AssetControllerTests : MockMvcTest() {
 
         val asset = getSample(1)[0]
         val clips = listOf(
-            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, "cat", 0.5),
-            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), "cat", 0.5)
+            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
+            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
         )
         val track = TrackSpec("cats", clips)
         val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))

@@ -17,7 +17,7 @@ class ClipSpec(
     val stop: BigDecimal,
 
     @ApiModelProperty("The content contained in the video clip.")
-    val content: String,
+    val content: List<String>,
 
     @ApiModelProperty("The confidence score that the content is correct.")
     val score: Double

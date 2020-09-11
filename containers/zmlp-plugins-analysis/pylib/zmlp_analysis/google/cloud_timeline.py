@@ -196,8 +196,8 @@ def save_label_detection_timeline(asset, annotations):
             clip_start = convert_offset(seg.segment.start_time_offset)
             clip_stop = convert_offset(seg.segment.end_time_offset)
 
-            for label in labels:
-                timeline.add_clip(label, clip_start, clip_stop, label, seg.confidence)
+        timeline.add_clip(annotation.entity.description,
+                          clip_start, clip_stop, labels, seg.confidence)
 
     save_timeline(timeline)
     return timeline

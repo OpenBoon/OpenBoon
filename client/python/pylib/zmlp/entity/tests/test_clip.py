@@ -15,7 +15,7 @@ class TimelineBulderTests(unittest.TestCase):
 
     def test_add_clip(self):
         clip = self.tl.tracks['dogs']['clips'][0]
-        assert clip['content'] == 'dog'
+        assert clip['content'] == ['dog']
         assert clip['start'] == 0
         assert clip['stop'] == 1
 
