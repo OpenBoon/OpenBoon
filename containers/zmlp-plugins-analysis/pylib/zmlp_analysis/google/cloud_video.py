@@ -27,7 +27,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         'detect_objects': tip,
         'detect_logos': tip,
         'detect_explicit': 'An integer level of confidence to tag as explicit. 0=disabled, max=5',
-        'detect_speech': 'Set to true to recongize speech in video.'
+        'detect_speech': 'Set to true to recognize speech in video.'
     }
 
     max_length_sec = 30 * 60
@@ -116,7 +116,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         Args:
             asset (Asset): The asset.
-            results (obj): The video intelligence result.
+            results (obj): The Logo detection result.
         """
         analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_logos'),
                                           collapse_labels=True)
@@ -126,8 +126,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                     annotation.entity.description,
                     track.confidence))
         asset.add_analysis('gcp-video-logo-detection', analysis)
-        timeline = cloud_timeline.build_logo_detection_timeline(results)
-        file_storage.assets.store_timeline(asset, timeline)
+        cloud_timeline.save_logo_detection_timeline(asset, results)
 
     def handle_detect_objects(self, asset, annotation_result):
         """
@@ -135,7 +134,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         Args:
             asset (Asset): The asset to process.
-            results (dict): The JSON compatible result.
+            annotation_result (obj): The Object detection result.
 
         """
         analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_objects'),
@@ -146,16 +145,15 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             analysis.add_prediction(pred)
 
         asset.add_analysis('gcp-video-object-detection', analysis)
-        timeline = cloud_timeline.build_object_detection_timeline(annotation_result)
-        file_storage.assets.store_timeline(asset, timeline)
+        cloud_timeline.save_object_detection_timeline(asset, annotation_result)
 
-    def handle_detect_labels(self, asset, results):
+    def handle_detect_labels(self, asset, annotation_result):
         """
         Handles processing segment and shot labels.
 
         Args:
             asset (Asset): The asset to process.
-            results (dict): The JSON compatible result.
+            annotation_result (dict): The label detection result.
 
         """
         def process_label_annotations(annotations):
@@ -172,39 +170,57 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_labels'),
                                           collapse_labels=True)
 
-        process_label_annotations(results.segment_label_annotations)
-        process_label_annotations(results.shot_label_annotations)
-        process_label_annotations(results.shot_presence_label_annotations)
+        process_label_annotations(annotation_result.segment_label_annotations)
+        process_label_annotations(annotation_result.shot_label_annotations)
+        process_label_annotations(annotation_result.shot_presence_label_annotations)
         asset.add_analysis('gcp-video-label-detection', analysis)
 
-        timeline = cloud_timeline.build_label_detection_timeline(results)
-        file_storage.assets.store_timeline(asset, timeline)
+        cloud_timeline.save_label_detection_timeline(asset, annotation_result)
 
     def handle_detect_text(self, asset, annotation_result):
+        """
+        Detect text images in a video.
+        Args:
+            asset (Asset): The asset.
+            annotation_result (obj): The detect text result.
+
+        """
         analysis = ContentDetectionAnalysis()
         analysis.add_content(
             ' '.join(t.text for t in annotation_result.text_annotations))
 
         if analysis.content:
             asset.add_analysis('gcp-video-text-detection', analysis)
-
-            timeline = cloud_timeline.build_text_detection_timeline(annotation_result)
-            file_storage.assets.store_timeline(asset, timeline)
+            cloud_timeline.save_text_detection_timeline(asset, annotation_result)
 
     def handle_detect_speech(self, asset, annotation_result):
+        """
+        Handle the detect speech result.
+
+        Args:
+            asset (Asset): The Asset
+            annotation_result (obj): The detect speech result.
+
+        """
         analysis = ContentDetectionAnalysis()
 
         for speech in annotation_result.speech_transcriptions:
             for alternative in speech.alternatives:
                 if alternative.words:
-                    analysis.add_content(alternative.transcript)
+                    analysis.add_content(alternative.transcript.strip())
 
         if analysis.content:
             asset.add_analysis('gcp-video-speech-transcription', analysis)
-            timeline = cloud_timeline.build_speech_transcription_timeline(annotation_result)
-            file_storage.assets.store_timeline(asset, timeline)
+            cloud_timeline.save_speech_transcription_timeline(asset, annotation_result)
 
     def handle_detect_explicit(self, asset, annotation_result):
+        """
+        Detect explicit content.
+
+        Args:
+            asset (Asset): The asset.
+            annotation_result (obj): The content moderation result.
+        """
         analysis = LabelDetectionAnalysis(collapse_labels=True)
         analysis.set_attr('explicit', False)
 
@@ -218,9 +234,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                 analysis.set_attr('explicit', True)
 
         asset.add_analysis('gcp-video-explicit-detection', analysis)
-
-        timeline = cloud_timeline.build_content_moderation_timeline(annotation_result)
-        file_storage.assets.store_timeline(asset, timeline)
+        cloud_timeline.save_content_moderation_timeline(asset, annotation_result)
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_tries=3, max_time=3600)
     def _get_video_annotations(self, uri):
