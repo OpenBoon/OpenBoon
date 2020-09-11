@@ -63,6 +63,7 @@ const AssetAsset = ({ isQuickView }) => {
         css={{
           flex: 1,
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
@@ -72,7 +73,12 @@ const AssetAsset = ({ isQuickView }) => {
         }}
       >
         <div
-          css={{ width: '100%', height: '100%', marginTop: spacing.hairline }}
+          css={{
+            flex: 1,
+            display: 'flex',
+            width: '100%',
+            marginTop: spacing.hairline,
+          }}
         >
           {isVideo && !hasError ? (
             <AssetVideo

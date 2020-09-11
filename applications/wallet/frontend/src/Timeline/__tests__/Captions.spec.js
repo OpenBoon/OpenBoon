@@ -5,8 +5,24 @@ import TimelineCaptions from '../Captions'
 const noop = () => {}
 
 const TRACKS = [
-  { label: 'English', src: '/webvtt/english.vtt', mode: 'disabled' },
-  { label: 'French', src: '/webvtt/french.vtt', mode: 'disabled' },
+  {
+    label: 'English',
+    kind: 'captions',
+    src: '/webvtt/english.vtt',
+    mode: 'disabled',
+  },
+  {
+    label: 'French',
+    kind: 'captions',
+    src: '/webvtt/french.vtt',
+    mode: 'disabled',
+  },
+  {
+    label: 'metadata',
+    kind: 'metadata',
+    src: '/webvtt/metadata.vtt',
+    mode: 'disabled',
+  },
 ]
 
 describe('<TimelineCaptions />', () => {
@@ -31,7 +47,7 @@ describe('<TimelineCaptions />', () => {
           current: {
             textTracks: {
               ...TRACKS,
-              length: 2,
+              length: 3,
               addEventListener: mockAddEventListener,
               removeEventListener: mockRemoveEventListener,
             },
@@ -77,7 +93,7 @@ describe('<TimelineCaptions />', () => {
           current: {
             textTracks: {
               ...TRACKS,
-              length: 2,
+              length: 3,
               addEventListener: noop,
               removeEventListener: noop,
             },

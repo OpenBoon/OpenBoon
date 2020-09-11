@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Asset /> should handle no query 1`] = `
-.emotion-16 {
+.emotion-19 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Asset /> should handle no query 1`] = `
   flex-direction: column;
 }
 
-.emotion-15 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -28,7 +28,7 @@ exports[`<Asset /> should handle no query 1`] = `
   height: 100%;
 }
 
-.emotion-7 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -120,7 +120,7 @@ exports[`<Asset /> should handle no query 1`] = `
   width: 36px;
 }
 
-.emotion-6 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -128,6 +128,9 @@ exports[`<Asset /> should handle no query 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -142,20 +145,26 @@ exports[`<Asset /> should handle no query 1`] = `
   box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-5 {
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   width: 100%;
-  height: 100%;
   margin-top: 1px;
 }
 
-.emotion-14 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-13 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -165,7 +174,7 @@ exports[`<Asset /> should handle no query 1`] = `
   flex-direction: column;
 }
 
-.emotion-8 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -207,41 +216,44 @@ exports[`<Asset /> should handle no query 1`] = `
   border-radius: 0;
 }
 
-.emotion-8:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-8:hover svg,
-.emotion-8.focus-visible:focus svg {
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-8:hover {
+.emotion-11:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-15 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   background-color: #252525;
 }
 
-.emotion-4 {
+.emotion-5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -249,7 +261,33 @@ exports[`<Asset /> should handle no query 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  height: 100%;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 0;
 }
 
 .emotion-3 {
@@ -261,13 +299,13 @@ exports[`<Asset /> should handle no query 1`] = `
 }
 
 <div
-  className="emotion-16"
+  className="emotion-19"
 >
   <div
-    className="emotion-15"
+    className="emotion-18"
   >
     <div
-      className="emotion-7"
+      className="emotion-10"
     >
       <div
         className="emotion-2"
@@ -291,49 +329,82 @@ exports[`<Asset /> should handle no query 1`] = `
         />
       </div>
       <div
-        className="emotion-6"
+        className="emotion-9"
       >
         <div
-          className="emotion-5"
+          className="emotion-8"
         >
           <div
-            className="emotion-4"
+            className="emotion-5"
           >
-            <video
-              autoPlay={true}
-              className="emotion-3"
-              controls={true}
-              controlsList="nodownload"
-              disablePictureInPicture={true}
+            <div
+              className="emotion-6"
             >
-              <source
-                src="https://storage.googleapis.com/video.mp4"
-                type="video/mp4"
+              <div
+                className="emotion-5"
+              >
+                <div
+                  className="emotion-4"
+                >
+                  <video
+                    autoPlay={true}
+                    className="emotion-3"
+                    controls={true}
+                    controlsList="nodownload"
+                    disablePictureInPicture={true}
+                  >
+                    <source
+                      src="https://storage.googleapis.com/video.mp4"
+                      type="video/mp4"
+                    />
+                    <track
+                      default={false}
+                      kind="captions"
+                      label="English"
+                      src="/webvtt/english.vtt"
+                    />
+                    <track
+                      default={false}
+                      kind="captions"
+                      label="French"
+                      src="/webvtt/french.vtt"
+                    />
+                    <track
+                      default={true}
+                      kind="metadata"
+                      label="gcp-label-detection"
+                      src="/webvtt/gcp-label-detection.vtt"
+                    />
+                    <track
+                      default={true}
+                      kind="metadata"
+                      label="gcp-object-detection"
+                      src="/webvtt/gcp-object-detection.vtt"
+                    />
+                  </video>
+                </div>
+              </div>
+              <MetadataCues
+                videoRef={
+                  Object {
+                    "current": null,
+                  }
+                }
               />
-              <track
-                kind="captions"
-                label="English"
-                src="/webvtt/english.vtt"
-              />
-              <track
-                kind="captions"
-                label="French"
-                src="/webvtt/french.vtt"
-              />
-            </video>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-17"
     >
       <div
-        className="emotion-13"
+        className="emotion-16"
       >
         <button
           aria-label="Asset Metadata"
-          className="emotion-8"
+          className="emotion-11"
           onClick={[Function]}
           title="Asset Metadata"
           type="button"
@@ -345,7 +416,7 @@ exports[`<Asset /> should handle no query 1`] = `
         </button>
         <button
           aria-label="Face Recognition Training"
-          className="emotion-8"
+          className="emotion-11"
           onClick={[Function]}
           title="Face Recognition Training"
           type="button"
@@ -357,7 +428,7 @@ exports[`<Asset /> should handle no query 1`] = `
         </button>
         <button
           aria-label="Add Labels To Model"
-          className="emotion-8"
+          className="emotion-11"
           onClick={[Function]}
           title="Add Labels To Model"
           type="button"
@@ -369,7 +440,7 @@ exports[`<Asset /> should handle no query 1`] = `
         </button>
         <button
           aria-label="Delete"
-          className="emotion-8"
+          className="emotion-11"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -380,7 +451,7 @@ exports[`<Asset /> should handle no query 1`] = `
           />
         </button>
         <div
-          className="emotion-12"
+          className="emotion-15"
         />
       </div>
     </div>
@@ -516,6 +587,9 @@ exports[`<Asset /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -531,8 +605,14 @@ exports[`<Asset /> should render properly 1`] = `
 }
 
 .emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   width: 100%;
-  height: 100%;
   margin-top: 1px;
 }
 
@@ -743,7 +823,7 @@ exports[`<Asset /> should render properly 1`] = `
 `;
 
 exports[`<Asset /> should render videos properly 1`] = `
-.emotion-16 {
+.emotion-19 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -762,7 +842,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-15 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -770,7 +850,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   height: 100%;
 }
 
-.emotion-7 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -862,7 +942,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   width: 36px;
 }
 
-.emotion-6 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -870,6 +950,9 @@ exports[`<Asset /> should render videos properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -884,20 +967,26 @@ exports[`<Asset /> should render videos properly 1`] = `
   box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-5 {
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   width: 100%;
-  height: 100%;
   margin-top: 1px;
 }
 
-.emotion-14 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-13 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -907,7 +996,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-8 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -949,41 +1038,44 @@ exports[`<Asset /> should render videos properly 1`] = `
   border-radius: 0;
 }
 
-.emotion-8:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-8:hover svg,
-.emotion-8.focus-visible:focus svg {
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-8:hover {
+.emotion-11:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-15 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   background-color: #252525;
 }
 
-.emotion-4 {
+.emotion-5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -991,7 +1083,33 @@ exports[`<Asset /> should render videos properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  height: 100%;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 0;
 }
 
 .emotion-3 {
@@ -1003,13 +1121,13 @@ exports[`<Asset /> should render videos properly 1`] = `
 }
 
 <div
-  className="emotion-16"
+  className="emotion-19"
 >
   <div
-    className="emotion-15"
+    className="emotion-18"
   >
     <div
-      className="emotion-7"
+      className="emotion-10"
     >
       <div
         className="emotion-2"
@@ -1033,49 +1151,82 @@ exports[`<Asset /> should render videos properly 1`] = `
         />
       </div>
       <div
-        className="emotion-6"
+        className="emotion-9"
       >
         <div
-          className="emotion-5"
+          className="emotion-8"
         >
           <div
-            className="emotion-4"
+            className="emotion-5"
           >
-            <video
-              autoPlay={true}
-              className="emotion-3"
-              controls={true}
-              controlsList="nodownload"
-              disablePictureInPicture={true}
+            <div
+              className="emotion-6"
             >
-              <source
-                src="https://storage.googleapis.com/video.mp4"
-                type="video/mp4"
+              <div
+                className="emotion-5"
+              >
+                <div
+                  className="emotion-4"
+                >
+                  <video
+                    autoPlay={true}
+                    className="emotion-3"
+                    controls={true}
+                    controlsList="nodownload"
+                    disablePictureInPicture={true}
+                  >
+                    <source
+                      src="https://storage.googleapis.com/video.mp4"
+                      type="video/mp4"
+                    />
+                    <track
+                      default={false}
+                      kind="captions"
+                      label="English"
+                      src="/webvtt/english.vtt"
+                    />
+                    <track
+                      default={false}
+                      kind="captions"
+                      label="French"
+                      src="/webvtt/french.vtt"
+                    />
+                    <track
+                      default={true}
+                      kind="metadata"
+                      label="gcp-label-detection"
+                      src="/webvtt/gcp-label-detection.vtt"
+                    />
+                    <track
+                      default={true}
+                      kind="metadata"
+                      label="gcp-object-detection"
+                      src="/webvtt/gcp-object-detection.vtt"
+                    />
+                  </video>
+                </div>
+              </div>
+              <MetadataCues
+                videoRef={
+                  Object {
+                    "current": null,
+                  }
+                }
               />
-              <track
-                kind="captions"
-                label="English"
-                src="/webvtt/english.vtt"
-              />
-              <track
-                kind="captions"
-                label="French"
-                src="/webvtt/french.vtt"
-              />
-            </video>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-17"
     >
       <div
-        className="emotion-13"
+        className="emotion-16"
       >
         <button
           aria-label="Asset Metadata"
-          className="emotion-8"
+          className="emotion-11"
           onClick={[Function]}
           title="Asset Metadata"
           type="button"
@@ -1087,7 +1238,7 @@ exports[`<Asset /> should render videos properly 1`] = `
         </button>
         <button
           aria-label="Face Recognition Training"
-          className="emotion-8"
+          className="emotion-11"
           onClick={[Function]}
           title="Face Recognition Training"
           type="button"
@@ -1099,7 +1250,7 @@ exports[`<Asset /> should render videos properly 1`] = `
         </button>
         <button
           aria-label="Add Labels To Model"
-          className="emotion-8"
+          className="emotion-11"
           onClick={[Function]}
           title="Add Labels To Model"
           type="button"
@@ -1111,7 +1262,7 @@ exports[`<Asset /> should render videos properly 1`] = `
         </button>
         <button
           aria-label="Delete"
-          className="emotion-8"
+          className="emotion-11"
           onClick={[Function]}
           title="Delete"
           type="button"
@@ -1122,7 +1273,7 @@ exports[`<Asset /> should render videos properly 1`] = `
           />
         </button>
         <div
-          className="emotion-12"
+          className="emotion-15"
         />
       </div>
     </div>
