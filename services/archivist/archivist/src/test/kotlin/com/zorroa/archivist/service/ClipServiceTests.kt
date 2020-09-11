@@ -6,9 +6,7 @@ import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.CreateTimelineResponse
 import com.zorroa.archivist.domain.TimelineSpec
 import com.zorroa.archivist.domain.TrackSpec
-import com.zorroa.zmlp.util.Json
 import org.apache.lucene.search.join.ScoreMode
-import org.elasticsearch.common.Strings
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.join.query.JoinQueryBuilders
 import org.elasticsearch.search.builder.SearchSourceBuilder

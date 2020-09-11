@@ -65,8 +65,7 @@ class ClipServiceImpl(
                 // If we've handled a higher score don't add to the batch.
                 if ((scoreCache[id] ?: BigDecimal.ZERO) < score) {
                     scoreCache[id] = score
-                }
-                else {
+                } else {
                     continue
                 }
 
@@ -83,7 +82,6 @@ class ClipServiceImpl(
                     ),
                     "deepSearch" to mapOf("name" to "clip", "parent" to asset.id)
                 )
-
 
                 val req = rest.newIndexRequest(id)
                 req.source(doc)
