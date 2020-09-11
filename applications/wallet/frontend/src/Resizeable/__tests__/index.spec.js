@@ -11,8 +11,9 @@ describe('<Resizeable />', () => {
         storageName="yoga-div"
         openToThe="left"
         onMouseUp={noop}
-        render={() => 'Yoga div'}
-      />,
+      >
+        {() => 'Yoga div'}
+      </Resizeable>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -26,8 +27,9 @@ describe('<Resizeable />', () => {
         storageName="yoga-div"
         openToThe="right"
         onMouseUp={noop}
-        render={() => 'Yoga div'}
-      />,
+      >
+        {() => 'Yoga div'}
+      </Resizeable>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -41,8 +43,9 @@ describe('<Resizeable />', () => {
         storageName="yoga-div"
         openToThe="top"
         onMouseUp={noop}
-        render={() => 'Yoga div'}
-      />,
+      >
+        {() => 'Yoga div'}
+      </Resizeable>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

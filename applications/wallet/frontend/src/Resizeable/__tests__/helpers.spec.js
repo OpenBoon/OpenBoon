@@ -5,33 +5,33 @@ const MIN_COLLAPSED_SIZE = 30
 
 describe('<Resizeable /> helpers', () => {
   describe('getFinalSize', () => {
-    it('should return minExpandedSize when dragging up towards startingAxis', () => {
+    it('should return minExpandedSize when dragging up towards startingSize', () => {
       expect(
         getFinalSize({
-          startingAxis: 150,
-          sizeCalculation: 250,
+          startingSize: 150,
+          newSize: 250,
           minExpandedSize: MIN_EXPANDED_SIZE,
           minCollapsedSize: MIN_COLLAPSED_SIZE,
         }),
       ).toEqual(MIN_EXPANDED_SIZE)
     })
 
-    it('should return minCollapsedSize when dragging away from startingAxis', () => {
+    it('should return minCollapsedSize when dragging away from startingSize', () => {
       expect(
         getFinalSize({
-          startingAxis: 250,
-          sizeCalculation: 50,
+          startingSize: 250,
+          newSize: 50,
           minExpandedSize: MIN_EXPANDED_SIZE,
           minCollapsedSize: MIN_COLLAPSED_SIZE,
         }),
       ).toEqual(MIN_COLLAPSED_SIZE)
     })
 
-    it('should return sizeCalculation if no startingAxis', () => {
+    it('should return newSize if no startingSize', () => {
       expect(
         getFinalSize({
-          startingAxis: 0,
-          sizeCalculation: 350,
+          startingSize: 0,
+          newSize: 350,
           minExpandedSize: MIN_EXPANDED_SIZE,
           minCollapsedSize: MIN_COLLAPSED_SIZE,
         }),

@@ -386,7 +386,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
     }
   >
     <div
-      aria-label="Resize to the left"
+      aria-label="Resize horizontally"
       className="emotion-0"
       onMouseDown={[Function]}
     />
@@ -873,7 +873,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
       </div>
     </div>
     <div
-      aria-label="Resize to the right"
+      aria-label="Resize horizontally"
       className="emotion-10"
       onMouseDown={[Function]}
     />

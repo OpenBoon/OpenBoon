@@ -12,7 +12,7 @@ export const noop = () => {}
 
 const DRAG_SIZE = 4
 
-let originAxis
+let originCoord
 
 const Resizeable = ({
   minExpandedSize,
@@ -20,50 +20,50 @@ const Resizeable = ({
   storageName,
   openToThe,
   onMouseUp,
-  render,
+  children,
 }) => {
   const [size, setSize] = useLocalStorageState({
     key: storageName,
     initialValue: minExpandedSize,
   })
-  const [startingAxis, setStartingAxis] = useState(minExpandedSize)
+  const [startingSize, setStartingSize] = useState(minExpandedSize)
 
   const direction = openToThe === 'left' || openToThe === 'top' ? 1 : -1
 
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX, clientY }) => {
-    const difference = (openToThe === 'top' ? clientY : clientX) - originAxis
+    const difference = (openToThe === 'top' ? clientY : clientX) - originCoord
 
-    const sizeCalculation = size - difference * direction
+    const newSize = size - difference * direction
 
     setSize({
-      value: minCollapsedSize
-        ? Math.max(minCollapsedSize, sizeCalculation)
-        : sizeCalculation,
+      value: minCollapsedSize ? Math.max(minCollapsedSize, newSize) : newSize,
     })
   }
 
   /* istanbul ignore next */
   const handleMouseUp = ({ clientX, clientY }) => {
-    const difference = (openToThe === 'top' ? clientY : clientX) - originAxis
+    const difference = (openToThe === 'top' ? clientY : clientX) - originCoord
 
-    const sizeCalculation = size - difference * direction
+    // Calculate new size
+    const newSize = size - difference * direction
 
+    // Calculate if there is a snap size
     const finalSize = getFinalSize({
-      startingAxis,
-      sizeCalculation,
+      startingSize,
+      newSize,
       minExpandedSize,
       minCollapsedSize,
     })
 
-    setStartingAxis(finalSize)
+    // Update startingSize
+    setStartingSize(finalSize)
 
     setSize({
-      value: minCollapsedSize
-        ? Math.max(minCollapsedSize, finalSize)
-        : Math.max(minExpandedSize, finalSize),
+      value: Math.max(minCollapsedSize || minExpandedSize, finalSize),
     })
 
+    //
     onMouseUp({ size: finalSize })
 
     window.removeEventListener('mousemove', handleMouseMove)
@@ -72,7 +72,7 @@ const Resizeable = ({
 
   /* istanbul ignore next */
   const handleMouseDown = ({ clientX, clientY }) => {
-    originAxis = openToThe === 'top' ? clientY : clientX
+    originCoord = openToThe === 'top' ? clientY : clientX
 
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
@@ -90,7 +90,7 @@ const Resizeable = ({
     >
       {openToThe === 'left' && (
         <div
-          aria-label="Resize to the left"
+          aria-label="Resize horizontally"
           css={{
             userSelect: 'none',
             cursor: 'col-resize',
@@ -104,7 +104,7 @@ const Resizeable = ({
       )}
       {openToThe === 'top' && (
         <div
-          aria-label="Resize to the top"
+          aria-label="Resize vertically"
           css={{
             userSelect: 'none',
             cursor: 'row-resize',
@@ -117,11 +117,11 @@ const Resizeable = ({
         />
       )}
       <div css={{ [openToThe === 'top' ? 'height' : 'width']: size }}>
-        {render({ size, setSize, setStartingAxis })}
+        {children({ size, setSize, setStartingSize })}
       </div>
       {openToThe === 'right' && (
         <div
-          aria-label="Resize to the right"
+          aria-label="Resize horizontally"
           css={{
             userSelect: 'none',
             cursor: 'col-resize',
@@ -147,7 +147,7 @@ Resizeable.propTypes = {
   storageName: PropTypes.string.isRequired,
   openToThe: PropTypes.oneOf(['left', 'right', 'top']).isRequired,
   onMouseUp: PropTypes.func,
-  render: PropTypes.func.isRequired,
+  children: PropTypes.func.isRequired,
 }
 
 export default Resizeable

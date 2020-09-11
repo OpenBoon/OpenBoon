@@ -171,7 +171,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   }
 >
   <div
-    aria-label="Resize to the top"
+    aria-label="Resize vertically"
     className="emotion-0"
     onMouseDown={[Function]}
   />
@@ -435,7 +435,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   }
 >
   <div
-    aria-label="Resize to the top"
+    aria-label="Resize vertically"
     className="emotion-0"
     onMouseDown={[Function]}
   />
@@ -704,7 +704,7 @@ exports[`<Timeline /> should pause 1`] = `
   }
 >
   <div
-    aria-label="Resize to the top"
+    aria-label="Resize vertically"
     className="emotion-0"
     onMouseDown={[Function]}
   />
@@ -1047,7 +1047,7 @@ exports[`<Timeline /> should play 1`] = `
   }
 >
   <div
-    aria-label="Resize to the top"
+    aria-label="Resize vertically"
     className="emotion-0"
     onMouseDown={[Function]}
   />

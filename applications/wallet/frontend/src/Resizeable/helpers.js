@@ -1,12 +1,12 @@
 export const getFinalSize = ({
-  startingAxis,
-  sizeCalculation,
+  startingSize,
+  newSize,
   minExpandedSize,
   minCollapsedSize,
 }) => {
-  if (startingAxis && sizeCalculation < minExpandedSize) {
+  if (startingSize && newSize < minExpandedSize) {
     // snap down
-    if (sizeCalculation < startingAxis) {
+    if (newSize < startingSize) {
       return minCollapsedSize
     }
 
@@ -14,5 +14,5 @@ export const getFinalSize = ({
     return minExpandedSize
   }
 
-  return sizeCalculation
+  return newSize
 }

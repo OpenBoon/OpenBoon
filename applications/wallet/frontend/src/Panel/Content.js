@@ -24,7 +24,8 @@ const PanelContent = ({
       storageName={`PanelContent.${openToThe}.width`}
       openToThe={openToThe}
       onMouseUp={handleMouseUp({ minWidth: MIN_WIDTH, setOpenPanel })}
-      render={() => (
+    >
+      {() => (
         <div
           css={{
             display: 'flex',
@@ -89,7 +90,7 @@ const PanelContent = ({
           </div>
         </div>
       )}
-    />
+    </Resizeable>
   )
 }
 
