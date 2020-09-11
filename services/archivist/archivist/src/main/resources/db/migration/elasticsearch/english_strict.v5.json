@@ -44,10 +44,10 @@
   "mappings": {
     "dynamic": "strict",
     "properties": {
-      "deepVideoSearch": {
+      "deepSearch": {
         "type": "join",
         "relations": {
-          "movie": "clip"
+          "video": "clip"
         }
       },
       "source": {
@@ -169,7 +169,17 @@
           "track": {
             "type": "keyword"
           },
-          "metadata": {
+          "content": {
+            "type": "text",
+            "analyzer": "default"
+          },
+          "score": {
+            "type": "double"
+          },
+          "assetId": {
+            "type": "keyword"
+          },
+          "tags": {
             "type": "keyword",
             "fields": {
               "fulltext": {
@@ -177,9 +187,6 @@
                 "analyzer": "default"
               }
             }
-          },
-          "score": {
-            "type": "double"
           }
         }
       },
@@ -205,6 +212,7 @@
             "type": "float"
           },
           "pageNumber": {
+            "coerce": true,
             "type": "integer"
           },
           "pageStack": {

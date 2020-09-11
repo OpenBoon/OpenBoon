@@ -12,7 +12,7 @@ import com.zorroa.archivist.domain.ProjectIndexMigrationSpec
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.IndexTaskDao
 import com.zorroa.archivist.repository.IndexTaskJdbcDao
-import com.zorroa.archivist.repository.ProjectCustomDao
+import com.zorroa.archivist.repository.ProjectDao
 import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.zmlp.service.security.getZmlpActor
@@ -65,7 +65,7 @@ interface IndexTaskService {
 class IndexTaskServiceImpl(
     val indexRouteDao: IndexRouteDao,
     val indexRoutingService: IndexRoutingService,
-    val indexTaskDao: IndexTaskDao
+    val indexTaskDao: IndexTaskDao,
 ) : IndexTaskService {
 
     override fun migrateProject(project: Project, spec: ProjectIndexMigrationSpec): IndexTask {
@@ -148,6 +148,9 @@ class IndexTaskServiceImpl(
         val time = System.currentTimeMillis()
         val actor = getZmlpActor().toString()
 
+        logger.info("$esTask ES migration tasks created")
+        logger.info("$esTask src index: ${srcRoute.indexName} dst index: ${dstRoute.indexName}")
+
         val indexTask = IndexTask(
             UUID.randomUUID(),
             dstRoute.projectId,
@@ -178,7 +181,7 @@ class IndexTaskServiceImpl(
 
 @Component
 class IndexTaskMonitor(
-    val projectCustomDao: ProjectCustomDao,
+    val projectDao: ProjectDao,
     val indexTaskDao: IndexTaskDao,
     val indexTaskJdbcDao: IndexTaskJdbcDao,
     val indexRoutingService: IndexRoutingService
@@ -262,7 +265,7 @@ class IndexTaskMonitor(
             }
 
             // This puts the project on the new index.
-            if (!projectCustomDao.updateIndexRoute(task.projectId, indexRoute)) {
+            if (!indexRoutingService.setIndexRoute(projectDao.getOne(task.projectId), indexRoute)) {
                 logger.warn("Unable to set new index route for project ${task.projectId}")
                 false
             }

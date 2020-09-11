@@ -86,7 +86,7 @@ class IndexRoute(
      */
     @JsonIgnore
     fun esClientCacheKey(): EsClientCacheKey {
-        return EsClientCacheKey(clusterUrl, indexName)
+        return EsClientCacheKey(clusterUrl, indexName, majorVer)
     }
 
     override fun toString(): String {
@@ -167,7 +167,8 @@ class EsClientCacheKey(
     @ApiModelProperty(" The url to the cluster")
     val clusterUrl: String,
     @ApiModelProperty("The name of the index.")
-    val indexName: String
+    val indexName: String,
+    val majorVersion: Int
 ) {
     @ApiModelProperty("The full URL to the index.")
     val indexUrl = "$clusterUrl/$indexName"

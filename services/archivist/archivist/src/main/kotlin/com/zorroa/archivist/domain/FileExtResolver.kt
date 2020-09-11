@@ -153,8 +153,12 @@ object FileExtResolver {
         return result
     }
 
+    fun getType(asset: Asset): String {
+        return getType(asset.getAttr("source.extension", String::class.java) ?: "")
+    }
+
     fun getType(ext: String): String {
-        return when (ext) {
+        return when (ext.toLowerCase()) {
             in image -> {
                 "image"
             }

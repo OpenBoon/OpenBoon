@@ -66,11 +66,13 @@ class IndexTaskServiceTests : AbstractTest() {
         projectService.setIndexRoute(project, route)
 
         addTestAssets("images")
+        addTestAssets("video")
         refreshIndex()
 
         val spec = ProjectIndexMigrationSpec("english_strict", 5, size = ProjectSize.XSMALL)
         val task = indexTaskService.migrateProject(project, spec)
         // Sleep while task completes
+
         Thread.sleep(5000)
 
         val newRoute = indexRoutingService.getIndexRoute(task.dstIndexRouteId as UUID)
@@ -78,8 +80,11 @@ class IndexTaskServiceTests : AbstractTest() {
         indexRoutingService.setIndexRefreshInterval(newRoute, "5s")
         refreshIndex()
 
-        val results = getSample(1)
-        assertEquals(100, results[0].getAttr("media.pageNumber"))
-        assertEquals("ABC123", results[0].getAttr("media.pageStack"))
+        val image = getSample(1, type = "image")[0]
+        assertEquals(100, image.getAttr("media.pageNumber"))
+        assertEquals("ABC123", image.getAttr("media.pageStack"))
+
+        val video = getSample(1, type = "video")[0]
+        assertEquals("video", video.getAttr("deepSearch.name"))
     }
 }

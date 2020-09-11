@@ -634,12 +634,17 @@ class AssetServiceImpl : AssetService {
             // Set the files property. The source files will reference the
             // original asset id.
             newAsset.setAttr("files", sourceFiles)
-            newAsset.setAttr("media.pageNumber", spec.getPageNumber())
-            newAsset.setAttr("media.pageStack", parentAsset.id)
+
+            if (indexRoutingService.getProjectRestClient().route.majorVersion > 4) {
+                newAsset.setAttr("media.pageNumber", spec.getPageNumber())
+                newAsset.setAttr("media.pageStack", parentAsset.id)
+            }
         } ?: run {
             if (FileExtResolver.isMultiPage(FileUtils.extension(spec.getRealPath()))) {
-                newAsset.setAttr("media.pageNumber", spec.getPageNumber())
-                newAsset.setAttr("media.pageStack", AssetIdBuilder(spec.makePageOne()).build())
+                if (indexRoutingService.getProjectRestClient().route.majorVersion > 4) {
+                    newAsset.setAttr("media.pageNumber", spec.getPageNumber())
+                    newAsset.setAttr("media.pageStack", AssetIdBuilder(spec.makePageOne()).build())
+                }
             }
         }
     }
@@ -752,8 +757,10 @@ class AssetServiceImpl : AssetService {
             val ext = FileUtils.extension(spec.getRealPath())
             asset.setAttr("source.extension", ext)
 
-            if (FileExtResolver.getType(ext) == "video") {
-                asset.setAttr("deepVideoSearch", "movie")
+            if (indexRoutingService.getProjectRestClient().route.majorVersion > 4) {
+                if (FileExtResolver.getType(ext) == "video") {
+                    asset.setAttr("deepSearch", "video")
+                }
             }
 
             val mediaType = FileExtResolver.getMediaType(spec.uri)
