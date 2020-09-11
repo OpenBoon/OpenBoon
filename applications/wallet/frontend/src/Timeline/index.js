@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types'
 
-import videoShape from '../Video/shape'
-
 import Button, { VARIANTS } from '../Button'
 import Resizeable from '../Resizeable'
 
@@ -79,7 +77,15 @@ const Timeline = ({ videoRef }) => {
 
 Timeline.propTypes = {
   videoRef: PropTypes.shape({
-    current: videoShape,
+    current: PropTypes.shape({
+      play: PropTypes.func,
+      pause: PropTypes.func,
+      addEventListener: PropTypes.func,
+      removeEventListener: PropTypes.func,
+      currentTime: PropTypes.number,
+      duration: PropTypes.number,
+      paused: PropTypes.bool,
+    }),
   }).isRequired,
 }
 
