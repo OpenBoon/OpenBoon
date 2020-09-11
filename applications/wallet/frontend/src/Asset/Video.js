@@ -3,34 +3,73 @@ import { useRef } from 'react'
 import PropTypes from 'prop-types'
 
 import Feature from '../Feature'
+import MetadataCues from '../MetadataCues'
 import Timeline from '../Timeline'
 
 // TODO: fetch tracks from backend
 const TRACKS = [
-  { label: 'English', src: '/webvtt/english.vtt' },
-  { label: 'French', src: '/webvtt/french.vtt' },
+  { label: 'English', kind: 'captions', src: '/webvtt/english.vtt' },
+  { label: 'French', kind: 'captions', src: '/webvtt/french.vtt' },
+  {
+    label: 'gcp-label-detection',
+    kind: 'metadata',
+    src: '/webvtt/gcp-label-detection.vtt',
+  },
+  {
+    label: 'gcp-object-detection',
+    kind: 'metadata',
+    src: '/webvtt/gcp-object-detection.vtt',
+  },
 ]
 
 const AssetVideo = ({ assetRef, uri, mediaType, isQuickView }) => {
   const videoRef = useRef()
 
   return (
-    <div css={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <video
-        ref={videoRef}
-        css={{ flex: 1, width: '100%', height: 0 }}
-        autoPlay
-        controls
-        controlsList="nodownload"
-        disablePictureInPicture
-      >
-        <source ref={assetRef} src={uri} type={mediaType} />
-        <Feature flag="timeline" envs={[]}>
-          {TRACKS.map(({ label, src }) => {
-            return <track key={label} kind="captions" label={label} src={src} />
-          })}
-        </Feature>
-      </video>
+    <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div css={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
+        <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <div
+            css={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              height: 0,
+            }}
+          >
+            <video
+              ref={videoRef}
+              css={{ flex: 1, width: '100%', height: 0 }}
+              autoPlay
+              controls
+              controlsList="nodownload"
+              disablePictureInPicture
+            >
+              <source ref={assetRef} src={uri} type={mediaType} />
+
+              <Feature flag="timeline" envs={[]}>
+                {TRACKS.map(({ label, kind, src }) => {
+                  return (
+                    <track
+                      key={label}
+                      kind={kind}
+                      label={label}
+                      src={src}
+                      default={kind === 'metadata'}
+                    />
+                  )
+                })}
+              </Feature>
+            </video>
+          </div>
+        </div>
+
+        {!isQuickView && (
+          <Feature flag="timeline" envs={[]}>
+            <MetadataCues videoRef={videoRef} />
+          </Feature>
+        )}
+      </div>
 
       {!isQuickView && (
         <Feature flag="timeline" envs={[]}>

@@ -96,41 +96,41 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
         {({ onBlur, onClick }) => (
           <div>
             <ul>
-              {Object.values(textTracks).map(({ label }, index) => {
-                if (!label) return null
-
-                return (
-                  <li key={label}>
-                    <Button
-                      variant={VARIANTS.MENU_ITEM}
-                      css={
-                        trackIndex === index
-                          ? {
-                              color: colors.key.white,
-                              backgroundColor: colors.structure.mattGrey,
-                            }
-                          : {}
-                      }
-                      onBlur={onBlur}
-                      onClick={(event) => {
-                        for (let i = 0; i < textTracks.length; i += 1) {
-                          textTracks[i].mode = 'disabled'
+              {Object.values(textTracks)
+                .filter(({ kind }) => kind === 'captions')
+                .map(({ label }, index) => {
+                  return (
+                    <li key={label}>
+                      <Button
+                        variant={VARIANTS.MENU_ITEM}
+                        css={
+                          trackIndex === index
+                            ? {
+                                color: colors.key.white,
+                                backgroundColor: colors.structure.mattGrey,
+                              }
+                            : {}
                         }
+                        onBlur={onBlur}
+                        onClick={(event) => {
+                          for (let i = 0; i < textTracks.length; i += 1) {
+                            textTracks[i].mode = 'disabled'
+                          }
 
-                        textTracks[index].mode = 'showing'
+                          textTracks[index].mode = 'showing'
 
-                        lastEnabledTrackIndex = index
+                          lastEnabledTrackIndex = index
 
-                        onClick(event)
+                          onClick(event)
 
-                        onBlur(event)
-                      }}
-                    >
-                      {label}
-                    </Button>
-                  </li>
-                )
-              })}
+                          onBlur(event)
+                        }}
+                      >
+                        {label}
+                      </Button>
+                    </li>
+                  )
+                })}
             </ul>
           </div>
         )}

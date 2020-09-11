@@ -173,7 +173,12 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
 
 MetadataPrettyPredictionsContent.propTypes = {
   name: PropTypes.string.isRequired,
-  predictions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  predictions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      score: PropTypes.number.isRequired,
+    }).isRequired,
+  ).isRequired,
 }
 
 export default MetadataPrettyPredictionsContent
