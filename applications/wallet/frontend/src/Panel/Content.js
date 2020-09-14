@@ -8,8 +8,6 @@ import Button, { VARIANTS } from '../Button'
 import Resizeable from '../Resizeable'
 import BetaBadge from '../BetaBadge'
 
-import { handleMouseUp } from './helpers'
-
 const MIN_WIDTH = 400
 
 const PanelContent = ({
@@ -19,77 +17,76 @@ const PanelContent = ({
 }) => {
   return (
     <Resizeable
-      minExpandedSize={MIN_WIDTH}
-      minCollapsedSize={0}
-      storageName={`PanelContent.${openToThe}.width`}
+      minWidth={MIN_WIDTH}
+      storageName={`${openToThe}OpeningPanelWidth`}
       openToThe={openToThe}
-      onMouseUp={handleMouseUp({ minWidth: MIN_WIDTH, setOpenPanel })}
+      onMouseUp={({ width }) => {
+        if (width < MIN_WIDTH) setOpenPanel({ value: '' })
+      }}
     >
-      {() => (
+      <div
+        css={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          backgroundColor: colors.structure.lead,
+          [openToThe === 'left'
+            ? 'marginRight'
+            : 'marginLeft']: spacing.hairline,
+        }}
+      >
+        <div
+          css={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: spacing.base,
+            paddingLeft: spacing.normal,
+            borderBottom: constants.borders.regular.smoke,
+          }}
+        >
+          <h2
+            css={{
+              whiteSpace: 'nowrap',
+              textTransform: 'uppercase',
+              fontWeight: typography.weight.medium,
+              fontSize: typography.size.regular,
+              lineHeight: typography.height.regular,
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            {title}
+            {isBeta && <BetaBadge />}
+          </h2>
+          <Button
+            aria-label="Close Panel"
+            variant={VARIANTS.ICON}
+            onClick={() => setOpenPanel({ value: '' })}
+            style={{
+              padding: 0,
+            }}
+          >
+            <DoubleChevronSvg
+              height={constants.icons.regular}
+              css={{
+                transform: `rotate(${openToThe === 'left' ? -90 : 90}deg)`,
+              }}
+            />
+          </Button>
+        </div>
         <div
           css={{
             display: 'flex',
             flexDirection: 'column',
-            height: '100%',
-            backgroundColor: colors.structure.lead,
-            [openToThe === 'left'
-              ? 'marginRight'
-              : 'marginLeft']: spacing.hairline,
+            flex: 1,
+            // hack to make content scroll without hiding overflow (overflow needed for Toggltip visibility)
+            height: '0%',
           }}
         >
-          <div
-            css={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: spacing.base,
-              paddingLeft: spacing.normal,
-              borderBottom: constants.borders.regular.smoke,
-            }}
-          >
-            <h2
-              css={{
-                whiteSpace: 'nowrap',
-                textTransform: 'uppercase',
-                fontWeight: typography.weight.medium,
-                fontSize: typography.size.regular,
-                lineHeight: typography.height.regular,
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              {title}
-              {isBeta && <BetaBadge />}
-            </h2>
-            <Button
-              aria-label="Close Panel"
-              variant={VARIANTS.ICON}
-              onClick={() => setOpenPanel({ value: '' })}
-              style={{
-                padding: 0,
-              }}
-            >
-              <DoubleChevronSvg
-                height={constants.icons.regular}
-                css={{
-                  transform: `rotate(${openToThe === 'left' ? -90 : 90}deg)`,
-                }}
-              />
-            </Button>
-          </div>
-          <div
-            css={{
-              display: 'flex',
-              flexDirection: 'column',
-              flex: 1,
-              // hack to make content scroll without hiding overflow (overflow needed for Toggltip visibility)
-              height: '0%',
-            }}
-          >
-            {content}
-          </div>
+          {content}
         </div>
-      )}
+      </div>
     </Resizeable>
   )
 }

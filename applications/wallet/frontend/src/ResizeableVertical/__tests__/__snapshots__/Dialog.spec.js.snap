@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ResizeableVertical /> should display collapse when dragging down 1`] = `
+.emotion-0 {
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 17px;
+  font-height: 20px;
+  font-weight: 500;
+  overflow: hidden;
+  color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  Release to 
+  collapse
+  .
+</div>
+`;
+
+exports[`<ResizeableVertical /> should display expand when dragging up 1`] = `
+.emotion-0 {
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 17px;
+  font-height: 20px;
+  font-weight: 500;
+  overflow: hidden;
+  color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  Release to 
+  expand
+  .
+</div>
+`;

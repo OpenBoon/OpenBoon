@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 
 import { colors, typography } from '../Styles'
 
-const ResizeableMk2Copy = ({ size, startingSize, minExpandedSize }) => {
-  if (size > minExpandedSize) return null
+const ResizeableVerticalDialog = ({ size, startingSize, minExpandedSize }) => {
+  if (size >= minExpandedSize) return null
 
   return (
     <div
@@ -25,10 +25,10 @@ const ResizeableMk2Copy = ({ size, startingSize, minExpandedSize }) => {
   )
 }
 
-ResizeableMk2Copy.propTypes = {
+ResizeableVerticalDialog.propTypes = {
   size: PropTypes.number.isRequired,
   startingSize: PropTypes.number.isRequired,
   minExpandedSize: PropTypes.number.isRequired,
 }
 
-export default ResizeableMk2Copy
+export default ResizeableVerticalDialog

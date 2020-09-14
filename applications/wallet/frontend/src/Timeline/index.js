@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, constants } from '../Styles'
 
-import ResizeableMk2 from '../ResizeableMk2'
+import ResizeableVertical from '../ResizeableVertical'
 import Button, { VARIANTS } from '../Button'
 
 import TimelineControls from './Controls'
@@ -15,13 +15,12 @@ const TIMELINE_HEIGHT = 300
 
 const Timeline = ({ videoRef }) => {
   return (
-    <ResizeableMk2
+    <ResizeableVertical
       storageName="Timeline.height"
       minExpandedSize={TIMELINE_HEIGHT}
       collapsedSize={BAR_HEIGHT}
-      openToThe="top"
     >
-      {({ size, toggleOpen, renderCopy }) => {
+      {({ size, toggleOpen, renderDialog }) => {
         const isOpen = size >= TIMELINE_HEIGHT
 
         return (
@@ -64,12 +63,12 @@ const Timeline = ({ videoRef }) => {
             <div css={{ height: size - BAR_HEIGHT, overflow: 'auto' }}>
               {isOpen && <TimelineDetections />}
 
-              {!isOpen && renderCopy()}
+              {renderDialog()}
             </div>
           </>
         )
       }}
-    </ResizeableMk2>
+    </ResizeableVertical>
   )
 }
 

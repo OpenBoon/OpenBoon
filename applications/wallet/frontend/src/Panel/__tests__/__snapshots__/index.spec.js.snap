@@ -120,14 +120,14 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
 `;
 
 exports[`<Panel /> should render properly opening to the left 2`] = `
-.emotion-12 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -137,14 +137,14 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   flex-direction: column;
 }
 
-.emotion-10 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   background-color: #252525;
 }
 
-.emotion-9 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -186,38 +186,34 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   border-radius: 0;
 }
 
-.emotion-9:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-9[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-9:hover,
-.emotion-9.focus-visible:focus {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-9:hover svg,
-.emotion-9.focus-visible:focus svg {
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-9[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-9:hover {
+.emotion-7:hover {
   background-color: #2e2e2e;
 }
 
-.emotion-8 {
-  width: 400px;
-}
-
-.emotion-5 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -235,7 +231,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-2 {
+.emotion-1 {
   white-space: nowrap;
   text-transform: uppercase;
   font-weight: 500;
@@ -251,7 +247,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   align-items: center;
 }
 
-.emotion-4 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -285,30 +281,30 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   padding: 0;
 }
 
-.emotion-4:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-4:hover,
-.emotion-4.focus-visible:focus {
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-4:hover svg,
-.emotion-4.focus-visible:focus svg {
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-6 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -322,19 +318,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   height: 0%;
 }
 
-.emotion-0 {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  cursor: col-resize;
-  width: 4px;
-  margin-left: -2px;
-  margin-right: -2px;
-  z-index: 10;
-}
-
-.emotion-7 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -347,7 +331,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   margin-right: 1px;
 }
 
-.emotion-1 {
+.emotion-0 {
   color: #ffffff;
   background-color: #0074f5;
   border-radius: 8px;
@@ -365,77 +349,63 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   margin-left: 8px;
 }
 
-.emotion-3 {
+.emotion-2 {
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
 <div
-  className="emotion-12"
+  className="emotion-10"
 >
-  <div
-    style={
-      Object {
-        "alignItems": "stretch",
-        "display": "flex",
-        "flexDirection": "row",
-        "flexWrap": "nowrap",
-        "overflow": "hidden",
-      }
-    }
+  <Resizeable
+    minWidth={400}
+    onMouseUp={[Function]}
+    openToThe="left"
+    storageName="leftOpeningPanelWidth"
   >
     <div
-      aria-label="Resize horizontally"
-      className="emotion-0"
-      onMouseDown={[Function]}
-    />
-    <div
-      className="emotion-8"
+      className="emotion-6"
     >
       <div
-        className="emotion-7"
+        className="emotion-4"
       >
-        <div
-          className="emotion-5"
+        <h2
+          className="emotion-1"
         >
-          <h2
+          Metadata
+          <span
+            className="emotion-0"
+          >
+            beta
+          </span>
+        </h2>
+        <button
+          aria-label="Close Panel"
+          className="emotion-3"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
             className="emotion-2"
-          >
-            Metadata
-            <span
-              className="emotion-1"
-            >
-              beta
-            </span>
-          </h2>
-          <button
-            aria-label="Close Panel"
-            className="emotion-4"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              className="emotion-3"
-              data-file-name="doubleChevron.svg"
-              height={20}
-            />
-          </button>
-        </div>
-        <div
-          className="emotion-6"
-        >
-          
-        </div>
+            data-file-name="doubleChevron.svg"
+            height={20}
+          />
+        </button>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        
       </div>
     </div>
-  </div>
+  </Resizeable>
   <div
-    className="emotion-11"
+    className="emotion-9"
   >
     <button
       aria-label="Metadata"
-      className="emotion-9"
+      className="emotion-7"
       onClick={[Function]}
       title="Metadata"
       type="button"
@@ -446,7 +416,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
       />
     </button>
     <div
-      className="emotion-10"
+      className="emotion-8"
     />
   </div>
 </div>
@@ -572,7 +542,7 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
 `;
 
 exports[`<Panel /> should render properly opening to the right 2`] = `
-.emotion-11 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -663,10 +633,6 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
 
 .emotion-0:hover {
   background-color: #2e2e2e;
-}
-
-.emotion-9 {
-  width: 400px;
 }
 
 .emotion-8 {
@@ -793,20 +759,8 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   height: 0%;
 }
 
-.emotion-10 {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  cursor: col-resize;
-  width: 4px;
-  margin-left: -2px;
-  margin-right: -2px;
-  z-index: 10;
-}
-
 <div
-  className="emotion-11"
+  className="emotion-9"
 >
   <div
     className="emotion-2"
@@ -827,56 +781,42 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
       className="emotion-1"
     />
   </div>
-  <div
-    style={
-      Object {
-        "alignItems": "stretch",
-        "display": "flex",
-        "flexDirection": "row",
-        "flexWrap": "nowrap",
-        "overflow": "hidden",
-      }
-    }
+  <Resizeable
+    minWidth={400}
+    onMouseUp={[Function]}
+    openToThe="right"
+    storageName="rightOpeningPanelWidth"
   >
     <div
-      className="emotion-9"
+      className="emotion-8"
     >
       <div
-        className="emotion-8"
+        className="emotion-6"
       >
-        <div
-          className="emotion-6"
+        <h2
+          className="emotion-3"
         >
-          <h2
-            className="emotion-3"
-          >
-            Filters
-          </h2>
-          <button
-            aria-label="Close Panel"
-            className="emotion-5"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              className="emotion-4"
-              data-file-name="doubleChevron.svg"
-              height={20}
-            />
-          </button>
-        </div>
-        <div
-          className="emotion-7"
+          Filters
+        </h2>
+        <button
+          aria-label="Close Panel"
+          className="emotion-5"
+          onClick={[Function]}
+          type="button"
         >
-          
-        </div>
+          <svg
+            className="emotion-4"
+            data-file-name="doubleChevron.svg"
+            height={20}
+          />
+        </button>
+      </div>
+      <div
+        className="emotion-7"
+      >
+        
       </div>
     </div>
-    <div
-      aria-label="Resize horizontally"
-      className="emotion-10"
-      onMouseDown={[Function]}
-    />
-  </div>
+  </Resizeable>
 </div>
 `;

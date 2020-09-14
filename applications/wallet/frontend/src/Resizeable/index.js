@@ -1,133 +1,77 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types'
-import { useState } from 'react'
 
 import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import { zIndex } from '../Styles'
 
-import { getFinalSize } from './helpers'
+const DRAG_WIDTH = 4
 
-export const noop = () => {}
-
-const DRAG_SIZE = 4
-
-let originCoord
+let originX
 
 const Resizeable = ({
-  minExpandedSize,
-  minCollapsedSize,
+  minWidth,
   storageName,
   openToThe,
   onMouseUp,
   children,
 }) => {
-  const [size, setSize] = useLocalStorageState({
+  const [width, setWidth] = useLocalStorageState({
     key: storageName,
-    initialValue: minExpandedSize,
+    initialValue: minWidth,
   })
-  const [startingSize, setStartingSize] = useState(minExpandedSize)
 
-  const direction = openToThe === 'left' || openToThe === 'top' ? 1 : -1
+  const direction = openToThe === 'left' ? 1 : -1
 
   /* istanbul ignore next */
-  const handleMouseMove = ({ clientX, clientY }) => {
-    const difference = (openToThe === 'top' ? clientY : clientX) - originCoord
-
-    const newSize = size - difference * direction
-
-    setSize({
-      value: minCollapsedSize ? Math.max(minCollapsedSize, newSize) : newSize,
-    })
+  const handleMouseMove = ({ clientX }) => {
+    setWidth({ value: width - (clientX - originX) * direction })
   }
 
   /* istanbul ignore next */
-  const handleMouseUp = ({ clientX, clientY }) => {
-    const difference = (openToThe === 'top' ? clientY : clientX) - originCoord
+  const handleMouseUp = ({ clientX }) => {
+    const finalWidth = width - (clientX - originX) * direction
 
-    // Calculate new size
-    const newSize = size - difference * direction
+    setWidth({ value: Math.max(minWidth, finalWidth) })
 
-    // Calculate if there is a snap size
-    const finalSize = getFinalSize({
-      startingSize,
-      newSize,
-      minExpandedSize,
-      minCollapsedSize,
-    })
-
-    // Update startingSize
-    setStartingSize(finalSize)
-
-    setSize({
-      value: Math.max(minCollapsedSize || minExpandedSize, finalSize),
-    })
-
-    //
-    onMouseUp({ size: finalSize })
+    onMouseUp({ width: finalWidth })
 
     window.removeEventListener('mousemove', handleMouseMove)
     window.removeEventListener('mouseup', handleMouseUp)
   }
 
   /* istanbul ignore next */
-  const handleMouseDown = ({ clientX, clientY }) => {
-    originCoord = openToThe === 'top' ? clientY : clientX
+  const handleMouseDown = ({ clientX }) => {
+    originX = clientX
 
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: openToThe === 'top' ? 'column' : 'row',
-        alignItems: 'stretch',
-        flexWrap: 'nowrap',
-        overflow: 'hidden',
-      }}
-    >
+    <div style={{ display: 'flex', alignItems: 'stretch', flexWrap: 'nowrap' }}>
       {openToThe === 'left' && (
         <div
-          aria-label="Resize horizontally"
           css={{
             userSelect: 'none',
             cursor: 'col-resize',
-            width: DRAG_SIZE,
-            marginLeft: -DRAG_SIZE / 2,
-            marginRight: -DRAG_SIZE / 2,
+            width: DRAG_WIDTH,
+            marginLeft: -DRAG_WIDTH / 2,
+            marginRight: -DRAG_WIDTH / 2,
             zIndex: zIndex.layout.interactive,
           }}
           onMouseDown={handleMouseDown}
         />
       )}
-      {openToThe === 'top' && (
-        <div
-          aria-label="Resize vertically"
-          css={{
-            userSelect: 'none',
-            cursor: 'row-resize',
-            height: DRAG_SIZE,
-            marginTop: -DRAG_SIZE / 2,
-            marginBottom: -DRAG_SIZE / 2,
-            zIndex: zIndex.layout.interactive,
-          }}
-          onMouseDown={handleMouseDown}
-        />
-      )}
-      <div css={{ [openToThe === 'top' ? 'height' : 'width']: size }}>
-        {children({ size, setSize, setStartingSize })}
-      </div>
+      <div css={{ flex: 1, width }}>{children}</div>
       {openToThe === 'right' && (
         <div
-          aria-label="Resize horizontally"
           css={{
             userSelect: 'none',
             cursor: 'col-resize',
-            width: DRAG_SIZE,
-            marginLeft: -DRAG_SIZE / 2,
-            marginRight: -DRAG_SIZE / 2,
+            width: DRAG_WIDTH,
+            marginLeft: -DRAG_WIDTH / 2,
+            marginRight: -DRAG_WIDTH / 2,
             zIndex: zIndex.layout.interactive,
           }}
           onMouseDown={handleMouseDown}
@@ -137,17 +81,12 @@ const Resizeable = ({
   )
 }
 
-Resizeable.defaultProps = {
-  onMouseUp: noop,
-}
-
 Resizeable.propTypes = {
-  minExpandedSize: PropTypes.number.isRequired,
-  minCollapsedSize: PropTypes.number.isRequired,
+  minWidth: PropTypes.number.isRequired,
   storageName: PropTypes.string.isRequired,
-  openToThe: PropTypes.oneOf(['left', 'right', 'top']).isRequired,
-  onMouseUp: PropTypes.func,
-  children: PropTypes.func.isRequired,
+  openToThe: PropTypes.oneOf(['left', 'right']).isRequired,
+  onMouseUp: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default Resizeable

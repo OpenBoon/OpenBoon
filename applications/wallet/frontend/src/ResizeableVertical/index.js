@@ -6,17 +6,17 @@ import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import { zIndex } from '../Styles'
 
-import ResizeableMk2Copy from './Copy'
+import ResizeableVerticalDialog from './Dialog'
 
 const DRAG_SIZE = 4
+const DIRECTION = 1
 
 let originCoord
 
-const ResizeableMk2 = ({
+const ResizeableVertical = ({
   storageName,
   minExpandedSize,
   collapsedSize,
-  openToThe,
   children,
 }) => {
   const [size, setSize] = useLocalStorageState({
@@ -40,14 +40,11 @@ const ResizeableMk2 = ({
     setIsOpen(!isOpen)
   }
 
-  const isVertical = openToThe === 'top'
-  const direction = openToThe === 'left' || openToThe === 'top' ? 1 : -1
-
   /* istanbul ignore next */
-  const handleMouseMove = ({ clientX, clientY }) => {
-    const difference = (isVertical ? clientY : clientX) - originCoord
+  const handleMouseMove = ({ clientY }) => {
+    const difference = clientY - originCoord
 
-    const newSize = (isOpen ? size : collapsedSize) - difference * direction
+    const newSize = (isOpen ? size : collapsedSize) - difference * DIRECTION
 
     // Prevent dragging smaller than collapsedSize
     setSize({ value: Math.max(collapsedSize, newSize) })
@@ -56,10 +53,10 @@ const ResizeableMk2 = ({
   }
 
   /* istanbul ignore next */
-  const handleMouseUp = ({ clientX, clientY }) => {
-    const difference = (isVertical ? clientY : clientX) - originCoord
+  const handleMouseUp = ({ clientY }) => {
+    const difference = clientY - originCoord
 
-    const newSize = (isOpen ? size : collapsedSize) - difference * direction
+    const newSize = (isOpen ? size : collapsedSize) - difference * DIRECTION
 
     // Always update size if greater than minExpandedSize
     if (newSize > minExpandedSize) {
@@ -90,8 +87,8 @@ const ResizeableMk2 = ({
   }
 
   /* istanbul ignore next */
-  const handleMouseDown = ({ clientX, clientY }) => {
-    originCoord = isVertical ? clientY : clientX
+  const handleMouseDown = ({ clientY }) => {
+    originCoord = clientY
 
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
@@ -101,51 +98,35 @@ const ResizeableMk2 = ({
     <div
       style={{
         display: 'flex',
-        flexDirection: openToThe === 'top' ? 'column' : 'row',
+        flexDirection: 'column',
         alignItems: 'stretch',
         flexWrap: 'nowrap',
         overflow: 'hidden',
       }}
     >
-      {openToThe === 'left' && (
-        <div
-          aria-label="Resize horizontally"
-          css={{
-            userSelect: 'none',
-            cursor: 'col-resize',
-            width: DRAG_SIZE,
-            marginLeft: -DRAG_SIZE / 2,
-            marginRight: -DRAG_SIZE / 2,
-            zIndex: zIndex.layout.interactive,
-          }}
-          onMouseDown={handleMouseDown}
-        />
-      )}
-      {openToThe === 'top' && (
-        <div
-          aria-label="Resize vertically"
-          css={{
-            userSelect: 'none',
-            cursor: 'row-resize',
-            height: DRAG_SIZE,
-            marginTop: -DRAG_SIZE / 2,
-            marginBottom: -DRAG_SIZE / 2,
-            zIndex: zIndex.layout.interactive,
-          }}
-          onMouseDown={handleMouseDown}
-        />
-      )}
+      <div
+        aria-label="Resize vertically"
+        css={{
+          userSelect: 'none',
+          cursor: 'row-resize',
+          height: DRAG_SIZE,
+          marginTop: -DRAG_SIZE / 2,
+          marginBottom: -DRAG_SIZE / 2,
+          zIndex: zIndex.layout.interactive,
+        }}
+        onMouseDown={handleMouseDown}
+      />
 
       <div
         css={{
-          [isVertical ? 'height' : 'width']: isOpen ? size : collapsedSize,
+          height: isOpen ? size : collapsedSize,
         }}
       >
         {children({
           size,
           toggleOpen,
-          renderCopy: () => (
-            <ResizeableMk2Copy
+          renderDialog: /* istabul ignore next */ () => (
+            <ResizeableVerticalDialog
               size={size}
               startingSize={startingSize}
               minExpandedSize={minExpandedSize}
@@ -153,31 +134,15 @@ const ResizeableMk2 = ({
           ),
         })}
       </div>
-
-      {openToThe === 'right' && (
-        <div
-          aria-label="Resize horizontally"
-          css={{
-            userSelect: 'none',
-            cursor: 'col-resize',
-            width: DRAG_SIZE,
-            marginLeft: -DRAG_SIZE / 2,
-            marginRight: -DRAG_SIZE / 2,
-            zIndex: zIndex.layout.interactive,
-          }}
-          onMouseDown={handleMouseDown}
-        />
-      )}
     </div>
   )
 }
 
-ResizeableMk2.propTypes = {
+ResizeableVertical.propTypes = {
   storageName: PropTypes.string.isRequired,
   minExpandedSize: PropTypes.number.isRequired,
   collapsedSize: PropTypes.number.isRequired,
-  openToThe: PropTypes.oneOf(['left', 'right', 'top']).isRequired,
   children: PropTypes.func.isRequired,
 }
 
-export default ResizeableMk2
+export default ResizeableVertical
