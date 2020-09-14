@@ -134,7 +134,7 @@ class ZpsExecutor(object):
 
     def process(self):
         """
-        Iterate over the document processors and execute each one.
+        Iterate over the d ocument processors and execute each one.
         """
         processors = self.script.get("execute", [])
         assets = self.script.get("assets", [])
@@ -379,7 +379,7 @@ class DockerContainerWrapper(object):
         model_cache = ModelCacheManager.create_model_cache(self.task)
 
         volumes = {
-            "/tmp": {"bind": "/tmp", "mode": "rw"}
+            "/tmp": {"bind": os.environ.get("ANALYST_TEMP", "/tmp"), "mode": "rw"}
         }
 
         network = self.get_network_id()
