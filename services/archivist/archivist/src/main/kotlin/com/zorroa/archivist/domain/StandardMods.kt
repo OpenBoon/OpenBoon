@@ -376,10 +376,6 @@ fun getStandardModules(): List<PipelineModSpec> {
                             mapOf("detect_labels" to 0.15)
                         )
                     )
-                ),
-                ModOp(
-                    ModOpType.SET_ARGS,
-                    OpFilter(OpFilterType.REGEX, ".*AsyncVideoIntelligenceProcessor")
                 )
             ),
             true
