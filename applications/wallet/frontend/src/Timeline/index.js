@@ -1,77 +1,75 @@
 import PropTypes from 'prop-types'
 
+import { colors, spacing, constants } from '../Styles'
+
+import ResizeableMk2 from '../ResizeableMk2'
 import Button, { VARIANTS } from '../Button'
-import Resizeable from '../Resizeable'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
 import TimelinePlayhead from './Playhead'
 import TimelineDetections from './Detections'
 
-// TODO: make resizeable height
-const TIMELINE_HEIGHT = 300
-
 const BAR_HEIGHT = 43
-const MIN_HEIGHT = 300
-
-let reloadKey = 0
+const TIMELINE_HEIGHT = 300
 
 const Timeline = ({ videoRef }) => {
   return (
-    <Resizeable
-      key={reloadKey}
-      minExpandedSize={MIN_HEIGHT}
-      minCollapsedSize={BAR_HEIGHT}
+    <ResizeableMk2
       storageName="Timeline.height"
+      minExpandedSize={TIMELINE_HEIGHT}
+      collapsedSize={BAR_HEIGHT}
       openToThe="top"
     >
-      {({ size, setSize, setStartingSize }) => (
-        <>
-          <div>
-            <Button
-              aria-label="Open Timeline"
-              variant={VARIANTS.ICON}
-              style={{
-                padding: spacing.small,
-                ':hover, &.focus-visible:focus': {
-                  backgroundColor: colors.structure.mattGrey,
-                },
-              }}
-              onClick={() => {
-                reloadKey += 1
+      {({ size, toggleOpen, renderCopy }) => {
+        const isOpen = size >= TIMELINE_HEIGHT
+
+        return (
+          <>
+            <div>
+              <Button
+                aria-label="Open Timeline"
+                variant={VARIANTS.ICON}
+                style={{
+                  padding: spacing.small,
+                  ':hover, &.focus-visible:focus': {
+                    backgroundColor: colors.structure.mattGrey,
+                  },
+                }}
+                onClick={toggleOpen}
+              >
+                Timelime
+              </Button>
+            </div>
+            <TimelineControls />
+            <div
+              css={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                height: '0%',
+                position: 'relative',
+                marginLeft: constants.timeline.modulesWidth,
+                borderLeft: constants.borders.regular.smoke,
               }}
             >
-              Timelime
-            </Button>
-          </div>
-          <TimelineControls />
-          <div
-            css={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              height: '0%',
-              position: 'relative',
-              marginLeft: constants.timeline.modulesWidth,
-              borderLeft: constants.borders.regular.smoke,
-            }}
-          >
-            <TimelinePlayhead videoRef={videoRef} />
+              <TimelinePlayhead videoRef={videoRef} />
 
-            {/* TODO: add ruler and other stuff here */}
-            <div css={{ height: constants.timeline.rulerRowHeight }} />
+              {/* TODO: add ruler and other stuff here */}
+              <div css={{ height: constants.timeline.rulerRowHeight }} />
 
-            <TimelineCaptions videoRef={videoRef} />
-          </div>
-
-          {size >= MIN_HEIGHT && (
-            <div css={{ height: TIMELINE_HEIGHT, overflow: 'auto' }}>
-              <TimelineDetections />
+              <TimelineCaptions videoRef={videoRef} />
             </div>
-          )}
-        </>
-      )}
-    </Resizeable>
+
+            <div css={{ height: size - BAR_HEIGHT, overflow: 'auto' }}>
+              {isOpen && <TimelineDetections />}
+
+              {!isOpen && renderCopy()}
+            </div>
+          </>
+        )
+      }}
+    </ResizeableMk2>
   )
 }
 
