@@ -37,7 +37,7 @@ class TestVisualizationsViewSet:
 
         content = check_response(response)
         assert content[0]['id'] == 'myRange'
-        assert content[0]['attributeFieldType'] == 'double'
+        assert content[0]['defaultFilterType'] == 'range'
         assert content[0]['results']['count'] == 72
         assert content[0]['results']['min'] == 0.75
         assert content[0]['results']['max'] == 1.7799999713897705
@@ -57,7 +57,7 @@ class TestVisualizationsViewSet:
 
         content = check_response(response)
         assert content[0]['id'] == 'myFacet'
-        assert content[0]['attributeFieldType'] == 'keyword'
+        assert content[0]['defaultFilterType'] == 'facet'
         assert content[0]['results']['docCountErrorUpperBound'] == 0
         assert content[0]['results']['sumOtherDocCount'] == 0
         assert content[0]['results']['buckets'] == [
