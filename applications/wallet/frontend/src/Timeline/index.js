@@ -10,7 +10,7 @@ import TimelineCaptions from './Captions'
 import TimelinePlayhead from './Playhead'
 import TimelineDetections from './Detections'
 
-const BAR_HEIGHT = 43
+const CONTROLS_HEIGHT = 43
 const TIMELINE_HEIGHT = 300
 
 const Timeline = ({ videoRef }) => {
@@ -18,7 +18,7 @@ const Timeline = ({ videoRef }) => {
     <ResizeableVertical
       storageName="Timeline.height"
       minExpandedSize={TIMELINE_HEIGHT}
-      collapsedSize={BAR_HEIGHT}
+      collapsedSize={CONTROLS_HEIGHT}
     >
       {({ size, toggleOpen, renderDialog }) => {
         const isOpen = size >= TIMELINE_HEIGHT
@@ -60,7 +60,7 @@ const Timeline = ({ videoRef }) => {
               <TimelineCaptions videoRef={videoRef} />
             </div>
 
-            <div css={{ height: size - BAR_HEIGHT, overflow: 'auto' }}>
+            <div css={{ height: size - CONTROLS_HEIGHT, overflow: 'auto' }}>
               {isOpen && <TimelineDetections />}
 
               {renderDialog()}
