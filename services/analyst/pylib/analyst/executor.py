@@ -134,7 +134,7 @@ class ZpsExecutor(object):
 
     def process(self):
         """
-        Iterate over the d ocument processors and execute each one.
+        Iterate over the document processors and execute each one.
         """
         processors = self.script.get("execute", [])
         assets = self.script.get("assets", [])
