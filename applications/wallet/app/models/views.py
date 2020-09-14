@@ -123,6 +123,11 @@ class ModelViewSet(BaseProjectViewSet):
         return Response(status=status.HTTP_201_CREATED, data={'results': response})
 
     @action(methods=['get'], detail=False)
+    def all(self, request, project_pk):
+        """Get all the models available by consuming all the paginated responses."""
+        return self._zmlp_list_from_search_all_pages(request, item_modifier=item_modifier)
+
+    @action(methods=['get'], detail=False)
     def model_types(self, request, project_pk):
         """Get the available model types from ZMLP."""
         path = f'{self.zmlp_root_api_path}/_types'

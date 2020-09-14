@@ -135,7 +135,7 @@ class BaseProjectViewSet(ViewSet):
         return self.paginator.get_paginated_response(data)
 
     def _zmlp_list_from_search(self, request, item_modifier=None, search_filter=None,
-                               serializer_class=None, base_url=None, item_filter=None):
+                               serializer_class=None, base_url=None):
         """The result of this method can be returned for the list method of a concrete
         viewset if it just needs to proxy the results of a ZMLP search endpoint.
 
@@ -147,10 +147,6 @@ class BaseProjectViewSet(ViewSet):
             search_filter (dict): Optional filter to pass to the zmlp search endpoint.
             serializer_class (Serializer): Optional serializer to override the one set on
               the ViewSet.
-            item_filter (function): Each item dictionary returned by the API will be
-              passed to this function along with the request. If the function returns
-              False the item will not returned in the Response. The arguments are passed
-              as (request, item).
 
         Returns:
             Response: DRF Response that can be used directly by viewset action method.
@@ -167,18 +163,10 @@ class BaseProjectViewSet(ViewSet):
         content = self._get_content(response)
         current_url = request.build_absolute_uri(request.path)
         items = content['list']
-        items_to_remove = []
         for item in items:
             item['url'] = f'{current_url}{item["id"]}/'
             if item_modifier:
                 item_modifier(request, item)
-            if item_filter and not item_filter(request, item):
-                items_to_remove.append(item)
-
-        # TODO: Need to remove the item_filter option once we can do API key filtering
-        # in ZMLP. This functionality breaks pagination.
-        for item in items_to_remove:
-            content['list'].remove(item)
 
         if serializer_class:
             serializer = serializer_class(data=items, many=True)
@@ -189,6 +177,59 @@ class BaseProjectViewSet(ViewSet):
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])
+
+    def _zmlp_list_from_search_all_pages(self, request, item_modifier=None, search_filter=None,
+                                         serializer_class=None, base_url=None):
+        """Uses the default list endpoint logic and consumes all returned pages in one response.
+
+        Args:
+            request (Request): Request the view method was given.
+            item_modifier (function): Each item dictionary returned by the API will be
+              passed to this function along with the request. The function is expected to
+              modify the item in place. The arguments are passed as (request, item).
+            search_filter (dict): Optional filter to pass to the zmlp search endpoint.
+            serializer_class (Serializer): Optional serializer to override the one set on
+              the ViewSet.
+
+        Returns:
+            Response: DRF Response that can be used directly by viewset action method.
+
+        """
+        base_url = base_url or self.zmlp_root_api_path
+        size = request.query_params.get('size', settings.REST_FRAMEWORK['PAGE_SIZE'])
+        payload = {'page': {'from': 0, 'size': size}}
+
+        if search_filter:
+            payload.update(search_filter)
+        path = os.path.join(base_url, '_search')
+
+        additional_pages = True
+        aggregated_content = {'list': []}
+        while additional_pages:
+            response = request.client.post(path, payload)
+            content = self._get_content(response)
+            aggregated_content['list'].extend(content['list'])
+
+            _total = content['page']['totalCount']
+            _next = (int(payload['page']['from']) + int(payload['page']['size']))
+            if _next < _total:
+                payload['page']['from'] = _next
+            else:
+                additional_pages = False
+
+        current_url = request.build_absolute_uri(request.path)
+        items = aggregated_content['list']
+        for item in items:
+            item['url'] = f'{current_url}{item["id"]}/'
+            if item_modifier:
+                item_modifier(request, item)
+
+        if serializer_class:
+            serializer = serializer_class(data=items, many=True)
+        else:
+            serializer = self.get_serializer(data=items, many=True)
+        validate_zmlp_data(serializer)
+        return Response({'results': serializer.validated_data})
 
     def _zmlp_list_from_es(self, request, item_modifier=None, search_filter=None,
                            serializer_class=None, base_url=None, pagination_class=None):
