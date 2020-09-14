@@ -1,5 +1,6 @@
 import pytest
 from django.urls import reverse
+from django.test import override_settings
 from rest_framework import status
 from unittest.mock import patch, Mock
 from zmlp import ZmlpClient
@@ -69,6 +70,29 @@ class TestModelViewSetList:
         content = check_response(response)
         results = content['results']
         assert len(results) == 2
+        assert results[0]['name'] == 'Labeller'
+        assert results[0]['type'] == 'ZVI_LABEL_DETECTION'
+        assert set(model_fields) == set(results[0].keys())
+
+
+class TestModelViewSetListAll:
+
+    @override_settings(REST_FRAMEWORK={'PAGE_SIZE': 2})
+    def test_list_all(self, login, project, api_client, monkeypatch, model_fields):
+
+        def mock_response(*args, **kwargs):
+            return {'list': [{'id': 'b9c52abf-9914-1020-b9f0-0242ac12000a', 'projectId': '00000000-0000-0000-0000-000000000000', 'type': 'ZVI_LABEL_DETECTION', 'name': 'Labeller', 'moduleName': 'zvi-labeller-label-detection', 'fileId': 'models/b9c52abf-9914-1020-b9f0-0242ac12000a/zvi-labeller-label-detection/zvi-labeller-label-detection.zip', 'trainingJobName': 'Train Labeller / zvi-labeller-label-detection', 'ready': False, 'deploySearch': {'query': {'match_all': {}}}, 'timeCreated': 1594678625043, 'timeModified': 1594678625043, 'actorCreated': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000'}, {'id': 'b9c52abe-9914-1020-b9f0-0242ac12000a', 'projectId': '00000000-0000-0000-0000-000000000000', 'type': 'ZVI_KNN_CLASSIFIER', 'name': 'MyClassifier', 'moduleName': 'zvi-myclassifier-cluster', 'fileId': 'models/b9c52abe-9914-1020-b9f0-0242ac12000a/zvi-myclassifier-cluster/zvi-myclassifier-cluster.zip', 'trainingJobName': 'Train MyClassifier / zvi-myclassifier-cluster', 'ready': False, 'deploySearch': {'query': {'match_all': {}}}, 'timeCreated': 1594676501554, 'timeModified': 1594676501554, 'actorCreated': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000'}], 'page': {'from': 0, 'size': 50, 'disabled': False, 'totalCount': 9}}  # noqa
+
+        def job_response(*args, **kwargs):
+            return []
+
+        path = reverse('model-all', kwargs={'project_pk': project.id})
+        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        monkeypatch.setattr(ZmlpClient, 'iter_paged_results', job_response)
+        response = api_client.get(path)
+        content = check_response(response)
+        results = content['results']
+        assert len(results) == 10
         assert results[0]['name'] == 'Labeller'
         assert results[0]['type'] == 'ZVI_LABEL_DETECTION'
         assert set(model_fields) == set(results[0].keys())
