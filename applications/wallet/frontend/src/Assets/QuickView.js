@@ -177,7 +177,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           }}
         >
           <SuspenseBoundary isTransparent>
-            <AssetAsset key={assetId} projectId={projectId} assetId={assetId} />
+            <AssetAsset key={assetId} isQuickView />
           </SuspenseBoundary>
         </div>
       </div>
