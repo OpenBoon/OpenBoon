@@ -40,23 +40,19 @@ describe('<ChartHistogram />', () => {
       component.root.findByProps({ 'aria-label': 'Add Filter' }).props.onClick()
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer/data-visualization',
-        query: {
-          projectId: PROJECT_ID,
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'labelConfidence',
-                attribute: 'analysis.zvi-face-detection',
-                values: {},
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'labelConfidence',
+          attribute: 'analysis.zvi-face-detection',
+          values: {},
         },
-      },
-      `/${PROJECT_ID}/visualizer/data-visualization?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1mYWNlLWRldGVjdGlvbiIsInZhbHVlcyI6e319XQ==`,
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer/data-visualization?query=${query}`,
+      `/${PROJECT_ID}/visualizer/data-visualization?query=${query}`,
     )
   })
 
