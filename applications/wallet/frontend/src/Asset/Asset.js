@@ -77,6 +77,7 @@ const AssetAsset = ({ isQuickView }) => {
             flex: 1,
             display: 'flex',
             width: '100%',
+            height: '100%',
             marginTop: spacing.hairline,
           }}
         >
