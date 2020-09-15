@@ -2,7 +2,10 @@ import { useRouter } from 'next/router'
 
 import { colors, constants, spacing } from '../Styles'
 
+import { useLocalStorageReducer } from '../LocalStorage/helpers'
+
 import TimelineAccordion, { COLOR_TAB_WIDTH } from './Accordion'
+import TimelineTracks from './Tracks'
 
 const COLORS = [
   colors.signal.sky.base,
@@ -62,10 +65,18 @@ const TIMELINE_MODULES = [
   },
 ]
 
+const reducer = (state, action) => ({ ...state, ...action })
+
 const TimelineDetections = () => {
   const {
-    query: { projectId },
+    query: { assetId },
   } = useRouter()
+
+  const [state, dispatch] = useLocalStorageReducer({
+    key: `TimelineDetections.${assetId}`,
+    reducer,
+    initialState: {},
+  })
 
   return (
     <div
@@ -78,17 +89,19 @@ const TimelineDetections = () => {
       }}
     >
       <div css={{ width: constants.timeline.modulesWidth }}>
-        {TIMELINE_MODULES.map((module, index) => {
+        {TIMELINE_MODULES.map(({ name, predictions }, index) => {
           const colorIndex = index % COLORS.length
 
           return (
             <TimelineAccordion
-              key={module.name}
+              key={name}
               moduleColor={COLORS[colorIndex]}
-              cacheKey={`TimelineDetections.${projectId}.${module.name}`}
-              module={module}
+              name={name}
+              predictions={predictions}
+              dispatch={dispatch}
+              isOpen={state[name] || false}
             >
-              {module.predictions.map(({ label, count }) => {
+              {predictions.map(({ label, count }) => {
                 return (
                   <div key={label} css={{ display: 'flex' }}>
                     <div
@@ -128,7 +141,18 @@ const TimelineDetections = () => {
           )
         })}
       </div>
-      <div>{/* Insert marker zone here */}</div>
+      <div css={{ flex: 1 }}>
+        {TIMELINE_MODULES.map(({ name, predictions }) => {
+          return (
+            <TimelineTracks
+              key={name}
+              name={name}
+              predictions={predictions}
+              isOpen={state[name] || false}
+            />
+          )
+        })}
+      </div>
     </div>
   )
 }
