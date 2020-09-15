@@ -392,6 +392,13 @@ exports[`<Asset /> should handle no query 1`] = `
                 }
               />
             </div>
+            <Timeline
+              videoRef={
+                Object {
+                  "current": null,
+                }
+              }
+            />
           </div>
         </div>
       </div>
@@ -1214,6 +1221,13 @@ exports[`<Asset /> should render videos properly 1`] = `
                 }
               />
             </div>
+            <Timeline
+              videoRef={
+                Object {
+                  "current": null,
+                }
+              }
+            />
           </div>
         </div>
       </div>

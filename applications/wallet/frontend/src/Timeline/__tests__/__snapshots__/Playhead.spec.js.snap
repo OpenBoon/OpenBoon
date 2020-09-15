@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TimelinePlayhead /> should render properly 1`] = `
+.emotion-0 {
+  width: 200px;
+}
+
+.emotion-2 {
+  position: absolute;
+  margin-top: 0;
+  top: 30px;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background-color: #0074f5;
+}
+
+.emotion-1 {
+  position: absolute;
+  left: -9px;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 14px 10px 0 10px;
+  border-color: #0074f5 transparent transparent transparent;
+}
+
+<div>
+  <div
+    className="emotion-0"
+  />
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    />
+  </div>
+</div>
+`;
