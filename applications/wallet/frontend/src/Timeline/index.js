@@ -7,16 +7,18 @@ import Button, { VARIANTS } from '../Button'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
-import TimelineContent from './Content'
+import TimelinePlayhead from './Playhead'
+import TimelineDetections from './Detections'
+import TimelineDropMessage from './DropMessage'
 
 const TIMELINE_HEIGHT = 300
 
 const Timeline = ({ videoRef, assetId }) => {
   return (
     <ResizeableVertical
-      storageName={`Timeline.${assetId}.height`}
-      minExpandedSize={TIMELINE_HEIGHT}
-      header={({ toggleOpen }) => (
+      storageName={`Timeline.${assetId}`}
+      minHeight={TIMELINE_HEIGHT}
+      header={({ isOpen, toggleOpen }) => (
         <div
           css={{
             paddingLeft: spacing.base,
@@ -30,7 +32,7 @@ const Timeline = ({ videoRef, assetId }) => {
           }}
         >
           <Button
-            aria-label="Open Timeline"
+            aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
             variant={VARIANTS.ICON}
             style={{
               padding: spacing.small,
@@ -49,13 +51,43 @@ const Timeline = ({ videoRef, assetId }) => {
         </div>
       )}
     >
-      {({ size, originSize }) => (
-        <TimelineContent
-          isOpen={size >= TIMELINE_HEIGHT}
-          size={size}
-          originSize={originSize}
-          videoRef={videoRef}
-        />
+      {({ size, isOpen, originSize }) => (
+        <div css={{ height: size, overflow: 'auto' }}>
+          {isOpen ? (
+            <div
+              css={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: size,
+                overflow: 'hidden',
+              }}
+            >
+              <div
+                css={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '0%',
+                  position: 'relative',
+                  marginLeft: constants.timeline.modulesWidth,
+                  borderLeft: constants.borders.regular.smoke,
+                }}
+              >
+                <TimelinePlayhead videoRef={videoRef} />
+
+                {/* TODO: add ruler and other stuff here */}
+                <div css={{ height: constants.timeline.rulerRowHeight }} />
+
+                <TimelineDetections videoRef={videoRef} />
+              </div>
+            </div>
+          ) : (
+            /* istanbul ignore next */ <TimelineDropMessage
+              size={size}
+              originSize={originSize}
+            />
+          )}
+        </div>
       )}
     </ResizeableVertical>
   )

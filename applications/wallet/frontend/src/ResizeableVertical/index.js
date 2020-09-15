@@ -11,20 +11,18 @@ const DIRECTION = 1
 
 let originY
 
-const ResizeableVertical = ({
-  storageName,
-  minExpandedSize,
-  header,
-  children,
-}) => {
+const ResizeableVertical = ({ storageName, minHeight, header, children }) => {
   const [size, setSize] = useLocalStorageState({
-    key: storageName,
-    initialValue: minExpandedSize,
+    key: `${storageName}.height`,
+    initialValue: minHeight,
   })
 
-  const [originSize, setOriginSize] = useState(minExpandedSize)
+  const [isOpen, setIsOpen] = useLocalStorageState({
+    key: `${storageName}.isOpen`,
+    initialValue: false,
+  })
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [originSize, setOriginSize] = useState(minHeight)
 
   const toggleOpen = () => {
     // Updating here allows for proper collapse/expand messaging
@@ -32,10 +30,10 @@ const ResizeableVertical = ({
       setOriginSize(0)
     }
     if (!isOpen) {
-      setOriginSize(minExpandedSize)
+      setOriginSize(minHeight)
     }
 
-    setIsOpen(!isOpen)
+    setIsOpen({ value: !isOpen })
   }
 
   /* istanbul ignore next */
@@ -46,7 +44,7 @@ const ResizeableVertical = ({
 
     setSize({ value: newSize })
 
-    setIsOpen(newSize > 0)
+    setIsOpen({ value: newSize > 0 })
   }
 
   /* istanbul ignore next */
@@ -55,25 +53,25 @@ const ResizeableVertical = ({
 
     const newSize = (isOpen ? size : 0) - difference * DIRECTION
 
-    // Always update size if greater than minExpandedSize
-    if (newSize > minExpandedSize) {
-      // Prevent size being set smaller than minExpandedSize
-      setSize({ value: Math.max(minExpandedSize, newSize) })
+    // Always update size if greater than minHeight
+    if (newSize > minHeight) {
+      // Prevent size being set smaller than minHeight
+      setSize({ value: Math.max(minHeight, newSize) })
 
-      setOriginSize(Math.max(minExpandedSize, newSize))
+      setOriginSize(Math.max(minHeight, newSize))
     } else {
-      // Dragging open from closed state below minExpandedSize should snap open
+      // Dragging open from closed state below minHeight should snap open
       if (!isOpen) {
-        setSize({ value: minExpandedSize })
+        setSize({ value: minHeight })
 
         toggleOpen()
       }
 
-      // Dragging close under minExpandedSize should snap close
+      // Dragging close under minHeight should snap close
       if (isOpen) {
-        // If a user drags below the minExpandedSize and drops to collapse,
-        // the size is still set under the minExpandedSize. This resets it.
-        setSize({ value: Math.max(minExpandedSize, size) })
+        // If a user drags below the minHeight and drops to collapse,
+        // the size is still set under the minHeight. This resets it.
+        setSize({ value: Math.max(minHeight, size) })
 
         toggleOpen()
       }
@@ -114,7 +112,7 @@ const ResizeableVertical = ({
         onMouseDown={handleMouseDown}
       />
 
-      {header({ toggleOpen })}
+      {header({ isOpen, toggleOpen })}
 
       <div
         css={{
@@ -123,6 +121,7 @@ const ResizeableVertical = ({
       >
         {children({
           size,
+          isOpen: size >= minHeight,
           originSize,
         })}
       </div>
@@ -132,7 +131,7 @@ const ResizeableVertical = ({
 
 ResizeableVertical.propTypes = {
   storageName: PropTypes.string.isRequired,
-  minExpandedSize: PropTypes.number.isRequired,
+  minHeight: PropTypes.number.isRequired,
   header: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
 }

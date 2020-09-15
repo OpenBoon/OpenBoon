@@ -157,7 +157,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
     className="emotion-2"
   >
     <button
-      aria-label="Open Timeline"
+      aria-label="Close Timeline"
       className="emotion-1"
       onClick={[Function]}
       type="button"

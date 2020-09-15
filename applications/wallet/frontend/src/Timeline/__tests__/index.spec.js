@@ -7,7 +7,6 @@ const noop = () => {}
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 
 jest.mock('../Controls', () => 'TimelineControls')
-jest.mock('../../Resizeable', () => 'Resizeable')
 jest.mock('../Captions', () => 'TimelineCaptions')
 jest.mock('../Playhead', () => 'TimelinePlayhead')
 jest.mock('../Detections', () => 'TimelineDetections')
@@ -51,7 +50,7 @@ describe('<Timeline />', () => {
     // Close timeline
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Open Timeline' })
+        .findByProps({ 'aria-label': 'Close Timeline' })
         .props.onClick()
     })
 
