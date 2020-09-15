@@ -24,6 +24,7 @@ const TimelineAccordion = ({
       css={{
         backgroundColor: colors.structure.soot,
         borderBottom: constants.borders.regular.smoke,
+        borderRight: constants.borders.regular.smoke,
       }}
       open={isOpen}
       onToggle={({ target: { open } }) => setOpen({ value: open })}

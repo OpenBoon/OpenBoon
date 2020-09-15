@@ -62,16 +62,22 @@ const TIMELINE_MODULES = [
   },
 ]
 
-const WIDTH = 200
-
 const TimelineDetections = () => {
   const {
     query: { projectId },
   } = useRouter()
 
   return (
-    <div>
-      <div css={{ width: WIDTH, borderRight: constants.borders.regular.smoke }}>
+    <div
+      css={{
+        flex: 1,
+        display: 'flex',
+        overflow: 'auto',
+        marginLeft: -constants.timeline.modulesWidth,
+        borderTop: constants.borders.regular.smoke,
+      }}
+    >
+      <div css={{ width: constants.timeline.modulesWidth }}>
         {TIMELINE_MODULES.map((module, index) => {
           const colorIndex = index % COLORS.length
 

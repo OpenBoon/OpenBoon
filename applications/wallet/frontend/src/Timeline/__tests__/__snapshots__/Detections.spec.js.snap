@@ -1,14 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TimelineDetections /> should render properly 1`] = `
+.emotion-111 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: auto;
+  margin-left: -200px;
+  border-top: 1px solid #3b3b3b;
+}
+
 .emotion-110 {
   width: 200px;
-  border-right: 1px solid #3b3b3b;
 }
 
 .emotion-16 {
   background-color: #212121;
   border-bottom: 1px solid #3b3b3b;
+  border-right: 1px solid #3b3b3b;
 }
 
 .emotion-5 {
@@ -186,7 +199,9 @@ exports[`<TimelineDetections /> should render properly 1`] = `
   background-color: #00bdc1;
 }
 
-<div>
+<div
+  className="emotion-111"
+>
   <div
     className="emotion-110"
   >
@@ -691,14 +706,27 @@ exports[`<TimelineDetections /> should render properly 1`] = `
 `;
 
 exports[`<TimelineDetections /> should render properly 2`] = `
+.emotion-111 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: auto;
+  margin-left: -200px;
+  border-top: 1px solid #3b3b3b;
+}
+
 .emotion-110 {
   width: 200px;
-  border-right: 1px solid #3b3b3b;
 }
 
 .emotion-16 {
   background-color: #212121;
   border-bottom: 1px solid #3b3b3b;
+  border-right: 1px solid #3b3b3b;
 }
 
 .emotion-5 {
@@ -873,7 +901,9 @@ exports[`<TimelineDetections /> should render properly 2`] = `
   align-self: center;
 }
 
-<div>
+<div
+  className="emotion-111"
+>
   <div
     className="emotion-110"
   >

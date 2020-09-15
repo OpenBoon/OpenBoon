@@ -1,3 +1,5 @@
+export const GUIDE_WIDTH = 2
+
 export const formatPaddedSeconds = ({ seconds: s }) => {
   const seconds = Number.isFinite(s) ? s : 0
 
@@ -14,4 +16,15 @@ export const formatPaddedSeconds = ({ seconds: s }) => {
 
   // has single digit minutes or less than 1 minute
   return `00:0${ISOString.substr(15, 4)}`
+}
+
+export const updatePlayheadPosition = ({ video, playhead }) => {
+  if (!video || !playhead) return null
+
+  return playhead.style.setProperty(
+    'left',
+    `calc(${(video.currentTime / video.duration) * 100}% - ${
+      GUIDE_WIDTH / 2
+    }px)`,
+  )
 }
