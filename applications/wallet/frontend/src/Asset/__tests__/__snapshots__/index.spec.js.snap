@@ -393,6 +393,7 @@ exports[`<Asset /> should handle no query 1`] = `
               />
             </div>
             <Timeline
+              assetId="srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               videoRef={
                 Object {
                   "current": null,
@@ -1222,6 +1223,7 @@ exports[`<Asset /> should render videos properly 1`] = `
               />
             </div>
             <Timeline
+              assetId="srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               videoRef={
                 Object {
                   "current": null,

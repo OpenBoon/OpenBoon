@@ -73,7 +73,7 @@ const AssetVideo = ({ assetRef, assetId, uri, mediaType, isQuickView }) => {
 
       {!isQuickView && (
         <Feature flag="timeline" envs={[]}>
-          <Timeline videoRef={videoRef} />
+          <Timeline videoRef={videoRef} assetId={assetId} />
         </Feature>
       )}
     </div>
