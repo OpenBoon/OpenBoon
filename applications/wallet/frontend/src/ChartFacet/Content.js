@@ -19,6 +19,8 @@ import {
 import { getQueryString } from '../Fetch/helpers'
 import { ACTIONS as CHART_ACTIONS } from '../DataVisualization/reducer'
 
+import { CHART_TYPE_FIELDS } from '../ChartForm/helpers'
+
 import Button, { VARIANTS } from '../Button'
 
 const BAR_HEIGHT = 4
@@ -66,7 +68,8 @@ const ChartFacetContent = ({
     `/api/v1/projects/${projectId}/visualizations/load/${queryString}`,
   )
 
-  const { results = {} } = data.find((r) => r.id === id) || {}
+  const { results = {}, defaultFilterType } =
+    data.find((r) => r.id === id) || {}
 
   const { buckets = [] } = results
 
@@ -231,7 +234,7 @@ const ChartFacetContent = ({
               payload: {
                 pathname,
                 projectId,
-                filter: { type, attribute, values: {} },
+                filter: { type: defaultFilterType, attribute, values: {} },
                 query,
               },
             })
@@ -250,30 +253,34 @@ const ChartFacetContent = ({
           </div>
         </Button>
 
-        <div css={{ width: spacing.base }} />
+        {CHART_TYPE_FIELDS.histogram.includes(defaultFilterType) && (
+          <>
+            <div css={{ width: spacing.base }} />
 
-        <Button
-          aria-label="Add Histogram Visualization"
-          variant={VARIANTS.MICRO}
-          onClick={() => {
-            chartDispatch({
-              type: CHART_ACTIONS.CREATE,
-              payload: {
-                type: 'histogram',
-                attribute,
-                values: 10,
-              },
-            })
-          }}
-        >
-          <div css={{ display: 'flex', alignItems: 'center' }}>
-            <HistogramSvg
-              height={constants.icons.regular}
-              css={{ paddingRight: spacing.base }}
-            />
-            Add Histogram Visualization
-          </div>
-        </Button>
+            <Button
+              aria-label="Add Histogram Visualization"
+              variant={VARIANTS.MICRO}
+              onClick={() => {
+                chartDispatch({
+                  type: CHART_ACTIONS.CREATE,
+                  payload: {
+                    type: 'histogram',
+                    attribute,
+                    values: 10,
+                  },
+                })
+              }}
+            >
+              <div css={{ display: 'flex', alignItems: 'center' }}>
+                <HistogramSvg
+                  height={constants.icons.regular}
+                  css={{ paddingRight: spacing.base }}
+                />
+                Add Histogram Visualization
+              </div>
+            </Button>
+          </>
+        )}
       </div>
     </div>
   )
