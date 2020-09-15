@@ -5,7 +5,12 @@ import TimelineContent from '../Content'
 describe('<TimelineContent />', () => {
   it('should render properly when dragging down', () => {
     const component = TestRenderer.create(
-      <TimelineContent size={200} originSize={300} isOpen={false} />,
+      <TimelineContent
+        size={200}
+        originSize={300}
+        isOpen={false}
+        videoRef={{}}
+      />,
     )
 
     expect(component.root.findAllByType('div')[1].props.children).toEqual([
@@ -17,7 +22,12 @@ describe('<TimelineContent />', () => {
 
   it('should render properly when dragging up', () => {
     const component = TestRenderer.create(
-      <TimelineContent size={200} originSize={0} isOpen={false} />,
+      <TimelineContent
+        size={200}
+        originSize={0}
+        isOpen={false}
+        videoRef={{}}
+      />,
     )
 
     expect(component.root.findAllByType('div')[1].props.children).toEqual([

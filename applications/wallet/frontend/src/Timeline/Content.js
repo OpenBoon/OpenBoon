@@ -11,21 +11,30 @@ const TimelineControls = ({ isOpen, size, originSize, videoRef }) => {
       {isOpen && (
         <div
           css={{
-            flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            height: '0%',
-            position: 'relative',
-            marginLeft: constants.timeline.modulesWidth,
-            borderLeft: constants.borders.regular.smoke,
+            height: size,
+            overflow: 'hidden',
           }}
         >
-          <TimelinePlayhead videoRef={videoRef} />
+          <div
+            css={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              height: '0%',
+              position: 'relative',
+              marginLeft: constants.timeline.modulesWidth,
+              borderLeft: constants.borders.regular.smoke,
+            }}
+          >
+            <TimelinePlayhead videoRef={videoRef} />
 
-          {/* TODO: add ruler and other stuff here */}
-          <div css={{ height: constants.timeline.rulerRowHeight }} />
+            {/* TODO: add ruler and other stuff here */}
+            <div css={{ height: constants.timeline.rulerRowHeight }} />
 
-          <TimelineDetections videoRef={videoRef} />
+            <TimelineDetections videoRef={videoRef} />
+          </div>
         </div>
       )}
 

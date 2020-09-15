@@ -1,9 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-<<<<<<< HEAD
-exports[`<Timeline /> should render properly 1`] = `
-.emotion-4 {
-=======
 exports[`<Timeline /> should open the Timeline panel 1`] = `
 .emotion-0 {
   -webkit-user-select: none;
@@ -17,7 +13,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   z-index: 10;
 }
 
-.emotion-12 {
+.emotion-2 {
   padding-left: 8px;
   padding-right: 8px;
   background-color: #252525;
@@ -41,7 +37,6 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
->>>>>>> Fix behavior
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -49,13 +44,6 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-<<<<<<< HEAD
-  height: 300px;
-  overflow: hidden;
-}
-
-.emotion-1 {
-=======
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -107,56 +95,46 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-11 {
+.emotion-6 {
+  height: 300px;
+  overflow: auto;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 4px;
-}
-
-.emotion-2 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 300px;
+  overflow: hidden;
 }
 
 .emotion-4 {
-  width: 4px;
-}
-
-.emotion-10 {
-  padding: 4px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 0%;
+  position: relative;
+  margin-left: 200px;
+  border-left: 1px solid #3b3b3b;
 }
 
-.emotion-8 {
-  background-color: #191919;
-  padding: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-  color: #0074f5;
+.emotion-3 {
+  height: 44px;
 }
 
-.emotion-9 {
-  padding: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.emotion-13 {
-  height: 43px;
+.emotion-7 {
+  height: 300px;
 }
 
 <div
@@ -176,94 +154,95 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
     onMouseDown={[Function]}
   />
   <div
-    className="emotion-13"
+    className="emotion-2"
+  >
+    <button
+      aria-label="Open Timeline"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      Timelime
+    </button>
+    <TimelineControls
+      videoRef={
+        Object {
+          "current": Object {
+            "addEventListener": [Function],
+            "currentTime": 0,
+            "duration": 18,
+            "pause": [Function],
+            "paused": true,
+            "play": [Function],
+            "removeEventListener": [Function],
+          },
+        }
+      }
+    />
+    <TimelineCaptions
+      initialTrackIndex={-1}
+      videoRef={
+        Object {
+          "current": Object {
+            "addEventListener": [Function],
+            "currentTime": 0,
+            "duration": 18,
+            "pause": [Function],
+            "paused": true,
+            "play": [Function],
+            "removeEventListener": [Function],
+          },
+        }
+      }
+    />
+  </div>
+  <div
+    className="emotion-7"
   >
     <div
-      className="emotion-12"
+      className="emotion-6"
     >
-      <button
-        aria-label="Open Timeline"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        Timelime
-      </button>
       <div
-        className="emotion-11"
+        className="emotion-5"
       >
-        <button
-          aria-label="Previous Second"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            className="emotion-2"
-            data-file-name="seek.svg"
-            height={20}
-          />
-        </button>
         <div
           className="emotion-4"
-        />
-        <button
-          aria-label="Play"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
         >
-          <svg
-            data-file-name="play.svg"
-            height={20}
+          <TimelinePlayhead
+            videoRef={
+              Object {
+                "current": Object {
+                  "addEventListener": [Function],
+                  "currentTime": 0,
+                  "duration": 18,
+                  "pause": [Function],
+                  "paused": true,
+                  "play": [Function],
+                  "removeEventListener": [Function],
+                },
+              }
+            }
           />
-        </button>
-        <div
-          className="emotion-4"
-        />
-        <button
-          aria-label="Next Second"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="seek.svg"
-            height={20}
+          <div
+            className="emotion-3"
           />
-        </button>
-        <div
-          className="emotion-10"
-        >
-          <div
-            className="emotion-8"
-          >
-            00:00:00
-          </div>
-          <div
-            className="emotion-9"
-          >
-            / 
-            00:00:18
-          </div>
+          <TimelineDetections
+            videoRef={
+              Object {
+                "current": Object {
+                  "addEventListener": [Function],
+                  "currentTime": 0,
+                  "duration": 18,
+                  "pause": [Function],
+                  "paused": true,
+                  "play": [Function],
+                  "removeEventListener": [Function],
+                },
+              }
+            }
+          />
         </div>
       </div>
-      <TimelineCaptions
-        initialTrackIndex={-1}
-        videoRef={
-          Object {
-            "current": Object {
-              "addEventListener": [Function],
-              "currentTime": 0,
-              "duration": 18,
-              "pause": [Function],
-              "paused": true,
-              "play": [Function],
-              "removeEventListener": [Function],
-            },
-          }
-        }
-      />
     </div>
   </div>
 </div>
@@ -282,11 +261,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   z-index: 10;
 }
 
-.emotion-14 {
-  height: 300px;
-}
-
-.emotion-12 {
+.emotion-2 {
   padding-left: 8px;
   padding-right: 8px;
   background-color: #252525;
@@ -368,215 +343,16 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 4px;
+.emotion-7 {
+  height: 0;
 }
 
-.emotion-2 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-4 {
-  width: 4px;
-}
-
-.emotion-10 {
-  padding: 4px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-8 {
-  background-color: #191919;
-  padding: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-  color: #0074f5;
-}
-
-.emotion-9 {
-  padding: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.emotion-13 {
-  height: 200px;
+.emotion-6 {
+  height: 300px;
   overflow: auto;
 }
 
-<div
-  style={
-    Object {
-      "alignItems": "stretch",
-      "display": "flex",
-      "flexDirection": "column",
-      "flexWrap": "nowrap",
-      "overflow": "hidden",
-    }
-  }
->
-  <div
-    aria-label="Resize vertically"
-    className="emotion-0"
-    onMouseDown={[Function]}
-  />
-  <div
-    className="emotion-14"
-  >
-    <div
-      className="emotion-12"
-    >
-      <button
-        aria-label="Open Timeline"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        Timelime
-      </button>
-      <div
-        className="emotion-11"
-      >
-        <button
-          aria-label="Previous Second"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            className="emotion-2"
-            data-file-name="seek.svg"
-            height={20}
-          />
-        </button>
-        <div
-          className="emotion-4"
-        />
-        <button
-          aria-label="Play"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="play.svg"
-            height={20}
-          />
-        </button>
-        <div
-          className="emotion-4"
-        />
-        <button
-          aria-label="Next Second"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="seek.svg"
-            height={20}
-          />
-        </button>
-        <div
-          className="emotion-10"
-        >
-          <div
-            className="emotion-8"
-          >
-            00:00:00
-          </div>
-          <div
-            className="emotion-9"
-          >
-            / 
-            00:00:18
-          </div>
-        </div>
-      </div>
-      <TimelineCaptions
-        initialTrackIndex={-1}
-        videoRef={
-          Object {
-            "current": Object {
-              "addEventListener": [Function],
-              "currentTime": 0,
-              "duration": 18,
-              "pause": [Function],
-              "paused": true,
-              "play": [Function],
-              "removeEventListener": [Function],
-            },
-          }
-        }
-      />
-    </div>
-    <div
-      className="emotion-13"
-    >
-      <TimelineDetections />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<Timeline /> should pause 1`] = `
-.emotion-0 {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  cursor: row-resize;
-  height: 4px;
-  margin-top: -2px;
-  margin-bottom: -2px;
-  z-index: 10;
-}
-
-.emotion-14 {
-  height: 300px;
-}
-
-.emotion-12 {
-  padding-left: 8px;
-  padding-right: 8px;
-  background-color: #252525;
-  color: #808080;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -584,361 +360,18 @@ exports[`<Timeline /> should pause 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 4px;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  background-color: #2e2e2e;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 4px;
-}
-
-.emotion-2 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
+  height: 300px;
+  overflow: hidden;
 }
 
 .emotion-4 {
-  width: 4px;
-}
-
-.emotion-10 {
-  padding: 4px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-8 {
-  background-color: #191919;
-  padding: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-  color: #0074f5;
-}
-
-.emotion-9 {
-  padding: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.emotion-13 {
-  height: 200px;
-  overflow: auto;
-}
-
-<div
-  style={
-    Object {
-      "alignItems": "stretch",
-      "display": "flex",
-      "flexDirection": "column",
-      "flexWrap": "nowrap",
-      "overflow": "hidden",
-    }
-  }
->
-  <div
-    aria-label="Resize vertically"
-    className="emotion-0"
-    onMouseDown={[Function]}
-  />
-  <div
-    className="emotion-14"
-  >
-    <div
-      className="emotion-12"
-    >
-      <button
-        aria-label="Open Timeline"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        Timelime
-      </button>
-      <div
-        className="emotion-11"
-      >
-        <button
-          aria-label="Previous Second"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            className="emotion-2"
-            data-file-name="seek.svg"
-            height={20}
-          />
-        </button>
-        <div
-          className="emotion-4"
-        />
-        <button
-          aria-label="Pause"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="pause.svg"
-            height={20}
-          />
-        </button>
-        <div
-          className="emotion-4"
-        />
-        <button
-          aria-label="Next Second"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="seek.svg"
-            height={20}
-          />
-        </button>
-        <div
-          className="emotion-10"
-        >
-          <div
-            className="emotion-8"
-          >
-            00:00:06
-          </div>
-          <div
-            className="emotion-9"
-          >
-            / 
-            00:00:18
-          </div>
-        </div>
-      </div>
-      <TimelineCaptions
-        initialTrackIndex={-1}
-        videoRef={
-          Object {
-            "current": Object {
-              "addEventListener": [Function],
-              "currentTime": 6,
-              "duration": 18,
-              "pause": [MockFunction],
-              "paused": false,
-              "play": [Function],
-              "removeEventListener": [Function],
-            },
-          }
-        }
-      />
-    </div>
-    <div
-      className="emotion-13"
-    >
-      <TimelineDetections />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<Timeline /> should play 1`] = `
-.emotion-0 {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  cursor: row-resize;
-  height: 4px;
-  margin-top: -2px;
-  margin-bottom: -2px;
-  z-index: 10;
-}
-
-.emotion-14 {
-  height: 300px;
-}
-
-.emotion-12 {
->>>>>>> Fix behavior
-  padding-left: 8px;
-  padding-right: 8px;
-  background-color: #252525;
-  color: #808080;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border-bottom: 1px solid #3b3b3b;
-}
-
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  color: #808080;
-  padding: 4px;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  color: #ffffff;
-}
-
-.emotion-1:hover svg,
-.emotion-1.focus-visible:focus svg {
-  opacity: 1;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-1:hover,
-.emotion-1.focus-visible:focus {
-  background-color: #2e2e2e;
-}
-
-<<<<<<< HEAD
-.emotion-3 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-=======
-.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 4px;
-}
-
-.emotion-2 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-4 {
-  width: 4px;
-}
-
-.emotion-10 {
-  padding: 4px;
->>>>>>> Fix behavior
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-<<<<<<< HEAD
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -948,25 +381,285 @@ exports[`<Timeline /> should play 1`] = `
   border-left: 1px solid #3b3b3b;
 }
 
-.emotion-2 {
+.emotion-3 {
   height: 44px;
 }
 
 <div
-  className="emotion-4"
+  style={
+    Object {
+      "alignItems": "stretch",
+      "display": "flex",
+      "flexDirection": "column",
+      "flexWrap": "nowrap",
+      "overflow": "hidden",
+    }
+  }
 >
   <div
-    className="emotion-1"
+    aria-label="Resize vertically"
+    className="emotion-0"
+    onMouseDown={[Function]}
+  />
+  <div
+    className="emotion-2"
   >
-    <div>
-      <button
-        className="emotion-0"
-        onClick={[Function]}
-        type="button"
+    <button
+      aria-label="Open Timeline"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      Timelime
+    </button>
+    <TimelineControls
+      videoRef={
+        Object {
+          "current": Object {
+            "addEventListener": [Function],
+            "currentTime": 0,
+            "duration": 18,
+            "pause": [Function],
+            "paused": true,
+            "play": [Function],
+            "removeEventListener": [Function],
+          },
+        }
+      }
+    />
+    <TimelineCaptions
+      initialTrackIndex={-1}
+      videoRef={
+        Object {
+          "current": Object {
+            "addEventListener": [Function],
+            "currentTime": 0,
+            "duration": 18,
+            "pause": [Function],
+            "paused": true,
+            "play": [Function],
+            "removeEventListener": [Function],
+          },
+        }
+      }
+    />
+  </div>
+  <div
+    className="emotion-7"
+  >
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-5"
       >
-        Timelime
-      </button>
+        <div
+          className="emotion-4"
+        >
+          <TimelinePlayhead
+            videoRef={
+              Object {
+                "current": Object {
+                  "addEventListener": [Function],
+                  "currentTime": 0,
+                  "duration": 18,
+                  "pause": [Function],
+                  "paused": true,
+                  "play": [Function],
+                  "removeEventListener": [Function],
+                },
+              }
+            }
+          />
+          <div
+            className="emotion-3"
+          />
+          <TimelineDetections
+            videoRef={
+              Object {
+                "current": Object {
+                  "addEventListener": [Function],
+                  "currentTime": 0,
+                  "duration": 18,
+                  "pause": [Function],
+                  "paused": true,
+                  "play": [Function],
+                  "removeEventListener": [Function],
+                },
+              }
+            }
+          />
+        </div>
+      </div>
     </div>
+  </div>
+</div>
+`;
+
+exports[`<Timeline /> should render properly 1`] = `
+.emotion-0 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: row-resize;
+  height: 4px;
+  margin-top: -2px;
+  margin-bottom: -2px;
+  z-index: 10;
+}
+
+.emotion-2 {
+  padding-left: 8px;
+  padding-right: 8px;
+  background-color: #252525;
+  color: #808080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  padding: 4px;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  background-color: #2e2e2e;
+}
+
+.emotion-7 {
+  height: 0;
+}
+
+.emotion-6 {
+  height: 300px;
+  overflow: auto;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 300px;
+  overflow: hidden;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 0%;
+  position: relative;
+  margin-left: 200px;
+  border-left: 1px solid #3b3b3b;
+}
+
+.emotion-3 {
+  height: 44px;
+}
+
+<div
+  style={
+    Object {
+      "alignItems": "stretch",
+      "display": "flex",
+      "flexDirection": "column",
+      "flexWrap": "nowrap",
+      "overflow": "hidden",
+    }
+  }
+>
+  <div
+    aria-label="Resize vertically"
+    className="emotion-0"
+    onMouseDown={[Function]}
+  />
+  <div
+    className="emotion-2"
+  >
+    <button
+      aria-label="Open Timeline"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      Timelime
+    </button>
     <TimelineControls
       videoRef={
         Object {
@@ -984,163 +677,37 @@ exports[`<Timeline /> should play 1`] = `
     />
   </div>
   <div
-    className="emotion-3"
-  >
-    <TimelinePlayhead
-      videoRef={
-        Object {
-          "current": undefined,
-        }
-      }
-    />
-    <div
-      className="emotion-2"
-    />
-    <TimelineDetections
-      videoRef={
-        Object {
-          "current": undefined,
-        }
-      }
-    />
-=======
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-8 {
-  background-color: #191919;
-  padding: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-  color: #0074f5;
-}
-
-.emotion-9 {
-  padding: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.emotion-13 {
-  height: 200px;
-  overflow: auto;
-}
-
-<div
-  style={
-    Object {
-      "alignItems": "stretch",
-      "display": "flex",
-      "flexDirection": "column",
-      "flexWrap": "nowrap",
-      "overflow": "hidden",
-    }
-  }
->
-  <div
-    aria-label="Resize vertically"
-    className="emotion-0"
-    onMouseDown={[Function]}
-  />
-  <div
-    className="emotion-14"
+    className="emotion-7"
   >
     <div
-      className="emotion-12"
+      className="emotion-6"
     >
-      <button
-        aria-label="Open Timeline"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        Timelime
-      </button>
       <div
-        className="emotion-11"
+        className="emotion-5"
       >
-        <button
-          aria-label="Previous Second"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            className="emotion-2"
-            data-file-name="seek.svg"
-            height={20}
-          />
-        </button>
         <div
           className="emotion-4"
-        />
-        <button
-          aria-label="Play"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
         >
-          <svg
-            data-file-name="play.svg"
-            height={20}
+          <TimelinePlayhead
+            videoRef={
+              Object {
+                "current": undefined,
+              }
+            }
           />
-        </button>
-        <div
-          className="emotion-4"
-        />
-        <button
-          aria-label="Next Second"
-          className="emotion-1"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="seek.svg"
-            height={20}
+          <div
+            className="emotion-3"
           />
-        </button>
-        <div
-          className="emotion-10"
-        >
-          <div
-            className="emotion-8"
-          >
-            00:00:00
-          </div>
-          <div
-            className="emotion-9"
-          >
-            / 
-            00:00:18
-          </div>
+          <TimelineDetections
+            videoRef={
+              Object {
+                "current": undefined,
+              }
+            }
+          />
         </div>
       </div>
-      <TimelineCaptions
-        initialTrackIndex={-1}
-        videoRef={
-          Object {
-            "current": Object {
-              "addEventListener": [Function],
-              "currentTime": 0,
-              "duration": 18,
-              "pause": [Function],
-              "paused": true,
-              "play": [MockFunction],
-              "removeEventListener": [Function],
-            },
-          }
-        }
-      />
     </div>
-    <div
-      className="emotion-13"
-    >
-      <TimelineDetections />
-    </div>
->>>>>>> Fix behavior
   </div>
 </div>
 `;
