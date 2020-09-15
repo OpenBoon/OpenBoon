@@ -4,6 +4,8 @@ import Timeline from '..'
 
 const noop = () => {}
 
+const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
+
 jest.mock('../Controls', () => 'TimelineControls')
 jest.mock('../../Resizeable', () => 'Resizeable')
 jest.mock('../Captions', () => 'TimelineCaptions')
@@ -13,7 +15,7 @@ jest.mock('../Detections', () => 'TimelineDetections')
 describe('<Timeline />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
-      <Timeline videoRef={{ current: undefined }} />,
+      <Timeline assetId={ASSET_ID} videoRef={{ current: undefined }} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -22,6 +24,7 @@ describe('<Timeline />', () => {
   it('should open the Timeline panel', () => {
     const component = TestRenderer.create(
       <Timeline
+        assetId={ASSET_ID}
         videoRef={{
           current: {
             play: noop,

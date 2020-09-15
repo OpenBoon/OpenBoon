@@ -86,6 +86,7 @@ const AssetAsset = ({ isQuickView }) => {
               uri={uri}
               mediaType={mediaType}
               isQuickView={isQuickView}
+              assetId={assetId}
             />
           ) : (
             <img

@@ -1,73 +1,62 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing, constants } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import ResizeableVertical from '../ResizeableVertical'
 import Button, { VARIANTS } from '../Button'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
-import TimelinePlayhead from './Playhead'
-import TimelineDetections from './Detections'
+import TimelineContent from './Content'
 
-const CONTROLS_HEIGHT = 43
 const TIMELINE_HEIGHT = 300
 
-const Timeline = ({ videoRef }) => {
+const Timeline = ({ videoRef, assetId }) => {
   return (
     <ResizeableVertical
-      storageName="Timeline.height"
+      storageName={`Timeline.${assetId}.height`}
       minExpandedSize={TIMELINE_HEIGHT}
-      collapsedSize={CONTROLS_HEIGHT}
+      header={({ toggleOpen }) => (
+        <div
+          css={{
+            paddingLeft: spacing.base,
+            paddingRight: spacing.base,
+            backgroundColor: colors.structure.lead,
+            color: colors.structure.steel,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderBottom: constants.borders.regular.smoke,
+          }}
+        >
+          <Button
+            aria-label="Open Timeline"
+            variant={VARIANTS.ICON}
+            style={{
+              padding: spacing.small,
+              ':hover, &.focus-visible:focus': {
+                backgroundColor: colors.structure.mattGrey,
+              },
+            }}
+            onClick={toggleOpen}
+          >
+            Timelime
+          </Button>
+
+          <TimelineControls videoRef={videoRef} />
+
+          <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
+        </div>
+      )}
     >
-      {({ size, toggleOpen, renderDialog }) => {
-        const isOpen = size >= TIMELINE_HEIGHT
-
-        return (
-          <>
-            <div>
-              <Button
-                aria-label="Open Timeline"
-                variant={VARIANTS.ICON}
-                style={{
-                  padding: spacing.small,
-                  ':hover, &.focus-visible:focus': {
-                    backgroundColor: colors.structure.mattGrey,
-                  },
-                }}
-                onClick={toggleOpen}
-              >
-                Timelime
-              </Button>
-            </div>
-            <TimelineControls />
-            <div
-              css={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                height: '0%',
-                position: 'relative',
-                marginLeft: constants.timeline.modulesWidth,
-                borderLeft: constants.borders.regular.smoke,
-              }}
-            >
-              <TimelinePlayhead videoRef={videoRef} />
-
-              {/* TODO: add ruler and other stuff here */}
-              <div css={{ height: constants.timeline.rulerRowHeight }} />
-
-              <TimelineCaptions videoRef={videoRef} />
-            </div>
-
-            <div css={{ height: size - CONTROLS_HEIGHT, overflow: 'auto' }}>
-              {isOpen && <TimelineDetections />}
-
-              {renderDialog()}
-            </div>
-          </>
-        )
-      }}
+      {({ size, originSize }) => (
+        <TimelineContent
+          isOpen={size >= TIMELINE_HEIGHT}
+          size={size}
+          originSize={originSize}
+          videoRef={videoRef}
+        />
+      )}
     </ResizeableVertical>
   )
 }
@@ -84,6 +73,7 @@ Timeline.propTypes = {
       paused: PropTypes.bool,
     }),
   }).isRequired,
+  assetId: PropTypes.string.isRequired,
 }
 
 export default Timeline

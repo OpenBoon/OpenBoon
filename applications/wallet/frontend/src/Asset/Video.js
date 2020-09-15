@@ -22,7 +22,7 @@ const TRACKS = [
   },
 ]
 
-const AssetVideo = ({ assetRef, uri, mediaType, isQuickView }) => {
+const AssetVideo = ({ assetRef, assetId, uri, mediaType, isQuickView }) => {
   const videoRef = useRef()
 
   return (
@@ -82,6 +82,7 @@ const AssetVideo = ({ assetRef, uri, mediaType, isQuickView }) => {
 
 AssetVideo.propTypes = {
   assetRef: PropTypes.shape({}).isRequired,
+  assetId: PropTypes.string.isRequired,
   uri: PropTypes.string.isRequired,
   mediaType: PropTypes.string.isRequired,
   isQuickView: PropTypes.bool.isRequired,

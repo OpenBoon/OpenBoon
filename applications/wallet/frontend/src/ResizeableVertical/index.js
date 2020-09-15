@@ -6,17 +6,15 @@ import { useLocalStorageState } from '../LocalStorage/helpers'
 
 import { zIndex } from '../Styles'
 
-import ResizeableVerticalDialog from './Dialog'
-
 const DRAG_SIZE = 4
 const DIRECTION = 1
 
-let originCoord
+let originY
 
 const ResizeableVertical = ({
   storageName,
   minExpandedSize,
-  collapsedSize,
+  header,
   children,
 }) => {
   const [size, setSize] = useLocalStorageState({
@@ -24,17 +22,17 @@ const ResizeableVertical = ({
     initialValue: minExpandedSize,
   })
 
-  const [startingSize, setStartingSize] = useState(minExpandedSize)
+  const [originSize, setOriginSize] = useState(minExpandedSize)
 
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleOpen = () => {
     // Updating here allows for proper collapse/expand messaging
     if (isOpen) {
-      setStartingSize(collapsedSize)
+      setOriginSize(0)
     }
     if (!isOpen) {
-      setStartingSize(minExpandedSize)
+      setOriginSize(minExpandedSize)
     }
 
     setIsOpen(!isOpen)
@@ -42,28 +40,27 @@ const ResizeableVertical = ({
 
   /* istanbul ignore next */
   const handleMouseMove = ({ clientY }) => {
-    const difference = clientY - originCoord
+    const difference = clientY - originY
 
-    const newSize = (isOpen ? size : collapsedSize) - difference * DIRECTION
+    const newSize = (isOpen ? size : 0) - difference * DIRECTION
 
-    // Prevent dragging smaller than collapsedSize
-    setSize({ value: Math.max(collapsedSize, newSize) })
+    setSize({ value: newSize })
 
-    setIsOpen(newSize > collapsedSize)
+    setIsOpen(newSize > 0)
   }
 
   /* istanbul ignore next */
   const handleMouseUp = ({ clientY }) => {
-    const difference = clientY - originCoord
+    const difference = clientY - originY
 
-    const newSize = (isOpen ? size : collapsedSize) - difference * DIRECTION
+    const newSize = (isOpen ? size : 0) - difference * DIRECTION
 
     // Always update size if greater than minExpandedSize
     if (newSize > minExpandedSize) {
       // Prevent size being set smaller than minExpandedSize
       setSize({ value: Math.max(minExpandedSize, newSize) })
 
-      setStartingSize(Math.max(minExpandedSize, newSize))
+      setOriginSize(Math.max(minExpandedSize, newSize))
     } else {
       // Dragging open from closed state below minExpandedSize should snap open
       if (!isOpen) {
@@ -88,7 +85,7 @@ const ResizeableVertical = ({
 
   /* istanbul ignore next */
   const handleMouseDown = ({ clientY }) => {
-    originCoord = clientY
+    originY = clientY
 
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
@@ -117,21 +114,16 @@ const ResizeableVertical = ({
         onMouseDown={handleMouseDown}
       />
 
+      {header({ toggleOpen })}
+
       <div
         css={{
-          height: isOpen ? size : collapsedSize,
+          height: isOpen ? size : 0,
         }}
       >
         {children({
           size,
-          toggleOpen,
-          renderDialog: /* istabul ignore next */ () => (
-            <ResizeableVerticalDialog
-              size={size}
-              startingSize={startingSize}
-              minExpandedSize={minExpandedSize}
-            />
-          ),
+          originSize,
         })}
       </div>
     </div>
@@ -141,7 +133,7 @@ const ResizeableVertical = ({
 ResizeableVertical.propTypes = {
   storageName: PropTypes.string.isRequired,
   minExpandedSize: PropTypes.number.isRequired,
-  collapsedSize: PropTypes.number.isRequired,
+  header: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
 }
 
