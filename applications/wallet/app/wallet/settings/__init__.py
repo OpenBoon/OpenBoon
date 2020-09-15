@@ -194,9 +194,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+
+    # IMPORTANT: Only accepting JSON is required to mitigate CSRF attacks on unauthenticated
+    # POST endpoints. Do not add additional parsers.
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
     ],
+
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'EXCEPTION_HANDLER': 'wallet.exceptions.zmlp_exception_handler',
     'JSON_UNDERSCOREIZE': {
