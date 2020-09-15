@@ -52,7 +52,7 @@ class TimelineBuilder:
             "start": start,
             "stop":  stop,
             "content": [c.replace("\n", " ").strip() for c in as_collection(content)],
-            "score": round(score, 3),
+            "score": score,
             "tags": as_collection(tags)
         }
 

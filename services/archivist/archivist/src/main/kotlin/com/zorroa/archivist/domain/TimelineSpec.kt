@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.elasticsearch.action.bulk.BulkResponse
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.security.MessageDigest
 import java.util.Base64
 
@@ -102,8 +103,8 @@ class ClipIdBuilder(
         digester.update(asset.id.toByteArray())
         digester.update(timeline.toByteArray())
         digester.update(track.toByteArray())
-        digester.update(clip.start.setScale(3).toString().toByteArray())
-        digester.update(clip.stop.setScale(3).toString().toByteArray())
+        digester.update(clip.start.setScale(3, RoundingMode.HALF_UP).toString().toByteArray())
+        digester.update(clip.stop.setScale(3, RoundingMode.HALF_UP).toString().toByteArray())
 
         // Clamp the size to 32, 48 is bit much and you still
         // get much better resolution than a UUID.  We could

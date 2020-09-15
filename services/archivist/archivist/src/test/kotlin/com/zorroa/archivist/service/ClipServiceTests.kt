@@ -13,6 +13,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.io.ByteArrayOutputStream
 import java.math.BigDecimal
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -36,7 +37,8 @@ class ClipServiceTests : AbstractTest() {
         asset = getSample(1, "video")[0]
         val clips = listOf(
             ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
-            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
+            ClipSpec(BigDecimal(11.2), BigDecimal(12.5), listOf("cat"), 0.5),
+            ClipSpec(BigDecimal(11.684), BigDecimal(14.231), listOf("cat"), 0.2)
         )
         val track = TrackSpec("cats", clips)
         timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
@@ -47,7 +49,7 @@ class ClipServiceTests : AbstractTest() {
     @Test
     fun createClipsFromTimeline() {
         assertEquals(asset.id, rsp.assetId)
-        assertEquals(2, rsp.created)
+        assertEquals(3, rsp.created)
         assertTrue(rsp.failed.isEmpty())
     }
 
@@ -55,12 +57,12 @@ class ClipServiceTests : AbstractTest() {
     fun createDuplicateClips() {
         val asset = getSample(2, "video")[1]
         val clips = listOf(
-            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), listOf("dog"), 0.9),
+            ClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.9),
             // All these should be skipped.
-            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), listOf("dog"), 0.1),
-            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), listOf("dog"), 0.4),
-            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), listOf("dog"), 0.6),
-            ClipSpec(BigDecimal.ONE, BigDecimal("12.534"), listOf("dog"), 0.11)
+            ClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.1),
+            ClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.4),
+            ClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.6),
+            ClipSpec(BigDecimal.ONE, BigDecimal(12.534), listOf("dog"), 0.11)
         )
         val track = TrackSpec("dogs", clips)
         val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
@@ -76,7 +78,7 @@ class ClipServiceTests : AbstractTest() {
     @Test
     fun testSearchTimeline() {
         val search = clipService.searchClips(asset, mapOf(), mapOf())
-        assertEquals(2, search.hits.hits.size)
+        assertEquals(3, search.hits.hits.size)
     }
 
     @Test
@@ -89,5 +91,17 @@ class ClipServiceTests : AbstractTest() {
         )
         val result = assetSearchService.search(ssb, mapOf())
         assertEquals(1, result.hits.hits.size)
+    }
+
+    @Test
+    fun testGetWebVttBySearch() {
+        val output = ByteArrayOutputStream()
+        clipService.getWebvtt(asset, mapOf(), output)
+
+        val webvtt = String(output.toByteArray())
+        // Check the times.
+        assertTrue("00:00:11.684 --> 00:00:14.231" in webvtt)
+        assertTrue("00:00:11.200 --> 00:00:12.500" in webvtt)
+        assertTrue("00:00:11.684 --> 00:00:14.231" in webvtt)
     }
 }

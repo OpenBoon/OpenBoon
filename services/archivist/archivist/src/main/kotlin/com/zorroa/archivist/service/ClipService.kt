@@ -7,9 +7,11 @@ import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.TimelineSpec
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.bd
+import com.zorroa.archivist.util.formatDuration
 import com.zorroa.zmlp.util.Json
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.search.SearchResponse
+import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.Strings
 import org.elasticsearch.common.settings.Settings
@@ -23,12 +25,16 @@ import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.io.OutputStream
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 interface ClipService {
     fun createClips(timeline: TimelineSpec): CreateTimelineResponse
 
     fun searchClips(asset: Asset, search: Map<String, Any>, params: Map<String, Array<String>>): SearchResponse
+
+    fun getWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream)
 
     fun mapToSearchSourceBuilder(asset: Asset, search: Map<String, Any>): SearchSourceBuilder
 }
@@ -56,8 +62,8 @@ class ClipServiceImpl(
 
             for (clip in track.clips) {
                 val id = ClipIdBuilder(asset, timeline.name, track.name, clip).buildId()
-                val start = clip.start.setScale(3)
-                val stop = clip.stop.setScale(3)
+                val start = clip.start.setScale(3, RoundingMode.HALF_UP)
+                val stop = clip.stop.setScale(3, RoundingMode.HALF_UP)
                 val length = stop.subtract(start)
                 val score = clip.score.bd()
 
@@ -105,7 +111,6 @@ class ClipServiceImpl(
     }
 
     override fun searchClips(asset: Asset, search: Map<String, Any>, params: Map<String, Array<String>>): SearchResponse {
-        logger.info("Searching clips")
         val rest = indexRoutingService.getProjectRestClient()
         val ssb = mapToSearchSourceBuilder(asset, search)
         val req = rest.newSearchRequest()
@@ -115,6 +120,45 @@ class ClipServiceImpl(
         }
         req.preference(getProjectId().toString())
         return rest.client.search(req, RequestOptions.DEFAULT)
+    }
+
+    override fun getWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream) {
+
+        val rest = indexRoutingService.getProjectRestClient()
+        val ssb = mapToSearchSourceBuilder(asset, search)
+        val req = rest.newSearchRequest()
+        ssb.size(100)
+        ssb.sort("_doc")
+        req.source(ssb)
+        req.preference(getProjectId().toString())
+        req.scroll("10s")
+
+        val buffer = StringBuilder(512)
+        buffer.append("WEBVTT\n\n")
+
+        var rsp = rest.client.search(req, RequestOptions.DEFAULT)
+        do {
+
+            for (hit in rsp.hits.hits) {
+                val clip = hit.sourceAsMap["clip"] as Map<String, Any>
+                buffer.append(formatDuration(clip["start"] as Double))
+                buffer.append(" --> ")
+                buffer.append(formatDuration(clip["stop"] as Double))
+                buffer.append("\n\n{\n")
+                buffer.append("\"timeline\": \"${clip["timeline"]}\"\n")
+                buffer.append("\"track\": \"${clip["track"]}\"\n")
+                buffer.append("\"content\" : ${Json.serializeToString(clip["content"] as Collection<String>)}\n")
+                buffer.append("\"score\": ${clip["score"]}\n")
+                buffer.append("}\n\n")
+                outputStream.write(buffer.toString().toByteArray())
+                buffer.clear()
+            }
+
+            val sr = SearchScrollRequest()
+            sr.scrollId(rsp.scrollId)
+            sr.scroll("10s")
+            rsp = rest.client.scroll(sr, RequestOptions.DEFAULT)
+        } while (rsp.hits.hits.isNotEmpty())
     }
 
     override fun mapToSearchSourceBuilder(asset: Asset, search: Map<String, Any>): SearchSourceBuilder {
@@ -159,5 +203,8 @@ class ClipServiceImpl(
             "slice", "aggs", "aggregations", "sort",
             "search_after", "track_total_hits"
         )
+
+        val rightCurly = "{\n".toByteArray()
+        val leftCurly = "}\n".toByteArray()
     }
 }
