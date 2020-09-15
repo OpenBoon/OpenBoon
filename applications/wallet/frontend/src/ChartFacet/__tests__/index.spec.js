@@ -299,7 +299,7 @@ describe('<ChartFacet />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should add a histogram chart', () => {
+  it('should add a histogram chart for a labelConfidence compatible attribute', () => {
     const mockDispatch = jest.fn()
 
     require('next/router').__setUseRouter({
@@ -307,7 +307,9 @@ describe('<ChartFacet />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: aggregate })
+    require('swr').__setMockUseSWRResponse({
+      data: [{ ...aggregate[0], defaultFilterType: 'labelConfidence' }],
+    })
 
     const chart = {
       id: CHART_ID,

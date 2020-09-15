@@ -1,10 +1,12 @@
 import { v4 as uuidv4 } from 'uuid'
 
+import { constants } from '../Styles'
+
 import FacetSvg from '../Icons/facet.svg'
 import RangeSvg from '../Icons/range.svg'
 import HistogramSvg from '../Icons/histogram.svg'
 
-import { constants } from '../Styles'
+import { ENVS } from '../Feature'
 
 export const TYPES = [
   {
@@ -24,7 +26,7 @@ export const TYPES = [
     icon: <HistogramSvg height={constants.icons.moderate} />,
     legend: 'Shows the distribution of assets within value groups.',
     flag: 'histogram',
-    envs: [],
+    envs: [ENVS.QA],
   },
 ]
 
