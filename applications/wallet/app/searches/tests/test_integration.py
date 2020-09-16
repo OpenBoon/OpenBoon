@@ -417,6 +417,24 @@ class TestQuery(BaseFiltersTestCase):
             api_client.get(path)
 
 
+class TestRawQuery(BaseFiltersTestCase):
+
+    def test_get(self, login, api_client, project, facet_query_qs):
+        path = reverse('search-raw-query', kwargs={'project_pk': project.id})
+        response = api_client.get(path, {'query': facet_query_qs})
+        assert response.json() == {
+            'results': {
+                'query': {
+                    'bool': {
+                        'filter': [
+                            {'terms': {'source.extension': ['tiff']}}
+                        ]
+                    }
+                }
+            }
+        }
+
+
 class TestAggregate(BaseFiltersTestCase):
 
     def test_get(self, login, api_client, project, range_agg_qs, monkeypatch):
