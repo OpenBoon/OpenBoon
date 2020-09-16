@@ -89,7 +89,7 @@ resource "kubernetes_deployment" "analyst" {
         volume {
           name = "tmp"
           host_path {
-            path = "/tmp"
+            path = "/mnt/stateful_partition/var/tmp"
           }
         }
         volume {
@@ -132,6 +132,10 @@ resource "kubernetes_deployment" "analyst" {
           env {
             name  = "OFFICER_URL"
             value = var.officer-url
+          }
+          env {
+            name  = "ANALYST_TEMP"
+            value = "/mnt/stateful_partition/var/tmp"
           }
           liveness_probe {
             initial_delay_seconds = 120

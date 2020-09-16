@@ -154,6 +154,7 @@ exports[`<Asset /> should handle no query 1`] = `
   display: -ms-flexbox;
   display: flex;
   width: 100%;
+  height: 100%;
   margin-top: 1px;
 }
 
@@ -392,6 +393,13 @@ exports[`<Asset /> should handle no query 1`] = `
                 }
               />
             </div>
+            <Timeline
+              videoRef={
+                Object {
+                  "current": null,
+                }
+              }
+            />
           </div>
         </div>
       </div>
@@ -613,6 +621,7 @@ exports[`<Asset /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   width: 100%;
+  height: 100%;
   margin-top: 1px;
 }
 
@@ -976,6 +985,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   width: 100%;
+  height: 100%;
   margin-top: 1px;
 }
 
@@ -1214,6 +1224,13 @@ exports[`<Asset /> should render videos properly 1`] = `
                 }
               />
             </div>
+            <Timeline
+              videoRef={
+                Object {
+                  "current": null,
+                }
+              }
+            />
           </div>
         </div>
       </div>

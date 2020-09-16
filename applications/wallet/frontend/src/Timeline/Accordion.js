@@ -2,31 +2,26 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
-
 import ChevronSvg from '../Icons/chevron.svg'
 
 export const COLOR_TAB_WIDTH = 3
 
 const TimelineAccordion = ({
-  cacheKey,
   moduleColor,
-  module: { name, predictions },
+  name,
+  predictions,
+  dispatch,
+  isOpen,
   children,
 }) => {
-  const [isOpen, setOpen] = useLocalStorageState({
-    key: cacheKey,
-    initialValue: false,
-  })
-
   return (
     <details
       css={{
         backgroundColor: colors.structure.soot,
         borderBottom: constants.borders.regular.smoke,
+        borderRight: constants.borders.regular.smoke,
       }}
       open={isOpen}
-      onToggle={({ target: { open } }) => setOpen({ value: open })}
     >
       <summary
         aria-label={name}
@@ -38,6 +33,10 @@ const TimelineAccordion = ({
             backgroundColor: colors.structure.mattGrey,
           },
           backgroundColor: colors.structure.soot,
+        }}
+        onClick={(event) => {
+          event.preventDefault()
+          dispatch({ [name]: !isOpen })
         }}
       >
         <div css={{ display: 'flex' }}>
@@ -75,23 +74,22 @@ const TimelineAccordion = ({
           >{`(${predictions.length})`}</div>
         </div>
       </summary>
-      <div>{children}</div>
+      {isOpen && <div>{children}</div>}
     </details>
   )
 }
 
 TimelineAccordion.propTypes = {
   moduleColor: PropTypes.string.isRequired,
-  module: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    predictions: PropTypes.arrayOf(
-      PropTypes.shape({
-        label: PropTypes.string.isRequired,
-        count: PropTypes.number.isRequired,
-      }),
-    ).isRequired,
-  }).isRequired,
-  cacheKey: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  predictions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      count: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 }
 

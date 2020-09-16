@@ -50,7 +50,8 @@ const ChartHistogramContent = ({
     `/api/v1/projects/${projectId}/visualizations/load/${queryString}`,
   )
 
-  const { results = {} } = data.find((r) => r.id === id) || {}
+  const { results = {}, defaultFilterType } =
+    data.find((r) => r.id === id) || {}
 
   const { buckets = [] } = results
 
@@ -146,7 +147,7 @@ const ChartHistogramContent = ({
               payload: {
                 pathname,
                 projectId,
-                filter: { type: 'labelConfidence', attribute, values: {} },
+                filter: { type: defaultFilterType, attribute, values: {} },
                 query,
               },
             })

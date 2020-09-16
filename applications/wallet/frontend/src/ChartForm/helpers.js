@@ -1,6 +1,6 @@
 import { capitalizeFirstLetter } from '../Text/helpers'
 
-const CHART_TYPE_FIELDS = {
+export const CHART_TYPE_FIELDS = {
   range: ['range'],
   facet: ['facet', 'labelConfidence'],
   histogram: ['labelConfidence'],
