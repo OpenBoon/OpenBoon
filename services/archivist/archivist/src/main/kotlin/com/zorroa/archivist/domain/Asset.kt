@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.google.common.hash.Hashing
@@ -47,8 +48,8 @@ class AssetSpec(
     @ApiModelProperty("Additional metadata fields to add to the Asset in key/value format.")
     var attrs: Map<String, Any>? = null,
 
-    @ApiModelProperty("Optional clip metadata specifies the portion of the asset to process.")
-    var clip: Clip? = null,
+    @ApiModelProperty("Optional page number to extract.")
+    private val page: Int = 1,
 
     @ApiModelProperty("Optional Model label which puts the asset in the given Model.")
     val label: Label? = null,
@@ -57,8 +58,47 @@ class AssetSpec(
     val id: String? = null,
 
     @ApiModelProperty("A hidden option for sending the entire composed document.  ", hidden = true)
-    val document: MutableMap<String, Any>? = null
-)
+    val document: MutableMap<String, Any>? = null,
+
+    @JsonIgnore
+    @ApiModelProperty("A checksum for the file.", hidden = true)
+    var checksum: Int? = null,
+
+    @JsonIgnore
+    var parentAsset: Asset? = null
+
+) {
+    @JsonIgnore
+    fun getChecksumValue(): Int? {
+        return checksum ?: parentAsset?.getAttr("source.checksum", Int::class.java)
+    }
+
+    @JsonIgnore
+    fun getPageNumber(): Int {
+        return page.coerceAtLeast(1)
+    }
+
+    @JsonIgnore
+    fun getRealPath(): String {
+        return parentAsset?.getAttr("source.path") ?: uri
+    }
+
+    /**
+     * Get the Spec for page one which can be used to generate a page stack id.
+     */
+    @JsonIgnore
+    fun makePageOne(): AssetSpec {
+        return AssetSpec(getRealPath(), page = 1, id = id, checksum = checksum)
+    }
+
+    /**
+     * Apply a checksum to ID generation.
+     */
+    fun makeChecksum(bytes: ByteArray) {
+        val hf = Hashing.adler32()
+        this.checksum = hf.hashBytes(bytes).asInt()
+    }
+}
 
 @ApiModel("Asset Counters", description = "Stores the types of asset counters we keep track off.")
 class AssetCounters(
@@ -297,7 +337,6 @@ class AssetIdBuilder(val spec: AssetSpec) {
 
     val projectId = getProjectId()
     var length = 32
-    var checksum: Int? = null
 
     /**
      * Convert the givne UUID into a byte array.
@@ -307,15 +346,6 @@ class AssetIdBuilder(val spec: AssetSpec) {
         bb.putLong(uuid.mostSignificantBits)
         bb.putLong(uuid.leastSignificantBits)
         return bb.asReadOnlyBuffer()
-    }
-
-    /**
-     * Apply a checksum to ID generation.
-     */
-    fun checksum(bytes: ByteArray): AssetIdBuilder {
-        val hf = Hashing.adler32()
-        checksum = hf.hashBytes(bytes).asInt()
-        return this
     }
 
     /**
@@ -334,23 +364,14 @@ class AssetIdBuilder(val spec: AssetSpec) {
         val digester = MessageDigest.getInstance("SHA-256")
         digester.update(spec.uri.toByteArray())
         digester.update(uuidToByteArray(projectId))
+        digester.update(spec.getPageNumber().toString().toByteArray())
 
-        spec.clip?.let {
-            digester.update(it.type.toByteArray())
-            it.track?.let { track ->
-                digester.update(track.toByteArray())
-            }
-            val buf = ByteBuffer.allocate(16)
-            buf.putDouble(it.start.toDouble())
-            buf.putDouble(it.stop.toDouble())
-            digester.update(buf.array())
-        }
-
-        checksum?.let {
+        spec.getChecksumValue()?.let {
             val buf = ByteBuffer.allocate(4)
             buf.putInt(it)
             digester.update(buf.array())
         }
+
         // Clamp the size to 32, 48 is bit much and you still
         // get much better resolution than a UUID.  We could
         // also up it on shared indexes but probably not necessary.

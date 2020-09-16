@@ -21,15 +21,6 @@ class VideoProxyProcessor(AssetProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        clip = asset.get_attr('clip')
-        if not clip:
-            self.logger.warning('VideoProxyProcessor cannot continue, no clip defined')
-            return -1
-
-        # We only make proxies for full clips but this isn't
-        # an error or warning.
-        if clip.get('track') != 'full':
-            return -1
 
         process = self.get_transcoding_process(asset)
         if process == 'COPY':

@@ -42,7 +42,6 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalStateException
 import java.util.Base64
 import java.util.Date
 import java.util.UUID
@@ -388,24 +387,7 @@ class ProjectServiceImpl constructor(
     }
 
     override fun setIndexRoute(project: Project, route: IndexRoute): Boolean {
-        if (project.id != route.projectId) {
-            throw IllegalStateException("The index route does not belong to this project")
-        }
-
-        return if (projectCustomDao.updateIndexRoute(project.id, route)) {
-            logger.event(
-                LogObject.PROJECT, LogAction.UPDATE,
-                mapOf(
-                    "projectId" to project.id,
-                    "oldIndexRoute" to project.indexRouteId,
-                    "newIndexRoute" to route.id
-                )
-            )
-            true
-        } else {
-            logger.warn("Failed to set new index route for project ${project.id}, likely already set to same index.")
-            false
-        }
+        return indexRoutingService.setIndexRoute(project, route)
     }
 
     // This gets called alot so hold onto the values for a while.

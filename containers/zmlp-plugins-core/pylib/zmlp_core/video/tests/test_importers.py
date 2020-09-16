@@ -47,7 +47,7 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
 
     def test_create_proxy_source_image(self):
         asset = self.frame.asset
-        asset.set_attr('clip', {'start': 0, 'stop': 10})
+        asset.set_attr('media.length', 10)
         self.processor._create_proxy_source_image(asset)
         assert Path(asset.get_attr('tmp.proxy_source_image')).suffix == '.jpg'
 

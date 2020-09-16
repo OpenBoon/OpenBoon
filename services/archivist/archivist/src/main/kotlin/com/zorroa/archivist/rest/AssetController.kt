@@ -14,8 +14,8 @@ import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.ClipService
 import com.zorroa.archivist.service.JobLaunchService
-import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.RawByteArrayOutputStream
 import com.zorroa.archivist.util.RestUtils
 import com.zorroa.zmlp.service.logging.LogObject
@@ -57,7 +57,8 @@ import javax.servlet.ServletOutputStream
 class AssetController @Autowired constructor(
     val assetService: AssetService,
     val assetSearchService: AssetSearchService,
-    val jobLaunchService: JobLaunchService
+    val jobLaunchService: JobLaunchService,
+    val clipService: ClipService
 ) {
 
     @PreAuthorize("hasAuthority('AssetsRead')")
@@ -202,7 +203,7 @@ class AssetController @Autowired constructor(
     @ResponseBody
     fun delete(@PathVariable id: String): Any {
         val rsp = assetService.batchDelete(setOf(id))
-        return HttpUtils.status("asset", "delete", id, rsp.deleted.contains(id))
+        return RestUtils.status("asset", "delete", id, rsp.deleted.contains(id))
     }
 
     @ApiOperation("Delete assets by query.")
@@ -223,6 +224,28 @@ class AssetController @Autowired constructor(
             LogObject.ASSET,
             "_batch_update_labels", rsp.items.count { !it.isFailed }, rsp.items.count { it.isFailed }
         )
+    }
+
+    @PreAuthorize("hasAuthority('AssetsRead')")
+    @RequestMapping("/api/v3/assets/{id}/clips/_search", method = [RequestMethod.GET, RequestMethod.POST])
+    fun search(
+        @ApiParam("Unique ID of the Asset") @PathVariable id: String,
+        @RequestBody(required = false) search: Map<String, Any>?,
+        request: WebRequest,
+        output: ServletOutputStream
+    ): ResponseEntity<Resource> {
+
+        val asset = assetService.getAsset(id)
+        val rsp = clipService.searchClips(asset, search ?: mapOf(), request.parameterMap)
+        val output = RawByteArrayOutputStream(1024 * 64)
+
+        XContentFactory.jsonBuilder(output).use {
+            rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
+        }
+
+        return ResponseEntity.ok()
+            .contentLength(output.size().toLong())
+            .body(InputStreamResource(output.toInputStream()))
     }
 
     companion object {
