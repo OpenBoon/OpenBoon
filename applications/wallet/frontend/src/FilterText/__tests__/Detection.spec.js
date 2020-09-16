@@ -54,7 +54,7 @@ describe('<FilterTextDetection />', () => {
       component.root.findByProps({ type: 'submit' }).props.onClick()
     })
 
-    const encodedQuery = btoa(
+    const query = btoa(
       JSON.stringify([
         {
           type: 'textContent',
@@ -65,15 +65,8 @@ describe('<FilterTextDetection />', () => {
     )
 
     expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: encodedQuery,
-        },
-      },
-      `/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=${encodedQuery}`,
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -134,7 +127,7 @@ describe('<FilterTextDetection />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    const encodedQuery = btoa(
+    const query = btoa(
       JSON.stringify([
         {
           type: 'textContent',
@@ -145,15 +138,8 @@ describe('<FilterTextDetection />', () => {
     )
 
     expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: encodedQuery,
-        },
-      },
-      `/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=${encodedQuery}`,
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 })

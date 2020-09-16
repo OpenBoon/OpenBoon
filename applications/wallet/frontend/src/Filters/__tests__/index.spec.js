@@ -54,20 +54,19 @@ describe('<Filters />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          query: btoa(
-            JSON.stringify([
-              { type: 'textContent', attribute: '', values: { query: 'Cat' } },
-            ]),
-          ),
-          assetId: '',
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'textContent',
+          attribute: '',
+          values: { query: 'Cat' },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -104,20 +103,19 @@ describe('<Filters />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          query: btoa(
-            JSON.stringify([
-              { type: 'textContent', attribute: '', values: { query: 'Cat' } },
-            ]),
-          ),
-          assetId: 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C',
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'textContent',
+          attribute: '',
+          values: { query: 'Cat' },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?assetId=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C&query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?assetId=${ASSET_ID}&query=${query}`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}&query=${query}`,
     )
   })
 
@@ -149,25 +147,20 @@ describe('<Filters />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'textContent',
-                attribute: '',
-                values: { query: 'Cat' },
-                isDisabled: true,
-              },
-            ]),
-          ),
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'textContent',
+          attribute: '',
+          values: { query: 'Cat' },
+          isDisabled: true,
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In0sImlzRGlzYWJsZWQiOnRydWV9XQ==',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -204,25 +197,20 @@ describe('<Filters />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'textContent',
-                attribute: '',
-                values: { query: 'Cat' },
-                isDisabled: false,
-              },
-            ]),
-          ),
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'textContent',
+          attribute: '',
+          values: { query: 'Cat' },
+          isDisabled: false,
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In0sImlzRGlzYWJsZWQiOmZhbHNlfV0=',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -256,20 +244,19 @@ describe('<Filters />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          query: btoa(
-            JSON.stringify([
-              { type: 'textContent', attribute: '', values: { query: 'Cat' } },
-            ]),
-          ),
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'textContent',
+          attribute: '',
+          values: { query: 'Cat' },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -302,15 +289,8 @@ describe('<Filters />', () => {
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: '',
-        },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer',
+      `/[projectId]/visualizer`,
+      `/${PROJECT_ID}/visualizer`,
     )
   })
 
@@ -338,19 +318,13 @@ describe('<Filters />', () => {
     // Clear All Filters
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Clear All Filters' })
+        .findByProps({ children: 'Clear All Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-        },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer',
+      `/[projectId]/visualizer`,
+      `/${PROJECT_ID}/visualizer`,
     )
   })
 
@@ -438,24 +412,19 @@ describe('<Filters />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'range',
-                attribute: 'clip.length',
-                values: {},
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'range',
+          attribute: 'clip.length',
+          values: {},
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InJhbmdlIiwiYXR0cmlidXRlIjoiY2xpcC5sZW5ndGgiLCJ2YWx1ZXMiOnt9fV0=',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -496,24 +465,19 @@ describe('<Filters />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'exists',
-                attribute: 'location.point',
-                values: { exists: true },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'exists',
+          attribute: 'location.point',
+          values: { exists: true },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImV4aXN0cyIsImF0dHJpYnV0ZSI6ImxvY2F0aW9uLnBvaW50IiwidmFsdWVzIjp7ImV4aXN0cyI6dHJ1ZX19XQ==',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
