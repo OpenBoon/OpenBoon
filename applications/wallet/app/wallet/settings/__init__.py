@@ -194,6 +194,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+
+    # IMPORTANT: Only accepting JSON is required to mitigate CSRF attacks on unauthenticated
+    # POST endpoints. Do not add additional parsers.
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'EXCEPTION_HANDLER': 'wallet.exceptions.zmlp_exception_handler',
     'JSON_UNDERSCOREIZE': {
@@ -231,6 +238,11 @@ OLD_PASSWORD_FIELD_ENABLED = True
 
 # Django Registration Settings
 REGISTRATION_TIMEOUT_DAYS = 3  # Numbers of days the confirmation link is valid.
+
+# Session Settings
+SESSION_COOKIE_AGE = 28800
+# Allows the Session Cookie Age to essentially function as the idle timeout
+SESSION_SAVE_EVERY_REQUEST = True
 
 # Logging Settings
 LOGGING = {
@@ -291,3 +303,7 @@ MARKETPLACE_CREDENTIALS = os.environ.get('MARKETPLACE_CREDENTIALS')
 FEATURE_FLAGS = {
     'USE_MODEL_IDS_FOR_LABEL_FILTERS': os.environ.get('USE_MODEL_IDS_FOR_LABEL_FILTERS', 'false') == 'true'  # noqa
 }
+
+# Security Settings
+SECURE_HSTS_SECONDS = 31536000
+SECURE_CONTENT_TYPE_NOSNIFF = True

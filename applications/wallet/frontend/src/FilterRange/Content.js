@@ -148,7 +148,8 @@ const FilterRangeContent = ({
             step={0.1}
             domain={domain}
             values={rangeValues}
-            isDisabled={!!isDisabled}
+            isMuted={!!isDisabled}
+            isDisabled={false}
             onUpdate={(values) => {
               setRangeValues(values)
               setInputMin(parseValue({ value: values[0] }))

@@ -18,7 +18,7 @@ const TaskErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
       }}
     >
       <Menu
-        open="left"
+        open="bottom-left"
         button={({ onBlur, onClick }) => (
           <MenuButton onBlur={onBlur} onClick={onClick} legend="Modify Task" />
         )}
@@ -40,7 +40,6 @@ const TaskErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
 
                     revalidate()
                   }}
-                  isDisabled={false}
                 >
                   Retry Task
                 </Button>

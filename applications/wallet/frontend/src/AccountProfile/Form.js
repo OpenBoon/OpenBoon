@@ -7,9 +7,9 @@ import { UserContext } from '../User'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import ButtonGroup from '../Button/Group'
-
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import FlashMessageErrors from '../FlashMessage/Errors'
+import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
 
 import { onSubmit } from './helpers'
@@ -51,6 +51,11 @@ const AccountProfileForm = () => {
           </FlashMessage>
         </div>
       )}
+
+      <FlashMessageErrors
+        errors={state.errors}
+        styles={{ paddingTop: spacing.base, paddingBottom: spacing.base }}
+      />
 
       <SectionTitle>{`Email: ${email}`}</SectionTitle>
 

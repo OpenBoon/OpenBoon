@@ -33,7 +33,6 @@ const MenuButton = ({ onBlur, onClick, legend }) => (
     }}
     onBlur={onBlur}
     onClick={onClick}
-    isDisabled={false}
   >
     {legend}
     <ChevronSvg height={constants.icons.regular} />

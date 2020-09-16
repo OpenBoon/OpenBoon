@@ -15,7 +15,7 @@ const ACTIONS = [
 
 const TaskErrorsMenu = ({ projectId, taskId, revalidate }) => {
   return (
-    <Menu open="left" button={ButtonActions}>
+    <Menu open="bottom-left" button={ButtonActions}>
       {({ onBlur, onClick }) => (
         <div>
           <ul>
@@ -34,7 +34,6 @@ const TaskErrorsMenu = ({ projectId, taskId, revalidate }) => {
 
                     revalidate()
                   }}
-                  isDisabled={false}
                 >
                   {name}
                 </Button>

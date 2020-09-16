@@ -1,5 +1,7 @@
 import { onSubmit, onReset } from '../helpers'
 
+const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+
 const noop = () => () => {}
 
 describe('<AccountPassword /> helpers', () => {
@@ -47,7 +49,7 @@ describe('<AccountPassword /> helpers', () => {
       })
     })
 
-    it('should display an error message with mismatching new passwords', async () => {
+    it('should handle errors', async () => {
       const mockDispatch = jest.fn()
 
       fetch.mockRejectOnce({
@@ -56,7 +58,7 @@ describe('<AccountPassword /> helpers', () => {
 
       await onSubmit({
         dispatch: mockDispatch,
-        projectId: 'projectId',
+        projectId: PROJECT_ID,
         state: {
           currentPassword: 'password',
           newPassword: 'password1',
@@ -146,7 +148,9 @@ describe('<AccountPassword /> helpers', () => {
         body: '{"email":"jane@zorroa.com"}',
       })
 
-      expect(mockSetError).toHaveBeenCalledWith('Error. Please try again.')
+      expect(mockSetError).toHaveBeenCalledWith(
+        'Something went wrong. Please try again.',
+      )
     })
   })
 })

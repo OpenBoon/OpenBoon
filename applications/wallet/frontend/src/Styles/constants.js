@@ -66,6 +66,7 @@ const boxShadows = {
 
 const constants = {
   borderRadius,
+  borderWidths,
   borders,
   opacity,
   boxShadows,
@@ -88,6 +89,12 @@ const constants = {
   animations: {
     infiniteRotation: `${rotate} 2s linear infinite`,
     dualRotation: `${rotate} 1s linear 2`,
+  },
+  timeline: {
+    rulerRowHeight: 44,
+    modulesWidth: 200,
+    playheadWidth: 20,
+    playheadHeight: 14,
   },
 }
 

@@ -55,6 +55,20 @@ describe('<AssetLabeling />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render properly with missing model', () => {
+    require('swr').__setMockUseSWRResponse({
+      data: { ...asset, results: [] },
+    })
+
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+    })
+
+    const component = TestRenderer.create(<AssetLabeling />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should edit labels', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',

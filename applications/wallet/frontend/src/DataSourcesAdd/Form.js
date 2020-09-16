@@ -10,7 +10,7 @@ import SectionTitle from '../SectionTitle'
 import SectionSubTitle from '../SectionSubTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
@@ -31,7 +31,7 @@ const INITIAL_STATE = {
   fileTypes: {},
   modules: {},
   isLoading: false,
-  errors: { global: '', name: '', uri: '' },
+  errors: {},
 }
 
 const reducer = (state, action) => ({ ...state, ...action })
@@ -61,20 +61,10 @@ const DataSourcesAddForm = () => {
 
   return (
     <>
-      {errors.global && (
-        <div
-          css={{
-            display: 'flex',
-            paddingTop: spacing.base,
-            marginBottom: -spacing.base,
-          }}
-        >
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-            {errors.global}
-          </FlashMessage>
-        </div>
-      )}
-
+      <FlashMessageErrors
+        errors={errors}
+        styles={{ paddingTop: spacing.base, paddingBottom: spacing.base }}
+      />
       <Form style={{ width: 'auto' }}>
         <DataSourcesAddCopy />
 

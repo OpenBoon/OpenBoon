@@ -21,7 +21,8 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
   )
 
   return labels.map((label) => {
-    const { name, moduleName } = models.find(({ id }) => id === label.modelId)
+    const { name = '', moduleName = '' } =
+      models.find(({ id }) => id === label.modelId) || {}
 
     return (
       <tr
@@ -115,6 +116,7 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
         >
           {capitalizeFirstLetter({ word: label.scope })}
         </td>
+
         <td
           css={{
             paddingTop: spacing.base,
@@ -123,6 +125,7 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
         >
           <MetadataPrettyLabelsMenu label={label} moduleName={moduleName} />
         </td>
+
         <td css={{ borderBottom: 'none !important' }} />
       </tr>
     )

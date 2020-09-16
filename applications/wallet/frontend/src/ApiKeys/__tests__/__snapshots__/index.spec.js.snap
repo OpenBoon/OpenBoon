@@ -570,6 +570,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {

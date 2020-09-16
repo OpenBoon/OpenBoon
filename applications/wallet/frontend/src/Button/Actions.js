@@ -25,7 +25,6 @@ const ButtonActions = ({ onBlur, onClick, style }) => {
       }}
       onBlur={onBlur}
       onClick={onClick}
-      isDisabled={false}
     >
       <KebabSvg height={constants.icons.regular} />
     </Button>

@@ -3,7 +3,10 @@ import { useReducer } from 'react'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import ButtonGroup from '../Button/Group'
+
+import { spacing } from '../Styles'
 
 import { onSubmit } from './helpers'
 
@@ -34,6 +37,10 @@ const AccountPasswordForm = () => {
   return (
     <div css={{ display: 'flex' }}>
       <Form>
+        <FlashMessageErrors
+          errors={state.errors}
+          styles={{ marginTop: -spacing.base, paddingBottom: spacing.normal }}
+        />
         <Input
           autoFocus
           id="currentPassword"

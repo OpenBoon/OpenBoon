@@ -67,6 +67,7 @@ const FlashMessage = ({ variant, children }) => {
           paddingLeft: PADDING,
           color: colors.structure.coal,
           fontWeight: typography.weight.medium,
+          whiteSpace: 'pre-line',
           a: {
             color: STYLES[variant].linkColor,
           },

@@ -499,7 +499,8 @@ exports[`<Button /> should render properly for MENU Button 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
@@ -561,7 +562,8 @@ exports[`<Button /> should render properly for MENU Link 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
@@ -624,7 +626,8 @@ exports[`<Button /> should render properly for MENU_ITEM Button 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   background-color: #4a4a4a;
 }
 
@@ -688,7 +691,8 @@ exports[`<Button /> should render properly for MENU_ITEM Link 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
   background-color: #4a4a4a;
 }
 
@@ -752,7 +756,7 @@ exports[`<Button /> should render properly for MICRO Button 1`] = `
 }
 
 .emotion-0:hover,
-.emotion-0:focus {
+.emotion-0.focus-visible:focus {
   color: #ffffff;
 }
 
@@ -817,7 +821,7 @@ exports[`<Button /> should render properly for MICRO Link 1`] = `
 }
 
 .emotion-0:hover,
-.emotion-0:focus {
+.emotion-0.focus-visible:focus {
   color: #ffffff;
 }
 

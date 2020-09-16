@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Router, { useRouter } from 'next/router'
 
@@ -13,6 +13,7 @@ import { getQueryString } from '../Fetch/helpers'
 
 const AssetsQuickView = ({ assets, columnCount }) => {
   const {
+    query: q,
     query: { projectId, assetId, query },
   } = useRouter()
 
@@ -30,92 +31,107 @@ const AssetsQuickView = ({ assets, columnCount }) => {
       ? assets[index + columnCount]
       : {}
 
-  const keydownHandler = (event) => {
-    const {
-      code,
-      target: { tagName },
-    } = event
+  const keydownHandler = useCallback(
+    (event) => {
+      const {
+        code,
+        target: { tagName },
+      } = event
 
-    /* istanbul ignore next */
-    if (['INPUT', 'TEXTAREA'].includes(tagName)) return
+      /* istanbul ignore next */
+      if (['INPUT', 'TEXTAREA'].includes(tagName)) return
 
-    if (!assetId) return
+      if (!assetId) return
 
-    if (code === 'Escape') {
-      setIsVisible(false)
+      if (code === 'Escape') {
+        setIsVisible(false)
 
-      event.preventDefault()
-    }
+        event.preventDefault()
+      }
 
-    if (code === 'Space') {
-      setIsVisible((currentIsVisible) => !currentIsVisible)
+      if (code === 'Space') {
+        setIsVisible((currentIsVisible) => !currentIsVisible)
 
-      event.preventDefault()
-    }
+        event.preventDefault()
+      }
 
-    if (code === 'ArrowLeft' && previousId) {
-      Router.push(
-        {
-          pathname: '/[projectId]/visualizer',
-          query: { projectId, assetId: previousId, query },
-        },
-        `/${projectId}/visualizer${getQueryString({
-          assetId: previousId,
-          query,
-        })}`,
-      )
+      if (code === 'ArrowLeft' && previousId) {
+        Router.push(
+          {
+            pathname: '/[projectId]/visualizer',
+            query: { ...q, assetId: previousId },
+          },
+          `/${projectId}/visualizer${getQueryString({
+            assetId: previousId,
+            query,
+          })}`,
+        )
 
-      event.preventDefault()
-    }
+        event.preventDefault()
+      }
 
-    if (code === 'ArrowRight' && nextId) {
-      Router.push(
-        {
-          pathname: '/[projectId]/visualizer',
-          query: { projectId, assetId: nextId, query },
-        },
-        `/${projectId}/visualizer${getQueryString({ assetId: nextId, query })}`,
-      )
+      if (code === 'ArrowRight' && nextId) {
+        Router.push(
+          {
+            pathname: '/[projectId]/visualizer',
+            query: { ...q, assetId: nextId },
+          },
+          `/${projectId}/visualizer${getQueryString({
+            assetId: nextId,
+            query,
+          })}`,
+        )
 
-      event.preventDefault()
-    }
+        event.preventDefault()
+      }
 
-    if (code === 'ArrowUp' && previousRowId) {
-      Router.push(
-        {
-          pathname: '/[projectId]/visualizer',
-          query: { projectId, assetId: previousRowId, query },
-        },
-        `/${projectId}/visualizer${getQueryString({
-          assetId: previousRowId,
-          query,
-        })}`,
-      )
+      if (code === 'ArrowUp' && previousRowId) {
+        Router.push(
+          {
+            pathname: '/[projectId]/visualizer',
+            query: { ...q, assetId: previousRowId },
+          },
+          `/${projectId}/visualizer${getQueryString({
+            assetId: previousRowId,
+            query,
+          })}`,
+        )
 
-      event.preventDefault()
-    }
+        event.preventDefault()
+      }
 
-    if (code === 'ArrowDown' && nextRowId) {
-      Router.push(
-        {
-          pathname: '/[projectId]/visualizer',
-          query: { projectId, assetId: nextRowId, query },
-        },
-        `/${projectId}/visualizer${getQueryString({
-          assetId: nextRowId,
-          query,
-        })}`,
-      )
+      if (code === 'ArrowDown' && nextRowId) {
+        Router.push(
+          {
+            pathname: '/[projectId]/visualizer',
+            query: { ...q, assetId: nextRowId },
+          },
+          `/${projectId}/visualizer${getQueryString({
+            assetId: nextRowId,
+            query,
+          })}`,
+        )
 
-      event.preventDefault()
-    }
-  }
+        event.preventDefault()
+      }
+    },
+    [
+      assetId,
+      projectId,
+      q,
+      query,
+      previousId,
+      nextId,
+      previousRowId,
+      nextRowId,
+    ],
+  )
 
   useEffect(() => {
     document.addEventListener('keydown', keydownHandler)
 
     return () => document.removeEventListener('keydown', keydownHandler)
-  })
+  }, [keydownHandler])
 
   if (isVisible && projectId && assetId) {
     return (
@@ -161,7 +177,7 @@ const AssetsQuickView = ({ assets, columnCount }) => {
           }}
         >
           <SuspenseBoundary isTransparent>
-            <AssetAsset key={assetId} projectId={projectId} assetId={assetId} />
+            <AssetAsset key={assetId} isQuickView />
           </SuspenseBoundary>
         </div>
       </div>

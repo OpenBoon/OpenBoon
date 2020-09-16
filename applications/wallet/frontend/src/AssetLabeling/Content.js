@@ -43,6 +43,7 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
       >
         {filename}
       </div>
+
       <Accordion
         variant={ACCORDION_VARIANTS.PANEL}
         title="Select a model and add a label"

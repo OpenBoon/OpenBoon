@@ -1,6 +1,6 @@
 import { mutate } from 'swr'
 
-import { fetcher, revalidate } from '../Fetch/helpers'
+import { fetcher, revalidate, parseResponse } from '../Fetch/helpers'
 
 export const getOptions = async ({ projectId, modelId }) => {
   if (!modelId) {
@@ -47,7 +47,7 @@ export const onSubmit = async ({
   projectId,
   assetId,
 }) => {
-  dispatch({ isLoading: true })
+  dispatch({ isLoading: true, errors: {} })
 
   const existingModel = labels.find(
     ({ modelId: labelModel }) => labelModel === modelId,
@@ -83,21 +83,8 @@ export const onSubmit = async ({
       errors: {},
     })
   } catch (response) {
-    try {
-      const errors = await response.json()
+    const errors = await parseResponse({ response })
 
-      const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
-        acc[errorKey] = errors[errorKey].join(' ')
-        return acc
-      }, {})
-
-      dispatch({ success: false, isLoading: false, errors: parsedErrors })
-    } catch (error) {
-      dispatch({
-        success: false,
-        isLoading: false,
-        errors: { global: 'Something went wrong. Please try again.' },
-      })
-    }
+    dispatch({ success: false, isLoading: false, errors })
   }
 }

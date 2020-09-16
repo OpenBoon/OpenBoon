@@ -22,3 +22,6 @@ clarifai
 pytesseract
 facenet-pytorch
 boto3
+nameparser
+street-address
+dateparser

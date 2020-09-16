@@ -91,6 +91,10 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
   outline: #73b61c;
 }
 
+.emotion-4:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-4:focus {
   color: #000000;
   background-color: #ffffff;
@@ -254,6 +258,7 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
                 "Zvi": Object {
                   "tinyProxy": "analysis.zvi.tinyProxy",
                 },
+                "zvi-face-detection": "analysis.zvi-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",
@@ -443,6 +448,10 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
   outline: #73b61c;
 }
 
+.emotion-4:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-4:focus {
   color: #000000;
   background-color: #ffffff;
@@ -606,6 +615,7 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
                 "Zvi": Object {
                   "tinyProxy": "analysis.zvi.tinyProxy",
                 },
+                "zvi-face-detection": "analysis.zvi-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",
@@ -795,6 +805,10 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
   outline: #73b61c;
 }
 
+.emotion-4:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-4:focus {
   color: #000000;
   background-color: #ffffff;
@@ -958,6 +972,7 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
                 "Zvi": Object {
                   "tinyProxy": "analysis.zvi.tinyProxy",
                 },
+                "zvi-face-detection": "analysis.zvi-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",

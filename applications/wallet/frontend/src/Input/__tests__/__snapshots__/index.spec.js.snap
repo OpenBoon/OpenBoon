@@ -33,9 +33,14 @@ exports[`<Input /> should render properly with an error and disabled 1`] = `
   outline: #73b61c;
 }
 
+.emotion-1:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-3 {
   color: #c92300;
   font-style: italic;
+  white-space: pre-line;
 }
 
 <div

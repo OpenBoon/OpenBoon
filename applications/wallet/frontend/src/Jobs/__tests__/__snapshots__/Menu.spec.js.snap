@@ -131,7 +131,8 @@ exports[`<JobsMenu /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-1:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   background-color: #4a4a4a;
 }
 

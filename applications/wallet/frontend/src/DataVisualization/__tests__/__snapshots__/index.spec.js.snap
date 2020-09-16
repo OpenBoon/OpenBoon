@@ -189,6 +189,10 @@ exports[`<DataVisualization /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   padding-top: 16px;
   padding-bottom: 16px;
   border-bottom: 1px solid #3b3b3b;
@@ -338,9 +342,7 @@ exports[`<DataVisualization /> should render properly 1`] = `
     <div
       className="emotion-32"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-31"
       >
@@ -823,9 +825,7 @@ exports[`<DataVisualization /> should render properly 2`] = `
     <div
       className="emotion-12"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-11"
       >
@@ -1072,6 +1072,10 @@ exports[`<DataVisualization /> should render properly 3`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   padding-top: 16px;
   padding-bottom: 16px;
   border-bottom: 1px solid #3b3b3b;
@@ -1232,9 +1236,7 @@ exports[`<DataVisualization /> should render properly 3`] = `
     <div
       className="emotion-34"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-33"
       >
@@ -1577,6 +1579,10 @@ exports[`<DataVisualization /> should render properly 4`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   padding-top: 16px;
   padding-bottom: 16px;
   border-bottom: 1px solid #3b3b3b;
@@ -1726,9 +1732,7 @@ exports[`<DataVisualization /> should render properly 4`] = `
     <div
       className="emotion-32"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-31"
       >

@@ -108,7 +108,7 @@ const STYLES = {
     color: colors.key.one,
     fontWeight: typography.weight.regular,
     height: '100%',
-    ':hover': {
+    ':hover, &.focus-visible:focus': {
       backgroundColor: colors.structure.smoke,
     },
   },
@@ -118,7 +118,7 @@ const STYLES = {
     padding: `${spacing.base}px ${spacing.normal}px`,
     fontWeight: typography.weight.regular,
     borderRadius: 0,
-    ':hover': {
+    ':hover, &.focus-visible:focus': {
       backgroundColor: colors.structure.iron,
     },
   },
@@ -146,7 +146,7 @@ const STYLES = {
     fontSize: typography.size.regular,
     fontFamily: typography.family.condensed,
     textTransform: 'uppercase',
-    ':hover, :focus': {
+    ':hover, &.focus-visible:focus': {
       color: colors.structure.white,
     },
   },

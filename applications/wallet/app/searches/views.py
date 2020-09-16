@@ -73,17 +73,11 @@ class SearchViewSet(CreateModelMixin,
     @action(detail=False, methods=['get'])
     def fields(self, request, project_pk):
         """Returns all available fields in the ES index and their type."""
-        path = 'api/v3/fields/_mapping'
-        content = request.client.get(path)
-        indexes = list(content.keys())
-        if len(indexes) != 1:
+        try:
+            fields = self.field_utility.get_filter_map(request.client)
+        except ValueError:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            data={'detail': 'ZMLP did not return field mappings as expected.'})
-
-        index = indexes[0]
-        mappings = content[index]['mappings']
-        fields = self.field_utility.get_fields_from_mappings(mappings, request.client)
-
+                            data={'detail': ['ZMLP did not return field mappings as expected.']})
         return Response(status=status.HTTP_200_OK, data=fields)
 
     @action(detail=False, methods=['get'])
@@ -203,6 +197,20 @@ class SearchViewSet(CreateModelMixin,
                   'source*',
                   'files*',
                   'media*']
+
+        query = self._build_query_from_querystring(request)
+
+        # Only returns the specified fields in the metadata
+        query['_source'] = fields
+        query['track_total_hits'] = True
+
+        return self._zmlp_list_from_es(request, search_filter=query, base_url=path,
+                                       serializer_class=SearchAssetSerializer,
+                                       item_modifier=search_asset_modifier,
+                                       pagination_class=ZMLPFromSizePagination)
+
+    def _build_query_from_querystring(self, request):
+        """Helper to build the query used for query and raw_query."""
         filter_boy = FilterBuddy()
 
         _filters = filter_boy.get_filters_from_request(request)
@@ -215,14 +223,13 @@ class SearchViewSet(CreateModelMixin,
         if not query:
             query['sort'] = {'system.timeCreated': {'order': 'desc'}}
 
-        # Only returns the specified fields in the metadata
-        query['_source'] = fields
-        query['track_total_hits'] = True
+        return query
 
-        return self._zmlp_list_from_es(request, search_filter=query, base_url=path,
-                                       serializer_class=SearchAssetSerializer,
-                                       item_modifier=search_asset_modifier,
-                                       pagination_class=ZMLPFromSizePagination)
+    @action(detail=False, methods=['get'])
+    def raw_query(self, request, project_pk):
+        """Takes a query querystring and dumps out wha the raw ES query would be."""
+        query = self._build_query_from_querystring(request)
+        return Response({'results': query})
 
     @action(detail=False, methods=['get'],
             renderer_classes=[CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer])
@@ -299,7 +306,7 @@ class SearchViewSet(CreateModelMixin,
             response = request.client.post(path, _filter.get_es_agg())
         except NotImplementedError:
             return Response(status=status.HTTP_400_BAD_REQUEST,
-                            data={'detail': 'This Filter does not support aggregations.'})
+                            data={'detail': ['This Filter does not support aggregations.']})
 
         return Response(status=status.HTTP_200_OK, data=_filter.serialize_agg_response(response))
 

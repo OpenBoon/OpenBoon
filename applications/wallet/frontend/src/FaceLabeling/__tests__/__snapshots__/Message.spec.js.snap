@@ -26,6 +26,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -98,6 +99,7 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-1 a {
@@ -160,6 +162,7 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {

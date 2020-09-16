@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router'
+import { PropTypes } from 'prop-types'
 
 import Table from '../Table'
 
 import ModelLabelsEmpty from './Empty'
 import ModelLabelsRow from './Row'
 
-const ModelLabels = () => {
+const ModelLabels = ({ requiredAssetsPerLabel }) => {
   const {
     query: { projectId, modelId },
   } = useRouter()
@@ -16,7 +17,14 @@ const ModelLabels = () => {
       url={`/api/v1/projects/${projectId}/models/${modelId}/get_labels/`}
       refreshKeys={[]}
       refreshButton={false}
-      columns={['Label', 'Count', '#Actions#']}
+      columns={[
+        'Label',
+        '# Required',
+        '# Labeled',
+        '# Remaining',
+        '#Checkmark#',
+        '#Actions#',
+      ]}
       expandColumn={1}
       renderEmpty={<ModelLabelsEmpty />}
       renderRow={({ result, revalidate }) => (
@@ -26,10 +34,15 @@ const ModelLabels = () => {
           modelId={modelId}
           label={result}
           revalidate={revalidate}
+          requiredAssetsPerLabel={requiredAssetsPerLabel}
         />
       )}
     />
   )
+}
+
+ModelLabels.propTypes = {
+  requiredAssetsPerLabel: PropTypes.number.isRequired,
 }
 
 export default ModelLabels

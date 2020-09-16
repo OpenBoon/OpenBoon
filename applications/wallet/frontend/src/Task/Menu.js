@@ -25,7 +25,7 @@ const TaskMenu = ({ revalidate }) => {
       }}
     >
       <Menu
-        open="left"
+        open="bottom-left"
         button={({ onBlur, onClick }) => (
           <MenuButton onBlur={onBlur} onClick={onClick} legend="Modify Task" />
         )}
@@ -60,7 +60,6 @@ const TaskMenu = ({ revalidate }) => {
                       asPath,
                     )
                   }}
-                  isDisabled={false}
                 >
                   Retry
                 </Button>

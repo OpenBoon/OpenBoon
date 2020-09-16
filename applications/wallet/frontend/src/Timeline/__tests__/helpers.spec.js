@@ -1,0 +1,56 @@
+import { formatPaddedSeconds, updatePlayheadPosition } from '../helpers'
+
+describe('<Timeline /> helpers', () => {
+  describe('formatPaddedSeconds()', () => {
+    it('should format not a number', () => {
+      expect(formatPaddedSeconds({ seconds: NaN })).toEqual('00:00:00')
+    })
+
+    it('should format double digit hours', () => {
+      expect(formatPaddedSeconds({ seconds: 40123 })).toEqual('11:08:43')
+    })
+
+    it('should format single digit hours', () => {
+      expect(formatPaddedSeconds({ seconds: 30000 })).toEqual('08:20:00')
+    })
+
+    it('should format double digit minutes', () => {
+      expect(formatPaddedSeconds({ seconds: 700 })).toEqual('00:11:40')
+    })
+
+    it('should format single digit minutes', () => {
+      expect(formatPaddedSeconds({ seconds: 300 })).toEqual('00:05:00')
+    })
+
+    it('should format seconds', () => {
+      expect(formatPaddedSeconds({ seconds: 40 })).toEqual('00:00:40')
+    })
+  })
+
+  describe('updatePlayheadPosition()', () => {
+    it('should do nothing when video or playhead are undefined', () => {
+      expect(
+        updatePlayheadPosition({ video: undefined, playhead: undefined }),
+      ).toBe(null)
+    })
+
+    it('should update the left position', () => {
+      const video = {
+        duration: 10,
+        currentTime: 5,
+      }
+
+      const mockSetProperty = jest.fn()
+
+      const playhead = {
+        style: {
+          setProperty: mockSetProperty,
+        },
+      }
+
+      updatePlayheadPosition({ video, playhead })
+
+      expect(mockSetProperty).toHaveBeenCalledWith('left', 'calc(50% - 1px)')
+    })
+  })
+})
