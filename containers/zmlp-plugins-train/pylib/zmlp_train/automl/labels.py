@@ -44,7 +44,7 @@ class AutomlLabelDetectionSession:
         self._import_images_into_dataset(dataset)
 
         op_name = self._train_automl_model()
-        return self._register_automl_session(dataset, op_name)
+        return self._create_automl_session(dataset, op_name)
 
     def _train_automl_model(self, dataset):
         """
