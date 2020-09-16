@@ -27,7 +27,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
 
     namespace = 'gcp-speech-to-text'
 
-    max_length_sec = 30 * 60
+    max_length_sec = 120 * 60
 
     def __init__(self):
         super(AsyncSpeechToTextProcessor, self).__init__()
@@ -44,11 +44,6 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
 
     def process(self, frame):
         asset = frame.asset
-
-        # Cannot run on clips without transcoding the clip
-        if asset.get_attr('clip.track') != 'full':
-            self.logger.info('Skipping, cannot run processor on clips.')
-            return -1
 
         if asset.get_attr('media.length') > self.max_length_sec:
             self.logger.warning(

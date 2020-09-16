@@ -10,7 +10,7 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
 CREDS = os.path.join(os.path.dirname(__file__)) + '/gcp-creds.json'
 
 
-@pytest.mark.skip(reason='dont run automatically')
+#@pytest.mark.skip(reason='dont run automatically')
 class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
 
     def setUp(self):
@@ -157,3 +157,30 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
         timeline = tl_patch.call_args_list[0][0][0]
         assert "Very Unlikely" in timeline.tracks
         assert "Unlikely" in timeline.tracks
+
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
+    @patch.object(file_storage.assets, 'get_native_uri')
+    @patch.object(file_storage.assets, 'store_blob')
+    def test_detect_speech(self, blob_patch, native_patch, tl_patch):
+        uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
+        blob_patch.return_value = None
+        native_patch.return_value = uri
+
+        processor = self.init_processor(
+            AsyncVideoIntelligenceProcessor(), {
+                'detect_speech': 0.5
+            })
+
+        asset = TestAsset(uri)
+        asset.set_attr('media.length', 15.0)
+        frame = Frame(asset)
+        processor.process(frame)
+
+        analysis = frame.asset.get_attr('analysis.gcp-video-speech-transcription')
+
+        assert 'content' == analysis['type']
+        assert 'Sanitation. There\'s more coming Sanitation.' in analysis['content']
+
+        timeline = tl_patch.call_args_list[0][0][0]
+        assert 'Speech Transcription' in timeline.tracks
+
