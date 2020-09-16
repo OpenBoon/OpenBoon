@@ -23,9 +23,13 @@ class PreCacheSourceFileProcessor(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
         try:
+
+            if asset.get_attr('system.state') == 'Analyzed':
+                self.logger.info('Not precaching source, file is already analyzed')
+                return
+
             self.logger.info('precaching source file')
             path = file_storage.localize_file(asset)
-
             if not asset.get_attr('source.filesize'):
                 asset.set_attr('source.filesize', os.path.getsize(path))
             if not asset.get_attr('source.checksum'):
