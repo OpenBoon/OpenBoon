@@ -45,7 +45,7 @@ class TestCloudTimelineBuilder(PluginUnitTestCase):
         assert 'gcp-video-label-detection' == timeline.name
         assert 4.416666 == timeline.tracks['people']['clips'][0]['stop']
         assert 0 == timeline.tracks['people']['clips'][0]['start']
-        assert 0.266 == timeline.tracks['people']['clips'][0]['score']
+        assert 0.266 == round(timeline.tracks['people']['clips'][0]['score'], 3)
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     def test_save_logo_detection_timeline(self, _):

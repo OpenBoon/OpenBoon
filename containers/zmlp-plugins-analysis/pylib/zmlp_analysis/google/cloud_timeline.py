@@ -32,10 +32,12 @@ def save_text_detection_timeline(asset, annotations):
     """
     timeline = TimelineBuilder(asset, "gcp-video-text-detection")
     for annotation in annotations.text_annotations:
+        print(annotation)
         for segment in annotation.segments:
             start_time = convert_offset(segment.segment.start_time_offset)
             end_time = convert_offset(segment.segment.end_time_offset)
-            timeline.add_clip("Detected Text", start_time, end_time, annotation.text, 1)
+            timeline.add_clip("Detected Text",
+                              start_time, end_time, annotation.text, segment.confidence)
     save_timeline(timeline)
     return timeline
 
@@ -186,18 +188,23 @@ def save_label_detection_timeline(asset, annotations):
     """
     timeline = TimelineBuilder(asset, "gcp-video-label-detection")
 
-    for annotation in annotations.shot_presence_label_annotations:
-        labels = {annotation.entity.description}
+    def process_label_annotations(results):
+        for annotation in results:
+            labels = {annotation.entity.description}
 
-        for category in annotation.category_entities:
-            labels.add(category.description)
+            for category in annotation.category_entities:
+                labels.add(category.description)
 
-        for seg in annotation.segments:
-            clip_start = convert_offset(seg.segment.start_time_offset)
-            clip_stop = convert_offset(seg.segment.end_time_offset)
+            for seg in annotation.segments:
+                clip_start = convert_offset(seg.segment.start_time_offset)
+                clip_stop = convert_offset(seg.segment.end_time_offset)
 
-        timeline.add_clip(annotation.entity.description,
-                          clip_start, clip_stop, labels, seg.confidence)
+            timeline.add_clip(annotation.entity.description,
+                              clip_start, clip_stop, labels, seg.confidence)
+
+    process_label_annotations(annotations.segment_label_annotations)
+    process_label_annotations(annotations.shot_label_annotations)
+    process_label_annotations(annotations.shot_presence_label_annotations)
 
     save_timeline(timeline)
     return timeline

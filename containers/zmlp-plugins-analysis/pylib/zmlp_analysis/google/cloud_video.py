@@ -30,8 +30,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         'detect_speech': 'Set to true to recognize speech in video.'
     }
 
-    max_length_sec = 30 * 60
-    """By default we allow up to 30 minutes of video."""
+    max_length_sec = 120 * 60
+    """By default we allow up to 120 minutes of video."""
 
     conf_labels = [
         "IGNORE",
@@ -66,14 +66,10 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
 
-        # Cannot run on clips without transcoding the clip
-        if asset.get_attr('clip.track') != 'full':
-            self.logger.info('Skipping, cannot run processor on clips.')
-            return -1
-
         # If the length is over time time
-        if asset.get_attr('media.length') > self.max_length_sec:
-            self.logger.info(
+        if not asset.get_attr('media.length') \
+                or asset.get_attr('media.length') > self.max_length_sec:
+            self.logger.warning(
                 'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
             return
 
