@@ -80,10 +80,9 @@ Response Codes:
                 token.delete()
 
             # If the user exists and there is no registration token then the user was already
-            # activated. Exit with generic success message to prevent phishing.
+            # activated. Exit with standard success message to prevent phishing.
             elif User.objects.filter(username=email).exists():
-                msg = 'A user with this email address already exists.'
-                return Response(data={'detail': [msg]}, status=status.HTTP_409_CONFLICT)
+                return Response(data={'detail': ['Success, confirmation email has been sent.']})
 
             # If the user does not exist yet then create it.
             else:
