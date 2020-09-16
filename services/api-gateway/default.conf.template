@@ -29,6 +29,8 @@ server {
   proxy_http_version 1.1;
   proxy_set_header Connection "";
   server_tokens off;
+  ssl_protocols TLSv1.2 TLSv1.2;
+  ssl_ciphers HIGH:!aNULL:!MD5:!TLS_RSA_WITH_3DES_EDE_CBC_SHA;
 
   location / {
     proxy_pass http://archivist;
