@@ -239,6 +239,11 @@ OLD_PASSWORD_FIELD_ENABLED = True
 # Django Registration Settings
 REGISTRATION_TIMEOUT_DAYS = 3  # Numbers of days the confirmation link is valid.
 
+# Session Settings
+SESSION_COOKIE_AGE = 28800
+# Allows the Session Cookie Age to essentially function as the idle timeout
+SESSION_SAVE_EVERY_REQUEST = True
+
 # Logging Settings
 LOGGING = {
     'version': 1,
