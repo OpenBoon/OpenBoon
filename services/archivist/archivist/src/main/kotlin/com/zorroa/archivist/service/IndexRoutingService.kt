@@ -559,6 +559,7 @@ constructor(
         return list[0]
     }
 
+    @Transactional
     override fun setIndexRoute(project: Project, route: IndexRoute): Boolean {
         if (project.id != route.projectId) {
             throw IllegalStateException("The index route does not belong to this project")
