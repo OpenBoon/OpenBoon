@@ -1,9 +1,12 @@
 package com.zorroa.archivist.util
 
 import com.zorroa.zmlp.service.logging.LogObject
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Some utilities for returning basic response bodies.
@@ -25,6 +28,14 @@ object RestUtils {
             "errors" to errors
         )
     }
+
+    fun status(type: String, id: Any, op: String, success: Boolean): Map<String, Any> {
+        return mapOf("type" to type, "id" to id, "op" to op, "success" to success)
+    }
+
+    fun status(type: String, op: String, success: Boolean): Map<String, Any> {
+        return mapOf("type" to type, "op" to op, "success" to success)
+    }
 }
 
 /**
@@ -36,4 +47,11 @@ class RawByteArrayOutputStream(size: Int) : ByteArrayOutputStream(size) {
     fun toInputStream(): InputStream {
         return ByteArrayInputStream(buf, 0, count)
     }
+}
+
+/**
+ * Return the current http request or null if one does not exist.
+ */
+fun getCurrentHttpRequest(): HttpServletRequest? {
+    return (RequestContextHolder.getRequestAttributes() as? ServletRequestAttributes)?.request
 }

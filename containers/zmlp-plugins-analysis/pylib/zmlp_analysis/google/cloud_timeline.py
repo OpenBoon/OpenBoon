@@ -1,42 +1,59 @@
-import zmlpsdk.timeline as ztl
+import zmlp
+
+from zmlp.entity import TimelineBuilder
 
 
-def build_text_detection_timeline(annotations):
+def save_timeline(timeline):
+    """
+    Save the given timeline as Clips.
+
+    Args:
+        timeline (TimelineBuilder): The timeline
+
+    Returns:
+        dict: A status object.
+
+    """
+    app = zmlp.app_from_env()
+    return app.clips.create_clips_from_timeline(timeline)
+
+
+def save_text_detection_timeline(asset, annotations):
     """
     Build a timeline for video text detection.
 
     Args:
-        annotations (AnnotateVideoResponse):
+        asset (Asset): The Asset or Asset Id.
+        annotations (AnnotateVideoResponse): The Video Intelligence response.
 
     Returns:
-        Timeline: The populated Timeline.
+        TimelineBuilder: The populated TimelineBuilder.
 
     """
-    timeline = ztl.Timeline("gcp-video-text-detection")
-    track = timeline.add_track("Detected Text")
-
+    timeline = TimelineBuilder(asset, "gcp-video-text-detection")
     for annotation in annotations.text_annotations:
         for segment in annotation.segments:
             start_time = convert_offset(segment.segment.start_time_offset)
             end_time = convert_offset(segment.segment.end_time_offset)
-            track.add_clip(start_time, end_time, {"content": annotation.text})
-
+            timeline.add_clip("Detected Text",
+                              start_time, end_time, annotation.text, segment.confidence)
+    save_timeline(timeline)
     return timeline
 
 
-def build_speech_transcription_timeline(annotations):
+def save_speech_transcription_timeline(asset, annotations):
     """
-    Build a timeline for video text detection.
+    Build a timeline for speech to text transcription.
 
     Args:
-        annotations (AnnotateVideoResponse):
+        asset (Asset): The Asset or Asset Id.
+        annotations (AnnotateVideoResponse): The Video Intelligence response.
 
     Returns:
-        Timeline: The populated Timeline.
+        TimelineBuilder: The populated TimelineBuilder.
 
     """
-    timeline = ztl.Timeline("gcp-video-speech-transcription")
-    track = timeline.add_track("Speech Transcription")
+    timeline = TimelineBuilder(asset, "gcp-video-speech-transcription")
 
     for transcription in annotations.speech_transcriptions:
         for alternative in transcription.alternatives:
@@ -47,94 +64,89 @@ def build_speech_transcription_timeline(annotations):
 
                 start_time = convert_offset(start_word.start_time)
                 end_time = convert_offset(end_word.end_time)
+                timeline.add_clip("Speech Transcription",
+                                  start_time, end_time, alternative.transcript.strip(),
+                                  alternative.confidence)
 
-                track.add_clip(start_time, end_time, {"content": alternative.transcript})
-
+    save_timeline(timeline)
     return timeline
 
 
-def build_object_detection_timeline(annotations):
+def save_object_detection_timeline(asset, annotations):
     """
     Build a timeline for video object detection.
 
     Args:
-        annotations (AnnotateVideoResponse):
+        asset (Asset): The Asset or Asset Id.
+        annotations (AnnotateVideoResponse): The Video Intelligence response.
 
     Returns:
         Timeline: The populated Timeline.
 
     """
-    timeline = ztl.Timeline("gcp-video-object-detection")
-    track = timeline.add_track("Detected Object")
+    timeline = TimelineBuilder(asset, "gcp-video-object-detection")
 
     for annotation in annotations.object_annotations:
         label = annotation.entity.description
-
-        if not annotation.segment.start_time_offset:
-            clip_start = 0
-        else:
-            clip_start = convert_offset(annotation.segment.start_time_offset)
-
+        clip_start = convert_offset(annotation.segment.start_time_offset)
         clip_stop = convert_offset(annotation.segment.end_time_offset)
 
-        track = timeline.add_track(label)
-        track.add_clip(clip_start, clip_stop,
-                       {"content": annotation.entity.description,
-                        "confidence": annotation.confidence})
+        timeline.add_clip(label, clip_start, clip_stop,
+                          annotation.entity.description, annotation.confidence)
 
+    save_timeline(timeline)
     return timeline
 
 
-def build_logo_detection_timeline(annotations):
+def save_logo_detection_timeline(asset, annotations):
     """
     Build a timeline for video logo detection.
 
     Args:
-        annotations (AnnotateVideoResponse):
+        asset (Asset): The Asset or Asset Id.
+        annotations (AnnotateVideoResponse): The Video Intelligence response.
 
     Returns:
         Timeline: The populated Timeline.
 
     """
-    timeline = ztl.Timeline("gcp-video-logo-detection")
-    track = timeline.add_track("Detected Logo")
+    timeline = TimelineBuilder(asset, "gcp-video-logo-detection")
+
     for annotation in annotations.logo_recognition_annotations:
-        labels = set([annotation.entity.description])
+        label = annotation.entity.description
 
+        confidence = annotation.tracks[0].confidence
         for segment in annotation.segments:
-            if not segment.start_time_offset:
-                clip_start = 0
-            else:
-                clip_start = convert_offset(segment.start_time_offset)
 
+            clip_start = convert_offset(segment.start_time_offset)
             clip_stop = convert_offset(segment.end_time_offset)
 
-        for label in labels:
-            track = timeline.add_track(label)
-            track.add_clip(clip_start, clip_stop)
+            timeline.add_clip(label, clip_start, clip_stop,
+                              annotation.entity.description, confidence)
 
+    save_timeline(timeline)
     return timeline
 
 
-def build_content_moderation_timeline(annotations):
+def save_content_moderation_timeline(asset, annotations):
     """
     Use the explicit annotation to build a timeline.
 
     Args:
-        annotations (AnnotateVideoResponse):
+        asset (Asset): The Asset or Asset Id.
+        annotations (AnnotateVideoResponse): The Video Intelligence response.
 
     Returns:
-
+        TimelineBuilder: The timeline.
     """
-    timeline = ztl.Timeline("gcp-video-explicit-detection")
-    tracks = [
-        None,
-        timeline.add_track("Very Unlikely", sort=5),
-        timeline.add_track("Unlikely", sort=3),
-        timeline.add_track("Possible", sort=3),
-        timeline.add_track("Likely", sort=2),
-        timeline.add_track("Very Likely", sort=1)
-    ]
+    legend = [None,
+              "Very Unlikely",
+              "Unlikely",
+              "Possible",
+              "Likely",
+              "Very Likely"]
+
+    timeline = TimelineBuilder(asset, "gcp-video-explicit-detection")
 
     current_clip = None
     previous_frame = None
@@ -145,50 +157,55 @@ def build_content_moderation_timeline(annotations):
         # Close the current clip of this happens.
         if previous_frame and previous_frame.pornography_likelihood != frame.pornography_likelihood:
             if current_clip:
-                current_clip.extend_to(scrubber)
+                current_clip['stop'] = scrubber
                 current_clip = None
 
         if frame.pornography_likelihood > 0:
             if not current_clip:
-                current_clip = tracks[frame.pornography_likelihood].add_clip(scrubber, scrubber)
+                current_clip = timeline.add_clip(legend[frame.pornography_likelihood],
+                                                 scrubber, scrubber,
+                                                 legend[frame.pornography_likelihood])
             else:
-                current_clip.extend_to(scrubber)
+                current_clip['stop'] = scrubber
 
         previous_frame = frame
 
+    save_timeline(timeline)
     return timeline
 
 
-def build_label_detection_timeline(annotations):
+def save_label_detection_timeline(asset, annotations):
     """
     Use label annotations to build a label detection timeline.
 
     Args:
-        annotations (AnnotateVideoResponse):
+        asset (Asset): The Asset or Asset Id.
+        annotations (AnnotateVideoResponse): The Video Intelligence response.
 
     Returns:
         Timeline: The Label Detection timeline.
     """
-    timeline = ztl.Timeline("gcp-video-label-detection")
+    timeline = TimelineBuilder(asset, "gcp-video-label-detection")
 
-    for annotation in annotations.shot_presence_label_annotations:
-        labels = set([annotation.entity.description])
+    def process_label_annotations(results):
+        for annotation in results:
+            labels = {annotation.entity.description}
 
-        for category in annotation.category_entities:
-            labels.add(category.description)
+            for category in annotation.category_entities:
+                labels.add(category.description)
 
-        for seg in annotation.segments:
-            if not seg.segment.start_time_offset:
-                clip_start = 0
-            else:
+            for seg in annotation.segments:
                 clip_start = convert_offset(seg.segment.start_time_offset)
+                clip_stop = convert_offset(seg.segment.end_time_offset)
 
-            clip_stop = convert_offset(seg.segment.end_time_offset)
+            timeline.add_clip(annotation.entity.description,
+                              clip_start, clip_stop, labels, seg.confidence)
 
-        for label in labels:
-            track = timeline.add_track(label)
-            track.add_clip(clip_start, clip_stop)
+    process_label_annotations(annotations.segment_label_annotations)
+    process_label_annotations(annotations.shot_label_annotations)
+    process_label_annotations(annotations.shot_presence_label_annotations)
 
+    save_timeline(timeline)
     return timeline
 
 
@@ -203,4 +220,7 @@ def convert_offset(offset):
         float: A float representing seconds and nanos.
 
     """
-    return offset.seconds + (offset.nanos / 1000000000.0)
+    if not offset:
+        return 0
+    else:
+        return offset.seconds + (offset.nanos / 1000000000.0)

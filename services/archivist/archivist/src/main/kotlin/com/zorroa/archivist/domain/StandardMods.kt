@@ -465,6 +465,27 @@ fun getStandardModules(): List<PipelineModSpec> {
             true
         ),
         PipelineModSpec(
+            "gcp-video-speech-transcription",
+            "Convert audio to text by applying powerful neural network models.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VIDEO,
+            ModelObjective.SPEECH_RECOGNITION,
+            listOf(FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            StandardContainers.ANALYSIS,
+                            mutableMapOf("detect_speech" to true)
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
             "gcp-speech-to-text",
             "Convert audio to text by applying powerful neural network models. Support. for 120 languages.",
             Provider.GOOGLE,
@@ -490,7 +511,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Use Data Loss Prevention (DLP) to extract names, dates and addresses from scanned documents.",
             Provider.GOOGLE,
             Category.GOOGLE_DLP,
-            ModelObjective.LABEL_DETECTION,
+            ModelObjective.TEXT_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(

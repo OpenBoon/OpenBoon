@@ -14,9 +14,12 @@ import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
+import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.repository.IndexClusterDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.repository.ProjectCustomDao
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
@@ -41,6 +44,7 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.lang.IllegalStateException
 import java.net.URI
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -187,6 +191,16 @@ interface IndexRoutingService {
      * to speed up reindexing.
      */
     fun setIndexRefreshInterval(route: IndexRoute, interval: String): Boolean
+
+    /**
+     * Reset the project index route.
+     */
+    fun setIndexRoute(project: Project, route: IndexRoute): Boolean
+
+    /**
+     * Invalidate route cache.
+     */
+    fun invalidateCache()
 }
 
 /**
@@ -204,6 +218,7 @@ class IndexRoutingServiceImpl @Autowired
 constructor(
     val indexRouteDao: IndexRouteDao,
     val indexClusterDao: IndexClusterDao,
+    val projectCustomDao: ProjectCustomDao,
     val properties: ApplicationProperties,
     val txEvent: TransactionEventManager
 ) : IndexRoutingService {
@@ -385,7 +400,7 @@ constructor(
     }
 
     override fun getProjectRestClient(): EsRestClient {
-        val route = indexRouteDao.getProjectRoute()
+        val route = projectRouteCache.get(getProjectId())
         return esClientCache.get(route.esClientCacheKey())
     }
 
@@ -544,6 +559,36 @@ constructor(
         return list[0]
     }
 
+    @Transactional
+    override fun setIndexRoute(project: Project, route: IndexRoute): Boolean {
+        if (project.id != route.projectId) {
+            throw IllegalStateException("The index route does not belong to this project")
+        }
+
+        return if (projectCustomDao.updateIndexRoute(project.id, route)) {
+            logger.event(
+                LogObject.PROJECT, LogAction.UPDATE,
+                mapOf(
+                    "projectId" to project.id,
+                    "oldIndexRoute" to project.indexRouteId,
+                    "newIndexRoute" to route.id
+                )
+            )
+            // Make sure this comes after the
+            txEvent.afterCommit {
+                projectRouteCache.invalidate(project.id)
+            }
+            true
+        } else {
+            logger.warn("Failed to set new index route for project ${project.id}, likely already set to same index.")
+            false
+        }
+    }
+
+    override fun invalidateCache() {
+        projectRouteCache.invalidateAll()
+    }
+
     companion object {
         private val logger = LoggerFactory.getLogger(IndexRoutingServiceImpl::class.java)
 
@@ -553,6 +598,17 @@ constructor(
         // Matches minor version file foo.v1-02020202.json
         private val MAP_PATCH_REGEX = Regex("^(.*?).v(\\d+)-(\\d{8}).json$")
     }
+
+    private val projectRouteCache = CacheBuilder.newBuilder()
+        .initialCapacity(32)
+        .concurrencyLevel(8)
+        .expireAfterWrite(1, TimeUnit.HOURS)
+        .build(object : CacheLoader<UUID, IndexRoute>() {
+            @Throws(Exception::class)
+            override fun load(projectId: UUID): IndexRoute {
+                return indexRouteDao.getProjectRoute(projectId)
+            }
+        })
 }
 
 /**

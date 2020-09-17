@@ -63,14 +63,7 @@ describe('<FilterBuckets />', () => {
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: PROJECT_ID,
-          assetId: ASSET_ID,
-          query,
-        },
-      },
+      `/[projectId]/visualizer?query=${query}`,
       `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })

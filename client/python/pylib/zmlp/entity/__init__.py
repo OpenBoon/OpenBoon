@@ -6,3 +6,4 @@ from .job import *
 from .project import *
 from .model import *
 from .pmod import *
+from .clip import *

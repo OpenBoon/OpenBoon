@@ -37,12 +37,12 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
+  padding-left: 0;
+  padding-bottom: 16px;
 }
 
 .emotion-6 {
@@ -208,12 +208,12 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
+  padding-left: 0;
+  padding-bottom: 16px;
 }
 
 .emotion-6 {

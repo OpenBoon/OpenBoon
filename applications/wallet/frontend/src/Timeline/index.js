@@ -7,19 +7,22 @@ import Button, { VARIANTS } from '../Button'
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
 import TimelinePlayhead from './Playhead'
+import TimelineAggregate from './Aggregate'
 import TimelineDetections from './Detections'
+
+// TODO: fetch modules from backend
+import detections from './__mocks__/detections'
 
 // TODO: make resizeable height
 const TIMELINE_HEIGHT = 300
 
-const Timeline = ({ videoRef }) => {
+const Timeline = ({ videoRef, length }) => {
   return (
     <div
       css={{
         display: 'flex',
         flexDirection: 'column',
         height: TIMELINE_HEIGHT,
-        overflow: 'hidden',
       }}
     >
       <div
@@ -48,7 +51,7 @@ const Timeline = ({ videoRef }) => {
           </Button>
         </div>
 
-        <TimelineControls videoRef={videoRef} />
+        <TimelineControls videoRef={videoRef} length={length} />
 
         <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
       </div>
@@ -69,7 +72,12 @@ const Timeline = ({ videoRef }) => {
         {/* TODO: add ruler and other stuff here */}
         <div css={{ height: constants.timeline.rulerRowHeight }} />
 
-        <TimelineDetections videoRef={videoRef} />
+        <TimelineAggregate
+          detections={detections}
+          timelineHeight={TIMELINE_HEIGHT}
+        />
+
+        <TimelineDetections videoRef={videoRef} detections={detections} />
       </div>
     </div>
   )
@@ -83,10 +91,10 @@ Timeline.propTypes = {
       addEventListener: PropTypes.func,
       removeEventListener: PropTypes.func,
       currentTime: PropTypes.number,
-      duration: PropTypes.number,
       paused: PropTypes.bool,
     }),
   }).isRequired,
+  length: PropTypes.number.isRequired,
 }
 
 export default Timeline

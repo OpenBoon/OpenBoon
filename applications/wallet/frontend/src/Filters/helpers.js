@@ -179,10 +179,7 @@ export const dispatch = ({ type, payload }) => {
       const query = encode({ filters: [filter, ...filters] })
 
       Router.push(
-        {
-          pathname,
-          query: { projectId, assetId, query },
-        },
+        `${pathname}${getQueryString({ assetId, query })}`,
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
           assetId,
           query,
@@ -203,10 +200,7 @@ export const dispatch = ({ type, payload }) => {
       const query = encode({ filters: [...newFilters, ...filters] })
 
       Router.push(
-        {
-          pathname,
-          query: { projectId, assetId, query },
-        },
+        `${pathname}${getQueryString({ assetId, query })}`,
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
           assetId,
           query,
@@ -235,10 +229,7 @@ export const dispatch = ({ type, payload }) => {
       })
 
       Router.push(
-        {
-          pathname,
-          query: { projectId, assetId, query },
-        },
+        `${pathname}${getQueryString({ assetId, query })}`,
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
           assetId,
           query,
@@ -259,10 +250,7 @@ export const dispatch = ({ type, payload }) => {
       const query = newFilters.length > 0 ? encode({ filters: newFilters }) : ''
 
       Router.push(
-        {
-          pathname,
-          query: { projectId, assetId, query },
-        },
+        `${pathname}${getQueryString({ assetId, query })}`,
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
           assetId,
           query,
@@ -304,14 +292,7 @@ export const dispatch = ({ type, payload }) => {
       const query = encode({ filters: combinedFilters })
 
       Router.push(
-        {
-          pathname: '/[projectId]/visualizer',
-          query: {
-            projectId,
-            assetId,
-            query,
-          },
-        },
+        `/[projectId]/visualizer${getQueryString({ assetId, query })}`,
         `/${projectId}/visualizer${getQueryString({
           assetId,
           query,
@@ -325,10 +306,7 @@ export const dispatch = ({ type, payload }) => {
       const { pathname, projectId, assetId } = payload
 
       Router.push(
-        {
-          pathname,
-          query: { projectId, assetId },
-        },
+        `${pathname}${getQueryString({ assetId })}`,
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
           assetId,
         })}`,

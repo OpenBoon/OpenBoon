@@ -45,7 +45,8 @@ def test_register_already_active_user(api_client, user):
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
                                                               'password': uuid.uuid4()})
-    assert response.status_code == 409
+    assert response.status_code == 200
+    assert response.data['detail'] == ['Success, confirmation email has been sent.']
 
 
 def test_re_register_user(api_client, user):

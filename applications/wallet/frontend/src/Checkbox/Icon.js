@@ -15,13 +15,21 @@ const getBorder = ({ isChecked, isDisabled }) => {
   return `2px solid ${colors.structure.steel}`
 }
 
-const CheckboxIcon = ({ size, value, isChecked, isDisabled, onClick }) => (
+const CheckboxIcon = ({
+  size,
+  value,
+  isChecked,
+  isDisabled,
+  onClick,
+  onBlur,
+}) => (
   <div css={{ display: 'flex', position: 'relative' }}>
     <input
       type="checkbox"
       value={value}
       defaultChecked={isChecked}
       onClick={onClick}
+      onBlur={onBlur}
       css={{
         padding: 0,
         width: size,
@@ -63,12 +71,17 @@ const CheckboxIcon = ({ size, value, isChecked, isDisabled, onClick }) => (
   </div>
 )
 
+CheckboxIcon.defaultProps = {
+  onBlur: undefined,
+}
+
 CheckboxIcon.propTypes = {
   size: PropTypes.number.isRequired,
   value: PropTypes.string.isRequired,
   isChecked: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
+  onBlur: PropTypes.func,
 }
 
 export default CheckboxIcon

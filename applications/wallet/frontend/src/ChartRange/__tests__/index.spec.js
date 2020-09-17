@@ -40,23 +40,19 @@ describe('<ChartRange />', () => {
       component.root.findByProps({ 'aria-label': 'Add Filter' }).props.onClick()
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer/data-visualization',
-        query: {
-          projectId: PROJECT_ID,
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'range',
-                attribute: 'source.filesize',
-                values: {},
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'range',
+          attribute: 'source.filesize',
+          values: {},
         },
-      },
-      `/${PROJECT_ID}/visualizer/data-visualization?query=W3sidHlwZSI6InJhbmdlIiwiYXR0cmlidXRlIjoic291cmNlLmZpbGVzaXplIiwidmFsdWVzIjp7fX1d`,
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer/data-visualization?query=${query}`,
+      `/${PROJECT_ID}/visualizer/data-visualization?query=${query}`,
     )
   })
 

@@ -40,23 +40,19 @@ describe('<ChartFacet />', () => {
       component.root.findByProps({ 'aria-label': 'Add Filter' }).props.onClick()
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer/data-visualization',
-        query: {
-          projectId: PROJECT_ID,
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'facet',
-                attribute: 'location.city',
-                values: {},
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'facet',
+          attribute: 'location.city',
+          values: {},
         },
-      },
-      `/${PROJECT_ID}/visualizer/data-visualization?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibG9jYXRpb24uY2l0eSIsInZhbHVlcyI6e319XQ==`,
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer/data-visualization?query=${query}`,
+      `/${PROJECT_ID}/visualizer/data-visualization?query=${query}`,
     )
   })
 
@@ -107,23 +103,19 @@ describe('<ChartFacet />', () => {
       component.root.findByProps({ 'aria-label': 'Brooklyn' }).props.onClick()
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer/data-visualization',
-        query: {
-          projectId: PROJECT_ID,
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'facet',
-                attribute: 'location.city',
-                values: { facets: ['Brooklyn'] },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'facet',
+          attribute: 'location.city',
+          values: { facets: ['Brooklyn'] },
         },
-      },
-      `/${PROJECT_ID}/visualizer/data-visualization?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibG9jYXRpb24uY2l0eSIsInZhbHVlcyI6eyJmYWNldHMiOlsiQnJvb2tseW4iXX19XQ==`,
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer/data-visualization?query=${query}`,
+      `/${PROJECT_ID}/visualizer/data-visualization?query=${query}`,
     )
   })
 
@@ -163,23 +155,19 @@ describe('<ChartFacet />', () => {
       component.root.findByProps({ 'aria-label': 'Zermatt' }).props.onClick()
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer/data-visualization',
-        query: {
-          projectId: PROJECT_ID,
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'facet',
-                attribute: 'location.city',
-                values: { facets: ['Brooklyn', 'Zermatt'] },
-              },
-            ]),
-          ),
+    const newQuery = btoa(
+      JSON.stringify([
+        {
+          type: 'facet',
+          attribute: 'location.city',
+          values: { facets: ['Brooklyn', 'Zermatt'] },
         },
-      },
-      `/${PROJECT_ID}/visualizer/data-visualization?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibG9jYXRpb24uY2l0eSIsInZhbHVlcyI6eyJmYWNldHMiOlsiQnJvb2tseW4iLCJaZXJtYXR0Il19fV0=`,
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer/data-visualization?query=${newQuery}`,
+      `/${PROJECT_ID}/visualizer/data-visualization?query=${newQuery}`,
     )
   })
 

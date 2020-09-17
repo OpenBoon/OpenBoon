@@ -125,11 +125,11 @@ class AssetSearchServiceImpl : AssetSearchService {
 
         val logger: Logger = LoggerFactory.getLogger(AssetSearchServiceImpl::class.java)
 
-        private val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
+        val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
 
-        private val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
+        val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
 
-        private val allowedSearchProperties = setOf(
+        val allowedSearchProperties = setOf(
             "query", "from", "size", "timeout",
             "post_filter", "minscore", "suggest",
             "highlight", "collapse", "_source",

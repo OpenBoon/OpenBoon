@@ -1,5 +1,4 @@
 import glob
-import gzip
 import hashlib
 import logging
 import os
@@ -14,11 +13,12 @@ from urllib.parse import urlparse
 
 import requests
 
-from zmlp import app_from_env, Asset, StoredFile, PipelineMod, ZmlpException, to_json, util
+from zmlp import app_from_env, Asset, StoredFile, PipelineMod, \
+    ZmlpException, util
 from .base import ZmlpEnv
 from .cloud import get_cached_google_storage_client, get_pipeline_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
-from .timeline import Timeline
+
 
 __all__ = [
     'file_storage',
@@ -269,28 +269,6 @@ class AssetStorage(object):
         result = self.proj_store.store_blob(blob, asset, category, name, attrs)
         asset.add_file(result)
         return result
-
-    def store_timeline(self, asset, timeline):
-        """
-        Store a timeline proxy against the Asset.
-
-        Args:
-            asset (Asset): The asset to store the timeline with.
-            timeline (Timeline): The timeline.
-
-        Returns:
-            StoredFile: The stored file record.
-        """
-        if not isinstance(timeline, Timeline):
-            raise ValueError("The timeline argument must be an instance of a Timeline")
-
-        name = timeline.name + "-timeline.json.gz"
-        jfp, jpath = tempfile.mkstemp(suffix=".json.gz")
-        jbytes = to_json(timeline).encode('utf-8')
-        with gzip.GzipFile(filename=jpath, mode='wb') as zfp:
-            zfp.write(jbytes)
-
-        return self.store_file(jpath, asset, "timeline", rename=name)
 
 
 class ProjectStorage(object):
