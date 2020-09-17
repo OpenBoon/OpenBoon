@@ -35,14 +35,16 @@ class PipelineResolverServiceTests : AbstractTest() {
     @Test
     fun testResolveModular() {
         pipelineModService.updateStandardMods()
-        val pipeline = pipelineResolverService.resolveModular(listOf(
-            "gcp-video-label-detection",
-            "gcp-video-object-detection",
-            "gcp-video-text-detection",
-            "gcp-video-logo-detection",
-            "gcp-video-explicit-detection",
-            "gcp-speech-to-text"
-        ))
+        val pipeline = pipelineResolverService.resolveModular(
+            listOf(
+                "gcp-video-label-detection",
+                "gcp-video-object-detection",
+                "gcp-video-text-detection",
+                "gcp-video-logo-detection",
+                "gcp-video-explicit-detection",
+                "gcp-speech-to-text"
+            )
+        )
         assertEquals(10, pipeline.execute.size)
     }
 
