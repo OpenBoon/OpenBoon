@@ -124,3 +124,35 @@ class AzureBucketGenerator(Generator):
         for blob in blobs:
             azuri = "azure://{}/{}".format(uri.netloc, blob["name"])
             consumer.accept(FileImport(azuri))
+
+
+class DeleteBySearchGenerator(Generator):
+
+    def generate(self, consumer):
+        data_source_id = self.arg_value("dataSourceId")
+
+        if data_source_id:
+            self.assets_batch_delete(data_source_id, consumer.batch_size)
+
+    def assets_batch_delete(self, data_source_id, batch_size):
+        app = app_from_env()
+
+        query = {
+            "query": {
+                "term": {
+                    "system.dataSourceId": data_source_id
+                }
+            }
+        }
+
+        self.logger.info("Querying and Deleting assets. DataSource id: {}".format(data_source_id))
+        batch = []
+        for a in app.assets.scroll_search(query):
+            batch.append(a.id)
+            if len(batch) >= batch_size:
+                self.logger.info(app.assets.batch_delete_assets(batch))
+                batch = []
+
+        # Handle left over batch
+        if batch:
+            self.logger.info(app.assets.batch_delete_assets(batch))
