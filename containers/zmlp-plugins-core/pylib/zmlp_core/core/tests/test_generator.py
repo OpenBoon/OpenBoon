@@ -5,11 +5,11 @@ from unittest.mock import patch
 
 from dateutil.tz import tzutc
 
-from zmlp import ZmlpClient
+from zmlp import ZmlpClient, Asset
 from zmlp_core.core.generators import GcsBucketGenerator, AssetSearchGenerator, \
-    S3BucketGenerator, AzureBucketGenerator
+    S3BucketGenerator, AzureBucketGenerator, DeleteBySearchGenerator
 from zmlpsdk import Context
-
+from zmlp.app import AssetApp
 
 class TestConsumer:
     def __init__(self):
@@ -92,6 +92,21 @@ class AssetSearchGeneratorTests(unittest.TestCase):
         assert consumer.count > 0
 
 
+class DeleteBySearchGeneratorTests(unittest.TestCase):
+
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(AssetApp, 'scroll_search')
+    def test_generate(self, scroll_search_patch, del_patch):
+        scroll_search_patch.return_value = mock_delete_asset
+        del_patch.return_value = {}
+
+        consumer = TestConsumer()
+        generator = DeleteBySearchGenerator()
+        generator.set_context(Context(None, {'dataSourceId': 'c13cf8ae-a009-4ff8-b8f0-6db7eec96cf1'}, {}))
+        generator.generate(consumer)
+        assert consumer.count > 0
+
+
 mock_search_result = {
     'took': 4,
     'timed_out': False,
@@ -170,3 +185,7 @@ mock_azure_result = [
      'creation_time': datetime.datetime(2020, 3, 22, 21, 2, 46, tzinfo=datetime.timezone.utc), 'archive_status': None,
      'encryption_key_sha256': None, 'encryption_scope': None, 'request_server_encrypted': None}
 ]
+
+mock_delete_asset = [Asset({'id': "123Id",
+                            'document': {"doc":{}},
+                            'score': 0.999})]
