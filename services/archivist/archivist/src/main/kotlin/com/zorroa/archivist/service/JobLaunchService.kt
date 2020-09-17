@@ -90,7 +90,10 @@ class JobLaunchServiceImpl(
                     image = "zmlp/plugins-core",
                     args = mapOf("dataSourceId" to dataSource.id)
                 )
-            ), assets = null, name = null, execute = null
+            ),
+            assets = null,
+            name = null,
+            execute = null
         )
         script.setSettting("fileTypes", FileExtResolver.resolve(dataSource.fileTypes))
         script.setSettting("batchSize", clampBatchSize(options.batchSize))
