@@ -33,6 +33,20 @@ class PipelineResolverServiceTests : AbstractTest() {
     lateinit var entityManager: EntityManager
 
     @Test
+    fun testResolveModular() {
+        pipelineModService.updateStandardMods()
+        val pipeline = pipelineResolverService.resolveModular(listOf(
+            "gcp-video-label-detection",
+            "gcp-video-object-detection",
+            "gcp-video-text-detection",
+            "gcp-video-logo-detection",
+            "gcp-video-explicit-detection",
+            "gcp-speech-to-text"
+        ))
+        assertEquals(10, pipeline.execute.size)
+    }
+
+    @Test
     fun getStandardPipeline() {
         val pipeline = pipelineResolverService.getStandardPipeline()
         assertEquals("PrependMarker", pipeline.last().className)

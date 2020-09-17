@@ -252,4 +252,29 @@ class PipelineControllerTests : MockMvcTest() {
             )
             .andReturn()
     }
+
+    @Test
+    fun testResolveModular() {
+        pipelineModService.updateStandardMods()
+        mvc.perform(
+            post("/api/v1/pipelines/_resolve_modular")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(listOf("gcp-video-text-detection")))
+        )
+            .andExpect(status().isOk)
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.execute[0].className",
+                    CoreMatchers.equalTo("zmlp_core.core.PreCacheSourceFileProcessor")
+                )
+            )
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.execute[5].className",
+                    CoreMatchers.equalTo("zmlp_analysis.google.AsyncVideoIntelligenceProcessor")
+                )
+            )
+            .andReturn()
+    }
 }
