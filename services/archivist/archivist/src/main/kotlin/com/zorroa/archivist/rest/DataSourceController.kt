@@ -53,7 +53,7 @@ class DataSourceController(
     @DeleteMapping("/api/v1/data-sources/{id}")
     fun delete(
         @ApiParam("The DataSource unique Id.") @PathVariable id: UUID,
-        @RequestBody(required = false) dataSourceDelete: DataSourceDelete
+        @RequestBody(required = false) dataSourceDelete: DataSourceDelete?
     ): Any {
         dataSourceService.delete(
             id,
