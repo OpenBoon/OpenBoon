@@ -12,7 +12,7 @@ import TimelineDetections from './Detections'
 // TODO: make resizeable height
 const TIMELINE_HEIGHT = 300
 
-const Timeline = ({ videoRef }) => {
+const Timeline = ({ videoRef, length }) => {
   return (
     <div
       css={{
@@ -48,7 +48,7 @@ const Timeline = ({ videoRef }) => {
           </Button>
         </div>
 
-        <TimelineControls videoRef={videoRef} />
+        <TimelineControls videoRef={videoRef} length={length} />
 
         <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
       </div>
@@ -83,10 +83,10 @@ Timeline.propTypes = {
       addEventListener: PropTypes.func,
       removeEventListener: PropTypes.func,
       currentTime: PropTypes.number,
-      duration: PropTypes.number,
       paused: PropTypes.bool,
     }),
   }).isRequired,
+  length: PropTypes.number.isRequired,
 }
 
 export default Timeline

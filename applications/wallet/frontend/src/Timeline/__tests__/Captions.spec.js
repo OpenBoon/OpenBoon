@@ -26,7 +26,7 @@ const TRACKS = [
 ]
 
 describe('<TimelineCaptions />', () => {
-  it('should render nothing in the absence of tracks', () => {
+  it('should render a placeholder div in the absence of tracks', () => {
     const component = TestRenderer.create(
       <TimelineCaptions
         videoRef={{ current: undefined }}
@@ -34,7 +34,7 @@ describe('<TimelineCaptions />', () => {
       />,
     )
 
-    expect(component.toJSON()).toEqual(null)
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should mount and unmount event listeners', () => {

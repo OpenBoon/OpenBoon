@@ -10,7 +10,7 @@ jest.mock('../Detections', () => 'TimelineDetections')
 describe('<Timeline />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
-      <Timeline videoRef={{ current: undefined }} />,
+      <Timeline videoRef={{ current: undefined }} length={18} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
