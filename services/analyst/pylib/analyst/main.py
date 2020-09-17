@@ -61,3 +61,7 @@ def setup_routes(api):
     @app.route('/info', methods=['GET'])
     def info():
         return jsonify({"version": service.get_sdk_version()})
+
+    @app.route('/prestop', methods=['GET'])
+    def shutdown():
+        return jsonify({"ok": api.executor.start_shutdown()})
