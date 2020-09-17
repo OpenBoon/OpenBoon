@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<TimelineCaptions /> should render a placeholder div in the absence of tracks 1`] = `
+.emotion-0 {
+  width: 68px;
+}
+
+<div
+  className="emotion-0"
+/>
+`;
+
 exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = `
 .emotion-4 {
   display: -webkit-box;

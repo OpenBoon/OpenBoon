@@ -132,6 +132,7 @@ exports[`<Timeline /> should render properly 1`] = `
       </button>
     </div>
     <TimelineControls
+      length={18}
       videoRef={
         Object {
           "current": undefined,

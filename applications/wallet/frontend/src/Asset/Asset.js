@@ -38,6 +38,7 @@ const AssetAsset = ({ isQuickView }) => {
     data: {
       metadata: {
         source: { filename },
+        media: { length },
       },
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
@@ -86,6 +87,7 @@ const AssetAsset = ({ isQuickView }) => {
               assetRef={assetRef}
               uri={uri}
               mediaType={mediaType}
+              length={length}
               isQuickView={isQuickView}
             />
           ) : (
