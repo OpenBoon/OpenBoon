@@ -380,12 +380,12 @@ Array [
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-35 {
@@ -2153,12 +2153,12 @@ Array [
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-53 {
@@ -4029,12 +4029,12 @@ Array [
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-47 {
@@ -5872,12 +5872,12 @@ Array [
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-46 {

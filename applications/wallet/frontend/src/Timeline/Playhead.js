@@ -2,7 +2,7 @@
 import { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, constants } from '../Styles'
+import { colors, constants, zIndex } from '../Styles'
 
 import { updatePlayheadPosition, GUIDE_WIDTH } from './helpers'
 
@@ -77,6 +77,7 @@ const TimelinePlayhead = ({ videoRef }) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        zIndex: zIndex.layout.interactive,
       }}
     >
       <div

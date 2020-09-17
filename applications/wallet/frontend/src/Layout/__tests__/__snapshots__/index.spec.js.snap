@@ -91,6 +91,7 @@ exports[`<Layout /> should render properly 1`] = `
 
 .emotion-8 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-7 {
@@ -387,6 +388,7 @@ exports[`<Layout /> should render properly 2`] = `
 
 .emotion-8 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-7 {
