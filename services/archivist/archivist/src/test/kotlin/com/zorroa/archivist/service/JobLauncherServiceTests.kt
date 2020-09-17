@@ -216,6 +216,5 @@ class JobLauncherServiceTests : AbstractTest() {
 
         assertEquals("zmlp_core.core.generators.DeleteBySearchGenerator", script.generate!![0]!!.className)
         assertEquals(ds.id.toString(), script.generate?.get(0)?.args?.get("dataSourceId"))
-
     }
 }
