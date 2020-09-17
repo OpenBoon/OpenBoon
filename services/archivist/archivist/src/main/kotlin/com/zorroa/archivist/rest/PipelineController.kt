@@ -92,4 +92,13 @@ class PipelineController @Autowired constructor(
     fun resolve(@ApiParam("UUID of the Pipeline.") @PathVariable id: UUID): ResolvedPipeline {
         return pipeineResolverService.resolve(id)
     }
+
+    @ApiOperation("Resolve a Pipeline to its list of processors.")
+    @PostMapping(value = ["/api/v1/pipelines/_resolve_modular"])
+    fun resolveStandard(
+        @ApiParam("A List of module names") @RequestBody(required = false)
+        modules: List<String>?
+    ): ResolvedPipeline {
+        return pipeineResolverService.resolveModular(modules ?: listOf())
+    }
 }
