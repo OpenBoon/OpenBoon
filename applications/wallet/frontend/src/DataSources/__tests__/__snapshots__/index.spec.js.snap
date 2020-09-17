@@ -358,6 +358,7 @@ Array [
 
 .emotion-12 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-11 {
@@ -1067,6 +1068,7 @@ Array [
 
 .emotion-12 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-11 {
@@ -2247,6 +2249,7 @@ Array [
 
 .emotion-12 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-11 {

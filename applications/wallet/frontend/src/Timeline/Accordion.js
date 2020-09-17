@@ -44,9 +44,10 @@ const TimelineAccordion = ({
             css={{
               width: COLOR_TAB_WIDTH,
               backgroundColor: moduleColor,
-              marginRight: spacing.moderate,
+              marginRight: spacing.base,
             }}
-          />{' '}
+          />
+
           <ChevronSvg
             height={constants.icons.regular}
             css={{
@@ -55,6 +56,7 @@ const TimelineAccordion = ({
               alignSelf: 'center',
             }}
           />
+
           <div
             css={{
               flex: 1,
@@ -67,6 +69,7 @@ const TimelineAccordion = ({
           >
             {name}
           </div>
+
           <div
             css={{
               padding: spacing.base,
@@ -74,6 +77,7 @@ const TimelineAccordion = ({
           >{`(${predictions.length})`}</div>
         </div>
       </summary>
+
       {isOpen && <div>{children}</div>}
     </details>
   )

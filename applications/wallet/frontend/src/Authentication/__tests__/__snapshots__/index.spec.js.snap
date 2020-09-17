@@ -156,12 +156,12 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 0;
+  padding-bottom: 16px;
 }
 
 .emotion-6 {

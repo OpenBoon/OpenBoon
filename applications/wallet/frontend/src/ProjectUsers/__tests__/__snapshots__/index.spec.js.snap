@@ -1163,6 +1163,7 @@ Array [
 
 .emotion-9 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-8 {

@@ -29,6 +29,7 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
 
 .emotion-3 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-2 {
@@ -276,6 +277,7 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
 
 .emotion-3 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-2 {

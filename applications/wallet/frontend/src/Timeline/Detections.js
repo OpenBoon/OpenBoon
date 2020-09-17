@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 
 import { colors, constants, spacing } from '../Styles'
@@ -21,53 +22,9 @@ const COLORS = [
   colors.signal.grass.base,
 ]
 
-// TODO: fetch modules from backend
-const TIMELINE_MODULES = [
-  {
-    name: 'gcp-video-explicit-detection',
-    predictions: [
-      { label: 'Gh st', count: 3 },
-      { label: 'Busters', count: 3 },
-    ],
-  },
-  {
-    name: 'gcp-video-label-detection',
-    predictions: [
-      { label: 'Label 1', count: 3 },
-      { label: 'Label 2', count: 6 },
-      { label: 'Label 3 Plus More Text to Make A Long Label String', count: 9 },
-    ],
-  },
-  {
-    name: 'gcp-video-logo-detection',
-    predictions: [
-      { label: 'Logo 1', count: 1 },
-      { label: 'Logo 2', count: 3 },
-      { label: 'Logo 3', count: 5 },
-    ],
-  },
-  {
-    name: 'gcp-video-object-detection',
-    predictions: [
-      { label: 'Object 1', count: 3 },
-      { label: 'Object 2', count: 4 },
-      { label: 'Object 3', count: 4 },
-    ],
-  },
-  {
-    name: 'gcp-video-text-detection',
-    predictions: [
-      { label: 'Text 1', count: 2 },
-      { label: 'Text 2', count: 4 },
-      { label: 'Text 3', count: 6 },
-      { label: 'Text 4', count: 8 },
-    ],
-  },
-]
-
 const reducer = (state, action) => ({ ...state, ...action })
 
-const TimelineDetections = () => {
+const TimelineDetections = ({ detections }) => {
   const {
     query: { assetId },
   } = useRouter()
@@ -89,7 +46,7 @@ const TimelineDetections = () => {
       }}
     >
       <div css={{ width: constants.timeline.modulesWidth }}>
-        {TIMELINE_MODULES.map(({ name, predictions }, index) => {
+        {detections.map(({ name, predictions }, index) => {
           const colorIndex = index % COLORS.length
 
           return (
@@ -141,8 +98,9 @@ const TimelineDetections = () => {
           )
         })}
       </div>
+
       <div css={{ flex: 1 }}>
-        {TIMELINE_MODULES.map(({ name, predictions }) => {
+        {detections.map(({ name, predictions }) => {
           return (
             <TimelineTracks
               key={name}
@@ -155,6 +113,10 @@ const TimelineDetections = () => {
       </div>
     </div>
   )
+}
+
+TimelineDetections.propTypes = {
+  detections: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 }
 
 export default TimelineDetections
