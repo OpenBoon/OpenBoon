@@ -32,7 +32,6 @@ def save_text_detection_timeline(asset, annotations):
     """
     timeline = TimelineBuilder(asset, "gcp-video-text-detection")
     for annotation in annotations.text_annotations:
-        print(annotation)
         for segment in annotation.segments:
             start_time = convert_offset(segment.segment.start_time_offset)
             end_time = convert_offset(segment.segment.end_time_offset)
