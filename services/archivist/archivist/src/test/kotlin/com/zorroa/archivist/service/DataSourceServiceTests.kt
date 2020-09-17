@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
+import com.zorroa.archivist.domain.DataSourceDelete
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.FileType
@@ -160,7 +161,7 @@ class DataSourceServiceTests : AbstractTest() {
     @Test
     fun testDelete() {
         val ds = dataSourceService.create(spec)
-        dataSourceService.delete(ds.id)
+        dataSourceService.delete(ds.id, DataSourceDelete())
         entityManager.flush()
         val count = jdbc.queryForObject(
             "SELECT COUNT(1) FROM datasource WHERE pk_datasource=?", Int::class.java, ds.id
@@ -180,7 +181,7 @@ class DataSourceServiceTests : AbstractTest() {
         )
 
         val job = jobService.create(jspec)
-        dataSourceService.delete(ds.id)
+        dataSourceService.delete(ds.id, DataSourceDelete())
         entityManager.flush()
         val count = jdbc.queryForObject(
             "SELECT COUNT(1) FROM datasource WHERE pk_datasource=?", Int::class.java, ds.id
