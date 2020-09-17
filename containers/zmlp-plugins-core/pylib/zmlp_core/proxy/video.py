@@ -35,7 +35,7 @@ class VideoProxyProcessor(AssetProcessor):
         dst_path = tempfile.mkstemp('.mp4')[1]
 
         cmd = ['ffmpeg',
-               '-v', 'quiet',
+               '-v', 'warning',
                '-y',
                '-i', src_path,
                '-c:v', 'libx264',
@@ -64,12 +64,12 @@ class VideoProxyProcessor(AssetProcessor):
 
         cmd = [
             'ffmpeg',
-            '-v', 'quiet',
+            '-v', 'warning',
             '-y',
             '-i', src_path,
             '-movflags', '+faststart',
             '-threads', '0',
-            '-acodec', 'copy',
+            '-acodec', 'aac',
             '-vcodec', 'copy',
             dst_path
         ]
@@ -130,7 +130,7 @@ class ExtractVideoClipProxyProcessor(AssetProcessor):
         source_path = file_storage.localize_file(asset)
         with tempfile.NamedTemporaryFile(suffix=".mp4") as tf:
             cmd = ['ffmpeg',
-                   '-v', 'quiet',
+                   '-v', 'warning',
                    '-y',
                    '-i', str(source_path),
                    '-ss', str(asset.get_attr('clip.start')),
