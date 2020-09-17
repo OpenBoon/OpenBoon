@@ -45,7 +45,7 @@ class PipelineResolverServiceTests : AbstractTest() {
                 "gcp-speech-to-text"
             )
         )
-        assertEquals(10, pipeline.execute.size)
+        assertEquals(7, pipeline.execute.size)
     }
 
     @Test
