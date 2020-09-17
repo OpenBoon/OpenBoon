@@ -82,10 +82,10 @@ class AutomlLabelDetectionSession:
         """
         self.emit_status(f'Creating AutoML DataSet {self.display_name}')
 
-        metadata = automl.types.ImageClassificationDatasetMetadata(
-            classification_type=automl.enums.ClassificationType.MULTICLASS
+        metadata = automl.ImageClassificationDatasetMetadata(
+            classification_type=automl.ClassificationType.MULTICLASS
         )
-        spec = automl.types.Dataset(
+        spec = automl.Dataset(
             display_name=self.display_name,
             image_classification_dataset_metadata=metadata,
         )
@@ -104,8 +104,8 @@ class AutomlLabelDetectionSession:
 
         labels_url = self._store_labels_file()
 
-        gcs_source = automl.types.GcsSource(input_uris=[labels_url])
-        input_config = automl.types.InputConfig(gcs_source=gcs_source)
+        gcs_source = automl.GcsSource(input_uris=[labels_url])
+        input_config = automl.InputConfig(gcs_source=gcs_source)
         result = self.client.import_data(dataset.name, input_config).result()
 
         logger.info("Processing import...")
