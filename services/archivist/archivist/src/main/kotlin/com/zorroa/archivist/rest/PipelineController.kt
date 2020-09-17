@@ -95,8 +95,10 @@ class PipelineController @Autowired constructor(
 
     @ApiOperation("Resolve a Pipeline to its list of processors.")
     @PostMapping(value = ["/api/v1/pipelines/_resolve_modular"])
-    fun resolveStandard(@ApiParam("A List of module names") @RequestBody(required = false)
-        modules: List<String>?): ResolvedPipeline {
+    fun resolveStandard(
+        @ApiParam("A List of module names") @RequestBody(required = false)
+        modules: List<String>?
+    ): ResolvedPipeline {
         return pipeineResolverService.resolveModular(modules ?: listOf())
     }
 }
