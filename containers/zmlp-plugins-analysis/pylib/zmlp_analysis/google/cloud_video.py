@@ -6,6 +6,7 @@ import google.cloud.videointelligence_v1p3beta1 as videointelligence
 from google.api_core.exceptions import ResourceExhausted
 
 from zmlpsdk import Argument, AssetProcessor, FileTypes, file_storage, proxy
+from zmlpsdk.base import ProcessorException
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
 from . import cloud_timeline
 from .gcp_client import initialize_gcp_client
@@ -104,6 +105,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
     def get_video_proxy_uri(self, asset):
         video_proxy = proxy.get_proxy_level(asset, 3, mimetype="video")
+        if not video_proxy:
+            raise ProcessorException("Unable to find video proxy for asset {}".format(asset.id))
         return file_storage.assets.get_native_uri(video_proxy)
 
     def handle_detect_logos(self, asset, results):
