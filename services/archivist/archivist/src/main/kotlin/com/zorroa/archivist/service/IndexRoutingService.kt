@@ -24,6 +24,7 @@ import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
+import com.zorroa.zmlp.util.readValueOrNull
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.open.OpenIndexRequest
@@ -44,6 +45,8 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import redis.clients.jedis.JedisPool
+import redis.clients.jedis.params.SetParams
 import java.lang.IllegalStateException
 import java.net.URI
 import java.util.UUID
@@ -220,7 +223,8 @@ constructor(
     val indexClusterDao: IndexClusterDao,
     val projectCustomDao: ProjectCustomDao,
     val properties: ApplicationProperties,
-    val txEvent: TransactionEventManager
+    val txEvent: TransactionEventManager,
+    val jedis: JedisPool
 ) : IndexRoutingService {
 
     @Autowired
@@ -400,7 +404,18 @@ constructor(
     }
 
     override fun getProjectRestClient(): EsRestClient {
-        val route = projectRouteCache.get(getProjectId())
+        val route = jedis.resource.use { cache ->
+            val projectId = getProjectId().toString()
+
+            Json.Mapper.readValueOrNull(cache.get(projectId)) ?: {
+                val freshCopy = indexRouteDao.getProjectRoute()
+                cache.set(
+                    freshCopy.redisCacheKey(), Json.serializeToString(freshCopy),
+                    SetParams().px(TimeUnit.HOURS.toMillis(1))
+                )
+                freshCopy
+            }()
+        }
         return esClientCache.get(route.esClientCacheKey())
     }
 
@@ -576,7 +591,10 @@ constructor(
             )
             // Make sure this comes after the
             txEvent.afterCommit {
-                projectRouteCache.invalidate(project.id)
+
+                jedis.resource.use {
+                    it.del(route.redisCacheKey())
+                }
             }
             true
         } else {
@@ -586,7 +604,9 @@ constructor(
     }
 
     override fun invalidateCache() {
-        projectRouteCache.invalidateAll()
+        jedis.resource.use {
+            it.flushAll()
+        }
     }
 
     companion object {
@@ -598,17 +618,6 @@ constructor(
         // Matches minor version file foo.v1-02020202.json
         private val MAP_PATCH_REGEX = Regex("^(.*?).v(\\d+)-(\\d{8}).json$")
     }
-
-    private val projectRouteCache = CacheBuilder.newBuilder()
-        .initialCapacity(32)
-        .concurrencyLevel(8)
-        .expireAfterWrite(1, TimeUnit.HOURS)
-        .build(object : CacheLoader<UUID, IndexRoute>() {
-            @Throws(Exception::class)
-            override fun load(projectId: UUID): IndexRoute {
-                return indexRouteDao.getProjectRoute(projectId)
-            }
-        })
 }
 
 /**

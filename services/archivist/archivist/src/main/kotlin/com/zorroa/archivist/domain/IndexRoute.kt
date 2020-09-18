@@ -89,6 +89,11 @@ class IndexRoute(
         return EsClientCacheKey(clusterUrl, indexName, majorVer)
     }
 
+    @JsonIgnore
+    fun redisCacheKey(): String {
+        return "zmlp/archivist/$projectId/index"
+    }
+
     override fun toString(): String {
         return "IndexRoute(id=$id, indexUrl='$indexUrl')"
     }
