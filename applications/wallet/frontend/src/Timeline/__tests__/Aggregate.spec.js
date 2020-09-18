@@ -2,26 +2,28 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import detections from '../__mocks__/detections'
 
-import TimelineDetections from '../Detections'
+import TimelineAggregate, { noop } from '../Aggregate'
 
 jest.mock('../Tracks', () => 'TimelineTracks')
 
-const noop = () => () => {}
-
-describe('<TimelineDetections />', () => {
+describe('<TimelineAggregate />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
-      <TimelineDetections detections={detections} />,
+      <TimelineAggregate detections={detections} timelineHeight={400} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'gcp-video-explicit-detection' })
-        .props.onClick({ target: { open: true }, preventDefault: noop })
+        .findByProps({ 'aria-label': 'Toggle Dropdown Menu' })
+        .props.onClick()
     })
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('noop should do nothing', () => {
+    expect(noop()).toBe(undefined)
   })
 })

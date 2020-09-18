@@ -5,44 +5,6 @@ import TimelineControls from '../Controls'
 const noop = () => {}
 
 describe('<TimelineControls />', () => {
-  it('should not render until video has loaded with duration', () => {
-    const component = TestRenderer.create(
-      <TimelineControls videoRef={{ current: undefined }} />,
-    )
-
-    expect(component.toJSON()).toEqual(null)
-  })
-
-  it('should mount and unmount event listeners', () => {
-    const mockAddEventListener = jest.fn()
-    const mockRemoveEventListener = jest.fn()
-
-    const component = TestRenderer.create(
-      <TimelineControls
-        videoRef={{
-          current: {
-            play: noop,
-            pause: noop,
-            addEventListener: mockAddEventListener,
-            removeEventListener: mockRemoveEventListener,
-            currentTime: 0,
-            duration: 18,
-            paused: true,
-          },
-        }}
-      />,
-    )
-
-    // useEffect
-    act(() => {})
-
-    expect(mockAddEventListener).toHaveBeenCalled()
-
-    component.unmount()
-
-    expect(mockRemoveEventListener).toHaveBeenCalled()
-  })
-
   it('should play', () => {
     const mockPlay = jest.fn()
 
@@ -55,10 +17,10 @@ describe('<TimelineControls />', () => {
             addEventListener: noop,
             removeEventListener: noop,
             currentTime: 0,
-            duration: 18,
             paused: true,
           },
         }}
+        length={18}
       />,
     )
 
@@ -83,10 +45,10 @@ describe('<TimelineControls />', () => {
             addEventListener: noop,
             removeEventListener: noop,
             currentTime: 6,
-            duration: 18,
             paused: false,
           },
         }}
+        length={18}
       />,
     )
 
@@ -108,12 +70,11 @@ describe('<TimelineControls />', () => {
       addEventListener: noop,
       removeEventListener: noop,
       currentTime: 6.5,
-      duration: 18,
       paused: false,
     }
 
     const component = TestRenderer.create(
-      <TimelineControls videoRef={{ current }} />,
+      <TimelineControls videoRef={{ current }} length={18} />,
     )
 
     act(() => {
@@ -136,12 +97,11 @@ describe('<TimelineControls />', () => {
       addEventListener: noop,
       removeEventListener: noop,
       currentTime: 6.5,
-      duration: 18,
       paused: false,
     }
 
     const component = TestRenderer.create(
-      <TimelineControls videoRef={{ current }} />,
+      <TimelineControls videoRef={{ current }} length={18} />,
     )
 
     act(() => {

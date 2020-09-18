@@ -18,7 +18,7 @@ const Menu = ({ button, children, open, style }) => {
   const onClick = () => setMenuOpen(!isMenuOpen)
 
   return (
-    <div ref={container} css={{ position: 'relative' }}>
+    <div ref={container} css={{ position: 'relative', height: '100%' }}>
       {button({ onBlur, onClick, isMenuOpen, style })}
       {isMenuOpen && (
         <div
@@ -26,6 +26,7 @@ const Menu = ({ button, children, open, style }) => {
             position: 'absolute',
             zIndex: zIndex.reset,
             [open.includes('bottom') ? 'top' : 'bottom']: '100%',
+            right: open.includes('center') ? 0 : 'auto',
             [open.includes('left') ? 'right' : 'left']: 0,
             backgroundColor: colors.structure.steel,
             borderRadius: constants.borderRadius.small,
@@ -59,6 +60,7 @@ Menu.propTypes = {
     'top-right',
     'bottom-left',
     'bottom-right',
+    'bottom-center',
   ]).isRequired,
   button: PropTypes.func.isRequired,
   style: stylesShape,

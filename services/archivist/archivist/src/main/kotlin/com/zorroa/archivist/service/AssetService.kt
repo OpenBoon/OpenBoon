@@ -99,6 +99,11 @@ interface AssetService {
     fun getExistingAssetIds(specs: Collection<Asset>): Set<String>
 
     /**
+     * Get the Asset spec's existing Id.
+     */
+    fun getExistingAssetId(spec: AssetSpec): String?
+
+    /**
      * Batch create a list of assets.  Creating adds a base asset with
      * just source data to ElasticSearch.  A created asset still needs
      * to be analyzed.
@@ -276,6 +281,30 @@ class AssetServiceImpl : AssetService {
         return result
     }
 
+    override fun getExistingAssetId(spec: AssetSpec): String? {
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newSearchRequest()
+        val bool = QueryBuilders.boolQuery()
+
+        bool.must(QueryBuilders.termQuery("source.path", spec.uri))
+        if (FileExtResolver.isMultiPage(FileUtils.extension(spec.uri))) {
+            bool.must(QueryBuilders.termQuery("media.pageNumber", spec.getPageNumber()))
+        }
+        spec.getChecksumValue()?.let {
+            bool.must(QueryBuilders.termQuery("source.checksum", it))
+        }
+
+        req.source().size(1)
+        req.source().query(bool)
+        req.source().fetchSource(false)
+
+        val r = rest.client.search(req, RequestOptions.DEFAULT)
+        r.hits.forEach {
+            return it.id
+        }
+        return null
+    }
+
     override fun getAll(ids: Collection<String>): List<Asset> {
         val rest = indexRoutingService.getProjectRestClient()
         val req = rest.newSearchRequest()
@@ -299,13 +328,17 @@ class AssetServiceImpl : AssetService {
         }
 
         val assets = mutableListOf<Asset>()
+        val existingAssetIds = mutableSetOf<String>()
 
         for ((idx, mpfile) in req.files.withIndex()) {
             val spec = req.assets[idx]
             // Have to make checksum before
             spec.makeChecksum(mpfile.bytes)
 
-            val id = AssetIdBuilder(spec).build()
+            val existingId = getExistingAssetId(spec)
+            existingId?.let { existingAssetIds.add(it) }
+
+            val id = existingId ?: AssetIdBuilder(spec).build()
             val asset = assetSpecToAsset(id, spec)
             asset.setAttr("source.filesize", mpfile.size)
             asset.setAttr("source.checksum", spec.getChecksumValue())
@@ -321,7 +354,6 @@ class AssetServiceImpl : AssetService {
             assets.add(asset)
         }
 
-        val existingAssetIds = getValidAssetIds(assets.map { it.id })
         return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, req.credentials)
     }
 
@@ -338,15 +370,19 @@ class AssetServiceImpl : AssetService {
 
         // Make a list of Assets from the spec
         val assetIds = mutableSetOf<String>()
+        val existingAssetIds = mutableSetOf<String>()
+
         val assets = request.assets.map { spec ->
-            val id = AssetIdBuilder(spec).build()
+            val existingId = getExistingAssetId(spec)
+            existingId?.let { existingAssetIds.add(it) }
+
+            val id = existingId ?: AssetIdBuilder(spec).build()
             assetIds.add(id)
             val asset = assetSpecToAsset(id, spec, request.task)
             asset.setAttr("system.state", request.state.name)
             asset
         }
 
-        val existingAssetIds = getExistingAssetIds(assets)
         return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials)
     }
 

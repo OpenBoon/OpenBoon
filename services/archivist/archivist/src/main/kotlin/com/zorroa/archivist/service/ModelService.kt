@@ -446,13 +446,13 @@ class ModelServiceImpl(
          */
         private val RENAME_LABEL_SCRIPT =
             """
-             for (int i = 0; i < ctx._source['labels'].length; ++i) {
-                if (ctx._source['labels'][i]['label'] == params.oldLabel && 
-                    ctx._source['labels'][i]['modelId'] == params.modelId) {
-                        ctx._source['labels'][i]['label'] = params.newLabel;
-                        break;
-                }
-             }
+            for (int i = 0; i < ctx._source['labels'].length; ++i) {
+               if (ctx._source['labels'][i]['label'] == params.oldLabel && 
+                   ctx._source['labels'][i]['modelId'] == params.modelId) {
+                       ctx._source['labels'][i]['label'] = params.newLabel;
+                       break;
+               }
+            }
             """.trimIndent()
 
         /**
@@ -460,17 +460,17 @@ class ModelServiceImpl(
          */
         private val DELETE_LABEL_SCRIPT =
             """
-             int index = -1;
-             for (int i = 0; i < ctx._source['labels'].length; ++i) {
-                if (ctx._source['labels'][i]['label'] == params.label && 
-                    ctx._source['labels'][i]['modelId'] == params.modelId) {
-                    index = i;
-                    break;
-                }
-             }
-             if (index > -1) {
-                ctx._source['labels'].remove(index)
-             }
+            int index = -1;
+            for (int i = 0; i < ctx._source['labels'].length; ++i) {
+               if (ctx._source['labels'][i]['label'] == params.label && 
+                   ctx._source['labels'][i]['modelId'] == params.modelId) {
+                   index = i;
+                   break;
+               }
+            }
+            if (index > -1) {
+               ctx._source['labels'].remove(index)
+            }
             """.trimIndent()
 
         /**
@@ -478,16 +478,16 @@ class ModelServiceImpl(
          */
         private val DELETE_MODEL_SCRIPT =
             """
-             int index = -1;
-             for (int i = 0; i < ctx._source['labels'].length; ++i) {
-                if (ctx._source['labels'][i]['modelId'] == params.modelId) {
-                    index = i;
-                    break;
-                }
-             }
-             if (index > -1) {
-                ctx._source['labels'].remove(index)
-             }
+            int index = -1;
+            for (int i = 0; i < ctx._source['labels'].length; ++i) {
+               if (ctx._source['labels'][i]['modelId'] == params.modelId) {
+                   index = i;
+                   break;
+               }
+            }
+            if (index > -1) {
+               ctx._source['labels'].remove(index)
+            }
             """.trimIndent()
     }
 }

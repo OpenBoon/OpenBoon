@@ -7,6 +7,7 @@ exports[`<UserMenu /> should render properly 1`] = `
 
 .emotion-4 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-3 {
@@ -144,6 +145,7 @@ exports[`<UserMenu /> should render properly 2`] = `
 
 .emotion-12 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-2 {
@@ -449,6 +451,7 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
 
 .emotion-4 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-3 {

@@ -181,6 +181,7 @@ exports[`<TaskErrors /> should render properly with job errors 1`] = `
 
 .emotion-13 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-12 {

@@ -36,7 +36,17 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
     return () => textTracks.removeEventListener('change', onChange)
   }, [textTracks])
 
-  if (!textTracks || !textTracks[0]) return null
+  if (!textTracks || !textTracks[0])
+    return (
+      <div
+        css={{
+          width:
+            (constants.icons.regular + spacing.small * 2) * 2 + // 2 buttons width
+            spacing.small + // spacer
+            spacing.small * 2, // padding
+        }}
+      />
+    )
 
   return (
     <div

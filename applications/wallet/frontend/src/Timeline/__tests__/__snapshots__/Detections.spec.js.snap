@@ -48,7 +48,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
 .emotion-0 {
   width: 3px;
   background-color: #0074f5;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .emotion-1 {
@@ -79,7 +79,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
 .emotion-7 {
   width: 3px;
   background-color: #a03dc7;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .emotion-8 {
@@ -95,7 +95,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
 .emotion-14 {
   width: 3px;
   background-color: #d6680b;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .emotion-15 {
@@ -111,7 +111,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
 .emotion-21 {
   width: 3px;
   background-color: #ebb52e;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .emotion-22 {
@@ -127,7 +127,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
 .emotion-28 {
   width: 3px;
   background-color: #00bdc1;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .emotion-29 {
@@ -167,7 +167,6 @@ exports[`<TimelineDetections /> should render properly 1`] = `
           <div
             className="emotion-0"
           />
-           
           <svg
             className="emotion-1"
             data-file-name="chevron.svg"
@@ -201,7 +200,6 @@ exports[`<TimelineDetections /> should render properly 1`] = `
           <div
             className="emotion-7"
           />
-           
           <svg
             className="emotion-8"
             data-file-name="chevron.svg"
@@ -235,7 +233,6 @@ exports[`<TimelineDetections /> should render properly 1`] = `
           <div
             className="emotion-14"
           />
-           
           <svg
             className="emotion-15"
             data-file-name="chevron.svg"
@@ -269,7 +266,6 @@ exports[`<TimelineDetections /> should render properly 1`] = `
           <div
             className="emotion-21"
           />
-           
           <svg
             className="emotion-22"
             data-file-name="chevron.svg"
@@ -303,7 +299,6 @@ exports[`<TimelineDetections /> should render properly 1`] = `
           <div
             className="emotion-28"
           />
-           
           <svg
             className="emotion-29"
             data-file-name="chevron.svg"
@@ -478,7 +473,7 @@ exports[`<TimelineDetections /> should render properly 2`] = `
 .emotion-0 {
   width: 3px;
   background-color: #0074f5;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .emotion-2 {
@@ -499,7 +494,7 @@ exports[`<TimelineDetections /> should render properly 2`] = `
 .emotion-17 {
   width: 3px;
   background-color: #a03dc7;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .emotion-18 {
@@ -515,7 +510,7 @@ exports[`<TimelineDetections /> should render properly 2`] = `
 .emotion-24 {
   width: 3px;
   background-color: #d6680b;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .emotion-25 {
@@ -531,7 +526,7 @@ exports[`<TimelineDetections /> should render properly 2`] = `
 .emotion-31 {
   width: 3px;
   background-color: #ebb52e;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .emotion-32 {
@@ -547,7 +542,7 @@ exports[`<TimelineDetections /> should render properly 2`] = `
 .emotion-38 {
   width: 3px;
   background-color: #00bdc1;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .emotion-39 {
@@ -633,7 +628,6 @@ exports[`<TimelineDetections /> should render properly 2`] = `
           <div
             className="emotion-0"
           />
-           
           <svg
             className="emotion-1"
             data-file-name="chevron.svg"
@@ -711,7 +705,6 @@ exports[`<TimelineDetections /> should render properly 2`] = `
           <div
             className="emotion-17"
           />
-           
           <svg
             className="emotion-18"
             data-file-name="chevron.svg"
@@ -745,7 +738,6 @@ exports[`<TimelineDetections /> should render properly 2`] = `
           <div
             className="emotion-24"
           />
-           
           <svg
             className="emotion-25"
             data-file-name="chevron.svg"
@@ -779,7 +771,6 @@ exports[`<TimelineDetections /> should render properly 2`] = `
           <div
             className="emotion-31"
           />
-           
           <svg
             className="emotion-32"
             data-file-name="chevron.svg"
@@ -813,7 +804,6 @@ exports[`<TimelineDetections /> should render properly 2`] = `
           <div
             className="emotion-38"
           />
-           
           <svg
             className="emotion-39"
             data-file-name="chevron.svg"
