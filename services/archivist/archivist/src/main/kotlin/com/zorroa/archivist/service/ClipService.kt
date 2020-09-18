@@ -36,6 +36,8 @@ interface ClipService {
 
     fun getWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream)
 
+    fun getWebvttByTimeline(asset: Asset, timeline: String, outputStream: OutputStream)
+
     fun mapToSearchSourceBuilder(asset: Asset, search: Map<String, Any>): SearchSourceBuilder
 }
 
@@ -120,6 +122,11 @@ class ClipServiceImpl(
         }
         req.preference(getProjectId().toString())
         return rest.client.search(req, RequestOptions.DEFAULT)
+    }
+
+    override fun getWebvttByTimeline(asset: Asset, timeline: String, outputStream: OutputStream) {
+        val search = mapOf("query" to mapOf("term" to mapOf("clip.timeline" to timeline)))
+        return getWebvtt(asset, search, outputStream)
     }
 
     override fun getWebvtt(asset: Asset, search: Map<String, Any>, outputStream: OutputStream) {

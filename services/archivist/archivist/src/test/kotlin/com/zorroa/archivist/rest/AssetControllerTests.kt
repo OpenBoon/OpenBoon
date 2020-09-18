@@ -557,4 +557,52 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.hits.hits.length()", CoreMatchers.equalTo(2)))
             .andReturn()
     }
+
+    @Test
+    fun testGetWebvttFile() {
+        addTestAssets("video")
+
+        val asset = getSample(1)[0]
+        val clips = listOf(
+            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
+            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
+        )
+        val track = TrackSpec("cats", clips)
+        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+
+        clipService.createClips(timeline)
+        refreshElastic()
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/assets/${asset.id}/clips/all.vtt")
+                .headers(admin())
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().contentType("text/vtt"))
+            .andReturn()
+    }
+
+    @Test
+    fun testGetWebvttFileByTimeline() {
+        addTestAssets("video")
+
+        val asset = getSample(1)[0]
+        val clips = listOf(
+            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
+            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
+        )
+        val track = TrackSpec("cats", clips)
+        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+
+        clipService.createClips(timeline)
+        refreshElastic()
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/assets/${asset.id}/clips/timelines/cats.vtt")
+                .headers(admin())
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().contentType("text/vtt"))
+            .andReturn()
+    }
 }
