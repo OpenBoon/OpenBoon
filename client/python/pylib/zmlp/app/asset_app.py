@@ -229,7 +229,7 @@ class AssetApp(object):
             search['_source'] = False
         return AssetSearchResult(self.app, search)
 
-    def scroll_search(self, search=None, timeout="1m", topn=None):
+    def scroll_search(self, search=None, timeout="1m"):
         """
         Perform an asset scrolled search using the ElasticSearch query DSL.
 
