@@ -47,6 +47,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.multipart.MultipartFile
 import javax.servlet.ServletOutputStream
+import javax.servlet.http.HttpServletResponse
 
 @RestController
 @Timed
@@ -228,7 +229,7 @@ class AssetController @Autowired constructor(
 
     @PreAuthorize("hasAuthority('AssetsRead')")
     @RequestMapping("/api/v3/assets/{id}/clips/_search", method = [RequestMethod.GET, RequestMethod.POST])
-    fun search(
+    fun clipSearch(
         @ApiParam("Unique ID of the Asset") @PathVariable id: String,
         @RequestBody(required = false) search: Map<String, Any>?,
         request: WebRequest,
@@ -246,6 +247,37 @@ class AssetController @Autowired constructor(
         return ResponseEntity.ok()
             .contentLength(output.size().toLong())
             .body(InputStreamResource(output.toInputStream()))
+    }
+
+    @PreAuthorize("hasAuthority('AssetsRead')")
+    @RequestMapping("/api/v3/assets/{id}/clips/all.vtt", method = [RequestMethod.GET])
+    fun getFullWebvtt(
+        @ApiParam("Unique ID of the Asset") @PathVariable id: String,
+        request: WebRequest,
+        response: HttpServletResponse
+    ) {
+        response.contentType = "text/vtt"
+        response.setHeader("Content-Disposition", "attachment; filename=\"all.vtt\"")
+
+        val asset = assetService.getAsset(id)
+        clipService.getWebvtt(asset, mapOf(), response.outputStream)
+        response.flushBuffer()
+    }
+
+    @PreAuthorize("hasAuthority('AssetsRead')")
+    @RequestMapping("/api/v3/assets/{id}/clips/timelines/{timeline}.vtt", method = [RequestMethod.GET])
+    fun getFullWebvttTimeline(
+        @ApiParam("Unique ID of the Asset") @PathVariable id: String,
+        @ApiParam("Name of the webvtt timeline") @PathVariable timeline: String,
+        request: WebRequest,
+        response: HttpServletResponse
+    ) {
+        response.contentType = "text/vtt"
+        response.setHeader("Content-Disposition", "attachment; filename=\"$timeline.vtt\"")
+
+        val asset = assetService.getAsset(id)
+        clipService.getWebvtt(asset, mapOf(), response.outputStream)
+        response.flushBuffer()
     }
 
     companion object {
