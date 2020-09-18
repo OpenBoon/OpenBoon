@@ -83,23 +83,25 @@ class JobLaunchServiceImpl(
 ) : JobLaunchService {
 
     override fun launchJob(dataSource: DataSource, options: DataSourceDelete): Job {
+        val name = "Deleting assets from: ${dataSource.name}"
+
         val script = ZpsScript(
+            name = name,
             generate = listOf(
                 ProcessorRef(
                     className = "zmlp_core.core.generators.DeleteBySearchGenerator",
-                    image = "zmlp/plugins-core",
+                    image = StandardContainers.CORE,
                     args = mapOf("dataSourceId" to dataSource.id)
                 )
             ),
             assets = null,
-            name = null,
             execute = null
         )
         script.setSettting("fileTypes", FileExtResolver.resolve(dataSource.fileTypes))
         script.setSettting("batchSize", clampBatchSize(options.batchSize))
 
         val spec = JobSpec(
-            "Deleting Datasource: '${dataSource.name}'",
+            name,
             listOf(script),
             credentials = options.credentials
         )
