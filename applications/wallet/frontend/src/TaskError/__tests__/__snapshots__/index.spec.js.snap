@@ -210,6 +210,7 @@ Array [
 
 .emotion-1 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-0 {
@@ -806,6 +807,7 @@ Array [
 
 .emotion-1 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-0 {
@@ -1440,6 +1442,7 @@ Array [
 
 .emotion-3 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-0 {
@@ -2174,6 +2177,7 @@ Array [
 
 .emotion-1 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-0 {

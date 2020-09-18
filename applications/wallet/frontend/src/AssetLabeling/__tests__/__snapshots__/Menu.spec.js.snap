@@ -3,6 +3,7 @@
 exports[`<AssetLabelingMenu /> should add a model/label filter 1`] = `
 .emotion-6 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-0 {

@@ -156,6 +156,7 @@ exports[`<ModelLabels /> should render properly with labels 1`] = `
 
 .emotion-14 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-13 {
@@ -831,6 +832,7 @@ exports[`<ModelLabels /> should render properly with required assets per labels 
 
 .emotion-14 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-13 {

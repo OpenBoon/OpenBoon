@@ -167,12 +167,12 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-25 {
@@ -262,12 +262,12 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   display: -ms-flexbox;
   display: flex;
   cursor: not-allowed;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-39 {
@@ -1764,12 +1764,12 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-24 {
@@ -1859,12 +1859,12 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   cursor: not-allowed;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-38 {

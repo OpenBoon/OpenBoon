@@ -3,6 +3,7 @@
 exports[`<ModelLabelsMenu /> should render properly 1`] = `
 .emotion-4 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-0 {

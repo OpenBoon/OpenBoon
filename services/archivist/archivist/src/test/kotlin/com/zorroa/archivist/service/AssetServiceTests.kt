@@ -68,6 +68,32 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testGetExistingAssetIdImage() {
+        val spec = AssetSpec("gs://cats/large-brown-cat.jpg")
+        assertNull(assetService.getExistingAssetId(spec))
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        assetService.batchCreate(req)
+        val assetId = assetService.getExistingAssetId(spec)
+        assertNotNull(assetId)
+        assertEquals("jvfC_RFfhDKDXgqmgTFdtszLXj15uP-3", assetId)
+    }
+
+    @Test
+    fun testGetExistingAssetIdDoc() {
+        val spec = AssetSpec("gs://cats/large-brown-cat.pdf", page = 5)
+        assertNull(assetService.getExistingAssetId(spec))
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        assetService.batchCreate(req)
+        assertNotNull(assetService.getExistingAssetId(spec))
+    }
+
+    @Test
     fun testBatchCreateAssetsWithModule() {
         pipelineModuleService.updateStandardMods()
 
