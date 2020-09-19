@@ -6,6 +6,7 @@ import Button, { VARIANTS } from '../Button'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
+import TimelineRuler from './Ruler'
 import TimelinePlayhead from './Playhead'
 import TimelineAggregate from './Aggregate'
 import TimelineDetections from './Detections'
@@ -69,8 +70,7 @@ const Timeline = ({ videoRef, length }) => {
       >
         <TimelinePlayhead videoRef={videoRef} />
 
-        {/* TODO: add ruler and other stuff here */}
-        <div css={{ height: constants.timeline.rulerRowHeight }} />
+        <TimelineRuler />
 
         <TimelineAggregate
           detections={detections}
