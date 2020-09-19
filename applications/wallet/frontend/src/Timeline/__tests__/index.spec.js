@@ -5,6 +5,7 @@ import Timeline from '..'
 jest.mock('../Controls', () => 'TimelineControls')
 jest.mock('../Captions', () => 'TimelineCaptions')
 jest.mock('../Playhead', () => 'TimelinePlayhead')
+jest.mock('../Ruler', () => 'TimelineRuler')
 jest.mock('../Aggregate', () => 'TimelineAggregate')
 jest.mock('../Detections', () => 'TimelineDetections')
 

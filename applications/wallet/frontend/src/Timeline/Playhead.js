@@ -72,7 +72,7 @@ const TimelinePlayhead = ({ videoRef }) => {
         top:
           constants.timeline.rulerRowHeight - constants.timeline.playheadHeight,
         bottom: 0,
-        marginLeft: -DRAG_WIDTH / 2,
+        marginLeft: -(DRAG_WIDTH / 2) + constants.borderWidths.regular / 2,
         width: DRAG_WIDTH,
         display: 'flex',
         flexDirection: 'column',

@@ -15,7 +15,7 @@ const borderRadius = {
   round: 32,
 }
 
-const borderWidths = { regular: '1px', medium: '2px', large: '4px' }
+const borderWidths = { regular: 1, medium: 2, large: 4 }
 
 const newBorders = Object.entries(borderWidths).reduce((acc, [name, size]) => {
   return {
@@ -24,7 +24,7 @@ const newBorders = Object.entries(borderWidths).reduce((acc, [name, size]) => {
       (acc2, [colorName, colorHex]) => {
         return {
           ...acc2,
-          [colorName]: `${size} solid ${colorHex}`,
+          [colorName]: `${size}px solid ${colorHex}`,
         }
       },
       {},
