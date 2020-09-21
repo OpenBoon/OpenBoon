@@ -13,6 +13,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class IndexTaskServiceTests : AbstractTest() {
 
@@ -83,6 +84,7 @@ class IndexTaskServiceTests : AbstractTest() {
         val image = getSample(1, type = "image")[0]
         assertEquals(100, image.getAttr("media.pageNumber"))
         assertEquals("ABC123", image.getAttr("media.pageStack"))
+        assertNull(image.getAttr("clip"))
 
         val video = getSample(1, type = "video")[0]
         assertEquals("video", video.getAttr("deepSearch.name"))

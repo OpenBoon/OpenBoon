@@ -1,13 +1,22 @@
-if (ctx._source.containsKey("clip")) {
-    def clip = ctx._source.remove("clip");
-    if (ctx._source.media.type != "video") {
-        ctx._source.media.pageNumber = clip.start.intValue();
-        ctx._source.media.pageStack = clip.sourceAssetId;
+if (ctx._source !=null) {
+
+    if (ctx._source.containsKey("clip")) {
+        def clip = ctx._source.remove("clip");
+
+        if (ctx._source.media != null && ctx._source.media.type != null) {
+            if (ctx._source.media.type != "video") {
+                ctx._source.media.pageNumber = clip.start.intValue();
+                ctx._source.media.pageStack = clip.sourceAssetId;
+            }
+        }
+    }
+
+    if (ctx._source.media != null && ctx._source.media.type != null) {
+        if (ctx._source.media.type == "video") {
+            Map m = new HashMap();
+            m.put("name", "video");
+            ctx._source.deepSearch = m;
+        }
     }
 }
 
-if (ctx._source.media.type == "video") {
-    Map m = new HashMap();
-    m.put("name", "video");
-    ctx._source.deepSearch = m;
-}
