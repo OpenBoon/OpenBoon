@@ -86,6 +86,7 @@ const AssetAsset = ({ isQuickView }) => {
           {isVideo && !hasError ? (
             <AssetVideo
               assetRef={assetRef}
+              assetId={assetId}
               uri={uri}
               mediaType={mediaType}
               length={length}
