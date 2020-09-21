@@ -174,7 +174,6 @@ class ProjectServiceTests : AbstractTest() {
         }
         assertThrows<SystemStorageException> {
             systemStorageService.fetchObject("projects/${getProjectId()}/test2.json", Map::class.java)
-
         }
     }
 
