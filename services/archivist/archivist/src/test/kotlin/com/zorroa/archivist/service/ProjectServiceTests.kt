@@ -1,14 +1,20 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectNameUpdate
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageEntity
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.ProjectTier
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.service.storage.SystemStorageException
 import com.zorroa.zmlp.service.storage.SystemStorageService
+import com.zorroa.archivist.storage.ProjectStorageException
+import com.zorroa.archivist.storage.ProjectStorageService
 
 import org.junit.Test
 import org.junit.jupiter.api.assertThrows
@@ -28,6 +34,9 @@ class ProjectServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var systemStorageService: SystemStorageService
+
+    @Autowired
+    lateinit var projectStorageService: ProjectStorageService
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -164,7 +173,21 @@ class ProjectServiceTests : AbstractTest() {
             systemStorageService.fetchObject("projects/${getProjectId()}/test1.json", Map::class.java)
         }
         assertThrows<SystemStorageException> {
-            systemStorageService.fetchObject("projects/${getProjectId()}/test1.json", Map::class.java)
+            systemStorageService.fetchObject("projects/${getProjectId()}/test2.json", Map::class.java)
+
+        }
+    }
+
+    @Test
+    fun testDeleteProjectStorageFiles() {
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
+        val result = projectStorageService.store(spec)
+        projectService.deleteProjectStorage(project)
+
+        assertEquals(true, result.size > 0)
+        assertThrows<ProjectStorageException> {
+            projectStorageService.fetch(loc)
         }
     }
 }

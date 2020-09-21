@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Visualizer /> should render properly 1`] = `
-.emotion-20 {
+.emotion-18 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-19 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -269,17 +269,11 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-13 {
-  -webkit-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  transform: rotate(180deg);
-}
-
 <div
-  className="emotion-20"
+  className="emotion-18"
 >
   <div
-    className="emotion-19"
+    className="emotion-17"
   >
     <div
       className="emotion-4"
@@ -311,9 +305,7 @@ exports[`<Visualizer /> should render properly 1`] = `
     <div
       className="emotion-9"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-8"
       >
@@ -466,19 +458,6 @@ exports[`<Visualizer /> should render properly 1`] = `
         >
           <svg
             data-file-name="pen.svg"
-            height={20}
-          />
-        </button>
-        <button
-          aria-label="Export"
-          className="emotion-1"
-          onClick={[Function]}
-          title="Export"
-          type="button"
-        >
-          <svg
-            className="emotion-13"
-            data-file-name="upload.svg"
             height={20}
           />
         </button>
@@ -504,7 +483,7 @@ exports[`<Visualizer /> should render properly 1`] = `
 `;
 
 exports[`<Visualizer /> should render selected asset 1`] = `
-.emotion-20 {
+.emotion-18 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -523,7 +502,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   flex-direction: column;
 }
 
-.emotion-19 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -772,17 +751,11 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   color: #808080;
 }
 
-.emotion-13 {
-  -webkit-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  transform: rotate(180deg);
-}
-
 <div
-  className="emotion-20"
+  className="emotion-18"
 >
   <div
-    className="emotion-19"
+    className="emotion-17"
   >
     <div
       className="emotion-4"
@@ -814,9 +787,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
     <div
       className="emotion-9"
     >
-      <VisualizerNavigation
-        itemCount={574}
-      />
+      <VisualizerNavigation />
       <div
         className="emotion-8"
       >
@@ -969,19 +940,6 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         >
           <svg
             data-file-name="pen.svg"
-            height={20}
-          />
-        </button>
-        <button
-          aria-label="Export"
-          className="emotion-1"
-          onClick={[Function]}
-          title="Export"
-          type="button"
-        >
-          <svg
-            className="emotion-13"
-            data-file-name="upload.svg"
             height={20}
           />
         </button>

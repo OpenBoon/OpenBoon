@@ -15,7 +15,7 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
 
   return (
     <>
-      <Menu open="left" button={ButtonActions}>
+      <Menu open="bottom-left" button={ButtonActions}>
         {({ onBlur, onClick }) => (
           <div>
             <ul>

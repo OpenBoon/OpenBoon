@@ -14,6 +14,8 @@ resource "google_container_node_pool" "analyst" {
   node_config {
     preemptible  = true
     machine_type = var.machine-type
+    disk_size_gb = 500
+    disk_type    = "pd-ssd"
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
@@ -87,7 +89,7 @@ resource "kubernetes_deployment" "analyst" {
         volume {
           name = "tmp"
           host_path {
-            path = "/tmp"
+            path = "/mnt/stateful_partition/var/tmp"
           }
         }
         volume {
@@ -130,6 +132,10 @@ resource "kubernetes_deployment" "analyst" {
           env {
             name  = "OFFICER_URL"
             value = var.officer-url
+          }
+          env {
+            name  = "ANALYST_TEMP"
+            value = "/mnt/stateful_partition/var/tmp"
           }
           liveness_probe {
             initial_delay_seconds = 120

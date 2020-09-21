@@ -1,19 +1,35 @@
-import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
+import useSWR from 'swr'
 import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
 import { getQueryString } from '../Fetch/helpers'
+import { cleanup } from '../Filters/helpers'
 
 import AssetsSvg from '../Icons/assets.svg'
 import ChartsSvg from '../Icons/charts.svg'
 
-const VisualizerNavigation = ({ itemCount }) => {
+const FROM = 0
+const SIZE = 100
+
+const VisualizerNavigation = () => {
   const {
     pathname,
     query: { projectId, query },
   } = useRouter()
+
+  const q = cleanup({ query })
+
+  const { data: { count: itemCount = -1 } = {} } = useSWR(
+    `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${FROM}&size=${SIZE}`,
+    {
+      suspense: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      shouldRetryOnError: false,
+    },
+  )
 
   return (
     <div
@@ -101,23 +117,21 @@ const VisualizerNavigation = ({ itemCount }) => {
         </Link>
       </div>
 
-      <div
-        css={{
-          whiteSpace: 'nowrap',
-          padding: spacing.base,
-          paddingLeft: spacing.moderate,
-          paddingRight: spacing.moderate,
-          fontFamily: typography.family.condensed,
-        }}
-      >
-        {itemCount} Assets
-      </div>
+      {itemCount > -1 && (
+        <div
+          css={{
+            whiteSpace: 'nowrap',
+            padding: spacing.base,
+            paddingLeft: spacing.moderate,
+            paddingRight: spacing.moderate,
+            fontFamily: typography.family.condensed,
+          }}
+        >
+          {itemCount} Assets
+        </div>
+      )}
     </div>
   )
-}
-
-VisualizerNavigation.propTypes = {
-  itemCount: PropTypes.number.isRequired,
 }
 
 export default VisualizerNavigation

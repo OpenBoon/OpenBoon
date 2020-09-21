@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TimelineTracks /> should render properly 1`] = `
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-0 {
+  padding: 8px;
+  border-bottom: 1px solid #3b3b3b;
+  background-color: #212121;
+}
+
+.emotion-1 {
+  padding: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+<div
+  className="emotion-2"
+>
+  <div
+    className="emotion-0"
+  >
+    gcp-video-explicit-detection markers
+  </div>
+  <div
+    className="emotion-1"
+  >
+    Ghost markers
+  </div>
+</div>
+`;

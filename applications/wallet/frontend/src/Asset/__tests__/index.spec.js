@@ -8,7 +8,8 @@ import User from '../../User'
 
 import Asset from '..'
 
-jest.mock('../../Metadata', () => 'Metadata')
+jest.mock('../../MetadataCues', () => 'MetadataCues')
+jest.mock('../../Timeline', () => 'Timeline')
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'srL8ob5cTpCJjYoKkqqfa2ciyG425dGi'

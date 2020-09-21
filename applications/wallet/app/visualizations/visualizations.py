@@ -1,7 +1,7 @@
 import copy
 from rest_framework.exceptions import ValidationError
 
-from searches.utils import FieldUtility
+from searches.utils import FieldUtility, FIELD_TYPE_FILTER_MAPPING
 
 
 class BaseVisualization(object):
@@ -19,6 +19,7 @@ class BaseVisualization(object):
         self.errors = []
         self.field_utility = FieldUtility()
         self._field_type = None
+        self._default_filter_type = None
 
     def __eq__(self, other):
         if type(self) == type(other) and self.data == other.data:
@@ -43,6 +44,16 @@ class BaseVisualization(object):
             self._field_type = self.field_utility.get_attribute_field_type(attribute,
                                                                            self.request.client)
         return self._field_type
+
+    @property
+    def default_filter_type(self):
+        """Returns the "default" filter type for this visualizations metadata attribute."""
+        if self._default_filter_type is None:
+            missing_default = FIELD_TYPE_FILTER_MAPPING['object']
+            filters = FIELD_TYPE_FILTER_MAPPING.get(self.field_type, missing_default)
+            self._default_filter_type = filters[0]
+
+        return self._default_filter_type
 
     def is_valid(self, raise_exception=False):
         """Validates that every required key and options key needed was included.
@@ -85,7 +96,7 @@ class BaseVisualization(object):
         """
         results = data['aggregations'][f'{self.agg_prefix}#{self.id}']
         response = {'id': self.id,
-                    'attributeFieldType': self.field_type,
+                    'defaultFilterType': self.default_filter_type,
                     'results': results}
         return response
 
@@ -145,7 +156,7 @@ class FacetVisualization(BaseVisualization):
 class HistogramVisualization(BaseVisualization):
 
     type = 'histogram'
-    required_keys = ['id', 'attribute', 'fieldType']
+    required_keys = ['id', 'attribute']
     required_option_keys = []
     agg_prefix = 'filter#labels.histogram#scores'
 
@@ -195,12 +206,12 @@ class HistogramVisualization(BaseVisualization):
             }
 
     def serialize_response_data(self, data):
-        if self.data['fieldType'] == 'labelConfidence':
+        if self.field_type == 'prediction':
             results = data['aggregations'][f'nested#{self.id}']['filter#labels']['histogram#scores']
         else:
             results = data['aggregations'][f'histogram#{self.id}']
         return {'id': self.id,
-                'attributeFieldType': self.field_type,
+                'defaultFilterType': self.default_filter_type,
                 'results': results}
 
     def _get_labels_from_query(self):

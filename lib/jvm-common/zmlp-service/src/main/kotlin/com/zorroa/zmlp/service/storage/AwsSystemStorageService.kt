@@ -54,6 +54,24 @@ class AwsSystemStorageService constructor(
         }
     }
 
+    override fun <T> fetchObject(path: String, valueType: Class<T>): T {
+        try {
+            val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path.trimStart('/')))
+            return Json.Mapper.readValue(s3obj.objectContent.readBytes(), valueType)
+        } catch (e: Exception) {
+            throw SystemStorageException("failed to fetch object $path", e)
+        }
+    }
+
+    override fun <T> fetchObject(path: String, valueType: TypeReference<T>): T {
+        try {
+            val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path.trimStart('/')))
+            return Json.Mapper.readValue(s3obj.objectContent.readBytes(), valueType)
+        } catch (e: Exception) {
+            throw SystemStorageException("failed to fetch object $path", e)
+        }
+    }
+
     override fun recursiveDelete(path: String) {
         logger.info("Recursive delete path:${properties.bucket}/$path")
 
@@ -74,24 +92,6 @@ class AwsSystemStorageService constructor(
                 LogObject.PROJECT_STORAGE, LogAction.DELETE,
                 "Failed to delete ${ex.message}",
             )
-        }
-    }
-
-    override fun <T> fetchObject(path: String, valueType: Class<T>): T {
-        try {
-            val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path.trimStart('/')))
-            return Json.Mapper.readValue(s3obj.objectContent.readAllBytes(), valueType)
-        } catch (e: Exception) {
-            throw SystemStorageException("failed to fetch object $path", e)
-        }
-    }
-
-    override fun <T> fetchObject(path: String, valueType: TypeReference<T>): T {
-        try {
-            val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path.trimStart('/')))
-            return Json.Mapper.readValue(s3obj.objectContent.readAllBytes(), valueType)
-        } catch (e: Exception) {
-            throw SystemStorageException("failed to fetch object $path", e)
         }
     }
 

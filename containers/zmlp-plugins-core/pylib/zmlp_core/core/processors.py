@@ -23,12 +23,16 @@ class PreCacheSourceFileProcessor(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
         try:
+
+            if asset.get_attr('system.state') == 'Analyzed':
+                self.logger.info('Not precaching source, file is already analyzed')
+                return
+
             self.logger.info('precaching source file')
             path = file_storage.localize_file(asset)
-            # Virtual clip assets don't get a file size or checksum.
-            if not asset.attr_exists('source.filesize') and \
-                    not asset.attr_exists('clip.sourceAssetId'):
+            if not asset.get_attr('source.filesize'):
                 asset.set_attr('source.filesize', os.path.getsize(path))
+            if not asset.get_attr('source.checksum'):
                 asset.set_attr('source.checksum', self.calculate_checksum(path))
 
         except Exception as e:

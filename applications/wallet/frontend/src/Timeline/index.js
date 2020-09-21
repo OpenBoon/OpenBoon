@@ -1,53 +1,31 @@
-import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, spacing, constants } from '../Styles'
 
-import PlaySvg from '../Icons/play.svg'
-import PauseSvg from '../Icons/pause.svg'
-import SeekSvg from '../Icons/seek.svg'
-
 import Button, { VARIANTS } from '../Button'
 
-import { formatPaddedSeconds } from './helpers'
+import TimelineControls from './Controls'
+import TimelineCaptions from './Captions'
+import TimelineRuler from './Ruler'
+import TimelinePlayhead from './Playhead'
+import TimelineAggregate from './Aggregate'
+import TimelineDetections from './Detections'
 
-const Timeline = ({ videoRef }) => {
-  const [, setTick] = useState()
+// TODO: fetch modules from backend
+import detections from './__mocks__/detections'
 
-  const video = videoRef.current
+// TODO: make resizeable height
+const TIMELINE_HEIGHT = 300
 
-  useEffect(() => {
-    /* istanbul ignore next */
-    if (!video) return () => {}
-
-    /* istanbul ignore next */
-    const onDurationchange = (event) => {
-      setTick(event.timeStamp)
-    }
-
-    video.addEventListener('durationchange', onDurationchange)
-
-    return () => video.removeEventListener('durationchange', onDurationchange)
-  }, [video])
-
-  useEffect(() => {
-    /* istanbul ignore next */
-    if (!video) return () => {}
-
-    /* istanbul ignore next */
-    const onTimeupdate = (event) => {
-      setTick(event.timeStamp)
-    }
-
-    video.addEventListener('timeupdate', onTimeupdate)
-
-    return () => video.removeEventListener('timeupdate', onTimeupdate)
-  }, [video])
-
-  if (!video || !video.duration) return null
-
+const Timeline = ({ videoRef, length }) => {
   return (
-    <div>
+    <div
+      css={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: TIMELINE_HEIGHT,
+      }}
+    >
       <div
         css={{
           paddingLeft: spacing.base,
@@ -57,91 +35,50 @@ const Timeline = ({ videoRef }) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          borderBottom: constants.borders.regular.smoke,
         }}
       >
         <div>
-          <Button variant={VARIANTS.ICON}>Timelime</Button>
-        </div>
-
-        <div css={{ display: 'flex' }}>
           <Button
-            aria-label="Previous Second"
             variant={VARIANTS.ICON}
-            onClick={async () => {
-              video.pause()
-              video.currentTime = Math.trunc(video.currentTime) - 1
-            }}
-          >
-            <SeekSvg
-              height={constants.icons.regular}
-              css={{ transform: 'rotate(-180deg)' }}
-            />
-          </Button>
-
-          <Button
-            aria-label={video.paused ? 'Play' : 'Pause'}
-            variant={VARIANTS.ICON}
-            onClick={async () => {
-              if (video.paused) {
-                video.play()
-              } else {
-                video.pause()
-              }
-            }}
-          >
-            {video.paused ? (
-              <PlaySvg height={constants.icons.regular} />
-            ) : (
-              <PauseSvg height={constants.icons.regular} />
-            )}
-          </Button>
-
-          <Button
-            aria-label="Next Second"
-            variant={VARIANTS.ICON}
-            onClick={async () => {
-              video.pause()
-              video.currentTime = Math.trunc(video.currentTime) + 1
-            }}
-          >
-            <SeekSvg height={constants.icons.regular} />
-          </Button>
-
-          <div
-            css={{
+            style={{
               padding: spacing.small,
-              display: 'flex',
-              alignItems: 'center',
+              ':hover, &.focus-visible:focus': {
+                backgroundColor: colors.structure.mattGrey,
+              },
             }}
           >
-            <div
-              css={{
-                backgroundColor: colors.structure.coal,
-                padding: spacing.small,
-                paddingLeft: spacing.base,
-                paddingRight: spacing.base,
-                color: colors.signal.sky.base,
-              }}
-            >
-              {formatPaddedSeconds({ seconds: video.currentTime })}
-            </div>
-            <div
-              css={{
-                padding: spacing.small,
-                paddingLeft: spacing.base,
-                paddingRight: spacing.base,
-              }}
-            >
-              / {formatPaddedSeconds({ seconds: video.duration })}
-            </div>
-          </div>
+            Timelime
+          </Button>
         </div>
 
-        <div>
-          <Button variant={VARIANTS.ICON}>CC</Button>
-        </div>
+        <TimelineControls videoRef={videoRef} length={length} />
+
+        <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
       </div>
-      <div>{/* Insert Expanding Zone here */}</div>
+
+      <div
+        css={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          height: '0%',
+          position: 'relative',
+          marginLeft: constants.timeline.modulesWidth,
+          borderLeft: constants.borders.regular.smoke,
+        }}
+      >
+        <TimelinePlayhead videoRef={videoRef} />
+
+        <TimelineRuler />
+
+        <TimelineAggregate
+          detections={detections}
+          timelineHeight={TIMELINE_HEIGHT}
+        />
+
+        <TimelineDetections videoRef={videoRef} detections={detections} />
+      </div>
     </div>
   )
 }
@@ -154,10 +91,10 @@ Timeline.propTypes = {
       addEventListener: PropTypes.func,
       removeEventListener: PropTypes.func,
       currentTime: PropTypes.number,
-      duration: PropTypes.number,
       paused: PropTypes.bool,
     }),
   }).isRequired,
+  length: PropTypes.number.isRequired,
 }
 
 export default Timeline

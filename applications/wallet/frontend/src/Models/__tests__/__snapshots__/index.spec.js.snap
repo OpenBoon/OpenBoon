@@ -228,7 +228,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-21 {
+  .emotion-16 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -265,7 +265,7 @@ Array [
   font-weight: 400;
 }
 
-.emotion-20 {
+.emotion-15 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -292,45 +292,45 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-18 {
+.emotion-13 {
   height: auto;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 
-.emotion-18 tr {
+.emotion-13 tr {
   background-color: #252525;
 }
 
-.emotion-18 tr:nth-of-type(2n) {
+.emotion-13 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-18 tr:hover {
+.emotion-13 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-18 tr:hover .actions {
+.emotion-13 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-18 tr:hover td {
+.emotion-13 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-18 tr:hover td:first-of-type {
+.emotion-13 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-18 tr:hover td:last-of-type {
+.emotion-13 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-18 td {
-  max-width: calc(100vw / 3);
+.emotion-13 td {
+  max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -341,30 +341,26 @@ Array [
   border-right: 0;
 }
 
-.emotion-18 td:first-of-type {
+.emotion-13 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-18 td:last-of-type {
+.emotion-13 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-8 {
+.emotion-6 {
   cursor: pointer;
 }
 
-.emotion-6:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7 {
-  text-align: center;
-}
-
 <div
-    className="emotion-21"
+    className="emotion-16"
   >
     <div
       className="emotion-1"
@@ -379,13 +375,13 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-20"
+      className="emotion-15"
     >
       <div
-        className="emotion-19"
+        className="emotion-14"
       >
         <table
-          className="emotion-18"
+          className="emotion-13"
         >
           <thead>
             <tr>
@@ -404,16 +400,11 @@ Array [
               >
                 Module
               </th>
-              <th
-                className="emotion-2"
-              >
-                Ready
-              </th>
             </tr>
           </thead>
           <tbody>
             <tr
-              className="emotion-8"
+              className="emotion-6"
               onClick={[Function]}
             >
               <td>
@@ -423,7 +414,7 @@ Array [
                   passHref={true}
                 >
                   <a
-                    className="emotion-6"
+                    className="emotion-5"
                   >
                     console_face_recognition
                   </a>
@@ -435,18 +426,9 @@ Array [
               <td>
                 zvi-console_face_recognition-face-recognition
               </td>
-              <td
-                className="emotion-7"
-              >
-                <svg
-                  color="#73b61c"
-                  data-file-name="checkmark.svg"
-                  height={20}
-                />
-              </td>
             </tr>
             <tr
-              className="emotion-8"
+              className="emotion-6"
               onClick={[Function]}
             >
               <td>
@@ -456,7 +438,7 @@ Array [
                   passHref={true}
                 >
                   <a
-                    className="emotion-6"
+                    className="emotion-5"
                   >
                     console_cat_recognition
                   </a>
@@ -468,18 +450,9 @@ Array [
               <td>
                 zvi-console_cat_recognition-cat-recognition
               </td>
-              <td
-                className="emotion-7"
-              >
-                <svg
-                  color="transparent"
-                  data-file-name="checkmark.svg"
-                  height={20}
-                />
-              </td>
             </tr>
             <tr
-              className="emotion-8"
+              className="emotion-6"
               onClick={[Function]}
             >
               <td>
@@ -489,7 +462,7 @@ Array [
                   passHref={true}
                 >
                   <a
-                    className="emotion-6"
+                    className="emotion-5"
                   >
                     Gundam
                   </a>
@@ -501,18 +474,9 @@ Array [
               <td>
                 Gundam
               </td>
-              <td
-                className="emotion-7"
-              >
-                <svg
-                  color="transparent"
-                  data-file-name="checkmark.svg"
-                  height={20}
-                />
-              </td>
             </tr>
             <tr
-              className="emotion-8"
+              className="emotion-6"
               onClick={[Function]}
             >
               <td>
@@ -522,7 +486,7 @@ Array [
                   passHref={true}
                 >
                   <a
-                    className="emotion-6"
+                    className="emotion-5"
                   >
                     Location
                   </a>
@@ -533,15 +497,6 @@ Array [
               </td>
               <td>
                 Location
-              </td>
-              <td
-                className="emotion-7"
-              >
-                <svg
-                  color="transparent"
-                  data-file-name="checkmark.svg"
-                  height={20}
-                />
               </td>
             </tr>
           </tbody>
@@ -774,7 +729,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-12 {
+  .emotion-11 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -811,14 +766,14 @@ Array [
   font-weight: 400;
 }
 
-.emotion-11 {
+.emotion-10 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-10 {
+.emotion-9 {
   position: absolute;
   top: 0;
   left: 0;
@@ -826,45 +781,45 @@ Array [
   bottom: 0;
 }
 
-.emotion-9 {
+.emotion-8 {
   height: 100%;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 
-.emotion-9 tr {
+.emotion-8 tr {
   background-color: #252525;
 }
 
-.emotion-9 tr:nth-of-type(2n) {
+.emotion-8 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-9 tr:hover {
+.emotion-8 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-9 tr:hover .actions {
+.emotion-8 tr:hover .actions {
   color: #b3b3b3;
 }
 
-.emotion-9 tr:hover td {
+.emotion-8 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-9 tr:hover td:first-of-type {
+.emotion-8 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-9 tr:hover td:last-of-type {
+.emotion-8 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-9 td {
-  max-width: calc(100vw / 3);
+.emotion-8 td {
+  max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -875,11 +830,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-9 td:first-of-type {
+.emotion-8 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-9 td:last-of-type {
+.emotion-8 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -904,12 +859,12 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-7 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-7 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -931,7 +886,7 @@ Array [
   line-height: 19px;
 }
 
-.emotion-6 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -948,7 +903,7 @@ Array [
 }
 
 <div
-    className="emotion-12"
+    className="emotion-11"
   >
     <div
       className="emotion-1"
@@ -963,13 +918,13 @@ Array [
       </h3>
     </div>
     <div
-      className="emotion-11"
+      className="emotion-10"
     >
       <div
-        className="emotion-10"
+        className="emotion-9"
       >
         <table
-          className="emotion-9"
+          className="emotion-8"
         >
           <thead>
             <tr>
@@ -988,25 +943,20 @@ Array [
               >
                 Module
               </th>
-              <th
-                className="emotion-2"
-              >
-                Ready
-              </th>
             </tr>
           </thead>
           <tbody>
             <tr
-              className="emotion-8"
+              className="emotion-7"
             >
               <td
-                colSpan={4}
+                colSpan={3}
               >
                 <div
-                  className="emotion-7"
+                  className="emotion-6"
                 >
                   <div
-                    className="emotion-6"
+                    className="emotion-5"
                   >
                     <svg
                       data-file-name="noJobs.svg"

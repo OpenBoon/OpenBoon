@@ -28,7 +28,17 @@ def test_register_user_invalid_password(api_client):
                                                               'lastName': 'Fakerson',
                                                               'password': 'simple'})
     assert response.status_code == 422
-    assert response.json()['detail'] == ['Password not strong enough']
+    assert response.json()['detail'] == ['Password not strong enough.']
+
+
+def test_register_user_with_invalid_email(api_client):
+    api_client.logout()
+    response = api_client.post(reverse('api-user-register'), {'email': 'test@ise.io"or"2""="2"',
+                                                              'firstName': 'Fakey',
+                                                              'lastName': 'Fakerson',
+                                                              'password': uuid.uuid4()})
+    assert response.status_code == 422
+    assert response.json()['detail'] == ['Email address invalid.']
 
 
 def test_register_invalid_request(api_client):
@@ -45,7 +55,8 @@ def test_register_already_active_user(api_client, user):
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
                                                               'password': uuid.uuid4()})
-    assert response.status_code == 409
+    assert response.status_code == 200
+    assert response.data['detail'] == ['Success, confirmation email has been sent.']
 
 
 def test_re_register_user(api_client, user):
@@ -167,7 +178,7 @@ def test_reset_password(api_client, user, mailoutbox):
     response = api_client.post(reverse('api-password-reset'), {'email': user.email})
     assert response.status_code == 200
     message = mailoutbox[0]
-    assert message.subject == 'Wallet Password Reset'
+    assert message.subject == 'Zorroa ZVI Password Reset'
     search = re.search(r'token=(?P<token>.*)&uid=(?P<id>.*)', message.body)
     token = search.group('token')
     uid = search.group('id')

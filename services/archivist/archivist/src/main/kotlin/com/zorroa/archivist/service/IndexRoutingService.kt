@@ -14,13 +14,18 @@ import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
+import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.repository.IndexClusterDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.repository.ProjectCustomDao
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
+import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
+import com.zorroa.zmlp.util.readValueOrNull
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.open.OpenIndexRequest
@@ -41,6 +46,9 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import redis.clients.jedis.JedisPool
+import redis.clients.jedis.params.SetParams
+import java.lang.IllegalStateException
 import java.net.URI
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -163,6 +171,11 @@ interface IndexRoutingService {
     fun closeIndex(route: IndexRoute): Boolean
 
     /**
+     * Close indexes grouping by clusters
+     */
+    fun batchCloseIndex(routes: List<IndexRoute>)
+
+    /**
      * Reopen the index
      */
     fun openIndex(route: IndexRoute): Boolean
@@ -178,15 +191,35 @@ interface IndexRoutingService {
     fun deleteIndex(route: IndexRoute, force: Boolean = false): Boolean
 
     /**
+     * Delete a batch of IndexRoute grouping by cluster
+     */
+    fun batchDeleteIndex(routes: List<IndexRoute>): Boolean
+
+    /**
      * Close and delete the given index.
      */
     fun closeAndDeleteIndex(route: IndexRoute): Boolean
+
+    /**
+     * Close and delete all Indexes of a Project.
+     */
+    fun closeAndDeleteProjectIndexes(projectUUID: UUID)
 
     /**
      * Sets the index refresh interval. Setting to -1 disables refreshing, this is used
      * to speed up reindexing.
      */
     fun setIndexRefreshInterval(route: IndexRoute, interval: String): Boolean
+
+    /**
+     * Reset the project index route.
+     */
+    fun setIndexRoute(project: Project, route: IndexRoute): Boolean
+
+    /**
+     * Invalidate route cache.
+     */
+    fun invalidateCache()
 }
 
 /**
@@ -204,8 +237,11 @@ class IndexRoutingServiceImpl @Autowired
 constructor(
     val indexRouteDao: IndexRouteDao,
     val indexClusterDao: IndexClusterDao,
+    val systemStorageService: SystemStorageService,
+    val projectCustomDao: ProjectCustomDao,
     val properties: ApplicationProperties,
-    val txEvent: TransactionEventManager
+    val txEvent: TransactionEventManager,
+    val jedis: JedisPool
 ) : IndexRoutingService {
 
     @Autowired
@@ -385,7 +421,18 @@ constructor(
     }
 
     override fun getProjectRestClient(): EsRestClient {
-        val route = indexRouteDao.getProjectRoute()
+        val route = jedis.resource.use { cache ->
+            val projectId = getProjectId().toString()
+
+            Json.Mapper.readValueOrNull(cache.get(projectId)) ?: {
+                val freshCopy = indexRouteDao.getProjectRoute()
+                cache.set(
+                    freshCopy.redisCacheKey(), Json.serializeToString(freshCopy),
+                    SetParams().px(TimeUnit.HOURS.toMillis(1))
+                )
+                freshCopy
+            }()
+        }
         return esClientCache.get(route.esClientCacheKey())
     }
 
@@ -486,6 +533,77 @@ constructor(
         return rsp.isAcknowledged
     }
 
+    override fun batchCloseIndex(routes: List<IndexRoute>) {
+
+        routes.groupBy {
+            it.clusterUrl
+        }
+            .forEach {
+
+                val indexMapNameIndex = it.value.map { i -> i.indexName to i.id }.toMap()
+                val rsp = esClientCache
+                    .getRestHighLevelClient(it.key)
+                    .indices()
+                    .close(
+                        CloseIndexRequest(*indexMapNameIndex.keys.toTypedArray()),
+                        RequestOptions.DEFAULT
+                    )
+
+                if (rsp.isAcknowledged) {
+                    rsp.indices.forEach { indexResult ->
+                        if (!indexResult.hasFailures()) {
+                            indexMapNameIndex[indexResult.index]?.let { uuid ->
+                                indexRouteDao.setState(uuid, IndexRouteState.CLOSED)
+                                logger.event(
+                                    LogObject.INDEX_ROUTE, LogAction.STATE_CHANGE,
+                                    mapOf(
+                                        "indexRouteId" to uuid,
+                                        "indexRouteState" to IndexRouteState.CLOSED.name
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+    }
+
+    override fun batchDeleteIndex(routes: List<IndexRoute>): Boolean {
+
+        routes.groupBy {
+            it.clusterUrl
+        }.forEach {
+
+            val indexMapNameIndex = it.value.map { i -> i.indexName to i.id }.toMap()
+            val rsp = esClientCache
+                .getRestHighLevelClient(it.key)
+                .indices()
+                .delete(
+                    DeleteIndexRequest(*indexMapNameIndex.keys.toTypedArray()),
+                    RequestOptions.DEFAULT
+                )
+
+            if (rsp.isAcknowledged) {
+                it.value.forEach { indexRoute ->
+                    logger.event(
+                        LogObject.INDEX_ROUTE, LogAction.DELETE,
+                        mapOf(
+                            "indexRouteId" to indexRoute.id,
+                            "indexRouteName" to indexRoute.indexName
+                        )
+                    )
+                    indexRouteDao.delete(indexRoute)
+                    deleteIndexBackups(indexRoute)
+                }
+            }
+        }
+        return true
+    }
+
+    private fun deleteIndexBackups(indexRoute: IndexRoute) {
+        systemStorageService.recursiveDelete("index-clusters/${indexRoute.id}")
+    }
+
     override fun openIndex(route: IndexRoute): Boolean {
         val rsp = getClusterRestClient(route).client.indices()
             .open(OpenIndexRequest(route.indexName), RequestOptions.DEFAULT)
@@ -530,6 +648,12 @@ constructor(
         return false
     }
 
+    override fun closeAndDeleteProjectIndexes(projectUUID: UUID) {
+        val indexes = getAll(IndexRouteFilter(projectIds = listOf(projectUUID))).toList()
+        batchCloseIndex(indexes)
+        batchDeleteIndex(indexes)
+    }
+
     override fun closeAndDeleteIndex(route: IndexRoute): Boolean {
         closeIndex(route)
         return deleteIndex(route, force = true)
@@ -542,6 +666,43 @@ constructor(
             client.lowLevelClient.performRequest(req).entity.content
         )
         return list[0]
+    }
+
+    @Transactional
+    override fun setIndexRoute(project: Project, route: IndexRoute): Boolean {
+        if (project.id != route.projectId) {
+            throw IllegalStateException("The index route does not belong to this project")
+        }
+
+        return if (projectCustomDao.updateIndexRoute(project.id, route)) {
+            logger.event(
+                LogObject.PROJECT, LogAction.UPDATE,
+                mapOf(
+                    "projectId" to project.id,
+                    "oldIndexRoute" to project.indexRouteId,
+                    "newIndexRoute" to route.id
+                )
+            )
+
+            openIndex(route)
+
+            // Make sure this comes after the
+            txEvent.afterCommit {
+                jedis.resource.use {
+                    it.del(route.redisCacheKey())
+                }
+            }
+            true
+        } else {
+            logger.warn("Failed to set new index route for project ${project.id}, likely already set to same index.")
+            false
+        }
+    }
+
+    override fun invalidateCache() {
+        jedis.resource.use {
+            it.flushAll()
+        }
     }
 
     companion object {

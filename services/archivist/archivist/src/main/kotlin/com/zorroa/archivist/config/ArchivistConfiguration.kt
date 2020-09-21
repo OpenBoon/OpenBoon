@@ -46,7 +46,18 @@ class ArchivistConfiguration {
         val props = properties()
         val host = props.getString("archivist.redis.host")
         val port = props.getInt("archivist.redis.port")
-        return JedisPool(JedisPoolConfig(), host, port, 10000)
+
+        val config = JedisPoolConfig()
+        config.maxTotal = 128
+        config.maxIdle = 128
+        config.minIdle = 16
+        config.testWhileIdle = true
+        config.minEvictableIdleTimeMillis = 60000L
+        config.timeBetweenEvictionRunsMillis = 3000L
+        config.numTestsPerEvictionRun = 3
+        config.blockWhenExhausted = true
+
+        return JedisPool(config, host, port, 10000)
     }
 
     @Bean

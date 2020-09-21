@@ -93,9 +93,9 @@ describe('<Assets />', () => {
   })
 
   it('should render empty with filter properly', () => {
-    const mockPush = jest.fn()
+    const mockRouterPush = jest.fn()
 
-    require('next/router').__setMockPushFunction(mockPush)
+    require('next/router').__setMockPushFunction(mockRouterPush)
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
       query: {
@@ -125,11 +125,8 @@ describe('<Assets />', () => {
         .props.onClick()
     })
 
-    expect(mockPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: { assetId: ASSET_ID, projectId: PROJECT_ID },
-      },
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?assetId=${ASSET_ID}`,
       `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}`,
     )
   })

@@ -2,7 +2,7 @@ import tempfile
 import os
 from pathlib import Path
 
-from zmlp import Clip, ProjectTier
+from zmlp import ProjectTier
 from zmlpsdk.storage import file_storage
 from zmlpsdk.base import AssetProcessor, ZmlpProcessorException, FileTypes, \
     ZmlpFatalProcessorException
@@ -37,7 +37,6 @@ class VideoImporter(AssetProcessor):
             asset (Asset): Asset to add metadata to.
 
         """
-        has_clip = asset.attr_exists('clip')
         has_media_type = asset.attr_exists('media.type')
 
         # If there is no media type, then we have to
@@ -64,13 +63,6 @@ class VideoImporter(AssetProcessor):
 
             set_resolution_attrs(asset, probe.get('width'), probe.get('height'))
 
-            # Everything has a clip, even if it's the whole movie.
-            # Only add the clip if we didn't have have it.
-            if not has_clip:
-                # Since there is no clip, then set a clip, as all pages
-                # need to have a clip.
-                asset.set_attr('clip', Clip.scene(0.0, probe['length'], 'full'))
-
             # Set this last.
             asset.set_attr('media.type', 'video')
 
@@ -81,14 +73,13 @@ class VideoImporter(AssetProcessor):
             asset (Asset): Asset to create a thumbnail for.
 
         """
-        if not asset.attr_exists('clip.start') or not asset.attr_exists('clip.stop'):
-            raise ZmlpProcessorException('Cannot make image proxy, no clip defined')
+        if not asset.attr_exists('media.length'):
+            raise ZmlpProcessorException('Cannot make image proxy, no length defined')
 
         # Determine the second at which to pull the thumbnail from the video.
         # Takes the screenshot from middle of movie.
         # Cannot use clip.length because it might not be set at this point.
-        seconds = round(
-            max(0, (asset.get_attr('clip.stop') - asset.get_attr('clip.start')) / 2.0), 2)
+        seconds = round(max(0, asset.get_attr('media.length') / 2.0), 2)
         source_path = Path(file_storage.localize_file(asset))
         destination_path = Path(tempfile.mkdtemp('video_ingestor'), asset.id + '.jpg')
 

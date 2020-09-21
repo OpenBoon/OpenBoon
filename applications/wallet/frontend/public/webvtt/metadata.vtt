@@ -1,0 +1,50 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:11.000
+{
+  "module": "gcp-label-detection",
+  "score": 0.91,
+  "label": "cheese"
+}
+
+00:00:00.000 --> 00:00:11.000
+{
+  "module": "gcp-label-detection",
+  "score": 0.82,
+  "label": "pepperoni"
+}
+
+00:00:00.000 --> 00:00:11.000
+{
+  "module": "gcp-object-detection",
+  "score": 0.73,
+  "label": "food"
+}
+
+00:00:01.000 --> 00:00:04.000
+{
+  "module": "gcp-label-detection",
+  "score": 0.64,
+  "label": "hand"
+}
+
+00:00:00.500 --> 00:00:04.500
+{
+  "module": "gcp-object-detection",
+  "score": 0.55,
+  "label": "person"
+}
+
+00:00:02.000 --> 00:00:11.000
+{
+  "module": "gcp-label-detection",
+  "score": 0.46,
+  "label": "cardboard box"
+}
+
+00:00:05.000 --> 00:00:11.000
+{
+  "module": "gcp-label-detection",
+  "score": 0.37,
+  "label": "plastic thingy"
+}

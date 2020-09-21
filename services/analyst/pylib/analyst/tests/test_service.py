@@ -24,6 +24,7 @@ os.environ["ANALYST_DOCKER_PULL"] = "false"
 def test_task(event_type=None, attrs=None, sleep=1):
     task = {
         "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
+        "taskId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
         "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
         "projectId": "81C54046-6452-4669-BD71-719E9D5C2BBF",
         "name": "process_me",
@@ -222,3 +223,23 @@ class TestExecutor(unittest.TestCase):
         self.api.executor.run_task(task)
 
         assert os.path.exists(model_cache_dir)
+
+    @patch("requests.put")
+    def test_start_shutdown_true(self, post_patch):
+        post_patch.return_value = MockResponse(200)
+        assert self.api.executor.start_shutdown()
+
+    @patch("requests.post")
+    def test_start_shutdown_false(self, post_patch):
+        post_patch.return_value = MockResponse(200)
+        task = test_task(sleep=5)
+        thread = threading.Thread(target=self.api.executor.run_task, args=(task,))
+        thread.daemon = True
+        thread.start()
+        time.sleep(1)
+        assert not self.api.executor.start_shutdown()
+
+
+class MockResponse:
+    def __init__(self, status):
+        self.status_code = status

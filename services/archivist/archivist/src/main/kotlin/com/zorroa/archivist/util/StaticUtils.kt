@@ -8,11 +8,13 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.math.BigDecimal
 import java.text.SimpleDateFormat
+import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.Date
 import java.util.UUID
 import java.util.concurrent.ThreadLocalRandom
+import kotlin.math.abs
 
 object StaticUtils {
 
@@ -29,7 +31,10 @@ object StaticUtils {
         mapper.dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z")
     }
 
-    val UUID_REGEXP = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", RegexOption.IGNORE_CASE)
+    val UUID_REGEXP = Regex(
+        "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+        RegexOption.IGNORE_CASE
+    )
 }
 
 private const val SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321"
@@ -72,4 +77,16 @@ fun Double.bd(): BigDecimal = this.toBigDecimal().setScale(3, java.math.Rounding
  */
 fun bbox(x1: Double, y1: Double, x2: Double, y2: Double): List<BigDecimal> {
     return listOf(BigDecimal(x1), BigDecimal(y1), BigDecimal(x2), BigDecimal(y2))
+}
+
+fun formatDuration(seconds: Double): String {
+    val dur = Duration.ofMillis(abs(seconds * 1000).toLong())
+    val positive = String.format(
+        "%02d:%02d:%02d.%03d",
+        dur.seconds / 3600,
+        dur.seconds % 3600 / 60,
+        dur.seconds % 60,
+        dur.nano / 1000000
+    )
+    return if (seconds < 0) "-$positive" else positive
 }

@@ -42,7 +42,8 @@ const AssetLabelingList = ({ models, labels, triggerReload, setError }) => {
       </thead>
       <tbody>
         {labels.map(({ modelId, label }) => {
-          const { name, moduleName } = models.find(({ id }) => id === modelId)
+          const { name = '', moduleName = '' } =
+            models.find(({ id }) => id === modelId) || {}
 
           return (
             <tr

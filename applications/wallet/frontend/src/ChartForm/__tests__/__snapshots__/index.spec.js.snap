@@ -258,6 +258,7 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
                 "Zvi": Object {
                   "tinyProxy": "analysis.zvi.tinyProxy",
                 },
+                "zvi-face-detection": "analysis.zvi-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",
@@ -614,6 +615,7 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
                 "Zvi": Object {
                   "tinyProxy": "analysis.zvi.tinyProxy",
                 },
+                "zvi-face-detection": "analysis.zvi-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",
@@ -970,6 +972,7 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
                 "Zvi": Object {
                   "tinyProxy": "analysis.zvi.tinyProxy",
                 },
+                "zvi-face-detection": "analysis.zvi-face-detection",
               },
               "Clip": Object {
                 "pile": "clip.pile",

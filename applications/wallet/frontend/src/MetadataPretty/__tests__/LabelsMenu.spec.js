@@ -47,25 +47,20 @@ describe('<MetadataPrettyLabelsMenu />', () => {
         .props.onClick()
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: PROJECT_ID,
-          assetId: ASSET_ID,
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'label',
-                attribute: 'labels.zvi-face-recognition',
-                modelId: MODEL_ID,
-                values: { labels: ['Mark Ruffalo'] },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'label',
+          attribute: 'labels.zvi-face-recognition',
+          modelId: MODEL_ID,
+          values: { labels: ['Mark Ruffalo'] },
         },
-      },
-      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}&query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1mYWNlLXJlY29nbml0aW9uIiwibW9kZWxJZCI6IjYyMWJmNzc0LTg5ZDktMTI0NC05NTk2LWQ2ZGY0M2YxZWRlNSIsInZhbHVlcyI6eyJsYWJlbHMiOlsiTWFyayBSdWZmYWxvIl19fV0=`,
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?assetId=${ASSET_ID}&query=${query}`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}&query=${query}`,
     )
   })
 

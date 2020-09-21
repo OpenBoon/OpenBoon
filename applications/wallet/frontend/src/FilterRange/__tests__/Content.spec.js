@@ -168,24 +168,19 @@ describe('<FilterRangeContent />', () => {
         .props.onKeyPress({ target: { value: 50.5555 }, key: 'Enter' })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          assetId: '',
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'range',
-                attribute: 'clip.length',
-                values: { min: 50.56, max: 100 },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'range',
+          attribute: 'clip.length',
+          values: { min: 50.56, max: 100 },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InJhbmdlIiwiYXR0cmlidXRlIjoiY2xpcC5sZW5ndGgiLCJ2YWx1ZXMiOnsibWluIjo1MC41NiwibWF4IjoxMDB9fV0=',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -261,24 +256,19 @@ describe('<FilterRangeContent />', () => {
         .props.onKeyPress({ target: { value: 50.5555 }, key: 'Enter' })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          assetId: '',
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'range',
-                attribute: 'clip.length',
-                values: { min: 1, max: 50.56 },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'range',
+          attribute: 'clip.length',
+          values: { min: 1, max: 50.56 },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InJhbmdlIiwiYXR0cmlidXRlIjoiY2xpcC5sZW5ndGgiLCJ2YWx1ZXMiOnsibWluIjoxLCJtYXgiOjUwLjU2fX1d',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 

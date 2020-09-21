@@ -92,10 +92,6 @@ describe('<FilterDateRangeContent />', () => {
       },
     }
 
-    const mockRouterPush = jest.fn()
-
-    require('next/router').__setMockPushFunction(mockRouterPush)
-
     require('swr').__setMockUseSWRResponse({
       data: {
         results: {
@@ -175,27 +171,22 @@ describe('<FilterDateRangeContent />', () => {
         .props.onBlur({ target: { value: '2020-05-06' } })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          assetId: '',
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'date',
-                attribute: 'system.timeCreated',
-                values: {
-                  min: '2020-05-06T00:00:00.000Z',
-                  max: '2020-06-10T00:00:00.000Z',
-                },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'date',
+          attribute: 'system.timeCreated',
+          values: {
+            min: '2020-05-06T00:00:00.000Z',
+            max: '2020-06-10T00:00:00.000Z',
+          },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImRhdGUiLCJhdHRyaWJ1dGUiOiJzeXN0ZW0udGltZUNyZWF0ZWQiLCJ2YWx1ZXMiOnsibWluIjoiMjAyMC0wNS0wNlQwMDowMDowMC4wMDBaIiwibWF4IjoiMjAyMC0wNi0xMFQwMDowMDowMC4wMDBaIn19XQ==',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -255,27 +246,22 @@ describe('<FilterDateRangeContent />', () => {
         .props.onBlur({ target: { value: '2020-06-08' } })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          assetId: '',
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'date',
-                attribute: 'system.timeCreated',
-                values: {
-                  min: '2020-05-04T00:00:00.000Z',
-                  max: '2020-06-08T00:00:00.000Z',
-                },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'date',
+          attribute: 'system.timeCreated',
+          values: {
+            min: '2020-05-04T00:00:00.000Z',
+            max: '2020-06-08T00:00:00.000Z',
+          },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImRhdGUiLCJhdHRyaWJ1dGUiOiJzeXN0ZW0udGltZUNyZWF0ZWQiLCJ2YWx1ZXMiOnsibWluIjoiMjAyMC0wNS0wNFQwMDowMDowMC4wMDBaIiwibWF4IjoiMjAyMC0wNi0wOFQwMDowMDowMC4wMDBaIn19XQ==',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 

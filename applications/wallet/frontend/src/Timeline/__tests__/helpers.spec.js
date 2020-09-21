@@ -1,4 +1,4 @@
-import { formatPaddedSeconds } from '../helpers'
+import { formatPaddedSeconds, updatePlayheadPosition } from '../helpers'
 
 describe('<Timeline /> helpers', () => {
   describe('formatPaddedSeconds()', () => {
@@ -24,6 +24,33 @@ describe('<Timeline /> helpers', () => {
 
     it('should format seconds', () => {
       expect(formatPaddedSeconds({ seconds: 40 })).toEqual('00:00:40')
+    })
+  })
+
+  describe('updatePlayheadPosition()', () => {
+    it('should do nothing when video or playhead are undefined', () => {
+      expect(
+        updatePlayheadPosition({ video: undefined, playhead: undefined }),
+      ).toBe(null)
+    })
+
+    it('should update the left position', () => {
+      const video = {
+        duration: 10,
+        currentTime: 5,
+      }
+
+      const mockSetProperty = jest.fn()
+
+      const playhead = {
+        style: {
+          setProperty: mockSetProperty,
+        },
+      }
+
+      updatePlayheadPosition({ video, playhead })
+
+      expect(mockSetProperty).toHaveBeenCalledWith('left', 'calc(50% - 1px)')
     })
   })
 })

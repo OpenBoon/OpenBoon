@@ -96,15 +96,19 @@ const Assets = () => {
 
   if (!data) {
     return (
-      <div css={{ flex: 1, margin: spacing.hairline, marginTop: 0 }}>
-        <Loading />
+      <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <VisualizerNavigation />
+
+        <div css={{ flex: 1, margin: spacing.base, marginBottom: 0 }}>
+          <Loading />
+        </div>
       </div>
     )
   }
 
   return (
     <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      {!!itemCount && <VisualizerNavigation itemCount={itemCount} />}
+      <VisualizerNavigation />
 
       <div
         css={{

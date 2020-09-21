@@ -31,12 +31,12 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 0;
-  padding-left: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 0;
+  padding-bottom: 0;
 }
 
 .emotion-3 {
@@ -172,12 +172,12 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 0;
-  padding-left: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 0;
+  padding-bottom: 0;
 }
 
 .emotion-4 {
@@ -345,12 +345,12 @@ exports[`<FiltersMenuSection /> should render properly for an "exists" filter 1`
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 0;
-  padding-left: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 0;
+  padding-bottom: 0;
 }
 
 .emotion-3 {

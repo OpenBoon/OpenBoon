@@ -1,0 +1,379 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TimelineCaptions /> should render a placeholder div in the absence of tracks 1`] = `
+.emotion-0 {
+  width: 68px;
+}
+
+<div
+  className="emotion-0"
+/>
+`;
+
+exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = `
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
+}
+
+.emotion-1 {
+  width: 4px;
+}
+
+.emotion-3 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  padding: 4px;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-2:hover svg,
+.emotion-2.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  background-color: #2e2e2e;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  padding: 4px;
+  color: #73b61c;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-0:hover svg,
+.emotion-0.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
+  color: #73b61c;
+  background-color: #2e2e2e;
+}
+
+<div
+  className="emotion-4"
+>
+  <button
+    aria-label="Disable Captions"
+    className="emotion-0"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      data-file-name="captions.svg"
+      height={20}
+    />
+  </button>
+  <div
+    className="emotion-1"
+  />
+  <div
+    className="emotion-3"
+  >
+    <button
+      aria-label="Toggle Captions Menu"
+      className="actions emotion-2"
+      onBlur={[Function]}
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        data-file-name="gear.svg"
+        height={20}
+      />
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<TimelineCaptions /> should render properly with no track enabled 1`] = `
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  padding: 4px;
+  color: #808080;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-0:hover svg,
+.emotion-0.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-0:hover,
+.emotion-0.focus-visible:focus {
+  color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.emotion-1 {
+  width: 4px;
+}
+
+.emotion-3 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  padding: 4px;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-2:hover svg,
+.emotion-2.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-2:hover,
+.emotion-2.focus-visible:focus {
+  background-color: #2e2e2e;
+}
+
+<div
+  className="emotion-4"
+>
+  <button
+    aria-label="Enable Captions"
+    className="emotion-0"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      data-file-name="captions.svg"
+      height={20}
+    />
+  </button>
+  <div
+    className="emotion-1"
+  />
+  <div
+    className="emotion-3"
+  >
+    <button
+      aria-label="Toggle Captions Menu"
+      className="actions emotion-2"
+      onBlur={[Function]}
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        data-file-name="gear.svg"
+        height={20}
+      />
+    </button>
+  </div>
+</div>
+`;

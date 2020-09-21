@@ -42,15 +42,9 @@ describe('<FilterActions />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
     expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: encodedDisable,
-        },
-      },
+      `/[projectId]/visualizer?query=${encodedDisable}`,
       `/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=${encodedDisable}`,
     )
 
@@ -62,15 +56,9 @@ describe('<FilterActions />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
+
     expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: '',
-        },
-      },
+      `/[projectId]/visualizer`,
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer',
     )
   })

@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types'
 
+import stylesShape from '../Styles/shape'
+
+import { colors, constants, spacing } from '../Styles'
+
 import ChevronSvg from '../Icons/chevron.svg'
 
 import Button, { VARIANTS } from '../Button'
-import { colors, constants, spacing } from '../Styles'
 
 const WIDTH = 200
 
-const MenuButton = ({ onBlur, onClick, legend }) => (
+const MenuButton = ({ onBlur, onClick, legend, style }) => (
   <Button
     aria-label="Toggle Dropdown Menu"
     variant={VARIANTS.NEUTRAL}
@@ -30,6 +33,7 @@ const MenuButton = ({ onBlur, onClick, legend }) => (
       justifyContent: 'space-between',
       marginBottom: spacing.small,
       color: colors.structure.white,
+      ...style,
     }}
     onBlur={onBlur}
     onClick={onClick}
@@ -39,10 +43,15 @@ const MenuButton = ({ onBlur, onClick, legend }) => (
   </Button>
 )
 
+MenuButton.defaultProps = {
+  style: {},
+}
+
 MenuButton.propTypes = {
   onBlur: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   legend: PropTypes.string.isRequired,
+  style: stylesShape,
 }
 
 export default MenuButton

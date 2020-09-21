@@ -112,6 +112,12 @@ class CloudDLPDetectEntities(AssetProcessor):
             asset.add_analysis('gcp-dlp-' + info_type.lower().replace('_', '-'),
                                analysis_dict[info_type])
 
+        # This stores the raw google result in case we need it later.
+        file_storage.assets.store_blob(rsp.SerializeToString(),
+                                       asset,
+                                       'gcp',
+                                       'dlp.dat')
+
     def get_proxy_image(self, asset):
         """
         Choose a proper proxy image effort OCR.
@@ -157,6 +163,23 @@ class CloudDLPDetectEntities(AssetProcessor):
             addr = addr_parser.parse(value)
             if not addr['house'] or not addr['street_name']:
                 value = ''
+
+            # Do some replacements in order to standardize addresses
+            replace = {'.': '',
+                       ',': ' ',
+                       'Po ': 'P.O. ',
+                       'Avenue': 'Ave',
+                       'Street': 'St',
+                       'Place': 'Pl',
+                       'Lane': 'Ln',
+                       'Road': 'Rd'
+                       }
+
+            for key in replace:
+                value = value.replace(key, replace[key])
+
+            # Remove double spaces
+            value = ' '.join(value.split())
 
         elif info_type == 'DATE':
             parsers = [parser for parser in
