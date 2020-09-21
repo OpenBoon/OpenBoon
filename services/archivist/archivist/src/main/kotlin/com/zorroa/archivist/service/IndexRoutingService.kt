@@ -589,9 +589,11 @@ constructor(
                     "newIndexRoute" to route.id
                 )
             )
+
+            openIndex(route)
+
             // Make sure this comes after the
             txEvent.afterCommit {
-
                 jedis.resource.use {
                     it.del(route.redisCacheKey())
                 }
