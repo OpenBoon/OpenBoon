@@ -2,9 +2,12 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
+import { spacing } from '../Styles'
+
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import ButtonGroup from '../Button/Group'
 import Select from '../Select'
 
@@ -36,6 +39,10 @@ const ModelsAddForm = () => {
 
   return (
     <Form>
+      <FlashMessageErrors
+        errors={state.errors}
+        styles={{ marginTop: -spacing.base, paddingBottom: spacing.comfy }}
+      />
       <Select
         label="Model Type"
         options={options}

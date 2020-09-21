@@ -14,14 +14,18 @@ import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSimpleSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
+import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.repository.IndexClusterDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.repository.ProjectCustomDao
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
+import com.zorroa.zmlp.util.readValueOrNull
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.open.OpenIndexRequest
@@ -42,6 +46,9 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import redis.clients.jedis.JedisPool
+import redis.clients.jedis.params.SetParams
+import java.lang.IllegalStateException
 import java.net.URI
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -203,6 +210,16 @@ interface IndexRoutingService {
      * to speed up reindexing.
      */
     fun setIndexRefreshInterval(route: IndexRoute, interval: String): Boolean
+
+    /**
+     * Reset the project index route.
+     */
+    fun setIndexRoute(project: Project, route: IndexRoute): Boolean
+
+    /**
+     * Invalidate route cache.
+     */
+    fun invalidateCache()
 }
 
 /**
@@ -221,8 +238,10 @@ constructor(
     val indexRouteDao: IndexRouteDao,
     val indexClusterDao: IndexClusterDao,
     val systemStorageService: SystemStorageService,
+    val projectCustomDao: ProjectCustomDao,
     val properties: ApplicationProperties,
-    val txEvent: TransactionEventManager
+    val txEvent: TransactionEventManager,
+    val jedis: JedisPool
 ) : IndexRoutingService {
 
     @Autowired
@@ -402,7 +421,18 @@ constructor(
     }
 
     override fun getProjectRestClient(): EsRestClient {
-        val route = indexRouteDao.getProjectRoute()
+        val route = jedis.resource.use { cache ->
+            val projectId = getProjectId().toString()
+
+            Json.Mapper.readValueOrNull(cache.get(projectId)) ?: {
+                val freshCopy = indexRouteDao.getProjectRoute()
+                cache.set(
+                    freshCopy.redisCacheKey(), Json.serializeToString(freshCopy),
+                    SetParams().px(TimeUnit.HOURS.toMillis(1))
+                )
+                freshCopy
+            }()
+        }
         return esClientCache.get(route.esClientCacheKey())
     }
 
@@ -636,6 +666,43 @@ constructor(
             client.lowLevelClient.performRequest(req).entity.content
         )
         return list[0]
+    }
+
+    @Transactional
+    override fun setIndexRoute(project: Project, route: IndexRoute): Boolean {
+        if (project.id != route.projectId) {
+            throw IllegalStateException("The index route does not belong to this project")
+        }
+
+        return if (projectCustomDao.updateIndexRoute(project.id, route)) {
+            logger.event(
+                LogObject.PROJECT, LogAction.UPDATE,
+                mapOf(
+                    "projectId" to project.id,
+                    "oldIndexRoute" to project.indexRouteId,
+                    "newIndexRoute" to route.id
+                )
+            )
+
+            openIndex(route)
+
+            // Make sure this comes after the
+            txEvent.afterCommit {
+                jedis.resource.use {
+                    it.del(route.redisCacheKey())
+                }
+            }
+            true
+        } else {
+            logger.warn("Failed to set new index route for project ${project.id}, likely already set to same index.")
+            false
+        }
+    }
+
+    override fun invalidateCache() {
+        jedis.resource.use {
+            it.flushAll()
+        }
     }
 
     companion object {

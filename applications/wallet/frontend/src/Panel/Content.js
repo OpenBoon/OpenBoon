@@ -63,7 +63,6 @@ const PanelContent = ({
             aria-label="Close Panel"
             variant={VARIANTS.ICON}
             onClick={() => setOpenPanel({ value: '' })}
-            isDisabled={false}
             style={{
               padding: 0,
             }}

@@ -219,6 +219,8 @@ class Executor(object):
         if self.poll_timer_seconds:
             self.start_poll_timer()
 
+        self.disable_poll_timer = False
+
         # Clear out model cache.
         ModelCacheManager.instance.clear_cache_root()
 
@@ -280,6 +282,17 @@ class Executor(object):
             logger.debug("Fetched next task: %s:" % task)
             return task
         return None
+
+    def start_shutdown(self):
+        """
+        Disables the poll time and return true if the current task is None
+
+        Returns:
+            bool: True if there is no current task.
+        """
+        logger.info("Analyst shutting down, disabling poll timer")
+        self.disable_poll_timer = True
+        return self.current_task is None
 
     def send_ping(self):
         """
@@ -346,12 +359,16 @@ class Executor(object):
         # by the archivist.
         while True:
             time.sleep(self.poll_timer_seconds)
+            if self.disable_poll_timer:
+                return
             if not self.first_ping:
                 self.poll_count += 1
                 if self.poll_count % 25 == 0:
                     logger.debug("Polling Archivist for Task, count=%d" % self.poll_count)
                 try:
                     while True:
+                        if self.disable_poll_timer:
+                            return
                         task = self.queue_next_task()
                         if task:
                             self.run_task(task)

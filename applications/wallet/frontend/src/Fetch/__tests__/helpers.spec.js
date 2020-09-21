@@ -1,4 +1,10 @@
-import { fetcher, revalidate, getQueryString, getPathname } from '../helpers'
+import {
+  fetcher,
+  revalidate,
+  getQueryString,
+  getPathname,
+  parseResponse,
+} from '../helpers'
 
 describe('<Fetch /> helpers', () => {
   describe('fetcher()', () => {
@@ -111,6 +117,66 @@ describe('<Fetch /> helpers', () => {
             '/a0952c03-cc04-461c-a367-9ffae8c4199a/visualizer/2SdbPKHfNc0CPKBRAyA_V3oM5Oenpt3B',
         }),
       ).toEqual('/<projectId>/visualizer/<assetId>')
+    })
+  })
+
+  describe('parseResponse()', () => {
+    it('should handle errors properly', async () => {
+      const errors = await parseResponse({
+        response: {
+          json: () =>
+            Promise.resolve({
+              detail: ['Something went wrong. Here are the details.'],
+              name: ['This name is already in use.'],
+            }),
+        },
+      })
+
+      expect(errors).toEqual({
+        global: 'Something went wrong. Here are the details.',
+        name: 'This name is already in use.',
+      })
+    })
+
+    it('should handle global and detail errors properly', async () => {
+      const errors = await parseResponse({
+        response: {
+          json: () =>
+            Promise.resolve({
+              global: ['Something went wrong. Please try again.'],
+              detail: ['Something went wrong. Here are the details.'],
+              name: ['This name is already in use.'],
+            }),
+        },
+      })
+
+      expect(errors).toEqual({
+        global:
+          'Something went wrong. Please try again.\nSomething went wrong. Here are the details.',
+        name: 'This name is already in use.',
+      })
+    })
+
+    it('should handle empty response', async () => {
+      const errors = await parseResponse({
+        response: {
+          json: () => Promise.resolve({}),
+        },
+      })
+
+      expect(errors).toEqual({
+        global: 'Something went wrong. Please try again.',
+      })
+    })
+
+    it('should catch properly', async () => {
+      const errors = await parseResponse({
+        response: {},
+      })
+
+      expect(errors).toEqual({
+        global: 'Something went wrong. Please try again.',
+      })
     })
   })
 })

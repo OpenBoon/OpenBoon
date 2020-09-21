@@ -250,22 +250,14 @@ class ProjectQuotaCounters {
      * Introspect the asset and increment the internal counters.
      */
     fun count(asset: Asset) {
-        val mediaType = asset.getAttr<String>("media.type")
 
-        when (mediaType) {
+        when (asset.getAttr<String>("media.type")) {
             "video" -> {
                 val length = asset.getAttr("media.length", Double::class.java)
                     ?: throw IllegalArgumentException("Video has no length property")
-
-                val clipTrack = asset.getAttr<String>("clip.track") ?: "full"
-
-                if (clipTrack == Clip.TRACK_FULL) {
-                    videoLength += length
-                    videoFileCount += 1
-                    videoClipCount += 1
-                } else {
-                    videoClipCount += 1
-                }
+                videoLength += length
+                videoFileCount += 1
+                videoClipCount += 1
             }
             "document" -> {
                 pageCount += 1
@@ -286,23 +278,16 @@ class ProjectQuotaCounters {
      */
     fun countForDeletion(asset: Asset) {
         val mediaType = asset.getAttr<String>("media.type") ?: FileExtResolver.getType(
-            FileUtils.extension(asset.getAttr<String>("source.path"))
+            FileUtils.extension(asset.getAttr("source.path", String::class.java))
         )
 
         when (mediaType) {
             "video" -> {
                 val length = asset.getAttr("media.length", Double::class.java)
                     ?: throw IllegalArgumentException("Video has no length property")
-
-                val clipTrack = asset.getAttr<String>("clip.track") ?: "full"
-
-                if (clipTrack == Clip.TRACK_FULL) {
-                    deletedVideoLength += length
-                    deletedVideoFileCount += 1
-                    deletedVideoClipCount += 1
-                } else {
-                    deletedVideoClipCount += 1
-                }
+                deletedVideoLength += length
+                deletedVideoFileCount += 1
+                deletedVideoClipCount += 1
             }
             "document" -> {
                 deletedPageCount += 1

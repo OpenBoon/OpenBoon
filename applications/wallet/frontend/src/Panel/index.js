@@ -45,7 +45,6 @@ const Panel = ({ openToThe, children }) => {
                 onClick={() =>
                   setOpenPanel({ value: key === openPanel ? '' : key })
                 }
-                isDisabled={false}
                 style={{
                   flex: 'none',
                   paddingTop: spacing.normal,

@@ -7,8 +7,10 @@ import com.nhaarman.mockito_kotlin.capture
 import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectSize
 import com.zorroa.archivist.domain.ProjectSpec
@@ -32,6 +34,7 @@ import com.zorroa.zmlp.apikey.ZmlpActor
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
+import org.elasticsearch.index.query.QueryBuilders
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
@@ -211,6 +214,7 @@ abstract class AbstractTest {
     }
 
     fun setupElastic() {
+        indexRoutingService.invalidateCache()
         val cluster = indexClusterService.createDefaultCluster()
         jdbc.update("UPDATE index_cluster SET int_state=1 WHERE pk_index_cluster=?", cluster.id)
     }
@@ -269,7 +273,7 @@ abstract class AbstractTest {
 
     fun getTestAssets(subdir: String): List<AssetSpec> {
 
-        val formats = setOf("jpg", "pdf", "m4v", "gif", "tif")
+        val formats = setOf("jpg", "pdf", "m4v", "gif", "tif", "mov")
         val imagePaths = Json.Mapper.readValue<List<String>>(
             File("src/test/resources/test-data/files.json")
         )
@@ -279,13 +283,24 @@ abstract class AbstractTest {
                 null
             } else {
                 val asset = AssetSpec(path)
-                asset.attrs = mapOf(
-                    "media" to mapOf(
-                        "width" to 1024,
-                        "height" to 1024,
-                        "title" to "Picture of $path"
-                    )
+                val media = mapOf(
+                    "width" to 1024,
+                    "height" to 1024,
+                    "title" to "Picture of $path",
+                    "type" to FileExtResolver.getType(FileUtils.extension(path))
                 )
+                asset.attrs = mapOf(
+                    "media" to media
+                )
+                if (indexRoutingService.getProjectRestClient().route.majorVersion == 4) {
+                    asset.attrs = mapOf(
+                        "media" to media,
+                        "clip" to mapOf(
+                            "start" to 100,
+                            "sourceAssetId" to "ABC123"
+                        )
+                    )
+                }
                 asset
             }
         }
@@ -299,6 +314,24 @@ abstract class AbstractTest {
         val req = BatchCreateAssetsRequest(assets)
         assetService.batchCreate(req)
         refreshIndex()
+    }
+
+    fun getSample(size: Int, type: String? = null): List<Asset> {
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newSearchRequest()
+        val query = if (type != null) {
+            QueryBuilders.termQuery("media.type", type)
+        } else {
+            QueryBuilders.matchAllQuery()
+        }
+        req.source().size(size)
+        req.source().query(query)
+
+        val r = rest.client.search(req, RequestOptions.DEFAULT)
+        return r.hits.map {
+            Json.prettyPrint(it.sourceAsMap)
+            Asset(it.id, it.sourceAsMap)
+        }
     }
 
     fun refreshIndex(sleep: Long = 0) {

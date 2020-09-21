@@ -18,15 +18,16 @@ const Menu = ({ button, children, open, style }) => {
   const onClick = () => setMenuOpen(!isMenuOpen)
 
   return (
-    <div ref={container} css={{ position: 'relative' }}>
+    <div ref={container} css={{ position: 'relative', height: '100%' }}>
       {button({ onBlur, onClick, isMenuOpen, style })}
       {isMenuOpen && (
         <div
           css={{
             position: 'absolute',
             zIndex: zIndex.reset,
-            top: '100%',
-            [open === 'left' ? 'right' : 'left']: 0,
+            [open.includes('bottom') ? 'top' : 'bottom']: '100%',
+            right: open.includes('center') ? 0 : 'auto',
+            [open.includes('left') ? 'right' : 'left']: 0,
             backgroundColor: colors.structure.steel,
             borderRadius: constants.borderRadius.small,
             boxShadow: constants.boxShadows.menu,
@@ -54,7 +55,13 @@ Menu.defaultProps = {
 }
 
 Menu.propTypes = {
-  open: PropTypes.oneOf(['left', 'right']).isRequired,
+  open: PropTypes.oneOf([
+    'top-left',
+    'top-right',
+    'bottom-left',
+    'bottom-right',
+    'bottom-center',
+  ]).isRequired,
   button: PropTypes.func.isRequired,
   style: stylesShape,
   children: PropTypes.func.isRequired,

@@ -58,6 +58,7 @@ class VisioDocument(options: RenderRequest, inputStream: InputStream) : Document
             metadata["keywords"] = props.keywords
             metadata["timeCreated"] = convertDate(props.timeCreated?.toDate())
             metadata["length"] = diagram.pages.count
+            metadata["pageNumber"] = page
 
             val dpage = diagram.pages[(page - 1).coerceAtLeast(0)]
             val pageProps = dpage.pageSheet.pageProps

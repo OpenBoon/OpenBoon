@@ -1,6 +1,6 @@
 import { mutate } from 'swr'
 
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, parseResponse } from '../Fetch/helpers'
 
 export const onTrain = async ({
   model,
@@ -29,7 +29,9 @@ export const onTrain = async ({
       },
       false,
     )
-  } catch (error) {
-    setError('Something went wrong. Please try again.')
+  } catch (response) {
+    const { global } = await parseResponse({ response })
+
+    setError(global)
   }
 }

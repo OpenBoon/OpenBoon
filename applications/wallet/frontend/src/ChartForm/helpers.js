@@ -1,10 +1,16 @@
 import { capitalizeFirstLetter } from '../Text/helpers'
 
-export const formatFields = ({ fields, type: t, path = '' }) => {
-  const type = t === 'histogram' ? 'labelConfidence' : t
+export const CHART_TYPE_FIELDS = {
+  range: ['range'],
+  facet: ['facet', 'labelConfidence'],
+  histogram: ['labelConfidence'],
+}
+
+export const formatFields = ({ fields, type, path = '' }) => {
+  const enabledFields = CHART_TYPE_FIELDS[type]
 
   if (Array.isArray(fields)) {
-    if (fields.includes(type)) {
+    if (fields.filter((f) => enabledFields.includes(f)).length > 0) {
       return path
     }
 

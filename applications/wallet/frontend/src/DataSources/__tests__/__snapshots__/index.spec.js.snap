@@ -52,6 +52,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -357,6 +358,7 @@ Array [
 
 .emotion-12 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-11 {
@@ -767,6 +769,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -1065,6 +1068,7 @@ Array [
 
 .emotion-12 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-11 {
@@ -1475,6 +1479,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -1938,6 +1943,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -2243,6 +2249,7 @@ Array [
 
 .emotion-12 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-11 {

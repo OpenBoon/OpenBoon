@@ -114,4 +114,9 @@ class ApiKeyController(
     fun disableProject(@PathVariable projectId: UUID) {
         return apiKeyService.updateEnabledByProject(projectId, false)
     }
+
+    @DeleteMapping("/auth/v1/apikey/_delete_project/{projectId}")
+    fun deleteByProject(@PathVariable projectId: UUID) {
+        return apiKeyService.deleteByProject(projectId)
+    }
 }

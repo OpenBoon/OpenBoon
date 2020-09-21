@@ -83,12 +83,12 @@ exports[`<Policies /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 0;
+  padding-bottom: 16px;
 }
 
 .emotion-9 {
@@ -222,6 +222,10 @@ exports[`<Policies /> should render properly 1`] = `
 }
 
 .emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   padding-top: 32px;
 }
 
@@ -246,6 +250,7 @@ exports[`<Policies /> should render properly 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-2 a {

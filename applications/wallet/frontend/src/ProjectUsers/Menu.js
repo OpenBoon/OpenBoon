@@ -13,64 +13,62 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
   const [isRemoveModalOpen, setRemoveModalOpen] = useState(false)
 
   return (
-    <Menu open="left" button={ButtonActions}>
-      {({ onClick }) => (
-        <div>
-          <ul>
-            <li>
-              <Link
-                href="/[projectId]/users/[userId]/edit"
-                as={`/${projectId}/users/${userId}/edit`}
-                passHref
-              >
-                <Button
-                  variant={VARIANTS.MENU_ITEM}
-                  onClick={onClick}
-                  isDisabled={false}
+    <>
+      <Menu open="bottom-left" button={ButtonActions}>
+        {({ onBlur, onClick }) => (
+          <div>
+            <ul>
+              <li>
+                <Link
+                  href="/[projectId]/users/[userId]/edit"
+                  as={`/${projectId}/users/${userId}/edit`}
+                  passHref
                 >
-                  Edit
-                </Button>
-              </Link>
-            </li>
-            <li>
-              <>
+                  <Button
+                    variant={VARIANTS.MENU_ITEM}
+                    onBlur={onBlur}
+                    onClick={onClick}
+                  >
+                    Edit
+                  </Button>
+                </Link>
+              </li>
+              <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
                   onClick={() => {
+                    onClick()
                     setRemoveModalOpen(true)
                   }}
-                  isDisabled={false}
                 >
                   Remove
                 </Button>
-                {isRemoveModalOpen && (
-                  <Modal
-                    title="Remove User from Project"
-                    message="Are your sure you want to remove this user?"
-                    action="Remove User"
-                    onCancel={() => {
-                      setRemoveModalOpen(false)
-                      onClick()
-                    }}
-                    onConfirm={async () => {
-                      setRemoveModalOpen(false)
-                      onClick()
+              </li>
+            </ul>
+          </div>
+        )}
+      </Menu>
+      {isRemoveModalOpen && (
+        <Modal
+          title="Remove User from Project"
+          message="Are your sure you want to remove this user?"
+          action="Remove User"
+          onCancel={() => {
+            setRemoveModalOpen(false)
+          }}
+          onConfirm={async () => {
+            setRemoveModalOpen(false)
 
-                      await fetcher(
-                        `/api/v1/projects/${projectId}/users/${userId}/`,
-                        { method: 'DELETE' },
-                      )
+            await fetcher(`/api/v1/projects/${projectId}/users/${userId}/`, {
+              method: 'DELETE',
+            })
 
-                      revalidate()
-                    }}
-                  />
-                )}
-              </>
-            </li>
-          </ul>
-        </div>
+            revalidate()
+          }}
+        />
       )}
-    </Menu>
+    </>
   )
 }
 

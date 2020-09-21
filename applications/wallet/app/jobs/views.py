@@ -297,10 +297,10 @@ class TaskViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
         """Retries a task that has failed. Expects a `PUT` with an empty body."""
         response = request.client.put(f'{self.zmlp_root_api_path}{pk}/_retry', {})
         if response.get('success'):
-            return Response({'detail': f'Task {pk} has been successfully retried.'})
+            return Response({'detail': [f'Task {pk} has been successfully retried.']})
         else:
             message = f'Task {pk} failed to be retried. Message from ZMLP: {response}'
-            return Response({'detail': message}, status=500)
+            return Response({'detail': [message]}, status=500)
 
     @action(detail=True, methods=['get'])
     def assets(self, request, project_pk, pk):

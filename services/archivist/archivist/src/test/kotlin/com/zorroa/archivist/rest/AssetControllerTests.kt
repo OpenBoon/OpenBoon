@@ -5,11 +5,15 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
+import com.zorroa.archivist.domain.ClipSpec
 import com.zorroa.archivist.domain.Label
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelType
+import com.zorroa.archivist.domain.TimelineSpec
+import com.zorroa.archivist.domain.TrackSpec
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.service.AssetSearchService
+import com.zorroa.archivist.service.ClipService
 import com.zorroa.archivist.service.ModelService
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.util.bbox
@@ -23,6 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.io.File
+import java.math.BigDecimal
 import kotlin.test.assertEquals
 
 class AssetControllerTests : MockMvcTest() {
@@ -35,6 +40,9 @@ class AssetControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var modelService: ModelService
+
+    @Autowired
+    lateinit var clipService: ClipService
 
     @Test
     fun testBatchCreate() {
@@ -520,6 +528,81 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.job.id", CoreMatchers.anything()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.assetCount", CoreMatchers.equalTo(2)))
+            .andReturn()
+    }
+
+    @Test
+    fun testSearchClips() {
+        addTestAssets("video")
+
+        val asset = getSample(1)[0]
+        val clips = listOf(
+            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
+            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
+        )
+        val track = TrackSpec("cats", clips)
+        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+
+        clipService.createClips(timeline)
+        refreshElastic()
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/assets/${asset.id}/clips/_search")
+                .headers(admin())
+                .content(Json.serialize(timeline))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.hits.total.value", CoreMatchers.equalTo(2)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.hits.hits.length()", CoreMatchers.equalTo(2)))
+            .andReturn()
+    }
+
+    @Test
+    fun testGetWebvttFile() {
+        addTestAssets("video")
+
+        val asset = getSample(1)[0]
+        val clips = listOf(
+            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
+            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
+        )
+        val track = TrackSpec("cats", clips)
+        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+
+        clipService.createClips(timeline)
+        refreshElastic()
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/assets/${asset.id}/clips/all.vtt")
+                .headers(admin())
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().contentType("text/vtt"))
+            .andReturn()
+    }
+
+    @Test
+    fun testGetWebvttFileByTimeline() {
+        addTestAssets("video")
+
+        val asset = getSample(1)[0]
+        val clips = listOf(
+            ClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("cat"), 0.5),
+            ClipSpec(BigDecimal("11.2"), BigDecimal("12.5"), listOf("cat"), 0.5)
+        )
+        val track = TrackSpec("cats", clips)
+        val timeline = TimelineSpec(asset.id, "zvi-label-detection", listOf(track))
+
+        clipService.createClips(timeline)
+        refreshElastic()
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/assets/${asset.id}/clips/timelines/cats.vtt")
+                .headers(admin())
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().contentType("text/vtt"))
             .andReturn()
     }
 }

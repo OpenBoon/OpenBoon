@@ -28,7 +28,7 @@ def test_register_user_invalid_password(api_client):
                                                               'lastName': 'Fakerson',
                                                               'password': 'simple'})
     assert response.status_code == 422
-    assert response.json()['detail'] == 'Password not strong enough'
+    assert response.json()['detail'] == ['Password not strong enough']
 
 
 def test_register_invalid_request(api_client):
@@ -45,7 +45,8 @@ def test_register_already_active_user(api_client, user):
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
                                                               'password': uuid.uuid4()})
-    assert response.status_code == 409
+    assert response.status_code == 200
+    assert response.data['detail'] == ['Success, confirmation email has been sent.']
 
 
 def test_re_register_user(api_client, user):
@@ -135,7 +136,7 @@ def test_confirm_expired_registration_token(api_client, user):
     response = api_client.post(reverse('api-user-confirm'),
                                {'token': token.token, 'userId': user.id})
     assert response.status_code == 403
-    assert response.data['detail'] == 'The activation link has expired. Please sign up again.'
+    assert response.data['detail'] == ['The activation link has expired. Please sign up again.']
 
 
 def test_confirm_missing_registration_token(api_client):
@@ -167,7 +168,7 @@ def test_reset_password(api_client, user, mailoutbox):
     response = api_client.post(reverse('api-password-reset'), {'email': user.email})
     assert response.status_code == 200
     message = mailoutbox[0]
-    assert message.subject == 'Wallet Password Reset'
+    assert message.subject == 'Zorroa ZVI Password Reset'
     search = re.search(r'token=(?P<token>.*)&uid=(?P<id>.*)', message.body)
     token = search.group('token')
     uid = search.group('id')
@@ -379,10 +380,10 @@ def test_api_login_lockout(api_client, user):
 
     for i in range(settings.AXES_FAILURE_LIMIT - 1):
         response = api_client.post(reverse('api-login'), credentials)
-        assert response.json()['detail'] == 'Invalid email and password combination.'
+        assert response.json()['detail'] == ['Invalid email and password combination.']
 
     # Third failed attempt.
     response = api_client.post(reverse('api-login'), credentials)
-    assert response.json()['detail'] == ('This account has been locked due to too many '
+    assert response.json()['detail'] == ['This account has been locked due to too many '
                                          'failed login attempts. Please contact support to '
-                                         'unlock your account.')
+                                         'unlock your account.']

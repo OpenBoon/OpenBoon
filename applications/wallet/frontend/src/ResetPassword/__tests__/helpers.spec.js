@@ -25,7 +25,7 @@ describe('<ResetPassword /> helpers', () => {
 
       expect(mockDispatch).toHaveBeenCalledWith({
         isLoading: false,
-        error: 'Error. Please try again.',
+        errors: { global: 'Something went wrong. Please try again.' },
       })
     })
   })

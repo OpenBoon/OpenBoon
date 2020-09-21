@@ -8,9 +8,6 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
 from google.oauth2 import service_account
 import google.cloud.dlp
 
-CREDS = service_account.Credentials. from_service_account_file(os.path.dirname(__file__)
-                                                               + '/gcp-creds.json')
-
 
 @pytest.mark.skip(reason='dont run automatically')
 class CloudDLPDetectEntitiesTestCase(PluginUnitTestCase):
@@ -22,6 +19,9 @@ class CloudDLPDetectEntitiesTestCase(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'get_native_uri')
     def test_image_text_processor(self, native_patch, localize_patch,
                                   pid_patch, init_patch, proxy_patch):
+
+        CREDS = service_account.Credentials. from_service_account_file(os.path.dirname(__file__)
+                                                                       + '/gcp-creds.json')
         path = zorroa_test_path('images/dlp/87497658.jpg')
         native_patch.return_value = path
         localize_patch.return_value = path

@@ -57,6 +57,7 @@ class PdfDocument(options: RenderRequest, inputStream: InputStream) : com.zorroa
             metadata["description"] = fileInfo.subject
             metadata["timeCreated"] = getCreationDate(documentInfo)
             metadata["length"] = fileInfo.numberOfPages
+            metadata["pageNumber"] = page
 
             val virtPage = page.coerceAtLeast(1)
             val height = fileInfo.getPageHeight(virtPage)

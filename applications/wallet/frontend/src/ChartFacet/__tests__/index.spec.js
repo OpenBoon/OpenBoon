@@ -40,23 +40,19 @@ describe('<ChartFacet />', () => {
       component.root.findByProps({ 'aria-label': 'Add Filter' }).props.onClick()
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer/data-visualization',
-        query: {
-          projectId: PROJECT_ID,
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'facet',
-                attribute: 'location.city',
-                values: {},
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'facet',
+          attribute: 'location.city',
+          values: {},
         },
-      },
-      `/${PROJECT_ID}/visualizer/data-visualization?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibG9jYXRpb24uY2l0eSIsInZhbHVlcyI6e319XQ==`,
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer/data-visualization?query=${query}`,
+      `/${PROJECT_ID}/visualizer/data-visualization?query=${query}`,
     )
   })
 
@@ -107,23 +103,19 @@ describe('<ChartFacet />', () => {
       component.root.findByProps({ 'aria-label': 'Brooklyn' }).props.onClick()
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer/data-visualization',
-        query: {
-          projectId: PROJECT_ID,
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'facet',
-                attribute: 'location.city',
-                values: { facets: ['Brooklyn'] },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'facet',
+          attribute: 'location.city',
+          values: { facets: ['Brooklyn'] },
         },
-      },
-      `/${PROJECT_ID}/visualizer/data-visualization?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibG9jYXRpb24uY2l0eSIsInZhbHVlcyI6eyJmYWNldHMiOlsiQnJvb2tseW4iXX19XQ==`,
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer/data-visualization?query=${query}`,
+      `/${PROJECT_ID}/visualizer/data-visualization?query=${query}`,
     )
   })
 
@@ -163,23 +155,19 @@ describe('<ChartFacet />', () => {
       component.root.findByProps({ 'aria-label': 'Zermatt' }).props.onClick()
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer/data-visualization',
-        query: {
-          projectId: PROJECT_ID,
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'facet',
-                attribute: 'location.city',
-                values: { facets: ['Brooklyn', 'Zermatt'] },
-              },
-            ]),
-          ),
+    const newQuery = btoa(
+      JSON.stringify([
+        {
+          type: 'facet',
+          attribute: 'location.city',
+          values: { facets: ['Brooklyn', 'Zermatt'] },
         },
-      },
-      `/${PROJECT_ID}/visualizer/data-visualization?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibG9jYXRpb24uY2l0eSIsInZhbHVlcyI6eyJmYWNldHMiOlsiQnJvb2tseW4iLCJaZXJtYXR0Il19fV0=`,
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer/data-visualization?query=${newQuery}`,
+      `/${PROJECT_ID}/visualizer/data-visualization?query=${newQuery}`,
     )
   })
 
@@ -297,5 +285,39 @@ describe('<ChartFacet />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should add a histogram chart for a labelConfidence compatible attribute', () => {
+    const mockDispatch = jest.fn()
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer/data-visualization',
+      query: { projectId: PROJECT_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: [{ ...aggregate[0], defaultFilterType: 'labelConfidence' }],
+    })
+
+    const chart = {
+      id: CHART_ID,
+      type: 'facet',
+      attribute: 'system.type',
+    }
+
+    const component = TestRenderer.create(
+      <ChartFacet chart={chart} chartIndex={0} dispatch={mockDispatch} />,
+    )
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Add Histogram Visualization' })
+        .props.onClick()
+    })
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      payload: { attribute: 'system.type', type: 'histogram', values: 10 },
+      type: 'CREATE',
+    })
   })
 })

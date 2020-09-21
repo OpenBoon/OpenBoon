@@ -24,6 +24,7 @@ DATABASES = {
 
 ZMLP_API_URL = 'http://localhost:8080'
 FQDN = os.environ.get('FQDN', 'http://127.0.0.1:8000')
+SECURE_HSTS_SECONDS = 0
 
 # Unsafe password hasher used here to drastically speed up tests.
 PASSWORD_HASHERS = [

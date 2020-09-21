@@ -199,6 +199,10 @@ Array [
   outline: #73b61c;
 }
 
+.emotion-1:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-1:focus {
   color: #000000;
   background-color: #ffffff;
@@ -234,12 +238,12 @@ Array [
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
+  padding-left: 0;
+  padding-bottom: 16px;
 }
 
 .emotion-10 {
@@ -1151,6 +1155,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -1668,6 +1673,10 @@ Array [
   outline: #73b61c;
 }
 
+.emotion-1:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-1:focus {
   color: #000000;
   background-color: #ffffff;
@@ -1703,12 +1712,12 @@ Array [
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
+  padding-left: 0;
+  padding-bottom: 16px;
 }
 
 .emotion-10 {

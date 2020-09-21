@@ -54,7 +54,7 @@ class AssetViewSet(BaseProjectViewSet):
         else:
             # This may never be used as it doesn't seem like the ZMLP endpoint ever
             # returns a non-success response.
-            return Response(data={'detail': 'Unable to delete asset.'},
+            return Response(data={'detail': ['Unable to delete asset.']},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=True, methods=['get'])

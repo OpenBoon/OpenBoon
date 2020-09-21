@@ -3,7 +3,13 @@ import Router, { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 
-import { typography, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
+
+import { useLocalStorageState } from '../LocalStorage/helpers'
+
+import CheckmarkSvg from '../Icons/checkmark.svg'
+import FilterSvg from '../Icons/filter.svg'
+import PenSvg from '../Icons/pen.svg'
 
 import { encode } from '../Filters/helpers'
 import { fetcher, revalidate } from '../Fetch/helpers'
@@ -13,6 +19,7 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import Modal from '../Modal'
 import Tabs from '../Tabs'
+import ModelLabels from '../ModelLabels'
 
 import { onTrain } from './helpers'
 
@@ -28,6 +35,18 @@ const ModelDetails = () => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
+  const [, setPanel] = useLocalStorageState({
+    key: 'leftOpeningPanel',
+  })
+
+  const [, setModelId] = useLocalStorageState({
+    key: `AssetLabelingAdd.${projectId}.modelId`,
+  })
+
+  const [, setLabel] = useLocalStorageState({
+    key: `AssetLabelingAdd.${projectId}.label`,
+  })
+
   const { data: model } = useSWR(
     `/api/v1/projects/${projectId}/models/${modelId}/`,
     {
@@ -35,7 +54,19 @@ const ModelDetails = () => {
     },
   )
 
-  const { name, type, moduleName, ready, runningJobId } = model
+  const {
+    name,
+    type,
+    unappliedChanges,
+    moduleName,
+    runningJobId,
+    modelTypeRestrictions: {
+      requiredLabels,
+      missingLabels,
+      requiredAssetsPerLabel,
+      missingLabelsOnAssets,
+    },
+  } = model
 
   const encodedFilter = encode({
     filters: [
@@ -49,7 +80,7 @@ const ModelDetails = () => {
   })
 
   return (
-    <div>
+    <>
       {runningJobId && (
         <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.PROCESSING}>
@@ -91,13 +122,65 @@ const ModelDetails = () => {
         </li>
       </ul>
 
+      <div
+        css={{
+          paddingTop: spacing.base,
+          fontStyle: typography.style.italic,
+          display: 'flex',
+          flexDirection: 'column',
+          span: {
+            paddingTop: spacing.small,
+          },
+        }}
+      >
+        {!!missingLabels && (
+          <span
+            css={{
+              color: colors.signal.canary.base,
+            }}
+          >
+            {missingLabels} more{' '}
+            {missingLabels === 1 ? 'label is' : 'labels are'} required (min. ={' '}
+            {requiredLabels} unique)
+          </span>
+        )}
+
+        {!!missingLabelsOnAssets && (
+          <span
+            css={{
+              color: colors.signal.canary.base,
+            }}
+          >
+            {missingLabelsOnAssets} more assets need to be labeled (min. ={' '}
+            {requiredAssetsPerLabel} of each label)
+          </span>
+        )}
+
+        {!missingLabels && !missingLabelsOnAssets && (
+          <span
+            css={{
+              display: 'flex',
+              color: colors.signal.grass.base,
+            }}
+          >
+            <CheckmarkSvg
+              height={constants.icons.regular}
+              color={colors.signal.grass.base}
+            />{' '}
+            Ready to train
+          </span>
+        )}
+      </div>
+
       <ButtonGroup>
         <Button
           variant={BUTTON_VARIANTS.SECONDARY}
           onClick={() =>
             onTrain({ model, deploy: false, projectId, modelId, setError })
           }
-          isDisabled={ready}
+          isDisabled={
+            !unappliedChanges || !!missingLabels || !!missingLabelsOnAssets
+          }
         >
           Train
         </Button>
@@ -107,7 +190,9 @@ const ModelDetails = () => {
           onClick={() =>
             onTrain({ model, deploy: true, projectId, modelId, setError })
           }
-          isDisabled={ready}
+          isDisabled={
+            !unappliedChanges || !!missingLabels || !!missingLabelsOnAssets
+          }
         >
           Train &amp; Apply
         </Button>
@@ -117,7 +202,6 @@ const ModelDetails = () => {
           onClick={() => {
             setDeleteModalOpen(true)
           }}
-          isDisabled={false}
         >
           Delete
         </Button>
@@ -183,17 +267,62 @@ const ModelDetails = () => {
             passHref
           >
             <Button
-              variant={BUTTON_VARIANTS.SECONDARY}
+              aria-label="Add Filter in Visualizer"
+              variant={BUTTON_VARIANTS.SECONDARY_SMALL}
               onClick={() => {
                 localStorage.setItem('rightOpeningPanel', '"filters"')
               }}
+              style={{
+                display: 'flex',
+                paddingTop: spacing.moderate,
+                paddingBottom: spacing.moderate,
+              }}
             >
-              Add Label Filter &amp; View in Visualizer
+              <div css={{ display: 'flex', alignItems: 'center' }}>
+                <FilterSvg
+                  height={constants.icons.regular}
+                  css={{ paddingRight: spacing.base }}
+                />
+                Add Filter in Visualizer
+              </div>
+            </Button>
+          </Link>
+
+          <div css={{ width: spacing.normal }} />
+
+          <Link
+            href="/[projectId]/visualizer"
+            as={`/${projectId}/visualizer`}
+            passHref
+          >
+            <Button
+              aria-label="Add More Labels"
+              variant={BUTTON_VARIANTS.SECONDARY_SMALL}
+              onClick={() => {
+                setPanel({ value: 'assetLabeling' })
+                setModelId({ value: modelId })
+                setLabel({ value: '' })
+              }}
+              style={{
+                display: 'flex',
+                paddingTop: spacing.moderate,
+                paddingBottom: spacing.moderate,
+              }}
+            >
+              <div css={{ display: 'flex', alignItems: 'center' }}>
+                <PenSvg
+                  height={constants.icons.regular}
+                  css={{ paddingRight: spacing.base }}
+                />
+                Add More Labels
+              </div>
             </Button>
           </Link>
         </div>
       )}
-    </div>
+
+      {!edit && <ModelLabels requiredAssetsPerLabel={requiredAssetsPerLabel} />}
+    </>
   )
 }
 

@@ -27,7 +27,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
 
     namespace = 'gcp-speech-to-text'
 
-    max_length_sec = 30 * 60
+    max_length_sec = 120 * 60
 
     def __init__(self):
         super(AsyncSpeechToTextProcessor, self).__init__()
@@ -44,11 +44,6 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
 
     def process(self, frame):
         asset = frame.asset
-
-        # Cannot run on clips without transcoding the clip
-        if asset.get_attr('clip.track') != 'full':
-            self.logger.info('Skipping, cannot run processor on clips.')
-            return -1
 
         if asset.get_attr('media.length') > self.max_length_sec:
             self.logger.warning(
@@ -75,11 +70,12 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         analysis.set_attr('language', languages)
         asset.add_analysis(self.namespace, analysis)
 
-        # This stores the raw google result in case we need it later.
-        file_storage.assets.store_blob(audio_result.SerializeToString(),
-                                       asset,
-                                       'gcp',
-                                       'speech-to-text.dat')
+        results = audio_result.SerializeToString()
+        if results:
+            file_storage.assets.store_blob(results,
+                                           asset,
+                                           'gcp',
+                                           'speech-to-text.dat')
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_tries=3, max_time=3600)
     def recognize_speech(self, audio_uri):
@@ -122,7 +118,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         """
         audio_proxy = asset.get_files(category="audio", name="audio_proxy.flac")
         if audio_proxy:
-            return file_storage.assets.get_native_uri(audio_proxy)
+            return file_storage.assets.get_native_uri(audio_proxy[0])
         else:
             audio_fname = tempfile.mkstemp(suffix=".flac", prefix="audio", )[1]
             cmd_line = ['ffmpeg',

@@ -24,7 +24,16 @@ describe('<ModelDetails />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: { ...model, runningJobId: '' },
+      data: {
+        ...model,
+        runningJobId: '',
+        modelTypeRestrictions: {
+          requiredLabels: 2,
+          missingLabels: 0,
+          requiredAssetsPerLabel: 10,
+          missingLabelsOnAssets: 0,
+        },
+      },
     })
 
     const component = TestRenderer.create(<ModelDetails />)
@@ -99,6 +108,54 @@ describe('<ModelDetails />', () => {
     })
   })
 
+  it('should render properly with less than required labels for training', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        runningJobId: '',
+        modelTypeRestrictions: {
+          requiredLabels: 2,
+          missingLabels: 1,
+          requiredAssetsPerLabel: 10,
+          missingLabelsOnAssets: 1,
+        },
+      },
+    })
+
+    const component = TestRenderer.create(<ModelDetails />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with less than required labels for training', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        runningJobId: '',
+        modelTypeRestrictions: {
+          requiredLabels: 2,
+          missingLabels: 2,
+          requiredAssetsPerLabel: 10,
+          missingLabelsOnAssets: 1,
+        },
+      },
+    })
+
+    const component = TestRenderer.create(<ModelDetails />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should handle filter properly', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
@@ -116,11 +173,48 @@ describe('<ModelDetails />', () => {
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Add Label Filter & View in Visualizer' })
+        .findByProps({ 'aria-label': 'Add Filter in Visualizer' })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
     expect(spy).toHaveBeenCalledWith('rightOpeningPanel', '"filters"')
+  })
+
+  it('should handle Add More Labels properly', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        runningJobId: '',
+      },
+    })
+
+    const component = TestRenderer.create(<ModelDetails />)
+
+    // eslint-disable-next-line no-proto
+    const spy = jest.spyOn(localStorage.__proto__, 'setItem')
+
+    await act(async () => {
+      component.root
+        .findByProps({ 'aria-label': 'Add More Labels' })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    expect(spy).toHaveBeenCalledWith('leftOpeningPanel', '"assetLabeling"')
+
+    expect(spy).toHaveBeenCalledWith(
+      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
+      `"${MODEL_ID}"`,
+    )
+
+    expect(spy).toHaveBeenCalledWith(
+      `AssetLabelingAdd.${PROJECT_ID}.label`,
+      `""`,
+    )
   })
 
   it('should handle delete properly', async () => {

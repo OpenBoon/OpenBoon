@@ -11,7 +11,7 @@ from minio.api import Minio
 import zmlp
 from zmlp import StoredFile, ZmlpClient, PipelineMod, Job, Model
 from zmlp.app import ModelApp
-from zmlpsdk import storage, timeline
+from zmlpsdk import storage
 from zmlpsdk.testing import zorroa_test_data, TestAsset
 
 logging.basicConfig(level=logging.DEBUG)
@@ -165,29 +165,6 @@ class TestAssetStorage(TestCase):
 
     def tearDown(self):
         self.fs.cache.clear()
-
-    @patch.object(ZmlpClient, 'put')
-    @patch('requests.put')
-    @patch.object(ZmlpClient, 'post')
-    def test_store_timeline(self, post_patch, req_put_patch, put_patch):
-        post_patch.return_value = {
-            'uri': "http://localhost:9999/foo/bar/signed",
-            'mediaType': "image/jpeg"
-        }
-        req_put_patch.return_value = MockResponse()
-        put_patch.return_value = {
-            'id': '12345',
-            'name': 'foo-timeline.json.gz',
-            'category': 'timeline',
-            'size': 100
-        }
-
-        asset = TestAsset(id='123456')
-        tl = timeline.Timeline('cats')
-        tl.add_track('tabby').add_clip(0, 1)
-        result = self.fs.assets.store_timeline(asset, tl)
-        assert 'foo-timeline.json.gz' == result.name
-        assert 'timeline' == result.category
 
     @patch.object(ZmlpClient, 'put')
     @patch('requests.put')

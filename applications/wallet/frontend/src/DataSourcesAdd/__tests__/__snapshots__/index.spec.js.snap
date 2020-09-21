@@ -130,7 +130,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  "",
   .emotion-141 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -209,6 +208,10 @@ Array [
 .emotion-7:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-7:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-7:focus {
@@ -377,12 +380,12 @@ Array [
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-35 {
@@ -1900,7 +1903,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  "",
   .emotion-159 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1979,6 +1981,10 @@ Array [
 .emotion-7:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-7:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-7:focus {
@@ -2147,12 +2153,12 @@ Array [
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-53 {
@@ -3773,7 +3779,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  "",
   .emotion-153 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -3852,6 +3857,10 @@ Array [
 .emotion-7:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-7:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-7:focus {
@@ -4020,12 +4029,12 @@ Array [
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-47 {
@@ -5613,7 +5622,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  "",
   .emotion-152 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -5692,6 +5700,10 @@ Array [
 .emotion-7:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-7:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-7:focus {
@@ -5860,12 +5872,12 @@ Array [
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-46 {

@@ -8,7 +8,6 @@ import Assets from '../Assets'
 import Filters from '../Filters'
 import Metadata from '../Metadata'
 import FaceLabeling from '../FaceLabeling'
-import Export from '../Export'
 import AssetDelete from '../AssetDelete'
 import FiltersIcon from '../Filters/Icon'
 import AssetLabeling from '../AssetLabeling'
@@ -16,7 +15,6 @@ import { ENVS } from '../Feature'
 
 import InformationSvg from '../Icons/information.svg'
 import FaceDetectionSvg from '../Icons/faceDetection.svg'
-import UploadSvg from '../Icons/upload.svg'
 import TrashSvg from '../Icons/trash.svg'
 import PenSvg from '../Icons/pen.svg'
 
@@ -80,16 +78,6 @@ const VisualizerContent = () => {
               flag: 'asset-labeling',
               envs: [ENVS.QA],
               isBeta: true,
-            },
-            export: {
-              title: 'Export',
-              icon: (
-                <UploadSvg
-                  height={constants.icons.regular}
-                  css={{ transform: `rotate(180deg)` }}
-                />
-              ),
-              content: <Export />,
             },
             delete: {
               title: 'Delete',

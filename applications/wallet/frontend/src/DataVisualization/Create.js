@@ -80,6 +80,7 @@ const DataVisualizationCreate = ({ charts, dispatch, setIsCreating }) => {
               <div
                 css={{
                   display: 'flex',
+                  alignItems: 'center',
                   paddingTop: spacing.normal,
                   paddingBottom: spacing.normal,
                   borderBottom: constants.borders.regular.smoke,

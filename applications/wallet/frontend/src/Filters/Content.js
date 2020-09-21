@@ -21,6 +21,7 @@ import FilterDateRange from '../FilterDateRange'
 import { dispatch, ACTIONS } from './helpers'
 
 const BUTTON_SIZE = 190
+
 const FiltersContent = ({
   pathname,
   projectId,
@@ -63,7 +64,6 @@ const FiltersContent = ({
 
           {hasFilters && (
             <Button
-              aria-label="Clear All Filters"
               variant={VARIANTS.SECONDARY}
               style={{
                 flex: 1,
@@ -79,9 +79,7 @@ const FiltersContent = ({
                 })
               }}
             >
-              <div css={{ height: constants.icons.regular }}>
-                Clear All Filters
-              </div>
+              Clear All Filters
             </Button>
           )}
         </div>

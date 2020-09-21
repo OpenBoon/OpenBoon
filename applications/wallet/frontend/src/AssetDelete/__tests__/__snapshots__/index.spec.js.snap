@@ -321,6 +321,11 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
 }
 
 .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
   padding-bottom: 16px;
 }
 
@@ -345,6 +350,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -369,7 +375,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
         className="emotion-0"
         role="alert"
       >
-        There was an error. Please try again.
+        Something went wrong. Please try again.
       </div>
     </div>
   </div>
@@ -434,6 +440,7 @@ exports[`<AssetDelete /> should render properly when asset is deleted 1`] = `
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {

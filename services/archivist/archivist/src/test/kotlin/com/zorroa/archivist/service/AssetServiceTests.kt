@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.AssetMetrics
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
-import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.Label
 import com.zorroa.archivist.domain.FileExtResolver
 import com.zorroa.archivist.domain.InternalTask
@@ -28,7 +27,7 @@ import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.archivist.util.bd
+import com.zorroa.zmlp.util.Json
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -66,6 +65,32 @@ class AssetServiceTests : AbstractTest() {
 
     override fun requiresElasticSearch(): Boolean {
         return true
+    }
+
+    @Test
+    fun testGetExistingAssetIdImage() {
+        val spec = AssetSpec("gs://cats/large-brown-cat.jpg")
+        assertNull(assetService.getExistingAssetId(spec))
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        assetService.batchCreate(req)
+        val assetId = assetService.getExistingAssetId(spec)
+        assertNotNull(assetId)
+        assertEquals("jvfC_RFfhDKDXgqmgTFdtszLXj15uP-3", assetId)
+    }
+
+    @Test
+    fun testGetExistingAssetIdDoc() {
+        val spec = AssetSpec("gs://cats/large-brown-cat.pdf", page = 5)
+        assertNull(assetService.getExistingAssetId(spec))
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        assetService.batchCreate(req)
+        assertNotNull(assetService.getExistingAssetId(spec))
     }
 
     @Test
@@ -173,11 +198,11 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchCreateAssets_WithClip() {
+    fun testBatchCreateNonPageableWithPage() {
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
             mapOf("system.hello" to "foo"),
-            clip = Clip("page", BigDecimal(3.0), BigDecimal(3.0), "pages")
+            page = 2
         )
 
         val req = BatchCreateAssetsRequest(
@@ -186,11 +211,72 @@ class AssetServiceTests : AbstractTest() {
         val rsp = assetService.batchCreate(req)
         val assets = assetService.getAll(rsp.created)
 
-        assertEquals(3.0, assets[0].getAttr<Double?>("clip.start"))
-        assertEquals(3.0, assets[0].getAttr<Double?>("clip.stop"))
-        assertEquals("page", assets[0].getAttr<String?>("clip.type"))
-        assertEquals("pages", assets[0].getAttr<String?>("clip.track"))
-        assertEquals("bLyf1hG1kgdyYYyrdzXgVdBt0ok", assets[0].getAttr<String?>("clip.pile"))
+        assertNull(assets[0].getAttr("media.pageNumber"))
+        assertNull(assets[0].getAttr("media.pageStack"))
+    }
+
+    @Test
+    fun testBatchCreateVideo() {
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.mp4",
+            mapOf("system.hello" to "foo")
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        val assets = assetService.getAll(rsp.created)
+        Json.prettyPrint(assets)
+    }
+
+    @Test
+    fun testGetExistingAssetIds() {
+        AssetSpec(
+            "gs://cats/large-brown-cat.jpg",
+            mapOf("system.hello" to "foo"),
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec(
+                    "gs://cats/large-brown-cat.jpg",
+                    mapOf("system.hello" to "foo")
+                ),
+                AssetSpec(
+                    "gs://cats/large-brown-dog.png",
+                    mapOf("system.hello" to "foo"),
+                    page = 2
+                )
+            )
+        )
+        val rsp = assetService.batchCreate(req)
+        val assets = assetService.getAll(rsp.created)
+
+        assertEquals(2, assetService.getExistingAssetIds(assets).size)
+        assertEquals(1, assetService.getExistingAssetIds(listOf(assets[0])).size)
+
+        val fake = Asset("abc123")
+        fake.setAttr("source.path", "/foo")
+        assertEquals(0, assetService.getExistingAssetIds(listOf(fake)).size)
+    }
+
+    @Test
+    fun testBatchCreateAssetsWithPage() {
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.pdf",
+            mapOf("system.hello" to "foo"),
+            page = 2
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        val assets = assetService.getAll(rsp.created)
+
+        assertEquals(2, assets[0].getAttr("media.pageNumber"))
+        assertEquals("YJDNyJHRvJV2umLKQTvxiWuvVgBsIS8M", assets[0].getAttr("media.pageStack"))
     }
 
     @Test
@@ -248,7 +334,8 @@ class AssetServiceTests : AbstractTest() {
         projectStorageService.store(spec)
 
         val rsp = assetService.batchDelete(setOf(assetId))
-        Thread.sleep(1000)
+        assertTrue(assetId in rsp.deleted)
+        assertTrue(rsp.failed.isEmpty())
     }
 
     @Test
@@ -487,30 +574,17 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchIndexAssetsWithClip() {
+    fun testBatchIndexAssetWithNoPageOne() {
         val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.gif", page = 2))
         )
         val createRsp = assetService.batchCreate(batchCreate)
         var asset = assetService.getAsset(createRsp.created[0])
-        asset.setAttr("clip", mapOf("type" to "page", "start" to 2f, "stop" to 2f))
 
-        val batchIndex = mapOf(asset.id to asset.document)
-        assetService.batchIndex(batchIndex)
-
-        asset = assetService.getAsset(createRsp.created[0])
-        assertEquals("page", asset.getAttr<String?>("clip.type"))
-        assertEquals(2.0, asset.getAttr<Double?>("clip.start"))
-        assertEquals(2.0, asset.getAttr<Double?>("clip.stop"))
-        assertEquals(1.0, asset.getAttr<Double?>("clip.length"))
-        assertEquals("wU5f6DK02InzXUC600cqI5L8vGM", asset.getAttr<String?>("clip.pile"))
-
-        val clip = asset.getAttr("clip", Clip::class.java)
-        assertEquals("page", clip?.type)
-        assertEquals(2.0, clip?.start?.toDouble())
-        assertEquals(2.0, clip?.stop?.toDouble())
-        assertEquals(1.0, clip?.length?.toDouble())
-        assertEquals("wU5f6DK02InzXUC600cqI5L8vGM", clip?.pile)
+        // When there is no page 1 we figure out what page one's pageStack is.
+        assertEquals("PplipeapbU0tMnFxvZ225hGQKSMvjuyX", asset.getAttr("media.pageStack"))
+        assertEquals(2, asset.getAttr("media.pageNumber"))
+        assertEquals("YDWpJcJgss-FXM6ydFE1BuAent7Q6fUu", asset.id)
     }
 
     /**
@@ -545,54 +619,40 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testDeriveClipFromExistingAsset() {
+    fun testDerivePageFromExistingAsset() {
 
         val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
+            assets = listOf(AssetSpec("gs://cats/cat-info.pdf"))
         )
 
         val sourceAsset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
-
         val spec = AssetSpec(
             "asset:${sourceAsset.id}",
-            clip = Clip("scene", 10.24.bd(), 12.48.bd())
+            page = 5
         )
 
         val newAsset = Asset()
-        val clip = assetService.deriveClip(newAsset, spec)
+        assetService.derivePage(newAsset, spec)
 
-        assertEquals("scene", clip.type)
-        assertEquals(10.24.bd(), clip.start)
-        assertEquals(12.48.bd(), clip.stop)
-        assertEquals(2.24.bd(), clip.length)
-        assertEquals("oZ4r3vjXTNtopNSx_AHN-1WBbQk", clip.pile)
-        assertEquals("As2tgiN-NU29FxKczfB8alEvdAuQqgXr", clip.sourceAssetId)
-        assertEquals(sourceAsset.id, clip.sourceAssetId)
+        assertEquals("5kQEjlZwTrH3ABa9JItyqlakor22j_lF", sourceAsset.id)
+        assertEquals("5kQEjlZwTrH3ABa9JItyqlakor22j_lF", sourceAsset.getAttr("media.pageStack"))
+        assertEquals("5kQEjlZwTrH3ABa9JItyqlakor22j_lF", newAsset.getAttr("media.pageStack"))
+        assertEquals(5, newAsset.getAttr("media.pageNumber"))
     }
 
     @Test
-    fun testDeriveClipFromSelf() {
-
+    fun testDerivePageFromFilePath() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec(
-                    "gs://cats/cat-movie.m4v",
-                    clip = Clip("scene", 10.24.bd(), 12.48.bd())
+                    "gs://cats/cat-stuff.pdf", page = 2
                 )
             )
         )
         val sourceAsset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
-        val clip = sourceAsset.getAttr("clip", Clip::class.java) ?: throw IllegalStateException(
-            "Missing clip"
-        )
-
-        assertEquals("scene", clip.type)
-        assertEquals(10.24, clip.start.toDouble())
-        assertEquals(12.48, clip.stop.toDouble())
-        assertEquals(2.24, clip.length.toDouble())
-        assertEquals("GV0zsbUZLZo_gWuTUHGOLNqQ7io", clip.pile)
-        assertEquals("6UBTOcb7UygVSWstPqYtcgVor_n4HBEY", clip.sourceAssetId)
-        assertEquals(sourceAsset.id, clip.sourceAssetId)
+        assertEquals("EJvwFoCQ-ARK30i3bXJRIfW9gRfOXMn9", sourceAsset.id)
+        assertEquals("X45qGhIXYgiFcqOn0KuQxUG6ojZrRPuM", sourceAsset.getAttr("media.pageStack"))
+        assertEquals(2, sourceAsset.getAttr("media.pageNumber"))
     }
 
     @Test

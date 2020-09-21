@@ -269,6 +269,9 @@ class IndexRoutingServiceTests : AbstractTest() {
         assertTrue(indexRoutingService.openIndex(route))
         state = indexRoutingService.getEsIndexState(route)
         assertEquals("open", state["status"])
+
+        // Try to open already open which should be ok
+        assertTrue(indexRoutingService.openIndex(route))
     }
 
     @Test

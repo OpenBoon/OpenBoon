@@ -128,6 +128,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-4 a {
@@ -172,6 +173,10 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   outline: #73b61c;
 }
 
+.emotion-9:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-9:focus {
   color: #000000;
   background-color: #ffffff;
@@ -197,12 +202,12 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 0;
+  padding-bottom: 16px;
 }
 
 .emotion-38 {
@@ -824,6 +829,10 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   outline: #73b61c;
 }
 
+.emotion-6:hover {
+  border: 2px solid #ffffff;
+}
+
 .emotion-6:focus {
   color: #000000;
   background-color: #ffffff;
@@ -849,12 +858,12 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   display: -ms-flexbox;
   display: flex;
   cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-left: 0;
+  padding-bottom: 16px;
 }
 
 .emotion-35 {

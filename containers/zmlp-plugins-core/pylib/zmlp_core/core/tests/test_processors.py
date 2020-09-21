@@ -61,3 +61,11 @@ class PreCacheSourceFileProcessorTests(PluginUnitTestCase):
         ih.process(frame)
         assert frame.asset.get_attr("source.filesize") == 97221
         assert frame.asset.get_attr("source.checksum") == 1582911032
+
+    def test_process_skip_analyzed(self):
+        frame = Frame(TestAsset(self.TOUCAN))
+        frame.asset.set_attr('system.state', 'Analyzed')
+        ih = self.init_processor(PreCacheSourceFileProcessor())
+        ih.process(frame)
+        assert frame.asset.get_attr("source.filesize") is None
+        assert frame.asset.get_attr("source.checksum") is None

@@ -1,7 +1,8 @@
 import TestRenderer from 'react-test-renderer'
 
-import labels from '../__mocks__/labels'
 import models from '../../Models/__mocks__/models'
+
+import labels from '../__mocks__/labels'
 
 import MetadataPrettyLabelsContent from '../LabelsContent'
 
@@ -21,6 +22,24 @@ describe('<MetadataPrettyLabelsContent />', () => {
         projectId={PROJECT_ID}
         assetId={ASSET_ID}
         models={models.results}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with missing model', () => {
+    require('swr').__setMockUseSWRResponse({ data: labels })
+
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, id: ASSET_ID },
+    })
+
+    const component = TestRenderer.create(
+      <MetadataPrettyLabelsContent
+        projectId={PROJECT_ID}
+        assetId={ASSET_ID}
+        models={[]}
       />,
     )
 

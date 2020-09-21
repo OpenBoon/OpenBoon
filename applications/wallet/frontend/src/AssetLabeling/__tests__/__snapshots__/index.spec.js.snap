@@ -1,5 +1,452 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<AssetLabeling /> should render properly with missing model 1`] = `
+Array [
+  .emotion-0 {
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+  color: #0074f5;
+}
+
+<div
+    className="emotion-0"
+  >
+    TIFF_1MB.tiff
+  </div>,
+  .emotion-6 {
+  border-radius: 2px;
+  background-color: #191919;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-6:hover summary svg {
+  opacity: 1;
+}
+
+.emotion-4 {
+  list-style-type: none;
+  padding: 12px;
+  background-color: #252525;
+}
+
+.emotion-4::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-4:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  color: #808080;
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: -2px;
+  padding-left: 12px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  font-weight: 400;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: -2px;
+  font-weight: 500;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  color: #73b61c;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+<details
+    className="emotion-6"
+    onToggle={[Function]}
+    open={true}
+  >
+    <summary
+      aria-label="Select a model and add a label"
+      className="emotion-4"
+    >
+      <div
+        className="emotion-3"
+      >
+        <svg
+          className="emotion-0"
+          data-file-name="chevron.svg"
+          height={20}
+        />
+        <span
+          className="emotion-1"
+        >
+          Select a model and add a label
+        </span>
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/add"
+          onClick={[Function]}
+        >
+          Create New Model
+        </a>
+      </div>
+    </summary>
+    <div
+      className="emotion-5"
+    >
+      <AssetLabelingAdd
+        assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+        labels={
+          Array [
+            Object {
+              "label": "Space",
+              "modelId": "621bf774-89d9-1244-9596-d6df43f1ede5",
+              "scope": "TRAIN",
+            },
+            Object {
+              "label": "Outside",
+              "modelId": "621bf774-89d9-9596-1244-d6df43f1ede5",
+              "scope": "TRAIN",
+            },
+          ]
+        }
+        models={Array []}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      />
+    </div>
+  </details>,
+  .emotion-17 {
+  border-radius: 2px;
+  background-color: #191919;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-17:hover summary svg {
+  opacity: 1;
+}
+
+.emotion-3 {
+  list-style-type: none;
+  padding: 12px;
+  background-color: #252525;
+}
+
+.emotion-3::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-3:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: -2px;
+  padding-left: 12px;
+}
+
+.emotion-0 {
+  color: #808080;
+}
+
+.emotion-15 {
+  color: #808080;
+}
+
+.emotion-4 th {
+  text-align: left;
+  font-family: Roboto Condensed;
+  font-weight: 400;
+  text-transform: uppercase;
+  padding: 12px;
+  padding-top: 16px;
+  padding-left: 16px;
+}
+
+.emotion-9 {
+  text-align: left;
+  font-family: Roboto Condensed;
+  font-weight: 500;
+}
+
+.emotion-9:nth-last-of-type(2) {
+  width: 100%;
+}
+
+.emotion-9:hover {
+  background-color: #0074f538;
+  color: #ffffff;
+}
+
+.emotion-9:hover svg {
+  color: #ffffff;
+}
+
+.emotion-9 td {
+  border-top: 1px solid #3b3b3b;
+  padding: 12px;
+  padding-left: 16px;
+}
+
+.emotion-5 {
+  white-space: nowrap;
+}
+
+.emotion-6 {
+  width: 100%;
+  word-break: break-all;
+}
+
+.emotion-8 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  color: #808080;
+  padding: 6px;
+  margin: -6px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  color: #ffffff !important;
+}
+
+<details
+    className="emotion-17"
+    onToggle={[Function]}
+    open={false}
+  >
+    <summary
+      aria-label="Asset Labels: 2"
+      className="emotion-3"
+    >
+      <div
+        className="emotion-2"
+      >
+        <svg
+          className="emotion-0"
+          data-file-name="chevron.svg"
+          height={20}
+        />
+        <span
+          className="emotion-1"
+        >
+          Asset Labels: 2
+        </span>
+      </div>
+    </summary>
+    <div
+      className="emotion-16"
+    >
+      
+      <table
+        className="emotion-15"
+      >
+        <thead>
+          <tr
+            className="emotion-4"
+          >
+            <th>
+              Model
+            </th>
+            <th>
+              Label
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            className="emotion-9"
+          >
+            <td
+              className="emotion-5"
+            >
+              
+            </td>
+            <td
+              className="emotion-6"
+            >
+              Space
+            </td>
+            <td>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="actions emotion-7"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="kebab.svg"
+                    height={20}
+                  />
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr
+            className="emotion-9"
+          >
+            <td
+              className="emotion-5"
+            >
+              
+            </td>
+            <td
+              className="emotion-6"
+            >
+              Outside
+            </td>
+            <td>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="actions emotion-7"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="kebab.svg"
+                    height={20}
+                  />
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </details>,
+]
+`;
+
 exports[`<AssetLabeling /> should render properly with no labels 1`] = `
 Array [
   .emotion-0 {
@@ -721,6 +1168,7 @@ Array [
 
 .emotion-8 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-7 {
@@ -1250,6 +1698,7 @@ Array [
 
 .emotion-8 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-7 {

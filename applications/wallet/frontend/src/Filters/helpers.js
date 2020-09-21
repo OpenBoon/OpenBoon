@@ -13,30 +13,77 @@ export const ACTIONS = {
   CLEAR_FILTERS: 'CLEAR_FILTERS',
 }
 
-export const getNewFacets = ({
-  facets,
+export const getNewLabels = ({
+  labels,
   isSelected,
   hasModifier,
-  facetIndex,
+  labelIndex,
   key,
 }) => {
   if (hasModifier && isSelected) {
-    return [...facets.slice(0, facetIndex), ...facets.slice(facetIndex + 1)]
+    return [...labels.slice(0, labelIndex), ...labels.slice(labelIndex + 1)]
   }
 
   if (hasModifier && !isSelected) {
-    return [...facets, key]
+    return [...labels, key]
   }
 
-  if (isSelected && facets.length === 1) {
+  if (isSelected && labels.length === 1) {
     return []
   }
 
-  if (isSelected && facets.length > 1) {
+  if (isSelected && labels.length > 1) {
     return [key]
   }
 
   return [key]
+}
+
+export const getUpdatedFilter = ({
+  type,
+  attribute,
+  modelId,
+  min,
+  max,
+  scope,
+  newLabels,
+}) => {
+  switch (type) {
+    case 'labelConfidence': {
+      const values = newLabels.length > 0 ? { labels: newLabels, min, max } : {}
+
+      return {
+        type,
+        attribute,
+        values,
+      }
+    }
+
+    case 'label': {
+      const values =
+        newLabels.length > 0
+          ? { scope, labels: newLabels }
+          : { scope, labels: [] }
+
+      return {
+        type,
+        attribute,
+        modelId,
+        values,
+      }
+    }
+
+    case 'facet':
+    default: {
+      const values = newLabels.length > 0 ? { facets: newLabels } : {}
+
+      return {
+        type,
+        attribute,
+        values,
+      }
+    }
+  }
 }
 
 export const encode = ({ filters }) => {
@@ -132,10 +179,7 @@ export const dispatch = ({ type, payload }) => {
       const query = encode({ filters: [filter, ...filters] })
 
       Router.push(
-        {
-          pathname,
-          query: { projectId, assetId, query },
-        },
+        `${pathname}${getQueryString({ assetId, query })}`,
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
           assetId,
           query,
@@ -156,10 +200,7 @@ export const dispatch = ({ type, payload }) => {
       const query = encode({ filters: [...newFilters, ...filters] })
 
       Router.push(
-        {
-          pathname,
-          query: { projectId, assetId, query },
-        },
+        `${pathname}${getQueryString({ assetId, query })}`,
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
           assetId,
           query,
@@ -188,10 +229,7 @@ export const dispatch = ({ type, payload }) => {
       })
 
       Router.push(
-        {
-          pathname,
-          query: { projectId, assetId, query },
-        },
+        `${pathname}${getQueryString({ assetId, query })}`,
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
           assetId,
           query,
@@ -212,10 +250,7 @@ export const dispatch = ({ type, payload }) => {
       const query = newFilters.length > 0 ? encode({ filters: newFilters }) : ''
 
       Router.push(
-        {
-          pathname,
-          query: { projectId, assetId, query },
-        },
+        `${pathname}${getQueryString({ assetId, query })}`,
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
           assetId,
           query,
@@ -257,14 +292,7 @@ export const dispatch = ({ type, payload }) => {
       const query = encode({ filters: combinedFilters })
 
       Router.push(
-        {
-          pathname: '/[projectId]/visualizer',
-          query: {
-            projectId,
-            assetId,
-            query,
-          },
-        },
+        `/[projectId]/visualizer${getQueryString({ assetId, query })}`,
         `/${projectId}/visualizer${getQueryString({
           assetId,
           query,
@@ -278,10 +306,7 @@ export const dispatch = ({ type, payload }) => {
       const { pathname, projectId, assetId } = payload
 
       Router.push(
-        {
-          pathname,
-          query: { projectId, assetId },
-        },
+        `${pathname}${getQueryString({ assetId })}`,
         `${pathname.replace('[projectId]', projectId)}${getQueryString({
           assetId,
         })}`,
