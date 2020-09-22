@@ -5,11 +5,30 @@ import org.slf4j.LoggerFactory
 
 object Config {
 
+    open class BucketConfiguration(
+        val url: String,
+        val name: String,
+        val accessKey: String?,
+        val secretKey: String?,
+        val credentialsPath: String?
+    )
+
     class MinioBucketConfiguration(
-        val url: String = System.getenv("ZMLP_STORAGE_PIPELINE_URL") ?: "http://localhost:9000",
-        val name: String = System.getenv("ZMLP_STORAGE_PIPELINE_BUCKET") ?: "pipeline-storage",
-        val accessKey: String = System.getenv("ZMLP_STORAGE_PIPELINE_ACCESSKEY") ?: "qwerty123",
-        val secretKey: String = System.getenv("ZMLP_STORAGE_PIPELINE_SECRETKEY") ?: "123qwerty"
+    ) : BucketConfiguration(
+        System.getenv("ZMLP_STORAGE_PIPELINE_URL") ?: "http://localhost:9000",
+        System.getenv("ZMLP_STORAGE_PIPELINE_BUCKET") ?: "pipeline-storage",
+        System.getenv("ZMLP_STORAGE_PIPELINE_ACCESSKEY") ?: "qwerty123",
+        System.getenv("ZMLP_STORAGE_PIPELINE_SECRETKEY") ?: "123qwerty",
+        null
+    )
+
+    class GcsBucketConfiguration(
+    ) : BucketConfiguration(
+        System.getenv("ZMLP_STORAGE_PIPELINE_URL") ?: "http://localhost:9000",
+        System.getenv("ZMLP_STORAGE_PIPELINE_BUCKET") ?: "pipeline-storage",
+        null,
+        null,
+        System.getenv("CREDENTIALS_PATH") ?: "/secrets/gcs/credentials.json"
     )
 
     class OfficerConfiguration(
@@ -20,11 +39,17 @@ object Config {
     val logger: Logger = LoggerFactory.getLogger(Config::class.java)
 
     val officer: OfficerConfiguration
-    val minioBucket: MinioBucketConfiguration
+    val bucket: BucketConfiguration
+    val storageClient = System.getenv("STORAGE_CLIENT") ?: "minio"
 
     init {
-        minioBucket = MinioBucketConfiguration()
         officer = OfficerConfiguration()
+
+        bucket = when (storageClient) {
+            "minio" -> MinioBucketConfiguration()
+            "gcs" -> GcsBucketConfiguration()
+            else -> MinioBucketConfiguration()
+        }
     }
 
     fun logSystemConfiguration() {

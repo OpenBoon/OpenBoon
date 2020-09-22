@@ -50,7 +50,7 @@ class IOHandler(val options: RenderRequest) {
     }
 
     fun getOutputUri(): String {
-        return "zmlp://${Config.minioBucket.name}/$PREFIX/${options.outputDir}"
+        return "zmlp://${Config.bucket.name}/$PREFIX/${options.outputDir}"
     }
 
     fun getMetadata(page: Int = 1): InputStream {
