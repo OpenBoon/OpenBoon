@@ -5,7 +5,10 @@ import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import {
+  useLocalStorageState,
+  useLocalStorageReducer,
+} from '../LocalStorage/helpers'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import FilterSvg from '../Icons/filter.svg'
@@ -23,6 +26,8 @@ import ModelLabels from '../ModelLabels'
 
 import { onTrain } from './helpers'
 
+const reducer = (state, action) => ({ ...state, ...action })
+
 const LINE_HEIGHT = '23px'
 
 const ModelDetails = () => {
@@ -39,12 +44,9 @@ const ModelDetails = () => {
     key: 'leftOpeningPanel',
   })
 
-  const [, setModelId] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.modelId`,
-  })
-
-  const [, setLabel] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.label`,
+  const [, localDispatch] = useLocalStorageReducer({
+    key: `AssetLabelingAdd.${projectId}`,
+    reducer,
   })
 
   const { data: model } = useSWR(
@@ -300,8 +302,7 @@ const ModelDetails = () => {
               variant={BUTTON_VARIANTS.SECONDARY_SMALL}
               onClick={() => {
                 setPanel({ value: 'assetLabeling' })
-                setModelId({ value: modelId })
-                setLabel({ value: '' })
+                localDispatch({ modelId, label: '' })
               }}
               style={{
                 display: 'flex',

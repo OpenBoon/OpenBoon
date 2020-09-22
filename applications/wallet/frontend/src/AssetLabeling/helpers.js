@@ -2,8 +2,8 @@ import { mutate } from 'swr'
 
 import { fetcher, revalidate, parseResponse } from '../Fetch/helpers'
 
-export const getOptions = async ({ projectId, modelId }) => {
-  if (!modelId) {
+export const getOptions = async ({ projectId, modelId, isFirstLabel }) => {
+  if (!modelId || isFirstLabel) {
     return []
   }
 

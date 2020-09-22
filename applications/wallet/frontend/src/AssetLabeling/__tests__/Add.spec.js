@@ -112,12 +112,8 @@ describe('<AssetLabelingAdd />', () => {
 
   it('should render with localStorage and update a label', async () => {
     localStorage.setItem(
-      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
-      `"${MODEL_ID}"`,
-    )
-    localStorage.setItem(
-      `AssetLabelingAdd.${PROJECT_ID}.label`,
-      `"Existing localStorage"`,
+      `AssetLabelingAdd.${PROJECT_ID}`,
+      `{"modelId":"${MODEL_ID}","label":"Existing localStorage", "isFirstLabel":false}`,
     )
 
     const component = TestRenderer.create(
@@ -135,13 +131,6 @@ describe('<AssetLabelingAdd />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
-
-    // Select Model
-    act(() => {
-      component.root
-        .findByProps({ label: 'Model' })
-        .props.onChange({ value: MODEL_ID })
-    })
 
     // Input Label
     act(() => {

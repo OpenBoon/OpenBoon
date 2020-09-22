@@ -6,7 +6,7 @@ import { mutate } from 'swr'
 
 import { colors } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorageReducer } from '../LocalStorage/helpers'
 import { ACTIONS, dispatch } from '../Filters/helpers'
 import { fetcher } from '../Fetch/helpers'
 
@@ -14,6 +14,8 @@ import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
+
+const reducer = (state, action) => ({ ...state, ...action })
 
 const AssetLabelingMenu = ({
   label,
@@ -30,11 +32,9 @@ const AssetLabelingMenu = ({
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const [, setLocalModelId] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.modelId`,
-  })
-  const [, setLocalLabel] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.label`,
+  const [, localDispatch] = useLocalStorageReducer({
+    key: `AssetLabelingAdd.${projectId}`,
+    reducer,
   })
 
   return (
@@ -93,8 +93,7 @@ const AssetLabelingMenu = ({
                 variant={VARIANTS.MENU_ITEM}
                 onBlur={onBlur}
                 onClick={() => {
-                  setLocalModelId({ value: modelId })
-                  setLocalLabel({ value: label })
+                  localDispatch({ modelId, label })
 
                   triggerReload()
 

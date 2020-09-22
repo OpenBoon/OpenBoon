@@ -6,7 +6,10 @@ import Link from 'next/link'
 
 import { spacing } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import {
+  useLocalStorageState,
+  useLocalStorageReducer,
+} from '../LocalStorage/helpers'
 
 import PageTitle from '../PageTitle'
 import BetaBadge from '../BetaBadge'
@@ -17,6 +20,8 @@ import Table, { ROLES } from '../Table'
 import ModelsEmpty from './Empty'
 import ModelsRow from './Row'
 
+const reducer = (state, action) => ({ ...state, ...action })
+
 const Models = () => {
   const {
     query: { projectId, action, modelId },
@@ -26,12 +31,9 @@ const Models = () => {
     key: 'leftOpeningPanel',
   })
 
-  const [, setModelId] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.modelId`,
-  })
-
-  const [, setLabel] = useLocalStorageState({
-    key: `AssetLabelingAdd.${projectId}.label`,
+  const [, localDispatch] = useLocalStorageReducer({
+    key: `AssetLabelingAdd.${projectId}`,
+    reducer,
   })
 
   return (
@@ -58,8 +60,7 @@ const Models = () => {
                 onClick={() => {
                   setPanel({ value: 'assetLabeling' })
                   if (modelId) {
-                    setModelId({ value: modelId })
-                    setLabel({ value: '' })
+                    localDispatch({ modelId, label: '' })
                   }
                 }}
               >

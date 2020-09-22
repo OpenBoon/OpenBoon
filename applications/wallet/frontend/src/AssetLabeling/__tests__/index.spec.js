@@ -95,12 +95,8 @@ describe('<AssetLabeling />', () => {
     })
 
     expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}.modelId`,
-      `"${MODEL_ID}"`,
-    )
-    expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}.label`,
-      '"Space"',
+      `AssetLabelingAdd.${PROJECT_ID}`,
+      `{"modelId":"${MODEL_ID}","label":"Space"}`,
     )
 
     spy.mockClear()
