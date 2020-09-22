@@ -1,18 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Timeline /> should render properly 1`] = `
-.emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  height: 300px;
+exports[`<Timeline /> should open the Timeline panel 1`] = `
+.emotion-0 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: row-resize;
+  height: 4px;
+  margin-top: -2px;
+  margin-bottom: -2px;
+  z-index: 10;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-left: 8px;
   padding-right: 8px;
   background-color: #252525;
@@ -32,7 +33,7 @@ exports[`<Timeline /> should render properly 1`] = `
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-0 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -66,32 +67,43 @@ exports[`<Timeline /> should render properly 1`] = `
   padding: 4px;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-0:hover svg,
-.emotion-0.focus-visible:focus svg {
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   background-color: #2e2e2e;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 300px;
 }
 
 .emotion-3 {
@@ -111,25 +123,862 @@ exports[`<Timeline /> should render properly 1`] = `
   border-left: 1px solid #3b3b3b;
 }
 
-.emotion-2 {
-  height: 44px;
+.emotion-5 {
+  height: 300px;
 }
 
 <div
-  className="emotion-4"
+  style={
+    Object {
+      "alignItems": "stretch",
+      "display": "flex",
+      "flexDirection": "column",
+      "flexWrap": "nowrap",
+    }
+  }
 >
   <div
-    className="emotion-1"
+    aria-label="Resize vertically"
+    className="emotion-0"
+    onMouseDown={[Function]}
+  />
+  <div
+    className="emotion-2"
   >
-    <div>
-      <button
-        className="emotion-0"
-        onClick={[Function]}
-        type="button"
+    <button
+      aria-label="Close Timeline"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      Timeline
+    </button>
+    <TimelineControls
+      length={18}
+      videoRef={
+        Object {
+          "current": Object {
+            "addEventListener": [Function],
+            "currentTime": 0,
+            "duration": 18,
+            "pause": [Function],
+            "paused": true,
+            "play": [Function],
+            "removeEventListener": [Function],
+          },
+        }
+      }
+    />
+    <TimelineCaptions
+      initialTrackIndex={-1}
+      videoRef={
+        Object {
+          "current": Object {
+            "addEventListener": [Function],
+            "currentTime": 0,
+            "duration": 18,
+            "pause": [Function],
+            "paused": true,
+            "play": [Function],
+            "removeEventListener": [Function],
+          },
+        }
+      }
+    />
+  </div>
+  <div
+    className="emotion-5"
+  >
+    <div
+      className="emotion-4"
+    >
+      <div
+        className="emotion-3"
       >
-        Timelime
-      </button>
+        <TimelinePlayhead
+          videoRef={
+            Object {
+              "current": Object {
+                "addEventListener": [Function],
+                "currentTime": 0,
+                "duration": 18,
+                "pause": [Function],
+                "paused": true,
+                "play": [Function],
+                "removeEventListener": [Function],
+              },
+            }
+          }
+        />
+        <TimelineRuler />
+        <TimelineAggregate
+          detections={
+            Array [
+              Object {
+                "name": "gcp-video-explicit-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Gh st",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Busters",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-label-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Label 1",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Label 2",
+                  },
+                  Object {
+                    "count": 9,
+                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-logo-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 1,
+                    "label": "Logo 1",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Logo 2",
+                  },
+                  Object {
+                    "count": 5,
+                    "label": "Logo 3",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-object-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Object 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 2",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 3",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-text-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 2,
+                    "label": "Text 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Text 2",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Text 3",
+                  },
+                  Object {
+                    "count": 8,
+                    "label": "Text 4",
+                  },
+                ],
+              },
+            ]
+          }
+          timelineHeight={300}
+        />
+        <TimelineDetections
+          detections={
+            Array [
+              Object {
+                "name": "gcp-video-explicit-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Gh st",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Busters",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-label-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Label 1",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Label 2",
+                  },
+                  Object {
+                    "count": 9,
+                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-logo-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 1,
+                    "label": "Logo 1",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Logo 2",
+                  },
+                  Object {
+                    "count": 5,
+                    "label": "Logo 3",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-object-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Object 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 2",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 3",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-text-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 2,
+                    "label": "Text 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Text 2",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Text 3",
+                  },
+                  Object {
+                    "count": 8,
+                    "label": "Text 4",
+                  },
+                ],
+              },
+            ]
+          }
+          videoRef={
+            Object {
+              "current": Object {
+                "addEventListener": [Function],
+                "currentTime": 0,
+                "duration": 18,
+                "pause": [Function],
+                "paused": true,
+                "play": [Function],
+                "removeEventListener": [Function],
+              },
+            }
+          }
+        />
+      </div>
     </div>
+  </div>
+</div>
+`;
+
+exports[`<Timeline /> should open the Timeline panel 2`] = `
+.emotion-0 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: row-resize;
+  height: 4px;
+  margin-top: -2px;
+  margin-bottom: -2px;
+  z-index: 10;
+}
+
+.emotion-2 {
+  padding-left: 8px;
+  padding-right: 8px;
+  background-color: #252525;
+  color: #808080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  padding: 4px;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  background-color: #2e2e2e;
+}
+
+.emotion-5 {
+  height: 0;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 300px;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 0%;
+  position: relative;
+  margin-left: 200px;
+  border-left: 1px solid #3b3b3b;
+}
+
+<div
+  style={
+    Object {
+      "alignItems": "stretch",
+      "display": "flex",
+      "flexDirection": "column",
+      "flexWrap": "nowrap",
+    }
+  }
+>
+  <div
+    aria-label="Resize vertically"
+    className="emotion-0"
+    onMouseDown={[Function]}
+  />
+  <div
+    className="emotion-2"
+  >
+    <button
+      aria-label="Open Timeline"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      Timeline
+    </button>
+    <TimelineControls
+      length={18}
+      videoRef={
+        Object {
+          "current": Object {
+            "addEventListener": [Function],
+            "currentTime": 0,
+            "duration": 18,
+            "pause": [Function],
+            "paused": true,
+            "play": [Function],
+            "removeEventListener": [Function],
+          },
+        }
+      }
+    />
+    <TimelineCaptions
+      initialTrackIndex={-1}
+      videoRef={
+        Object {
+          "current": Object {
+            "addEventListener": [Function],
+            "currentTime": 0,
+            "duration": 18,
+            "pause": [Function],
+            "paused": true,
+            "play": [Function],
+            "removeEventListener": [Function],
+          },
+        }
+      }
+    />
+  </div>
+  <div
+    className="emotion-5"
+  >
+    <div
+      className="emotion-4"
+    >
+      <div
+        className="emotion-3"
+      >
+        <TimelinePlayhead
+          videoRef={
+            Object {
+              "current": Object {
+                "addEventListener": [Function],
+                "currentTime": 0,
+                "duration": 18,
+                "pause": [Function],
+                "paused": true,
+                "play": [Function],
+                "removeEventListener": [Function],
+              },
+            }
+          }
+        />
+        <TimelineRuler />
+        <TimelineAggregate
+          detections={
+            Array [
+              Object {
+                "name": "gcp-video-explicit-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Gh st",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Busters",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-label-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Label 1",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Label 2",
+                  },
+                  Object {
+                    "count": 9,
+                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-logo-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 1,
+                    "label": "Logo 1",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Logo 2",
+                  },
+                  Object {
+                    "count": 5,
+                    "label": "Logo 3",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-object-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Object 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 2",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 3",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-text-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 2,
+                    "label": "Text 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Text 2",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Text 3",
+                  },
+                  Object {
+                    "count": 8,
+                    "label": "Text 4",
+                  },
+                ],
+              },
+            ]
+          }
+          timelineHeight={300}
+        />
+        <TimelineDetections
+          detections={
+            Array [
+              Object {
+                "name": "gcp-video-explicit-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Gh st",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Busters",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-label-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Label 1",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Label 2",
+                  },
+                  Object {
+                    "count": 9,
+                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-logo-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 1,
+                    "label": "Logo 1",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Logo 2",
+                  },
+                  Object {
+                    "count": 5,
+                    "label": "Logo 3",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-object-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Object 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 2",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 3",
+                  },
+                ],
+              },
+              Object {
+                "name": "gcp-video-text-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 2,
+                    "label": "Text 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Text 2",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Text 3",
+                  },
+                  Object {
+                    "count": 8,
+                    "label": "Text 4",
+                  },
+                ],
+              },
+            ]
+          }
+          videoRef={
+            Object {
+              "current": Object {
+                "addEventListener": [Function],
+                "currentTime": 0,
+                "duration": 18,
+                "pause": [Function],
+                "paused": true,
+                "play": [Function],
+                "removeEventListener": [Function],
+              },
+            }
+          }
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Timeline /> should render properly 1`] = `
+.emotion-0 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: row-resize;
+  height: 4px;
+  margin-top: -2px;
+  margin-bottom: -2px;
+  z-index: 10;
+}
+
+.emotion-2 {
+  padding-left: 8px;
+  padding-right: 8px;
+  background-color: #252525;
+  color: #808080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  padding: 4px;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  background-color: #2e2e2e;
+}
+
+.emotion-5 {
+  height: 0;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 300px;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 0%;
+  position: relative;
+  margin-left: 200px;
+  border-left: 1px solid #3b3b3b;
+}
+
+<div
+  style={
+    Object {
+      "alignItems": "stretch",
+      "display": "flex",
+      "flexDirection": "column",
+      "flexWrap": "nowrap",
+    }
+  }
+>
+  <div
+    aria-label="Resize vertically"
+    className="emotion-0"
+    onMouseDown={[Function]}
+  />
+  <div
+    className="emotion-2"
+  >
+    <button
+      aria-label="Open Timeline"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      Timeline
+    </button>
     <TimelineControls
       length={18}
       videoRef={
@@ -148,206 +997,212 @@ exports[`<Timeline /> should render properly 1`] = `
     />
   </div>
   <div
-    className="emotion-3"
+    className="emotion-5"
   >
-    <TimelinePlayhead
-      videoRef={
-        Object {
-          "current": undefined,
-        }
-      }
-    />
     <div
-      className="emotion-2"
-    />
-    <TimelineAggregate
-      detections={
-        Array [
-          Object {
-            "name": "gcp-video-explicit-detection",
-            "predictions": Array [
+      className="emotion-4"
+    >
+      <div
+        className="emotion-3"
+      >
+        <TimelinePlayhead
+          videoRef={
+            Object {
+              "current": undefined,
+            }
+          }
+        />
+        <TimelineRuler />
+        <TimelineAggregate
+          detections={
+            Array [
               Object {
-                "count": 3,
-                "label": "Gh st",
+                "name": "gcp-video-explicit-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Gh st",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Busters",
+                  },
+                ],
               },
               Object {
-                "count": 3,
-                "label": "Busters",
-              },
-            ],
-          },
-          Object {
-            "name": "gcp-video-label-detection",
-            "predictions": Array [
-              Object {
-                "count": 3,
-                "label": "Label 1",
-              },
-              Object {
-                "count": 6,
-                "label": "Label 2",
-              },
-              Object {
-                "count": 9,
-                "label": "Label 3 Plus More Text to Make A Long Label String",
-              },
-            ],
-          },
-          Object {
-            "name": "gcp-video-logo-detection",
-            "predictions": Array [
-              Object {
-                "count": 1,
-                "label": "Logo 1",
+                "name": "gcp-video-label-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Label 1",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Label 2",
+                  },
+                  Object {
+                    "count": 9,
+                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                  },
+                ],
               },
               Object {
-                "count": 3,
-                "label": "Logo 2",
+                "name": "gcp-video-logo-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 1,
+                    "label": "Logo 1",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Logo 2",
+                  },
+                  Object {
+                    "count": 5,
+                    "label": "Logo 3",
+                  },
+                ],
               },
               Object {
-                "count": 5,
-                "label": "Logo 3",
-              },
-            ],
-          },
-          Object {
-            "name": "gcp-video-object-detection",
-            "predictions": Array [
-              Object {
-                "count": 3,
-                "label": "Object 1",
-              },
-              Object {
-                "count": 4,
-                "label": "Object 2",
-              },
-              Object {
-                "count": 4,
-                "label": "Object 3",
-              },
-            ],
-          },
-          Object {
-            "name": "gcp-video-text-detection",
-            "predictions": Array [
-              Object {
-                "count": 2,
-                "label": "Text 1",
+                "name": "gcp-video-object-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Object 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 2",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 3",
+                  },
+                ],
               },
               Object {
-                "count": 4,
-                "label": "Text 2",
+                "name": "gcp-video-text-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 2,
+                    "label": "Text 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Text 2",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Text 3",
+                  },
+                  Object {
+                    "count": 8,
+                    "label": "Text 4",
+                  },
+                ],
+              },
+            ]
+          }
+          timelineHeight={300}
+        />
+        <TimelineDetections
+          detections={
+            Array [
+              Object {
+                "name": "gcp-video-explicit-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Gh st",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Busters",
+                  },
+                ],
               },
               Object {
-                "count": 6,
-                "label": "Text 3",
+                "name": "gcp-video-label-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Label 1",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Label 2",
+                  },
+                  Object {
+                    "count": 9,
+                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                  },
+                ],
               },
               Object {
-                "count": 8,
-                "label": "Text 4",
-              },
-            ],
-          },
-        ]
-      }
-      timelineHeight={300}
-    />
-    <TimelineDetections
-      detections={
-        Array [
-          Object {
-            "name": "gcp-video-explicit-detection",
-            "predictions": Array [
-              Object {
-                "count": 3,
-                "label": "Gh st",
+                "name": "gcp-video-logo-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 1,
+                    "label": "Logo 1",
+                  },
+                  Object {
+                    "count": 3,
+                    "label": "Logo 2",
+                  },
+                  Object {
+                    "count": 5,
+                    "label": "Logo 3",
+                  },
+                ],
               },
               Object {
-                "count": 3,
-                "label": "Busters",
-              },
-            ],
-          },
-          Object {
-            "name": "gcp-video-label-detection",
-            "predictions": Array [
-              Object {
-                "count": 3,
-                "label": "Label 1",
-              },
-              Object {
-                "count": 6,
-                "label": "Label 2",
-              },
-              Object {
-                "count": 9,
-                "label": "Label 3 Plus More Text to Make A Long Label String",
-              },
-            ],
-          },
-          Object {
-            "name": "gcp-video-logo-detection",
-            "predictions": Array [
-              Object {
-                "count": 1,
-                "label": "Logo 1",
+                "name": "gcp-video-object-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 3,
+                    "label": "Object 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 2",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Object 3",
+                  },
+                ],
               },
               Object {
-                "count": 3,
-                "label": "Logo 2",
+                "name": "gcp-video-text-detection",
+                "predictions": Array [
+                  Object {
+                    "count": 2,
+                    "label": "Text 1",
+                  },
+                  Object {
+                    "count": 4,
+                    "label": "Text 2",
+                  },
+                  Object {
+                    "count": 6,
+                    "label": "Text 3",
+                  },
+                  Object {
+                    "count": 8,
+                    "label": "Text 4",
+                  },
+                ],
               },
-              Object {
-                "count": 5,
-                "label": "Logo 3",
-              },
-            ],
-          },
-          Object {
-            "name": "gcp-video-object-detection",
-            "predictions": Array [
-              Object {
-                "count": 3,
-                "label": "Object 1",
-              },
-              Object {
-                "count": 4,
-                "label": "Object 2",
-              },
-              Object {
-                "count": 4,
-                "label": "Object 3",
-              },
-            ],
-          },
-          Object {
-            "name": "gcp-video-text-detection",
-            "predictions": Array [
-              Object {
-                "count": 2,
-                "label": "Text 1",
-              },
-              Object {
-                "count": 4,
-                "label": "Text 2",
-              },
-              Object {
-                "count": 6,
-                "label": "Text 3",
-              },
-              Object {
-                "count": 8,
-                "label": "Text 4",
-              },
-            ],
-          },
-        ]
-      }
-      videoRef={
-        Object {
-          "current": undefined,
-        }
-      }
-    />
+            ]
+          }
+          videoRef={
+            Object {
+              "current": undefined,
+            }
+          }
+        />
+      </div>
+    </div>
   </div>
 </div>
 `;

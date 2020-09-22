@@ -70,11 +70,12 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         analysis.set_attr('language', languages)
         asset.add_analysis(self.namespace, analysis)
 
-        # This stores the raw google result in case we need it later.
-        file_storage.assets.store_blob(audio_result.SerializeToString(),
-                                       asset,
-                                       'gcp',
-                                       'speech-to-text.dat')
+        results = audio_result.SerializeToString()
+        if results:
+            file_storage.assets.store_blob(results,
+                                           asset,
+                                           'gcp',
+                                           'speech-to-text.dat')
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_tries=3, max_time=3600)
     def recognize_speech(self, audio_uri):

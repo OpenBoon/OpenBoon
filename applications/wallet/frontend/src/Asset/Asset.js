@@ -80,11 +80,13 @@ const AssetAsset = ({ isQuickView }) => {
             width: '100%',
             height: '100%',
             marginTop: spacing.hairline,
+            overflow: 'hidden',
           }}
         >
           {isVideo && !hasError ? (
             <AssetVideo
               assetRef={assetRef}
+              assetId={assetId}
               uri={uri}
               mediaType={mediaType}
               length={length}

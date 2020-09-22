@@ -40,6 +40,8 @@ interface ApiKeyService {
 
     fun delete(apiKey: ApiKey)
 
+    fun deleteByProject(projectUUID: UUID)
+
     fun updateEnabled(apiKey: ApiKey, enabled: Boolean)
 
     fun updateEnabledByProject(projectId: UUID, enabled: Boolean)
@@ -172,6 +174,17 @@ class ApiKeyServiceImpl constructor(
             )
         )
         apiKeyRepository.delete(apiKey)
+    }
+
+    override fun deleteByProject(projectUUID: UUID) {
+        apiKeyRepository.deleteByProjectId(projectUUID)
+
+        logger.event(
+            LogObject.API_KEY, LogAction.DELETE,
+            mapOf(
+                "projectId" to projectUUID
+            )
+        )
     }
 
     override fun updateEnabled(apiKey: ApiKey, enabled: Boolean) {
