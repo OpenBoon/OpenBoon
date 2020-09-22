@@ -1,5 +1,5 @@
 from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
+from django.views.decorators.cache import cache_control
 from rest_framework import status
 from rest_framework.response import Response
 from zmlp.client import ZmlpDuplicateException
@@ -10,7 +10,7 @@ from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
 
-@method_decorator(never_cache, name='dispatch')
+@method_decorator(cache_control(max_age=0, no_store=True), name='dispatch')
 class ApikeyViewSet(BaseProjectViewSet):
     serializer_class = ApikeySerializer
     pagination_class = ZMLPFromSizePagination
