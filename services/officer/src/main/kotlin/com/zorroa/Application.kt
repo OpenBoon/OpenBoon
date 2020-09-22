@@ -134,7 +134,7 @@ fun runServer(port: Int) {
 
     get("/monitor/health") {
         response.type("application/json")
-        if (StorageManager.minioClient.bucketExists(Config.bucket.name)) {
+        if (StorageManager.storageClient().bucketExists(Config.minioBucket.name)) {
             """{"status": "UP"}"""
         } else {
             response.status(400)

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 
 object Config {
 
-    class BucketConfiguration(
+    class MinioBucketConfiguration(
         val url: String = System.getenv("ZMLP_STORAGE_PIPELINE_URL") ?: "http://localhost:9000",
         val name: String = System.getenv("ZMLP_STORAGE_PIPELINE_BUCKET") ?: "pipeline-storage",
         val accessKey: String = System.getenv("ZMLP_STORAGE_PIPELINE_ACCESSKEY") ?: "qwerty123",
@@ -20,10 +20,10 @@ object Config {
     val logger: Logger = LoggerFactory.getLogger(Config::class.java)
 
     val officer: OfficerConfiguration
-    val bucket: BucketConfiguration
+    val minioBucket: MinioBucketConfiguration
 
     init {
-        bucket = BucketConfiguration()
+        minioBucket = MinioBucketConfiguration()
         officer = OfficerConfiguration()
     }
 

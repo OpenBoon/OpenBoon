@@ -14,6 +14,8 @@ import spark.kotlin.stop
 
 class TestServer {
 
+    val storageClient = MinioStorageClient()
+
     companion object {
         @BeforeClass
         @JvmStatic
@@ -38,7 +40,7 @@ class TestServer {
 
     @Test
     fun testStatusFailure() {
-        val minioSpy = spy(StorageManager.minioClient)
+        val minioSpy = spy(storageClient.minioClient)
         doReturn(false).whenever(minioSpy).bucketExists(any())
 
         val rsp = HttpRequest.get("http://localhost:9876/monitor/health")

@@ -74,7 +74,7 @@ class TestIOHandler {
 
     @Test
     fun getOutputUri() {
-        val bucket = StorageManager.bucket
+        val bucket = StorageManager.storageClient().bucket()
         val prefix = IOHandler.PREFIX
         val path = handler.getOutputUri()
         assertEquals("zmlp://$bucket/$prefix/${options.outputDir}", path)
