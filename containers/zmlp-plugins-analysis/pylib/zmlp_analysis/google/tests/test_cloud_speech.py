@@ -71,10 +71,15 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         self.processor.process(frame)
         assert 'dog' in asset.get_attr('analysis.gcp-speech-to-text.content')
 
+    @patch.object(file_storage.cache, 'localize_uri')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(file_storage.assets, 'get_native_uri')
-    def test_speech_detection_existing_proxy(self, native_url_patch, store_patch, store_blob_patch):
+    @patch('zmlp_analysis.google.cloud_speech.initialize_gcp_client')
+    def test_speech_detection_existing_proxy(self, speech_patch,
+                                             native_url_patch, store_patch, store_blob_patch, local_patch):
+        local_patch.return_value = zorroa_test_path('audio/audio1.flac')
+        speech_patch.return_value = MockSpeechToTextClient()
         native_url_patch.return_value = 'gs://zorroa-dev-data/video/audio8D0_VU.flac'
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
