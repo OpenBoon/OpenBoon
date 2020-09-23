@@ -61,6 +61,30 @@ describe('<Asset />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should toggle MetadataCues properly', () => {
+    localStorage.setItem('MetadataCues.isOpen', 'true')
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...videoAsset,
+        uri: 'https://storage.googleapis.com/video.mp4',
+        mediaType: 'video/mp4',
+      },
+    })
+
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID, query: QUERY_STRING },
+    })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Asset />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should handle no query', () => {
     require('swr').__setMockUseSWRResponse({
       data: {

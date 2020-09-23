@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing, constants } from '../Styles'
+import { colors, spacing, constants, typography } from '../Styles'
+
+import TimebasedMetadataSvg from '../Icons/timebasedMetadata.svg'
 
 import { useLocalStorageReducer } from '../LocalStorage/helpers'
 
@@ -21,7 +23,7 @@ import detections from './__mocks__/detections'
 
 const TIMELINE_HEIGHT = 300
 
-const Timeline = ({ videoRef, length, assetId }) => {
+const Timeline = ({ videoRef, length, assetId, cueIsOpen, setCueIsOpen }) => {
   const [settings, dispatch] = useLocalStorageReducer({
     key: `TimelineDetections.${assetId}`,
     reducer,
@@ -53,6 +55,8 @@ const Timeline = ({ videoRef, length, assetId }) => {
               ':hover, &.focus-visible:focus': {
                 backgroundColor: colors.structure.mattGrey,
               },
+              fontFamily: typography.family.condensed,
+              textTransform: 'uppercase',
             }}
             onClick={toggleOpen}
           >
@@ -61,7 +65,48 @@ const Timeline = ({ videoRef, length, assetId }) => {
 
           <TimelineControls videoRef={videoRef} length={length} />
 
-          <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
+          <div css={{ display: 'flex', alignItems: 'center' }}>
+            <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
+
+            <div
+              css={{
+                width: spacing.mini,
+                height: spacing.comfy,
+                backgroundColor: colors.structure.coal,
+                marginLeft: spacing.small,
+                marginRight: spacing.base,
+              }}
+            />
+
+            <Button
+              aria-label={`${cueIsOpen ? 'Close' : 'Open'} Metadata`}
+              variant={VARIANTS.ICON}
+              style={{
+                flexDirection: 'row',
+                padding: spacing.small,
+                ':hover, &.focus-visible:focus': {
+                  backgroundColor: colors.structure.mattGrey,
+                  color: cueIsOpen ? colors.key.one : colors.structure.white,
+                  svg: {
+                    path: {
+                      fill: cueIsOpen ? colors.key.one : colors.structure.white,
+                    },
+                  },
+                },
+                fontFamily: typography.family.condensed,
+                textTransform: 'uppercase',
+                color: cueIsOpen ? colors.key.one : colors.structure.steel,
+              }}
+              onClick={() => setCueIsOpen(!cueIsOpen)}
+            >
+              <TimebasedMetadataSvg
+                height={constants.icons.regular}
+                color={cueIsOpen ? colors.key.one : colors.structure.steel}
+              />
+              <div css={{ width: spacing.base }} />
+              Metadata
+            </Button>
+          </div>
         </div>
       )}
     >
@@ -120,6 +165,8 @@ Timeline.propTypes = {
   }).isRequired,
   length: PropTypes.number.isRequired,
   assetId: PropTypes.string.isRequired,
+  cueIsOpen: PropTypes.bool.isRequired,
+  setCueIsOpen: PropTypes.func.isRequired,
 }
 
 export default Timeline

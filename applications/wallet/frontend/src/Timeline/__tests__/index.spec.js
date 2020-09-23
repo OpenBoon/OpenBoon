@@ -20,6 +20,8 @@ describe('<Timeline />', () => {
         assetId={ASSET_ID}
         length={18}
         videoRef={{ current: undefined }}
+        cueIsOpen={false}
+        setCueIsOpen={noop}
       />,
     )
 
@@ -42,6 +44,8 @@ describe('<Timeline />', () => {
             paused: true,
           },
         }}
+        cueIsOpen={false}
+        setCueIsOpen={noop}
       />,
     )
 
@@ -60,6 +64,42 @@ describe('<Timeline />', () => {
         .findByProps({ 'aria-label': 'Close Timeline' })
         .props.onClick()
     })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should open MetadataCues', () => {
+    const mockFn = jest.fn()
+
+    const component = TestRenderer.create(
+      <Timeline
+        assetId={ASSET_ID}
+        length={18}
+        videoRef={{
+          current: {
+            play: noop,
+            pause: noop,
+            addEventListener: noop,
+            removeEventListener: noop,
+            currentTime: 0,
+            duration: 18,
+            paused: true,
+          },
+        }}
+        cueIsOpen
+        setCueIsOpen={mockFn}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Close Metadata' })
+        .props.onClick()
+    })
+
+    expect(mockFn).toHaveBeenCalledWith(false)
 
     expect(component.toJSON()).toMatchSnapshot()
   })

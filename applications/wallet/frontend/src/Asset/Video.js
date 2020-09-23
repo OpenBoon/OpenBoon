@@ -2,6 +2,7 @@
 import { useRef } from 'react'
 import PropTypes from 'prop-types'
 
+import { useLocalStorageState } from '../LocalStorage/helpers'
 import Feature from '../Feature'
 import MetadataCues from '../MetadataCues'
 import Timeline from '../Timeline'
@@ -31,6 +32,11 @@ const AssetVideo = ({
   isQuickView,
 }) => {
   const videoRef = useRef()
+
+  const [cueIsOpen, setCueIsOpen] = useLocalStorageState({
+    key: 'MetadataCues.isOpen',
+    intialValue: false,
+  })
 
   return (
     <div css={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -71,7 +77,7 @@ const AssetVideo = ({
           </div>
         </div>
 
-        {!isQuickView && (
+        {!isQuickView && cueIsOpen && (
           <Feature flag="timeline" envs={[]}>
             <MetadataCues videoRef={videoRef} />
           </Feature>
@@ -80,7 +86,13 @@ const AssetVideo = ({
 
       {!isQuickView && (
         <Feature flag="timeline" envs={[]}>
-          <Timeline videoRef={videoRef} length={length} assetId={assetId} />
+          <Timeline
+            videoRef={videoRef}
+            length={length}
+            assetId={assetId}
+            cueIsOpen={cueIsOpen}
+            setCueIsOpen={setCueIsOpen}
+          />
         </Feature>
       )}
     </div>
