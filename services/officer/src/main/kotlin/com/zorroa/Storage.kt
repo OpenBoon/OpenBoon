@@ -45,7 +45,7 @@ interface StorageClient {
     fun bucket(): String
 }
 
-class MinioStorageClient : StorageClient {
+open class MinioStorageClient : StorageClient {
 
     val logger: Logger = LoggerFactory.getLogger(MinioStorageClient::class.java)
 
@@ -112,7 +112,7 @@ class MinioStorageClient : StorageClient {
     }
 }
 
-class GcsStorageClient : StorageClient {
+open class GcsStorageClient : StorageClient {
 
     val options: StorageOptions = StorageOptions.newBuilder()
         .setCredentials(loadCredentials()).build()
