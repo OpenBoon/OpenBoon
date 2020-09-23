@@ -11,6 +11,7 @@ from google.cloud import speech_v1p1beta1 as speech
 from zmlpsdk import Argument, AssetProcessor, file_storage, FileTypes
 from zmlpsdk.analysis import ContentDetectionAnalysis
 from .gcp_client import initialize_gcp_client
+from .cloud_timeline import save_speech_to_text_webvtt
 from subprocess import check_output
 
 
@@ -57,6 +58,20 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         audio_uri = self.get_audio_proxy_uri(asset)
         audio_result = self.recognize_speech(audio_uri)
 
+        self.set_analysis(asset, audio_result)
+        self.save_raw_result(asset, audio_result)
+        self.save_webvtt(asset, audio_result)
+
+    def save_webvtt(self, asset, audio_result):
+        save_speech_to_text_webvtt(asset, audio_result)
+
+    def save_raw_result(self, asset, audio_result):
+        file_storage.assets.store_blob(audio_result.SerializeToString(),
+                                       asset,
+                                       'gcp',
+                                       'gcp-speech-to-text.dat')
+
+    def set_analysis(self, asset, audio_result):
         # The speech to text results come with multiple possibilities per segment, we
         # only keep the highest confidence.
         analysis = ContentDetectionAnalysis()
@@ -69,12 +84,6 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
 
         analysis.set_attr('language', languages)
         asset.add_analysis(self.namespace, analysis)
-
-        # This stores the raw google result in case we need it later.
-        file_storage.assets.store_blob(audio_result.SerializeToString(),
-                                       asset,
-                                       'gcp',
-                                       'speech-to-text.dat')
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_tries=3, max_time=3600)
     def recognize_speech(self, audio_uri):
@@ -92,6 +101,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         }
         config = speech.types.RecognitionConfig(
             encoding=speech.enums.RecognitionConfig.AudioEncoding.FLAC,
+            enable_word_time_offsets=True,
             audio_channel_count=self.audio_channels,
             sample_rate_hertz=self.audio_sample_rate,
             language_code=self.arg_value('language'),
@@ -121,6 +131,8 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         else:
             audio_fname = tempfile.mkstemp(suffix=".flac", prefix="audio", )[1]
             cmd_line = ['ffmpeg',
+                        '-v',
+                        'quiet',
                         '-y',
                         '-i', file_storage.localize_file(asset),
                         '-vn',

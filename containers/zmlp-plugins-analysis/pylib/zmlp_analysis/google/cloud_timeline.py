@@ -1,6 +1,11 @@
 import zmlp
+import logging
 
 from zmlp.entity import TimelineBuilder
+from zmlpsdk.video import WebvttBuilder
+from zmlpsdk.storage import file_storage
+
+logger = logging.getLogger(__name__)
 
 
 def save_timeline(timeline):
@@ -67,6 +72,7 @@ def save_speech_transcription_timeline(asset, annotations):
                 timeline.add_clip("Speech Transcription",
                                   start_time, end_time, alternative.transcript.strip(),
                                   alternative.confidence)
+                break
 
     save_timeline(timeline)
     return timeline
@@ -207,6 +213,71 @@ def save_label_detection_timeline(asset, annotations):
 
     save_timeline(timeline)
     return timeline
+
+
+def save_speech_to_text_webvtt(asset, audio_result):
+    """
+    Create a webvtt file for speech to text.
+
+    Args:
+        asset (Asset): The asset to register the file to.
+        audio_result (obj): The speech to text result.
+
+    Returns:
+        StoredFile
+    """
+    with WebvttBuilder() as webvtt:
+        for r in audio_result.results:
+
+            sorted_results = sorted(r.alternatives, key=lambda i: i.confidence, reverse=True)
+            best_result = sorted_results[0]
+
+            for result in r.alternatives:
+                if result.words:
+                    # get first and last word
+                    start_word = result.words[0]
+                    end_word = result.words[-1]
+
+                    start_time = convert_offset(start_word.start_time)
+                    end_time = convert_offset(end_word.end_time)
+                    webvtt.append(start_time, end_time, best_result.transcript.strip())
+                    break
+
+        logger.info(f'Saving speech-to-text timeline webvtt to {webvtt.path}')
+        return file_storage.assets.store_file(webvtt.path, asset,
+                                              'captions',
+                                              'gcp-speech-to-text.vtt')
+
+
+def save_video_speech_transcription_webvtt(asset, annotations):
+    """
+    Build a timeline for video speech transcription.
+
+    Args:
+        asset (Asset): The Asset or Asset Id.
+        annotations (AnnotateVideoResponse): The Video Intelligence response.
+
+    Returns:
+        StoredFile
+
+    """
+    with WebvttBuilder() as webvtt:
+        for transcription in annotations.speech_transcriptions:
+            for alternative in transcription.alternatives:
+                if alternative.words:
+                    # get first and last word
+                    start_word = alternative.words[0]
+                    end_word = alternative.words[-1]
+
+                    start_time = convert_offset(start_word.start_time)
+                    end_time = convert_offset(end_word.end_time)
+                    webvtt.append(start_time, end_time, alternative.transcript.strip())
+                    break
+
+        logger.info(f'Saving video_speech_transcription webvtt to {webvtt.path}')
+        return file_storage.assets.store_file(webvtt.path, asset,
+                                              'captions',
+                                              'gcp-video-speech-transcription.vtt')
 
 
 def convert_offset(offset):

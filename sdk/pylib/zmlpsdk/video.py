@@ -1,7 +1,8 @@
 import logging
 import os
 import subprocess
-
+import time
+import tempfile
 
 logger = logging.getLogger(__name__)
 
@@ -61,3 +62,32 @@ def extract_thumbnail_from_video(video_path, thumbnail_path, seconds):
     if not os.path.exists(thumbnail_path):
         # Don't let the CalledProcessError impl detail leak out
         raise IOError('FFMpeg failed to create a thumbnail, command failed: {}'.format(cmd))
+
+
+class WebvttBuilder:
+    """
+    A simple class for building a webvtt file.  This class is meant to
+    be used with a 'with' statement.
+    """
+    def __init__(self, path=None):
+        """
+        Create a new WebvttBuilder.
+
+        Args:
+            path (str): An optional file path, otherwise a temp file.
+        """
+        self.path = path or tempfile.mkstemp(".vtt")[1]
+        self.fp = None
+
+    def append(self, time_in, time_out, content):
+        start = time.strftime("%H:%M:%S.000", time.gmtime(float(time_in)))
+        stop = time.strftime("%H:%M:%S.000", time.gmtime(float(time_out)))
+        self.fp.write("{} --> {}\n{}\n\n".format(start, stop, content))
+
+    def __enter__(self):
+        self.fp = open(self.path, 'a')
+        self.fp.write("WEBVTT\n\n")
+        return self
+
+    def __exit__(self, *args):
+        self.fp.close()

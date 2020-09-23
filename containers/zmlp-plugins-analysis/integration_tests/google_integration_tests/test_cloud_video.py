@@ -159,9 +159,9 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
         assert "Unlikely" in timeline.tracks
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
-    @patch.object(file_storage.assets, 'get_native_uri')
+    @patch("zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
-    def test_detect_speech(self, blob_patch, native_patch, tl_patch):
+    def test_speech_transcription(self, blob_patch, native_patch, tl_patch):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
         blob_patch.return_value = None
         native_patch.return_value = uri
