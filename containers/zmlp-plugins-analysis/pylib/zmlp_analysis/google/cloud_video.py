@@ -205,12 +205,15 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         for speech in annotation_result.speech_transcriptions:
             for alternative in speech.alternatives:
+                # Find first one with words.
                 if alternative.words:
                     analysis.add_content(alternative.transcript.strip())
+                    break
 
         if analysis.content:
             asset.add_analysis('gcp-video-speech-transcription', analysis)
             cloud_timeline.save_speech_transcription_timeline(asset, annotation_result)
+            cloud_timeline.save_video_speech_transcription_webvtt(asset, annotation_result)
 
     def handle_detect_explicit(self, asset, annotation_result):
         """
