@@ -4,24 +4,33 @@ import detections from '../__mocks__/detections'
 
 import TimelineDetections from '../Detections'
 
-jest.mock('../Tracks', () => 'TimelineTracks')
+const noop = () => {}
 
-const noop = () => () => {}
+jest.mock('../Tracks', () => 'TimelineTracks')
 
 describe('<TimelineDetections />', () => {
   it('should render properly', () => {
+    const mockDispatch = jest.fn()
+
     const component = TestRenderer.create(
-      <TimelineDetections detections={detections} />,
+      <TimelineDetections
+        detections={detections}
+        settings={{ [detections[0].name]: { isOpen: true } }}
+        dispatch={mockDispatch}
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'gcp-video-explicit-detection' })
-        .props.onClick({ target: { open: true }, preventDefault: noop })
+        .findByProps({ 'aria-label': detections[0].name })
+        .props.onClick({ preventDefault: noop })
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
+    expect(mockDispatch).toHaveBeenCalledWith({
+      payload: { name: detections[0].name },
+      type: 'TOGGLE_OPEN',
+    })
   })
 })
