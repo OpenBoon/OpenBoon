@@ -33,6 +33,9 @@ interface ApiKeyRepository : JpaRepository<ApiKey, UUID> {
     @Modifying(clearAutomatically = true)
     @Query("update ApiKey api set api.enabled = ?1 where api.id = ?2")
     fun updateEnabledById(enabled: Boolean, id: UUID)
+
+    @Modifying(clearAutomatically = true)
+    fun deleteByProjectId(projectId: UUID)
 }
 
 /**

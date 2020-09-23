@@ -156,6 +156,7 @@ exports[`<Asset /> should handle no query 1`] = `
   width: 100%;
   height: 100%;
   margin-top: 1px;
+  overflow: hidden;
 }
 
 .emotion-17 {
@@ -394,6 +395,7 @@ exports[`<Asset /> should handle no query 1`] = `
               />
             </div>
             <Timeline
+              assetId="srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               length={144.45}
               videoRef={
                 Object {
@@ -624,6 +626,7 @@ exports[`<Asset /> should render properly 1`] = `
   width: 100%;
   height: 100%;
   margin-top: 1px;
+  overflow: hidden;
 }
 
 .emotion-3 {
@@ -988,6 +991,7 @@ exports[`<Asset /> should render videos properly 1`] = `
   width: 100%;
   height: 100%;
   margin-top: 1px;
+  overflow: hidden;
 }
 
 .emotion-17 {
@@ -1226,6 +1230,7 @@ exports[`<Asset /> should render videos properly 1`] = `
               />
             </div>
             <Timeline
+              assetId="srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               length={144.45}
               videoRef={
                 Object {

@@ -23,7 +23,7 @@ export const onSubmit = async ({
     )
 
     await revalidate({
-      key: `/api/v1/projects/${projectId}/models/`,
+      key: `/api/v1/projects/${projectId}/models/${modelId}/get_labels/`,
       paginated: true,
     })
 

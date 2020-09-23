@@ -2,10 +2,16 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, constants } from '../Styles'
 
+import { useLocalStorageReducer } from '../LocalStorage/helpers'
+
 import Button, { VARIANTS } from '../Button'
+import ResizeableVertical from '../ResizeableVertical'
+
+import { reducer } from './reducer'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
+import TimelineRuler from './Ruler'
 import TimelinePlayhead from './Playhead'
 import TimelineAggregate from './Aggregate'
 import TimelineDetections from './Detections'
@@ -13,32 +19,34 @@ import TimelineDetections from './Detections'
 // TODO: fetch modules from backend
 import detections from './__mocks__/detections'
 
-// TODO: make resizeable height
 const TIMELINE_HEIGHT = 300
 
-const Timeline = ({ videoRef, length }) => {
+const Timeline = ({ videoRef, length, assetId }) => {
+  const [settings, dispatch] = useLocalStorageReducer({
+    key: `TimelineDetections.${assetId}`,
+    reducer,
+    initialState: {},
+  })
+
   return (
-    <div
-      css={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: TIMELINE_HEIGHT,
-      }}
-    >
-      <div
-        css={{
-          paddingLeft: spacing.base,
-          paddingRight: spacing.base,
-          backgroundColor: colors.structure.lead,
-          color: colors.structure.steel,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottom: constants.borders.regular.smoke,
-        }}
-      >
-        <div>
+    <ResizeableVertical
+      storageName={`Timeline.${assetId}`}
+      minHeight={TIMELINE_HEIGHT}
+      header={({ isOpen, toggleOpen }) => (
+        <div
+          css={{
+            paddingLeft: spacing.base,
+            paddingRight: spacing.base,
+            backgroundColor: colors.structure.lead,
+            color: colors.structure.steel,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderBottom: constants.borders.regular.smoke,
+          }}
+        >
           <Button
+            aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
             variant={VARIANTS.ICON}
             style={{
               padding: spacing.small,
@@ -46,40 +54,56 @@ const Timeline = ({ videoRef, length }) => {
                 backgroundColor: colors.structure.mattGrey,
               },
             }}
+            onClick={toggleOpen}
           >
-            Timelime
+            Timeline
           </Button>
+
+          <TimelineControls videoRef={videoRef} length={length} />
+
+          <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
         </div>
+      )}
+    >
+      {({ size }) => (
+        <div
+          css={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: size,
+          }}
+        >
+          <div
+            css={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              height: '0%',
+              position: 'relative',
+              marginLeft: constants.timeline.modulesWidth,
+              borderLeft: constants.borders.regular.smoke,
+            }}
+          >
+            <TimelinePlayhead videoRef={videoRef} />
 
-        <TimelineControls videoRef={videoRef} length={length} />
+            <TimelineRuler />
 
-        <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
-      </div>
+            <TimelineAggregate
+              timelineHeight={size}
+              detections={detections}
+              settings={settings}
+              dispatch={dispatch}
+            />
 
-      <div
-        css={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          height: '0%',
-          position: 'relative',
-          marginLeft: constants.timeline.modulesWidth,
-          borderLeft: constants.borders.regular.smoke,
-        }}
-      >
-        <TimelinePlayhead videoRef={videoRef} />
-
-        {/* TODO: add ruler and other stuff here */}
-        <div css={{ height: constants.timeline.rulerRowHeight }} />
-
-        <TimelineAggregate
-          detections={detections}
-          timelineHeight={TIMELINE_HEIGHT}
-        />
-
-        <TimelineDetections videoRef={videoRef} detections={detections} />
-      </div>
-    </div>
+            <TimelineDetections
+              detections={detections}
+              settings={settings}
+              dispatch={dispatch}
+            />
+          </div>
+        </div>
+      )}
+    </ResizeableVertical>
   )
 }
 
@@ -95,6 +119,7 @@ Timeline.propTypes = {
     }),
   }).isRequired,
   length: PropTypes.number.isRequired,
+  assetId: PropTypes.string.isRequired,
 }
 
 export default Timeline

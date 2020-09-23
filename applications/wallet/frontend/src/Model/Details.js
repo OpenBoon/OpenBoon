@@ -227,6 +227,11 @@ const ModelDetails = () => {
                 paginated: true,
               })
 
+              await revalidate({
+                key: `/api/v1/projects/${projectId}/models/all/`,
+                paginated: false,
+              })
+
               Router.push(
                 '/[projectId]/models?action=delete-model-success',
                 `/${projectId}/models`,

@@ -294,4 +294,15 @@ class ApiKeyControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
     }
+
+    @Test
+    fun testDeleteByProject() {
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/auth/v1/apikey/_delete_project/${mockKey.projectId}")
+                .headers(superAdmin(mockKey.projectId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
 }

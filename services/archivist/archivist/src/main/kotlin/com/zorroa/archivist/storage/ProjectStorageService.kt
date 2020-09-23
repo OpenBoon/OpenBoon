@@ -79,6 +79,11 @@ interface ProjectStorageService {
     fun recursiveDelete(locator: ProjectDirLocator)
 
     /**
+     * Delete recursively ALL FILES below a certain path
+     */
+    fun recursiveDelete(path: String)
+
+    /**
      * Log the storage of a file.
      */
     fun logStoreEvent(spec: ProjectStorageSpec) {

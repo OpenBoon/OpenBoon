@@ -21,8 +21,8 @@ const Layout = ({ user, logout, children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
-    if (isSidebarOpen) disableBodyScroll(sidebarRef.current)
-    if (!isSidebarOpen) enableBodyScroll(sidebarRef.current)
+    if (isSidebarOpen) disableBodyScroll(sidebarRef.current || true)
+    if (!isSidebarOpen) enableBodyScroll(sidebarRef.current || true)
     return clearAllBodyScrollLocks
   }, [isSidebarOpen, sidebarRef])
 

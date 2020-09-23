@@ -58,9 +58,10 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         audio_uri = self.get_audio_proxy_uri(asset)
         audio_result = self.recognize_speech(audio_uri)
 
-        self.set_analysis(asset, audio_result)
-        self.save_raw_result(asset, audio_result)
-        self.save_webvtt(asset, audio_result)
+        if audio_result.results:
+            self.set_analysis(asset, audio_result)
+            self.save_raw_result(asset, audio_result)
+            self.save_webvtt(asset, audio_result)
 
     def save_webvtt(self, asset, audio_result):
         save_speech_to_text_webvtt(asset, audio_result)
@@ -127,7 +128,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         """
         audio_proxy = asset.get_files(category="audio", name="audio_proxy.flac")
         if audio_proxy:
-            return file_storage.assets.get_native_uri(audio_proxy)
+            return file_storage.assets.get_native_uri(audio_proxy[0])
         else:
             audio_fname = tempfile.mkstemp(suffix=".flac", prefix="audio", )[1]
             cmd_line = ['ffmpeg',

@@ -83,7 +83,7 @@
     {
       "//": "main runtime",
       "path": ".next/static/chunks/main**.js",
-      "maxSize": "6 kB"
+      "maxSize": "7 kB"
     },
     {
       "//": "polyfill",
@@ -98,7 +98,7 @@
     {
       "//": "chunks",
       "path": ".next/static/chunks/!(commons|framework|main|polyfill|webpack)*.js",
-      "maxSize": "24 kB"
+      "maxSize": "25 kB"
     },
     {
       "//": "app.js",
@@ -123,9 +123,9 @@
     "@reach/combobox": "0.11.2",
     "@reach/listbox": "0.11.2",
     "@reach/skip-nav": "0.11.2",
-    "@sentry/browser": "5.23.0",
+    "@sentry/browser": "5.24.2",
     "@svgr/webpack": "5.4.0",
-    "body-scroll-lock": "3.0.3",
+    "body-scroll-lock": "3.1.5",
     "camelcase": "6.0.0",
     "deep-filter": "1.0.2",
     "dotenv": "8.2.0",
@@ -171,10 +171,10 @@
     "jest": "26.4.2",
     "jest-emotion": "10.0.32",
     "jest-fetch-mock": "3.0.3",
-    "lint-staged": "10.3.0",
+    "lint-staged": "10.4.0",
     "morgan": "1.10.0",
-    "prettier": "2.1.1",
+    "prettier": "2.1.2",
     "react-test-renderer": "16.13.1",
-    "webpack-bundle-analyzer": "3.8.0"
+    "webpack-bundle-analyzer": "3.9.0"
   }
 }

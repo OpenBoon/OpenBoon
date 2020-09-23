@@ -28,7 +28,17 @@ def test_register_user_invalid_password(api_client):
                                                               'lastName': 'Fakerson',
                                                               'password': 'simple'})
     assert response.status_code == 422
-    assert response.json()['detail'] == ['Password not strong enough']
+    assert response.json()['detail'] == ['Password not strong enough.']
+
+
+def test_register_user_with_invalid_email(api_client):
+    api_client.logout()
+    response = api_client.post(reverse('api-user-register'), {'email': 'test@ise.io"or"2""="2"',
+                                                              'firstName': 'Fakey',
+                                                              'lastName': 'Fakerson',
+                                                              'password': uuid.uuid4()})
+    assert response.status_code == 422
+    assert response.json()['detail'] == ['Email address invalid.']
 
 
 def test_register_invalid_request(api_client):

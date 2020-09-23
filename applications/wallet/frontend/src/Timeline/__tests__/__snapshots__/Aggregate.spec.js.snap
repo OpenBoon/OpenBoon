@@ -239,7 +239,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
 
 .emotion-49 {
   background-color: #4a4a4a;
-  max-height: 268px;
+  max-height: 312px;
   overflow-y: auto;
 }
 
@@ -367,7 +367,6 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
                 <input
                   className="emotion-1"
                   defaultChecked={true}
-                  onBlur={[Function]}
                   onClick={[Function]}
                   type="checkbox"
                   value="all"
@@ -402,7 +401,6 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
               <input
                 className="emotion-1"
                 defaultChecked={true}
-                onBlur={[Function]}
                 onClick={[Function]}
                 type="checkbox"
                 value="gcp-video-explicit-detection"
@@ -441,7 +439,6 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
               <input
                 className="emotion-1"
                 defaultChecked={true}
-                onBlur={[Function]}
                 onClick={[Function]}
                 type="checkbox"
                 value="gcp-video-label-detection"
@@ -480,7 +477,6 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
               <input
                 className="emotion-1"
                 defaultChecked={true}
-                onBlur={[Function]}
                 onClick={[Function]}
                 type="checkbox"
                 value="gcp-video-logo-detection"
@@ -519,7 +515,6 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
               <input
                 className="emotion-1"
                 defaultChecked={true}
-                onBlur={[Function]}
                 onClick={[Function]}
                 type="checkbox"
                 value="gcp-video-object-detection"
@@ -558,7 +553,6 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
               <input
                 className="emotion-1"
                 defaultChecked={true}
-                onBlur={[Function]}
                 onClick={[Function]}
                 type="checkbox"
                 value="gcp-video-text-detection"
