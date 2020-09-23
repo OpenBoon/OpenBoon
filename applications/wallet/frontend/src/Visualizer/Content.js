@@ -45,7 +45,7 @@ const VisualizerContent = () => {
     >
       <div css={{ display: 'flex', height: '100%', overflowY: 'hidden' }}>
         <FetchAhead url={`/api/v1/projects/${projectId}/searches/fields/`} />
-        <FetchAhead url={`/api/v1/projects/${projectId}/models/`} />
+        <FetchAhead url={`/api/v1/projects/${projectId}/models/all/`} />
 
         <Panel openToThe="right">
           {{
