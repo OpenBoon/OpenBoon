@@ -4,6 +4,8 @@ import { colors, constants, spacing } from '../Styles'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
+import { ACTIONS } from './reducer'
+
 export const COLOR_TAB_WIDTH = 3
 
 const TimelineAccordion = ({
@@ -36,7 +38,7 @@ const TimelineAccordion = ({
         }}
         onClick={(event) => {
           event.preventDefault()
-          dispatch({ [name]: !isOpen })
+          dispatch({ type: ACTIONS.TOGGLE_OPEN, payload: { name } })
         }}
       >
         <div css={{ display: 'flex' }}>

@@ -2,8 +2,12 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, constants } from '../Styles'
 
+import { useLocalStorageReducer } from '../LocalStorage/helpers'
+
 import Button, { VARIANTS } from '../Button'
 import ResizeableVertical from '../ResizeableVertical'
+
+import { reducer } from './reducer'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
@@ -18,6 +22,12 @@ import detections from './__mocks__/detections'
 const TIMELINE_HEIGHT = 300
 
 const Timeline = ({ videoRef, length, assetId }) => {
+  const [settings, dispatch] = useLocalStorageReducer({
+    key: `TimelineDetections.${assetId}`,
+    reducer,
+    initialState: {},
+  })
+
   return (
     <ResizeableVertical
       storageName={`Timeline.${assetId}`}
@@ -78,9 +88,18 @@ const Timeline = ({ videoRef, length, assetId }) => {
 
             <TimelineRuler />
 
-            <TimelineAggregate detections={detections} timelineHeight={size} />
+            <TimelineAggregate
+              timelineHeight={size}
+              detections={detections}
+              settings={settings}
+              dispatch={dispatch}
+            />
 
-            <TimelineDetections videoRef={videoRef} detections={detections} />
+            <TimelineDetections
+              detections={detections}
+              settings={settings}
+              dispatch={dispatch}
+            />
           </div>
         </div>
       )}

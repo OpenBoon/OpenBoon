@@ -6,9 +6,14 @@ import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 
-export const noop = () => {}
+import { ACTIONS } from './reducer'
 
-const TimelineAggregate = ({ detections, timelineHeight }) => {
+const TimelineAggregate = ({
+  timelineHeight,
+  detections,
+  settings,
+  dispatch,
+}) => {
   return (
     <div
       css={{
@@ -45,44 +50,57 @@ const TimelineAggregate = ({ detections, timelineHeight }) => {
             />
           )}
         >
-          {({ onBlur }) => (
+          {() => (
             <div
               // eslint-disable-next-line
               tabIndex="1"
               css={{
                 backgroundColor: colors.structure.iron,
                 maxHeight:
-                  timelineHeight - constants.timeline.rulerRowHeight * 3,
+                  timelineHeight - constants.timeline.rulerRowHeight * 2,
                 overflowY: 'auto',
               }}
             >
               <div css={{ borderBottom: constants.borders.medium.steel }}>
                 <Checkbox
+                  key={Object.values(settings).every(
+                    ({ isVisible }) => isVisible === true,
+                  )}
                   variant={CHECKBOX_VARIANTS.MENU}
                   option={{
                     value: 'all',
                     label: 'All',
-                    initialValue: true,
+                    initialValue: Object.values(settings).every(
+                      ({ isVisible }) => isVisible === true,
+                    ),
                     isDisabled: false,
                   }}
-                  onBlur={onBlur}
-                  onClick={noop}
+                  onClick={() => {
+                    dispatch({
+                      type: ACTIONS.TOGGLE_VISIBLE_ALL,
+                      payload: { detections },
+                    })
+                  }}
                 />
               </div>
 
               {detections.map(({ name, predictions }) => (
                 <Checkbox
-                  key={name}
+                  key={`${name}.${settings[name]?.isVisible}`}
                   variant={CHECKBOX_VARIANTS.MENU}
                   option={{
                     value: name,
                     label: name,
                     legend: `(${predictions.length})`,
-                    initialValue: true,
+                    initialValue: settings[name]?.isVisible !== false,
                     isDisabled: false,
                   }}
-                  onBlur={onBlur}
-                  onClick={noop}
+                  onClick={() => {
+                    dispatch({
+                      type: ACTIONS.TOGGLE_VISIBLE,
+                      payload: { name },
+                    })
+                  }}
                 />
               ))}
             </div>
@@ -94,8 +112,10 @@ const TimelineAggregate = ({ detections, timelineHeight }) => {
 }
 
 TimelineAggregate.propTypes = {
-  detections: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   timelineHeight: PropTypes.number.isRequired,
+  detections: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  settings: PropTypes.shape({}).isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default TimelineAggregate
