@@ -665,7 +665,7 @@ Array [
           <span
             className="emotion-12"
           >
-            Provides access to User Administration for a Project.
+            Allows adding and removing users as well as managing their roles. This includes adding and removing their own roles.
           </span>
         </div>
       </label>
@@ -1368,7 +1368,7 @@ Array [
           <span
             className="emotion-12"
           >
-            Provides access to User Administration for a Project.
+            Allows adding and removing users as well as managing their roles. This includes adding and removing their own roles.
           </span>
         </div>
       </label>
@@ -2629,7 +2629,7 @@ Array [
           <span
             className="emotion-12"
           >
-            Provides access to User Administration for a Project.
+            Allows adding and removing users as well as managing their roles. This includes adding and removing their own roles.
           </span>
         </div>
       </label>
