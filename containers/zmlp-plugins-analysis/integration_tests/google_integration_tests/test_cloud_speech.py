@@ -13,8 +13,7 @@ CREDS = os.path.join(os.path.dirname(__file__)) + '/gcp-creds.json'
 
 logging.basicConfig()
 
-
-@pytest.mark.skip(reason='dont run automatically')
+#@pytest.mark.skip(reason='dont run automatically')
 class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
