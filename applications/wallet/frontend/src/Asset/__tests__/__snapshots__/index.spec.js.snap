@@ -389,6 +389,7 @@ exports[`<Asset /> should handle no query 1`] = `
             </div>
             <Timeline
               assetId="srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
+              cueIsOpen={false}
               length={144.45}
               setCueIsOpen={[Function]}
               videoRef={
@@ -1218,6 +1219,7 @@ exports[`<Asset /> should render videos properly 1`] = `
             </div>
             <Timeline
               assetId="srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
+              cueIsOpen={false}
               length={144.45}
               setCueIsOpen={[Function]}
               videoRef={

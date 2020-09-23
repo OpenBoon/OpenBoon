@@ -97,7 +97,9 @@ const Timeline = ({ videoRef, length, assetId, cueIsOpen, setCueIsOpen }) => {
                 textTransform: 'uppercase',
                 color: cueIsOpen ? colors.key.one : colors.structure.steel,
               }}
-              onClick={() => setCueIsOpen(!cueIsOpen)}
+              onClick={() => {
+                setCueIsOpen({ value: !cueIsOpen })
+              }}
             >
               <TimebasedMetadataSvg
                 height={constants.icons.regular}

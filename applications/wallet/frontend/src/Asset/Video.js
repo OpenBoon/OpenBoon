@@ -35,7 +35,7 @@ const AssetVideo = ({
 
   const [cueIsOpen, setCueIsOpen] = useLocalStorageState({
     key: 'MetadataCues.isOpen',
-    intialValue: false,
+    initialValue: false,
   })
 
   return (

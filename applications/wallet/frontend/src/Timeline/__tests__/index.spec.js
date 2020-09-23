@@ -99,7 +99,7 @@ describe('<Timeline />', () => {
         .props.onClick()
     })
 
-    expect(mockFn).toHaveBeenCalledWith(false)
+    expect(mockFn).toHaveBeenCalledWith({ value: false })
 
     expect(component.toJSON()).toMatchSnapshot()
   })
