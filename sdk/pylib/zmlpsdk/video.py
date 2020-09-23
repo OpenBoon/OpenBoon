@@ -1,8 +1,8 @@
 import logging
 import os
 import subprocess
-import time
 import tempfile
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -80,8 +80,8 @@ class WebvttBuilder:
         self.fp = None
 
     def append(self, time_in, time_out, content):
-        start = time.strftime("%H:%M:%S.000", time.gmtime(float(time_in)))
-        stop = time.strftime("%H:%M:%S.000", time.gmtime(float(time_out)))
+        start = datetime.utcfromtimestamp(float(time_in)).strftime('%H:%M:%S.%f')[:-3]
+        stop = datetime.utcfromtimestamp(float(time_out)).strftime('%H:%M:%S.%f')[:-3]
         self.fp.write("{} --> {}\n{}\n\n".format(start, stop, content))
 
     def __enter__(self):

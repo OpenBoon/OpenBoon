@@ -1,9 +1,9 @@
-import zmlp
 import logging
 
+import zmlp
 from zmlp.entity import TimelineBuilder
-from zmlpsdk.video import WebvttBuilder
 from zmlpsdk.storage import file_storage
+from zmlpsdk.video import WebvttBuilder
 
 logger = logging.getLogger(__name__)
 
@@ -244,9 +244,10 @@ def save_speech_to_text_webvtt(asset, audio_result):
                     break
 
         logger.info(f'Saving speech-to-text timeline webvtt to {webvtt.path}')
-        return file_storage.assets.store_file(webvtt.path, asset,
-                                              'captions',
-                                              'gcp-speech-to-text.vtt')
+        sf = file_storage.assets.store_file(webvtt.path, asset,
+                                            'captions',
+                                            'gcp-speech-to-text.vtt')
+        return webvtt.path, sf
 
 
 def save_video_speech_transcription_webvtt(asset, annotations):
@@ -258,7 +259,7 @@ def save_video_speech_transcription_webvtt(asset, annotations):
         annotations (AnnotateVideoResponse): The Video Intelligence response.
 
     Returns:
-        StoredFile
+        tuple: The path to the vtt file and StoredFile object
 
     """
     with WebvttBuilder() as webvtt:
@@ -275,9 +276,10 @@ def save_video_speech_transcription_webvtt(asset, annotations):
                     break
 
         logger.info(f'Saving video_speech_transcription webvtt to {webvtt.path}')
-        return file_storage.assets.store_file(webvtt.path, asset,
-                                              'captions',
-                                              'gcp-video-speech-transcription.vtt')
+        sf = file_storage.assets.store_file(webvtt.path, asset,
+                                            'captions',
+                                            'gcp-video-speech-transcription.vtt')
+        return webvtt.path, sf
 
 
 def convert_offset(offset):
