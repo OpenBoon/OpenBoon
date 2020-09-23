@@ -123,7 +123,7 @@ class GcsStorageClient : StorageClient {
     @PostConstruct
     fun initialize() {
         logger.info(
-            "Initializing GCS Storage Backend (bucket='${bucket}')"
+            "Initializing GCS Storage Backend (bucket='$bucket')"
         )
     }
 
@@ -143,7 +143,7 @@ class GcsStorageClient : StorageClient {
     override fun bucketExists(path: String): Boolean {
         try {
             return gcs.get(path).exists()
-        }catch (ex: StorageException){
+        } catch (ex: StorageException) {
             logger.warn("Bucket $path does not exists")
         }
         return false

@@ -13,8 +13,7 @@ object Config {
         val credentialsPath: String?
     )
 
-    class MinioBucketConfiguration(
-    ) : BucketConfiguration(
+    class MinioBucketConfiguration() : BucketConfiguration(
         System.getenv("ZMLP_STORAGE_PIPELINE_URL") ?: "http://localhost:9000",
         System.getenv("ZMLP_STORAGE_PIPELINE_BUCKET") ?: "pipeline-storage",
         System.getenv("ZMLP_STORAGE_PIPELINE_ACCESSKEY") ?: "qwerty123",
@@ -22,8 +21,7 @@ object Config {
         null
     )
 
-    class GcsBucketConfiguration(
-    ) : BucketConfiguration(
+    class GcsBucketConfiguration() : BucketConfiguration(
         System.getenv("ZMLP_STORAGE_PIPELINE_URL") ?: "http://localhost:9000",
         System.getenv("ZMLP_STORAGE_PIPELINE_BUCKET") ?: "pipeline-storage",
         null,
