@@ -423,6 +423,8 @@ exports[`<Timeline /> should open MetadataCues 1`] = `
               },
             ]
           }
+          dispatch={[Function]}
+          settings={Object {}}
           timelineHeight={300}
         />
         <TimelineDetections
@@ -515,19 +517,8 @@ exports[`<Timeline /> should open MetadataCues 1`] = `
               },
             ]
           }
-          videoRef={
-            Object {
-              "current": Object {
-                "addEventListener": [Function],
-                "currentTime": 0,
-                "duration": 18,
-                "pause": [Function],
-                "paused": true,
-                "play": [Function],
-                "removeEventListener": [Function],
-              },
-            }
-          }
+          dispatch={[Function]}
+          settings={Object {}}
         />
       </div>
     </div>
@@ -958,6 +949,8 @@ exports[`<Timeline /> should open MetadataCues 2`] = `
               },
             ]
           }
+          dispatch={[Function]}
+          settings={Object {}}
           timelineHeight={300}
         />
         <TimelineDetections
@@ -1050,19 +1043,8 @@ exports[`<Timeline /> should open MetadataCues 2`] = `
               },
             ]
           }
-          videoRef={
-            Object {
-              "current": Object {
-                "addEventListener": [Function],
-                "currentTime": 0,
-                "duration": 18,
-                "pause": [Function],
-                "paused": true,
-                "play": [Function],
-                "removeEventListener": [Function],
-              },
-            }
-          }
+          dispatch={[Function]}
+          settings={Object {}}
         />
       </div>
     </div>
