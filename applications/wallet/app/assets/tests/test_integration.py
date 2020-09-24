@@ -233,7 +233,6 @@ class TestTimelines:
         ]
 
 
-
 class TestFileNameViewSet:
 
     def test_get_proxy(self, project, zvi_project_user, api_client, monkeypatch):
