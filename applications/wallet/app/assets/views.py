@@ -134,15 +134,14 @@ class AssetViewSet(BaseProjectViewSet):
         formatted_timelines = []
         for timeline in data:
             section = {'timeline': timeline,
-                       'hits': [],
                        'tracks': []}
             for track in data[timeline]:
                 track_section = {'track': track,
                                  'count': len(data[timeline][track]),
                                  'hits': data[timeline][track]}
-                section['hits'].extend(track_section['hits'])
+                # section['hits'].extend(track_section['hits'])
                 section['tracks'].append(track_section)
-            section['count'] = len(section['hits'])
+            # section['count'] = len(section['hits'])
             formatted_timelines.append(section)
         return formatted_timelines
 

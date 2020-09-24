@@ -175,16 +175,6 @@ class TestTimelines:
         content = check_response(response)
         assert content == [
             {'timeline': 'gcp-video-logo-detection',
-             'count': 7,
-             'hits': [
-                 {'start': 0.033, 'stop': 19.453},
-                 {'start': 1.735, 'stop': 2.936},
-                 {'start': 3.537, 'stop': 9.743},
-                 {'start': 10.244, 'stop': 10.344},
-                 {'start': 13.447, 'stop': 13.847},
-                 {'start': 14.748, 'stop': 15.048},
-                 {'start': 15.949, 'stop': 19.453}
-             ],
              'tracks': [
                  {
                      'track': 'AAMCO Transmissions',
@@ -207,12 +197,6 @@ class TestTimelines:
                  }
              ]},
             {'timeline': 'gcp-video-object-detection',
-             'count': 3,
-             'hits': [
-                 {'start': 0.033, 'stop': 1.935},
-                 {'start': 0.033, 'stop': 0.334},
-                 {'start': 1.635, 'stop': 1.935}
-             ],
              'tracks': [
                  {
                      'track': 'person',
