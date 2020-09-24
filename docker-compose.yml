@@ -143,6 +143,7 @@ services:
       ZMLP_STORAGE_PIPELINE_URL: http://minio:9000
       ZMLP_STORAGE_PIPELINE_ACCESSKEY: qwerty123
       ZMLP_STORAGE_PIPELINE_SECRETKEY: 123qwerty
+      ZMLP_STORAGE_CLIENT: minio
       REDIS_HOST: redis:6379
 
   analyst:
