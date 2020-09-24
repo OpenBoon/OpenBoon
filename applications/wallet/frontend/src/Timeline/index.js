@@ -7,10 +7,11 @@ import { useLocalStorageReducer } from '../LocalStorage/helpers'
 import Button, { VARIANTS } from '../Button'
 import ResizeableVertical from '../ResizeableVertical'
 
-import { reducer } from './reducer'
+import { reducer, INITIAL_STATE } from './reducer'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
+import TimelineFilterTracks from './FilterTracks'
 import TimelineRuler from './Ruler'
 import TimelinePlayhead from './Playhead'
 import TimelineAggregate from './Aggregate'
@@ -25,7 +26,7 @@ const Timeline = ({ videoRef, length, assetId }) => {
   const [settings, dispatch] = useLocalStorageReducer({
     key: `TimelineDetections.${assetId}`,
     reducer,
-    initialState: {},
+    initialState: INITIAL_STATE,
   })
 
   return (
@@ -86,7 +87,18 @@ const Timeline = ({ videoRef, length, assetId }) => {
           >
             <TimelinePlayhead videoRef={videoRef} />
 
-            <TimelineRuler />
+            <div
+              css={{
+                display: 'flex',
+                height: constants.timeline.rulerRowHeight,
+              }}
+            >
+              <TimelineFilterTracks settings={settings} dispatch={dispatch} />
+
+              <div css={{ flex: 1 }}>
+                <TimelineRuler />
+              </div>
+            </div>
 
             <TimelineAggregate
               timelineHeight={size}

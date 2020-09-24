@@ -28,3 +28,17 @@ export const updatePlayheadPosition = ({ video, playhead }) => {
     }px)`,
   )
 }
+
+export const filterDetections = ({ detections, settings }) => {
+  return detections
+    .map(({ name, predictions }) => {
+      const filteredPredictions = predictions.filter((prediction) => {
+        return prediction.label
+          .toLowerCase()
+          .includes(settings.filter.toLowerCase())
+      })
+
+      return { name, predictions: filteredPredictions }
+    })
+    .filter(({ predictions }) => predictions.length > 0)
+}

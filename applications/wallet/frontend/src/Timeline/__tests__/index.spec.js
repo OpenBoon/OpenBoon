@@ -9,6 +9,7 @@ const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 jest.mock('../Controls', () => 'TimelineControls')
 jest.mock('../Captions', () => 'TimelineCaptions')
 jest.mock('../Playhead', () => 'TimelinePlayhead')
+jest.mock('../FilterTracks', () => 'TimelineFilterTracks')
 jest.mock('../Ruler', () => 'TimelineRuler')
 jest.mock('../Aggregate', () => 'TimelineAggregate')
 jest.mock('../Detections', () => 'TimelineDetections')
