@@ -11,7 +11,6 @@ import FaceLabeling from '../FaceLabeling'
 import AssetDelete from '../AssetDelete'
 import FiltersIcon from '../Filters/Icon'
 import AssetLabeling from '../AssetLabeling'
-import { ENVS } from '../Feature'
 
 import InformationSvg from '../Icons/information.svg'
 import FaceDetectionSvg from '../Icons/faceDetection.svg'
@@ -45,7 +44,7 @@ const VisualizerContent = () => {
     >
       <div css={{ display: 'flex', height: '100%', overflowY: 'hidden' }}>
         <FetchAhead url={`/api/v1/projects/${projectId}/searches/fields/`} />
-        <FetchAhead url={`/api/v1/projects/${projectId}/models/`} />
+        <FetchAhead url={`/api/v1/projects/${projectId}/models/all/`} />
 
         <Panel openToThe="right">
           {{
@@ -75,8 +74,6 @@ const VisualizerContent = () => {
               title: 'Add Labels To Model',
               icon: <PenSvg height={constants.icons.regular} />,
               content: <AssetLabeling />,
-              flag: 'asset-labeling',
-              envs: [ENVS.QA],
               isBeta: true,
             },
             delete: {

@@ -15,7 +15,10 @@ describe('<TimelineDetections />', () => {
     const component = TestRenderer.create(
       <TimelineDetections
         detections={detections}
-        settings={{ [detections[0].name]: { isOpen: true } }}
+        settings={{
+          filter: '',
+          modules: { [detections[0].name]: { isOpen: true } },
+        }}
         dispatch={mockDispatch}
       />,
     )

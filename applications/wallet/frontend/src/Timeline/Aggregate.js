@@ -6,6 +6,8 @@ import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 
+import { filterDetections } from './helpers'
+
 import { ACTIONS } from './reducer'
 
 const TimelineAggregate = ({
@@ -14,6 +16,12 @@ const TimelineAggregate = ({
   settings,
   dispatch,
 }) => {
+  const filteredDetections = filterDetections({ detections, settings })
+
+  const isAllVisible = Object.values(settings.modules).every(
+    ({ isVisible }) => isVisible === true,
+  )
+
   return (
     <div
       css={{
@@ -30,7 +38,7 @@ const TimelineAggregate = ({
             <MenuButton
               onBlur={onBlur}
               onClick={onClick}
-              legend={`Detections (${detections.length})`}
+              legend={`Detections (${filteredDetections.length})`}
               style={{
                 '&,&:hover,&:visited': {
                   backgroundColor: isMenuOpen
@@ -63,16 +71,12 @@ const TimelineAggregate = ({
             >
               <div css={{ borderBottom: constants.borders.medium.steel }}>
                 <Checkbox
-                  key={Object.values(settings).every(
-                    ({ isVisible }) => isVisible === true,
-                  )}
+                  key={isAllVisible}
                   variant={CHECKBOX_VARIANTS.MENU}
                   option={{
                     value: 'all',
                     label: 'All',
-                    initialValue: Object.values(settings).every(
-                      ({ isVisible }) => isVisible === true,
-                    ),
+                    initialValue: isAllVisible,
                     isDisabled: false,
                   }}
                   onClick={() => {
@@ -86,13 +90,13 @@ const TimelineAggregate = ({
 
               {detections.map(({ name, predictions }) => (
                 <Checkbox
-                  key={`${name}.${settings[name]?.isVisible}`}
+                  key={`${name}.${settings.modules[name]?.isVisible}`}
                   variant={CHECKBOX_VARIANTS.MENU}
                   option={{
                     value: name,
                     label: name,
                     legend: `(${predictions.length})`,
-                    initialValue: settings[name]?.isVisible !== false,
+                    initialValue: settings.modules[name]?.isVisible !== false,
                     isDisabled: false,
                   }}
                   onClick={() => {
@@ -114,7 +118,10 @@ const TimelineAggregate = ({
 TimelineAggregate.propTypes = {
   timelineHeight: PropTypes.number.isRequired,
   detections: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  settings: PropTypes.shape({}).isRequired,
+  settings: PropTypes.shape({
+    filter: PropTypes.string.isRequired,
+    modules: PropTypes.shape({}).isRequired,
+  }).isRequired,
   dispatch: PropTypes.func.isRequired,
 }
 
