@@ -147,6 +147,92 @@ class TestAssetViewSet:
         assert content['mediaType'] == 'image/png'
 
 
+class TestTimelines:
+
+    def test_timelines_empty_response(self, login, project, api_client, monkeypatch):
+
+        def mock_response(*args, **kwargs):
+            return {'took': 3, 'timed_out': False, '_shards': {'total': 3, 'successful': 3, 'skipped': 0, 'failed': 0}, 'hits': {'total': {'value': 0, 'relation': 'eq'}, 'max_score': None, 'hits': []}}  # noqa
+
+        monkeypatch.setattr(AssetViewSet, '_zmlp_get_content_from_es_search', mock_response)
+        asset_id = '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5'
+        response = api_client.get(reverse('asset-timelines',
+                                          kwargs={'project_pk': project.id,
+                                                  'pk': asset_id}))
+        content = check_response(response)
+        assert content == []
+
+    def test_timeline(self, login, project, api_client, monkeypatch):
+
+        def mock_response(*args, **kwargs):
+            return {'took': 4, 'timed_out': False, '_shards': {'total': 3, 'successful': 3, 'skipped': 0, 'failed': 0}, 'hits': {'total': {'value': 134, 'relation': 'eq'}, 'max_score': 0.0, 'hits': [{'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'gY6ZV7AVKyIAGdcDopKJy6S4Jl2LKNQX', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.904, 'stop': 19.453, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 0.033, 'length': 19.42, 'timeline': 'gcp-video-logo-detection', 'track': 'AAMCO Transmissions', 'content': ['AAMCO Transmissions']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'e7sRs6KWejPJwScDB9VipWDWXoyA8m3E', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 2.936, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 1.735, 'length': 1.201, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'ShVFwPsVKP7h76Ml30x4qh3zoSrEFQgc', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 9.743, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 3.537, 'length': 6.206, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'bM62oaRK82OzUUNpjCyA3Xo2mf0tvQpU', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 10.344, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 10.244, 'length': 0.1, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': '0jtcS42wmk6dwSbRiW3Oi9v46QY4W9Yz', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 13.847, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 13.447, 'length': 0.4, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'b4lo4jKOhU0lyqPJ1NTQCnOZGLO9TOwt', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 15.048, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 14.748, 'length': 0.3, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'hFAwdiwtZs0WovYQ2RhOTREHUVy8KQud', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 19.453, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 15.949, 'length': 3.504, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': '43fHeEBKapcIOEQQyhiNNMrvd2zBY1hl', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.885, 'stop': 1.935, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 0.033, 'length': 1.902, 'timeline': 'gcp-video-object-detection', 'track': 'person', 'content': ['person']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'R83rxMfDt3_cOLjR7IqH-wjx0366YnzG', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.872, 'stop': 0.334, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 0.033, 'length': 0.301, 'timeline': 'gcp-video-object-detection', 'track': 'car', 'content': ['car']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'l38Em6MQkL4KjQsNTmNVW-2ePau2ZSUF', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.847, 'stop': 1.935, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 1.635, 'length': 0.3, 'timeline': 'gcp-video-object-detection', 'track': 'car', 'content': ['car']}}}]}}  # noqa
+
+        monkeypatch.setattr(AssetViewSet, '_zmlp_get_content_from_es_search', mock_response)
+        asset_id = '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5'
+        response = api_client.get(reverse('asset-timelines',
+                                          kwargs={'project_pk': project.id,
+                                                  'pk': asset_id}))
+        content = check_response(response)
+        assert content == [
+            {'timeline': 'gcp-video-logo-detection',
+             'count': 7,
+             'hits': [
+                 {'start': 0.033, 'stop': 19.453},
+                 {'start': 1.735, 'stop': 2.936},
+                 {'start': 3.537, 'stop': 9.743},
+                 {'start': 10.244, 'stop': 10.344},
+                 {'start': 13.447, 'stop': 13.847},
+                 {'start': 14.748, 'stop': 15.048},
+                 {'start': 15.949, 'stop': 19.453}
+             ],
+             'tracks': [
+                 {
+                     'track': 'AAMCO Transmissions',
+                     'count': 1,
+                     'hits': [
+                         {'start': 0.033, 'stop': 19.453}
+                     ]
+                 },
+                 {
+                     'track': 'Patagonia',
+                     'count': 6,
+                     'hits': [
+                         {'start': 1.735, 'stop': 2.936},
+                         {'start': 3.537, 'stop': 9.743},
+                         {'start': 10.244, 'stop': 10.344},
+                         {'start': 13.447, 'stop': 13.847},
+                         {'start': 14.748, 'stop': 15.048},
+                         {'start': 15.949, 'stop': 19.453}
+                     ]
+                 }
+             ]},
+            {'timeline': 'gcp-video-object-detection',
+             'count': 3,
+             'hits': [
+                 {'start': 0.033, 'stop': 1.935},
+                 {'start': 0.033, 'stop': 0.334},
+                 {'start': 1.635, 'stop': 1.935}
+             ],
+             'tracks': [
+                 {
+                     'track': 'person',
+                     'count': 1,
+                     'hits': [
+                         {'start': 0.033, 'stop': 1.935}
+                     ]
+                 },
+                 {
+                     'track': 'car',
+                     'count': 2,
+                     'hits': [
+                         {'start': 0.033, 'stop': 0.334},
+                         {'start': 1.635, 'stop': 1.935}
+                     ]
+                 }
+             ]}
+        ]
+
+
 class TestFileNameViewSet:
 
     def test_get_proxy(self, project, zvi_project_user, api_client, monkeypatch):
