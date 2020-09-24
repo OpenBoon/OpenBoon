@@ -272,6 +272,10 @@ class HistogramVisualization(BaseVisualization):
             agg_data = response['aggregations'][agg_key]
         _min, _max = agg_data['min'], agg_data['max']
 
+        if _min is None or _max is None:
+            # No min and max means we need to return dummy numbers to get an empty agg response
+            return 1, 1
+
         # Calculate correct interval to get the # of buckets we want
         if size == 1:
             interval = _max - _min
