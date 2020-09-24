@@ -72,7 +72,7 @@ class TestApikey:
         assert response.status_code == 201
         content = response.json()
         assert content == {'secretKey': 'secret', 'accessKey': 'access'}
-        assert response['Cache-Control'] == 'max-age=0, no-cache, no-store, must-revalidate, private'
+        assert response['Cache-Control'] == 'max-age=0, no-store'
 
     def test_post_create_bad_body(self, zmlp_project_user, project, api_client,
                                   monkeypatch, detail_data):
