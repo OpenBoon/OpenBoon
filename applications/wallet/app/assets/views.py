@@ -111,6 +111,41 @@ class AssetViewSet(BaseProjectViewSet):
         response = request.client.get(path)
         return Response(status=status.HTTP_200_OK, data=response)
 
+    @action(detail=True, methods=['get'])
+    def timelines(self, request, project_pk, pk):
+        """Returns the time based metadata in timeline format."""
+        base_path = f'{self.zmlp_root_api_path}{pk}/clips'
+        content = self._zmlp_get_content_from_es_search(request, base_url=base_path)
+        formatted_content = self._get_formatted_timelines(content)
+        return Response(formatted_content)
+
+    def _get_formatted_timelines(self, content):
+        """Helper to format the clip search response from ZMLP into the JSON response for the UI"""
+        # Organize the detections into a more helpful state
+        data = {}
+        for entry in content['hits']['hits']:
+            clip = entry['_source']['clip']
+            timeline = clip['timeline']
+            track = clip['track']
+            start = clip['start']
+            stop = clip['stop']
+            data.setdefault(timeline, {}).setdefault(track, []).append({'start': start, 'stop': stop})
+
+        formatted_timelines = []
+        for timeline in data:
+            section = {'timeline': timeline,
+                       'hits': [],
+                       'tracks': []}
+            for track in data[timeline]:
+                track_section = {'track': track,
+                                 'count': len(data[timeline][track]),
+                                 'hits': data[timeline][track]}
+                section['hits'].extend(track_section['hits'])
+                section['tracks'].append(track_section)
+            section['count'] = len(section['hits'])
+            formatted_timelines.append(section)
+        return formatted_timelines
+
 
 class FileCategoryViewSet(BaseProjectViewSet):
     zmlp_only = True
