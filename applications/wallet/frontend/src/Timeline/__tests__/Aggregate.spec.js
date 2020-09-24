@@ -14,7 +14,10 @@ describe('<TimelineAggregate />', () => {
       <TimelineAggregate
         timelineHeight={400}
         detections={detections}
-        settings={{ [detections[0].name]: { isVisible: true } }}
+        settings={{
+          filter: '',
+          modules: { [detections[0].name]: { isVisible: true } },
+        }}
         dispatch={mockDispatch}
       />,
     )

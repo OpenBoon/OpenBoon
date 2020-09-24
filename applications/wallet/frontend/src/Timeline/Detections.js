@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing } from '../Styles'
 
+import { filterDetections } from './helpers'
+
 import TimelineAccordion, { COLOR_TAB_WIDTH } from './Accordion'
 import TimelineTracks from './Tracks'
 
@@ -20,6 +22,8 @@ const COLORS = [
 ]
 
 const TimelineDetections = ({ detections, settings, dispatch }) => {
+  const filteredDetections = filterDetections({ detections, settings })
+
   return (
     <div
       css={{
@@ -31,8 +35,8 @@ const TimelineDetections = ({ detections, settings, dispatch }) => {
       }}
     >
       <div css={{ width: constants.timeline.modulesWidth }}>
-        {detections
-          .filter(({ name }) => settings[name]?.isVisible !== false)
+        {filteredDetections
+          .filter(({ name }) => settings.modules[name]?.isVisible !== false)
           .map(({ name, predictions }, index) => {
             const colorIndex = index % COLORS.length
 
@@ -43,7 +47,7 @@ const TimelineDetections = ({ detections, settings, dispatch }) => {
                 name={name}
                 predictions={predictions}
                 dispatch={dispatch}
-                isOpen={settings[name]?.isOpen || false}
+                isOpen={settings.modules[name]?.isOpen || false}
               >
                 {predictions.map(({ label, count }) => {
                   return (
@@ -89,15 +93,15 @@ const TimelineDetections = ({ detections, settings, dispatch }) => {
       </div>
 
       <div css={{ flex: 1 }}>
-        {detections
-          .filter(({ name }) => settings[name]?.isVisible !== false)
+        {filteredDetections
+          .filter(({ name }) => settings.modules[name]?.isVisible !== false)
           .map(({ name, predictions }) => {
             return (
               <TimelineTracks
                 key={name}
                 name={name}
                 predictions={predictions}
-                isOpen={settings[name]?.isOpen || false}
+                isOpen={settings.modules[name]?.isOpen || false}
               />
             )
           })}
@@ -108,7 +112,10 @@ const TimelineDetections = ({ detections, settings, dispatch }) => {
 
 TimelineDetections.propTypes = {
   detections: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  settings: PropTypes.shape({}).isRequired,
+  settings: PropTypes.shape({
+    filter: PropTypes.string.isRequired,
+    modules: PropTypes.shape({}).isRequired,
+  }).isRequired,
   dispatch: PropTypes.func.isRequired,
 }
 
