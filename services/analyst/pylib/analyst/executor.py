@@ -379,7 +379,7 @@ class DockerContainerWrapper(object):
         model_cache = ModelCacheManager.create_model_cache(self.task)
 
         volumes = {
-            "/tmp": {"bind": "/tmp", "mode": "rw"}
+            "/tmp": {"bind": os.environ.get("ANALYST_TEMP", "/tmp"), "mode": "rw"}
         }
 
         network = self.get_network_id()

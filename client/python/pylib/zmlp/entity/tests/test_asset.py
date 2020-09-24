@@ -2,7 +2,7 @@ import json
 import logging
 import unittest
 
-from zmlp import Asset, StoredFile, FileImport, FileUpload, Clip, FileTypes, Label, Model
+from zmlp import Asset, StoredFile, FileImport, FileUpload, FileTypes, Label, Model
 from zmlp.client import to_json
 
 logging.basicConfig(level=logging.DEBUG)
@@ -270,15 +270,11 @@ class FileImportTests(unittest.TestCase):
 
     def test_for_json(self):
         imp = FileImport('gs://zorroa-dev-data/image/pluto.png',
-                         clip=Clip("page", 1, 10, "page"),
                          label=Label("12345", "dog"))
 
         d = json.loads(to_json(imp))
         assert 'gs://zorroa-dev-data/image/pluto.png' == d['uri']
         assert {} == d['attrs']
-        assert 'page' == d['clip']['type']
-        assert 1.0 == d['clip']['start']
-        assert 10.0 == d['clip']['stop']
         assert '12345' == d['label']['modelId']
         assert 'dog' == d['label']['label']
 
@@ -287,39 +283,14 @@ class FileUploadTests(unittest.TestCase):
 
     def test_for_json(self):
         imp = FileUpload(__file__,
-                         clip=Clip("page", 1, 10, "page"),
+                         page=1,
                          label=Label("12345", "dog"))
 
         d = json.loads(to_json(imp))
         assert __file__ == d['uri']
-        assert 'page' == d['clip']['type']
-        assert 1.0 == d['clip']['start']
-        assert 10.0 == d['clip']['stop']
+        assert 1 == d['page']
         assert '12345' == d['label']['modelId']
         assert 'dog' == d['label']['label']
-
-
-class ClipTests(unittest.TestCase):
-
-    def test_page_clip(self):
-        clip = Clip.page(10)
-        assert clip.start == 10
-        assert clip.stop == 10
-        assert clip.type == 'page'
-
-    def test_scene_clip(self):
-        clip = Clip.scene(1.44, 2.25, "shot")
-        assert clip.start == 1.44
-        assert clip.stop == 2.25
-        assert clip.type == 'scene'
-        assert clip.track == 'shot'
-
-    def test_create_clip(self):
-        clip = Clip("scene", 1, 2, "faces")
-        assert clip.start == 1
-        assert clip.stop == 2
-        assert clip.type == 'scene'
-        assert clip.track == 'faces'
 
 
 class FileTypesTests(unittest.TestCase):

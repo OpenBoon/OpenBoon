@@ -39,17 +39,16 @@ class ImageImporterUnitTestCase(PluginUnitTestCase):
 
     def test_process_multipage_tiff(self):
         frame = Frame(TestAsset(OFFICE))
+        frame.asset.set_attr("media.pageNumber", 1)
         processor = self.init_processor(ImageImporter(),
                                         {'extract_image_pages': True})
         processor.process(frame)
         document = frame.asset
         assert document.get_attr('media.length') == 10
-        assert document.get_attr('clip.start') == 1
-        assert document.get_attr('clip.stop') == 1
-        assert document.get_attr('clip.type') == 'page'
+        assert document.get_attr('media.pageNumber') == 1
         assert len(processor.reactor.expand_frames) == 9
         for i, expand in enumerate(processor.reactor.expand_frames, 1):
-            assert expand[1].asset.clip.start == float(i + 1)
+            assert expand[1].asset.page == i + 1
 
     def test_process_geotagged(self):
         frame = Frame(TestAsset(GEO_TAG))

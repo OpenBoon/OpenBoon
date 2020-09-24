@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ArchivistConfiguration
+import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexTask
 import com.zorroa.archivist.domain.IndexTaskState
@@ -11,7 +12,7 @@ import com.zorroa.archivist.domain.ProjectIndexMigrationSpec
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.IndexTaskDao
 import com.zorroa.archivist.repository.IndexTaskJdbcDao
-import com.zorroa.archivist.repository.ProjectCustomDao
+import com.zorroa.archivist.repository.ProjectDao
 import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.zmlp.service.security.getZmlpActor
@@ -24,9 +25,13 @@ import org.elasticsearch.common.xcontent.XContentBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.reindex.ReindexRequest
 import org.elasticsearch.index.reindex.RemoteInfo
+import org.elasticsearch.script.Script
+import org.elasticsearch.script.ScriptType
 import org.slf4j.LoggerFactory
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
+import java.io.BufferedReader
 import java.net.URI
 import java.util.Timer
 import java.util.UUID
@@ -49,13 +54,18 @@ interface IndexTaskService {
      * Migrate the specific project to a new index.
      */
     fun migrateProject(project: Project, spec: ProjectIndexMigrationSpec): IndexTask
+
+    /**
+     * Get a reindex script associated with an index version.
+     */
+    fun getReindexScript(route: IndexRoute): String?
 }
 
 @Service
 class IndexTaskServiceImpl(
     val indexRouteDao: IndexRouteDao,
     val indexRoutingService: IndexRoutingService,
-    val indexTaskDao: IndexTaskDao
+    val indexTaskDao: IndexTaskDao,
 ) : IndexTaskService {
 
     override fun migrateProject(project: Project, spec: ProjectIndexMigrationSpec): IndexTask {
@@ -88,6 +98,12 @@ class IndexTaskServiceImpl(
         )
     }
 
+    override fun getReindexScript(route: IndexRoute): String? {
+        val path = "db/migration/elasticsearch/${route.mapping}.v${route.majorVer}.painless"
+        val resource = ClassPathResource(path)
+        return resource?.inputStream.bufferedReader().use(BufferedReader::readText)
+    }
+
     override fun createIndexMigrationTask(spec: IndexToIndexMigrationSpec): IndexTask {
         val srcRoute = indexRouteDao.get(spec.srcIndexRouteId)
         val dstRoute = indexRouteDao.get(spec.dstIndexRouteId)
@@ -99,6 +115,12 @@ class IndexTaskServiceImpl(
             .setSourceQuery(QueryBuilders.matchAllQuery())
             .setDestIndex(dstRoute.indexName)
             .setSourceBatchSize(500)
+
+        if (dstRoute.majorVer > srcRoute.majorVer) {
+            getReindexScript(dstRoute)?.let {
+                req.script = Script(ScriptType.INLINE, "painless", it, mapOf())
+            }
+        }
 
         val uri = URI(srcRoute.clusterUrl)
 
@@ -126,6 +148,9 @@ class IndexTaskServiceImpl(
         val time = System.currentTimeMillis()
         val actor = getZmlpActor().toString()
 
+        logger.info("$esTask ES migration tasks created")
+        logger.info("$esTask src index: ${srcRoute.indexName} dst index: ${dstRoute.indexName}")
+
         val indexTask = IndexTask(
             UUID.randomUUID(),
             dstRoute.projectId,
@@ -148,11 +173,15 @@ class IndexTaskServiceImpl(
         val rest = indexRoutingService.getClusterRestClient(task.dstIndexRouteId ?: task.srcIndexRouteId)
         return rest.client.tasks().get(task.buildGetTaskRequest(), RequestOptions.DEFAULT).get()
     }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(IndexTaskServiceImpl::class.java)
+    }
 }
 
 @Component
 class IndexTaskMonitor(
-    val projectCustomDao: ProjectCustomDao,
+    val projectDao: ProjectDao,
     val indexTaskDao: IndexTaskDao,
     val indexTaskJdbcDao: IndexTaskJdbcDao,
     val indexRoutingService: IndexRoutingService
@@ -236,7 +265,7 @@ class IndexTaskMonitor(
             }
 
             // This puts the project on the new index.
-            if (!projectCustomDao.updateIndexRoute(task.projectId, indexRoute)) {
+            if (!indexRoutingService.setIndexRoute(projectDao.getOne(task.projectId), indexRoute)) {
                 logger.warn("Unable to set new index route for project ${task.projectId}")
                 false
             }

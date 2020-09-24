@@ -63,24 +63,19 @@ describe('<FilterLabelConfidenceContent />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'labelConfidence',
-                attribute: 'analysis.zvi-label-detection',
-                values: { labels: ['web_site'], min: 0, max: 1 },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'labelConfidence',
+          attribute: 'analysis.zvi-label-detection',
+          values: { labels: ['web_site'], min: 0, max: 1 },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1sYWJlbC1kZXRlY3Rpb24iLCJ2YWx1ZXMiOnsibGFiZWxzIjpbIndlYl9zaXRlIl0sIm1pbiI6MCwibWF4IjoxfX1d',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -127,24 +122,19 @@ describe('<FilterLabelConfidenceContent />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'labelConfidence',
-                attribute: 'analysis.zvi-label-detection',
-                values: {},
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'labelConfidence',
+          attribute: 'analysis.zvi-label-detection',
+          values: {},
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1sYWJlbC1kZXRlY3Rpb24iLCJ2YWx1ZXMiOnt9fV0=',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -191,24 +181,19 @@ describe('<FilterLabelConfidenceContent />', () => {
       component.root.findByType('Slider').props.onChange([0.2, 0.8])
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'labelConfidence',
-                attribute: 'analysis.zvi-label-detection',
-                values: { labels: ['web_site'], min: 0.2, max: 0.8 },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'labelConfidence',
+          attribute: 'analysis.zvi-label-detection',
+          values: { labels: ['web_site'], min: 0.2, max: 0.8 },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1sYWJlbC1kZXRlY3Rpb24iLCJ2YWx1ZXMiOnsibGFiZWxzIjpbIndlYl9zaXRlIl0sIm1pbiI6MC4yLCJtYXgiOjAuOH19XQ==',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
 
     act(() => {

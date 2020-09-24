@@ -11,7 +11,7 @@ const JobsMenu = ({ projectId, jobId, status, revalidate }) => {
   if (!ACTIONS[status].length) return null
 
   return (
-    <Menu open="left" button={ButtonActions}>
+    <Menu open="bottom-left" button={ButtonActions}>
       {({ onBlur, onClick }) => (
         <div>
           <ul>
@@ -30,7 +30,6 @@ const JobsMenu = ({ projectId, jobId, status, revalidate }) => {
 
                     revalidate()
                   }}
-                  isDisabled={false}
                 >
                   {name}
                 </Button>

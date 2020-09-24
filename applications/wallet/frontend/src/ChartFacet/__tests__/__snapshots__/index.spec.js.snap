@@ -17,13 +17,13 @@ exports[`<ChartFacet /> should edit 1`] = `
 `;
 
 exports[`<ChartFacet /> should render properly 1`] = `
-.emotion-85 {
+.emotion-86 {
   height: 100%;
   overflow: hidden;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-84 {
+.emotion-85 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -143,11 +143,19 @@ exports[`<ChartFacet /> should render properly 1`] = `
   width: 2px;
 }
 
-.emotion-83 {
+.emotion-84 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+}
+
+.emotion-83 {
+  height: 100%;
+}
+
+.emotion-83 .Loading {
+  min-height: auto;
 }
 
 .emotion-82 {
@@ -393,7 +401,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding-top: 8px;
+  padding-top: 16px;
 }
 
 .emotion-80 {
@@ -447,7 +455,7 @@ exports[`<ChartFacet /> should render properly 1`] = `
 }
 
 .emotion-80:hover,
-.emotion-80:focus {
+.emotion-80.focus-visible:focus {
   color: #ffffff;
 }
 
@@ -471,10 +479,10 @@ exports[`<ChartFacet /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-85"
+  className="emotion-86"
 >
   <div
-    className="emotion-84"
+    className="emotion-85"
   >
     <div
       className="emotion-5"
@@ -517,391 +525,395 @@ exports[`<ChartFacet /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-83"
+      className="emotion-84"
     >
       <div
-        className="emotion-82"
+        className="emotion-83"
       >
         <div
-          className="emotion-6"
+          className="emotion-82"
         >
-          <div>
-            LABEL
-          </div>
-          <div>
-            COUNT
-          </div>
-        </div>
-        <ul
-          className="emotion-77"
-        >
-          <li>
-            <button
-              aria-label="Tyngsboro"
-              className="emotion-16"
-              onClick={[Function]}
-              type="button"
-            >
-              <div
-                className="emotion-15"
-              >
-                <div
-                  className="emotion-13"
-                >
-                  <div
-                    className="emotion-9"
-                  >
-                    <div
-                      className="emotion-7"
-                    />
-                    <div
-                      className="emotion-8"
-                    />
-                  </div>
-                  <div
-                    className="emotion-12"
-                  >
-                    <div
-                      className="emotion-10"
-                    >
-                      Tyngsboro
-                    </div>
-                    <div
-                      className="emotion-11"
-                    >
-                      3
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="emotion-14"
-                >
-                  <svg
-                    data-file-name="filter.svg"
-                    height={20}
-                  />
-                </div>
-              </div>
-            </button>
-          </li>
-          <li>
-            <button
-              aria-label="Brooklyn"
-              className="emotion-16"
-              onClick={[Function]}
-              type="button"
-            >
-              <div
-                className="emotion-15"
-              >
-                <div
-                  className="emotion-13"
-                >
-                  <div
-                    className="emotion-9"
-                  >
-                    <div
-                      className="emotion-17"
-                    />
-                    <div
-                      className="emotion-18"
-                    />
-                  </div>
-                  <div
-                    className="emotion-12"
-                  >
-                    <div
-                      className="emotion-10"
-                    >
-                      Brooklyn
-                    </div>
-                    <div
-                      className="emotion-11"
-                    >
-                      2
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="emotion-14"
-                >
-                  <svg
-                    data-file-name="filter.svg"
-                    height={20}
-                  />
-                </div>
-              </div>
-            </button>
-          </li>
-          <li>
-            <button
-              aria-label="Cát Bà"
-              className="emotion-16"
-              onClick={[Function]}
-              type="button"
-            >
-              <div
-                className="emotion-15"
-              >
-                <div
-                  className="emotion-13"
-                >
-                  <div
-                    className="emotion-9"
-                  >
-                    <div
-                      className="emotion-27"
-                    />
-                    <div
-                      className="emotion-28"
-                    />
-                  </div>
-                  <div
-                    className="emotion-12"
-                  >
-                    <div
-                      className="emotion-10"
-                    >
-                      Cát Bà
-                    </div>
-                    <div
-                      className="emotion-11"
-                    >
-                      1
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="emotion-14"
-                >
-                  <svg
-                    data-file-name="filter.svg"
-                    height={20}
-                  />
-                </div>
-              </div>
-            </button>
-          </li>
-          <li>
-            <button
-              aria-label="La Habana Vieja"
-              className="emotion-16"
-              onClick={[Function]}
-              type="button"
-            >
-              <div
-                className="emotion-15"
-              >
-                <div
-                  className="emotion-13"
-                >
-                  <div
-                    className="emotion-9"
-                  >
-                    <div
-                      className="emotion-37"
-                    />
-                    <div
-                      className="emotion-28"
-                    />
-                  </div>
-                  <div
-                    className="emotion-12"
-                  >
-                    <div
-                      className="emotion-10"
-                    >
-                      La Habana Vieja
-                    </div>
-                    <div
-                      className="emotion-11"
-                    >
-                      1
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="emotion-14"
-                >
-                  <svg
-                    data-file-name="filter.svg"
-                    height={20}
-                  />
-                </div>
-              </div>
-            </button>
-          </li>
-          <li>
-            <button
-              aria-label="North Glendale"
-              className="emotion-16"
-              onClick={[Function]}
-              type="button"
-            >
-              <div
-                className="emotion-15"
-              >
-                <div
-                  className="emotion-13"
-                >
-                  <div
-                    className="emotion-9"
-                  >
-                    <div
-                      className="emotion-47"
-                    />
-                    <div
-                      className="emotion-28"
-                    />
-                  </div>
-                  <div
-                    className="emotion-12"
-                  >
-                    <div
-                      className="emotion-10"
-                    >
-                      North Glendale
-                    </div>
-                    <div
-                      className="emotion-11"
-                    >
-                      1
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="emotion-14"
-                >
-                  <svg
-                    data-file-name="filter.svg"
-                    height={20}
-                  />
-                </div>
-              </div>
-            </button>
-          </li>
-          <li>
-            <button
-              aria-label="Saalfelden am Steinernen Meer"
-              className="emotion-16"
-              onClick={[Function]}
-              type="button"
-            >
-              <div
-                className="emotion-15"
-              >
-                <div
-                  className="emotion-13"
-                >
-                  <div
-                    className="emotion-9"
-                  >
-                    <div
-                      className="emotion-57"
-                    />
-                    <div
-                      className="emotion-28"
-                    />
-                  </div>
-                  <div
-                    className="emotion-12"
-                  >
-                    <div
-                      className="emotion-10"
-                    >
-                      Saalfelden am Steinernen Meer
-                    </div>
-                    <div
-                      className="emotion-11"
-                    >
-                      1
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="emotion-14"
-                >
-                  <svg
-                    data-file-name="filter.svg"
-                    height={20}
-                  />
-                </div>
-              </div>
-            </button>
-          </li>
-          <li>
-            <button
-              aria-label="Zermatt"
-              className="emotion-16"
-              onClick={[Function]}
-              type="button"
-            >
-              <div
-                className="emotion-15"
-              >
-                <div
-                  className="emotion-13"
-                >
-                  <div
-                    className="emotion-9"
-                  >
-                    <div
-                      className="emotion-67"
-                    />
-                    <div
-                      className="emotion-68"
-                    />
-                  </div>
-                  <div
-                    className="emotion-12"
-                  >
-                    <div
-                      className="emotion-10"
-                    >
-                      Zermatt
-                    </div>
-                    <div
-                      className="emotion-11"
-                    >
-                      0
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="emotion-14"
-                >
-                  <svg
-                    data-file-name="filter.svg"
-                    height={20}
-                  />
-                </div>
-              </div>
-            </button>
-          </li>
-        </ul>
-        <div
-          className="emotion-81"
-        >
-          <button
-            aria-label="Add Filter"
-            className="emotion-80"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-6"
           >
-            <div
-              className="emotion-79"
+            <div>
+              LABEL
+            </div>
+            <div>
+              COUNT
+            </div>
+          </div>
+          <ul
+            className="emotion-77"
+          >
+            <li>
+              <button
+                aria-label="Tyngsboro"
+                className="emotion-16"
+                onClick={[Function]}
+                type="button"
+              >
+                <div
+                  className="emotion-15"
+                >
+                  <div
+                    className="emotion-13"
+                  >
+                    <div
+                      className="emotion-9"
+                    >
+                      <div
+                        className="emotion-7"
+                      />
+                      <div
+                        className="emotion-8"
+                      />
+                    </div>
+                    <div
+                      className="emotion-12"
+                    >
+                      <div
+                        className="emotion-10"
+                      >
+                        Tyngsboro
+                      </div>
+                      <div
+                        className="emotion-11"
+                      >
+                        3
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="emotion-14"
+                  >
+                    <svg
+                      data-file-name="filter.svg"
+                      height={20}
+                    />
+                  </div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button
+                aria-label="Brooklyn"
+                className="emotion-16"
+                onClick={[Function]}
+                type="button"
+              >
+                <div
+                  className="emotion-15"
+                >
+                  <div
+                    className="emotion-13"
+                  >
+                    <div
+                      className="emotion-9"
+                    >
+                      <div
+                        className="emotion-17"
+                      />
+                      <div
+                        className="emotion-18"
+                      />
+                    </div>
+                    <div
+                      className="emotion-12"
+                    >
+                      <div
+                        className="emotion-10"
+                      >
+                        Brooklyn
+                      </div>
+                      <div
+                        className="emotion-11"
+                      >
+                        2
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="emotion-14"
+                  >
+                    <svg
+                      data-file-name="filter.svg"
+                      height={20}
+                    />
+                  </div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button
+                aria-label="Cát Bà"
+                className="emotion-16"
+                onClick={[Function]}
+                type="button"
+              >
+                <div
+                  className="emotion-15"
+                >
+                  <div
+                    className="emotion-13"
+                  >
+                    <div
+                      className="emotion-9"
+                    >
+                      <div
+                        className="emotion-27"
+                      />
+                      <div
+                        className="emotion-28"
+                      />
+                    </div>
+                    <div
+                      className="emotion-12"
+                    >
+                      <div
+                        className="emotion-10"
+                      >
+                        Cát Bà
+                      </div>
+                      <div
+                        className="emotion-11"
+                      >
+                        1
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="emotion-14"
+                  >
+                    <svg
+                      data-file-name="filter.svg"
+                      height={20}
+                    />
+                  </div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button
+                aria-label="La Habana Vieja"
+                className="emotion-16"
+                onClick={[Function]}
+                type="button"
+              >
+                <div
+                  className="emotion-15"
+                >
+                  <div
+                    className="emotion-13"
+                  >
+                    <div
+                      className="emotion-9"
+                    >
+                      <div
+                        className="emotion-37"
+                      />
+                      <div
+                        className="emotion-28"
+                      />
+                    </div>
+                    <div
+                      className="emotion-12"
+                    >
+                      <div
+                        className="emotion-10"
+                      >
+                        La Habana Vieja
+                      </div>
+                      <div
+                        className="emotion-11"
+                      >
+                        1
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="emotion-14"
+                  >
+                    <svg
+                      data-file-name="filter.svg"
+                      height={20}
+                    />
+                  </div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button
+                aria-label="North Glendale"
+                className="emotion-16"
+                onClick={[Function]}
+                type="button"
+              >
+                <div
+                  className="emotion-15"
+                >
+                  <div
+                    className="emotion-13"
+                  >
+                    <div
+                      className="emotion-9"
+                    >
+                      <div
+                        className="emotion-47"
+                      />
+                      <div
+                        className="emotion-28"
+                      />
+                    </div>
+                    <div
+                      className="emotion-12"
+                    >
+                      <div
+                        className="emotion-10"
+                      >
+                        North Glendale
+                      </div>
+                      <div
+                        className="emotion-11"
+                      >
+                        1
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="emotion-14"
+                  >
+                    <svg
+                      data-file-name="filter.svg"
+                      height={20}
+                    />
+                  </div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button
+                aria-label="Saalfelden am Steinernen Meer"
+                className="emotion-16"
+                onClick={[Function]}
+                type="button"
+              >
+                <div
+                  className="emotion-15"
+                >
+                  <div
+                    className="emotion-13"
+                  >
+                    <div
+                      className="emotion-9"
+                    >
+                      <div
+                        className="emotion-57"
+                      />
+                      <div
+                        className="emotion-28"
+                      />
+                    </div>
+                    <div
+                      className="emotion-12"
+                    >
+                      <div
+                        className="emotion-10"
+                      >
+                        Saalfelden am Steinernen Meer
+                      </div>
+                      <div
+                        className="emotion-11"
+                      >
+                        1
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="emotion-14"
+                  >
+                    <svg
+                      data-file-name="filter.svg"
+                      height={20}
+                    />
+                  </div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button
+                aria-label="Zermatt"
+                className="emotion-16"
+                onClick={[Function]}
+                type="button"
+              >
+                <div
+                  className="emotion-15"
+                >
+                  <div
+                    className="emotion-13"
+                  >
+                    <div
+                      className="emotion-9"
+                    >
+                      <div
+                        className="emotion-67"
+                      />
+                      <div
+                        className="emotion-68"
+                      />
+                    </div>
+                    <div
+                      className="emotion-12"
+                    >
+                      <div
+                        className="emotion-10"
+                      >
+                        Zermatt
+                      </div>
+                      <div
+                        className="emotion-11"
+                      >
+                        0
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="emotion-14"
+                  >
+                    <svg
+                      data-file-name="filter.svg"
+                      height={20}
+                    />
+                  </div>
+                </div>
+              </button>
+            </li>
+          </ul>
+          <div
+            className="emotion-81"
+          >
+            <button
+              aria-label="Add Filter"
+              className="emotion-80"
+              onClick={[Function]}
+              type="button"
             >
               <div
-                className="emotion-78"
+                className="emotion-79"
               >
-                <svg
-                  data-file-name="filter.svg"
-                  height={20}
-                />
+                <div
+                  className="emotion-78"
+                >
+                  <svg
+                    data-file-name="filter.svg"
+                    height={20}
+                  />
+                </div>
+                Add Filter
               </div>
-              Add Filter
-            </div>
-          </button>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -910,13 +922,13 @@ exports[`<ChartFacet /> should render properly 1`] = `
 `;
 
 exports[`<ChartFacet /> should render properly without data 1`] = `
-.emotion-15 {
+.emotion-16 {
   height: 100%;
   overflow: hidden;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-14 {
+.emotion-15 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1036,11 +1048,19 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   width: 2px;
 }
 
-.emotion-13 {
+.emotion-14 {
   height: 0%;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+}
+
+.emotion-13 {
+  height: 100%;
+}
+
+.emotion-13 .Loading {
+  min-height: auto;
 }
 
 .emotion-12 {
@@ -1095,7 +1115,7 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding-top: 8px;
+  padding-top: 16px;
 }
 
 .emotion-10 {
@@ -1149,7 +1169,7 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
 }
 
 .emotion-10:hover,
-.emotion-10:focus {
+.emotion-10.focus-visible:focus {
   color: #ffffff;
 }
 
@@ -1173,10 +1193,10 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
 }
 
 <div
-  className="emotion-15"
+  className="emotion-16"
 >
   <div
-    className="emotion-14"
+    className="emotion-15"
   >
     <div
       className="emotion-5"
@@ -1219,47 +1239,51 @@ exports[`<ChartFacet /> should render properly without data 1`] = `
       </div>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-14"
     >
       <div
-        className="emotion-12"
+        className="emotion-13"
       >
         <div
-          className="emotion-6"
+          className="emotion-12"
         >
-          <div>
-            LABEL
-          </div>
-          <div>
-            COUNT
-          </div>
-        </div>
-        <ul
-          className="emotion-7"
-        />
-        <div
-          className="emotion-11"
-        >
-          <button
-            aria-label="Add Filter"
-            className="emotion-10"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-6"
           >
-            <div
-              className="emotion-9"
+            <div>
+              LABEL
+            </div>
+            <div>
+              COUNT
+            </div>
+          </div>
+          <ul
+            className="emotion-7"
+          />
+          <div
+            className="emotion-11"
+          >
+            <button
+              aria-label="Add Filter"
+              className="emotion-10"
+              onClick={[Function]}
+              type="button"
             >
               <div
-                className="emotion-8"
+                className="emotion-9"
               >
-                <svg
-                  data-file-name="filter.svg"
-                  height={20}
-                />
+                <div
+                  className="emotion-8"
+                >
+                  <svg
+                    data-file-name="filter.svg"
+                    height={20}
+                  />
+                </div>
+                Add Filter
               </div>
-              Add Filter
-            </div>
-          </button>
+            </button>
+          </div>
         </div>
       </div>
     </div>

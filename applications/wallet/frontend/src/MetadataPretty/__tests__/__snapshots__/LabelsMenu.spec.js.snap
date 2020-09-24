@@ -3,6 +3,7 @@
 exports[`<MetadataPrettyLabelsMenu /> should add a model/label filter 1`] = `
 .emotion-6 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-0 {
@@ -135,7 +136,8 @@ exports[`<MetadataPrettyLabelsMenu /> should add a model/label filter 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-1:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   background-color: #4a4a4a;
 }
 
@@ -164,6 +166,7 @@ exports[`<MetadataPrettyLabelsMenu /> should add a model/label filter 1`] = `
         <li>
           <button
             className="emotion-1"
+            onBlur={[Function]}
             onClick={[Function]}
             type="button"
           >
@@ -173,6 +176,7 @@ exports[`<MetadataPrettyLabelsMenu /> should add a model/label filter 1`] = `
         <li>
           <button
             className="emotion-1"
+            onBlur={[Function]}
             onClick={[Function]}
             type="button"
           >
@@ -182,6 +186,7 @@ exports[`<MetadataPrettyLabelsMenu /> should add a model/label filter 1`] = `
         <li>
           <button
             className="emotion-1"
+            onBlur={[Function]}
             onClick={[Function]}
             type="button"
           >

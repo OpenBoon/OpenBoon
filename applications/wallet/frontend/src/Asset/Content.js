@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router'
-
 import { colors, constants, spacing } from '../Styles'
 
 import SuspenseBoundary from '../SuspenseBoundary'
@@ -8,7 +6,6 @@ import Metadata from '../Metadata'
 import AssetDelete from '../AssetDelete'
 import FaceLabeling from '../FaceLabeling'
 import AssetLabeling from '../AssetLabeling'
-import { ENVS } from '../Feature'
 
 import InformationSvg from '../Icons/information.svg'
 import TrashSvg from '../Icons/trash.svg'
@@ -16,13 +13,8 @@ import FaceDetectionSvg from '../Icons/faceDetection.svg'
 import PenSvg from '../Icons/pen.svg'
 
 import AssetAsset from './Asset'
-import AssetNavigation from './Navigation'
 
 const AssetContent = () => {
-  const {
-    query: { projectId, assetId, query = '' },
-  } = useRouter()
-
   return (
     <div
       css={{
@@ -51,14 +43,8 @@ const AssetContent = () => {
             marginRight: spacing.hairline,
           }}
         >
-          <AssetNavigation
-            projectId={projectId}
-            assetId={assetId}
-            query={query}
-          />
-
           <SuspenseBoundary>
-            <AssetAsset projectId={projectId} assetId={assetId} />
+            <AssetAsset isQuickView={false} />
           </SuspenseBoundary>
         </div>
 
@@ -78,8 +64,6 @@ const AssetContent = () => {
               title: 'Add Labels To Model',
               icon: <PenSvg height={constants.icons.regular} />,
               content: <AssetLabeling />,
-              flag: 'asset-labeling',
-              envs: [ENVS.QA],
             },
             delete: {
               title: 'Delete',

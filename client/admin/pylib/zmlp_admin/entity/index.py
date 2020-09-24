@@ -19,9 +19,7 @@ class IndexState(Enum):
 
     READY = 0
     """The index is ready for use."""
-    BUILDING = 1
-    """The index is building"""
-    PENDING_DELETE = 2
+    CLOSED = 1
     """The index is closed and will eventually be deleted."""
 
 

@@ -1,115 +1,132 @@
 import logging
 
-from django.conf import settings
 from rest_framework.exceptions import ParseError
 
 from wallet.exceptions import InvalidRequestError
 from wallet.utils import convert_base64_to_json
 from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
-                              LabelsAnalysisSchema, TYPE_FIELD_MAPPING)
+                              LabelsAnalysisSchema, SingleLabelAnalysisSchema,
+                              FIELD_TYPE_FILTER_MAPPING)
 from searches.filters import (ExistsFilter, FacetFilter, RangeFilter, LabelConfidenceFilter,
                               TextContentFilter, SimilarityFilter, LabelFilter, DateFilter)
 
 
-ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema]
+ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema,
+                    SingleLabelAnalysisSchema]
 logger = logging.getLogger(__name__)
 
 
 class FieldUtility(object):
 
-    def get_fields_from_mappings(self, mappings, client=None):
-        """Converts an ES Indexes mappings response into a field:filter map."""
+    def get_filter_map(self, client=None):
+        """Returns the list of fields and their valid filters."""
+        field_types = self.get_field_type_map(client)
+        return self._get_child_filters_from_field_types(field_types)
+
+    def _get_child_filters_from_field_types(self, field_types):
+        """Recursive helper to parse the list of fields and convert fieldTypes to filters."""
         fields = {}
-        properties = mappings['properties']
-        for property in properties:
-            # Labels is a top level property
-            if property == 'labels':
-                # If we end up with more special cases in the future, let's create a
-                # map of properties to helper functions for this conditional.
-                fields.update(self.get_labels_field_mapping(property, properties[property],
-                                                            client=client))
+        for field in field_types:
+            if 'fieldType' in field_types[field]:
+                try:
+                    fields[field] = FIELD_TYPE_FILTER_MAPPING[field_types[field]['fieldType']]
+                except KeyError:
+                    fields[field] = FIELD_TYPE_FILTER_MAPPING['object']
             else:
-                fields.update(self.get_filters_for_child_fields(property, properties[property],
-                                                                client=client))
+                fields.update({field: self._get_child_filters_from_field_types(field_types[field])})
         return fields
 
-    def get_filters_for_child_fields(self, property_name, values, client=None):
-        """Recursively build the dict structure for an attribute and retrieve it's filters.
+    def get_field_type_map(self, client=None):
+        """Converts an ES Indexes mappings response into a field:fieldType map."""
+        fields = {}
+        path = 'api/v3/fields/_mapping'
+        content = client.get(path)
+        indexes = list(content.keys())
+        if len(indexes) != 1:
+            raise ValueError('ZMLP did not return field mappings as expected.')
 
-        Returns:
-            <dict>: A dict of dicts where each key is part of the attribute dot path,
-            and the final value is the list of allowed filters.
-        """
+        index = indexes[0]
+        properties = content[index]['mappings']['properties']
+        for property in properties:
+            if property == 'labels':
+                fields.update(self._get_labels_field_types(property, properties[property],
+                                                           client=client))
+            else:
+                fields.update(self._get_field_types_for_child_fields(property, properties[property],
+                                                                     client=client))
+        return fields
+
+    def _get_field_types_for_child_fields(self, property_name, values, client=None):
+        """Recursive helper to walk a field mapping and determine the field types."""
         fields = {property_name: {}}
         if 'type' in values:
-            # May need to add an override for type on similarity hash fields
-            return {property_name: TYPE_FIELD_MAPPING[values['type']]}
+            return {property_name: {'fieldType': values['type']}}
 
         if 'properties' in values:
             child_properties = values['properties']
 
             # Identify special Analysis Schemas
             if 'type' in child_properties:
-                schema = self.get_analysis_schema(property_name, child_properties)
+                schema = self._get_analysis_schema(property_name, child_properties)
                 if schema:
-                    return schema
+                    return schema.get_field_type_representation()
 
             for property in child_properties:
                 fields[property_name].update(
-                    self.get_filters_for_child_fields(property, child_properties[property]))
+                    self._get_field_types_for_child_fields(property, child_properties[property]))
 
         return fields
 
-    def get_analysis_schema(self, property_name, child_properties):
+    def _get_labels_field_types(self, property_name, child_properties, client=None):
+        """Adds labels to the field type map and sets the field type for each."""
+        if not client:
+            logger.warning('No Client provided. Unable to retrieve models.')
+            return {'labels': {}}
+        model_key_names = self._get_all_model_ids(client)
+        model_ids = {}
+        for model_id in model_key_names:
+            model_ids[model_id] = {'fieldType': 'label'}
+
+        return {'labels': model_ids}
+
+    def _get_analysis_schema(self, property_name, child_properties):
         """Return the special schema for a ZMLP Analysis Schema"""
         for Klass in ANALYSIS_SCHEMAS:
             schema = Klass(property_name, child_properties)
             if schema.is_valid():
-                return schema.get_representation()
+                return schema
 
         return None
 
-    def get_labels_field_mapping(self, property_name, child_properties, client=None):
-        """Gets the available filters for all labels/models.
-
-        Args:
-            property_name (str): Name of the current field property being examined.
-            child_properties (dict): Subset of children properties for property_name.
-            client (ZMLPClient): Client that will be used to retrieve the model names.
-
-        Returns:
-            (dict): Returns the set of models/filters for the "labels" section of fields.
-        """
-        if not client:
-            logger.warning('No Client provided. Unable to retrieve models.')
-            return {'labels': {}}
-        # query for all the model names/ids, return with available filters
-        if settings.FEATURE_FLAGS['USE_MODEL_IDS_FOR_LABEL_FILTERS']:
-            # TODO: Remove flag once frontend is updated, this should be new default
-            model_key_names = self._get_all_model_ids(client)
-        else:
-            model_key_names = self._get_all_model_names(client)
-        model_filters = {}
-        for model in model_key_names:
-            model_filters[model] = ['label']
-
-        return {'labels': model_filters}
-
-    def _get_all_model_names(self, client):
-        path = '/api/v3/models/_search'
-        response = client.post(path, {})
-        names = []
-        for model in response.get('list', []):
-            names.append(model['name'])
-        return names
-
     def _get_all_model_ids(self, client):
+        """Returns the model IDs for all models on the current project."""
         path = '/api/v3/models/_search'
         response = client.post(path, {})
         names = []
         for model in response.get('list', []):
             names.append(model['id'])
         return names
+
+    def get_attribute_field_type(self, attribute, client):
+        """Given an attribute in dot path form, return it's field type.
+
+        Returns:
+            (str): The FieldType of the given field
+
+        Raises:
+            (ParseError): If the given attribute type can't be found or is not in the mapping.
+        """
+        field_type_map = self.get_field_type_map(client)
+        current_level = field_type_map
+        for level in attribute.split('.'):
+            if level not in current_level:
+                raise ParseError(detail=['Given attribute could not be found in field mapping.'])
+            if 'fieldType' in current_level[level]:
+                return current_level[level]['fieldType']
+            else:
+                current_level = current_level[level]
+
+        raise ParseError(detail=['Attribute given is not a valid filterable or visualizable field.'])
 
 
 class FilterBuddy(object):
@@ -142,12 +159,12 @@ class FilterBuddy(object):
         try:
             encoded_filter = request.query_params['filter']
         except KeyError:
-            raise InvalidRequestError(detail='No `filter` query param included.')
+            raise InvalidRequestError(detail={'detail': ['No `filter` query param included.']})
 
         try:
             decoded_filter = convert_base64_to_json(encoded_filter)
         except ValueError:
-            raise ParseError(detail='Unable to decode `filter` query param.')
+            raise ParseError(detail={'detail': ['Unable to decode `filter` query param.']})
 
         return self.get_filter_from_json(decoded_filter, request.app)
 
@@ -178,19 +195,19 @@ class FilterBuddy(object):
         try:
             converted_query = convert_base64_to_json(encoded_query)
         except ValueError:
-            raise ParseError(detail='Unable to decode `query` query param.')
+            raise ParseError(detail={'detail': ['Unable to decode `query` query param.']})
 
         filters = []
         for raw_filter in converted_query:
-            filters.append(self.get_filter_from_json(raw_filter, request.app))
+            filters.append(self.get_filter_from_json(raw_filter, request))
         return filters
 
-    def get_filter_from_json(self, raw_filter, zmlp_app=None):
+    def get_filter_from_json(self, raw_filter, request=None):
         """Converts a raw filter dict into native Wallet object.
 
         Args:
             raw_filter: The raw JSON data that represents the Filter
-            zmlp_app(ZmlpApp): ZMLP App object to pass to the instantiated filter.
+            request (Request): DRF Request object to pass to the instantiated filter.
 
         Returns:
             Filter: Wallet Filter representation of the raw data.
@@ -202,10 +219,10 @@ class FilterBuddy(object):
         try:
             filter_type = raw_filter['type']
         except KeyError:
-            raise ParseError(detail='Filter description is missing a `type`.')
+            raise ParseError(detail={'detail': ['Filter description is missing a `type`.']})
         except TypeError:
-            raise ParseError(detail='Filter format incorrect, did not receive a single '
-                                    'JSON object for the Filter.')
+            raise ParseError(detail={'detail': ['Filter format incorrect, did not receive a '
+                                                'single JSON object for the Filter.']})
 
         Filter = None
         for _filter in self.filters:
@@ -214,9 +231,9 @@ class FilterBuddy(object):
                 continue
 
         if not Filter:
-            raise ParseError(detail=f'Unsupported filter `{filter_type}` given.')
+            raise ParseError(detail={'detail': [f'Unsupported filter `{filter_type}` given.']})
 
-        return Filter(raw_filter, zmlp_app)
+        return Filter(raw_filter, request)
 
     def reduce_filters_to_query(self, filters):
         """Takes a list of Filters and combines their separate queries into one."""

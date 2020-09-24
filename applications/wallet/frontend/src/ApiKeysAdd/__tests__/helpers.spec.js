@@ -45,7 +45,7 @@ describe('<ApiKeysAdd /> helpers', () => {
     })
   })
 
-  it('should display an error message with mismatching new passwords', async () => {
+  it('should handle errors', async () => {
     const mockDispatch = jest.fn()
 
     fetch.mockRejectOnce({

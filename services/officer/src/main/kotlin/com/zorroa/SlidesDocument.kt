@@ -49,7 +49,7 @@ class SlidesDocument(options: RenderRequest, inputStream: InputStream) : Documen
             metadata["description"] = props.category
             metadata["timeCreated"] = convertDate(props.createdTime)
             metadata["length"] = doc.slides.size()
-
+            metadata["pageNumber"] = page
             metadata["height"] = dim.size.width
             metadata["width"] = dim.size.height
             metadata["orientation"] = if (dim.size.height > dim.size.width) "portrait" else "landscape"

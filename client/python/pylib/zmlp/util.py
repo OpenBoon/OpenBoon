@@ -1,6 +1,7 @@
 import functools
 import re
 import uuid
+import decimal
 
 
 def is_valid_uuid(val):
@@ -105,3 +106,25 @@ def memoize(func):
         return cache[key]
 
     return memoized_func
+
+
+def truncate(number, places):
+    """
+    Truncate a float to the given number of places.
+
+    Args:
+        number (float): The number to truncate.
+        places (int): The number of plaes to preserve.
+
+    Returns:
+        Decimal: The truncated decimal value.
+    """
+    if not isinstance(places, int):
+        raise ValueError('Decimal places must be an integer.')
+    if places < 1:
+        raise ValueError('Decimal places must be at least 1.')
+
+    with decimal.localcontext() as context:
+        context.rounding = decimal.ROUND_DOWN
+        exponent = decimal.Decimal(str(10 ** - places))
+        return decimal.Decimal(str(number)).quantize(exponent)

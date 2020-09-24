@@ -10,18 +10,72 @@ from zmlp.entity.model import LabelScope
 from models.serializers import (ModelSerializer, ModelTypeSerializer,
                                 AddLabelsSerializer, UpdateLabelsSerializer,
                                 RemoveLabelsSerializer, RenameLabelSerializer,
-                                DestroyLabelSerializer)
+                                DestroyLabelSerializer, ModelDetailSerializer)
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
+from wallet.utils import validate_zmlp_data
+
+
+def get_model_type_restrictions(label_counts, min_concepts, min_examples):
+    if label_counts:
+        # Calculate number of missing labels
+        difference = min_concepts - len(label_counts)
+        if difference <= 0:
+            missing_label_count = 0
+        else:
+            missing_label_count = difference
+
+        # Calculate number of missing labels on assets
+        # Account for completely missing labels
+        missing_label_count_asset_total = missing_label_count * min_examples
+        # Account for labels that don't have the minimum amount of examples
+        label_sum = 0
+        for label in label_counts:
+            additional_labels_required = min_examples - label_counts[label]
+            if additional_labels_required > 0:
+                label_sum += additional_labels_required
+
+        missing_labels_on_assets = missing_label_count_asset_total + label_sum
+
+    else:
+        missing_label_count = min_concepts
+        missing_labels_on_assets = min_concepts * min_examples
+
+    return {'requiredLabels': min_concepts,
+            'missingLabels': missing_label_count,
+            'requiredAssetsPerLabel': min_examples,
+            'missingLabelsOnAssets': missing_labels_on_assets}
 
 
 def item_modifier(request, item):
+    # Convert ready to unapplied changes
+    ready = item['ready']
+    del(item['ready'])
+    item['unappliedChanges'] = not ready
+
+
+def detail_item_modifier(request, item):
+    item_modifier(request, item)
     app = request.app
+
+    # Get the running job info
     running_jobs = app.jobs.find_jobs(state='InProgress', name=item['trainingJobName'],
                                       sort=['timeCreated:d'])
     running_jobs = list(running_jobs)
     running_job_id = running_jobs[0].id if running_jobs else ''
     item['runningJobId'] = running_job_id
+
+    # Get the model type restrictions
+    model_type = item['type']
+    model_id = item['id']
+    model_type_info = app.models.get_model_type_info(model_type)
+    label_counts = app.models.get_label_counts(model_id)
+    min_examples = model_type_info.min_examples
+    min_concepts = model_type_info.min_concepts
+
+    item['modelTypeRestrictions'] = get_model_type_restrictions(label_counts,
+                                                                min_concepts,
+                                                                min_examples)
 
 
 class ModelViewSet(BaseProjectViewSet):
@@ -30,13 +84,18 @@ class ModelViewSet(BaseProjectViewSet):
     zmlp_root_api_path = '/api/v3/models'
     zmlp_only = True
 
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return ModelDetailSerializer
+        return self.serializer_class
+
     def list(self, request, project_pk):
         """List all of the Models for this project."""
         return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
     def retrieve(self, request, project_pk, pk):
         """Retrieve the details for this specific model."""
-        return self._zmlp_retrieve(request, pk=pk, item_modifier=item_modifier)
+        return self._zmlp_retrieve(request, pk=pk, item_modifier=detail_item_modifier)
 
     def destroy(self, request, project_pk, pk):
         """Deletes a model."""
@@ -64,11 +123,21 @@ class ModelViewSet(BaseProjectViewSet):
         return Response(status=status.HTTP_201_CREATED, data={'results': response})
 
     @action(methods=['get'], detail=False)
+    def all(self, request, project_pk):
+        """Get all the models available by consuming all the paginated responses."""
+        return self._zmlp_list_from_search_all_pages(request, item_modifier=item_modifier)
+
+    @action(methods=['get'], detail=False)
     def model_types(self, request, project_pk):
         """Get the available model types from ZMLP."""
         path = f'{self.zmlp_root_api_path}/_types'
-        return self._zmlp_list_from_root(request, base_url=path,
-                                         serializer_class=ModelTypeSerializer)
+        excluded_names = ['ZVI_FACE_RECOGNITION']
+        response = request.client.get(path)
+        filtered = [x for x in response if x['name'] not in excluded_names]
+        serializer = ModelTypeSerializer(data=filtered, many=True,
+                                         context=self.get_serializer_context())
+        validate_zmlp_data(serializer)
+        return Response({'results': serializer.data})
 
     @action(methods=['post'], detail=True)
     def train(self, request, project_pk, pk):
@@ -135,7 +204,7 @@ class ModelViewSet(BaseProjectViewSet):
                 app.assets.update_labels(asset, add_labels=label)
         else:
             msg = 'No valid labels sent for creation.'
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': msg})
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': [msg]})
 
         return Response(status=status.HTTP_201_CREATED, data={})
 
@@ -164,7 +233,7 @@ class ModelViewSet(BaseProjectViewSet):
                                          remove_labels=by_asset[asset]['remove'])
         else:
             msg = 'No valid label updates sent.'
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': msg})
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': [msg]})
 
         return Response(status=status.HTTP_200_OK, data={})
 
@@ -184,7 +253,7 @@ class ModelViewSet(BaseProjectViewSet):
                 app.assets.update_labels(asset, remove_labels=label)
         else:
             msg = 'No valid labels sent for creation.'
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': msg})
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': [msg]})
 
         return Response(status=status.HTTP_200_OK, data={})
 

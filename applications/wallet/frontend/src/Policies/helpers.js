@@ -1,6 +1,6 @@
 import { mutate } from 'swr'
 
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, parseResponse } from '../Fetch/helpers'
 
 /**
  * How to update legal documents:
@@ -18,7 +18,7 @@ import { fetcher } from '../Fetch/helpers'
 export const CURRENT_POLICIES_DATE = '20200414'
 
 export const onSubmit = async ({ dispatch }) => {
-  dispatch({ isLoading: true })
+  dispatch({ isLoading: true, errors: {} })
 
   try {
     await fetcher(`/api/v1/me/agreements/`, {
@@ -32,9 +32,8 @@ export const onSubmit = async ({ dispatch }) => {
       false,
     )
   } catch (response) {
-    dispatch({
-      isLoading: false,
-      errors: { global: 'Something went wrong. Please try again.' },
-    })
+    const errors = await parseResponse({ response })
+
+    dispatch({ isLoading: false, errors })
   }
 }

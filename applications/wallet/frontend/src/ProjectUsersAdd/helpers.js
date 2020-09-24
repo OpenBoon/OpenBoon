@@ -1,11 +1,11 @@
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, parseResponse } from '../Fetch/helpers'
 
 export const onSubmit = async ({
   projectId,
   dispatch,
   state: { emails: e, roles: r },
 }) => {
-  dispatch({ isLoading: true })
+  dispatch({ isLoading: true, errors: {} })
 
   try {
     const emails = e.split(',').map((str) => str.trim(''))
@@ -23,20 +23,8 @@ export const onSubmit = async ({
 
     dispatch({ succeeded, failed, isLoading: false })
   } catch (response) {
-    try {
-      const errors = await response.json()
+    const errors = await parseResponse({ response })
 
-      const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
-        acc[errorKey] = errors[errorKey].join(' ')
-        return acc
-      }, {})
-
-      dispatch({ isLoading: false, errors: parsedErrors })
-    } catch (error) {
-      dispatch({
-        isLoading: false,
-        errors: { global: 'Something went wrong. Please try again.' },
-      })
-    }
+    dispatch({ isLoading: false, errors })
   }
 }

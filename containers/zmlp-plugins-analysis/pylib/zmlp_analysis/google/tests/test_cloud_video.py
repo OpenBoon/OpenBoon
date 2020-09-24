@@ -16,6 +16,7 @@ class MockVideoIntelligenceClient:
 
 class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch('zmlp_analysis.google.cloud_video.initialize_gcp_client',
            side_effect=MockVideoIntelligenceClient)
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
@@ -23,11 +24,8 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
-    @patch.object(file_storage.assets, 'store_timeline')
-    def test_detect_logos(self, store_tl_patch,
-                          store_blob_patch, proxy_patch, annot_patch, client_patch):
+    def test_detect_logos(self, store_blob_patch, proxy_patch, annot_patch, _, __):
         uri = 'gs://zorroa-dev-data/video/mustang.mp4'
-        store_tl_patch.return_value = None
         store_blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-logos.dat")
         proxy_patch.return_value = uri
@@ -48,6 +46,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 'Ford Motor Company' in get_prediction_labels(analysis)
         assert 16 == analysis['count']
 
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch('zmlp_analysis.google.cloud_video.initialize_gcp_client',
            side_effect=MockVideoIntelligenceClient)
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
@@ -55,11 +54,8 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
-    @patch.object(file_storage.assets, 'store_timeline')
-    def test_detect_labels(self, store_tl_patch,
-                           store_blob_patch, proxy_patch, annot_patch, client_patch):
+    def test_detect_labels(self, store_blob_patch, proxy_patch, annot_patch, _, __):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
-        store_tl_patch.return_value = None
         store_blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-labels.dat")
         proxy_patch.return_value = uri
@@ -80,6 +76,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 'stage' in get_prediction_labels(analysis)
         assert 14 == analysis['count']
 
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch('zmlp_analysis.google.cloud_video.initialize_gcp_client',
            side_effect=MockVideoIntelligenceClient)
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
@@ -87,11 +84,8 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
-    @patch.object(file_storage.assets, 'store_timeline')
-    def test_detect_text(self, store_tl_patch,
-                         store_blob_patch, proxy_patch, annot_patch, client_patch):
+    def test_detect_text(self, store_blob_patch, proxy_patch, annot_patch, _, __):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
-        store_tl_patch.return_value = None
         store_blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-text.dat")
         proxy_patch.return_value = uri
@@ -112,6 +106,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 'sanitation, toilets and poop' in analysis['content']
         assert 20 == analysis['words']
 
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch('zmlp_analysis.google.cloud_video.initialize_gcp_client',
            side_effect=MockVideoIntelligenceClient)
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
@@ -119,11 +114,11 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
-    @patch.object(file_storage.assets, 'store_timeline')
-    def test_speech_transcription(self, store_tl_patch, store_blob_patch,
-                                  proxy_patch, annot_patch, client_patch):
+    @patch.object(file_storage.assets, 'store_file')
+    def test_speech_transcription(self, store_file_patch, store_blob_patch,
+                                  proxy_patch, annot_patch, _, __):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
-        store_tl_patch.return_value = None
+        store_file_patch.return_value = None
         store_blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-speech.dat")
         proxy_patch.return_value = uri
@@ -145,6 +140,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 'engine start or three two one' in analysis['content']
         assert 303 == analysis['words']
 
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch('zmlp_analysis.google.cloud_video.initialize_gcp_client',
            side_effect=MockVideoIntelligenceClient)
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
@@ -152,11 +148,8 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
-    @patch.object(file_storage.assets, 'store_timeline')
-    def test_detect_objects(self, store_tl_patch,
-                            blob_patch, proxy_patch, annot_patch, client_patch):
+    def test_detect_objects(self, blob_patch, proxy_patch, annot_patch, _, __):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
-        store_tl_patch.return_value = None
         blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-objects.dat")
         proxy_patch.return_value = uri
@@ -178,6 +171,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 'person' in get_prediction_labels(analysis)
         assert 4 == analysis['count']
 
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch('zmlp_analysis.google.cloud_video.initialize_gcp_client',
            side_effect=MockVideoIntelligenceClient)
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
@@ -185,11 +179,8 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.'
            'get_video_proxy_uri')
     @patch.object(file_storage.assets, 'store_blob')
-    @patch.object(file_storage.assets, 'store_timeline')
-    def test_detect_explicit(self, store_tl_patch,
-                             blob_patch, proxy_patch, annot_patch, client_patch):
+    def test_detect_explicit(self, blob_patch, proxy_patch, annot_patch, _, __):
         uri = 'gs://zorroa-dev-data/video/model.mp4'
-        store_tl_patch.return_value = None
         blob_patch.return_value = None
         annot_patch.return_value = self.load_results("detect-explicit.dat")
         proxy_patch.return_value = uri

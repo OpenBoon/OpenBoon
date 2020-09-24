@@ -129,6 +129,7 @@ exports[`<Assets /> should render empty properly 1`] = `
 <div
   className="emotion-9"
 >
+  <VisualizerNavigation />
   <div
     className="emotion-8"
   >
@@ -292,6 +293,7 @@ exports[`<Assets /> should render empty with filter properly 1`] = `
 <div
   className="emotion-5"
 >
+  <VisualizerNavigation />
   <div
     className="emotion-4"
   >
@@ -452,6 +454,7 @@ exports[`<Assets /> should render empty with no filters properly 1`] = `
 <div
   className="emotion-9"
 >
+  <VisualizerNavigation />
   <div
     className="emotion-8"
   >
@@ -651,9 +654,7 @@ exports[`<Assets /> should render properly 1`] = `
 <div
   className="emotion-4"
 >
-  <VisualizerNavigation
-    itemCount={574}
-  />
+  <VisualizerNavigation />
   <div
     className="emotion-3"
   >
@@ -844,9 +845,7 @@ exports[`<Assets /> should render properly 2`] = `
 <div
   className="emotion-4"
 >
-  <VisualizerNavigation
-    itemCount={574}
-  />
+  <VisualizerNavigation />
   <div
     className="emotion-3"
   >
@@ -1037,9 +1036,7 @@ exports[`<Assets /> should render properly 3`] = `
 <div
   className="emotion-4"
 >
-  <VisualizerNavigation
-    itemCount={574}
-  />
+  <VisualizerNavigation />
   <div
     className="emotion-3"
   >
@@ -1098,12 +1095,25 @@ exports[`<Assets /> should render properly while loading 1`] = `
   }
 }
 
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
 .emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  margin: 1px;
-  margin-top: 0;
+  margin: 8px;
+  margin-bottom: 0;
 }
 
 .emotion-1 {
@@ -1139,17 +1149,22 @@ exports[`<Assets /> should render properly while loading 1`] = `
 }
 
 <div
-  className="emotion-2"
+  className="emotion-3"
 >
+  <VisualizerNavigation />
   <div
-    className="Loading emotion-1"
+    className="emotion-2"
   >
-    <svg
-      className="emotion-0"
-      data-file-name="generating.svg"
-      height={20}
-    />
-    Loading...
+    <div
+      className="Loading emotion-1"
+    >
+      <svg
+        className="emotion-0"
+        data-file-name="generating.svg"
+        height={20}
+      />
+      Loading...
+    </div>
   </div>
 </div>
 `;

@@ -13,7 +13,8 @@ const roles = {
     },
     {
       name: 'User_Admin',
-      description: 'Provides access to User Administration for a Project.',
+      description:
+        'Allows adding and removing users as well as managing their roles. This includes adding and removing their own roles.',
       permissions: ['ProjectManage'],
     },
   ],

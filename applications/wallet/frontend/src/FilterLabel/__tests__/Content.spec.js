@@ -42,25 +42,20 @@ describe('<FilterLabelContent />', () => {
         .props.onChange({ value: 'train' })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'label',
-                attribute: 'labels.console',
-                modelId: MODEL_ID,
-                values: { labels: ['Ford'], scope: 'train' },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'label',
+          attribute: 'labels.console',
+          modelId: MODEL_ID,
+          values: { labels: ['Ford'], scope: 'train' },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNvbnNvbGUiLCJtb2RlbElkIjoiNjIxYmY3NzQtODlkOS0xMjQ0LTk1OTYtZDZkZjQzZjFlZGU1IiwidmFsdWVzIjp7ImxhYmVscyI6WyJGb3JkIl0sInNjb3BlIjoidHJhaW4ifX1d',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -98,25 +93,20 @@ describe('<FilterLabelContent />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'label',
-                attribute: 'labels.console',
-                modelId: MODEL_ID,
-                values: { scope: 'all', labels: ['Ford'] },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'label',
+          attribute: 'labels.console',
+          modelId: MODEL_ID,
+          values: { scope: 'all', labels: ['Ford'] },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNvbnNvbGUiLCJtb2RlbElkIjoiNjIxYmY3NzQtODlkOS0xMjQ0LTk1OTYtZDZkZjQzZjFlZGU1IiwidmFsdWVzIjp7InNjb3BlIjoiYWxsIiwibGFiZWxzIjpbIkZvcmQiXX19XQ==',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -153,25 +143,20 @@ describe('<FilterLabelContent />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: btoa(
-            JSON.stringify([
-              {
-                type: 'label',
-                attribute: 'labels.console',
-                modelId: MODEL_ID,
-                values: { scope: 'all', labels: [] },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'label',
+          attribute: 'labels.console',
+          modelId: MODEL_ID,
+          values: { scope: 'all', labels: [] },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNvbnNvbGUiLCJtb2RlbElkIjoiNjIxYmY3NzQtODlkOS0xMjQ0LTk1OTYtZDZkZjQzZjFlZGU1IiwidmFsdWVzIjp7InNjb3BlIjoiYWxsIiwibGFiZWxzIjpbXX19XQ==',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 

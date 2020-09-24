@@ -1,6 +1,7 @@
 const aggregate = [
   {
     id: '972a8ab5-cdcb-4eea-ada7-f1c88d997fed',
+    defaultFilterType: 'labelConfidence',
     results: {
       buckets: [
         { key: 0.15000000596046448, docCount: 93974 },

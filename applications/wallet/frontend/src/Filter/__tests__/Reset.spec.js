@@ -3,9 +3,6 @@ import TestRenderer, { act } from 'react-test-renderer'
 import fields from '../../Filters/__mocks__/fields'
 import asset from '../../Asset/__mocks__/asset'
 
-import { encode } from '../../Filters/helpers'
-import { getQueryString } from '../../Fetch/helpers'
-
 import FilterReset from '../Reset'
 
 const noop = () => () => {}
@@ -47,24 +44,19 @@ describe('<FilterReset />', () => {
 
     expect(mockFn).toHaveBeenCalled()
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: btoa(
-            JSON.stringify([
-              {
-                attribute: 'clip.length',
-                type: 'range',
-                values: {},
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          attribute: 'clip.length',
+          type: 'range',
+          values: {},
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3siYXR0cmlidXRlIjoiY2xpcC5sZW5ndGgiLCJ0eXBlIjoicmFuZ2UiLCJ2YWx1ZXMiOnt9fV0=',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -101,24 +93,19 @@ describe('<FilterReset />', () => {
 
     expect(mockFn).toHaveBeenCalled()
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: btoa(
-            JSON.stringify([
-              {
-                attribute: 'clip.length',
-                type: 'exists',
-                values: { exists: true },
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          attribute: 'clip.length',
+          type: 'exists',
+          values: { exists: true },
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3siYXR0cmlidXRlIjoiY2xpcC5sZW5ndGgiLCJ0eXBlIjoiZXhpc3RzIiwidmFsdWVzIjp7ImV4aXN0cyI6dHJ1ZX19XQ==',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -155,24 +142,19 @@ describe('<FilterReset />', () => {
 
     expect(mockFn).toHaveBeenCalled()
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: {
-          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-          assetId: '',
-          query: btoa(
-            JSON.stringify([
-              {
-                attribute: 'clip.length',
-                type: 'range',
-                values: {},
-              },
-            ]),
-          ),
+    const query = btoa(
+      JSON.stringify([
+        {
+          attribute: 'clip.length',
+          type: 'range',
+          values: {},
         },
-      },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3siYXR0cmlidXRlIjoiY2xpcC5sZW5ndGgiLCJ0eXBlIjoicmFuZ2UiLCJ2YWx1ZXMiOnt9fV0=',
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?query=${query}`,
+      `/${PROJECT_ID}/visualizer?query=${query}`,
     )
   })
 
@@ -206,9 +188,9 @@ describe('<FilterReset />', () => {
       },
     ]
     const mockFn = jest.fn()
-    const mockPush = jest.fn()
+    const mockRouterPush = jest.fn()
 
-    require('next/router').__setMockPushFunction(mockPush)
+    require('next/router').__setMockPushFunction(mockRouterPush)
     require('swr').__setMockUseSWRResponse({ data: {} })
 
     const component = TestRenderer.create(
@@ -223,7 +205,7 @@ describe('<FilterReset />', () => {
       />,
     )
 
-    const query = encode({ filters })
+    const query = btoa(JSON.stringify(filters))
 
     act(() => {
       component.root
@@ -231,15 +213,9 @@ describe('<FilterReset />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockPush).toHaveBeenCalledWith(
-      {
-        pathname: '/[projectId]/visualizer',
-        query: { projectId: PROJECT_ID, assetId: asset.id, query },
-      },
-      `/${PROJECT_ID}/visualizer${getQueryString({
-        assetId: asset.id,
-        query,
-      })}`,
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?assetId=${asset.id}&query=${query}`,
+      `/${PROJECT_ID}/visualizer?assetId=${asset.id}&query=${query}`,
     )
   })
 })

@@ -36,22 +36,34 @@ class BaseFilter(object):
     optional_keys = []
     agg_prefix = ''
 
-    def __init__(self, data, zmlp_app=None):
+    def __init__(self, data, request=None):
         """Initializes filter instance.
 
         Args:
             data (dict): The initial data
-            zmlp_app (ZmlpApp): A ZMLP App instance, in case connecting to ZMLP is required.
+            request (Request): A DRF request instance, which should have the app and client.
         """
         self.data = data
-        self.zmlp_app = zmlp_app
+        self.request = request
         self.name = str(uuid.uuid4())
         self.errors = []
+        self._field_type = None
+        from .utils import FieldUtility
+        self.field_utility = FieldUtility()
 
     def __eq__(self, other):
         if type(self) == type(other) and self.data == other.data:
             return True
         return False
+
+    @property
+    def field_type(self):
+        """Returns the field for the attribute associated with this filter."""
+        if self._field_type is None:
+            attribute = self.data.get('attribute')
+            self._field_type = self.field_utility.get_attribute_field_type(attribute,
+                                                                           self.request.client)
+        return self._field_type
 
     def is_valid(self, query=False, raise_exception=False):
         """Confirms the required keys for this filter have been given in the data.
@@ -238,12 +250,17 @@ class LabelConfidenceFilter(BaseFilter):
 
     def get_es_agg(self):
         attribute = self.data['attribute']
+        if self.field_type == 'prediction':
+            attribute = f'{attribute}.predictions.label'
+        elif self.field_type == 'single_label':
+            attribute = f'{attribute}.label'
+
         agg = {
             'size': 0,
             'aggs': {
                 self.name: {
                     'terms': {
-                        'field': f'{attribute}.predictions.label',
+                        'field': attribute,
                         'size': 1000
                     }
                 }
@@ -255,6 +272,13 @@ class LabelConfidenceFilter(BaseFilter):
         labels = self.data['values']['labels']
         min = self.data['values']['min']
         max = self.data['values']['max']
+        if self.field_type == 'prediction':
+            return self.get_prediction_query(attribute, labels, min, max)
+        else:
+            return self.get_single_label_query(attribute, labels, min, max)
+
+    def get_prediction_query(self, attribute, labels, min, max):
+        """Query to return when querying against a prediction analysis schema."""
         return {
             "query": {
                 "bool": {
@@ -287,6 +311,30 @@ class LabelConfidenceFilter(BaseFilter):
 
                             }
                         }
+                        }
+                    ]
+                }
+            }
+        }
+
+    def get_single_label_query(self, attribute, labels, min, max):
+        """Query to return when querying against a Single Label analysis schema."""
+        return {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {
+                            'terms': {
+                                f'{attribute}.label': labels
+                            }
+                        },
+                        {
+                            'range': {
+                                f'{attribute}.score': {
+                                    'from': min,
+                                    'to': max
+                                }
+                            }
                         }
                     ]
                 }
@@ -362,11 +410,11 @@ class SimilarityFilter(BaseFilter):
 
     def _get_hashes(self):
         """Returns all of the simhashes for the assets given to the filter."""
-        if self.zmlp_app is None:
+        if self.request is None:
             raise ImproperlyConfigured()
 
         ids = self.data['values']['ids']
-        assets = self.zmlp_app.assets.search({'query': {'terms': {'_id': ids}}})
+        assets = self.request.app.assets.search({'query': {'terms': {'_id': ids}}})
 
         # Some validation that we got all the ids back
         if len(set(assets)) != len(set(ids)):

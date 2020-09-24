@@ -1,5 +1,10 @@
+import math
+import os
 import time
+
+import requests
 from google.cloud import monitoring_v3
+from requests.auth import HTTPBasicAuth
 from zmlp import ZmlpClient
 
 
@@ -24,16 +29,17 @@ class BaseMetric(object):
     """Base class all Metrics inherit from. Each concrete Metric must override the get_metric_values
     function and have it return a list of MetricValue objects to publish.
 
-    NOTE: This implementation is currently limited to supporting int64 gauge metrics with a
-    resource type of "global". As needed this should be expanded to support more varied metrics.
+    NOTE: This implementation is currently limited to supporting int64 and double gauge metrics with
+    a resource type of "global". As needed this should be expanded to support more varied metrics.
     More information can be found at
     https://cloud.google.com/monitoring/custom-metrics/creating-metrics.
 
     """
-    def __init__(self, monitoring_client, zmlp_client, project_id):
+    def __init__(self, monitoring_client, zmlp_client, k8s_client, project_id):
         self.monitoring_client = monitoring_client
         self.zmlp_client = zmlp_client
         self.project_id = project_id
+        self.k8s_client = k8s_client
 
     def publish(self):
         for metric_value in list(self.get_metric_values()):
@@ -44,8 +50,13 @@ class BaseMetric(object):
             now = time.time()
             point.interval.end_time.seconds = int(now)
             point.interval.end_time.nanos = int((now - point.interval.end_time.seconds) * 10 ** 9)
-            point.value.int64_value = metric_value.value
-            print(f'Submitting Time Series: {metric_value.metric_type} = {point.value.int64_value}')
+            if isinstance(metric_value.value, int):
+                point.value.int64_value = metric_value.value
+            elif isinstance(metric_value.value, float):
+                point.value.double_value = metric_value.value
+            else:
+                raise TypeError('Metric values must be ints or floats.')
+            print(f'Submitting Time Series: {metric_value.metric_type} = {point.value}')
             project_path = self.monitoring_client.project_path(self.project_id)
             self.monitoring_client.create_time_series(project_path, [series])
 
@@ -57,27 +68,29 @@ class BaseMetric(object):
 class JobQueueMetrics(BaseMetric):
 
     def get_metric_values(self):
-        total_pending_jobs = 0
-        total_pending_tasks = 0
-        projects = self.zmlp_client.post('/api/v1/projects/_search', {})['list']
-        for project in projects:
-            client = ZmlpClient(apikey=self.zmlp_client.apikey, server=self.zmlp_client.server,
-                                project_id=project['id'])
-            jobs_response = client.post('/api/v1/jobs/_search',
-                                       {'states': ['InProgress'], 'paused': False})
-            pending_job_count = jobs_response['page']['totalCount']
-            pending_task_count = 0
-            for job in jobs_response['list']:
-                task_counts = job['taskCounts']
-                pending_task_count += task_counts['tasksWaiting']
-                pending_task_count += task_counts['tasksRunning']
-                pending_task_count += task_counts['tasksQueued']
-            if pending_job_count:
-                print(f'Project {project["name"]} has {pending_task_count} pending task(s) in '
-                      f'{pending_job_count} pending job(s).')
-            total_pending_jobs += pending_job_count
-            total_pending_tasks += pending_task_count
+        api_gateway_url = os.environ['ZMLP_API_URL']
+        basic_auth = HTTPBasicAuth('monitor', os.environ['MONITOR_PASSWORD'])
 
-        return [MetricValue('custom.googleapis.com/zmlp/total-pending-jobs', total_pending_jobs),
-                MetricValue('custom.googleapis.com/zmlp/total-pending-tasks', total_pending_tasks)]
+        # Get max running tasks.
+        response = requests.get(os.path.join(api_gateway_url, 'monitor/metrics/tasks.max_running'),
+                                auth=basic_auth)
+        max_running_tasks = int(response.json()['measurements'][0]['value'])
 
+        # Get total pending tasks.
+        response = requests.get(os.path.join(api_gateway_url, 'monitor/metrics/tasks.pending'),
+                                auth=basic_auth)
+        total_pending_tasks = int(response.json()['measurements'][0]['value'])
+
+        desired_analyst_count = int(min(total_pending_tasks, max_running_tasks))
+        current_analyst_count = self.get_analyst_count()
+        analyst_scale_ratio = desired_analyst_count / current_analyst_count
+
+        return [MetricValue('custom.googleapis.com/zmlp/total-pending-tasks', total_pending_tasks),
+                MetricValue('custom.googleapis.com/zmlp/max-running-tasks', max_running_tasks),
+                MetricValue('custom.googleapis.com/zmlp/current-analyst-count', current_analyst_count),
+                MetricValue('custom.googleapis.com/zmlp/desired-analyst-count', desired_analyst_count),
+                MetricValue('custom.googleapis.com/zmlp/analyst-scale-ratio', analyst_scale_ratio)]
+
+    def get_analyst_count(self):
+        scale = self.k8s_client.AppsV1Api().read_namespaced_deployment_scale('analyst', 'default')
+        return scale.status.replicas

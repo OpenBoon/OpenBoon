@@ -29,6 +29,7 @@ import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.security.withAuth
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.service.logging.LogAction
@@ -42,7 +43,6 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalStateException
 import java.util.Base64
 import java.util.Date
 import java.util.UUID
@@ -120,6 +120,11 @@ interface ProjectService {
      * Set the active index for the given project.
      */
     fun setIndexRoute(project: Project, route: IndexRoute): Boolean
+
+    /**
+     * Delete Project related storage
+     */
+    fun deleteProjectStorage(project: Project)
 }
 
 @Service
@@ -130,6 +135,7 @@ class ProjectServiceImpl constructor(
     val projectStatsDao: ProjectQuotasDao,
     val authServerClient: AuthServerClient,
     val systemStorageService: SystemStorageService,
+    var projectStorageService: ProjectStorageService,
     val properties: ApplicationProperties,
     val txEvent: TransactionEventManager
 ) : ProjectService {
@@ -388,24 +394,12 @@ class ProjectServiceImpl constructor(
     }
 
     override fun setIndexRoute(project: Project, route: IndexRoute): Boolean {
-        if (project.id != route.projectId) {
-            throw IllegalStateException("The index route does not belong to this project")
-        }
+        return indexRoutingService.setIndexRoute(project, route)
+    }
 
-        return if (projectCustomDao.updateIndexRoute(project.id, route)) {
-            logger.event(
-                LogObject.PROJECT, LogAction.UPDATE,
-                mapOf(
-                    "projectId" to project.id,
-                    "oldIndexRoute" to project.indexRouteId,
-                    "newIndexRoute" to route.id
-                )
-            )
-            true
-        } else {
-            logger.warn("Failed to set new index route for project ${project.id}, likely already set to same index.")
-            false
-        }
+    override fun deleteProjectStorage(project: Project) {
+        projectStorageService.recursiveDelete("projects/${project.id}")
+        logger.warn("Deleted Project ${project.id} storage files")
     }
 
     // This gets called alot so hold onto the values for a while.

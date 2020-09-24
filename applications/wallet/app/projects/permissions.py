@@ -4,7 +4,7 @@ from rest_framework.permissions import BasePermission
 
 class ManagerUserPermissions(BasePermission):
     """Permission class that looks for the User_Admin role for the current project."""
-    message = 'You do not have permission to manage users.'
+    message = {'detail': ['You do not have permission to manage users.']}
 
     def has_permission(self, request, view):
         try:

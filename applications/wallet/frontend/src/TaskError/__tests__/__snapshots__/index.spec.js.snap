@@ -210,6 +210,7 @@ Array [
 
 .emotion-1 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-0 {
@@ -806,6 +807,7 @@ Array [
 
 .emotion-1 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-0 {
@@ -1440,6 +1442,7 @@ Array [
 
 .emotion-3 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-0 {
@@ -1588,7 +1591,8 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-1:hover {
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
   background-color: #4a4a4a;
 }
 
@@ -2173,6 +2177,7 @@ Array [
 
 .emotion-1 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-0 {

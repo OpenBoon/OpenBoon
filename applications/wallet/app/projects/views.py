@@ -5,7 +5,7 @@ import zmlp
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import transaction
-from django.http import HttpResponseForbidden, Http404
+from django.http import Http404, JsonResponse
 from rest_framework import status
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
@@ -52,13 +52,13 @@ class BaseProjectViewSet(ViewSet):
         if self.zmlp_only and settings.PLATFORM != 'zmlp':
             # This is needed to keep from returning terrible stacktraces on endpoints
             # not meant for dual platform usage
-            raise Http404()
+            raise Http404
 
         try:
             apikey = Membership.objects.get(user=request.user, project=kwargs['project_pk']).apikey
         except Membership.DoesNotExist:
-            return HttpResponseForbidden(f'{request.user.username} is not a member of '
-                                         f'the project {project}')
+            return JsonResponse(data={'detail': [f'{request.user.username} is not a member of '
+                                                 f'the project {project}']}, status=403)
 
         # Attach some useful objects for interacting with ZMLP/ZVI to the request.
         if settings.PLATFORM == 'zmlp':
@@ -135,7 +135,7 @@ class BaseProjectViewSet(ViewSet):
         return self.paginator.get_paginated_response(data)
 
     def _zmlp_list_from_search(self, request, item_modifier=None, search_filter=None,
-                               serializer_class=None, base_url=None, item_filter=None):
+                               serializer_class=None, base_url=None):
         """The result of this method can be returned for the list method of a concrete
         viewset if it just needs to proxy the results of a ZMLP search endpoint.
 
@@ -147,10 +147,6 @@ class BaseProjectViewSet(ViewSet):
             search_filter (dict): Optional filter to pass to the zmlp search endpoint.
             serializer_class (Serializer): Optional serializer to override the one set on
               the ViewSet.
-            item_filter (function): Each item dictionary returned by the API will be
-              passed to this function along with the request. If the function returns
-              False the item will not returned in the Response. The arguments are passed
-              as (request, item).
 
         Returns:
             Response: DRF Response that can be used directly by viewset action method.
@@ -167,18 +163,10 @@ class BaseProjectViewSet(ViewSet):
         content = self._get_content(response)
         current_url = request.build_absolute_uri(request.path)
         items = content['list']
-        items_to_remove = []
         for item in items:
             item['url'] = f'{current_url}{item["id"]}/'
             if item_modifier:
                 item_modifier(request, item)
-            if item_filter and not item_filter(request, item):
-                items_to_remove.append(item)
-
-        # TODO: Need to remove the item_filter option once we can do API key filtering
-        # in ZMLP. This functionality breaks pagination.
-        for item in items_to_remove:
-            content['list'].remove(item)
 
         if serializer_class:
             serializer = serializer_class(data=items, many=True)
@@ -189,6 +177,59 @@ class BaseProjectViewSet(ViewSet):
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])
+
+    def _zmlp_list_from_search_all_pages(self, request, item_modifier=None, search_filter=None,
+                                         serializer_class=None, base_url=None):
+        """Uses the default list endpoint logic and consumes all returned pages in one response.
+
+        Args:
+            request (Request): Request the view method was given.
+            item_modifier (function): Each item dictionary returned by the API will be
+              passed to this function along with the request. The function is expected to
+              modify the item in place. The arguments are passed as (request, item).
+            search_filter (dict): Optional filter to pass to the zmlp search endpoint.
+            serializer_class (Serializer): Optional serializer to override the one set on
+              the ViewSet.
+
+        Returns:
+            Response: DRF Response that can be used directly by viewset action method.
+
+        """
+        base_url = base_url or self.zmlp_root_api_path
+        size = request.query_params.get('size', settings.REST_FRAMEWORK['PAGE_SIZE'])
+        payload = {'page': {'from': 0, 'size': size}}
+
+        if search_filter:
+            payload.update(search_filter)
+        path = os.path.join(base_url, '_search')
+
+        additional_pages = True
+        aggregated_content = {'list': []}
+        while additional_pages:
+            response = request.client.post(path, payload)
+            content = self._get_content(response)
+            aggregated_content['list'].extend(content['list'])
+
+            _total = content['page']['totalCount']
+            _next = (int(payload['page']['from']) + int(payload['page']['size']))
+            if _next < _total:
+                payload['page']['from'] = _next
+            else:
+                additional_pages = False
+
+        current_url = request.build_absolute_uri(request.path)
+        items = aggregated_content['list']
+        for item in items:
+            item['url'] = f'{current_url}{item["id"]}/'
+            if item_modifier:
+                item_modifier(request, item)
+
+        if serializer_class:
+            serializer = serializer_class(data=items, many=True)
+        else:
+            serializer = self.get_serializer(data=items, many=True)
+        validate_zmlp_data(serializer)
+        return Response({'results': serializer.validated_data})
 
     def _zmlp_list_from_es(self, request, item_modifier=None, search_filter=None,
                            serializer_class=None, base_url=None, pagination_class=None):
@@ -456,7 +497,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
     def create(self, request, project_pk):
         batch = request.data.get('batch')
         if batch and request.data.get('email'):
-            return Response(data={'detail': 'Batch argument provided with single creation arguments.'},  # noqa
+            return Response(data={'detail': ['Batch argument provided with single creation arguments.']},  # noqa
                             status=status.HTTP_400_BAD_REQUEST)
         elif batch:
             response_body = {'results': {'succeeded': [], 'failed': []}}
@@ -479,7 +520,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         try:
             new_roles = request.data['roles']
         except KeyError:
-            return Response(data={'detail': 'Roles must be supplied.'},
+            return Response(data={'detail': ['Roles must be supplied.']},
                             status=status.HTTP_400_BAD_REQUEST)
         membership = self.get_object(pk, project_pk)
         if membership.roles != new_roles:
@@ -487,10 +528,10 @@ class ProjectUserViewSet(BaseProjectViewSet):
             try:
                 membership.sync_with_zmlp(request.client)
             except IOError:
-                return Response(data={'detail': 'Error deleting apikey.'},
+                return Response(data={'detail': ['Error deleting apikey.']},
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             except ValueError:
-                return Response(data={'detail': 'Unable to modify the admin key.'},
+                return Response(data={'detail': ['Unable to modify the admin key.']},
                                 status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(membership.user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
@@ -502,13 +543,13 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
         # Don't allow a User to remove themselves
         if request.user == membership.user:
-            return Response(data={'detail': 'Cannot remove yourself from a project.'},
+            return Response(data={'detail': ['Cannot remove yourself from a project.']},
                             status=status.HTTP_403_FORBIDDEN)
 
         try:
             membership.delete_and_sync_with_zmlp(request.client)
         except IOError:
-            return Response(data={'detail': 'Error deleting apikey.'},
+            return Response(data={'detail': ['Error deleting apikey.']},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_200_OK)
 
@@ -522,7 +563,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
             email = data['email']
             requested_roles = data['roles']
         except KeyError:
-            return Response(data={'detail': 'Email and Roles are required.'},
+            return Response(data={'detail': ['Email and Roles are required.']},
                             status=status.HTTP_400_BAD_REQUEST)
 
         # Get the current project and User
@@ -530,7 +571,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         try:
             user = User.objects.get(username=email)
         except User.DoesNotExist:
-            return Response(data={'detail': 'No user with the given email.'},
+            return Response(data={'detail': ['No user with the given email.']},
                             status=status.HTTP_404_NOT_FOUND)
 
         # If the membership already exists return the correct status code.
@@ -540,8 +581,8 @@ class ProjectUserViewSet(BaseProjectViewSet):
                 serializer = self.get_serializer(user, context={'request': request})
                 return Response(data=serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response({'detail': 'This user already exists in this project '
-                                           'with different permissions.'}, status=409)
+                return Response({'detail': ['This user already exists in this project '
+                                            'with different permissions.']}, status=409)
         except Membership.DoesNotExist:
             pass
 

@@ -12,6 +12,70 @@ describe('Visualizer', function () {
       )
     })
 
+    it('can add a Simple Text filter', function () {
+      cy.login()
+
+      cy.visit(`/${this.PROJECT_ID}/visualizer`)
+
+      cy.get('button[aria-label="Filters"]').click()
+
+      cy.get('input[aria-label="Add Simple Text Filter"]').type('Daisy{enter}')
+
+      cy.selectFirstAsset()
+    })
+
+    it('can delete a filter', function () {
+      cy.login()
+
+      cy.visit(`/${this.PROJECT_ID}/visualizer`)
+
+      cy.get('button[aria-label="Filters"]').click()
+
+      cy.get('input[aria-label="Add Simple Text Filter"]').type('Daisy{enter}')
+
+      cy.get('button[aria-label="Delete Filter"]').click()
+
+      cy.contains('Daisy').should('not.exist')
+    })
+
+    it('can clear all filters', function () {
+      cy.login()
+
+      cy.visit(`/${this.PROJECT_ID}/visualizer`)
+
+      cy.get('button[aria-label="Filters"]').click()
+
+      cy.get('input[aria-label="Add Simple Text Filter"]').type('Daisy{enter}')
+
+      cy.contains('Clear All Filters').click()
+
+      cy.contains('Daisy').should('not.exist')
+    })
+
+    it('can add an Exists filter', function () {
+      cy.login()
+
+      cy.visit(`/${this.PROJECT_ID}/visualizer`)
+
+      cy.get('button[aria-label="Filters"]').click()
+
+      cy.contains('Add Metadata Filters').click()
+
+      cy.get('summary[aria-label="Source"]').click()
+
+      cy.contains('filesize').click()
+
+      cy.contains('Add Filters').click()
+
+      cy.contains('range').get('select').select('exists')
+
+      cy.contains('Missing').click()
+
+      cy.contains('Show assets missing the field "source.filesize"')
+
+      cy.contains('All assets have been filtered out.')
+    })
+
     it('can add a Range filter', function () {
       cy.login()
 
@@ -29,13 +93,11 @@ describe('Visualizer', function () {
 
       cy.contains('source.filesize')
 
-      cy.contains('range').get('select').select('exists')
+      cy.contains('MIN').click()
 
-      cy.contains('Missing').click()
+      cy.focused().clear().type('10000000').type('{enter}')
 
-      cy.contains('Show assets missing the field "source.filesize"')
-
-      cy.contains('All assets have been filtered out.')
+      cy.selectFirstAsset()
     })
 
     it('can add a Facet filter', function () {
@@ -55,14 +117,12 @@ describe('Visualizer', function () {
 
       cy.contains('location.city')
 
-      cy.contains('facet').get('select').select('exists')
+      cy.contains('Long Beach').click()
 
-      cy.contains('Missing').click()
-
-      cy.contains('Show assets missing the field "location.city"')
+      cy.selectFirstAsset()
     })
 
-    it('can add a Text filter', function () {
+    it('can add a Text Detection filter', function () {
       cy.login()
 
       cy.visit(`/${this.PROJECT_ID}/visualizer`)
@@ -79,15 +139,11 @@ describe('Visualizer', function () {
 
       cy.contains('analysis.zvi-text-detection')
 
-      cy.get('input[placeholder="Search text"]')
+      cy.get('input[aria-label="Add Text Detection Filter"]')
         .type('improbable text that should never have results')
         .type('{enter}')
 
       cy.contains('All assets have been filtered out.')
-
-      cy.contains('Clear All Filters').click()
-
-      cy.contains('analysis.zvi-text-detection').should('not.exist')
     })
 
     it('can add a Prediction filter', function () {
@@ -107,9 +163,9 @@ describe('Visualizer', function () {
 
       cy.contains('analysis.zvi-label-detection')
 
-      cy.get('button[aria-label="Delete Filter"]').click()
+      cy.contains('daisy').click()
 
-      cy.contains('analysis.zvi-label-detection').should('not.exist')
+      cy.selectFirstAsset()
     })
   })
 })

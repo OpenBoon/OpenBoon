@@ -62,6 +62,7 @@ class WordDocument(options: RenderRequest, inputStream: InputStream) : Document(
             metadata["keywords"] = props.keywords
             metadata["timeCreated"] = convertDate(props.createdTime)
             metadata["length"] = doc.pageCount
+            metadata["pageNumber"] = page
 
             val pageInfo = doc.getPageInfo((page - 1).coerceAtLeast(0))
             metadata["height"] = pageInfo.heightInPoints

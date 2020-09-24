@@ -91,6 +91,7 @@ exports[`<Layout /> should render properly 1`] = `
 
 .emotion-8 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-7 {
@@ -141,7 +142,8 @@ exports[`<Layout /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 
@@ -386,6 +388,7 @@ exports[`<Layout /> should render properly 2`] = `
 
 .emotion-8 {
   position: relative;
+  height: 100%;
 }
 
 .emotion-7 {
@@ -436,7 +439,8 @@ exports[`<Layout /> should render properly 2`] = `
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
   background-color: #3b3b3b;
 }
 

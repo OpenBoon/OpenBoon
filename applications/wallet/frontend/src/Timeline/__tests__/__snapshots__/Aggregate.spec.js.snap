@@ -1,0 +1,590 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TimelineAggregate /> should render properly 1`] = `
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: -200px;
+  border-top: 1px solid #3b3b3b;
+  height: 44px;
+}
+
+.emotion-2 {
+  width: 200px;
+}
+
+.emotion-1 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 200px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 12px;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin-bottom: 0;
+  color: #ffffff;
+  border-radius: 0;
+  height: 100%;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #3b3b3b;
+}
+
+.emotion-0:hover {
+  background-color: #808080;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #3b3b3b;
+}
+
+<div
+  className="emotion-3"
+>
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <button
+        aria-label="Toggle Dropdown Menu"
+        className="emotion-0"
+        onBlur={[Function]}
+        onClick={[Function]}
+        type="button"
+      >
+        Detections (5)
+        <svg
+          data-file-name="chevron.svg"
+          height={20}
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TimelineAggregate /> should render properly 2`] = `
+.emotion-53 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: -200px;
+  border-top: 1px solid #3b3b3b;
+  height: 44px;
+}
+
+.emotion-52 {
+  width: 200px;
+}
+
+.emotion-51 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 200px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 12px;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin-bottom: 0;
+  color: #ffffff;
+  border-radius: 0;
+  height: 100%;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #808080;
+}
+
+.emotion-0:hover {
+  background-color: #808080;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #3b3b3b;
+}
+
+.emotion-50 {
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  right: 0;
+  left: 0;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 4px 7px 0 #000000;
+  min-width: 200px;
+  font-family: Roboto,Avenir,"sans-serif";
+}
+
+.emotion-50 ul {
+  list-style-type: none;
+  padding: 0;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin: 0;
+}
+
+.emotion-50 li {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-49 {
+  background-color: #4a4a4a;
+  max-height: 312px;
+  overflow-y: auto;
+}
+
+.emotion-8 {
+  border-bottom: 2px solid #808080;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  border-top: 2px solid #808080;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-1 {
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  -webkit-appearance: none;
+  background-color: #73b61c;
+  border: 2px solid #73b61c;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 16px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-2 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  padding-left: 8px;
+}
+
+.emotion-5 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.emotion-14 {
+  padding-left: 2px;
+}
+
+<div
+  className="emotion-53"
+>
+  <div
+    className="emotion-52"
+  >
+    <div
+      className="emotion-51"
+    >
+      <button
+        aria-label="Toggle Dropdown Menu"
+        className="emotion-0"
+        onBlur={[Function]}
+        onClick={[Function]}
+        type="button"
+      >
+        Detections (5)
+        <svg
+          data-file-name="chevron.svg"
+          height={20}
+        />
+      </button>
+      <div
+        className="emotion-50"
+      >
+        <div
+          className="emotion-49"
+          tabIndex="1"
+        >
+          <div
+            className="emotion-8"
+          >
+            <label
+              className="emotion-7"
+            >
+              <div
+                className="emotion-4"
+              >
+                <input
+                  className="emotion-1"
+                  defaultChecked={true}
+                  onClick={[Function]}
+                  type="checkbox"
+                  value="all"
+                />
+                <div
+                  className="emotion-3"
+                >
+                  <svg
+                    className="emotion-2"
+                    data-file-name="checkmark.svg"
+                    height={20}
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-6"
+              >
+                <span
+                  className="emotion-5"
+                >
+                  All
+                </span>
+              </div>
+            </label>
+          </div>
+          <label
+            className="emotion-7"
+          >
+            <div
+              className="emotion-4"
+            >
+              <input
+                className="emotion-1"
+                defaultChecked={true}
+                onClick={[Function]}
+                type="checkbox"
+                value="gcp-video-explicit-detection"
+              />
+              <div
+                className="emotion-3"
+              >
+                <svg
+                  className="emotion-2"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <span
+                className="emotion-5"
+              >
+                gcp-video-explicit-detection
+              </span>
+              <span
+                className="emotion-14"
+              >
+                (2)
+              </span>
+            </div>
+          </label>
+          <label
+            className="emotion-7"
+          >
+            <div
+              className="emotion-4"
+            >
+              <input
+                className="emotion-1"
+                defaultChecked={true}
+                onClick={[Function]}
+                type="checkbox"
+                value="gcp-video-label-detection"
+              />
+              <div
+                className="emotion-3"
+              >
+                <svg
+                  className="emotion-2"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <span
+                className="emotion-5"
+              >
+                gcp-video-label-detection
+              </span>
+              <span
+                className="emotion-14"
+              >
+                (3)
+              </span>
+            </div>
+          </label>
+          <label
+            className="emotion-7"
+          >
+            <div
+              className="emotion-4"
+            >
+              <input
+                className="emotion-1"
+                defaultChecked={true}
+                onClick={[Function]}
+                type="checkbox"
+                value="gcp-video-logo-detection"
+              />
+              <div
+                className="emotion-3"
+              >
+                <svg
+                  className="emotion-2"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <span
+                className="emotion-5"
+              >
+                gcp-video-logo-detection
+              </span>
+              <span
+                className="emotion-14"
+              >
+                (3)
+              </span>
+            </div>
+          </label>
+          <label
+            className="emotion-7"
+          >
+            <div
+              className="emotion-4"
+            >
+              <input
+                className="emotion-1"
+                defaultChecked={true}
+                onClick={[Function]}
+                type="checkbox"
+                value="gcp-video-object-detection"
+              />
+              <div
+                className="emotion-3"
+              >
+                <svg
+                  className="emotion-2"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <span
+                className="emotion-5"
+              >
+                gcp-video-object-detection
+              </span>
+              <span
+                className="emotion-14"
+              >
+                (3)
+              </span>
+            </div>
+          </label>
+          <label
+            className="emotion-7"
+          >
+            <div
+              className="emotion-4"
+            >
+              <input
+                className="emotion-1"
+                defaultChecked={true}
+                onClick={[Function]}
+                type="checkbox"
+                value="gcp-video-text-detection"
+              />
+              <div
+                className="emotion-3"
+              >
+                <svg
+                  className="emotion-2"
+                  data-file-name="checkmark.svg"
+                  height={20}
+                />
+              </div>
+            </div>
+            <div
+              className="emotion-6"
+            >
+              <span
+                className="emotion-5"
+              >
+                gcp-video-text-detection
+              </span>
+              <span
+                className="emotion-14"
+              >
+                (4)
+              </span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

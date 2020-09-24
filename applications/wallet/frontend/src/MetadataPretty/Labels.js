@@ -14,7 +14,7 @@ const MetadataPrettyLabels = () => {
 
   const {
     data: { results: models },
-  } = useSWR(`/api/v1/projects/${projectId}/models/`)
+  } = useSWR(`/api/v1/projects/${projectId}/models/all/`)
 
   return (
     <div css={{ paddingTop: spacing.normal, paddingBottom: spacing.comfy }}>

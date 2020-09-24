@@ -31,15 +31,15 @@ class AgreementViewSet(ListModelMixin, GenericViewSet):
         # Check that we got a good policies date
         policies_date = request.data.get('policiesDate')
         if not policies_date:
-            return Response(data={'detail': 'Missing `policiesDate` in the request.'},
+            return Response(data={'detail': ['Missing `policiesDate` in the request.']},
                             status=status.HTTP_400_BAD_REQUEST)
         try:
             int(policies_date)
             if len(policies_date) != 8:
                 raise ValueError
         except ValueError:
-            return Response(data={'detail': 'Value for `policiesDate` must be an 8 character date '
-                                  'string in the YYYYMMDD format.'},
+            return Response(data={'detail': ['Value for `policiesDate` must be an 8 character date '
+                                  'string in the YYYYMMDD format.']},
                             status=status.HTTP_400_BAD_REQUEST)
 
         # Get the IP

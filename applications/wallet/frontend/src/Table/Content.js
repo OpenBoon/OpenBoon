@@ -4,6 +4,8 @@ import useSWR from 'swr'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import CheckmarkSvg from '../Icons/checkmark.svg'
+
 import FetchAhead from '../Fetch/Ahead'
 import Pagination from '../Pagination'
 
@@ -147,13 +149,21 @@ const TableContent = ({
                       },
                     }}
                   >
-                    {column === '#Actions#' ? (
+                    {column === '#Actions#' && (
                       <div css={{ display: 'flex' }}>
                         <KebabSvg height={constants.icons.regular} />
                       </div>
-                    ) : (
-                      column
                     )}
+
+                    {column === '#Checkmark#' && (
+                      <div css={{ display: 'flex' }}>
+                        <CheckmarkSvg height={constants.icons.regular} />
+                      </div>
+                    )}
+
+                    {column !== '#Actions#' &&
+                      column !== '#Checkmark#' &&
+                      column}
                   </th>
                 ))}
               </tr>

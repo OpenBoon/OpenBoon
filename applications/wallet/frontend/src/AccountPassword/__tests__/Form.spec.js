@@ -28,6 +28,7 @@ describe('<AccountPasswordForm />', () => {
         .props.onChange({ target: { value: 'bar' } })
     })
 
+    // Mock Success
     fetch.mockResponseOnce(
       JSON.stringify({
         oldPassword: 'password',
@@ -36,6 +37,7 @@ describe('<AccountPasswordForm />', () => {
       }),
     )
 
+    // Click Submit
     await act(async () => {
       component.root
         .findByProps({ type: 'submit' })

@@ -8,14 +8,25 @@ class ModelSerializer(serializers.Serializer):
     moduleName = serializers.CharField(required=False)
     fileId = serializers.CharField(required=False)
     trainingJobName = serializers.CharField(required=False)
-    ready = serializers.BooleanField(required=False)
+    unappliedChanges = serializers.BooleanField(required=False)
     deploySearch = serializers.JSONField(required=False)
     timeCreated = serializers.IntegerField(required=False)
     timeModified = serializers.IntegerField(required=False)
     actorCreated = serializers.CharField(required=False)
     actorModified = serializers.CharField(required=False)
     url = serializers.CharField(required=False)
+
+
+class ModelTypeRestrictionsSerializer(serializers.Serializer):
+    requiredLabels = serializers.IntegerField()
+    missingLabels = serializers.IntegerField()
+    requiredAssetsPerLabel = serializers.IntegerField()
+    missingLabelsOnAssets = serializers.IntegerField()
+
+
+class ModelDetailSerializer(ModelSerializer):
     runningJobId = serializers.CharField(required=False, default='', allow_blank=True)
+    modelTypeRestrictions = ModelTypeRestrictionsSerializer()
 
 
 class ModelTypeSerializer(serializers.Serializer):

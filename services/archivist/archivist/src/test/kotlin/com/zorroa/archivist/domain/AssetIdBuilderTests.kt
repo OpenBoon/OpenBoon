@@ -11,15 +11,15 @@ class AssetIdBuilderTests : AbstractTest() {
         val spec = AssetSpec("gs://cats/large-brown-cat.jpg")
         val builder = AssetIdBuilder(spec)
         val id = builder.build()
-        assertEquals("hWsGI5FlI2HRdbT6EzJ3HqF3IA0WBx2_", id)
+        assertEquals("jvfC_RFfhDKDXgqmgTFdtszLXj15uP-3", id)
     }
 
     @Test
     fun testBuildWithChecksum() {
         val spec = AssetSpec("gs://cats/large-brown-cat.jpg")
+        spec.makeChecksum("peaches".toByteArray())
         val builder = AssetIdBuilder(spec)
-            .checksum("peaches".toByteArray())
         val id = builder.build()
-        assertEquals("YKwzMmtXGTZ9fyT5QXCqUwPoht3ex38D", id)
+        assertEquals("YRwTuSPS7xJ_gWUdjaYHEZPCf13Yz-yb", id)
     }
 }

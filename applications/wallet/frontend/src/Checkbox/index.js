@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import checkboxOptionShape from './optionShape'
 
-import { colors, spacing, typography } from '../Styles'
+import { colors, spacing, typography, constants } from '../Styles'
 
 import CheckboxIcon from './Icon'
 
@@ -75,6 +75,27 @@ const STYLES = {
       paddingLeft: spacing.moderate,
     },
   },
+  MENU: {
+    label: {
+      alignItems: 'center',
+      padding: spacing.base,
+      borderTop: constants.borders.medium.steel,
+    },
+    icon: { size: 16 },
+    main: {
+      display: 'flex',
+      overflow: 'hidden',
+      paddingLeft: spacing.base,
+    },
+    value: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    },
+    legend: {
+      paddingLeft: spacing.mini,
+    },
+  },
 }
 
 export const VARIANTS = Object.keys(STYLES).reduce(
@@ -86,6 +107,7 @@ const Checkbox = ({
   variant,
   option: { value, label, icon, legend, initialValue, isDisabled },
   onClick,
+  onBlur,
 }) => {
   const [isChecked, setIsChecked] = useState(initialValue)
 
@@ -95,8 +117,7 @@ const Checkbox = ({
         display: 'flex',
         color: colors.white,
         cursor: isDisabled ? 'not-allowed' : 'pointer',
-        paddingBottom: STYLES[variant].label.paddingBottom,
-        paddingLeft: STYLES[variant].label.paddingLeft,
+        ...STYLES[variant].label,
         alignItems: legend ? STYLES[variant].label.alignItems : 'center',
       }}
     >
@@ -110,6 +131,7 @@ const Checkbox = ({
           setIsChecked(!isChecked)
           onClick(!isChecked)
         }}
+        onBlur={onBlur}
       />
       {!!icon && (
         <div
@@ -130,10 +152,15 @@ const Checkbox = ({
   )
 }
 
+Checkbox.defaultProps = {
+  onBlur: undefined,
+}
+
 Checkbox.propTypes = {
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   option: PropTypes.shape(checkboxOptionShape).isRequired,
   onClick: PropTypes.func.isRequired,
+  onBlur: PropTypes.func,
 }
 
 export default Checkbox

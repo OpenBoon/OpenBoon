@@ -17,7 +17,15 @@ const HANDLE_HEIGHT = 24
 
 export const noop = () => {}
 
-const Slider = ({ step, domain, values, isDisabled, onUpdate, onChange }) => {
+const Slider = ({
+  step,
+  domain,
+  values,
+  isMuted,
+  isDisabled,
+  onUpdate,
+  onChange,
+}) => {
   return (
     <ReactSlider
       mode={2}
@@ -101,7 +109,9 @@ const Slider = ({ step, domain, values, isDisabled, onUpdate, onChange }) => {
                     transform: 'translate(0%, -50%)',
                     height: TRACK_HEIGHT,
                     zIndex: 1,
-                    backgroundColor: colors.key.one,
+                    backgroundColor: isMuted
+                      ? colors.structure.steel
+                      : colors.key.one,
                     cursor: 'pointer',
                     left: `${source.percent}%`,
                     width: `${target.percent - source.percent}%`,
@@ -121,6 +131,7 @@ Slider.propTypes = {
   step: PropTypes.number.isRequired,
   domain: PropTypes.arrayOf(PropTypes.number).isRequired,
   values: PropTypes.arrayOf(PropTypes.number).isRequired,
+  isMuted: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,

@@ -5,7 +5,7 @@ from functools import reduce
 import dateutil.parser
 from pathlib import Path
 
-from zmlp import Clip, FileImport
+from zmlp import FileImport
 from zmlpsdk import AssetProcessor, Argument, ExpandFrame, FileTypes
 from zmlpsdk.storage import file_storage
 from ..util.media import get_image_metadata, set_resolution_attrs
@@ -37,14 +37,9 @@ class ImageImporter(AssetProcessor):
         subimages = int(metadata.get('subimages', 1))
         asset.set_attr('media.length', subimages)
 
-        has_clip = asset.attr_exists('clip')
-        if not has_clip:
-            # Since there is no clip, then set a clip, as all pages
-            # need to have a clip.
-            asset.set_attr('clip', Clip.page(1))
-
-            if self.arg_value('extract_image_pages') and metadata.get('subimages'):
-                self.extract_pages(frame, metadata)
+        page = asset.get_attr('media.pageNumber')
+        if page == 1 and self.arg_value('extract_image_pages') and metadata.get('subimages'):
+            self.extract_pages(frame, metadata)
 
     def set_date(self, document, metadata):
         """Extracts the date from the metadata and sets it on the document.
@@ -124,6 +119,5 @@ class ImageImporter(AssetProcessor):
         subimages = int(metadata.get('subimages'))
         source_asset = "asset:{}".format(frame.asset.id)
         for i in range(2, subimages + 1):
-            clip = Clip.page(i)
-            expand = ExpandFrame(FileImport(source_asset, clip=clip))
+            expand = ExpandFrame(FileImport(source_asset, page=i))
             self.expand(frame, expand)

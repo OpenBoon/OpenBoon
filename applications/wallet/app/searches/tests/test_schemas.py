@@ -1,7 +1,7 @@
 import pytest
 
 from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
-                              LabelsAnalysisSchema)
+                              LabelsAnalysisSchema, SingleLabelAnalysisSchema)
 
 
 @pytest.fixture
@@ -113,7 +113,16 @@ def mock_response():
                                                  'type': 'float',
                                                  'coerce': True}}}
                                 }
-                            }
+                            },
+                            'setting': {'properties': {'label': {'type': 'text',
+                                                                 'fields': {
+                                                                     'keyword': {'type': 'keyword',
+                                                                                 'ignore_above': 256}}},
+                                                       'score': {'type': 'float'},
+                                                       'type': {'type': 'text',
+                                                                'fields': {
+                                                                    'keyword': {'type': 'keyword',
+                                                                                'ignore_above': 256}}}}},
                         }
                     }
                 }
@@ -135,9 +144,9 @@ class TestSimilarityAnalysisSchema:
     def test_is_valid(self, schema):
         assert schema.is_valid()
 
-    def test_get_representation(self, schema):
-        rep = schema.get_representation()
-        assert rep == {'zvi-image-similarity': ['exists', 'similarity']}
+    def test_get_field_type(self, schema):
+        rep = schema.get_field_type_representation()
+        assert rep == {'zvi-image-similarity': {'fieldType': 'similarity'}}
 
 
 class TestContentAnalysisSchema:
@@ -153,9 +162,9 @@ class TestContentAnalysisSchema:
     def test_is_valid(self, schema):
         assert schema.is_valid()
 
-    def test_get_represention(self, schema):
-        rep = schema.get_representation()
-        assert rep == {'zvi-text-detection': ['textContent', 'exists']}
+    def test_get_field_type(self, schema):
+        rep = schema.get_field_type_representation()
+        assert rep == {'zvi-text-detection': {'fieldType': 'text_content'}}
 
 
 class TestLabelsAnalysisSchema:
@@ -182,10 +191,28 @@ class TestLabelsAnalysisSchema:
     def test_is_valid_safe(self, safe_schema):
         assert safe_schema.is_valid()
 
-    def test_get_represention_with_count(self, count_schema):
-        rep = count_schema.get_representation()
-        assert rep == {'zvi-label-detection': ['labelConfidence', 'exists']}
+    def test_get_field_type_with_count(self, count_schema):
+        rep = count_schema.get_field_type_representation()
+        assert rep == {'zvi-label-detection': {'fieldType': 'prediction'}}
 
-    def test_get_representation_with_safe(self, safe_schema):
-        rep = safe_schema.get_representation()
-        assert rep == {'zvi-content-moderation': ['labelConfidence', 'exists']}
+    def test_get_field_type_with_safe(self, safe_schema):
+        rep = safe_schema.get_field_type_representation()
+        assert rep == {'zvi-content-moderation': {'fieldType': 'prediction'}}
+
+
+class TestSingleLabelAnalysisSchema:
+
+    @pytest.fixture
+    def label_data(self, mock_response):
+        return mock_response['index']['mappings']['properties']['analysis']['properties']['setting']
+
+    @pytest.fixture
+    def label_schema(self, label_data):
+        return SingleLabelAnalysisSchema('setting', label_data['properties'])
+
+    def test_is_valid(self, label_schema):
+        assert label_schema.is_valid()
+
+    def test_get_field_type(self, label_schema):
+        rep = label_schema.get_field_type_representation()
+        assert rep == {'setting': {'fieldType': 'single_label'}}

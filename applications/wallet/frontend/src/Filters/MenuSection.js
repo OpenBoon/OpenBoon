@@ -17,14 +17,16 @@ const FiltersMenuSection = ({
 }) => {
   const {
     data: { results: models },
-  } = useSWR(`/api/v1/projects/${projectId}/models/`)
+  } = useSWR(`/api/v1/projects/${projectId}/models/all/`)
 
   const { moduleName: label } =
     path === 'labels'
-      ? models.find(({ id }) => id === attribute)
+      ? models.find(({ id }) => id === attribute) || {}
       : { moduleName: attribute }
 
   const fullPath = `${path}.${label}`
+
+  if (!label) return null
 
   if (Array.isArray(value) && value.length === 0) return null
 

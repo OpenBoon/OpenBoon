@@ -8,6 +8,7 @@ import chartShape from '../Chart/shape'
 
 import { encode, cleanup, ACTIONS, dispatch } from '../Filters/helpers'
 import { getQueryString } from '../Fetch/helpers'
+
 import Button, { VARIANTS } from '../Button'
 
 import FilterSvg from '../Icons/filter.svg'
@@ -28,7 +29,8 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
     `/api/v1/projects/${projectId}/visualizations/load/${queryString}`,
   )
 
-  const { results = {} } = data.find((r) => r.id === id) || {}
+  const { results = {}, defaultFilterType } =
+    data.find((r) => r.id === id) || {}
 
   return (
     <div
@@ -92,7 +94,7 @@ const ChartRangeContent = ({ chart: { type, id, attribute } }) => {
                 payload: {
                   pathname,
                   projectId,
-                  filter: { type, attribute, values: {} },
+                  filter: { type: defaultFilterType, attribute, values: {} },
                   query,
                 },
               })

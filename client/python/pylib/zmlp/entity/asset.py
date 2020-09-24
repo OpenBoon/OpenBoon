@@ -9,7 +9,6 @@ __all__ = [
     'Asset',
     'FileImport',
     'FileUpload',
-    'Clip',
     'StoredFile',
     'FileTypes'
 ]
@@ -234,7 +233,7 @@ class FileImport(object):
     An FileImport is used to import a new file and metadata into ZMLP.
     """
 
-    def __init__(self, uri, attrs=None, clip=None, label=None):
+    def __init__(self, uri, attrs=None, page=None, label=None):
         """
         Construct an FileImport instance which can point to a remote URI.
 
@@ -242,15 +241,14 @@ class FileImport(object):
             uri (str): a URI locator to the file asset.
             attrs (dict): A shallow key/value pair dictionary of starting point
                 attributes to set on the asset.
-            clip (Clip): Defines a subset of the asset to be processed, for example a
-                page of a PDF or time code from a video.
+            page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
                 a Model training set.
         """
         super(FileImport, self).__init__()
         self.uri = uri
         self.attrs = attrs or {}
-        self.clip = clip
+        self.page = page
         self.label = label
 
     def for_json(self):
@@ -265,7 +263,7 @@ class FileImport(object):
         return {
             "uri": self.uri,
             "attrs": self.attrs,
-            "clip": self.clip,
+            "page": self.page,
             "label": self.label
         }
 
@@ -281,7 +279,7 @@ class FileUpload(FileImport):
     FileUpload instances point to a local file that will be uploaded for analysis.
     """
 
-    def __init__(self, path, attrs=None, clip=None, label=None):
+    def __init__(self, path, attrs=None, page=None, label=None):
         """
         Create a new FileUpload instance.
 
@@ -289,12 +287,12 @@ class FileUpload(FileImport):
             path (str): A path to a file, the file must exist.
             attrs (dict): A shallow key/value pair dictionary of starting point
                 attributes to set on the asset.
-            clip (Clip): Clip settings if applicable.
+            page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
                 a Model training set.
         """
         super(FileUpload, self).__init__(
-            os.path.normpath(os.path.abspath(path)), attrs, clip, label)
+            os.path.normpath(os.path.abspath(path)), attrs, page, label)
 
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
@@ -310,18 +308,17 @@ class FileUpload(FileImport):
         """
         return {
             "uri": self.uri,
-            "clip": self.clip,
+            "page": self.page,
             "label": self.label
         }
 
 
 class Asset(DocumentMixin):
     """
-    An Asset represents a single processed file or a clip/segment of a
-    file. Assets start out in the 'CREATED' state, which indicates
-    they've been created by not processed.  Once an asset has been processed
-    and augmented with files created by various analysis modules, the Asset
-    will move into the 'ANALYZED' state.
+    An Asset represents a single processed file.  Assets start out
+    in the 'CREATED' state, which indicates they've been created by not processed.
+    Once an asset has been processed and augmented with files created by various
+    analysis modules, the Asset will move into the 'ANALYZED' state.
     """
 
     def __init__(self, data):
@@ -513,76 +510,6 @@ class Asset(DocumentMixin):
         if not getattr(other, "id"):
             return False
         return other.id == self.id
-
-
-class Clip(object):
-    """
-    A Clip object is used to define a subsection of a file/asset that should be
-    processed, for example a particular page of a PDF or a section of a movie.
-
-    Each clip of an Asset needs to have a unique type, start, stop, and optionally
-    track attributes fo it to be considered a unique clip.
-
-    """
-
-    @staticmethod
-    def page(page_num):
-        """
-        Return a standard 'page' clip for the given page.
-
-        Args:
-            page_num (int): The page number
-
-        Returns:
-            Clip: The page clip.
-
-        """
-        return Clip('page', page_num, page_num)
-
-    @staticmethod
-    def scene(time_in, time_out, track):
-        """
-        Return a video scene Clip with the given in/out points and a track name.
-
-        Args:
-            time_in: (float): The start time of the cut.
-            time_out: (float): The end time of the cut.
-            track: (str): An track label.  Videos can be clipified multiple ways
-                by multiple types of services and labeling them with a track is
-                useful for differentiating them.
-        Returns:
-            Clip: A scene Clip.
-
-        """
-        return Clip('scene', time_in, time_out, track)
-
-    def __init__(self, type, start, stop, track=None):
-        """Initialize a new clip.
-
-        Args:
-            type (str): The clip type, usually 'scene' or 'page' but it can be arbitrary.
-            start (float): The start of the clip
-            stop (float): The end of the clip,
-            track (str): The track the clip belongs to.
-        """
-
-        self.type = type
-        self.start = float(start)
-        self.stop = float(stop)
-        self.track = track
-
-    def for_json(self):
-        """Return a JSON serialized copy.
-
-        Returns:
-            :obj:`dict`: A json serializable dict.
-        """
-        serializable_dict = {}
-        attrs = ['type', 'start', 'stop', 'track']
-        for attr in attrs:
-            if getattr(self, attr, None) is not None:
-                serializable_dict[attr] = getattr(self, attr)
-        return serializable_dict
 
 
 class StoredFile(object):

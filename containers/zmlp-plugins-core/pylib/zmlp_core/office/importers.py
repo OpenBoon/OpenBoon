@@ -3,7 +3,7 @@ import os
 import subprocess
 import tempfile
 
-from zmlp import FileImport, Clip
+from zmlp import FileImport
 from zmlpsdk import AssetProcessor, Argument, ExpandFrame, ZmlpFatalProcessorException, FileTypes
 from zmlpsdk.storage import file_storage, ZmlpStorageException
 from .oclient import OfficerClient
@@ -81,29 +81,25 @@ class OfficeImporter(AssetProcessor):
             frame (Frame): The Frame to process
         """
         asset = frame.asset
-        has_clip = asset.attr_exists('clip')
-        page = max(int(asset.get_attr('clip.start') or 1), 1)
+        page = max(int(asset.get_attr('media.pageNumber') or 1), 1)
 
-        output_uri = self.render_pages(asset, page, not has_clip)
-        media = self.get_metadata(output_uri, page)
+        output_uri = self.render_pages(asset, page, page == 1)
+        media = asset.get_attr('media') or {}
+        media.update(self.get_metadata(output_uri, page))
         asset.set_attr('media', media)
         asset.set_attr('media.type', 'document')
 
-        if not has_clip:
-            # Since there is no clip, then set a clip
-            asset.set_attr('clip', Clip.page(1))
-
-            if self.arg_value('extract_doc_pages'):
-                # Iterate the pages and expand
-                num_pages = int(asset.get_attr('media.length') or 1)
-                if num_pages > 1:
-                    # Start on page 2 since we just processed page 1
-                    for page_num in range(2, num_pages + 1):
-                        clip = Clip('page', page_num, page_num)
-                        file_import = FileImport("asset:{}".format(asset.id), clip=clip)
-                        file_import.attrs[self.tmp_loc_attr] = output_uri
-                        expand = ExpandFrame(file_import)
-                        self.expand(frame, expand)
+        # If we're on page 1 and extract_doc_pages is true.
+        if page == 1 and self.arg_value('extract_doc_pages'):
+            # Iterate the pages and expand
+            num_pages = int(asset.get_attr('media.length') or 1)
+            if num_pages > 1:
+                # Start on page 2 since we just processed page 1
+                for page_num in range(2, num_pages + 1):
+                    file_import = FileImport("asset:{}".format(asset.id), page=page_num)
+                    file_import.attrs[self.tmp_loc_attr] = output_uri
+                    expand = ExpandFrame(file_import)
+                    self.expand(frame, expand)
 
     def render_pages(self, asset, page, all_pages):
         """

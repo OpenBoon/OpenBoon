@@ -5,12 +5,12 @@ import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
-import com.zorroa.zmlp.service.logging.LogAction
-import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.zmlp.service.logging.event
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.util.randomString
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.UUID
@@ -81,6 +81,8 @@ interface IndexRouteDao {
      * Set the state of the [IndexRoute].
      */
     fun setState(route: IndexRoute, state: IndexRouteState): Boolean
+
+    fun setState(routeUUID: UUID, state: IndexRouteState): Boolean
 }
 
 @Repository
@@ -160,6 +162,10 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
 
     override fun setState(route: IndexRoute, state: IndexRouteState): Boolean {
         return jdbc.update(UPDATE_STATE, state.ordinal, System.currentTimeMillis(), route.id) == 1
+    }
+
+    override fun setState(routeUUID: UUID, state: IndexRouteState): Boolean {
+        return jdbc.update(UPDATE_STATE, state.ordinal, System.currentTimeMillis(), routeUUID) == 1
     }
 
     override fun count(filter: IndexRouteFilter): Long {

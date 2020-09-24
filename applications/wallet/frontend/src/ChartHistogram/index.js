@@ -40,9 +40,11 @@ const ChartHistogram = ({ chart, chartIndex, dispatch }) => {
         />
       }
       content={
-        <SuspenseBoundary isTransparent>
-          <ChartHistogramContent chart={chart} />
-        </SuspenseBoundary>
+        <div css={{ height: '100%', '.Loading': { minHeight: 'auto' } }}>
+          <SuspenseBoundary isTransparent>
+            <ChartHistogramContent chart={chart} dispatch={dispatch} />
+          </SuspenseBoundary>
+        </div>
       }
     />
   )

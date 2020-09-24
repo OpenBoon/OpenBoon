@@ -6,6 +6,7 @@ import google.cloud.videointelligence_v1p3beta1 as videointelligence
 from google.api_core.exceptions import ResourceExhausted
 
 from zmlpsdk import Argument, AssetProcessor, FileTypes, file_storage, proxy
+from zmlpsdk.base import ProcessorException
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
 from . import cloud_timeline
 from .gcp_client import initialize_gcp_client
@@ -27,11 +28,11 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         'detect_objects': tip,
         'detect_logos': tip,
         'detect_explicit': 'An integer level of confidence to tag as explicit. 0=disabled, max=5',
-        'detect_speech': 'Set to true to recongize speech in video.'
+        'detect_speech': 'Set to true to recognize speech in video.'
     }
 
-    max_length_sec = 30 * 60
-    """By default we allow up to 30 minutes of video."""
+    max_length_sec = 120 * 60
+    """By default we allow up to 120 minutes of video."""
 
     conf_labels = [
         "IGNORE",
@@ -66,14 +67,10 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
 
-        # Cannot run on clips without transcoding the clip
-        if asset.get_attr('clip.track') != 'full':
-            self.logger.info('Skipping, cannot run processor on clips.')
-            return -1
-
         # If the length is over time time
-        if asset.get_attr('media.length') > self.max_length_sec:
-            self.logger.info(
+        if not asset.get_attr('media.length') \
+                or asset.get_attr('media.length') > self.max_length_sec:
+            self.logger.warning(
                 'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
             return
 
@@ -108,6 +105,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
     def get_video_proxy_uri(self, asset):
         video_proxy = proxy.get_proxy_level(asset, 3, mimetype="video")
+        if not video_proxy:
+            raise ProcessorException("Unable to find video proxy for asset {}".format(asset.id))
         return file_storage.assets.get_native_uri(video_proxy)
 
     def handle_detect_logos(self, asset, results):
@@ -116,7 +115,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         Args:
             asset (Asset): The asset.
-            results (obj): The video intelligence result.
+            results (obj): The Logo detection result.
         """
         analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_logos'),
                                           collapse_labels=True)
@@ -126,8 +125,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                     annotation.entity.description,
                     track.confidence))
         asset.add_analysis('gcp-video-logo-detection', analysis)
-        timeline = cloud_timeline.build_logo_detection_timeline(results)
-        file_storage.assets.store_timeline(asset, timeline)
+        cloud_timeline.save_logo_detection_timeline(asset, results)
 
     def handle_detect_objects(self, asset, annotation_result):
         """
@@ -135,7 +133,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         Args:
             asset (Asset): The asset to process.
-            results (dict): The JSON compatible result.
+            annotation_result (obj): The Object detection result.
 
         """
         analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_objects'),
@@ -146,16 +144,15 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             analysis.add_prediction(pred)
 
         asset.add_analysis('gcp-video-object-detection', analysis)
-        timeline = cloud_timeline.build_object_detection_timeline(annotation_result)
-        file_storage.assets.store_timeline(asset, timeline)
+        cloud_timeline.save_object_detection_timeline(asset, annotation_result)
 
-    def handle_detect_labels(self, asset, results):
+    def handle_detect_labels(self, asset, annotation_result):
         """
         Handles processing segment and shot labels.
 
         Args:
             asset (Asset): The asset to process.
-            results (dict): The JSON compatible result.
+            annotation_result (dict): The label detection result.
 
         """
         def process_label_annotations(annotations):
@@ -172,39 +169,60 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_labels'),
                                           collapse_labels=True)
 
-        process_label_annotations(results.segment_label_annotations)
-        process_label_annotations(results.shot_label_annotations)
-        process_label_annotations(results.shot_presence_label_annotations)
+        process_label_annotations(annotation_result.segment_label_annotations)
+        process_label_annotations(annotation_result.shot_label_annotations)
+        process_label_annotations(annotation_result.shot_presence_label_annotations)
         asset.add_analysis('gcp-video-label-detection', analysis)
 
-        timeline = cloud_timeline.build_label_detection_timeline(results)
-        file_storage.assets.store_timeline(asset, timeline)
+        cloud_timeline.save_label_detection_timeline(asset, annotation_result)
 
     def handle_detect_text(self, asset, annotation_result):
+        """
+        Detect text images in a video.
+        Args:
+            asset (Asset): The asset.
+            annotation_result (obj): The detect text result.
+
+        """
         analysis = ContentDetectionAnalysis()
         analysis.add_content(
             ' '.join(t.text for t in annotation_result.text_annotations))
 
         if analysis.content:
             asset.add_analysis('gcp-video-text-detection', analysis)
-
-            timeline = cloud_timeline.build_text_detection_timeline(annotation_result)
-            file_storage.assets.store_timeline(asset, timeline)
+            cloud_timeline.save_text_detection_timeline(asset, annotation_result)
 
     def handle_detect_speech(self, asset, annotation_result):
+        """
+        Handle the detect speech result.
+
+        Args:
+            asset (Asset): The Asset
+            annotation_result (obj): The detect speech result.
+
+        """
         analysis = ContentDetectionAnalysis()
 
         for speech in annotation_result.speech_transcriptions:
             for alternative in speech.alternatives:
+                # Find first one with words.
                 if alternative.words:
-                    analysis.add_content(alternative.transcript)
+                    analysis.add_content(alternative.transcript.strip())
+                    break
 
         if analysis.content:
             asset.add_analysis('gcp-video-speech-transcription', analysis)
-            timeline = cloud_timeline.build_speech_transcription_timeline(annotation_result)
-            file_storage.assets.store_timeline(asset, timeline)
+            cloud_timeline.save_speech_transcription_timeline(asset, annotation_result)
+            cloud_timeline.save_video_speech_transcription_webvtt(asset, annotation_result)
 
     def handle_detect_explicit(self, asset, annotation_result):
+        """
+        Detect explicit content.
+
+        Args:
+            asset (Asset): The asset.
+            annotation_result (obj): The content moderation result.
+        """
         analysis = LabelDetectionAnalysis(collapse_labels=True)
         analysis.set_attr('explicit', False)
 
@@ -218,9 +236,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                 analysis.set_attr('explicit', True)
 
         asset.add_analysis('gcp-video-explicit-detection', analysis)
-
-        timeline = cloud_timeline.build_content_moderation_timeline(annotation_result)
-        file_storage.assets.store_timeline(asset, timeline)
+        cloud_timeline.save_content_moderation_timeline(asset, annotation_result)
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_tries=3, max_time=3600)
     def _get_video_annotations(self, uri):

@@ -45,6 +45,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -118,13 +119,45 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-1 a {
   color: #0074f5;
 }
 
-.emotion-4 {
+<div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-2"
+    >
+      <svg
+        className="emotion-0"
+        color="#0074f5"
+        data-file-name="generating.svg"
+        height={20}
+      />
+      <div
+        className="emotion-1"
+        role="alert"
+      >
+        "
+        console_face_recognition
+        " training in progress.
+         
+        <a
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Check Status
+        </a>
+      </div>
+    </div>
+  </div>,
+  "",
+  .emotion-0 {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -132,7 +165,77 @@ Array [
   line-height: 23px;
 }
 
-.emotion-8 {
+<ul
+    className="emotion-0"
+  >
+    <li>
+      <strong>
+        Model Name:
+      </strong>
+       
+      console_face_recognition
+    </li>
+    <li>
+      <strong>
+        Model Type:
+      </strong>
+       
+      ZVI_FACE_RECOGNITION
+    </li>
+    <li>
+      <strong>
+        Module Name:
+      </strong>
+       
+      zvi-console_face_recognition-face-recognition
+    </li>
+  </ul>,
+  .emotion-2 {
+  padding-top: 8px;
+  font-style: italic;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 span {
+  padding-top: 4px;
+}
+
+.emotion-0 {
+  color: #ebb52e;
+}
+
+<div
+    className="emotion-2"
+  >
+    <span
+      className="emotion-0"
+    >
+      1
+       more
+       
+      label is
+       required (min. =
+       
+      2
+       unique)
+    </span>
+    <span
+      className="emotion-0"
+    >
+      15
+       more assets need to be labeled (min. =
+       
+      10
+       of each label)
+    </span>
+  </div>,
+  .emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -141,12 +244,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-8 button,
-.emotion-8 a {
+.emotion-3 button,
+.emotion-3 a {
   margin-right: 16px;
 }
 
-.emotion-5 {
+.emotion-0 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -177,30 +280,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-5:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-0[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-0:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-0[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-7 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -231,30 +334,57 @@ Array [
   background-color: transparent;
 }
 
-.emotion-7:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
   background-color: #808080;
 }
 
-.emotion-7:hover {
+.emotion-2:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-12 {
+<div
+    className="emotion-3"
+  >
+    <button
+      aria-disabled={true}
+      className="emotion-0"
+      onClick={[Function]}
+      type="button"
+    >
+      Train
+    </button>
+    <button
+      aria-disabled={true}
+      className="emotion-0"
+      onClick={[Function]}
+      type="button"
+    >
+      Train & Apply
+    </button>
+    <button
+      className="emotion-2"
+      onClick={[Function]}
+      type="button"
+    >
+      Delete
+    </button>
+  </div>,
+  .emotion-3 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -263,7 +393,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-11 {
+.emotion-2 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -274,12 +404,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-10 {
+.emotion-1 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-9 {
+.emotion-0 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -298,12 +428,32 @@ Array [
   font-weight: 700;
 }
 
-.emotion-9:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-14 {
+<nav
+    className="emotion-3"
+  >
+    <ul
+      className="emotion-2"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View Labels
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -315,124 +465,132 @@ Array [
   margin-bottom: -16px;
 }
 
-<div>
-    <div
-      className="emotion-3"
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #808080;
+}
+
+.emotion-2:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  padding-right: 8px;
+}
+
+.emotion-3 {
+  width: 16px;
+}
+
+<div
+    className="emotion-7"
+  >
+    <a
+      aria-label="Add Filter in Visualizer"
+      className="emotion-2"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
+      onClick={[Function]}
+      onMouseEnter={[Function]}
     >
       <div
-        className="emotion-2"
+        className="emotion-1"
       >
         <svg
           className="emotion-0"
-          color="#0074f5"
-          data-file-name="generating.svg"
+          data-file-name="filter.svg"
           height={20}
         />
-        <div
-          className="emotion-1"
-          role="alert"
-        >
-          "
-          console_face_recognition
-          " training in progress.
-           
-          <a
-            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-          >
-            Check Status
-          </a>
-        </div>
+        Add Filter in Visualizer
       </div>
-    </div>
-    
-    <ul
-      className="emotion-4"
-    >
-      <li>
-        <strong>
-          Model Name:
-        </strong>
-         
-        console_face_recognition
-      </li>
-      <li>
-        <strong>
-          Model Type:
-        </strong>
-         
-        ZVI_FACE_RECOGNITION
-      </li>
-      <li>
-        <strong>
-          Module Name:
-        </strong>
-         
-        zvi-console_face_recognition-face-recognition
-      </li>
-    </ul>
+    </a>
     <div
-      className="emotion-8"
+      className="emotion-3"
+    />
+    <a
+      aria-label="Add More Labels"
+      className="emotion-2"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
     >
-      <button
-        aria-disabled={true}
-        className="emotion-5"
-        onClick={[Function]}
-        type="button"
+      <div
+        className="emotion-1"
       >
-        Train
-      </button>
-      <button
-        aria-disabled={true}
-        className="emotion-5"
-        onClick={[Function]}
-        type="button"
-      >
-        Train & Apply
-      </button>
-      <button
-        className="emotion-7"
-        onClick={[Function]}
-        type="button"
-      >
-        Delete
-      </button>
-    </div>
-    <nav
-      className="emotion-12"
-    >
-      <ul
-        className="emotion-11"
-      >
-        <li
-          className="emotion-10"
-        >
-          <a
-            className="emotion-9"
-            href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-          >
-            View Labels
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <div
-      className="emotion-14"
-    >
-      <a
-        className="emotion-7"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLnp2aS1jb25zb2xlX2ZhY2VfcmVjb2duaXRpb24tZmFjZS1yZWNvZ25pdGlvbiIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnt9fV0="
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-      >
-        Add Label Filter & View in Visualizer
-      </a>
-    </div>
+        <svg
+          className="emotion-0"
+          data-file-name="pen.svg"
+          height={20}
+        />
+        Add More Labels
+      </div>
+    </a>
   </div>,
-  <ModelLabels />,
+  <ModelLabels
+    requiredAssetsPerLabel={10}
+  />,
   "",
 ]
 `;
@@ -482,6 +640,7 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-0 a {
@@ -555,13 +714,45 @@ Array [
   padding-left: 12px;
   color: #191919;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .emotion-1 a {
   color: #0074f5;
 }
 
-.emotion-4 {
+<div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-2"
+    >
+      <svg
+        className="emotion-0"
+        color="#0074f5"
+        data-file-name="generating.svg"
+        height={20}
+      />
+      <div
+        className="emotion-1"
+        role="alert"
+      >
+        "
+        console_face_recognition
+        " training in progress.
+         
+        <a
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Check Status
+        </a>
+      </div>
+    </div>
+  </div>,
+  "",
+  .emotion-0 {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -569,7 +760,77 @@ Array [
   line-height: 23px;
 }
 
-.emotion-8 {
+<ul
+    className="emotion-0"
+  >
+    <li>
+      <strong>
+        Model Name:
+      </strong>
+       
+      console_face_recognition
+    </li>
+    <li>
+      <strong>
+        Model Type:
+      </strong>
+       
+      ZVI_FACE_RECOGNITION
+    </li>
+    <li>
+      <strong>
+        Module Name:
+      </strong>
+       
+      zvi-console_face_recognition-face-recognition
+    </li>
+  </ul>,
+  .emotion-2 {
+  padding-top: 8px;
+  font-style: italic;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-2 span {
+  padding-top: 4px;
+}
+
+.emotion-0 {
+  color: #ebb52e;
+}
+
+<div
+    className="emotion-2"
+  >
+    <span
+      className="emotion-0"
+    >
+      1
+       more
+       
+      label is
+       required (min. =
+       
+      2
+       unique)
+    </span>
+    <span
+      className="emotion-0"
+    >
+      15
+       more assets need to be labeled (min. =
+       
+      10
+       of each label)
+    </span>
+  </div>,
+  .emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -578,12 +839,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-8 button,
-.emotion-8 a {
+.emotion-3 button,
+.emotion-3 a {
   margin-right: 16px;
 }
 
-.emotion-5 {
+.emotion-0 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -614,30 +875,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-5:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-0[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
   background-color: #808080;
 }
 
-.emotion-5:hover {
+.emotion-0:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-0[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-7 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -668,30 +929,57 @@ Array [
   background-color: transparent;
 }
 
-.emotion-7:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
   background-color: #808080;
 }
 
-.emotion-7:hover {
+.emotion-2:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-14 {
+<div
+    className="emotion-3"
+  >
+    <button
+      aria-disabled={true}
+      className="emotion-0"
+      onClick={[Function]}
+      type="button"
+    >
+      Train
+    </button>
+    <button
+      aria-disabled={true}
+      className="emotion-0"
+      onClick={[Function]}
+      type="button"
+    >
+      Train & Apply
+    </button>
+    <button
+      className="emotion-2"
+      onClick={[Function]}
+      type="button"
+    >
+      Delete
+    </button>
+  </div>,
+  .emotion-5 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
@@ -700,7 +988,7 @@ Array [
   flex-shrink: 0;
 }
 
-.emotion-13 {
+.emotion-4 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -711,12 +999,12 @@ Array [
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-10 {
+.emotion-1 {
   padding-right: 16px;
   margin-bottom: -1px;
 }
 
-.emotion-11 {
+.emotion-2 {
   border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -735,12 +1023,12 @@ Array [
   font-weight: 700;
 }
 
-.emotion-11:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-9 {
+.emotion-0 {
   border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -760,128 +1048,43 @@ Array [
   font-weight: 700;
 }
 
-.emotion-9:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
-<div>
-    <div
-      className="emotion-3"
-    >
-      <div
-        className="emotion-2"
-      >
-        <svg
-          className="emotion-0"
-          color="#0074f5"
-          data-file-name="generating.svg"
-          height={20}
-        />
-        <div
-          className="emotion-1"
-          role="alert"
-        >
-          "
-          console_face_recognition
-          " training in progress.
-           
-          <a
-            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-          >
-            Check Status
-          </a>
-        </div>
-      </div>
-    </div>
-    
+<nav
+    className="emotion-5"
+  >
     <ul
       className="emotion-4"
     >
-      <li>
-        <strong>
-          Model Name:
-        </strong>
-         
-        console_face_recognition
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View Labels
+        </a>
       </li>
-      <li>
-        <strong>
-          Model Type:
-        </strong>
-         
-        ZVI_FACE_RECOGNITION
-      </li>
-      <li>
-        <strong>
-          Module Name:
-        </strong>
-         
-        zvi-console_face_recognition-face-recognition
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Edit Label
+        </a>
       </li>
     </ul>
-    <div
-      className="emotion-8"
-    >
-      <button
-        aria-disabled={true}
-        className="emotion-5"
-        onClick={[Function]}
-        type="button"
-      >
-        Train
-      </button>
-      <button
-        aria-disabled={true}
-        className="emotion-5"
-        onClick={[Function]}
-        type="button"
-      >
-        Train & Apply
-      </button>
-      <button
-        className="emotion-7"
-        onClick={[Function]}
-        type="button"
-      >
-        Delete
-      </button>
-    </div>
-    <nav
-      className="emotion-14"
-    >
-      <ul
-        className="emotion-13"
-      >
-        <li
-          className="emotion-10"
-        >
-          <a
-            className="emotion-9"
-            href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-          >
-            View Labels
-          </a>
-        </li>
-        <li
-          className="emotion-10"
-        >
-          <a
-            className="emotion-11"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-          >
-            Edit Label
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>,
+  </nav>,
   .emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -993,6 +1196,10 @@ Array [
 .emotion-1:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
+}
+
+.emotion-1:hover {
+  border: 2px solid #ffffff;
 }
 
 .emotion-1:focus {

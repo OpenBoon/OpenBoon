@@ -29,7 +29,7 @@ class IndexTaskMonitorTests : AbstractTest() {
         addTestAssets("images")
         refreshIndex()
 
-        val testSpec = IndexRouteSpec("english_strict", 1)
+        val testSpec = IndexRouteSpec("english_strict", 5)
         val dstRoute = indexRoutingService.createIndexRoute(testSpec)
         val srcRoute = indexRouteDao.getProjectRoute()
 

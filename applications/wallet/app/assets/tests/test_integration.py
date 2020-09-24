@@ -108,7 +108,7 @@ class TestAssetViewSet:
         response = api_client.delete(reverse('asset-detail', kwargs={'project_pk': project.id,
                                                                      'pk': id}))
         content = check_response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
-        assert content['detail'] == 'Unable to delete asset.'
+        assert content['detail'] == ['Unable to delete asset.']
 
     def test_signed_url(self, login, project, api_client, monkeypatch):
 

@@ -1,11 +1,11 @@
-import { fetcher, getCsrfToken } from '../Fetch/helpers'
+import { fetcher, getCsrfToken, parseResponse } from '../Fetch/helpers'
 import { logout } from '../Authentication/helpers'
 
 export const onSubmit = async ({
   dispatch,
   state: { currentPassword, newPassword, confirmPassword },
 }) => {
-  dispatch({ isLoading: true })
+  dispatch({ isLoading: true, errors: {} })
 
   try {
     await fetcher(`/api/v1/password/change/`, {
@@ -26,15 +26,9 @@ export const onSubmit = async ({
       errors: {},
     })
   } catch (response) {
-    const errors = await response.json()
+    const errors = await parseResponse({ response })
 
-    const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
-      acc[errorKey] = errors[errorKey].join(' ')
-
-      return acc
-    }, {})
-
-    dispatch({ success: false, isLoading: false, errors: parsedErrors })
+    dispatch({ success: false, isLoading: false, errors })
   }
 }
 
@@ -60,6 +54,8 @@ export const onReset = async ({ setError, email, googleAuth }) => {
       redirectAs: '/',
     })
   } catch (response) {
-    setError('Error. Please try again.')
+    const { global } = await parseResponse({ response })
+
+    setError(global)
   }
 }

@@ -1,6 +1,11 @@
 import Router from 'next/router'
 
-import { fetcher, revalidate, getQueryString } from '../Fetch/helpers'
+import {
+  fetcher,
+  revalidate,
+  getQueryString,
+  parseResponse,
+} from '../Fetch/helpers'
 
 export const slugify = ({ value }) => {
   // https://gist.github.com/codeguy/6684588#gistcomment-3361909
@@ -20,7 +25,7 @@ export const onSubmit = async ({
   projectId,
   state: { type, name, moduleName },
 }) => {
-  dispatch({ isLoading: true })
+  dispatch({ isLoading: true, errors: {} })
 
   try {
     const {
@@ -35,6 +40,11 @@ export const onSubmit = async ({
       paginated: true,
     })
 
+    await revalidate({
+      key: `/api/v1/projects/${projectId}/models/all/`,
+      paginated: false,
+    })
+
     const queryString = getQueryString({
       action: 'add-model-success',
       modelId,
@@ -42,20 +52,8 @@ export const onSubmit = async ({
 
     Router.push(`/[projectId]/models${queryString}`, `/${projectId}/models`)
   } catch (response) {
-    try {
-      const errors = await response.json()
+    const errors = await parseResponse({ response })
 
-      const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
-        acc[errorKey] = errors[errorKey].join(' ')
-        return acc
-      }, {})
-
-      dispatch({ isLoading: false, errors: parsedErrors })
-    } catch (error) {
-      dispatch({
-        isLoading: false,
-        errors: { global: 'Something went wrong. Please try again.' },
-      })
-    }
+    dispatch({ isLoading: false, errors })
   }
 }
