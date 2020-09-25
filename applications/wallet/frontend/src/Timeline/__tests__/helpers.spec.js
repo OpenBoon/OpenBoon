@@ -1,4 +1,8 @@
-import { formatPaddedSeconds, updatePlayheadPosition } from '../helpers'
+import {
+  formatPaddedSeconds,
+  updatePlayheadPosition,
+  getRulerLayout,
+} from '../helpers'
 
 describe('<Timeline /> helpers', () => {
   describe('formatPaddedSeconds()', () => {
@@ -51,6 +55,26 @@ describe('<Timeline /> helpers', () => {
       updatePlayheadPosition({ video, playhead })
 
       expect(mockSetProperty).toHaveBeenCalledWith('left', 'calc(50% - 1px)')
+    })
+  })
+
+  describe('getRulerLayout()', () => {
+    it('should render properly when all half seconds can be marked', () => {
+      const { halfSeconds, majorStep } = getRulerLayout({
+        length: 25.045,
+        width: 1000,
+      })
+      expect(halfSeconds.length).toBe(50)
+      expect(majorStep).toBe(4)
+    })
+
+    it('should render properly when marks are scaled to fit', () => {
+      const { halfSeconds, majorStep } = getRulerLayout({
+        length: 25.045,
+        width: 775,
+      })
+      expect(halfSeconds.length).toBe(50)
+      expect(majorStep).toBe(8)
     })
   })
 })
