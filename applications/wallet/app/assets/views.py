@@ -129,7 +129,8 @@ class AssetViewSet(BaseProjectViewSet):
             track = clip['track']
             start = clip['start']
             stop = clip['stop']
-            data.setdefault(timeline, {}).setdefault(track, []).append({'start': start, 'stop': stop})
+            data.setdefault(timeline, {}).setdefault(track, []).append({'start': start,
+                                                                        'stop': stop})
 
         formatted_timelines = []
         for timeline in data:
@@ -137,11 +138,8 @@ class AssetViewSet(BaseProjectViewSet):
                        'tracks': []}
             for track in data[timeline]:
                 track_section = {'track': track,
-                                 'count': len(data[timeline][track]),
                                  'hits': data[timeline][track]}
-                # section['hits'].extend(track_section['hits'])
                 section['tracks'].append(track_section)
-            # section['count'] = len(section['hits'])
             formatted_timelines.append(section)
         return formatted_timelines
 
