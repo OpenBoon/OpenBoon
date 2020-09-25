@@ -108,6 +108,8 @@ const Timeline = ({ videoRef, length, assetId }) => {
             />
 
             <TimelineDetections
+              videoRef={videoRef}
+              length={length}
               detections={detections}
               settings={settings}
               dispatch={dispatch}

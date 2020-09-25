@@ -14,6 +14,8 @@ describe('<TimelineDetections />', () => {
 
     const component = TestRenderer.create(
       <TimelineDetections
+        videoRef={{ current: { duration: 18 } }}
+        length={18}
         detections={detections}
         settings={{
           filter: '',

@@ -21,7 +21,13 @@ const COLORS = [
   colors.signal.grass.base,
 ]
 
-const TimelineDetections = ({ detections, settings, dispatch }) => {
+const TimelineDetections = ({
+  videoRef,
+  length,
+  detections,
+  settings,
+  dispatch,
+}) => {
   const filteredDetections = filterDetections({ detections, settings })
 
   return (
@@ -49,7 +55,7 @@ const TimelineDetections = ({ detections, settings, dispatch }) => {
                 dispatch={dispatch}
                 isOpen={settings.modules[name]?.isOpen || false}
               >
-                {predictions.map(({ label, count }) => {
+                {predictions.map(({ label, hits }) => {
                   return (
                     <div key={label} css={{ display: 'flex' }}>
                       <div
@@ -82,7 +88,7 @@ const TimelineDetections = ({ detections, settings, dispatch }) => {
                         </div>
                         <div
                           css={{ padding: spacing.base }}
-                        >{`(${count})`}</div>
+                        >{`(${hits.length})`}</div>
                       </div>
                     </div>
                   )
@@ -95,11 +101,15 @@ const TimelineDetections = ({ detections, settings, dispatch }) => {
       <div css={{ flex: 1 }}>
         {filteredDetections
           .filter(({ name }) => settings.modules[name]?.isVisible !== false)
-          .map(({ name, predictions }) => {
+          .map(({ name, predictions }, index) => {
+            const colorIndex = index % COLORS.length
+
             return (
               <TimelineTracks
                 key={name}
-                name={name}
+                videoRef={videoRef}
+                length={length}
+                moduleColor={COLORS[colorIndex]}
                 predictions={predictions}
                 isOpen={settings.modules[name]?.isOpen || false}
               />
@@ -111,6 +121,10 @@ const TimelineDetections = ({ detections, settings, dispatch }) => {
 }
 
 TimelineDetections.propTypes = {
+  videoRef: PropTypes.shape({
+    current: PropTypes.shape({}),
+  }).isRequired,
+  length: PropTypes.number.isRequired,
   detections: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   settings: PropTypes.shape({
     filter: PropTypes.string.isRequired,

@@ -251,11 +251,37 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
                 "name": "gcp-video-explicit-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Gh st",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 6,
+                        "stop": 7,
+                      },
+                      Object {
+                        "start": 13,
+                        "stop": 14,
+                      },
+                      Object {
+                        "start": 15,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Busters",
                   },
                 ],
@@ -264,16 +290,34 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
                 "name": "gcp-video-label-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 1,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 3,
+                        "stop": 6,
+                      },
+                      Object {
+                        "start": 11,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Label 1",
                   },
                   Object {
-                    "count": 6,
-                    "label": "Label 2",
-                  },
-                  Object {
-                    "count": 9,
-                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                    "hits": Array [
+                      Object {
+                        "start": 7,
+                        "stop": 10,
+                      },
+                      Object {
+                        "start": 16,
+                        "stop": 17,
+                      },
+                    ],
+                    "label": "Label 2 Plus More Text to Make A Long Label String",
                   },
                 ],
               },
@@ -281,15 +325,54 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
                 "name": "gcp-video-logo-detection",
                 "predictions": Array [
                   Object {
-                    "count": 1,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 1",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 2",
                   },
                   Object {
-                    "count": 5,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 3",
                   },
                 ],
@@ -298,15 +381,54 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
                 "name": "gcp-video-object-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 2",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 3",
                   },
                 ],
@@ -315,19 +437,71 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
                 "name": "gcp-video-text-detection",
                 "predictions": Array [
                   Object {
-                    "count": 2,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 2",
                   },
                   Object {
-                    "count": 6,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 3",
                   },
                   Object {
-                    "count": 8,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 4",
                   },
                 ],
@@ -350,11 +524,37 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
                 "name": "gcp-video-explicit-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Gh st",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 6,
+                        "stop": 7,
+                      },
+                      Object {
+                        "start": 13,
+                        "stop": 14,
+                      },
+                      Object {
+                        "start": 15,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Busters",
                   },
                 ],
@@ -363,16 +563,34 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
                 "name": "gcp-video-label-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 1,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 3,
+                        "stop": 6,
+                      },
+                      Object {
+                        "start": 11,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Label 1",
                   },
                   Object {
-                    "count": 6,
-                    "label": "Label 2",
-                  },
-                  Object {
-                    "count": 9,
-                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                    "hits": Array [
+                      Object {
+                        "start": 7,
+                        "stop": 10,
+                      },
+                      Object {
+                        "start": 16,
+                        "stop": 17,
+                      },
+                    ],
+                    "label": "Label 2 Plus More Text to Make A Long Label String",
                   },
                 ],
               },
@@ -380,15 +598,54 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
                 "name": "gcp-video-logo-detection",
                 "predictions": Array [
                   Object {
-                    "count": 1,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 1",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 2",
                   },
                   Object {
-                    "count": 5,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 3",
                   },
                 ],
@@ -397,15 +654,54 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
                 "name": "gcp-video-object-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 2",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 3",
                   },
                 ],
@@ -414,19 +710,71 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
                 "name": "gcp-video-text-detection",
                 "predictions": Array [
                   Object {
-                    "count": 2,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 2",
                   },
                   Object {
-                    "count": 6,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 3",
                   },
                   Object {
-                    "count": 8,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 4",
                   },
                 ],
@@ -434,10 +782,24 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
             ]
           }
           dispatch={[Function]}
+          length={18}
           settings={
             Object {
               "filter": "",
               "modules": Object {},
+            }
+          }
+          videoRef={
+            Object {
+              "current": Object {
+                "addEventListener": [Function],
+                "currentTime": 0,
+                "duration": 18,
+                "pause": [Function],
+                "paused": true,
+                "play": [Function],
+                "removeEventListener": [Function],
+              },
             }
           }
         />
@@ -698,11 +1060,37 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 "name": "gcp-video-explicit-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Gh st",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 6,
+                        "stop": 7,
+                      },
+                      Object {
+                        "start": 13,
+                        "stop": 14,
+                      },
+                      Object {
+                        "start": 15,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Busters",
                   },
                 ],
@@ -711,16 +1099,34 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 "name": "gcp-video-label-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 1,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 3,
+                        "stop": 6,
+                      },
+                      Object {
+                        "start": 11,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Label 1",
                   },
                   Object {
-                    "count": 6,
-                    "label": "Label 2",
-                  },
-                  Object {
-                    "count": 9,
-                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                    "hits": Array [
+                      Object {
+                        "start": 7,
+                        "stop": 10,
+                      },
+                      Object {
+                        "start": 16,
+                        "stop": 17,
+                      },
+                    ],
+                    "label": "Label 2 Plus More Text to Make A Long Label String",
                   },
                 ],
               },
@@ -728,15 +1134,54 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 "name": "gcp-video-logo-detection",
                 "predictions": Array [
                   Object {
-                    "count": 1,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 1",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 2",
                   },
                   Object {
-                    "count": 5,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 3",
                   },
                 ],
@@ -745,15 +1190,54 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 "name": "gcp-video-object-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 2",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 3",
                   },
                 ],
@@ -762,19 +1246,71 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 "name": "gcp-video-text-detection",
                 "predictions": Array [
                   Object {
-                    "count": 2,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 2",
                   },
                   Object {
-                    "count": 6,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 3",
                   },
                   Object {
-                    "count": 8,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 4",
                   },
                 ],
@@ -797,11 +1333,37 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 "name": "gcp-video-explicit-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Gh st",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 6,
+                        "stop": 7,
+                      },
+                      Object {
+                        "start": 13,
+                        "stop": 14,
+                      },
+                      Object {
+                        "start": 15,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Busters",
                   },
                 ],
@@ -810,16 +1372,34 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 "name": "gcp-video-label-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 1,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 3,
+                        "stop": 6,
+                      },
+                      Object {
+                        "start": 11,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Label 1",
                   },
                   Object {
-                    "count": 6,
-                    "label": "Label 2",
-                  },
-                  Object {
-                    "count": 9,
-                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                    "hits": Array [
+                      Object {
+                        "start": 7,
+                        "stop": 10,
+                      },
+                      Object {
+                        "start": 16,
+                        "stop": 17,
+                      },
+                    ],
+                    "label": "Label 2 Plus More Text to Make A Long Label String",
                   },
                 ],
               },
@@ -827,15 +1407,54 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 "name": "gcp-video-logo-detection",
                 "predictions": Array [
                   Object {
-                    "count": 1,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 1",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 2",
                   },
                   Object {
-                    "count": 5,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 3",
                   },
                 ],
@@ -844,15 +1463,54 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 "name": "gcp-video-object-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 2",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 3",
                   },
                 ],
@@ -861,19 +1519,71 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 "name": "gcp-video-text-detection",
                 "predictions": Array [
                   Object {
-                    "count": 2,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 2",
                   },
                   Object {
-                    "count": 6,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 3",
                   },
                   Object {
-                    "count": 8,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 4",
                   },
                 ],
@@ -881,10 +1591,24 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
             ]
           }
           dispatch={[Function]}
+          length={18}
           settings={
             Object {
               "filter": "",
               "modules": Object {},
+            }
+          }
+          videoRef={
+            Object {
+              "current": Object {
+                "addEventListener": [Function],
+                "currentTime": 0,
+                "duration": 18,
+                "pause": [Function],
+                "paused": true,
+                "play": [Function],
+                "removeEventListener": [Function],
+              },
             }
           }
         />
@@ -1121,11 +1845,37 @@ exports[`<Timeline /> should render properly 1`] = `
                 "name": "gcp-video-explicit-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Gh st",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 6,
+                        "stop": 7,
+                      },
+                      Object {
+                        "start": 13,
+                        "stop": 14,
+                      },
+                      Object {
+                        "start": 15,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Busters",
                   },
                 ],
@@ -1134,16 +1884,34 @@ exports[`<Timeline /> should render properly 1`] = `
                 "name": "gcp-video-label-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 1,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 3,
+                        "stop": 6,
+                      },
+                      Object {
+                        "start": 11,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Label 1",
                   },
                   Object {
-                    "count": 6,
-                    "label": "Label 2",
-                  },
-                  Object {
-                    "count": 9,
-                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                    "hits": Array [
+                      Object {
+                        "start": 7,
+                        "stop": 10,
+                      },
+                      Object {
+                        "start": 16,
+                        "stop": 17,
+                      },
+                    ],
+                    "label": "Label 2 Plus More Text to Make A Long Label String",
                   },
                 ],
               },
@@ -1151,15 +1919,54 @@ exports[`<Timeline /> should render properly 1`] = `
                 "name": "gcp-video-logo-detection",
                 "predictions": Array [
                   Object {
-                    "count": 1,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 1",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 2",
                   },
                   Object {
-                    "count": 5,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 3",
                   },
                 ],
@@ -1168,15 +1975,54 @@ exports[`<Timeline /> should render properly 1`] = `
                 "name": "gcp-video-object-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 2",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 3",
                   },
                 ],
@@ -1185,19 +2031,71 @@ exports[`<Timeline /> should render properly 1`] = `
                 "name": "gcp-video-text-detection",
                 "predictions": Array [
                   Object {
-                    "count": 2,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 2",
                   },
                   Object {
-                    "count": 6,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 3",
                   },
                   Object {
-                    "count": 8,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 4",
                   },
                 ],
@@ -1220,11 +2118,37 @@ exports[`<Timeline /> should render properly 1`] = `
                 "name": "gcp-video-explicit-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Gh st",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 6,
+                        "stop": 7,
+                      },
+                      Object {
+                        "start": 13,
+                        "stop": 14,
+                      },
+                      Object {
+                        "start": 15,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Busters",
                   },
                 ],
@@ -1233,16 +2157,34 @@ exports[`<Timeline /> should render properly 1`] = `
                 "name": "gcp-video-label-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 1,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 3,
+                        "stop": 6,
+                      },
+                      Object {
+                        "start": 11,
+                        "stop": 15,
+                      },
+                    ],
                     "label": "Label 1",
                   },
                   Object {
-                    "count": 6,
-                    "label": "Label 2",
-                  },
-                  Object {
-                    "count": 9,
-                    "label": "Label 3 Plus More Text to Make A Long Label String",
+                    "hits": Array [
+                      Object {
+                        "start": 7,
+                        "stop": 10,
+                      },
+                      Object {
+                        "start": 16,
+                        "stop": 17,
+                      },
+                    ],
+                    "label": "Label 2 Plus More Text to Make A Long Label String",
                   },
                 ],
               },
@@ -1250,15 +2192,54 @@ exports[`<Timeline /> should render properly 1`] = `
                 "name": "gcp-video-logo-detection",
                 "predictions": Array [
                   Object {
-                    "count": 1,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 1",
                   },
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 2",
                   },
                   Object {
-                    "count": 5,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Logo 3",
                   },
                 ],
@@ -1267,15 +2248,54 @@ exports[`<Timeline /> should render properly 1`] = `
                 "name": "gcp-video-object-detection",
                 "predictions": Array [
                   Object {
-                    "count": 3,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 2",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Object 3",
                   },
                 ],
@@ -1284,19 +2304,71 @@ exports[`<Timeline /> should render properly 1`] = `
                 "name": "gcp-video-text-detection",
                 "predictions": Array [
                   Object {
-                    "count": 2,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 1",
                   },
                   Object {
-                    "count": 4,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 2",
                   },
                   Object {
-                    "count": 6,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 3",
                   },
                   Object {
-                    "count": 8,
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
                     "label": "Text 4",
                   },
                 ],
@@ -1304,10 +2376,16 @@ exports[`<Timeline /> should render properly 1`] = `
             ]
           }
           dispatch={[Function]}
+          length={18}
           settings={
             Object {
               "filter": "",
               "modules": Object {},
+            }
+          }
+          videoRef={
+            Object {
+              "current": undefined,
             }
           }
         />

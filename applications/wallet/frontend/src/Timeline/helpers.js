@@ -80,3 +80,9 @@ export const getRulerLayout = ({ length, width }) => {
 
   return { halfSeconds, majorStep }
 }
+
+export const gotoCurrentTime = ({ videoRef, start }) => () => {
+  videoRef.current.pause()
+  // eslint-disable-next-line no-param-reassign
+  videoRef.current.currentTime = start
+}
