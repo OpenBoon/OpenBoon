@@ -25,7 +25,7 @@ from rest_framework_nested.routers import NestedSimpleRouter
 from agreements.views import AgreementViewSet
 from apikeys.views import ApikeyViewSet
 from assets.views import (AssetViewSet, FileCategoryViewSet,
-                          FileNameViewSet)
+                          FileNameViewSet, WebVttViewSet)
 from datasources.views import DataSourceViewSet
 from faces.views import FaceViewSet
 from gcpmarketplace.views import signup_success, SignUpView
@@ -71,6 +71,7 @@ projects_router.register('models', ModelViewSet, basename='model')
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')
 assets_files_router.register('files/category', FileCategoryViewSet, basename='category')
+assets_files_router.register('webvtt', WebVttViewSet, basename='webvtt')
 
 assets_file_names_router = NestedSimpleRouter(assets_files_router, 'files/category', lookup='category')  # noqa
 assets_file_names_router.register('name', FileNameViewSet, basename='file_name')
