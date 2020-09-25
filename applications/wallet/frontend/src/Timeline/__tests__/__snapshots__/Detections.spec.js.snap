@@ -293,7 +293,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
           <div
             className="emotion-3"
           >
-            (3)
+            (2)
           </div>
         </div>
       </summary>
@@ -403,102 +403,316 @@ exports[`<TimelineDetections /> should render properly 1`] = `
   >
     <TimelineTracks
       isOpen={true}
-      name="gcp-video-explicit-detection"
+      length={18}
+      moduleColor="#0074f5"
       predictions={
         Array [
           Object {
-            "count": 3,
+            "hits": Array [
+              Object {
+                "start": 0,
+                "stop": 2,
+              },
+              Object {
+                "start": 4,
+                "stop": 5,
+              },
+              Object {
+                "start": 10,
+                "stop": 12,
+              },
+            ],
             "label": "Gh st",
           },
           Object {
-            "count": 3,
+            "hits": Array [
+              Object {
+                "start": 6,
+                "stop": 7,
+              },
+              Object {
+                "start": 13,
+                "stop": 14,
+              },
+              Object {
+                "start": 15,
+                "stop": 15,
+              },
+            ],
             "label": "Busters",
           },
         ]
       }
-    />
-    <TimelineTracks
-      isOpen={false}
-      name="gcp-video-label-detection"
-      predictions={
-        Array [
-          Object {
-            "count": 3,
-            "label": "Label 1",
+      videoRef={
+        Object {
+          "current": Object {
+            "duration": 18,
           },
-          Object {
-            "count": 6,
-            "label": "Label 2",
-          },
-          Object {
-            "count": 9,
-            "label": "Label 3 Plus More Text to Make A Long Label String",
-          },
-        ]
+        }
       }
     />
     <TimelineTracks
       isOpen={false}
-      name="gcp-video-logo-detection"
+      length={18}
+      moduleColor="#a03dc7"
       predictions={
         Array [
           Object {
-            "count": 1,
+            "hits": Array [
+              Object {
+                "start": 1,
+                "stop": 2,
+              },
+              Object {
+                "start": 3,
+                "stop": 6,
+              },
+              Object {
+                "start": 11,
+                "stop": 15,
+              },
+            ],
+            "label": "Label 1",
+          },
+          Object {
+            "hits": Array [
+              Object {
+                "start": 7,
+                "stop": 10,
+              },
+              Object {
+                "start": 16,
+                "stop": 17,
+              },
+            ],
+            "label": "Label 2 Plus More Text to Make A Long Label String",
+          },
+        ]
+      }
+      videoRef={
+        Object {
+          "current": Object {
+            "duration": 18,
+          },
+        }
+      }
+    />
+    <TimelineTracks
+      isOpen={false}
+      length={18}
+      moduleColor="#d6680b"
+      predictions={
+        Array [
+          Object {
+            "hits": Array [
+              Object {
+                "start": 0,
+                "stop": 2,
+              },
+              Object {
+                "start": 4,
+                "stop": 5,
+              },
+              Object {
+                "start": 10,
+                "stop": 12,
+              },
+            ],
             "label": "Logo 1",
           },
           Object {
-            "count": 3,
+            "hits": Array [
+              Object {
+                "start": 0,
+                "stop": 2,
+              },
+              Object {
+                "start": 4,
+                "stop": 5,
+              },
+              Object {
+                "start": 10,
+                "stop": 12,
+              },
+            ],
             "label": "Logo 2",
           },
           Object {
-            "count": 5,
+            "hits": Array [
+              Object {
+                "start": 0,
+                "stop": 2,
+              },
+              Object {
+                "start": 4,
+                "stop": 5,
+              },
+              Object {
+                "start": 10,
+                "stop": 12,
+              },
+            ],
             "label": "Logo 3",
           },
         ]
       }
-    />
-    <TimelineTracks
-      isOpen={false}
-      name="gcp-video-object-detection"
-      predictions={
-        Array [
-          Object {
-            "count": 3,
-            "label": "Object 1",
+      videoRef={
+        Object {
+          "current": Object {
+            "duration": 18,
           },
-          Object {
-            "count": 4,
-            "label": "Object 2",
-          },
-          Object {
-            "count": 4,
-            "label": "Object 3",
-          },
-        ]
+        }
       }
     />
     <TimelineTracks
       isOpen={false}
-      name="gcp-video-text-detection"
+      length={18}
+      moduleColor="#ebb52e"
       predictions={
         Array [
           Object {
-            "count": 2,
+            "hits": Array [
+              Object {
+                "start": 0,
+                "stop": 2,
+              },
+              Object {
+                "start": 4,
+                "stop": 5,
+              },
+              Object {
+                "start": 10,
+                "stop": 12,
+              },
+            ],
+            "label": "Object 1",
+          },
+          Object {
+            "hits": Array [
+              Object {
+                "start": 0,
+                "stop": 2,
+              },
+              Object {
+                "start": 4,
+                "stop": 5,
+              },
+              Object {
+                "start": 10,
+                "stop": 12,
+              },
+            ],
+            "label": "Object 2",
+          },
+          Object {
+            "hits": Array [
+              Object {
+                "start": 0,
+                "stop": 2,
+              },
+              Object {
+                "start": 4,
+                "stop": 5,
+              },
+              Object {
+                "start": 10,
+                "stop": 12,
+              },
+            ],
+            "label": "Object 3",
+          },
+        ]
+      }
+      videoRef={
+        Object {
+          "current": Object {
+            "duration": 18,
+          },
+        }
+      }
+    />
+    <TimelineTracks
+      isOpen={false}
+      length={18}
+      moduleColor="#00bdc1"
+      predictions={
+        Array [
+          Object {
+            "hits": Array [
+              Object {
+                "start": 0,
+                "stop": 2,
+              },
+              Object {
+                "start": 4,
+                "stop": 5,
+              },
+              Object {
+                "start": 10,
+                "stop": 12,
+              },
+            ],
             "label": "Text 1",
           },
           Object {
-            "count": 4,
+            "hits": Array [
+              Object {
+                "start": 0,
+                "stop": 2,
+              },
+              Object {
+                "start": 4,
+                "stop": 5,
+              },
+              Object {
+                "start": 10,
+                "stop": 12,
+              },
+            ],
             "label": "Text 2",
           },
           Object {
-            "count": 6,
+            "hits": Array [
+              Object {
+                "start": 0,
+                "stop": 2,
+              },
+              Object {
+                "start": 4,
+                "stop": 5,
+              },
+              Object {
+                "start": 10,
+                "stop": 12,
+              },
+            ],
             "label": "Text 3",
           },
           Object {
-            "count": 8,
+            "hits": Array [
+              Object {
+                "start": 0,
+                "stop": 2,
+              },
+              Object {
+                "start": 4,
+                "stop": 5,
+              },
+              Object {
+                "start": 10,
+                "stop": 12,
+              },
+            ],
             "label": "Text 4",
           },
         ]
+      }
+      videoRef={
+        Object {
+          "current": Object {
+            "duration": 18,
+          },
+        }
       }
     />
   </div>

@@ -91,8 +91,13 @@ TimelineAccordion.propTypes = {
   predictions: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      count: PropTypes.number.isRequired,
-    }),
+      hits: PropTypes.arrayOf(
+        PropTypes.shape({
+          start: PropTypes.number.isRequired,
+          stop: PropTypes.number.isRequired,
+        }).isRequired,
+      ).isRequired,
+    }).isRequired,
   ).isRequired,
   isOpen: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
