@@ -178,14 +178,12 @@ class TestTimelines:
              'tracks': [
                  {
                      'track': 'AAMCO Transmissions',
-                     'count': 1,
                      'hits': [
                          {'start': 0.033, 'stop': 19.453}
                      ]
                  },
                  {
                      'track': 'Patagonia',
-                     'count': 6,
                      'hits': [
                          {'start': 1.735, 'stop': 2.936},
                          {'start': 3.537, 'stop': 9.743},
@@ -200,14 +198,12 @@ class TestTimelines:
              'tracks': [
                  {
                      'track': 'person',
-                     'count': 1,
                      'hits': [
                          {'start': 0.033, 'stop': 1.935}
                      ]
                  },
                  {
                      'track': 'car',
-                     'count': 2,
                      'hits': [
                          {'start': 0.033, 'stop': 0.334},
                          {'start': 1.635, 'stop': 1.935}
