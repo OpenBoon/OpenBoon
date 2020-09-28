@@ -151,7 +151,7 @@ class ClipServiceImpl(
                 buffer.append(formatDuration(clip["start"] as Double))
                 buffer.append(" --> ")
                 buffer.append(formatDuration(clip["stop"] as Double))
-                buffer.append("\n\n{\n")
+                buffer.append("\n{\n")
                 buffer.append("\"timeline\": \"${clip["timeline"]}\",\n")
                 buffer.append("\"track\": \"${clip["track"]}\",\n")
                 buffer.append("\"content\": ${Json.serializeToString(clip["content"] as Collection<String>)},\n")
