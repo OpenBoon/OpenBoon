@@ -25,7 +25,7 @@ const TimelineRuler = ({ length }) => {
               display: 'flex',
               alignItems: 'flex-end',
               height: constants.timeline.rulerRowHeight,
-              width,
+              width: width + OFFSET,
               marginLeft: -OFFSET,
               backgroundColor: colors.structure.lead,
             }}
