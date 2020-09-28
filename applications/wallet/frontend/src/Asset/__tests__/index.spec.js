@@ -2,6 +2,7 @@ import TestRenderer from 'react-test-renderer'
 
 import videoAsset from '../__mocks__/videoAsset'
 import docAsset from '../__mocks__/docAsset'
+import tracks from '../__mocks__/tracks'
 import mockUser from '../../User/__mocks__/user'
 
 import User from '../../User'
@@ -21,8 +22,10 @@ describe('<Asset />', () => {
     require('swr').__setMockUseSWRResponse({
       data: {
         ...docAsset,
-        uri: 'https://storage.googleapis.com/image.jpeg',
-        mediaType: 'image/jpeg',
+        signedUrl: {
+          uri: 'https://storage.googleapis.com/image.jpeg',
+          mediaType: 'image/jpeg',
+        },
       },
     })
 
@@ -43,8 +46,11 @@ describe('<Asset />', () => {
     require('swr').__setMockUseSWRResponse({
       data: {
         ...videoAsset,
-        uri: 'https://storage.googleapis.com/video.mp4',
-        mediaType: 'video/mp4',
+        signedUrl: {
+          uri: 'https://storage.googleapis.com/video.mp4',
+          mediaType: 'video/mp4',
+        },
+        tracks,
       },
     })
 
@@ -65,8 +71,10 @@ describe('<Asset />', () => {
     require('swr').__setMockUseSWRResponse({
       data: {
         ...videoAsset,
-        uri: 'https://storage.googleapis.com/video.mp4',
-        mediaType: 'video/mp4',
+        signedUrl: {
+          uri: 'https://storage.googleapis.com/video.mp4',
+          mediaType: 'video/mp4',
+        },
       },
     })
 
