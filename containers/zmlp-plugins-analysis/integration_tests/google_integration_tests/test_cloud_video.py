@@ -1,4 +1,5 @@
 import os
+import logging
 from unittest.mock import patch
 
 import pytest
@@ -8,6 +9,8 @@ from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
 
 CREDS = os.path.join(os.path.dirname(__file__)) + '/gcp-creds.json'
+
+logging.basicConfig(level=logging.INFO)
 
 
 @pytest.mark.skip(reason='dont run automatically')
@@ -161,8 +164,10 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch("zmlp_analysis.google.cloud_video.AsyncVideoIntelligenceProcessor.get_video_proxy_uri")
     @patch.object(file_storage.assets, 'store_blob')
-    def test_speech_transcription(self, blob_patch, native_patch, tl_patch):
+    @patch.object(file_storage.assets, 'store_file')
+    def test_speech_transcription(self, webvtt_patch, blob_patch, native_patch, tl_patch):
         uri = 'gs://zorroa-dev-data/video/ted_talk.mp4'
+        webvtt_patch.return_value = None
         blob_patch.return_value = None
         native_patch.return_value = uri
 
