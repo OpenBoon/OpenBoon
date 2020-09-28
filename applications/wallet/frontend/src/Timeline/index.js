@@ -96,7 +96,7 @@ const Timeline = ({ videoRef, length, assetId }) => {
               <TimelineFilterTracks settings={settings} dispatch={dispatch} />
 
               <div css={{ flex: 1 }}>
-                <TimelineRuler />
+                <TimelineRuler length={videoRef.current?.duration || length} />
               </div>
             </div>
 
@@ -108,6 +108,8 @@ const Timeline = ({ videoRef, length, assetId }) => {
             />
 
             <TimelineDetections
+              videoRef={videoRef}
+              length={length}
               detections={detections}
               settings={settings}
               dispatch={dispatch}
@@ -128,6 +130,7 @@ Timeline.propTypes = {
       removeEventListener: PropTypes.func,
       currentTime: PropTypes.number,
       paused: PropTypes.bool,
+      duration: PropTypes.number,
     }),
   }).isRequired,
   length: PropTypes.number.isRequired,
