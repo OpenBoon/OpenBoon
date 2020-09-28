@@ -112,6 +112,7 @@ exports[`<TimelineTracks /> should render properly 1`] = `
   position: relative;
   padding: 8px;
   border-bottom: 1px solid #3b3b3b;
+  background-color: #191919;
 }
 
 .emotion-14 {

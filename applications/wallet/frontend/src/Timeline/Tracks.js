@@ -72,6 +72,7 @@ const TimelineTracks = ({
                 position: 'relative',
                 padding: spacing.base,
                 borderBottom: constants.borders.regular.smoke,
+                backgroundColor: colors.structure.coal,
               }}
             >
               &nbsp;
