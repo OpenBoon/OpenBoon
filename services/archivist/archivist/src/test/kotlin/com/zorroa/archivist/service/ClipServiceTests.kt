@@ -108,7 +108,7 @@ class ClipServiceTests : AbstractTest() {
 
         val startPos = webvtt.indexOf('{')
         val endPos = webvtt.indexOf('}')
-        val json = webvtt.substring(startPos, endPos+1)
+        val json = webvtt.substring(startPos, endPos + 1)
 
         val data = Json.Mapper.readValue(json, Json.GENERIC_MAP)
         assertEquals("zvi-label-detection", data["timeline"])
