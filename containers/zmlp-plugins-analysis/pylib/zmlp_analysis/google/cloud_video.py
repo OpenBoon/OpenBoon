@@ -210,10 +210,9 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                     analysis.add_content(alternative.transcript.strip())
                     break
 
-        if analysis.content:
-            asset.add_analysis('gcp-video-speech-transcription', analysis)
-            cloud_timeline.save_speech_transcription_timeline(asset, annotation_result)
-            cloud_timeline.save_video_speech_transcription_webvtt(asset, annotation_result)
+        asset.add_analysis('gcp-video-speech-transcription', analysis)
+        cloud_timeline.save_speech_transcription_timeline(asset, annotation_result)
+        cloud_timeline.save_video_speech_transcription_webvtt(asset, annotation_result)
 
     def handle_detect_explicit(self, asset, annotation_result):
         """
@@ -268,12 +267,13 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         if self.arg_value('detect_logos') > -1:
             features.append(videointelligence.enums.Feature.LOGO_RECOGNITION)
 
+        logger.info("Calling Google Video Intelligence,  ctx={}".format(video_context))
         operation = self.video_intel_client.annotate_video(input_uri=uri, features=features,
                                                            video_context=video_context)
 
         while not operation.done():
             logger.info("Waiting on Google Visual Intelligence {}".format(uri))
-            time.sleep(0.5)
+            time.sleep(5)
 
         res = operation.result()
         return res.annotation_results[0]
