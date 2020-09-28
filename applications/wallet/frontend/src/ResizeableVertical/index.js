@@ -20,7 +20,7 @@ const ResizeableVertical = ({ storageName, minHeight, header, children }) => {
     reducer,
     initialState: {
       size: minHeight,
-      originSize: minHeight,
+      originSize: 0,
       isOpen: false,
     },
   })
