@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing } from '../Styles'
 
-import { filterDetections } from './helpers'
+import { filterTimelines } from './helpers'
 
 import TimelineAccordion, { COLOR_TAB_WIDTH } from './Accordion'
 import TimelineTracks from './Tracks'
@@ -21,14 +21,14 @@ const COLORS = [
   colors.signal.grass.base,
 ]
 
-const TimelineDetections = ({
+const TimelineTimelines = ({
   videoRef,
   length,
-  detections,
+  timelines,
   settings,
   dispatch,
 }) => {
-  const filteredDetections = filterDetections({ detections, settings })
+  const filteredTimelines = filterTimelines({ timelines, settings })
 
   return (
     <div
@@ -41,23 +41,25 @@ const TimelineDetections = ({
       }}
     >
       <div css={{ width: constants.timeline.modulesWidth }}>
-        {filteredDetections
-          .filter(({ name }) => settings.modules[name]?.isVisible !== false)
-          .map(({ name, predictions }, index) => {
+        {filteredTimelines
+          .filter(({ timeline }) => {
+            return settings.modules[timeline]?.isVisible !== false
+          })
+          .map(({ timeline, tracks }, index) => {
             const colorIndex = index % COLORS.length
 
             return (
               <TimelineAccordion
-                key={name}
+                key={timeline}
                 moduleColor={COLORS[colorIndex]}
-                name={name}
-                predictions={predictions}
+                timeline={timeline}
+                tracks={tracks}
                 dispatch={dispatch}
-                isOpen={settings.modules[name]?.isOpen || false}
+                isOpen={settings.modules[timeline]?.isOpen || false}
               >
-                {predictions.map(({ label, hits }) => {
+                {tracks.map(({ track, hits }) => {
                   return (
-                    <div key={label} css={{ display: 'flex' }}>
+                    <div key={track} css={{ display: 'flex' }}>
                       <div
                         css={{
                           width: COLOR_TAB_WIDTH,
@@ -84,7 +86,7 @@ const TimelineDetections = ({
                             paddingRight: 0,
                           }}
                         >
-                          {label}
+                          {track}
                         </div>
                         <div
                           css={{ padding: spacing.base }}
@@ -99,19 +101,21 @@ const TimelineDetections = ({
       </div>
 
       <div css={{ flex: 1 }}>
-        {filteredDetections
-          .filter(({ name }) => settings.modules[name]?.isVisible !== false)
-          .map(({ name, predictions }, index) => {
+        {filteredTimelines
+          .filter(({ timeline }) => {
+            return settings.modules[timeline]?.isVisible !== false
+          })
+          .map(({ timeline, tracks }, index) => {
             const colorIndex = index % COLORS.length
 
             return (
               <TimelineTracks
-                key={name}
+                key={timeline}
                 videoRef={videoRef}
                 length={length}
                 moduleColor={COLORS[colorIndex]}
-                predictions={predictions}
-                isOpen={settings.modules[name]?.isOpen || false}
+                tracks={tracks}
+                isOpen={settings.modules[timeline]?.isOpen || false}
               />
             )
           })}
@@ -120,12 +124,17 @@ const TimelineDetections = ({
   )
 }
 
-TimelineDetections.propTypes = {
+TimelineTimelines.propTypes = {
   videoRef: PropTypes.shape({
     current: PropTypes.shape({}),
   }).isRequired,
   length: PropTypes.number.isRequired,
-  detections: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  timelines: PropTypes.arrayOf(
+    PropTypes.shape({
+      timeline: PropTypes.string.isRequired,
+      tracks: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+    }),
+  ).isRequired,
   settings: PropTypes.shape({
     filter: PropTypes.string.isRequired,
     modules: PropTypes.shape({}).isRequired,
@@ -133,4 +142,4 @@ TimelineDetections.propTypes = {
   dispatch: PropTypes.func.isRequired,
 }
 
-export default TimelineDetections
+export default TimelineTimelines

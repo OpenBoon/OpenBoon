@@ -34,18 +34,16 @@ export const updatePlayheadPosition = ({ video, playhead }) => {
   )
 }
 
-export const filterDetections = ({ detections, settings }) => {
-  return detections
-    .map(({ name, predictions }) => {
-      const filteredPredictions = predictions.filter((prediction) => {
-        return prediction.label
-          .toLowerCase()
-          .includes(settings.filter.toLowerCase())
+export const filterTimelines = ({ timelines, settings }) => {
+  return timelines
+    .map(({ timeline, tracks }) => {
+      const filteredPredictions = tracks.filter(({ track }) => {
+        return track.toLowerCase().includes(settings.filter.toLowerCase())
       })
 
-      return { name, predictions: filteredPredictions }
+      return { timeline, tracks: filteredPredictions }
     })
-    .filter(({ predictions }) => predictions.length > 0)
+    .filter(({ tracks }) => tracks.length > 0)
 }
 
 export const getStep = ({ maxTicksCount, halfSeconds, majorStep }) => {

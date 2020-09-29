@@ -6,17 +6,17 @@ import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 
-import { filterDetections } from './helpers'
+import { filterTimelines } from './helpers'
 
 import { ACTIONS } from './reducer'
 
 const TimelineAggregate = ({
   timelineHeight,
-  detections,
+  timelines,
   settings,
   dispatch,
 }) => {
-  const filteredDetections = filterDetections({ detections, settings })
+  const filteredTimelines = filterTimelines({ timelines, settings })
 
   const isAllVisible = Object.values(settings.modules).every(
     ({ isVisible }) => isVisible === true,
@@ -38,7 +38,7 @@ const TimelineAggregate = ({
             <MenuButton
               onBlur={onBlur}
               onClick={onClick}
-              legend={`Detections (${filteredDetections.length})`}
+              legend={`Timelines (${filteredTimelines.length})`}
               style={{
                 '&,&:hover,&:visited': {
                   backgroundColor: isMenuOpen
@@ -82,27 +82,28 @@ const TimelineAggregate = ({
                   onClick={() => {
                     dispatch({
                       type: ACTIONS.TOGGLE_VISIBLE_ALL,
-                      payload: { detections },
+                      payload: { timelines },
                     })
                   }}
                 />
               </div>
 
-              {detections.map(({ name, predictions }) => (
+              {timelines.map(({ timeline, tracks }) => (
                 <Checkbox
-                  key={`${name}.${settings.modules[name]?.isVisible}`}
+                  key={`${timeline}.${settings.modules[timeline]?.isVisible}`}
                   variant={CHECKBOX_VARIANTS.MENU}
                   option={{
-                    value: name,
-                    label: name,
-                    legend: `(${predictions.length})`,
-                    initialValue: settings.modules[name]?.isVisible !== false,
+                    value: timeline,
+                    label: timeline,
+                    legend: `(${tracks.length})`,
+                    initialValue:
+                      settings.modules[timeline]?.isVisible !== false,
                     isDisabled: false,
                   }}
                   onClick={() => {
                     dispatch({
                       type: ACTIONS.TOGGLE_VISIBLE,
-                      payload: { name },
+                      payload: { timeline },
                     })
                   }}
                 />
@@ -117,7 +118,12 @@ const TimelineAggregate = ({
 
 TimelineAggregate.propTypes = {
   timelineHeight: PropTypes.number.isRequired,
-  detections: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  timelines: PropTypes.arrayOf(
+    PropTypes.shape({
+      timeline: PropTypes.string.isRequired,
+      tracks: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+    }),
+  ).isRequired,
   settings: PropTypes.shape({
     filter: PropTypes.string.isRequired,
     modules: PropTypes.shape({}).isRequired,

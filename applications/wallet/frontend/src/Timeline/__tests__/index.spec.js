@@ -4,6 +4,7 @@ import Timeline from '..'
 
 const noop = () => {}
 
+const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 
 jest.mock('../Controls', () => 'TimelineControls')
@@ -12,25 +13,28 @@ jest.mock('../Playhead', () => 'TimelinePlayhead')
 jest.mock('../FilterTracks', () => 'TimelineFilterTracks')
 jest.mock('../Ruler', () => 'TimelineRuler')
 jest.mock('../Aggregate', () => 'TimelineAggregate')
-jest.mock('../Detections', () => 'TimelineDetections')
+jest.mock('../Timelines', () => 'TimelineTimelines')
 
 describe('<Timeline />', () => {
   it('should render properly', () => {
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+    })
+
     const component = TestRenderer.create(
-      <Timeline
-        assetId={ASSET_ID}
-        length={18}
-        videoRef={{ current: undefined }}
-      />,
+      <Timeline length={18} videoRef={{ current: undefined }} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should open the Timeline panel', () => {
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+    })
+
     const component = TestRenderer.create(
       <Timeline
-        assetId={ASSET_ID}
         length={18}
         videoRef={{
           current: {

@@ -1,25 +1,25 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import detections from '../__mocks__/detections'
+import timelines from '../__mocks__/timelines'
 
-import TimelineDetections from '../Detections'
+import TimelineTimelines from '../Timelines'
 
 const noop = () => {}
 
 jest.mock('../Tracks', () => 'TimelineTracks')
 
-describe('<TimelineDetections />', () => {
+describe('<TimelineTimelines />', () => {
   it('should render properly', () => {
     const mockDispatch = jest.fn()
 
     const component = TestRenderer.create(
-      <TimelineDetections
+      <TimelineTimelines
         videoRef={{ current: { duration: 18 } }}
         length={18}
-        detections={detections}
+        timelines={timelines}
         settings={{
           filter: '',
-          modules: { [detections[0].name]: { isOpen: true } },
+          modules: { [timelines[0].timeline]: { isOpen: true } },
         }}
         dispatch={mockDispatch}
       />,
@@ -29,12 +29,12 @@ describe('<TimelineDetections />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': detections[0].name })
+        .findByProps({ 'aria-label': timelines[0].timeline })
         .props.onClick({ preventDefault: noop })
     })
 
     expect(mockDispatch).toHaveBeenCalledWith({
-      payload: { name: detections[0].name },
+      payload: { timeline: timelines[0].timeline },
       type: 'TOGGLE_OPEN',
     })
   })
