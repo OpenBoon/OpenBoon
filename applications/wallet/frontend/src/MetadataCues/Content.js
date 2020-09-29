@@ -54,19 +54,19 @@ const MetadataCuesContent = ({ metadata, height }) => {
           </div>
         )}
 
-        {Object.entries(metadata).map(([module, predictions], index) => {
+        {Object.entries(metadata).map(([timeline, predictions], index) => {
           const colorIndex = index % COLORS.length
 
           return (
             <div
-              key={module}
+              key={timeline}
               css={{
                 borderBottom: constants.borders.large.smoke,
                 boxShadow: `inset ${COLOR_WIDTH}px 0 0 ${COLORS[colorIndex]}`,
               }}
             >
               <MetadataPrettyPredictionsContent
-                name={module}
+                name={timeline}
                 predictions={predictions}
               />
             </div>

@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useRef, useEffect } from 'react'
+import { useRef, useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, constants, zIndex } from '../Styles'
 
 import { updatePlayheadPosition, GUIDE_WIDTH } from './helpers'
 
-const DRAG_WIDTH = 10
+const HEIGHT = 12
+const WIDTH = 10
 
 let originX
 let originLeft
@@ -16,24 +17,34 @@ const TimelinePlayhead = ({ videoRef }) => {
   const frameRef = useRef()
 
   const video = videoRef.current
-  const playhead = playheadRef.current
 
   /* istanbul ignore next */
-  useEffect(() => {
-    const animate = () => {
-      updatePlayheadPosition({ video, playhead })
+  const onMount = useCallback(
+    (node) => {
+      const animate = () => {
+        updatePlayheadPosition({ video, playhead: node })
 
-      frameRef.current = requestAnimationFrame(animate)
-    }
+        frameRef.current = requestAnimationFrame(animate)
+      }
 
-    frameRef.current = requestAnimationFrame(animate)
+      if (frameRef.current && !node) {
+        cancelAnimationFrame(frameRef.current)
+        frameRef.current = null
+        playheadRef.current = null
+      }
 
-    return () => cancelAnimationFrame(frameRef.current)
-  }, [video, playhead])
+      if (!frameRef.current && node) {
+        animate()
+        playheadRef.current = node
+      }
+    },
+    [video],
+  )
 
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
-    const maxPosition = playhead.parentNode.offsetWidth - GUIDE_WIDTH / 2
+    const maxPosition =
+      playheadRef.current.parentNode.offsetWidth - GUIDE_WIDTH / 2
 
     const newPosition = Math.min(
       Math.max(0, originLeft + clientX - originX),
@@ -54,7 +65,7 @@ const TimelinePlayhead = ({ videoRef }) => {
   /* istanbul ignore next */
   const handleMouseDown = ({ clientX }) => {
     originX = clientX
-    originLeft = playhead.offsetLeft
+    originLeft = playheadRef.current.offsetLeft
 
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
@@ -62,18 +73,17 @@ const TimelinePlayhead = ({ videoRef }) => {
 
   return (
     <div
-      ref={playheadRef}
+      ref={onMount}
       onMouseDown={handleMouseDown}
       css={{
         userSelect: 'none',
         cursor: 'col-resize',
         position: 'absolute',
         marginTop: 0,
-        top:
-          constants.timeline.rulerRowHeight - constants.timeline.playheadHeight,
+        top: constants.timeline.rulerRowHeight - HEIGHT,
         bottom: 0,
-        marginLeft: -(DRAG_WIDTH / 2) + constants.borderWidths.regular / 2,
-        width: DRAG_WIDTH,
+        marginLeft: -(WIDTH / 2) + constants.borderWidths.regular / 2,
+        width: WIDTH,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -83,9 +93,7 @@ const TimelinePlayhead = ({ videoRef }) => {
       <div
         css={{
           borderStyle: 'solid',
-          borderWidth: `${constants.timeline.playheadHeight}px ${
-            constants.timeline.playheadWidth / 2
-          }px 0 ${constants.timeline.playheadWidth / 2}px`,
+          borderWidth: `${HEIGHT}px ${WIDTH}px 0 ${WIDTH}px`,
           borderColor: `${colors.signal.sky.base} transparent transparent transparent`,
         }}
       />

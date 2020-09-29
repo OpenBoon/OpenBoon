@@ -359,30 +359,6 @@ exports[`<Asset /> should handle no query 1`] = `
                       src="https://storage.googleapis.com/video.mp4"
                       type="video/mp4"
                     />
-                    <track
-                      default={false}
-                      kind="captions"
-                      label="English"
-                      src="/webvtt/english.vtt"
-                    />
-                    <track
-                      default={false}
-                      kind="captions"
-                      label="French"
-                      src="/webvtt/french.vtt"
-                    />
-                    <track
-                      default={true}
-                      kind="metadata"
-                      label="gcp-label-detection"
-                      src="/webvtt/gcp-label-detection.vtt"
-                    />
-                    <track
-                      default={true}
-                      kind="metadata"
-                      label="gcp-object-detection"
-                      src="/webvtt/gcp-object-detection.vtt"
-                    />
                   </video>
                 </div>
               </div>
@@ -395,7 +371,6 @@ exports[`<Asset /> should handle no query 1`] = `
               />
             </div>
             <Timeline
-              assetId="srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               length={144.45}
               videoRef={
                 Object {
@@ -1230,7 +1205,6 @@ exports[`<Asset /> should render videos properly 1`] = `
               />
             </div>
             <Timeline
-              assetId="srL8ob5cTpCJjYoKkqqfa2ciyG425dGi"
               length={144.45}
               videoRef={
                 Object {

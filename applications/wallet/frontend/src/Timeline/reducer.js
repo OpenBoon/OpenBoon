@@ -9,36 +9,48 @@ export const INITIAL_STATE = { filter: '', modules: {} }
 
 export const reducer = (
   state,
-  { type: actionType, payload: { name, detections, value } = {} },
+  { type: actionType, payload: { timeline, timelines, value } = {} },
 ) => {
-  const module = state.modules[name] || {}
+  const module = state.modules[timeline] || {}
 
   switch (actionType) {
     case ACTIONS.TOGGLE_OPEN: {
-      if (state.modules[name]?.isOpen === true) {
+      if (state.modules[timeline]?.isOpen === true) {
         return {
           ...state,
-          modules: { ...state.modules, [name]: { ...module, isOpen: false } },
+          modules: {
+            ...state.modules,
+            [timeline]: { ...module, isOpen: false },
+          },
         }
       }
 
       return {
         ...state,
-        modules: { ...state.modules, [name]: { ...module, isOpen: true } },
+        modules: {
+          ...state.modules,
+          [timeline]: { ...module, isOpen: true },
+        },
       }
     }
 
     case ACTIONS.TOGGLE_VISIBLE: {
-      if (state.modules[name]?.isVisible === false) {
+      if (state.modules[timeline]?.isVisible === false) {
         return {
           ...state,
-          modules: { ...state.modules, [name]: { ...module, isVisible: true } },
+          modules: {
+            ...state.modules,
+            [timeline]: { ...module, isVisible: true },
+          },
         }
       }
 
       return {
         ...state,
-        modules: { ...state.modules, [name]: { ...module, isVisible: false } },
+        modules: {
+          ...state.modules,
+          [timeline]: { ...module, isVisible: false },
+        },
       }
     }
 
@@ -49,8 +61,8 @@ export const reducer = (
 
       return {
         ...state,
-        modules: Object.values(detections).reduce(
-          (acc, { name: moduleName }) => ({
+        modules: Object.values(timelines).reduce(
+          (acc, { timeline: moduleName }) => ({
             ...acc,
             [moduleName]: {
               ...state.modules[moduleName],

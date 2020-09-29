@@ -6,26 +6,10 @@ import Feature from '../Feature'
 import MetadataCues from '../MetadataCues'
 import Timeline from '../Timeline'
 
-// TODO: fetch tracks from backend
-const TRACKS = [
-  { label: 'English', kind: 'captions', src: '/webvtt/english.vtt' },
-  { label: 'French', kind: 'captions', src: '/webvtt/french.vtt' },
-  {
-    label: 'gcp-label-detection',
-    kind: 'metadata',
-    src: '/webvtt/gcp-label-detection.vtt',
-  },
-  {
-    label: 'gcp-object-detection',
-    kind: 'metadata',
-    src: '/webvtt/gcp-object-detection.vtt',
-  },
-]
-
 const AssetVideo = ({
   assetRef,
-  assetId,
   uri,
+  tracks,
   mediaType,
   length,
   isQuickView,
@@ -55,7 +39,7 @@ const AssetVideo = ({
               <source ref={assetRef} src={uri} type={mediaType} />
 
               <Feature flag="timeline" envs={[]}>
-                {TRACKS.map(({ label, kind, src }) => {
+                {tracks.map(({ label, kind, src }) => {
                   return (
                     <track
                       key={label}
@@ -80,7 +64,7 @@ const AssetVideo = ({
 
       {!isQuickView && (
         <Feature flag="timeline" envs={[]}>
-          <Timeline videoRef={videoRef} length={length} assetId={assetId} />
+          <Timeline videoRef={videoRef} length={length} />
         </Feature>
       )}
     </div>
@@ -89,8 +73,14 @@ const AssetVideo = ({
 
 AssetVideo.propTypes = {
   assetRef: PropTypes.shape({}).isRequired,
-  assetId: PropTypes.string.isRequired,
   uri: PropTypes.string.isRequired,
+  tracks: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      kind: PropTypes.string.isRequired,
+      src: PropTypes.string.isRequired,
+    }).isRequired,
+  ).isRequired,
   mediaType: PropTypes.string.isRequired,
   length: PropTypes.number.isRequired,
   isQuickView: PropTypes.bool.isRequired,

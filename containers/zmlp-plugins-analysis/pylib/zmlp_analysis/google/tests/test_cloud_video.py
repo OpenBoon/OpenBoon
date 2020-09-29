@@ -1,4 +1,5 @@
 import os
+import logging
 from unittest.mock import patch
 from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
 
@@ -7,6 +8,8 @@ from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
 
 client_las = 'zmlp_analysis.google.cloud_video.initialize_gcp_client'
+
+logging.basicConfig(level=logging.INFO)
 
 
 class MockVideoIntelligenceClient:
@@ -130,7 +133,6 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
         asset = TestAsset(uri)
         asset.set_attr('media.length', 15.0)
-        asset.set_attr('clip.track', 'full')
         frame = Frame(asset)
         processor.process(frame)
 

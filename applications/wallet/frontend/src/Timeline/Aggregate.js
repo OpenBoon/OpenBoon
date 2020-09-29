@@ -1,22 +1,34 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants } from '../Styles'
+import { colors, constants, spacing, zIndex } from '../Styles'
 
 import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 
-import { filterDetections } from './helpers'
+import {
+  filterTimelines,
+  formatPaddedSeconds,
+  gotoCurrentTime,
+  GUIDE_WIDTH,
+} from './helpers'
 
 import { ACTIONS } from './reducer'
 
+const WIDTH = GUIDE_WIDTH + spacing.mini * 2
+const OFFSET = (WIDTH + constants.borderWidths.regular) / 2
+
 const TimelineAggregate = ({
+  videoRef,
+  length,
   timelineHeight,
-  detections,
+  timelines,
   settings,
   dispatch,
 }) => {
-  const filteredDetections = filterDetections({ detections, settings })
+  const duration = videoRef.current?.duration || length
+
+  const filteredTimelines = filterTimelines({ timelines, settings })
 
   const isAllVisible = Object.values(settings.modules).every(
     ({ isVisible }) => isVisible === true,
@@ -38,7 +50,7 @@ const TimelineAggregate = ({
             <MenuButton
               onBlur={onBlur}
               onClick={onClick}
-              legend={`Detections (${filteredDetections.length})`}
+              legend={`Timelines (${filteredTimelines.length})`}
               style={{
                 '&,&:hover,&:visited': {
                   backgroundColor: isMenuOpen
@@ -82,27 +94,28 @@ const TimelineAggregate = ({
                   onClick={() => {
                     dispatch({
                       type: ACTIONS.TOGGLE_VISIBLE_ALL,
-                      payload: { detections },
+                      payload: { timelines },
                     })
                   }}
                 />
               </div>
 
-              {detections.map(({ name, predictions }) => (
+              {timelines.map(({ timeline, tracks }) => (
                 <Checkbox
-                  key={`${name}.${settings.modules[name]?.isVisible}`}
+                  key={`${timeline}.${settings.modules[timeline]?.isVisible}`}
                   variant={CHECKBOX_VARIANTS.MENU}
                   option={{
-                    value: name,
-                    label: name,
-                    legend: `(${predictions.length})`,
-                    initialValue: settings.modules[name]?.isVisible !== false,
+                    value: timeline,
+                    label: timeline,
+                    legend: `(${tracks.length})`,
+                    initialValue:
+                      settings.modules[timeline]?.isVisible !== false,
                     isDisabled: false,
                   }}
                   onClick={() => {
                     dispatch({
                       type: ACTIONS.TOGGLE_VISIBLE,
-                      payload: { name },
+                      payload: { timeline },
                     })
                   }}
                 />
@@ -111,13 +124,77 @@ const TimelineAggregate = ({
           )}
         </Menu>
       </div>
+      <div
+        css={{
+          flex: 1,
+          position: 'relative',
+          padding: spacing.base,
+          borderBottom: constants.borders.regular.coal,
+          backgroundColor: colors.structure.coal,
+        }}
+      >
+        &nbsp;
+        {filteredTimelines
+          .filter(({ timeline }) => {
+            return settings.modules[timeline]?.isVisible !== false
+          })
+          .map(({ tracks }) => {
+            return tracks.map(({ track, hits }) => {
+              return hits.map(({ start, stop }) => (
+                <button
+                  key={`${track}.${start}`}
+                  type="button"
+                  onClick={gotoCurrentTime({ videoRef, start })}
+                  aria-label={`${formatPaddedSeconds({ seconds: start })}`}
+                  title={`${formatPaddedSeconds({
+                    seconds: start,
+                  })}-${formatPaddedSeconds({ seconds: stop })}`}
+                  css={{
+                    margin: 0,
+                    border: 0,
+                    zIndex: zIndex.layout.interactive + 1,
+                    position: 'absolute',
+                    top: spacing.base,
+                    bottom: spacing.base,
+                    left: `calc(${(start / duration) * 100}% - ${OFFSET}px)`,
+                    width: WIDTH,
+                    backgroundColor: colors.structure.coal,
+                    padding: spacing.mini,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div
+                    css={{
+                      backgroundColor: colors.structure.steel,
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  />
+                </button>
+              ))
+            })
+          })}
+      </div>
     </div>
   )
 }
 
 TimelineAggregate.propTypes = {
+  videoRef: PropTypes.shape({
+    current: PropTypes.shape({
+      pause: PropTypes.func,
+      currentTime: PropTypes.number,
+      duration: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
+  length: PropTypes.number.isRequired,
   timelineHeight: PropTypes.number.isRequired,
-  detections: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  timelines: PropTypes.arrayOf(
+    PropTypes.shape({
+      timeline: PropTypes.string.isRequired,
+      tracks: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+    }),
+  ).isRequired,
   settings: PropTypes.shape({
     filter: PropTypes.string.isRequired,
     modules: PropTypes.shape({}).isRequired,

@@ -9,23 +9,23 @@ describe('<MetadataCues /> helpers', () => {
             activeCues: {
               0: {
                 text: JSON.stringify({
-                  module: 'gcp-label-detection',
+                  timeline: 'gcp-label-detection',
                   score: 0.91,
-                  label: 'cheese',
+                  track: 'cheese',
                 }),
               },
               1: {
                 text: JSON.stringify({
-                  module: 'gcp-label-detection',
+                  timeline: 'gcp-label-detection',
                   score: 0.82,
-                  label: 'pepperoni',
+                  track: 'pepperoni',
                 }),
               },
               2: {
                 text: JSON.stringify({
-                  module: 'gcp-object-detection',
+                  timeline: 'gcp-object-detection',
                   score: 0.73,
-                  label: 'food',
+                  track: 'food',
                 }),
               },
             },
