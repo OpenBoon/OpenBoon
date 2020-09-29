@@ -35,7 +35,7 @@ object ModelObjective {
     const val LANDMARK_DETECTION = "Landmark Detection"
     const val LOGO_DETECTION = "Logo Detection"
     const val FACE_RECOGNITION = "Face Recognition"
-    const val FACE_DETECTION= "Face Detection"
+    const val FACE_DETECTION = "Face Detection"
     const val CLIPIFIER = "Asset Clipifier"
     const val EXPLICIT_DETECTION = "Explicit Detection"
     const val TEXT_DETECTION = "Text Detection (OCR)"
