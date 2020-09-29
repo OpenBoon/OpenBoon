@@ -193,4 +193,3 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
             vtt = fp.read()
         assert "Toilets and poop and I have yet to emerge." in vtt
         assert "Sanitation. There's more coming Sanitation." in vtt
-
