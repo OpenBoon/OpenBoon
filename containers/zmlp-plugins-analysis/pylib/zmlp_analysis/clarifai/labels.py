@@ -15,23 +15,6 @@ models = [
     'wedding-model',
 ]
 
-quality_models = [
-    'landscape-quality-model',
-    'portrait-quality-model'
-]
-
-region_models = [
-    'celebrity-model',
-    'demographics-model',
-    'face-detection-model',
-    'logo-model'
-]
-
-embedding_models = [
-    'face-embedding-model',
-    'general-embedding-model'
-]
-
 
 class ClarifaiLabelDetectionProcessor(AssetProcessor):
     namespace = 'clarifai-label'
