@@ -1,9 +1,9 @@
-const detections = [
+const timelines = [
   {
-    name: 'gcp-video-explicit-detection',
-    predictions: [
+    timeline: 'gcp-video-explicit-detection',
+    tracks: [
       {
-        label: 'Gh st',
+        track: 'Gh st',
         hits: [
           { start: 0, stop: 2 },
           { start: 4, stop: 5 },
@@ -11,7 +11,7 @@ const detections = [
         ],
       },
       {
-        label: 'Busters',
+        track: 'Busters',
         hits: [
           { start: 6, stop: 7 },
           { start: 13, stop: 14 },
@@ -21,10 +21,10 @@ const detections = [
     ],
   },
   {
-    name: 'gcp-video-label-detection',
-    predictions: [
+    timeline: 'gcp-video-label-detection',
+    tracks: [
       {
-        label: 'Label 1',
+        track: 'Label 1',
         hits: [
           { start: 1, stop: 2 },
           { start: 3, stop: 6 },
@@ -32,7 +32,7 @@ const detections = [
         ],
       },
       {
-        label: 'Label 2 Plus More Text to Make A Long Label String',
+        track: 'Label 2 Plus More Text to Make A Long Label String',
         hits: [
           { start: 7, stop: 10 },
           { start: 16, stop: 17 },
@@ -41,10 +41,10 @@ const detections = [
     ],
   },
   {
-    name: 'gcp-video-logo-detection',
-    predictions: [
+    timeline: 'gcp-video-logo-detection',
+    tracks: [
       {
-        label: 'Logo 1',
+        track: 'Logo 1',
         hits: [
           { start: 0, stop: 2 },
           { start: 4, stop: 5 },
@@ -52,7 +52,7 @@ const detections = [
         ],
       },
       {
-        label: 'Logo 2',
+        track: 'Logo 2',
         hits: [
           { start: 0, stop: 2 },
           { start: 4, stop: 5 },
@@ -60,36 +60,7 @@ const detections = [
         ],
       },
       {
-        label: 'Logo 3',
-        hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
-        ],
-      },
-    ],
-  },
-  {
-    name: 'gcp-video-object-detection',
-    predictions: [
-      {
-        label: 'Object 1',
-        hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
-        ],
-      },
-      {
-        label: 'Object 2',
-        hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
-        ],
-      },
-      {
-        label: 'Object 3',
+        track: 'Logo 3',
         hits: [
           { start: 0, stop: 2 },
           { start: 4, stop: 5 },
@@ -99,10 +70,10 @@ const detections = [
     ],
   },
   {
-    name: 'gcp-video-text-detection',
-    predictions: [
+    timeline: 'gcp-video-object-detection',
+    tracks: [
       {
-        label: 'Text 1',
+        track: 'Object 1',
         hits: [
           { start: 0, stop: 2 },
           { start: 4, stop: 5 },
@@ -110,7 +81,7 @@ const detections = [
         ],
       },
       {
-        label: 'Text 2',
+        track: 'Object 2',
         hits: [
           { start: 0, stop: 2 },
           { start: 4, stop: 5 },
@@ -118,7 +89,20 @@ const detections = [
         ],
       },
       {
-        label: 'Text 3',
+        track: 'Object 3',
+        hits: [
+          { start: 0, stop: 2 },
+          { start: 4, stop: 5 },
+          { start: 10, stop: 12 },
+        ],
+      },
+    ],
+  },
+  {
+    timeline: 'gcp-video-text-detection',
+    tracks: [
+      {
+        track: 'Text 1',
         hits: [
           { start: 0, stop: 2 },
           { start: 4, stop: 5 },
@@ -126,7 +110,23 @@ const detections = [
         ],
       },
       {
-        label: 'Text 4',
+        track: 'Text 2',
+        hits: [
+          { start: 0, stop: 2 },
+          { start: 4, stop: 5 },
+          { start: 10, stop: 12 },
+        ],
+      },
+      {
+        track: 'Text 3',
+        hits: [
+          { start: 0, stop: 2 },
+          { start: 4, stop: 5 },
+          { start: 10, stop: 12 },
+        ],
+      },
+      {
+        track: 'Text 4',
         hits: [
           { start: 0, stop: 2 },
           { start: 4, stop: 5 },
@@ -137,4 +137,4 @@ const detections = [
   },
 ]
 
-export default detections
+export default timelines

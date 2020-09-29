@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TimelineDetections /> should render properly 1`] = `
+exports[`<TimelineTimelines /> should render properly 1`] = `
 .emotion-47 {
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -405,7 +405,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
       isOpen={true}
       length={18}
       moduleColor="#0074f5"
-      predictions={
+      tracks={
         Array [
           Object {
             "hits": Array [
@@ -422,7 +422,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 12,
               },
             ],
-            "label": "Gh st",
+            "track": "Gh st",
           },
           Object {
             "hits": Array [
@@ -439,7 +439,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 15,
               },
             ],
-            "label": "Busters",
+            "track": "Busters",
           },
         ]
       }
@@ -455,7 +455,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
       isOpen={false}
       length={18}
       moduleColor="#a03dc7"
-      predictions={
+      tracks={
         Array [
           Object {
             "hits": Array [
@@ -472,7 +472,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 15,
               },
             ],
-            "label": "Label 1",
+            "track": "Label 1",
           },
           Object {
             "hits": Array [
@@ -485,7 +485,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 17,
               },
             ],
-            "label": "Label 2 Plus More Text to Make A Long Label String",
+            "track": "Label 2 Plus More Text to Make A Long Label String",
           },
         ]
       }
@@ -501,7 +501,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
       isOpen={false}
       length={18}
       moduleColor="#d6680b"
-      predictions={
+      tracks={
         Array [
           Object {
             "hits": Array [
@@ -518,7 +518,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 12,
               },
             ],
-            "label": "Logo 1",
+            "track": "Logo 1",
           },
           Object {
             "hits": Array [
@@ -535,7 +535,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 12,
               },
             ],
-            "label": "Logo 2",
+            "track": "Logo 2",
           },
           Object {
             "hits": Array [
@@ -552,7 +552,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 12,
               },
             ],
-            "label": "Logo 3",
+            "track": "Logo 3",
           },
         ]
       }
@@ -568,7 +568,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
       isOpen={false}
       length={18}
       moduleColor="#ebb52e"
-      predictions={
+      tracks={
         Array [
           Object {
             "hits": Array [
@@ -585,7 +585,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 12,
               },
             ],
-            "label": "Object 1",
+            "track": "Object 1",
           },
           Object {
             "hits": Array [
@@ -602,7 +602,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 12,
               },
             ],
-            "label": "Object 2",
+            "track": "Object 2",
           },
           Object {
             "hits": Array [
@@ -619,7 +619,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 12,
               },
             ],
-            "label": "Object 3",
+            "track": "Object 3",
           },
         ]
       }
@@ -635,7 +635,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
       isOpen={false}
       length={18}
       moduleColor="#00bdc1"
-      predictions={
+      tracks={
         Array [
           Object {
             "hits": Array [
@@ -652,7 +652,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 12,
               },
             ],
-            "label": "Text 1",
+            "track": "Text 1",
           },
           Object {
             "hits": Array [
@@ -669,7 +669,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 12,
               },
             ],
-            "label": "Text 2",
+            "track": "Text 2",
           },
           Object {
             "hits": Array [
@@ -686,7 +686,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 12,
               },
             ],
-            "label": "Text 3",
+            "track": "Text 3",
           },
           Object {
             "hits": Array [
@@ -703,7 +703,7 @@ exports[`<TimelineDetections /> should render properly 1`] = `
                 "stop": 12,
               },
             ],
-            "label": "Text 4",
+            "track": "Text 4",
           },
         ]
       }

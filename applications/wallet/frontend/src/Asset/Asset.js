@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import useSWR from 'swr'
 import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 import { constants, spacing } from '../Styles'
 
@@ -86,7 +86,6 @@ const AssetAsset = ({ isQuickView }) => {
           {isVideo && !hasError ? (
             <AssetVideo
               assetRef={assetRef}
-              assetId={assetId}
               uri={uri}
               mediaType={mediaType}
               length={length}

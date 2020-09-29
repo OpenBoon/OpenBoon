@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 import { colors, spacing, constants } from '../Styles'
 
@@ -15,19 +17,24 @@ import TimelineFilterTracks from './FilterTracks'
 import TimelineRuler from './Ruler'
 import TimelinePlayhead from './Playhead'
 import TimelineAggregate from './Aggregate'
-import TimelineDetections from './Detections'
+import TimelineTimelines from './Timelines'
 
-// TODO: fetch modules from backend
-import detections from './__mocks__/detections'
+const TIMELINE_HEIGHT = 200
 
-const TIMELINE_HEIGHT = 300
+const Timeline = ({ videoRef, length }) => {
+  const {
+    query: { projectId, assetId },
+  } = useRouter()
 
-const Timeline = ({ videoRef, length, assetId }) => {
   const [settings, dispatch] = useLocalStorageReducer({
-    key: `TimelineDetections.${assetId}`,
+    key: `TimelineTimelines.${assetId}`,
     reducer,
     initialState: INITIAL_STATE,
   })
+
+  const { data: timelines } = useSWR(
+    `/api/v1/projects/${projectId}/assets/${assetId}/timelines/`,
+  )
 
   return (
     <ResizeableVertical
@@ -102,15 +109,15 @@ const Timeline = ({ videoRef, length, assetId }) => {
 
             <TimelineAggregate
               timelineHeight={size}
-              detections={detections}
+              timelines={timelines}
               settings={settings}
               dispatch={dispatch}
             />
 
-            <TimelineDetections
+            <TimelineTimelines
               videoRef={videoRef}
               length={length}
-              detections={detections}
+              timelines={timelines}
               settings={settings}
               dispatch={dispatch}
             />
@@ -134,7 +141,6 @@ Timeline.propTypes = {
     }),
   }).isRequired,
   length: PropTypes.number.isRequired,
-  assetId: PropTypes.string.isRequired,
 }
 
 export default Timeline

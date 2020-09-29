@@ -22,14 +22,7 @@ const TRACKS = [
   },
 ]
 
-const AssetVideo = ({
-  assetRef,
-  assetId,
-  uri,
-  mediaType,
-  length,
-  isQuickView,
-}) => {
+const AssetVideo = ({ assetRef, uri, mediaType, length, isQuickView }) => {
   const videoRef = useRef()
 
   return (
@@ -80,7 +73,7 @@ const AssetVideo = ({
 
       {!isQuickView && (
         <Feature flag="timeline" envs={[]}>
-          <Timeline videoRef={videoRef} length={length} assetId={assetId} />
+          <Timeline videoRef={videoRef} length={length} />
         </Feature>
       )}
     </div>
@@ -89,7 +82,6 @@ const AssetVideo = ({
 
 AssetVideo.propTypes = {
   assetRef: PropTypes.shape({}).isRequired,
-  assetId: PropTypes.string.isRequired,
   uri: PropTypes.string.isRequired,
   mediaType: PropTypes.string.isRequired,
   length: PropTypes.number.isRequired,
