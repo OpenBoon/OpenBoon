@@ -173,7 +173,7 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
 
         processor = self.init_processor(
             AsyncVideoIntelligenceProcessor(), {
-                'detect_speech': 0.5
+                'detect_speech': True
             })
 
         asset = TestAsset(uri)
@@ -188,3 +188,9 @@ class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
 
         timeline = tl_patch.call_args_list[0][0][0]
         assert 'Speech Transcription' in timeline.tracks
+
+        with open(webvtt_patch.call_args_list[0][0][0]) as fp:
+            vtt = fp.read()
+        assert "Toilets and poop and I have yet to emerge." in vtt
+        assert "Sanitation. There's more coming Sanitation." in vtt
+
