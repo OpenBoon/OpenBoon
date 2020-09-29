@@ -1,21 +1,33 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants } from '../Styles'
+import { colors, constants, spacing, zIndex } from '../Styles'
 
 import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 
-import { filterTimelines } from './helpers'
+import {
+  filterTimelines,
+  formatPaddedSeconds,
+  gotoCurrentTime,
+  GUIDE_WIDTH,
+} from './helpers'
 
 import { ACTIONS } from './reducer'
 
+const WIDTH = GUIDE_WIDTH + spacing.mini * 2
+const OFFSET = (WIDTH + constants.borderWidths.regular) / 2
+
 const TimelineAggregate = ({
+  videoRef,
+  length,
   timelineHeight,
   timelines,
   settings,
   dispatch,
 }) => {
+  const duration = videoRef.current?.duration || length
+
   const filteredTimelines = filterTimelines({ timelines, settings })
 
   const isAllVisible = Object.values(settings.modules).every(
@@ -112,11 +124,70 @@ const TimelineAggregate = ({
           )}
         </Menu>
       </div>
+      <div
+        css={{
+          flex: 1,
+          position: 'relative',
+          padding: spacing.base,
+          borderBottom: constants.borders.regular.coal,
+          backgroundColor: colors.structure.coal,
+        }}
+      >
+        &nbsp;
+        {filteredTimelines
+          .filter(({ timeline }) => {
+            return settings.modules[timeline]?.isVisible !== false
+          })
+          .map(({ tracks }) => {
+            return tracks.map(({ track, hits }) => {
+              return hits.map(({ start, stop }) => (
+                <button
+                  key={`${track}.${start}`}
+                  type="button"
+                  onClick={gotoCurrentTime({ videoRef, start })}
+                  aria-label={`${formatPaddedSeconds({ seconds: start })}`}
+                  title={`${formatPaddedSeconds({
+                    seconds: start,
+                  })}-${formatPaddedSeconds({ seconds: stop })}`}
+                  css={{
+                    margin: 0,
+                    border: 0,
+                    zIndex: zIndex.layout.interactive + 1,
+                    position: 'absolute',
+                    top: spacing.base,
+                    bottom: spacing.base,
+                    left: `calc(${(start / duration) * 100}% - ${OFFSET}px)`,
+                    width: WIDTH,
+                    backgroundColor: colors.structure.coal,
+                    padding: spacing.mini,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div
+                    css={{
+                      backgroundColor: colors.structure.steel,
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  />
+                </button>
+              ))
+            })
+          })}
+      </div>
     </div>
   )
 }
 
 TimelineAggregate.propTypes = {
+  videoRef: PropTypes.shape({
+    current: PropTypes.shape({
+      pause: PropTypes.func,
+      currentTime: PropTypes.number,
+      duration: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
+  length: PropTypes.number.isRequired,
   timelineHeight: PropTypes.number.isRequired,
   timelines: PropTypes.arrayOf(
     PropTypes.shape({

@@ -6,7 +6,7 @@ import { colors, constants, zIndex } from '../Styles'
 
 import { updatePlayheadPosition, GUIDE_WIDTH } from './helpers'
 
-const HEIGHT = 14
+const HEIGHT = 12
 const WIDTH = 10
 
 let originX
