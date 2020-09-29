@@ -1,5 +1,3 @@
-import shutil
-import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -35,7 +33,6 @@ def test_get_video_metadata():
 
 @patch('zmlp_core.util.media.check_output')
 def test_get_image_metadata_invalid_chars(check_out_patch):
-
     xml = """
     <ImageSpec version="20">
     <attrib name="oiio:ColorSpace" type="string">sRGB</attrib>
