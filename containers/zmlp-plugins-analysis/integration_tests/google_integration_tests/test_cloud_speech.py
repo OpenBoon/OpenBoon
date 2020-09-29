@@ -60,3 +60,8 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         self.processor.process(frame)
         assert 'en-us' in asset.get_attr('analysis.gcp-speech-to-text.language')
         assert 'poop' in asset.get_attr('analysis.gcp-speech-to-text.content')
+
+        with open(store_patch.call_args_list[0][0][0]) as fp:
+            vtt = fp.read()
+        assert "toilets and poop" in vtt
+        assert "and I have yet to emerge" in vtt

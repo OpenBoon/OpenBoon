@@ -11,7 +11,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   -ms-flex-align: flex-end;
   align-items: flex-end;
   height: 44px;
-  width: 500px;
+  width: 501.5px;
   margin-left: -1.5px;
   background-color: #252525;
 }

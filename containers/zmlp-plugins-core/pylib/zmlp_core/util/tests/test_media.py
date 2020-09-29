@@ -1,5 +1,3 @@
-import shutil
-import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -35,7 +33,6 @@ def test_get_video_metadata():
 
 @patch('zmlp_core.util.media.check_output')
 def test_get_image_metadata_invalid_chars(check_out_patch):
-
     xml = """
     <ImageSpec version="20">
     <attrib name="oiio:ColorSpace" type="string">sRGB</attrib>
@@ -80,14 +77,6 @@ def test_media_size_image():
     size = media.media_size(IMAGE_EXR)
     assert size[0] == 1000
     assert size[1] == 1000
-
-
-def test_media_size_image_with_wildcard():
-    tmp_file = tempfile.gettempdir() + "/lgts_bty.#.jpg"
-    shutil.copy(IMAGE_JPG, tmp_file)
-    size = media.media_size(tmp_file)
-    assert size[0] == 3264
-    assert size[1] == 2448
 
 
 def test_get_output_dimension():

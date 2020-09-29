@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import detections from '../__mocks__/detections'
+import timelines from '../__mocks__/timelines'
 
 import TimelineTracks from '../Tracks'
 
@@ -11,7 +11,7 @@ describe('<TimelineTracks />', () => {
         videoRef={{}}
         length={18}
         moduleColor="#0074f5"
-        predictions={detections[0].predictions}
+        tracks={timelines[0].tracks}
         isOpen
       />,
     )
@@ -33,7 +33,7 @@ describe('<TimelineTracks />', () => {
         videoRef={{ current }}
         length={18}
         moduleColor="#0074f5"
-        predictions={detections[0].predictions}
+        tracks={timelines[0].tracks}
         isOpen={false}
       />,
     )

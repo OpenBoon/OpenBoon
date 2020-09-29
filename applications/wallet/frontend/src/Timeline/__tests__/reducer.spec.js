@@ -1,4 +1,4 @@
-import detections from '../__mocks__/detections'
+import timelines from '../__mocks__/timelines'
 
 import { reducer, ACTIONS, INITIAL_STATE } from '../reducer'
 
@@ -20,7 +20,7 @@ describe('<Timeline /> reducer', () => {
     expect(
       reducer(INITIAL_STATE, {
         type: ACTIONS.TOGGLE_OPEN,
-        payload: { name: 'gcp-video-logo-detection' },
+        payload: { timeline: 'gcp-video-logo-detection' },
       }),
     ).toEqual({
       filter: '',
@@ -37,7 +37,7 @@ describe('<Timeline /> reducer', () => {
         },
         {
           type: ACTIONS.TOGGLE_OPEN,
-          payload: { name: 'gcp-video-logo-detection' },
+          payload: { timeline: 'gcp-video-logo-detection' },
         },
       ),
     ).toEqual({
@@ -55,7 +55,7 @@ describe('<Timeline /> reducer', () => {
         },
         {
           type: ACTIONS.TOGGLE_OPEN,
-          payload: { name: 'gcp-video-logo-detection' },
+          payload: { timeline: 'gcp-video-logo-detection' },
         },
       ),
     ).toEqual({
@@ -68,7 +68,7 @@ describe('<Timeline /> reducer', () => {
     expect(
       reducer(INITIAL_STATE, {
         type: ACTIONS.TOGGLE_VISIBLE,
-        payload: { name: 'gcp-video-logo-detection' },
+        payload: { timeline: 'gcp-video-logo-detection' },
       }),
     ).toEqual({
       filter: '',
@@ -85,7 +85,7 @@ describe('<Timeline /> reducer', () => {
         },
         {
           type: ACTIONS.TOGGLE_VISIBLE,
-          payload: { name: 'gcp-video-logo-detection' },
+          payload: { timeline: 'gcp-video-logo-detection' },
         },
       ),
     ).toEqual({
@@ -103,7 +103,7 @@ describe('<Timeline /> reducer', () => {
         },
         {
           type: ACTIONS.TOGGLE_VISIBLE,
-          payload: { name: 'gcp-video-logo-detection' },
+          payload: { timeline: 'gcp-video-logo-detection' },
         },
       ),
     ).toEqual({
@@ -121,7 +121,7 @@ describe('<Timeline /> reducer', () => {
         },
         {
           type: ACTIONS.TOGGLE_VISIBLE_ALL,
-          payload: { detections },
+          payload: { timelines },
         },
       ),
     ).toEqual({
@@ -145,7 +145,7 @@ describe('<Timeline /> reducer', () => {
         },
         {
           type: ACTIONS.TOGGLE_VISIBLE_ALL,
-          payload: { detections },
+          payload: { timelines },
         },
       ),
     ).toEqual({

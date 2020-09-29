@@ -7,13 +7,7 @@ import { formatPaddedSeconds, gotoCurrentTime, GUIDE_WIDTH } from './helpers'
 const WIDTH = GUIDE_WIDTH + spacing.mini * 2
 const OFFSET = (WIDTH + constants.borderWidths.regular) / 2
 
-const TimelineTracks = ({
-  videoRef,
-  length,
-  moduleColor,
-  predictions,
-  isOpen,
-}) => {
+const TimelineTracks = ({ videoRef, length, moduleColor, tracks, isOpen }) => {
   const duration = videoRef.current?.duration || length
 
   return (
@@ -27,10 +21,10 @@ const TimelineTracks = ({
         }}
       >
         &nbsp;
-        {predictions.map(({ label, hits }) => {
+        {tracks.map(({ track, hits }) => {
           return hits.map(({ start, stop }) => (
             <button
-              key={`${label}.${start}`}
+              key={`${track}.${start}`}
               type="button"
               onClick={gotoCurrentTime({ videoRef, start })}
               aria-label={`${formatPaddedSeconds({ seconds: start })}`}
@@ -64,14 +58,15 @@ const TimelineTracks = ({
       </div>
 
       {isOpen &&
-        predictions.map(({ label, hits }) => {
+        tracks.map(({ track, hits }) => {
           return (
             <div
-              key={label}
+              key={track}
               css={{
                 position: 'relative',
                 padding: spacing.base,
                 borderBottom: constants.borders.regular.smoke,
+                backgroundColor: colors.structure.coal,
               }}
             >
               &nbsp;
@@ -126,9 +121,9 @@ TimelineTracks.propTypes = {
   }).isRequired,
   length: PropTypes.number.isRequired,
   moduleColor: PropTypes.string.isRequired,
-  predictions: PropTypes.arrayOf(
+  tracks: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
+      track: PropTypes.string.isRequired,
       hits: PropTypes.arrayOf(
         PropTypes.shape({
           start: PropTypes.number.isRequired,

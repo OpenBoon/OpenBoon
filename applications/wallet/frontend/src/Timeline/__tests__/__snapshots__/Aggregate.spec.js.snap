@@ -107,7 +107,7 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
         onClick={[Function]}
         type="button"
       >
-        Detections (5)
+        Timelines (5)
         <svg
           data-file-name="chevron.svg"
           height={20}
@@ -342,7 +342,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
         onClick={[Function]}
         type="button"
       >
-        Detections (5)
+        Timelines (5)
         <svg
           data-file-name="chevron.svg"
           height={20}
