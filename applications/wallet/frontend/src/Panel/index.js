@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import { colors, spacing, constants } from '../Styles'
 
@@ -10,9 +10,9 @@ import Feature, { ENVS } from '../Feature'
 import PanelContent from './Content'
 
 const Panel = ({ openToThe, children }) => {
-  const [openPanel, setOpenPanel] = useLocalStorageState({
+  const [openPanel, setOpenPanel] = useLocalStorage({
     key: `${openToThe}OpeningPanel`,
-    initialValue: '',
+    initialState: '',
   })
 
   const panel = children[openPanel] || {}
