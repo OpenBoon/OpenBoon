@@ -35,9 +35,11 @@ object ModelObjective {
     const val LANDMARK_DETECTION = "Landmark Detection"
     const val LOGO_DETECTION = "Logo Detection"
     const val FACE_RECOGNITION = "Face Recognition"
+    const val FACE_DETECTION= "Face Detection"
     const val CLIPIFIER = "Asset Clipifier"
     const val EXPLICIT_DETECTION = "Explicit Detection"
     const val TEXT_DETECTION = "Text Detection (OCR)"
+    const val IMAGE_TEXT_DETECTION = "Image Text Detection"
     const val SPEECH_RECOGNITION = "Speech Recognition"
     const val CLUSTERING = "Clustering"
 }
@@ -291,10 +293,10 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "gcp-image-text-detection",
-            "Detect text within an image, including photographic ones.",
+            "Detect text within a photographic image.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
-            ModelObjective.TEXT_DETECTION,
+            ModelObjective.IMAGE_TEXT_DETECTION,
             listOf(FileType.Images, FileType.Documents),
             listOf(
                 ModOp(
@@ -545,6 +547,86 @@ fun getStandardModules(): List<PipelineModSpec> {
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionLabelDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-face-detection",
+            "Detect faces usng Amazon AWS Rekognition",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.FACE_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.RekognitionFaceDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-face-detection",
+            "Detect faces using Amazon AWS Rekognition",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.FACE_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.RekognitionFaceDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-unsafe-detection",
+            "Detect unsafe content using Amazon AWS Rekognition",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.EXPLICIT_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.RekognitionUnsafeDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-text-detection",
+            "Detect text within an image using Amazon AWS Rekognition",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.IMAGE_TEXT_DETECTION,
+            listOf(FileType.Images),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.RekognitionUnsafeDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
