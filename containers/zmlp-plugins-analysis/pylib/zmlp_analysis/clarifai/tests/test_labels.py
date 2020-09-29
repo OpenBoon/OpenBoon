@@ -50,7 +50,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
                                         {'general-model': True})
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_attr('analysis.clarifai-general-model')
+        analysis = self.frame.asset.get_attr('analysis.clarifai-label-general-model')
         assert 'wheel' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
