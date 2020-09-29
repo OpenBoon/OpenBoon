@@ -82,14 +82,6 @@ def test_media_size_image():
     assert size[1] == 1000
 
 
-def test_media_size_image_with_wildcard():
-    tmp_file = tempfile.gettempdir() + "/lgts_bty.#.jpg"
-    shutil.copy(IMAGE_JPG, tmp_file)
-    size = media.media_size(tmp_file)
-    assert size[0] == 3264
-    assert size[1] == 2448
-
-
 def test_get_output_dimension():
     # Test width being the longest edge.
     width, height = media.get_output_dimension(256, 512, 341)
