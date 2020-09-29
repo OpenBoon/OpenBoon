@@ -9,7 +9,7 @@ exports[`<TimelinePlayhead /> should render properly 1`] = `
   cursor: col-resize;
   position: absolute;
   margin-top: 0;
-  top: 30px;
+  top: 32px;
   bottom: 0;
   margin-left: -4.5px;
   width: 10px;
@@ -29,7 +29,7 @@ exports[`<TimelinePlayhead /> should render properly 1`] = `
 
 .emotion-0 {
   border-style: solid;
-  border-width: 14px 10px 0 10px;
+  border-width: 12px 10px 0 10px;
   border-color: #0074f5 transparent transparent transparent;
 }
 

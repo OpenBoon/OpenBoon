@@ -12,6 +12,8 @@ describe('<TimelineAggregate />', () => {
 
     const component = TestRenderer.create(
       <TimelineAggregate
+        videoRef={{ current: undefined }}
+        length={16}
         timelineHeight={400}
         timelines={timelines}
         settings={{

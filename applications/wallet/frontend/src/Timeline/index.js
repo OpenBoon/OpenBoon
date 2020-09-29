@@ -108,6 +108,8 @@ const Timeline = ({ videoRef, length }) => {
             </div>
 
             <TimelineAggregate
+              videoRef={videoRef}
+              length={length}
               timelineHeight={size}
               timelines={timelines}
               settings={settings}

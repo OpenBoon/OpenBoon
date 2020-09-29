@@ -246,6 +246,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
         </div>
         <TimelineAggregate
           dispatch={[Function]}
+          length={18}
           settings={
             Object {
               "filter": "",
@@ -254,6 +255,19 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
           }
           timelineHeight={200}
           timelines={Object {}}
+          videoRef={
+            Object {
+              "current": Object {
+                "addEventListener": [Function],
+                "currentTime": 0,
+                "duration": 18,
+                "pause": [Function],
+                "paused": true,
+                "play": [Function],
+                "removeEventListener": [Function],
+              },
+            }
+          }
         />
         <TimelineTimelines
           dispatch={[Function]}
@@ -531,6 +545,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
         </div>
         <TimelineAggregate
           dispatch={[Function]}
+          length={18}
           settings={
             Object {
               "filter": "",
@@ -539,6 +554,19 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
           }
           timelineHeight={200}
           timelines={Object {}}
+          videoRef={
+            Object {
+              "current": Object {
+                "addEventListener": [Function],
+                "currentTime": 0,
+                "duration": 18,
+                "pause": [Function],
+                "paused": true,
+                "play": [Function],
+                "removeEventListener": [Function],
+              },
+            }
+          }
         />
         <TimelineTimelines
           dispatch={[Function]}
@@ -792,6 +820,7 @@ exports[`<Timeline /> should render properly 1`] = `
         </div>
         <TimelineAggregate
           dispatch={[Function]}
+          length={18}
           settings={
             Object {
               "filter": "",
@@ -800,6 +829,11 @@ exports[`<Timeline /> should render properly 1`] = `
           }
           timelineHeight={200}
           timelines={Object {}}
+          videoRef={
+            Object {
+              "current": undefined,
+            }
+          }
         />
         <TimelineTimelines
           dispatch={[Function]}
