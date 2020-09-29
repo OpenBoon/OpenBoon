@@ -32,8 +32,7 @@ class ClarifaiBoundingBoxDetectionPublicModelsProcessorIntegrationTests(PluginUn
 
         analysis = frame.asset.get_attr(attr)
         for label in assertions['labels']:
-            a = get_prediction_labels(analysis)
-            assert label in a
+            assert label in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert assertions['count'] == analysis['count']
 
