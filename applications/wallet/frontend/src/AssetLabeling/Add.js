@@ -5,7 +5,7 @@ import modelShape from '../Model/shape'
 
 import { spacing } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 import Form from '../Form'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import FlashMessageErrors from '../FlashMessage/Errors'
@@ -26,14 +26,14 @@ const INITIAL_STATE = {
 const reducer = (state, action) => ({ ...state, ...action })
 
 const AssetLabelingAdd = ({ projectId, assetId, models, labels }) => {
-  const [localModelId, setLocalModelId] = useLocalStorageState({
+  const [localModelId, setLocalModelId] = useLocalStorage({
     key: `AssetLabelingAdd.${projectId}.modelId`,
-    initialValue: '',
+    initialState: '',
   })
 
-  const [localLabel, setLocalLabel] = useLocalStorageState({
+  const [localLabel, setLocalLabel] = useLocalStorage({
     key: `AssetLabelingAdd.${projectId}.label`,
-    initialValue: '',
+    initialState: '',
   })
 
   const hasModel = models.find(({ id }) => id === localModelId)

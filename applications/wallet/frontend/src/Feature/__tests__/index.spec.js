@@ -13,6 +13,8 @@ describe('<Feature />', () => {
     )
 
     expect(component.toJSON()).toEqual(null)
+
+    component.unmount()
   })
 
   it('should render an enabled feature', () => {
@@ -25,6 +27,8 @@ describe('<Feature />', () => {
     )
 
     expect(component.toJSON()).toEqual('Hello')
+
+    component.unmount()
   })
 
   it('should render a feature with no env in localdev', () => {

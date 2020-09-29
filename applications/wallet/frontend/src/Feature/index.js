@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import getConfig from 'next/config'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 export const ENVS = {
   LOCAL: 'localdev',
@@ -15,9 +15,9 @@ const Feature = ({ flag, envs, children }) => {
     publicRuntimeConfig: { ENVIRONMENT },
   } = getConfig()
 
-  const [featureFlags] = useLocalStorageState({
+  const [featureFlags] = useLocalStorage({
     key: 'FeatureFlags',
-    initialValue: {},
+    initialState: {},
   })
 
   // Disabled flag

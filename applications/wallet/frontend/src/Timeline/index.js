@@ -4,7 +4,7 @@ import useSWR from 'swr'
 
 import { colors, spacing, constants } from '../Styles'
 
-import { useLocalStorageReducer } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import Button, { VARIANTS } from '../Button'
 import ResizeableVertical from '../ResizeableVertical'
@@ -26,7 +26,7 @@ const Timeline = ({ videoRef, length }) => {
     query: { projectId, assetId },
   } = useRouter()
 
-  const [settings, dispatch] = useLocalStorageReducer({
+  const [settings, dispatch] = useLocalStorage({
     key: `TimelineTimelines.${assetId}`,
     reducer,
     initialState: INITIAL_STATE,
