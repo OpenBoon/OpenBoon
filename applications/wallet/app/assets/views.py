@@ -195,8 +195,7 @@ class WebVttViewSet(BaseProjectViewSet):
             path = f'{self.zmlp_root_api_path}/{asset_pk}/clips/{pk}'
         else:
             path = f'{self.zmlp_root_api_path}/{asset_pk}/clips/timelines/{pk}'
-        content_type, encoding = mimetypes.guess_type(pk)
-        response = StreamingHttpResponse(stream(request, path), content_type=content_type)
+        response = StreamingHttpResponse(stream(request, path), content_type='text/vtt')
         patch_response_headers(response, cache_timeout=86400)
         patch_cache_control(response, private=True)
         return response
