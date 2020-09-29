@@ -243,11 +243,11 @@ def save_speech_to_text_webvtt(asset, audio_result):
                     webvtt.append(start_time, end_time, best_result.transcript.strip())
                     break
 
-        logger.info(f'Saving speech-to-text timeline webvtt to {webvtt.path}')
-        sf = file_storage.assets.store_file(webvtt.path, asset,
-                                            'captions',
-                                            'gcp-speech-to-text.vtt')
-        return webvtt.path, sf
+    logger.info(f'Saving speech-to-text data from {webvtt.path}')
+    sf = file_storage.assets.store_file(webvtt.path, asset,
+                                        'captions',
+                                        'gcp-speech-to-text.vtt')
+    return webvtt.path, sf
 
 
 def save_video_speech_transcription_webvtt(asset, annotations):
@@ -275,11 +275,11 @@ def save_video_speech_transcription_webvtt(asset, annotations):
                     webvtt.append(start_time, end_time, alternative.transcript.strip())
                     break
 
-        logger.info(f'Saving video_speech_transcription webvtt to {webvtt.path}')
-        sf = file_storage.assets.store_file(webvtt.path, asset,
-                                            'captions',
-                                            'gcp-video-speech-transcription.vtt')
-        return webvtt.path, sf
+    logger.info(f'Saving video_speech_transcription webvtt from {webvtt.path}')
+    sf = file_storage.assets.store_file(webvtt.path, asset,
+                                        'captions',
+                                        'gcp-video-speech-transcription.vtt')
+    return webvtt.path, sf
 
 
 def convert_offset(offset):
