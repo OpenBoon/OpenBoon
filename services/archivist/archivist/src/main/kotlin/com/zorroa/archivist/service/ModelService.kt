@@ -185,7 +185,8 @@ class ModelServiceImpl(
             search,
             listOf(model.moduleName),
             name = name,
-            replace = true
+            replace = true,
+            includeStandard = false
         )
 
         return if (req.jobId == null) {
