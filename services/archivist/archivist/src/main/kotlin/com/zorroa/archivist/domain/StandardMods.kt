@@ -556,26 +556,6 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "aws-face-detection",
-            "Detect faces usng Amazon AWS Rekognition",
-            Provider.AMAZON,
-            Category.AWS_REK,
-            ModelObjective.FACE_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
-            listOf(
-                ModOp(
-                    ModOpType.APPEND,
-                    listOf(
-                        ProcessorRef(
-                            "zmlp_analysis.aws.RekognitionFaceDetection",
-                            StandardContainers.ANALYSIS
-                        )
-                    )
-                )
-            ),
-            true
-        ),
-        PipelineModSpec(
-            "aws-face-detection",
             "Detect faces using Amazon AWS Rekognition",
             Provider.AMAZON,
             Category.AWS_REK,
