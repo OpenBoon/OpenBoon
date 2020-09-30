@@ -4,7 +4,7 @@ import useSWR from 'swr'
 
 import { colors, spacing, constants } from '../Styles'
 
-import { useLocalStorageReducer } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import Button, { VARIANTS } from '../Button'
 import ResizeableVertical from '../ResizeableVertical'
@@ -13,6 +13,7 @@ import { reducer, INITIAL_STATE } from './reducer'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
+import TimelineModulesResizer from './ModulesResizer'
 import TimelineFilterTracks from './FilterTracks'
 import TimelineRuler from './Ruler'
 import TimelinePlayhead from './Playhead'
@@ -26,7 +27,7 @@ const Timeline = ({ videoRef, length }) => {
     query: { projectId, assetId },
   } = useRouter()
 
-  const [settings, dispatch] = useLocalStorageReducer({
+  const [settings, dispatch] = useLocalStorage({
     key: `TimelineTimelines.${assetId}`,
     reducer,
     initialState: INITIAL_STATE,
@@ -53,19 +54,21 @@ const Timeline = ({ videoRef, length }) => {
             borderBottom: constants.borders.regular.smoke,
           }}
         >
-          <Button
-            aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
-            variant={VARIANTS.ICON}
-            style={{
-              padding: spacing.small,
-              ':hover, &.focus-visible:focus': {
-                backgroundColor: colors.structure.mattGrey,
-              },
-            }}
-            onClick={toggleOpen}
-          >
-            Timeline
-          </Button>
+          <div css={{ flex: 1, padding: spacing.small, paddingLeft: 0 }}>
+            <Button
+              aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
+              variant={VARIANTS.ICON}
+              style={{
+                padding: spacing.small,
+                ':hover, &.focus-visible:focus': {
+                  backgroundColor: colors.structure.mattGrey,
+                },
+              }}
+              onClick={toggleOpen}
+            >
+              Timeline
+            </Button>
+          </div>
 
           <TimelineControls videoRef={videoRef} length={length} />
 
@@ -88,10 +91,12 @@ const Timeline = ({ videoRef, length }) => {
               flexDirection: 'column',
               height: '0%',
               position: 'relative',
-              marginLeft: constants.timeline.modulesWidth,
+              marginLeft: settings.modulesWidth,
               borderLeft: constants.borders.regular.smoke,
             }}
           >
+            <TimelineModulesResizer settings={settings} dispatch={dispatch} />
+
             <TimelinePlayhead videoRef={videoRef} />
 
             <div
@@ -108,6 +113,8 @@ const Timeline = ({ videoRef, length }) => {
             </div>
 
             <TimelineAggregate
+              videoRef={videoRef}
+              length={length}
               timelineHeight={size}
               timelines={timelines}
               settings={settings}

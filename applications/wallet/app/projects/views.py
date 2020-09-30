@@ -59,6 +59,8 @@ class BaseProjectViewSet(ViewSet):
         except Membership.DoesNotExist:
             return JsonResponse(data={'detail': [f'{request.user.username} is not a member of '
                                                  f'the project {project}']}, status=403)
+        except TypeError:
+            return JsonResponse(data={'detail': ['Unauthorized.']}, status=403)
 
         # Attach some useful objects for interacting with ZMLP/ZVI to the request.
         if settings.PLATFORM == 'zmlp':

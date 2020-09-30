@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types'
 
-import { useLocalStorageReducer } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import { zIndex } from '../Styles'
 
@@ -15,7 +15,7 @@ let originY
 const reducer = (state, action) => ({ ...state, ...action })
 
 const ResizeableVertical = ({ storageName, minHeight, header, children }) => {
-  const [state, dispatch] = useLocalStorageReducer({
+  const [state, dispatch] = useLocalStorage({
     key: storageName,
     reducer,
     initialState: {

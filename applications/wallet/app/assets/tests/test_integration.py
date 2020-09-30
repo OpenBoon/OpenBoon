@@ -149,6 +149,14 @@ class TestAssetViewSet:
 
 class TestTimelines:
 
+    def test_timelines_logged_out(self, project, api_client):
+        asset_id = '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5'
+        response = api_client.get(reverse('asset-timelines',
+                                          kwargs={'project_pk': project.id,
+                                                  'pk': asset_id}))
+        content = check_response(response, status.HTTP_403_FORBIDDEN)
+        assert content == {'detail': ['Unauthorized.']}
+
     def test_timelines_empty_response(self, login, project, api_client, monkeypatch):
 
         def mock_response(*args, **kwargs):

@@ -2,6 +2,7 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Category
+import com.zorroa.archivist.domain.FileType
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
 import com.zorroa.archivist.domain.ModelObjective
@@ -12,7 +13,6 @@ import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.Provider
-import com.zorroa.archivist.domain.FileType
 import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -46,6 +46,23 @@ class PipelineResolverServiceTests : AbstractTest() {
             )
         )
         assertEquals(7, pipeline.execute.size)
+    }
+
+    @Test
+    fun testResolveModularNoStandard() {
+        pipelineModService.updateStandardMods()
+        val pipeline = pipelineResolverService.resolveModular(
+            listOf(
+                "gcp-video-label-detection",
+                "gcp-video-object-detection",
+                "gcp-video-text-detection",
+                "gcp-video-logo-detection",
+                "gcp-video-explicit-detection",
+                "gcp-speech-to-text"
+            ),
+            false
+        )
+        assertEquals(2, pipeline.execute.size)
     }
 
     @Test

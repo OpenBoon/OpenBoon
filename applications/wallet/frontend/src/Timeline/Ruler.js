@@ -12,12 +12,13 @@ import {
   MIN_TICK_SPACING,
 } from './helpers'
 
+const OFFSET = (TICK_WIDTH + constants.borderWidths.regular) / 2
+
 const TimelineRuler = ({ length }) => {
   return (
     <AutoSizer defaultWidth={500} disableHeight>
       {({ width }) => {
         const { halfSeconds, majorStep } = getRulerLayout({ length, width })
-        const OFFSET = (TICK_WIDTH + constants.borderWidths.regular) / 2
 
         return (
           <div
@@ -64,9 +65,7 @@ const TimelineRuler = ({ length }) => {
                     <div
                       css={{ position: 'absolute', top: -MAJOR_TICK_HEIGHT }}
                     >
-                      {formatPaddedSeconds({
-                        seconds: label,
-                      })}
+                      {formatPaddedSeconds({ seconds: label })}
                     </div>
                   )}
                   <div

@@ -10,7 +10,8 @@ class RekognitionTextDetection(AssetProcessor):
 
     namespace = 'aws-text-detection'
 
-    file_types = FileTypes.documents | FileTypes.images
+    # Only images, this isn't for OCR I don't think.
+    file_types = FileTypes.images
 
     def __init__(self):
         super(RekognitionTextDetection, self).__init__()

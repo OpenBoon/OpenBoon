@@ -1,7 +1,5 @@
 const imageAsset = {
   id: 'AjXYVpaVeLsOgpenKKSW8oDB5YuOTWDs',
-  fullscreen_url:
-    'https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/assets/AjXYVpaVeLsOgpenKKSW8oDB5YuOTWDs/files/category/web-proxy/name/web-proxy.jpg/signed_url/',
   metadata: {
     system: {
       jobId: 'c01b9495-def1-133b-9f27-aa2fbe1ff2ea',

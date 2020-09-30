@@ -9,23 +9,23 @@ describe('<MetadataCues /> helpers', () => {
             activeCues: {
               0: {
                 text: JSON.stringify({
-                  module: 'gcp-label-detection',
+                  timeline: 'gcp-label-detection',
                   score: 0.91,
-                  label: 'cheese',
+                  content: ['cheese', 'mozzarella'],
                 }),
               },
               1: {
                 text: JSON.stringify({
-                  module: 'gcp-label-detection',
+                  timeline: 'gcp-label-detection',
                   score: 0.82,
-                  label: 'pepperoni',
+                  content: ['pepperoni'],
                 }),
               },
               2: {
                 text: JSON.stringify({
-                  module: 'gcp-object-detection',
+                  timeline: 'gcp-object-detection',
                   score: 0.73,
-                  label: 'food',
+                  content: ['food'],
                 }),
               },
             },
@@ -33,7 +33,7 @@ describe('<MetadataCues /> helpers', () => {
         }),
       ).toEqual({
         'gcp-label-detection': [
-          { label: 'cheese', score: 0.91 },
+          { label: 'cheese, mozzarella', score: 0.91 },
           { label: 'pepperoni', score: 0.82 },
         ],
         'gcp-object-detection': [{ label: 'food', score: 0.73 }],

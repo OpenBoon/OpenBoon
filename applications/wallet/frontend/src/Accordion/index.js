@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import { typography, colors, spacing, constants } from '../Styles'
 
@@ -66,9 +66,9 @@ const Accordion = ({
   isInitiallyOpen,
   isResizeable,
 }) => {
-  const [isOpen, setOpen] = useLocalStorageState({
+  const [isOpen, setOpen] = useLocalStorage({
     key: cacheKey,
-    initialValue: isInitiallyOpen,
+    initialState: isInitiallyOpen,
   })
 
   return (

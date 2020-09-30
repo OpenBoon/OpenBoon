@@ -13,7 +13,16 @@ describe('<Timeline /> reducer', () => {
         type: ACTIONS.UPDATE_FILTER,
         payload: { value: 'cat' },
       }),
-    ).toEqual({ filter: 'cat', modules: {} })
+    ).toEqual({ filter: 'cat', modulesWidth: 200, modules: {} })
+  })
+
+  it('should update the modules width', () => {
+    expect(
+      reducer(INITIAL_STATE, {
+        type: ACTIONS.RESIZE_MODULES,
+        payload: { value: 300 },
+      }),
+    ).toEqual({ filter: '', modulesWidth: 300, modules: {} })
   })
 
   it('should open an undefined module', () => {
@@ -24,6 +33,7 @@ describe('<Timeline /> reducer', () => {
       }),
     ).toEqual({
       filter: '',
+      modulesWidth: 200,
       modules: { 'gcp-video-logo-detection': { isOpen: true } },
     })
   })
@@ -33,6 +43,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          modulesWidth: 200,
           modules: { 'gcp-video-logo-detection': { isOpen: false } },
         },
         {
@@ -42,6 +53,7 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      modulesWidth: 200,
       modules: { 'gcp-video-logo-detection': { isOpen: true } },
     })
   })
@@ -51,6 +63,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          modulesWidth: 200,
           modules: { 'gcp-video-logo-detection': { isOpen: true } },
         },
         {
@@ -60,6 +73,7 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      modulesWidth: 200,
       modules: { 'gcp-video-logo-detection': { isOpen: false } },
     })
   })
@@ -72,6 +86,7 @@ describe('<Timeline /> reducer', () => {
       }),
     ).toEqual({
       filter: '',
+      modulesWidth: 200,
       modules: { 'gcp-video-logo-detection': { isVisible: false } },
     })
   })
@@ -81,6 +96,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          modulesWidth: 200,
           modules: { 'gcp-video-logo-detection': { isVisible: true } },
         },
         {
@@ -90,6 +106,7 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      modulesWidth: 200,
       modules: { 'gcp-video-logo-detection': { isVisible: false } },
     })
   })
@@ -99,6 +116,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          modulesWidth: 200,
           modules: { 'gcp-video-logo-detection': { isVisible: false } },
         },
         {
@@ -108,6 +126,7 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      modulesWidth: 200,
       modules: { 'gcp-video-logo-detection': { isVisible: true } },
     })
   })
@@ -117,6 +136,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          modulesWidth: 200,
           modules: { 'gcp-video-logo-detection': { isVisible: false } },
         },
         {
@@ -126,6 +146,7 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      modulesWidth: 200,
       modules: {
         'gcp-video-explicit-detection': { isVisible: true },
         'gcp-video-label-detection': { isVisible: true },
@@ -141,6 +162,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          modulesWidth: 200,
           modules: { 'gcp-video-logo-detection': { isVisible: true } },
         },
         {
@@ -150,6 +172,7 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      modulesWidth: 200,
       modules: {
         'gcp-video-explicit-detection': { isVisible: false },
         'gcp-video-label-detection': { isVisible: false },
