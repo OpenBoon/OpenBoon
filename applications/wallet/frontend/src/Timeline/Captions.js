@@ -40,10 +40,8 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
     return (
       <div
         css={{
-          width:
-            (constants.icons.regular + spacing.small * 2) * 2 + // 2 buttons width
-            spacing.small + // spacer
-            spacing.small * 2, // padding
+          flex: 1,
+          padding: spacing.small,
         }}
       />
     )
@@ -51,8 +49,10 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
   return (
     <div
       css={{
+        flex: 1,
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'flex-end',
         padding: spacing.small,
       }}
     >

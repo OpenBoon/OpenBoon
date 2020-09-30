@@ -53,19 +53,21 @@ const Timeline = ({ videoRef, length }) => {
             borderBottom: constants.borders.regular.smoke,
           }}
         >
-          <Button
-            aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
-            variant={VARIANTS.ICON}
-            style={{
-              padding: spacing.small,
-              ':hover, &.focus-visible:focus': {
-                backgroundColor: colors.structure.mattGrey,
-              },
-            }}
-            onClick={toggleOpen}
-          >
-            Timeline
-          </Button>
+          <div css={{ flex: 1, padding: spacing.small, paddingLeft: 0 }}>
+            <Button
+              aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
+              variant={VARIANTS.ICON}
+              style={{
+                padding: spacing.small,
+                ':hover, &.focus-visible:focus': {
+                  backgroundColor: colors.structure.mattGrey,
+                },
+              }}
+              onClick={toggleOpen}
+            >
+              Timeline
+            </Button>
+          </div>
 
           <TimelineControls videoRef={videoRef} length={length} />
 

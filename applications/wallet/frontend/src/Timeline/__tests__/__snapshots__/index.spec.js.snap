@@ -13,7 +13,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   z-index: 10;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding-left: 8px;
   padding-right: 8px;
   background-color: #252525;
@@ -31,6 +31,14 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   -ms-flex-align: center;
   align-items: center;
   border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 4px;
+  padding-left: 0;
 }
 
 .emotion-1 {
@@ -95,7 +103,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -106,7 +114,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   height: 200px;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -123,7 +131,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   border-left: 1px solid #3b3b3b;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -131,13 +139,13 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   height: 44px;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-7 {
+.emotion-8 {
   height: 200px;
 }
 
@@ -157,16 +165,20 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
     onMouseDown={[Function]}
   />
   <div
-    className="emotion-2"
+    className="emotion-3"
   >
-    <button
-      aria-label="Close Timeline"
-      className="emotion-1"
-      onClick={[Function]}
-      type="button"
+    <div
+      className="emotion-2"
     >
-      Timeline
-    </button>
+      <button
+        aria-label="Close Timeline"
+        className="emotion-1"
+        onClick={[Function]}
+        type="button"
+      >
+        Timeline
+      </button>
+    </div>
     <TimelineControls
       length={18}
       videoRef={
@@ -201,13 +213,13 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
     />
   </div>
   <div
-    className="emotion-7"
+    className="emotion-8"
   >
     <div
-      className="emotion-6"
+      className="emotion-7"
     >
       <div
-        className="emotion-5"
+        className="emotion-6"
       >
         <TimelinePlayhead
           videoRef={
@@ -225,7 +237,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
           }
         />
         <div
-          className="emotion-4"
+          className="emotion-5"
         >
           <TimelineFilterTracks
             dispatch={[Function]}
@@ -237,7 +249,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
             }
           />
           <div
-            className="emotion-3"
+            className="emotion-4"
           >
             <TimelineRuler
               length={18}
@@ -312,7 +324,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   z-index: 10;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding-left: 8px;
   padding-right: 8px;
   background-color: #252525;
@@ -330,6 +342,14 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   -ms-flex-align: center;
   align-items: center;
   border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 4px;
+  padding-left: 0;
 }
 
 .emotion-1 {
@@ -394,11 +414,11 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   height: 0;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -409,7 +429,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   height: 200px;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -426,7 +446,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   border-left: 1px solid #3b3b3b;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -434,7 +454,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   height: 44px;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -456,16 +476,20 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
     onMouseDown={[Function]}
   />
   <div
-    className="emotion-2"
+    className="emotion-3"
   >
-    <button
-      aria-label="Open Timeline"
-      className="emotion-1"
-      onClick={[Function]}
-      type="button"
+    <div
+      className="emotion-2"
     >
-      Timeline
-    </button>
+      <button
+        aria-label="Open Timeline"
+        className="emotion-1"
+        onClick={[Function]}
+        type="button"
+      >
+        Timeline
+      </button>
+    </div>
     <TimelineControls
       length={18}
       videoRef={
@@ -500,13 +524,13 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
     />
   </div>
   <div
-    className="emotion-7"
+    className="emotion-8"
   >
     <div
-      className="emotion-6"
+      className="emotion-7"
     >
       <div
-        className="emotion-5"
+        className="emotion-6"
       >
         <TimelinePlayhead
           videoRef={
@@ -524,7 +548,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
           }
         />
         <div
-          className="emotion-4"
+          className="emotion-5"
         >
           <TimelineFilterTracks
             dispatch={[Function]}
@@ -536,7 +560,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
             }
           />
           <div
-            className="emotion-3"
+            className="emotion-4"
           >
             <TimelineRuler
               length={18}
@@ -611,7 +635,7 @@ exports[`<Timeline /> should render properly 1`] = `
   z-index: 10;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding-left: 8px;
   padding-right: 8px;
   background-color: #252525;
@@ -629,6 +653,14 @@ exports[`<Timeline /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 4px;
+  padding-left: 0;
 }
 
 .emotion-1 {
@@ -693,11 +725,11 @@ exports[`<Timeline /> should render properly 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   height: 0;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -708,7 +740,7 @@ exports[`<Timeline /> should render properly 1`] = `
   height: 200px;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -725,7 +757,7 @@ exports[`<Timeline /> should render properly 1`] = `
   border-left: 1px solid #3b3b3b;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -733,7 +765,7 @@ exports[`<Timeline /> should render properly 1`] = `
   height: 44px;
 }
 
-.emotion-3 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -755,16 +787,20 @@ exports[`<Timeline /> should render properly 1`] = `
     onMouseDown={[Function]}
   />
   <div
-    className="emotion-2"
+    className="emotion-3"
   >
-    <button
-      aria-label="Open Timeline"
-      className="emotion-1"
-      onClick={[Function]}
-      type="button"
+    <div
+      className="emotion-2"
     >
-      Timeline
-    </button>
+      <button
+        aria-label="Open Timeline"
+        className="emotion-1"
+        onClick={[Function]}
+        type="button"
+      >
+        Timeline
+      </button>
+    </div>
     <TimelineControls
       length={18}
       videoRef={
@@ -783,13 +819,13 @@ exports[`<Timeline /> should render properly 1`] = `
     />
   </div>
   <div
-    className="emotion-7"
+    className="emotion-8"
   >
     <div
-      className="emotion-6"
+      className="emotion-7"
     >
       <div
-        className="emotion-5"
+        className="emotion-6"
       >
         <TimelinePlayhead
           videoRef={
@@ -799,7 +835,7 @@ exports[`<Timeline /> should render properly 1`] = `
           }
         />
         <div
-          className="emotion-4"
+          className="emotion-5"
         >
           <TimelineFilterTracks
             dispatch={[Function]}
@@ -811,7 +847,7 @@ exports[`<Timeline /> should render properly 1`] = `
             }
           />
           <div
-            className="emotion-3"
+            className="emotion-4"
           >
             <TimelineRuler
               length={18}
