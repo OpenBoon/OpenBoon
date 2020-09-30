@@ -54,10 +54,11 @@ class VideoProxyProcessor(AssetProcessor):
             '-i', src_path,
             '-c:v', 'libx264',
             '-crf', '23',
-            '-c:a', 'aac',
+            '-c:a', 'copy',
             '-threads', '0',
             '-pix_fmt', 'yuv420p',
-            '-movflags', '+faststart'
+            '-movflags', '+faststart',
+            '-preset', 'slow'
         ]
 
         # the width/height of yuv420p videos must be divisible by 2
