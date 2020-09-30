@@ -74,6 +74,7 @@ resource "kubernetes_deployment" "analyst" {
         }
       }
       spec {
+        termination_grace_period_seconds = 10800
         node_selector = {
           type = "analyst"
         }
