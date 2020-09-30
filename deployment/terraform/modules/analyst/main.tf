@@ -166,6 +166,13 @@ resource "kubernetes_deployment" "analyst" {
               cpu    = var.cpu-limit
             }
           }
+          lifecycle {
+            pre_stop {
+              exec {
+                command = ["/service/bin/k8prestop.py"]
+              }
+            }
+          }
         }
       }
     }
