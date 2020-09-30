@@ -42,78 +42,84 @@ const TimelineControls = ({ videoRef, length }) => {
   return (
     <div
       css={{
+        flex: 2,
         display: 'flex',
         alignItems: 'center',
         padding: spacing.small,
       }}
     >
-      <Button
-        aria-label="Previous Second"
-        variant={VARIANTS.ICON}
-        style={{
-          padding: spacing.small,
-          ':hover, &.focus-visible:focus': {
-            backgroundColor: colors.structure.mattGrey,
-          },
-        }}
-        onClick={async () => {
-          video?.pause()
-          video.currentTime = Math.trunc(video?.currentTime) - 1
-        }}
-      >
-        <SeekSvg
-          height={constants.icons.regular}
-          css={{ transform: 'rotate(-180deg)' }}
-        />
-      </Button>
+      <div css={{ flex: 1, padding: spacing.small }} />
 
-      <div css={{ width: spacing.small }} />
-
-      <Button
-        aria-label={video?.paused ? 'Play' : 'Pause'}
-        variant={VARIANTS.ICON}
-        style={{
-          padding: spacing.small,
-          ':hover, &.focus-visible:focus': {
-            backgroundColor: colors.structure.mattGrey,
-          },
-        }}
-        onClick={async () => {
-          if (video?.paused) {
-            video?.play()
-          } else {
+      <div css={{ display: 'flex' }}>
+        <Button
+          aria-label="Previous Second"
+          variant={VARIANTS.ICON}
+          style={{
+            padding: spacing.small,
+            ':hover, &.focus-visible:focus': {
+              backgroundColor: colors.structure.mattGrey,
+            },
+          }}
+          onClick={async () => {
             video?.pause()
-          }
-        }}
-      >
-        {video?.paused || !video ? (
-          <PlaySvg height={constants.icons.regular} />
-        ) : (
-          <PauseSvg height={constants.icons.regular} />
-        )}
-      </Button>
+            video.currentTime = Math.trunc(video?.currentTime) - 1
+          }}
+        >
+          <SeekSvg
+            height={constants.icons.regular}
+            css={{ transform: 'rotate(-180deg)' }}
+          />
+        </Button>
 
-      <div css={{ width: spacing.small }} />
+        <div css={{ width: spacing.small }} />
 
-      <Button
-        aria-label="Next Second"
-        variant={VARIANTS.ICON}
-        style={{
-          padding: spacing.small,
-          ':hover, &.focus-visible:focus': {
-            backgroundColor: colors.structure.mattGrey,
-          },
-        }}
-        onClick={async () => {
-          video?.pause()
-          video.currentTime = Math.trunc(video?.currentTime) + 1
-        }}
-      >
-        <SeekSvg height={constants.icons.regular} />
-      </Button>
+        <Button
+          aria-label={video?.paused ? 'Play' : 'Pause'}
+          variant={VARIANTS.ICON}
+          style={{
+            padding: spacing.small,
+            ':hover, &.focus-visible:focus': {
+              backgroundColor: colors.structure.mattGrey,
+            },
+          }}
+          onClick={async () => {
+            if (video?.paused) {
+              video?.play()
+            } else {
+              video?.pause()
+            }
+          }}
+        >
+          {video?.paused || !video ? (
+            <PlaySvg height={constants.icons.regular} />
+          ) : (
+            <PauseSvg height={constants.icons.regular} />
+          )}
+        </Button>
+
+        <div css={{ width: spacing.small }} />
+
+        <Button
+          aria-label="Next Second"
+          variant={VARIANTS.ICON}
+          style={{
+            padding: spacing.small,
+            ':hover, &.focus-visible:focus': {
+              backgroundColor: colors.structure.mattGrey,
+            },
+          }}
+          onClick={async () => {
+            video?.pause()
+            video.currentTime = Math.trunc(video?.currentTime) + 1
+          }}
+        >
+          <SeekSvg height={constants.icons.regular} />
+        </Button>
+      </div>
 
       <div
         css={{
+          flex: 1,
           padding: spacing.small,
           display: 'flex',
           alignItems: 'center',
@@ -137,6 +143,7 @@ const TimelineControls = ({ videoRef, length }) => {
             padding: spacing.small,
             paddingLeft: spacing.base,
             paddingRight: spacing.base,
+            whiteSpace: 'nowrap',
           }}
         >
           / {formatPaddedSeconds({ seconds: length })}
