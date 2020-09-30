@@ -497,7 +497,7 @@ class LabelFilter(BaseFilter):
         query = {
             'query': {
                 "bool": {
-                    "must": {
+                    "must": [{
                         "nested": {
                             "path": "labels",
                             "query": {
@@ -510,7 +510,7 @@ class LabelFilter(BaseFilter):
                                 }
                             }
                         }
-                    }
+                    }]
                 }
             }
         }
