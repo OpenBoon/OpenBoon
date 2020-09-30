@@ -38,12 +38,12 @@ const TimelineAggregate = ({
     <div
       css={{
         display: 'flex',
-        marginLeft: -constants.timeline.modulesWidth,
+        marginLeft: -settings.modulesWidth,
         borderTop: constants.borders.regular.smoke,
         height: constants.timeline.rulerRowHeight,
       }}
     >
-      <div css={{ width: constants.timeline.modulesWidth }}>
+      <div css={{ width: settings.modulesWidth }}>
         <Menu
           open="bottom-center"
           button={({ onBlur, onClick, isMenuOpen }) => (
@@ -65,6 +65,7 @@ const TimelineAggregate = ({
                 },
                 marginBottom: 0,
                 borderRadius: 0,
+                width: '100%',
                 height: '100%',
               }}
             />
@@ -197,6 +198,7 @@ TimelineAggregate.propTypes = {
   ).isRequired,
   settings: PropTypes.shape({
     filter: PropTypes.string.isRequired,
+    modulesWidth: PropTypes.number.isRequired,
     modules: PropTypes.shape({}).isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,

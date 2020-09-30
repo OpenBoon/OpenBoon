@@ -17,6 +17,7 @@ describe('<TimelineAggregate />', () => {
         timelineHeight={400}
         timelines={timelines}
         settings={{
+          modulesWidth: 200,
           filter: '',
           modules: { [timelines[0].timeline]: { isVisible: true } },
         }}

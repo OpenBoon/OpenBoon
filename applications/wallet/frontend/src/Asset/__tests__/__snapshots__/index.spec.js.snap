@@ -361,7 +361,6 @@ exports[`<Asset /> should handle no query 1`] = `
                   className="emotion-5"
                 >
                   <video
-                    autoPlay={true}
                     className="emotion-4"
                     controls={true}
                     controlsList="nodownload"
@@ -1195,7 +1194,6 @@ exports[`<Asset /> should render videos properly 1`] = `
                   className="emotion-5"
                 >
                   <video
-                    autoPlay={true}
                     className="emotion-4"
                     controls={true}
                     controlsList="nodownload"

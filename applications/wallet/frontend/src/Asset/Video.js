@@ -31,7 +31,8 @@ const AssetVideo = ({
             <video
               ref={videoRef}
               css={{ flex: 1, width: '100%', height: 0 }}
-              autoPlay
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...(isQuickView ? { autoPlay: true } : {})}
               controls
               controlsList="nodownload"
               disablePictureInPicture
