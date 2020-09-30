@@ -13,6 +13,7 @@ import { reducer, INITIAL_STATE } from './reducer'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
+import TimelineModulesResizer from './ModulesResizer'
 import TimelineFilterTracks from './FilterTracks'
 import TimelineRuler from './Ruler'
 import TimelinePlayhead from './Playhead'
@@ -90,10 +91,12 @@ const Timeline = ({ videoRef, length }) => {
               flexDirection: 'column',
               height: '0%',
               position: 'relative',
-              marginLeft: constants.timeline.modulesWidth,
+              marginLeft: settings.modulesWidth,
               borderLeft: constants.borders.regular.smoke,
             }}
           >
+            <TimelineModulesResizer settings={settings} dispatch={dispatch} />
+
             <TimelinePlayhead videoRef={videoRef} />
 
             <div

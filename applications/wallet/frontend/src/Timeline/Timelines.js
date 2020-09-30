@@ -36,11 +36,11 @@ const TimelineTimelines = ({
         flex: 1,
         display: 'flex',
         overflow: 'auto',
-        marginLeft: -constants.timeline.modulesWidth,
+        marginLeft: -settings.modulesWidth,
         borderTop: constants.borders.regular.smoke,
       }}
     >
-      <div css={{ width: constants.timeline.modulesWidth }}>
+      <div css={{ width: settings.modulesWidth }}>
         {filteredTimelines
           .filter(({ timeline }) => {
             return settings.modules[timeline]?.isVisible !== false
@@ -136,6 +136,7 @@ TimelineTimelines.propTypes = {
     }),
   ).isRequired,
   settings: PropTypes.shape({
+    modulesWidth: PropTypes.number.isRequired,
     filter: PropTypes.string.isRequired,
     modules: PropTypes.shape({}).isRequired,
   }).isRequired,

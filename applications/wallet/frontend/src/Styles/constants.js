@@ -92,7 +92,6 @@ const constants = {
   },
   timeline: {
     rulerRowHeight: 44,
-    modulesWidth: 200,
   },
 }
 
