@@ -38,7 +38,7 @@ from registration.views import UserRegistrationView, UserConfirmationView, \
     ApiPasswordChangeView, LogoutView, MeView, LoginView, ApiPasswordResetView, \
     ApiPasswordResetConfirmView
 from roles.views import RolesViewSet
-from searches.views import SearchViewSet, MetadataExportViewSet
+from searches.views import SearchViewSet
 from subscriptions.views import SubscriptionViewSet
 from supportadmin.admin import support_admin_site
 from visualizations.views import VisualizationViewSet
