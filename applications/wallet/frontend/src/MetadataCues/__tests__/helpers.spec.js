@@ -6,29 +6,29 @@ describe('<MetadataCues /> helpers', () => {
       expect(
         getMetadata({
           target: {
-            activeCues: {
-              0: {
+            activeCues: [
+              {
                 text: JSON.stringify({
                   timeline: 'gcp-label-detection',
                   score: 0.91,
                   content: ['cheese', 'mozzarella'],
                 }),
               },
-              1: {
+              {
                 text: JSON.stringify({
                   timeline: 'gcp-label-detection',
                   score: 0.82,
                   content: ['pepperoni'],
                 }),
               },
-              2: {
+              {
                 text: JSON.stringify({
                   timeline: 'gcp-object-detection',
                   score: 0.73,
                   content: ['food'],
                 }),
               },
-            },
+            ],
           },
         }),
       ).toEqual({
@@ -37,6 +37,19 @@ describe('<MetadataCues /> helpers', () => {
           { label: 'pepperoni', score: 0.82 },
         ],
         'gcp-object-detection': [{ label: 'food', score: 0.73 }],
+      })
+    })
+
+    it('should clear the metadata', () => {
+      expect(
+        getMetadata({
+          target: {
+            label: 'gcp-label-detection',
+            activeCues: [],
+          },
+        }),
+      ).toEqual({
+        'gcp-label-detection': [],
       })
     })
   })

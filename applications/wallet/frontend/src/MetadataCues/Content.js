@@ -41,7 +41,8 @@ const MetadataCuesContent = ({ metadata, height }) => {
       </div>
 
       <div css={{ flex: 1, overflowY: 'auto' }}>
-        {Object.keys(metadata).length === 0 && (
+        {Object.values(metadata).filter((predictions) => predictions.length > 0)
+          .length === 0 && (
           <div
             css={{
               padding: spacing.normal,
@@ -54,24 +55,26 @@ const MetadataCuesContent = ({ metadata, height }) => {
           </div>
         )}
 
-        {Object.entries(metadata).map(([timeline, predictions], index) => {
-          const colorIndex = index % COLORS.length
+        {Object.entries(metadata)
+          .filter(([, predictions]) => predictions.length > 0)
+          .map(([timeline, predictions], index) => {
+            const colorIndex = index % COLORS.length
 
-          return (
-            <div
-              key={timeline}
-              css={{
-                borderBottom: constants.borders.large.smoke,
-                boxShadow: `inset ${COLOR_WIDTH}px 0 0 ${COLORS[colorIndex]}`,
-              }}
-            >
-              <MetadataPrettyPredictionsContent
-                name={timeline}
-                predictions={predictions}
-              />
-            </div>
-          )
-        })}
+            return (
+              <div
+                key={timeline}
+                css={{
+                  borderBottom: constants.borders.large.smoke,
+                  boxShadow: `inset ${COLOR_WIDTH}px 0 0 ${COLORS[colorIndex]}`,
+                }}
+              >
+                <MetadataPrettyPredictionsContent
+                  name={timeline}
+                  predictions={predictions}
+                />
+              </div>
+            )
+          })}
       </div>
     </div>
   )
