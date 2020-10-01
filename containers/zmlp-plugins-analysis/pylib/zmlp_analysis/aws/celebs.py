@@ -1,3 +1,5 @@
+from zmlp.util import round_all
+
 from zmlpsdk import AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
@@ -5,15 +7,15 @@ from zmlpsdk.proxy import get_proxy_level_path
 from .util import get_zvi_rekognition_client
 
 
-class RekognitionFaceDetection(AssetProcessor):
+class RekognitionCelebrityDetection(AssetProcessor):
     """Get labels for an image using AWS Rekognition """
 
-    namespace = 'aws-face-detection'
+    namespace = 'aws-celebrity-detection'
 
     file_types = FileTypes.documents | FileTypes.images
 
     def __init__(self):
-        super(RekognitionFaceDetection, self).__init__()
+        super(RekognitionCelebrityDetection, self).__init__()
         self.client = None
 
     def init(self):
@@ -21,18 +23,25 @@ class RekognitionFaceDetection(AssetProcessor):
         self.client = get_zvi_rekognition_client()
 
     def process(self, frame):
-        """Process the given frame for predicting and adding labels to an asset
-
-        Args:
-            frame (Frame): Frame to be processed
-
-        """
         asset = frame.asset
         proxy_path = get_proxy_level_path(asset, 0)
         analysis = LabelDetectionAnalysis(min_score=0.01)
 
-        for ls in self.predict(proxy_path):
-            analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
+        result = self.predict(proxy_path)
+        for person in result['CelebrityFaces']:
+
+            name = person['Name']
+            face = person['Face']
+            conf = face['Confidence']
+            bbox = face['BoundingBox']
+
+            left = bbox['Left']
+            top = bbox['Top']
+            width = bbox['Width']
+            height = bbox['Height']
+
+            analysis.add_label_and_score(name, conf,
+                                         bbox=round_all([left, top, left+width, top+height]))
 
         asset.add_analysis(self.namespace, analysis)
 
@@ -52,18 +61,4 @@ class RekognitionFaceDetection(AssetProcessor):
 
         # get predictions
         img_json = {'Bytes': source_bytes}
-        response = self.client.detect_faces(Image=img_json)
-
-        # get bounding box
-        results = []
-        for i, r in enumerate(response['FaceDetails']):
-            confidence = r['Confidence']
-            bbox = r['BoundingBox']
-
-            left = bbox['Left']
-            top = bbox['Top']
-            width = bbox['Width']
-            height = bbox['Height']
-
-            results.append(("face{}".format(i), confidence, [left, top, left+width, top+height]))
-        return results
+        return self.client.recognize_celebrities(Image=img_json)
