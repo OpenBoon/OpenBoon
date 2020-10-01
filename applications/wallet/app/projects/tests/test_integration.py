@@ -93,13 +93,12 @@ def test_projects_view_inactive_projects(project, zmlp_project_user, api_client)
     response = api_client.get(reverse('project-list')).json()
     assert response['count'] == 0
 
-
 def test_project_serializer_detail(project):
     serializer = ProjectSerializer(project, context={'request': None})
     data = serializer.data
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions',
-                       'modules', 'providers', 'searches', 'export', 'faces', 'visualizations',
+                       'modules', 'providers', 'searches','faces', 'visualizations',
                        'models']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
@@ -118,7 +117,6 @@ def test_project_serializer_detail(project):
     assert data['modules'] == f'/api/v1/projects/{project.id}/modules/'
     assert data['providers'] == f'/api/v1/projects/{project.id}/providers/'
     assert data['searches'] == f'/api/v1/projects/{project.id}/searches/'
-    assert data['export'] == f'/api/v1/projects/{project.id}/searches/export/'
     assert data['faces'] == f'/api/v1/projects/{project.id}/faces/'
     assert data['visualizations'] == f'/api/v1/projects/{project.id}/visualizations/'
     assert data['models'] == f'/api/v1/projects/{project.id}/models/'

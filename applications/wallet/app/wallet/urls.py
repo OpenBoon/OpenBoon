@@ -67,11 +67,6 @@ projects_router.register('faces', FaceViewSet, basename='face')
 projects_router.register('visualizations', VisualizationViewSet, basename='visualization')
 projects_router.register('models', ModelViewSet, basename='model')
 
-# Disabled due to a security vulnerability found by ISE and a bug where large exports
-# result in a 504. If we find a need for this in the future those issue will need to be
-# addressed before re-enabling.
-# projects_router.register('searches/export', MetadataExportViewSet, basename='export')
-
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')
 assets_files_router.register('files/category', FileCategoryViewSet, basename='category')
