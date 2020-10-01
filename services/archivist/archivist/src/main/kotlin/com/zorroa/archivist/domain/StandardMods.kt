@@ -613,6 +613,26 @@ fun getStandardModules(): List<PipelineModSpec> {
                 )
             ),
             true
+        ),
+        PipelineModSpec(
+            "aws-celebrity-detection",
+            "Recognizes thousands of celebrities in a wide range of categories.",
+            Provider.AMAZON,
+            Category.AWS_REK,
+            ModelObjective.FACE_RECOGNITION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.RekognitionCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
         )
     )
 }
