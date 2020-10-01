@@ -75,11 +75,10 @@ const MetadataPrettyPredictionsContent = ({ name, predictions }) => {
           </thead>
 
           <tbody>
-            {predictions.map((prediction, index) => {
+            {predictions.map((prediction) => {
               return (
                 <tr
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={`${prediction.label}-${index}`}
+                  key={`${prediction.label}-${prediction.score}`}
                   css={{
                     td: {
                       verticalAlign: 'bottom',
