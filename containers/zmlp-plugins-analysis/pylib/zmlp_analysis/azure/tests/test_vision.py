@@ -8,6 +8,8 @@ from zmlp_analysis.azure.vision import (
     ComputerVisionImageTagsDetection,
     ComputerVisionCelebrityDetection,
     ComputerVisionLandmarkDetection,
+    ComputerVisionLogoDetection,
+    ComputerVisionCategoryDetection,
 )
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
@@ -17,6 +19,7 @@ DOGBIKE = zorroa_test_path('images/detect/dogbike.jpg')
 STREETSIGN = zorroa_test_path("images/set09/streetsign.jpg")
 RYAN_GOSLING = zorroa_test_path('images/set08/meme.jpg')
 EIFFEL_TOWER = zorroa_test_path('images/set08/eiffel_tower.jpg')
+LOGOS = zorroa_test_path('images/set11/logos.jpg')
 
 
 @pytest.mark.skip(reason='dont run automatically')
@@ -128,6 +131,42 @@ class AzureLandmarkDetectionProcessorTests(PluginUnitTestCase):
         assert 'Eiffel Tower' in get_prediction_labels(analysis)
 
 
+@pytest.mark.skip(reason='dont run automatically')
+class AzureLogoDetectionProcessorTests(PluginUnitTestCase):
+    namespace = 'azure-logo-detection'
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    @patch('zmlp_analysis.azure.vision.get_zvi_azure_cv_client')
+    def test_predict(self, client_patch, proxy_patch):
+        client_patch.return_value = MockACVClient()
+        proxy_patch.return_value = LOGOS
+        frame = Frame(TestAsset(LOGOS))
+
+        processor = self.init_processor(ComputerVisionLogoDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.namespace)
+        assert 'Shell' in get_prediction_labels(analysis)
+
+
+@pytest.mark.skip(reason='dont run automatically')
+class AzureCategoryDetectionProcessorTests(PluginUnitTestCase):
+    namespace = 'azure-category-detection'
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    @patch('zmlp_analysis.azure.vision.get_zvi_azure_cv_client')
+    def test_predict(self, client_patch, proxy_patch):
+        client_patch.return_value = MockACVClient()
+        proxy_patch.return_value = DOGBIKE
+        frame = Frame(TestAsset(DOGBIKE))
+
+        processor = self.init_processor(ComputerVisionCategoryDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.namespace)
+        assert 'indoor_' in get_prediction_labels(analysis)
+
+
 class MockACVClient:
 
     def detect_objects_in_stream(self, image=None):
@@ -179,6 +218,14 @@ class MockImageAnalysis:
         return [MockTags()]
 
     @property
+    def brands(self):
+        return [MockBrands()]
+
+    @property
+    def categories(self):
+        return [MockCategories()]
+
+    @property
     def result(self):
         return {
             'celebrities': [{
@@ -201,3 +248,25 @@ class MockTags:
     @property
     def confidence(self):
         return '0.776'
+
+
+class MockBrands:
+
+    @property
+    def name(self):
+        return 'Shell'
+
+    @property
+    def confidence(self):
+        return '0.935'
+
+
+class MockCategories:
+
+    @property
+    def name(self):
+        return 'indoor_'
+
+    @property
+    def confidence(self):
+        return '0.935'
