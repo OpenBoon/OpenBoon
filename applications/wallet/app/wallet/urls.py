@@ -38,7 +38,7 @@ from registration.views import UserRegistrationView, UserConfirmationView, \
     ApiPasswordChangeView, LogoutView, MeView, LoginView, ApiPasswordResetView, \
     ApiPasswordResetConfirmView
 from roles.views import RolesViewSet
-from searches.views import SearchViewSet, MetadataExportViewSet
+from searches.views import SearchViewSet
 from subscriptions.views import SubscriptionViewSet
 from supportadmin.admin import support_admin_site
 from visualizations.views import VisualizationViewSet
@@ -62,7 +62,6 @@ projects_router.register('data_sources', DataSourceViewSet, basename='datasource
 projects_router.register('subscriptions', SubscriptionViewSet, basename='subscription')
 projects_router.register('modules', ModuleViewSet, basename='module')
 projects_router.register('providers', ProviderViewSet, basename='provider')
-projects_router.register('searches/export', MetadataExportViewSet, basename='export')
 projects_router.register('searches', SearchViewSet, basename='search')
 projects_router.register('faces', FaceViewSet, basename='face')
 projects_router.register('visualizations', VisualizationViewSet, basename='visualization')
