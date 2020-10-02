@@ -14,6 +14,8 @@ __all__ = [
     'ComputerVisionCelebrityDetection',
     'ComputerVisionLandmarkDetection',
     'ComputerVisionLogoDetection',
+    'ComputerVisionCategoryDetection',
+    'ComputerVisionExplicitContentDetection',
 
 ]
 
@@ -122,7 +124,6 @@ class ComputerVisionObjectDetection(AbstractComputerVisionProcessor):
         Returns:
             list: a list of predictions
         """
-
         with open(path, 'rb') as img:
             response = self.client.detect_objects_in_stream(image=img)
 
@@ -158,7 +159,6 @@ class ComputerVisionLabelDetection(AbstractComputerVisionProcessor):
         Returns:
             list: a list of predictions
         """
-
         with open(path, 'rb') as img:
             response = self.client.analyze_image_in_stream(
                 image=img,
@@ -188,7 +188,6 @@ class ComputerVisionImageDescription(AbstractComputerVisionProcessor):
         Returns:
             list: a list of predictions
         """
-
         with open(path, 'rb') as img:
             response = self.client.describe_image_in_stream(image=img)
 
@@ -215,7 +214,6 @@ class ComputerVisionImageTagsDetection(AbstractComputerVisionProcessor):
         Returns:
             list: a list of predictions
         """
-
         with open(path, 'rb') as img:
             response = self.client.tag_image_in_stream(image=img)
 
@@ -231,7 +229,6 @@ class ComputerVisionCelebrityDetection(AbstractComputerVisionProcessor):
 
     def __init__(self):
         super(ComputerVisionCelebrityDetection, self).__init__()
-
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -300,7 +297,6 @@ class ComputerVisionLandmarkDetection(AbstractComputerVisionProcessor):
         Returns:
             list: a list of predictions
         """
-
         with open(path, 'rb') as img:
             response = self.client.analyze_image_by_domain_in_stream(model=self.model, image=img)
 
@@ -316,7 +312,6 @@ class ComputerVisionLogoDetection(AbstractComputerVisionProcessor):
 
     def __init__(self):
         super(ComputerVisionLogoDetection, self).__init__()
-
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -388,7 +383,6 @@ class ComputerVisionCategoryDetection(AbstractComputerVisionProcessor):
         Returns:
             list: a list of predictions
         """
-
         with open(path, 'rb') as img:
             response = self.client.analyze_image_in_stream(
                 image=img,
@@ -419,7 +413,6 @@ class ComputerVisionExplicitContentDetection(AbstractComputerVisionProcessor):
         Returns:
             list: a list of predictions
         """
-
         with open(path, 'rb') as img:
             response = self.client.analyze_image_in_stream(
                 image=img,
