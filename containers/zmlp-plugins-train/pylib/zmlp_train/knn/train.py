@@ -35,18 +35,16 @@ class KnnLabelDetectionTrainer(AssetProcessor):
 
         # If there's no labels for this model, we cluster, find centroids, and make labels
         if not classifier_hashes:
-
             # This is how many points we will cluster. The search is randomized in order
             # to get a representative sampling of the assets.
-            n_points = 5000
             n_clusters = self.arg_value('n_clusters')
             self.reactor.emit_status("No labeled assets - pre-clustering")
             query = {
-                'size': n_points,
+                'size': 100,
                 '_source': ['analysis.zvi-image-similarity.*'],
                 'query': {
                     'function_score': {
-                        'query': {'match_all': {}},
+                        'query': {'exists': {'field': 'analysis.zvi-image-similarity.simhash'}},
                         'random_score': {}
                     }
                 }
@@ -54,6 +52,8 @@ class KnnLabelDetectionTrainer(AssetProcessor):
 
             assets = []
             hashes = []
+            n_points = 5000
+            count = 0
             for asset in self.app.assets.scroll_search(query):
                 num_hash = []
                 shash = asset['analysis']['zvi-image-similarity']['simhash']
@@ -62,6 +62,9 @@ class KnnLabelDetectionTrainer(AssetProcessor):
                         num_hash.append(ord(char))
                     hashes.append(num_hash)
                     assets.append(asset)
+                    count += 1
+                    if count >= n_points:
+                        break
 
             x = np.asarray(hashes, dtype=np.float64)
 
