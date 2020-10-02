@@ -109,7 +109,7 @@ class ImageProxyProcessor(AssetProcessor):
 
         # Crete the base of the oiiotool shell command.
         oiiotool_command = ['oiiotool', '-q', '-native', '-wildcardoff', source_path,
-                            '--cache', '512', '--clear-keywords',
+                            '--cache', '1024', '--clear-keywords',
                             '--nosoftwareattrib', '--eraseattrib', 'thumbnail_image',
                             '--eraseattrib', 'Exif:.*', '--eraseattrib', 'IPTC:.*']
 
@@ -236,7 +236,7 @@ class ImageProxyProcessor(AssetProcessor):
             'oiiotool',
             '-q', '-native', '-wildcardoff',
             src_path,
-            '--cache', '512',
+            '--cache', '1024',
             '--resize:filter=lanczos3',
             '%dx%d' % (width, height),
             '--quality', str(self.web_quality),
