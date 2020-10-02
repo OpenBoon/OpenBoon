@@ -167,13 +167,16 @@ resource "kubernetes_deployment" "analyst" {
               cpu    = var.cpu-limit
             }
           }
-          lifecycle {
-            pre_stop {
-              exec {
-                command = ["/service/bin/k8prestop.py"]
-              }
-            }
-          }
+
+          // Commented out until we figure out why pods are never released.
+          //          lifecycle {
+          //            pre_stop {
+          //              exec {
+          //                command = ["/service/bin/k8prestop.py"]
+          //              }
+          //            }
+          //          }
+
         }
       }
     }
