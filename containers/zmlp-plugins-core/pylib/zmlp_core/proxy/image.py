@@ -25,6 +25,8 @@ class ImageProxyProcessor(AssetProcessor):
     multipage_formats = ['tiff', 'tif']
     """Multipage image formats that have to be handled specifically for web proxies."""
 
+    use_threads = False
+
     def __init__(self):
         super(ImageProxyProcessor, self).__init__()
         self.created_proxy_count = 0
