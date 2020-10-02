@@ -132,7 +132,7 @@ class AssetViewSet(BaseProjectViewSet):
 
         # Figure out the tracks
         # Get all the clips so we know what vtt's to add
-        clips = self._get_clips(request, pk)
+        clips = self._get_all_clips(request, pk)
         timelines = self._get_formatted_timelines(clips)
         for timeline in timelines:
             name = timeline['timeline']
@@ -150,20 +150,20 @@ class AssetViewSet(BaseProjectViewSet):
     @action(detail=True, methods=['get'])
     def timelines(self, request, project_pk, pk):
         """Returns the time based metadata in timeline format."""
-        content = self._get_clips(request, pk)
+        content = self._get_all_clips(request, pk)
         formatted_content = self._get_formatted_timelines(content)
         return Response(formatted_content)
 
-    def _get_clips(self, request, pk):
+    def _get_all_clips(self, request, pk):
         """Helper to return all the timelines/clips for an asset"""
         base_path = f'{self.zmlp_root_api_path}{pk}/clips'
-        return self._zmlp_get_content_from_es_search(request, base_url=base_path)
+        return self._zmlp_get_all_content_from_es_search(request, base_url=base_path)
 
     def _get_formatted_timelines(self, content):
         """Helper to format the clip search response from ZMLP into the JSON response for the UI"""
         # Organize the detections into a more helpful state
         data = {}
-        for entry in content['hits']['hits']:
+        for entry in content:
             clip = entry['_source']['clip']
             timeline = clip['timeline']
             track = clip['track']
