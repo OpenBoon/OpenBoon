@@ -272,8 +272,10 @@ class ComputerVisionLogoDetection(AbstractComputerVisionProcessor):
         """
 
         with open(path, 'rb') as img:
-            response = self.client.analyze_image_in_stream(image=img,
-                                                           visual_features=self.image_features)
+            response = self.client.analyze_image_in_stream(
+                image=img,
+                visual_features=self.image_features
+            )
 
         # get list of labels
         return [(r.name, r.confidence) for r in response.brands]
@@ -301,8 +303,45 @@ class ComputerVisionCategoryDetection(AbstractComputerVisionProcessor):
         """
 
         with open(path, 'rb') as img:
-            response = self.client.analyze_image_in_stream(image=img,
-                                                           visual_features=self.image_features)
+            response = self.client.analyze_image_in_stream(
+                image=img,
+                visual_features=self.image_features
+            )
 
         # get list of labels
         return [(r.name, r.confidence) for r in response.categories]
+
+
+class ComputerVisionExplicitContentDetection(AbstractComputerVisionProcessor):
+    """Explicit Content detection for an image using Azure Computer Vision """
+
+    image_features = ['adult']
+    namespace = 'azure-explicit-detection'
+
+    def __init__(self):
+        super(ComputerVisionExplicitContentDetection, self).__init__()
+
+    def predict(self, path):
+        """ Make a prediction for an image path.
+        self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
+            (label, score)]
+
+        Args:
+            path (str): image path
+
+        Returns:
+            list: a list of predictions
+        """
+
+        with open(path, 'rb') as img:
+            response = self.client.analyze_image_in_stream(
+                image=img,
+                visual_features=self.image_features
+            )
+
+        # get list of labels
+        return [
+            ('adult', response.adult.adult_score),
+            ('racy', response.adult.racy_score),
+            ('gory', response.adult.gory_score),
+        ]

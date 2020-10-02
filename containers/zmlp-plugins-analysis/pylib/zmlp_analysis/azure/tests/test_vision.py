@@ -10,6 +10,7 @@ from zmlp_analysis.azure.vision import (
     ComputerVisionLandmarkDetection,
     ComputerVisionLogoDetection,
     ComputerVisionCategoryDetection,
+    ComputerVisionExplicitContentDetection,
 )
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
@@ -167,6 +168,24 @@ class AzureCategoryDetectionProcessorTests(PluginUnitTestCase):
         assert 'indoor_' in get_prediction_labels(analysis)
 
 
+@pytest.mark.skip(reason='dont run automatically')
+class AzureExplicitContentDetectionProcessorTests(PluginUnitTestCase):
+    namespace = 'azure-explicit-detection'
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    @patch('zmlp_analysis.azure.vision.get_zvi_azure_cv_client')
+    def test_predict(self, client_patch, proxy_patch):
+        client_patch.return_value = MockACVClient()
+        proxy_patch.return_value = DOGBIKE
+        frame = Frame(TestAsset(DOGBIKE))
+
+        processor = self.init_processor(ComputerVisionExplicitContentDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.namespace)
+        assert 'racy' in get_prediction_labels(analysis)
+
+
 class MockACVClient:
 
     def detect_objects_in_stream(self, image=None):
@@ -226,15 +245,19 @@ class MockImageAnalysis:
         return [MockCategories()]
 
     @property
+    def adult(self):
+        return MockExplicit()
+
+    @property
     def result(self):
         return {
             'celebrities': [{
                 'name': 'Ryan Gosling',
-                'confidence': '0.995'
+                'confidence': 0.995
             }],
             'landmarks': [{
                 'name': 'Eiffel Tower',
-                'confidence': '0.998'
+                'confidence': 0.998
             }]
         }
 
@@ -247,7 +270,7 @@ class MockTags:
 
     @property
     def confidence(self):
-        return '0.776'
+        return 0.776
 
 
 class MockBrands:
@@ -258,7 +281,7 @@ class MockBrands:
 
     @property
     def confidence(self):
-        return '0.935'
+        return 0.935
 
 
 class MockCategories:
@@ -269,4 +292,23 @@ class MockCategories:
 
     @property
     def confidence(self):
-        return '0.935'
+        return 0.935
+
+
+class MockExplicit:
+
+    @property
+    def adult_score(self):
+        return 0.935
+
+    @property
+    def racy_score(self):
+        return 0.935
+
+    @property
+    def gory_score(self):
+        return 0.935
+
+    @property
+    def is_racy_content(self):
+        return True if self.racy_score() >= 0.50 else False
