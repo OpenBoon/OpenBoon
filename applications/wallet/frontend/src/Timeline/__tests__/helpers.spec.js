@@ -34,7 +34,11 @@ describe('<Timeline /> helpers', () => {
   describe('updatePlayheadPosition()', () => {
     it('should do nothing when video or playhead are undefined', () => {
       expect(
-        updatePlayheadPosition({ video: undefined, playhead: undefined }),
+        updatePlayheadPosition({
+          video: undefined,
+          playhead: undefined,
+          zoom: 100,
+        }),
       ).toBe(null)
     })
 
@@ -52,7 +56,7 @@ describe('<Timeline /> helpers', () => {
         },
       }
 
-      updatePlayheadPosition({ video, playhead })
+      updatePlayheadPosition({ video, playhead, zoom: 100 })
 
       expect(mockSetProperty).toHaveBeenCalledWith('left', 'calc(50% - 1px)')
     })

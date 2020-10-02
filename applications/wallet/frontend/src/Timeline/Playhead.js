@@ -12,7 +12,7 @@ const WIDTH = 10
 let originX
 let originLeft
 
-const TimelinePlayhead = ({ videoRef }) => {
+const TimelinePlayhead = ({ videoRef, zoom }) => {
   const playheadRef = useRef()
   const frameRef = useRef()
 
@@ -22,7 +22,7 @@ const TimelinePlayhead = ({ videoRef }) => {
   const onMount = useCallback(
     (node) => {
       const animate = () => {
-        updatePlayheadPosition({ video, playhead: node })
+        updatePlayheadPosition({ video, playhead: node, zoom })
 
         frameRef.current = requestAnimationFrame(animate)
       }
@@ -38,7 +38,7 @@ const TimelinePlayhead = ({ videoRef }) => {
         playheadRef.current = node
       }
     },
-    [video],
+    [video, zoom],
   )
 
   /* istanbul ignore next */
@@ -115,6 +115,7 @@ TimelinePlayhead.propTypes = {
       duration: PropTypes.number.isRequired,
     }),
   }).isRequired,
+  zoom: PropTypes.number.isRequired,
 }
 
 export default TimelinePlayhead

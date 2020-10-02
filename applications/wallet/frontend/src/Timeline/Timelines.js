@@ -35,7 +35,7 @@ const TimelineTimelines = ({
       css={{
         flex: 1,
         display: 'flex',
-        overflow: 'auto',
+        overflow: 'overlay',
         marginLeft: -settings.modulesWidth,
         borderTop: constants.borders.regular.smoke,
       }}
@@ -100,25 +100,34 @@ const TimelineTimelines = ({
           })}
       </div>
 
-      <div css={{ flex: 1 }}>
-        {filteredTimelines
-          .filter(({ timeline }) => {
-            return settings.modules[timeline]?.isVisible !== false
-          })
-          .map(({ timeline, tracks }, index) => {
-            const colorIndex = index % COLORS.length
+      <div
+        css={{
+          flex: 1,
+          overflowY: 'hidden',
+          overflowX: 'overlay',
+          height: 'fit-content',
+        }}
+      >
+        <div css={{ width: `${settings.zoom}%` }}>
+          {filteredTimelines
+            .filter(({ timeline }) => {
+              return settings.modules[timeline]?.isVisible !== false
+            })
+            .map(({ timeline, tracks }, index) => {
+              const colorIndex = index % COLORS.length
 
-            return (
-              <TimelineTracks
-                key={timeline}
-                videoRef={videoRef}
-                length={length}
-                moduleColor={COLORS[colorIndex]}
-                tracks={tracks}
-                isOpen={settings.modules[timeline]?.isOpen || false}
-              />
-            )
-          })}
+              return (
+                <TimelineTracks
+                  key={timeline}
+                  videoRef={videoRef}
+                  length={length}
+                  moduleColor={COLORS[colorIndex]}
+                  tracks={tracks}
+                  isOpen={settings.modules[timeline]?.isOpen || false}
+                />
+              )
+            })}
+        </div>
       </div>
     </div>
   )
@@ -139,6 +148,7 @@ TimelineTimelines.propTypes = {
     modulesWidth: PropTypes.number.isRequired,
     filter: PropTypes.string.isRequired,
     modules: PropTypes.shape({}).isRequired,
+    zoom: PropTypes.number.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
 }
