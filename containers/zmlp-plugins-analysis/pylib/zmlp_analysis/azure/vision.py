@@ -7,8 +7,10 @@ from zmlpsdk.proxy import get_proxy_level_path
 from .util import get_zvi_azure_cv_client
 
 __all__ = [
+    'ComputerVisionObjectDetection',
     'ComputerVisionLabelDetection',
-    'ComputerVisionObjectDetection'
+    'ComputerVisionImageDescription',
+    'ComputerVisionImageTagsDetection',
 ]
 
 
@@ -129,6 +131,60 @@ class ComputerVisionLabelDetection(AbstractComputerVisionProcessor):
                 image=img,
                 visual_features=[VisualFeatureTypes.tags]
             )
+
+        # get list of labels
+        return [(r.name, r.confidence) for r in response.tags]
+
+
+class ComputerVisionImageDescription(AbstractComputerVisionProcessor):
+    """Get labels for an image using Microsoft Azure """
+
+    namespace = 'azure-image-description-detection'
+
+    def __init__(self):
+        super(ComputerVisionImageDescription, self).__init__()
+
+    def predict(self, path):
+        """ Make a prediction for an image path.
+        self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
+            (label, score)]
+
+        Args:
+            path (str): image path
+
+        Returns:
+            list: a list of predictions
+        """
+
+        with open(path, 'rb') as img:
+            response = self.client.describe_image_in_stream(image=img)
+
+        # get list of labels
+        return [(r.text, r.confidence) for r in response.captions]
+
+
+class ComputerVisionImageTagsDetection(AbstractComputerVisionProcessor):
+    """Get labels for an image using Microsoft Azure """
+
+    namespace = 'azure-tag-detection'
+
+    def __init__(self):
+        super(ComputerVisionImageTagsDetection, self).__init__()
+
+    def predict(self, path):
+        """ Make a prediction for an image path.
+        self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
+            (label, score)]
+
+        Args:
+            path (str): image path
+
+        Returns:
+            list: a list of predictions
+        """
+
+        with open(path, 'rb') as img:
+            response = self.client.tag_image_in_stream(image=img)
 
         # get list of labels
         return [(r.name, r.confidence) for r in response.tags]
