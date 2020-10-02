@@ -4,6 +4,7 @@ from msrest.authentication import CognitiveServicesCredentials
 # key = os.environ['ACCOUNT_KEY']
 key = "<KEY>"
 
+
 def get_zvi_azure_cv_client():
     """
     Return an AWS client configured for rekognition with ZVI credentials.
