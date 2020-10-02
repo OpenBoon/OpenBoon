@@ -21,6 +21,9 @@ class VideoProxyProcessor(AssetProcessor):
     # ML process we need full HD for.
     max_resolution = 1280
 
+    # Don't use threads for transcoding, ffmpeg already does.
+    use_threads = False
+
     def __init__(self):
         super(VideoProxyProcessor, self).__init__()
 
