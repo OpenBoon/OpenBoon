@@ -3,8 +3,8 @@ import os
 from azure.cognitiveservices.vision.computervision import ComputerVisionClient
 from msrest.authentication import CognitiveServicesCredentials
 
-key = os.environ['ACCOUNT_KEY']
-
+# key = os.environ['ACCOUNT_KEY']
+key = "<KEY>"
 
 def get_zvi_azure_cv_client():
     """
