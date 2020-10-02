@@ -20,9 +20,9 @@ __all__ = [
 
 class AbstractComputerVisionProcessor(AssetProcessor):
     """
-        This base class is used for all Microsoft Computer Vision features.  Subclasses
-        only have to implement the "predict(asset, image) method.
-        """
+    This base class is used for all Microsoft Computer Vision features.  Subclasses
+    only have to implement the "predict(asset, image) method.
+    """
 
     file_types = FileTypes.images | FileTypes.documents
 
@@ -40,10 +40,10 @@ class AbstractComputerVisionProcessor(AssetProcessor):
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
 
-                        Args:
-                            frame (Frame): Frame to be processed
+        Args:
+            frame (Frame): Frame to be processed
 
-                        """
+        """
         asset = frame.asset
         proxy_path = get_proxy_level_path(asset, 0)
         analysis = LabelDetectionAnalysis()
@@ -91,6 +91,26 @@ class ComputerVisionObjectDetection(AbstractComputerVisionProcessor):
     def __init__(self):
         super(ComputerVisionObjectDetection, self).__init__()
 
+    def process(self, frame):
+        """Process the given frame for predicting and adding labels to an asset
+
+        Args:
+            frame (Frame): Frame to be processed
+
+        """
+        asset = frame.asset
+        proxy_path = get_proxy_level_path(asset, 0)
+        analysis = LabelDetectionAnalysis()
+
+        predictions = self.predict(proxy_path)
+        for ls in predictions:
+            analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
+
+        try:
+            asset.add_analysis(self.namespace, analysis)
+        except NameError:
+            self.reactor.emit_status("self.namespace not defined")
+
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -107,7 +127,16 @@ class ComputerVisionObjectDetection(AbstractComputerVisionProcessor):
             response = self.client.detect_objects_in_stream(image=img)
 
         # get list of labels
-        return [(r.object_property, r.confidence) for r in response.objects]
+        labels = []
+        for r in response.objects:
+            bbox = [
+                r.rectangle.x,
+                r.rectangle.y,
+                r.rectangle.x + r.rectangle.w,
+                r.rectangle.y + r.rectangle.h,
+            ]
+            labels.append((r.object_property, r.confidence, bbox))
+        return labels
 
 
 class ComputerVisionLabelDetection(AbstractComputerVisionProcessor):
@@ -203,6 +232,27 @@ class ComputerVisionCelebrityDetection(AbstractComputerVisionProcessor):
     def __init__(self):
         super(ComputerVisionCelebrityDetection, self).__init__()
 
+
+    def process(self, frame):
+        """Process the given frame for predicting and adding labels to an asset
+
+        Args:
+            frame (Frame): Frame to be processed
+
+        """
+        asset = frame.asset
+        proxy_path = get_proxy_level_path(asset, 0)
+        analysis = LabelDetectionAnalysis()
+
+        predictions = self.predict(proxy_path)
+        for ls in predictions:
+            analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
+
+        try:
+            asset.add_analysis(self.namespace, analysis)
+        except NameError:
+            self.reactor.emit_status("self.namespace not defined")
+
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -214,12 +264,20 @@ class ComputerVisionCelebrityDetection(AbstractComputerVisionProcessor):
         Returns:
             list: a list of predictions
         """
-
         with open(path, 'rb') as img:
             response = self.client.analyze_image_by_domain_in_stream(model=self.model, image=img)
 
         # get list of labels
-        return [(r['name'], r['confidence']) for r in response.result[self.model]]
+        labels = []
+        for r in response.result[self.model]:
+            bbox = [
+                r['faceRectangle']['left'],
+                r['faceRectangle']['top'],
+                r['faceRectangle']['left'] + r['faceRectangle']['width'],
+                r['faceRectangle']['top'] + r['faceRectangle']['height'],
+            ]
+            labels.append((r['name'], r['confidence'], bbox))
+        return labels
 
 
 class ComputerVisionLandmarkDetection(AbstractComputerVisionProcessor):
@@ -259,6 +317,27 @@ class ComputerVisionLogoDetection(AbstractComputerVisionProcessor):
     def __init__(self):
         super(ComputerVisionLogoDetection, self).__init__()
 
+
+    def process(self, frame):
+        """Process the given frame for predicting and adding labels to an asset
+
+        Args:
+            frame (Frame): Frame to be processed
+
+        """
+        asset = frame.asset
+        proxy_path = get_proxy_level_path(asset, 0)
+        analysis = LabelDetectionAnalysis()
+
+        predictions = self.predict(proxy_path)
+        for ls in predictions:
+            analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
+
+        try:
+            asset.add_analysis(self.namespace, analysis)
+        except NameError:
+            self.reactor.emit_status("self.namespace not defined")
+
     def predict(self, path):
         """ Make a prediction for an image path.
         self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
@@ -270,7 +349,6 @@ class ComputerVisionLogoDetection(AbstractComputerVisionProcessor):
         Returns:
             list: a list of predictions
         """
-
         with open(path, 'rb') as img:
             response = self.client.analyze_image_in_stream(
                 image=img,
@@ -278,7 +356,16 @@ class ComputerVisionLogoDetection(AbstractComputerVisionProcessor):
             )
 
         # get list of labels
-        return [(r.name, r.confidence) for r in response.brands]
+        labels = []
+        for r in response.brands:
+            bbox = [
+                r.rectangle.x,
+                r.rectangle.y,
+                r.rectangle.x + r.rectangle.w,
+                r.rectangle.y + r.rectangle.h,
+            ]
+            labels.append((r.name, r.confidence, bbox))
+        return labels
 
 
 class ComputerVisionCategoryDetection(AbstractComputerVisionProcessor):

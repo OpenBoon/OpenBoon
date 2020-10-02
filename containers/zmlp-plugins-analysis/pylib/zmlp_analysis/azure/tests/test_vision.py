@@ -229,6 +229,10 @@ class MockDetectedObjects:
     def text(self):
         return 'a dog sitting in front of a mirror posing for the camera'
 
+    @property
+    def rectangle(self):
+        return MockBoundingBox()
+
 
 class MockImageAnalysis:
 
@@ -253,7 +257,13 @@ class MockImageAnalysis:
         return {
             'celebrities': [{
                 'name': 'Ryan Gosling',
-                'confidence': 0.995
+                'confidence': 0.995,
+                'faceRectangle': {
+                    'left': 118,
+                    'top': 159,
+                    'width': 94,
+                    'height': 94
+                }
             }],
             'landmarks': [{
                 'name': 'Eiffel Tower',
@@ -282,6 +292,29 @@ class MockBrands:
     @property
     def confidence(self):
         return 0.935
+
+    @property
+    def rectangle(self):
+        return MockBoundingBox()
+
+
+class MockBoundingBox:
+
+    @property
+    def x(self):
+        return 0
+
+    @property
+    def y(self):
+        return 0
+
+    @property
+    def w(self):
+        return 1
+
+    @property
+    def h(self):
+        return 1
 
 
 class MockCategories:
