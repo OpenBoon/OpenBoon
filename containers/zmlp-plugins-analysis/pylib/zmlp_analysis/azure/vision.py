@@ -11,13 +11,15 @@ __all__ = [
     'ComputerVisionLabelDetection',
     'ComputerVisionImageDescription',
     'ComputerVisionImageTagsDetection',
+    'ComputerVisionCelebrityDetection',
+    'ComputerVisionLandmarkDetection',
 ]
 
 
 class AbstractComputerVisionProcessor(AssetProcessor):
     """
-        This base class is used for all Google Vision features.  Subclasses
-        only have to implement the "detect(asset, image) method.
+        This base class is used for all Microsoft Computer Vision features.  Subclasses
+        only have to implement the "predict(asset, image) method.
         """
 
     file_types = FileTypes.images | FileTypes.documents
@@ -80,7 +82,7 @@ class AbstractComputerVisionProcessor(AssetProcessor):
 
 
 class ComputerVisionObjectDetection(AbstractComputerVisionProcessor):
-    """Get labels for an image using Microsoft Azure """
+    """Object detection for an image using Azure Computer Vision """
 
     namespace = 'azure-object-detection'
 
@@ -107,7 +109,7 @@ class ComputerVisionObjectDetection(AbstractComputerVisionProcessor):
 
 
 class ComputerVisionLabelDetection(AbstractComputerVisionProcessor):
-    """Get labels for an image using Microsoft Azure """
+    """Get labels for an image using Azure Computer Vision """
 
     namespace = 'azure-label-detection'
 
@@ -137,7 +139,7 @@ class ComputerVisionLabelDetection(AbstractComputerVisionProcessor):
 
 
 class ComputerVisionImageDescription(AbstractComputerVisionProcessor):
-    """Get labels for an image using Microsoft Azure """
+    """Get image descriptions for an image using Azure Computer Vision """
 
     namespace = 'azure-image-description-detection'
 
@@ -164,7 +166,7 @@ class ComputerVisionImageDescription(AbstractComputerVisionProcessor):
 
 
 class ComputerVisionImageTagsDetection(AbstractComputerVisionProcessor):
-    """Get labels for an image using Microsoft Azure """
+    """Get image tags for an image using Azure Computer Vision """
 
     namespace = 'azure-tag-detection'
 
@@ -188,3 +190,59 @@ class ComputerVisionImageTagsDetection(AbstractComputerVisionProcessor):
 
         # get list of labels
         return [(r.name, r.confidence) for r in response.tags]
+
+
+class ComputerVisionCelebrityDetection(AbstractComputerVisionProcessor):
+    """Celebrity detection for an image using Azure Computer Vision """
+
+    namespace = 'azure-celebrity-detection'
+    model = "celebrities"
+
+    def __init__(self):
+        super(ComputerVisionCelebrityDetection, self).__init__()
+
+    def predict(self, path):
+        """ Make a prediction for an image path.
+        self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
+            (label, score)]
+
+        Args:
+            path (str): image path
+
+        Returns:
+            list: a list of predictions
+        """
+
+        with open(path, 'rb') as img:
+            response = self.client.analyze_image_by_domain_in_stream(model=self.model, image=img)
+
+        # get list of labels
+        return [(r['name'], r['confidence']) for r in response.result[self.model]]
+
+
+class ComputerVisionLandmarkDetection(AbstractComputerVisionProcessor):
+    """Landmark detection for an image using Azure Computer Vision """
+
+    namespace = 'azure-landmark-detection'
+    model = "landmarks"
+
+    def __init__(self):
+        super(ComputerVisionLandmarkDetection, self).__init__()
+
+    def predict(self, path):
+        """ Make a prediction for an image path.
+        self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
+            (label, score)]
+
+        Args:
+            path (str): image path
+
+        Returns:
+            list: a list of predictions
+        """
+
+        with open(path, 'rb') as img:
+            response = self.client.analyze_image_by_domain_in_stream(model=self.model, image=img)
+
+        # get list of labels
+        return [(r['name'], r['confidence']) for r in response.result[self.model]]
