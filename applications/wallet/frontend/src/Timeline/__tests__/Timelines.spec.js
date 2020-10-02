@@ -21,6 +21,7 @@ describe('<TimelineTimelines />', () => {
           modulesWidth: 200,
           filter: '',
           modules: { [timelines[0].timeline]: { isOpen: true } },
+          zoom: 100,
         }}
         dispatch={mockDispatch}
       />,

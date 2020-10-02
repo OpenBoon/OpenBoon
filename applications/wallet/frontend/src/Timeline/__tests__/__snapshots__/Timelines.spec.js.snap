@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TimelineTimelines /> should render properly 1`] = `
-.emotion-47 {
+.emotion-48 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -9,7 +9,7 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  overflow: auto;
+  overflow: overlay;
   margin-left: -200px;
   border-top: 1px solid #3b3b3b;
 }
@@ -176,14 +176,23 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   align-self: center;
 }
 
-.emotion-46 {
+.emotion-47 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  overflow-y: hidden;
+  overflow-x: overlay;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.emotion-46 {
+  width: 100%;
 }
 
 <div
-  className="emotion-47"
+  className="emotion-48"
 >
   <div
     className="emotion-45"
@@ -399,322 +408,326 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
     </details>
   </div>
   <div
-    className="emotion-46"
+    className="emotion-47"
   >
-    <TimelineTracks
-      isOpen={true}
-      length={18}
-      moduleColor="#0074f5"
-      tracks={
-        Array [
-          Object {
-            "hits": Array [
-              Object {
-                "start": 0,
-                "stop": 2,
-              },
-              Object {
-                "start": 4,
-                "stop": 5,
-              },
-              Object {
-                "start": 10,
-                "stop": 12,
-              },
-            ],
-            "track": "Gh st",
-          },
-          Object {
-            "hits": Array [
-              Object {
-                "start": 6,
-                "stop": 7,
-              },
-              Object {
-                "start": 13,
-                "stop": 14,
-              },
-              Object {
-                "start": 15,
-                "stop": 15,
-              },
-            ],
-            "track": "Busters",
-          },
-        ]
-      }
-      videoRef={
-        Object {
-          "current": Object {
-            "duration": 18,
-          },
+    <div
+      className="emotion-46"
+    >
+      <TimelineTracks
+        isOpen={true}
+        length={18}
+        moduleColor="#0074f5"
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Gh st",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 6,
+                  "stop": 7,
+                },
+                Object {
+                  "start": 13,
+                  "stop": 14,
+                },
+                Object {
+                  "start": 15,
+                  "stop": 15,
+                },
+              ],
+              "track": "Busters",
+            },
+          ]
         }
-      }
-    />
-    <TimelineTracks
-      isOpen={false}
-      length={18}
-      moduleColor="#a03dc7"
-      tracks={
-        Array [
+        videoRef={
           Object {
-            "hits": Array [
-              Object {
-                "start": 1,
-                "stop": 2,
-              },
-              Object {
-                "start": 3,
-                "stop": 6,
-              },
-              Object {
-                "start": 11,
-                "stop": 15,
-              },
-            ],
-            "track": "Label 1",
-          },
-          Object {
-            "hits": Array [
-              Object {
-                "start": 7,
-                "stop": 10,
-              },
-              Object {
-                "start": 16,
-                "stop": 17,
-              },
-            ],
-            "track": "Label 2 Plus More Text to Make A Long Label String",
-          },
-        ]
-      }
-      videoRef={
-        Object {
-          "current": Object {
-            "duration": 18,
-          },
+            "current": Object {
+              "duration": 18,
+            },
+          }
         }
-      }
-    />
-    <TimelineTracks
-      isOpen={false}
-      length={18}
-      moduleColor="#d6680b"
-      tracks={
-        Array [
-          Object {
-            "hits": Array [
-              Object {
-                "start": 0,
-                "stop": 2,
-              },
-              Object {
-                "start": 4,
-                "stop": 5,
-              },
-              Object {
-                "start": 10,
-                "stop": 12,
-              },
-            ],
-            "track": "Logo 1",
-          },
-          Object {
-            "hits": Array [
-              Object {
-                "start": 0,
-                "stop": 2,
-              },
-              Object {
-                "start": 4,
-                "stop": 5,
-              },
-              Object {
-                "start": 10,
-                "stop": 12,
-              },
-            ],
-            "track": "Logo 2",
-          },
-          Object {
-            "hits": Array [
-              Object {
-                "start": 0,
-                "stop": 2,
-              },
-              Object {
-                "start": 4,
-                "stop": 5,
-              },
-              Object {
-                "start": 10,
-                "stop": 12,
-              },
-            ],
-            "track": "Logo 3",
-          },
-        ]
-      }
-      videoRef={
-        Object {
-          "current": Object {
-            "duration": 18,
-          },
+      />
+      <TimelineTracks
+        isOpen={false}
+        length={18}
+        moduleColor="#a03dc7"
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 1,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 3,
+                  "stop": 6,
+                },
+                Object {
+                  "start": 11,
+                  "stop": 15,
+                },
+              ],
+              "track": "Label 1",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 7,
+                  "stop": 10,
+                },
+                Object {
+                  "start": 16,
+                  "stop": 17,
+                },
+              ],
+              "track": "Label 2 Plus More Text to Make A Long Label String",
+            },
+          ]
         }
-      }
-    />
-    <TimelineTracks
-      isOpen={false}
-      length={18}
-      moduleColor="#ebb52e"
-      tracks={
-        Array [
+        videoRef={
           Object {
-            "hits": Array [
-              Object {
-                "start": 0,
-                "stop": 2,
-              },
-              Object {
-                "start": 4,
-                "stop": 5,
-              },
-              Object {
-                "start": 10,
-                "stop": 12,
-              },
-            ],
-            "track": "Object 1",
-          },
-          Object {
-            "hits": Array [
-              Object {
-                "start": 0,
-                "stop": 2,
-              },
-              Object {
-                "start": 4,
-                "stop": 5,
-              },
-              Object {
-                "start": 10,
-                "stop": 12,
-              },
-            ],
-            "track": "Object 2",
-          },
-          Object {
-            "hits": Array [
-              Object {
-                "start": 0,
-                "stop": 2,
-              },
-              Object {
-                "start": 4,
-                "stop": 5,
-              },
-              Object {
-                "start": 10,
-                "stop": 12,
-              },
-            ],
-            "track": "Object 3",
-          },
-        ]
-      }
-      videoRef={
-        Object {
-          "current": Object {
-            "duration": 18,
-          },
+            "current": Object {
+              "duration": 18,
+            },
+          }
         }
-      }
-    />
-    <TimelineTracks
-      isOpen={false}
-      length={18}
-      moduleColor="#00bdc1"
-      tracks={
-        Array [
-          Object {
-            "hits": Array [
-              Object {
-                "start": 0,
-                "stop": 2,
-              },
-              Object {
-                "start": 4,
-                "stop": 5,
-              },
-              Object {
-                "start": 10,
-                "stop": 12,
-              },
-            ],
-            "track": "Text 1",
-          },
-          Object {
-            "hits": Array [
-              Object {
-                "start": 0,
-                "stop": 2,
-              },
-              Object {
-                "start": 4,
-                "stop": 5,
-              },
-              Object {
-                "start": 10,
-                "stop": 12,
-              },
-            ],
-            "track": "Text 2",
-          },
-          Object {
-            "hits": Array [
-              Object {
-                "start": 0,
-                "stop": 2,
-              },
-              Object {
-                "start": 4,
-                "stop": 5,
-              },
-              Object {
-                "start": 10,
-                "stop": 12,
-              },
-            ],
-            "track": "Text 3",
-          },
-          Object {
-            "hits": Array [
-              Object {
-                "start": 0,
-                "stop": 2,
-              },
-              Object {
-                "start": 4,
-                "stop": 5,
-              },
-              Object {
-                "start": 10,
-                "stop": 12,
-              },
-            ],
-            "track": "Text 4",
-          },
-        ]
-      }
-      videoRef={
-        Object {
-          "current": Object {
-            "duration": 18,
-          },
+      />
+      <TimelineTracks
+        isOpen={false}
+        length={18}
+        moduleColor="#d6680b"
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Logo 1",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Logo 2",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Logo 3",
+            },
+          ]
         }
-      }
-    />
+        videoRef={
+          Object {
+            "current": Object {
+              "duration": 18,
+            },
+          }
+        }
+      />
+      <TimelineTracks
+        isOpen={false}
+        length={18}
+        moduleColor="#ebb52e"
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Object 1",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Object 2",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Object 3",
+            },
+          ]
+        }
+        videoRef={
+          Object {
+            "current": Object {
+              "duration": 18,
+            },
+          }
+        }
+      />
+      <TimelineTracks
+        isOpen={false}
+        length={18}
+        moduleColor="#00bdc1"
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Text 1",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Text 2",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Text 3",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Text 4",
+            },
+          ]
+        }
+        videoRef={
+          Object {
+            "current": Object {
+              "duration": 18,
+            },
+          }
+        }
+      />
+    </div>
   </div>
 </div>
 `;

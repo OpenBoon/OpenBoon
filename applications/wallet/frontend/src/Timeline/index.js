@@ -97,7 +97,7 @@ const Timeline = ({ videoRef, length }) => {
           >
             <TimelineModulesResizer settings={settings} dispatch={dispatch} />
 
-            <TimelinePlayhead videoRef={videoRef} />
+            <TimelinePlayhead videoRef={videoRef} zoom={settings.zoom} />
 
             <div
               css={{
@@ -107,8 +107,12 @@ const Timeline = ({ videoRef, length }) => {
             >
               <TimelineFilterTracks settings={settings} dispatch={dispatch} />
 
-              <div css={{ flex: 1 }}>
-                <TimelineRuler length={videoRef.current?.duration || length} />
+              <div css={{ flex: 1, overflow: 'overlay' }}>
+                <div css={{ width: `${settings.zoom}%` }}>
+                  <TimelineRuler
+                    length={videoRef.current?.duration || length}
+                  />
+                </div>
               </div>
             </div>
 

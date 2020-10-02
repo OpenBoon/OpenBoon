@@ -11,7 +11,13 @@ const TimelineTracks = ({ videoRef, length, moduleColor, tracks, isOpen }) => {
   const duration = videoRef.current?.duration || length
 
   return (
-    <div css={{ display: 'flex', flexDirection: 'column' }}>
+    <div
+      css={{
+        display: 'flex',
+        flexDirection: 'column',
+        ':last-of-type': { marginBottom: spacing.normal },
+      }}
+    >
       <div
         css={{
           position: 'relative',
