@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 
 import { colors, constants, spacing, typography } from '../Styles'
+
+import { useLocalStorage } from '../LocalStorage/helpers'
+import { reducer, INITIAL_STATE } from '../Timeline/reducer'
 
 import MetadataPrettyPredictionsContent from '../MetadataPretty/PredictionsContent'
 
@@ -21,6 +25,16 @@ const COLORS = [
 ]
 
 const MetadataCuesContent = ({ metadata, height }) => {
+  const {
+    query: { assetId },
+  } = useRouter()
+
+  const [settings] = useLocalStorage({
+    key: `TimelineTimelines.${assetId}`,
+    reducer,
+    initialState: INITIAL_STATE,
+  })
+
   return (
     <div
       css={{
@@ -57,6 +71,9 @@ const MetadataCuesContent = ({ metadata, height }) => {
 
         {Object.entries(metadata)
           .filter(([, predictions]) => predictions.length > 0)
+          .filter(([timeline]) => {
+            return settings.modules[timeline]?.isVisible !== false
+          })
           .map(([timeline, predictions], index) => {
             const colorIndex = index % COLORS.length
 
