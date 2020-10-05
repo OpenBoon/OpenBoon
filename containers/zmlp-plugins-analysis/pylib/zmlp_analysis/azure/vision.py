@@ -390,7 +390,7 @@ class ComputerVisionCategoryDetection(AbstractComputerVisionProcessor):
             )
 
         # get list of labels
-        return [(r.name, r.confidence) for r in response.categories]
+        return [(r.name, r.score) for r in response.categories]
 
 
 class ComputerVisionExplicitContentDetection(AbstractComputerVisionProcessor):
@@ -423,5 +423,5 @@ class ComputerVisionExplicitContentDetection(AbstractComputerVisionProcessor):
         return [
             ('adult', response.adult.adult_score),
             ('racy', response.adult.racy_score),
-            ('gory', response.adult.gory_score),
+            ('gory', response.adult.gore_score),
         ]

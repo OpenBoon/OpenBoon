@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import patch
 
 from zmlp_analysis.azure.vision import (
@@ -15,22 +14,51 @@ from zmlp_analysis.azure.vision import (
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
 
+patch_path = 'zmlp_analysis.azure.util.ComputerVisionClient'
+cred_path = 'zmlp_analysis.azure.util.CognitiveServicesCredentials'
 
 DOGBIKE = zorroa_test_path('images/detect/dogbike.jpg')
 STREETSIGN = zorroa_test_path("images/set09/streetsign.jpg")
 RYAN_GOSLING = zorroa_test_path('images/set08/meme.jpg')
-EIFFEL_TOWER = zorroa_test_path('images/set08/eiffel_tower.jpg')
+EIFFEL_TOWER = zorroa_test_path('images/set11/eiffel_tower.jpg')
 LOGOS = zorroa_test_path('images/set11/logos.jpg')
+NSFW = zorroa_test_path('images/set10/nsfw1.jpg')
 
 
-@pytest.mark.skip(reason='dont run automatically')
+class MockCognitiveServicesCredentials:
+
+    def __init__(self, subscription_key=None):
+        pass
+
+
+class MockACVClient:
+
+    def __init__(self, endpoint=None, credentials=None):
+        pass
+
+    def detect_objects_in_stream(self, image=None):
+        return MockDetectResult()
+
+    def analyze_image_in_stream(self, image=None, visual_features=None):
+        return MockImageAnalysis()
+
+    def describe_image_in_stream(self, image=None):
+        return MockDetectResult()
+
+    def tag_image_in_stream(self, image=None):
+        return MockImageAnalysis()
+
+    def analyze_image_by_domain_in_stream(self, model=None, image=None):
+        return MockImageAnalysis()
+
+
 class AzureObjectDetectionProcessorTests(PluginUnitTestCase):
     namespace = 'azure-object-detection'
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
-    @patch('zmlp_analysis.azure.vision.get_zvi_azure_cv_client')
-    def test_predict(self, client_patch, proxy_patch):
-        client_patch.return_value = MockACVClient()
+    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=MockACVClient)
+    def test_predict(self, p_path, c_path, proxy_patch):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
@@ -41,14 +69,13 @@ class AzureObjectDetectionProcessorTests(PluginUnitTestCase):
         assert 'dog' in get_prediction_labels(analysis)
 
 
-@pytest.mark.skip(reason='dont run automatically')
 class AzureLabelDetectionProcessorTests(PluginUnitTestCase):
     namespace = 'azure-label-detection'
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
-    @patch('zmlp_analysis.azure.vision.get_zvi_azure_cv_client')
-    def test_predict(self, client_patch, proxy_patch):
-        client_patch.return_value = MockACVClient()
+    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=MockACVClient)
+    def test_predict(self, p_path, c_path, proxy_patch):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
@@ -59,14 +86,13 @@ class AzureLabelDetectionProcessorTests(PluginUnitTestCase):
         assert 'bicycle' in get_prediction_labels(analysis)
 
 
-@pytest.mark.skip(reason='dont run automatically')
 class AzureImageDescriptionProcessorTests(PluginUnitTestCase):
     namespace = 'azure-image-description-detection'
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
-    @patch('zmlp_analysis.azure.vision.get_zvi_azure_cv_client')
-    def test_predict(self, client_patch, proxy_patch):
-        client_patch.return_value = MockACVClient()
+    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=MockACVClient)
+    def test_predict(self,  p_path, c_path, proxy_patch):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
@@ -78,14 +104,13 @@ class AzureImageDescriptionProcessorTests(PluginUnitTestCase):
         assert description in get_prediction_labels(analysis)
 
 
-@pytest.mark.skip(reason='dont run automatically')
 class AzureTagDetectionProcessorTests(PluginUnitTestCase):
     namespace = 'azure-tag-detection'
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
-    @patch('zmlp_analysis.azure.vision.get_zvi_azure_cv_client')
-    def test_predict(self, client_patch, proxy_patch):
-        client_patch.return_value = MockACVClient()
+    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=MockACVClient)
+    def test_predict(self, p_path, c_path, proxy_patch):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
@@ -96,7 +121,6 @@ class AzureTagDetectionProcessorTests(PluginUnitTestCase):
         assert 'bicycle' in get_prediction_labels(analysis)
 
 
-@pytest.mark.skip(reason='dont run automatically')
 class AzureCelebrityDetectionProcessorTests(PluginUnitTestCase):
     namespace = 'azure-celebrity-detection'
 
@@ -114,14 +138,13 @@ class AzureCelebrityDetectionProcessorTests(PluginUnitTestCase):
         assert 'Ryan Gosling' in get_prediction_labels(analysis)
 
 
-@pytest.mark.skip(reason='dont run automatically')
 class AzureLandmarkDetectionProcessorTests(PluginUnitTestCase):
     namespace = 'azure-landmark-detection'
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
-    @patch('zmlp_analysis.azure.vision.get_zvi_azure_cv_client')
-    def test_predict(self, client_patch, proxy_patch):
-        client_patch.return_value = MockACVClient()
+    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=MockACVClient)
+    def test_predict(self, p_path, c_path, proxy_patch):
         proxy_patch.return_value = EIFFEL_TOWER
         frame = Frame(TestAsset(EIFFEL_TOWER))
 
@@ -132,14 +155,13 @@ class AzureLandmarkDetectionProcessorTests(PluginUnitTestCase):
         assert 'Eiffel Tower' in get_prediction_labels(analysis)
 
 
-@pytest.mark.skip(reason='dont run automatically')
 class AzureLogoDetectionProcessorTests(PluginUnitTestCase):
     namespace = 'azure-logo-detection'
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
-    @patch('zmlp_analysis.azure.vision.get_zvi_azure_cv_client')
-    def test_predict(self, client_patch, proxy_patch):
-        client_patch.return_value = MockACVClient()
+    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=MockACVClient)
+    def test_predict(self, p_path, c_path, proxy_patch):
         proxy_patch.return_value = LOGOS
         frame = Frame(TestAsset(LOGOS))
 
@@ -150,14 +172,13 @@ class AzureLogoDetectionProcessorTests(PluginUnitTestCase):
         assert 'Shell' in get_prediction_labels(analysis)
 
 
-@pytest.mark.skip(reason='dont run automatically')
 class AzureCategoryDetectionProcessorTests(PluginUnitTestCase):
     namespace = 'azure-category-detection'
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
-    @patch('zmlp_analysis.azure.vision.get_zvi_azure_cv_client')
-    def test_predict(self, client_patch, proxy_patch):
-        client_patch.return_value = MockACVClient()
+    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=MockACVClient)
+    def test_predict(self, p_path, c_path, proxy_patch):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
@@ -168,14 +189,13 @@ class AzureCategoryDetectionProcessorTests(PluginUnitTestCase):
         assert 'indoor_' in get_prediction_labels(analysis)
 
 
-@pytest.mark.skip(reason='dont run automatically')
 class AzureExplicitContentDetectionProcessorTests(PluginUnitTestCase):
     namespace = 'azure-explicit-detection'
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
-    @patch('zmlp_analysis.azure.vision.get_zvi_azure_cv_client')
-    def test_predict(self, client_patch, proxy_patch):
-        client_patch.return_value = MockACVClient()
+    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=MockACVClient)
+    def test_predict(self, p_path, c_path, proxy_patch):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
@@ -184,24 +204,6 @@ class AzureExplicitContentDetectionProcessorTests(PluginUnitTestCase):
 
         analysis = frame.asset.get_analysis(self.namespace)
         assert 'racy' in get_prediction_labels(analysis)
-
-
-class MockACVClient:
-
-    def detect_objects_in_stream(self, image=None):
-        return MockDetectResult()
-
-    def analyze_image_in_stream(self, image=None, visual_features=None):
-        return MockImageAnalysis()
-
-    def describe_image_in_stream(self, image=None):
-        return MockDetectResult()
-
-    def tag_image_in_stream(self, image=None):
-        return MockImageAnalysis()
-
-    def analyze_image_by_domain_in_stream(self, model=None, image=None):
-        return MockImageAnalysis()
 
 
 class MockDetectResult:
@@ -324,7 +326,7 @@ class MockCategories:
         return 'indoor_'
 
     @property
-    def confidence(self):
+    def score(self):
         return 0.935
 
 
@@ -339,7 +341,7 @@ class MockExplicit:
         return 0.935
 
     @property
-    def gory_score(self):
+    def gore_score(self):
         return 0.935
 
     @property

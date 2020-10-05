@@ -1,0 +1,147 @@
+import os
+import pytest
+from unittest.mock import patch
+
+from zmlp_analysis.azure.vision import (
+    ComputerVisionObjectDetection,
+    ComputerVisionLabelDetection,
+    ComputerVisionImageDescription,
+    ComputerVisionImageTagsDetection,
+    ComputerVisionCelebrityDetection,
+    ComputerVisionLandmarkDetection,
+    ComputerVisionLogoDetection,
+    ComputerVisionCategoryDetection,
+    ComputerVisionExplicitContentDetection,
+)
+from zmlpsdk.base import Frame
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
+
+
+DOGBIKE = zorroa_test_path('images/detect/dogbike.jpg')
+STREETSIGN = zorroa_test_path("images/set09/streetsign.jpg")
+RYAN_GOSLING = zorroa_test_path('images/set08/meme.jpg')
+EIFFEL_TOWER = zorroa_test_path('images/set11/eiffel_tower.jpg')
+LOGOS = zorroa_test_path('images/set11/logos.jpg')
+NSFW = zorroa_test_path('images/set10/nsfw1.jpg')
+
+
+@pytest.mark.skip(reason='dont run automatically')
+class ComputerVisionProcessorTestCase(PluginUnitTestCase):
+
+    def setUp(self):
+        cred_location = os.path.dirname(__file__) + '/azure-creds'
+        with open(cred_location, 'rb') as f:
+            key = f.read().decode()
+        os.environ['AZURE_ACCOUNT_KEY'] = key
+
+    def tearDown(self):
+        del os.environ['AZURE_ACCOUNT_KEY']
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    def test_object_detection_processor(self, proxy_patch):
+        namespace = 'azure-object-detection'
+        proxy_patch.return_value = DOGBIKE
+        frame = Frame(TestAsset(DOGBIKE))
+
+        processor = self.init_processor(ComputerVisionObjectDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(namespace)
+        assert 'dog' in get_prediction_labels(analysis)
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    def test_label_detection_processor(self, proxy_patch):
+        namespace = 'azure-label-detection'
+        proxy_patch.return_value = DOGBIKE
+        frame = Frame(TestAsset(DOGBIKE))
+
+        processor = self.init_processor(ComputerVisionLabelDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(namespace)
+        assert 'bicycle' in get_prediction_labels(analysis)
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    def test_image_description_processor(self, proxy_patch):
+        namespace = 'azure-image-description-detection'
+        proxy_patch.return_value = DOGBIKE
+        frame = Frame(TestAsset(DOGBIKE))
+
+        processor = self.init_processor(ComputerVisionImageDescription())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(namespace)
+        description = 'a dog sitting in front of a mirror posing for the camera'
+        assert description in get_prediction_labels(analysis)
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    def test_tag_detection_processor(self, proxy_patch):
+        namespace = 'azure-tag-detection'
+        proxy_patch.return_value = DOGBIKE
+        frame = Frame(TestAsset(DOGBIKE))
+
+        processor = self.init_processor(ComputerVisionImageTagsDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(namespace)
+        assert 'bicycle' in get_prediction_labels(analysis)
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    def test_celebrity_detection_processor(self, proxy_patch):
+        namespace = 'azure-celebrity-detection'
+        proxy_patch.return_value = RYAN_GOSLING
+        frame = Frame(TestAsset(RYAN_GOSLING))
+
+        processor = self.init_processor(ComputerVisionCelebrityDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(namespace)
+        assert 'Ryan Gosling' in get_prediction_labels(analysis)
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    def test_landmark_detection_processor(self, proxy_patch):
+        namespace = 'azure-landmark-detection'
+        proxy_patch.return_value = EIFFEL_TOWER
+        frame = Frame(TestAsset(EIFFEL_TOWER))
+
+        processor = self.init_processor(ComputerVisionLandmarkDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(namespace)
+        assert 'Eiffel Tower' in get_prediction_labels(analysis)
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    def test_logo_detection_processor(self, proxy_patch):
+        namespace = 'azure-logo-detection'
+        proxy_patch.return_value = LOGOS
+        frame = Frame(TestAsset(LOGOS))
+
+        processor = self.init_processor(ComputerVisionLogoDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(namespace)
+        assert 'Shell' in get_prediction_labels(analysis)
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    def test_category_detection_processor(self, proxy_patch):
+        namespace = 'azure-category-detection'
+        proxy_patch.return_value = EIFFEL_TOWER
+        frame = Frame(TestAsset(EIFFEL_TOWER))
+
+        processor = self.init_processor(ComputerVisionCategoryDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(namespace)
+        assert 'building_' in get_prediction_labels(analysis)
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    def test_explicit_detection_processor(self, proxy_patch):
+        namespace = 'azure-explicit-detection'
+        proxy_patch.return_value = NSFW
+        frame = Frame(TestAsset(NSFW))
+
+        processor = self.init_processor(ComputerVisionExplicitContentDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(namespace)
+        assert 'racy' in get_prediction_labels(analysis)
