@@ -49,7 +49,7 @@ class AssetSpec(
     var attrs: Map<String, Any>? = null,
 
     @ApiModelProperty("Optional page number to extract.")
-    private val page: Int = 1,
+    private val page: Int? = null,
 
     @ApiModelProperty("Optional Model label which puts the asset in the given Model.")
     val label: Label? = null,
@@ -75,7 +75,13 @@ class AssetSpec(
 
     @JsonIgnore
     fun getPageNumber(): Int {
-        return page.coerceAtLeast(1)
+        return page?.coerceAtLeast(1)
+            ?: if (document != null) {
+                val asset = Asset(document)
+                asset.getAttr("media.pageNumber", Int::class.java) ?: 1
+            } else {
+                1
+            }
     }
 
     @JsonIgnore
