@@ -103,7 +103,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -114,7 +114,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   height: 200px;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -146,7 +146,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   z-index: 10;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -154,13 +154,18 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   height: 44px;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  overflow: overlay;
 }
 
-.emotion-9 {
+.emotion-5 {
+  width: 100%;
+}
+
+.emotion-10 {
   height: 200px;
 }
 
@@ -228,13 +233,13 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
     />
   </div>
   <div
-    className="emotion-9"
+    className="emotion-10"
   >
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <div
           className="emotion-4"
@@ -254,9 +259,10 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
               },
             }
           }
+          zoom={100}
         />
         <div
-          className="emotion-6"
+          className="emotion-7"
         >
           <TimelineFilterTracks
             dispatch={[Function]}
@@ -265,15 +271,20 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
                 "filter": "",
                 "modules": Object {},
                 "modulesWidth": 200,
+                "zoom": 100,
               }
             }
           />
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
-            <TimelineRuler
-              length={18}
-            />
+            <div
+              className="emotion-5"
+            >
+              <TimelineRuler
+                length={18}
+              />
+            </div>
           </div>
         </div>
         <TimelineAggregate
@@ -284,6 +295,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
               "filter": "",
               "modules": Object {},
               "modulesWidth": 200,
+              "zoom": 100,
             }
           }
           timelineHeight={200}
@@ -310,6 +322,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
               "filter": "",
               "modules": Object {},
               "modulesWidth": 200,
+              "zoom": 100,
             }
           }
           timelines={Object {}}
@@ -436,11 +449,11 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-10 {
   height: 0;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -451,7 +464,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   height: 200px;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -483,7 +496,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   z-index: 10;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -491,10 +504,15 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   height: 44px;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  overflow: overlay;
+}
+
+.emotion-5 {
+  width: 100%;
 }
 
 <div
@@ -561,13 +579,13 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
     />
   </div>
   <div
-    className="emotion-9"
+    className="emotion-10"
   >
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <div
           className="emotion-4"
@@ -587,9 +605,10 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
               },
             }
           }
+          zoom={100}
         />
         <div
-          className="emotion-6"
+          className="emotion-7"
         >
           <TimelineFilterTracks
             dispatch={[Function]}
@@ -598,15 +617,20 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
                 "filter": "",
                 "modules": Object {},
                 "modulesWidth": 200,
+                "zoom": 100,
               }
             }
           />
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
-            <TimelineRuler
-              length={18}
-            />
+            <div
+              className="emotion-5"
+            >
+              <TimelineRuler
+                length={18}
+              />
+            </div>
           </div>
         </div>
         <TimelineAggregate
@@ -617,6 +641,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
               "filter": "",
               "modules": Object {},
               "modulesWidth": 200,
+              "zoom": 100,
             }
           }
           timelineHeight={200}
@@ -643,6 +668,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
               "filter": "",
               "modules": Object {},
               "modulesWidth": 200,
+              "zoom": 100,
             }
           }
           timelines={Object {}}
@@ -769,11 +795,11 @@ exports[`<Timeline /> should render properly 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-10 {
   height: 0;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -784,7 +810,7 @@ exports[`<Timeline /> should render properly 1`] = `
   height: 200px;
 }
 
-.emotion-7 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -816,7 +842,7 @@ exports[`<Timeline /> should render properly 1`] = `
   z-index: 10;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -824,10 +850,15 @@ exports[`<Timeline /> should render properly 1`] = `
   height: 44px;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  overflow: overlay;
+}
+
+.emotion-5 {
+  width: 100%;
 }
 
 <div
@@ -878,13 +909,13 @@ exports[`<Timeline /> should render properly 1`] = `
     />
   </div>
   <div
-    className="emotion-9"
+    className="emotion-10"
   >
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <div
           className="emotion-4"
@@ -896,9 +927,10 @@ exports[`<Timeline /> should render properly 1`] = `
               "current": undefined,
             }
           }
+          zoom={100}
         />
         <div
-          className="emotion-6"
+          className="emotion-7"
         >
           <TimelineFilterTracks
             dispatch={[Function]}
@@ -907,15 +939,20 @@ exports[`<Timeline /> should render properly 1`] = `
                 "filter": "",
                 "modules": Object {},
                 "modulesWidth": 200,
+                "zoom": 100,
               }
             }
           />
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
-            <TimelineRuler
-              length={18}
-            />
+            <div
+              className="emotion-5"
+            >
+              <TimelineRuler
+                length={18}
+              />
+            </div>
           </div>
         </div>
         <TimelineAggregate
@@ -926,6 +963,7 @@ exports[`<Timeline /> should render properly 1`] = `
               "filter": "",
               "modules": Object {},
               "modulesWidth": 200,
+              "zoom": 100,
             }
           }
           timelineHeight={200}
@@ -944,6 +982,7 @@ exports[`<Timeline /> should render properly 1`] = `
               "filter": "",
               "modules": Object {},
               "modulesWidth": 200,
+              "zoom": 100,
             }
           }
           timelines={Object {}}

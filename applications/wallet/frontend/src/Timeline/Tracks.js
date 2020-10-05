@@ -11,7 +11,13 @@ const TimelineTracks = ({ videoRef, length, moduleColor, tracks, isOpen }) => {
   const duration = videoRef.current?.duration || length
 
   return (
-    <div css={{ display: 'flex', flexDirection: 'column' }}>
+    <div
+      css={{
+        display: 'flex',
+        flexDirection: 'column',
+        ':last-of-type': { marginBottom: spacing.normal },
+      }}
+    >
       <div
         css={{
           position: 'relative',
@@ -24,7 +30,7 @@ const TimelineTracks = ({ videoRef, length, moduleColor, tracks, isOpen }) => {
         {tracks.map(({ track, hits }) => {
           return hits.map(({ start, stop }) => (
             <button
-              key={`${track}.${start}`}
+              key={`${track}.${start}.${stop}`}
               type="button"
               onClick={gotoCurrentTime({ videoRef, start })}
               aria-label={`${formatPaddedSeconds({ seconds: start })}`}
@@ -72,7 +78,7 @@ const TimelineTracks = ({ videoRef, length, moduleColor, tracks, isOpen }) => {
               &nbsp;
               {hits.map(({ start, stop }) => (
                 <button
-                  key={start}
+                  key={`${track}.${start}.${stop}`}
                   type="button"
                   onClick={gotoCurrentTime({ videoRef, start })}
                   aria-label={`${formatPaddedSeconds({ seconds: start })}`}
