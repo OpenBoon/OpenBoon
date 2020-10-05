@@ -1,16 +1,7 @@
+# flake8: noqa
 from unittest.mock import patch
 
-from zmlp_analysis.azure.vision import (
-    ComputerVisionObjectDetection,
-    ComputerVisionLabelDetection,
-    ComputerVisionImageDescription,
-    ComputerVisionImageTagsDetection,
-    ComputerVisionCelebrityDetection,
-    ComputerVisionLandmarkDetection,
-    ComputerVisionLogoDetection,
-    ComputerVisionCategoryDetection,
-    ComputerVisionExplicitContentDetection,
-)
+from zmlp_analysis.azure import *
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
 
