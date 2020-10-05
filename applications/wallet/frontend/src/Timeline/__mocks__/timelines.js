@@ -41,35 +41,6 @@ const timelines = [
     ],
   },
   {
-    timeline: 'gcp-video-logo-detection',
-    tracks: [
-      {
-        track: 'Logo 1',
-        hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
-        ],
-      },
-      {
-        track: 'Logo 2',
-        hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
-        ],
-      },
-      {
-        track: 'Logo 3',
-        hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
-        ],
-      },
-    ],
-  },
-  {
     timeline: 'gcp-video-object-detection',
     tracks: [
       {
@@ -90,6 +61,35 @@ const timelines = [
       },
       {
         track: 'Object 3',
+        hits: [
+          { start: 0, stop: 2 },
+          { start: 4, stop: 5 },
+          { start: 10, stop: 12 },
+        ],
+      },
+    ],
+  },
+  {
+    timeline: 'gcp-video-logo-detection',
+    tracks: [
+      {
+        track: 'Logo 1',
+        hits: [
+          { start: 0, stop: 2 },
+          { start: 4, stop: 5 },
+          { start: 10, stop: 12 },
+        ],
+      },
+      {
+        track: 'Logo 2',
+        hits: [
+          { start: 0, stop: 2 },
+          { start: 4, stop: 5 },
+          { start: 10, stop: 12 },
+        ],
+      },
+      {
+        track: 'Logo 3',
         hits: [
           { start: 0, stop: 2 },
           { start: 4, stop: 5 },
