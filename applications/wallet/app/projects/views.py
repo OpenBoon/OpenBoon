@@ -311,6 +311,42 @@ class BaseProjectViewSet(ViewSet):
         response = request.client.post(path, payload)
         return self._get_content(response)
 
+    def _zmlp_get_all_content_from_es_search(self, request, search_filter=None, base_url=None):
+        """Generates and runs the search query against a ZMLP ES search endpoint and gets all pages.
+
+        Args:
+            request (Request): Request the view method was given.
+            search_filter (dict): Optional filter to pass to the zmlp search endpoint.
+            base_url (str): The base zmlp api url to use.
+
+        Returns:
+            Response: DRF Response that can be used directly by viewset action method.
+
+        """
+        base_url = base_url or self.zmlp_root_api_path
+        size = request.query_params.get('size', settings.REST_FRAMEWORK['PAGE_SIZE'])
+        payload = {'from': 0, 'size': size}
+
+        if search_filter:
+            payload.update(search_filter)
+        path = os.path.join(base_url, '_search')
+
+        additional_pages = True
+        items = []
+        while additional_pages:
+            response = request.client.post(path, payload)
+            content = self._get_content(response)
+            items.extend(content['hits']['hits'])
+
+            _total = content['hits']['total']['value']
+            _next = (int(payload['from']) + int(payload['size']))
+            if _next < _total:
+                payload['from'] = _next
+            else:
+                additional_pages = False
+
+        return items
+
     def _get_modified_items_from_content(self, request, content, item_modifier=None):
         """Modifies the structure of each item with the given item modifier and returns them.
 

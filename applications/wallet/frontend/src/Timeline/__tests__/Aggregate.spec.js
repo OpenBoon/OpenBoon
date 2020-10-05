@@ -20,6 +20,7 @@ describe('<TimelineAggregate />', () => {
           modulesWidth: 200,
           filter: '',
           modules: { [timelines[0].timeline]: { isVisible: true } },
+          zoom: 100,
         }}
         dispatch={mockDispatch}
       />,

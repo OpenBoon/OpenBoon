@@ -13,7 +13,7 @@ describe('<Timeline /> reducer', () => {
         type: ACTIONS.UPDATE_FILTER,
         payload: { value: 'cat' },
       }),
-    ).toEqual({ filter: 'cat', modulesWidth: 200, modules: {} })
+    ).toEqual({ filter: 'cat', modulesWidth: 200, modules: {}, zoom: 100 })
   })
 
   it('should update the modules width', () => {
@@ -22,7 +22,7 @@ describe('<Timeline /> reducer', () => {
         type: ACTIONS.RESIZE_MODULES,
         payload: { value: 300 },
       }),
-    ).toEqual({ filter: '', modulesWidth: 300, modules: {} })
+    ).toEqual({ filter: '', modulesWidth: 300, modules: {}, zoom: 100 })
   })
 
   it('should open an undefined module', () => {
@@ -35,6 +35,7 @@ describe('<Timeline /> reducer', () => {
       filter: '',
       modulesWidth: 200,
       modules: { 'gcp-video-logo-detection': { isOpen: true } },
+      zoom: 100,
     })
   })
 
@@ -88,6 +89,7 @@ describe('<Timeline /> reducer', () => {
       filter: '',
       modulesWidth: 200,
       modules: { 'gcp-video-logo-detection': { isVisible: false } },
+      zoom: 100,
     })
   })
 
