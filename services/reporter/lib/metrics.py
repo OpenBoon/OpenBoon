@@ -1,11 +1,9 @@
-import math
 import os
 import time
 
 import requests
 from google.cloud import monitoring_v3
 from requests.auth import HTTPBasicAuth
-from zmlp import ZmlpClient
 
 
 class MetricValue(object):
@@ -77,7 +75,7 @@ class JobQueueMetrics(BaseMetric):
         max_running_tasks = int(response.json()['measurements'][0]['value'])
 
         # Get total pending tasks.
-        response = requests.get(os.path.join(api_gateway_url, 'monitor/metrics/tasks.pending'),
+        response = requests.get(os.path.join(api_gateway_url, 'monitor/metrics/tasks.active'),
                                 auth=basic_auth)
         total_pending_tasks = int(response.json()['measurements'][0]['value'])
 
