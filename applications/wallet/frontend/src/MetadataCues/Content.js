@@ -74,6 +74,7 @@ const MetadataCuesContent = ({ metadata, height }) => {
           .filter(([timeline]) => {
             return settings.modules[timeline]?.isVisible !== false
           })
+          .sort(([a], [b]) => (a > b ? 1 : -1))
           .map(([timeline, predictions], index) => {
             const colorIndex = index % COLORS.length
 
