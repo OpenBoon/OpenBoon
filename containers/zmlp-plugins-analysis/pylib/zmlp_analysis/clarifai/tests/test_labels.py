@@ -1,33 +1,20 @@
 import os
 from unittest.mock import patch
 
-import pytest
-from clarifai.rest import ClarifaiApp
-
-from zmlp_analysis.clarifai.labels import ClarifaiLabelDetectionProcessor
+from zmlp_analysis.clarifai.labels import *
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
     TestAsset, get_prediction_labels
 
-clarifai_api_key = "<KEY>"
+client_patch = 'zmlp_analysis.clarifai.util.ClarifaiApp'
 
 
-class MockClarifaiApp(object):
+class MockClarifaiApp:
     """
     Class to handle clarifai responses.
     """
 
-    def __init__(self):
-
-        class GeneralModel(object):
-            def predict_by_filename(self, filename):
-                with open(os.path.dirname(__file__) + "/clarifai.rsp") as fp:
-                    return eval(fp.read())
-
-        class PublicModels(object):
-            def __init__(self):
-                self.general_model = GeneralModel()
-
+    def __init__(self, api_key=None):
         self.public_models = PublicModels()
 
 
@@ -38,98 +25,158 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         self.frame = Frame(TestAsset(self.image_path))
 
     @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
-    @patch('zmlp_analysis.clarifai.labels.get_clarifai_app')
-    def test_process(self, get_app_patch, proxy_path_patch):
-        get_app_patch.return_value = MockClarifaiApp()
+    @patch(client_patch, side_effect=MockClarifaiApp)
+    def test_general_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiLabelDetectionProcessor(),
-                                        {'general-model': True})
+        processor = self.init_processor(ClarifaiLabelDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_attr('analysis.clarifai-label-general-model')
+        analysis = self.frame.asset.get_analysis('clarifai-general-model')
         assert 'wheel' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
 
+    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch(client_patch, side_effect=MockClarifaiApp)
+    def test_food_process(self, _, proxy_path_patch):
+        proxy_path_patch.return_value = self.image_path
 
-@pytest.mark.skip(reason='dont run automatically')
-class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestCase):
+        processor = self.init_processor(ClarifaiFoodDetectionProcessor())
+        processor.process(self.frame)
 
-    def setUp(self):
-        self.capp = ClarifaiApp(api_key=clarifai_api_key)
+        analysis = self.frame.asset.get_analysis('clarifai-food-model')
+        assert 'coffee' in get_prediction_labels(analysis)
+        assert 'labels' in analysis['type']
+        assert 19 == analysis['count']
 
     @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
-    @patch('zmlp_analysis.clarifai.labels.get_clarifai_app')
-    def run_process(self, get_app_patch, proxy_path_patch,
-                    image_path, model_name, attr, assertions):
-        frame = Frame(TestAsset(image_path))
+    @patch(client_patch, side_effect=MockClarifaiApp)
+    def test_apparel_process(self, _, proxy_path_patch):
+        proxy_path_patch.return_value = self.image_path
 
-        get_app_patch.return_value = self.capp
-        proxy_path_patch.return_value = image_path
+        processor = self.init_processor(ClarifaiApparelDetectionProcessor())
+        processor.process(self.frame)
 
-        processor = self.init_processor(ClarifaiLabelDetectionProcessor(),
-                                        {model_name: True})
-        processor.process(frame)
-
-        analysis = frame.asset.get_attr(attr)
-        for label in assertions['labels']:
-            assert label in get_prediction_labels(analysis)
+        analysis = self.frame.asset.get_analysis('clarifai-apparel-model')
+        assert 'Earring' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert assertions['count'] == analysis['count']
+        assert 6 == analysis['count']
 
-    def test_travel_process(self):
-        self.run_process(
-            image_path=zorroa_test_path('images/set06/gif_tahoe.gif'),
-            model_name='travel-model',
-            attr='analysis.clarifai-label-travel-model',
-            assertions={'labels': ['Winter'], 'count': 7}
-        )
+    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch(client_patch, side_effect=MockClarifaiApp)
+    def test_wedding_process(self, _, proxy_path_patch):
+        proxy_path_patch.return_value = self.image_path
 
-    def test_food_process(self):
-        self.run_process(
-            image_path=zorroa_test_path('images/set02/beer_kettle_01.jpg'),
-            model_name='food-model',
-            attr='analysis.clarifai-label-food-model',
-            assertions={'labels': ['beer'], 'count': 19}
-        )
+        processor = self.init_processor(ClarifaiWeddingDetectionProcessor())
+        processor.process(self.frame)
 
-    def test_apparel_process(self):
-        self.run_process(
-            image_path=zorroa_test_path('images/face-recognition/face2.jpg'),
-            model_name='apparel-model',
-            attr='analysis.clarifai-label-apparel-model',
-            assertions={'labels': ['Necklace'], 'count': 6}
-        )
+        analysis = self.frame.asset.get_analysis('clarifai-wedding-model')
+        assert 'bride' in get_prediction_labels(analysis)
+        assert 'labels' in analysis['type']
+        assert 20 == analysis['count']
 
-    def test_wedding_process(self):
-        self.run_process(
-            image_path=zorroa_test_path('images/set11/wedding1.jpg'),
-            model_name='wedding-model',
-            attr='analysis.clarifai-label-wedding-model',
-            assertions={'labels': ['bride'], 'count': 20}
-        )
+    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch(client_patch, side_effect=MockClarifaiApp)
+    def test_wedding_process(self, _, proxy_path_patch):
+        proxy_path_patch.return_value = self.image_path
 
-    def test_nsfw_process(self):
-        self.run_process(
-            image_path=zorroa_test_path('images/set10/nsfw1.jpg'),
-            model_name='nsfw-model',
-            attr='analysis.clarifai-label-nsfw-model',
-            assertions={'labels': ['nsfw', 'sfw'], 'count': 2}
-        )
+        processor = self.init_processor(ClarifaiWeddingDetectionProcessor())
+        processor.process(self.frame)
 
-    def test_moderation_process(self):
-        self.run_process(
-            image_path=zorroa_test_path('images/set10/nsfw1.jpg'),
-            model_name='moderation-model',
-            attr='analysis.clarifai-label-moderation-model',
-            assertions={'labels': ['suggestive'], 'count': 1}
-        )
+        analysis = self.frame.asset.get_analysis('clarifai-wedding-model')
+        assert 'bride' in get_prediction_labels(analysis)
+        assert 'labels' in analysis['type']
+        assert 20 == analysis['count']
 
-    def test_textures_and_patterns_process(self):
-        self.run_process(
-            image_path=zorroa_test_path('images/set09/letter.png'),
-            model_name='textures-and-patterns-model',
-            attr='analysis.clarifai-textures-and-patterns-model',
-            assertions={'labels': ['handwriting'], 'count': 1}
-        )
+    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch(client_patch, side_effect=MockClarifaiApp)
+    def test_nsfw_process(self, _, proxy_path_patch):
+        proxy_path_patch.return_value = self.image_path
+
+        processor = self.init_processor(ClarifaiExplicitDetectionProcessor())
+        processor.process(self.frame)
+
+        analysis = self.frame.asset.get_analysis('clarifai-nsfw-model')
+        assert 'nsfw' in get_prediction_labels(analysis)
+        assert 'labels' in analysis['type']
+        assert 2 == analysis['count']
+
+    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch(client_patch, side_effect=MockClarifaiApp)
+    def test_moderation_process(self, _, proxy_path_patch):
+        proxy_path_patch.return_value = self.image_path
+
+        processor = self.init_processor(ClarifaiModerationDetectionProcessor())
+        processor.process(self.frame)
+
+        analysis = self.frame.asset.get_analysis('clarifai-moderation-model')
+        assert 'suggestive' in get_prediction_labels(analysis)
+        assert 'labels' in analysis['type']
+        assert 1 == analysis['count']
+
+    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch(client_patch, side_effect=MockClarifaiApp)
+    def test_textures_and_patterns_process(self, _, proxy_path_patch):
+        proxy_path_patch.return_value = self.image_path
+
+        processor = self.init_processor(ClarifaiTexturesDetectionProcessor())
+        processor.process(self.frame)
+
+        analysis = self.frame.asset.get_analysis('clarifai-textures-and-patterns-model')
+        assert 'handwriting' in get_prediction_labels(analysis)
+        assert 'labels' in analysis['type']
+        assert 1 == analysis['count']
+
+
+class PublicModels:
+    def __init__(self):
+        self.general_model = GeneralModel()
+        self.food_model = FoodModel()
+        self.apparel_model = ApparelModel()
+        self.wedding_model = WeddingModel()
+        self.nsfw_model = ExplicitModel()
+        self.moderation_model = ModerationModel()
+        self.textures_and_patterns_model = TexturesModel()
+
+
+class GeneralModel:
+    def predict_by_filename(self, filename):
+        with open(os.path.dirname(__file__) + "/mock_data/clarifai.rsp") as fp:
+            return eval(fp.read())
+
+
+class FoodModel:
+    def predict_by_filename(self, filename):
+        with open(os.path.dirname(__file__) + "/mock_data/clarifai_food.rsp") as fp:
+            return eval(fp.read())
+
+
+class ApparelModel:
+    def predict_by_filename(self, filename):
+        with open(os.path.dirname(__file__) + "/mock_data/clarifai_apparel.rsp") as fp:
+            return eval(fp.read())
+
+
+class WeddingModel:
+    def predict_by_filename(self, filename):
+        with open(os.path.dirname(__file__) + "/mock_data/clarifai_wedding.rsp") as fp:
+            return eval(fp.read())
+
+
+class ExplicitModel:
+    def predict_by_filename(self, filename):
+        with open(os.path.dirname(__file__) + "/mock_data/clarifai_nsfw.rsp") as fp:
+            return eval(fp.read())
+
+
+class ModerationModel:
+    def predict_by_filename(self, filename):
+        with open(os.path.dirname(__file__) + "/mock_data/clarifai_moderation.rsp") as fp:
+            return eval(fp.read())
+
+
+class TexturesModel:
+    def predict_by_filename(self, filename):
+        with open(os.path.dirname(__file__) + "/mock_data/clarifai_textures.rsp") as fp:
+            return eval(fp.read())

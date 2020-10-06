@@ -1,2 +1,2 @@
 # flake8: noqa
-from .labels import ClarifaiLabelDetectionProcessor
+from .labels import *
