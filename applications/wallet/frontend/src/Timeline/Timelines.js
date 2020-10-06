@@ -28,7 +28,11 @@ const TimelineTimelines = ({
   settings,
   dispatch,
 }) => {
-  const filteredTimelines = filterTimelines({ timelines, settings })
+  const filteredSortedTimelines = filterTimelines({ timelines, settings })
+    .filter(({ timeline }) => {
+      return settings.modules[timeline]?.isVisible !== false
+    })
+    .sort((a, b) => (a.timeline > b.timeline ? 1 : -1))
 
   return (
     <div
@@ -42,64 +46,59 @@ const TimelineTimelines = ({
       }}
     >
       <div css={{ width: settings.modulesWidth }}>
-        {filteredTimelines
-          .filter(({ timeline }) => {
-            return settings.modules[timeline]?.isVisible !== false
-          })
-          .sort((a, b) => (a.timeline > b.timeline ? 1 : -1))
-          .map(({ timeline, tracks }, index) => {
-            const colorIndex = index % COLORS.length
+        {filteredSortedTimelines.map(({ timeline, tracks }, index) => {
+          const colorIndex = index % COLORS.length
 
-            return (
-              <TimelineAccordion
-                key={timeline}
-                moduleColor={COLORS[colorIndex]}
-                timeline={timeline}
-                tracks={tracks}
-                dispatch={dispatch}
-                isOpen={settings.modules[timeline]?.isOpen || false}
-              >
-                {tracks.map(({ track, hits }) => {
-                  return (
-                    <div key={track} css={{ display: 'flex' }}>
+          return (
+            <TimelineAccordion
+              key={timeline}
+              moduleColor={COLORS[colorIndex]}
+              timeline={timeline}
+              tracks={tracks}
+              dispatch={dispatch}
+              isOpen={settings.modules[timeline]?.isOpen || false}
+            >
+              {tracks.map(({ track, hits }) => {
+                return (
+                  <div key={track} css={{ display: 'flex' }}>
+                    <div
+                      css={{
+                        width: COLOR_TAB_WIDTH,
+                        backgroundColor: COLORS[colorIndex],
+                      }}
+                    />
+                    <div
+                      css={{
+                        display: 'flex',
+                        width: '100%',
+                        borderTop: constants.borders.regular.smoke,
+                        backgroundColor: colors.structure.coal,
+                        overflow: 'hidden',
+                      }}
+                    >
                       <div
                         css={{
-                          width: COLOR_TAB_WIDTH,
-                          backgroundColor: COLORS[colorIndex],
-                        }}
-                      />
-                      <div
-                        css={{
-                          display: 'flex',
-                          width: '100%',
-                          borderTop: constants.borders.regular.smoke,
-                          backgroundColor: colors.structure.coal,
+                          flex: 1,
                           overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          padding: spacing.base,
+                          paddingLeft: spacing.base + spacing.spacious,
+                          paddingRight: 0,
                         }}
                       >
-                        <div
-                          css={{
-                            flex: 1,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            padding: spacing.base,
-                            paddingLeft: spacing.base + spacing.spacious,
-                            paddingRight: 0,
-                          }}
-                        >
-                          {track}
-                        </div>
-                        <div
-                          css={{ padding: spacing.base }}
-                        >{`(${hits.length})`}</div>
+                        {track}
                       </div>
+                      <div
+                        css={{ padding: spacing.base }}
+                      >{`(${hits.length})`}</div>
                     </div>
-                  )
-                })}
-              </TimelineAccordion>
-            )
-          })}
+                  </div>
+                )
+              })}
+            </TimelineAccordion>
+          )
+        })}
       </div>
 
       <div
@@ -111,25 +110,20 @@ const TimelineTimelines = ({
         }}
       >
         <div css={{ width: `${settings.zoom}%` }}>
-          {filteredTimelines
-            .filter(({ timeline }) => {
-              return settings.modules[timeline]?.isVisible !== false
-            })
-            .sort((a, b) => (a.timeline > b.timeline ? 1 : -1))
-            .map(({ timeline, tracks }, index) => {
-              const colorIndex = index % COLORS.length
+          {filteredSortedTimelines.map(({ timeline, tracks }, index) => {
+            const colorIndex = index % COLORS.length
 
-              return (
-                <TimelineTracks
-                  key={timeline}
-                  videoRef={videoRef}
-                  length={length}
-                  moduleColor={COLORS[colorIndex]}
-                  tracks={tracks}
-                  isOpen={settings.modules[timeline]?.isOpen || false}
-                />
-              )
-            })}
+            return (
+              <TimelineTracks
+                key={timeline}
+                videoRef={videoRef}
+                length={length}
+                moduleColor={COLORS[colorIndex]}
+                tracks={tracks}
+                isOpen={settings.modules[timeline]?.isOpen || false}
+              />
+            )
+          })}
         </div>
       </div>
     </div>

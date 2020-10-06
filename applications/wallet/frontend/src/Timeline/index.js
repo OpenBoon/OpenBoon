@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useEffect } from 'react'
+import { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
@@ -41,15 +41,29 @@ const Timeline = ({ videoRef, length }) => {
     `/api/v1/projects/${projectId}/assets/${assetId}/timelines/`,
   )
 
-  const scrollablesX = document.getElementsByClassName('scrollableX')
-  const scrollablesY = document.getElementsByClassName('scrollableY')
+  const onMount = useCallback((node) => {
+    if (!node) return
 
-  useEffect(() => {
+    const scrollablesX = document.getElementsByClassName('scrollableX')
+    const scrollablesY = document.getElementsByClassName('scrollableY')
+
     const handleOnWheel = (event) => {
       event.preventDefault()
 
-      const newScrollLeftPos = scrollLeftPos + event.deltaX
-      const newScrollTopPos = scrollTopPos + event.deltaY
+      const maxScrollX =
+        scrollablesX[0].scrollWidth - scrollablesX[0].clientWidth
+      const maxScrollY =
+        scrollablesY[0].scrollHeight - scrollablesY[0].clientHeight
+
+      const newScrollLeftPos = Math.min(
+        maxScrollX,
+        Math.max(0, scrollLeftPos + event.deltaX),
+      )
+
+      const newScrollTopPos = Math.min(
+        maxScrollY,
+        Math.max(0, scrollTopPos + event.deltaY),
+      )
 
       for (let i = 0; i < scrollablesX.length; i += 1) {
         scrollablesX[i].scrollLeft = newScrollLeftPos
@@ -63,15 +77,8 @@ const Timeline = ({ videoRef, length }) => {
       scrollTopPos = newScrollTopPos
     }
 
-    document
-      .getElementById('scrollContainer')
-      .addEventListener('wheel', handleOnWheel, { passive: false })
-
-    return () =>
-      document
-        .getElementById('scrollContainer')
-        .removeEventListener('wheel', handleOnWheel, { passive: false })
-  })
+    node.addEventListener('wheel', handleOnWheel, { passive: false })
+  }, [])
 
   return (
     <ResizeableVertical
@@ -121,7 +128,7 @@ const Timeline = ({ videoRef, length }) => {
           }}
         >
           <div
-            id="scrollContainer"
+            ref={onMount}
             css={{
               flex: 1,
               display: 'flex',
