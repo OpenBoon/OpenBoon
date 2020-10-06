@@ -20,6 +20,7 @@ describe('<MetadataCuesContent />', () => {
             { label: 'pepperoni', score: 0.91 },
           ],
           'gcp-object-detection': [{ label: 'food', score: 0.91 }],
+          'gcp-logo-detection': [{ label: 'boon', score: 0.91 }],
         }}
         height={300}
       />,

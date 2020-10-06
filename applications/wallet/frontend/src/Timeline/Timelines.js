@@ -45,6 +45,7 @@ const TimelineTimelines = ({
           .filter(({ timeline }) => {
             return settings.modules[timeline]?.isVisible !== false
           })
+          .sort((a, b) => (a.timeline > b.timeline ? 1 : -1))
           .map(({ timeline, tracks }, index) => {
             const colorIndex = index % COLORS.length
 

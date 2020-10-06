@@ -101,26 +101,28 @@ const TimelineAggregate = ({
                 />
               </div>
 
-              {timelines.map(({ timeline, tracks }) => (
-                <Checkbox
-                  key={`${timeline}.${settings.modules[timeline]?.isVisible}`}
-                  variant={CHECKBOX_VARIANTS.MENU}
-                  option={{
-                    value: timeline,
-                    label: timeline,
-                    legend: `(${tracks.length})`,
-                    initialValue:
-                      settings.modules[timeline]?.isVisible !== false,
-                    isDisabled: false,
-                  }}
-                  onClick={() => {
-                    dispatch({
-                      type: ACTIONS.TOGGLE_VISIBLE,
-                      payload: { timeline },
-                    })
-                  }}
-                />
-              ))}
+              {timelines
+                .sort((a, b) => (a.timeline > b.timeline ? 1 : -1))
+                .map(({ timeline, tracks }) => (
+                  <Checkbox
+                    key={`${timeline}.${settings.modules[timeline]?.isVisible}`}
+                    variant={CHECKBOX_VARIANTS.MENU}
+                    option={{
+                      value: timeline,
+                      label: timeline,
+                      legend: `(${tracks.length})`,
+                      initialValue:
+                        settings.modules[timeline]?.isVisible !== false,
+                      isDisabled: false,
+                    }}
+                    onClick={() => {
+                      dispatch({
+                        type: ACTIONS.TOGGLE_VISIBLE,
+                        payload: { timeline },
+                      })
+                    }}
+                  />
+                ))}
             </div>
           )}
         </Menu>
