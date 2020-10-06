@@ -12,6 +12,7 @@ google-cloud-videointelligence==1.15.0
 google-cloud-vision==1.0.0
 google-cloud-language
 google-cloud-dlp==1.0.0
+google-cloud-documentai==0.3.0
 google-cloud-pubsub
 googleapis-common-protos
 backoff
