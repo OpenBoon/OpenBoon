@@ -760,7 +760,7 @@ class TestLabelsFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'must': {
+                    'must': [{
                         'nested': {
                             'path': 'labels',
                             'query': {
@@ -770,7 +770,7 @@ class TestLabelsFilter(FilterBaseTestCase):
                                             'bc28213f-cf3a-16a2-9f21-0242ac130003']}},
                                         {'terms': {'labels.label': ['Celeste', 'David']}},
                                         {'terms': {'labels.scope': ['TRAIN', 'TEST']}}
-                                    ]}}}}}
+                                    ]}}}}]}
             }
         }
 
@@ -781,7 +781,7 @@ class TestLabelsFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'must': {
+                    'must': [{
                         'nested': {
                             'path': 'labels',
                             'query': {
@@ -791,7 +791,7 @@ class TestLabelsFilter(FilterBaseTestCase):
                                             'bc28213f-cf3a-16a2-9f21-0242ac130003']}},
                                         {'terms': {'labels.label': ['Celeste', 'David']}},
                                         {'terms': {'labels.scope': ['TRAIN']}}
-                                    ]}}}}}
+                                    ]}}}}]}
             }
         }
 

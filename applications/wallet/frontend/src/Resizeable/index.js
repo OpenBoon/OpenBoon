@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import { zIndex } from '../Styles'
 
@@ -16,9 +16,9 @@ const Resizeable = ({
   onMouseUp,
   children,
 }) => {
-  const [width, setWidth] = useLocalStorageState({
+  const [width, setWidth] = useLocalStorage({
     key: storageName,
-    initialValue: minWidth,
+    initialState: minWidth,
   })
 
   const direction = openToThe === 'left' ? 1 : -1

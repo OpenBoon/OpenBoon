@@ -202,7 +202,9 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         """
         analysis = ContentDetectionAnalysis()
-
+        logger.info("-----SPEECH------")
+        logger.info("{}".format(annotation_result.speech_transcriptions))
+        logger.info("-----------------")
         for speech in annotation_result.speech_transcriptions:
             for alternative in speech.alternatives:
                 # Find first one with words.

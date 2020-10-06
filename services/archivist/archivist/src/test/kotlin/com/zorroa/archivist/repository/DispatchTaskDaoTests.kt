@@ -141,6 +141,7 @@ class DispatchTaskDaoTests : AbstractTest() {
 
         countPendingTasks = dispatchTaskDao.getPendingTasksStats()
         assertEquals(3, countPendingTasks.pendingTasks)
+        assertEquals(0, countPendingTasks.runningTasks)
         assertEquals(maxRunningTasksSum, countPendingTasks.maxRunningTasks)
     }
 

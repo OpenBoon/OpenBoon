@@ -94,6 +94,19 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testGetExistingAssetIdById() {
+        val spec = AssetSpec("gs://cats/large-brown-cat.pdf", id = "abcd12345")
+        assertNull(assetService.getExistingAssetId(spec))
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        assetService.batchCreate(req)
+        assertNotNull(assetService.getExistingAssetId(spec))
+        assertTrue(assetService.getAll(listOf("abcd12345")).isNotEmpty())
+    }
+
+    @Test
     fun testBatchCreateAssetsWithModule() {
         pipelineModuleService.updateStandardMods()
 

@@ -18,8 +18,10 @@ describe('<TimelineTimelines />', () => {
         length={18}
         timelines={timelines}
         settings={{
+          modulesWidth: 200,
           filter: '',
           modules: { [timelines[0].timeline]: { isOpen: true } },
+          zoom: 100,
         }}
         dispatch={mockDispatch}
       />,

@@ -21,6 +21,9 @@ class VideoProxyProcessor(AssetProcessor):
     # ML process we need full HD for.
     max_resolution = 1280
 
+    # Don't use threads for transcoding, ffmpeg already does.
+    use_threads = False
+
     def __init__(self):
         super(VideoProxyProcessor, self).__init__()
 
@@ -54,10 +57,11 @@ class VideoProxyProcessor(AssetProcessor):
             '-i', src_path,
             '-c:v', 'libx264',
             '-crf', '23',
-            '-c:a', 'aac',
+            '-c:a', 'copy',
             '-threads', '0',
             '-pix_fmt', 'yuv420p',
-            '-movflags', '+faststart'
+            '-movflags', '+faststart',
+            '-preset', 'slow'
         ]
 
         # the width/height of yuv420p videos must be divisible by 2

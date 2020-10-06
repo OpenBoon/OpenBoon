@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 
 import { colors, constants, spacing, typography } from '../Styles'
+
+import { useLocalStorage } from '../LocalStorage/helpers'
+import { reducer, INITIAL_STATE } from '../Timeline/reducer'
 
 import MetadataPrettyPredictionsContent from '../MetadataPretty/PredictionsContent'
 
@@ -21,6 +25,16 @@ const COLORS = [
 ]
 
 const MetadataCuesContent = ({ metadata, height }) => {
+  const {
+    query: { assetId },
+  } = useRouter()
+
+  const [settings] = useLocalStorage({
+    key: `TimelineTimelines.${assetId}`,
+    reducer,
+    initialState: INITIAL_STATE,
+  })
+
   return (
     <div
       css={{
@@ -41,7 +55,8 @@ const MetadataCuesContent = ({ metadata, height }) => {
       </div>
 
       <div css={{ flex: 1, overflowY: 'auto' }}>
-        {Object.keys(metadata).length === 0 && (
+        {Object.values(metadata).filter((predictions) => predictions.length > 0)
+          .length === 0 && (
           <div
             css={{
               padding: spacing.normal,
@@ -54,24 +69,30 @@ const MetadataCuesContent = ({ metadata, height }) => {
           </div>
         )}
 
-        {Object.entries(metadata).map(([timeline, predictions], index) => {
-          const colorIndex = index % COLORS.length
+        {Object.entries(metadata)
+          .filter(([, predictions]) => predictions.length > 0)
+          .filter(([timeline]) => {
+            return settings.modules[timeline]?.isVisible !== false
+          })
+          .sort(([a], [b]) => (a > b ? 1 : -1))
+          .map(([timeline, predictions], index) => {
+            const colorIndex = index % COLORS.length
 
-          return (
-            <div
-              key={timeline}
-              css={{
-                borderBottom: constants.borders.large.smoke,
-                boxShadow: `inset ${COLOR_WIDTH}px 0 0 ${COLORS[colorIndex]}`,
-              }}
-            >
-              <MetadataPrettyPredictionsContent
-                name={timeline}
-                predictions={predictions}
-              />
-            </div>
-          )
-        })}
+            return (
+              <div
+                key={timeline}
+                css={{
+                  borderBottom: constants.borders.large.smoke,
+                  boxShadow: `inset ${COLOR_WIDTH}px 0 0 ${COLORS[colorIndex]}`,
+                }}
+              >
+                <MetadataPrettyPredictionsContent
+                  name={timeline}
+                  predictions={predictions}
+                />
+              </div>
+            )
+          })}
       </div>
     </div>
   )

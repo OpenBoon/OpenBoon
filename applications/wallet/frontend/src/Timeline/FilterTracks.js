@@ -4,14 +4,18 @@ import { colors, constants } from '../Styles'
 
 import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
 
+import { TICK_WIDTH } from './helpers'
 import { ACTIONS } from './reducer'
+
+const OFFSET = (TICK_WIDTH + constants.borderWidths.regular) / 2
 
 const TimelineFilterTracks = ({ settings, dispatch }) => {
   return (
     <div
       css={{
-        marginLeft: -constants.timeline.modulesWidth,
-        width: constants.timeline.modulesWidth,
+        marginLeft: -settings.modulesWidth,
+        width: settings.modulesWidth,
+        paddingRight: OFFSET,
       }}
     >
       <InputSearch
@@ -36,6 +40,7 @@ const TimelineFilterTracks = ({ settings, dispatch }) => {
 
 TimelineFilterTracks.propTypes = {
   settings: PropTypes.shape({
+    modulesWidth: PropTypes.number.isRequired,
     filter: PropTypes.string.isRequired,
     modules: PropTypes.shape({}).isRequired,
   }).isRequired,

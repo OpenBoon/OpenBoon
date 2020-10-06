@@ -38,12 +38,12 @@ const TimelineAggregate = ({
     <div
       css={{
         display: 'flex',
-        marginLeft: -constants.timeline.modulesWidth,
+        marginLeft: -settings.modulesWidth,
         borderTop: constants.borders.regular.smoke,
         height: constants.timeline.rulerRowHeight,
       }}
     >
-      <div css={{ width: constants.timeline.modulesWidth }}>
+      <div css={{ width: settings.modulesWidth }}>
         <Menu
           open="bottom-center"
           button={({ onBlur, onClick, isMenuOpen }) => (
@@ -65,6 +65,7 @@ const TimelineAggregate = ({
                 },
                 marginBottom: 0,
                 borderRadius: 0,
+                width: '100%',
                 height: '100%',
               }}
             />
@@ -100,80 +101,85 @@ const TimelineAggregate = ({
                 />
               </div>
 
-              {timelines.map(({ timeline, tracks }) => (
-                <Checkbox
-                  key={`${timeline}.${settings.modules[timeline]?.isVisible}`}
-                  variant={CHECKBOX_VARIANTS.MENU}
-                  option={{
-                    value: timeline,
-                    label: timeline,
-                    legend: `(${tracks.length})`,
-                    initialValue:
-                      settings.modules[timeline]?.isVisible !== false,
-                    isDisabled: false,
-                  }}
-                  onClick={() => {
-                    dispatch({
-                      type: ACTIONS.TOGGLE_VISIBLE,
-                      payload: { timeline },
-                    })
-                  }}
-                />
-              ))}
+              {timelines
+                .sort((a, b) => (a.timeline > b.timeline ? 1 : -1))
+                .map(({ timeline, tracks }) => (
+                  <Checkbox
+                    key={`${timeline}.${settings.modules[timeline]?.isVisible}`}
+                    variant={CHECKBOX_VARIANTS.MENU}
+                    option={{
+                      value: timeline,
+                      label: timeline,
+                      legend: `(${tracks.length})`,
+                      initialValue:
+                        settings.modules[timeline]?.isVisible !== false,
+                      isDisabled: false,
+                    }}
+                    onClick={() => {
+                      dispatch({
+                        type: ACTIONS.TOGGLE_VISIBLE,
+                        payload: { timeline },
+                      })
+                    }}
+                  />
+                ))}
             </div>
           )}
         </Menu>
       </div>
-      <div
-        css={{
-          flex: 1,
-          position: 'relative',
-          padding: spacing.base,
-          borderBottom: constants.borders.regular.coal,
-          backgroundColor: colors.structure.coal,
-        }}
-      >
-        &nbsp;
-        {filteredTimelines
-          .filter(({ timeline }) => {
-            return settings.modules[timeline]?.isVisible !== false
-          })
-          .map(({ tracks }) => {
-            return tracks.map(({ track, hits }) => {
-              return hits.map(({ start, stop }) => (
-                <button
-                  key={`${track}.${start}`}
-                  type="button"
-                  onClick={gotoCurrentTime({ videoRef, start })}
-                  aria-label={`${formatPaddedSeconds({ seconds: start })}`}
-                  title={`${formatPaddedSeconds({
-                    seconds: start,
-                  })}-${formatPaddedSeconds({ seconds: stop })}`}
-                  css={{
-                    margin: 0,
-                    border: 0,
-                    zIndex: zIndex.layout.interactive + 1,
-                    position: 'absolute',
-                    top: spacing.base,
-                    bottom: spacing.base,
-                    left: `calc(${(start / duration) * 100}% - ${OFFSET}px)`,
-                    width: WIDTH,
-                    backgroundColor: colors.structure.coal,
-                    padding: spacing.mini,
-                    cursor: 'pointer',
-                  }}
-                >
-                  <div
-                    css={{
-                      backgroundColor: colors.structure.steel,
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  />
-                </button>
-              ))
+      <div css={{ flex: 1, overflow: 'overlay' }}>
+        <div
+          css={{
+            width: `${settings.zoom}%`,
+            height: '100%',
+            position: 'relative',
+            padding: spacing.base,
+            borderBottom: constants.borders.regular.coal,
+            backgroundColor: colors.structure.coal,
+          }}
+        >
+          &nbsp;
+          {filteredTimelines
+            .filter(({ timeline }) => {
+              return settings.modules[timeline]?.isVisible !== false
             })
-          })}
+            .map(({ tracks }) => {
+              return tracks.map(({ track, hits }) => {
+                return hits.map(({ start, stop }) => (
+                  <button
+                    key={`${track}.${start}.${stop}`}
+                    type="button"
+                    onClick={gotoCurrentTime({ videoRef, start })}
+                    aria-label={`${formatPaddedSeconds({ seconds: start })}`}
+                    title={`${formatPaddedSeconds({
+                      seconds: start,
+                    })}-${formatPaddedSeconds({ seconds: stop })}`}
+                    css={{
+                      margin: 0,
+                      border: 0,
+                      zIndex: zIndex.layout.interactive + 1,
+                      position: 'absolute',
+                      top: spacing.base,
+                      bottom: spacing.base,
+                      left: `calc(${(start / duration) * 100}% - ${OFFSET}px)`,
+                      width: WIDTH,
+                      backgroundColor: colors.structure.coal,
+                      padding: spacing.mini,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <div
+                      css={{
+                        backgroundColor: colors.structure.steel,
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    />
+                  </button>
+                ))
+              })
+            })}
+        </div>
       </div>
     </div>
   )
@@ -197,7 +203,9 @@ TimelineAggregate.propTypes = {
   ).isRequired,
   settings: PropTypes.shape({
     filter: PropTypes.string.isRequired,
+    modulesWidth: PropTypes.number.isRequired,
     modules: PropTypes.shape({}).isRequired,
+    zoom: PropTypes.number.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
 }
