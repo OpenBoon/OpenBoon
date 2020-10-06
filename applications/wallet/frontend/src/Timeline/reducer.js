@@ -12,7 +12,7 @@ export const INITIAL_STATE = {
   filter: '',
   modulesWidth: MODULES_MIN_WIDTH,
   modules: {},
-  zoom: 100,
+  zoom: 200,
 }
 
 export const reducer = (

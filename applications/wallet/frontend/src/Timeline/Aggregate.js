@@ -127,7 +127,13 @@ const TimelineAggregate = ({
           )}
         </Menu>
       </div>
-      <div css={{ flex: 1, overflow: 'overlay' }}>
+      <div
+        className="scrollableX"
+        css={{
+          flex: 1,
+          overflow: 'hidden',
+        }}
+      >
         <div
           css={{
             width: `${settings.zoom}%`,

@@ -32,10 +32,11 @@ const TimelineTimelines = ({
 
   return (
     <div
+      className="scrollableY"
       css={{
         flex: 1,
         display: 'flex',
-        overflow: 'overlay',
+        overflow: 'hidden',
         marginLeft: -settings.modulesWidth,
         borderTop: constants.borders.regular.smoke,
       }}
@@ -102,10 +103,10 @@ const TimelineTimelines = ({
       </div>
 
       <div
+        className="scrollableX"
         css={{
           flex: 1,
-          overflowY: 'hidden',
-          overflowX: 'overlay',
+          overflow: 'hidden',
           height: 'fit-content',
         }}
       >

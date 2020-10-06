@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
@@ -22,6 +23,9 @@ import TimelineTimelines from './Timelines'
 
 const TIMELINE_HEIGHT = 200
 
+let scrollLeftPos = 0
+let scrollTopPos = 0
+
 const Timeline = ({ videoRef, length }) => {
   const {
     query: { projectId, assetId },
@@ -36,6 +40,33 @@ const Timeline = ({ videoRef, length }) => {
   const { data: timelines } = useSWR(
     `/api/v1/projects/${projectId}/assets/${assetId}/timelines/`,
   )
+
+  useEffect(() => {
+    const scrollablesX = document.getElementsByClassName('scrollableX')
+    const scrollablesY = document.getElementsByClassName('scrollableY')
+
+    const handleOnWheel = (event) => {
+      event.preventDefault()
+      const newLeft = scrollLeftPos + event.deltaX
+      const newTop = scrollTopPos + event.deltaY
+
+      for (let i = 0; i < scrollablesX.length; i += 1) {
+        scrollablesX[i].scrollLeft = newLeft
+      }
+
+      for (let i = 0; i < scrollablesY.length; i += 1) {
+        scrollablesY[i].scrollTop = newTop
+      }
+
+      scrollLeftPos = newLeft
+      scrollTopPos = newTop
+    }
+
+    document.addEventListener('wheel', handleOnWheel, { passive: false })
+
+    return () =>
+      document.removeEventListener('wheel', handleOnWheel, { passive: false })
+  })
 
   return (
     <ResizeableVertical
@@ -107,7 +138,13 @@ const Timeline = ({ videoRef, length }) => {
             >
               <TimelineFilterTracks settings={settings} dispatch={dispatch} />
 
-              <div css={{ flex: 1, overflow: 'overlay' }}>
+              <div
+                className="scrollableX"
+                css={{
+                  flex: 1,
+                  overflow: 'hidden',
+                }}
+              >
                 <div css={{ width: `${settings.zoom}%` }}>
                   <TimelineRuler
                     length={videoRef.current?.duration || length}
