@@ -41,31 +41,36 @@ const Timeline = ({ videoRef, length }) => {
     `/api/v1/projects/${projectId}/assets/${assetId}/timelines/`,
   )
 
-  useEffect(() => {
-    const scrollablesX = document.getElementsByClassName('scrollableX')
-    const scrollablesY = document.getElementsByClassName('scrollableY')
+  const scrollablesX = document.getElementsByClassName('scrollableX')
+  const scrollablesY = document.getElementsByClassName('scrollableY')
 
+  useEffect(() => {
     const handleOnWheel = (event) => {
       event.preventDefault()
-      const newLeft = scrollLeftPos + event.deltaX
-      const newTop = scrollTopPos + event.deltaY
+
+      const newScrollLeftPos = scrollLeftPos + event.deltaX
+      const newScrollTopPos = scrollTopPos + event.deltaY
 
       for (let i = 0; i < scrollablesX.length; i += 1) {
-        scrollablesX[i].scrollLeft = newLeft
+        scrollablesX[i].scrollLeft = newScrollLeftPos
       }
 
       for (let i = 0; i < scrollablesY.length; i += 1) {
-        scrollablesY[i].scrollTop = newTop
+        scrollablesY[i].scrollTop = newScrollTopPos
       }
 
-      scrollLeftPos = newLeft
-      scrollTopPos = newTop
+      scrollLeftPos = newScrollLeftPos
+      scrollTopPos = newScrollTopPos
     }
 
-    document.addEventListener('wheel', handleOnWheel, { passive: false })
+    document
+      .getElementById('scrollContainer')
+      .addEventListener('wheel', handleOnWheel, { passive: false })
 
     return () =>
-      document.removeEventListener('wheel', handleOnWheel, { passive: false })
+      document
+        .getElementById('scrollContainer')
+        .removeEventListener('wheel', handleOnWheel, { passive: false })
   })
 
   return (
@@ -116,6 +121,7 @@ const Timeline = ({ videoRef, length }) => {
           }}
         >
           <div
+            id="scrollContainer"
             css={{
               flex: 1,
               display: 'flex',
