@@ -95,7 +95,7 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  overflow: overlay;
+  overflow: hidden;
 }
 
 .emotion-85 {
@@ -292,7 +292,7 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-86"
+    className="scrollableX emotion-86"
   >
     <div
       className="emotion-85"
@@ -778,7 +778,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  overflow: overlay;
+  overflow: hidden;
 }
 
 .emotion-135 {
@@ -1399,7 +1399,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
     </div>
   </div>
   <div
-    className="emotion-136"
+    className="scrollableX emotion-136"
   >
     <div
       className="emotion-135"

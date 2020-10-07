@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -9,6 +10,7 @@ import { useLocalStorage } from '../LocalStorage/helpers'
 import Button, { VARIANTS } from '../Button'
 import ResizeableVertical from '../ResizeableVertical'
 
+import { setScroll } from './helpers'
 import { reducer, INITIAL_STATE } from './reducer'
 
 import TimelineControls from './Controls'
@@ -21,6 +23,9 @@ import TimelineAggregate from './Aggregate'
 import TimelineTimelines from './Timelines'
 
 const TIMELINE_HEIGHT = 200
+
+let scrollLeftPos = 0
+let scrollTopPos = 0
 
 const Timeline = ({ videoRef, length }) => {
   const {
@@ -36,6 +41,31 @@ const Timeline = ({ videoRef, length }) => {
   const { data: timelines } = useSWR(
     `/api/v1/projects/${projectId}/assets/${assetId}/timelines/`,
   )
+
+  /* istanbul ignore next */
+  const onMount = useCallback((node) => {
+    if (!node) return
+
+    const scrollablesX = document.getElementsByClassName('scrollableX')
+    const scrollablesY = document.getElementsByClassName('scrollableY')
+
+    const handleOnWheel = (event) => {
+      event.preventDefault()
+
+      const { newScrollLeftPos, newScrollTopPos } = setScroll({
+        event,
+        scrollLeftPos,
+        scrollTopPos,
+        scrollablesX,
+        scrollablesY,
+      })
+
+      scrollLeftPos = newScrollLeftPos
+      scrollTopPos = newScrollTopPos
+    }
+
+    node.addEventListener('wheel', handleOnWheel, { passive: false })
+  }, [])
 
   return (
     <ResizeableVertical
@@ -85,6 +115,7 @@ const Timeline = ({ videoRef, length }) => {
           }}
         >
           <div
+            ref={onMount}
             css={{
               flex: 1,
               display: 'flex',
@@ -107,7 +138,10 @@ const Timeline = ({ videoRef, length }) => {
             >
               <TimelineFilterTracks settings={settings} dispatch={dispatch} />
 
-              <div css={{ flex: 1, overflow: 'overlay' }}>
+              <div
+                className="scrollableX"
+                css={{ flex: 1, overflow: 'hidden' }}
+              >
                 <div css={{ width: `${settings.zoom}%` }}>
                   <TimelineRuler
                     length={videoRef.current?.duration || length}

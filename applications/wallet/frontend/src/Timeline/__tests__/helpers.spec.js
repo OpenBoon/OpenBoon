@@ -2,6 +2,7 @@ import {
   formatPaddedSeconds,
   updatePlayheadPosition,
   getRulerLayout,
+  setScroll,
 } from '../helpers'
 
 describe('<Timeline /> helpers', () => {
@@ -79,6 +80,32 @@ describe('<Timeline /> helpers', () => {
       })
       expect(halfSeconds.length).toBe(50)
       expect(majorStep).toBe(8)
+    })
+  })
+
+  describe('setScroll()', () => {
+    it('should scroll when there is more hidden content', () => {
+      const { newScrollLeftPos, newScrollTopPos } = setScroll({
+        event: { deltaX: 100, deltaY: 100 },
+        scrollLeftPos: 0,
+        scrollTopPos: 0,
+        scrollablesX: [{ scrollWidth: 1000, clientWidth: 500 }],
+        scrollablesY: [{ scrollHeight: 1000, clientHeight: 500 }],
+      })
+      expect(newScrollLeftPos).toBe(100)
+      expect(newScrollTopPos).toBe(100)
+    })
+
+    it('should not scroll when there is no more hidden content', () => {
+      const { newScrollLeftPos, newScrollTopPos } = setScroll({
+        event: { deltaX: 100, deltaY: 100 },
+        scrollLeftPos: 500,
+        scrollTopPos: 500,
+        scrollablesX: [{ scrollWidth: 1000, clientWidth: 500 }],
+        scrollablesY: [{ scrollHeight: 1000, clientHeight: 500 }],
+      })
+      expect(newScrollLeftPos).toBe(500)
+      expect(newScrollTopPos).toBe(500)
     })
   })
 })
