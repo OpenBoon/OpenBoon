@@ -13,7 +13,7 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
         super(KnnFaceRecognitionClassifier, self).__init__()
 
         self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
-        self.add_arg(Argument("sensitivity", "int", default=1000,
+        self.add_arg(Argument("sensitivity", "int", default=1200,
                               toolTip="How sensitive the model is to differences."))
 
         self.app_model = None
@@ -41,7 +41,7 @@ class KnnFaceRecognitionClassifier(AssetProcessor):
         for i, face in enumerate(faces):
             if dist[i][0] < min_distance:
                 label = predictions[i]
-                score = 1.0 - max(0, min(1, (dist[i][0] - 800) / (1100 - 800)))
+                score = 1.0 - max(0, min(1, (dist[i][0] - 200) / (min_distance - 200)))
             else:
                 label = 'Unrecognized'
                 score = 0.0
