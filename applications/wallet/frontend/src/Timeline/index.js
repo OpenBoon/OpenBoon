@@ -11,6 +11,7 @@ import Button, { VARIANTS } from '../Button'
 import ResizeableVertical from '../ResizeableVertical'
 
 import { reducer, INITIAL_STATE } from './reducer'
+import { setScroll } from './helpers'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
@@ -41,6 +42,7 @@ const Timeline = ({ videoRef, length }) => {
     `/api/v1/projects/${projectId}/assets/${assetId}/timelines/`,
   )
 
+  /* istanbul ignore next */
   const onMount = useCallback((node) => {
     if (!node) return
 
@@ -50,28 +52,13 @@ const Timeline = ({ videoRef, length }) => {
     const handleOnWheel = (event) => {
       event.preventDefault()
 
-      const maxScrollX =
-        scrollablesX[0].scrollWidth - scrollablesX[0].clientWidth
-      const maxScrollY =
-        scrollablesY[0].scrollHeight - scrollablesY[0].clientHeight
-
-      const newScrollLeftPos = Math.min(
-        maxScrollX,
-        Math.max(0, scrollLeftPos + event.deltaX),
-      )
-
-      const newScrollTopPos = Math.min(
-        maxScrollY,
-        Math.max(0, scrollTopPos + event.deltaY),
-      )
-
-      for (let i = 0; i < scrollablesX.length; i += 1) {
-        scrollablesX[i].scrollLeft = newScrollLeftPos
-      }
-
-      for (let i = 0; i < scrollablesY.length; i += 1) {
-        scrollablesY[i].scrollTop = newScrollTopPos
-      }
+      const { newScrollLeftPos, newScrollTopPos } = setScroll({
+        event,
+        scrollLeftPos,
+        scrollTopPos,
+        scrollablesX,
+        scrollablesY,
+      })
 
       scrollLeftPos = newScrollLeftPos
       scrollTopPos = newScrollTopPos

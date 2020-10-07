@@ -84,3 +84,36 @@ export const gotoCurrentTime = ({ videoRef, start }) => () => {
   // eslint-disable-next-line no-param-reassign
   videoRef.current.currentTime = start
 }
+
+export const setScroll = ({
+  event,
+  scrollLeftPos,
+  scrollTopPos,
+  scrollablesX,
+  scrollablesY,
+}) => {
+  const maxScrollX = scrollablesX[0].scrollWidth - scrollablesX[0].clientWidth
+  const maxScrollY = scrollablesY[0].scrollHeight - scrollablesY[0].clientHeight
+
+  const newScrollLeftPos = Math.min(
+    maxScrollX,
+    Math.max(0, scrollLeftPos + event.deltaX),
+  )
+
+  const newScrollTopPos = Math.min(
+    maxScrollY,
+    Math.max(0, scrollTopPos + event.deltaY),
+  )
+
+  for (let i = 0; i < scrollablesX.length; i += 1) {
+    // eslint-disable-next-line no-param-reassign
+    scrollablesX[i].scrollLeft = newScrollLeftPos
+  }
+
+  for (let i = 0; i < scrollablesY.length; i += 1) {
+    // eslint-disable-next-line no-param-reassign
+    scrollablesY[i].scrollTop = newScrollTopPos
+  }
+
+  return { newScrollLeftPos, newScrollTopPos }
+}

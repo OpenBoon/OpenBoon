@@ -529,73 +529,6 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
                   "stop": 12,
                 },
               ],
-              "track": "Logo 1",
-            },
-            Object {
-              "hits": Array [
-                Object {
-                  "start": 0,
-                  "stop": 2,
-                },
-                Object {
-                  "start": 4,
-                  "stop": 5,
-                },
-                Object {
-                  "start": 10,
-                  "stop": 12,
-                },
-              ],
-              "track": "Logo 2",
-            },
-            Object {
-              "hits": Array [
-                Object {
-                  "start": 0,
-                  "stop": 2,
-                },
-                Object {
-                  "start": 4,
-                  "stop": 5,
-                },
-                Object {
-                  "start": 10,
-                  "stop": 12,
-                },
-              ],
-              "track": "Logo 3",
-            },
-          ]
-        }
-        videoRef={
-          Object {
-            "current": Object {
-              "duration": 18,
-            },
-          }
-        }
-      />
-      <TimelineTracks
-        isOpen={false}
-        length={18}
-        moduleColor="#ebb52e"
-        tracks={
-          Array [
-            Object {
-              "hits": Array [
-                Object {
-                  "start": 0,
-                  "stop": 2,
-                },
-                Object {
-                  "start": 4,
-                  "stop": 5,
-                },
-                Object {
-                  "start": 10,
-                  "stop": 12,
-                },
-              ],
               "track": "Object 1",
             },
             Object {
@@ -631,6 +564,73 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
                 },
               ],
               "track": "Object 3",
+            },
+          ]
+        }
+        videoRef={
+          Object {
+            "current": Object {
+              "duration": 18,
+            },
+          }
+        }
+      />
+      <TimelineTracks
+        isOpen={false}
+        length={18}
+        moduleColor="#ebb52e"
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Logo 1",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Logo 2",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Logo 3",
             },
           ]
         }
