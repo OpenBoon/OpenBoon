@@ -7,6 +7,7 @@ from .util import get_clarifai_app
 __all__ = [
     'ClarifaiLabelDetectionProcessor',
     'ClarifaiFoodDetectionProcessor',
+    'ClarifaiTravelDetectionProcessor',
     'ClarifaiApparelDetectionProcessor',
     'ClarifaiWeddingDetectionProcessor',
     'ClarifaiExplicitDetectionProcessor',
@@ -88,6 +89,14 @@ class ClarifaiFoodDetectionProcessor(AbstractClarifaiProcessor):
     def __init__(self):
         super(ClarifaiFoodDetectionProcessor, self).__init__()
         self.model_name = 'food-model'
+
+
+class ClarifaiTravelDetectionProcessor(AbstractClarifaiProcessor):
+    """ Clarifai travel detection"""
+
+    def __init__(self):
+        super(ClarifaiTravelDetectionProcessor, self).__init__()
+        self.model_name = 'travel-model'
 
 
 class ClarifaiApparelDetectionProcessor(AbstractClarifaiProcessor):

@@ -53,6 +53,19 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
     @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
+    def test_travel_process(self, _, proxy_path_patch):
+        proxy_path_patch.return_value = self.image_path
+
+        processor = self.init_processor(ClarifaiTravelDetectionProcessor())
+        processor.process(self.frame)
+
+        analysis = self.frame.asset.get_analysis('clarifai-travel-model')
+        assert 'Winter' in get_prediction_labels(analysis)
+        assert 'labels' in analysis['type']
+        assert 7 == analysis['count']
+
+    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch(client_patch, side_effect=MockClarifaiApp)
     def test_apparel_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
@@ -63,19 +76,6 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'Earring' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 6 == analysis['count']
-
-    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
-    @patch(client_patch, side_effect=MockClarifaiApp)
-    def test_wedding_process(self, _, proxy_path_patch):
-        proxy_path_patch.return_value = self.image_path
-
-        processor = self.init_processor(ClarifaiWeddingDetectionProcessor())
-        processor.process(self.frame)
-
-        analysis = self.frame.asset.get_analysis('clarifai-wedding-model')
-        assert 'bride' in get_prediction_labels(analysis)
-        assert 'labels' in analysis['type']
-        assert 20 == analysis['count']
 
     @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
@@ -134,6 +134,7 @@ class PublicModels:
     def __init__(self):
         self.general_model = GeneralModel()
         self.food_model = FoodModel()
+        self.travel_model = TravelModel()
         self.apparel_model = ApparelModel()
         self.wedding_model = WeddingModel()
         self.nsfw_model = ExplicitModel()
@@ -150,6 +151,12 @@ class GeneralModel:
 class FoodModel:
     def predict_by_filename(self, filename):
         with open(os.path.dirname(__file__) + "/mock_data/clarifai_food.rsp") as fp:
+            return eval(fp.read())
+
+
+class TravelModel:
+    def predict_by_filename(self, filename):
+        with open(os.path.dirname(__file__) + "/mock_data/clarifai_travel.rsp") as fp:
             return eval(fp.read())
 
 
