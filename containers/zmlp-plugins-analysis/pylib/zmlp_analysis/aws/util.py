@@ -9,9 +9,16 @@ def get_zvi_rekognition_client():
     Returns:
         boto3.client: A boto3 client for recognition
     """
+    key = os.environ.get('ZORROA_AWS_KEY')
+    secret = os.environ.get('ZORROA_AWS_SECRET')
+    region = os.environ.get('ZORROA_AWS_REGION', 'us-east-2')
+
+    if not key or not secret:
+        raise RuntimeError('AWS support is not setup for this environment.')
+
     return boto3.client(
         'rekognition',
-        region_name='us-east-2',
-        aws_access_key_id=os.environ['ZORROA_AWS_KEY'],
-        aws_secret_access_key=os.environ['ZORROA_AWS_SECRET']
+        region_name=region,
+        aws_access_key_id=key,
+        aws_secret_access_key=secret
     )

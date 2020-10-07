@@ -248,7 +248,9 @@ class ImageProxyProcessor(AssetProcessor):
 
         logger.debug("Running cmd: {}".format(" ".join(cmd)))
         with StopWatch("Create web proxy"):
-            subprocess.check_call(cmd, shell=False)
+            subprocess.check_call(cmd, shell=False,
+                                  stdout=subprocess.DEVNULL,
+                                  stderr=subprocess.DEVNULL)
         attrs = {"width": width, "height": height}
         prx = file_storage.assets.store_file(output_path, asset, "web-proxy",
                                              "web-proxy.jpg", attrs)

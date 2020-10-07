@@ -226,6 +226,17 @@ class ProcessorExecutorTests(unittest.TestCase):
         instance = self.pe.new_processor_instance(ref)
         assert instance.__class__.__name__ == "TestProcessor"
 
+    def test_new_processor_init_failure(self):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {"raise_on_init": True},
+            "image": TEST_IMAGE,
+        }
+        wrapper = self.pe.get_processor_wrapper(ref)
+        assert wrapper.instance is None
+        errors = self.emitter.get_events("error")
+        assert len(errors) == 1
+
     def test_is_aleady_processed(self):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
