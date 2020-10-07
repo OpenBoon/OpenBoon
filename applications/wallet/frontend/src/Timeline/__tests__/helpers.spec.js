@@ -5,6 +5,8 @@ import {
   setScroll,
 } from '../helpers'
 
+const noop = () => () => {}
+
 describe('<Timeline /> helpers', () => {
   describe('formatPaddedSeconds()', () => {
     it('should format not a number', () => {
@@ -99,9 +101,7 @@ describe('<Timeline /> helpers', () => {
         configurable: true,
       })
 
-      setScroll({
-        event: { deltaX: 100, deltaY: 100 },
-      })
+      setScroll({ deltaX: 100, deltaY: 100, preventDefault: noop })
       expect(scrollable.scrollLeft).toBe(100)
       expect(scrollable.scrollTop).toBe(100)
     })
@@ -121,9 +121,7 @@ describe('<Timeline /> helpers', () => {
         configurable: true,
       })
 
-      setScroll({
-        event: { deltaX: 100, deltaY: 100 },
-      })
+      setScroll({ deltaX: 100, deltaY: 100, preventDefault: noop })
 
       expect(scrollable.scrollLeft).toBe(0)
       expect(scrollable.scrollTop).toBe(0)

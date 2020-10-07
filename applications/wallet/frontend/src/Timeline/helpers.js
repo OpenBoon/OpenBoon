@@ -85,7 +85,9 @@ export const gotoCurrentTime = ({ videoRef, start }) => () => {
   videoRef.current.currentTime = start
 }
 
-export const setScroll = ({ event }) => {
+export const setScroll = (event) => {
+  event.preventDefault()
+
   const scrollables = document.querySelectorAll('.scrollable')
 
   scrollables.forEach((scrollable) => {

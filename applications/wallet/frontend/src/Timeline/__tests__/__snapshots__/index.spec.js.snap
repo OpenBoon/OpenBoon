@@ -240,6 +240,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
     >
       <div
         className="emotion-8"
+        id="scrollContainer"
       >
         <div
           className="emotion-4"
@@ -586,6 +587,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
     >
       <div
         className="emotion-8"
+        id="scrollContainer"
       >
         <div
           className="emotion-4"
@@ -916,6 +918,7 @@ exports[`<Timeline /> should render properly 1`] = `
     >
       <div
         className="emotion-8"
+        id="scrollContainer"
       >
         <div
           className="emotion-4"

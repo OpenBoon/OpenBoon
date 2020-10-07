@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -39,17 +39,19 @@ const Timeline = ({ videoRef, length }) => {
     `/api/v1/projects/${projectId}/assets/${assetId}/timelines/`,
   )
 
-  /* istanbul ignore next */
-  const onMount = useCallback((node) => {
-    if (!node) return
+  useEffect(() => {
+    document
+      .getElementById('scrollContainer')
+      .addEventListener('wheel', setScroll, {
+        passive: false,
+      })
 
-    const handleOnWheel = (event) => {
-      event.preventDefault()
-
-      setScroll({ event })
-    }
-
-    node.addEventListener('wheel', handleOnWheel, { passive: false })
+    return () =>
+      document
+        .getElementById('scrollContainer')
+        .removeEventListener('wheel', setScroll, {
+          passive: false,
+        })
   }, [])
 
   return (
@@ -100,7 +102,7 @@ const Timeline = ({ videoRef, length }) => {
           }}
         >
           <div
-            ref={onMount}
+            id="scrollContainer"
             css={{
               flex: 1,
               display: 'flex',
