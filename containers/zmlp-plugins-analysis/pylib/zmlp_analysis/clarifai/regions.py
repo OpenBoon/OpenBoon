@@ -24,13 +24,12 @@ class AbstractClarifaiProcessor(AssetProcessor):
     file_types = FileTypes.images | FileTypes.documents
 
     namespace = 'clarifai'
-    model_name = 'general-model'
 
-    def __init__(self, reactor=None):
+    def __init__(self, model_name, reactor=None):
         super(AbstractClarifaiProcessor, self).__init__()
         self.add_arg(Argument('debug', 'bool', default=False))
+        self.model_name = model_name
         self.reactor = reactor
-
         self.clarifai = None
 
     def init(self):
@@ -67,13 +66,11 @@ class ClarifaiCelebrityDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai label detection"""
 
     def __init__(self):
-        super(ClarifaiCelebrityDetectionProcessor, self).__init__()
-        self.model_name = 'celebrity-model'
+        super(ClarifaiCelebrityDetectionProcessor, self).__init__('celebrity-model')
 
 
 class ClarifaiDemographicsDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai label detection"""
 
     def __init__(self):
-        super(ClarifaiDemographicsDetectionProcessor, self).__init__()
-        self.model_name = 'demographics-model'
+        super(ClarifaiDemographicsDetectionProcessor, self).__init__('demographics-model')

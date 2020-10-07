@@ -36,14 +36,13 @@ class AbstractClarifaiProcessor(AssetProcessor):
     file_types = FileTypes.images | FileTypes.documents
 
     namespace = 'clarifai'
-    model_name = 'general-model'
 
-    def __init__(self, reactor=None):
+    def __init__(self, model_name, reactor=None):
         super(AbstractClarifaiProcessor, self).__init__()
         self.add_arg(Argument('debug', 'bool', default=False))
         self.reactor = reactor
-
         self.clarifai = None
+        self.model_name = model_name
 
     def init(self):
         self.clarifai = get_clarifai_app()
@@ -79,61 +78,53 @@ class ClarifaiLabelDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai label detection"""
 
     def __init__(self):
-        super(ClarifaiLabelDetectionProcessor, self).__init__()
-        self.model_name = 'general-model'
+        super(ClarifaiLabelDetectionProcessor, self).__init__('general-model')
 
 
 class ClarifaiFoodDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai food detection"""
 
     def __init__(self):
-        super(ClarifaiFoodDetectionProcessor, self).__init__()
-        self.model_name = 'food-model'
+        super(ClarifaiFoodDetectionProcessor, self).__init__('food-model')
 
 
 class ClarifaiTravelDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai travel detection"""
 
     def __init__(self):
-        super(ClarifaiTravelDetectionProcessor, self).__init__()
-        self.model_name = 'travel-model'
+        super(ClarifaiTravelDetectionProcessor, self).__init__('travel-model')
 
 
 class ClarifaiApparelDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai apparel detection"""
 
     def __init__(self):
-        super(ClarifaiApparelDetectionProcessor, self).__init__()
-        self.model_name = 'apparel-model'
+        super(ClarifaiApparelDetectionProcessor, self).__init__('apparel-model')
 
 
 class ClarifaiWeddingDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai wedding detection"""
 
     def __init__(self):
-        super(ClarifaiWeddingDetectionProcessor, self).__init__()
-        self.model_name = 'wedding-model'
+        super(ClarifaiWeddingDetectionProcessor, self).__init__('wedding-model')
 
 
 class ClarifaiExplicitDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai explicit detection"""
 
     def __init__(self):
-        super(ClarifaiExplicitDetectionProcessor, self).__init__()
-        self.model_name = 'nsfw-model'
+        super(ClarifaiExplicitDetectionProcessor, self).__init__('nsfw-model')
 
 
 class ClarifaiModerationDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai moderation detection"""
 
     def __init__(self):
-        super(ClarifaiModerationDetectionProcessor, self).__init__()
-        self.model_name = 'moderation-model'
+        super(ClarifaiModerationDetectionProcessor, self).__init__('moderation-model')
 
 
 class ClarifaiTexturesDetectionProcessor(AbstractClarifaiProcessor):
     """ Clarifai textures detection"""
 
     def __init__(self):
-        super(ClarifaiTexturesDetectionProcessor, self).__init__()
-        self.model_name = 'textures-and-patterns-model'
+        super(ClarifaiTexturesDetectionProcessor, self).__init__('textures-and-patterns-model')
