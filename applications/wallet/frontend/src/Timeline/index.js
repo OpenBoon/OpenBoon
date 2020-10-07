@@ -24,9 +24,6 @@ import TimelineTimelines from './Timelines'
 
 const TIMELINE_HEIGHT = 200
 
-let scrollLeftPos = 0
-let scrollTopPos = 0
-
 const Timeline = ({ videoRef, length }) => {
   const {
     query: { projectId, assetId },
@@ -46,22 +43,10 @@ const Timeline = ({ videoRef, length }) => {
   const onMount = useCallback((node) => {
     if (!node) return
 
-    const scrollablesX = document.getElementsByClassName('scrollableX')
-    const scrollablesY = document.getElementsByClassName('scrollableY')
-
     const handleOnWheel = (event) => {
       event.preventDefault()
 
-      const { newScrollLeftPos, newScrollTopPos } = setScroll({
-        event,
-        scrollLeftPos,
-        scrollTopPos,
-        scrollablesX,
-        scrollablesY,
-      })
-
-      scrollLeftPos = newScrollLeftPos
-      scrollTopPos = newScrollTopPos
+      setScroll({ event })
     }
 
     node.addEventListener('wheel', handleOnWheel, { passive: false })
@@ -138,10 +123,7 @@ const Timeline = ({ videoRef, length }) => {
             >
               <TimelineFilterTracks settings={settings} dispatch={dispatch} />
 
-              <div
-                className="scrollableX"
-                css={{ flex: 1, overflow: 'hidden' }}
-              >
+              <div className="scrollable" css={{ flex: 1, overflow: 'hidden' }}>
                 <div css={{ width: `${settings.zoom}%` }}>
                   <TimelineRuler
                     length={videoRef.current?.duration || length}

@@ -85,27 +85,48 @@ describe('<Timeline /> helpers', () => {
 
   describe('setScroll()', () => {
     it('should scroll when there is more hidden content', () => {
-      const { newScrollLeftPos, newScrollTopPos } = setScroll({
-        event: { deltaX: 100, deltaY: 100 },
-        scrollLeftPos: 0,
-        scrollTopPos: 0,
-        scrollablesX: [{ scrollWidth: 1000, clientWidth: 500 }],
-        scrollablesY: [{ scrollHeight: 1000, clientHeight: 500 }],
+      const scrollable = {
+        scrollLeft: 0,
+        scrollTop: 0,
+        scrollWidth: 1000,
+        clientWidth: 500,
+        scrollHeight: 1000,
+        clientHeight: 500,
+      }
+
+      Object.defineProperty(document, 'getElementsByClassName', {
+        value: () => [scrollable],
+        configurable: true,
       })
-      expect(newScrollLeftPos).toBe(100)
-      expect(newScrollTopPos).toBe(100)
+
+      setScroll({
+        event: { deltaX: 100, deltaY: 100 },
+      })
+      expect(scrollable.scrollLeft).toBe(100)
+      expect(scrollable.scrollTop).toBe(100)
     })
 
     it('should not scroll when there is no more hidden content', () => {
-      const { newScrollLeftPos, newScrollTopPos } = setScroll({
-        event: { deltaX: 100, deltaY: 100 },
-        scrollLeftPos: 500,
-        scrollTopPos: 500,
-        scrollablesX: [{ scrollWidth: 1000, clientWidth: 500 }],
-        scrollablesY: [{ scrollHeight: 1000, clientHeight: 500 }],
+      const scrollable = {
+        scrollLeft: 0,
+        scrollTop: 0,
+        scrollWidth: 500,
+        clientWidth: 500,
+        scrollHeight: 500,
+        clientHeight: 500,
+      }
+
+      Object.defineProperty(document, 'getElementsByClassName', {
+        value: () => [scrollable],
+        configurable: true,
       })
-      expect(newScrollLeftPos).toBe(500)
-      expect(newScrollTopPos).toBe(500)
+
+      setScroll({
+        event: { deltaX: 100, deltaY: 100 },
+      })
+
+      expect(scrollable.scrollLeft).toBe(0)
+      expect(scrollable.scrollTop).toBe(0)
     })
   })
 })

@@ -276,7 +276,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
             }
           />
           <div
-            className="scrollableX emotion-6"
+            className="scrollable emotion-6"
           >
             <div
               className="emotion-5"
@@ -622,7 +622,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
             }
           />
           <div
-            className="scrollableX emotion-6"
+            className="scrollable emotion-6"
           >
             <div
               className="emotion-5"
@@ -944,7 +944,7 @@ exports[`<Timeline /> should render properly 1`] = `
             }
           />
           <div
-            className="scrollableX emotion-6"
+            className="scrollable emotion-6"
           >
             <div
               className="emotion-5"

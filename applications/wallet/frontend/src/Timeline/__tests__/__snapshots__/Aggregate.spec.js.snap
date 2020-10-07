@@ -292,7 +292,7 @@ exports[`<TimelineAggregate /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="scrollableX emotion-86"
+    className="scrollable emotion-86"
   >
     <div
       className="emotion-85"
@@ -1399,7 +1399,7 @@ exports[`<TimelineAggregate /> should render properly 2`] = `
     </div>
   </div>
   <div
-    className="scrollableX emotion-136"
+    className="scrollable emotion-136"
   >
     <div
       className="emotion-135"
