@@ -81,4 +81,47 @@ describe('<Timeline />', () => {
 
     component.unmount()
   })
+
+  it('should do nothing when the scroll container has not yet mounted', () => {
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+    })
+
+    Object.defineProperties(
+      document,
+      {
+        getElementById: {
+          value: () => {},
+          configurable: true,
+        },
+      },
+      {},
+    )
+
+    const component = TestRenderer.create(
+      <Timeline
+        length={18}
+        videoRef={{
+          current: {
+            play: noop,
+            pause: noop,
+            addEventListener: noop,
+            removeEventListener: noop,
+            currentTime: 0,
+            duration: 18,
+            paused: true,
+          },
+        }}
+      />,
+    )
+
+    // Open timeline
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Open Timeline' })
+        .props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

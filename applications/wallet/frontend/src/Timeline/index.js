@@ -40,18 +40,18 @@ const Timeline = ({ videoRef, length }) => {
   )
 
   useEffect(() => {
-    document
-      .getElementById('scrollContainer')
-      .addEventListener('wheel', setScroll, {
-        passive: false,
-      })
+    const scrollContainer = document.getElementById('scrollContainer')
+
+    if (!scrollContainer) return () => {}
+
+    scrollContainer.addEventListener('wheel', setScroll, {
+      passive: false,
+    })
 
     return () =>
-      document
-        .getElementById('scrollContainer')
-        .removeEventListener('wheel', setScroll, {
-          passive: false,
-        })
+      scrollContainer.removeEventListener('wheel', setScroll, {
+        passive: false,
+      })
   }, [])
 
   return (
