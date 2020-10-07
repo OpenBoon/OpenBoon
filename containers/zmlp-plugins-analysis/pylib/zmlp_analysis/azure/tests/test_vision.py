@@ -14,6 +14,7 @@ RYAN_GOSLING = zorroa_test_path('images/set08/meme.jpg')
 EIFFEL_TOWER = zorroa_test_path('images/set11/eiffel_tower.jpg')
 LOGOS = zorroa_test_path('images/set11/logos.jpg')
 NSFW = zorroa_test_path('images/set10/nsfw1.jpg')
+FACES = zorroa_test_path('images/set01/faces.jpg')
 
 
 class MockCognitiveServicesCredentials:
@@ -197,6 +198,23 @@ class AzureExplicitContentDetectionProcessorTests(PluginUnitTestCase):
         assert 'racy' in get_prediction_labels(analysis)
 
 
+class AzureFaceDetectionProcessorTests(PluginUnitTestCase):
+    namespace = 'azure-face-detection'
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=MockACVClient)
+    def test_predict(self, p_path, c_path, proxy_patch):
+        proxy_patch.return_value = FACES
+        frame = Frame(TestAsset(FACES))
+
+        processor = self.init_processor(AzureVisionFaceDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.namespace)
+        assert 'Male' in get_prediction_labels(analysis)
+
+
 class MockDetectResult:
 
     @property
@@ -246,6 +264,10 @@ class MockImageAnalysis:
         return MockExplicit()
 
     @property
+    def faces(self):
+        return [MockFaces()]
+
+    @property
     def result(self):
         return {
             'celebrities': [{
@@ -291,25 +313,6 @@ class MockBrands:
         return MockBoundingBox()
 
 
-class MockBoundingBox:
-
-    @property
-    def x(self):
-        return 0
-
-    @property
-    def y(self):
-        return 0
-
-    @property
-    def w(self):
-        return 1
-
-    @property
-    def h(self):
-        return 1
-
-
 class MockCategories:
 
     @property
@@ -319,6 +322,21 @@ class MockCategories:
     @property
     def score(self):
         return 0.935
+
+
+class MockFaces:
+
+    @property
+    def gender(self):
+        return 'Male'
+
+    @property
+    def age(self):
+        return '5'
+
+    @property
+    def face_rectangle(self):
+        return MockBoundingBox()
 
 
 class MockExplicit:
@@ -338,3 +356,38 @@ class MockExplicit:
     @property
     def is_racy_content(self):
         return True if self.racy_score() >= 0.50 else False
+
+
+class MockBoundingBox:
+
+    @property
+    def x(self):
+        return 0
+
+    @property
+    def y(self):
+        return 0
+
+    @property
+    def w(self):
+        return 1
+
+    @property
+    def h(self):
+        return 1
+
+    @property
+    def left(self):
+        return 0
+
+    @property
+    def top(self):
+        return 0
+
+    @property
+    def width(self):
+        return 1
+
+    @property
+    def height(self):
+        return 1
