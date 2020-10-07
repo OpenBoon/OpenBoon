@@ -1,7 +1,6 @@
 # flake8: noqa
 import os
 from unittest.mock import patch
-
 import pytest
 
 from zmlp_analysis.clarifai.labels import *
