@@ -34,7 +34,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(ComputerVisionObjectDetection())
+        processor = self.init_processor(AzureVisionObjectDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -46,7 +46,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(ComputerVisionLabelDetection())
+        processor = self.init_processor(AzureVisionLabelDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -58,7 +58,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(ComputerVisionImageDescription())
+        processor = self.init_processor(AzureVisionImageDescription())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -71,7 +71,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(ComputerVisionImageTagsDetection())
+        processor = self.init_processor(AzureVisionImageTagsDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -83,7 +83,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = RYAN_GOSLING
         frame = Frame(TestAsset(RYAN_GOSLING))
 
-        processor = self.init_processor(ComputerVisionCelebrityDetection())
+        processor = self.init_processor(AzureVisionCelebrityDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -95,7 +95,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = EIFFEL_TOWER
         frame = Frame(TestAsset(EIFFEL_TOWER))
 
-        processor = self.init_processor(ComputerVisionLandmarkDetection())
+        processor = self.init_processor(AzureVisionLandmarkDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -107,7 +107,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = LOGOS
         frame = Frame(TestAsset(LOGOS))
 
-        processor = self.init_processor(ComputerVisionLogoDetection())
+        processor = self.init_processor(AzureVisionLogoDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -119,7 +119,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = EIFFEL_TOWER
         frame = Frame(TestAsset(EIFFEL_TOWER))
 
-        processor = self.init_processor(ComputerVisionCategoryDetection())
+        processor = self.init_processor(AzureVisionCategoryDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)
@@ -131,7 +131,7 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         proxy_patch.return_value = NSFW
         frame = Frame(TestAsset(NSFW))
 
-        processor = self.init_processor(ComputerVisionExplicitContentDetection())
+        processor = self.init_processor(AzureVisionExplicitContentDetection())
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(namespace)

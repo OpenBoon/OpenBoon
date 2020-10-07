@@ -7,20 +7,20 @@ from zmlpsdk.proxy import get_proxy_level_path
 from .util import get_zvi_azure_cv_client
 
 __all__ = [
-    'ComputerVisionObjectDetection',
-    'ComputerVisionLabelDetection',
-    'ComputerVisionImageDescription',
-    'ComputerVisionImageTagsDetection',
-    'ComputerVisionCelebrityDetection',
-    'ComputerVisionLandmarkDetection',
-    'ComputerVisionLogoDetection',
-    'ComputerVisionCategoryDetection',
-    'ComputerVisionExplicitContentDetection',
+    'AzureVisionObjectDetection',
+    'AzureVisionLabelDetection',
+    'AzureVisionImageDescription',
+    'AzureVisionImageTagsDetection',
+    'AzureVisionCelebrityDetection',
+    'AzureVisionLandmarkDetection',
+    'AzureVisionLogoDetection',
+    'AzureVisionCategoryDetection',
+    'AzureVisionExplicitContentDetection',
 
 ]
 
 
-class AbstractComputerVisionProcessor(AssetProcessor):
+class AbstractAzureVisionProcessor(AssetProcessor):
     """
     This base class is used for all Microsoft Computer Vision features.  Subclasses
     only have to implement the "predict(asset, image) method.
@@ -29,7 +29,7 @@ class AbstractComputerVisionProcessor(AssetProcessor):
     file_types = FileTypes.images | FileTypes.documents
 
     def __init__(self, reactor=None):
-        super(AbstractComputerVisionProcessor, self).__init__()
+        super(AbstractAzureVisionProcessor, self).__init__()
         self.add_arg(Argument('debug', 'bool', default=False))
         self.reactor = reactor
 
@@ -85,13 +85,13 @@ class AbstractComputerVisionProcessor(AssetProcessor):
         self.reactor.emit_status(msg)
 
 
-class ComputerVisionObjectDetection(AbstractComputerVisionProcessor):
+class AzureVisionObjectDetection(AbstractAzureVisionProcessor):
     """Object detection for an image using Azure Computer Vision """
 
     namespace = 'azure-object-detection'
 
     def __init__(self):
-        super(ComputerVisionObjectDetection, self).__init__()
+        super(AzureVisionObjectDetection, self).__init__()
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -140,13 +140,13 @@ class ComputerVisionObjectDetection(AbstractComputerVisionProcessor):
         return labels
 
 
-class ComputerVisionLabelDetection(AbstractComputerVisionProcessor):
+class AzureVisionLabelDetection(AbstractAzureVisionProcessor):
     """Get labels for an image using Azure Computer Vision """
 
     namespace = 'azure-label-detection'
 
     def __init__(self):
-        super(ComputerVisionLabelDetection, self).__init__()
+        super(AzureVisionLabelDetection, self).__init__()
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -169,13 +169,13 @@ class ComputerVisionLabelDetection(AbstractComputerVisionProcessor):
         return [(r.name, r.confidence) for r in response.tags]
 
 
-class ComputerVisionImageDescription(AbstractComputerVisionProcessor):
+class AzureVisionImageDescription(AbstractAzureVisionProcessor):
     """Get image descriptions for an image using Azure Computer Vision """
 
     namespace = 'azure-image-description-detection'
 
     def __init__(self):
-        super(ComputerVisionImageDescription, self).__init__()
+        super(AzureVisionImageDescription, self).__init__()
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -195,13 +195,13 @@ class ComputerVisionImageDescription(AbstractComputerVisionProcessor):
         return [(r.text, r.confidence) for r in response.captions]
 
 
-class ComputerVisionImageTagsDetection(AbstractComputerVisionProcessor):
+class AzureVisionImageTagsDetection(AbstractAzureVisionProcessor):
     """Get image tags for an image using Azure Computer Vision """
 
     namespace = 'azure-tag-detection'
 
     def __init__(self):
-        super(ComputerVisionImageTagsDetection, self).__init__()
+        super(AzureVisionImageTagsDetection, self).__init__()
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -221,14 +221,14 @@ class ComputerVisionImageTagsDetection(AbstractComputerVisionProcessor):
         return [(r.name, r.confidence) for r in response.tags]
 
 
-class ComputerVisionCelebrityDetection(AbstractComputerVisionProcessor):
+class AzureVisionCelebrityDetection(AbstractAzureVisionProcessor):
     """Celebrity detection for an image using Azure Computer Vision """
 
     namespace = 'azure-celebrity-detection'
     model = "celebrities"
 
     def __init__(self):
-        super(ComputerVisionCelebrityDetection, self).__init__()
+        super(AzureVisionCelebrityDetection, self).__init__()
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -277,14 +277,14 @@ class ComputerVisionCelebrityDetection(AbstractComputerVisionProcessor):
         return labels
 
 
-class ComputerVisionLandmarkDetection(AbstractComputerVisionProcessor):
+class AzureVisionLandmarkDetection(AbstractAzureVisionProcessor):
     """Landmark detection for an image using Azure Computer Vision """
 
     namespace = 'azure-landmark-detection'
     model = "landmarks"
 
     def __init__(self):
-        super(ComputerVisionLandmarkDetection, self).__init__()
+        super(AzureVisionLandmarkDetection, self).__init__()
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -304,14 +304,14 @@ class ComputerVisionLandmarkDetection(AbstractComputerVisionProcessor):
         return [(r['name'], r['confidence']) for r in response.result[self.model]]
 
 
-class ComputerVisionLogoDetection(AbstractComputerVisionProcessor):
+class AzureVisionLogoDetection(AbstractAzureVisionProcessor):
     """Logo detection for an image using Azure Computer Vision """
 
     image_features = ['brands']
     namespace = 'azure-logo-detection'
 
     def __init__(self):
-        super(ComputerVisionLogoDetection, self).__init__()
+        super(AzureVisionLogoDetection, self).__init__()
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -363,14 +363,14 @@ class ComputerVisionLogoDetection(AbstractComputerVisionProcessor):
         return labels
 
 
-class ComputerVisionCategoryDetection(AbstractComputerVisionProcessor):
+class AzureVisionCategoryDetection(AbstractAzureVisionProcessor):
     """Category detection for an image using Azure Computer Vision """
 
     image_features = ['categories']
     namespace = 'azure-category-detection'
 
     def __init__(self):
-        super(ComputerVisionCategoryDetection, self).__init__()
+        super(AzureVisionCategoryDetection, self).__init__()
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -393,14 +393,14 @@ class ComputerVisionCategoryDetection(AbstractComputerVisionProcessor):
         return [(r.name, r.score) for r in response.categories]
 
 
-class ComputerVisionExplicitContentDetection(AbstractComputerVisionProcessor):
+class AzureVisionExplicitContentDetection(AbstractAzureVisionProcessor):
     """Explicit Content detection for an image using Azure Computer Vision """
 
     image_features = ['adult']
     namespace = 'azure-explicit-detection'
 
     def __init__(self):
-        super(ComputerVisionExplicitContentDetection, self).__init__()
+        super(AzureVisionExplicitContentDetection, self).__init__()
 
     def predict(self, path):
         """ Make a prediction for an image path.
