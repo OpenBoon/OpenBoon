@@ -67,6 +67,7 @@ class TaskSpec(
 
 open class PendingTasksStats(
     val pendingTasks: Long = 0L,
+    val runningTasks: Long = 0L,
     val maxRunningTasks: Long = 0L
 )
 
