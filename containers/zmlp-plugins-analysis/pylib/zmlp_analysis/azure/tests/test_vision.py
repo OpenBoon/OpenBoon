@@ -1,6 +1,8 @@
 # flake8: noqa
 from unittest.mock import patch
 
+from azure.cognitiveservices.vision.computervision.models import OperationStatusCodes
+
 from zmlp_analysis.azure import *
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
@@ -42,6 +44,12 @@ class MockACVClient:
 
     def analyze_image_by_domain_in_stream(self, model=None, image=None):
         return MockImageAnalysis()
+
+    def read_in_stream(self, image=None, raw=True):
+        return MockRawResult()
+
+    def get_read_result(self, operation_id=None):
+        return MockReadResult()
 
 
 class AzureObjectDetectionProcessorTests(PluginUnitTestCase):
@@ -215,6 +223,23 @@ class AzureFaceDetectionProcessorTests(PluginUnitTestCase):
         assert 'Male' in get_prediction_labels(analysis)
 
 
+class AzureImageTextProcessorTests(PluginUnitTestCase):
+    namespace = 'azure-image-text-detection'
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
+    @patch(patch_path, side_effect=MockACVClient)
+    def test_predict(self,  p_path, c_path, proxy_patch):
+        proxy_patch.return_value = STREETSIGN
+        frame = Frame(TestAsset(STREETSIGN))
+
+        processor = self.init_processor(AzureVisionTextDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.namespace)
+        assert 'N PASEO TAMAYO 6050 F NIRVANA PL 6400 N NO OUTLET STOP' in analysis['content']
+
+
 class MockDetectResult:
 
     @property
@@ -224,6 +249,54 @@ class MockDetectResult:
     @property
     def captions(self):
         return [MockDetectedObjects()]
+
+
+class MockRawResult:
+
+    @property
+    def headers(self):
+        return {
+          "Content-Length": "0",
+          "Operation-Location": "https://eastus.api.cognitive.microsoft.com/vision/v3.0/read/"
+                                "analyzeResults/4b934ad6-c104-4549-971e-4a822ac5d69e",
+          "x-envoy-upstream-service-time": "66",
+          "CSP-Billing-Usage": "CognitiveServices.ComputerVision.Transaction=1",
+          "apim-request-id": "4b934ad6-c104-4549-971e-4a822ac5d69e",
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+          "x-content-type-options": "nosniff",
+          "Date": "Wed, 07 Oct 2020 18:28:56 GMT"
+        }
+
+
+class MockReadResult:
+
+    @property
+    def status(self):
+        return  OperationStatusCodes.succeeded
+
+    @property
+    def analyze_result(self):
+        return ReadResults()
+
+
+class ReadResults:
+
+    @property
+    def read_results(self):
+        return [MockLines()]
+
+
+class MockLines:
+
+    @property
+    def lines(self):
+        return [MockText()]
+
+class MockText:
+
+    @property
+    def text(self):
+        return 'N PASEO TAMAYO 6050 F NIRVANA PL 6400 N NO OUTLET STOP'
 
 
 class MockDetectedObjects:
