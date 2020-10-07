@@ -86,23 +86,20 @@ export const gotoCurrentTime = ({ videoRef, start }) => () => {
 }
 
 export const setScroll = ({ event }) => {
-  const scrollables = document.getElementsByClassName('scrollable')
+  const scrollables = document.querySelectorAll('.scrollable')
 
-  for (let i = 0; i < scrollables.length; i += 1) {
-    const maxScrollX = scrollables[i].scrollWidth - scrollables[i].clientWidth
-    const newScrollLeftPos = Math.min(
-      maxScrollX,
-      Math.max(0, scrollables[i].scrollLeft + event.deltaX),
-    )
+  scrollables.forEach((scrollable) => {
+    const maxScrollX = scrollable.scrollWidth - scrollable.clientWidth
+    const newScrollX = scrollable.scrollLeft + event.deltaX
+    const newScrollLeft = Math.max(0, Math.min(newScrollX, maxScrollX))
 
-    const maxScrollY = scrollables[i].scrollHeight - scrollables[i].clientHeight
-    const newScrollTopPos = Math.min(
-      maxScrollY,
-      Math.max(0, scrollables[i].scrollTop + event.deltaY),
-    )
+    const maxScrollY = scrollable.scrollHeight - scrollable.clientHeight
+    const newScrollY = scrollable.scrollTop + event.deltaY
+    const newScrollTop = Math.max(0, Math.min(newScrollY, maxScrollY))
 
     // eslint-disable-next-line no-param-reassign
-    scrollables[i].scrollLeft = newScrollLeftPos
-    scrollables[i].scrollTop = newScrollTopPos
-  }
+    scrollable.scrollLeft = newScrollLeft
+    // eslint-disable-next-line no-param-reassign
+    scrollable.scrollTop = newScrollTop
+  })
 }
