@@ -33,24 +33,11 @@ describe('<Timeline />', () => {
       query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
-    const scrollable = {
-      scrollLeft: 0,
-      scrollTop: 0,
-      scrollWidth: 1000,
-      clientWidth: 500,
-      scrollHeight: 1000,
-      clientHeight: 500,
-    }
-
     Object.defineProperties(
       document,
       {
         getElementById: {
           value: () => ({ addEventListener: noop, removeEventListener: noop }),
-          configurable: true,
-        },
-        getElementsByClassName: {
-          value: () => [scrollable],
           configurable: true,
         },
       },
