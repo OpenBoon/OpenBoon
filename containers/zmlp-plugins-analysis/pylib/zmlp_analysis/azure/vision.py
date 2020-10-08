@@ -5,7 +5,8 @@ from azure.cognitiveservices.vision.computervision.models import \
 
 from zmlpsdk import Argument, AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
-from zmlpsdk.proxy import get_proxy_level_path
+from zmlpsdk.proxy import get_proxy_level_path, get_proxy_level
+from zmlpsdk import file_storage
 
 from .util import get_zvi_azure_cv_client
 
@@ -112,10 +113,7 @@ class AzureVisionObjectDetection(AbstractAzureVisionProcessor):
         for ls in predictions:
             analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
 
-        try:
-            asset.add_analysis(self.namespace, analysis)
-        except NameError:
-            self.reactor.emit_status("self.namespace not defined")
+        asset.add_analysis(self.namespace, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -249,10 +247,7 @@ class AzureVisionCelebrityDetection(AbstractAzureVisionProcessor):
         for ls in predictions:
             analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
 
-        try:
-            asset.add_analysis(self.namespace, analysis)
-        except NameError:
-            self.reactor.emit_status("self.namespace not defined")
+        asset.add_analysis(self.namespace, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -332,10 +327,7 @@ class AzureVisionLogoDetection(AbstractAzureVisionProcessor):
         for ls in predictions:
             analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
 
-        try:
-            asset.add_analysis(self.namespace, analysis)
-        except NameError:
-            self.reactor.emit_status("self.namespace not defined")
+        asset.add_analysis(self.namespace, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -455,10 +447,7 @@ class AzureVisionFaceDetection(AbstractAzureVisionProcessor):
         for ls in predictions:
             analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2], age=ls[3])
 
-        try:
-            asset.add_analysis(self.namespace, analysis)
-        except NameError:
-            self.reactor.emit_status("self.namespace not defined")
+        asset.add_analysis(self.namespace, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -506,16 +495,13 @@ class AzureVisionTextDetection(AbstractAzureVisionProcessor):
 
         """
         asset = frame.asset
-        proxy_path = get_proxy_level_path(asset, 0)
+        proxy_path = self.get_ocr_image(asset)
         analysis = ContentDetectionAnalysis()
 
         text = self.predict(proxy_path)
         analysis.add_content(text)
 
-        try:
-            asset.add_analysis(self.namespace, analysis)
-        except NameError:
-            self.reactor.emit_status("self.namespace not defined")
+        asset.add_analysis(self.namespace, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path.
@@ -549,7 +535,23 @@ class AzureVisionTextDetection(AbstractAzureVisionProcessor):
         if results.status == OperationStatusCodes.succeeded:
             for text_result in results.analyze_result.read_results:
                 for line in text_result.lines:
-                    lines.append(line.text)
+                    lines.append(line.text.strip())
 
         # get text in a single string
         return ' '.join(lines)
+
+    def get_ocr_image(self, asset):
+        """
+        Fetch the proper OCR image
+
+        Args:
+            asset (Asset): The Asset
+
+        Returns:
+            str: The location of the file.
+        """
+        ocr_proxy = asset.get_files(category='ocr-proxy')
+        if ocr_proxy:
+            return file_storage.localize_file(ocr_proxy)
+        else:
+            return file_storage.localize_file(get_proxy_level(asset, 0))

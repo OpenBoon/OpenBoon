@@ -7,6 +7,7 @@ from azure.cognitiveservices.vision.computervision.models import OperationStatus
 from zmlp_analysis.azure import *
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
+from zmlpsdk import file_storage
 
 patch_path = 'zmlp_analysis.azure.util.ComputerVisionClient'
 cred_path = 'zmlp_analysis.azure.util.CognitiveServicesCredentials'
@@ -203,7 +204,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         analysis = frame.asset.get_analysis(namespace)
         assert 'Male' in get_prediction_labels(analysis)
 
-    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    @patch.object(file_storage, 'localize_file')
     @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
     @patch(patch_path, side_effect=MockACVClient)
     def test_image_text_detection(self,  p_path, c_path, proxy_patch):
