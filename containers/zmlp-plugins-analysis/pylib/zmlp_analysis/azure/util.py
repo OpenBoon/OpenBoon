@@ -5,7 +5,7 @@ from msrest.authentication import CognitiveServicesCredentials
 
 def get_zvi_azure_cv_client():
     """
-    Return an Azure Computer Vision client configured for rekognition with ZVI credentials.
+    Return an Azure Computer Vision client configured with ZVI credentials.
 
     Returns:
        ComputerVisionClient: an Azure ComputerVisionClient
