@@ -16,8 +16,9 @@ def get_zvi_azure_cv_client():
 
     region = os.environ.get('ZORROA_AZURE_REGION', 'eastus')
     credentials = CognitiveServicesCredentials(key)
+    endpoint = f'https://{region}.api.cognitive.microsoft.com/'
 
     return ComputerVisionClient(
-        endpoint="https://" + region + ".api.cognitive.microsoft.com/",
+        endpoint=endpoint,
         credentials=credentials
     )
