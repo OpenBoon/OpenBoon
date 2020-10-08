@@ -50,19 +50,19 @@ describe('<Timeline />', () => {
       />,
     )
 
-    // Open timeline
+    // CLose timeline
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Open Timeline' })
+        .findByProps({ 'aria-label': 'Close Timeline' })
         .props.onClick()
     })
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Close timeline
+    // Open timeline
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Close Timeline' })
+        .findByProps({ 'aria-label': 'Open Timeline' })
         .props.onClick()
     })
 

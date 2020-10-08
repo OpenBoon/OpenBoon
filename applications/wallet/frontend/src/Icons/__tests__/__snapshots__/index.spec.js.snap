@@ -17,7 +17,7 @@ exports[`<Icons /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-123 {
+.emotion-125 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -63,7 +63,7 @@ exports[`<Icons /> should render properly 1`] = `
     Icons
   </h2>
   <div
-    className="emotion-123"
+    className="emotion-125"
   >
     <div
       className="emotion-2"
@@ -940,6 +940,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="text.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./timebasedMetadata.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="timebasedMetadata.svg"
           height="100%"
           width="100%"
         />

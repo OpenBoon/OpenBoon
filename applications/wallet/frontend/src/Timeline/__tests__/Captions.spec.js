@@ -1,29 +1,10 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import tracks from '../../Asset/__mocks__/tracks'
+
 import TimelineCaptions from '../Captions'
 
 const noop = () => {}
-
-const TRACKS = [
-  {
-    label: 'English',
-    kind: 'captions',
-    src: '/webvtt/english.vtt',
-    mode: 'disabled',
-  },
-  {
-    label: 'French',
-    kind: 'captions',
-    src: '/webvtt/french.vtt',
-    mode: 'disabled',
-  },
-  {
-    label: 'metadata',
-    kind: 'metadata',
-    src: '/webvtt/metadata.vtt',
-    mode: 'disabled',
-  },
-]
 
 describe('<TimelineCaptions />', () => {
   it('should render a placeholder div in the absence of tracks', () => {
@@ -46,7 +27,7 @@ describe('<TimelineCaptions />', () => {
         videoRef={{
           current: {
             textTracks: {
-              ...TRACKS,
+              ...tracks,
               length: 3,
               addEventListener: mockAddEventListener,
               removeEventListener: mockRemoveEventListener,
@@ -73,7 +54,7 @@ describe('<TimelineCaptions />', () => {
         videoRef={{
           current: {
             textTracks: {
-              ...TRACKS,
+              ...tracks,
               addEventListener: noop,
               removeEventListener: noop,
             },
@@ -92,7 +73,7 @@ describe('<TimelineCaptions />', () => {
         videoRef={{
           current: {
             textTracks: {
-              ...TRACKS,
+              ...tracks,
               length: 3,
               addEventListener: noop,
               removeEventListener: noop,
@@ -107,7 +88,7 @@ describe('<TimelineCaptions />', () => {
   })
 
   it('should enable the first available track', () => {
-    const englishTrack = { ...TRACKS[0] }
+    const englishTrack = { ...tracks[0] }
 
     const component = TestRenderer.create(
       <TimelineCaptions
@@ -135,7 +116,7 @@ describe('<TimelineCaptions />', () => {
   })
 
   it('should disable any track', () => {
-    const englishTrack = { ...TRACKS[0], mode: 'showing' }
+    const englishTrack = { ...tracks[0], mode: 'showing' }
 
     const component = TestRenderer.create(
       <TimelineCaptions
@@ -163,8 +144,8 @@ describe('<TimelineCaptions />', () => {
   })
 
   it('should toggle any track', () => {
-    const englishTrack = { ...TRACKS[0], mode: 'showing' }
-    const frenchTrack = { ...TRACKS[1] }
+    const englishTrack = { ...tracks[0], mode: 'showing' }
+    const frenchTrack = { ...tracks[1] }
 
     const component = TestRenderer.create(
       <TimelineCaptions
