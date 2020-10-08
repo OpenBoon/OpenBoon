@@ -412,8 +412,8 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
             settings={
               Object {
                 "filter": "",
-                "modules": Object {},
-                "modulesWidth": 200,
+                "timelines": Object {},
+                "width": 200,
                 "zoom": 100,
               }
             }
@@ -436,13 +436,13 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
           settings={
             Object {
               "filter": "",
-              "modules": Object {},
-              "modulesWidth": 200,
+              "timelines": Object {},
+              "width": 200,
               "zoom": 100,
             }
           }
           timelineHeight={200}
-          timelines={Object {}}
+          timelines={Array []}
           videoRef={
             Object {
               "current": Object {
@@ -463,12 +463,12 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
           settings={
             Object {
               "filter": "",
-              "modules": Object {},
-              "modulesWidth": 200,
+              "timelines": Object {},
+              "width": 200,
               "zoom": 100,
             }
           }
-          timelines={Object {}}
+          timelines={Array []}
           videoRef={
             Object {
               "current": Object {
@@ -901,8 +901,8 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
             settings={
               Object {
                 "filter": "",
-                "modules": Object {},
-                "modulesWidth": 200,
+                "timelines": Object {},
+                "width": 200,
                 "zoom": 100,
               }
             }
@@ -925,13 +925,13 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
           settings={
             Object {
               "filter": "",
-              "modules": Object {},
-              "modulesWidth": 200,
+              "timelines": Object {},
+              "width": 200,
               "zoom": 100,
             }
           }
           timelineHeight={200}
-          timelines={Object {}}
+          timelines={Array []}
           videoRef={
             Object {
               "current": Object {
@@ -952,12 +952,12 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
           settings={
             Object {
               "filter": "",
-              "modules": Object {},
-              "modulesWidth": 200,
+              "timelines": Object {},
+              "width": 200,
               "zoom": 100,
             }
           }
-          timelines={Object {}}
+          timelines={Array []}
           videoRef={
             Object {
               "current": Object {
@@ -1366,8 +1366,34 @@ exports[`<Timeline /> should render properly 1`] = `
             settings={
               Object {
                 "filter": "",
-                "modules": Object {},
-                "modulesWidth": 200,
+                "timelines": Object {
+                  "gcp-video-explicit-detection": Object {
+                    "color": "#0074f5",
+                    "isOpen": false,
+                    "isVisible": true,
+                  },
+                  "gcp-video-label-detection": Object {
+                    "color": "#a03dc7",
+                    "isOpen": false,
+                    "isVisible": true,
+                  },
+                  "gcp-video-logo-detection": Object {
+                    "color": "#ebb52e",
+                    "isOpen": false,
+                    "isVisible": true,
+                  },
+                  "gcp-video-object-detection": Object {
+                    "color": "#d6680b",
+                    "isOpen": false,
+                    "isVisible": true,
+                  },
+                  "gcp-video-text-detection": Object {
+                    "color": "#00bdc1",
+                    "isOpen": false,
+                    "isVisible": true,
+                  },
+                },
+                "width": 200,
                 "zoom": 100,
               }
             }
@@ -1390,13 +1416,301 @@ exports[`<Timeline /> should render properly 1`] = `
           settings={
             Object {
               "filter": "",
-              "modules": Object {},
-              "modulesWidth": 200,
+              "timelines": Object {
+                "gcp-video-explicit-detection": Object {
+                  "color": "#0074f5",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-label-detection": Object {
+                  "color": "#a03dc7",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-logo-detection": Object {
+                  "color": "#ebb52e",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-object-detection": Object {
+                  "color": "#d6680b",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-text-detection": Object {
+                  "color": "#00bdc1",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+              },
+              "width": 200,
               "zoom": 100,
             }
           }
           timelineHeight={200}
-          timelines={Object {}}
+          timelines={
+            Array [
+              Object {
+                "timeline": "gcp-video-explicit-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Gh st",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 6,
+                        "stop": 7,
+                      },
+                      Object {
+                        "start": 13,
+                        "stop": 14,
+                      },
+                      Object {
+                        "start": 15,
+                        "stop": 15,
+                      },
+                    ],
+                    "track": "Busters",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-label-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 1,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 3,
+                        "stop": 6,
+                      },
+                      Object {
+                        "start": 11,
+                        "stop": 15,
+                      },
+                    ],
+                    "track": "Label 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 7,
+                        "stop": 10,
+                      },
+                      Object {
+                        "start": 16,
+                        "stop": 17,
+                      },
+                    ],
+                    "track": "Label 2 Plus More Text to Make A Long Label String",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-object-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 3",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-logo-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 3",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-text-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Text 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Text 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Text 3",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Text 4",
+                  },
+                ],
+              },
+            ]
+          }
           videoRef={
             Object {
               "current": undefined,
@@ -1409,12 +1723,300 @@ exports[`<Timeline /> should render properly 1`] = `
           settings={
             Object {
               "filter": "",
-              "modules": Object {},
-              "modulesWidth": 200,
+              "timelines": Object {
+                "gcp-video-explicit-detection": Object {
+                  "color": "#0074f5",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-label-detection": Object {
+                  "color": "#a03dc7",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-logo-detection": Object {
+                  "color": "#ebb52e",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-object-detection": Object {
+                  "color": "#d6680b",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-text-detection": Object {
+                  "color": "#00bdc1",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+              },
+              "width": 200,
               "zoom": 100,
             }
           }
-          timelines={Object {}}
+          timelines={
+            Array [
+              Object {
+                "timeline": "gcp-video-explicit-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Gh st",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 6,
+                        "stop": 7,
+                      },
+                      Object {
+                        "start": 13,
+                        "stop": 14,
+                      },
+                      Object {
+                        "start": 15,
+                        "stop": 15,
+                      },
+                    ],
+                    "track": "Busters",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-label-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 1,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 3,
+                        "stop": 6,
+                      },
+                      Object {
+                        "start": 11,
+                        "stop": 15,
+                      },
+                    ],
+                    "track": "Label 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 7,
+                        "stop": 10,
+                      },
+                      Object {
+                        "start": 16,
+                        "stop": 17,
+                      },
+                    ],
+                    "track": "Label 2 Plus More Text to Make A Long Label String",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-object-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 3",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-logo-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 3",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-text-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Text 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Text 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Text 3",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Text 4",
+                  },
+                ],
+              },
+            ]
+          }
           videoRef={
             Object {
               "current": undefined,

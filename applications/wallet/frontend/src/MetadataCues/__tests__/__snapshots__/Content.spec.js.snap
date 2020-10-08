@@ -22,7 +22,7 @@ Array [
 
 .emotion-10 {
   border-bottom: 4px solid #3b3b3b;
-  box-shadow: inset 3px 0 0 #0074f5;
+  box-shadow: inset 3px 0 0 transparent;
 }
 
 .emotion-9 {
@@ -76,16 +76,6 @@ Array [
 .emotion-3:last-of-type {
   text-align: right;
   padding-right: 0;
-}
-
-.emotion-18 {
-  border-bottom: 4px solid #3b3b3b;
-  box-shadow: inset 3px 0 0 #a03dc7;
-}
-
-.emotion-26 {
-  border-bottom: 4px solid #3b3b3b;
-  box-shadow: inset 3px 0 0 #d6680b;
 }
 
 <div
@@ -151,7 +141,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-18"
+      className="emotion-10"
     >
       <div
         className="emotion-9"
@@ -196,7 +186,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-26"
+      className="emotion-10"
     >
       <div
         className="emotion-9"

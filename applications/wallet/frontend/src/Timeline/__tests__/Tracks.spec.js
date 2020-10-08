@@ -10,7 +10,7 @@ describe('<TimelineTracks />', () => {
       <TimelineTracks
         videoRef={{}}
         length={18}
-        moduleColor="#0074f5"
+        color="#0074f5"
         tracks={timelines[0].tracks}
         isOpen
       />,
@@ -32,7 +32,7 @@ describe('<TimelineTracks />', () => {
       <TimelineTracks
         videoRef={{ current }}
         length={18}
-        moduleColor="#0074f5"
+        color="#0074f5"
         tracks={timelines[0].tracks}
         isOpen={false}
       />,

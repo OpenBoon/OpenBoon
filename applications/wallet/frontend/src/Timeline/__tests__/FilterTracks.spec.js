@@ -9,9 +9,9 @@ describe('<TimelineFilterTracks />', () => {
     const component = TestRenderer.create(
       <TimelineFilterTracks
         settings={{
-          modulesWidth: 200,
+          width: 200,
           filter: '',
-          modules: {},
+          timelines: {},
         }}
         dispatch={mockDispatch}
       />,

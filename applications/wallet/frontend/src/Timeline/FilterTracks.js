@@ -13,8 +13,8 @@ const TimelineFilterTracks = ({ settings, dispatch }) => {
   return (
     <div
       css={{
-        marginLeft: -settings.modulesWidth,
-        width: settings.modulesWidth,
+        marginLeft: -settings.width,
+        width: settings.width,
         paddingRight: OFFSET,
       }}
     >
@@ -40,9 +40,9 @@ const TimelineFilterTracks = ({ settings, dispatch }) => {
 
 TimelineFilterTracks.propTypes = {
   settings: PropTypes.shape({
-    modulesWidth: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
     filter: PropTypes.string.isRequired,
-    modules: PropTypes.shape({}).isRequired,
+    timelines: PropTypes.shape({}).isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
 }

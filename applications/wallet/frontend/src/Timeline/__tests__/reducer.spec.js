@@ -13,16 +13,16 @@ describe('<Timeline /> reducer', () => {
         type: ACTIONS.UPDATE_FILTER,
         payload: { value: 'cat' },
       }),
-    ).toEqual({ filter: 'cat', modulesWidth: 200, modules: {}, zoom: 100 })
+    ).toEqual({ filter: 'cat', width: 200, timelines: {}, zoom: 100 })
   })
 
-  it('should update the modules width', () => {
+  it('should update the timelines width', () => {
     expect(
       reducer(INITIAL_STATE, {
         type: ACTIONS.RESIZE_MODULES,
         payload: { value: 300 },
       }),
-    ).toEqual({ filter: '', modulesWidth: 300, modules: {}, zoom: 100 })
+    ).toEqual({ filter: '', width: 300, timelines: {}, zoom: 100 })
   })
 
   it('should open an undefined module', () => {
@@ -33,8 +33,8 @@ describe('<Timeline /> reducer', () => {
       }),
     ).toEqual({
       filter: '',
-      modulesWidth: 200,
-      modules: { 'gcp-video-logo-detection': { isOpen: true } },
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isOpen: true } },
       zoom: 100,
     })
   })
@@ -44,8 +44,8 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
-          modulesWidth: 200,
-          modules: { 'gcp-video-logo-detection': { isOpen: false } },
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isOpen: false } },
         },
         {
           type: ACTIONS.TOGGLE_OPEN,
@@ -54,8 +54,8 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
-      modulesWidth: 200,
-      modules: { 'gcp-video-logo-detection': { isOpen: true } },
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isOpen: true } },
     })
   })
 
@@ -64,8 +64,8 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
-          modulesWidth: 200,
-          modules: { 'gcp-video-logo-detection': { isOpen: true } },
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isOpen: true } },
         },
         {
           type: ACTIONS.TOGGLE_OPEN,
@@ -74,8 +74,8 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
-      modulesWidth: 200,
-      modules: { 'gcp-video-logo-detection': { isOpen: false } },
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isOpen: false } },
     })
   })
 
@@ -87,8 +87,8 @@ describe('<Timeline /> reducer', () => {
       }),
     ).toEqual({
       filter: '',
-      modulesWidth: 200,
-      modules: { 'gcp-video-logo-detection': { isVisible: false } },
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isVisible: false } },
       zoom: 100,
     })
   })
@@ -98,8 +98,8 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
-          modulesWidth: 200,
-          modules: { 'gcp-video-logo-detection': { isVisible: true } },
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isVisible: true } },
         },
         {
           type: ACTIONS.TOGGLE_VISIBLE,
@@ -108,8 +108,8 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
-      modulesWidth: 200,
-      modules: { 'gcp-video-logo-detection': { isVisible: false } },
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isVisible: false } },
     })
   })
 
@@ -118,8 +118,8 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
-          modulesWidth: 200,
-          modules: { 'gcp-video-logo-detection': { isVisible: false } },
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isVisible: false } },
         },
         {
           type: ACTIONS.TOGGLE_VISIBLE,
@@ -128,18 +128,18 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
-      modulesWidth: 200,
-      modules: { 'gcp-video-logo-detection': { isVisible: true } },
+      width: 200,
+      timelines: { 'gcp-video-logo-detection': { isVisible: true } },
     })
   })
 
-  it('should show all modules when one of them is hidden', () => {
+  it('should show all timelines when one of them is hidden', () => {
     expect(
       reducer(
         {
           filter: '',
-          modulesWidth: 200,
-          modules: { 'gcp-video-logo-detection': { isVisible: false } },
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isVisible: false } },
         },
         {
           type: ACTIONS.TOGGLE_VISIBLE_ALL,
@@ -148,8 +148,8 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
-      modulesWidth: 200,
-      modules: {
+      width: 200,
+      timelines: {
         'gcp-video-explicit-detection': { isVisible: true },
         'gcp-video-label-detection': { isVisible: true },
         'gcp-video-logo-detection': { isVisible: true },
@@ -159,13 +159,13 @@ describe('<Timeline /> reducer', () => {
     })
   })
 
-  it('should hide all modules when all of them are visible', () => {
+  it('should hide all timelines when all of them are visible', () => {
     expect(
       reducer(
         {
           filter: '',
-          modulesWidth: 200,
-          modules: { 'gcp-video-logo-detection': { isVisible: true } },
+          width: 200,
+          timelines: { 'gcp-video-logo-detection': { isVisible: true } },
         },
         {
           type: ACTIONS.TOGGLE_VISIBLE_ALL,
@@ -174,8 +174,8 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
-      modulesWidth: 200,
-      modules: {
+      width: 200,
+      timelines: {
         'gcp-video-explicit-detection': { isVisible: false },
         'gcp-video-label-detection': { isVisible: false },
         'gcp-video-logo-detection': { isVisible: false },

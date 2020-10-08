@@ -1,5 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import timelines from '../__mocks__/timelines'
+
 import Timeline from '..'
 
 const noop = () => {}
@@ -21,6 +23,10 @@ describe('<Timeline />', () => {
       query: { projectId: PROJECT_ID, assetId: ASSET_ID },
     })
 
+    require('swr').__setMockUseSWRResponse({
+      data: timelines,
+    })
+
     const component = TestRenderer.create(
       <Timeline length={18} videoRef={{ current: undefined }} />,
     )
@@ -31,6 +37,10 @@ describe('<Timeline />', () => {
   it('should open the Timeline panel', () => {
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: [],
     })
 
     const component = TestRenderer.create(
