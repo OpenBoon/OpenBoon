@@ -949,6 +949,11 @@ fun getStandardModules(): List<PipelineModSpec> {
                             StandardContainers.ANALYSIS
                         )
                     )
+                ),
+                ModOp(
+                    ModOpType.SET_ARGS,
+                    mapOf("ocr" to true),
+                    OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
             true
