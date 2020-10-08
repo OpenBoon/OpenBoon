@@ -414,9 +414,9 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
       className="emotion-46"
     >
       <TimelineTracks
+        color="#0074f5"
         isOpen={true}
         length={18}
-        moduleColor="#0074f5"
         tracks={
           Array [
             Object {
@@ -464,9 +464,9 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
         }
       />
       <TimelineTracks
+        color="#a03dc7"
         isOpen={false}
         length={18}
-        moduleColor="#a03dc7"
         tracks={
           Array [
             Object {
@@ -510,9 +510,9 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
         }
       />
       <TimelineTracks
+        color="#d6680b"
         isOpen={false}
         length={18}
-        moduleColor="#d6680b"
         tracks={
           Array [
             Object {
@@ -577,9 +577,9 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
         }
       />
       <TimelineTracks
+        color="#ebb52e"
         isOpen={false}
         length={18}
-        moduleColor="#ebb52e"
         tracks={
           Array [
             Object {
@@ -644,9 +644,9 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
         }
       />
       <TimelineTracks
+        color="#00bdc1"
         isOpen={false}
         length={18}
-        moduleColor="#00bdc1"
         tracks={
           Array [
             Object {

@@ -30,7 +30,7 @@ const TimelineAggregate = ({
 
   const filteredTimelines = filterTimelines({ timelines, settings })
 
-  const isAllVisible = Object.values(settings.modules).every(
+  const isAllVisible = Object.values(settings.timelines).every(
     ({ isVisible }) => isVisible === true,
   )
 
@@ -38,12 +38,12 @@ const TimelineAggregate = ({
     <div
       css={{
         display: 'flex',
-        marginLeft: -settings.modulesWidth,
+        marginLeft: -settings.width,
         borderTop: constants.borders.regular.smoke,
         height: constants.timeline.rulerRowHeight,
       }}
     >
-      <div css={{ width: settings.modulesWidth }}>
+      <div css={{ width: settings.width }}>
         <Menu
           open="bottom-center"
           button={({ onBlur, onClick, isMenuOpen }) => (
@@ -105,14 +105,14 @@ const TimelineAggregate = ({
                 .sort((a, b) => (a.timeline > b.timeline ? 1 : -1))
                 .map(({ timeline, tracks }) => (
                   <Checkbox
-                    key={`${timeline}.${settings.modules[timeline]?.isVisible}`}
+                    key={`${timeline}.${settings.timelines[timeline]?.isVisible}`}
                     variant={CHECKBOX_VARIANTS.MENU}
                     option={{
                       value: timeline,
                       label: timeline,
                       legend: `(${tracks.length})`,
                       initialValue:
-                        settings.modules[timeline]?.isVisible !== false,
+                        settings.timelines[timeline]?.isVisible !== false,
                       isDisabled: false,
                     }}
                     onClick={() => {
@@ -141,7 +141,7 @@ const TimelineAggregate = ({
           &nbsp;
           {filteredTimelines
             .filter(({ timeline }) => {
-              return settings.modules[timeline]?.isVisible !== false
+              return settings.timelines[timeline]?.isVisible !== false
             })
             .map(({ tracks }) => {
               return tracks.map(({ track, hits }) => {
@@ -203,8 +203,8 @@ TimelineAggregate.propTypes = {
   ).isRequired,
   settings: PropTypes.shape({
     filter: PropTypes.string.isRequired,
-    modulesWidth: PropTypes.number.isRequired,
-    modules: PropTypes.shape({}).isRequired,
+    width: PropTypes.number.isRequired,
+    timelines: PropTypes.shape({}).isRequired,
     zoom: PropTypes.number.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,

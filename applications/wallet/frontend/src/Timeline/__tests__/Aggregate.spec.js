@@ -17,9 +17,9 @@ describe('<TimelineAggregate />', () => {
         timelineHeight={400}
         timelines={timelines}
         settings={{
-          modulesWidth: 200,
+          width: 200,
           filter: '',
-          modules: { [timelines[0].timeline]: { isVisible: true } },
+          timelines: { [timelines[0].timeline]: { isVisible: true } },
           zoom: 100,
         }}
         dispatch={mockDispatch}

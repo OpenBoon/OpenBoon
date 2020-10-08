@@ -9,7 +9,7 @@ import { ACTIONS } from './reducer'
 export const COLOR_TAB_WIDTH = 3
 
 const TimelineAccordion = ({
-  moduleColor,
+  color,
   timeline,
   tracks,
   dispatch,
@@ -45,7 +45,7 @@ const TimelineAccordion = ({
           <div
             css={{
               width: COLOR_TAB_WIDTH,
-              backgroundColor: moduleColor,
+              backgroundColor: color,
               marginRight: spacing.base,
             }}
           />
@@ -53,7 +53,7 @@ const TimelineAccordion = ({
           <ChevronSvg
             height={constants.icons.regular}
             css={{
-              color: moduleColor,
+              color,
               transform: isOpen ? '' : 'rotate(-90deg)',
               alignSelf: 'center',
             }}
@@ -86,7 +86,7 @@ const TimelineAccordion = ({
 }
 
 TimelineAccordion.propTypes = {
-  moduleColor: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
   timeline: PropTypes.string.isRequired,
   tracks: PropTypes.arrayOf(
     PropTypes.shape({

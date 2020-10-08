@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -11,7 +12,8 @@ import { useLocalStorage } from '../LocalStorage/helpers'
 import Button, { VARIANTS } from '../Button'
 import ResizeableWithMessage from '../Resizeable/WithMessage'
 
-import { reducer, INITIAL_STATE } from './reducer'
+import { reducer, INITIAL_STATE, ACTIONS } from './reducer'
+import { COLORS } from './helpers'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
@@ -39,6 +41,23 @@ const Timeline = ({ videoRef, length }) => {
   const { data: timelines } = useSWR(
     `/api/v1/projects/${projectId}/assets/${assetId}/timelines/`,
   )
+
+  useMemo(() => {
+    const value = timelines.reduce((acc, { timeline }, index) => {
+      return {
+        ...acc,
+        [timeline]: {
+          ...(settings.timelines[timeline] || {}),
+          isOpen: settings.timelines[timeline]?.isOpen || false,
+          isVisible: settings.timelines[timeline]?.isVisible || true,
+          color: COLORS[index % COLORS.length],
+        },
+      }
+    }, {})
+
+    dispatch({ type: ACTIONS.UPDATE_TIMELINES, payload: { value } })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timelines])
 
   return (
     <ResizeableWithMessage
@@ -123,7 +142,7 @@ const Timeline = ({ videoRef, length }) => {
               flexDirection: 'column',
               height: '0%',
               position: 'relative',
-              marginLeft: settings.modulesWidth,
+              marginLeft: settings.width,
               borderLeft: constants.borders.regular.smoke,
             }}
           >

@@ -3,30 +3,30 @@ import PropTypes from 'prop-types'
 
 import { zIndex } from '../Styles'
 
-import { MODULES_MIN_WIDTH, ACTIONS } from './reducer'
+import { MIN_WIDTH, ACTIONS } from './reducer'
 
 const DRAG_WIDTH = 4
 
 let originX
 
-const TimelineModulesResizer = ({ settings: { modulesWidth }, dispatch }) => {
+const TimelineModulesResizer = ({ settings: { width }, dispatch }) => {
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
-    const newWidth = modulesWidth - (clientX - originX) * -1
+    const newWidth = width - (clientX - originX) * -1
 
     dispatch({
       type: ACTIONS.RESIZE_MODULES,
-      payload: { value: Math.max(MODULES_MIN_WIDTH, newWidth) },
+      payload: { value: Math.max(MIN_WIDTH, newWidth) },
     })
   }
 
   /* istanbul ignore next */
   const handleMouseUp = ({ clientX }) => {
-    const finalWidth = modulesWidth - (clientX - originX) * -1
+    const finalWidth = width - (clientX - originX) * -1
 
     dispatch({
       type: ACTIONS.RESIZE_MODULES,
-      payload: { value: Math.max(MODULES_MIN_WIDTH, finalWidth) },
+      payload: { value: Math.max(MIN_WIDTH, finalWidth) },
     })
 
     window.removeEventListener('mousemove', handleMouseMove)
@@ -62,8 +62,8 @@ const TimelineModulesResizer = ({ settings: { modulesWidth }, dispatch }) => {
 TimelineModulesResizer.propTypes = {
   settings: PropTypes.shape({
     filter: PropTypes.string.isRequired,
-    modulesWidth: PropTypes.number.isRequired,
-    modules: PropTypes.shape({}).isRequired,
+    width: PropTypes.number.isRequired,
+    timelines: PropTypes.shape({}).isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
 }
