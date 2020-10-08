@@ -1,7 +1,10 @@
-from azure.cognitiveservices.vision.computervision.models import VisualFeatureTypes
+import time
+
+from azure.cognitiveservices.vision.computervision.models import \
+    VisualFeatureTypes, OperationStatusCodes
 
 from zmlpsdk import Argument, AssetProcessor, FileTypes
-from zmlpsdk.analysis import LabelDetectionAnalysis
+from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
 from .util import get_zvi_azure_cv_client
@@ -16,7 +19,8 @@ __all__ = [
     'AzureVisionLogoDetection',
     'AzureVisionCategoryDetection',
     'AzureVisionExplicitContentDetection',
-
+    'AzureVisionFaceDetection',
+    'AzureVisionTextDetection'
 ]
 
 
@@ -425,3 +429,127 @@ class AzureVisionExplicitContentDetection(AbstractAzureVisionProcessor):
             ('racy', response.adult.racy_score),
             ('gory', response.adult.gore_score),
         ]
+
+
+class AzureVisionFaceDetection(AbstractAzureVisionProcessor):
+    """Logo detection for an image using Azure Computer Vision """
+
+    image_features = ['faces']
+    namespace = 'azure-face-detection'
+
+    def __init__(self):
+        super(AzureVisionFaceDetection, self).__init__()
+
+    def process(self, frame):
+        """Process the given frame for predicting and adding labels to an asset
+
+        Args:
+            frame (Frame): Frame to be processed
+
+        """
+        asset = frame.asset
+        proxy_path = get_proxy_level_path(asset, 0)
+        analysis = LabelDetectionAnalysis()
+
+        predictions = self.predict(proxy_path)
+        for ls in predictions:
+            analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2], age=ls[3])
+
+        try:
+            asset.add_analysis(self.namespace, analysis)
+        except NameError:
+            self.reactor.emit_status("self.namespace not defined")
+
+    def predict(self, path):
+        """ Make a prediction for an image path.
+        self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
+            (label, score)]
+
+        Args:
+            path (str): image path
+
+        Returns:
+            list: a list of predictions
+        """
+        with open(path, 'rb') as img:
+            response = self.client.analyze_image_in_stream(
+                image=img,
+                visual_features=self.image_features
+            )
+
+        # get list of labels
+        labels = []
+        for r in response.faces:
+            bbox = [
+                r.face_rectangle.left,
+                r.face_rectangle.top,
+                r.face_rectangle.left + r.face_rectangle.width,
+                r.face_rectangle.top + r.face_rectangle.height,
+            ]
+            labels.append((r.gender, '1.00', bbox, r.age))
+        return labels
+
+
+class AzureVisionTextDetection(AbstractAzureVisionProcessor):
+    """Get OCR'd text for an image using Azure Computer Vision """
+
+    namespace = 'azure-image-text-detection'
+
+    def __init__(self):
+        super(AzureVisionTextDetection, self).__init__()
+
+    def process(self, frame):
+        """Process the given frame for predicting and adding labels to an asset
+
+        Args:
+            frame (Frame): Frame to be processed
+
+        """
+        asset = frame.asset
+        proxy_path = get_proxy_level_path(asset, 0)
+        analysis = ContentDetectionAnalysis()
+
+        text = self.predict(proxy_path)
+        analysis.add_content(text)
+
+        try:
+            asset.add_analysis(self.namespace, analysis)
+        except NameError:
+            self.reactor.emit_status("self.namespace not defined")
+
+    def predict(self, path):
+        """ Make a prediction for an image path.
+        self.label_and_score (List[tuple]): result is list of tuples in format [(label, score),
+            (label, score)]
+
+        Args:
+            path (str): image path
+
+        Returns:
+            list: a list of predictions
+        """
+        with open(path, 'rb') as img:
+            response = self.client.read_in_stream(image=img, raw=True)
+
+        # Get the operation location (URL with an ID at the end) from the response
+        operation_location_remote = response.headers["Operation-Location"]
+
+        # Grab the ID from the URL
+        operation_id = operation_location_remote.split("/")[-1]
+
+        # Call the "GET" API and wait for it to retrieve the results
+        while True:
+            results = self.client.get_read_result(operation_id)
+            if results.status not in ['notStarted', 'running']:
+                break
+            time.sleep(1)
+
+        # Print the detected text, line by line
+        lines = []
+        if results.status == OperationStatusCodes.succeeded:
+            for text_result in results.analyze_result.read_results:
+                for line in text_result.lines:
+                    lines.append(line.text)
+
+        # get text in a single string
+        return ' '.join(lines)

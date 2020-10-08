@@ -14,6 +14,7 @@ RYAN_GOSLING = zorroa_test_path('images/set08/meme.jpg')
 EIFFEL_TOWER = zorroa_test_path('images/set11/eiffel_tower.jpg')
 LOGOS = zorroa_test_path('images/set11/logos.jpg')
 NSFW = zorroa_test_path('images/set10/nsfw1.jpg')
+FACES = zorroa_test_path('images/set01/faces.jpg')
 
 
 @pytest.mark.skip(reason='dont run automatically')
@@ -136,3 +137,29 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
 
         analysis = frame.asset.get_analysis(namespace)
         assert 'racy' in get_prediction_labels(analysis)
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    def test_face_detection_processor(self, proxy_patch):
+        namespace = 'azure-face-detection'
+        proxy_patch.return_value = FACES
+        frame = Frame(TestAsset(FACES))
+
+        processor = self.init_processor(AzureVisionFaceDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(namespace)
+        assert 'Male' in get_prediction_labels(analysis)
+
+    @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
+    def test_text_detection_processor(self, proxy_patch):
+        namespace = 'azure-image-text-detection'
+        proxy_patch.return_value = STREETSIGN
+        frame = Frame(TestAsset(STREETSIGN))
+
+        processor = self.init_processor(AzureVisionTextDetection())
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(namespace)
+        assert 'content' in analysis['type']
+        assert 12 == analysis['words']
+        assert 'N PASEO TAMAYO 6050 F NIRVANA PL 6400 N NO OUTLET STOP' in analysis['content']
