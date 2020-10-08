@@ -15,6 +15,7 @@ object Category {
     const val GOOGLE_S2TEXT = "Google Speech-To-Text"
     const val GOOGLE_DLP = "Google Data Loss Prevention"
     const val AWS_REK = "Amazon Rekognition"
+    const val AZURE_VISION = "Azure Computer Vision"
     const val ZORROA_TL = "Zorroa Timeline Extraction"
     const val ZORROA_STD = "Zorroa Visual Intelligence"
     const val CLARIFAI_STD = "Clarifai Public"
@@ -27,6 +28,7 @@ object Provider {
     const val GOOGLE = "Google"
     const val AMAZON = "Amazon"
     const val CUSTOM = "Custom"
+    const val MICROSOFT = "Microsoft"
 }
 
 object ModelObjective {
@@ -41,7 +43,7 @@ object ModelObjective {
     const val TEXT_DETECTION = "Text Detection (OCR)"
     const val IMAGE_TEXT_DETECTION = "Image Text Detection"
     const val SPEECH_RECOGNITION = "Speech Recognition"
-    const val CLUSTERING = "Clustering"
+    const val IMAGE_DESCRIPTION = "Image Description"
 }
 
 /**
@@ -744,6 +746,206 @@ fun getStandardModules(): List<PipelineModSpec> {
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-object-detection",
+            "Identify and tag visual features in an image with a bounding box, from a set of thousands of recognizable objects and living things.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.OBJECT_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionObjectDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-label-detection",
+            "Identify and tag visual features in an image, from a set of thousands of recognizable objects, living things, scenery, and actions.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionLabelDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-image-description-detection",
+            "Analyze an image and generate a human-readable sentence that describes its contents. ",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.IMAGE_DESCRIPTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionImageDescription",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-celebrity-detection",
+            "Recognizes thousands of celebrities in a wide range of categories.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.FACE_RECOGNITION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-landmark-detection",
+            "Detect popular natural and man-made structures within an image",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.LANDMARK_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionLandmarkDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-logo-detection",
+            "Brand detection is a specialized mode of object detection that uses a database of thousands of global logos to identify commercial brands.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.LOGO_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionLogoDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-category-detection",
+            "In addition to tags and a description, generates the taxonomy-based categories detected in an image.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.LABEL_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionCategoryDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-explicit-detection",
+            "Detect adult material in images so that developers can restrict the display of these images in their software.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.EXPLICIT_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionExplicitContentDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-face-detection",
+            "Detect human faces within an image.",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.FACE_RECOGNITION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionFaceDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "azure-text-detection",
+            "Optical Character Recognition (OCR) capabilities that extract printed or handwritten text from images. ",
+            Provider.MICROSOFT,
+            Category.AZURE_VISION,
+            ModelObjective.TEXT_DETECTION,
+            listOf(FileType.Images, FileType.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.azure.AzureVisionTextDetection",
                             StandardContainers.ANALYSIS
                         )
                     )
