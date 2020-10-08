@@ -10,11 +10,11 @@ def get_zvi_azure_cv_client():
     Returns:
         boto3.client: A boto3 client for recognition
     """
-    try:
-        key = os.environ['AZURE_ACCOUNT_KEY']
-    except KeyError:
-        key = None
-    region = 'eastus'
+    key = os.environ.get('ZORROA_AZURE_KEY')
+    if not key:
+        raise RuntimeError('Azure support is not setup for this environment.')
+
+    region = os.environ.get('ZORROA_AZURE_REGION', 'eastus')
     credentials = CognitiveServicesCredentials(key)
 
     return ComputerVisionClient(

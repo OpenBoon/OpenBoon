@@ -23,10 +23,10 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         cred_location = os.path.dirname(__file__) + '/azure-creds'
         with open(cred_location, 'rb') as f:
             key = f.read().decode()
-        os.environ['AZURE_ACCOUNT_KEY'] = key
+        os.environ['ZORROA_AZURE_KEY'] = key
 
     def tearDown(self):
-        del os.environ['AZURE_ACCOUNT_KEY']
+        del os.environ['ZORROA_AZURE_KEY']
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
     def test_object_detection_processor(self, proxy_patch):
