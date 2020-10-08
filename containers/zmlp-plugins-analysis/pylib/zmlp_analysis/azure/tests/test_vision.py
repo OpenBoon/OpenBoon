@@ -189,38 +189,32 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         analysis = frame.asset.get_analysis(namespace)
         assert 'racy' in get_prediction_labels(analysis)
 
-
-class AzureFaceDetectionProcessorTests(PluginUnitTestCase):
-    namespace = 'azure-face-detection'
-
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
     @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
     @patch(patch_path, side_effect=MockACVClient)
-    def test_predict(self, p_path, c_path, proxy_patch):
+    def test_face_detection(self, p_path, c_path, proxy_patch):
         proxy_patch.return_value = FACES
         frame = Frame(TestAsset(FACES))
 
         processor = self.init_processor(AzureVisionFaceDetection())
         processor.process(frame)
 
-        analysis = frame.asset.get_analysis(self.namespace)
+        namespace = 'azure-face-detection'
+        analysis = frame.asset.get_analysis(namespace)
         assert 'Male' in get_prediction_labels(analysis)
-
-
-class AzureImageTextProcessorTests(PluginUnitTestCase):
-    namespace = 'azure-image-text-detection'
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
     @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
     @patch(patch_path, side_effect=MockACVClient)
-    def test_predict(self,  p_path, c_path, proxy_patch):
+    def test_image_text_detection(self,  p_path, c_path, proxy_patch):
         proxy_patch.return_value = STREETSIGN
         frame = Frame(TestAsset(STREETSIGN))
 
         processor = self.init_processor(AzureVisionTextDetection())
         processor.process(frame)
 
-        analysis = frame.asset.get_analysis(self.namespace)
+        namespace = 'azure-image-text-detection'
+        analysis = frame.asset.get_analysis(namespace)
         assert 'N PASEO TAMAYO 6050 F NIRVANA PL 6400 N NO OUTLET STOP' in analysis['content']
 
 
