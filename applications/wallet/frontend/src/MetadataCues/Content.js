@@ -24,7 +24,7 @@ const COLORS = [
   colors.signal.grass.base,
 ]
 
-const MetadataCuesContent = ({ metadata, height }) => {
+const MetadataCuesContent = ({ metadata }) => {
   const {
     query: { assetId },
   } = useRouter()
@@ -36,14 +36,7 @@ const MetadataCuesContent = ({ metadata, height }) => {
   })
 
   return (
-    <div
-      css={{
-        height,
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-      }}
-    >
+    <>
       <div
         css={{
           padding: spacing.base,
@@ -94,7 +87,7 @@ const MetadataCuesContent = ({ metadata, height }) => {
             )
           })}
       </div>
-    </div>
+    </>
   )
 }
 
@@ -107,7 +100,6 @@ MetadataCuesContent.propTypes = {
       }).isRequired,
     ).isRequired,
   ).isRequired,
-  height: PropTypes.number.isRequired,
 }
 
 export default MetadataCuesContent

@@ -4,10 +4,12 @@ import useSWR from 'swr'
 
 import { colors, spacing, constants } from '../Styles'
 
+import DoubleChevronSvg from '../Icons/doubleChevron.svg'
+
 import { useLocalStorage } from '../LocalStorage/helpers'
 
 import Button, { VARIANTS } from '../Button'
-import ResizeableVertical from '../ResizeableVertical'
+import ResizeableWithMessage from '../Resizeable/WithMessage'
 
 import { reducer, INITIAL_STATE } from './reducer'
 
@@ -19,6 +21,7 @@ import TimelineRuler from './Ruler'
 import TimelinePlayhead from './Playhead'
 import TimelineAggregate from './Aggregate'
 import TimelineTimelines from './Timelines'
+import TimelineMetadata from './Metadata'
 
 const TIMELINE_HEIGHT = 200
 
@@ -38,9 +41,11 @@ const Timeline = ({ videoRef, length }) => {
   )
 
   return (
-    <ResizeableVertical
+    <ResizeableWithMessage
       storageName={`Timeline.${assetId}`}
-      minHeight={TIMELINE_HEIGHT}
+      minSize={TIMELINE_HEIGHT}
+      openToThe="top"
+      isInitiallyOpen
       header={({ isOpen, toggleOpen }) => (
         <div
           css={{
@@ -59,20 +64,47 @@ const Timeline = ({ videoRef, length }) => {
               aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
               variant={VARIANTS.ICON}
               style={{
+                flexDirection: 'row',
                 padding: spacing.small,
                 ':hover, &.focus-visible:focus': {
                   backgroundColor: colors.structure.mattGrey,
+                  svg: {
+                    path: {
+                      fill: colors.structure.white,
+                    },
+                  },
                 },
+                textTransform: 'uppercase',
               }}
               onClick={toggleOpen}
             >
+              <DoubleChevronSvg
+                height={constants.icons.regular}
+                color={colors.structure.steel}
+                css={{
+                  transform: `rotate(${isOpen ? 0 : -90}deg)`,
+                }}
+              />
+              <div css={{ width: spacing.small }} />
               Timeline
             </Button>
           </div>
 
           <TimelineControls videoRef={videoRef} length={length} />
 
-          <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
+          <div
+            css={{
+              display: 'flex',
+              flex: 1,
+              justifyContent: 'flex-end',
+              padding: spacing.small,
+              paddingRight: 0,
+            }}
+          >
+            <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
+
+            <TimelineMetadata videoRef={videoRef} assetId={assetId} />
+          </div>
         </div>
       )}
     >
@@ -135,7 +167,7 @@ const Timeline = ({ videoRef, length }) => {
           </div>
         </div>
       )}
-    </ResizeableVertical>
+    </ResizeableWithMessage>
   )
 }
 
