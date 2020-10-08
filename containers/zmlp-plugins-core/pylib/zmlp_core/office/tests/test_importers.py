@@ -156,5 +156,5 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         assert asset['tmp.proxy_source_image'] == tempfile.gettempdir() + '/12345_pdf_proxy.jpg'
         size = media_size(asset['tmp.proxy_source_image'])
         print(asset['tmp.proxy_source_image'])
-        assert size[0] == 12228
-        assert size[1] == 5391
+        assert size[0] == 10000
+        assert size[1] == 4409
