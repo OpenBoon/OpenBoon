@@ -59,7 +59,7 @@ const ResizeableWithMessage = ({
     const newSize = (isOpen ? size : 0) - difference * DIRECTION
 
     if (newSize > minSize) {
-      dispatch({ size: newSize })
+      dispatch({ size: newSize, isOpen: true })
     }
 
     if (newSize < minSize) {
