@@ -1,68 +1,32 @@
 import TestRenderer from 'react-test-renderer'
 
-import MetadataCues from '..'
+import tracks from '../../Asset/__mocks__/tracks'
 
-const noop = () => {}
+import MetadataCues, { noop } from '..'
 
-const TRACKS = [
-  {
-    label: 'English',
-    kind: 'captions',
-    src: '/webvtt/english.vtt',
-    mode: 'disabled',
-  },
-  {
-    label: 'French',
-    kind: 'captions',
-    src: '/webvtt/french.vtt',
-    mode: 'disabled',
-  },
-  {
-    label: 'metadata',
-    kind: 'metadata',
-    src: '/webvtt/metadata.vtt',
-    mode: 'disabled',
-  },
-]
+const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 
 describe('<MetadataCues />', () => {
-  it('should render nothing without a video', () => {
+  it('should render properly without a video', () => {
     const component = TestRenderer.create(
       <MetadataCues videoRef={{ current: undefined }} />,
     )
 
-    expect(component.toJSON()).toBe(null)
-  })
-
-  it('should render nothing with a video without metadata track', () => {
-    const component = TestRenderer.create(
-      <MetadataCues
-        videoRef={{
-          current: {
-            duration: 42,
-            textTracks: {
-              0: TRACKS[0],
-              1: TRACKS[1],
-              length: 2,
-              addEventListener: noop,
-              removeEventListener: noop,
-            },
-          },
-        }}
-      />,
-    )
-
-    expect(component.toJSON()).toBe(null)
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should render properly with a video with a metadata track', () => {
+    require('next/router').__setUseRouter({
+      query: { assetId: ASSET_ID },
+    })
+
     const component = TestRenderer.create(
       <MetadataCues
         videoRef={{
           current: {
             duration: 42,
             textTracks: {
-              ...TRACKS,
+              ...tracks,
               length: 3,
               addEventListener: noop,
               removeEventListener: noop,
@@ -73,5 +37,9 @@ describe('<MetadataCues />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('noop should do nothing', () => {
+    expect(noop()).toBe(undefined)
   })
 })

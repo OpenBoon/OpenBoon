@@ -22,8 +22,8 @@ class OfficeImporter(AssetProcessor):
     default_dpi = 150
     """The default DPI for PDF rendering"""
 
-    max_pdf_res = 12228
-    """Max PDF render resolution"""
+    max_pdf_res = 10000
+    """Max PDF render resolution.  Azure max is 10k"""
 
     def __init__(self):
         super(OfficeImporter, self).__init__()

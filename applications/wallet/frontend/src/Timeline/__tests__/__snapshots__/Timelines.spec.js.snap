@@ -414,9 +414,9 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
       className="emotion-46"
     >
       <TimelineTracks
+        color="#0074f5"
         isOpen={true}
         length={18}
-        moduleColor="#0074f5"
         tracks={
           Array [
             Object {
@@ -464,9 +464,9 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
         }
       />
       <TimelineTracks
+        color="#a03dc7"
         isOpen={false}
         length={18}
-        moduleColor="#a03dc7"
         tracks={
           Array [
             Object {
@@ -510,76 +510,9 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
         }
       />
       <TimelineTracks
+        color="#d6680b"
         isOpen={false}
         length={18}
-        moduleColor="#d6680b"
-        tracks={
-          Array [
-            Object {
-              "hits": Array [
-                Object {
-                  "start": 0,
-                  "stop": 2,
-                },
-                Object {
-                  "start": 4,
-                  "stop": 5,
-                },
-                Object {
-                  "start": 10,
-                  "stop": 12,
-                },
-              ],
-              "track": "Object 1",
-            },
-            Object {
-              "hits": Array [
-                Object {
-                  "start": 0,
-                  "stop": 2,
-                },
-                Object {
-                  "start": 4,
-                  "stop": 5,
-                },
-                Object {
-                  "start": 10,
-                  "stop": 12,
-                },
-              ],
-              "track": "Object 2",
-            },
-            Object {
-              "hits": Array [
-                Object {
-                  "start": 0,
-                  "stop": 2,
-                },
-                Object {
-                  "start": 4,
-                  "stop": 5,
-                },
-                Object {
-                  "start": 10,
-                  "stop": 12,
-                },
-              ],
-              "track": "Object 3",
-            },
-          ]
-        }
-        videoRef={
-          Object {
-            "current": Object {
-              "duration": 18,
-            },
-          }
-        }
-      />
-      <TimelineTracks
-        isOpen={false}
-        length={18}
-        moduleColor="#ebb52e"
         tracks={
           Array [
             Object {
@@ -644,9 +577,76 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
         }
       />
       <TimelineTracks
+        color="#ebb52e"
         isOpen={false}
         length={18}
-        moduleColor="#00bdc1"
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Object 1",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Object 2",
+            },
+            Object {
+              "hits": Array [
+                Object {
+                  "start": 0,
+                  "stop": 2,
+                },
+                Object {
+                  "start": 4,
+                  "stop": 5,
+                },
+                Object {
+                  "start": 10,
+                  "stop": 12,
+                },
+              ],
+              "track": "Object 3",
+            },
+          ]
+        }
+        videoRef={
+          Object {
+            "current": Object {
+              "duration": 18,
+            },
+          }
+        }
+      />
+      <TimelineTracks
+        color="#00bdc1"
+        isOpen={false}
+        length={18}
         tracks={
           Array [
             Object {

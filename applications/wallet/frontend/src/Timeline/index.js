@@ -1,15 +1,19 @@
+import { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 import { colors, spacing, constants } from '../Styles'
 
+import DoubleChevronSvg from '../Icons/doubleChevron.svg'
+
 import { useLocalStorage } from '../LocalStorage/helpers'
 
 import Button, { VARIANTS } from '../Button'
-import ResizeableVertical from '../ResizeableVertical'
+import ResizeableWithMessage from '../Resizeable/WithMessage'
 
-import { reducer, INITIAL_STATE } from './reducer'
+import { reducer, INITIAL_STATE, ACTIONS } from './reducer'
+import { COLORS } from './helpers'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
@@ -19,6 +23,7 @@ import TimelineRuler from './Ruler'
 import TimelinePlayhead from './Playhead'
 import TimelineAggregate from './Aggregate'
 import TimelineTimelines from './Timelines'
+import TimelineMetadata from './Metadata'
 
 const TIMELINE_HEIGHT = 200
 
@@ -37,10 +42,29 @@ const Timeline = ({ videoRef, length }) => {
     `/api/v1/projects/${projectId}/assets/${assetId}/timelines/`,
   )
 
+  useMemo(() => {
+    const value = timelines.reduce((acc, { timeline }, index) => {
+      return {
+        ...acc,
+        [timeline]: {
+          ...(settings.timelines[timeline] || {}),
+          isOpen: settings.timelines[timeline]?.isOpen || false,
+          isVisible: settings.timelines[timeline]?.isVisible || true,
+          color: COLORS[index % COLORS.length],
+        },
+      }
+    }, {})
+
+    dispatch({ type: ACTIONS.UPDATE_TIMELINES, payload: { value } })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timelines])
+
   return (
-    <ResizeableVertical
+    <ResizeableWithMessage
       storageName={`Timeline.${assetId}`}
-      minHeight={TIMELINE_HEIGHT}
+      minSize={TIMELINE_HEIGHT}
+      openToThe="top"
+      isInitiallyOpen
       header={({ isOpen, toggleOpen }) => (
         <div
           css={{
@@ -59,20 +83,47 @@ const Timeline = ({ videoRef, length }) => {
               aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
               variant={VARIANTS.ICON}
               style={{
+                flexDirection: 'row',
                 padding: spacing.small,
                 ':hover, &.focus-visible:focus': {
                   backgroundColor: colors.structure.mattGrey,
+                  svg: {
+                    path: {
+                      fill: colors.structure.white,
+                    },
+                  },
                 },
+                textTransform: 'uppercase',
               }}
               onClick={toggleOpen}
             >
+              <DoubleChevronSvg
+                height={constants.icons.regular}
+                color={colors.structure.steel}
+                css={{
+                  transform: `rotate(${isOpen ? 0 : -90}deg)`,
+                }}
+              />
+              <div css={{ width: spacing.small }} />
               Timeline
             </Button>
           </div>
 
           <TimelineControls videoRef={videoRef} length={length} />
 
-          <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
+          <div
+            css={{
+              display: 'flex',
+              flex: 1,
+              justifyContent: 'flex-end',
+              padding: spacing.small,
+              paddingRight: 0,
+            }}
+          >
+            <TimelineCaptions videoRef={videoRef} initialTrackIndex={-1} />
+
+            <TimelineMetadata videoRef={videoRef} assetId={assetId} />
+          </div>
         </div>
       )}
     >
@@ -91,7 +142,7 @@ const Timeline = ({ videoRef, length }) => {
               flexDirection: 'column',
               height: '0%',
               position: 'relative',
-              marginLeft: settings.modulesWidth,
+              marginLeft: settings.width,
               borderLeft: constants.borders.regular.smoke,
             }}
           >
@@ -135,7 +186,7 @@ const Timeline = ({ videoRef, length }) => {
           </div>
         </div>
       )}
-    </ResizeableVertical>
+    </ResizeableWithMessage>
   )
 }
 

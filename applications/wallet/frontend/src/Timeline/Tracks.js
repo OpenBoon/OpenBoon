@@ -7,7 +7,7 @@ import { formatPaddedSeconds, gotoCurrentTime, GUIDE_WIDTH } from './helpers'
 const WIDTH = GUIDE_WIDTH + spacing.mini * 2
 const OFFSET = (WIDTH + constants.borderWidths.regular) / 2
 
-const TimelineTracks = ({ videoRef, length, moduleColor, tracks, isOpen }) => {
+const TimelineTracks = ({ videoRef, length, color, tracks, isOpen }) => {
   const duration = videoRef.current?.duration || length
 
   return (
@@ -53,7 +53,7 @@ const TimelineTracks = ({ videoRef, length, moduleColor, tracks, isOpen }) => {
             >
               <div
                 css={{
-                  backgroundColor: moduleColor,
+                  backgroundColor: color,
                   width: '100%',
                   height: '100%',
                 }}
@@ -103,7 +103,7 @@ const TimelineTracks = ({ videoRef, length, moduleColor, tracks, isOpen }) => {
                 >
                   <div
                     css={{
-                      backgroundColor: moduleColor,
+                      backgroundColor: color,
                       width: '100%',
                       height: '100%',
                     }}
@@ -126,7 +126,7 @@ TimelineTracks.propTypes = {
     }),
   }).isRequired,
   length: PropTypes.number.isRequired,
-  moduleColor: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
   tracks: PropTypes.arrayOf(
     PropTypes.shape({
       track: PropTypes.string.isRequired,

@@ -10,21 +10,7 @@ import MetadataPrettyPredictionsContent from '../MetadataPretty/PredictionsConte
 
 const COLOR_WIDTH = 3
 
-const COLORS = [
-  colors.signal.sky.base,
-  colors.graph.magenta,
-  colors.signal.halloween.base,
-  colors.signal.canary.base,
-  colors.graph.seafoam,
-  colors.graph.rust,
-  colors.graph.coral,
-  colors.graph.iris,
-  colors.graph.marigold,
-  colors.graph.magenta,
-  colors.signal.grass.base,
-]
-
-const MetadataCuesContent = ({ metadata, height }) => {
+const MetadataCuesContent = ({ metadata }) => {
   const {
     query: { assetId },
   } = useRouter()
@@ -36,14 +22,7 @@ const MetadataCuesContent = ({ metadata, height }) => {
   })
 
   return (
-    <div
-      css={{
-        height,
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-      }}
-    >
+    <>
       <div
         css={{
           padding: spacing.base,
@@ -72,18 +51,19 @@ const MetadataCuesContent = ({ metadata, height }) => {
         {Object.entries(metadata)
           .filter(([, predictions]) => predictions.length > 0)
           .filter(([timeline]) => {
-            return settings.modules[timeline]?.isVisible !== false
+            return settings.timelines[timeline]?.isVisible !== false
           })
           .sort(([a], [b]) => (a > b ? 1 : -1))
-          .map(([timeline, predictions], index) => {
-            const colorIndex = index % COLORS.length
-
+          .map(([timeline, predictions]) => {
             return (
               <div
                 key={timeline}
                 css={{
                   borderBottom: constants.borders.large.smoke,
-                  boxShadow: `inset ${COLOR_WIDTH}px 0 0 ${COLORS[colorIndex]}`,
+                  boxShadow: `inset ${COLOR_WIDTH}px 0 0 ${
+                    settings.timelines[timeline]?.color ||
+                    colors.structure.transparent
+                  }`,
                 }}
               >
                 <MetadataPrettyPredictionsContent
@@ -94,7 +74,7 @@ const MetadataCuesContent = ({ metadata, height }) => {
             )
           })}
       </div>
-    </div>
+    </>
   )
 }
 
@@ -107,7 +87,6 @@ MetadataCuesContent.propTypes = {
       }).isRequired,
     ).isRequired,
   ).isRequired,
-  height: PropTypes.number.isRequired,
 }
 
 export default MetadataCuesContent

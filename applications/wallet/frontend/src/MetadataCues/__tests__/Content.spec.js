@@ -5,7 +5,7 @@ import MetadataCuesContent from '../Content'
 describe('<MetadataCuesContent />', () => {
   it('should render properly with no metadata', () => {
     const component = TestRenderer.create(
-      <MetadataCuesContent metadata={{}} height={300} />,
+      <MetadataCuesContent metadata={{}} width={300} height={500} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -22,7 +22,8 @@ describe('<MetadataCuesContent />', () => {
           'gcp-object-detection': [{ label: 'food', score: 0.91 }],
           'gcp-logo-detection': [{ label: 'boon', score: 0.91 }],
         }}
-        height={300}
+        width={300}
+        height={500}
       />,
     )
 

@@ -7,20 +7,6 @@ import { filterTimelines } from './helpers'
 import TimelineAccordion, { COLOR_TAB_WIDTH } from './Accordion'
 import TimelineTracks from './Tracks'
 
-const COLORS = [
-  colors.signal.sky.base,
-  colors.graph.magenta,
-  colors.signal.halloween.base,
-  colors.signal.canary.base,
-  colors.graph.seafoam,
-  colors.graph.rust,
-  colors.graph.coral,
-  colors.graph.iris,
-  colors.graph.marigold,
-  colors.graph.magenta,
-  colors.signal.grass.base,
-]
-
 const TimelineTimelines = ({
   videoRef,
   length,
@@ -36,27 +22,25 @@ const TimelineTimelines = ({
         flex: 1,
         display: 'flex',
         overflow: 'overlay',
-        marginLeft: -settings.modulesWidth,
+        marginLeft: -settings.width,
         borderTop: constants.borders.regular.smoke,
       }}
     >
-      <div css={{ width: settings.modulesWidth }}>
+      <div css={{ width: settings.width }}>
         {filteredTimelines
           .filter(({ timeline }) => {
-            return settings.modules[timeline]?.isVisible !== false
+            return settings.timelines[timeline]?.isVisible !== false
           })
           .sort((a, b) => (a.timeline > b.timeline ? 1 : -1))
-          .map(({ timeline, tracks }, index) => {
-            const colorIndex = index % COLORS.length
-
+          .map(({ timeline, tracks }) => {
             return (
               <TimelineAccordion
                 key={timeline}
-                moduleColor={COLORS[colorIndex]}
+                color={settings.timelines[timeline]?.color}
                 timeline={timeline}
                 tracks={tracks}
                 dispatch={dispatch}
-                isOpen={settings.modules[timeline]?.isOpen || false}
+                isOpen={settings.timelines[timeline]?.isOpen || false}
               >
                 {tracks.map(({ track, hits }) => {
                   return (
@@ -64,7 +48,7 @@ const TimelineTimelines = ({
                       <div
                         css={{
                           width: COLOR_TAB_WIDTH,
-                          backgroundColor: COLORS[colorIndex],
+                          backgroundColor: settings.timelines[timeline]?.color,
                         }}
                       />
                       <div
@@ -112,19 +96,18 @@ const TimelineTimelines = ({
         <div css={{ width: `${settings.zoom}%` }}>
           {filteredTimelines
             .filter(({ timeline }) => {
-              return settings.modules[timeline]?.isVisible !== false
+              return settings.timelines[timeline]?.isVisible !== false
             })
-            .map(({ timeline, tracks }, index) => {
-              const colorIndex = index % COLORS.length
-
+            .sort((a, b) => (a.timeline > b.timeline ? 1 : -1))
+            .map(({ timeline, tracks }) => {
               return (
                 <TimelineTracks
                   key={timeline}
                   videoRef={videoRef}
                   length={length}
-                  moduleColor={COLORS[colorIndex]}
+                  color={settings.timelines[timeline]?.color}
                   tracks={tracks}
-                  isOpen={settings.modules[timeline]?.isOpen || false}
+                  isOpen={settings.timelines[timeline]?.isOpen || false}
                 />
               )
             })}
@@ -146,9 +129,9 @@ TimelineTimelines.propTypes = {
     }),
   ).isRequired,
   settings: PropTypes.shape({
-    modulesWidth: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
     filter: PropTypes.string.isRequired,
-    modules: PropTypes.shape({}).isRequired,
+    timelines: PropTypes.shape({}).isRequired,
     zoom: PropTypes.number.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,

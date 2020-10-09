@@ -1,9 +1,25 @@
+import { colors } from '../Styles'
+
 export const GUIDE_WIDTH = 2
 export const MAJOR_TICK_HEIGHT = 16
 export const MINOR_TICK_HEIGHT = 12
 export const TICK_WIDTH = 2
 export const HALF_SECOND = 0.5
 export const MIN_TICK_SPACING = 32
+
+export const COLORS = [
+  colors.signal.sky.base,
+  colors.graph.magenta,
+  colors.signal.halloween.base,
+  colors.signal.canary.base,
+  colors.graph.seafoam,
+  colors.graph.rust,
+  colors.graph.coral,
+  colors.graph.iris,
+  colors.graph.marigold,
+  colors.graph.magenta,
+  colors.signal.grass.base,
+]
 
 export const formatPaddedSeconds = ({ seconds: s }) => {
   const seconds = Number.isFinite(s) ? s : 0

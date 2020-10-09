@@ -1,0 +1,195 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TimelineMetadata /> should toggle Metadata 1`] = `
+.emotion-0 {
+  width: 4px;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 4px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  color: #73b61c;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  background-color: #2e2e2e;
+  color: #73b61c;
+}
+
+.emotion-1:hover svg path,
+.emotion-1.focus-visible:focus svg path {
+  fill: #73b61c;
+}
+
+<button
+  aria-label="Close Metadata"
+  className="emotion-1"
+  onClick={[Function]}
+  type="button"
+>
+  <svg
+    color="#73b61c"
+    data-file-name="timebasedMetadata.svg"
+    height={20}
+  />
+  <div
+    className="emotion-0"
+  />
+  Metadata
+</button>
+`;
+
+exports[`<TimelineMetadata /> should toggle Metadata 2`] = `
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 4px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  color: #808080;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus {
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-1:hover svg path,
+.emotion-1.focus-visible:focus svg path {
+  fill: #ffffff;
+}
+
+.emotion-0 {
+  width: 4px;
+}
+
+<button
+  aria-label="Open Metadata"
+  className="emotion-1"
+  onClick={[Function]}
+  type="button"
+>
+  <svg
+    color="#808080"
+    data-file-name="timebasedMetadata.svg"
+    height={20}
+  />
+  <div
+    className="emotion-0"
+  />
+  Metadata
+</button>
+`;
