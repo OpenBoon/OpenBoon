@@ -106,13 +106,32 @@ class BaseFilter(object):
         """
         raise NotImplementedError()
 
+    def get_clip_query(self):
+        """Gives the `clip` query for the current filter values."""
+        return {}
+
     def add_to_query(self, query):
         """Adds the given filters information to a pre-existing query.
 
         Adds this query to a prebuilt query. Every clause will be appended to the list
         of existing `bool` clauses if they exist, in an additive manner.
         """
-        this_query = self.get_es_query()
+        return self._add_to_given_query(self.get_es_query(), query)
+
+    def add_to_clip_query(self, query):
+        """Adds the given filter's clip query to a pre-existing query.
+
+        Adds this clip query to a prebuilt query. Every clause will be appended to the list
+        of existing `bool` clauses if they exist, in an additive manner.
+        """
+        return self._add_to_given_query(self.get_clip_query(), query)
+
+    def _add_to_given_query(self, this_query, query):
+        """Adds `this_query` to the given `query` in an additive manner."""
+        if not this_query:
+            # Catches the case where a filter doesn't have a relevant query to add
+            return query
+
         bool_clauses = this_query['query'].get('bool', {})
 
         if 'query' not in query:
@@ -312,6 +331,48 @@ class LabelConfidenceFilter(BaseFilter):
             }
         }
 
+    def get_clip_query(self):
+        attribute = self.data['attribute']
+        labels = self.data['values']['labels']
+        min = self.data['values']['min']
+        max = self.data['values']['max']
+        if self.field_type == 'prediction' and 'video' in attribute:
+            timeline = attribute.replace('analysis.', '')
+            return {
+                'query': {
+                    'bool': {
+                        'must': [
+                            {
+                                'bool': {
+                                    'filter': [
+                                        {
+                                            'terms': {
+                                                'clip.content': labels
+                                            }
+                                        },
+                                        {
+                                            'term': {
+                                                'clip.timeline': timeline
+                                            }
+                                        },
+                                        {
+                                            'range': {
+                                                'clip.score': {
+                                                    'from': min,
+                                                    'to': max
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        else:
+            return {}
+
 
 class TextContentFilter(BaseFilter):
 
@@ -350,6 +411,26 @@ class TextContentFilter(BaseFilter):
                     ]
                 }
             }
+        }
+
+    def get_clip_query(self):
+        # Regardless of what the attribute is, search all content fields
+        query = self.data['values']['query']
+        simple_query_string = {
+            'simple_query_string': {
+                'query': query,
+                'fields': ['clip.content']
+            }
+        }
+        return {
+            'query': {
+                'bool': {
+                    'must': [
+                        simple_query_string
+                    ]
+                }
+            }
+
         }
 
 
