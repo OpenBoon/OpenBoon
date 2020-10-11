@@ -109,7 +109,12 @@ const Timeline = ({ videoRef, length }) => {
             </Button>
           </div>
 
-          <TimelineControls videoRef={videoRef} length={length} />
+          <TimelineControls
+            videoRef={videoRef}
+            length={length}
+            timelines={timelines}
+            settings={settings}
+          />
 
           <div
             css={{
