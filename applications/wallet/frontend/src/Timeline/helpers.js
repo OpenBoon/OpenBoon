@@ -113,10 +113,14 @@ const getAdjacentHits = ({ currentTime, timelines, settings }) => {
         })
       })
     })
-    .sort()
+    .sort((a, b) => a - b)
 
-  const previousHits = sortedHits.filter((hit) => hit < currentTime)
-  const nextHits = sortedHits.filter((hit) => hit > currentTime)
+  const previousHits = sortedHits.filter(
+    (hit) => Math.round(hit * 1000) < Math.round(currentTime * 1000),
+  )
+  const nextHits = sortedHits.filter(
+    (hit) => Math.round(hit * 1000) > Math.round(currentTime * 1000),
+  )
 
   return {
     previousHit: previousHits[previousHits.length - 1],
