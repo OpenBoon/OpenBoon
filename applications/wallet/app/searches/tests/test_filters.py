@@ -426,20 +426,37 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
                 'bool': {
                     'filter': [
                         {
-                            'terms': {'analysis.zvi-label-detection.predictions.label': [
-                                'value1',
-                                'value2']}},
-                        {'nested': {
-                            'path': 'analysis.zvi-label-detection.predictions',
-                            'query': {
-                                'bool': {'filter': [{'terms': {
-                                    'analysis.zvi-label-detection.predictions.label': [
-                                        'value1',
-                                        'value2']}},
-                                    {'range': {
-                                        'analysis.zvi-label-detection.predictions.score': {
-                                            'from': 0.5,
-                                            'to': 0.8}}}]}}}}]}}}
+                            'terms': {
+                                'analysis.zvi-label-detection.predictions.label': [
+                                    'value1',
+                                    'value2'
+                                ]}}],
+                    'must': [
+                        {
+                            'nested': {
+                                'path': 'analysis.zvi-label-detection.predictions',
+                                'query': {
+                                    'function_score': {
+                                        'boost_mode': 'sum',
+                                        'field_value_factor': {
+                                            'field': 'analysis.zvi-label-detection.predictions.score',
+                                            'missing': 0
+                                        },
+                                        'query': {
+                                            'bool': {
+                                                'filter': [
+                                                    {
+                                                        'terms': {
+                                                            'analysis.zvi-label-detection.predictions.label': [
+                                                                'value1',
+                                                                'value2'
+                                                            ]}},
+                                                    {
+                                                        'range': {
+                                                            'analysis.zvi-label-detection.predictions.score': {
+                                                                'gte': 0.5,
+                                                                'lte': 0.8
+                                                            }}}]}}}}}}]}}}
 
     def test_get_es_query_single_label(self, mock_query_data):
         _filter = LabelConfidenceFilter(mock_query_data)
@@ -467,26 +484,19 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
             }
         }
         new_query = _filter.add_to_query(query)
-        assert new_query == {
-            'query': {
-                'bool': {
-                    'filter': [
-                        {
-                            'terms': {'my_attr': ['value1', 'value2']}},
-                        {'terms': {
-                            'analysis.zvi-label-detection.predictions.label': [
-                                'value1',
-                                'value2']}},
-                        {'nested': {
-                            'path': 'analysis.zvi-label-detection.predictions',
-                            'query': {'bool': {'filter': [{'terms': {
-                                'analysis.zvi-label-detection.predictions.label': [
-                                    'value1',
-                                    'value2']}},
-                                {'range': {
-                                    'analysis.zvi-label-detection.predictions.score': {
-                                        'from': 0.5,
-                                        'to': 0.8}}}]}}}}]}}}
+        assert new_query == {'query': {'bool': {
+            'filter': [{'terms': {'my_attr': ['value1', 'value2']}}, {
+                'terms': {'analysis.zvi-label-detection.predictions.label': ['value1', 'value2']}}],
+            'must': [{'nested': {'path': 'analysis.zvi-label-detection.predictions', 'query': {
+                'function_score': {'boost_mode': 'sum', 'field_value_factor': {
+                    'field': 'analysis.zvi-label-detection.predictions.score', 'missing': 0},
+                                   'query': {'bool': {'filter': [{'terms': {
+                                       'analysis.zvi-label-detection.predictions.label': ['value1',
+                                                                                          'value2']}},
+                                                                 {'range': {
+                                                                     'analysis.zvi-label-detection.predictions.score': {
+                                                                         'gte': 0.5,
+                                                                         'lte': 0.8}}}]}}}}}}]}}}
 
     def test_add_to_label_conf_query(self, mock_query_data):
         _filter = LabelConfidenceFilter(mock_query_data)
@@ -504,32 +514,43 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
         query = _filter.get_es_query()
         query = _filter2.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [
-            {'terms': {'analysis.zvi-label-detection.predictions.label': ['value1',
-                                                                          'value2']}},
-            {'nested': {'path': 'analysis.zvi-label-detection.predictions',
-                        'query': {
-                            'bool': {
-                                'filter': [
-                                    {'terms': {
-                                        'analysis.zvi-label-detection.predictions.label': [
-                                            'value1', 'value2']}},
-                                    {'range': {
-                                        'analysis.zvi-label-detection.predictions.score': {
-                                            'from': 0.5,
-                                            'to': 0.8}}}]}}}},
-            {'terms': {'analysis.zvi-object-detection.predictions.label': ['dog',
-                                                                           'cat']}},
-            {'nested': {'path': 'analysis.zvi-object-detection.predictions',
-                        'query': {
-                            'bool': {
-                                'filter': [
-                                    {'terms': {
-                                        'analysis.zvi-object-detection.predictions.label': [
-                                            'dog', 'cat']}},
-                                    {'range': {
-                                        'analysis.zvi-object-detection.predictions.score': {
-                                            'from': 0.2,
-                                            'to': 0.7}}}]}}}}]}}}
+            {'terms': {'analysis.zvi-label-detection.predictions.label': ['value1', 'value2']}},
+            {'terms': {'analysis.zvi-object-detection.predictions.label': ['dog', 'cat']}}],
+                                            'must': [{'nested': {
+                                                'path': 'analysis.zvi-label-detection.predictions',
+                                                'query': {'function_score': {'boost_mode': 'sum',
+                                                                             'field_value_factor': {
+                                                                                 'field': 'analysis.zvi-label-detection.predictions.score',
+                                                                                 'missing': 0},
+                                                                             'query': {'bool': {
+                                                                                 'filter': [{
+                                                                                                'terms': {
+                                                                                                    'analysis.zvi-label-detection.predictions.label': [
+                                                                                                        'value1',
+                                                                                                        'value2']}},
+                                                                                            {
+                                                                                                'range': {
+                                                                                                    'analysis.zvi-label-detection.predictions.score': {
+                                                                                                        'gte': 0.5,
+                                                                                                        'lte': 0.8}}}]}}}}}},
+                                                     {'nested': {
+                                                         'path': 'analysis.zvi-object-detection.predictions',
+                                                         'query': {
+                                                             'function_score': {'boost_mode': 'sum',
+                                                                                'field_value_factor': {
+                                                                                    'field': 'analysis.zvi-object-detection.predictions.score',
+                                                                                    'missing': 0},
+                                                                                'query': {'bool': {
+                                                                                    'filter': [{
+                                                                                                   'terms': {
+                                                                                                       'analysis.zvi-object-detection.predictions.label': [
+                                                                                                           'dog',
+                                                                                                           'cat']}},
+                                                                                               {
+                                                                                                   'range': {
+                                                                                                       'analysis.zvi-object-detection.predictions.score': {
+                                                                                                           'gte': 0.2,
+                                                                                                           'lte': 0.7}}}]}}}}}}]}}}
 
 
 class TestTextContentFilter(FilterBaseTestCase):
@@ -760,7 +781,7 @@ class TestLabelsFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'must': {
+                    'must': [{
                         'nested': {
                             'path': 'labels',
                             'query': {
@@ -770,7 +791,7 @@ class TestLabelsFilter(FilterBaseTestCase):
                                             'bc28213f-cf3a-16a2-9f21-0242ac130003']}},
                                         {'terms': {'labels.label': ['Celeste', 'David']}},
                                         {'terms': {'labels.scope': ['TRAIN', 'TEST']}}
-                                    ]}}}}}
+                                    ]}}}}]}
             }
         }
 
@@ -781,7 +802,7 @@ class TestLabelsFilter(FilterBaseTestCase):
         assert query == {
             'query': {
                 'bool': {
-                    'must': {
+                    'must': [{
                         'nested': {
                             'path': 'labels',
                             'query': {
@@ -791,7 +812,7 @@ class TestLabelsFilter(FilterBaseTestCase):
                                             'bc28213f-cf3a-16a2-9f21-0242ac130003']}},
                                         {'terms': {'labels.label': ['Celeste', 'David']}},
                                         {'terms': {'labels.scope': ['TRAIN']}}
-                                    ]}}}}}
+                                    ]}}}}]}
             }
         }
 

@@ -15,7 +15,6 @@ class RekognitionFaceDetection(AssetProcessor):
     def __init__(self):
         super(RekognitionFaceDetection, self).__init__()
         self.client = None
-        self.analysis = None
 
     def init(self):
         # AWS client
@@ -30,12 +29,12 @@ class RekognitionFaceDetection(AssetProcessor):
         """
         asset = frame.asset
         proxy_path = get_proxy_level_path(asset, 0)
-        self.analysis = LabelDetectionAnalysis(min_score=0.01)
+        analysis = LabelDetectionAnalysis(min_score=0.01)
 
         for ls in self.predict(proxy_path):
-            self.analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
+            analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
 
-        asset.add_analysis(self.namespace, self.analysis)
+        asset.add_analysis(self.namespace, analysis)
 
     def predict(self, path):
         """ Make a prediction for an image path.

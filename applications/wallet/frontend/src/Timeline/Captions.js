@@ -9,6 +9,8 @@ import GearSvg from '../Icons/gear.svg'
 import Button, { VARIANTS } from '../Button'
 import Menu from '../Menu'
 
+const SEPARATOR_WIDTH = 2
+
 let lastEnabledTrackIndex = 0
 
 const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
@@ -36,26 +38,10 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
     return () => textTracks.removeEventListener('change', onChange)
   }, [textTracks])
 
-  if (!textTracks || !textTracks[0])
-    return (
-      <div
-        css={{
-          width:
-            (constants.icons.regular + spacing.small * 2) * 2 + // 2 buttons width
-            spacing.small + // spacer
-            spacing.small * 2, // padding
-        }}
-      />
-    )
+  if (!textTracks || !textTracks[0]) return null
 
   return (
-    <div
-      css={{
-        display: 'flex',
-        alignItems: 'center',
-        padding: spacing.small,
-      }}
-    >
+    <div css={{ display: 'flex' }}>
       <Button
         aria-label={`${trackIndex > -1 ? 'Disable' : 'Enable'} Captions`}
         variant={VARIANTS.ICON}
@@ -145,6 +131,15 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
           </div>
         )}
       </Menu>
+
+      <div
+        css={{
+          width: SEPARATOR_WIDTH,
+          backgroundColor: colors.structure.coal,
+          marginLeft: spacing.small,
+          marginRight: spacing.small,
+        }}
+      />
     </div>
   )
 }

@@ -152,6 +152,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Add the django-axes authentication backend and configure.
+AXES_META_PRECEDENCE_ORDER = ['HTTP_X_FORWARDED_FOR']
 AXES_FAILURE_LIMIT = 5
 AUTHENTICATION_BACKENDS = [
     # AxesBackend should be the first backend in the AUTHENTICATION_BACKENDS list.

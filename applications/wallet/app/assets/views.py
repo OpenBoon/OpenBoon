@@ -2,6 +2,7 @@ import mimetypes
 import requests
 
 from django.http import StreamingHttpResponse
+from django.urls import reverse
 from django.utils.cache import patch_response_headers, patch_cache_control
 from rest_framework import status
 from rest_framework.decorators import action
@@ -110,6 +111,94 @@ class AssetViewSet(BaseProjectViewSet):
         path = f'{FileNameViewSet.zmlp_root_api_path}/_sign/{_file["id"]}'
         response = request.client.get(path)
         return Response(status=status.HTTP_200_OK, data=response)
+
+    @action(detail=True, methods=['get'])
+    def urls(self, request, project_pk, pk):
+        """Returns the set of urls used for the media and webvtt files"""
+        urls = {'signedUrl': {},
+                'tracks': []}
+        # Query for the asset details to get it's metadata and list of files
+        detail_response = self.retrieve(request, project_pk, pk)
+
+        # Figure out the signed url
+        # Determine the best file to display in fullscreen
+        _file = get_best_fullscreen_file_data(detail_response.data)
+        if not _file:
+            urls['signedUrl'] = {'uri': '/icons/fallback_3x.png',
+                                 'mediaType': 'image/png'}
+        else:
+            path = f'{FileNameViewSet.zmlp_root_api_path}/_sign/{_file["id"]}'
+            urls['signedUrl'] = request.client.get(path)
+
+        # Figure out the tracks
+        # Get all the clips so we know what vtt's to add
+        clips = self._get_all_clips(request, pk)
+        timelines = self._get_formatted_timelines(clips)
+        for timeline in timelines:
+            name = timeline['timeline']
+            track = {'label': name,
+                     'kind': 'metadata',
+                     'src': reverse('webvtt-detail', kwargs={'project_pk': project_pk,
+                                                             'asset_pk': pk,
+                                                             'pk': f'{name}.vtt'})}
+            urls['tracks'].append(track)
+
+        # TODO: Figure out how to add the closed caption files to the tracks listing
+
+        return Response(data=urls)
+
+    @action(detail=True, methods=['get'])
+    def timelines(self, request, project_pk, pk):
+        """Returns the time based metadata in timeline format."""
+        content = self._get_all_clips(request, pk)
+        formatted_content = self._get_formatted_timelines(content)
+        return Response(formatted_content)
+
+    def _get_all_clips(self, request, pk):
+        """Helper to return all the timelines/clips for an asset"""
+        base_path = f'{self.zmlp_root_api_path}{pk}/clips'
+        return self._zmlp_get_all_content_from_es_search(request, base_url=base_path)
+
+    def _get_formatted_timelines(self, content):
+        """Helper to format the clip search response from ZMLP into the JSON response for the UI"""
+        # Organize the detections into a more helpful state
+        data = {}
+        for entry in content:
+            clip = entry['_source']['clip']
+            timeline = clip['timeline']
+            track = clip['track']
+            start = clip['start']
+            stop = clip['stop']
+            data.setdefault(timeline, {}).setdefault(track, []).append({'start': start,
+                                                                        'stop': stop})
+
+        formatted_timelines = []
+        for timeline in data:
+            section = {'timeline': timeline,
+                       'tracks': []}
+            for track in data[timeline]:
+                track_section = {'track': track,
+                                 'hits': data[timeline][track]}
+                section['tracks'].append(track_section)
+            formatted_timelines.append(section)
+        return formatted_timelines
+
+
+class WebVttViewSet(BaseProjectViewSet):
+    zmlp_only = True
+    zmlp_root_api_path = 'api/v3/assets'
+    lookup_value_regex = '[^/]+'
+
+    def retrieve(self, request, project_pk, asset_pk, pk):
+        """Streams the webvtt for the specified vtt file."""
+        if pk == 'all.vtt':
+            path = f'{self.zmlp_root_api_path}/{asset_pk}/clips/{pk}'
+        else:
+            path = f'{self.zmlp_root_api_path}/{asset_pk}/clips/timelines/{pk}'
+        response = StreamingHttpResponse(stream(request, path), content_type='text/vtt')
+        patch_response_headers(response, cache_timeout=86400)
+        patch_cache_control(response, private=True)
+        return response
 
 
 class FileCategoryViewSet(BaseProjectViewSet):

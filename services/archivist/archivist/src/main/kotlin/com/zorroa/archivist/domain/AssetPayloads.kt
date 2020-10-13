@@ -131,7 +131,10 @@ class ReprocessAssetSearchRequest(
     val dependOnJobIds: List<UUID>? = null,
 
     @ApiModelProperty("Filter by file types, defaults to all types.")
-    var fileTypes: List<FileType> = FileType.allTypes()
+    var fileTypes: List<FileType> = FileType.allTypes(),
+
+    @ApiModelProperty("Include standard modules in pipeline.")
+    val includeStandard: Boolean = true
 )
 
 @ApiModel(

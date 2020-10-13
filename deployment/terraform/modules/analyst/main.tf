@@ -74,6 +74,7 @@ resource "kubernetes_deployment" "analyst" {
         }
       }
       spec {
+        termination_grace_period_seconds = 10800
         node_selector = {
           type = "analyst"
         }
@@ -164,6 +165,13 @@ resource "kubernetes_deployment" "analyst" {
             limits {
               memory = var.memory-limit
               cpu    = var.cpu-limit
+            }
+          }
+          lifecycle {
+            pre_stop {
+              exec {
+                command = ["/service/bin/k8prestop.py"]
+              }
             }
           }
         }

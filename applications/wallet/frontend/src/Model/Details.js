@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { useLocalStorageState } from '../LocalStorage/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import FilterSvg from '../Icons/filter.svg'
@@ -35,15 +35,15 @@ const ModelDetails = () => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const [, setPanel] = useLocalStorageState({
+  const [, setPanel] = useLocalStorage({
     key: 'leftOpeningPanel',
   })
 
-  const [, setModelId] = useLocalStorageState({
+  const [, setModelId] = useLocalStorage({
     key: `AssetLabelingAdd.${projectId}.modelId`,
   })
 
-  const [, setLabel] = useLocalStorageState({
+  const [, setLabel] = useLocalStorage({
     key: `AssetLabelingAdd.${projectId}.label`,
   })
 

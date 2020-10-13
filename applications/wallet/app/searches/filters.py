@@ -3,7 +3,7 @@ import uuid
 from django.core.exceptions import ImproperlyConfigured
 from rest_framework.exceptions import ValidationError, NotFound
 
-from zmlp.search import SimilarityQuery
+from zmlp.search import SimilarityQuery, LabelConfidenceQuery
 
 
 class BaseFilter(object):
@@ -279,42 +279,13 @@ class LabelConfidenceFilter(BaseFilter):
 
     def get_prediction_query(self, attribute, labels, min, max):
         """Query to return when querying against a prediction analysis schema."""
+        namespace = attribute.split('.')[1]
+        confidence_query = LabelConfidenceQuery(namespace=namespace,
+                                                labels=labels,
+                                                min_score=min,
+                                                max_score=max)
         return {
-            "query": {
-                "bool": {
-                    "filter": [
-                        {
-                            "terms": {
-                                f"{attribute}.predictions.label": labels
-                            }
-                        },
-                        {"nested": {
-                            "path": f"{attribute}.predictions",
-                            "query": {
-                                "bool": {
-                                    "filter": [
-                                        {
-                                            "terms": {
-                                                f"{attribute}.predictions.label": labels
-                                            }
-                                        },
-                                        {
-                                            "range": {
-                                                f"{attribute}.predictions.score": {
-                                                    "from": min,
-                                                    "to": max
-                                                }
-                                            }
-                                        }
-                                    ]
-                                }
-
-                            }
-                        }
-                        }
-                    ]
-                }
-            }
+            "query": confidence_query.for_json()
         }
 
     def get_single_label_query(self, attribute, labels, min, max):
@@ -497,7 +468,7 @@ class LabelFilter(BaseFilter):
         query = {
             'query': {
                 "bool": {
-                    "must": {
+                    "must": [{
                         "nested": {
                             "path": "labels",
                             "query": {
@@ -510,7 +481,7 @@ class LabelFilter(BaseFilter):
                                 }
                             }
                         }
-                    }
+                    }]
                 }
             }
         }

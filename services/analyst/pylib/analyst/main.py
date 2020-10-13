@@ -64,4 +64,4 @@ def setup_routes(api):
 
     @app.route('/prestop', methods=['GET'])
     def shutdown():
-        return jsonify({"ok": api.executor.start_shutdown()})
+        return jsonify(api.executor.start_shutdown())

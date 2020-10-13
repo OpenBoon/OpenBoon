@@ -290,9 +290,20 @@ class Executor(object):
         Returns:
             bool: True if there is no current task.
         """
-        logger.info("Analyst shutting down, disabling poll timer")
+        logger.info("Analyst shutting down, current task={}".format(self.current_task))
         self.disable_poll_timer = True
-        return self.current_task is None
+        if self.current_task:
+            return {
+                "task": self.current_task.task['taskId'],
+                "name": self.current_task.task['name'],
+                "exit": False
+            }
+        else:
+            return {
+                "task": None,
+                "name": None,
+                "exit": True
+            }
 
     def send_ping(self):
         """

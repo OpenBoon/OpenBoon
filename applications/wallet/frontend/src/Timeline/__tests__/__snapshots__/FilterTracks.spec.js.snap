@@ -4,6 +4,7 @@ exports[`<TimelineFilterTracks /> should render properly 1`] = `
 .emotion-1 {
   margin-left: -200px;
   width: 200px;
+  padding-right: 1.5px;
 }
 
 .emotion-0 {
