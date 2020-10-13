@@ -153,7 +153,7 @@ class ProcessorExecutor(object):
                 if ref.get("module") == "standard":
                     self.reactor.write_event("hardfailure", {"message": msg + "(standard)"})
                 else:
-                    self.reactor.write_event("error", {"message": msg})
+                    self.reactor.error(None, ref["className"], e, False, "init")
         else:
             wrapper = self.processors[key]
 

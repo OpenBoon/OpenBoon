@@ -170,7 +170,7 @@ class Reactor(object):
             "processor": proc_name,
             "message": message,
             "fatal": fatal,
-            "phase": phase
+            "phase": phase or "execute"
         }
         if frame:
             payload["path"] = frame.asset.get_attr("source.path")
