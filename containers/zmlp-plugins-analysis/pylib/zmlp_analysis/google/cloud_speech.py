@@ -11,7 +11,7 @@ from google.cloud import speech_v1p1beta1 as speech
 from zmlpsdk import Argument, AssetProcessor, file_storage, FileTypes
 from zmlpsdk.analysis import ContentDetectionAnalysis
 from .gcp_client import initialize_gcp_client
-from .cloud_timeline import save_speech_to_text_webvtt
+from .cloud_timeline import save_speech_to_text_webvtt, save_speech_to_text_timeline
 from subprocess import check_output
 
 
@@ -61,10 +61,11 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         if audio_result.results:
             self.set_analysis(asset, audio_result)
             self.save_raw_result(asset, audio_result)
-            self.save_webvtt(asset, audio_result)
+            self.save_timelines(asset, audio_result)
 
-    def save_webvtt(self, asset, audio_result):
+    def save_timelines(self, asset, audio_result):
         save_speech_to_text_webvtt(asset, audio_result)
+        save_speech_to_text_timeline(asset, audio_result)
 
     def save_raw_result(self, asset, audio_result):
         file_storage.assets.store_blob(audio_result.SerializeToString(),
@@ -77,7 +78,6 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
         # only keep the highest confidence.
         analysis = ContentDetectionAnalysis()
         languages = set()
-
         for r in audio_result.results:
             sorted_results = sorted(r.alternatives, key=lambda i: i.confidence, reverse=True)
             analysis.add_content(sorted_results[0].transcript)

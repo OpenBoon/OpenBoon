@@ -37,6 +37,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         self.processor = self.init_processor(
             AsyncSpeechToTextProcessor(), {'language': 'en-US'})
 
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(file_storage.assets, 'get_native_uri')
@@ -44,7 +45,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.google.cloud_speech.initialize_gcp_client')
     @patch('zmlp_analysis.google.cloud_speech.AsyncSpeechToTextProcessor.recognize_speech')
     def test_speech_detection(self, speech_patch, client_patch, localize_patch,
-                              native_url_patch, store_patch, store_blob_patch):
+                              native_url_patch, store_patch, store_blob_patch, _):
         speech_patch.return_value = load_results()
         client_patch.return_value = MockSpeechToTextClient()
         localize_patch.return_value = zorroa_test_path("video/ted_talk.mov")
@@ -58,6 +59,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         self.processor.process(frame)
         assert 'poop' in asset.get_attr('analysis.gcp-speech-to-text.content')
 
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     @patch.object(file_storage.cache, 'localize_uri')
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
@@ -70,7 +72,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
                                              native_url_patch,
                                              store_patch,
                                              store_blob_patch,
-                                             local_patch):
+                                             local_patch, _):
         speech_patch.return_value = load_results()
         local_patch.return_value = zorroa_test_path('audio/audio1.flac')
         client_patch.return_value = MockSpeechToTextClient()
