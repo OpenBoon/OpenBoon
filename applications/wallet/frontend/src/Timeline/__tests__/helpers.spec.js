@@ -87,6 +87,29 @@ describe('<Timeline /> helpers', () => {
   })
 
   describe('gotoPreviousHit()', () => {
+    it('should round and sort', () => {
+      const videoRef = {
+        current: { pause: noop, currentTime: 4.9999, duration: 10 },
+      }
+
+      gotoPreviousHit({
+        videoRef,
+        timelines: [
+          {
+            tracks: [
+              {
+                track: 'gcp-logo-detection',
+                hits: [{ start: 5.0 }, { start: 5.001 }, { start: 4.999 }],
+              },
+            ],
+          },
+        ],
+        settings: { timelines: {}, filter: '' },
+      })()
+
+      expect(videoRef.current.currentTime).toBe(4.999)
+    })
+
     it('should go to the previous hit', () => {
       const videoRef = {
         current: { pause: noop, currentTime: 5, duration: 10 },
