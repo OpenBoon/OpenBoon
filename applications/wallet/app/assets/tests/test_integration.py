@@ -8,6 +8,7 @@ from zmlp import ZmlpClient
 
 from assets.utils import AssetBoxImager
 from assets.views import AssetViewSet
+from searches.filters import LabelConfidenceFilter
 from wallet.tests.utils import check_response
 
 pytestmark = pytest.mark.django_db
@@ -187,18 +188,18 @@ class TestTimelines:
                  {
                      'track': 'AAMCO Transmissions',
                      'hits': [
-                         {'start': 0.033, 'stop': 19.453}
+                         {'start': 0.033, 'stop': 19.453, 'highlight': False}
                      ]
                  },
                  {
                      'track': 'Patagonia',
                      'hits': [
-                         {'start': 1.735, 'stop': 2.936},
-                         {'start': 3.537, 'stop': 9.743},
-                         {'start': 10.244, 'stop': 10.344},
-                         {'start': 13.447, 'stop': 13.847},
-                         {'start': 14.748, 'stop': 15.048},
-                         {'start': 15.949, 'stop': 19.453}
+                         {'start': 1.735, 'stop': 2.936, 'highlight': False},
+                         {'start': 3.537, 'stop': 9.743, 'highlight': False},
+                         {'start': 10.244, 'stop': 10.344, 'highlight': False},
+                         {'start': 13.447, 'stop': 13.847, 'highlight': False},
+                         {'start': 14.748, 'stop': 15.048, 'highlight': False},
+                         {'start': 15.949, 'stop': 19.453, 'highlight': False}
                      ]
                  }
              ]},
@@ -207,17 +208,119 @@ class TestTimelines:
                  {
                      'track': 'person',
                      'hits': [
-                         {'start': 0.033, 'stop': 1.935}
+                         {'start': 0.033, 'stop': 1.935, 'highlight': False}
                      ]
                  },
                  {
                      'track': 'car',
                      'hits': [
-                         {'start': 0.033, 'stop': 0.334},
-                         {'start': 1.635, 'stop': 1.935}
+                         {'start': 0.033, 'stop': 0.334, 'highlight': False},
+                         {'start': 1.635, 'stop': 1.935, 'highlight': False}
                      ]
                  }
              ]}
+        ]
+
+    def test_timelines_with_query(self, login, project, api_client, monkeypatch):
+
+        def mock_response(*args, **kwargs):
+            if kwargs.get('search_filter'):
+                return [{"_index":"psqvrhj2nweamqb5","_type":"_doc","_id":"gY6ZV7AVKyIAGdcDopKJy6S4Jl2LKNQX","_score":0.0,"_routing":"161cSlllD5EP-mma5nw1Rk_xDDLVDrs5","_source":{"clip":{"score":0.904,"stop":19.453,"assetId":"161cSlllD5EP-mma5nw1Rk_xDDLVDrs5","start":0.033,"length":19.42,"timeline":"gcp-video-logo-detection","track":"AAMCO Transmissions","content":["AAMCO Transmissions"]}}}]  # noqa
+            else:
+                return [{'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'gY6ZV7AVKyIAGdcDopKJy6S4Jl2LKNQX', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.904, 'stop': 19.453, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 0.033, 'length': 19.42, 'timeline': 'gcp-video-logo-detection', 'track': 'AAMCO Transmissions', 'content': ['AAMCO Transmissions']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'e7sRs6KWejPJwScDB9VipWDWXoyA8m3E', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 2.936, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 1.735, 'length': 1.201, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'ShVFwPsVKP7h76Ml30x4qh3zoSrEFQgc', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 9.743, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 3.537, 'length': 6.206, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'bM62oaRK82OzUUNpjCyA3Xo2mf0tvQpU', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 10.344, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 10.244, 'length': 0.1, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': '0jtcS42wmk6dwSbRiW3Oi9v46QY4W9Yz', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 13.847, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 13.447, 'length': 0.4, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'b4lo4jKOhU0lyqPJ1NTQCnOZGLO9TOwt', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 15.048, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 14.748, 'length': 0.3, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'hFAwdiwtZs0WovYQ2RhOTREHUVy8KQud', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.967, 'stop': 19.453, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 15.949, 'length': 3.504, 'timeline': 'gcp-video-logo-detection', 'track': 'Patagonia', 'content': ['Patagonia']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': '43fHeEBKapcIOEQQyhiNNMrvd2zBY1hl', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.885, 'stop': 1.935, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 0.033, 'length': 1.902, 'timeline': 'gcp-video-object-detection', 'track': 'person', 'content': ['person']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'R83rxMfDt3_cOLjR7IqH-wjx0366YnzG', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.872, 'stop': 0.334, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 0.033, 'length': 0.301, 'timeline': 'gcp-video-object-detection', 'track': 'car', 'content': ['car']}}}, {'_index': 'psqvrhj2nweamqb5', '_type': '_doc', '_id': 'l38Em6MQkL4KjQsNTmNVW-2ePau2ZSUF', '_score': 0.0, '_routing': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', '_source': {'clip': {'score': 0.847, 'stop': 1.935, 'assetId': '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5', 'start': 1.635, 'length': 0.3, 'timeline': 'gcp-video-object-detection', 'track': 'car', 'content': ['car']}}}]  # noqa
+
+        # def field_type_response(*args, **kwargs):
+        #     return 'prediction'
+
+        monkeypatch.setattr(AssetViewSet, '_zmlp_get_all_content_from_es_search', mock_response)
+        monkeypatch.setattr(LabelConfidenceFilter, 'field_type', 'prediction')
+        asset_id = '161cSlllD5EP-mma5nw1Rk_xDDLVDrs5'
+        querystring = 'W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLmdjcC12aWRlby1sb2dvLWRldGVjdGlvbiIsInZhbHVlcyI6eyJsYWJlbHMiOlsiQUFNQ08gVHJhbnNtaXNzaW9ucyJdLCJtaW4iOjAsIm1heCI6MX19XQ=='
+        response = api_client.get(reverse('asset-timelines',
+                                          kwargs={'project_pk': project.id,
+                                                  'pk': asset_id}), {'query': querystring})
+        content = check_response(response)
+        assert content == [
+            {
+                "timeline": "gcp-video-logo-detection",
+                "tracks": [
+                    {
+                        "track": "AAMCO Transmissions",
+                        "hits": [
+                            {
+                                "start": 0.033,
+                                "stop": 19.453,
+                                "highlight": True
+                            }
+                        ]
+                    },
+                    {
+                        "track": "Patagonia",
+                        "hits": [
+                            {
+                                "start": 1.735,
+                                "stop": 2.936,
+                                "highlight": False
+                            },
+                            {
+                                "start": 3.537,
+                                "stop": 9.743,
+                                "highlight": False
+                            },
+                            {
+                                "start": 10.244,
+                                "stop": 10.344,
+                                "highlight": False
+                            },
+                            {
+                                "start": 13.447,
+                                "stop": 13.847,
+                                "highlight": False
+                            },
+                            {
+                                "start": 14.748,
+                                "stop": 15.048,
+                                "highlight": False
+                            },
+                            {
+                                "start": 15.949,
+                                "stop": 19.453,
+                                "highlight": False
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "timeline": "gcp-video-object-detection",
+                "tracks": [
+                    {
+                        "track": "person",
+                        "hits": [
+                            {
+                                "start": 0.033,
+                                "stop": 1.935,
+                                "highlight": False
+                            }
+                        ]
+                    },
+                    {
+                        "track": "car",
+                        "hits": [
+                            {
+                                "start": 0.033,
+                                "stop": 0.334,
+                                "highlight": False
+                            },
+                            {
+                                "start": 1.635,
+                                "stop": 1.935,
+                                "highlight": False
+                            }
+                        ]
+                    }
+                ]
+            }
         ]
 
 
