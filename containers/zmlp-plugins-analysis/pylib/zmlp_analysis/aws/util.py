@@ -13,6 +13,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def get_zvi_rekognition_client():
     """
     Return an AWS client configured for rekognition with ZVI credentials.
