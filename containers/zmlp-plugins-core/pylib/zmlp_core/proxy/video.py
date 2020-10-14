@@ -57,7 +57,7 @@ class VideoProxyProcessor(AssetProcessor):
             '-i', src_path,
             '-c:v', 'libx264',
             '-crf', '23',
-            '-c:a', 'copy',
+            '-c:a', 'aac',
             '-threads', '0',
             '-pix_fmt', 'yuv420p',
             '-movflags', '+faststart',
