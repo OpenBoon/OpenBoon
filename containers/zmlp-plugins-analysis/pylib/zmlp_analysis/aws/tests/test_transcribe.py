@@ -51,6 +51,7 @@ class MockS3Client:
         return self
 
 
+@pytest.mark.skip(reason='dont run automatically')
 class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
 
     @patch('zmlp_analysis.aws.transcribe.boto3.client',
