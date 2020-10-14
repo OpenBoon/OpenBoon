@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TimelineRuler /> should render properly 1`] = `
-.emotion-31 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -14,6 +14,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   width: 501.5px;
   margin-left: -1.5px;
   background-color: #252525;
+  cursor: pointer;
 }
 
 .emotion-1 {
@@ -55,7 +56,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   align-items: center;
   font-family: Roboto Condensed;
   color: #808080;
-  left: calc(8% - 1.5px);
+  left: calc(11.11111111111111% - 1.5px);
 }
 
 .emotion-2 {
@@ -79,12 +80,16 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   align-items: center;
   font-family: Roboto Condensed;
   color: #808080;
-  left: calc(16% - 1.5px);
+  left: calc(22.22222222222222% - 1.5px);
 }
 
 .emotion-4 {
   position: absolute;
   top: -16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .emotion-8 {
@@ -102,7 +107,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   align-items: center;
   font-family: Roboto Condensed;
   color: #808080;
-  left: calc(24% - 1.5px);
+  left: calc(33.33333333333333% - 1.5px);
 }
 
 .emotion-11 {
@@ -120,7 +125,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   align-items: center;
   font-family: Roboto Condensed;
   color: #808080;
-  left: calc(32% - 1.5px);
+  left: calc(44.44444444444444% - 1.5px);
 }
 
 .emotion-13 {
@@ -138,7 +143,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   align-items: center;
   font-family: Roboto Condensed;
   color: #808080;
-  left: calc(40% - 1.5px);
+  left: calc(55.55555555555556% - 1.5px);
 }
 
 .emotion-16 {
@@ -156,7 +161,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   align-items: center;
   font-family: Roboto Condensed;
   color: #808080;
-  left: calc(48% - 1.5px);
+  left: calc(66.66666666666666% - 1.5px);
 }
 
 .emotion-18 {
@@ -174,7 +179,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   align-items: center;
   font-family: Roboto Condensed;
   color: #808080;
-  left: calc(56.00000000000001% - 1.5px);
+  left: calc(77.77777777777779% - 1.5px);
 }
 
 .emotion-21 {
@@ -192,79 +197,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   align-items: center;
   font-family: Roboto Condensed;
   color: #808080;
-  left: calc(64% - 1.5px);
-}
-
-.emotion-23 {
-  position: absolute;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Roboto Condensed;
-  color: #808080;
-  left: calc(72% - 1.5px);
-}
-
-.emotion-26 {
-  position: absolute;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Roboto Condensed;
-  color: #808080;
-  left: calc(80% - 1.5px);
-}
-
-.emotion-28 {
-  position: absolute;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Roboto Condensed;
-  color: #808080;
-  left: calc(88% - 1.5px);
-}
-
-.emotion-30 {
-  position: absolute;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Roboto Condensed;
-  color: #808080;
-  left: calc(96% - 1.5px);
+  left: calc(88.88888888888889% - 1.5px);
 }
 
 <div
@@ -276,7 +209,8 @@ exports[`<TimelineRuler /> should render properly 1`] = `
   }
 >
   <div
-    className="emotion-31"
+    className="emotion-22"
+    onClick={[Function]}
   >
     <div
       className="emotion-1"
@@ -298,7 +232,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
       <div
         className="emotion-4"
       >
-        00:00:16
+        00:00:04
       </div>
       <div
         className="emotion-0"
@@ -317,7 +251,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
       <div
         className="emotion-4"
       >
-        00:00:32
+        00:00:08
       </div>
       <div
         className="emotion-0"
@@ -336,7 +270,7 @@ exports[`<TimelineRuler /> should render properly 1`] = `
       <div
         className="emotion-4"
       >
-        00:00:48
+        00:00:12
       </div>
       <div
         className="emotion-0"
@@ -355,41 +289,8 @@ exports[`<TimelineRuler /> should render properly 1`] = `
       <div
         className="emotion-4"
       >
-        00:01:04
+        00:00:16
       </div>
-      <div
-        className="emotion-0"
-      />
-    </div>
-    <div
-      className="emotion-23"
-    >
-      <div
-        className="emotion-2"
-      />
-    </div>
-    <div
-      className="emotion-26"
-    >
-      <div
-        className="emotion-4"
-      >
-        00:01:20
-      </div>
-      <div
-        className="emotion-0"
-      />
-    </div>
-    <div
-      className="emotion-28"
-    >
-      <div
-        className="emotion-2"
-      />
-    </div>
-    <div
-      className="emotion-30"
-    >
       <div
         className="emotion-0"
       />
