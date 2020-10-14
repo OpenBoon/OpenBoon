@@ -57,10 +57,10 @@ class MockACVClient:
 class AzureVisionProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
-        os.environ["ZORROA_AZURE_KEY"] = "abc123"
+        os.environ["ZORROA_AZURE_VISION_KEY"] = "abc123"
 
     def tearDown(self):
-        del os.environ["ZORROA_AZURE_KEY"]
+        del os.environ["ZORROA_AZURE_VISION_KEY"]
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
     @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
