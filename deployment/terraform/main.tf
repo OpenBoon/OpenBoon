@@ -141,8 +141,8 @@ resource "google_storage_bucket_object" "task_env" {
   content = <<EOF
 {
   "CLARIFAI_KEY":  "${var.clarifai-key}",
-  "ZORROA_AZURE_KEY": "${var.azure-key}"
-  "ZORROA_AWS_KEY": "${var.aws-key}"
+  "ZORROA_AZURE_KEY": "${var.azure-key}",
+  "ZORROA_AWS_KEY": "${var.aws-key}",
   "ZORROA_AWS_SECRET": "${var.aws-secret}"
 }
 EOF
