@@ -137,10 +137,13 @@ resource "kubernetes_secret" "dockerhub" {
 
 resource "google_storage_bucket_object" "task_env" {
   bucket  = google_storage_bucket.system.name
-  name    = "environment/task_env.json"
+  name    = "environments/task_env.json"
   content = <<EOF
 {
-  "CLARIFAI_KEY":  "${var.clarifai-key}"
+  "CLARIFAI_KEY":  "${var.clarifai-key}",
+  "ZORROA_AZURE_KEY": "${var.azure-key}"
+  "ZORROA_AWS_KEY": "${var.aws-key}"
+  "ZORROA_AWS_SECRET": "${var.aws-secret}"
 }
 EOF
 

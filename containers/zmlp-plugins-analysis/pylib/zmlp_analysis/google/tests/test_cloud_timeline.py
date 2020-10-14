@@ -41,6 +41,21 @@ class TestCloudTimelineBuilder(PluginUnitTestCase):
         assert "00:00:04.400 --> 00:00:06.200" in data
 
     @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
+    def test_save_speech_speech_to_text_timeline(self, _):
+        annots = speech_load_results()
+        timeline = cloud_timeline.save_speech_to_text_timeline(TestAsset(id="123"), annots)
+
+        assert 'gcp-speech-to-text' == timeline.name
+        assert 1 == len(timeline.tracks)
+
+        clips = timeline.tracks['Language en-us']['clips']
+        clips = sorted(clips, key=lambda i: i['start'])
+
+        assert ['sanitation does mold killing Sanitation'] == clips[0]["content"]
+        assert ['toilets and poop'] == clips[1]["content"]
+        assert ['and I have yet to emerge'] == clips[2]["content"]
+
+    @patch("zmlp_analysis.google.cloud_timeline.save_timeline", return_value={})
     def test_save_speech_transcription_timeline(self, _):
         annots = self.load_results('detect-speech.dat')
         timeline = cloud_timeline.save_speech_transcription_timeline(TestAsset(id="123"), annots)

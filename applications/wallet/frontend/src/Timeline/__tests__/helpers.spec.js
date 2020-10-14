@@ -2,7 +2,11 @@ import {
   formatPaddedSeconds,
   updatePlayheadPosition,
   getRulerLayout,
+  gotoPreviousHit,
+  gotoNextHit,
 } from '../helpers'
+
+const noop = () => () => {}
 
 describe('<Timeline /> helpers', () => {
   describe('formatPaddedSeconds()', () => {
@@ -79,6 +83,97 @@ describe('<Timeline /> helpers', () => {
       })
       expect(halfSeconds.length).toBe(50)
       expect(majorStep).toBe(8)
+    })
+  })
+
+  describe('gotoPreviousHit()', () => {
+    it('should round and sort', () => {
+      const videoRef = {
+        current: { pause: noop, currentTime: 4.9999, duration: 10 },
+      }
+
+      gotoPreviousHit({
+        videoRef,
+        timelines: [
+          {
+            tracks: [
+              {
+                track: 'gcp-logo-detection',
+                hits: [{ start: 5.0 }, { start: 5.001 }, { start: 4.999 }],
+              },
+            ],
+          },
+        ],
+        settings: { timelines: {}, filter: '' },
+      })()
+
+      expect(videoRef.current.currentTime).toBe(4.999)
+    })
+
+    it('should go to the previous hit', () => {
+      const videoRef = {
+        current: { pause: noop, currentTime: 5, duration: 10 },
+      }
+
+      gotoPreviousHit({
+        videoRef,
+        timelines: [
+          { tracks: [{ track: 'gcp-logo-detection', hits: [{ start: 2 }] }] },
+        ],
+        settings: { timelines: {}, filter: '' },
+      })()
+
+      expect(videoRef.current.currentTime).toBe(2)
+    })
+
+    it('should go to the start of the clip', () => {
+      const videoRef = {
+        current: { pause: noop, currentTime: 5, duration: 10 },
+      }
+
+      gotoPreviousHit({
+        videoRef,
+        timelines: [
+          { tracks: [{ track: 'gcp-logo-detection', hits: [{ start: 8 }] }] },
+        ],
+        settings: { timelines: {}, filter: '' },
+      })()
+
+      expect(videoRef.current.currentTime).toBe(0)
+    })
+  })
+
+  describe('gotoNextHit()', () => {
+    it('should go to the next hit', () => {
+      const videoRef = {
+        current: { pause: noop, currentTime: 5, duration: 10 },
+      }
+
+      gotoNextHit({
+        videoRef,
+        timelines: [
+          { tracks: [{ track: 'gcp-logo-detection', hits: [{ start: 8 }] }] },
+        ],
+        settings: { timelines: {}, filter: '' },
+      })()
+
+      expect(videoRef.current.currentTime).toBe(8)
+    })
+
+    it('should go to the end of the clip', () => {
+      const videoRef = {
+        current: { pause: noop, currentTime: 5, duration: 10 },
+      }
+
+      gotoNextHit({
+        videoRef,
+        timelines: [
+          { tracks: [{ track: 'gcp-logo-detection', hits: [{ start: 2 }] }] },
+        ],
+        settings: { timelines: {}, filter: '' },
+      })()
+
+      expect(videoRef.current.currentTime).toBe(10)
     })
   })
 })

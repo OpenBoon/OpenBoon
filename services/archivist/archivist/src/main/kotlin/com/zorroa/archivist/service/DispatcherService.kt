@@ -429,7 +429,7 @@ class DispatcherServiceImpl @Autowired constructor(
                     TaskErrorEvent(
                         null,
                         null,
-                        "Hard task container failure, all assets failed, exit ${event.exitStatus}",
+                        "Hard task container failure, all assets failed, exit ${event.exitStatus},",
                         "unknown",
                         true,
                         "unknown"
