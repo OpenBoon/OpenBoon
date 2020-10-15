@@ -14,6 +14,22 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+class AWSClient:
+
+    def __init__(self, key=None, secret=None, region='us-east-2'):
+        self.key = os.environ.get('ZORROA_AWS_KEY', key)
+        self.secret = os.environ.get('ZORROA_AWS_SECRET', secret)
+        self.region = os.environ.get('ZORROA_AWS_REGION', region)
+
+    def get_aws_client(self, service_type=boto3.client, service='s3'):
+        return service_type(
+            service,
+            region_name=self.region,
+            aws_access_key_id=self.key,
+            aws_secret_access_key=self.secret
+        )
+
+
 def get_zvi_rekognition_client():
     """
     Return an AWS client configured for rekognition with ZVI credentials.
@@ -66,26 +82,25 @@ class CustomWaiter:
             self._wait(TranscriptionJobName=job_name)
 
     """
-    def __init__(
-            self, name, operation, argument, acceptors, client, delay=10, max_tries=60):
-        """
-        Subclasses should pass specific operations, arguments, and acceptors to
+    def __init__(self, name, operation, argument, acceptors, client, delay=10, max_tries=60):
+        """ Subclasses should pass specific operations, arguments, and acceptors to
         their super class.
 
-        :param name: The name of the waiter. This can be any descriptive string.
-        :param operation: The operation to wait for. This must match the casing of
-                          the underlying operation model, which is typically in
-                          CamelCase.
-        :param argument: The dict keys used to access the result of the operation, in
-                         dot notation. For example, 'Job.Status' will access
-                         result['Job']['Status'].
-        :param acceptors: The list of acceptors that indicate the wait is over. These
-                          can indicate either success or failure. The acceptor values
-                          are compared to the result of the operation after the
-                          argument keys are applied.
-        :param client: The Boto3 client.
-        :param delay: The number of seconds to wait between each call to the operation.
-        :param max_tries: The maximum number of tries before exiting.
+        Args:
+            name: The name of the waiter. This can be any descriptive string.
+            operation: The operation to wait for. This must match the casing of the underlying
+            operation model, which is typically in CamelCase.
+            argument: The dict keys used to access the result of the operation, in dot notation.
+            For example, 'Job.Status' will access result['Job']['Status'].
+            acceptors: The list of acceptors that indicate the wait is over. These can indicate
+            either success or failure. The acceptor values are compared to the result of the
+            operation after the argument keys are applied.
+            client: The Boto3 client.
+            delay: The number of seconds to wait between each call to the operation.
+            max_tries: The maximum number of tries before exiting.
+
+        Returns:
+            None
         """
         self.name = name
         self.operation = operation
@@ -109,12 +124,15 @@ class CustomWaiter:
             self.name, self.waiter_model, self.client)
 
     def __call__(self, parsed, **kwargs):
-        """
-        Handles the after-call event by logging information about the operation and its
+        """ Handles the after-call event by logging information about the operation and its
         result.
 
-        :param parsed: The parsed response from polling the operation.
-        :param kwargs: Not used, but expected by the caller.
+        Args:
+            parsed: The parsed response from polling the operation.
+            **kwargs: Not used, but expected by the caller.
+
+        Returns:
+            None
         """
         status = parsed
         for key in self.argument.split('.'):
@@ -123,10 +141,13 @@ class CustomWaiter:
             "Waiter %s called %s, got %s.", self.name, self.operation, status)
 
     def _wait(self, **kwargs):
-        """
-        Registers for the after-call event and starts the botocore wait loop.
+        """ Registers for the after-call event and starts the botocore wait loop.
 
-        :param kwargs: Keyword arguments that are passed to the operation being polled.
+        Args:
+            **kwargs: Keyword arguments that are passed to the operation being polled.
+
+        Returns:
+            None
         """
         event_name = f'after-call.{self.client.meta.service_model.service_name}'
         self.client.meta.events.register(event_name, self)

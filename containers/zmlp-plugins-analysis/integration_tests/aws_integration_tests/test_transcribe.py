@@ -17,9 +17,10 @@ logging.basicConfig()
 class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
-        curr_dir = os.path.dirname(__file__)
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = \
-            os.path.join(curr_dir, '..', '/google_integration_tests', '/gcp-creds.json')
+        self.path = zorroa_test_path('fallback/ted_talk.mp4')
+        self.asset = TestAsset(self.path)
+        self.asset.set_attr('media.length', 15.0)
+
         with open('aws_credentials.csv', 'r') as f:
             next(f)
             reader = csv.reader(f)
@@ -30,47 +31,35 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         os.environ["ZORROA_AWS_SECRET"] = secret_access_key
 
     def tearDown(self):
-        del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
         del os.environ['ZORROA_AWS_KEY']
         del os.environ['ZORROA_AWS_SECRET']
 
+    @patch("zmlp_analysis.aws.transcribe.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(file_storage.assets, 'get_native_uri')
-    def test_speech_detection(self, native_url_patch, store_patch, store_blob_patch):
-        path = zorroa_test_path('fallback/ted_talk.mp4')
+    def run_process(self, native_url_patch, store_patch, store_blob_patch, _):
         native_url_patch.return_value = 'gs://zorroa-dev-data/video/audio8D0_VU.flac'
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        asset = TestAsset(path)
-        asset.set_attr('media.length', 15.0)
         processor = self.init_processor(AmazonTranscribeProcessor(), {'language': 'en-US'})
-        frame = Frame(asset)
+        frame = Frame(self.asset)
         processor.process(frame)
 
-        assert 'poop' in asset.get_attr('analysis.aws-transcribe.content')
+        assert 'poop' in self.asset.get_attr('analysis.aws-transcribe.content')
 
-    @patch.object(file_storage.assets, 'store_blob')
-    @patch.object(file_storage.assets, 'store_file')
-    @patch.object(file_storage.assets, 'get_native_uri')
-    def test_speech_detection_existing_proxy(self, native_url_patch, store_patch, store_blob_patch):
-        path = zorroa_test_path('fallback/ted_talk.mp4')
-        native_url_patch.return_value = 'gs://zorroa-dev-data/video/audio8D0_VU.flac'
-        store_patch.return_value = get_mock_stored_file()
-        store_blob_patch.return_value = get_mock_stored_file()
+        return store_patch
 
-        asset = TestAsset(path)
-        asset.set_attr('media.length', 15.0)
-        asset.add_file(StoredFile({
+    def test_speech_detection(self):
+        self.run_process()
+
+    def test_speech_detection_existing_proxy(self):
+        self.asset.add_file(StoredFile({
             'id': 'assets/12345/audio/audio_proxy.flac',
             'category': 'audio', 'name': 'audio_proxy.flac'
         }))
-
-        processor = self.init_processor(AmazonTranscribeProcessor(), {'language': 'en-US'})
-        frame = Frame(asset)
-        processor.process(frame)
-        assert 'poop' in asset.get_attr('analysis.aws-transcribe.content')
+        store_patch = self.run_process()
 
         with open(store_patch.call_args_list[0][0][0]) as fp:
             vtt = fp.read()

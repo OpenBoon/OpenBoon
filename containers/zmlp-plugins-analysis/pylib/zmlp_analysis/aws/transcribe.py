@@ -1,62 +1,36 @@
-import os
-import json
 from pathlib import Path
 import requests
-from subprocess import check_output
 
 import boto3
 from botocore.exceptions import ClientError
 
-from zmlpsdk import Argument, AssetProcessor, file_storage, FileTypes
+from zmlpsdk import file_storage
 from zmlpsdk.analysis import ContentDetectionAnalysis
 from zmlpsdk.video import WebvttBuilder
-from zmlp_analysis.aws.util import TranscribeCompleteWaiter
+from zmlp.entity import TimelineBuilder
+from zmlp_analysis.google.cloud_timeline import save_timeline
+from zmlp_analysis.aws.util import TranscribeCompleteWaiter, AWSClient
+from zmlp_analysis.utils.audio import AudioProcessor
 
 
-class AmazonTranscribeProcessor(AssetProcessor):
-    file_types = FileTypes.videos
-
-    tool_tips = {
-        'language': 'A ISO 639-1 standard language code indicating the primary '
-                    'language to be expected in the given assets. (Default: '
-                    '"en-US")',
-        'alt_languages':
-            'A set of alternative languages that your audio data might contain.'
-    }
-
+class AmazonTranscribeProcessor(AudioProcessor):
+    """ AWS Transcribe Processor for transcribing videos"""
     namespace = 'aws-transcribe'
-
-    max_length_sec = 120 * 60
 
     def __init__(self):
         super(AmazonTranscribeProcessor, self).__init__()
-        self.add_arg(Argument('language', 'string', default='en-US',
-                              toolTip=self.tool_tips['language']))
-        self.add_arg(Argument('alt_languages', 'list',
-                              toolTip=self.tool_tips['alt_languages']))
-        # aws clients
         self.transcribe_client = None
         self.s3_resource = None
-        # audio params
-        self.audio_channels = 2
-        self.audio_sample_rate = 44100
 
     def init(self):
-        key = os.environ.get('ZORROA_AWS_KEY')
-        secret = os.environ.get('ZORROA_AWS_SECRET')
-        region = os.environ.get('ZORROA_AWS_REGION', 'us-east-2')
-
-        self.transcribe_client = boto3.client(
-            'transcribe',
-            region_name=region,
-            aws_access_key_id=key,
-            aws_secret_access_key=secret
+        aws_client = AWSClient()
+        self.transcribe_client = aws_client.get_aws_client(
+            service_type=boto3.client,
+            service='transcribe'
         )
-        self.s3_resource = boto3.resource(
-            's3',
-            region_name=region,
-            aws_access_key_id=key,
-            aws_secret_access_key=secret
+        self.s3_resource = aws_client.get_aws_client(
+            service_type=boto3.resource,
+            service='s3'
         )
 
     def process(self, frame):
@@ -70,9 +44,9 @@ class AmazonTranscribeProcessor(AssetProcessor):
 
         local_audio = file_storage.localize_file(asset)
         local_filename = Path(local_audio).name  # filename with extension
-        if not self.has_audio(local_audio):
-            self.logger.warning('Skipping, video has no audio.')
-            return
+        # if not self.has_audio(local_audio):
+        #     self.logger.warning('Skipping, video has no audio.')
+        #     return
 
         # create temporary s3 bucket
         bucket = self.create_bucket(bucket_name=asset_id)
@@ -84,9 +58,9 @@ class AmazonTranscribeProcessor(AssetProcessor):
         audio_result = self.recognize_speech(audio_uri, asset_id)
 
         if audio_result['results']:
-            transcript = self.set_analysis(asset, audio_result)
+            self.set_analysis(asset, audio_result)
             self.save_raw_result(asset, audio_result)
-            self.save_webvtt(asset, audio_result, transcript)
+            self.save_timelines(asset, audio_result)
 
             # delete bucket and jobs
             try:
@@ -112,7 +86,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
             }
         )
 
-    def save_webvtt(self, asset, audio_result, transcript):
+    def save_webvtt(self, asset, audio_result):
         """
         Create a webvtt file for speech to text.
 
@@ -129,14 +103,45 @@ class AmazonTranscribeProcessor(AssetProcessor):
                     start_time = r['start_time']
                     end_time = r['end_time']
                     content = sorted(r['alternatives'], key=lambda i: i['confidence'], reverse=True)
-                    content = content[0]['content']
-                    webvtt.append(start_time, end_time, content)
+                    webvtt.append(start_time, end_time, content[0]['content'])
 
         self.logger.info(f'Saving speech-to-text data from {webvtt.path}')
         sf = file_storage.assets.store_file(webvtt.path, asset,
                                             'captions',
                                             'aws-transcribe.vtt')
         return webvtt.path, sf
+
+    def save_transcribe_timeline(self, asset, audio_result):
+        """ Save the results of Transcribe to a timeline.
+
+        Args:
+            asset (Asset): The asset to register the file to.
+            audio_result (obj): The speech to text result.
+
+        Returns:
+            Timeline: The generated timeline.
+        """
+        timeline = TimelineBuilder(asset, "aws-transcribe")
+
+        for r in audio_result['results']['items']:
+            if r['type'] != 'punctuation':
+                start_time = r['start_time']
+                end_time = r['end_time']
+                best_result = sorted(r['alternatives'], key=lambda i: i['confidence'], reverse=True)
+
+                timeline.add_clip(
+                    "Detected Text",
+                    start_time,
+                    end_time,
+                    best_result[0]['content'],
+                    best_result[0]['confidence'])
+
+        save_timeline(timeline)
+        return timeline
+
+    def save_timelines(self, asset, audio_result):
+        self.save_webvtt(asset, audio_result)
+        self.save_transcribe_timeline(asset, audio_result)
 
     def save_raw_result(self, asset, audio_result):
         transcript = audio_result['results']['transcripts'][0]['transcript']
@@ -154,7 +159,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
             audio_result(dict): transcribed audio result
 
         Returns:
-            (str) highest confidence transcript
+            None
         """
         transcript = ''
         analysis = ContentDetectionAnalysis()
@@ -166,12 +171,8 @@ class AmazonTranscribeProcessor(AssetProcessor):
                 "" if r['type'] == 'punctuation' else " ",  # make clean for punctuations
                 sorted_results[0]['content']
             )
-        transcript = transcript.strip()
-        analysis.add_content(transcript)
-
+        analysis.add_content(transcript.strip())
         asset.add_analysis(self.namespace, analysis)
-
-        return transcript
 
     def recognize_speech(self, audio_uri, job_name):
         """
@@ -240,29 +241,3 @@ class AmazonTranscribeProcessor(AssetProcessor):
             raise
         else:
             return job
-
-    def has_audio(self, src_path):
-        """Returns the json results of an ffprobe command as a dictionary.
-
-        Args:
-            src_path (str): Path the the media.
-
-        Returns:
-            True is media has at least one audio stream, False otherwise.
-        """
-
-        cmd = ['ffprobe',
-               str(src_path),
-               '-show_streams',
-               '-select_streams', 'a',
-               '-print_format', 'json',
-               '-loglevel', 'error']
-
-        self.logger.debug("running command: %s" % cmd)
-
-        ffprobe_result = check_output(cmd, shell=False)
-        n_streams = len(json.loads(ffprobe_result)['streams'])
-        if n_streams > 0:
-            return True
-        else:
-            return False
