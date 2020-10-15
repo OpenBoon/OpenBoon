@@ -34,8 +34,8 @@ expected_results = [
     (
         {"model_id": "model-id-12345"},
         [
-            ('HEY', approx(99.92, 0.01)),
-            ('GIRL,', approx(99.92, 0.01))
+            ('HEY', approx(0.9992, 0.0001)),
+            ('GIRL,', approx(0.9992, 0.0001))
         ]
     )
 ]
