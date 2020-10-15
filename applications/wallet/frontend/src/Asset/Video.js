@@ -2,7 +2,7 @@
 import { useRef } from 'react'
 import PropTypes from 'prop-types'
 
-import Feature from '../Feature'
+import Feature, { ENVS } from '../Feature'
 import MetadataCues from '../MetadataCues'
 import Timeline from '../Timeline'
 
@@ -39,7 +39,7 @@ const AssetVideo = ({
             >
               <source ref={assetRef} src={uri} type={mediaType} />
 
-              <Feature flag="timeline" envs={[]}>
+              <Feature flag="timeline" envs={[ENVS.QA]}>
                 {tracks.map(({ label, kind, src }) => {
                   return (
                     <track
@@ -57,14 +57,14 @@ const AssetVideo = ({
         </div>
 
         {!isQuickView && (
-          <Feature flag="timeline" envs={[]}>
+          <Feature flag="timeline" envs={[ENVS.QA]}>
             <MetadataCues videoRef={videoRef} />
           </Feature>
         )}
       </div>
 
       {!isQuickView && (
-        <Feature flag="timeline" envs={[]}>
+        <Feature flag="timeline" envs={[ENVS.QA]}>
           <Timeline videoRef={videoRef} length={length} />
         </Feature>
       )}

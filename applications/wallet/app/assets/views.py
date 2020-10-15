@@ -143,7 +143,18 @@ class AssetViewSet(BaseProjectViewSet):
                                                              'pk': f'{name}.vtt'})}
             urls['tracks'].append(track)
 
-        # TODO: Figure out how to add the closed caption files to the tracks listing
+        # Add the closed captioning files
+        files = detail_response.data.get('metadata').get('files')
+        caption_files = [_file for _file in files if _file['category'] == 'captions']
+        for caption in caption_files:
+            name = caption['name']
+            label = name.split('.')[0].replace('-transcription', '').replace('-', ' ').title()
+            get_signed_url = f'{FileNameViewSet.zmlp_root_api_path}/_sign/{caption["id"]}'
+            signed_url = request.client.get(get_signed_url)
+            track = {'label': label,
+                     'kind': 'captions',
+                     'src': signed_url['uri']}
+            urls['tracks'].append(track)
 
         return Response(data=urls)
 

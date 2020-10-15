@@ -43,6 +43,18 @@ variable "clarifai-key" {
   description = "Secret key to allow access to the Clarifai API."
 }
 
+variable "azure-key" {
+  description = "Secret key to allow access to the Azure ML API."
+}
+
+variable "aws-key" {
+  description = "Secret key to allow access to the AWS ML API."
+}
+
+variable "aws-secret" {
+  description = "Secret to allow access to the AWS ML API."
+}
+
 variable "analyst-memory-request" {
   description = "Memory request for Analyst pods."
   default     = "2Gi"

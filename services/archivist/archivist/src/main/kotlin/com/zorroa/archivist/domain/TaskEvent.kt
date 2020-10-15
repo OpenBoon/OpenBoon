@@ -26,7 +26,8 @@ open class TaskEvent(
 class TaskStoppedEvent(
     val exitStatus: Int,
     val newState: TaskState? = null,
-    val manualKill: Boolean = false
+    val manualKill: Boolean = false,
+    val message: String? = null
 )
 
 class TaskProgressUpdateEvent(

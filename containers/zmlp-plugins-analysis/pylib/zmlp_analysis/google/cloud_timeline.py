@@ -215,6 +215,42 @@ def save_label_detection_timeline(asset, annotations):
     return timeline
 
 
+def save_speech_to_text_timeline(asset, audio_result):
+    """
+    Save the results of Speech to Text to a timeline.
+
+    Args:
+        asset (Asset): The asset to register the file to.
+        audio_result (obj): The speech to text result.
+
+    Returns:
+        Timeline: The generated timeline.
+    """
+    timeline = TimelineBuilder(asset, "gcp-speech-to-text")
+
+    for r in audio_result.results:
+
+        sorted_results = sorted(r.alternatives, key=lambda i: i.confidence, reverse=True)
+        best_result = sorted_results[0]
+
+        for result in r.alternatives:
+            if result.words:
+                # get first and last word
+                start_word = result.words[0]
+                end_word = result.words[-1]
+
+                start_time = convert_offset(start_word.start_time)
+                end_time = convert_offset(end_word.end_time)
+
+                timeline.add_clip(f'Language {r.language_code}', start_time, end_time,
+                                  best_result.transcript.strip(), best_result.confidence)
+
+                break
+
+    save_timeline(timeline)
+    return timeline
+
+
 def save_speech_to_text_webvtt(asset, audio_result):
     """
     Create a webvtt file for speech to text.

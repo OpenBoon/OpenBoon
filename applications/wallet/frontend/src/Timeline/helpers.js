@@ -100,3 +100,52 @@ export const gotoCurrentTime = ({ videoRef, start }) => () => {
   // eslint-disable-next-line no-param-reassign
   videoRef.current.currentTime = start
 }
+
+const getAdjacentHits = ({ currentTime, timelines, settings }) => {
+  const sortedHits = filterTimelines({ timelines, settings })
+    .filter(({ timeline }) => {
+      return settings.timelines[timeline]?.isVisible !== false
+    })
+    .flatMap(({ tracks }) => {
+      return tracks.flatMap(({ hits }) => {
+        return hits.map(({ start }) => {
+          return start
+        })
+      })
+    })
+    .sort((a, b) => a - b)
+
+  const previousHits = sortedHits.filter(
+    (hit) => Math.round(hit * 1000) < Math.round(currentTime * 1000),
+  )
+  const nextHits = sortedHits.filter(
+    (hit) => Math.round(hit * 1000) > Math.round(currentTime * 1000),
+  )
+
+  return {
+    previousHit: previousHits[previousHits.length - 1],
+    nextHit: nextHits[0],
+  }
+}
+
+export const gotoPreviousHit = ({ videoRef, timelines, settings }) => () => {
+  videoRef.current.pause()
+
+  const { currentTime } = videoRef.current
+
+  const { previousHit } = getAdjacentHits({ currentTime, timelines, settings })
+
+  // eslint-disable-next-line no-param-reassign
+  videoRef.current.currentTime = previousHit || 0
+}
+
+export const gotoNextHit = ({ videoRef, timelines, settings }) => () => {
+  videoRef.current.pause()
+
+  const { currentTime, duration } = videoRef.current
+
+  const { nextHit } = getAdjacentHits({ currentTime, timelines, settings })
+
+  // eslint-disable-next-line no-param-reassign
+  videoRef.current.currentTime = nextHit || duration
+}

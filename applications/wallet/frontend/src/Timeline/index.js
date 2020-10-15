@@ -24,6 +24,7 @@ import TimelinePlayhead from './Playhead'
 import TimelineAggregate from './Aggregate'
 import TimelineTimelines from './Timelines'
 import TimelineMetadata from './Metadata'
+import TimelineShortcuts from './Shortcuts'
 
 const TIMELINE_HEIGHT = 200
 
@@ -78,6 +79,12 @@ const Timeline = ({ videoRef, length }) => {
             borderBottom: constants.borders.regular.smoke,
           }}
         >
+          <TimelineShortcuts
+            videoRef={videoRef}
+            timelines={timelines}
+            settings={settings}
+          />
+
           <div css={{ flex: 1, padding: spacing.small, paddingLeft: 0 }}>
             <Button
               aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
@@ -109,7 +116,12 @@ const Timeline = ({ videoRef, length }) => {
             </Button>
           </div>
 
-          <TimelineControls videoRef={videoRef} length={length} />
+          <TimelineControls
+            videoRef={videoRef}
+            length={length}
+            timelines={timelines}
+            settings={settings}
+          />
 
           <div
             css={{
@@ -161,7 +173,9 @@ const Timeline = ({ videoRef, length }) => {
               <div css={{ flex: 1, overflow: 'overlay' }}>
                 <div css={{ width: `${settings.zoom}%` }}>
                   <TimelineRuler
+                    videoRef={videoRef}
                     length={videoRef.current?.duration || length}
+                    settings={settings}
                   />
                 </div>
               </div>

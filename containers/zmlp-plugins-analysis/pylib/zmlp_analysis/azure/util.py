@@ -10,13 +10,14 @@ def get_zvi_azure_cv_client():
     Returns:
        ComputerVisionClient: an Azure ComputerVisionClient
     """
-    key = os.environ.get('ZORROA_AZURE_KEY')
+    key = os.environ.get('ZORROA_AZURE_VISION_KEY')
     if not key:
         raise RuntimeError('Azure support is not setup for this environment.')
-
-    region = os.environ.get('ZORROA_AZURE_REGION', 'eastus')
     credentials = CognitiveServicesCredentials(key)
-    endpoint = f'https://{region}.api.cognitive.microsoft.com/'
+
+    region = os.environ.get('ZORROA_AZURE_VISION_REGION', 'centralus')
+    endpoint = os.environ.get('ZORROA_AZURE_VISION_ENDPOINT',
+                              f'https://{region}.api.cognitive.microsoft.com/')
 
     return ComputerVisionClient(
         endpoint=endpoint,
