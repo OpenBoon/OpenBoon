@@ -173,7 +173,9 @@ const Timeline = ({ videoRef, length }) => {
               <div css={{ flex: 1, overflow: 'overlay' }}>
                 <div css={{ width: `${settings.zoom}%` }}>
                   <TimelineRuler
+                    videoRef={videoRef}
                     length={videoRef.current?.duration || length}
+                    settings={settings}
                   />
                 </div>
               </div>

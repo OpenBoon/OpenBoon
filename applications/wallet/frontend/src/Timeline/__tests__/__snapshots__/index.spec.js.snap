@@ -435,6 +435,27 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
             >
               <TimelineRuler
                 length={18}
+                settings={
+                  Object {
+                    "filter": "",
+                    "timelines": Object {},
+                    "width": 200,
+                    "zoom": 100,
+                  }
+                }
+                videoRef={
+                  Object {
+                    "current": Object {
+                      "addEventListener": [Function],
+                      "currentTime": 0,
+                      "duration": 18,
+                      "pause": [Function],
+                      "paused": true,
+                      "play": [Function],
+                      "removeEventListener": [Function],
+                    },
+                  }
+                }
               />
             </div>
           </div>
@@ -933,6 +954,27 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
             >
               <TimelineRuler
                 length={18}
+                settings={
+                  Object {
+                    "filter": "",
+                    "timelines": Object {},
+                    "width": 200,
+                    "zoom": 100,
+                  }
+                }
+                videoRef={
+                  Object {
+                    "current": Object {
+                      "addEventListener": [Function],
+                      "currentTime": 0,
+                      "duration": 18,
+                      "pause": [Function],
+                      "paused": true,
+                      "play": [Function],
+                      "removeEventListener": [Function],
+                    },
+                  }
+                }
               />
             </div>
           </div>
@@ -1721,6 +1763,45 @@ exports[`<Timeline /> should render properly 1`] = `
             >
               <TimelineRuler
                 length={18}
+                settings={
+                  Object {
+                    "filter": "",
+                    "timelines": Object {
+                      "gcp-video-explicit-detection": Object {
+                        "color": "#0074f5",
+                        "isOpen": false,
+                        "isVisible": true,
+                      },
+                      "gcp-video-label-detection": Object {
+                        "color": "#a03dc7",
+                        "isOpen": false,
+                        "isVisible": true,
+                      },
+                      "gcp-video-logo-detection": Object {
+                        "color": "#ebb52e",
+                        "isOpen": false,
+                        "isVisible": true,
+                      },
+                      "gcp-video-object-detection": Object {
+                        "color": "#d6680b",
+                        "isOpen": false,
+                        "isVisible": true,
+                      },
+                      "gcp-video-text-detection": Object {
+                        "color": "#00bdc1",
+                        "isOpen": false,
+                        "isVisible": true,
+                      },
+                    },
+                    "width": 200,
+                    "zoom": 100,
+                  }
+                }
+                videoRef={
+                  Object {
+                    "current": undefined,
+                  }
+                }
               />
             </div>
           </div>
