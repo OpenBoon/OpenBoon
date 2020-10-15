@@ -57,7 +57,7 @@ class RekognitionFaceDetection(AssetProcessor):
         # get bounding box
         results = []
         for i, r in enumerate(response['FaceDetails']):
-            confidence = r['Confidence']
+            conf = r['Confidence']
             bbox = r['BoundingBox']
 
             left = bbox['Left']
@@ -65,5 +65,6 @@ class RekognitionFaceDetection(AssetProcessor):
             width = bbox['Width']
             height = bbox['Height']
 
+            confidence = conf / 100.
             results.append(("face{}".format(i), confidence, [left, top, left+width, top+height]))
         return results

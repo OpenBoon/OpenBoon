@@ -59,4 +59,4 @@ class RekognitionUnsafeDetection(AssetProcessor):
         )
 
         # get list of labels
-        return [(r['Name'], r['Confidence']) for r in response['ModerationLabels']]
+        return [(r['Name'], r['Confidence'] / 100.) for r in response['ModerationLabels']]
