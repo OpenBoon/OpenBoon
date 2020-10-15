@@ -44,9 +44,9 @@ class AmazonTranscribeProcessor(AudioProcessor):
 
         local_audio = file_storage.localize_file(asset)
         local_filename = Path(local_audio).name  # filename with extension
-        # if not self.has_audio(local_audio):
-        #     self.logger.warning('Skipping, video has no audio.')
-        #     return
+        if not self.has_audio(local_audio):
+            self.logger.warning('Skipping, video has no audio.')
+            return
 
         # create temporary s3 bucket
         bucket = self.create_bucket(bucket_name=asset_id)
