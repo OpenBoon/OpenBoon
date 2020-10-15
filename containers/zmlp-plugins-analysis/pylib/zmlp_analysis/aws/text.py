@@ -60,9 +60,10 @@ class RekognitionTextDetection(AssetProcessor):
         bbox_result = []
         for i, r in enumerate(response['TextDetections']):
             text = r['DetectedText']
-            confidence = r['Confidence']
+            conf = r['Confidence']
             geometry = r['Geometry']
 
+            confidence = conf / 100.
             if geometry:
                 bbox = geometry['BoundingBox']
 

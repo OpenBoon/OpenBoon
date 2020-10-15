@@ -59,4 +59,4 @@ class RekognitionLabelDetection(AssetProcessor):
         )
 
         # get list of labels
-        return [(r['Name'], r['Confidence']) for r in response['Labels']]
+        return [(r['Name'], r['Confidence'] / 100.) for r in response['Labels']]

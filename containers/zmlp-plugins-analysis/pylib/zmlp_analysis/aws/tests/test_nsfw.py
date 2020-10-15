@@ -33,8 +33,8 @@ expected_results = [
     (
         {"model_id": "model-id-12345"},
         [
-            ('Suggestive', approx(65.14, 0.01)),
-            ('Male Swimwear Or Underwear', approx(65.14, 0.01))
+            ('Suggestive', approx(0.6514, 0.0001)),
+            ('Male Swimwear Or Underwear', approx(0.6514, 0.0001))
         ]
     )
 ]
