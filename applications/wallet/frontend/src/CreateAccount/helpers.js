@@ -31,7 +31,7 @@ export const onRegister = async ({
 
     if (response.status >= 400) throw response
 
-    Router.push('/?action=create-account-success', '/')
+    Router.push('/create-account-success', '/')
   } catch (response) {
     dispatch({
       isLoading: false,

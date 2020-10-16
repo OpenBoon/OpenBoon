@@ -97,7 +97,7 @@ describe('<CreateAccount />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockFn).toHaveBeenCalledWith('/?action=create-account-success', '/')
+    expect(mockFn).toHaveBeenCalledWith('/create-account-success', '/')
   })
 
   it('noop should do nothing', () => {
