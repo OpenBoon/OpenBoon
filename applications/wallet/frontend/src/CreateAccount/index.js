@@ -67,6 +67,13 @@ const CreateAccount = () => {
       >
         <PageTitle>Create an Account</PageTitle>
 
+        <div css={{ display: 'flex', paddingTop: spacing.base }}>
+          <FlashMessage variant={VARIANTS.INFO}>
+            A confirmation link will be sent to your email. Please click to
+            confirm before logging in.
+          </FlashMessage>
+        </div>
+
         <Form>
           {!!state.error && (
             <div css={{ display: 'flex', paddingBottom: spacing.base }}>
