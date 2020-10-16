@@ -1,10 +1,10 @@
 resource "azurerm_resource_group" "zmlp" {
-  name     = "zvi-${var.environment}"
+  name     = var.environment
   location = "Central US"
 }
 
 resource "azurerm_cognitive_account" "vision" {
-  name                = "zvi-${var.environment}-vision"
+  name                = "${var.environment}-vision"
   location            = azurerm_resource_group.zmlp.location
   resource_group_name = azurerm_resource_group.zmlp.name
   kind                = "ComputerVision"
