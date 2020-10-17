@@ -523,7 +523,7 @@ class SingleLabelConfidenceQuery(object):
                                 }
                             },
                             "boost": "5",
-                            "boost_mode": "multiply",
+                            "boost_mode": "sum",
                             "field_value_factor": {
                                 "field": self.field + ".score",
                                 "missing": 0
