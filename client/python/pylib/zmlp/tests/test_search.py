@@ -204,7 +204,7 @@ class TestLabelConfidenceQuery(unittest.TestCase):
         s = LabelConfidenceQuery("foo", "dog", 0.5)
         qjson = s.for_json()
 
-        assert qjson['bool']['filter'][0]['terms']['analysis.foo.label'] == ['dog']
+        assert qjson['bool']['filter'][0]['terms']['analysis.foo.predictions.label'] == ['dog']
         nested = qjson['bool']['must'][0]['nested']
         assert nested['path'] == 'analysis.foo.predictions'
 
