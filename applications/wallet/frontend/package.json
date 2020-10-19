@@ -150,7 +150,7 @@
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
-    "babel-jest": "26.3.0",
+    "babel-jest": "26.5.2",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-macros": "2.8.0",
     "bundlesize": "0.18.0",
@@ -167,7 +167,7 @@
     "http-proxy-middleware": "1.0.5",
     "husky": "4.3.0",
     "import-all.macro": "3.1.0",
-    "jest": "26.4.2",
+    "jest": "26.5.3",
     "jest-emotion": "10.0.32",
     "jest-fetch-mock": "3.0.3",
     "lint-staged": "10.4.0",
