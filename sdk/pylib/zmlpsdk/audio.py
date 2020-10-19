@@ -8,11 +8,19 @@ logger = logging.getLogger(__name__)
 
 
 def extract_audio_file(src_path):
+    """
+    Extract a .flac file from the give video src file.
 
-    if not (has_audio_channel(src_path)):
-        msg = f'The file {src_path} does not have an audio channel.'
-        logger.warning(msg)
-        raise RuntimeError(msg)
+    Args:
+        src_path (str): The src path.
+
+    Returns:
+        str: The path to the audio file.
+
+    """
+    if not has_audio_channel(src_path):
+        logger.warning(f'The file {src_path} does not have an audio channel.')
+        return None
 
     audio_channels = 2
     audio_sample_rate = 44100
@@ -30,9 +38,13 @@ def extract_audio_file(src_path):
                 audio_file]
 
     logger.info('Executing {}'.format(" ".join(cmd_line)))
-    subprocess.check_call(cmd_line)
+    try:
+        subprocess.check_call(cmd_line)
+        return audio_file
+    except Exception:
+        logger.exception(f'Failed to extract audio file from {src_path}')
 
-    return audio_file
+    return None
 
 
 def has_audio_channel(src_path):
