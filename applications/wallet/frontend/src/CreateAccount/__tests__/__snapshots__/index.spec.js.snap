@@ -119,6 +119,8 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 
 .emotion-4 a {
   color: #0074f5;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .emotion-49 {
@@ -169,6 +171,8 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 
 .emotion-7 a {
   color: #c92300;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .emotion-10 {
@@ -866,6 +870,8 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 
 .emotion-4 a {
   color: #0074f5;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .emotion-46 {

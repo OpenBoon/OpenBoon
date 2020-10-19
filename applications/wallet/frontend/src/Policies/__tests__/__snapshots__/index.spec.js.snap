@@ -255,6 +255,8 @@ exports[`<Policies /> should render properly 1`] = `
 
 .emotion-2 a {
   color: #c92300;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 <div

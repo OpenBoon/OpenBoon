@@ -355,6 +355,8 @@ exports[`<AssetDelete /> should render properly when an asset is selected 2`] = 
 
 .emotion-0 a {
   color: #c92300;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 <div
@@ -445,6 +447,8 @@ exports[`<AssetDelete /> should render properly when asset is deleted 1`] = `
 
 .emotion-0 a {
   color: #009f22;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 <div
