@@ -132,15 +132,15 @@ class AssetViewSet(BaseProjectViewSet):
 
         # Figure out the tracks
         # Get all the clips so we know what vtt's to add
-        clips = self._get_all_clips(request, pk)
-        timelines = self._get_formatted_timelines(clips)
+        timelines = self._get_list_of_timelines(request, pk)
+        # clips = self._get_all_clips(request, pk)
+        # timelines = self._get_formatted_timelines(clips)
         for timeline in timelines:
-            name = timeline['timeline']
-            track = {'label': name,
+            track = {'label': timeline,
                      'kind': 'metadata',
                      'src': reverse('webvtt-detail', kwargs={'project_pk': project_pk,
                                                              'asset_pk': pk,
-                                                             'pk': f'{name}.vtt'})}
+                                                             'pk': f'{timeline}.vtt'})}
             urls['tracks'].append(track)
 
         # Add the closed captioning files
@@ -165,10 +165,31 @@ class AssetViewSet(BaseProjectViewSet):
         formatted_content = self._get_formatted_timelines(content)
         return Response(formatted_content)
 
+    def _get_list_of_timelines(self, request, pk):
+        """Helper to aggregate all the available timelines on this clip."""
+        base_path = f'{self.zmlp_root_api_path}{pk}/clips/_search'
+        agg_query = {
+            'size': 0,
+            'aggs': {
+                'timelines': {
+                    'terms': {
+                        'field': 'clip.timeline',
+                        'size': 1000
+                    }
+                }
+            }
+        }
+        result = request.client.post(base_path, agg_query)
+        timeline_buckets = result.get(
+            'aggregations', {}).get(
+            'sterms#timelines', {}).get(
+            'buckets', [])
+        return [bucket.get('key') for bucket in timeline_buckets]
+
     def _get_all_clips(self, request, pk):
         """Helper to return all the timelines/clips for an asset"""
         base_path = f'{self.zmlp_root_api_path}{pk}/clips'
-        return self._zmlp_get_all_content_from_es_search(request, base_url=base_path)
+        return self._zmlp_get_all_content_from_es_search(request, base_url=base_path, default_page_size=200)
 
     def _get_formatted_timelines(self, content):
         """Helper to format the clip search response from ZMLP into the JSON response for the UI"""
