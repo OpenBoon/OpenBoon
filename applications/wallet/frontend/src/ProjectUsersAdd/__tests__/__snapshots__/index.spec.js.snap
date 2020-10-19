@@ -1724,6 +1724,8 @@ Array [
 
 .emotion-0 a {
   color: #c92300;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .emotion-2 {
@@ -1767,6 +1769,8 @@ Array [
 
 .emotion-11 a {
   color: #009f22;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .emotion-15 {

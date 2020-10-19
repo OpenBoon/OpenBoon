@@ -10,7 +10,7 @@ import { useLocalStorage } from '../LocalStorage/helpers'
 
 import PageTitle from '../PageTitle'
 import BetaBadge from '../BetaBadge'
-import FlashMessage, { VARIANTS } from '../FlashMessage'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
 
@@ -47,7 +47,7 @@ const Models = () => {
 
       {action === 'add-model-success' && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
-          <FlashMessage variant={VARIANTS.SUCCESS}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
             Model created.{' '}
             <Link
               href="/[projectId]/visualizer"
@@ -72,7 +72,9 @@ const Models = () => {
 
       {action === 'delete-model-success' && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
-          <FlashMessage variant={VARIANTS.SUCCESS}>Model deleted.</FlashMessage>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Model deleted.
+          </FlashMessage>
         </div>
       )}
 

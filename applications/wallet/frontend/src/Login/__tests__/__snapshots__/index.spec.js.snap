@@ -50,6 +50,8 @@ exports[`<Login /> should render error 1`] = `
 
 .emotion-0 a {
   color: #009f22;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .emotion-30 {
@@ -374,6 +376,8 @@ exports[`<Login /> should render error 1`] = `
 
 .emotion-10 a {
   color: #c92300;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .emotion-14 {
@@ -663,6 +667,8 @@ exports[`<Login /> should render password changed 1`] = `
 
 .emotion-0 a {
   color: #009f22;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .emotion-25 {
@@ -1201,6 +1207,8 @@ exports[`<Login /> should render properly 1`] = `
 
 .emotion-0 a {
   color: #009f22;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .emotion-25 {
@@ -1739,6 +1747,8 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 
 .emotion-0 a {
   color: #009f22;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .emotion-25 {
