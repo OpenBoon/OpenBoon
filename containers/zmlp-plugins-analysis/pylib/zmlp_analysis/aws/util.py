@@ -1,55 +1,53 @@
-# SPDX-License-Identifier: Apache-2.0
-
-"""
-Base class for implementing custom waiters for services that don't already have
-prebuilt waiters. This class leverages botocore waiter code.
-"""
-
+import logging
 import os
+from enum import Enum
+
 import boto3
 import botocore.waiter
-from enum import Enum
-import logging
 
 logger = logging.getLogger(__name__)
 
 
-class AWSClient:
-
-    def __init__(self, key=None, secret=None, region='us-east-2'):
-        self.key = os.environ.get('ZORROA_AWS_KEY', key)
-        self.secret = os.environ.get('ZORROA_AWS_SECRET', secret)
-        self.region = os.environ.get('ZORROA_AWS_REGION', region)
-
-    def get_aws_client(self, service_type=boto3.client, service='s3'):
-        return service_type(
-            service,
-            region_name=self.region,
-            aws_access_key_id=self.key,
-            aws_secret_access_key=self.secret
-        )
-
-
-def get_zvi_rekognition_client():
+class AwsEnv:
     """
-    Return an AWS client configured for rekognition with ZVI credentials.
-
-    Returns:
-        boto3.client: A boto3 client for recognition
+    AWS client utility client.
     """
-    key = os.environ.get('ZORROA_AWS_KEY')
-    secret = os.environ.get('ZORROA_AWS_SECRET')
-    region = os.environ.get('ZORROA_AWS_REGION', 'us-east-2')
 
-    if not key or not secret:
-        raise RuntimeError('AWS support is not setup for this environment.')
+    @staticmethod
+    def s3():
+        return boto3.client('s3', **AwsEnv.get_aws_env())
 
-    return boto3.client(
-        'rekognition',
-        region_name=region,
-        aws_access_key_id=key,
-        aws_secret_access_key=secret
-    )
+    @staticmethod
+    def transcribe():
+        return boto3.client('transcribe', **AwsEnv.get_aws_env())
+
+    @staticmethod
+    def rekognition():
+        """
+        Return an AWS client configured for rekognition with ZVI credentials.
+
+        Returns:
+            boto3.client: A boto3 client for recognition
+        """
+        return boto3.client('rekognition', **AwsEnv.get_aws_env())
+
+    @staticmethod
+    def get_aws_env():
+        aws_env = {
+            'aws_access_key_id': os.environ.get('ZORROA_AWS_KEY'),
+            'aws_secret_access_key': os.environ.get('ZORROA_AWS_SECRET'),
+            'region_name': os.environ.get('ZORROA_AWS_REGION', 'us-east-1')
+        }
+        if None in aws_env.values():
+            raise RuntimeError('AWS support is not setup for this environment.')
+        return aws_env
+
+    @staticmethod
+    def get_bucket_name():
+        bucket = os.environ.get('ZORROA_AWS_BUCKET')
+        if not bucket:
+            raise RuntimeError('AWS support is not setup for this environment.')
+        return bucket
 
 
 class WaitState(Enum):
@@ -82,6 +80,7 @@ class CustomWaiter:
             self._wait(TranscriptionJobName=job_name)
 
     """
+
     def __init__(self, name, operation, argument, acceptors, client, delay=10, max_tries=60):
         """ Subclasses should pass specific operations, arguments, and acceptors to
         their super class.
@@ -159,6 +158,7 @@ class TranscribeCompleteWaiter(CustomWaiter):
     """
     Waits for the transcription to complete.
     """
+
     def __init__(self, client):
         super().__init__(
             'TranscribeComplete', 'GetTranscriptionJob',

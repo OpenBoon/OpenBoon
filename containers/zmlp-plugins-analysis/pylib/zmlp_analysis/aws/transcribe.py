@@ -1,90 +1,103 @@
-from pathlib import Path
-import requests
+import os
+import random
+import string
+import json
 
-import boto3
+import requests
 from botocore.exceptions import ClientError
 
-from zmlpsdk import file_storage
-from zmlpsdk.analysis import ContentDetectionAnalysis
-from zmlpsdk.video import WebvttBuilder
 from zmlp.entity import TimelineBuilder
+from zmlp_analysis.aws.util import TranscribeCompleteWaiter, AwsEnv
 from zmlp_analysis.google.cloud_timeline import save_timeline
-from zmlp_analysis.aws.util import TranscribeCompleteWaiter, AWSClient
-from zmlp_analysis.utils.audio import AudioProcessor
+from zmlpsdk import file_storage, FileTypes, Argument, AssetProcessor, ZmlpEnv
+from zmlpsdk.analysis import ContentDetectionAnalysis
+from zmlpsdk.proxy import get_audio_proxy, get_video_proxy
+from zmlpsdk.audio import has_audio_channel
+from zmlpsdk.video import WebvttBuilder
 
 
-class AmazonTranscribeProcessor(AudioProcessor):
+class AmazonTranscribeProcessor(AssetProcessor):
     """ AWS Transcribe Processor for transcribing videos"""
     namespace = 'aws-transcribe'
+    file_types = FileTypes.videos
 
     def __init__(self):
         super(AmazonTranscribeProcessor, self).__init__()
+        self.add_arg(Argument('languages', 'list',
+                              toolTip="List of languages to auto-detect",
+                              default=['en-US', 'en-GB', 'fr-FR', 'es-US']))
+
         self.transcribe_client = None
-        self.s3_resource = None
+        self.s3_client = None
 
     def init(self):
-        aws_client = AWSClient()
-        self.transcribe_client = aws_client.get_aws_client(
-            service_type=boto3.client,
-            service='transcribe'
-        )
-        self.s3_resource = aws_client.get_aws_client(
-            service_type=boto3.resource,
-            service='s3'
-        )
+        self.transcribe_client = AwsEnv.transcribe()
+        self.s3_client = AwsEnv.s3()
 
     def process(self, frame):
         asset = frame.asset
         asset_id = asset.id
 
-        if asset.get_attr('media.length') > self.max_length_sec:
+        if asset.get_attr('media.length') > 120:
             self.logger.warning(
                 'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
             return
 
-        local_audio = file_storage.localize_file(asset)
-        local_filename = Path(local_audio).name  # filename with extension
-        if not self.has_audio(local_audio):
-            self.logger.warning('Skipping, video has no audio.')
+        # Look for a .flac audio proxy first.  If one doesn't exist we can
+        # use the MP4, but it's larger and thus slower.
+        audio_proxy = get_audio_proxy(asset, False)
+        if not audio_proxy:
+            # We can use the video proxy.
+            audio_proxy = get_video_proxy(asset)
+
+        if not audio_proxy:
+            self.logger.warning(f'No audio could be found for {asset_id}')
             return
 
-        # create temporary s3 bucket
-        bucket = self.create_bucket(bucket_name=asset_id)
+        local_path = file_storage.localize_file(audio_proxy)
+        if not has_audio_channel(local_path):
+            self.logger.warning(f'No audio channel could be found for {asset_id}')
+            return
+
+        ext = os.path.splitext(local_path)[1]
+        bucket_file = f'{ZmlpEnv.get_project_id()}/transcribe/{asset_id}{ext}'
+        bucket_name = AwsEnv.get_bucket_name()
+
         # upload to s3
-        bucket.upload_file(local_audio, local_filename)
+        self.s3_client.upload_file(local_path, bucket_name, bucket_file)
+
         # get audio s3 uri
-        audio_uri = f's3://{bucket.name}/{local_filename}'
-        # run transcribe
-        audio_result = self.recognize_speech(audio_uri, asset_id)
+        s3_uri = f's3://{bucket_name}/{bucket_file}'
 
-        if audio_result['results']:
-            self.set_analysis(asset, audio_result)
-            self.save_raw_result(asset, audio_result)
-            self.save_timelines(asset, audio_result)
+        job_name, audio_result = self.recognize_speech(s3_uri)
+        try:
+            if audio_result['results']:
+                self.set_analysis(asset, audio_result)
+                self.save_raw_result(asset, audio_result)
+                self.save_timelines(asset, audio_result)
+        finally:
+            self.cleanup_aws_resources(bucket_file, job_name)
 
-            # delete bucket and jobs
-            try:
-                self.transcribe_client.delete_transcription_job(TranscriptionJobName=asset_id)
-            except ClientError:
-                pass
-            bucket.objects.delete()
-            bucket.delete()
+    def cleanup_aws_resources(self, bucket_file, job_name):
 
-    def create_bucket(self, bucket_name=''):
-        """ Create an S3 bucket
+        # delete bucket and jobs
+        try:
+            self.logger.info("deleting job {}".format(job_name))
+            self.transcribe_client.delete_transcription_job(TranscriptionJobName=job_name)
+        except Exception:
+            self.logger.exception("Failed to delete AWS transcription job.")
 
-        Args:
-            bucket_name: bucket name
-
-        Returns:
-            s3.Bucket object
-        """
-        return self.s3_resource.create_bucket(
-            Bucket=bucket_name,
-            CreateBucketConfiguration={
-                'LocationConstraint': self.transcribe_client.meta.region_name
-            }
-        )
+        try:
+            self.logger.info("deleting object {} {}".format(
+                AwsEnv.get_bucket_name(),
+                bucket_file
+            ))
+            self.s3_client.delete_object(
+                Bucket=AwsEnv.get_bucket_name(),
+                Key=bucket_file
+            )
+        except Exception:
+            self.logger.exception("Failed to delete AWS audio file.")
 
     def save_webvtt(self, asset, audio_result):
         """
@@ -97,6 +110,7 @@ class AmazonTranscribeProcessor(AudioProcessor):
         Returns:
             StoredFile
         """
+
         with WebvttBuilder() as webvtt:
             for r in audio_result['results']['items']:
                 if r['type'] != 'punctuation':
@@ -122,15 +136,16 @@ class AmazonTranscribeProcessor(AudioProcessor):
             Timeline: The generated timeline.
         """
         timeline = TimelineBuilder(asset, "aws-transcribe")
-
-        for r in audio_result['results']['items']:
+        results = audio_result['results']
+        track = 'Language {}'.format(results.get('language_code', 'en-US'))
+        for r in results['items']:
             if r['type'] != 'punctuation':
                 start_time = r['start_time']
                 end_time = r['end_time']
                 best_result = sorted(r['alternatives'], key=lambda i: i['confidence'], reverse=True)
 
                 timeline.add_clip(
-                    "Detected Text",
+                    track,
                     start_time,
                     end_time,
                     best_result[0]['content'],
@@ -144,11 +159,18 @@ class AmazonTranscribeProcessor(AudioProcessor):
         self.save_transcribe_timeline(asset, audio_result)
 
     def save_raw_result(self, asset, audio_result):
-        transcript = audio_result['results']['transcripts'][0]['transcript']
-        file_storage.assets.store_blob(transcript.encode(),
+        """
+        Save a JSON version of the raw AWS result.
+
+        Args:
+            asset (Asset): The asset
+            audio_result (dict): A transcribe result.
+        """
+        jstr = json.dumps(audio_result)
+        file_storage.assets.store_blob(jstr.encode(),
                                        asset,
                                        'aws',
-                                       'aws-transcribe.dat')
+                                       'aws-transcribe.json')
 
     def set_analysis(self, asset, audio_result):
         """ The speech to text results come with multiple possibilities per segment, we only keep
@@ -174,54 +196,49 @@ class AmazonTranscribeProcessor(AudioProcessor):
         analysis.add_content(transcript.strip())
         asset.add_analysis(self.namespace, analysis)
 
-    def recognize_speech(self, audio_uri, job_name):
+    def recognize_speech(self, audio_uri):
         """
         Call Amazon Transcribe and wait for the result.
 
         Args:
             audio_uri (str): The URI to the audio dump.
-            job_name (str): job name
-
         Returns:
             (dict) AWS Transcribe response
         """
-        self.start_job(job_name, audio_uri)
+        job = self.start_job(audio_uri)
+        job_name = job['TranscriptionJobName']
         transcribe_waiter = TranscribeCompleteWaiter(self.transcribe_client)
+
         transcribe_waiter.wait(job_name)
         job = self.get_job(job_name)
-        transcript_simple = requests.get(job['Transcript']['TranscriptFileUri']).json()
+        return job_name, requests.get(job['Transcript']['TranscriptFileUri']).json()
 
-        return transcript_simple
-
-    def start_job(
-            self, job_name, media_uri, media_format='mp4', language_code='en-US'):
+    def start_job(self, media_uri):
         """
 
         Args:
-            job_name (str): The name of the transcription job. This must be unique for your AWS
-            account.
             media_uri (str): The URI where the audio file is stored. This is typically in an
             Amazon S3 bucket
-            media_format (str): The format of the audio file. For example, mp4 or wav.
-            language_code (str): The language code of the audio file. For example, en-US or ja-JP
-
         Returns:
             (dict) Data about the job
         """
         try:
+            job_name = ''.join(random.choice(string.ascii_lowercase) for i in range(32))
+            media_format = os.path.splitext(media_uri)[1][1:]
             job_args = {
                 'TranscriptionJobName': job_name,
                 'Media': {'MediaFileUri': media_uri},
                 'MediaFormat': media_format,
-                'LanguageCode': language_code}
+                'IdentifyLanguage': True,
+                'LanguageOptions': self.arg_value('languages')
+            }
+
+            self.logger.info("Starting transcription job %s.", job_name)
             response = self.transcribe_client.start_transcription_job(**job_args)
-            job = response['TranscriptionJob']
-            self.logger.debug("Started transcription job %s.", job_name)
+            return response['TranscriptionJob']
         except ClientError:
             self.logger.exception("Couldn't start transcription job %s.", job_name)
             raise
-        else:
-            return job
 
     def get_job(self, job_name):
         """ Gets details about a transcription job.
@@ -234,10 +251,7 @@ class AmazonTranscribeProcessor(AudioProcessor):
         """
         try:
             response = self.transcribe_client.get_transcription_job(TranscriptionJobName=job_name)
-            job = response['TranscriptionJob']
-            self.logger.debug("Got job %s.", job['TranscriptionJobName'])
+            return response['TranscriptionJob']
         except ClientError:
             self.logger.exception("Couldn't get job %s.", job_name)
             raise
-        else:
-            return job

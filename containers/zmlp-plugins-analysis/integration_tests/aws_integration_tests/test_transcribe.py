@@ -5,7 +5,6 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp import StoredFile
 from zmlp_analysis.aws import AmazonTranscribeProcessor
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_mock_stored_file
@@ -27,19 +26,26 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
             for line in reader:
                 access_key_id = line[2]
                 secret_access_key = line[3]
-        os.environ["ZORROA_AWS_KEY"] = access_key_id
-        os.environ["ZORROA_AWS_SECRET"] = secret_access_key
+
+        os.environ['ZORROA_AWS_KEY'] = access_key_id
+        os.environ['ZORROA_AWS_SECRET'] = secret_access_key
+        os.environ['ZORROA_AWS_BUCKET'] = 'zorroa-integration-tests'
+        os.environ['ZORROA_AWS_REGION'] = 'us-east-1'
+        os.environ['ZMLP_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
 
     def tearDown(self):
         del os.environ['ZORROA_AWS_KEY']
         del os.environ['ZORROA_AWS_SECRET']
+        del os.environ['ZORROA_AWS_BUCKET']
+        del os.environ['ZORROA_AWS_REGION']
+        del os.environ['ZMLP_PROJECT_ID']
 
     @patch("zmlp_analysis.aws.transcribe.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
-    @patch.object(file_storage.assets, 'get_native_uri')
-    def run_process(self, native_url_patch, store_patch, store_blob_patch, _):
-        native_url_patch.return_value = 'gs://zorroa-dev-data/video/audio8D0_VU.flac'
+    @patch('zmlp_analysis.aws.transcribe.get_audio_proxy')
+    def test_process_audio_proxy(self, get_prx_patch, store_patch, store_blob_patch, _):
+        get_prx_patch.return_value = zorroa_test_path("audio/audio1.flac")
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
@@ -49,19 +55,20 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
 
         assert 'poop' in self.asset.get_attr('analysis.aws-transcribe.content')
 
-        return store_patch
+    @patch("zmlp_analysis.aws.transcribe.save_timeline", return_value={})
+    @patch.object(file_storage.assets, 'store_blob')
+    @patch.object(file_storage.assets, 'store_file')
+    @patch('zmlp_analysis.aws.transcribe.get_video_proxy')
+    @patch('zmlp_analysis.aws.transcribe.get_audio_proxy')
+    def test_process_video_proxy(self,
+                                 get_prx_patch, get_vid_patch, store_patch, store_blob_patch, _):
+        get_prx_patch.return_value = 0
+        get_vid_patch.return_value = zorroa_test_path("video/ted_talk.mp4")
+        store_patch.return_value = get_mock_stored_file()
+        store_blob_patch.return_value = get_mock_stored_file()
 
-    def test_speech_detection(self):
-        self.run_process()
+        processor = self.init_processor(AmazonTranscribeProcessor(), {'language': 'en-US'})
+        frame = Frame(self.asset)
+        processor.process(frame)
 
-    def test_speech_detection_existing_proxy(self):
-        self.asset.add_file(StoredFile({
-            'id': 'assets/12345/audio/audio_proxy.flac',
-            'category': 'audio', 'name': 'audio_proxy.flac'
-        }))
-        store_patch = self.run_process()
-
-        with open(store_patch.call_args_list[0][0][0]) as fp:
-            vtt = fp.read()
-        assert "toilet" in vtt
-        assert "emerge" in vtt
+        assert 'poop' in self.asset.get_attr('analysis.aws-transcribe.content')

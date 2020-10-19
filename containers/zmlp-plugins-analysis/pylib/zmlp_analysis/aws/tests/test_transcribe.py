@@ -1,15 +1,59 @@
 import logging
 import os
-import pytest
-from unittest.mock import patch
 import pickle
+from unittest.mock import patch
 
-from zmlp import StoredFile
 from zmlp_analysis.aws.transcribe import AmazonTranscribeProcessor
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_mock_stored_file, zorroa_test_path
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig()
+
+
+class MockTranscribeClient:
+    def __init__(self, *args, **kwargs):
+        self.meta = MockMeta()
+
+    def start_transcription_job(self, **kwargs):
+        return load_results(name="job_response.pk")
+
+    def get_transcription_job(self, **kwargs):
+        return load_results(name="transcribe_job.pk")
+
+    def delete_transcription_job(self, **kwargs):
+        return self
+
+
+class MockS3Client:
+    def __init__(self, *args, **kwargs):
+        self.objects = MockS3Object()
+
+    def upload_file(self, *args, **kwargs):
+        return self
+
+    def delete_object(self, **kwargs):
+        return self
+
+
+class MockMeta:
+    def __init__(self, *args, **kwargs):
+        self.region_name = 'us-east-2'
+
+
+class MockS3Object:
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def delete(self, **kwargs):
+        return self
+
+
+class MockTranscribeCompleteWaiter:
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def wait(self, job_name=None, **kwargs):
+        return self
 
 
 def load_results(name):
@@ -37,37 +81,16 @@ def mocked_requests_get(*args, **kwargs):
     return MockResponse(None, 404)
 
 
-class MockTranscribeClient:
-    def __init__(self, *args, **kwargs):
-        self.meta = MockMeta()
-
-    def start_transcription_job(self, **kwargs):
-        return load_results(name="job_response.pk")
-
-    def get_transcription_job(self, **kwargs):
-        return load_results(name="transcribe_job.pk")
-
-    def delete_transcription_job(self, **kwargs):
-        return self
-
-
-class MockS3Client:
-    def __init__(self, *args, **kwargs):
-        self.objects = MockS3Object()
-
-    def create_bucket(self, **kwargs):
-        return self
-
-    def delete(self, **kwargs):
-        return self
-
-
-@pytest.mark.skip(reason='dont run automatically')
 class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
 
-    @patch('zmlp_analysis.aws.transcribe.boto3.client',
+    @patch('zmlp_analysis.aws.util.AwsEnv.transcribe',
            side_effect=MockTranscribeClient)
-    def setUp(self, client_patch):
+    @patch('zmlp_analysis.aws.util.AwsEnv.s3',
+           side_effect=MockS3Client)
+    def setUp(self, client_patch, s3_patch):
+        os.environ['ZMLP_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
+        os.environ['ZORROA_AWS_BUCKET'] = 'zorroa-unit-tests'
+
         self.processor = self.init_processor(AmazonTranscribeProcessor(), {'language': 'en-US'})
         self.test_video = 'gs://zorroa-dev-data/video/ted_talk.mov'
         self.asset = TestAsset(self.test_video)
@@ -76,73 +99,44 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
     @patch("zmlp_analysis.aws.transcribe.save_timeline", return_value={})
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
-    @patch.object(file_storage.assets, 'get_native_uri')
+    @patch('zmlp_analysis.aws.transcribe.get_audio_proxy')
     @patch.object(file_storage, 'localize_file')
-    @patch('zmlp_analysis.aws.transcribe.boto3.client')
     @patch('zmlp_analysis.aws.transcribe.AmazonTranscribeProcessor.recognize_speech')
-    def run_process(self, speech_patch, client_patch, localize_patch, native_url_patch,
-                    store_patch, store_blob_patch, _):
-        speech_patch.return_value = load_results(name="transcribe.pk")
-        client_patch.return_value = MockTranscribeClient()
-        localize_patch.return_value = zorroa_test_path("video/ted_talk.mov")
-        native_url_patch.return_value = 'gs://zorroa-dev-data/video/audio8D0_VU.flac'
+    def test_run_process(self, speech_patch, localize_patch, audio_prx_patch,
+                         store_patch, store_blob_patch, _):
+        speech_patch.return_value = "foo", load_results(name="transcribe.pk")
+        audio_prx_patch.return_value = 1
         store_patch.return_value = get_mock_stored_file()
+        localize_patch.return_value = zorroa_test_path("video/ted_talk.mp4")
         store_blob_patch.return_value = get_mock_stored_file()
 
         frame = Frame(self.asset)
         self.processor.process(frame)
         assert 'poop' in self.asset.get_attr('analysis.aws-transcribe.content')
 
-    def test_speech_detection(self):
-        self.run_process()
-
-    def test_speech_detection_existing_proxy(self):
-        self.asset.add_file(StoredFile({
-            'id': 'assets/12345/audio/audio_proxy.flac',
-            'category': 'audio',
-            'name': 'audio_proxy.flac'
-        }))
-        self.run_process()
-
-    @patch("zmlp_analysis.aws.transcribe.save_timeline", return_value={})
-    @patch.object(file_storage.assets, 'store_blob')
-    @patch.object(file_storage.assets, 'store_file')
-    @patch.object(file_storage.assets, 'get_native_uri')
-    @patch.object(file_storage, 'localize_file')
-    @patch('zmlp_analysis.aws.transcribe.boto3.client')
-    @patch('zmlp_analysis.aws.transcribe.TranscribeCompleteWaiter')
-    @patch('zmlp_analysis.aws.transcribe.requests.get', side_effect=mocked_requests_get)
-    def test_speech_detection_no_audio(self, _, waiter_patch, speech_patch, localize_patch,
-                                       native_url_patch, store_patch, store_blob_patch, st_patch):
-        waiter_patch.return_value = MockTranscribeCompleteWaiter()
-        speech_patch.return_value = MockTranscribeClient()
-        localize_patch.return_value = zorroa_test_path("video/no_audio.mp4")
-        native_url_patch.return_value = 'gs://zorroa-dev-data/video/audio8D0_VU.flac'
-        store_patch.return_value = get_mock_stored_file()
-        store_blob_patch.return_value = get_mock_stored_file()
+    @patch('zmlp_analysis.aws.transcribe.get_audio_proxy')
+    def test_speech_detection_no_prx(self, audio_prx_patch):
+        audio_prx_patch.return_value = 0
 
         asset = TestAsset('gs://zorroa-dev-data/video/no_audio.mp4')
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         self.processor.process(frame)
 
+        assert not self.asset.get_attr('analysis.aws-transcribe.content')
 
-class MockMeta:
-    def __init__(self, *args, **kwargs):
-        self.region_name = 'us-east-2'
+    @patch.object(file_storage, 'localize_file')
+    @patch('zmlp_analysis.aws.transcribe.get_video_proxy')
+    @patch('zmlp_analysis.aws.transcribe.get_audio_proxy')
+    def test_speech_detection_video_has_no_auido(self, audio_prx_patch,
+                                                 video_prx_patch, localize_patch):
+        audio_prx_patch.return_value = 0
+        video_prx_patch.return_value = 1
+        localize_patch.return_value = zorroa_test_path("video/no_audio.mp4")
 
+        asset = TestAsset('gs://zorroa-dev-data/video/no_audio.mp4')
+        asset.set_attr('media.length', 15.0)
+        frame = Frame(asset)
+        self.processor.process(frame)
 
-class MockS3Object:
-    def __init__(self, *args, **kwargs):
-        pass
-
-    def delete(self, **kwargs):
-        return self
-
-
-class MockTranscribeCompleteWaiter:
-    def __init__(self, *args, **kwargs):
-        pass
-
-    def wait(self, job_name=None, **kwargs):
-        return self
+        assert not self.asset.get_attr('analysis.aws-transcribe.content')
