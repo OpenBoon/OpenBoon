@@ -478,10 +478,7 @@ class ZmlpEnv:
         Returns:
             str: The ZMLP project Id.
         """
-        pid = os.environ.get("ZMLP_PROJECT_ID")
-        if not pid:
-            raise RuntimeError("No project ID is set in the environment")
-        return pid
+        return os.environ.get("ZMLP_PROJECT_ID")
 
     @staticmethod
     def get_datasource_id():
