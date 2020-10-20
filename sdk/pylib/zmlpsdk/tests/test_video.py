@@ -1,5 +1,6 @@
 import os
 import tempfile
+import unittest
 
 import zmlpsdk.video as video
 from zmlpsdk.testing import zorroa_test_path
@@ -26,3 +27,20 @@ def test_webvtt_builder():
     data = open(vtt.path, "r").read()
     assert "00:00:00.000 --> 00:00:10.000" in data
     assert "hello, you bastard" in data
+
+
+class FrameExtractors(unittest.TestCase):
+    """
+    Test the different frame extractors
+    """
+    def test_time_based_iterate(self):
+        iter = video.TimeBasedFrameExtractor(VIDEO_M4V)
+        frames = list(iter)
+        assert 17 == len(frames)
+        assert os.path.exists(frames[0][1])
+
+    def test_shot_based_iterate(self):
+        iter = video.ShotBasedFrameExtractor(VIDEO_M4V)
+        frames = list(iter)
+        assert len(frames) > 1
+        assert os.path.exists(frames[0][1])
