@@ -42,5 +42,5 @@ class FrameExtractors(unittest.TestCase):
     def test_shot_based_iterate(self):
         iter = video.ShotBasedFrameExtractor(VIDEO_M4V)
         frames = list(iter)
-        assert 4 >= len(frames)
+        assert len(frames) >= 4
         assert os.path.exists(frames[0][1])
