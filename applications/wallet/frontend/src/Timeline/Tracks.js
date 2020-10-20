@@ -25,14 +25,19 @@ const TimelineTracks = ({ videoRef, length, color, tracks, isOpen }) => {
       css={{
         display: 'flex',
         flexDirection: 'column',
-        ':last-of-type': { marginBottom: spacing.normal },
+        ':last-of-type': {
+          marginBottom: color === colors.structure.white ? 0 : spacing.normal,
+        },
       }}
     >
       <div
         css={{
           position: 'relative',
           padding: spacing.base,
-          borderBottom: constants.borders.regular.smoke,
+          borderBottom:
+            color === colors.structure.white
+              ? 'none'
+              : constants.borders.regular.smoke,
           backgroundColor: colors.structure.soot,
         }}
       >

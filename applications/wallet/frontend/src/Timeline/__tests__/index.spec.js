@@ -15,6 +15,7 @@ jest.mock('../Playhead', () => 'TimelinePlayhead')
 jest.mock('../FilterTracks', () => 'TimelineFilterTracks')
 jest.mock('../Ruler', () => 'TimelineRuler')
 jest.mock('../Aggregate', () => 'TimelineAggregate')
+jest.mock('../SearchHits', () => 'TimelineSearchHits')
 jest.mock('../Timelines', () => 'TimelineTimelines')
 
 describe('<Timeline />', () => {
