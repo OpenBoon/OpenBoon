@@ -311,20 +311,23 @@ class BaseProjectViewSet(ViewSet):
         response = request.client.post(path, payload)
         return self._get_content(response)
 
-    def _zmlp_get_all_content_from_es_search(self, request, search_filter=None, base_url=None):
+    def _zmlp_get_all_content_from_es_search(self, request, search_filter=None, base_url=None,
+                                             default_page_size=None):
         """Generates and runs the search query against a ZMLP ES search endpoint and gets all pages.
 
         Args:
             request (Request): Request the view method was given.
             search_filter (dict): Optional filter to pass to the zmlp search endpoint.
             base_url (str): The base zmlp api url to use.
+            default_page_size (int): Paging size to use
 
         Returns:
             Response: DRF Response that can be used directly by viewset action method.
 
         """
         base_url = base_url or self.zmlp_root_api_path
-        size = request.query_params.get('size', settings.REST_FRAMEWORK['PAGE_SIZE'])
+        page_size = default_page_size or settings.REST_FRAMEWORK['PAGE_SIZE']
+        size = request.query_params.get('size', page_size)
         payload = {'from': 0, 'size': size}
 
         if search_filter:

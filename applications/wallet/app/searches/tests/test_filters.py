@@ -552,6 +552,41 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
                                                                                                            'gte': 0.2,
                                                                                                            'lte': 0.7}}}]}}}}}}]}}}
 
+    def test_get_clip_query_non_video(self, mock_query_data):
+        _filter = LabelConfidenceFilter(mock_query_data)
+        _filter._field_type = 'prediction'
+        query = _filter.get_clip_query()
+        assert query == {}
+
+    def test_get_clip_query_non_video(self, mock_query_data):
+        mock_query_data['attribute'] = 'analysis.zvi-video-label-detection'
+        _filter = LabelConfidenceFilter(mock_query_data)
+        _filter._field_type = 'prediction'
+        query = _filter.get_clip_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {
+                            'terms': {
+                                'clip.track': ['value1', 'value2']
+                            }
+                        },
+                        {
+                            'term': {
+                                'clip.timeline': 'zvi-video-label-detection'
+                            }
+                        },
+                        {
+                            'range': {
+                                'clip.score': {'from': 0.5, 'to': 0.8}
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+
 
 class TestTextContentFilter(FilterBaseTestCase):
 
@@ -618,6 +653,20 @@ class TestTextContentFilter(FilterBaseTestCase):
                         {'simple_query_string': {
                             'query': 'test',
                             'fields': ['one.two']
+                        }}
+                    ]}}}
+
+    def test_get_clip_query(self):
+        _filter = self.Filter({'type': self.Filter.type,
+                               'values': {'query': 'Jack Hodgens'}})
+        query = _filter.get_clip_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    'must': [
+                        {'simple_query_string': {
+                            'query': 'Jack Hodgens',
+                            'fields': ['clip.content']
                         }}
                     ]}}}
 

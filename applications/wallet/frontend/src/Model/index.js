@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { spacing } from '../Styles'
 
 import Breadcrumbs from '../Breadcrumbs'
-import FlashMessage, { VARIANTS } from '../FlashMessage'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 import LabelEdit from '../LabelEdit'
 
@@ -31,7 +31,7 @@ const Model = () => {
 
       {!!action && (
         <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
-          <FlashMessage variant={VARIANTS.SUCCESS}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
             {action === 'edit-label-success' && 'Label updated.'}
             {action === 'delete-label-success' && 'Label deleted.'}
           </FlashMessage>

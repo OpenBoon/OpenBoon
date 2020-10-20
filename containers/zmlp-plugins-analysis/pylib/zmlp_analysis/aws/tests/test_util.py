@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from zmlp_analysis.aws.util import get_zvi_rekognition_client
+from zmlp_analysis.aws.util import AwsEnv
 from zmlpsdk.testing import PluginUnitTestCase
 
 
@@ -13,7 +13,7 @@ class UtilTests(PluginUnitTestCase):
         os.environ['ZORROA_AWS_SECRET'] = "abc123"
         try:
             with pytest.raises(RuntimeError):
-                get_zvi_rekognition_client()
+                AwsEnv.rekognition()
         finally:
             del os.environ['ZORROA_AWS_SECRET']
 
@@ -21,7 +21,7 @@ class UtilTests(PluginUnitTestCase):
         os.environ['ZORROA_AWS_KEY'] = "abc123"
         try:
             with pytest.raises(RuntimeError):
-                get_zvi_rekognition_client()
+                AwsEnv.rekognition()
         finally:
             del os.environ['ZORROA_AWS_KEY']
 
@@ -29,7 +29,7 @@ class UtilTests(PluginUnitTestCase):
         os.environ['ZORROA_AWS_KEY'] = "abc123"
         os.environ['ZORROA_AWS_SECRET'] = "abc123"
         try:
-            get_zvi_rekognition_client()
+            AwsEnv.rekognition()
         finally:
             del os.environ['ZORROA_AWS_KEY']
             del os.environ['ZORROA_AWS_SECRET']

@@ -2,7 +2,7 @@ from zmlpsdk import AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from .util import get_zvi_rekognition_client
+from .util import AwsEnv
 
 
 class RekognitionFaceDetection(AssetProcessor):
@@ -18,7 +18,7 @@ class RekognitionFaceDetection(AssetProcessor):
 
     def init(self):
         # AWS client
-        self.client = get_zvi_rekognition_client()
+        self.client = AwsEnv.rekognition()
 
     def process(self, frame):
         """Process the given frame for predicting and adding labels to an asset
@@ -57,7 +57,7 @@ class RekognitionFaceDetection(AssetProcessor):
         # get bounding box
         results = []
         for i, r in enumerate(response['FaceDetails']):
-            confidence = r['Confidence']
+            conf = r['Confidence']
             bbox = r['BoundingBox']
 
             left = bbox['Left']
@@ -65,5 +65,6 @@ class RekognitionFaceDetection(AssetProcessor):
             width = bbox['Width']
             height = bbox['Height']
 
+            confidence = conf / 100.
             results.append(("face{}".format(i), confidence, [left, top, left+width, top+height]))
         return results
