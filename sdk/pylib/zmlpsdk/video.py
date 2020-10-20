@@ -163,7 +163,7 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
     iteration writes over the previous frame.
     """
 
-    sensitivity = 0.12
+    sensitivity = 0.125
     """How sensitive shot detection is, higher is less shots."""
 
     def __init__(self, video_file):
@@ -212,6 +212,7 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
             logger.warning('Exception thrown waiting on process to complete.')
 
         return shot_times
+
 
 def save_timeline(timeline):
     """
