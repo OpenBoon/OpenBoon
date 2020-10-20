@@ -4,7 +4,7 @@ from zmlpsdk import AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from .util import get_zvi_rekognition_client
+from .util import AwsEnv
 
 
 class RekognitionCelebrityDetection(AssetProcessor):
@@ -20,7 +20,7 @@ class RekognitionCelebrityDetection(AssetProcessor):
 
     def init(self):
         # AWS client
-        self.client = get_zvi_rekognition_client()
+        self.client = AwsEnv.rekognition()
 
     def process(self, frame):
         asset = frame.asset
