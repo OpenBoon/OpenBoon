@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TimelineTimelines /> should render properly 1`] = `
-.emotion-48 {
+.emotion-46 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -14,11 +14,11 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-45 {
+.emotion-43 {
   width: 200px;
 }
 
-.emotion-16 {
+.emotion-6 {
   background-color: #212121;
   border-bottom: 1px solid #3b3b3b;
   border-right: 1px solid #3b3b3b;
@@ -47,12 +47,15 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
 
 .emotion-0 {
   width: 3px;
-  background-color: #0074f5;
+  background-color: #a03dc7;
   margin-right: 8px;
 }
 
 .emotion-1 {
-  color: #0074f5;
+  color: #a03dc7;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -73,19 +76,64 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-10 {
+.emotion-7 {
+  width: 3px;
+  background-color: #d6680b;
+  margin-right: 8px;
+}
+
+.emotion-8 {
+  color: #d6680b;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-14 {
+  width: 3px;
+  background-color: #ebb52e;
+  margin-right: 8px;
+}
+
+.emotion-15 {
+  color: #ebb52e;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-21 {
+  width: 3px;
+  background-color: #009f22;
+  margin-right: 8px;
+}
+
+.emotion-22 {
+  color: #009f22;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-6 {
+.emotion-27 {
   width: 3px;
-  background-color: #0074f5;
+  background-color: #009f22;
 }
 
-.emotion-9 {
+.emotion-30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -96,7 +144,7 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   overflow: hidden;
 }
 
-.emotion-7 {
+.emotion-28 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -108,75 +156,11 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   padding-right: 0;
 }
 
-.emotion-8 {
+.emotion-29 {
   padding: 8px;
 }
 
-.emotion-17 {
-  width: 3px;
-  background-color: #a03dc7;
-  margin-right: 8px;
-}
-
-.emotion-18 {
-  color: #a03dc7;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.emotion-24 {
-  width: 3px;
-  background-color: #d6680b;
-  margin-right: 8px;
-}
-
-.emotion-25 {
-  color: #d6680b;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.emotion-31 {
-  width: 3px;
-  background-color: #ebb52e;
-  margin-right: 8px;
-}
-
-.emotion-32 {
-  color: #ebb52e;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.emotion-38 {
-  width: 3px;
-  background-color: #00bdc1;
-  margin-right: 8px;
-}
-
-.emotion-39 {
-  color: #00bdc1;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.emotion-47 {
+.emotion-45 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -187,22 +171,22 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   height: fit-content;
 }
 
-.emotion-46 {
+.emotion-44 {
   width: 100%;
 }
 
 <div
-  className="emotion-48"
+  className="emotion-46"
 >
   <div
-    className="emotion-45"
+    className="emotion-43"
   >
     <details
-      className="emotion-16"
-      open={true}
+      className="emotion-6"
+      open={false}
     >
       <summary
-        aria-label="gcp-video-explicit-detection"
+        aria-label="gcp-video-label-detection"
         className="emotion-5"
         onClick={[Function]}
       >
@@ -220,83 +204,6 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
           <div
             className="emotion-2"
           >
-            gcp-video-explicit-detection
-          </div>
-          <div
-            className="emotion-3"
-          >
-            (2)
-          </div>
-        </div>
-      </summary>
-      <div>
-        <div
-          className="emotion-10"
-        >
-          <div
-            className="emotion-6"
-          />
-          <div
-            className="emotion-9"
-          >
-            <div
-              className="emotion-7"
-            >
-              Gh st
-            </div>
-            <div
-              className="emotion-8"
-            >
-              (3)
-            </div>
-          </div>
-        </div>
-        <div
-          className="emotion-10"
-        >
-          <div
-            className="emotion-6"
-          />
-          <div
-            className="emotion-9"
-          >
-            <div
-              className="emotion-7"
-            >
-              Busters
-            </div>
-            <div
-              className="emotion-8"
-            >
-              (3)
-            </div>
-          </div>
-        </div>
-      </div>
-    </details>
-    <details
-      className="emotion-16"
-      open={false}
-    >
-      <summary
-        aria-label="gcp-video-label-detection"
-        className="emotion-5"
-        onClick={[Function]}
-      >
-        <div
-          className="emotion-4"
-        >
-          <div
-            className="emotion-17"
-          />
-          <svg
-            className="emotion-18"
-            data-file-name="chevron.svg"
-            height={20}
-          />
-          <div
-            className="emotion-2"
-          >
             gcp-video-label-detection
           </div>
           <div
@@ -308,7 +215,7 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-16"
+      className="emotion-6"
       open={false}
     >
       <summary
@@ -320,10 +227,10 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
           className="emotion-4"
         >
           <div
-            className="emotion-24"
+            className="emotion-7"
           />
           <svg
-            className="emotion-25"
+            className="emotion-8"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -341,7 +248,7 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-16"
+      className="emotion-6"
       open={false}
     >
       <summary
@@ -353,10 +260,10 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
           className="emotion-4"
         >
           <div
-            className="emotion-31"
+            className="emotion-14"
           />
           <svg
-            className="emotion-32"
+            className="emotion-15"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -374,8 +281,8 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
       </summary>
     </details>
     <details
-      className="emotion-16"
-      open={false}
+      className="emotion-6"
+      open={true}
     >
       <summary
         aria-label="gcp-video-text-detection"
@@ -386,10 +293,10 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
           className="emotion-4"
         >
           <div
-            className="emotion-38"
+            className="emotion-21"
           />
           <svg
-            className="emotion-39"
+            className="emotion-22"
             data-file-name="chevron.svg"
             height={20}
           />
@@ -401,68 +308,83 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
           <div
             className="emotion-3"
           >
-            (4)
+            (3)
           </div>
         </div>
       </summary>
+      <div>
+        <div
+          className="emotion-31"
+        >
+          <div
+            className="emotion-27"
+          />
+          <div
+            className="emotion-30"
+          >
+            <div
+              className="emotion-28"
+            >
+              Gh st
+            </div>
+            <div
+              className="emotion-29"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-31"
+        >
+          <div
+            className="emotion-27"
+          />
+          <div
+            className="emotion-30"
+          >
+            <div
+              className="emotion-28"
+            >
+              Lemon
+            </div>
+            <div
+              className="emotion-29"
+            >
+              (1)
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-31"
+        >
+          <div
+            className="emotion-27"
+          />
+          <div
+            className="emotion-30"
+          >
+            <div
+              className="emotion-28"
+            >
+              Busters
+            </div>
+            <div
+              className="emotion-29"
+            >
+              (3)
+            </div>
+          </div>
+        </div>
+      </div>
     </details>
   </div>
   <div
-    className="emotion-47"
+    className="emotion-45"
   >
     <div
-      className="emotion-46"
+      className="emotion-44"
     >
-      <TimelineTracks
-        color="#0074f5"
-        isOpen={true}
-        length={18}
-        tracks={
-          Array [
-            Object {
-              "hits": Array [
-                Object {
-                  "start": 0,
-                  "stop": 2,
-                },
-                Object {
-                  "start": 4,
-                  "stop": 5,
-                },
-                Object {
-                  "start": 10,
-                  "stop": 12,
-                },
-              ],
-              "track": "Gh st",
-            },
-            Object {
-              "hits": Array [
-                Object {
-                  "start": 6,
-                  "stop": 7,
-                },
-                Object {
-                  "start": 13,
-                  "stop": 14,
-                },
-                Object {
-                  "start": 15,
-                  "stop": 15,
-                },
-              ],
-              "track": "Busters",
-            },
-          ]
-        }
-        videoRef={
-          Object {
-            "current": Object {
-              "duration": 18,
-            },
-          }
-        }
-      />
       <TimelineTracks
         color="#a03dc7"
         isOpen={false}
@@ -472,14 +394,17 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
             Object {
               "hits": Array [
                 Object {
+                  "highlight": false,
                   "start": 1,
                   "stop": 2,
                 },
                 Object {
+                  "highlight": false,
                   "start": 3,
                   "stop": 6,
                 },
                 Object {
+                  "highlight": false,
                   "start": 11,
                   "stop": 15,
                 },
@@ -489,10 +414,12 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
             Object {
               "hits": Array [
                 Object {
+                  "highlight": false,
                   "start": 7,
                   "stop": 10,
                 },
                 Object {
+                  "highlight": false,
                   "start": 16,
                   "stop": 17,
                 },
@@ -518,14 +445,17 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
             Object {
               "hits": Array [
                 Object {
+                  "highlight": false,
                   "start": 0,
                   "stop": 2,
                 },
                 Object {
+                  "highlight": false,
                   "start": 4,
                   "stop": 5,
                 },
                 Object {
+                  "highlight": false,
                   "start": 10,
                   "stop": 12,
                 },
@@ -535,14 +465,17 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
             Object {
               "hits": Array [
                 Object {
+                  "highlight": false,
                   "start": 0,
                   "stop": 2,
                 },
                 Object {
+                  "highlight": false,
                   "start": 4,
                   "stop": 5,
                 },
                 Object {
+                  "highlight": false,
                   "start": 10,
                   "stop": 12,
                 },
@@ -552,14 +485,17 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
             Object {
               "hits": Array [
                 Object {
+                  "highlight": false,
                   "start": 0,
                   "stop": 2,
                 },
                 Object {
+                  "highlight": false,
                   "start": 4,
                   "stop": 5,
                 },
                 Object {
+                  "highlight": false,
                   "start": 10,
                   "stop": 12,
                 },
@@ -585,14 +521,17 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
             Object {
               "hits": Array [
                 Object {
+                  "highlight": false,
                   "start": 0,
                   "stop": 2,
                 },
                 Object {
+                  "highlight": false,
                   "start": 4,
                   "stop": 5,
                 },
                 Object {
+                  "highlight": false,
                   "start": 10,
                   "stop": 12,
                 },
@@ -602,14 +541,17 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
             Object {
               "hits": Array [
                 Object {
+                  "highlight": false,
                   "start": 0,
                   "stop": 2,
                 },
                 Object {
+                  "highlight": false,
                   "start": 4,
                   "stop": 5,
                 },
                 Object {
+                  "highlight": false,
                   "start": 10,
                   "stop": 12,
                 },
@@ -619,14 +561,17 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
             Object {
               "hits": Array [
                 Object {
+                  "highlight": false,
                   "start": 0,
                   "stop": 2,
                 },
                 Object {
+                  "highlight": false,
                   "start": 4,
                   "stop": 5,
                 },
                 Object {
+                  "highlight": false,
                   "start": 10,
                   "stop": 12,
                 },
@@ -644,78 +589,60 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
         }
       />
       <TimelineTracks
-        color="#00bdc1"
-        isOpen={false}
+        color="#009f22"
+        isOpen={true}
         length={18}
         tracks={
           Array [
             Object {
               "hits": Array [
                 Object {
+                  "highlight": false,
                   "start": 0,
                   "stop": 2,
                 },
                 Object {
+                  "highlight": false,
                   "start": 4,
                   "stop": 5,
                 },
                 Object {
+                  "highlight": false,
                   "start": 10,
                   "stop": 12,
                 },
               ],
-              "track": "Text 1",
+              "track": "Gh st",
             },
             Object {
               "hits": Array [
                 Object {
-                  "start": 0,
-                  "stop": 2,
-                },
-                Object {
-                  "start": 4,
-                  "stop": 5,
-                },
-                Object {
-                  "start": 10,
-                  "stop": 12,
+                  "highlight": true,
+                  "start": 6,
+                  "stop": 7,
                 },
               ],
-              "track": "Text 2",
+              "track": "Lemon",
             },
             Object {
               "hits": Array [
                 Object {
-                  "start": 0,
-                  "stop": 2,
+                  "highlight": false,
+                  "start": 6,
+                  "stop": 7,
                 },
                 Object {
-                  "start": 4,
-                  "stop": 5,
+                  "highlight": false,
+                  "start": 13,
+                  "stop": 14,
                 },
                 Object {
-                  "start": 10,
-                  "stop": 12,
+                  "highlight": false,
+                  "start": 15,
+                  "stop": 15,
                 },
               ],
-              "track": "Text 3",
-            },
-            Object {
-              "hits": Array [
-                Object {
-                  "start": 0,
-                  "stop": 2,
-                },
-                Object {
-                  "start": 4,
-                  "stop": 5,
-                },
-                Object {
-                  "start": 10,
-                  "stop": 12,
-                },
-              ],
-              "track": "Text 4",
+              "track": "Busters",
             },
           ]
         }

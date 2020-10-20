@@ -111,6 +111,7 @@ exports[`<AssetAsset /> should render properly in QuickView 1`] = `
               className="emotion-0"
               controls={true}
               controlsList="nodownload"
+              crossOrigin="anonymous"
               disablePictureInPicture={true}
             >
               <source

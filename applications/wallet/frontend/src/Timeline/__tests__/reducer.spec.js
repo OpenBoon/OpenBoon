@@ -150,7 +150,6 @@ describe('<Timeline /> reducer', () => {
       filter: '',
       width: 200,
       timelines: {
-        'gcp-video-explicit-detection': { isVisible: true },
         'gcp-video-label-detection': { isVisible: true },
         'gcp-video-logo-detection': { isVisible: true },
         'gcp-video-object-detection': { isVisible: true },
@@ -176,7 +175,6 @@ describe('<Timeline /> reducer', () => {
       filter: '',
       width: 200,
       timelines: {
-        'gcp-video-explicit-detection': { isVisible: false },
         'gcp-video-label-detection': { isVisible: false },
         'gcp-video-logo-detection': { isVisible: false },
         'gcp-video-object-detection': { isVisible: false },

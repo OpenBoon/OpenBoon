@@ -8,7 +8,6 @@ export const HALF_SECOND = 0.5
 export const MIN_TICK_SPACING = 32
 
 export const COLORS = [
-  colors.signal.sky.base,
   colors.graph.magenta,
   colors.signal.halloween.base,
   colors.signal.canary.base,
