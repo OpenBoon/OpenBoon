@@ -22,6 +22,7 @@ import TimelineFilterTracks from './FilterTracks'
 import TimelineRuler from './Ruler'
 import TimelinePlayhead from './Playhead'
 import TimelineAggregate from './Aggregate'
+import TimelineSearchHits from './SearchHits'
 import TimelineTimelines from './Timelines'
 import TimelineMetadata from './Metadata'
 import TimelineShortcuts from './Shortcuts'
@@ -191,6 +192,16 @@ const Timeline = ({ videoRef, length }) => {
               settings={settings}
               dispatch={dispatch}
             />
+
+            {query && (
+              <TimelineSearchHits
+                videoRef={videoRef}
+                length={length}
+                timelineHeight={size}
+                timelines={timelines}
+                settings={settings}
+              />
+            )}
 
             <TimelineTimelines
               videoRef={videoRef}
