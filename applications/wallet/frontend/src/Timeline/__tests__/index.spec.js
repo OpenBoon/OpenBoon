@@ -19,8 +19,18 @@ jest.mock('../Timelines', () => 'TimelineTimelines')
 
 describe('<Timeline />', () => {
   it('should render properly', () => {
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'textContent',
+          attribute: '',
+          values: { query: 'Lemon' },
+        },
+      ]),
+    )
+
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID, query },
     })
 
     require('swr').__setMockUseSWRResponse({

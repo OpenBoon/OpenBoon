@@ -10,6 +10,16 @@ const OFFSET = (WIDTH + constants.borderWidths.regular) / 2
 const TimelineTracks = ({ videoRef, length, color, tracks, isOpen }) => {
   const duration = videoRef.current?.duration || length
 
+  const aggregate = {}
+
+  tracks.forEach(({ hits }) => {
+    hits.forEach(({ start, stop, highlight }) => {
+      if (!aggregate[start] || aggregate[start].highlight !== true) {
+        aggregate[start] = { start, stop, highlight }
+      }
+    })
+  })
+
   return (
     <div
       css={{
@@ -27,40 +37,54 @@ const TimelineTracks = ({ videoRef, length, color, tracks, isOpen }) => {
         }}
       >
         &nbsp;
-        {tracks.map(({ track, hits }) => {
-          return hits.map(({ start, stop }) => (
-            <button
-              key={`${track}.${start}.${stop}`}
-              type="button"
-              onClick={gotoCurrentTime({ videoRef, start })}
-              aria-label={`${formatPaddedSeconds({ seconds: start })}`}
-              title={`${formatPaddedSeconds({
-                seconds: start,
-              })}-${formatPaddedSeconds({ seconds: stop })}`}
+        {Object.values(aggregate).map(({ start, stop, highlight }) => (
+          <button
+            key={`${start}.${stop}`}
+            type="button"
+            onClick={gotoCurrentTime({ videoRef, start })}
+            aria-label={`${formatPaddedSeconds({ seconds: start })}`}
+            title={`${formatPaddedSeconds({
+              seconds: start,
+            })}-${formatPaddedSeconds({ seconds: stop })}`}
+            css={{
+              margin: 0,
+              border: 0,
+              zIndex: zIndex.layout.interactive + 1,
+              position: 'absolute',
+              top: spacing.base,
+              bottom: spacing.base,
+              left: `calc(${(start / duration) * 100}% - ${OFFSET}px)`,
+              width: WIDTH,
+              backgroundColor: colors.structure.soot,
+              padding: spacing.mini,
+              cursor: 'pointer',
+            }}
+          >
+            <div
               css={{
-                margin: 0,
-                border: 0,
-                zIndex: zIndex.layout.interactive + 1,
-                position: 'absolute',
-                top: spacing.base,
-                bottom: spacing.base,
-                left: `calc(${(start / duration) * 100}% - ${OFFSET}px)`,
-                width: WIDTH,
-                backgroundColor: colors.structure.soot,
-                padding: spacing.mini,
-                cursor: 'pointer',
+                backgroundColor: color,
+                width: '100%',
+                height: '100%',
+                position: 'relative',
               }}
             >
-              <div
-                css={{
-                  backgroundColor: color,
-                  width: '100%',
-                  height: '100%',
-                }}
-              />
-            </button>
-          ))
-        })}
+              {highlight && (
+                <svg
+                  width="8"
+                  height="5"
+                  css={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    zIndex: zIndex.layout.interactive + 2,
+                  }}
+                >
+                  <polygon fill={color} points="0,0 8,0 6,2.5 8,5 0,5" />
+                </svg>
+              )}
+            </div>
+          </button>
+        ))}
       </div>
 
       {isOpen &&
