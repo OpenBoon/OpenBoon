@@ -18,6 +18,7 @@ __all__ = [
 def save_raw_transcribe_result(asset, audio_result):
     """
     Save the raw AWS Transcribe result.
+
     Args:
         asset (Asset): The asset to save to,.
         audio_result (dict): The transcribe result.
@@ -58,7 +59,8 @@ def save_transcribe_webvtt(asset, audio_result):
 
 
 def save_transcribe_timeline(asset, audio_result):
-    """Save the results of Transcribe to a timeline.
+    """
+    Save the results of Transcribe to a timeline.
 
     Args:
         asset (Asset): The asset to register the file to.
