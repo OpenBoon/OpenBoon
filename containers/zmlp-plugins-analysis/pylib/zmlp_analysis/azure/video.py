@@ -1,7 +1,7 @@
 from zmlp_analysis.azure.vision import AzureVisionLabelDetection
 from zmlpsdk import FileTypes, file_storage
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlpsdk.proxy import get_video_proxy
+from zmlpsdk import proxy
 from zmlpsdk.audio import has_audio_channel
 from zmlp_analysis.google.cloud_timeline import save_timeline
 
@@ -30,7 +30,7 @@ class AzureVideoDetector(AzureVisionLabelDetection):
         """
         asset = frame.asset
         asset_id = asset.id
-        analysis = LabelDetectionAnalysis()
+        analysis = LabelDetectionAnalysis(collapse_labels=True)
         final_time = asset.get_attr('media.length')
 
         if final_time > 120:
@@ -38,7 +38,7 @@ class AzureVideoDetector(AzureVisionLabelDetection):
                 'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
             return
 
-        audio_proxy = get_video_proxy(asset)
+        audio_proxy = proxy.get_video_proxy(asset)
 
         if not audio_proxy:
             self.logger.warning(f'No audio could be found for {asset_id}')
