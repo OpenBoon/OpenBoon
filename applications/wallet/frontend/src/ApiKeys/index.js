@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { spacing } from '../Styles'
 
 import PageTitle from '../PageTitle'
-import FlashMessage, { VARIANTS } from '../FlashMessage'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
 
@@ -26,7 +26,7 @@ const ApiKeys = () => {
 
       {action === 'delete-apikey-success' && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
-          <FlashMessage variant={VARIANTS.SUCCESS}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
             API Key deleted.
           </FlashMessage>
         </div>

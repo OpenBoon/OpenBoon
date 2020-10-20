@@ -6,6 +6,8 @@ import shlex
 
 from datetime import datetime
 
+import zmlp
+
 logger = logging.getLogger(__name__)
 
 
@@ -94,6 +96,7 @@ class WebvttBuilder:
 
     def __exit__(self, *args):
         self.fp.close()
+
 
 
 class VideoFrameExtractor:
@@ -209,3 +212,18 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
             logger.warning('Exception thrown waiting on process to complete.')
 
         return shot_times
+
+def save_timeline(timeline):
+    """
+    Save the given timeline as Clips.
+
+    Args:
+        timeline (TimelineBuilder): The timeline
+
+    Returns:
+        dict: A status object.
+
+    """
+    app = zmlp.app_from_env()
+    return app.clips.create_clips_from_timeline(timeline)
+

@@ -34,6 +34,8 @@ exports[`<FlashMessageErrors /> should render with a global error 1`] = `
 
 .emotion-0 a {
   color: #c92300;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 <div

@@ -106,6 +106,10 @@ class BaseFilter(object):
         """
         raise NotImplementedError()
 
+    def get_clip_query(self):
+        """Gives the `clip` query for the current filter values."""
+        return {}
+
     def add_to_query(self, query):
         """Adds the given filters information to a pre-existing query.
 
@@ -113,6 +117,10 @@ class BaseFilter(object):
         of existing `bool` clauses if they exist, in an additive manner.
         """
         this_query = self.get_es_query()
+        if not this_query:
+            # Catches the case where a filter doesn't have a relevant query to add
+            return query
+
         bool_clauses = this_query['query'].get('bool', {})
 
         if 'query' not in query:
@@ -130,6 +138,25 @@ class BaseFilter(object):
                     query['query']['bool'][clause] = this_query['query']['bool'][clause]
                 else:
                     query['query']['bool'][clause].extend(this_query['query']['bool'][clause])
+
+        return query
+
+    def add_to_clip_query(self, query):
+        """Adds the given filter's clip query to a pre-existing query.
+
+        Adds this clip query to a prebuilt query. This generates a query where each
+        filter is added to the query under a `should` condition.
+        """
+        this_query = self.get_clip_query()
+        if not this_query:
+            return query
+
+        if not query:
+            # Setup the initial OR/should based query
+            query = {'query': {'bool': {'should': []}}}
+
+        # Append this queries bool to the list of should conditions
+        query['query']['bool']['should'].append(this_query['query'])
 
         return query
 
@@ -312,6 +339,42 @@ class LabelConfidenceFilter(BaseFilter):
             }
         }
 
+    def get_clip_query(self):
+        attribute = self.data['attribute']
+        labels = self.data['values']['labels']
+        min = self.data['values']['min']
+        max = self.data['values']['max']
+        if self.field_type == 'prediction' and 'video' in attribute:
+            timeline = attribute.replace('analysis.', '')
+            return {
+                'query': {
+                    'bool': {
+                        'filter': [
+                            {
+                                'terms': {
+                                    'clip.track': labels
+                                }
+                            },
+                            {
+                                'term': {
+                                    'clip.timeline': timeline
+                                }
+                            },
+                            {
+                                'range': {
+                                    'clip.score': {
+                                        'from': min,
+                                        'to': max
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        else:
+            return {}
+
 
 class TextContentFilter(BaseFilter):
 
@@ -350,6 +413,26 @@ class TextContentFilter(BaseFilter):
                     ]
                 }
             }
+        }
+
+    def get_clip_query(self):
+        # Regardless of what the attribute is, search all content fields
+        query = self.data['values']['query']
+        simple_query_string = {
+            'simple_query_string': {
+                'query': query,
+                'fields': ['clip.content']
+            }
+        }
+        return {
+            'query': {
+                'bool': {
+                    'must': [
+                        simple_query_string
+                    ]
+                }
+            }
+
         }
 
 

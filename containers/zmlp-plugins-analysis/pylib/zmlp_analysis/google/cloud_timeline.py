@@ -1,27 +1,10 @@
 import logging
 
-import zmlp
 from zmlp.entity import TimelineBuilder
 from zmlpsdk.storage import file_storage
-from zmlpsdk.video import WebvttBuilder
+from zmlpsdk.video import WebvttBuilder, save_timeline
 
 logger = logging.getLogger(__name__)
-
-
-def save_timeline(timeline):
-    """
-    Save the given timeline as Clips.
-
-    Args:
-        timeline (TimelineBuilder): The timeline
-
-    Returns:
-        dict: A status object.
-
-    """
-    app = zmlp.app_from_env()
-    logger.info('Saving timeline: {}'.format(timeline.name))
-    return app.clips.create_clips_from_timeline(timeline)
 
 
 def save_text_detection_timeline(asset, annotations):

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { spacing } from '../Styles'
 
 import PageTitle from '../PageTitle'
-import FlashMessage, { VARIANTS } from '../FlashMessage'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
 
@@ -26,7 +26,7 @@ const DataSources = () => {
 
       {!!action && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
-          <FlashMessage variant={VARIANTS.SUCCESS}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
             Data source
             {action === 'add-datasource-success' && ' created'}
             {action === 'scan-datasource-success' && ' is being scanned'}

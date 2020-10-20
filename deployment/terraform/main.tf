@@ -27,6 +27,20 @@ provider "google-beta" {
   version     = ">= 3.33.0"
 }
 
+provider "azurerm" {
+  subscription_id = var.azure-subscription-id
+  client_id       = var.azure-client-id
+  tenant_id       = var.azure-tenant-id
+  client_secret   = var.azure-client-secret
+  features {}
+}
+
+provider "aws" {
+  region     = var.aws-region
+  access_key = var.aws-key
+  secret_key = var.aws-secret
+}
+
 provider "kubernetes" {
   load_config_file       = "false"
   host                   = module.gke-cluster.endpoint
@@ -143,7 +157,12 @@ resource "google_storage_bucket_object" "task_env" {
   "CLARIFAI_KEY":  "${var.clarifai-key}",
   "ZORROA_AZURE_KEY": "${var.azure-key}",
   "ZORROA_AWS_KEY": "${var.aws-key}",
-  "ZORROA_AWS_SECRET": "${var.aws-secret}"
+  "ZORROA_AWS_SECRET": "${var.aws-secret}",
+  "ZORROA_AWS_REGION": "${var.aws-region}",
+  "ZORROA_AWS_BUCKET": "${module.aws-ml.bucket}",
+  "ZORROA_AZURE_VISION_REGION": "${module.azure-ml.vision-region}",
+  "ZORROA_AZURE_VISION_ENDPOINT": "${module.azure-ml.vision-endpoint}",
+  "ZORROA_AZURE_VISION_KEY": "${module.azure-ml.vision-key}"
 }
 EOF
 
@@ -190,6 +209,16 @@ resource "google_project_service" "dlp" {
   disable_on_destroy = false
 }
 
+## Third Party ML Resources #################################################################
+module "azure-ml" {
+  source      = "./modules/azure-ml"
+  environment = var.environment
+}
+
+module "aws-ml" {
+  source      = "./modules/aws-ml"
+  environment = var.environment
+}
 
 ## ZMLP Services ######################################################################
 module "elasticsearch" {

@@ -31,6 +31,8 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
 
 .emotion-0 a {
   color: #009f22;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 <div
@@ -104,6 +106,8 @@ exports[`<FaceLabelingMessage /> should render properly when a training job just
 
 .emotion-1 a {
   color: #0074f5;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 <div
@@ -167,6 +171,8 @@ exports[`<FaceLabelingMessage /> should render properly when there is an error 1
 
 .emotion-0 a {
   color: #c92300;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 <div

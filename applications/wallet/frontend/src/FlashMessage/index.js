@@ -4,6 +4,7 @@ import { colors, constants, typography, spacing } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import WarningSvg from '../Icons/warning.svg'
+import InformationSvg from '../Icons/information.svg'
 import GeneratingSvg from '../Icons/generating.svg'
 
 const PADDING = spacing.moderate
@@ -28,6 +29,16 @@ const STYLES = {
       />
     ),
     linkColor: colors.signal.warning.base,
+  },
+  INFO: {
+    backgroundColor: colors.signal.sky.background,
+    icon: (
+      <InformationSvg
+        height={constants.icons.regular}
+        color={colors.signal.sky.base}
+      />
+    ),
+    linkColor: colors.signal.sky.base,
   },
   PROCESSING: {
     backgroundColor: colors.signal.sky.background,
@@ -70,6 +81,7 @@ const FlashMessage = ({ variant, children }) => {
           whiteSpace: 'pre-line',
           a: {
             color: STYLES[variant].linkColor,
+            textDecoration: 'underline',
           },
         }}
       >

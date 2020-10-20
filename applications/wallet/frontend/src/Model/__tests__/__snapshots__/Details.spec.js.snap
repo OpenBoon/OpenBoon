@@ -37,6 +37,8 @@ Array [
 
 .emotion-0 a {
   color: #c92300;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 <div
