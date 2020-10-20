@@ -4,6 +4,8 @@ import subprocess
 import tempfile
 from datetime import datetime
 
+import zmlp
+
 logger = logging.getLogger(__name__)
 
 
@@ -91,3 +93,18 @@ class WebvttBuilder:
 
     def __exit__(self, *args):
         self.fp.close()
+
+
+def save_timeline(timeline):
+    """
+    Save the given timeline as Clips.
+
+    Args:
+        timeline (TimelineBuilder): The timeline
+
+    Returns:
+        dict: A status object.
+
+    """
+    app = zmlp.app_from_env()
+    return app.clips.create_clips_from_timeline(timeline)

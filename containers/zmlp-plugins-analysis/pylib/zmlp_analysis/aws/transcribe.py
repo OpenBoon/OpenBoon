@@ -1,19 +1,17 @@
 import os
 import random
 import string
-import json
 
 import requests
 from botocore.exceptions import ClientError
 
-from zmlp.entity import TimelineBuilder
 from zmlp_analysis.aws.util import TranscribeCompleteWaiter, AwsEnv
-from zmlp_analysis.google.cloud_timeline import save_timeline
 from zmlpsdk import file_storage, FileTypes, Argument, AssetProcessor, ZmlpEnv
 from zmlpsdk.analysis import ContentDetectionAnalysis
 from zmlpsdk.proxy import get_audio_proxy, get_video_proxy
 from zmlpsdk.audio import has_audio_channel
-from zmlpsdk.video import WebvttBuilder
+
+from .timeline import save_transcribe_timeline, save_transcribe_webvtt, save_raw_transcribe_result
 
 
 class AmazonTranscribeProcessor(AssetProcessor):
@@ -24,7 +22,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
     def __init__(self):
         super(AmazonTranscribeProcessor, self).__init__()
         self.add_arg(Argument('languages', 'list',
-                              toolTip="List of languages to auto-detect",
+                              toolTip='List of languages to auto-detect',
                               default=['en-US', 'en-GB', 'fr-FR', 'es-US']))
 
         self.transcribe_client = None
@@ -73,8 +71,9 @@ class AmazonTranscribeProcessor(AssetProcessor):
         try:
             if audio_result['results']:
                 self.set_analysis(asset, audio_result)
-                self.save_raw_result(asset, audio_result)
-                self.save_timelines(asset, audio_result)
+                save_raw_transcribe_result(asset, audio_result)
+                save_transcribe_timeline(asset, audio_result)
+                save_transcribe_webvtt(asset, audio_result)
         finally:
             self.cleanup_aws_resources(bucket_file, job_name)
 
@@ -82,13 +81,13 @@ class AmazonTranscribeProcessor(AssetProcessor):
 
         # delete bucket and jobs
         try:
-            self.logger.info("deleting job {}".format(job_name))
+            self.logger.info('deleting job {}'.format(job_name))
             self.transcribe_client.delete_transcription_job(TranscriptionJobName=job_name)
         except Exception:
-            self.logger.exception("Failed to delete AWS transcription job.")
+            self.logger.exception('Failed to delete AWS transcription job.')
 
         try:
-            self.logger.info("deleting object {} {}".format(
+            self.logger.info('deleting object {} {}'.format(
                 AwsEnv.get_bucket_name(),
                 bucket_file
             ))
@@ -97,80 +96,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
                 Key=bucket_file
             )
         except Exception:
-            self.logger.exception("Failed to delete AWS audio file.")
-
-    def save_webvtt(self, asset, audio_result):
-        """
-        Create a webvtt file for speech to text.
-
-        Args:
-            asset (Asset): The asset to register the file to.
-            audio_result (obj): The speech to text result.
-
-        Returns:
-            StoredFile
-        """
-
-        with WebvttBuilder() as webvtt:
-            for r in audio_result['results']['items']:
-                if r['type'] != 'punctuation':
-                    start_time = r['start_time']
-                    end_time = r['end_time']
-                    content = sorted(r['alternatives'], key=lambda i: i['confidence'], reverse=True)
-                    webvtt.append(start_time, end_time, content[0]['content'])
-
-        self.logger.info(f'Saving speech-to-text data from {webvtt.path}')
-        sf = file_storage.assets.store_file(webvtt.path, asset,
-                                            'captions',
-                                            'aws-transcribe.vtt')
-        return webvtt.path, sf
-
-    def save_transcribe_timeline(self, asset, audio_result):
-        """ Save the results of Transcribe to a timeline.
-
-        Args:
-            asset (Asset): The asset to register the file to.
-            audio_result (obj): The speech to text result.
-
-        Returns:
-            Timeline: The generated timeline.
-        """
-        timeline = TimelineBuilder(asset, "aws-transcribe")
-        results = audio_result['results']
-        track = 'Language {}'.format(results.get('language_code', 'en-US'))
-        for r in results['items']:
-            if r['type'] != 'punctuation':
-                start_time = r['start_time']
-                end_time = r['end_time']
-                best_result = sorted(r['alternatives'], key=lambda i: i['confidence'], reverse=True)
-
-                timeline.add_clip(
-                    track,
-                    start_time,
-                    end_time,
-                    best_result[0]['content'],
-                    best_result[0]['confidence'])
-
-        save_timeline(timeline)
-        return timeline
-
-    def save_timelines(self, asset, audio_result):
-        self.save_webvtt(asset, audio_result)
-        self.save_transcribe_timeline(asset, audio_result)
-
-    def save_raw_result(self, asset, audio_result):
-        """
-        Save a JSON version of the raw AWS result.
-
-        Args:
-            asset (Asset): The asset
-            audio_result (dict): A transcribe result.
-        """
-        jstr = json.dumps(audio_result)
-        file_storage.assets.store_blob(jstr.encode(),
-                                       asset,
-                                       'aws',
-                                       'aws-transcribe.json')
+            self.logger.exception('Failed to delete AWS audio file.')
 
     def set_analysis(self, asset, audio_result):
         """ The speech to text results come with multiple possibilities per segment, we only keep
@@ -189,8 +115,8 @@ class AmazonTranscribeProcessor(AssetProcessor):
         for r in audio_result['results']['items']:
             sorted_results = sorted(r['alternatives'], key=lambda i: i['confidence'],
                                     reverse=True)
-            transcript += "{}{}".format(
-                "" if r['type'] == 'punctuation' else " ",  # make clean for punctuations
+            transcript += '{}{}'.format(
+                '' if r['type'] == 'punctuation' else ' ',  # make clean for punctuations
                 sorted_results[0]['content']
             )
         analysis.add_content(transcript.strip())
@@ -233,11 +159,11 @@ class AmazonTranscribeProcessor(AssetProcessor):
                 'LanguageOptions': self.arg_value('languages')
             }
 
-            self.logger.info("Starting transcription job %s.", job_name)
+            self.logger.info('Starting transcription job %s.', job_name)
             response = self.transcribe_client.start_transcription_job(**job_args)
             return response['TranscriptionJob']
         except ClientError:
-            self.logger.exception("Couldn't start transcription job %s.", job_name)
+            self.logger.exception('Couldn\'t start transcription job %s.', job_name)
             raise
 
     def get_job(self, job_name):
@@ -253,5 +179,5 @@ class AmazonTranscribeProcessor(AssetProcessor):
             response = self.transcribe_client.get_transcription_job(TranscriptionJobName=job_name)
             return response['TranscriptionJob']
         except ClientError:
-            self.logger.exception("Couldn't get job %s.", job_name)
+            self.logger.exception('Couldn\'t get job %s.', job_name)
             raise

@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 from zmlp_analysis.aws.transcribe import AmazonTranscribeProcessor
 from zmlpsdk import Frame, file_storage
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_mock_stored_file, zorroa_test_path
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path
 
 logging.basicConfig()
 
@@ -96,19 +96,16 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         self.asset = TestAsset(self.test_video)
         self.asset.set_attr('media.length', 15.0)
 
-    @patch("zmlp_analysis.aws.transcribe.save_timeline", return_value={})
-    @patch.object(file_storage.assets, 'store_blob')
-    @patch.object(file_storage.assets, 'store_file')
+    @patch("zmlp_analysis.aws.transcribe.save_transcribe_timeline", return_value={})
+    @patch("zmlp_analysis.aws.transcribe.save_raw_transcribe_result", return_value={})
+    @patch("zmlp_analysis.aws.transcribe.save_transcribe_webvtt", return_value={})
     @patch('zmlp_analysis.aws.transcribe.get_audio_proxy')
     @patch.object(file_storage, 'localize_file')
     @patch('zmlp_analysis.aws.transcribe.AmazonTranscribeProcessor.recognize_speech')
-    def test_run_process(self, speech_patch, localize_patch, audio_prx_patch,
-                         store_patch, store_blob_patch, _):
+    def test_run_process(self, speech_patch, localize_patch, audio_prx_patch, _, __, ___):
         speech_patch.return_value = "foo", load_results(name="transcribe.pk")
         audio_prx_patch.return_value = 1
-        store_patch.return_value = get_mock_stored_file()
         localize_patch.return_value = zorroa_test_path("video/ted_talk.mp4")
-        store_blob_patch.return_value = get_mock_stored_file()
 
         frame = Frame(self.asset)
         self.processor.process(frame)
