@@ -98,7 +98,6 @@ class WebvttBuilder:
         self.fp.close()
 
 
-
 class VideoFrameExtractor:
     """
     A simple base class for clip generators.
@@ -227,4 +226,3 @@ def save_timeline(timeline):
     """
     app = zmlp.app_from_env()
     return app.clips.create_clips_from_timeline(timeline)
-
