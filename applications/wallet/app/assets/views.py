@@ -12,6 +12,7 @@ from assets.serializers import AssetSerializer
 from assets.utils import AssetBoxImager, get_best_fullscreen_file_data
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
+from searches.utils import FilterBuddy
 
 
 def asset_modifier(request, item):
@@ -132,15 +133,15 @@ class AssetViewSet(BaseProjectViewSet):
 
         # Figure out the tracks
         # Get all the clips so we know what vtt's to add
-        clips = self._get_all_clips(request, pk)
-        timelines = self._get_formatted_timelines(clips)
+        timelines = self._get_list_of_timelines(request, pk)
+        # clips = self._get_all_clips(request, pk)
+        # timelines = self._get_formatted_timelines(clips)
         for timeline in timelines:
-            name = timeline['timeline']
-            track = {'label': name,
+            track = {'label': timeline,
                      'kind': 'metadata',
                      'src': reverse('webvtt-detail', kwargs={'project_pk': project_pk,
                                                              'asset_pk': pk,
-                                                             'pk': f'{name}.vtt'})}
+                                                             'pk': f'{timeline}.vtt'})}
             urls['tracks'].append(track)
 
         # Add the closed captioning files
@@ -163,12 +164,53 @@ class AssetViewSet(BaseProjectViewSet):
         """Returns the time based metadata in timeline format."""
         content = self._get_all_clips(request, pk)
         formatted_content = self._get_formatted_timelines(content)
-        return Response(formatted_content)
+        highlight_clips = self._get_highlight_clips(request, pk)
+        highlighted_content = self._highlight_content(formatted_content, highlight_clips)
+        return Response(highlighted_content)
+
+    def _get_list_of_timelines(self, request, pk):
+        """Helper to aggregate all the available timelines on this clip."""
+        base_path = f'{self.zmlp_root_api_path}{pk}/clips/_search'
+        agg_query = {
+            'size': 0,
+            'aggs': {
+                'timelines': {
+                    'terms': {
+                        'field': 'clip.timeline',
+                        'size': 1000
+                    }
+                }
+            }
+        }
+        result = request.client.post(base_path, agg_query)
+        timeline_buckets = result.get(
+            'aggregations', {}).get(
+            'sterms#timelines', {}).get(
+            'buckets', [])
+        return [bucket.get('key') for bucket in timeline_buckets]
 
     def _get_all_clips(self, request, pk):
         """Helper to return all the timelines/clips for an asset"""
         base_path = f'{self.zmlp_root_api_path}{pk}/clips'
-        return self._zmlp_get_all_content_from_es_search(request, base_url=base_path)
+        return self._zmlp_get_all_content_from_es_search(request, base_url=base_path, default_page_size=200)
+
+    def _get_highlight_clips(self, request, pk):
+        """Helper for returning only the clips that matched the user's original query."""
+        base_path = f'{self.zmlp_root_api_path}{pk}/clips'
+        query = self._build_clip_query_from_querystring(request)
+        if query:
+            return self._zmlp_get_all_content_from_es_search(request, base_url=base_path,
+                                                             search_filter=query)
+        else:
+            return {}
+
+    def _build_clip_query_from_querystring(self, request):
+        filter_boy = FilterBuddy()
+
+        _filters = filter_boy.get_filters_from_request(request)
+        for _filter in _filters:
+            _filter.is_valid(query=True, raise_exception=True)
+        return filter_boy.reduce_filters_to_clip_query(_filters)
 
     def _get_formatted_timelines(self, content):
         """Helper to format the clip search response from ZMLP into the JSON response for the UI"""
@@ -181,7 +223,8 @@ class AssetViewSet(BaseProjectViewSet):
             start = clip['start']
             stop = clip['stop']
             data.setdefault(timeline, {}).setdefault(track, []).append({'start': start,
-                                                                        'stop': stop})
+                                                                        'stop': stop,
+                                                                        'highlight': False})
 
         formatted_timelines = []
         for timeline in data:
@@ -193,6 +236,32 @@ class AssetViewSet(BaseProjectViewSet):
                 section['tracks'].append(track_section)
             formatted_timelines.append(section)
         return formatted_timelines
+
+    def _highlight_content(self, formatted_content, highlight_clips):
+        """Helper for marking all the highlighted clips in the formatted json response."""
+        # Too much brute force going on here.
+        for clip in highlight_clips:
+            _clip = clip['_source']['clip']
+            timeline = _clip['timeline']
+            track = _clip['track']
+            start = _clip['start']
+            stop = _clip['stop']
+            # Check all timelines
+            for content_timeline in formatted_content:
+                if timeline == content_timeline['timeline']:
+                    # Check the tracks in this timeline
+                    for content_track in content_timeline['tracks']:
+                        if track == content_track['track']:
+                            # Check the hits in this track for a match
+                            for content_hit in content_track['hits']:
+                                if start == content_hit['start'] and stop == content_hit['stop']:
+                                    # Phew, found it. Mark it as highlighted.
+                                    content_hit['highlight'] = True
+                                    break
+                            break
+                    break
+
+        return formatted_content
 
 
 class WebVttViewSet(BaseProjectViewSet):

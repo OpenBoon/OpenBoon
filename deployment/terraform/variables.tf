@@ -71,6 +71,11 @@ variable "aws-secret" {
   description = "Secret to allow access to the AWS ML API."
 }
 
+variable "aws-region" {
+  description = "Region where AWS resources will be created."
+  default     = "us-east-2"
+}
+
 variable "analyst-memory-request" {
   description = "Memory request for Analyst pods."
   default     = "2Gi"

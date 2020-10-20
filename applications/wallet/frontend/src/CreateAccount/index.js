@@ -7,7 +7,7 @@ import { constants, spacing } from '../Styles'
 
 import Navbar from '../Navbar'
 import PageTitle from '../PageTitle'
-import FlashMessage, { VARIANTS } from '../FlashMessage'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
@@ -68,7 +68,7 @@ const CreateAccount = () => {
         <PageTitle>Create an Account</PageTitle>
 
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
-          <FlashMessage variant={VARIANTS.INFO}>
+          <FlashMessage variant={FLASH_VARIANTS.INFO}>
             A confirmation link will be sent to your email. Please click to
             confirm before logging in.
           </FlashMessage>
@@ -77,7 +77,7 @@ const CreateAccount = () => {
         <Form>
           {!!state.error && (
             <div css={{ display: 'flex', paddingBottom: spacing.base }}>
-              <FlashMessage variant={VARIANTS.ERROR}>
+              <FlashMessage variant={FLASH_VARIANTS.ERROR}>
                 {state.error}
               </FlashMessage>
             </div>
@@ -91,7 +91,7 @@ const CreateAccount = () => {
                   paddingBottom: spacing.base,
                 }}
               >
-                <FlashMessage variant={VARIANTS.ERROR}>
+                <FlashMessage variant={FLASH_VARIANTS.ERROR}>
                   Confirmation link expired. Links expire after three days.
                   Please create a new account.
                 </FlashMessage>

@@ -81,6 +81,7 @@ const FlashMessage = ({ variant, children }) => {
           whiteSpace: 'pre-line',
           a: {
             color: STYLES[variant].linkColor,
+            textDecoration: 'underline',
           },
         }}
       >
