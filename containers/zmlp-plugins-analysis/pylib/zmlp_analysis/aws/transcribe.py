@@ -109,17 +109,12 @@ class AmazonTranscribeProcessor(AssetProcessor):
         Returns:
             None
         """
-        transcript = ''
         analysis = ContentDetectionAnalysis()
+        content = []
+        for trans in audio_result['results']['transcripts']:
+            content.append(trans['transcript'].strip())
 
-        for r in audio_result['results']['items']:
-            sorted_results = sorted(r['alternatives'], key=lambda i: i['confidence'],
-                                    reverse=True)
-            transcript += '{}{}'.format(
-                '' if r['type'] == 'punctuation' else ' ',  # make clean for punctuations
-                sorted_results[0]['content']
-            )
-        analysis.add_content(transcript.strip())
+        analysis.add_content(' '.join(content))
         asset.add_analysis(self.namespace, analysis)
 
     def recognize_speech(self, audio_uri):
