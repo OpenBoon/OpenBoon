@@ -1,3 +1,4 @@
+# flake8: noqa
 from zmlp_analysis.azure.vision import *
 from zmlpsdk import FileTypes, file_storage
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
