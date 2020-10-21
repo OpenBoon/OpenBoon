@@ -173,15 +173,15 @@ class ShotBasedFrameExtractor(VideoFrameExtractor):
             video_file (str): The video file path.
         """
         super(ShotBasedFrameExtractor, self).__init__(video_file)
-        self.output_path = tempfile.mkstemp(".jpg")[1]
 
     def __iter__(self):
         return self._generate()
 
     def _generate(self):
         for shot_time in self._get_shot_times():
-            extract_thumbnail_from_video(self.video_file, self.output_path, shot_time)
-            yield shot_time, self.output_path
+            output_path = tempfile.mkstemp(".jpg")[1]
+            extract_thumbnail_from_video(self.video_file, output_path, shot_time)
+            yield shot_time, output_path
 
     def _get_shot_times(self):
         keyframe_command = ('ffprobe -show_frames -of compact=p=0 -show_entries '
