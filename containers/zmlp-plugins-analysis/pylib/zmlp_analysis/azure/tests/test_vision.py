@@ -76,7 +76,6 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         analysis = frame.asset.get_analysis(namespace)
         assert 'dog' in get_prediction_labels(analysis)
 
-
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
     @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
     @patch(patch_path, side_effect=MockACVClient)
