@@ -19,8 +19,6 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
         os.environ["ZORROA_AZURE_VISION_KEY"] = "abc123"
-        os.environ['ZORROA_AZURE_VISION_REGION'] = 'eastus'
-        os.environ["PATH"] += ':/usr/local/bin/'
 
     def tearDown(self):
         del os.environ["ZORROA_AZURE_VISION_KEY"]

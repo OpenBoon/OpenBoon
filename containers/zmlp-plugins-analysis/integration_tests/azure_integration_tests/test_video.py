@@ -23,8 +23,6 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         with open(cred_location, 'rb') as f:
             key = f.read().decode()
         os.environ['ZORROA_AZURE_VISION_KEY'] = key
-        os.environ['ZORROA_AZURE_VISION_REGION'] = 'eastus'
-        os.environ["PATH"] += ':/usr/local/bin/'
 
     def tearDown(self):
         del os.environ['ZORROA_AZURE_VISION_KEY']
@@ -268,5 +266,5 @@ class AzureVideoDetectorTestCase(PluginUnitTestCase):
         processor.process(frame)
 
         analysis = asset.get_analysis(namespace)
-        assert 4 == analysis['words']
-        assert 'and poop, sanitation, toilets' in analysis['content']
+        assert 9 == analysis['words']
+        assert 'and into of poop, sanitation sanitation, the toilets world' in analysis['content']
