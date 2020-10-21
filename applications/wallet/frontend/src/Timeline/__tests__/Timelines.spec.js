@@ -21,11 +21,10 @@ describe('<TimelineTimelines />', () => {
           width: 200,
           filter: '',
           timelines: {
-            [timelines[0].timeline]: { isOpen: true, color: '#0074f5' },
+            [timelines[0].timeline]: { isOpen: true, color: '#009f22' },
             [timelines[1].timeline]: { isOpen: false, color: '#a03dc7' },
             [timelines[2].timeline]: { isOpen: false, color: '#ebb52e' },
             [timelines[3].timeline]: { isOpen: false, color: '#d6680b' },
-            [timelines[4].timeline]: { isOpen: false, color: '#00bdc1' },
           },
           zoom: 100,
         }}

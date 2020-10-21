@@ -1,21 +1,25 @@
 const timelines = [
   {
-    timeline: 'gcp-video-explicit-detection',
+    timeline: 'gcp-video-text-detection',
     tracks: [
       {
         track: 'Gh st',
         hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
+          { start: 0, stop: 2, highlight: false },
+          { start: 4, stop: 5, highlight: false },
+          { start: 10, stop: 12, highlight: false },
         ],
+      },
+      {
+        track: 'Lemon',
+        hits: [{ start: 6, stop: 7, highlight: true }],
       },
       {
         track: 'Busters',
         hits: [
-          { start: 6, stop: 7 },
-          { start: 13, stop: 14 },
-          { start: 15, stop: 15 },
+          { start: 6, stop: 7, highlight: false },
+          { start: 13, stop: 14, highlight: false },
+          { start: 15, stop: 15, highlight: false },
         ],
       },
     ],
@@ -26,16 +30,16 @@ const timelines = [
       {
         track: 'Label 1',
         hits: [
-          { start: 1, stop: 2 },
-          { start: 3, stop: 6 },
-          { start: 11, stop: 15 },
+          { start: 1, stop: 2, highlight: false },
+          { start: 3, stop: 6, highlight: false },
+          { start: 11, stop: 15, highlight: false },
         ],
       },
       {
         track: 'Label 2 Plus More Text to Make A Long Label String',
         hits: [
-          { start: 7, stop: 10 },
-          { start: 16, stop: 17 },
+          { start: 7, stop: 10, highlight: false },
+          { start: 16, stop: 17, highlight: false },
         ],
       },
     ],
@@ -46,25 +50,25 @@ const timelines = [
       {
         track: 'Object 1',
         hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
+          { start: 0, stop: 2, highlight: false },
+          { start: 4, stop: 5, highlight: false },
+          { start: 10, stop: 12, highlight: false },
         ],
       },
       {
         track: 'Object 2',
         hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
+          { start: 0, stop: 2, highlight: false },
+          { start: 4, stop: 5, highlight: false },
+          { start: 10, stop: 12, highlight: false },
         ],
       },
       {
         track: 'Object 3',
         hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
+          { start: 0, stop: 2, highlight: false },
+          { start: 4, stop: 5, highlight: false },
+          { start: 10, stop: 12, highlight: false },
         ],
       },
     ],
@@ -75,62 +79,25 @@ const timelines = [
       {
         track: 'Logo 1',
         hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
+          { start: 0, stop: 2, highlight: false },
+          { start: 4, stop: 5, highlight: false },
+          { start: 10, stop: 12, highlight: false },
         ],
       },
       {
         track: 'Logo 2',
         hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
+          { start: 0, stop: 2, highlight: false },
+          { start: 4, stop: 5, highlight: false },
+          { start: 10, stop: 12, highlight: false },
         ],
       },
       {
         track: 'Logo 3',
         hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
-        ],
-      },
-    ],
-  },
-  {
-    timeline: 'gcp-video-text-detection',
-    tracks: [
-      {
-        track: 'Text 1',
-        hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
-        ],
-      },
-      {
-        track: 'Text 2',
-        hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
-        ],
-      },
-      {
-        track: 'Text 3',
-        hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
-        ],
-      },
-      {
-        track: 'Text 4',
-        hits: [
-          { start: 0, stop: 2 },
-          { start: 4, stop: 5 },
-          { start: 10, stop: 12 },
+          { start: 0, stop: 2, highlight: false },
+          { start: 4, stop: 5, highlight: false },
+          { start: 10, stop: 12, highlight: false },
         ],
       },
     ],
