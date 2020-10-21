@@ -74,8 +74,7 @@ class AzureVideoAbstract(AssetProcessor):
         """
         analysis = LabelDetectionAnalysis(collapse_labels=True)
 
-        frames = list(extractor)
-        for time_ms, path in frames:
+        for time_ms, path in extractor:
             predictions = proc.predict(path)
             labels = [pred[0] for pred in predictions]
             clip_tracker.append(time_ms, labels)
@@ -109,8 +108,7 @@ class AzureVideoObjectDetector(AzureVideoAbstract):
         """
         analysis = LabelDetectionAnalysis(collapse_labels=True)
 
-        frames = list(extractor)
-        for time_ms, path in frames:
+        for time_ms, path in extractor:
             predictions = proc.predict(path)
             labels = [pred[0] for pred in predictions]
             clip_tracker.append(time_ms, labels)
@@ -180,8 +178,7 @@ class AzureVideoCelebrityDetector(AzureVideoAbstract):
         """
         analysis = LabelDetectionAnalysis(collapse_labels=True)
 
-        frames = list(extractor)
-        for time_ms, path in frames:
+        for time_ms, path in extractor:
             predictions = proc.predict(path)
             labels = [pred[0] for pred in predictions]
             clip_tracker.append(time_ms, labels)
@@ -227,8 +224,7 @@ class AzureVideoLogoDetector(AzureVideoAbstract):
         """
         analysis = LabelDetectionAnalysis(collapse_labels=True)
 
-        frames = list(extractor)
-        for time_ms, path in frames:
+        for time_ms, path in extractor:
             predictions = proc.predict(path)
             labels = [pred[0] for pred in predictions]
             clip_tracker.append(time_ms, labels)
@@ -286,8 +282,7 @@ class AzureVideoFaceDetector(AzureVideoAbstract):
         """
         analysis = LabelDetectionAnalysis(collapse_labels=True)
 
-        frames = list(extractor)
-        for time_ms, path in frames:
+        for time_ms, path in extractor:
             predictions = proc.predict(path)
             labels = [pred[0] for pred in predictions]
             clip_tracker.append(time_ms, labels)
@@ -321,8 +316,7 @@ class AzureVideoTextDetector(AzureVideoAbstract):
         """
         analysis = ContentDetectionAnalysis(unique_words=True)
 
-        frames = list(extractor)
-        for time_ms, path in frames:
+        for time_ms, path in extractor:
             predictions = proc.predict(path)
             labels = [predictions]
             clip_tracker.append(time_ms, labels)
