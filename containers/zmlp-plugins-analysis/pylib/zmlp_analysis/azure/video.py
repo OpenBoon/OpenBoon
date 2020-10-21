@@ -95,28 +95,6 @@ class AzureVideoObjectDetector(AzureVideoAbstract):
         self.vision_client = AzureVisionObjectDetection()
         self.vision_client.init()
 
-    def set_analysis(self, extractor, clip_tracker, proc):
-        """ Set up ClipTracker and Asset Detection Analysis
-
-        Args:
-            extractor: ShotBasedFrameExtractor
-            clip_tracker: ClipTracker
-            proc: Azure Computer Vision Client
-
-        Returns:
-            (tuple): asset detection analysis, clip_tracker
-        """
-        analysis = LabelDetectionAnalysis(collapse_labels=True)
-
-        for time_ms, path in extractor:
-            predictions = proc.predict(path)
-            labels = [pred[0] for pred in predictions]
-            clip_tracker.append(time_ms, labels)
-            for ls in predictions:
-                analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
-
-        return analysis, clip_tracker
-
 
 class AzureVideoLabelDetector(AzureVideoAbstract):
     """Label detection for a video frame using Azure Computer Vision """
@@ -165,28 +143,6 @@ class AzureVideoCelebrityDetector(AzureVideoAbstract):
         self.vision_client = AzureVisionCelebrityDetection()
         self.vision_client.init()
 
-    def set_analysis(self, extractor, clip_tracker, proc):
-        """ Set up ClipTracker and Asset Detection Analysis
-
-        Args:
-            extractor: ShotBasedFrameExtractor
-            clip_tracker: ClipTracker
-            proc: Azure Computer Vision Client
-
-        Returns:
-            (tuple): asset detection analysis, clip_tracker
-        """
-        analysis = LabelDetectionAnalysis(collapse_labels=True)
-
-        for time_ms, path in extractor:
-            predictions = proc.predict(path)
-            labels = [pred[0] for pred in predictions]
-            clip_tracker.append(time_ms, labels)
-            for ls in predictions:
-                analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
-
-        return analysis, clip_tracker
-
 
 class AzureVideoLandmarkDetector(AzureVideoAbstract):
     """Landmark detection for a video frame using Azure Computer Vision """
@@ -210,28 +166,6 @@ class AzureVideoLogoDetector(AzureVideoAbstract):
     def init(self):
         self.vision_client = AzureVisionLogoDetection()
         self.vision_client.init()
-
-    def set_analysis(self, extractor, clip_tracker, proc):
-        """ Set up ClipTracker and Asset Detection Analysis
-
-        Args:
-            extractor: ShotBasedFrameExtractor
-            clip_tracker: ClipTracker
-            proc: Azure Computer Vision Client
-
-        Returns:
-            (tuple): asset detection analysis, clip_tracker
-        """
-        analysis = LabelDetectionAnalysis(collapse_labels=True)
-
-        for time_ms, path in extractor:
-            predictions = proc.predict(path)
-            labels = [pred[0] for pred in predictions]
-            clip_tracker.append(time_ms, labels)
-            for ls in predictions:
-                analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2])
-
-        return analysis, clip_tracker
 
 
 class AzureVideoCategoryDetector(AzureVideoAbstract):
@@ -268,28 +202,6 @@ class AzureVideoFaceDetector(AzureVideoAbstract):
     def init(self):
         self.vision_client = AzureVisionFaceDetection()
         self.vision_client.init()
-
-    def set_analysis(self, extractor, clip_tracker, proc):
-        """ Set up ClipTracker and Asset Detection Analysis
-
-        Args:
-            extractor: ShotBasedFrameExtractor
-            clip_tracker: ClipTracker
-            proc: Azure Computer Vision Client
-
-        Returns:
-            (tuple): asset detection analysis, clip_tracker
-        """
-        analysis = LabelDetectionAnalysis(collapse_labels=True)
-
-        for time_ms, path in extractor:
-            predictions = proc.predict(path)
-            labels = [pred[0] for pred in predictions]
-            clip_tracker.append(time_ms, labels)
-            for ls in predictions:
-                analysis.add_label_and_score(ls[0], ls[1], bbox=ls[2], age=ls[3])
-
-        return analysis, clip_tracker
 
 
 class AzureVideoTextDetector(AzureVideoAbstract):

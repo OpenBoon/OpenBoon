@@ -5,7 +5,6 @@ import unittest
 import zmlpsdk.video as video
 from zmlpsdk.testing import zorroa_test_path
 
-os.environ["PATH"] += ':/usr/local/bin/'
 VIDEO_M4V = zorroa_test_path('video/sample_ipad.m4v')
 VIDEO_MOV = zorroa_test_path('video/1324_CAPS_23.0_030.00_15_MISC.mov')
 
