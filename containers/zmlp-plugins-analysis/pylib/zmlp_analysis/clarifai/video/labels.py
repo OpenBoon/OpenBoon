@@ -1,6 +1,6 @@
+# flake8: noqa
 from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlp_analysis.clarifai.util import get_clarifai_app
 from zmlp_analysis.clarifai.images.labels import *
 
 __all__ = [
