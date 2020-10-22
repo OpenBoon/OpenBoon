@@ -52,7 +52,15 @@ export const updatePlayheadPosition = ({ video, playhead, zoom }) => {
 export const filterTimelines = ({ timelines, settings }) => {
   return timelines
     .map(({ timeline, tracks }) => {
-      const filteredPredictions = tracks.filter(({ track }) => {
+      const filteredHitsTracks = settings.highlights
+        ? tracks
+            .map(({ track, hits }) => {
+              return { track, hits: hits.filter(({ highlight }) => highlight) }
+            })
+            .filter(({ hits }) => hits.length > 0)
+        : tracks
+
+      const filteredPredictions = filteredHitsTracks.filter(({ track }) => {
         return track.toLowerCase().includes(settings.filter.toLowerCase())
       })
 

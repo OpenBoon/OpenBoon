@@ -658,3 +658,230 @@ exports[`<TimelineTimelines /> should render properly 1`] = `
   </div>
 </div>
 `;
+
+exports[`<TimelineTimelines /> should render properly with Search Highlights Only 1`] = `
+.emotion-15 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: overlay;
+  margin-left: -200px;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-12 {
+  width: 200px;
+}
+
+.emotion-11 {
+  background-color: #212121;
+  border-bottom: 1px solid #3b3b3b;
+  border-right: 1px solid #3b3b3b;
+}
+
+.emotion-5 {
+  list-style-type: none;
+  background-color: #212121;
+}
+
+.emotion-5::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-5:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px;
+  padding-right: 0;
+}
+
+.emotion-3 {
+  padding: 8px;
+}
+
+.emotion-0 {
+  width: 3px;
+  background-color: #009f22;
+  margin-right: 8px;
+}
+
+.emotion-1 {
+  color: #009f22;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
+  width: 3px;
+  background-color: #009f22;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  border-top: 1px solid #3b3b3b;
+  background-color: #191919;
+  overflow: hidden;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px;
+  padding-left: 40px;
+  padding-right: 0;
+}
+
+.emotion-8 {
+  padding: 8px;
+}
+
+.emotion-14 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow-y: hidden;
+  overflow-x: overlay;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.emotion-13 {
+  width: 100%;
+}
+
+<div
+  className="emotion-15"
+>
+  <div
+    className="emotion-12"
+  >
+    <details
+      className="emotion-11"
+      open={true}
+    >
+      <summary
+        aria-label="gcp-video-text-detection"
+        className="emotion-5"
+        onClick={[Function]}
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-0"
+          />
+          <svg
+            className="emotion-1"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+          >
+            gcp-video-text-detection
+          </div>
+          <div
+            className="emotion-3"
+          >
+            (1)
+          </div>
+        </div>
+      </summary>
+      <div>
+        <div
+          className="emotion-10"
+        >
+          <div
+            className="emotion-6"
+          />
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-7"
+            >
+              Lemon
+            </div>
+            <div
+              className="emotion-8"
+            >
+              (1)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+  <div
+    className="emotion-14"
+  >
+    <div
+      className="emotion-13"
+    >
+      <TimelineTracks
+        color="#009f22"
+        isOpen={true}
+        length={18}
+        tracks={
+          Array [
+            Object {
+              "hits": Array [
+                Object {
+                  "highlight": true,
+                  "start": 6,
+                  "stop": 7,
+                },
+              ],
+              "track": "Lemon",
+            },
+          ]
+        }
+        videoRef={
+          Object {
+            "current": Object {
+              "duration": 18,
+            },
+          }
+        }
+      />
+    </div>
+  </div>
+</div>
+`;
