@@ -2,7 +2,7 @@
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.labels import *
+from zmlp_analysis.clarifai.images.labels import *
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
     TestAsset, get_prediction_labels
@@ -25,7 +25,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         self.image_path = zorroa_test_path('images/detect/dogbike.jpg')
         self.frame = Frame(TestAsset(self.image_path))
 
-    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_general_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
@@ -38,7 +38,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
 
-    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_food_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
@@ -51,7 +51,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'labels' in analysis['type']
         assert 19 == analysis['count']
 
-    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_travel_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
@@ -64,7 +64,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'labels' in analysis['type']
         assert 7 == analysis['count']
 
-    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_apparel_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
@@ -77,7 +77,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'labels' in analysis['type']
         assert 6 == analysis['count']
 
-    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_wedding_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
@@ -90,7 +90,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
 
-    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_nsfw_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
@@ -103,7 +103,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'labels' in analysis['type']
         assert 2 == analysis['count']
 
-    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_moderation_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
@@ -116,7 +116,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         assert 'labels' in analysis['type']
         assert 1 == analysis['count']
 
-    @patch('zmlp_analysis.clarifai.labels.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.labels.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_textures_and_patterns_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
@@ -144,47 +144,55 @@ class PublicModels:
 
 class GeneralModel:
     def predict_by_filename(self, filename):
-        with open(os.path.dirname(__file__) + "/mock_data/clarifai.rsp") as fp:
+        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai.rsp')
+        with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class FoodModel:
     def predict_by_filename(self, filename):
-        with open(os.path.dirname(__file__) + "/mock_data/clarifai_food.rsp") as fp:
+        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_food.rsp')
+        with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class TravelModel:
     def predict_by_filename(self, filename):
-        with open(os.path.dirname(__file__) + "/mock_data/clarifai_travel.rsp") as fp:
+        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_travel.rsp')
+        with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class ApparelModel:
     def predict_by_filename(self, filename):
-        with open(os.path.dirname(__file__) + "/mock_data/clarifai_apparel.rsp") as fp:
+        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_apparel.rsp')
+        with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class WeddingModel:
     def predict_by_filename(self, filename):
-        with open(os.path.dirname(__file__) + "/mock_data/clarifai_wedding.rsp") as fp:
+        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_wedding.rsp')
+        with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class ExplicitModel:
     def predict_by_filename(self, filename):
-        with open(os.path.dirname(__file__) + "/mock_data/clarifai_nsfw.rsp") as fp:
+        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_nsfw.rsp')
+        with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class ModerationModel:
     def predict_by_filename(self, filename):
-        with open(os.path.dirname(__file__) + "/mock_data/clarifai_moderation.rsp") as fp:
+        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_moderation.rsp')
+        with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class TexturesModel:
     def predict_by_filename(self, filename):
-        with open(os.path.dirname(__file__) + "/mock_data/clarifai_textures.rsp") as fp:
+        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_textures.rsp')
+        with open(mock_data) as fp:
             return eval(fp.read())

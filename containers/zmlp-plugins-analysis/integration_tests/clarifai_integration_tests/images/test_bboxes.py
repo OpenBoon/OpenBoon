@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pytest
 from clarifai.rest import ClarifaiApp
 
-from zmlp_analysis.clarifai.bboxes import *
+from zmlp_analysis.clarifai.images.bboxes import *
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
 
@@ -13,7 +13,7 @@ from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get
 class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestCase):
 
     def setUp(self):
-        cred_location = os.path.dirname(__file__) + '/clarifai-creds'
+        cred_location = os.path.join(os.path.dirname(__file__), '..', 'clarifai-creds')
         with open(cred_location, 'rb') as f:
             key = f.read().decode()
         os.environ['CLARIFAI_KEY'] = key
@@ -21,7 +21,7 @@ class ClarifaiBboxDetectionPublicModelsProcessorIntegrationTests(PluginUnitTestC
     def tearDown(self):
         del os.environ['CLARIFAI_KEY']
 
-    @patch('zmlp_analysis.clarifai.bboxes.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.bboxes.get_proxy_level_path')
     def run_process(self, proxy_path_patch,
                     image_path, detector, attr, assertions):
         frame = Frame(TestAsset(image_path))

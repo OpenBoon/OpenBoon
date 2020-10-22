@@ -4,7 +4,7 @@ from zmlpsdk import AssetProcessor, Argument, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from .util import get_clarifai_app
+from zmlp_analysis.clarifai.util import get_clarifai_app
 
 models = [
     'face-detection-model',

@@ -2,7 +2,7 @@
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.regions import *
+from zmlp_analysis.clarifai.images.bboxes import *
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
     TestAsset, get_prediction_labels
@@ -25,46 +25,48 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         self.image_path = zorroa_test_path('images/detect/dogbike.jpg')
         self.frame = Frame(TestAsset(self.image_path))
 
-    @patch('zmlp_analysis.clarifai.regions.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.bboxes.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
-    def test_celebrity_process(self, _, proxy_path_patch):
+    def test_face_detection_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiCelebrityDetectionProcessor())
+        processor = self.init_processor(ClarifaiFaceDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-celebrity-model')
-        assert 'ryan gosling' in get_prediction_labels(analysis)
+        analysis = self.frame.asset.get_analysis('clarifai-face-detection-model')
+        assert 'face' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 1 == analysis['count']
 
-    @patch('zmlp_analysis.clarifai.regions.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.bboxes.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
-    def test_demographics_process(self, _, proxy_path_patch):
+    def test_logo_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiDemographicsDetectionProcessor())
+        processor = self.init_processor(ClarifaiLogoDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-demographics-model')
-        assert 'feminine' in get_prediction_labels(analysis)
+        analysis = self.frame.asset.get_analysis('clarifai-logo-model')
+        assert 'Shell' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
-        assert 23 == analysis['count']
+        assert 4 == analysis['count']
 
 
 class PublicModels:
     def __init__(self):
-        self.celebrity_model = CelebrityModel()
-        self.demographics_model = DemographicsModel()
+        self.face_detection_model = FaceDetectionModel()
+        self.logo_model = LogoModel()
 
 
-class CelebrityModel:
+class FaceDetectionModel:
     def predict_by_filename(self, filename):
-        with open(os.path.dirname(__file__) + "/mock_data/clarifai_celebrity.rsp") as fp:
+        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_faces.rsp')
+        with open(mock_data) as fp:
             return eval(fp.read())
 
 
-class DemographicsModel:
+class LogoModel:
     def predict_by_filename(self, filename):
-        with open(os.path.dirname(__file__) + "/mock_data/clarifai_demographics.rsp") as fp:
+        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_logo.rsp')
+        with open(mock_data) as fp:
             return eval(fp.read())

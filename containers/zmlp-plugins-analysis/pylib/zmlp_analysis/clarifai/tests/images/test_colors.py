@@ -2,7 +2,7 @@
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.colors import *
+from zmlp_analysis.clarifai.images.colors import *
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
     TestAsset, get_prediction_labels
@@ -25,7 +25,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         self.image_path = zorroa_test_path('images/detect/dogbike.jpg')
         self.frame = Frame(TestAsset(self.image_path))
 
-    @patch('zmlp_analysis.clarifai.colors.get_proxy_level_path')
+    @patch('zmlp_analysis.clarifai.images.colors.get_proxy_level_path')
     @patch(client_patch, side_effect=MockClarifaiApp)
     def test_color_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
@@ -46,5 +46,6 @@ class PublicModels:
 
 class ColorModel:
     def predict_by_filename(self, filename):
-        with open(os.path.dirname(__file__) + "/mock_data/clarifai_colors.rsp") as fp:
+        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_colors.rsp')
+        with open(mock_data) as fp:
             return eval(fp.read())

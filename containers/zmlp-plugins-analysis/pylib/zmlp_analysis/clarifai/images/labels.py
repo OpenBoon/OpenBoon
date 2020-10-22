@@ -2,7 +2,7 @@ from zmlpsdk import AssetProcessor, Argument, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
-from .util import get_clarifai_app
+from zmlp_analysis.clarifai.util import get_clarifai_app
 
 __all__ = [
     'ClarifaiLabelDetectionProcessor',
@@ -29,7 +29,7 @@ models = [
 
 class AbstractClarifaiProcessor(AssetProcessor):
     """
-        This base class is used for all Microsoft Computer Vision features.  Subclasses
+        This base class is used for all Clarifai features.  Subclasses
         only have to implement the "predict(asset, image) method.
         """
 
