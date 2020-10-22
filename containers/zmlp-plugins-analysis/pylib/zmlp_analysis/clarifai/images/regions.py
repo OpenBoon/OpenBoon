@@ -41,7 +41,10 @@ class AbstractClarifaiProcessor(AssetProcessor):
 
         model = getattr(self.clarifai.public_models, self.model_name.replace("-", "_"))
         response = model.predict_by_filename(p_path)
-        labels = response['outputs'][0]['data']['regions'][0]['data'].get('concepts')
+        try:
+            labels = response['outputs'][0]['data']['regions'][0]['data'].get('concepts')
+        except KeyError:
+            return
         if not labels:
             return
 
