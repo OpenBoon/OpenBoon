@@ -16,7 +16,6 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         with open(cred_location, 'rb') as f:
             key = f.read().decode()
         os.environ['CLARIFAI_KEY'] = key
-        os.environ["PATH"] += ':/usr/local/bin/'
 
     def tearDown(self):
         del os.environ['CLARIFAI_KEY']
