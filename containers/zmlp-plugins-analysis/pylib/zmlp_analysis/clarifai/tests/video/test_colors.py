@@ -22,7 +22,6 @@ class MockClarifaiApp:
 class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
-        os.environ["PATH"] += ':/usr/local/bin/'
         self.video_path = zorroa_test_path('video/ted_talk.mp4')
         asset = TestAsset(self.video_path)
         asset.set_attr('media.length', 15.0)
