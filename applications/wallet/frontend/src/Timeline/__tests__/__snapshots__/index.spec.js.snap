@@ -13,7 +13,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   z-index: 10;
 }
 
-.emotion-8 {
+.emotion-13 {
   padding-left: 8px;
   padding-right: 8px;
   background-color: #252525;
@@ -33,12 +33,16 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-4 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   padding: 4px;
   padding-left: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-3 {
@@ -76,6 +80,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   -ms-flex-direction: row;
   flex-direction: row;
   padding: 4px;
+  padding-right: 8px;
   text-transform: uppercase;
 }
 
@@ -116,7 +121,76 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   width: 4px;
 }
 
+.emotion-4 {
+  width: 2px;
+  background-color: #191919;
+  margin: 4px;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.emotion-8:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-8:hover div {
+  color: #ffffff;
+}
+
+.emotion-8:hover rect {
+  stroke: #ffffff;
+}
+
+.emotion-8:hover circle {
+  fill: #ffffff;
+}
+
+.emotion-5 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+}
+
+.emotion-6 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  fill: #4a4a4a;
+}
+
 .emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 8px;
+  text-transform: uppercase;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  color: #808080;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Roboto Condensed;
+  margin-bottom: -1px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -132,7 +206,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   padding-right: 0;
 }
 
-.emotion-6 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -172,45 +246,45 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   color: #808080;
 }
 
-.emotion-6:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-6:hover svg,
-.emotion-6.focus-visible:focus svg {
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   background-color: #2e2e2e;
   color: #ffffff;
 }
 
-.emotion-6:hover svg path,
-.emotion-6.focus-visible:focus svg path {
+.emotion-11:hover svg path,
+.emotion-11.focus-visible:focus svg path {
   fill: #ffffff;
 }
 
-.emotion-5 {
+.emotion-10 {
   width: 4px;
 }
 
-.emotion-14 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -221,7 +295,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   height: 200px;
 }
 
-.emotion-13 {
+.emotion-18 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -238,7 +312,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   border-left: 1px solid #3b3b3b;
 }
 
-.emotion-9 {
+.emotion-14 {
   position: absolute;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -253,7 +327,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   z-index: 10;
 }
 
-.emotion-12 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -261,14 +335,14 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   height: 44px;
 }
 
-.emotion-11 {
+.emotion-16 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   overflow: overlay;
 }
 
-.emotion-10 {
+.emotion-15 {
   width: 100%;
 }
 
@@ -278,7 +352,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
   transform: rotate(-90deg);
 }
 
-.emotion-15 {
+.emotion-20 {
   height: 0;
 }
 
@@ -299,10 +373,10 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
     onMouseDown={[Function]}
   />
   <div
-    className="emotion-8"
+    className="emotion-13"
   >
     <div
-      className="emotion-4"
+      className="emotion-9"
     >
       <button
         aria-label="Open Timeline"
@@ -321,12 +395,72 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
         />
         Timeline
       </button>
+      <div
+        className="emotion-4"
+      />
+      <label
+        className="emotion-8"
+      >
+        <input
+          className="hidden"
+          defaultChecked={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          type="checkbox"
+          value="highlights"
+        />
+        <svg
+          height={16}
+          width={30}
+        >
+          <rect
+            className="emotion-5"
+            fill="#191919"
+            height={8}
+            rx={4}
+            stroke="#3b3b3b"
+            width={30}
+            x={0}
+            y={4}
+          />
+          <circle
+            className="emotion-6"
+            cx={8}
+            cy={8}
+            r={8}
+          />
+        </svg>
+        <div
+          className="emotion-7"
+        >
+          <svg
+            height={14}
+            width={12}
+          >
+            <line
+              stroke="currentColor"
+              strokeWidth="4"
+              x1="0"
+              x2="0"
+              y1="0"
+              y2={14}
+            />
+            <polygon
+              fill="currentColor"
+              points="0,0 8,0 6,2.5 8,5 0,5"
+            />
+          </svg>
+          Search Only
+        </div>
+      </label>
     </div>
     <TimelineControls
       length={18}
       settings={
         Object {
           "filter": "",
+          "highlights": false,
           "timelines": Object {},
           "width": 200,
           "zoom": 100,
@@ -348,7 +482,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
       }
     />
     <div
-      className="emotion-7"
+      className="emotion-12"
     >
       <TimelineCaptions
         initialTrackIndex={-1}
@@ -368,7 +502,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
       />
       <button
         aria-label="Open Metadata"
-        className="emotion-6"
+        className="emotion-11"
         onClick={[Function]}
         type="button"
       >
@@ -378,23 +512,23 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
           height={20}
         />
         <div
-          className="emotion-5"
+          className="emotion-10"
         />
         Metadata
       </button>
     </div>
   </div>
   <div
-    className="emotion-15"
+    className="emotion-20"
   >
     <div
-      className="emotion-14"
+      className="emotion-19"
     >
       <div
-        className="emotion-13"
+        className="emotion-18"
       >
         <div
-          className="emotion-9"
+          className="emotion-14"
           onMouseDown={[Function]}
         />
         <TimelinePlayhead
@@ -414,13 +548,14 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
           zoom={100}
         />
         <div
-          className="emotion-12"
+          className="emotion-17"
         >
           <TimelineFilterTracks
             dispatch={[Function]}
             settings={
               Object {
                 "filter": "",
+                "highlights": false,
                 "timelines": Object {},
                 "width": 200,
                 "zoom": 100,
@@ -428,16 +563,17 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
             }
           />
           <div
-            className="emotion-11"
+            className="emotion-16"
           >
             <div
-              className="emotion-10"
+              className="emotion-15"
             >
               <TimelineRuler
                 length={18}
                 settings={
                   Object {
                     "filter": "",
+                    "highlights": false,
                     "timelines": Object {},
                     "width": 200,
                     "zoom": 100,
@@ -466,6 +602,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
           settings={
             Object {
               "filter": "",
+              "highlights": false,
               "timelines": Object {},
               "width": 200,
               "zoom": 100,
@@ -493,6 +630,7 @@ exports[`<Timeline /> should open the Timeline panel 1`] = `
           settings={
             Object {
               "filter": "",
+              "highlights": false,
               "timelines": Object {},
               "width": 200,
               "zoom": 100,
@@ -532,7 +670,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   z-index: 10;
 }
 
-.emotion-8 {
+.emotion-13 {
   padding-left: 8px;
   padding-right: 8px;
   background-color: #252525;
@@ -552,12 +690,16 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-4 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   padding: 4px;
   padding-left: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-3 {
@@ -595,6 +737,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   -ms-flex-direction: row;
   flex-direction: row;
   padding: 4px;
+  padding-right: 8px;
   text-transform: uppercase;
 }
 
@@ -641,7 +784,76 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   width: 4px;
 }
 
+.emotion-4 {
+  width: 2px;
+  background-color: #191919;
+  margin: 4px;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.emotion-8:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-8:hover div {
+  color: #ffffff;
+}
+
+.emotion-8:hover rect {
+  stroke: #ffffff;
+}
+
+.emotion-8:hover circle {
+  fill: #ffffff;
+}
+
+.emotion-5 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+}
+
+.emotion-6 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  fill: #4a4a4a;
+}
+
 .emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 8px;
+  text-transform: uppercase;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  color: #808080;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Roboto Condensed;
+  margin-bottom: -1px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -657,7 +869,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   padding-right: 0;
 }
 
-.emotion-6 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -697,49 +909,49 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   color: #808080;
 }
 
-.emotion-6:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-6:hover svg,
-.emotion-6.focus-visible:focus svg {
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   background-color: #2e2e2e;
   color: #ffffff;
 }
 
-.emotion-6:hover svg path,
-.emotion-6.focus-visible:focus svg path {
+.emotion-11:hover svg path,
+.emotion-11.focus-visible:focus svg path {
   fill: #ffffff;
 }
 
-.emotion-5 {
+.emotion-10 {
   width: 4px;
 }
 
-.emotion-15 {
+.emotion-20 {
   height: 200px;
 }
 
-.emotion-14 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -750,7 +962,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   height: 200px;
 }
 
-.emotion-13 {
+.emotion-18 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -767,7 +979,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   border-left: 1px solid #3b3b3b;
 }
 
-.emotion-9 {
+.emotion-14 {
   position: absolute;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -782,7 +994,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   z-index: 10;
 }
 
-.emotion-12 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -790,14 +1002,14 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
   height: 44px;
 }
 
-.emotion-11 {
+.emotion-16 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   overflow: overlay;
 }
 
-.emotion-10 {
+.emotion-15 {
   width: 100%;
 }
 
@@ -818,10 +1030,10 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
     onMouseDown={[Function]}
   />
   <div
-    className="emotion-8"
+    className="emotion-13"
   >
     <div
-      className="emotion-4"
+      className="emotion-9"
     >
       <button
         aria-label="Close Timeline"
@@ -840,12 +1052,72 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
         />
         Timeline
       </button>
+      <div
+        className="emotion-4"
+      />
+      <label
+        className="emotion-8"
+      >
+        <input
+          className="hidden"
+          defaultChecked={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          type="checkbox"
+          value="highlights"
+        />
+        <svg
+          height={16}
+          width={30}
+        >
+          <rect
+            className="emotion-5"
+            fill="#191919"
+            height={8}
+            rx={4}
+            stroke="#3b3b3b"
+            width={30}
+            x={0}
+            y={4}
+          />
+          <circle
+            className="emotion-6"
+            cx={8}
+            cy={8}
+            r={8}
+          />
+        </svg>
+        <div
+          className="emotion-7"
+        >
+          <svg
+            height={14}
+            width={12}
+          >
+            <line
+              stroke="currentColor"
+              strokeWidth="4"
+              x1="0"
+              x2="0"
+              y1="0"
+              y2={14}
+            />
+            <polygon
+              fill="currentColor"
+              points="0,0 8,0 6,2.5 8,5 0,5"
+            />
+          </svg>
+          Search Only
+        </div>
+      </label>
     </div>
     <TimelineControls
       length={18}
       settings={
         Object {
           "filter": "",
+          "highlights": false,
           "timelines": Object {},
           "width": 200,
           "zoom": 100,
@@ -867,7 +1139,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
       }
     />
     <div
-      className="emotion-7"
+      className="emotion-12"
     >
       <TimelineCaptions
         initialTrackIndex={-1}
@@ -887,7 +1159,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
       />
       <button
         aria-label="Open Metadata"
-        className="emotion-6"
+        className="emotion-11"
         onClick={[Function]}
         type="button"
       >
@@ -897,23 +1169,23 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
           height={20}
         />
         <div
-          className="emotion-5"
+          className="emotion-10"
         />
         Metadata
       </button>
     </div>
   </div>
   <div
-    className="emotion-15"
+    className="emotion-20"
   >
     <div
-      className="emotion-14"
+      className="emotion-19"
     >
       <div
-        className="emotion-13"
+        className="emotion-18"
       >
         <div
-          className="emotion-9"
+          className="emotion-14"
           onMouseDown={[Function]}
         />
         <TimelinePlayhead
@@ -933,13 +1205,14 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
           zoom={100}
         />
         <div
-          className="emotion-12"
+          className="emotion-17"
         >
           <TimelineFilterTracks
             dispatch={[Function]}
             settings={
               Object {
                 "filter": "",
+                "highlights": false,
                 "timelines": Object {},
                 "width": 200,
                 "zoom": 100,
@@ -947,16 +1220,17 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
             }
           />
           <div
-            className="emotion-11"
+            className="emotion-16"
           >
             <div
-              className="emotion-10"
+              className="emotion-15"
             >
               <TimelineRuler
                 length={18}
                 settings={
                   Object {
                     "filter": "",
+                    "highlights": false,
                     "timelines": Object {},
                     "width": 200,
                     "zoom": 100,
@@ -985,6 +1259,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
           settings={
             Object {
               "filter": "",
+              "highlights": false,
               "timelines": Object {},
               "width": 200,
               "zoom": 100,
@@ -1012,6 +1287,7 @@ exports[`<Timeline /> should open the Timeline panel 2`] = `
           settings={
             Object {
               "filter": "",
+              "highlights": false,
               "timelines": Object {},
               "width": 200,
               "zoom": 100,
@@ -1051,7 +1327,7 @@ exports[`<Timeline /> should render properly 1`] = `
   z-index: 10;
 }
 
-.emotion-8 {
+.emotion-13 {
   padding-left: 8px;
   padding-right: 8px;
   background-color: #252525;
@@ -1071,12 +1347,16 @@ exports[`<Timeline /> should render properly 1`] = `
   border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-4 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   padding: 4px;
   padding-left: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-3 {
@@ -1114,6 +1394,7 @@ exports[`<Timeline /> should render properly 1`] = `
   -ms-flex-direction: row;
   flex-direction: row;
   padding: 4px;
+  padding-right: 8px;
   text-transform: uppercase;
 }
 
@@ -1160,7 +1441,76 @@ exports[`<Timeline /> should render properly 1`] = `
   width: 4px;
 }
 
+.emotion-4 {
+  width: 2px;
+  background-color: #191919;
+  margin: 4px;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.emotion-8:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-8:hover div {
+  color: #ffffff;
+}
+
+.emotion-8:hover rect {
+  stroke: #ffffff;
+}
+
+.emotion-8:hover circle {
+  fill: #ffffff;
+}
+
+.emotion-5 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+}
+
+.emotion-6 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  fill: #4a4a4a;
+}
+
 .emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 8px;
+  text-transform: uppercase;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  color: #808080;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Roboto Condensed;
+  margin-bottom: -1px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1176,7 +1526,7 @@ exports[`<Timeline /> should render properly 1`] = `
   padding-right: 0;
 }
 
-.emotion-6 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1216,49 +1566,49 @@ exports[`<Timeline /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-6:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   color: #ffffff;
 }
 
-.emotion-6:hover svg,
-.emotion-6.focus-visible:focus svg {
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg {
   opacity: 1;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-6:hover,
-.emotion-6.focus-visible:focus {
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
   background-color: #2e2e2e;
   color: #ffffff;
 }
 
-.emotion-6:hover svg path,
-.emotion-6.focus-visible:focus svg path {
+.emotion-11:hover svg path,
+.emotion-11.focus-visible:focus svg path {
   fill: #ffffff;
 }
 
-.emotion-5 {
+.emotion-10 {
   width: 4px;
 }
 
-.emotion-15 {
+.emotion-20 {
   height: 200px;
 }
 
-.emotion-14 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1269,7 +1619,7 @@ exports[`<Timeline /> should render properly 1`] = `
   height: 200px;
 }
 
-.emotion-13 {
+.emotion-18 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1286,7 +1636,7 @@ exports[`<Timeline /> should render properly 1`] = `
   border-left: 1px solid #3b3b3b;
 }
 
-.emotion-9 {
+.emotion-14 {
   position: absolute;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1301,7 +1651,7 @@ exports[`<Timeline /> should render properly 1`] = `
   z-index: 10;
 }
 
-.emotion-12 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1309,14 +1659,14 @@ exports[`<Timeline /> should render properly 1`] = `
   height: 44px;
 }
 
-.emotion-11 {
+.emotion-16 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   overflow: overlay;
 }
 
-.emotion-10 {
+.emotion-15 {
   width: 100%;
 }
 
@@ -1337,10 +1687,10 @@ exports[`<Timeline /> should render properly 1`] = `
     onMouseDown={[Function]}
   />
   <div
-    className="emotion-8"
+    className="emotion-13"
   >
     <div
-      className="emotion-4"
+      className="emotion-9"
     >
       <button
         aria-label="Close Timeline"
@@ -1359,12 +1709,72 @@ exports[`<Timeline /> should render properly 1`] = `
         />
         Timeline
       </button>
+      <div
+        className="emotion-4"
+      />
+      <label
+        className="emotion-8"
+      >
+        <input
+          className="hidden"
+          defaultChecked={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          type="checkbox"
+          value="highlights"
+        />
+        <svg
+          height={16}
+          width={30}
+        >
+          <rect
+            className="emotion-5"
+            fill="#191919"
+            height={8}
+            rx={4}
+            stroke="#3b3b3b"
+            width={30}
+            x={0}
+            y={4}
+          />
+          <circle
+            className="emotion-6"
+            cx={8}
+            cy={8}
+            r={8}
+          />
+        </svg>
+        <div
+          className="emotion-7"
+        >
+          <svg
+            height={14}
+            width={12}
+          >
+            <line
+              stroke="currentColor"
+              strokeWidth="4"
+              x1="0"
+              x2="0"
+              y1="0"
+              y2={14}
+            />
+            <polygon
+              fill="currentColor"
+              points="0,0 8,0 6,2.5 8,5 0,5"
+            />
+          </svg>
+          Search Only
+        </div>
+      </label>
     </div>
     <TimelineControls
       length={18}
       settings={
         Object {
           "filter": "",
+          "highlights": false,
           "timelines": Object {
             "gcp-video-label-detection": Object {
               "color": "#d6680b",
@@ -1627,7 +2037,7 @@ exports[`<Timeline /> should render properly 1`] = `
       }
     />
     <div
-      className="emotion-7"
+      className="emotion-12"
     >
       <TimelineCaptions
         initialTrackIndex={-1}
@@ -1639,7 +2049,7 @@ exports[`<Timeline /> should render properly 1`] = `
       />
       <button
         aria-label="Open Metadata"
-        className="emotion-6"
+        className="emotion-11"
         onClick={[Function]}
         type="button"
       >
@@ -1649,23 +2059,23 @@ exports[`<Timeline /> should render properly 1`] = `
           height={20}
         />
         <div
-          className="emotion-5"
+          className="emotion-10"
         />
         Metadata
       </button>
     </div>
   </div>
   <div
-    className="emotion-15"
+    className="emotion-20"
   >
     <div
-      className="emotion-14"
+      className="emotion-19"
     >
       <div
-        className="emotion-13"
+        className="emotion-18"
       >
         <div
-          className="emotion-9"
+          className="emotion-14"
           onMouseDown={[Function]}
         />
         <TimelinePlayhead
@@ -1677,13 +2087,14 @@ exports[`<Timeline /> should render properly 1`] = `
           zoom={100}
         />
         <div
-          className="emotion-12"
+          className="emotion-17"
         >
           <TimelineFilterTracks
             dispatch={[Function]}
             settings={
               Object {
                 "filter": "",
+                "highlights": false,
                 "timelines": Object {
                   "gcp-video-label-detection": Object {
                     "color": "#d6680b",
@@ -1712,16 +2123,17 @@ exports[`<Timeline /> should render properly 1`] = `
             }
           />
           <div
-            className="emotion-11"
+            className="emotion-16"
           >
             <div
-              className="emotion-10"
+              className="emotion-15"
             >
               <TimelineRuler
                 length={18}
                 settings={
                   Object {
                     "filter": "",
+                    "highlights": false,
                     "timelines": Object {
                       "gcp-video-label-detection": Object {
                         "color": "#d6680b",
@@ -1763,6 +2175,7 @@ exports[`<Timeline /> should render properly 1`] = `
           settings={
             Object {
               "filter": "",
+              "highlights": false,
               "timelines": Object {
                 "gcp-video-label-detection": Object {
                   "color": "#d6680b",
@@ -2030,6 +2443,7 @@ exports[`<Timeline /> should render properly 1`] = `
           settings={
             Object {
               "filter": "",
+              "highlights": false,
               "timelines": Object {
                 "gcp-video-label-detection": Object {
                   "color": "#d6680b",
@@ -2298,6 +2712,1673 @@ exports[`<Timeline /> should render properly 1`] = `
           settings={
             Object {
               "filter": "",
+              "highlights": false,
+              "timelines": Object {
+                "gcp-video-label-detection": Object {
+                  "color": "#d6680b",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-logo-detection": Object {
+                  "color": "#00bdc1",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-object-detection": Object {
+                  "color": "#ebb52e",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-text-detection": Object {
+                  "color": "#a03dc7",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+              },
+              "width": 200,
+              "zoom": 100,
+            }
+          }
+          timelines={
+            Array [
+              Object {
+                "timeline": "gcp-video-text-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Gh st",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": true,
+                        "start": 6,
+                        "stop": 7,
+                      },
+                    ],
+                    "track": "Lemon",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 6,
+                        "stop": 7,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 13,
+                        "stop": 14,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 15,
+                        "stop": 15,
+                      },
+                    ],
+                    "track": "Busters",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-label-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 1,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 3,
+                        "stop": 6,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 11,
+                        "stop": 15,
+                      },
+                    ],
+                    "track": "Label 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 7,
+                        "stop": 10,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 16,
+                        "stop": 17,
+                      },
+                    ],
+                    "track": "Label 2 Plus More Text to Make A Long Label String",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-object-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 3",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-logo-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 3",
+                  },
+                ],
+              },
+            ]
+          }
+          videoRef={
+            Object {
+              "current": undefined,
+            }
+          }
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Timeline /> should render properly 2`] = `
+.emotion-0 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: row-resize;
+  height: 4px;
+  margin-top: -2px;
+  margin-bottom: -2px;
+  z-index: 10;
+}
+
+.emotion-13 {
+  padding-left: 8px;
+  padding-right: 8px;
+  background-color: #252525;
+  color: #808080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-9 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 4px;
+  padding-left: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 4px;
+  padding-right: 8px;
+  text-transform: uppercase;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-3:hover svg,
+.emotion-3.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-3:hover,
+.emotion-3.focus-visible:focus {
+  background-color: #2e2e2e;
+}
+
+.emotion-3:hover svg path,
+.emotion-3.focus-visible:focus svg path {
+  fill: #ffffff;
+}
+
+.emotion-1 {
+  -webkit-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
+.emotion-2 {
+  width: 4px;
+}
+
+.emotion-4 {
+  width: 2px;
+  background-color: #191919;
+  margin: 4px;
+}
+
+.emotion-5 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  padding: 4px;
+  padding-right: 0;
+}
+
+.emotion-11 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #808080;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 4px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  color: #808080;
+}
+
+.emotion-11:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-11[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
+  color: #ffffff;
+}
+
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg {
+  opacity: 1;
+}
+
+.emotion-11[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-11:hover,
+.emotion-11.focus-visible:focus {
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.emotion-11:hover svg path,
+.emotion-11.focus-visible:focus svg path {
+  fill: #ffffff;
+}
+
+.emotion-10 {
+  width: 4px;
+}
+
+.emotion-20 {
+  height: 200px;
+}
+
+.emotion-19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 200px;
+}
+
+.emotion-18 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 0%;
+  position: relative;
+  margin-left: 200px;
+  border-left: 1px solid #3b3b3b;
+}
+
+.emotion-14 {
+  position: absolute;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: col-resize;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  margin-left: -2px;
+  margin-right: -2px;
+  z-index: 10;
+}
+
+.emotion-17 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 44px;
+}
+
+.emotion-16 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: overlay;
+}
+
+.emotion-15 {
+  width: 100%;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.emotion-8:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-8:hover div {
+  color: #73b61c;
+}
+
+.emotion-8:hover rect {
+  stroke: #3b3b3b;
+}
+
+.emotion-8:hover circle {
+  fill: #73b61c;
+}
+
+.emotion-6 {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  fill: #73b61c;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 8px;
+  text-transform: uppercase;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  color: #73b61c;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Roboto Condensed;
+  margin-bottom: -1px;
+}
+
+<div
+  style={
+    Object {
+      "alignItems": "stretch",
+      "display": "flex",
+      "flexDirection": "column",
+      "flexWrap": "nowrap",
+      "width": "100%",
+    }
+  }
+>
+  <div
+    aria-label="Resize vertically"
+    className="emotion-0"
+    onMouseDown={[Function]}
+  />
+  <div
+    className="emotion-13"
+  >
+    <div
+      className="emotion-9"
+    >
+      <button
+        aria-label="Close Timeline"
+        className="emotion-3"
+        onClick={[Function]}
+        type="button"
+      >
+        <svg
+          className="emotion-1"
+          color="#808080"
+          data-file-name="doubleChevron.svg"
+          height={20}
+        />
+        <div
+          className="emotion-2"
+        />
+        Timeline
+      </button>
+      <div
+        className="emotion-4"
+      />
+      <label
+        className="emotion-8"
+      >
+        <input
+          className="hidden"
+          defaultChecked={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          type="checkbox"
+          value="highlights"
+        />
+        <svg
+          height={16}
+          width={30}
+        >
+          <rect
+            className="emotion-5"
+            fill="#191919"
+            height={8}
+            rx={4}
+            stroke="#3b3b3b"
+            width={30}
+            x={0}
+            y={4}
+          />
+          <circle
+            className="emotion-6"
+            cx={22}
+            cy={8}
+            r={8}
+          />
+        </svg>
+        <div
+          className="emotion-7"
+        >
+          <svg
+            height={14}
+            width={12}
+          >
+            <line
+              stroke="currentColor"
+              strokeWidth="4"
+              x1="0"
+              x2="0"
+              y1="0"
+              y2={14}
+            />
+            <polygon
+              fill="currentColor"
+              points="0,0 8,0 6,2.5 8,5 0,5"
+            />
+          </svg>
+          Search Only
+        </div>
+      </label>
+    </div>
+    <TimelineControls
+      length={18}
+      settings={
+        Object {
+          "filter": "",
+          "highlights": true,
+          "timelines": Object {
+            "gcp-video-label-detection": Object {
+              "color": "#d6680b",
+              "isOpen": false,
+              "isVisible": true,
+            },
+            "gcp-video-logo-detection": Object {
+              "color": "#00bdc1",
+              "isOpen": false,
+              "isVisible": true,
+            },
+            "gcp-video-object-detection": Object {
+              "color": "#ebb52e",
+              "isOpen": false,
+              "isVisible": true,
+            },
+            "gcp-video-text-detection": Object {
+              "color": "#a03dc7",
+              "isOpen": false,
+              "isVisible": true,
+            },
+          },
+          "width": 200,
+          "zoom": 100,
+        }
+      }
+      timelines={
+        Array [
+          Object {
+            "timeline": "gcp-video-text-detection",
+            "tracks": Array [
+              Object {
+                "hits": Array [
+                  Object {
+                    "highlight": false,
+                    "start": 0,
+                    "stop": 2,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 4,
+                    "stop": 5,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 10,
+                    "stop": 12,
+                  },
+                ],
+                "track": "Gh st",
+              },
+              Object {
+                "hits": Array [
+                  Object {
+                    "highlight": true,
+                    "start": 6,
+                    "stop": 7,
+                  },
+                ],
+                "track": "Lemon",
+              },
+              Object {
+                "hits": Array [
+                  Object {
+                    "highlight": false,
+                    "start": 6,
+                    "stop": 7,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 13,
+                    "stop": 14,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 15,
+                    "stop": 15,
+                  },
+                ],
+                "track": "Busters",
+              },
+            ],
+          },
+          Object {
+            "timeline": "gcp-video-label-detection",
+            "tracks": Array [
+              Object {
+                "hits": Array [
+                  Object {
+                    "highlight": false,
+                    "start": 1,
+                    "stop": 2,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 3,
+                    "stop": 6,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 11,
+                    "stop": 15,
+                  },
+                ],
+                "track": "Label 1",
+              },
+              Object {
+                "hits": Array [
+                  Object {
+                    "highlight": false,
+                    "start": 7,
+                    "stop": 10,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 16,
+                    "stop": 17,
+                  },
+                ],
+                "track": "Label 2 Plus More Text to Make A Long Label String",
+              },
+            ],
+          },
+          Object {
+            "timeline": "gcp-video-object-detection",
+            "tracks": Array [
+              Object {
+                "hits": Array [
+                  Object {
+                    "highlight": false,
+                    "start": 0,
+                    "stop": 2,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 4,
+                    "stop": 5,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 10,
+                    "stop": 12,
+                  },
+                ],
+                "track": "Object 1",
+              },
+              Object {
+                "hits": Array [
+                  Object {
+                    "highlight": false,
+                    "start": 0,
+                    "stop": 2,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 4,
+                    "stop": 5,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 10,
+                    "stop": 12,
+                  },
+                ],
+                "track": "Object 2",
+              },
+              Object {
+                "hits": Array [
+                  Object {
+                    "highlight": false,
+                    "start": 0,
+                    "stop": 2,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 4,
+                    "stop": 5,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 10,
+                    "stop": 12,
+                  },
+                ],
+                "track": "Object 3",
+              },
+            ],
+          },
+          Object {
+            "timeline": "gcp-video-logo-detection",
+            "tracks": Array [
+              Object {
+                "hits": Array [
+                  Object {
+                    "highlight": false,
+                    "start": 0,
+                    "stop": 2,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 4,
+                    "stop": 5,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 10,
+                    "stop": 12,
+                  },
+                ],
+                "track": "Logo 1",
+              },
+              Object {
+                "hits": Array [
+                  Object {
+                    "highlight": false,
+                    "start": 0,
+                    "stop": 2,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 4,
+                    "stop": 5,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 10,
+                    "stop": 12,
+                  },
+                ],
+                "track": "Logo 2",
+              },
+              Object {
+                "hits": Array [
+                  Object {
+                    "highlight": false,
+                    "start": 0,
+                    "stop": 2,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 4,
+                    "stop": 5,
+                  },
+                  Object {
+                    "highlight": false,
+                    "start": 10,
+                    "stop": 12,
+                  },
+                ],
+                "track": "Logo 3",
+              },
+            ],
+          },
+        ]
+      }
+      videoRef={
+        Object {
+          "current": undefined,
+        }
+      }
+    />
+    <div
+      className="emotion-12"
+    >
+      <TimelineCaptions
+        initialTrackIndex={-1}
+        videoRef={
+          Object {
+            "current": undefined,
+          }
+        }
+      />
+      <button
+        aria-label="Open Metadata"
+        className="emotion-11"
+        onClick={[Function]}
+        type="button"
+      >
+        <svg
+          color="#808080"
+          data-file-name="timebasedMetadata.svg"
+          height={20}
+        />
+        <div
+          className="emotion-10"
+        />
+        Metadata
+      </button>
+    </div>
+  </div>
+  <div
+    className="emotion-20"
+  >
+    <div
+      className="emotion-19"
+    >
+      <div
+        className="emotion-18"
+      >
+        <div
+          className="emotion-14"
+          onMouseDown={[Function]}
+        />
+        <TimelinePlayhead
+          videoRef={
+            Object {
+              "current": undefined,
+            }
+          }
+          zoom={100}
+        />
+        <div
+          className="emotion-17"
+        >
+          <TimelineFilterTracks
+            dispatch={[Function]}
+            settings={
+              Object {
+                "filter": "",
+                "highlights": true,
+                "timelines": Object {
+                  "gcp-video-label-detection": Object {
+                    "color": "#d6680b",
+                    "isOpen": false,
+                    "isVisible": true,
+                  },
+                  "gcp-video-logo-detection": Object {
+                    "color": "#00bdc1",
+                    "isOpen": false,
+                    "isVisible": true,
+                  },
+                  "gcp-video-object-detection": Object {
+                    "color": "#ebb52e",
+                    "isOpen": false,
+                    "isVisible": true,
+                  },
+                  "gcp-video-text-detection": Object {
+                    "color": "#a03dc7",
+                    "isOpen": false,
+                    "isVisible": true,
+                  },
+                },
+                "width": 200,
+                "zoom": 100,
+              }
+            }
+          />
+          <div
+            className="emotion-16"
+          >
+            <div
+              className="emotion-15"
+            >
+              <TimelineRuler
+                length={18}
+                settings={
+                  Object {
+                    "filter": "",
+                    "highlights": true,
+                    "timelines": Object {
+                      "gcp-video-label-detection": Object {
+                        "color": "#d6680b",
+                        "isOpen": false,
+                        "isVisible": true,
+                      },
+                      "gcp-video-logo-detection": Object {
+                        "color": "#00bdc1",
+                        "isOpen": false,
+                        "isVisible": true,
+                      },
+                      "gcp-video-object-detection": Object {
+                        "color": "#ebb52e",
+                        "isOpen": false,
+                        "isVisible": true,
+                      },
+                      "gcp-video-text-detection": Object {
+                        "color": "#a03dc7",
+                        "isOpen": false,
+                        "isVisible": true,
+                      },
+                    },
+                    "width": 200,
+                    "zoom": 100,
+                  }
+                }
+                videoRef={
+                  Object {
+                    "current": undefined,
+                  }
+                }
+              />
+            </div>
+          </div>
+        </div>
+        <TimelineAggregate
+          dispatch={[Function]}
+          length={18}
+          settings={
+            Object {
+              "filter": "",
+              "highlights": true,
+              "timelines": Object {
+                "gcp-video-label-detection": Object {
+                  "color": "#d6680b",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-logo-detection": Object {
+                  "color": "#00bdc1",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-object-detection": Object {
+                  "color": "#ebb52e",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-text-detection": Object {
+                  "color": "#a03dc7",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+              },
+              "width": 200,
+              "zoom": 100,
+            }
+          }
+          timelineHeight={200}
+          timelines={
+            Array [
+              Object {
+                "timeline": "gcp-video-text-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Gh st",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": true,
+                        "start": 6,
+                        "stop": 7,
+                      },
+                    ],
+                    "track": "Lemon",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 6,
+                        "stop": 7,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 13,
+                        "stop": 14,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 15,
+                        "stop": 15,
+                      },
+                    ],
+                    "track": "Busters",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-label-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 1,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 3,
+                        "stop": 6,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 11,
+                        "stop": 15,
+                      },
+                    ],
+                    "track": "Label 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 7,
+                        "stop": 10,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 16,
+                        "stop": 17,
+                      },
+                    ],
+                    "track": "Label 2 Plus More Text to Make A Long Label String",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-object-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 3",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-logo-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 3",
+                  },
+                ],
+              },
+            ]
+          }
+          videoRef={
+            Object {
+              "current": undefined,
+            }
+          }
+        />
+        <TimelineSearchHits
+          length={18}
+          settings={
+            Object {
+              "filter": "",
+              "highlights": true,
+              "timelines": Object {
+                "gcp-video-label-detection": Object {
+                  "color": "#d6680b",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-logo-detection": Object {
+                  "color": "#00bdc1",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-object-detection": Object {
+                  "color": "#ebb52e",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+                "gcp-video-text-detection": Object {
+                  "color": "#a03dc7",
+                  "isOpen": false,
+                  "isVisible": true,
+                },
+              },
+              "width": 200,
+              "zoom": 100,
+            }
+          }
+          timelineHeight={200}
+          timelines={
+            Array [
+              Object {
+                "timeline": "gcp-video-text-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Gh st",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": true,
+                        "start": 6,
+                        "stop": 7,
+                      },
+                    ],
+                    "track": "Lemon",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 6,
+                        "stop": 7,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 13,
+                        "stop": 14,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 15,
+                        "stop": 15,
+                      },
+                    ],
+                    "track": "Busters",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-label-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 1,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 3,
+                        "stop": 6,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 11,
+                        "stop": 15,
+                      },
+                    ],
+                    "track": "Label 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 7,
+                        "stop": 10,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 16,
+                        "stop": 17,
+                      },
+                    ],
+                    "track": "Label 2 Plus More Text to Make A Long Label String",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-object-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Object 3",
+                  },
+                ],
+              },
+              Object {
+                "timeline": "gcp-video-logo-detection",
+                "tracks": Array [
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 1",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 2",
+                  },
+                  Object {
+                    "hits": Array [
+                      Object {
+                        "highlight": false,
+                        "start": 0,
+                        "stop": 2,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 4,
+                        "stop": 5,
+                      },
+                      Object {
+                        "highlight": false,
+                        "start": 10,
+                        "stop": 12,
+                      },
+                    ],
+                    "track": "Logo 3",
+                  },
+                ],
+              },
+            ]
+          }
+          videoRef={
+            Object {
+              "current": undefined,
+            }
+          }
+        />
+        <TimelineTimelines
+          dispatch={[Function]}
+          length={18}
+          settings={
+            Object {
+              "filter": "",
+              "highlights": true,
               "timelines": Object {
                 "gcp-video-label-detection": Object {
                   "color": "#d6680b",
