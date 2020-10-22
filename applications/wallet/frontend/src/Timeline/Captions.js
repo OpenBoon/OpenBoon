@@ -136,8 +136,7 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
         css={{
           width: SEPARATOR_WIDTH,
           backgroundColor: colors.structure.coal,
-          marginLeft: spacing.small,
-          marginRight: spacing.small,
+          margin: spacing.small,
         }}
       />
     </div>

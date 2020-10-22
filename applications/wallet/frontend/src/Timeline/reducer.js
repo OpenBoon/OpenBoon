@@ -2,6 +2,7 @@ export const MIN_WIDTH = 200
 
 export const ACTIONS = {
   UPDATE_FILTER: 'UPDATE_FILTER',
+  TOGGLE_HIGHLIGHTS: 'TOGGLE_HIGHLIGHTS',
   RESIZE_MODULES: 'RESIZE_MODULES',
   UPDATE_TIMELINES: 'UPDATE_TIMELINES',
   TOGGLE_OPEN: 'TOGGLE_OPEN',
@@ -11,9 +12,10 @@ export const ACTIONS = {
 
 export const INITIAL_STATE = {
   filter: '',
+  highlights: false,
   width: MIN_WIDTH,
-  timelines: {},
   zoom: 100,
+  timelines: {},
 }
 
 export const reducer = (
@@ -25,6 +27,10 @@ export const reducer = (
   switch (actionType) {
     case ACTIONS.UPDATE_FILTER: {
       return { ...state, filter: value }
+    }
+
+    case ACTIONS.TOGGLE_HIGHLIGHTS: {
+      return { ...state, highlights: !state.highlights }
     }
 
     case ACTIONS.RESIZE_MODULES: {

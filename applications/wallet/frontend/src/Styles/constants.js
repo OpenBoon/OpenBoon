@@ -87,6 +87,7 @@ const constants = {
     maxWidth: 600,
   },
   animations: {
+    slide: 'all .15s ease',
     infiniteRotation: `${rotate} 2s linear infinite`,
     dualRotation: `${rotate} 1s linear 2`,
   },
