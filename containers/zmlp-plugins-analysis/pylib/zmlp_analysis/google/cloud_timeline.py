@@ -1,26 +1,10 @@
 import logging
 
-import zmlp
 from zmlp.entity import TimelineBuilder
 from zmlpsdk.storage import file_storage
-from zmlpsdk.video import WebvttBuilder
+from zmlpsdk.video import WebvttBuilder, save_timeline
 
 logger = logging.getLogger(__name__)
-
-
-def save_timeline(timeline):
-    """
-    Save the given timeline as Clips.
-
-    Args:
-        timeline (TimelineBuilder): The timeline
-
-    Returns:
-        dict: A status object.
-
-    """
-    app = zmlp.app_from_env()
-    return app.clips.create_clips_from_timeline(timeline)
 
 
 def save_text_detection_timeline(asset, annotations):
@@ -35,12 +19,12 @@ def save_text_detection_timeline(asset, annotations):
         TimelineBuilder: The populated TimelineBuilder.
 
     """
-    timeline = TimelineBuilder(asset, "gcp-video-text-detection")
+    timeline = TimelineBuilder(asset, 'gcp-video-text-detection')
     for annotation in annotations.text_annotations:
         for segment in annotation.segments:
             start_time = convert_offset(segment.segment.start_time_offset)
             end_time = convert_offset(segment.segment.end_time_offset)
-            timeline.add_clip("Detected Text",
+            timeline.add_clip('Detected Text',
                               start_time, end_time, annotation.text, segment.confidence)
     save_timeline(timeline)
     return timeline
@@ -69,7 +53,7 @@ def save_speech_transcription_timeline(asset, annotations):
 
                 start_time = convert_offset(start_word.start_time)
                 end_time = convert_offset(end_word.end_time)
-                timeline.add_clip("Speech Transcription",
+                timeline.add_clip('Speech Transcription',
                                   start_time, end_time, alternative.transcript.strip(),
                                   alternative.confidence)
                 break
@@ -116,7 +100,7 @@ def save_logo_detection_timeline(asset, annotations):
         Timeline: The populated Timeline.
 
     """
-    timeline = TimelineBuilder(asset, "gcp-video-logo-detection")
+    timeline = TimelineBuilder(asset, 'gcp-video-logo-detection')
 
     for annotation in annotations.logo_recognition_annotations:
         label = annotation.entity.description
@@ -146,13 +130,13 @@ def save_content_moderation_timeline(asset, annotations):
         TimelineBuilder: The timeline.
     """
     legend = [None,
-              "Very Unlikely",
-              "Unlikely",
-              "Possible",
-              "Likely",
-              "Very Likely"]
+              'Very Unlikely',
+              'Unlikely',
+              'Possible',
+              'Likely',
+              'Very Likely']
 
-    timeline = TimelineBuilder(asset, "gcp-video-explicit-detection")
+    timeline = TimelineBuilder(asset, 'gcp-video-explicit-detection')
 
     current_clip = None
     previous_frame = None

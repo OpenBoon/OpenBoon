@@ -15,12 +15,23 @@ jest.mock('../Playhead', () => 'TimelinePlayhead')
 jest.mock('../FilterTracks', () => 'TimelineFilterTracks')
 jest.mock('../Ruler', () => 'TimelineRuler')
 jest.mock('../Aggregate', () => 'TimelineAggregate')
+jest.mock('../SearchHits', () => 'TimelineSearchHits')
 jest.mock('../Timelines', () => 'TimelineTimelines')
 
 describe('<Timeline />', () => {
   it('should render properly', () => {
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'textContent',
+          attribute: '',
+          values: { query: 'Lemon' },
+        },
+      ]),
+    )
+
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, assetId: ASSET_ID },
+      query: { projectId: PROJECT_ID, assetId: ASSET_ID, query },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -30,6 +41,13 @@ describe('<Timeline />', () => {
     const component = TestRenderer.create(
       <Timeline length={18} videoRef={{ current: undefined }} />,
     )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Filter Search Highlights Only
+    act(() => {
+      component.root.findByProps({ value: 'highlights' }).props.onClick()
+    })
 
     expect(component.toJSON()).toMatchSnapshot()
   })

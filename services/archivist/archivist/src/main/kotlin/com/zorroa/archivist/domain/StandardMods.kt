@@ -15,6 +15,7 @@ object Category {
     const val GOOGLE_S2TEXT = "Google Speech-To-Text"
     const val GOOGLE_DLP = "Google Data Loss Prevention"
     const val AWS_REK = "Amazon Rekognition"
+    const val AWS_TRANS = "Amazon Transcribe"
     const val AZURE_VISION = "Azure Computer Vision"
     const val ZORROA_TL = "Zorroa Timeline Extraction"
     const val ZORROA_STD = "Zorroa Visual Intelligence"
@@ -746,6 +747,27 @@ fun getStandardModules(): List<PipelineModSpec> {
                     listOf(
                         ProcessorRef(
                             "zmlp_analysis.aws.RekognitionCelebrityDetection",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            true
+        ),
+        PipelineModSpec(
+            "aws-transcribe",
+            "Amazon Transcribe uses a deep learning process called automatic speech recognition (ASR) " +
+                "to convert speech to text quickly and accurately.",
+            Provider.AMAZON,
+            Category.AWS_TRANS,
+            ModelObjective.SPEECH_RECOGNITION,
+            listOf(FileType.Videos),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.aws.AmazonTranscribeProcessor",
                             StandardContainers.ANALYSIS
                         )
                     )

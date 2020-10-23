@@ -13,7 +13,13 @@ describe('<Timeline /> reducer', () => {
         type: ACTIONS.UPDATE_FILTER,
         payload: { value: 'cat' },
       }),
-    ).toEqual({ filter: 'cat', width: 200, timelines: {}, zoom: 100 })
+    ).toEqual({
+      filter: 'cat',
+      highlights: false,
+      width: 200,
+      timelines: {},
+      zoom: 100,
+    })
   })
 
   it('should update the timelines width', () => {
@@ -22,7 +28,13 @@ describe('<Timeline /> reducer', () => {
         type: ACTIONS.RESIZE_MODULES,
         payload: { value: 300 },
       }),
-    ).toEqual({ filter: '', width: 300, timelines: {}, zoom: 100 })
+    ).toEqual({
+      filter: '',
+      highlights: false,
+      width: 300,
+      timelines: {},
+      zoom: 100,
+    })
   })
 
   it('should open an undefined module', () => {
@@ -33,6 +45,7 @@ describe('<Timeline /> reducer', () => {
       }),
     ).toEqual({
       filter: '',
+      highlights: false,
       width: 200,
       timelines: { 'gcp-video-logo-detection': { isOpen: true } },
       zoom: 100,
@@ -44,6 +57,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          highlights: false,
           width: 200,
           timelines: { 'gcp-video-logo-detection': { isOpen: false } },
         },
@@ -54,6 +68,7 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      highlights: false,
       width: 200,
       timelines: { 'gcp-video-logo-detection': { isOpen: true } },
     })
@@ -64,6 +79,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          highlights: false,
           width: 200,
           timelines: { 'gcp-video-logo-detection': { isOpen: true } },
         },
@@ -74,6 +90,7 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      highlights: false,
       width: 200,
       timelines: { 'gcp-video-logo-detection': { isOpen: false } },
     })
@@ -87,6 +104,7 @@ describe('<Timeline /> reducer', () => {
       }),
     ).toEqual({
       filter: '',
+      highlights: false,
       width: 200,
       timelines: { 'gcp-video-logo-detection': { isVisible: false } },
       zoom: 100,
@@ -98,6 +116,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          highlights: false,
           width: 200,
           timelines: { 'gcp-video-logo-detection': { isVisible: true } },
         },
@@ -108,6 +127,7 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      highlights: false,
       width: 200,
       timelines: { 'gcp-video-logo-detection': { isVisible: false } },
     })
@@ -118,6 +138,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          highlights: false,
           width: 200,
           timelines: { 'gcp-video-logo-detection': { isVisible: false } },
         },
@@ -128,6 +149,7 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      highlights: false,
       width: 200,
       timelines: { 'gcp-video-logo-detection': { isVisible: true } },
     })
@@ -138,6 +160,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          highlights: false,
           width: 200,
           timelines: { 'gcp-video-logo-detection': { isVisible: false } },
         },
@@ -148,9 +171,9 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      highlights: false,
       width: 200,
       timelines: {
-        'gcp-video-explicit-detection': { isVisible: true },
         'gcp-video-label-detection': { isVisible: true },
         'gcp-video-logo-detection': { isVisible: true },
         'gcp-video-object-detection': { isVisible: true },
@@ -164,6 +187,7 @@ describe('<Timeline /> reducer', () => {
       reducer(
         {
           filter: '',
+          highlights: false,
           width: 200,
           timelines: { 'gcp-video-logo-detection': { isVisible: true } },
         },
@@ -174,9 +198,9 @@ describe('<Timeline /> reducer', () => {
       ),
     ).toEqual({
       filter: '',
+      highlights: false,
       width: 200,
       timelines: {
-        'gcp-video-explicit-detection': { isVisible: false },
         'gcp-video-label-detection': { isVisible: false },
         'gcp-video-logo-detection': { isVisible: false },
         'gcp-video-object-detection': { isVisible: false },

@@ -364,6 +364,7 @@ exports[`<Asset /> should handle no query 1`] = `
                     className="emotion-4"
                     controls={true}
                     controlsList="nodownload"
+                    crossOrigin="anonymous"
                     disablePictureInPicture={true}
                   >
                     <source
@@ -1197,6 +1198,7 @@ exports[`<Asset /> should render videos properly 1`] = `
                     className="emotion-4"
                     controls={true}
                     controlsList="nodownload"
+                    crossOrigin="anonymous"
                     disablePictureInPicture={true}
                   >
                     <source
