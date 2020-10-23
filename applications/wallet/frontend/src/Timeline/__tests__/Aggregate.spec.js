@@ -17,10 +17,11 @@ describe('<TimelineAggregate />', () => {
         timelineHeight={400}
         timelines={timelines}
         settings={{
-          width: 200,
           filter: '',
-          timelines: { [timelines[0].timeline]: { isVisible: true } },
+          highlights: false,
+          width: 200,
           zoom: 100,
+          timelines: { [timelines[0].timeline]: { isVisible: true } },
         }}
         dispatch={mockDispatch}
       />,
