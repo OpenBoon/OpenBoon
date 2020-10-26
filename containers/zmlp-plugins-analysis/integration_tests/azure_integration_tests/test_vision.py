@@ -150,10 +150,12 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         analysis = frame.asset.get_analysis(namespace)
         assert 'Male' in get_prediction_labels(analysis)
 
+    @patch("zmlp_analysis.azure.vision.file_storage.localize_file")
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
-    def test_text_detection_processor(self, proxy_patch):
+    def test_text_detection_processor(self, proxy_patch, localize_patch):
         namespace = 'azure-image-text-detection'
         proxy_patch.return_value = STREETSIGN
+        localize_patch.return_value = STREETSIGN
         frame = Frame(TestAsset(STREETSIGN))
 
         processor = self.init_processor(AzureVisionTextDetection())
