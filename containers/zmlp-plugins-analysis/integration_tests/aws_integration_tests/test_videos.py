@@ -1,4 +1,3 @@
-# flake8: noqa
 import os
 import csv
 import logging
@@ -6,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp_analysis.aws.videos import *
+from zmlp_analysis.aws import videos
 from zmlpsdk import Frame, file_storage
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels, \
     zorroa_test_path, get_mock_stored_file
@@ -55,7 +54,7 @@ class RekognitionVideoTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(RekognitionVideoLabelDetection())
+        processor = self.init_processor(videos.RekognitionVideoLabelDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -76,7 +75,7 @@ class RekognitionVideoTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(RekognitionVideoFaceDetection())
+        processor = self.init_processor(videos.RekognitionVideoFaceDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -97,7 +96,7 @@ class RekognitionVideoTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(RekognitionVideoUnsafeDetection())
+        processor = self.init_processor(videos.RekognitionVideoUnsafeDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -120,7 +119,7 @@ class RekognitionVideoTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(RekognitionVideoCelebrityDetection())
+        processor = self.init_processor(videos.RekognitionVideoCelebrityDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
@@ -141,7 +140,7 @@ class RekognitionVideoTestCase(PluginUnitTestCase):
         store_patch.return_value = get_mock_stored_file()
         store_blob_patch.return_value = get_mock_stored_file()
 
-        processor = self.init_processor(RekognitionVideoTextDetection())
+        processor = self.init_processor(videos.RekognitionVideoTextDetection())
         asset = TestAsset(video_path)
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
