@@ -1,4 +1,3 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 import pytest
@@ -23,7 +22,6 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     @patch("zmlp_analysis.clarifai.video.colors.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.colors.proxy.get_video_proxy')
     def run_process(self, proxy_path_patch, _, video_path, detector, attr, assertions):
-        frame = Frame(TestAsset(video_path))
         proxy_path_patch.return_value = video_path
 
         processor = self.init_processor(detector)
@@ -44,6 +42,6 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
         self.run_process(
             video_path=zorroa_test_path('images/set05/color_test.png'),
             detector=ClarifaiVideoColorDetectionProcessor(),
-            attr='clarifai-video-color-model',
+            attr='clarifai-color-model',
             assertions={'labels': ['Yellow', 'OrangeRed'], 'count': 4}
         )

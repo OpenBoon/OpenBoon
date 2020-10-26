@@ -1,11 +1,9 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.video.labels import *
+from zmlp_analysis.clarifai.video import labels
 from zmlpsdk import Frame
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
-    TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
 
 client_patch = 'zmlp_analysis.clarifai.util.ClarifaiApp'
 
@@ -33,10 +31,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_general_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoLabelDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiVideoLabelDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-general-model')
+        analysis = self.frame.asset.get_analysis('clarifai-general-model')
         assert 'wheel' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
@@ -47,10 +45,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_travel_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoTravelDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiVideoTravelDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-travel-model')
+        analysis = self.frame.asset.get_analysis('clarifai-travel-model')
         assert 'labels' in analysis['type']
         assert 7 == analysis['count']
 
@@ -60,10 +58,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_apparel_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoApparelDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiVideoApparelDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-apparel-model')
+        analysis = self.frame.asset.get_analysis('clarifai-apparel-model')
         assert 'Earring' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 6 == analysis['count']
@@ -74,10 +72,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_wedding_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoWeddingDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiVideoWeddingDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-wedding-model')
+        analysis = self.frame.asset.get_analysis('clarifai-wedding-model')
         assert 'bride' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 20 == analysis['count']
@@ -88,10 +86,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_nsfw_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoExplicitDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiVideoExplicitDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-nsfw-model')
+        analysis = self.frame.asset.get_analysis('clarifai-nsfw-model')
         assert 'nsfw' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 2 == analysis['count']
@@ -102,10 +100,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_moderation_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoModerationDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiVideoModerationDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-moderation-model')
+        analysis = self.frame.asset.get_analysis('clarifai-moderation-model')
         assert 'suggestive' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 1 == analysis['count']
@@ -116,10 +114,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_textures_and_patterns_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoTexturesDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiVideoTexturesDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-textures-and-patterns-model')
+        analysis = self.frame.asset.get_analysis('clarifai-textures-and-patterns-model')
         assert 'labels' in analysis['type']
         assert 1 == analysis['count']
 
@@ -129,10 +127,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_food_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoFoodDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiVideoFoodDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-food-model')
+        analysis = self.frame.asset.get_analysis('clarifai-food-model')
         assert 'coffee' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 19 == analysis['count']
@@ -194,7 +192,11 @@ class ExplicitModel:
 
 class ModerationModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_moderation.rsp')
+        mock_data = os.path.join(
+            os.path.dirname(__file__),
+            '..',
+            'mock_data/clarifai_moderation.rsp'
+        )
         with open(mock_data) as fp:
             return eval(fp.read())
 

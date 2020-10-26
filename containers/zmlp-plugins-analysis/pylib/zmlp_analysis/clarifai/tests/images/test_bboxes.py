@@ -1,8 +1,7 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.images.bboxes import *
+from zmlp_analysis.clarifai.images import bboxes
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
     TestAsset, get_prediction_labels
@@ -30,7 +29,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_face_detection_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiFaceDetectionProcessor())
+        processor = self.init_processor(bboxes.ClarifaiFaceDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-face-detection-model')
@@ -43,7 +42,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_logo_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiLogoDetectionProcessor())
+        processor = self.init_processor(bboxes.ClarifaiLogoDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-logo-model')

@@ -1,9 +1,8 @@
-# flake8: noqa
 import os
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlp_analysis.clarifai.images.regions import *
+from zmlp_analysis.clarifai.images import regions
 
 __all__ = [
     'ClarifaiVideoCelebrityDetectionProcessor',
@@ -26,7 +25,7 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
 
     file_types = FileTypes.images | FileTypes.documents
 
-    namespace = 'clarifai-video'
+    namespace = 'clarifai'
 
     def __init__(self, model_name, reactor=None):
         super(AbstractClarifaiVideoProcessor, self).__init__()
@@ -111,7 +110,7 @@ class ClarifaiVideoCelebrityDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoCelebrityDetectionProcessor, self).__init__('celebrity-model')
 
     def init(self):
-        self.image_client = ClarifaiCelebrityDetectionProcessor()
+        self.image_client = regions.ClarifaiCelebrityDetectionProcessor()
         self.image_client.init()
 
 class ClarifaiVideoDemographicsDetectionProcessor(AbstractClarifaiVideoProcessor):
@@ -121,5 +120,5 @@ class ClarifaiVideoDemographicsDetectionProcessor(AbstractClarifaiVideoProcessor
         super(ClarifaiVideoDemographicsDetectionProcessor, self).__init__('demographics-model')
 
     def init(self):
-        self.image_client = ClarifaiDemographicsDetectionProcessor()
+        self.image_client = regions.ClarifaiDemographicsDetectionProcessor()
         self.image_client.init()

@@ -1,11 +1,9 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.video.bboxes import *
+from zmlp_analysis.clarifai.video import bboxes
 from zmlpsdk import Frame
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
-    TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
 
 client_patch = 'zmlp_analysis.clarifai.util.ClarifaiApp'
 
@@ -33,10 +31,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_face_detection_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoFaceDetectionProcessor())
+        processor = self.init_processor(bboxes.ClarifaiVideoFaceDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-face-detection-model')
+        analysis = self.frame.asset.get_analysis('clarifai-face-detection-model')
         assert 'face' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 1 == analysis['count']
@@ -47,10 +45,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_logo_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoLogoDetectionProcessor())
+        processor = self.init_processor(bboxes.ClarifaiVideoLogoDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-logo-model')
+        analysis = self.frame.asset.get_analysis('clarifai-logo-model')
         assert 'Shell' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 4 == analysis['count']

@@ -1,9 +1,8 @@
-# flake8: noqa
 import os
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlp_analysis.clarifai.images.colors import *
+from zmlp_analysis.clarifai.images.colors import ClarifaiColorDetectionProcessor
 
 __all__ = [
     'ClarifaiVideoColorDetectionProcessor',
@@ -25,7 +24,7 @@ class AbstractClarifaiVideoProcessor(AssetProcessor):
 
     file_types = FileTypes.images | FileTypes.documents
 
-    namespace = 'clarifai-video'
+    namespace = 'clarifai'
 
     def __init__(self, model_name, reactor=None):
         super(AbstractClarifaiVideoProcessor, self).__init__()

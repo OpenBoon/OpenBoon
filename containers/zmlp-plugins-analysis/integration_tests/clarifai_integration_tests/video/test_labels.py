@@ -1,9 +1,8 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 import pytest
 
-from zmlp_analysis.clarifai.video.labels import *
+from zmlp_analysis.clarifai.video import labels
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
 
@@ -42,63 +41,63 @@ class ClarifaiLabelDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def test_general_process(self):
         self.run_process(
             video_path=zorroa_test_path('video/ted_talk.mp4'),
-            detector=ClarifaiVideoLabelDetectionProcessor(),
-            attr='clarifai-video-general-model',
+            detector=labels.ClarifaiVideoLabelDetectionProcessor(),
+            attr='clarifai-general-model',
             assertions={'labels': ['performance', 'music', 'stage'], 'count': 31}
         )
 
     def test_travel_process(self):
         self.run_process(
             video_path=zorroa_test_path('video/sample_ipad.m4v'),
-            detector=ClarifaiVideoTravelDetectionProcessor(),
-            attr='clarifai-video-travel-model',
+            detector=labels.ClarifaiVideoTravelDetectionProcessor(),
+            attr='clarifai-travel-model',
             assertions={'labels': ['Snow & Ski Sports', 'Kids Area', 'Winter'], 'count': 10}
         )
 
     def test_food_process(self):
         self.run_process(
             video_path=zorroa_test_path('video/beer.mp4'),
-            detector=ClarifaiVideoFoodDetectionProcessor(),
-            attr='clarifai-video-food-model',
+            detector=labels.ClarifaiVideoFoodDetectionProcessor(),
+            attr='clarifai-food-model',
             assertions={'labels': ['beer', 'alcohol'], 'count': 20}
         )
 
     def test_apparel_process(self):
         self.run_process(
             video_path=zorroa_test_path('video/wedding.mp4'),
-            detector=ClarifaiVideoApparelDetectionProcessor(),
-            attr='clarifai-video-apparel-model',
+            detector=labels.ClarifaiVideoApparelDetectionProcessor(),
+            attr='clarifai-apparel-model',
             assertions={'labels': ['Wedding Dress', 'Necklace'], 'count': 9}
         )
 
     def test_wedding_process(self):
         self.run_process(
             video_path=zorroa_test_path('video/out.mp4'),
-            detector=ClarifaiVideoWeddingDetectionProcessor(),
-            attr='clarifai-video-wedding-model',
+            detector=labels.ClarifaiVideoWeddingDetectionProcessor(),
+            attr='clarifai-wedding-model',
             assertions={'labels': ['love', 'vows'], 'count': 20}
         )
 
     def test_nsfw_process(self):
         self.run_process(
             video_path=zorroa_test_path('video/model.mp4'),
-            detector=ClarifaiVideoExplicitDetectionProcessor(),
-            attr='clarifai-video-nsfw-model',
+            detector=labels.ClarifaiVideoExplicitDetectionProcessor(),
+            attr='clarifai-nsfw-model',
             assertions={'labels': ['sfw'], 'count': 1}
         )
 
     def test_moderation_process(self):
         self.run_process(
             video_path=zorroa_test_path('video/model.mp4'),
-            detector=ClarifaiVideoModerationDetectionProcessor(),
-            attr='clarifai-video-moderation-model',
+            detector=labels.ClarifaiVideoModerationDetectionProcessor(),
+            attr='clarifai-moderation-model',
             assertions={'labels': ['safe', 'suggestive'], 'count': 2}
         )
 
     def test_textures_and_patterns_process(self):
         self.run_process(
             video_path=zorroa_test_path('video/beach.mp4'),
-            detector=ClarifaiVideoTexturesDetectionProcessor(),
-            attr='clarifai-video-textures-and-patterns-model',
+            detector=labels.ClarifaiVideoTexturesDetectionProcessor(),
+            attr='clarifai-textures-and-patterns-model',
             assertions={'labels': ['sand'], 'count': 1}
         )

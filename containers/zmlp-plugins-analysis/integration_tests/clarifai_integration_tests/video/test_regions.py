@@ -1,10 +1,8 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 import pytest
-from clarifai.rest import ClarifaiApp
 
-from zmlp_analysis.clarifai.video.regions import *
+from zmlp_analysis.clarifai.video import regions
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
 
@@ -24,7 +22,6 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     @patch("zmlp_analysis.clarifai.video.labels.video.save_timeline", return_value={})
     @patch('zmlp_analysis.clarifai.video.labels.proxy.get_video_proxy')
     def run_process(self, proxy_path_patch, _, video_path, detector, attr, assertions):
-        frame = Frame(TestAsset(video_path))
         proxy_path_patch.return_value = video_path
 
         processor = self.init_processor(detector)
@@ -44,15 +41,15 @@ class ClarifaiColorDetectionPublicModelsProcessorIntegrationTests(PluginUnitTest
     def test_celebrity_process(self):
         self.run_process(
             video_path=zorroa_test_path('video/julia_roberts.mp4'),
-            detector=ClarifaiVideoCelebrityDetectionProcessor(),
-            attr='clarifai-video-celebrity-model',
+            detector=regions.ClarifaiVideoCelebrityDetectionProcessor(),
+            attr='clarifai-celebrity-model',
             assertions={'labels': ['julia roberts'], 'count': 1}
         )
 
     def test_demographics_process(self):
         self.run_process(
             video_path=zorroa_test_path('video/julia_roberts.mp4'),
-            detector=ClarifaiVideoDemographicsDetectionProcessor(),
-            attr='clarifai-video-demographics-model',
+            detector=regions.ClarifaiVideoDemographicsDetectionProcessor(),
+            attr='clarifai-demographics-model',
             assertions={'labels': ['feminine', 'white'], 'count': 19}
         )

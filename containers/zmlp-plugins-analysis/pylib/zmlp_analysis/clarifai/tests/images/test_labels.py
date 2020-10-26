@@ -1,8 +1,7 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.images.labels import *
+from zmlp_analysis.clarifai.images import labels
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
     TestAsset, get_prediction_labels
@@ -30,7 +29,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_general_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiLabelDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiLabelDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-general-model')
@@ -43,7 +42,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_food_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiFoodDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiFoodDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-food-model')
@@ -56,7 +55,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_travel_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiTravelDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiTravelDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-travel-model')
@@ -69,7 +68,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_apparel_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiApparelDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiApparelDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-apparel-model')
@@ -82,7 +81,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_wedding_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiWeddingDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiWeddingDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-wedding-model')
@@ -95,7 +94,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_nsfw_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiExplicitDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiExplicitDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-nsfw-model')
@@ -108,7 +107,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_moderation_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiModerationDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiModerationDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-moderation-model')
@@ -121,7 +120,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_textures_and_patterns_process(self, _, proxy_path_patch):
         proxy_path_patch.return_value = self.image_path
 
-        processor = self.init_processor(ClarifaiTexturesDetectionProcessor())
+        processor = self.init_processor(labels.ClarifaiTexturesDetectionProcessor())
         processor.process(self.frame)
 
         analysis = self.frame.asset.get_analysis('clarifai-textures-and-patterns-model')

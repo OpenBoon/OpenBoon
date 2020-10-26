@@ -1,11 +1,9 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.video.regions import *
+from zmlp_analysis.clarifai.video import regions
 from zmlpsdk import Frame
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
-    TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
 
 client_patch = 'zmlp_analysis.clarifai.util.ClarifaiApp'
 
@@ -33,10 +31,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_celebrity_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoCelebrityDetectionProcessor())
+        processor = self.init_processor(regions.ClarifaiVideoCelebrityDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-celebrity-model')
+        analysis = self.frame.asset.get_analysis('clarifai-celebrity-model')
         assert 'ryan gosling' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 1 == analysis['count']
@@ -47,10 +45,10 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
     def test_demographics_process(self, _, proxy_path_patch, __):
         proxy_path_patch.return_value = self.video_path
 
-        processor = self.init_processor(ClarifaiVideoDemographicsDetectionProcessor())
+        processor = self.init_processor(regions.ClarifaiVideoDemographicsDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-demographics-model')
+        analysis = self.frame.asset.get_analysis('clarifai-demographics-model')
         assert 'feminine' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 23 == analysis['count']
@@ -64,13 +62,21 @@ class PublicModels:
 
 class CelebrityModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_celebrity.rsp')
+        mock_data = os.path.join(
+            os.path.dirname(__file__),
+            '..',
+            'mock_data/clarifai_celebrity.rsp'
+        )
         with open(mock_data) as fp:
             return eval(fp.read())
 
 
 class DemographicsModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_demographics.rsp')
+        mock_data = os.path.join(
+            os.path.dirname(__file__),
+            '..',
+            'mock_data/clarifai_demographics.rsp'
+        )
         with open(mock_data) as fp:
             return eval(fp.read())

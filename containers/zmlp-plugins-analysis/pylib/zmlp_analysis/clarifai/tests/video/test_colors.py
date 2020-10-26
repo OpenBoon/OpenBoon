@@ -1,11 +1,9 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.video.colors import *
+from zmlp_analysis.clarifai.video.colors import ClarifaiVideoColorDetectionProcessor
 from zmlpsdk import Frame
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
-    TestAsset, get_prediction_labels
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, get_prediction_labels
 
 client_patch = 'zmlp_analysis.clarifai.util.ClarifaiApp'
 
@@ -36,7 +34,7 @@ class ClarifaiPublicModelsProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(ClarifaiVideoColorDetectionProcessor())
         processor.process(self.frame)
 
-        analysis = self.frame.asset.get_analysis('clarifai-video-color-model')
+        analysis = self.frame.asset.get_analysis('clarifai-color-model')
         assert 'Yellow' in get_prediction_labels(analysis)
         assert 'labels' in analysis['type']
         assert 4 == analysis['count']
