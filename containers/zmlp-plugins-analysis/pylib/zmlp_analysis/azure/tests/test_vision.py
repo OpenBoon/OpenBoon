@@ -1,10 +1,9 @@
-# flake8: noqa
 import os
 from unittest.mock import patch
 
 from azure.cognitiveservices.vision.computervision.models import OperationStatusCodes
 
-from zmlp_analysis.azure import *
+from zmlp_analysis import azure
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_path, get_prediction_labels
 from zmlpsdk import file_storage
@@ -69,13 +68,12 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(AzureVisionObjectDetection())
+        processor = self.init_processor(azure.AzureVisionObjectDetection())
         processor.process(frame)
 
         namespace = 'azure-object-detection'
         analysis = frame.asset.get_analysis(namespace)
         assert 'dog' in get_prediction_labels(analysis)
-
 
     @patch("zmlp_analysis.azure.vision.get_proxy_level_path")
     @patch(cred_path, side_effect=MockCognitiveServicesCredentials)
@@ -84,7 +82,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(AzureVisionLabelDetection())
+        processor = self.init_processor(azure.AzureVisionLabelDetection())
         processor.process(frame)
 
         namespace = 'azure-label-detection'
@@ -98,7 +96,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(AzureVisionImageDescription())
+        processor = self.init_processor(azure.AzureVisionImageDescription())
         processor.process(frame)
 
         namespace = 'azure-image-description-detection'
@@ -113,7 +111,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(AzureVisionImageTagsDetection())
+        processor = self.init_processor(azure.AzureVisionImageTagsDetection())
         processor.process(frame)
 
         namespace = 'azure-tag-detection'
@@ -127,7 +125,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         proxy_patch.return_value = RYAN_GOSLING
         frame = Frame(TestAsset(RYAN_GOSLING))
 
-        processor = self.init_processor(AzureVisionCelebrityDetection())
+        processor = self.init_processor(azure.AzureVisionCelebrityDetection())
         processor.process(frame)
 
         namespace = 'azure-celebrity-detection'
@@ -141,7 +139,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         proxy_patch.return_value = EIFFEL_TOWER
         frame = Frame(TestAsset(EIFFEL_TOWER))
 
-        processor = self.init_processor(AzureVisionLandmarkDetection())
+        processor = self.init_processor(azure.AzureVisionLandmarkDetection())
         processor.process(frame)
 
         namespace = 'azure-landmark-detection'
@@ -155,7 +153,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         proxy_patch.return_value = LOGOS
         frame = Frame(TestAsset(LOGOS))
 
-        processor = self.init_processor(AzureVisionLogoDetection())
+        processor = self.init_processor(azure.AzureVisionLogoDetection())
         processor.process(frame)
 
         namespace = 'azure-logo-detection'
@@ -169,7 +167,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(AzureVisionCategoryDetection())
+        processor = self.init_processor(azure.AzureVisionCategoryDetection())
         processor.process(frame)
 
         namespace = 'azure-category-detection'
@@ -183,7 +181,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         proxy_patch.return_value = DOGBIKE
         frame = Frame(TestAsset(DOGBIKE))
 
-        processor = self.init_processor(AzureVisionExplicitContentDetection())
+        processor = self.init_processor(azure.AzureVisionExplicitContentDetection())
         processor.process(frame)
 
         namespace = 'azure-explicit-detection'
@@ -197,7 +195,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         proxy_patch.return_value = FACES
         frame = Frame(TestAsset(FACES))
 
-        processor = self.init_processor(AzureVisionFaceDetection())
+        processor = self.init_processor(azure.AzureVisionFaceDetection())
         processor.process(frame)
 
         namespace = 'azure-face-detection'
@@ -211,7 +209,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
         proxy_patch.return_value = STREETSIGN
         frame = Frame(TestAsset(STREETSIGN))
 
-        processor = self.init_processor(AzureVisionTextDetection())
+        processor = self.init_processor(azure.AzureVisionTextDetection())
         processor.process(frame)
 
         namespace = 'azure-image-text-detection'
@@ -251,7 +249,7 @@ class MockReadResult:
 
     @property
     def status(self):
-        return  OperationStatusCodes.succeeded
+        return OperationStatusCodes.succeeded
 
     @property
     def analyze_result(self):
@@ -270,6 +268,7 @@ class MockLines:
     @property
     def lines(self):
         return [MockText()]
+
 
 class MockText:
 
