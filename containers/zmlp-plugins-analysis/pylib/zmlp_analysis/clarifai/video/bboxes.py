@@ -2,7 +2,7 @@ import os
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlp_analysis.clarifai.images import bboxes
+from zmlp_analysis.clarifai.images import bboxes as bboxes_images
 
 models = [
     'face-detection-model',
@@ -109,7 +109,7 @@ class ClarifaiVideoFaceDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoFaceDetectionProcessor, self).__init__('face-detection-model')
 
     def init(self):
-        self.image_client = bboxes.ClarifaiFaceDetectionProcessor()
+        self.image_client = bboxes_images.ClarifaiFaceDetectionProcessor()
         self.image_client.init()
 
 
@@ -120,5 +120,5 @@ class ClarifaiVideoLogoDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoLogoDetectionProcessor, self).__init__('logo-model')
 
     def init(self):
-        self.image_client = bboxes.ClarifaiLogoDetectionProcessor()
+        self.image_client = bboxes_images.ClarifaiLogoDetectionProcessor()
         self.image_client.init()

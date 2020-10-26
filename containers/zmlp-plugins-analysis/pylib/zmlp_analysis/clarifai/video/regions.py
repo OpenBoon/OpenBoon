@@ -2,7 +2,7 @@ import os
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlp_analysis.clarifai.images import regions
+from zmlp_analysis.clarifai.images import regions as regions_images
 
 __all__ = [
     'ClarifaiVideoCelebrityDetectionProcessor',
@@ -111,7 +111,7 @@ class ClarifaiVideoCelebrityDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoCelebrityDetectionProcessor, self).__init__('celebrity-model')
 
     def init(self):
-        self.image_client = regions.ClarifaiCelebrityDetectionProcessor()
+        self.image_client = regions_images.ClarifaiCelebrityDetectionProcessor()
         self.image_client.init()
 
 
@@ -122,5 +122,5 @@ class ClarifaiVideoDemographicsDetectionProcessor(AbstractClarifaiVideoProcessor
         super(ClarifaiVideoDemographicsDetectionProcessor, self).__init__('demographics-model')
 
     def init(self):
-        self.image_client = regions.ClarifaiDemographicsDetectionProcessor()
+        self.image_client = regions_images.ClarifaiDemographicsDetectionProcessor()
         self.image_client.init()

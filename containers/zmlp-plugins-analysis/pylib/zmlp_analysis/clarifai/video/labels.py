@@ -2,7 +2,7 @@ import os
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlp_analysis.clarifai.images import labels
+from zmlp_analysis.clarifai.images import labels as labels_images
 
 __all__ = [
     'ClarifaiVideoLabelDetectionProcessor',
@@ -120,7 +120,7 @@ class ClarifaiVideoLabelDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoLabelDetectionProcessor, self).__init__('general-model')
 
     def init(self):
-        self.image_client = labels.ClarifaiLabelDetectionProcessor()
+        self.image_client = labels_images.ClarifaiLabelDetectionProcessor()
         self.image_client.init()
 
 
@@ -131,7 +131,7 @@ class ClarifaiVideoFoodDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoFoodDetectionProcessor, self).__init__('food-model')
 
     def init(self):
-        self.image_client = labels.ClarifaiFoodDetectionProcessor()
+        self.image_client = labels_images.ClarifaiFoodDetectionProcessor()
         self.image_client.init()
 
 
@@ -142,7 +142,7 @@ class ClarifaiVideoTravelDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoTravelDetectionProcessor, self).__init__('travel-model')
 
     def init(self):
-        self.image_client = labels.ClarifaiTravelDetectionProcessor()
+        self.image_client = labels_images.ClarifaiTravelDetectionProcessor()
         self.image_client.init()
 
 
@@ -153,7 +153,7 @@ class ClarifaiVideoApparelDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoApparelDetectionProcessor, self).__init__('apparel-model')
 
     def init(self):
-        self.image_client = labels.ClarifaiApparelDetectionProcessor()
+        self.image_client = labels_images.ClarifaiApparelDetectionProcessor()
         self.image_client.init()
 
 
@@ -164,7 +164,7 @@ class ClarifaiVideoWeddingDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoWeddingDetectionProcessor, self).__init__('wedding-model')
 
     def init(self):
-        self.image_client = labels.ClarifaiWeddingDetectionProcessor()
+        self.image_client = labels_images.ClarifaiWeddingDetectionProcessor()
         self.image_client.init()
 
 
@@ -175,7 +175,7 @@ class ClarifaiVideoExplicitDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoExplicitDetectionProcessor, self).__init__('nsfw-model')
 
     def init(self):
-        self.image_client = labels.ClarifaiExplicitDetectionProcessor()
+        self.image_client = labels_images.ClarifaiExplicitDetectionProcessor()
         self.image_client.init()
 
 
@@ -186,7 +186,7 @@ class ClarifaiVideoModerationDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoModerationDetectionProcessor, self).__init__('moderation-model')
 
     def init(self):
-        self.image_client = labels.ClarifaiModerationDetectionProcessor()
+        self.image_client = labels_images.ClarifaiModerationDetectionProcessor()
         self.image_client.init()
 
 
@@ -197,5 +197,5 @@ class ClarifaiVideoTexturesDetectionProcessor(AbstractClarifaiVideoProcessor):
         super(ClarifaiVideoTexturesDetectionProcessor, self).__init__('textures-and-patterns-model')
 
     def init(self):
-        self.image_client = labels.ClarifaiTexturesDetectionProcessor()
+        self.image_client = labels_images.ClarifaiTexturesDetectionProcessor()
         self.image_client.init()
