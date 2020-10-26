@@ -84,8 +84,7 @@ exports[`<TimelineCaptions /> should render properly with a track enabled 1`] = 
 .emotion-4 {
   width: 2px;
   background-color: #191919;
-  margin-left: 4px;
-  margin-right: 4px;
+  margin: 4px;
 }
 
 .emotion-0 {
@@ -337,8 +336,7 @@ exports[`<TimelineCaptions /> should render properly with no track enabled 1`] =
 .emotion-4 {
   width: 2px;
   background-color: #191919;
-  margin-left: 4px;
-  margin-right: 4px;
+  margin: 4px;
 }
 
 <div

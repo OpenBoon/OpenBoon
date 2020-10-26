@@ -22,7 +22,13 @@ describe('<TimelineControls />', () => {
         }}
         length={18}
         timelines={[]}
-        settings={{ filter: '', width: 100, timelines: {}, zoom: 100 }}
+        settings={{
+          filter: '',
+          highlights: false,
+          width: 100,
+          zoom: 100,
+          timelines: {},
+        }}
       />,
     )
 
@@ -52,7 +58,13 @@ describe('<TimelineControls />', () => {
         }}
         length={18}
         timelines={[]}
-        settings={{ filter: '', width: 100, timelines: {}, zoom: 100 }}
+        settings={{
+          filter: '',
+          highlights: false,
+          width: 100,
+          zoom: 100,
+          timelines: {},
+        }}
       />,
     )
 
@@ -82,7 +94,13 @@ describe('<TimelineControls />', () => {
         videoRef={{ current }}
         length={18}
         timelines={[]}
-        settings={{ filter: '', width: 100, timelines: {}, zoom: 100 }}
+        settings={{
+          filter: '',
+          highlights: false,
+          width: 100,
+          zoom: 100,
+          timelines: {},
+        }}
       />,
     )
 
@@ -114,7 +132,13 @@ describe('<TimelineControls />', () => {
         videoRef={{ current }}
         length={18}
         timelines={[]}
-        settings={{ filter: '', width: 100, timelines: {}, zoom: 100 }}
+        settings={{
+          filter: '',
+          highlights: false,
+          width: 100,
+          zoom: 100,
+          timelines: {},
+        }}
       />,
     )
 

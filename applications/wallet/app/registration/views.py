@@ -3,7 +3,6 @@ from datetime import timedelta
 from axes.handlers.proxy import AxesProxyHandler
 from django.conf import settings
 from django.contrib.auth import get_user_model, logout, login, authenticate
-from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail

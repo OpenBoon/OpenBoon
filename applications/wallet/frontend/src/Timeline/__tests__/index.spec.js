@@ -43,6 +43,13 @@ describe('<Timeline />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    // Filter Search Highlights Only
+    act(() => {
+      component.root.findByProps({ value: 'highlights' }).props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should open the Timeline panel', () => {

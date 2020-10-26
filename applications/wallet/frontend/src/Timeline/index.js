@@ -8,8 +8,10 @@ import { colors, spacing, constants } from '../Styles'
 import DoubleChevronSvg from '../Icons/doubleChevron.svg'
 
 import { useLocalStorage } from '../LocalStorage/helpers'
+import { cleanup } from '../Filters/helpers'
 
 import Button, { VARIANTS } from '../Button'
+import CheckboxSwitch from '../Checkbox/Switch'
 import ResizeableWithMessage from '../Resizeable/WithMessage'
 
 import { reducer, INITIAL_STATE, ACTIONS } from './reducer'
@@ -28,6 +30,7 @@ import TimelineMetadata from './Metadata'
 import TimelineShortcuts from './Shortcuts'
 
 const TIMELINE_HEIGHT = 200
+const SEPARATOR_WIDTH = 2
 
 const Timeline = ({ videoRef, length }) => {
   const {
@@ -40,10 +43,10 @@ const Timeline = ({ videoRef, length }) => {
     initialState: INITIAL_STATE,
   })
 
+  const cleanQuery = cleanup({ query })
+
   const { data: timelines } = useSWR(
-    `/api/v1/projects/${projectId}/assets/${assetId}/timelines/${
-      query ? `?query=${query}` : ''
-    }`,
+    `/api/v1/projects/${projectId}/assets/${assetId}/timelines/?query=${cleanQuery}`,
   )
 
   useMemo(() => {
@@ -88,13 +91,21 @@ const Timeline = ({ videoRef, length }) => {
             settings={settings}
           />
 
-          <div css={{ flex: 1, padding: spacing.small, paddingLeft: 0 }}>
+          <div
+            css={{
+              flex: 1,
+              padding: spacing.small,
+              paddingLeft: 0,
+              display: 'flex',
+            }}
+          >
             <Button
               aria-label={`${isOpen ? 'Close' : 'Open'} Timeline`}
               variant={VARIANTS.ICON}
               style={{
                 flexDirection: 'row',
                 padding: spacing.small,
+                paddingRight: spacing.base,
                 ':hover, &.focus-visible:focus': {
                   backgroundColor: colors.structure.mattGrey,
                   svg: {
@@ -117,6 +128,44 @@ const Timeline = ({ videoRef, length }) => {
               <div css={{ width: spacing.small }} />
               Timeline
             </Button>
+
+            <div
+              css={{
+                width: SEPARATOR_WIDTH,
+                backgroundColor: colors.structure.coal,
+                margin: spacing.small,
+              }}
+            />
+
+            <CheckboxSwitch
+              option={{
+                value: 'highlights',
+                label: (
+                  <>
+                    <svg width={12} height={14}>
+                      <line
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2={14}
+                      />
+                      <polygon
+                        fill="currentColor"
+                        points="0,0 8,0 6,2.5 8,5 0,5"
+                      />
+                    </svg>
+                    Search Only
+                  </>
+                ),
+                initialValue: settings.highlights,
+                isDisabled: false,
+              }}
+              onClick={() => {
+                dispatch({ type: ACTIONS.TOGGLE_HIGHLIGHTS })
+              }}
+            />
           </div>
 
           <TimelineControls
@@ -193,7 +242,7 @@ const Timeline = ({ videoRef, length }) => {
               dispatch={dispatch}
             />
 
-            {query && (
+            {cleanQuery !== 'W10=' && (
               <TimelineSearchHits
                 videoRef={videoRef}
                 length={length}
