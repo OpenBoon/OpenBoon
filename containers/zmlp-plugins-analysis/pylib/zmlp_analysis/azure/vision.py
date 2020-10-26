@@ -1,11 +1,12 @@
 import time
+from PIL import Image
 
 from azure.cognitiveservices.vision.computervision.models import \
     VisualFeatureTypes, OperationStatusCodes
 
 from zmlpsdk import Argument, AssetProcessor, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
-from zmlpsdk.proxy import get_proxy_level_path, get_proxy_level
+from zmlpsdk.proxy import get_proxy_level_path, get_proxy_level, calculate_normalized_bbox
 from zmlpsdk import file_storage
 
 from .util import get_zvi_azure_cv_client
@@ -126,6 +127,10 @@ class AzureVisionObjectDetection(AbstractAzureVisionProcessor):
         Returns:
             list: a list of predictions
         """
+        # get height and width of image
+        image = Image.open(path)
+        img_width, img_height = image.size
+
         with open(path, 'rb') as img:
             response = self.client.detect_objects_in_stream(image=img)
 
@@ -138,7 +143,8 @@ class AzureVisionObjectDetection(AbstractAzureVisionProcessor):
                 r.rectangle.x + r.rectangle.w,
                 r.rectangle.y + r.rectangle.h,
             ]
-            labels.append((r.object_property, r.confidence, bbox))
+            normalized_bbox = calculate_normalized_bbox(img_width, img_height, bbox)
+            labels.append((r.object_property, r.confidence, normalized_bbox))
         return labels
 
 
@@ -260,6 +266,10 @@ class AzureVisionCelebrityDetection(AbstractAzureVisionProcessor):
         Returns:
             list: a list of predictions
         """
+        # get height and width of image
+        image = Image.open(path)
+        img_width, img_height = image.size
+
         with open(path, 'rb') as img:
             response = self.client.analyze_image_by_domain_in_stream(model=self.model, image=img)
 
@@ -272,7 +282,8 @@ class AzureVisionCelebrityDetection(AbstractAzureVisionProcessor):
                 r['faceRectangle']['left'] + r['faceRectangle']['width'],
                 r['faceRectangle']['top'] + r['faceRectangle']['height'],
             ]
-            labels.append((r['name'], r['confidence'], bbox))
+            normalized_bbox = calculate_normalized_bbox(img_width, img_height, bbox)
+            labels.append((r['name'], r['confidence'], normalized_bbox))
         return labels
 
 
@@ -340,6 +351,10 @@ class AzureVisionLogoDetection(AbstractAzureVisionProcessor):
         Returns:
             list: a list of predictions
         """
+        # get height and width of image
+        image = Image.open(path)
+        img_width, img_height = image.size
+
         with open(path, 'rb') as img:
             response = self.client.analyze_image_in_stream(
                 image=img,
@@ -355,7 +370,8 @@ class AzureVisionLogoDetection(AbstractAzureVisionProcessor):
                 r.rectangle.x + r.rectangle.w,
                 r.rectangle.y + r.rectangle.h,
             ]
-            labels.append((r.name, r.confidence, bbox))
+            normalized_bbox = calculate_normalized_bbox(img_width, img_height, bbox)
+            labels.append((r.name, r.confidence, normalized_bbox))
         return labels
 
 
@@ -460,6 +476,10 @@ class AzureVisionFaceDetection(AbstractAzureVisionProcessor):
         Returns:
             list: a list of predictions
         """
+        # get height and width of image
+        image = Image.open(path)
+        img_width, img_height = image.size
+
         with open(path, 'rb') as img:
             response = self.client.analyze_image_in_stream(
                 image=img,
@@ -475,7 +495,8 @@ class AzureVisionFaceDetection(AbstractAzureVisionProcessor):
                 r.face_rectangle.left + r.face_rectangle.width,
                 r.face_rectangle.top + r.face_rectangle.height,
             ]
-            labels.append((r.gender, '1.00', bbox, r.age))
+            normalized_bbox = calculate_normalized_bbox(img_width, img_height, bbox)
+            labels.append((r.gender, '1.00', normalized_bbox, r.age))
         return labels
 
 
