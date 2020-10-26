@@ -1,30 +1,26 @@
-# flake8: noqa
-import os
-
 from zmlpsdk import AssetProcessor, Argument, FileTypes, file_storage, proxy, clips, video
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlp_analysis.aws.util import AwsEnv
-from zmlp_analysis.aws.labels import RekognitionLabelDetection
+from zmlp_analysis.aws.faces import RekognitionFaceDetection
 
 MAX_LENGTH_SEC = 120
 
 
-class RekognitionVideoLabelDetection(AssetProcessor):
+class RekognitionVideoFaceDetection(AssetProcessor):
     """Get labels for a video using AWS Rekognition """
 
     file_types = FileTypes.videos
 
-    namespace = 'aws-video-label-detection'
+    namespace = 'aws-video-face-detection'
 
     def __init__(self, extract_type=None, reactor=None):
-        super(RekognitionVideoLabelDetection, self).__init__()
+        super(RekognitionVideoFaceDetection, self).__init__()
         self.add_arg(Argument('debug', 'bool', default=False))
         self.extract_type = extract_type
         self.reactor = reactor
         self.image_client = None
 
     def init(self):
-        self.image_client = RekognitionLabelDetection()
+        self.image_client = RekognitionFaceDetection()
         self.image_client.init()
 
     def process(self, frame):
@@ -71,7 +67,7 @@ class RekognitionVideoLabelDetection(AssetProcessor):
         analysis = LabelDetectionAnalysis(collapse_labels=True)
 
         for time_ms, path in extractor:
-            predictions = proc.predict(path, analysis.max_predictions)
+            predictions = proc.predict(path)
             labels = [pred[0] for pred in predictions]
             clip_tracker.append(time_ms, labels)
             for ls in predictions:
