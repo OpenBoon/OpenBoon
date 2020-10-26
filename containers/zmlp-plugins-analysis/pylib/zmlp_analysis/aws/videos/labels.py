@@ -10,7 +10,7 @@ class RekognitionVideoLabelDetection(AssetProcessor):
 
     file_types = FileTypes.videos
 
-    namespace = 'aws-video-label-detection'
+    namespace = 'aws-label-detection'
 
     def __init__(self, extract_type=None, reactor=None):
         super(RekognitionVideoLabelDetection, self).__init__()

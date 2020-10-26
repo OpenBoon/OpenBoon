@@ -10,7 +10,7 @@ class RekognitionVideoUnsafeDetection(AssetProcessor):
 
     file_types = FileTypes.videos
 
-    namespace = 'aws-video-unsafe-detection'
+    namespace = 'aws-unsafe-detection'
 
     def __init__(self, extract_type=None, reactor=None):
         super(RekognitionVideoUnsafeDetection, self).__init__()

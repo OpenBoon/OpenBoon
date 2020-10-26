@@ -9,7 +9,7 @@ class RekognitionVideoCelebrityDetection(AssetProcessor):
     """ AWS Rekognition celebrity detection"""
     file_types = FileTypes.videos
 
-    namespace = 'aws-video-celebrity-detection'
+    namespace = 'aws-celebrity-detection'
 
     def __init__(self, extract_type=None, reactor=None):
         super(RekognitionVideoCelebrityDetection, self).__init__()

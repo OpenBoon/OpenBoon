@@ -10,7 +10,7 @@ class RekognitionVideoTextDetection(AssetProcessor):
 
     file_types = FileTypes.videos
 
-    namespace = 'aws-video-text-detection'
+    namespace = 'aws-text-detection'
 
     def __init__(self, extract_type=None, reactor=None):
         super(RekognitionVideoTextDetection, self).__init__()

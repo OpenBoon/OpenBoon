@@ -48,7 +48,7 @@ class RekognitionVideoTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.videos.labels.proxy.get_video_proxy')
     def test_label_detection_processor(self, get_vid_patch, store_patch, store_blob_patch, _):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.aws-video-label-detection'
+        namespace = 'analysis.aws-label-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
@@ -69,7 +69,7 @@ class RekognitionVideoTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.videos.faces.proxy.get_video_proxy')
     def test_face_detection_processor(self, get_vid_patch, store_patch, store_blob_patch, _):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.aws-video-face-detection'
+        namespace = 'analysis.aws-face-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
@@ -90,7 +90,7 @@ class RekognitionVideoTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.videos.nsfw.proxy.get_video_proxy')
     def test_unsafe_detection_processor(self, get_vid_patch, store_patch, store_blob_patch, _):
         video_path = zorroa_test_path(MODEL)
-        namespace = 'analysis.aws-video-unsafe-detection'
+        namespace = 'analysis.aws-unsafe-detection'
 
         get_vid_patch.return_value = zorroa_test_path(MODEL)
         store_patch.return_value = get_mock_stored_file()
@@ -113,7 +113,7 @@ class RekognitionVideoTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.videos.celebs.proxy.get_video_proxy')
     def test_celebrity_detection_processor(self, get_vid_patch, store_patch, store_blob_patch, _):
         video_path = zorroa_test_path(BORIS_JOHNSON)
-        namespace = 'analysis.aws-video-celebrity-detection'
+        namespace = 'analysis.aws-celebrity-detection'
 
         get_vid_patch.return_value = zorroa_test_path(BORIS_JOHNSON)
         store_patch.return_value = get_mock_stored_file()
@@ -134,7 +134,7 @@ class RekognitionVideoTestCase(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.videos.text.proxy.get_video_proxy')
     def test_text_detection_processor(self, get_vid_patch, store_patch, store_blob_patch, _):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.aws-video-text-detection'
+        namespace = 'analysis.aws-text-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()

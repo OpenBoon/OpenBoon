@@ -70,7 +70,7 @@ class RekognitionVideoTextDetectionProcessorTests(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.videos.nsfw.proxy.get_video_proxy')
     def test_unsafe_detection(self, get_vid_patch, store_patch, store_blob_patch, _, __):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.aws-video-text-detection'
+        namespace = 'analysis.aws-text-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()

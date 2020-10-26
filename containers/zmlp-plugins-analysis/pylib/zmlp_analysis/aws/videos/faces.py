@@ -10,7 +10,7 @@ class RekognitionVideoFaceDetection(AssetProcessor):
 
     file_types = FileTypes.videos
 
-    namespace = 'aws-video-face-detection'
+    namespace = 'aws-face-detection'
 
     def __init__(self, extract_type=None, reactor=None):
         super(RekognitionVideoFaceDetection, self).__init__()

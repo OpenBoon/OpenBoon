@@ -30,7 +30,7 @@ class RekognitionVideoCelebrityDetectionProcessorTests(PluginUnitTestCase):
     @patch('zmlp_analysis.aws.videos.celebs.proxy.get_video_proxy')
     def test_celebrity_detection(self, get_vid_patch, store_patch, store_blob_patch, _, __):
         video_path = zorroa_test_path(VID_MP4)
-        namespace = 'analysis.aws-video-celebrity-detection'
+        namespace = 'analysis.aws-celebrity-detection'
 
         get_vid_patch.return_value = zorroa_test_path(VID_MP4)
         store_patch.return_value = get_mock_stored_file()
