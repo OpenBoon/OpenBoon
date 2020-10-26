@@ -17,6 +17,7 @@ models = [
 MAX_LENGTH_SEC = 120
 MAX_SIZE = 10**7  # 10MB
 
+
 class AbstractClarifaiVideoProcessor(AssetProcessor):
     """
         This base class is used for all Clarifai features.  Subclasses
@@ -112,6 +113,7 @@ class ClarifaiVideoCelebrityDetectionProcessor(AbstractClarifaiVideoProcessor):
     def init(self):
         self.image_client = regions.ClarifaiCelebrityDetectionProcessor()
         self.image_client.init()
+
 
 class ClarifaiVideoDemographicsDetectionProcessor(AbstractClarifaiVideoProcessor):
     """ Clarifai landmark detection"""

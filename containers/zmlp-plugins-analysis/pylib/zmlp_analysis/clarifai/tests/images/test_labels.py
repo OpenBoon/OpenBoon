@@ -185,7 +185,11 @@ class ExplicitModel:
 
 class ModerationModel:
     def predict_by_filename(self, filename):
-        mock_data = os.path.join(os.path.dirname(__file__), '..', 'mock_data/clarifai_moderation.rsp')
+        mock_data = os.path.join(
+            os.path.dirname(__file__),
+            '..',
+            'mock_data/clarifai_moderation.rsp'
+        )
         with open(mock_data) as fp:
             return eval(fp.read())
 
