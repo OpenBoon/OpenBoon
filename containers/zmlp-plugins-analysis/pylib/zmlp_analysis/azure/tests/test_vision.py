@@ -326,10 +326,10 @@ class MockImageAnalysis:
                 'name': 'Ryan Gosling',
                 'confidence': 0.995,
                 'faceRectangle': {
-                    'left': 118,
-                    'top': 159,
-                    'width': 94,
-                    'height': 94
+                    'left': 0.397,
+                    'top': 0.273,
+                    'width': 0.773,
+                    'height': 0.65
                 }
             }],
             'landmarks': [{
