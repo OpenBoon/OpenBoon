@@ -19,7 +19,7 @@ def test_save_raw_transcribe_result(store_patch):
 
     assert data['jobName'] == '5e2ce15a-77ac-4637-95dc-e31f96b9c180'
     assert data['results']['transcripts'][0]['transcript'] == \
-           'sanitation. There\'s more coming sanitation, toilet on poop and I have yet to emerge.'
+        'sanitation. There\'s more coming sanitation, toilet on poop and I have yet to emerge.'
 
 
 def test_generate_transcribe_sentences():
