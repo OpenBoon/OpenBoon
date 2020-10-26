@@ -1,5 +1,4 @@
-# flake8: noqa
-from zmlp_analysis.azure.vision import *
+from zmlp_analysis.azure import vision
 from zmlpsdk import AssetProcessor, FileTypes, file_storage
 from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
 from zmlpsdk import proxy
@@ -92,7 +91,7 @@ class AzureVideoObjectDetector(AzureVideoAbstract):
         super(AzureVideoObjectDetector, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionObjectDetection()
+        self.vision_client = vision.AzureVisionObjectDetection()
         self.vision_client.init()
 
 
@@ -104,7 +103,7 @@ class AzureVideoLabelDetector(AzureVideoAbstract):
         super(AzureVideoLabelDetector, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionLabelDetection()
+        self.vision_client = vision.AzureVisionLabelDetection()
         self.vision_client.init()
 
 
@@ -116,7 +115,7 @@ class AzureVideoImageDescriptionDetector(AzureVideoAbstract):
         super(AzureVideoImageDescriptionDetector, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionImageDescription()
+        self.vision_client = vision.AzureVisionImageDescription()
         self.vision_client.init()
 
 
@@ -128,7 +127,7 @@ class AzureVideoImageTagDetector(AzureVideoAbstract):
         super(AzureVideoImageTagDetector, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionImageTagsDetection()
+        self.vision_client = vision.AzureVisionImageTagsDetection()
         self.vision_client.init()
 
 
@@ -140,7 +139,7 @@ class AzureVideoCelebrityDetector(AzureVideoAbstract):
         super(AzureVideoCelebrityDetector, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionCelebrityDetection()
+        self.vision_client = vision.AzureVisionCelebrityDetection()
         self.vision_client.init()
 
 
@@ -152,7 +151,7 @@ class AzureVideoLandmarkDetector(AzureVideoAbstract):
         super(AzureVideoLandmarkDetector, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionLandmarkDetection()
+        self.vision_client = vision.AzureVisionLandmarkDetection()
         self.vision_client.init()
 
 
@@ -164,7 +163,7 @@ class AzureVideoLogoDetector(AzureVideoAbstract):
         super(AzureVideoLogoDetector, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionLogoDetection()
+        self.vision_client = vision.AzureVisionLogoDetection()
         self.vision_client.init()
 
 
@@ -176,7 +175,7 @@ class AzureVideoCategoryDetector(AzureVideoAbstract):
         super(AzureVideoCategoryDetector, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionCategoryDetection()
+        self.vision_client = vision.AzureVisionCategoryDetection()
         self.vision_client.init()
 
 
@@ -188,7 +187,7 @@ class AzureVideoExplicitContentDetector(AzureVideoAbstract):
         super(AzureVideoExplicitContentDetector, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionExplicitContentDetection()
+        self.vision_client = vision.AzureVisionExplicitContentDetection()
         self.vision_client.init()
 
 
@@ -200,7 +199,7 @@ class AzureVideoFaceDetector(AzureVideoAbstract):
         super(AzureVideoFaceDetector, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionFaceDetection()
+        self.vision_client = vision.AzureVisionFaceDetection()
         self.vision_client.init()
 
 
@@ -212,7 +211,7 @@ class AzureVideoTextDetector(AzureVideoAbstract):
         super(AzureVideoTextDetector, self).__init__()
 
     def init(self):
-        self.vision_client = AzureVisionTextDetection()
+        self.vision_client = vision.AzureVisionTextDetection()
         self.vision_client.init()
 
     def set_analysis(self, extractor, clip_tracker, proc):
