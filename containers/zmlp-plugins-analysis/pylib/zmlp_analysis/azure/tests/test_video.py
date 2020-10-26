@@ -134,7 +134,7 @@ class AzureVisionProcessorTests(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'store_file')
     @patch('zmlp_analysis.azure.video.proxy.get_video_proxy')
     def test_celeb_detection(self, get_vid_patch, store_patch, store_blob_patch, t_path,
-                                p_path, c_path):
+                             p_path, c_path):
         video_path = zorroa_test_path(VID_MP4)
         namespace = 'analysis.azure-video-celebrity-detection'
 

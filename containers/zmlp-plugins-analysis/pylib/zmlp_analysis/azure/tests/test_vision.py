@@ -249,7 +249,7 @@ class MockReadResult:
 
     @property
     def status(self):
-        return  OperationStatusCodes.succeeded
+        return OperationStatusCodes.succeeded
 
     @property
     def analyze_result(self):
@@ -268,6 +268,7 @@ class MockLines:
     @property
     def lines(self):
         return [MockText()]
+
 
 class MockText:
 
