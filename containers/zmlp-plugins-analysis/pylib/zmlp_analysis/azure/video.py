@@ -31,9 +31,10 @@ class AzureVideoAbstract(AssetProcessor):
     """
     file_types = FileTypes.videos
 
-    def __init__(self):
+    def __init__(self, extract_type=None):
         super(AzureVideoAbstract, self).__init__()
         self.vision_client = None
+        self.extract_type = extract_type
 
     def process(self, frame):
         asset = frame.asset
@@ -52,7 +53,12 @@ class AzureVideoAbstract(AssetProcessor):
             return
 
         local_path = file_storage.localize_file(video_proxy)
-        extractor = video.ShotBasedFrameExtractor(local_path)
+
+        if self.extract_type == 'time':
+            extractor = video.TimeBasedFrameExtractor(local_path)
+        else:
+            extractor = video.ShotBasedFrameExtractor(local_path)
+
         clip_tracker = ClipTracker(asset, self.namespace)
 
         analysis, clip_tracker = self.set_analysis(extractor, clip_tracker, self.vision_client)
@@ -184,7 +190,7 @@ class AzureVideoExplicitContentDetector(AzureVideoAbstract):
     namespace = 'azure-video-explicit-detection'
 
     def __init__(self):
-        super(AzureVideoExplicitContentDetector, self).__init__()
+        super(AzureVideoExplicitContentDetector, self).__init__(extract_type='time')
 
     def init(self):
         self.vision_client = vision.AzureVisionExplicitContentDetection()
