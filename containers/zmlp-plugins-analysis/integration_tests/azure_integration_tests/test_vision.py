@@ -25,7 +25,6 @@ class ComputerVisionProcessorTestCase(PluginUnitTestCase):
         with open(cred_location, 'rb') as f:
             key = f.read().decode()
         os.environ['ZORROA_AZURE_VISION_KEY'] = key
-        os.environ['ZORROA_AZURE_VISION_REGION'] = 'eastus'
 
     def tearDown(self):
         del os.environ['ZORROA_AZURE_VISION_KEY']
