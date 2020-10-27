@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-import NoProjectSvg from './noProject.svg'
+import NoProjectSvg from '../Icons/noProject.svg'
 
 import { colors, typography } from '../Styles'
 
