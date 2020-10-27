@@ -2,7 +2,7 @@ import cv2
 
 from zmlpsdk import AssetProcessor, Argument, FileTypes
 from zmlpsdk.analysis import LabelDetectionAnalysis
-from zmlpsdk.proxy import get_proxy_level_path
+from zmlpsdk.proxy import get_proxy_level_path, calculate_normalized_bbox
 
 from .util import get_clarifai_app
 
@@ -74,7 +74,8 @@ class AbstractClarifaiProcessor(AssetProcessor):
         y = top * height
         w = (right * width) - x
         h = (bottom * height) - y
-        return [x, y, w, h]
+        normalized_bbox = calculate_normalized_bbox(width, height, [x, y, w, h])
+        return normalized_bbox
 
     def emit_status(self, msg):
         """
