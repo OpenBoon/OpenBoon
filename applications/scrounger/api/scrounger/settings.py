@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,14 +24,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'nnb4iz@t!(+^#vg5dl4@n7z^ux2ub8yxq0wjj1!dcbmr-4tjhy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+if os.environ.get('DEBUG') == 'true':
+    DEBUG = True
+else:
+    DEBUG = False
+
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'registration',
+    'scrounger',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,12 +79,15 @@ WSGI_APPLICATION = 'scrounger.wsgi.application'
 
 
 # Database
+# If a different database is desired to be used, this will need to be replaced with
+# the appropriate configuration
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+DATABASE_PATH = os.environ.get('DATABASE_PATH', os.path.join(BASE_DIR, 'db.sqlite3'))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': DATABASE_PATH,
     }
 }
 
@@ -118,3 +129,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'scrounger/static')
+
+
+# General Application Configuration
+ZMLP_API_URL = os.environ.get('ZMLP_API_URL', 'https://api.zvi.zorroa.com')
+ZMLP_API_KEY = os.environ.get('ZMLP_API_KEY')
+
+SUPERUSER_EMAIL = 'software@zorroa.com'
+
+# Logging Settings
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}

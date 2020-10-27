@@ -52,3 +52,44 @@ file have been installed, running the tests for the backend is as simple as:
 1. `cd` into the `applications/scrounger/api` directory
 1. Run: `pytest`
 
+## Build the Docker Container
+
+The Scounger application can be built as a standalone Docker Container. This is a helpful
+list of Docker commands you can use to build an image, run the image, and manage the
+resulting container. If doing continual development, it may be wise to create aliases for
+these commands in your shell profile.
+
+### Build
+
+- From the root of the ZMLP monorepo, tagging the image as "scrounger", run:
+    - `docker build -f applications/scrounger/Dockerfile . -t scrounger` 
+    
+### Run
+
+- To run the resulting image as a container, run:
+    - `docker run -p 80:80 scrounger`
+    
+- Run the container, mounting a local directory location to store a permananent
+  copy of the db, to prevent data loss if the db goes down:
+    - `docker run -p 80:80 -e DATABASE_PATH=/applications/db/db.sqlite3 --mount type=bind,source=/Users/zach.schipono/dev/scrounger_db,destination=/applications/db scrounger`
+    - Note that the `DATABASE_PATH` env variable refers to the location of the db
+    *inside* the container's mounted location. 
+    
+### Manage
+
+- To attach to a shell in the running container, run:
+    - ```docker exec -it `docker ps | egrep scrounger | awk '{print $NF}'` /bin/bash```
+    
+- To kill the running Scounger container, run:
+    - ```docker kill `docker ps | egrep scrounger | awk '{print $1}'` ```
+    
+## ENVIRONMENT VARIABLES
+
+Environment variables can be used to control the execution of Scounger. Below is a table
+of the available environment variables that can be used.
+
+| Env Variable Name | Description | Possible Values |
+| :---------------- | :---------- | :-------------- |
+| DEBUG             | Run the backend server in debug mode. | true/false |
+| DATABASE_PATH     | Full path to a full SQLite3 database file to use. | varies |
+

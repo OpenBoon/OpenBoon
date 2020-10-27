@@ -21,3 +21,4 @@ docker-compose.yml
 README.md
 renovate.json
 terraform.tfstate
+**db.sqlite3
